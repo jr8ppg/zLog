@@ -5,7 +5,7 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45180.9556018518</prop>
+        <prop prop-type="SelfDateTime">45181.915</prop>
         <prop prop-type="OrigDateTime">45134.9315740741</prop>
         <prop prop-type="XlatDateTime">45154.4880092593</prop>
         <prop prop-type="Translated">64</prop>
@@ -9090,7 +9090,7 @@
           <prop prop-type="Created">45180.9380009375</prop>
           <prop prop-type="Status">1</prop>
         </prop-group>
-        <target>"全てのデータが削除され、Z-Linkを使用してデータをロードします。 よろしいですか？"</target>
+        <target>"全てのデータを削除後、Z-Linkを使用してデータをロードします。 よろしいですか？"</target>
       </trans-unit>
       <trans-unit id="UZLinkForm_ZServer_connection_failed" resname="UZLinkForm_ZServer_connection_failed">
         <source>"Z-Server connection failed."</source>

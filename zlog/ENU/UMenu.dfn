@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.970162037</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45181.9144444444</prop>
+        <prop prop-type="OrigDateTime">45181.9142592593</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">2</prop>
-        <prop prop-type="UnTranslated">358</prop>
+        <prop prop-type="UnTranslated">359</prop>
       </prop-group>
     </header>
     <body>
@@ -1475,345 +1475,350 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">291</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:MenuForm.O:editCallsign.CharCase" resname="O:MenuForm.O:editCallsign.CharCase">
+        <source>ecUpperCase</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45181.9144484375</prop><prop prop-type="Status">0</prop><prop prop-type="Order">292</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:MenuForm.O:editCallsign.TabOrder" resname="O:MenuForm.O:editCallsign.TabOrder">
         <source>6</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">292</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CheckBox1.Left" resname="O:MenuForm.O:CheckBox1.Left">
         <source>272</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CheckBox1.Top" resname="O:MenuForm.O:CheckBox1.Top">
         <source>280</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CheckBox1.Width" resname="O:MenuForm.O:CheckBox1.Width">
         <source>87</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CheckBox1.Height" resname="O:MenuForm.O:CheckBox1.Height">
         <source>17</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CheckBox1.Anchors" resname="O:MenuForm.O:CheckBox1.Anchors">
         <source>[akRight, akBottom]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CheckBox1.Caption" resname="O:MenuForm.O:CheckBox1.Caption">
         <source>'Post-contest'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CheckBox1.TabOrder" resname="O:MenuForm.O:CheckBox1.TabOrder">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TCheckBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.Left" resname="O:MenuForm.O:ScoreCoeffEdit.Left">
         <source>240</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">301</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.Top" resname="O:MenuForm.O:ScoreCoeffEdit.Top">
         <source>255</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">301</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">302</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.Width" resname="O:MenuForm.O:ScoreCoeffEdit.Width">
         <source>25</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">302</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">303</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.Height" resname="O:MenuForm.O:ScoreCoeffEdit.Height">
         <source>18</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">303</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">304</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.AutoSize" resname="O:MenuForm.O:ScoreCoeffEdit.AutoSize">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">304</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">305</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.MaxLength" resname="O:MenuForm.O:ScoreCoeffEdit.MaxLength">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">305</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">306</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.TabOrder" resname="O:MenuForm.O:ScoreCoeffEdit.TabOrder">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">306</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">307</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:ScoreCoeffEdit.Text" resname="O:MenuForm.O:ScoreCoeffEdit.Text">
         <source>'1'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">307</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">308</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.Left" resname="O:MenuForm.O:GroupBox1.Left">
         <source>272</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">308</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">309</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.Top" resname="O:MenuForm.O:GroupBox1.Top">
         <source>144</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">309</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">310</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.Width" resname="O:MenuForm.O:GroupBox1.Width">
         <source>146</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">310</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">311</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.Height" resname="O:MenuForm.O:GroupBox1.Height">
         <source>128</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">311</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">312</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.Caption" resname="O:MenuForm.O:GroupBox1.Caption">
         <source>'Category'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">312</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">313</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.TabOrder" resname="O:MenuForm.O:GroupBox1.TabOrder">
         <source>9</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">313</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">314</prop><prop prop-type="Type">TGroupBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:Label2.Left" resname="O:MenuForm.O:GroupBox1.O:Label2.Left">
         <source>67</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">314</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">315</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:Label2.Top" resname="O:MenuForm.O:GroupBox1.O:Label2.Top">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">315</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">316</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:Label2.Width" resname="O:MenuForm.O:GroupBox1.O:Label2.Width">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">316</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">317</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:Label2.Height" resname="O:MenuForm.O:GroupBox1.O:Label2.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">317</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">318</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:Label2.Caption" resname="O:MenuForm.O:GroupBox1.O:Label2.Caption">
         <source>'TX#'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">318</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">319</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioSingleOp.Left" resname="O:MenuForm.O:GroupBox1.O:radioSingleOp.Left">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">319</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">320</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioSingleOp.Top" resname="O:MenuForm.O:GroupBox1.O:radioSingleOp.Top">
         <source>19</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">320</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">321</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioSingleOp.Width" resname="O:MenuForm.O:GroupBox1.O:radioSingleOp.Width">
         <source>130</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">321</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">322</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioSingleOp.Height" resname="O:MenuForm.O:GroupBox1.O:radioSingleOp.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">322</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">323</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioSingleOp.Caption" resname="O:MenuForm.O:GroupBox1.O:radioSingleOp.Caption">
         <source>'Single-Op'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">323</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">324</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioSingleOp.TabOrder" resname="O:MenuForm.O:GroupBox1.O:radioSingleOp.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">324</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">325</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioSingleOp.OnClick" resname="O:MenuForm.O:GroupBox1.O:radioSingleOp.OnClick">
         <source>OpGroupClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">325</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">326</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Tag" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">326</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">327</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Left" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Left">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">327</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">328</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Top" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Top">
         <source>38</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">328</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">329</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Width" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Width">
         <source>130</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">329</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">330</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Height" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">330</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">331</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Caption" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.Caption">
         <source>'Multi-Op/Multi-TX'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">331</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">332</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.TabOrder" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">332</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">333</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.OnClick" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpMultiTx.OnClick">
         <source>OpGroupClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">333</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">334</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Tag" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Tag">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">334</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">335</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Left" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Left">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">335</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">336</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Top" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Top">
         <source>58</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">336</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">337</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Width" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Width">
         <source>130</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">337</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">338</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Height" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">338</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">339</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Caption" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.Caption">
         <source>'Multi-Op/Single-TX'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">339</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">340</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.TabOrder" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.TabOrder">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">340</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">341</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.OnClick" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpSingleTx.OnClick">
         <source>OpGroupClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">341</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">342</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Tag" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Tag">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">342</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">343</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Left" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Left">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">343</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">344</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Top" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Top">
         <source>78</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">344</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">345</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Width" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Width">
         <source>130</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">345</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">346</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Height" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Height">
         <source>13</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">346</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">347</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Caption" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.Caption">
         <source>'Multi-Op/Two-TX'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">347</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">348</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.TabOrder" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.TabOrder">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">348</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">349</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.OnClick" resname="O:MenuForm.O:GroupBox1.O:radioMultiOpTwoTx.OnClick">
         <source>OpGroupClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">349</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">350</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:comboTxNo.Left" resname="O:MenuForm.O:GroupBox1.O:comboTxNo.Left">
         <source>97</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">350</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">351</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:comboTxNo.Top" resname="O:MenuForm.O:GroupBox1.O:comboTxNo.Top">
         <source>97</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">351</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">352</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:comboTxNo.Width" resname="O:MenuForm.O:GroupBox1.O:comboTxNo.Width">
         <source>41</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">352</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">353</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:comboTxNo.Height" resname="O:MenuForm.O:GroupBox1.O:comboTxNo.Height">
         <source>21</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">353</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">354</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:comboTxNo.Style" resname="O:MenuForm.O:GroupBox1.O:comboTxNo.Style">
         <source>csDropDownList</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">354</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">355</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:GroupBox1.O:comboTxNo.TabOrder" resname="O:MenuForm.O:GroupBox1.O:comboTxNo.TabOrder">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">355</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">356</prop><prop prop-type="Type">TComboBox</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CFGOpenDialog.DefaultExt" resname="O:MenuForm.O:CFGOpenDialog.DefaultExt">
         <source>'CFG'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">356</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">357</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CFGOpenDialog.Filter" resname="O:MenuForm.O:CFGOpenDialog.Filter">
         <source>'zLog CFG file|*.cfg'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">357</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">358</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CFGOpenDialog.Title" resname="O:MenuForm.O:CFGOpenDialog.Title">
         <source>'Open a CFG file'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">358</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">359</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:MenuForm.O:CFGOpenDialog.Left" resname="O:MenuForm.O:CFGOpenDialog.Left">
         <source>104</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">359</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.893196493</prop><prop prop-type="Status">0</prop><prop prop-type="Order">360</prop><prop prop-type="Type">TOpenDialog</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>
