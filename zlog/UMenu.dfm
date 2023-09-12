@@ -353,6 +353,7 @@ object MenuForm: TMenuForm
     Height = 18
     Anchors = [akRight, akBottom]
     AutoSize = False
+    CharCase = ecUpperCase
     TabOrder = 6
   end
   object CheckBox1: TCheckBox
