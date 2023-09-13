@@ -424,6 +424,11 @@ begin
    else begin
       LoadAllowDenyList();
       Telnet.Connect;
+
+      ZServer.Addr := FZServerHostName;
+      ZServer.Port := FZServerPortNumber;
+      ZServer.Connect();
+
       buttonConnect.Caption := 'Connecting...';
       FDisconnectClicked := False;
       Timer1.Enabled := True;
