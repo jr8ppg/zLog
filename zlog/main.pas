@@ -4962,7 +4962,7 @@ begin
       end;
 
       // Out of contest period•\Ž¦
-      FOutOfContestPeriod := Log.IsOutOfPeriod(CurrentQSO);
+      FOutOfContestPeriod := Log.IsOutOfPeriod(CurrentQSO) and MyContest.UseContestPeriod;
       if (FPrevOutOfContestPeriod <> FOutOfContestPeriod) or (FFirstOutOfContestPeriod = True) then begin
          if panelOutOfPeriod.Visible <> FOutOfContestPeriod then begin
             ShowOutOfContestPeriod(FOutOfContestPeriod);
