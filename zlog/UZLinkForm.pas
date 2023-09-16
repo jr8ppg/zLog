@@ -520,6 +520,7 @@ begin
       if pos('RENEW', temp) = 1 then begin
          Log.ProcessQue;
          Log.SortBy(soTime);
+         Log.RebuildDupeCheckList();
          MainForm.RenewScore();
       end;
 

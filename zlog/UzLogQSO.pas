@@ -7,7 +7,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.DateUtils, Generics.Collections, Generics.Defaults,
-  UzlogConst;
+  UzLogConst;
 
 type
   TQSODataExHeader = packed record
@@ -616,12 +616,16 @@ end;
 
 procedure TQSO.UpdateTime;
 begin
+   {$IFNDEF ZSERVER}
    if Assigned(MyContest) and (MyContest.UseUTC) then begin
       FTime := GetUTC();
    end
    else begin
       FTime := Now;
    end;
+   {$ELSE}
+   FTime := Now;
+   {$ENDIF}
 end;
 
 function TQSO.GetSerialStr: string;
@@ -696,6 +700,7 @@ begin
 //   Result := dmZLogGlobal.PowerOfBand2[Band];
    power := NewPowerString[Self.FPower];
 
+   {$IFNDEF ZSERVER}
    if power = 'H' then begin
       Result := dmZLogGlobal.Settings._powerH;
    end
@@ -711,6 +716,9 @@ begin
    else begin
       Result := dmZLogGlobal.Settings._powerM;
    end;
+   {$ELSE}
+   Result := power;
+   {$ENDIF}
 end;
 
 function TQSO.GetNewPowerStr: string;
@@ -2379,12 +2387,16 @@ var
    dtNow: TDateTime;
 begin
    if FPeriod = 0 then begin
+      {$IFNDEF ZSERVER}
       if MyContest.UseUTC = True then begin
          dtNow := GetUTC();
       end
       else begin
          dtNow := Now;
       end;
+      {$ELSE}
+      dtNow := Now;
+      {$ENDIF}
 
       if (FStartTime <= dtNow) then begin
          Result := dtNow;
@@ -3688,6 +3700,7 @@ end;
 
 function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
 begin
+   {$IFNDEF ZSERVER}
    if dmZLogGlobal.Settings._use_contest_period = False then begin
       Result := False;
       Exit;
@@ -3697,6 +3710,7 @@ begin
       Result := True;
       Exit;
    end;
+   {$ENDIF}
    Result := False;
 end;
 
