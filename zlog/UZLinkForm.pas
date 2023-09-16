@@ -520,8 +520,7 @@ begin
       if pos('RENEW', temp) = 1 then begin
          Log.ProcessQue;
          Log.SortBy(soTime);
-         MyContest.Renew;
-         MainForm.GridRefreshScreen;
+         MainForm.RenewScore();
       end;
 
       if pos('SENDLOG', temp) = 1 then begin

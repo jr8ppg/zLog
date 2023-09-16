@@ -1044,7 +1044,6 @@ type
     procedure SetNextSerialNumber(aQSO: TQSO);
     procedure SetNextSerialNumber2(aQSO: TQSO; Local : Boolean);
     procedure SetNextSerialNumber3(aQSO: TQSO);
-    procedure RenewScore();
     procedure ScrollGrid();
     procedure EditCurrentRow();
     procedure CallSpaceBarProc(C, N, B: TEdit);
@@ -1078,6 +1077,7 @@ type
     procedure ReEvaluateQSYCount;
     procedure AutoInput(D : TBSData);
     procedure ConsoleRigBandSet(B: TBand);
+    procedure RenewScore();
 
     procedure ShowBandMenu(b: TBand);
     procedure HideBandMenu(b: TBand);

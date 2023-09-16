@@ -3563,6 +3563,21 @@ var
    i: Integer;
    Diff: Integer;
    basetime: TDateTime;
+
+   function FindThisTxQso(nStartIndex: Integer): Integer;
+   var
+      i: Integer;
+      aQSO: TQSO;
+   begin
+      for i := nStartIndex downto 1 do begin
+         aQSO := FQsoList[i];
+         if aQSO.TX = dmZLogGlobal.TXNr then begin
+            Result := i;
+            Exit;
+         end;
+      end;
+      Result := -1;
+   end;
 begin
    if dmZlogGlobal.Settings._qsycount = False then begin
       Result := 0;
@@ -3570,8 +3585,19 @@ begin
    end;
 
    nQsyCount := 0;
+
+   // このzLogと同じQSOを探す
+   i := FindThisTxQso(nStartIndex);
+   if i = -1 then begin
+      Result := 0;
+      Exit;
+   end;
+
+   nStartIndex := i;
+
    aQSO := FQsoList[nStartIndex];
    basetime := aQSO.Time;
+
    for i := nStartIndex - 1 downto 1 do begin
       bQSO := FQsoList[i];
 
@@ -3582,11 +3608,12 @@ begin
       end;
 
       // TXが同じでバンドが違えばカウント
-      if (aQSO.TX = bQSO.TX) and (aQSO.Band <> bQSO.Band) then begin
-         Inc(nQsyCount);
+      if (dmZLogGlobal.TXNr = bQSO.TX) then begin
+         if (aQSO.Band <> bQSO.Band) then begin
+            Inc(nQsyCount);
+         end;
+         aQSO := bQSO;
       end;
-
-      aQSO := bQSO;
    end;
 
    Result := nQsyCount;
