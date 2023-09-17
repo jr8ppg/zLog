@@ -4765,6 +4765,9 @@ begin
    end;
 
    if dmZlogGlobal.Settings._qsycount then begin
+
+      ReEvaluateQsyCount();
+
       S2 := 'QSY# ' + IntToStr(QSYCount);
 
       if QSYCount < dmZLogGlobal.Settings._countperhour then begin
@@ -6884,6 +6887,7 @@ begin
 
       // ‰Šú‰»Š®—¹
       FInitialized := True;
+      Timer1.Interval := dmZLogGlobal.Settings.FInfoUpdateInterval;
       Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
 

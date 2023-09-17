@@ -3608,7 +3608,7 @@ begin
    nStartIndex := i;
 
    aQSO := FQsoList[nStartIndex];
-   basetime := aQSO.Time;
+   basetime := CurrentQSO.Time;
 
    for i := nStartIndex - 1 downto 1 do begin
       bQSO := FQsoList[i];
