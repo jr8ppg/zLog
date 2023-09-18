@@ -404,7 +404,7 @@ begin
          aQSO := TQSO.Create;
          temp := copy(temp, 8, 255);
          aQSO.TextToQSO(temp);
-         if (Log.CheckQSOID(aQSO.Reserve2) = False) then begin
+         if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
             MyContest.LogQSO(aQSO, false);
             MainForm.GridRefreshScreen(False, True);
             MainForm.BandScopeNotifyWorked(aQSO);
@@ -499,7 +499,7 @@ begin
          aQSO := TQSO.Create;
          Delete(temp, 1, 9);
          aQSO.TextToQSO(temp);
-         if (Log.CheckQSOID(aQSO.Reserve2) = False) then begin
+         if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
             aQSO.Reserve := actEditOrAdd;
             Log.AddQue(aQSO);
          end;
@@ -510,7 +510,7 @@ begin
          aQSO := TQSO.Create;
          Delete(temp, 1, 7);
          aQSO.TextToQSO(temp);
-         if (Log.CheckQSOID(aQSO.Reserve2) = False) then begin
+         if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
             aQSO.Reserve := actAdd;
             Log.AddQue(aQSO);
          end;
