@@ -1812,7 +1812,8 @@ var
    i: Integer;
    L: TQSOList;
 begin
-   if (FPastEditMode = True) and (fNewData = True) then begin
+   if (FPastEditMode = True) and (fNewData = True) and
+      ((Log.TotalQSO - Grid.VisibleRowCount) > Grid.TopRow) then begin
       ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
       Exit;
    end;
