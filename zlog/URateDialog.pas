@@ -325,9 +325,9 @@ begin
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    _start := Log.StartTime;   // Log.QsoList[1].Time;
+         spFirstQSO:    _start := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
          spCurrentTime: _start := CalcStartTime( CurrentTime() );
-         spLastQSO:     _start := IncHour(Log.EndTime, (FShowLast * -1));  // CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
+         spLastQSO:     _start := ifthen(MyContest.UseContestPeriod, IncHour(Log.EndTime, (FShowLast * -1)), CalcStartTime( Log.QsoList[Log.TotalQSO].Time ));
          else           _start := CalcStartTime( CurrentTime() );
       end;
    end;
