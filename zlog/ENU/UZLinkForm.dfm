@@ -85,6 +85,7 @@ object ZLinkForm: TZLinkForm
     Top = 36
   end
   object ZSocket: TWSocket
+    LineMode = True
     LineEnd = #13#10
     Proto = 'tcp'
     LocalAddr = '0.0.0.0'

@@ -6044,12 +6044,23 @@ object MainForm: TMainForm
       Caption = #34920#31034'(&V)'
       object ShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
+        AutoCheck = True
+        GroupIndex = 1
+        RadioItem = True
+      end
+      object ShowCurrentTXonly: TMenuItem
+        Action = actionShowCurrentTxOnly
+        AutoCheck = True
+        GroupIndex = 1
+        RadioItem = True
       end
       object N10: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object Sort1: TMenuItem
         Caption = #20006#12403#26367#12360
+        GroupIndex = 1
         object menuSortByCallsign: TMenuItem
           Caption = #12467#12540#12523#12469#12452#12531#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
@@ -6097,23 +6108,29 @@ object MainForm: TMainForm
       end
       object N9: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object mnHideCWPhToolBar: TMenuItem
         Caption = 'CW/Ph'#12484#12540#12523#12496#12540#12434#34920#31034#12375#12394#12356
+        GroupIndex = 1
         OnClick = mnHideCWPhToolBarClick
       end
       object mnHideMenuToolbar: TMenuItem
         Caption = 'Menu'#12484#12540#12523#12496#12540#12434#34920#31034#12375#12394#12356
+        GroupIndex = 1
         OnClick = mnHideMenuToolbarClick
       end
       object N12: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object IncreaseFontSize1: TMenuItem
         Action = actionIncreaseFontSize
+        GroupIndex = 1
       end
       object DecreaseFontSize1: TMenuItem
         Action = actionDecreaseFontSize
+        GroupIndex = 1
       end
     end
     object Help1: TMenuItem
@@ -7352,6 +7369,10 @@ object MainForm: TMainForm
     object actionShowCWMonitor: TAction
       Caption = 'CW'#12514#12491#12479#12540
       OnExecute = actionShowCWMonitorExecute
+    end
+    object actionShowCurrentTxOnly: TAction
+      Caption = #12371#12398'TX'#12398#12415#12434#34920#31034
+      OnExecute = actionShowCurrentTxOnlyExecute
     end
   end
   object SPCMenu: TPopupMenu

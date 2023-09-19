@@ -530,6 +530,8 @@ type
     panelShowInfo: TPanel;
     linklabelInfo: TLinkLabel;
     timerShowInfo: TTimer;
+    actionShowCurrentTxOnly: TAction;
+    ShowCurrentTXonly: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -801,6 +803,7 @@ type
     procedure menuChangeDateClick(Sender: TObject);
     procedure actionShowCWMonitorExecute(Sender: TObject);
     procedure timerShowInfoTimer(Sender: TObject);
+    procedure actionShowCurrentTxOnlyExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1822,6 +1825,9 @@ begin
    try
       if ShowCurrentBandOnly.Checked then begin
          L := Log.BandList[CurrentQSO.Band];
+      end
+      else if ShowCurrentTxOnly.Checked then begin
+         L := Log.TxList[CurrentQSO.TX];
       end
       else begin
          L := Log.QsoList;
@@ -8333,7 +8339,7 @@ end;
 // #49 “¯‚¶ƒoƒ“ƒh‚Ì‚Ý•\Ž¦
 procedure TMainForm.actionShowCurrentBandOnlyExecute(Sender: TObject);
 begin
-   ShowCurrentBandOnly.Checked := not(ShowCurrentBandOnly.Checked);
+//   ShowCurrentBandOnly.Checked := not(ShowCurrentBandOnly.Checked);
    GridRefreshScreen();
 end;
 
@@ -9363,6 +9369,13 @@ end;
 procedure TMainForm.actionShowCWMonitorExecute(Sender: TObject);
 begin
    FCWMonitor.Show();
+end;
+
+// #162 Show current TX only
+procedure TMainForm.actionShowCurrentTxOnlyExecute(Sender: TObject);
+begin
+//   ShowCurrentTxOnly.Checked := not ShowCurrentTxOnly.Checked;
+   GridRefreshScreen();
 end;
 
 procedure TMainForm.RestoreWindowsPos();

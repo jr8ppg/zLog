@@ -334,6 +334,7 @@ type
   end;
 
   TQSOListArray = array[b19..HiBand] of TQSOList;
+  TQSOListArrayByTx = array[0..9] of TQSOList;
 
   TLog = class(TObject)
   private
@@ -346,6 +347,7 @@ type
     FDifferentModePointer : Integer; //points to a qso on a different mode but not dupe
     FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
+    FTxList: TQSOListArrayByTx;
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
     FQsoIdDic: TDictionary<Integer, string>;
     FStartTime: TDateTime;
@@ -438,6 +440,7 @@ type
 
     property QsoList: TQSOList read FQsoList;
     property BandList: TQSOListArray read FBandList;
+    property TxList: TQSOListArrayByTx read FTxList;
 
     property ScoreCoeff: Extended read GetScoreCoeff write SetScoreCoeff;
 
@@ -1590,6 +1593,7 @@ constructor TLog.Create(Memo: string);
 var
    Q: TQSO;
    B: TBand;
+   i: Integer;
 begin
    Inherited Create();
 
@@ -1603,6 +1607,10 @@ begin
       FBandList[B] := TQSOList.Create(False);
    end;
 
+   for i := 0 to 9 do begin
+      FTxList[i] := TQSOList.Create(False);
+   end;
+
    Q := TQSO.Create;
    Q.Callsign := '';
    Q.Memo := Memo;
@@ -1613,6 +1621,10 @@ begin
 
    for B := b19 to HiBand do begin
       FBandList[B].Add(Q);
+   end;
+
+   for i := 0 to 9 do begin
+      FTxList[i].Add(Q);
    end;
 
    FSaved := True;
@@ -1628,10 +1640,15 @@ end;
 destructor TLog.Destroy;
 var
    B: TBand;
+   i: Integer;
 begin
    for B := b19 to HiBand do begin
       FDupeCheckList[B].Free();
       FBandList[B].Free();
+   end;
+
+   for i := 0 to 9 do begin
+      FTxList[i].Free();
    end;
 
    {$IFDEF DEBUG}
@@ -1776,6 +1793,7 @@ begin
    end;
 
    FBandList[xQSO.Band].Add(aQSO);
+   FTxList[xQSO.TX].Add(aQSO);
 
    if FQsoIdDic.ContainsKey(xQSO.QsoId) = False then begin
       FQsoIdDic.Add(xQSO.QsoId, xQSO.Callsign);
@@ -1958,6 +1976,11 @@ begin
       FBandList[aQSO.Band].Delete(Index);
    end;
 
+   Index := FTxList[aQSO.TX].IndexOf(aQSO);
+   if Index > -1 then begin
+      FTxList[aQSO.TX].Delete(Index);
+   end;
+
    FQsoList.Delete(i);
 
    FSaved := False;
@@ -1975,6 +1998,11 @@ begin
    Index := FBandList[aQSO.Band].IndexOf(aQSO);
    if Index > -1 then begin
       FBandList[aQSO.Band].Delete(Index);
+   end;
+
+   Index := FTxList[aQSO.TX].IndexOf(aQSO);
+   if Index > -1 then begin
+      FTxList[aQSO.TX].Delete(Index);
    end;
 
    Index := FQSOList.IndexOf(aQSO);

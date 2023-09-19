@@ -6044,12 +6044,23 @@ object MainForm: TMainForm
       Caption = '&View'
       object ShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
+        AutoCheck = True
+        GroupIndex = 1
+        RadioItem = True
+      end
+      object ShowCurrentTXonly: TMenuItem
+        Action = actionShowCurrentTxOnly
+        AutoCheck = True
+        GroupIndex = 1
+        RadioItem = True
       end
       object N10: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object Sort1: TMenuItem
         Caption = 'Sort'
+        GroupIndex = 1
         object menuSortByCallsign: TMenuItem
           Caption = 'Sort by Callsign'
           OnClick = menuSortByClick
@@ -6097,23 +6108,29 @@ object MainForm: TMainForm
       end
       object N9: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object mnHideCWPhToolBar: TMenuItem
         Caption = 'Hide CW/Ph Tool Bar'
+        GroupIndex = 1
         OnClick = mnHideCWPhToolBarClick
       end
       object mnHideMenuToolbar: TMenuItem
         Caption = 'Hide Menu Tool Bar'
+        GroupIndex = 1
         OnClick = mnHideMenuToolbarClick
       end
       object N12: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object IncreaseFontSize1: TMenuItem
         Action = actionIncreaseFontSize
+        GroupIndex = 1
       end
       object DecreaseFontSize1: TMenuItem
         Action = actionDecreaseFontSize
+        GroupIndex = 1
       end
     end
     object Help1: TMenuItem
@@ -6824,7 +6841,7 @@ object MainForm: TMainForm
       OnExecute = actionClearCallAndRptExecute
     end
     object actionShowCurrentBandOnly: TAction
-      Caption = 'Show Current Band Only'
+      Caption = 'Show current band only'
       ShortCut = 16460
       OnExecute = actionShowCurrentBandOnlyExecute
     end
@@ -7354,6 +7371,10 @@ object MainForm: TMainForm
     object actionShowCWMonitor: TAction
       Caption = 'CW Monitor'
       OnExecute = actionShowCWMonitorExecute
+    end
+    object actionShowCurrentTxOnly: TAction
+      Caption = 'Show current TX only'
+      OnExecute = actionShowCurrentTxOnlyExecute
     end
   end
   object SPCMenu: TPopupMenu

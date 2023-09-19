@@ -393,7 +393,7 @@
         <DCCReference Include="UZAnalyze.pas">
             <Form>ZAnalyze</Form>
         </DCCReference>
-        <DCCReference Include="UzLogConst.pas"/>
+        <DCCReference Include="UzlogConst.pas"/>
         <DCCReference Include="UzLogQSO.pas"/>
         <DCCReference Include="USuperCheck.pas">
             <Form>SuperCheck</Form>
