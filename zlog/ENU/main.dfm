@@ -6042,17 +6042,96 @@ object MainForm: TMainForm
     end
     object View1: TMenuItem
       Caption = '&View'
-      object ShowCurrentBandOnly: TMenuItem
+      object menuShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
-        AutoCheck = True
         GroupIndex = 1
-        RadioItem = True
       end
-      object ShowCurrentTXonly: TMenuItem
+      object menuShowThisTXonly: TMenuItem
         Action = actionShowCurrentTxOnly
-        AutoCheck = True
         GroupIndex = 1
-        RadioItem = True
+      end
+      object menuShowOnlySpecifiedTX: TMenuItem
+        Caption = 'Show only specified TX'
+        GroupIndex = 1
+        object menuShowTx0: TMenuItem
+          AutoCheck = True
+          Caption = '#0'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx1: TMenuItem
+          Tag = 1
+          AutoCheck = True
+          Caption = '#1'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx2: TMenuItem
+          Tag = 2
+          AutoCheck = True
+          Caption = '#2'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx3: TMenuItem
+          Tag = 3
+          AutoCheck = True
+          Caption = '#3'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx4: TMenuItem
+          Tag = 4
+          AutoCheck = True
+          Caption = '#4'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx5: TMenuItem
+          Tag = 5
+          AutoCheck = True
+          Caption = '#5'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx6: TMenuItem
+          Tag = 6
+          AutoCheck = True
+          Caption = '#6'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx7: TMenuItem
+          Tag = 7
+          AutoCheck = True
+          Caption = '#7'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx8: TMenuItem
+          Tag = 8
+          AutoCheck = True
+          Caption = '#8'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx9: TMenuItem
+          Tag = 9
+          AutoCheck = True
+          Caption = '#9'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
       end
       object N10: TMenuItem
         Caption = '-'
@@ -7373,7 +7452,7 @@ object MainForm: TMainForm
       OnExecute = actionShowCWMonitorExecute
     end
     object actionShowCurrentTxOnly: TAction
-      Caption = 'Show current TX only'
+      Caption = 'Show this TX only'
       OnExecute = actionShowCurrentTxOnlyExecute
     end
   end

@@ -215,7 +215,7 @@ type
     CreateDupeCheckSheetZPRINT1: TMenuItem;
     PluginMenu: TMenuItem;
     View1: TMenuItem;
-    ShowCurrentBandOnly: TMenuItem;
+    menuShowCurrentBandOnly: TMenuItem;
     menuSortByTime: TMenuItem;
     CallsignEdit1: TOvrEdit;
     NumberEdit1: TOvrEdit;
@@ -531,7 +531,18 @@ type
     linklabelInfo: TLinkLabel;
     timerShowInfo: TTimer;
     actionShowCurrentTxOnly: TAction;
-    ShowCurrentTXonly: TMenuItem;
+    menuShowThisTXonly: TMenuItem;
+    menuShowOnlySpecifiedTX: TMenuItem;
+    menuShowTx0: TMenuItem;
+    menuShowTx1: TMenuItem;
+    menuShowTx2: TMenuItem;
+    menuShowTx3: TMenuItem;
+    menuShowTx4: TMenuItem;
+    menuShowTx5: TMenuItem;
+    menuShowTx6: TMenuItem;
+    menuShowTx7: TMenuItem;
+    menuShowTx8: TMenuItem;
+    menuShowTx9: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -804,6 +815,7 @@ type
     procedure actionShowCWMonitorExecute(Sender: TObject);
     procedure timerShowInfoTimer(Sender: TObject);
     procedure actionShowCurrentTxOnlyExecute(Sender: TObject);
+    procedure menuShowOnlyTxClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -893,6 +905,7 @@ type
     FOtherKeyPressed: Boolean;
 
     FPastEditMode: Boolean;
+    FFilterTx: Integer;
 
     FTaskbarList: ITaskbarList;
 
@@ -1057,6 +1070,7 @@ type
     procedure ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
     procedure ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
     procedure DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
+    function GetQsoList(): TQSOList;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1584,7 +1598,7 @@ begin
       FPartialCheck.UpdateData(CurrentQSO);
    end;
 
-   if ShowCurrentBandOnly.Checked then begin
+   if menuShowCurrentBandOnly.Checked then begin
       GridRefreshScreen();
    end;
 
@@ -1706,16 +1720,11 @@ procedure TMainForm.GridAdd(aQSO: TQSO);
 var
    L: TQSOList;
 begin
-   if ShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
+   if menuShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
       Exit;
    end;
 
-   if ShowCurrentBandOnly.Checked then begin
-      L := Log.BandList[CurrentQSO.Band];
-   end
-   else begin
-      L := Log.QsoList;
-   end;
+   L := GetQsoList();
 
    GridWriteQSO(L.Count, aQSO);
 
@@ -1823,15 +1832,7 @@ begin
 
    Grid.BeginUpdate();
    try
-      if ShowCurrentBandOnly.Checked then begin
-         L := Log.BandList[CurrentQSO.Band];
-      end
-      else if ShowCurrentTxOnly.Checked then begin
-         L := Log.TxList[CurrentQSO.TX];
-      end
-      else begin
-         L := Log.QsoList;
-      end;
+      L := GetQsoList();
       Grid.Tag := Integer(L);
 
       if Grid.VisibleRowCount > L.Count then begin
@@ -3505,12 +3506,7 @@ begin
       DeleteCurrentRow;
    end
    else begin
-      if ShowCurrentBandOnly.Checked then begin
-         L := Log.BandList[CurrentQSO.Band];
-      end
-      else begin
-         L := Log.QsoList;
-      end;
+      L := GetQsoList();
 
       if (_top < L.Count - 1) and (_bottom <= L.Count - 1) then begin
          R := MessageDlg(TMainForm_Comfirm_Delete_Qsos, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
@@ -3531,12 +3527,7 @@ procedure TMainForm.GridKeyDown(Sender: TObject; var Key: word; Shift: TShiftSta
 var
    L: TQSOList;
 begin
-   if ShowCurrentBandOnly.Checked then begin
-      L := Log.BandList[CurrentQSO.Band];
-   end
-   else begin
-      L := Log.QsoList;
-   end;
+   L := GetQsoList();
 
    case Key of
       VK_DELETE: begin
@@ -5185,6 +5176,23 @@ end;
 procedure TMainForm.menuSortByTxNoBandTimeClick(Sender: TObject);
 begin
    Log.SortByTxNoBandTime();
+   GridRefreshScreen();
+end;
+
+procedure TMainForm.menuShowOnlyTxClick(Sender: TObject);
+var
+   seltx: Integer;
+begin
+   seltx := TMenuItem(Sender).Tag;
+   if FFilterTx = seltx then begin
+      menuShowOnlySpecifiedTX.Checked := False;
+   end
+   else begin
+      menuShowOnlySpecifiedTX.Checked := True;
+   end;
+   FFilterTx := seltx;
+   menuShowCurrentBandOnly.Checked := False;
+   menuShowThisTxOnly.Checked := False;
    GridRefreshScreen();
 end;
 
@@ -8339,7 +8347,9 @@ end;
 // #49 “¯‚¶ƒoƒ“ƒh‚Ì‚Ý•\Ž¦
 procedure TMainForm.actionShowCurrentBandOnlyExecute(Sender: TObject);
 begin
-//   ShowCurrentBandOnly.Checked := not(ShowCurrentBandOnly.Checked);
+   menuShowCurrentBandOnly.Checked := not menuShowCurrentBandOnly.Checked;
+   menuShowThisTxOnly.Checked := False;
+   menuShowOnlySpecifiedTX.Checked := False;
    GridRefreshScreen();
 end;
 
@@ -9374,7 +9384,9 @@ end;
 // #162 Show current TX only
 procedure TMainForm.actionShowCurrentTxOnlyExecute(Sender: TObject);
 begin
-//   ShowCurrentTxOnly.Checked := not ShowCurrentTxOnly.Checked;
+   menuShowCurrentBandOnly.Checked := False;
+   menuShowThisTxOnly.Checked := not menuShowThisTxOnly.Checked;
+   menuShowOnlySpecifiedTX.Checked := False;
    GridRefreshScreen();
 end;
 
@@ -11507,6 +11519,26 @@ begin
    GridRefreshScreen();
    ShowInfoPanel('', nil, False);
    SetLastFocus();
+end;
+
+function TMainForm.GetQsoList(): TQSOList;
+var
+   L: TQSOList;
+begin
+   if menuShowCurrentBandOnly.Checked then begin
+      L := Log.BandList[CurrentQSO.Band];
+   end
+   else if menuShowThisTxOnly.Checked then begin
+      L := Log.TxList[CurrentQSO.TX];
+   end
+   else if menuShowOnlySpecifiedTX.Checked then begin
+      L := Log.TxList[FFilterTx];
+   end
+   else begin
+      L := Log.QsoList;
+   end;
+
+   Result := L;
 end;
 
 { TBandScopeNotifyThread }
