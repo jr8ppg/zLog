@@ -3,7 +3,8 @@ unit UzLogCW;
 interface
 
 uses
-  SysUtils, UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
+  System.SysUtils, System.StrUtils,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
 
 const tabstate_normal = 0;
       tabstate_tabpressedbutnotedited = 1;
@@ -15,8 +16,9 @@ var
 function LastCallsign : string;
 function SetStr(sendtext: string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : String; {for QSO.NrSent}
-procedure zLogSendStr(nID: Integer; S: string);
+procedure zLogSendStr(nID: Integer; S: string; C: string = '');
 procedure zLogSendStr2(nID: Integer; S: string; aQSO: TQSO);
+procedure zLogSetSendText(nID: Integer; S, C: string);
 
 implementation
 
@@ -226,9 +228,11 @@ begin
    Result := temp;
 end;
 
-procedure zLogSendStr(nID: Integer; S: string);
+procedure zLogSendStr(nID: Integer; S: string; C: string);
 begin
    dmZLogKeyer.ResetSpeed();
+   zLogSetSendText(nID, S, C);
+
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
@@ -250,7 +254,14 @@ begin
          dmZLogKeyer.SendStr(nID, S);
       end;
 
-      dmZLogKeyer.SetCallSign(Main.CurrentQSO.Callsign);
+      if C <> '' then begin
+         if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+            dmZLogKeyer.SetCallSign(C);
+         end
+         else begin
+            dmZLogKeyer.SetCallSign(C);
+         end;
+      end;
       dmZLogKeyer.ResumeCW;
    end;
 end;
@@ -264,7 +275,18 @@ begin
       S := SetStrNoAbbrev(S, aQSO);
    end;
 
-   zLogSendStr(nID, S);
+   zLogSendStr(nID, S, aQSO.Callsign);
+end;
+
+procedure zLogSetSendText(nID: Integer; S, C: string);
+begin
+   if C = '' then begin
+      MainForm.CWMonitor.SetSendingText(nID + 1, S);
+   end
+   else begin
+      S := StringReplace(S, ':***************', C + DupeString('*', 16 - Length(C)), [rfReplaceAll]);
+      MainForm.CWMonitor.SetSendingText(nID + 1, S);
+   end;
 end;
 
 end.

@@ -444,7 +444,6 @@ end;
 procedure TRig.SetMode(Q: TQSO);
 begin
    _currentmode := Q.Mode;
-   FLastMode := _currentmode;
 end;
 
 procedure TRig.SetMode(M: TMode);

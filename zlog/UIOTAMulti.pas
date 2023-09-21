@@ -8,22 +8,6 @@ uses
   UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers, UzLogCW;
 
 type
-  TIsland = class
-    RefNumber : string;
-    Name : string;
-    Worked : array[b19..HiBand, mCW..mSSB] of boolean;
-    constructor Create;
-    function Summary : string;
-  end;
-
-  TIslandList = class
-    List : TList;
-    constructor Create;
-    destructor Destroy; override;
-    procedure LoadFromFile(filename : string);
-    procedure SaveToFile(filename : string);
-  end;
-
   TIOTAMulti = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
@@ -56,124 +40,6 @@ uses Main, UNewIOTARef, UOptions, UIOTACategory;
 function TIOTAMulti.ValidMulti(aQSO: TQSO): boolean;
 begin
    Result := True;
-end;
-
-constructor TIsland.Create;
-var
-   B: TBand;
-   M: TMode;
-begin
-   RefNumber := '';
-   Name := '';
-   for B := b19 to HiBand do
-      for M := mCW to mSSB do
-         Worked[B, M] := False;
-end;
-
-function TIsland.Summary: string;
-var
-   str: string;
-   strname: string;
-   B: TBand;
-   M: TMode;
-begin
-   strname := Name;
-   str := FillRight(RefNumber, 6) +
-          StringReplace(FillRight(strname, 31), '&', '&&', [rfReplaceAll]);
-
-   for B := b35 to b28 do begin
-      if NotWARC(B) then begin
-         for M := mCW to mSSB do begin
-            if Worked[B, M] = True then
-               str := str + '* '
-            else
-               str := str + '. ';
-         end;
-      end;
-   end;
-
-   Result := str;
-end;
-
-constructor TIslandList.Create;
-begin
-   List := TList.Create;
-end;
-
-destructor TIslandList.Destroy;
-var
-   i: Integer;
-begin
-   for i := 0 to List.Count - 1 do begin
-      if List[i] <> nil then
-         TIsland(List[i]).Free;
-   end;
-   List.Free;
-end;
-
-procedure TIslandList.LoadFromFile(filename: string);
-var
-   f: textfile;
-   str: string;
-   i: TIsland;
-   fullpath: string;
-begin
-   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
-   if fullpath = '' then begin
-      Exit;
-   end;
-
-   Assign(f, fullpath);
-   try
-      Reset(f);
-   except
-      on EFOpenError do begin
-         MessageDlg('DAT file ' + filename + ' cannot be opened', mtError, [mbOK], 0);
-         exit; { Alert that the file cannot be opened \\ }
-      end;
-   end;
-   readln(f, str);
-   while not(eof(f)) do begin
-      readln(f, str);
-      if Pos('end of file', LowerCase(str)) > 0 then
-         break;
-      i := TIsland.Create;
-      i.RefNumber := Copy(str, 1, 5);
-      Delete(str, 1, 6);
-      i.Name := str;
-      List.Add(i);
-   end;
-   system.close(f);
-end;
-
-procedure TIslandList.SaveToFile(filename: string);
-var
-   f: textfile;
-   str: string;
-   i: TIsland;
-   j: Integer;
-   fullpath: string;
-begin
-   fullpath := dmZLogGlobal.ExpandCfgDatFullPath(filename);
-   if fullpath = '' then begin
-      Exit;
-   end;
-
-   Assign(f, fullpath);
-   try
-      rewrite(f);
-   except
-      on EFOpenError do begin
-         MessageDlg('DAT file ' + filename + ' cannot be opened', mtError, [mbOK], 0);
-         exit; { Alert that the file cannot be opened \\ }
-      end;
-   end;
-   for j := 0 to List.Count - 1 do begin
-      i := TIsland(List[j]);
-      str := i.RefNumber + ' ' + i.Name;
-      writeln(f, str);
-   end;
-   system.close(f);
 end;
 
 procedure TIOTAMulti.Edit1Change(Sender: TObject);
@@ -280,17 +146,17 @@ begin
       aQSO.NewMulti1 := True;
 
       // Å´Ç«Ç§çlÇ¶ÇƒÇ‡ÉoÉOÇ¡ÇƒÇ¢ÇÈ
-      for i := 0 to IslandList.List.Count - 1 do begin
-         if StrMore(str, TIsland(IslandList.List[i]).RefNumber) = False then begin
-            IslandList.List.Insert(i, C);
-            IslandList.SaveToFile('IOTA.DAT');
-            exit;
-         end;
-
-         IslandList.List.Add(C);
-         IslandList.SaveToFile('IOTA.DAT');
-         exit;
-      end;
+//      for i := 0 to IslandList.List.Count - 1 do begin
+//         if StrMore(str, TIsland(IslandList.List[i]).RefNumber) = False then begin
+//            IslandList.List.Insert(i, C);
+//            IslandList.SaveToFile('IOTA.DAT');
+//            exit;
+//         end;
+//
+//         IslandList.List.Add(C);
+//         IslandList.SaveToFile('IOTA.DAT');
+//         exit;
+//      end;
    finally
       f.Release();
    end;

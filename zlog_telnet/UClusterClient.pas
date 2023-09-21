@@ -44,6 +44,7 @@ type
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer; var Height: Integer);
     procedure menuSettingsClick(Sender: TObject);
     procedure menuExitClick(Sender: TObject);
+    procedure ZServerSessionConnected(Sender: TObject; ErrCode: Word);
   private
     { Private declarations }
     FSpotExpireMin: Integer; // spot expiration time in minutes
@@ -332,7 +333,8 @@ begin
       // Auto Login
       if (FClusterAutoLogin = True) and (FClusterLoginID <> '') and (FAutoLogined = False) then begin
          if (Pos('login:', str) > 0) or
-            (Pos('Please enter your call:', str) > 0) then begin
+            (Pos('Please enter your call:', str) > 0) or
+            (Pos('Please enter your callsign:', str) > 0) then begin
             Sleep(500);
             WriteLine(FClusterLoginID);
             FAutoLogined := True;
@@ -422,6 +424,11 @@ begin
    else begin
       LoadAllowDenyList();
       Telnet.Connect;
+
+      ZServer.Addr := FZServerHostName;
+      ZServer.Port := FZServerPortNumber;
+      ZServer.Connect();
+
       buttonConnect.Caption := 'Connecting...';
       FDisconnectClicked := False;
       Timer1.Enabled := True;
@@ -607,6 +614,19 @@ end;
 procedure TClusterClient.WriteLineConsole(str : string);
 begin
    WriteConsole(str + LineBreakCode[ord(Console.LineBreak)]);
+end;
+
+procedure TClusterClient.ZServerSessionConnected(Sender: TObject; ErrCode: Word);
+var
+   S: string;
+begin
+   // BANDコマンド
+   S := ZLinkHeader + ' BAND ' + IntToStr(Ord(bUnknown));
+   ZServer.SendStr(S + LineBreakCode[Ord(Console.LineBreak)]);
+
+   // OPERATORコマンドで端末名を送る
+   S := ZLinkHeader + ' OPERATOR ' + FZServerClientName;
+   ZServer.SendStr(S + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
 procedure TClusterClient.WriteConsole(strText: string);

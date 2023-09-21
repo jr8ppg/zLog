@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 138
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
-  ClientHeight = 403
+  ClientHeight = 423
   ClientWidth = 524
   Color = clBtnFace
   Constraints.MinWidth = 540
@@ -34,7 +34,7 @@ object MainForm: TMainForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 383
+    Top = 403
     Width = 524
     Height = 20
     Font.Charset = DEFAULT_CHARSET
@@ -66,15 +66,15 @@ object MainForm: TMainForm
   end
   object MainPanel: TPanel
     Left = 0
-    Top = 66
+    Top = 122
     Width = 524
-    Height = 317
+    Height = 281
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     object EditPanel1R: TPanel
       Left = 0
-      Top = 207
+      Top = 171
       Width = 524
       Height = 27
       Align = alBottom
@@ -274,7 +274,7 @@ object MainForm: TMainForm
     end
     object EditPanel2R: TPanel
       Left = 0
-      Top = 234
+      Top = 198
       Width = 524
       Height = 83
       Align = alBottom
@@ -834,7 +834,7 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 524
-      Height = 207
+      Height = 171
       TabStop = False
       Align = alClient
       ColCount = 10
@@ -5768,6 +5768,51 @@ object MainForm: TMainForm
       end
     end
   end
+  object panelOutOfPeriod: TPanel
+    Left = 0
+    Top = 66
+    Width = 524
+    Height = 28
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Out of contest period'
+    Color = clYellow
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 3
+    Visible = False
+  end
+  object panelShowInfo: TPanel
+    Left = 0
+    Top = 94
+    Width = 524
+    Height = 28
+    Align = alTop
+    BevelOuter = bvNone
+    Color = clAqua
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 4
+    Visible = False
+    object linklabelInfo: TLinkLabel
+      Left = 117
+      Top = 5
+      Width = 150
+      Height = 20
+      Caption = 'new qso data arrived'
+      TabOrder = 0
+    end
+  end
   object MainMenu: TMainMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
@@ -5944,6 +5989,9 @@ object MainForm: TMainForm
       object ShowMessageManagerSO2R1: TMenuItem
         Action = actionShowMsgMgr
       end
+      object menuShowCWMonitor: TMenuItem
+        Action = actionShowCWMonitor
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
@@ -5994,14 +6042,104 @@ object MainForm: TMainForm
     end
     object View1: TMenuItem
       Caption = '&View'
-      object ShowCurrentBandOnly: TMenuItem
+      object menuShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
+        GroupIndex = 1
+      end
+      object menuShowThisTXonly: TMenuItem
+        Action = actionShowCurrentTxOnly
+        GroupIndex = 1
+      end
+      object menuShowOnlySpecifiedTX: TMenuItem
+        Caption = 'Show only specified TX'
+        GroupIndex = 1
+        object menuShowTx0: TMenuItem
+          AutoCheck = True
+          Caption = '#0'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx1: TMenuItem
+          Tag = 1
+          AutoCheck = True
+          Caption = '#1'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx2: TMenuItem
+          Tag = 2
+          AutoCheck = True
+          Caption = '#2'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx3: TMenuItem
+          Tag = 3
+          AutoCheck = True
+          Caption = '#3'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx4: TMenuItem
+          Tag = 4
+          AutoCheck = True
+          Caption = '#4'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx5: TMenuItem
+          Tag = 5
+          AutoCheck = True
+          Caption = '#5'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx6: TMenuItem
+          Tag = 6
+          AutoCheck = True
+          Caption = '#6'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx7: TMenuItem
+          Tag = 7
+          AutoCheck = True
+          Caption = '#7'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx8: TMenuItem
+          Tag = 8
+          AutoCheck = True
+          Caption = '#8'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx9: TMenuItem
+          Tag = 9
+          AutoCheck = True
+          Caption = '#9'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
       end
       object N10: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object Sort1: TMenuItem
         Caption = 'Sort'
+        GroupIndex = 1
         object menuSortByCallsign: TMenuItem
           Caption = 'Sort by Callsign'
           OnClick = menuSortByClick
@@ -6049,23 +6187,29 @@ object MainForm: TMainForm
       end
       object N9: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object mnHideCWPhToolBar: TMenuItem
         Caption = 'Hide CW/Ph Tool Bar'
+        GroupIndex = 1
         OnClick = mnHideCWPhToolBarClick
       end
       object mnHideMenuToolbar: TMenuItem
         Caption = 'Hide Menu Tool Bar'
+        GroupIndex = 1
         OnClick = mnHideMenuToolbarClick
       end
       object N12: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object IncreaseFontSize1: TMenuItem
         Action = actionIncreaseFontSize
+        GroupIndex = 1
       end
       object DecreaseFontSize1: TMenuItem
         Action = actionDecreaseFontSize
+        GroupIndex = 1
       end
     end
     object Help1: TMenuItem
@@ -6263,7 +6407,7 @@ object MainForm: TMainForm
     object N7: TMenuItem
       Caption = '-'
     end
-    object GBand: TMenuItem
+    object menuChangeBand: TMenuItem
       Caption = 'Change &Band'
       object G1R9MHz: TMenuItem
         Caption = '1.9 MHz'
@@ -6348,7 +6492,7 @@ object MainForm: TMainForm
         OnClick = GridBandChangeClick
       end
     end
-    object Changemode: TMenuItem
+    object menuChangeMode: TMenuItem
       Caption = 'Change &Mode'
       object CW2: TMenuItem
         Caption = 'CW'
@@ -6380,7 +6524,7 @@ object MainForm: TMainForm
         OnClick = GridModeChangeClick
       end
     end
-    object mChangePower: TMenuItem
+    object menuChangePower: TMenuItem
       Caption = 'Change &Power'
       object H2: TMenuItem
         Caption = 'P (QRP)'
@@ -6402,15 +6546,23 @@ object MainForm: TMainForm
         OnClick = GridPowerChangeClick
       end
     end
-    object GOperator: TMenuItem
+    object menuChangeOperator: TMenuItem
       Caption = 'Change &Operator'
       object Clear1: TMenuItem
         Caption = 'Clear'
         OnClick = GridOperatorClick
       end
     end
-    object mnChangeTXNr: TMenuItem
+    object menuChangeTXNr: TMenuItem
       Caption = 'Change &TX#'
+    end
+    object menuChangeSentNr: TMenuItem
+      Caption = 'Change Sent &NR'
+      OnClick = menuChangeSentNrClick
+    end
+    object menuChangeDate: TMenuItem
+      Caption = 'Change Da&te'
+      OnClick = menuChangeDateClick
     end
     object N13: TMenuItem
       Caption = '-'
@@ -6768,7 +6920,7 @@ object MainForm: TMainForm
       OnExecute = actionClearCallAndRptExecute
     end
     object actionShowCurrentBandOnly: TAction
-      Caption = 'Show Current Band Only'
+      Caption = 'Show current band only'
       ShortCut = 16460
       OnExecute = actionShowCurrentBandOnlyExecute
     end
@@ -7214,7 +7366,7 @@ object MainForm: TMainForm
       OnExecute = actionSo2rNeoCanRxSelExecute
     end
     object actionShowInformation: TAction
-      Caption = 'Show Information Window'
+      Caption = 'Information Window'
       OnExecute = actionShowInformationExecute
     end
     object actionToggleSo2r2bsiq: TAction
@@ -7272,7 +7424,7 @@ object MainForm: TMainForm
       OnExecute = actionNoQslExecute
     end
     object actionShowMsgMgr: TAction
-      Caption = 'Show Message Manager (SO2R)'
+      Caption = 'Message Manager (SO2R)'
       OnExecute = actionShowMsgMgrExecute
     end
     object actionChangeBand2: TAction
@@ -7294,6 +7446,14 @@ object MainForm: TMainForm
       Caption = 'actionToggleTxNr'
       ShortCut = 32857
       OnExecute = actionToggleTxNrExecute
+    end
+    object actionShowCWMonitor: TAction
+      Caption = 'CW Monitor'
+      OnExecute = actionShowCWMonitorExecute
+    end
+    object actionShowCurrentTxOnly: TAction
+      Caption = 'Show this TX only'
+      OnExecute = actionShowCurrentTxOnlyExecute
     end
   end
   object SPCMenu: TPopupMenu
@@ -7325,5 +7485,19 @@ object MainForm: TMainForm
     Title = 'Import'
     Left = 472
     Top = 144
+  end
+  object timerOutOfPeriod: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerOutOfPeriodTimer
+    Left = 304
+    Top = 147
+  end
+  object timerShowInfo: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerShowInfoTimer
+    Left = 320
+    Top = 195
   end
 end

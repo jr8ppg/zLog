@@ -130,6 +130,7 @@ type
     destructor Destroy(); override;
     procedure Sort(SortMethod: TBSSortMethod); overload;
     function BinarySearch(SortMethod: TBSSortMethod; D: TBSData): Integer; overload;
+    function BinarySearch(SortMethod: TBSSortMethod; D: TBSData; var Found: Boolean): Integer; overload;
   end;
 
   {$IFNDEF ZLOG_TELNET}
@@ -501,7 +502,7 @@ var
    diff: TFrequency;
 begin
    if (Left.FreqHz - Right.FreqHz) = 0 then begin
-      Result := (Left.Index - Right.Index);
+      Result := 0;   //(Left.Index - Right.Index);
    end
    else begin
       diff := Left.FreqHz - Right.FreqHz;
@@ -521,7 +522,7 @@ var
    diff: TFrequency;
 begin
    if (Left.FreqHz - Right.FreqHz) = 0 then begin
-      Result := (Right.Index - Left.Index);
+      Result := 0;   //(Right.Index - Left.Index);
    end
    else begin
       diff := Right.FreqHz - Left.FreqHz;
@@ -604,6 +605,20 @@ begin
       soBsFreqDesc: BinarySearch(D, NewIndex, FFreqDescComparer);
       soBsTimeAsc: BinarySearch(D, NewIndex, FTimeAscComparer);
       soBsTimeDesc: BinarySearch(D, NewIndex, FTimeDescComparer);
+   end;
+   Result := NewIndex;
+end;
+
+function TBSList.BinarySearch(SortMethod: TBSSortMethod; D: TBSData; var Found: Boolean): Integer;
+var
+   NewIndex: Integer;
+begin
+   NewIndex := 0;
+   case SortMethod of
+      soBsFreqAsc: Found := BinarySearch(D, NewIndex, FFreqAscComparer);
+      soBsFreqDesc: Found := BinarySearch(D, NewIndex, FFreqDescComparer);
+      soBsTimeAsc: Found := BinarySearch(D, NewIndex, FTimeAscComparer);
+      soBsTimeDesc: Found := BinarySearch(D, NewIndex, FTimeDescComparer);
    end;
    Result := NewIndex;
 end;

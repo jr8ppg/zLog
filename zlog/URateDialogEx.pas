@@ -376,17 +376,17 @@ begin
    // äÓèÄéûçèÇãÅÇﬂÇÈ
    if Log.TotalQSO = 0 then begin
       FStartTime := CalcStartTime( CurrentTime() );
-      FOriginTime := Log.StartTime;
+      FOriginTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, FStartTime);
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    FStartTime := Log.StartTime;  // Log.QsoList[1].Time;
+         spFirstQSO:    FStartTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
          spCurrentTime: FStartTime := CalcStartTime( IncHour(CurrentTime(), (FShowLast div 2) - 1) );
-         spLastQSO:     FStartTime := IncHour(Log.EndTime, (FShowLast * -1));    // CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
+         spLastQSO:     FStartTime := ifthen(MyContest.UseContestPeriod, IncHour(Log.EndTime, (FShowLast * -1)), CalcStartTime( Log.QsoList[Log.TotalQSO].Time ));
          else           FStartTime := CalcStartTime( CurrentTime() );
       end;
 
-      FOriginTime := Log.StartTime;  //Log.QsoList[1].Time;
+      FOriginTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
    end;
 
    DecodeTime(FOriginTime, H, M, S, ms);

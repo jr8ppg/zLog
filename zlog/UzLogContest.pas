@@ -34,6 +34,7 @@ type
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
     function GetUseUTC(): Boolean;
     procedure SetUseUTC(v: Boolean);
+    function GetUseContestPeriod(): Boolean;
   public
     WantedList : TList;
 
@@ -80,7 +81,7 @@ type
     property BandHigh: TBand read FBandHigh;
     property BandPlan: string read FBandPlan;
 
-    property UseContestPeriod: Boolean read FUseContestPeriod write FUseContestPeriod;
+    property UseContestPeriod: Boolean read GetUseContestPeriod write FUseContestPeriod;
     property StartTime: Integer read FStartTime write FStartTime;
     property Period: Integer read FPeriod write FPeriod;
     property UseUTC: Boolean read GetUseUTC write SetUseUTC;
@@ -615,6 +616,16 @@ begin
    end
    else begin
       Log.QsoList[0].RSTsent := UTCOffset();
+   end;
+end;
+
+function TContest.GetUseContestPeriod(): Boolean;
+begin
+   if dmZLogGlobal.Settings._use_contest_period = False then begin
+      Result := False;
+   end
+   else begin
+      Result := FUseContestPeriod;
    end;
 end;
 

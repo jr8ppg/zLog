@@ -19,7 +19,6 @@ type
     Grid: TStringGrid;
     ImageList1: TImageList;
     panelStandardOption: TPanel;
-    checkSyncVfo: TCheckBox;
     timerCleanup: TTimer;
     buttonShowWorked: TSpeedButton;
     ActionList1: TActionList;
@@ -47,7 +46,6 @@ type
     actionPlayMessageB10: TAction;
     actionPlayMessageB11: TAction;
     actionPlayMessageB12: TAction;
-    actionESC: TAction;
     actionPlayCQA1: TAction;
     actionPlayCQA2: TAction;
     actionPlayCQA3: TAction;
@@ -64,6 +62,8 @@ type
     buttonSortByFreq: TSpeedButton;
     buttonSortByTime: TSpeedButton;
     ImageList2: TImageList;
+    buttonSyncVfo: TSpeedButton;
+    buttonFreqCenter: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -83,12 +83,15 @@ type
     procedure FormDeactivate(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
-    procedure actionESCExecute(Sender: TObject);
     procedure actionDecreaseCwSpeedExecute(Sender: TObject);
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure menuAddToDenyListClick(Sender: TObject);
     procedure buttonSortByFreqClick(Sender: TObject);
     procedure buttonSortByTimeClick(Sender: TObject);
+    procedure GridMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure GridMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -113,6 +116,8 @@ type
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
+    function IsShowData(D: TBSData): Boolean;
+    function FormatSpotInfo(D: TBSData): string;
     function EstimateNumRows(): Integer;
     procedure SetSelect(fSelect: Boolean);
     procedure Cleanup(D: TBSData);
@@ -129,6 +134,8 @@ type
     procedure Lock();
     procedure Unlock();
     procedure ApplyShortcut();
+    procedure SetButtonEnabled();
+    procedure ApplyFontSize(font_size: Integer);
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -136,6 +143,8 @@ type
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
     procedure RewriteBandScope();
+    procedure RewriteBandScope1();
+    procedure RewriteBandScope2();
     procedure MarkCurrentFreq(Hz: TFrequency);
     procedure NotifyWorked(aQSO: TQSO);
     procedure CopyList(F: TBandScope2);
@@ -338,6 +347,19 @@ begin
 end;
 
 procedure TBandScope2.RewriteBandScope();
+begin
+   if (FNewMultiOnly = False) and
+      (FAllBands = False) and
+      (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) and
+      (buttonFreqCenter.Down = True) then begin
+      RewriteBandScope2();
+   end
+   else begin
+      RewriteBandScope1();
+   end;
+end;
+
+procedure TBandScope2.RewriteBandScope1();
 var
    D: TBSData;
    i: Integer;
@@ -403,15 +425,7 @@ begin
          for i := 0 to FBSList.Count - 1 do begin
             D := FBSList[i];
 
-            if (FAllBands = False) and (buttonShowWorked.Down = False) and (D.Worked = True) then begin
-               Continue;
-            end;
-
-            if (FAllBands = True) and (buttonShowWorked2.Down = False) and (D.Worked = True) then begin
-               Continue;
-            end;
-
-            if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
+            if IsShowData(D) = False then begin
                Continue;
             end;
 
@@ -432,21 +446,7 @@ begin
                end;
             end;
 
-            str := FillRight(D.LabelStr, 24);
-
-            if D.SpotSource <> ssSelf then begin
-               str := str + '+ ';
-            end
-            else begin
-               str := str + '  ';
-            end;
-
-            if D.CQ = True then begin
-               str := str + 'CQ';
-            end
-            else begin
-               str := str + '  ';
-            end;
+            str := FormatSpotInfo(D);
 
             if (fOnFreq = True) or
                ((FAllBands = True) and (D.Band = CurrentQSO.Band)) then begin
@@ -478,7 +478,7 @@ begin
          Grid.RowCount := R;
       end;
 
-      if checkSyncVfo.Checked = True then begin
+      if buttonSyncVfo.Down = True then begin
          if markrow = -1 then begin
             if toprow <= Grid.RowCount - 1 then begin
                Grid.TopRow := toprow;
@@ -516,6 +516,174 @@ begin
       Grid.EndUpdate();
       FProcessing := False;
    end;
+end;
+
+procedure TBandScope2.RewriteBandScope2();
+var
+   D: TBSData;
+   i: Integer;
+   R: Integer;
+   str: string;
+   Index: Integer;
+   FreqDispIndex: Integer;
+   fFound: Boolean;
+   DataIndex: Integer;
+begin
+   if FProcessing = True then begin
+      Exit;
+   end;
+
+   FProcessing := True;
+   Grid.BeginUpdate();
+   try
+   try
+      if FBSList.Count = 0 then begin
+         Exit;
+      end;
+
+      // 仮に100行とする
+      Grid.RowCount := 100;
+
+      // 全部クリア
+      for i := 0 to Grid.RowCount - 1 do begin
+         Grid.Objects[0, i] := nil;
+      end;
+
+      // 表示可能な行数に変更
+      Grid.RowCount := Grid.VisibleRowCount;
+
+      Lock();
+      try
+         // 周波数の描画位置  VisibleRowCountの真ん中
+         FreqDispIndex := (Grid.VisibleRowCount div 2);
+
+         // 周波数順に並び替え
+         FBSList.Sort(soBsFreqAsc);
+
+         // 現在周波数の位置にあるスポットを求める
+         D := TBSData.Create();
+         D.FreqHz := CurrentRigFrequency;
+         Index := FBSList.BinarySearch(soBsFreqAsc, D, fFound);
+         D.Free();
+
+         if fFound = True then begin   // あった
+            R := FreqDispIndex;
+            D := FBSList[Index];
+            str := FormatSpotInfo(D);
+            str := '>>' + str + '<<';
+            Grid.Cells[0, R] := str;
+            Grid.Objects[0, R] := D;
+         end
+         else begin  // なかった
+            R := FreqDispIndex;
+            Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
+            Grid.Objects[0, R] := nil;
+         end;
+
+         // 周波数より上
+         DataIndex := Index - 1;
+         for R := FreqDispIndex - 1 downto 0 do begin
+            if (DataIndex >= 0) and (FBSList.Count > DataIndex) then begin
+               D := FBSList[DataIndex];
+
+               if IsShowData(D) = True then begin
+                  str := FormatSpotInfo(D);
+                  Grid.Cells[0, R] := str;
+                  Grid.Objects[0, R] := D;
+               end
+               else begin
+                  Grid.Cells[0, R] := '';
+                  Grid.Objects[0, R] := nil;
+               end;
+            end
+            else begin
+               Grid.Cells[0, R] := '';
+               Grid.Objects[0, R] := nil;
+            end;
+
+            Dec(DataIndex);
+         end;
+
+         // 周波数より下
+         DataIndex := Index + 1;
+         for R := FreqDispIndex + 1 to (Grid.VisibleRowCount - 1) do begin
+            if (DataIndex >= 0) and (FBSList.Count > DataIndex) then begin
+               D := FBSList[DataIndex];
+
+               if IsShowData(D) = True then begin
+                  str := FormatSpotInfo(D);
+                  Grid.Cells[0, R] := str;
+                  Grid.Objects[0, R] := D;
+               end
+               else begin
+                  Grid.Cells[0, R] := '';
+                  Grid.Objects[0, R] := nil;
+               end;
+            end
+            else begin
+               Grid.Cells[0, R] := '';
+               Grid.Objects[0, R] := nil;
+            end;
+
+            Inc(DataIndex);
+         end;
+      finally
+         Unlock();
+      end;
+
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+         dmZLogGlobal.WriteErrorLog(E.StackTrace);
+      end;
+   end;
+   finally
+      Grid.EndUpdate();
+      FProcessing := False;
+   end;
+end;
+
+function TBandScope2.IsShowData(D: TBSData): Boolean;
+begin
+   if (FAllBands = False) and (buttonShowWorked.Down = False) and (D.Worked = True) then begin
+      Result := False;
+      Exit;
+   end;
+
+   if (FAllBands = True) and (buttonShowWorked2.Down = False) and (D.Worked = True) then begin
+      Result := False;
+      Exit;
+   end;
+
+   if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
+      Result := False;
+      Exit;
+   end;
+
+   Result := True;
+end;
+
+function TBandScope2.FormatSpotInfo(D: TBSData): string;
+var
+   str: string;
+begin
+   str := FillRight(D.LabelStr, 24);
+
+   if D.SpotSource <> ssSelf then begin
+      str := str + '+ ';
+   end
+   else begin
+      str := str + '  ';
+   end;
+
+   if D.CQ = True then begin
+      str := str + 'CQ';
+   end
+   else begin
+      str := str + '  ';
+   end;
+
+   Result := str;
 end;
 
 function TBandScope2.EstimateNumRows(): Integer;
@@ -671,8 +839,9 @@ end;
 procedure TBandScope2.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
    case Key of
-      VK_ESCAPE:
+      VK_ESCAPE: begin
          MainForm.SetLastFocus();
+      end;
    end;
 end;
 
@@ -959,6 +1128,52 @@ begin
    end;
 end;
 
+procedure TBandScope2.GridMouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズDOWN
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := FontSize;
+      Dec(font_size);
+      if font_size < 6 then begin
+         font_size := 6;
+      end;
+      FontSize := font_size;
+
+      // さらにSHIFTキーを押していると他のBandScopeも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         ApplyFontSize(font_size);
+      end;
+
+      Grid.Refresh();
+      Handled := True;
+   end;
+end;
+
+procedure TBandScope2.GridMouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズUP
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := FontSize;
+      Inc(font_size);
+      if font_size > 28 then begin
+         font_size := 28;
+      end;
+      FontSize := font_size;
+      Grid.Refresh();
+
+      // さらにSHIFTキーを押していると他のBandScopeも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         ApplyFontSize(font_size);
+      end;
+
+      Handled := True;
+   end;
+end;
+
 function TBandScope2.GetFontSize(): Integer;
 begin
    Result := Grid.Font.Size;
@@ -1123,14 +1338,17 @@ begin
    SetCaption();
    SetColor();
    if v = True then begin
-      checkSyncVfo.Checked := False;
+      buttonSyncVfo.Down := False;
       buttonShowWorked.Down := False;
-      checkSyncVfo.Visible := False;
+      buttonFreqCenter.Down := False;
+      buttonSyncVfo.Visible := False;
+      buttonFreqCenter.Visible := False;
       buttonShowWorked.Visible := False;
       buttonShowAllBands.Down := True;
    end
    else begin
-      checkSyncVfo.Visible := True;
+      buttonSyncVfo.Visible := True;
+      buttonFreqCenter.Visible := True;
       buttonShowWorked.Visible := True;
    end;
 end;
@@ -1141,8 +1359,10 @@ begin
    SetCaption();
    SetColor();
    if v = True then begin
-      checkSyncVfo.Checked := False;
-      checkSyncVfo.Visible := False;
+      buttonSyncVfo.Down := False;
+      buttonSyncVfo.Visible := False;
+      buttonFreqCenter.Down := False;
+      buttonFreqCenter.Visible := False;
       buttonShowWorked2.Down := False;
       buttonShowWorked2.Visible := True;
       panelStandardOption.Visible := False;
@@ -1151,7 +1371,8 @@ begin
       FSortOrder := 0;
    end
    else begin
-      checkSyncVfo.Visible := True;
+      buttonSyncVfo.Visible := True;
+      buttonFreqCenter.Visible := True;
       buttonShowWorked2.Visible := True;
    end;
 end;
@@ -1278,6 +1499,8 @@ end;
 
 procedure TBandScope2.buttonShowWorkedClick(Sender: TObject);
 begin
+   SetButtonEnabled();
+
    RewriteBandScope();
 end;
 
@@ -1339,18 +1562,6 @@ var
 begin
    no := TAction(Sender).Tag;
    SendMessage(MainForm.Handle, WM_ZLOG_PLAYMESSAGEB, no, 0);
-end;
-
-procedure TBandScope2.actionESCExecute(Sender: TObject);
-begin
-   if dmZLogKeyer.IsPlaying then begin
-      dmZLogKeyer.ClrBuffer;
-      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
-   end
-   else begin
-      dmZLogKeyer.ControlPTT(MainForm.CurrentRigID, False);
-      MainForm.SetLastFocus();
-   end;
 end;
 
 procedure TBandScope2.actionIncreaseCwSpeedExecute(Sender: TObject);
@@ -1439,7 +1650,9 @@ end;
 procedure TBandScope2.SaveSettings(ini: TMemIniFile; section: string);
 begin
    dmZLogGlobal.WriteWindowState(ini, Self, section);
-   ini.WriteBool(section, 'SyncVFO', checkSyncVFO.Checked);
+   ini.WriteInteger(section, 'FontSize', FontSize);
+   ini.WriteBool(section, 'SyncVFO', buttonSyncVFO.Down);
+   ini.WriteBool(section, 'FreqCenter', buttonFreqCenter.Down);
 
    if FCurrentBandOnly = True then begin
       ini.WriteBool(section, 'ShowAllBands', buttonShowAllBands.Down);
@@ -1460,7 +1673,9 @@ end;
 procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
 begin
    dmZLogGlobal.ReadWindowState(ini, Self, section);
-   checkSyncVFO.Checked := ini.ReadBool(section, 'SyncVFO', True);
+   FontSize := ini.ReadInteger(section, 'FontSize', 9);
+   buttonSyncVFO.Down := ini.ReadBool(section, 'SyncVFO', True);
+   buttonFreqCenter.Down := ini.ReadBool(section, 'FreqCenter', False);
 
    if FCurrentBandOnly = True then begin
       buttonShowAllBands.Down := ini.ReadBool(section, 'ShowAllBands', False);
@@ -1475,6 +1690,31 @@ begin
    end
    else begin
       buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   end;
+
+   SetButtonEnabled();
+end;
+
+procedure TBandScope2.SetButtonEnabled();
+begin
+   if buttonFreqCenter.Down = True then begin
+      buttonSyncVfo.Enabled := False;
+   end
+   else begin
+      buttonSyncVfo.Enabled := True;
+   end;
+end;
+
+procedure TBandScope2.ApplyFontSize(font_size: Integer);
+var
+   i: Integer;
+begin
+   for i := 0 to (Screen.FormCount - 1) do begin
+      if Screen.Forms[i] is TBandScope2 then begin
+         if Screen.Forms[i] <> Self then begin
+            TBandScope2(Screen.Forms[i]).FontSize := font_size;
+         end;
+      end;
    end;
 end;
 

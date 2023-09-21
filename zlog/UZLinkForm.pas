@@ -43,13 +43,15 @@ type
     CommBuffer : TStringList;
     CommandQue : TStringList;
 
-    FMergeTempList: TList<TQSOID>; // temporary list to hold Z-Server QSOID list
-                           // created when GETQSOIDS is issued and destroyed
-                           // when all merge process is finished. List of TQSOID
+    // temporary list to hold Z-Server QSOID list
+    // created when GETQSOIDS is issued and destroyed
+    // when all merge process is finished. List of TQSOID
+    FMergeTempList: TDictionary<Integer, TQSOID>;
 
     procedure EnableConnectButton(boo : boolean);
     procedure CommProcess;
     procedure ProcessCommand;
+    procedure QsoIDsProc(S: string);
     procedure EndQsoIDsProc();
     procedure SendMergeTempList; // request to send the qsos in the MergeTempList
     procedure SendQSO_PUTLOG(aQSO : TQSO);
@@ -90,6 +92,10 @@ type
     procedure DelWanted(Band: TBand; Mult : string);
     procedure PushRemoteConnect; // connect button in cluster win
   end;
+
+resourcestring
+    This_will_delete_all_data_and_loads_data_using_zlink = 'This will delete all data and loads data using Z-Link';
+    ZServer_connection_failed = 'Z-Server connection failed.';
 
 implementation
 
@@ -162,7 +168,7 @@ var
    str: string;
 begin
    str := ZLinkHeader + ' GETQSOIDS';
-   FMergeTempList := TList<TQSOID>.Create;
+   FMergeTempList := TDictionary<Integer,TQSOID>.Create();
    WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
@@ -238,6 +244,7 @@ var
    count, i: integer;
    qid: TQSOID;
    str: string;
+   list: TArray<TPair<Integer,TQSOID>>;
 begin
    try
       count := FMergeTempList.Count;
@@ -245,11 +252,13 @@ begin
          Exit;
       end;
 
+      list := FMergeTempList.ToArray();
+
       i := 0;
       str := '';
       while i <= count - 1 do begin
          repeat
-            qid := FMergeTempList[i];
+            qid := list[i].Value;
             str := str + IntToStr(qid.FullQSOID) + ' ';
             inc(i);
          until (i = count) or (i mod 20 = 0);
@@ -259,9 +268,8 @@ begin
 
       WriteData(ZLinkHeader + ' ' + 'SENDRENEW' + LineBreakCode[Ord(Console.LineBreak)]);
    finally
-      for i := FMergeTempList.Count - 1 downto 0 do begin
-         FMergeTempList[i].Free();
-         FMergeTempList.Delete(i);
+      for i := 0 to Length(list) - 1 do begin
+         list[i].Value.Free();
       end;
       FMergeTempList.Free();
    end;
@@ -269,10 +277,9 @@ end;
 
 procedure TZLinkForm.ProcessCommand;
 var
-   temp, temp2: string;
+   temp: string;
    aQSO: TQSO;
-   i, j: integer;
-   qid: TQSOID;
+   i: integer;
 begin
    while CommandQue.count > 0 do begin
       temp := CommandQue.Strings[0];
@@ -303,17 +310,7 @@ begin
 
       if pos('QSOIDS', temp) = 1 then begin
          Delete(temp, 1, 7);
-         i := pos(' ', temp);
-         while i > 1 do begin
-            temp2 := copy(temp, 1, i - 1);
-            Delete(temp, 1, i);
-            j := StrToInt(temp2);
-            qid := TQSOID.Create;
-            qid.FullQSOID := j;
-            qid.QSOIDwoCounter := j div 100;
-            FMergeTempList.Add(qid);
-            i := pos(' ', temp);
-         end;
+         QsoIDsProc(temp);
       end;
 
       if pos('ENDQSOIDS', temp) = 1 then begin
@@ -407,9 +404,11 @@ begin
          aQSO := TQSO.Create;
          temp := copy(temp, 8, 255);
          aQSO.TextToQSO(temp);
-         MyContest.LogQSO(aQSO, false);
-         MainForm.GridRefreshScreen;
-         MainForm.BandScopeNotifyWorked(aQSO);
+         if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
+            MyContest.LogQSO(aQSO, false);
+            MainForm.GridRefreshScreen(False, True);
+            MainForm.BandScopeNotifyWorked(aQSO);
+         end;
          aQSO.Free;
       end;
 
@@ -444,7 +443,7 @@ begin
          Log.AddQue(aQSO);
          // Log.ProcessQue;
          // MyContest.Renew;
-         MainForm.GridRefreshScreen;
+         MainForm.GridRefreshScreen(False, True);
          aQSO.Free;
       end;
 
@@ -492,7 +491,7 @@ begin
          Log.AddQue(aQSO);
          Log.ProcessQue;
          MyContest.Renew;
-         MainForm.GridRefreshScreen;
+         MainForm.GridRefreshScreen(False, True);
          aQSO.Free;
       end;
 
@@ -500,8 +499,10 @@ begin
          aQSO := TQSO.Create;
          Delete(temp, 1, 9);
          aQSO.TextToQSO(temp);
-         aQSO.Reserve := actEditOrAdd;
-         Log.AddQue(aQSO);
+         if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
+            aQSO.Reserve := actEditOrAdd;
+            Log.AddQue(aQSO);
+         end;
          aQSO.Free;
       end;
 
@@ -509,15 +510,18 @@ begin
          aQSO := TQSO.Create;
          Delete(temp, 1, 7);
          aQSO.TextToQSO(temp);
-         aQSO.Reserve := actAdd;
-         Log.AddQue(aQSO);
+         if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
+            aQSO.Reserve := actAdd;
+            Log.AddQue(aQSO);
+         end;
          aQSO.Free;
       end;
 
       if pos('RENEW', temp) = 1 then begin
          Log.ProcessQue;
-         MyContest.Renew;
-         MainForm.GridRefreshScreen;
+         Log.SortBy(soTime);
+         Log.RebuildDupeCheckList();
+         MainForm.RenewScore();
       end;
 
       if pos('SENDLOG', temp) = 1 then begin
@@ -704,14 +708,42 @@ begin
    end;
 end;
 
+procedure TZLinkForm.QsoIDsProc(S: string);
+var
+   i: Integer;
+   j: Integer;
+   temp2: string;
+   qid: TQSOID;
+begin
+   i := pos(' ', S);
+   while i > 1 do begin
+      temp2 := copy(S, 1, i - 1);
+      Delete(S, 1, i);
+      j := StrToInt(temp2);
+
+      qid := TQSOID.Create;
+      qid.FullQSOID := j;
+      qid.QSOIDwoCounter := j div 100;
+
+      if FMergeTempList.ContainsKey(qid.QSOIDwoCounter) = False then begin
+         FMergeTempList.Add(qid.QSOIDwoCounter, qid);
+      end
+      else begin
+         qid.Free();
+      end;
+
+      i := pos(' ', S);
+   end;
+end;
+
 procedure TZLinkForm.EndQsoIDsProc();
 var
    aQSO: TQSO;
    fFoundQso: Boolean;
    fNeedToRenew: Boolean;
    i: Integer;
-   j: Integer;
    qid: TQSOID;
+   qsoid: Integer;
 begin
    fNeedToRenew := False;
 
@@ -720,41 +752,38 @@ begin
 
       fFoundQso := False;
 
-      for j := 0 to FMergeTempList.Count - 1 do begin
-         qid := FMergeTempList[j];
-         if (aQSO.Reserve3 div 100) = qid.QSOIDwoCounter then begin
-            fFoundQso := True;
+      qsoid := aQSO.Reserve3 div 100;
 
-            if aQSO.Reserve3 = qid.FullQSOID then begin // exactly the same qso
-               FMergeTempList.Delete(j);
-               qid.Free;
-               break;
+      if FMergeTempList.TryGetValue(qsoid, qid) = True then begin
+         fFoundQso := True;
+
+         if aQSO.Reserve3 = qid.FullQSOID then begin // exactly the same qso
+            FMergeTempList.Remove(qsoid);
+            qid.Free;
+         end
+         else begin // counter is different
+            if qid.FullQSOID > aQSO.Reserve3 then begin // serverdata is newer
+               // qid qso must be sent as editqsoto command;
             end
-            else begin // counter is different
-               if qid.FullQSOID > aQSO.Reserve3 then begin // serverdata is newer
-                  break;
-                  // qid qso must be sent as editqsoto command;
-               end
-               else begin // local data is newer
-                  FMergeTempList.Delete(j);
-                  qid.Free;
+            else begin // local data is newer
+               FMergeTempList.Remove(qsoid);
+               qid.Free;
 
-                  WriteData(ZLinkHeader + ' ' + 'EDITQSOTO ' + aQSO.QSOinText + LineBreakCode[Ord(Console.LineBreak)]);
-                  break;
-                  // aQSO moved to ToSendList (but edit)
-                  // or just ask to send immediately
-               end;
+               WriteData(ZLinkHeader + ' ' + 'EDITQSOTO ' + aQSO.QSOinText + LineBreakCode[Ord(Console.LineBreak)]);
+               // aQSO moved to ToSendList (but edit)
+               // or just ask to send immediately
             end;
          end;
       end;
 
       if fFoundQso = False then begin
          SendQSO_PUTLOG(aQSO);
-         fNeedToRenew := true;
          // add aQSO to ToSendList;
          // or just send putlog ...
          // renew after done.
       end;
+
+      fNeedToRenew := true;
    end;
 
    // getqsos from MergeTempList; (whatever is left)
@@ -916,7 +945,7 @@ procedure TZLinkForm.LoadLogFromZLink;
 var
    R: Word;
 begin
-   R := MessageDlg('This will delete all data and loads data using Z-Link', mtConfirmation, [mbOK, mbCancel], 0); { HELP context 0 }
+   R := MessageDlg(This_will_delete_all_data_and_loads_data_using_zlink, mtConfirmation, [mbOK, mbCancel], 0); { HELP context 0 }
    if R = mrCancel then begin
       exit;
    end;
@@ -943,6 +972,7 @@ var
    count: integer;
    P: PAnsiChar;
 begin
+   ZeroMemory(@Buf, SizeOf(Buf));
    if Error <> 0 then begin
       exit;
    end;
@@ -969,7 +999,7 @@ begin
    MainForm.ChatForm.SetConnectStatus(False);
 
    if DisconnectedByMenu = false then begin
-      MessageDlg('Z-Server connection failed.', mtError, [mbOK], 0); { HELP context 0 }
+      MessageDlg(ZServer_connection_failed, mtError, [mbOK], 0); { HELP context 0 }
    end
    else begin
       DisconnectedByMenu := false;

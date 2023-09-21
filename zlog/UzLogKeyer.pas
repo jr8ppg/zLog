@@ -13,6 +13,7 @@ interface
 uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
+  System.SyncObjs,
   UzLogConst
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
@@ -168,11 +169,11 @@ type
     FPttDelayBeforeTime: Byte;
     FPttDelayAfterTime: Byte;
 
-    cwstrptr : word;
-    tailcwstrptr : word;
-    mousetail : word; {pointer in CWSendBuf}
+    cwstrptr: Integer;
+    tailcwstrptr: Integer;
+    mousetail: Integer; {pointer in CWSendBuf}
 
-    callsignptr : word; {char pos. not absolute pos}
+    callsignptr: Integer; {char pos. not absolute pos}
 
     FDotCount: Integer;
     FDashCount: Integer;
@@ -393,6 +394,7 @@ type
 
 var
   dmZLogKeyer: TdmZLogKeyer;
+  CWBufferSync: TCriticalSection;
 
 const
   USBIF4CW_VENDORID = $BFE;
@@ -965,13 +967,18 @@ procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: Char);
 var
    m: Integer;
 begin
-   for m := 1 to codemax do begin
-      FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
-   end;
+   CWBufferSync.Enter();
+   try
+      for m := 1 to codemax do begin
+         FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+      end;
 
-   inc(tailcwstrptr);
-   if tailcwstrptr > charmax then begin
-      tailcwstrptr := 1;
+      inc(tailcwstrptr);
+      if tailcwstrptr > charmax then begin
+         tailcwstrptr := 1;
+      end;
+   finally
+      CWBufferSync.Leave();
    end;
 end;
 
@@ -1041,31 +1048,36 @@ begin
 
       // SendOK := False;
 
-      // set send char
-      for m := 1 to codemax do begin
-         FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+      CWBufferSync.Enter();
+      try
+         // set send char
+         for m := 1 to codemax do begin
+            FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+         end;
+
+         if FPTTEnabled then begin
+            FPttHoldCounter := FPttDelayAfterCount;
+
+            { holds PTT until pttafter expires }
+            FCWSendBuf[0, codemax * (tailcwstrptr - 1) + codemax + 1] := $A2; { holds PTT until pttafter expires }
+         end;
+
+         inc(tailcwstrptr);
+         if tailcwstrptr > charmax then begin
+            tailcwstrptr := 1;
+         end;
+
+         // set finish char
+         SetCWSendBufFinish(0);
+
+         if cwstrptr = 0 then begin
+            cwstrptr := 1;
+         end;
+
+         FSendOK := True;
+      finally
+         CWBufferSync.Leave();
       end;
-
-      if FPTTEnabled then begin
-         FPttHoldCounter := FPttDelayAfterCount;
-
-         { holds PTT until pttafter expires }
-         FCWSendBuf[0, codemax * (tailcwstrptr - 1) + codemax + 1] := $A2; { holds PTT until pttafter expires }
-      end;
-
-      inc(tailcwstrptr);
-      if tailcwstrptr > charmax then begin
-         tailcwstrptr := 1;
-      end;
-
-      // set finish char
-      SetCWSendBufFinish(0);
-
-      if cwstrptr = 0 then begin
-         cwstrptr := 1;
-      end;
-
-      FSendOK := True;
    end;
 end;
 
@@ -1120,20 +1132,25 @@ begin
 
    SS := DecodeCommands(SS);
 
-   tailcwstrptr := 1;
+   CWBufferSync.Enter();
+   try
+      tailcwstrptr := 1;
 
-   Len := length(SS);
-   for n := 1 to Len do begin
-      if SS[n] = ':' then begin { callsign 1st char }
-         callsignptr := n;
+      Len := length(SS);
+      for n := 1 to Len do begin
+         if SS[n] = ':' then begin { callsign 1st char }
+            callsignptr := n;
+         end;
+
+         SetCWSendBufChar(b, SS[n]);
       end;
 
-      SetCWSendBufChar(b, SS[n]);
+      SetCWSendBufFinish(b);
+
+      cwstrptr := 1;
+   finally
+      CWBufferSync.Leave();
    end;
-
-   SetCWSendBufFinish(b);
-
-   cwstrptr := 1;
 end;
 
 procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string);
@@ -1186,17 +1203,22 @@ begin
 
    SS := CW + SS;
 
-   for n := 1 to length(SS) do begin
-      if SS[n] = ':' then { callsign 1st char }
-         callsignptr := n;
+   CWBufferSync.Enter();
+   try
+      for n := 1 to length(SS) do begin
+         if SS[n] = ':' then { callsign 1st char }
+            callsignptr := n;
 
-      SetCWSendBufChar(0, SS[n]);
-   end;
+         SetCWSendBufChar(0, SS[n]);
+      end;
 
-   SetCWSendBufFinish(0);
+      SetCWSendBufFinish(0);
 
-   if cwstrptr = 0 then begin
-      cwstrptr := 1;
+      if cwstrptr = 0 then begin
+         cwstrptr := 1;
+      end;
+   finally
+      CWBufferSync.Leave();
    end;
 end;
 
@@ -1268,190 +1290,195 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
         ControlPTT(False); } // PTT doesn't work with \
    end;
 begin
-   if FKeyingCounter > 0 then begin
-      Dec(FKeyingCounter);
-      Exit;
-   end;
-
-   if FSendOK = False then begin
-      Exit;
-   end;
-
-   if cwstrptr = 0 then begin
-      Exit;
-   end;
-
-   case FCWSendBuf[FSelectedBuf, cwstrptr] of
-      $55: begin { set ptt delay before }
-         FKeyingCounter := FPttDelayBeforeCount;
+   CWBufferSync.Enter();
+   try
+      if FKeyingCounter > 0 then begin
+         Dec(FKeyingCounter);
+         Exit;
       end;
 
-      $10: begin
-         ControlPTT(FWkTx, True);
+      if FSendOK = False then begin
+         Exit;
       end;
 
-      $1F: begin
-         ControlPTT(FWkTx, False);
+      if cwstrptr = 0 then begin
+         Exit;
       end;
 
-      0: begin
-         CW_OFF(FWkTx);
-         if FUseSideTone then begin
-            NoSound();
-         end;
-         FKeyingCounter := FBlank1Count;
-      end;
-
-      2: begin { normal space x space factor (%) }
-         CW_OFF(FWkTx);
-         if FUseSideTone then begin
-            NoSound();
-         end;
-         FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
-      end;
-
-      $E: begin { normal space x space factor x eispacefactor(%) }
-         CW_OFF(FWkTx);
-         if FUseSideTone then begin
-            NoSound();
-         end;
-         FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
-      end;
-
-      1: begin
-         CW_ON(FWkTx);
-         if FUseSideTone then begin
-            Sound();
+      case FCWSendBuf[FSelectedBuf, cwstrptr] of
+         $55: begin { set ptt delay before }
+            FKeyingCounter := FPttDelayBeforeCount;
          end;
 
-         FKeyingCounter := FDotCount;
-         FSendChar := True;
-      end;
-
-      3: begin
-         CW_ON(FWkTx);
-         if FUseSideTone then begin
-            Sound();
+         $10: begin
+            ControlPTT(FWkTx, True);
          end;
 
-         FKeyingCounter := FDashCount;
-         FSendChar := True;
-      end;
-
-      // 4 : begin
-      // if BGKsidetone then sound(Hz);
-      // SetPort(PRTport, GetPort(PRTport) or $80);
-      // sss:=100; {30 ms}
-      // end;
-      // 5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end; {???}
-      (*
-        0 : begin SetPort(PRTport, GetPort(PRTport) and $FE); nosound; sss:=_bl1; end;
-        2 : begin SetPort(PRTport, GetPort(PRTport) and $FE); nosound; sss:=_bl3; end;
-        1 : begin
-        SetPort(PRTport, GetPort(PRTport) or $01);
-        if BGKsidetone then sound(Hz);
-        sss:=_dot;
-        end;
-        3 : begin
-        SetPort(PRTport, GetPort(PRTport) or $01);
-        if BGKsidetone then sound(Hz);
-        sss:=_dash;
-        end;
-        4 : begin
-        if BGKsidetone then sound(Hz);
-        SetPort(PRTport, GetPort(PRTport) or $80);
-        sss:=100; {30 ms}
-        end;
-        5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end;
-      *)
-
-      9: begin
-         cwstrptr := (cwstrptr div codemax + 1) * codemax;
-         if Assigned(FOnOneCharSentProc) and FSendChar then begin
-            FOnOneCharSentProc(Self);
+         $1F: begin
+            ControlPTT(FWkTx, False);
          end;
-      end;
 
-      $A1: begin
-         FPttHoldCounter := FPttDelayAfterCount;
-      end;
-
-      $A2: begin
-         if FPttHoldCounter <= 0 then begin
-            Finish();
-            if FPTTEnabled then begin
-               ControlPTT(FWkTx, False);
+         0: begin
+            CW_OFF(FWkTx);
+            if FUseSideTone then begin
+               NoSound();
             end;
-         end
-         else begin
-            Dec(FPttHoldCounter);
-            Exit;
+            FKeyingCounter := FBlank1Count;
+         end;
+
+         2: begin { normal space x space factor (%) }
+            CW_OFF(FWkTx);
+            if FUseSideTone then begin
+               NoSound();
+            end;
+            FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
+         end;
+
+         $E: begin { normal space x space factor x eispacefactor(%) }
+            CW_OFF(FWkTx);
+            if FUseSideTone then begin
+               NoSound();
+            end;
+            FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
+         end;
+
+         1: begin
+            CW_ON(FWkTx);
+            if FUseSideTone then begin
+               Sound();
+            end;
+
+            FKeyingCounter := FDotCount;
+            FSendChar := True;
+         end;
+
+         3: begin
+            CW_ON(FWkTx);
+            if FUseSideTone then begin
+               Sound();
+            end;
+
+            FKeyingCounter := FDashCount;
+            FSendChar := True;
+         end;
+
+         // 4 : begin
+         // if BGKsidetone then sound(Hz);
+         // SetPort(PRTport, GetPort(PRTport) or $80);
+         // sss:=100; {30 ms}
+         // end;
+         // 5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end; {???}
+         (*
+           0 : begin SetPort(PRTport, GetPort(PRTport) and $FE); nosound; sss:=_bl1; end;
+           2 : begin SetPort(PRTport, GetPort(PRTport) and $FE); nosound; sss:=_bl3; end;
+           1 : begin
+           SetPort(PRTport, GetPort(PRTport) or $01);
+           if BGKsidetone then sound(Hz);
+           sss:=_dot;
+           end;
+           3 : begin
+           SetPort(PRTport, GetPort(PRTport) or $01);
+           if BGKsidetone then sound(Hz);
+           sss:=_dash;
+           end;
+           4 : begin
+           if BGKsidetone then sound(Hz);
+           SetPort(PRTport, GetPort(PRTport) or $80);
+           sss:=100; {30 ms}
+           end;
+           5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end;
+         *)
+
+         9: begin
+            cwstrptr := (cwstrptr div codemax + 1) * codemax;
+            if Assigned(FOnOneCharSentProc) and FSendChar then begin
+               FOnOneCharSentProc(Self);
+            end;
+         end;
+
+         $A1: begin
+            FPttHoldCounter := FPttDelayAfterCount;
+         end;
+
+         $A2: begin
+            if FPttHoldCounter <= 0 then begin
+               Finish();
+               if FPTTEnabled then begin
+                  ControlPTT(FWkTx, False);
+               end;
+            end
+            else begin
+               Dec(FPttHoldCounter);
+               Exit;
+            end;
+         end;
+
+         $A3: begin
+            if FPttHoldCounter > 0 then begin
+               Dec(FPttHoldCounter);
+               Exit;
+            end;
+         end;
+
+         $BB: begin
+            Dec(cwstrptr);
+         end;
+
+         $EE: begin { cwstrptr:=(BGKcall+callmax-1)*codemax; }
+         end;
+
+         $FA: begin
+            Dec(cwstrptr);
+         end;
+
+         $FF: begin { SendOK:=False; }
+            Finish();
+
+            if Assigned(FOnSendFinishProc) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
+               {$ENDIF}
+               FOnSendFinishProc(Self, mCW, False);
+            end;
+
+            FSendOK := False;
+         end;
+
+         $99: begin { pause }
+            FSendOK := False;
+         end;
+
+         $41: begin
+            IncWPM;
+            FSendChar := True;
+         end;
+
+         $42: begin
+            DecWPM;
+            FSendChar := True;
+         end;
+
+         $0B: begin
+            FUserFlag := False;
+         end;
+
+         $20: begin
+            FWkTx := 0;
+         end;
+
+         $21: begin
+            FWkTx := 1;
+         end;
+
+         $22: begin
+            FWkTx := 2;
          end;
       end;
 
-      $A3: begin
-         if FPttHoldCounter > 0 then begin
-            Dec(FPttHoldCounter);
-            Exit;
-         end;
-      end;
-
-      $BB: begin
-         Dec(cwstrptr);
-      end;
-
-      $EE: begin { cwstrptr:=(BGKcall+callmax-1)*codemax; }
-      end;
-
-      $FA: begin
-         Dec(cwstrptr);
-      end;
-
-      $FF: begin { SendOK:=False; }
-         Finish();
-
-         if Assigned(FOnSendFinishProc) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
-            {$ENDIF}
-            FOnSendFinishProc(Self, mCW, False);
-         end;
-
-         FSendOK := False;
-      end;
-
-      $99: begin { pause }
-         FSendOK := False;
-      end;
-
-      $41: begin
-         IncWPM;
-         FSendChar := True;
-      end;
-
-      $42: begin
-         DecWPM;
-         FSendChar := True;
-      end;
-
-      $0B: begin
-         FUserFlag := False;
-      end;
-
-      $20: begin
-         FWkTx := 0;
-      end;
-
-      $21: begin
-         FWkTx := 1;
-      end;
-
-      $22: begin
-         FWkTx := 2;
-      end;
+      Inc(cwstrptr);
+   finally
+      CWBufferSync.Leave();
    end;
-
-   Inc(cwstrptr);
 end; { TimerProcess }
 
 procedure TdmZLogKeyer.SetWPM(wpm: Integer);
@@ -2184,15 +2211,22 @@ begin
    else begin
       { SendOK:=False; }
       { StringBuffer := ''; }
-      for m := 0 to 2 do begin
-         FCWSendBuf[m, 1] := $FF;
+
+      CWBufferSync.Enter();
+      try
+         for m := 0 to 2 do begin
+            FCWSendBuf[m, 1] := $FF;
+         end;
+         cwstrptr := 0;
+         FSelectedBuf := 0; // ver 2.1b
+         FSendChar := False;
+         callsignptr := 0;
+         mousetail := 1;
+         tailcwstrptr := 1;
+      finally
+         CWBufferSync.Leave();
       end;
-      cwstrptr := 0;
-      FSelectedBuf := 0; // ver 2.1b
-      FSendChar := False;
-      callsignptr := 0;
-      mousetail := 1;
-      tailcwstrptr := 1;
+
       if FUseSideTone then begin
          NoSound();
       end;
@@ -2214,9 +2248,17 @@ begin
       WinKeyerCancelLastChar();
    end
    else begin
-      if ((tailcwstrptr - 1) * codemax + 1) > (cwstrptr) then begin
-         dec(tailcwstrptr, 1);
-         SetCWSendBufFinish(0);
+      CWBufferSync.Enter();
+      try
+         if ((tailcwstrptr - 1) * codemax + 1) > (cwstrptr) then begin
+            Dec(tailcwstrptr, 1);
+            if tailcwstrptr <= 0 then begin
+               tailcwstrptr := 1;
+            end;
+            SetCWSendBufFinish(0);
+         end;
+      finally
+         CWBufferSync.Leave();
       end;
    end;
 end;
@@ -2258,13 +2300,18 @@ end;
 
 function TdmZLogKeyer.CallSignSent: Boolean;
 begin
-   Result := False;
+   CWBufferSync.Enter();
+   try
+      Result := False;
 
-   if (callsignptr > 0) and (cwstrptr > 1) then begin
-      if FCWSendBuf[0, cwstrptr - 1] = $99 then begin
-         Result := True;
-         callsignptr := 0;
+      if (callsignptr > 0) and (cwstrptr > 1) then begin
+         if FCWSendBuf[0, cwstrptr - 1] = $99 then begin
+            Result := True;
+            callsignptr := 0;
+         end;
       end;
+   finally
+      CWBufferSync.Leave();
    end;
 end;
 
@@ -3476,6 +3523,11 @@ begin
             OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
 
+            // CWモニターを１文字進める
+            if Assigned(FOnOneCharSentProc) then begin
+               FOnOneCharSentProc(Self);
+            end;
+
             // コールサイン送信
             if (FWkCallsignSending = True) and
                (Length(FWkCallsignStr) >= FWkCallsignIndex) and
@@ -3851,5 +3903,12 @@ begin
       FUsbPortData := FUsbPortData or USBIF4CW_MIC;
    end;
 end;
+
+initialization
+   CWBufferSync := TCriticalSection.Create();
+
+finalization
+   CWBufferSync.Free();
+
 
 end.

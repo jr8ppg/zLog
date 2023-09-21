@@ -156,6 +156,7 @@ const
                        ('P', 'L', 'M', 'H',  '',  '',  '',  '',  '',  '',  '');
 
 const
+  {$IFNDEF ZSERVER}
   MHzString: array[b19..bUnknown] of string = ('1.9','3.5','7','10','14',
                                              '18','21','24','28','50','144',
                                              '430','1200','2400','5600','10G','Target','Unknown');
@@ -164,6 +165,16 @@ const
                                              '14 MHz', '18 MHz','21 MHz','24 MHz','28 MHz',
                                              '50 MHz','144 MHz','430 MHz','1200 MHz','2400 MHz',
                                              '5600 MHz','10 GHz & up');
+  {$ELSE}
+  MHzString: array[b19..bUnknown] of string = ('1.9','3.5','7','10','14',
+                                             '18','21','24','28','50','144',
+                                             '430','1200','2400','5600','10G','','TELNET');
+
+  BandString: array[b19..bUnknown] of string = ('1.9 MHz','3.5 MHz','7 MHz','10 MHz',
+                                             '14 MHz', '18 MHz','21 MHz','24 MHz','28 MHz',
+                                             '50 MHz','144 MHz','430 MHz','1200 MHz','2400 MHz',
+                                             '5600 MHz','10 GHz & up', '', 'TELNET');
+  {$ENDIF}
 
   ADIFBandString : array[b19..HiBand] of string = ('160m','80m','40m','30m',
                                              '20m', '17m','15m','12m','10m',
@@ -216,7 +227,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..160] of string = (
+  default_primary_shortcut: array[0..162] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -377,10 +388,12 @@ const
     'Shift+Ctrl+B',     // #157 actionChangeBand2
     'Shift+Ctrl+M',     // #158 actionChangeMode2
     'Shift+Ctrl+P',     // #159 actionChangePower2
-    'Alt+Y'             // #160 actionToggleTxNr
+    'Alt+Y',            // #160 actionToggleTxNr
+    '',                 // #161 actionShowCWMonitor
+    ''                  // #162 actionShowCurrentTxOnly
   );
 
-  default_secondary_shortcut: array[0..160] of string = (
+  default_secondary_shortcut: array[0..162] of string = (
     '',                 // #00
     '',
     '',
@@ -541,7 +554,9 @@ const
     '',                 // #157 actionChangeBand2
     '',                 // #158 actionChangeMode2
     '',                 // #159 actionChangePower2
-    ''                  // #160 actionToggleTxNr
+    '',                 // #160 actionToggleTxNr
+    '',                 // #161 actionShowCWMonitor
+    ''                  // #162 actionShowCurrentTxOnly
   );
 
 const

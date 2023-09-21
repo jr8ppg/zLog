@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
-  Vcl.Dialogs, System.UITypes,
+  Vcl.Dialogs, System.UITypes, System.Win.Registry,
   UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget;
 
@@ -192,6 +192,7 @@ type
     _age : string; // all asian
     _allowdupe : boolean;
     _output_outofperiod: Boolean;
+    _use_contest_period: Boolean;
     _countdown : boolean;
     _qsycount : boolean;
     _countdownminute: Integer;
@@ -290,6 +291,7 @@ type
     FClusterRelaySpot: Boolean;
     FClusterNotifyCurrentBand: Boolean;
     FClusterRecordLogs: Boolean;
+    FClusterIgnoreBEL: Boolean;
     FClusterUseAllowDenyLists: Boolean;
     FClusterIgnoreSHDX: Boolean;
     FClusterReConnectMax: Integer;
@@ -325,6 +327,30 @@ type
     FAnalyzeExcludeZeroPoints: Boolean;
     FAnalyzeExcludeZeroHour: Boolean;
     FAnalyzeShowCW: Boolean;
+
+    // COMM PORT TEST
+    FCommPortTest: Boolean;
+
+    // Update interval
+    FInfoUpdateInterval: Integer;
+  end;
+
+  TCommPort = class(TObject)
+    FPortName: string;
+    FPortNumber: Integer;
+    FRigControl: Boolean;
+    FKeying: Boolean;
+  public
+    constructor Create();
+    property Name: string read FPortName write FPortName;
+    property Number: Integer read FPortNumber write FPortNumber;
+    property RigControl: Boolean read FRigControl write FRigControl;
+    property Keying: Boolean read FKeying write FKeying;
+  end;
+
+  TCommPortComparer = class(TComparer<TCommPort>)
+  public
+    function Compare(const Left, Right: TCommPort): Integer; override;
   end;
 
 var
@@ -353,6 +379,10 @@ type
     FOpList: TOperatorInfoList;
 
     FTarget: TContestTarget;
+
+    FCommPortList: TList<TCommPort>;
+
+    FCurrentOperator: TOperatorInfo;
 
     FMyCountry: string;
     FMyContinent: string;
@@ -408,6 +438,9 @@ type
     function GetSpcPath(): string;
     procedure SetSpcPath(v: string);
     function GetCurrentBandPlan(): TBandPlan;
+    procedure FreeCommPortList();
+    function GetCommPortList(): TList<TCommPort>;
+    function LoadCommPortList(): TList<TCommPort>;
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -432,6 +465,7 @@ public
     property RigNameStr[Index: Integer]: string read GetRigNameStr;
     property SuperCheckColumns: Integer read GetSuperCheckColumns write SetSuperCheckColumns;
     property SuperCheck2Columns: Integer read GetSuperCheck2Columns write SetSuperCheck2Columns;
+    property CurrentOperator: TOperatorInfo read FCurrentOperator write FCurrentOperator;
 
     function GetAge(aQSO : TQSO) : string;
     procedure SetOpPower(aQSO : TQSO);
@@ -487,6 +521,8 @@ public
     property SoundPath: string read GetSoundPath write SetSoundPath;
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
+
+    property CommPortList: TList<TCommPort> read GetCommPortList;
 
     procedure SelectBandPlan(preset_name: string);
 
@@ -556,6 +592,8 @@ procedure ResetDupeQso(aQSO: TQSO);
 
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
+function BandToText(b: TBand): string;
+function ModeToText(m: TMode): string;
 function BandToPower(B: TBand): TPower;
 
 function LoadResourceString(uID: Integer): string;
@@ -565,6 +603,8 @@ function AdjustPath(v: string): string;
 
 function ExpandEnvironmentVariables(strOriginal: string): string;
 procedure FormShowAndRestore(F: TForm);
+function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
+function GetCommPortsForOldVersion(lpPortNumbers: PULONG; uPortNumbersCount: ULONG; var puPortNumbersFound: ULONG): ULONG;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -624,6 +664,12 @@ begin
    FTarget := TContestTarget.Create();
    FTarget.LoadFromFile();
 
+   // COMポートリスト
+   FCommPortList := nil;
+
+   // 現在のオペレーター
+   FCurrentOperator := nil;
+
    // エラーログファイル名
    FErrorLogFileName := ExtractFileName(Application.ExeName);
    FErrorLogFileName := StringReplace(FErrorLogFileName, ExtractFileExt(FErrorLogFileName), '', [rfReplaceAll]);
@@ -638,6 +684,8 @@ begin
       bandplan.Free();
    end;
    FBandPlans.Free();
+
+   FreeCommPortList();
 
    FTarget.Free();
    FCountryList.Free();
@@ -763,6 +811,9 @@ begin
 
       // Output out of contest period
       Settings._output_outofperiod := ini.ReadBool('Preferences', 'OutputOutOfPeriod', False);
+
+      // Use contest period
+      Settings._use_contest_period := ini.ReadBool('Preferences', 'UseContestPeriod', True);
 
       // Save when not sending CW
       Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
@@ -1025,7 +1076,7 @@ begin
       Settings._dontallowsameband := ini.ReadBool('Rig', 'DontAllowSameBand', False);
 
       // Record rig frequency in memo
-      Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', False);
+      Settings._recrigfreq := ini.ReadBool('Rig', 'RecordFreqInMemo', True);
 
       // Automatically create band scope
       Settings._autobandmap := ini.ReadBool('Rig', 'AutoBandMap', False);
@@ -1114,7 +1165,8 @@ begin
       //
       // ここから隠し設定
       //
-
+      Settings.FInfoUpdateInterval := ini.ReadInteger('Preferences', 'InfoUpdateInterval', 1000);
+      Settings.FCommPortTest := ini.ReadBool('Preferences', 'CommPortTest', False);
       Settings._movetomemo := ini.ReadBool('Preferences', 'MoveToMemoWithSpace', False);
 
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
@@ -1343,6 +1395,7 @@ begin
       Settings.FClusterRelaySpot       := ini.ReadBool('ClusterWindow', 'RelaySpot', False);
       Settings.FClusterNotifyCurrentBand := ini.ReadBool('ClusterWindow', 'NotifyCurrentBand', False);
       Settings.FClusterRecordLogs      := ini.ReadBool('ClusterWindow', 'RecordLogs', False);
+      Settings.FClusterIgnoreBEL       := ini.ReadBool('ClusterWindow', 'IgnoreBEL', True);
       Settings.FClusterUseAllowDenyLists := ini.ReadBool('ClusterWindow', 'UseAllowDenyLists', False);
       Settings.FClusterIgnoreSHDX      := ini.ReadBool('ClusterWindow', 'IgnoreSHDX', True);
       Settings.FClusterReConnectMax    := ini.ReadInteger('ClusterWindow', 'ReConnectMax', 10);
@@ -1448,6 +1501,9 @@ begin
 
       // Output out of contest period
       ini.WriteBool('Preferences', 'OutputOutOfPeriod', Settings._output_outofperiod);
+
+      // Use contest period
+      ini.WriteBool('Preferences', 'UseContestPeriod', Settings._use_contest_period);
 
       // Save when not sending CW
       ini.WriteBool('Preferences', 'SaveWhenNoCW', Settings._savewhennocw);
@@ -1945,6 +2001,7 @@ begin
       ini.WriteBool('ClusterWindow', 'RelaySpot', Settings.FClusterRelaySpot);
       ini.WriteBool('ClusterWindow', 'NotifyCurrentBand', Settings.FClusterNotifyCurrentBand);
       ini.WriteBool('ClusterWindow', 'RecordLogs', Settings.FClusterRecordLogs);
+      ini.WriteBool('ClusterWindow', 'IgnoreBEL', Settings.FClusterIgnoreBEL);
       ini.WriteBool('ClusterWindow', 'UseAllowDenyLists', Settings.FClusterUseAllowDenyLists);
       ini.WriteBool('ClusterWindow', 'IgnoreSHDX', Settings.FClusterIgnoreSHDX);
       ini.WriteInteger('ClusterWindow', 'ReConnectMax', Settings.FClusterReConnectMax);
@@ -2084,21 +2141,15 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
-      // 今のOPがOpListにいなければ消す
-      aQSO.Operator := '';
-      Exit;
-   end;
+      P := dmZLogGlobal.Settings._power[aQSO.Band][1];
+   end
+   else begin
+      str := op.Power;
 
-   str := op.Power;
-
-//   if OldBandOrd(aQSO.Band) + 1 <= length(str) then
-//      P := str[OldBandOrd(aQSO.Band) + 1]
-//   else
-//      P := UpCase(str[1]);
-
-   P := str[OldBandOrd(aQSO.Band) + 1];
-   if P = '-' then begin
-      P := UpCase(str[1]);
+      P := str[OldBandOrd(aQSO.Band) + 1];
+      if P = '-' then begin
+         P := UpCase(str[1]);
+      end;
    end;
 
    case P of
@@ -2326,6 +2377,35 @@ begin
       end;
    end;
 
+   // OP別メッセージオーバーライド
+   if FCurrentOperator <> nil then begin
+      case no of
+         1..12: begin
+            if FCurrentOperator.CwMessages[bank, no] <> '' then begin
+               S := FCurrentOperator.CwMessages[bank, no];
+            end;
+         end;
+
+         101: begin
+            if FCurrentOperator.CwMessages[bank, 1] <> '' then begin
+               S := FCurrentOperator.CwMessages[bank, 1];
+            end;
+         end;
+
+         102: begin
+            if FCurrentOperator.AdditionalCwMessages[2] <> '' then begin
+               S := FCurrentOperator.AdditionalCwMessages[2];
+            end;
+         end;
+
+         103: begin
+            if FCurrentOperator.AdditionalCwMessages[3] <> '' then begin
+               S := FCurrentOperator.AdditionalCwMessages[3];
+            end;
+         end;
+      end;
+   end;
+
    Result := S;
 end;
 
@@ -2469,6 +2549,7 @@ begin
       sl.Add(ICOMLIST[i].name);
    end;
 
+   sl.Add('Elecraft K3S/K3/KX3/KX2');
    sl.Add('JST-145');
    sl.Add('JST-245');
    sl.Add('Omni-Rig');
@@ -2524,7 +2605,7 @@ begin
    if FileExists(fullpath) = False then begin
       fullpath := ExtractFilePath(Application.ExeName) + filename;
       if FileExists(fullpath) = False then begin
-         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
+//         MessageDlg('DAT file [' + fullpath + '] cannot be opened', mtError, [mbOK], 0);
          Result := '';
          Exit;
       end;
@@ -2855,6 +2936,323 @@ begin
    else begin
       Result := False;
    end;
+end;
+
+procedure TdmZLogGlobal.SetRootPath(v: string);
+begin
+   Settings._rootpath := v;
+end;
+
+function TdmZLogGlobal.GetCfgDatPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._cfgdatpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._cfgdatpath;
+   end
+   else begin
+      Result := RootPath + Settings._cfgdatpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetCfgDatPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._cfgdatpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._cfgdatpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetLogPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._logspath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._logspath;
+   end
+   else begin
+      Result := RootPath + Settings._logspath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetLogPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._logspath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._logspath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetBackupPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._backuppath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._backuppath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetBackupPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._backuppath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._backuppath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetSoundPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._soundpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._soundpath;
+   end
+   else begin
+      Result := RootPath + Settings._soundpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetSoundPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._soundpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._soundpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetPluginPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._pluginpath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._pluginpath;
+   end
+   else begin
+      Result := RootPath + Settings._pluginpath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetPluginPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._pluginpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._pluginpath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetSpcPath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings.FSuperCheck.FSuperCheckFolder);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings.FSuperCheck.FSuperCheckFolder;
+   end
+   else begin
+      Result := RootPath + Settings.FSuperCheck.FSuperCheckFolder;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetSpcPath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings.FSuperCheck.FSuperCheckFolder := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings.FSuperCheck.FSuperCheckFolder := v;
+   end;
+end;
+
+procedure TdmZLogGlobal.SelectBandPlan(preset_name: string);
+begin
+   if FBandPlans.ContainsKey(preset_name) = False then begin
+      Exit;
+   end;
+   FCurrentBandPlan := preset_name;
+end;
+
+procedure TdmZLogGlobal.CreateFolders();
+var
+   strPath: string;
+begin
+   // Root
+   strPath := RootPath;
+   if strPath <> '' then begin
+      ForceDirectories(strPath);
+   end;
+
+   // CFG/DAT folder
+   strPath := CfgDatPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Logs folder
+   strPath := LogPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Backup folder
+   strPath := BackupPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Sound folder
+   strPath := SoundPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Plugins folder
+   strPath := PluginPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Super Check folder
+   strPath := SpcPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+end;
+
+procedure TdmZLogGlobal.WriteErrorLog(msg: string);
+var
+   str: string;
+   txt: TextFile;
+begin
+   AssignFile(txt, FErrorLogFileName);
+   if FileExists(FErrorLogFileName) then begin
+      Reset(txt);
+   end
+   else begin
+      Rewrite(txt);
+   end;
+
+   str := FormatDateTime( 'yyyy/mm/dd hh:nn:ss ', Now ) + msg;
+
+   Append( txt );
+   WriteLn( txt, str );
+   Flush( txt );
+   CloseFile( txt );
+end;
+
+function TdmZLogGlobal.GetCurrentBandPlan(): TBandPlan;
+begin
+   Result := BandPlans[FCurrentBandPlan];
+end;
+
+procedure TdmZLogGlobal.FreeCommPortList();
+var
+   O: TObject;
+begin
+   if Assigned(FCommPortList) then begin
+      for O in FCommPortList do begin
+         TCommPort(O).Free();
+      end;
+      FCommPortList.Free();
+      FCommPortList := nil;
+   end;
+end;
+
+function TdmZLogGlobal.GetCommPortList(): TList<TCommPort>;
+begin
+   FreeCommPortList();
+
+   FCommPortList := LoadCommPortList();
+
+   Result := FCommPortList;
+end;
+
+function TdmZLogGlobal.LoadCommPortList(): TList<TCommPort>;
+var
+   portNumbers: array[0..50] of ULONG;
+   numofports: ULONG;
+   i: Integer;
+   list: TList<TCommPort>;
+   O: TCommPort;
+   Comparer: TCommPortComparer;
+begin
+   ZeroMemory(@portNumbers, SizeOf(portNumbers));
+   GetCommPortsForOldVersion(@portNumbers, SizeOf(portNumbers) div SizeOf(ULONG), numofports);
+
+   list := TList<TCommPort>.Create();
+
+   O := TCommPort.Create();
+   O.Number := 0;
+   O.Name := 'None';
+   O.RigControl := True;
+   O.Keying := True;
+   list.Add(O);
+
+   if Settings.FCommPortTest = False then begin
+      for i := 0 to numofports - 1 do begin
+         O := TCommPort.Create();
+         if portNumbers[i] < 21 then begin
+            O.Number := portNumbers[i];
+            O.Name := 'COM' + IntToStr(portNumbers[i]);
+            O.RigControl := True;
+            O.Keying := True;
+            list.Add(O);
+         end;
+      end;
+   end
+   else begin
+      for i := 1 to 20 do begin
+         O := TCommPort.Create();
+         O.Number := i;
+         O.Name := 'COM' + IntToStr(i);
+         O.RigControl := True;
+         O.Keying := True;
+         list.Add(O);
+      end;
+   end;
+
+   O := TCommPort.Create();
+   O.Number := 21;
+   O.Name := 'USBIF4CW';
+   O.Keying := True;
+   list.Add(O);
+
+   Comparer := TCommPortComparer.Create();
+   list.Sort(Comparer);
+   Comparer.Free();
+
+   Result := list;
+end;
+
+// ----------------------------------------------------------------------------
+
+{ TCommPort }
+
+constructor TCommPort.Create();
+begin
+   Inherited;
+   FPortName := '';
+   FPortNumber := 0;
+   FRigControl := False;
+   FKeying := False;
+end;
+
+{ TCommPortComparer }
+
+function TCommPortComparer.Compare(const Left, Right: TCommPort): Integer;
+begin
+   Result := Left.Number - Right.Number;
 end;
 
 // ----------------------------------------------------------------------------
@@ -3691,6 +4089,26 @@ begin
    Result := mOther;
 end;
 
+function BandToText(b: TBand): string;
+begin
+   if b = bUnknown then begin
+      Result := 'Unknown';
+   end
+   else begin
+      Result := MHzString[b];
+   end;
+end;
+
+function ModeToText(m: TMode): string;
+begin
+   if m = mOther then begin
+      Result := 'Other';
+   end
+   else begin
+      Result := ModeString[m];
+   end;
+end;
+
 function BandToPower(B: TBand): TPower;
 var
    strPower: string;
@@ -3710,224 +4128,6 @@ begin
       Result := ExtractFilePath(Application.ExeName);
    end;
    Result := IncludeTrailingPathDelimiter(Result);
-end;
-
-procedure TdmZLogGlobal.SetRootPath(v: string);
-begin
-   Settings._rootpath := v;
-end;
-
-function TdmZLogGlobal.GetCfgDatPath(): string;
-begin
-   Result := ExpandEnvironmentVariables(Settings._cfgdatpath);
-   if IsFullPath(Result) = True then begin
-//      Result := Settings._cfgdatpath;
-   end
-   else begin
-      Result := RootPath + Settings._cfgdatpath;
-   end;
-   Result := IncludeTrailingPathDelimiter(Result);
-end;
-
-procedure TdmZLogGlobal.SetCfgDatPath(v: string);
-begin
-   if Pos(RootPath, v) > 0 then begin
-      Settings._cfgdatpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
-   end
-   else begin
-      Settings._cfgdatpath := v;
-   end;
-end;
-
-function TdmZLogGlobal.GetLogPath(): string;
-begin
-   Result := ExpandEnvironmentVariables(Settings._logspath);
-   if IsFullPath(Result) = True then begin
-//      Result := Settings._logspath;
-   end
-   else begin
-      Result := RootPath + Settings._logspath;
-   end;
-   Result := IncludeTrailingPathDelimiter(Result);
-end;
-
-procedure TdmZLogGlobal.SetLogPath(v: string);
-begin
-   if Pos(RootPath, v) > 0 then begin
-      Settings._logspath := StringReplace(v, RootPath, '', [rfReplaceAll]);
-   end
-   else begin
-      Settings._logspath := v;
-   end;
-end;
-
-function TdmZLogGlobal.GetBackupPath(): string;
-begin
-   Result := ExpandEnvironmentVariables(Settings._backuppath);
-   if IsFullPath(Result) = True then begin
-//      Result := Settings._backuppath;
-   end
-   else begin
-      Result := RootPath + Settings._backuppath;
-   end;
-   Result := IncludeTrailingPathDelimiter(Result);
-end;
-
-procedure TdmZLogGlobal.SetBackupPath(v: string);
-begin
-   if Pos(RootPath, v) > 0 then begin
-      Settings._backuppath := StringReplace(v, RootPath, '', [rfReplaceAll]);
-   end
-   else begin
-      Settings._backuppath := v;
-   end;
-end;
-
-function TdmZLogGlobal.GetSoundPath(): string;
-begin
-   Result := ExpandEnvironmentVariables(Settings._soundpath);
-   if IsFullPath(Result) = True then begin
-//      Result := Settings._soundpath;
-   end
-   else begin
-      Result := RootPath + Settings._soundpath;
-   end;
-   Result := IncludeTrailingPathDelimiter(Result);
-end;
-
-procedure TdmZLogGlobal.SetSoundPath(v: string);
-begin
-   if Pos(RootPath, v) > 0 then begin
-      Settings._soundpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
-   end
-   else begin
-      Settings._soundpath := v;
-   end;
-end;
-
-function TdmZLogGlobal.GetPluginPath(): string;
-begin
-   Result := ExpandEnvironmentVariables(Settings._pluginpath);
-   if IsFullPath(Result) = True then begin
-//      Result := Settings._pluginpath;
-   end
-   else begin
-      Result := RootPath + Settings._pluginpath;
-   end;
-   Result := IncludeTrailingPathDelimiter(Result);
-end;
-
-procedure TdmZLogGlobal.SetPluginPath(v: string);
-begin
-   if Pos(RootPath, v) > 0 then begin
-      Settings._pluginpath := StringReplace(v, RootPath, '', [rfReplaceAll]);
-   end
-   else begin
-      Settings._pluginpath := v;
-   end;
-end;
-
-function TdmZLogGlobal.GetSpcPath(): string;
-begin
-   Result := ExpandEnvironmentVariables(Settings.FSuperCheck.FSuperCheckFolder);
-   if IsFullPath(Result) = True then begin
-//      Result := Settings.FSuperCheck.FSuperCheckFolder;
-   end
-   else begin
-      Result := RootPath + Settings.FSuperCheck.FSuperCheckFolder;
-   end;
-   Result := IncludeTrailingPathDelimiter(Result);
-end;
-
-procedure TdmZLogGlobal.SetSpcPath(v: string);
-begin
-   if Pos(RootPath, v) > 0 then begin
-      Settings.FSuperCheck.FSuperCheckFolder := StringReplace(v, RootPath, '', [rfReplaceAll]);
-   end
-   else begin
-      Settings.FSuperCheck.FSuperCheckFolder := v;
-   end;
-end;
-
-procedure TdmZLogGlobal.SelectBandPlan(preset_name: string);
-begin
-   if FBandPlans.ContainsKey(preset_name) = False then begin
-      Exit;
-   end;
-   FCurrentBandPlan := preset_name;
-end;
-
-procedure TdmZLogGlobal.CreateFolders();
-var
-   strPath: string;
-begin
-   // Root
-   strPath := RootPath;
-   if strPath <> '' then begin
-      ForceDirectories(strPath);
-   end;
-
-   // CFG/DAT folder
-   strPath := CfgDatPath;
-   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
-      ForceDirectories(strPath);
-   end;
-
-   // Logs folder
-   strPath := LogPath;
-   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
-      ForceDirectories(strPath);
-   end;
-
-   // Backup folder
-   strPath := BackupPath;
-   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
-      ForceDirectories(strPath);
-   end;
-
-   // Sound folder
-   strPath := SoundPath;
-   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
-      ForceDirectories(strPath);
-   end;
-
-   // Plugins folder
-   strPath := PluginPath;
-   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
-      ForceDirectories(strPath);
-   end;
-
-   // Super Check folder
-   strPath := SpcPath;
-   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
-      ForceDirectories(strPath);
-   end;
-end;
-
-procedure TdmZLogGlobal.WriteErrorLog(msg: string);
-var
-   str: string;
-   txt: TextFile;
-begin
-   AssignFile(txt, FErrorLogFileName);
-   if FileExists(FErrorLogFileName) then begin
-      Reset(txt);
-   end
-   else begin
-      Rewrite(txt);
-   end;
-
-   str := FormatDateTime( 'yyyy/mm/dd hh:nn:ss ', Now ) + msg;
-
-   Append( txt );
-   WriteLn( txt, str );
-   Flush( txt );
-   CloseFile( txt );
-end;
-
-function TdmZLogGlobal.GetCurrentBandPlan(): TBandPlan;
-begin
-   Result := BandPlans[FCurrentBandPlan];
 end;
 
 function LoadResourceString(uID: Integer): string;
@@ -4050,6 +4250,71 @@ begin
       F.WindowState := wsNormal;
    end;
    F.Show();
+end;
+
+function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
+var
+   RS: TResourceStream;
+   SL: TStringList;
+   resname: string;
+begin
+   resname := 'IDF_' + StringReplace(filename, '.', '_', [rfReplaceAll]);
+
+   RS := TResourceStream.Create(hinst, resname, RT_RCDATA);
+   SL := TStringList.Create();
+   SL.StrictDelimiter := True;
+   try
+      SL.LoadFromStream(RS);
+   finally
+      RS.Free();
+      Result := SL;
+   end;
+end;
+
+function GetCommPortsForOldVersion(lpPortNumbers: PULONG; uPortNumbersCount: ULONG; var puPortNumbersFound: ULONG): ULONG;
+var
+   reg: TRegistry;
+   slKey: TStringList;
+   i: Integer;
+   S: string;
+   P: PULONG;
+   c: ULONG;
+   portnum: Integer;
+begin
+   slKey := TStringList.Create();
+   reg := TRegistry.Create(KEY_READ);
+   try
+      reg.RootKey := HKEY_LOCAL_MACHINE;
+      reg.OpenKey('HARDWARE\DEVICEMAP\SERIALCOMM', False);
+
+      reg.GetValueNames(slKey);
+
+      P := lpPortNumbers;
+      c := 0;
+      for i := 0 to slKey.Count - 1 do begin
+         if c >= uPortNumbersCount then begin
+            Break;
+         end;
+
+         S := reg.ReadString(slKey[i]);
+
+         S := StringReplace(S, 'COM', '', [rfReplaceAll]);
+
+         portnum := StrToIntDef(S, 0);
+         if (portnum >= 1) and (portnum <= 20) then begin
+            P^ := portnum;
+            Inc(P);
+            Inc(c);
+         end;
+      end;
+
+      puPortNumbersFound := c;
+   finally
+      reg.Free();
+      slKey.Free();
+   end;
+
+   Result := 0;
 end;
 
 end.

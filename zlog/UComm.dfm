@@ -94,7 +94,7 @@ object CommForm: TCommForm
     object checkRecordLogs: TCheckBox
       Left = 176
       Top = 57
-      Width = 153
+      Width = 81
       Height = 17
       Caption = 'Record logs'
       TabOrder = 6
@@ -105,6 +105,14 @@ object CommForm: TCommForm
       Width = 153
       Height = 17
       Caption = 'Use Allow/Deny Lists'
+      TabOrder = 8
+    end
+    object checkIgnoreBEL: TCheckBox
+      Left = 269
+      Top = 57
+      Width = 74
+      Height = 17
+      Caption = 'Ignore BEL'
       TabOrder = 7
     end
   end

@@ -6,6 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
+  Generics.Collections, Generics.Defaults,
   UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
 
 type
@@ -549,6 +550,7 @@ type
     checkOutputOutofPeriod: TCheckBox;
     checkGen3MicSelect: TCheckBox;
     checkIgnoreRigMode: TCheckBox;
+    checkUseContestPeriod: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -601,6 +603,7 @@ type
   private
     FEditMode: Integer;
     FEditNumber: Integer;
+    FActiveTab: Integer;
     FTempVoiceFiles : array[1..maxmessage] of string;
     FTempAdditionalVoiceFiles : array[2..3] of string;
     TempCurrentBank : integer;
@@ -640,6 +643,7 @@ type
     property EditNumber: Integer read FEditNumber write SetEditNumber;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
     property EditBank: Integer read TempCurrentBank write TempCurrentBank;
+    property ActiveTab: Integer read FActiveTab write FActiveTab;
   end;
 
 const
@@ -736,10 +740,12 @@ var
    i, j: integer;
 
    procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   var
+      KeyPort: Integer;
    begin
       with dmZlogGlobal do begin
          if Assigned(C) then begin
-            Settings.FRigControl[no].FControlPort := C.ItemIndex;
+            Settings.FRigControl[no].FControlPort := TCommPort(C.Items.Objects[C.ItemIndex]).Number;
          end;
 
          if Assigned(S) then begin
@@ -756,10 +762,11 @@ var
          end;
 
          if Assigned(K) then begin
-            if (K.ItemIndex >= 1) and (K.ItemIndex <= 20) then begin
-               Settings.FRigControl[no].FKeyingPort := K.ItemIndex;
+            KeyPort := TCommPort(K.Items.Objects[K.ItemIndex]).Number;
+            if (KeyPort >= 1) and (KeyPort <= 20) then begin
+               Settings.FRigControl[no].FKeyingPort := KeyPort;
             end
-            else if K.ItemIndex = 21 then begin    // USB
+            else if KeyPort = 21 then begin    // USB
                Settings.FRigControl[no].FKeyingPort := 21;
             end
             else begin
@@ -1018,6 +1025,7 @@ begin
 
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
+      Settings._use_contest_period := checkUseContestPeriod.Checked;
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
       Settings._displongdatetime := checkDispLongDateTime.Checked;
@@ -1238,10 +1246,18 @@ var
    i, j: integer;
 
    procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   var
+      i: Integer;
    begin
       with dmZlogGlobal do begin
          if Assigned(C) then begin
-            C.ItemIndex := Settings.FRigControl[no].FControlPort;
+            C.ItemIndex := 0;
+            for i := 0 to C.Items.Count - 1 do begin
+               if TCommPort(C.Items.Objects[i]).Number = Settings.FRigControl[no].FControlPort then begin
+                  C.ItemIndex := i;
+                  Break;
+               end;
+            end;
          end;
 
          if Assigned(S) then begin
@@ -1258,14 +1274,12 @@ var
          end;
 
          if Assigned(K) then begin
-            if (Settings.FRigControl[no].FKeyingPort >= 1) and (Settings.FRigControl[no].FKeyingPort <= 20) then begin
-               K.ItemIndex := Settings.FRigControl[no].FKeyingPort;
-            end
-            else if Settings.FRigControl[no].FKeyingPort = 21 then begin    // USB
-               K.ItemIndex := 21;
-            end
-            else begin
-               K.ItemIndex := 0;
+            K.ItemIndex := 0;
+            for i := 0 to K.Items.Count - 1 do begin
+               if TCommPort(K.Items.Objects[i]).Number = Settings.FRigControl[no].FKeyingPort then begin
+                  K.ItemIndex := i;
+                  Break;
+               end;
             end;
          end;
 
@@ -1333,20 +1347,14 @@ begin
          radioSingleOp.Checked := True;
       end
       else if ContestCategory = ccMultiOpMultiTx then begin
-         radioMultiOpMultiTx.Checked := True
+         radioMultiOpMultiTx.Checked := True;
       end
       else if ContestCategory = ccMultiOpSingleTx then begin
-         radioMultiOpSingleTx.Checked := True
+         radioMultiOpSingleTx.Checked := True;
       end
       else if ContestCategory = ccMultiOpTwoTx then begin
-         radioMultiOpTwoTx.Checked := True
+         radioMultiOpTwoTx.Checked := True;
       end;
-//      case ContestCategory of
-//         ccSingleOp:          radioSingleOp.Checked := True;
-//         ccMultiOpMultiTx:    radioMultiOpMultiTx.Checked := True;
-//         ccMultiOpSingleTx:   radioMultiOpSingleTx.Checked := True;
-//         ccMultiOpTwoTx:      radioMultiOpTwoTx.Checked := True;
-//      end;
 
       // #TXNR
       comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(Settings._txnr));
@@ -1413,6 +1421,7 @@ begin
 
       AllowDupeCheckBox.Checked := Settings._allowdupe;
       checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
+      checkUseContestPeriod.Checked := Settings._use_contest_period;
 
       ClusterCombo.ItemIndex := Settings._clusterport;
       ZLinkCombo.ItemIndex := Settings._zlinkport;
@@ -1719,6 +1728,7 @@ begin
       tabsheetCW.TabVisible := True;
       tabsheetVoice.TabVisible := True;
       tabsheetHardware.TabVisible := True;
+      tabsheetNetwork.TabVisible := True;
       tabsheetRigControl.TabVisible := True;
       tabsheetPath.TabVisible := True;
       tabsheetMisc.TabVisible := True;
@@ -1726,6 +1736,7 @@ begin
       tabsheetBandScope1.TabVisible := True;
       tabsheetBandScope2.TabVisible := True;
       tabsheetQuickMemo.TabVisible := True;
+      tabsheetFont.TabVisible := True;
    end
    else if FEditMode = 1 then begin // CW
       PageControl.ActivePage := tabsheetCW;
@@ -1735,6 +1746,7 @@ begin
       tabsheetCW.TabVisible := True;
       tabsheetVoice.TabVisible := False;
       tabsheetHardware.TabVisible := False;
+      tabsheetNetwork.TabVisible := False;
       tabsheetRigControl.TabVisible := False;
       tabsheetPath.TabVisible := False;
       tabsheetMisc.TabVisible := False;
@@ -1742,6 +1754,7 @@ begin
       tabsheetBandScope1.TabVisible := False;
       tabsheetBandScope2.TabVisible := False;
       tabsheetQuickMemo.TabVisible := False;
+      tabsheetFont.TabVisible := False;
 
       if FEditNumber > 0 then begin
          FEditMessage[FEditNumber].SetFocus;
@@ -1755,6 +1768,7 @@ begin
       tabsheetCW.TabVisible := False;
       tabsheetVoice.TabVisible := True;
       tabsheetHardware.TabVisible := False;
+      tabsheetNetwork.TabVisible := False;
       tabsheetRigControl.TabVisible := False;
       tabsheetPath.TabVisible := False;
       tabsheetMisc.TabVisible := False;
@@ -1762,26 +1776,17 @@ begin
       tabsheetBandScope1.TabVisible := False;
       tabsheetBandScope2.TabVisible := False;
       tabsheetQuickMemo.TabVisible := False;
+      tabsheetFont.TabVisible := False;
 
       if FEditNumber > 0 then begin
          FVoiceButton[FEditNumber].SetFocus();
       end;
+   end
+   else if FEditMode = 3 then begin
+      PageControl.ActivePageIndex := FActiveTab;
    end;
 
    FNeedSuperCheckLoad := False;
-
-   if radioSingleOp.Checked = True then begin
-      radioCategoryClick(radioSingleOp);
-   end
-   else if radioMultiOpMultiTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpMultiTx);
-   end
-   else if radioMultiOpSingleTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpSingleTx);
-   end
-   else if radioMultiOpTwoTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpTwoTx);
-   end;
 end;
 
 procedure TformOptions.buttonOpAddClick(Sender: TObject);
@@ -1860,6 +1865,8 @@ var
    i: integer;
    b: TBand;
    m: TMode;
+   CP: TCommPort;
+   list: TList<TCommPort>;
 begin
    FQuickQSYCheck[1]    := checkUseQuickQSY01;
    FQuickQSYBand[1]     := comboQuickQsyBand01;
@@ -1961,6 +1968,27 @@ begin
    FEditNumber := 0;
 
    FNeedSuperCheckLoad := False;
+
+   // CommPorts
+   comboRig1Port.Items.Clear();
+   comboRig2Port.Items.Clear();
+   comboCwPttPort1.Items.Clear();
+   comboCwPttPort2.Items.Clear();
+   comboCwPttPort3.Items.Clear();
+
+   list := dmZLogGlobal.CommPortList;
+   for i := 0 to list.Count - 1 do begin
+      CP := list[i];
+      if CP.RigControl = True then begin
+         comboRig1Port.Items.AddObject(CP.Name, CP);
+         comboRig2Port.Items.AddObject(CP.Name, CP);
+      end;
+      if CP.Keying = True then begin
+         comboCwPttPort1.Items.AddObject(CP.Name, CP);
+         comboCwPttPort2.Items.AddObject(CP.Name, CP);
+         comboCwPttPort3.Items.AddObject(CP.Name, CP);
+      end;
+   end;
 end;
 
 procedure TformOptions.buttonCancelClick(Sender: TObject);
@@ -2283,8 +2311,10 @@ procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
    Index: Integer;
    rigno: Integer;
+   combo: TComboBox;
 begin
-   Index := TComboBox(Sender).ItemIndex;
+   combo := TComboBox(Sender);
+   Index := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
    rigno := TComboBox(Sender).Tag;
 
    if (Index = 0) or (Index = 21) then begin
@@ -2295,6 +2325,7 @@ begin
          checkWkOutportSelect.Enabled := False;
          checkWkIgnoreSpeedPot.Enabled := False;
       end;
+      checkUseWinKeyer.Checked := False;
    end
    else begin
       checkUseWinKeyer.Enabled := True;

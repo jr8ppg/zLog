@@ -32,6 +32,8 @@ library Zlog;
 {ITE} {DFMFileType} {UConsolePad.dfm}
 {ITE} {DFMFileType} {UCWKeyBoard.dfm}
 {ITE} {DFMFileType} {UCwMessagePad.dfm}
+{ITE} {DFMFileType} {UCWMonitor.dfm}
+{ITE} {DFMFileType} {UDateDialog.dfm}
 {ITE} {DFMFileType} {UEditDialog.dfm}
 {ITE} {DFMFileType} {UELogJarl1.dfm}
 {ITE} {DFMFileType} {UELogJarl2.dfm}
@@ -108,6 +110,7 @@ library Zlog;
 {ITE} {DFMFileType} {UzLogGlobal.dfm}
 {ITE} {DFMFileType} {UzLogKeyer.dfm}
 {ITE} {DFMFileType} {UZServerInquiry.dfm}
+{ITE} {RCFileType} {resource.rc}
 {ITE} {RCFileType} {Win64\Release\Zlog_DRC.rc}
 
 {$R 'main.dfm' 'MainForm:TForm'}
@@ -140,6 +143,8 @@ library Zlog;
 {$R 'UConsolePad.dfm' 'ConsolePad:TForm'}
 {$R 'UCWKeyBoard.dfm' 'CWKeyBoard:TForm'}
 {$R 'UCwMessagePad.dfm' 'CwMessagePad:TForm'}
+{$R 'UCWMonitor.dfm' 'formCWMonitor:TForm'}
+{$R 'UDateDialog.dfm' 'DateDialog:TForm'}
 {$R 'UEditDialog.dfm' 'EditDialog:TForm'}
 {$R 'UELogJarl1.dfm' 'formELogJarl1:TForm'}
 {$R 'UELogJarl2.dfm' 'formELogJarl2:TForm'}
@@ -216,6 +221,7 @@ library Zlog;
 {$R 'UzLogGlobal.dfm' 'dmZLogGlobal:TDataModule'}
 {$R 'UzLogKeyer.dfm' 'dmZLogKeyer:TDataModule'}
 {$R 'UZServerInquiry.dfm' 'ZServerInquiry:TForm'}
+{$R 'resource.res' 'resource.rc'}
 {$R 'Win64\Release\Zlog_DRC.res' 'Win64\Release\Zlog_DRC.rc'}
 
 {$E ENU}

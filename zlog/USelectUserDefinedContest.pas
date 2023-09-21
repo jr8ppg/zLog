@@ -10,6 +10,9 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
   Vcl.FileCtrl, UserDefinedContest;
 
+const
+  WM_ZLOG_SHOWCFGEDIT = (WM_USER + 301);
+
 type
   TSelectUserDefinedContest = class(TForm)
     Panel1: TPanel;
@@ -36,6 +39,7 @@ type
     procedure buttonOKClick(Sender: TObject);
     procedure buttonCFGEditClick(Sender: TObject);
     procedure ListView1MouseEnter(Sender: TObject);
+    procedure OnZLogShowCfgEdit( var Message: TMessage ); message WM_ZLOG_SHOWCFGEDIT;
   private
     { Private éŒ¾ }
     FCfgList: TUserDefinedContestList;
@@ -55,6 +59,10 @@ type
     property ImportCwMessage[Index: Integer]: Boolean read GetImportCwMessage;
     property InitialContestName: string read FInitialContestName write FInitialContestName;
   end;
+
+resourcestring
+  Setup_prov_first = 'Setup Prov/State code first';
+  Setup_city_first = 'Setup City code first';
 
 implementation
 
@@ -101,6 +109,19 @@ end;
 procedure TSelectUserDefinedContest.buttonOKClick(Sender: TObject);
 begin
    FSelectedContest := TUserDefinedContest(ListView1.Selected.Data);
+
+   if (Pos('$V', FSelectedContest.Sent) > 0) and (FSelectedContest.Prov = '') then begin
+      MessageBox(Handle, PChar(Setup_prov_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PostMessage(Handle, WM_ZLOG_SHOWCFGEDIT, 0, 0);
+      Exit;
+   end;
+
+   if (Pos('$Q', FSelectedContest.Sent) > 0) and (FSelectedContest.City = '') then begin
+      MessageBox(Handle, PChar(Setup_city_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PostMessage(Handle, WM_ZLOG_SHOWCFGEDIT, 0, 0);
+      Exit;
+   end;
+
    ModalResult := mrOK;
 end;
 
@@ -257,6 +278,7 @@ begin
 
       if D.ContestName = FInitialContestName then begin
          listItem.Selected := True;
+         listItem.MakeVisible(False);
       end;
    end;
 
@@ -287,6 +309,11 @@ begin
       4: Result := checkImportCwMessage4.Checked;
       else Result := False;
    end;
+end;
+
+procedure TSelectUserDefinedContest.OnZLogShowCfgEdit( var Message: TMessage );
+begin
+   buttonCFGEditClick(buttonCFGEdit);
 end;
 
 end.
