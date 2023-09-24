@@ -284,8 +284,8 @@ begin
    SI.Callsign := SD.Callsign;
    try
       if BinarySearch(SI, Index, FIndexComparer) = True then begin
-         L := Items[Index].List.Count - 1;
-         Result := Items[Index].List[L];
+//         L := Items[Index].List.Count - 1;
+         Result := Items[Index].List[0];
       end
       else begin
          Result := nil;
