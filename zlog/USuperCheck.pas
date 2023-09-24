@@ -127,7 +127,7 @@ end;
 
 procedure TSuperCheck.GridDblClick(Sender: TObject);
 var
-   str, strCall, strNumber, strComment: string;
+   str, strCall, strNumber: string;
    c, r: Integer;
    I: Integer;
 begin
