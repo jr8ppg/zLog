@@ -41,7 +41,7 @@ type
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
     function IndexOf(SD: TSuperData): Integer;
-    procedure Add(SD: TSuperData);
+    procedure AddSort(SD: TSuperData);
   end;
 
   TSuperIndex = class(TObject)
@@ -211,7 +211,7 @@ begin
    end;
 end;
 
-procedure TSuperDataList.Add(SD: TSuperData);
+procedure TSuperDataList.AddSort(SD: TSuperData);
 var
    Index: Integer;
 begin
