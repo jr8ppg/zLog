@@ -816,6 +816,7 @@ type
     procedure timerShowInfoTimer(Sender: TObject);
     procedure actionShowCurrentTxOnlyExecute(Sender: TObject);
     procedure menuShowOnlyTxClick(Sender: TObject);
+    procedure View1Click(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -10885,6 +10886,18 @@ begin
    end
    else begin
       dmZLogKeyer.ControlPTT(nID, fOn);
+   end;
+end;
+
+procedure TMainForm.View1Click(Sender: TObject);
+begin
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      menuShowThisTXonly.Visible := False;
+      menuShowOnlySpecifiedTX.Visible := False;
+   end
+   else begin
+      menuShowThisTXonly.Visible := True;
+      menuShowOnlySpecifiedTX.Visible := True;
    end;
 end;
 
