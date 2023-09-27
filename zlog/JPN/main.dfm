@@ -6042,6 +6042,7 @@ object MainForm: TMainForm
     end
     object View1: TMenuItem
       Caption = #34920#31034'(&V)'
+      OnClick = View1Click
       object menuShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
         GroupIndex = 1

@@ -17,13 +17,15 @@ type
     FDate: TDateTime;
     FCallsign : string;
     FNumber : string;
+    FDisplay: string;
+    procedure SetNumber(v: string);
     function GetText(): string;
   public
     constructor Create(); overload;
     constructor Create(D: TDateTime; C, N: string); overload;
     property Date: TDateTime read FDate write FDate;
     property Callsign: string read FCallsign write FCallsign;
-    property Number: string read FNumber write FNumber;
+    property Number: string read FNumber write SetNumber;
     property Text: string read GetText;
   end;
 
@@ -39,7 +41,7 @@ type
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
     function IndexOf(SD: TSuperData): Integer;
-    procedure Add(SD: TSuperData);
+    procedure AddSort(SD: TSuperData);
   end;
 
   TSuperIndex = class(TObject)
@@ -161,12 +163,26 @@ begin
    Inherited Create();
    FDate := D;
    FCallsign := C;
-   FNumber := N;
+   FDisplay := N;
+   Number := N;
+end;
+
+procedure TSuperData.SetNumber(v: string);
+var
+   I: Integer;
+begin
+   I := Pos(' ', v);
+   if I = 0 then begin
+      FNumber := v;
+   end
+   else begin
+      FNumber := Copy(v, 1, I - 1);
+   end;
 end;
 
 function TSuperData.GetText(): string;
 begin
-   Result := FillRight(callsign, 11) + number;
+   Result := FillRight(callsign, 11) + FDisplay;
 end;
 
 { TSuperDataList }
@@ -195,7 +211,7 @@ begin
    end;
 end;
 
-procedure TSuperDataList.Add(SD: TSuperData);
+procedure TSuperDataList.AddSort(SD: TSuperData);
 var
    Index: Integer;
 begin
@@ -268,8 +284,8 @@ begin
    SI.Callsign := SD.Callsign;
    try
       if BinarySearch(SI, Index, FIndexComparer) = True then begin
-         L := Items[Index].List.Count - 1;
-         Result := Items[Index].List[L];
+//         L := Items[Index].List.Count - 1;
+         Result := Items[Index].List[0];
       end
       else begin
          Result := nil;

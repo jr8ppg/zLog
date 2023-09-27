@@ -355,6 +355,7 @@ var
    Str: string;
    diff: TDateTime;
    H, M, S, ms: Word;
+   D: Integer;
    i: Integer;
    n: Integer;
    hindex: Integer;
@@ -401,6 +402,11 @@ begin
    if (FStartTime >= FOriginTime) then begin
       diff := FStartTime - FOriginTime;
       DecodeTime(diff, H, M, S, ms);
+      D := Trunc(DaySpan(FStartTime, FOriginTime));
+      H := H + (D * 24);
+      if H > 47 then begin
+         H := 0;
+      end;
    end
    else begin
       FStartTime := Log.StartTime;   //Log.QsoList[1].Time;

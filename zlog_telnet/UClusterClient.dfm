@@ -19,6 +19,7 @@ object ClusterClient: TClusterClient
   Visible = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -59,15 +60,17 @@ object ClusterClient: TClusterClient
   end
   object Panel2: TPanel
     Left = 0
-    Top = 0
+    Top = 28
     Width = 284
-    Height = 208
+    Height = 180
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
+    ExplicitTop = 0
+    ExplicitHeight = 208
     object Splitter1: TSplitter
       Left = 1
-      Top = 115
+      Top = 87
       Width = 282
       Height = 4
       Cursor = crVSplit
@@ -80,7 +83,7 @@ object ClusterClient: TClusterClient
       Left = 1
       Top = 1
       Width = 282
-      Height = 114
+      Height = 86
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -93,10 +96,11 @@ object ClusterClient: TClusterClient
       TabOrder = 0
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitHeight = 114
     end
     object Console: TColorConsole2
       Left = 1
-      Top = 119
+      Top = 91
       Width = 282
       Height = 88
       Align = alBottom
@@ -108,7 +112,30 @@ object ClusterClient: TClusterClient
       Font.Style = []
       Rows = 500
       LineBreak = CR
+      ExplicitTop = 119
     end
+  end
+  object panelShowInfo: TPanel
+    Left = 0
+    Top = 0
+    Width = 284
+    Height = 28
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Z-LINK'#12363#12425#20999#26029#12375#12414#12375#12383
+    Color = clRed
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -15
+    Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 2
+    Visible = False
+    ExplicitLeft = -240
+    ExplicitTop = 66
+    ExplicitWidth = 524
   end
   object Timer1: TTimer
     Enabled = False
@@ -166,9 +193,17 @@ object ClusterClient: TClusterClient
     ExclusiveAddr = False
     ComponentOptions = []
     ListenBacklog = 15
+    OnSessionClosed = ZServerSessionClosed
     OnSessionConnected = ZServerSessionConnected
     SocketErrs = wsErrTech
     Left = 88
     Top = 112
+  end
+  object timerShowInfo: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerShowInfoTimer
+    Left = 152
+    Top = 147
   end
 end

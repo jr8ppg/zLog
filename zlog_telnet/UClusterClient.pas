@@ -30,6 +30,8 @@ type
     N2: TMenuItem;
     menuExit: TMenuItem;
     ZServer: TWSocket;
+    panelShowInfo: TPanel;
+    timerShowInfo: TTimer;
     procedure buttonCloseClick(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -45,6 +47,9 @@ type
     procedure menuSettingsClick(Sender: TObject);
     procedure menuExitClick(Sender: TObject);
     procedure ZServerSessionConnected(Sender: TObject; ErrCode: Word);
+    procedure timerShowInfoTimer(Sender: TObject);
+    procedure ZServerSessionClosed(Sender: TObject; ErrCode: Word);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FSpotExpireMin: Integer; // spot expiration time in minutes
@@ -84,6 +89,7 @@ type
     procedure WriteLineConsole(str : string);
     procedure WriteConsole(strText: string);
     procedure LoadAllowDenyList();
+    procedure ShowInfo(fShow: Boolean);
   public
     { Public declarations }
   end;
@@ -138,6 +144,11 @@ begin
    FSpotterList.Free();
    FAllowList.Free();
    FDenyList.Free();
+end;
+
+procedure TClusterClient.FormShow(Sender: TObject);
+begin
+   ShowInfo(True);
 end;
 
 procedure TClusterClient.WriteLine(str: string);
@@ -408,6 +419,30 @@ begin
    end;
 end;
 
+procedure TClusterClient.timerShowInfoTimer(Sender: TObject);
+begin
+   if TTimer(Sender).Tag = 0 then begin   // OFF
+      if panelShowInfo.Height <= 0 then begin
+         panelShowInfo.Height := 0;
+         panelShowInfo.Visible := False;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelShowInfo.Height := panelShowInfo.Height - 2;
+      end;
+   end
+   else begin     // ON
+      if panelShowInfo.Height >= 28 then begin
+         panelShowInfo.Height := 28;
+         TTimer(Sender).Enabled := False;
+      end
+      else begin
+         panelShowInfo.Visible := True;
+         panelShowInfo.Height := panelShowInfo.Height + 2;
+      end;
+   end;
+end;
+
 procedure TClusterClient.TelnetDisplay(Sender: TTnCnx; Str: String);
 begin
    FCommBuffer.Add(str);
@@ -616,10 +651,17 @@ begin
    WriteConsole(str + LineBreakCode[ord(Console.LineBreak)]);
 end;
 
+procedure TClusterClient.ZServerSessionClosed(Sender: TObject; ErrCode: Word);
+begin
+   ShowInfo(True);
+end;
+
 procedure TClusterClient.ZServerSessionConnected(Sender: TObject; ErrCode: Word);
 var
    S: string;
 begin
+   ShowInfo(False);
+
    // BANDƒRƒ}ƒ“ƒh
    S := ZLinkHeader + ' BAND ' + IntToStr(Ord(bUnknown));
    ZServer.SendStr(S + LineBreakCode[Ord(Console.LineBreak)]);
@@ -669,6 +711,18 @@ begin
    if FileExists(fname) then begin
       FDenyList.LoadFromFile(fname);
    end;
+end;
+
+procedure TClusterClient.ShowInfo(fShow: Boolean);
+begin
+   if fShow = True then begin
+      panelShowInfo.Visible := True;
+      timerShowInfo.Tag := 1;
+   end
+   else begin
+      timerShowInfo.Tag := 0;
+   end;
+   timerShowInfo.Enabled := True;
 end;
 
 end.

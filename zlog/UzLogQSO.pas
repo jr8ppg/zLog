@@ -3601,54 +3601,79 @@ var
    aQSO: TQSO;
    bQSO: TQSO;
    i: Integer;
-   Diff: Integer;
    basetime: TDateTime;
-
-   function FindThisTxQso(nStartIndex: Integer): Integer;
-   var
-      i: Integer;
-      aQSO: TQSO;
-   begin
-      for i := nStartIndex downto 1 do begin
-         aQSO := FQsoList[i];
-         if aQSO.TX = dmZLogGlobal.TXNr then begin
-            Result := i;
-            Exit;
-         end;
-      end;
-      Result := -1;
-   end;
+   dd, hh: Word;
+   dd2, hh2: Word;
+   fFound: Boolean;
+   offsetmin: Integer;
+   offsethour: Integer;
 begin
    if dmZlogGlobal.Settings._qsycount = False then begin
       Result := 0;
       Exit;
    end;
 
+   offsetmin := FQsoList[0].RSTsent;
+   if offsetmin = _USEUTC then begin
+      offsethour := 0;
+   end
+   else begin
+      offsethour := offsetmin div 60;
+   end;
+
    nQsyCount := 0;
 
-   // このzLogと同じQSOを探す
-   i := FindThisTxQso(nStartIndex);
-   if i = -1 then begin
-      Result := 0;
+   basetime := CurrentQSO.Time;
+   dd := DayOf(basetime);
+   hh := HourOf(basetime);
+
+   // その時間帯の最初のQSOを探す
+   fFound := False;
+   for i := nStartIndex downto 1 do begin
+      bQSO := FQsoList[i];
+
+      if offsetmin = _USEUTC then begin
+         bQSO.Time := IncHour(bQSO.Time, offsethour);
+      end;
+
+      dd2 := DayOf(bQSO.Time);
+      hh2 := HourOf(bQSO.Time);
+
+      if (dmZLogGlobal.TXNr = bQSO.TX) then begin
+         if (dd = dd2) and (hh = hh2) then begin
+            fFound := True;
+         end;
+
+         if ((dd <> dd2) or (hh <> hh2)) then begin
+            nStartIndex := i;
+            Break;
+         end;
+      end;
+   end;
+
+   // 同じ時間帯のQSOを発見できなかったらQSYなし
+   if fFound = False then begin
+      Result := nQsyCount;
       Exit;
    end;
 
-   nStartIndex := i;
-
+   // その時間帯最初のQSOの一つ前
    aQSO := FQsoList[nStartIndex];
-   basetime := CurrentQSO.Time;
 
-   for i := nStartIndex - 1 downto 1 do begin
+   for i := nStartIndex + 1 to FQsoList.Count - 1 do begin
       bQSO := FQsoList[i];
-
-      // 時間差が1hourあるか
-      Diff := SecondsBetween(basetime, bQSO.Time);
-      if (Diff / 60) > 60 then begin
-         Break;
-      end;
 
       // TXが同じでバンドが違えばカウント
       if (dmZLogGlobal.TXNr = bQSO.TX) then begin
+         dd2 := DayOf(bQSO.Time);
+         hh2 := HourOf(bQSO.Time);
+
+         // 日又は時が変わったら終わり
+         if ((dd <> dd2) or (hh <> hh2)) then begin
+            Break;
+         end;
+
+         // 一つ前のQSOとバンドが違えばQSYとする
          if (aQSO.Band <> bQSO.Band) then begin
             Inc(nQsyCount);
          end;

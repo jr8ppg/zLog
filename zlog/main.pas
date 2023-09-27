@@ -816,6 +816,7 @@ type
     procedure timerShowInfoTimer(Sender: TObject);
     procedure actionShowCurrentTxOnlyExecute(Sender: TObject);
     procedure menuShowOnlyTxClick(Sender: TObject);
+    procedure View1Click(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -884,6 +885,7 @@ type
 
     // QSY Violation (10 min rule / per hour)
     FQsyViolation: Boolean;
+    FQsyCountPrevHour: string;
 
     FCurrentRx: Integer;
     FCurrentTx: Integer;
@@ -2123,6 +2125,8 @@ begin
    FRigSwitchTime := Now();
    FKeyPressedRigID := 0;
    FPastEditMode := False;
+   FQsyViolation := False;
+   FQsyCountPrevHour := '';
 
    // Out of contest period表示
    FFirstOutOfContestPeriod := True;
@@ -4717,6 +4721,7 @@ var
    fQsyOK: Boolean;
    nCountDownMinute: Integer;
    strTxNo: string;
+   strHour: string;
 begin
    S := TimeToStr(CurrentTime);
    if length(S) = 7 then begin
@@ -4764,6 +4769,14 @@ begin
 
    if dmZlogGlobal.Settings._qsycount then begin
 
+      // "時"が変わったらカウンターリセット
+      strHour := Copy(S, 1, 2);
+      if FQsyCountPrevHour <> strHour then begin
+         QsyCount := 0;
+         FQsyCountPrevHour := strHour;
+      end;
+
+      // QSY回数を数える
       ReEvaluateQsyCount();
 
       S2 := 'QSY# ' + IntToStr(QSYCount);
@@ -10873,6 +10886,18 @@ begin
    end
    else begin
       dmZLogKeyer.ControlPTT(nID, fOn);
+   end;
+end;
+
+procedure TMainForm.View1Click(Sender: TObject);
+begin
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      menuShowThisTXonly.Visible := False;
+      menuShowOnlySpecifiedTX.Visible := False;
+   end
+   else begin
+      menuShowThisTXonly.Visible := True;
+      menuShowOnlySpecifiedTX.Visible := True;
    end;
 end;
 
