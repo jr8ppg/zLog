@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45154.4805092593</prop>
-        <prop prop-type="OrigDateTime">45154.4767361111</prop>
+        <prop prop-type="SelfDateTime">45197.8822453704</prop>
+        <prop prop-type="OrigDateTime">45197.8735185185</prop>
         <prop prop-type="XlatDateTime">45063.945787037</prop>
         <prop prop-type="Translated">286</prop>
         <prop prop-type="UnTranslated">4724</prop>
@@ -135,7 +135,7 @@
         <prop prop-type="Created">44796.8925922685</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:formOptions.O:PageControl.ActivePage" resname="O:formOptions.O:PageControl.ActivePage">
-        <source>tabsheetHardware</source>
+        <source>tabsheetPreferences</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925922685</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TPageControl</prop><prop prop-type="Localize">1</prop></prop-group>
       <alt-trans>  <source>tabsheetPath</source>

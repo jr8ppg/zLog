@@ -5,10 +5,10 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45181.915</prop>
+        <prop prop-type="SelfDateTime">45199.9328935185</prop>
         <prop prop-type="OrigDateTime">45134.9315740741</prop>
         <prop prop-type="XlatDateTime">45154.4880092593</prop>
-        <prop prop-type="Translated">64</prop>
+        <prop prop-type="Translated">66</prop>
         <prop prop-type="UnTranslated">1216</prop>
       </prop-group>
     </header>
@@ -9099,6 +9099,22 @@
           <prop prop-type="Status">1</prop>
         </prop-group>
         <target>"Z-Serverとの接続に失敗しました。"</target>
+      </trans-unit>
+      <trans-unit id="UZLinkForm_Connect_ZSERVER" resname="UZLinkForm_Connect_ZSERVER">
+        <source>"Connect to Z-Server"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45199.9312072917</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"Z-Serverに接続"</target>
+      </trans-unit>
+      <trans-unit id="UZLinkForm_Disconnect_ZSERVER" resname="UZLinkForm_Disconnect_ZSERVER">
+        <source>"Disconnect from Z-Server"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45199.9312072917</prop>
+          <prop prop-type="Status">1</prop>
+        </prop-group>
+        <target>"Z-Serverから切断"</target>
       </trans-unit>
     </body>
   </file>

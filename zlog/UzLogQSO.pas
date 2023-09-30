@@ -7,7 +7,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.DateUtils, Generics.Collections, Generics.Defaults,
-  UzlogConst;
+  UzLogConst;
 
 type
   TQSODataExHeader = packed record
@@ -334,6 +334,7 @@ type
   end;
 
   TQSOListArray = array[b19..HiBand] of TQSOList;
+  TQSOListArrayByTx = array[0..9] of TQSOList;
 
   TLog = class(TObject)
   private
@@ -346,6 +347,7 @@ type
     FDifferentModePointer : Integer; //points to a qso on a different mode but not dupe
     FDupeCheckList: TQSOListArray;
     FBandList: TQSOListArray;
+    FTxList: TQSOListArrayByTx;
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
     FQsoIdDic: TDictionary<Integer, string>;
     FStartTime: TDateTime;
@@ -438,6 +440,7 @@ type
 
     property QsoList: TQSOList read FQsoList;
     property BandList: TQSOListArray read FBandList;
+    property TxList: TQSOListArrayByTx read FTxList;
 
     property ScoreCoeff: Extended read GetScoreCoeff write SetScoreCoeff;
 
@@ -616,12 +619,16 @@ end;
 
 procedure TQSO.UpdateTime;
 begin
+   {$IFNDEF ZSERVER}
    if Assigned(MyContest) and (MyContest.UseUTC) then begin
       FTime := GetUTC();
    end
    else begin
       FTime := Now;
    end;
+   {$ELSE}
+   FTime := Now;
+   {$ENDIF}
 end;
 
 function TQSO.GetSerialStr: string;
@@ -696,6 +703,7 @@ begin
 //   Result := dmZLogGlobal.PowerOfBand2[Band];
    power := NewPowerString[Self.FPower];
 
+   {$IFNDEF ZSERVER}
    if power = 'H' then begin
       Result := dmZLogGlobal.Settings._powerH;
    end
@@ -711,6 +719,9 @@ begin
    else begin
       Result := dmZLogGlobal.Settings._powerM;
    end;
+   {$ELSE}
+   Result := power;
+   {$ENDIF}
 end;
 
 function TQSO.GetNewPowerStr: string;
@@ -1582,6 +1593,7 @@ constructor TLog.Create(Memo: string);
 var
    Q: TQSO;
    B: TBand;
+   i: Integer;
 begin
    Inherited Create();
 
@@ -1595,6 +1607,10 @@ begin
       FBandList[B] := TQSOList.Create(False);
    end;
 
+   for i := 0 to 9 do begin
+      FTxList[i] := TQSOList.Create(False);
+   end;
+
    Q := TQSO.Create;
    Q.Callsign := '';
    Q.Memo := Memo;
@@ -1605,6 +1621,10 @@ begin
 
    for B := b19 to HiBand do begin
       FBandList[B].Add(Q);
+   end;
+
+   for i := 0 to 9 do begin
+      FTxList[i].Add(Q);
    end;
 
    FSaved := True;
@@ -1620,10 +1640,15 @@ end;
 destructor TLog.Destroy;
 var
    B: TBand;
+   i: Integer;
 begin
    for B := b19 to HiBand do begin
       FDupeCheckList[B].Free();
       FBandList[B].Free();
+   end;
+
+   for i := 0 to 9 do begin
+      FTxList[i].Free();
    end;
 
    {$IFDEF DEBUG}
@@ -1768,6 +1793,7 @@ begin
    end;
 
    FBandList[xQSO.Band].Add(aQSO);
+   FTxList[xQSO.TX].Add(aQSO);
 
    if FQsoIdDic.ContainsKey(xQSO.QsoId) = False then begin
       FQsoIdDic.Add(xQSO.QsoId, xQSO.Callsign);
@@ -1950,6 +1976,11 @@ begin
       FBandList[aQSO.Band].Delete(Index);
    end;
 
+   Index := FTxList[aQSO.TX].IndexOf(aQSO);
+   if Index > -1 then begin
+      FTxList[aQSO.TX].Delete(Index);
+   end;
+
    FQsoList.Delete(i);
 
    FSaved := False;
@@ -1967,6 +1998,11 @@ begin
    Index := FBandList[aQSO.Band].IndexOf(aQSO);
    if Index > -1 then begin
       FBandList[aQSO.Band].Delete(Index);
+   end;
+
+   Index := FTxList[aQSO.TX].IndexOf(aQSO);
+   if Index > -1 then begin
+      FTxList[aQSO.TX].Delete(Index);
    end;
 
    Index := FQSOList.IndexOf(aQSO);
@@ -2379,12 +2415,16 @@ var
    dtNow: TDateTime;
 begin
    if FPeriod = 0 then begin
+      {$IFNDEF ZSERVER}
       if MyContest.UseUTC = True then begin
          dtNow := GetUTC();
       end
       else begin
          dtNow := Now;
       end;
+      {$ELSE}
+      dtNow := Now;
+      {$ENDIF}
 
       if (FStartTime <= dtNow) then begin
          Result := dtNow;
@@ -3561,32 +3601,84 @@ var
    aQSO: TQSO;
    bQSO: TQSO;
    i: Integer;
-   Diff: Integer;
    basetime: TDateTime;
+   dd, hh: Word;
+   dd2, hh2: Word;
+   fFound: Boolean;
+   offsetmin: Integer;
+   offsethour: Integer;
 begin
    if dmZlogGlobal.Settings._qsycount = False then begin
       Result := 0;
       Exit;
    end;
 
+   offsetmin := FQsoList[0].RSTsent;
+   if offsetmin = _USEUTC then begin
+      offsethour := 0;
+   end
+   else begin
+      offsethour := offsetmin div 60;
+   end;
+
    nQsyCount := 0;
-   aQSO := FQsoList[nStartIndex];
-   basetime := aQSO.Time;
-   for i := nStartIndex - 1 downto 1 do begin
+
+   basetime := CurrentQSO.Time;
+   dd := DayOf(basetime);
+   hh := HourOf(basetime);
+
+   // その時間帯の最初のQSOを探す
+   fFound := False;
+   for i := nStartIndex downto 1 do begin
       bQSO := FQsoList[i];
 
-      // 時間差が1hourあるか
-      Diff := SecondsBetween(basetime, bQSO.Time);
-      if (Diff / 60) > 60 then begin
-         Break;
+      if offsetmin = _USEUTC then begin
+         bQSO.Time := IncHour(bQSO.Time, offsethour);
       end;
+
+      dd2 := DayOf(bQSO.Time);
+      hh2 := HourOf(bQSO.Time);
+
+      if (dmZLogGlobal.TXNr = bQSO.TX) then begin
+         if (dd = dd2) and (hh = hh2) then begin
+            fFound := True;
+         end;
+
+         if ((dd <> dd2) or (hh <> hh2)) then begin
+            nStartIndex := i;
+            Break;
+         end;
+      end;
+   end;
+
+   // 同じ時間帯のQSOを発見できなかったらQSYなし
+   if fFound = False then begin
+      Result := nQsyCount;
+      Exit;
+   end;
+
+   // その時間帯最初のQSOの一つ前
+   aQSO := FQsoList[nStartIndex];
+
+   for i := nStartIndex + 1 to FQsoList.Count - 1 do begin
+      bQSO := FQsoList[i];
 
       // TXが同じでバンドが違えばカウント
-      if (aQSO.TX = bQSO.TX) and (aQSO.Band <> bQSO.Band) then begin
-         Inc(nQsyCount);
-      end;
+      if (dmZLogGlobal.TXNr = bQSO.TX) then begin
+         dd2 := DayOf(bQSO.Time);
+         hh2 := HourOf(bQSO.Time);
 
-      aQSO := bQSO;
+         // 日又は時が変わったら終わり
+         if ((dd <> dd2) or (hh <> hh2)) then begin
+            Break;
+         end;
+
+         // 一つ前のQSOとバンドが違えばQSYとする
+         if (aQSO.Band <> bQSO.Band) then begin
+            Inc(nQsyCount);
+         end;
+         aQSO := bQSO;
+      end;
    end;
 
    Result := nQsyCount;
@@ -3661,6 +3753,7 @@ end;
 
 function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
 begin
+   {$IFNDEF ZSERVER}
    if dmZLogGlobal.Settings._use_contest_period = False then begin
       Result := False;
       Exit;
@@ -3670,6 +3763,7 @@ begin
       Result := True;
       Exit;
    end;
+   {$ENDIF}
    Result := False;
 end;
 

@@ -330,6 +330,9 @@ type
 
     // COMM PORT TEST
     FCommPortTest: Boolean;
+
+    // Update interval
+    FInfoUpdateInterval: Integer;
   end;
 
   TCommPort = class(TObject)
@@ -1165,6 +1168,7 @@ begin
       //
       // ここから隠し設定
       //
+      Settings.FInfoUpdateInterval := ini.ReadInteger('Preferences', 'InfoUpdateInterval', 1000);
       Settings.FCommPortTest := ini.ReadBool('Preferences', 'CommPortTest', False);
       Settings._movetomemo := ini.ReadBool('Preferences', 'MoveToMemoWithSpace', False);
 

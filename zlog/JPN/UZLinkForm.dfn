@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.9700231481</prop>
-        <prop prop-type="OrigDateTime">44946.9303009259</prop>
+        <prop prop-type="SelfDateTime">45197.8825231481</prop>
+        <prop prop-type="OrigDateTime">45197.8716203704</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">88</prop>
+        <prop prop-type="UnTranslated">89</prop>
       </prop-group>
     </header>
     <body>
@@ -378,80 +378,85 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:ZLinkForm.O:ZSocket.LineMode" resname="O:ZLinkForm.O:ZSocket.LineMode">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45197.8825290856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LineEnd" resname="O:ZLinkForm.O:ZSocket.LineEnd">
         <source>#13#10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.Proto" resname="O:ZLinkForm.O:ZSocket.Proto">
         <source>'tcp'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LocalAddr" resname="O:ZLinkForm.O:ZSocket.LocalAddr">
         <source>'0.0.0.0'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LocalAddr6" resname="O:ZLinkForm.O:ZSocket.LocalAddr6">
         <source>'::'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LocalPort" resname="O:ZLinkForm.O:ZSocket.LocalPort">
         <source>'0'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.SocksLevel" resname="O:ZLinkForm.O:ZSocket.SocksLevel">
         <source>'5'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.ExclusiveAddr" resname="O:ZLinkForm.O:ZSocket.ExclusiveAddr">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.ComponentOptions" resname="O:ZLinkForm.O:ZSocket.ComponentOptions">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.ListenBacklog" resname="O:ZLinkForm.O:ZSocket.ListenBacklog">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.OnDataAvailable" resname="O:ZLinkForm.O:ZSocket.OnDataAvailable">
         <source>ZSocketDataAvailable</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.OnSessionClosed" resname="O:ZLinkForm.O:ZSocket.OnSessionClosed">
         <source>ZSocketSessionClosed</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.OnSessionConnected" resname="O:ZLinkForm.O:ZSocket.OnSessionConnected">
         <source>ZSocketSessionConnected</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.SocketErrs" resname="O:ZLinkForm.O:ZSocket.SocketErrs">
         <source>wsErrTech</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.Left" resname="O:ZLinkForm.O:ZSocket.Left">
         <source>68</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.Top" resname="O:ZLinkForm.O:ZSocket.Top">
         <source>36</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

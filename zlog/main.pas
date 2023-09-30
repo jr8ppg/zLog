@@ -228,7 +228,7 @@ type
     CreateDupeCheckSheetZPRINT1: TMenuItem;
     PluginMenu: TMenuItem;
     View1: TMenuItem;
-    ShowCurrentBandOnly: TMenuItem;
+    menuShowCurrentBandOnly: TMenuItem;
     menuSortByTime: TMenuItem;
     CallsignEdit1: TOvrEdit;
     NumberEdit1: TOvrEdit;
@@ -543,6 +543,19 @@ type
     panelShowInfo: TPanel;
     linklabelInfo: TLinkLabel;
     timerShowInfo: TTimer;
+    actionShowCurrentTxOnly: TAction;
+    menuShowThisTXonly: TMenuItem;
+    menuShowOnlySpecifiedTX: TMenuItem;
+    menuShowTx0: TMenuItem;
+    menuShowTx1: TMenuItem;
+    menuShowTx2: TMenuItem;
+    menuShowTx3: TMenuItem;
+    menuShowTx4: TMenuItem;
+    menuShowTx5: TMenuItem;
+    menuShowTx6: TMenuItem;
+    menuShowTx7: TMenuItem;
+    menuShowTx8: TMenuItem;
+    menuShowTx9: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -828,6 +841,9 @@ type
     procedure menuChangeDateClick(Sender: TObject);
     procedure actionShowCWMonitorExecute(Sender: TObject);
     procedure timerShowInfoTimer(Sender: TObject);
+    procedure actionShowCurrentTxOnlyExecute(Sender: TObject);
+    procedure menuShowOnlyTxClick(Sender: TObject);
+    procedure View1Click(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -894,6 +910,7 @@ type
 
     // QSY Violation (10 min rule / per hour)
     FQsyViolation: Boolean;
+    FQsyCountPrevHour: string;
 
     FCurrentRx: Integer;
     FCurrentTx: Integer;
@@ -925,6 +942,7 @@ type
     FLastMode: TMode;
 
     FPastEditMode: Boolean;
+    FFilterTx: Integer;
 
     FTaskbarList: ITaskbarList;
 
@@ -1073,7 +1091,6 @@ type
     procedure SetNextSerialNumber(aQSO: TQSO);
     procedure SetNextSerialNumber2(aQSO: TQSO; Local : Boolean);
     procedure SetNextSerialNumber3(aQSO: TQSO);
-    procedure RenewScore();
     procedure ScrollGrid();
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
@@ -1091,6 +1108,7 @@ type
     procedure ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
     procedure ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
     procedure DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
+    function GetQsoList(): TQSOList;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1114,6 +1132,7 @@ type
     procedure ReEvaluateQSYCount;
     procedure AutoInput(D : TBSData);
     procedure ConsoleRigBandSet(B: TBand);
+    procedure RenewScore();
 
     procedure ShowBandMenu(b: TBand);
     procedure HideBandMenu(b: TBand);
@@ -1619,7 +1638,7 @@ begin
       FPartialCheck.UpdateData(CurrentQSO);
    end;
 
-   if ShowCurrentBandOnly.Checked then begin
+   if menuShowCurrentBandOnly.Checked then begin
       GridRefreshScreen();
    end;
 
@@ -1745,16 +1764,11 @@ procedure TMainForm.GridAdd(aQSO: TQSO);
 var
    L: TQSOList;
 begin
-   if ShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
+   if menuShowCurrentBandOnly.Checked and (aQSO.Band <> CurrentQSO.Band) then begin
       Exit;
    end;
 
-   if ShowCurrentBandOnly.Checked then begin
-      L := Log.BandList[CurrentQSO.Band];
-   end
-   else begin
-      L := Log.QsoList;
-   end;
+   L := GetQsoList();
 
    GridWriteQSO(L.Count, aQSO);
 
@@ -1854,19 +1868,15 @@ var
    i: Integer;
    L: TQSOList;
 begin
-   if (FPastEditMode = True) and (fNewData = True) then begin
+   if (FPastEditMode = True) and (fNewData = True) and
+      ((Log.TotalQSO - Grid.VisibleRowCount) > Grid.TopRow) then begin
       ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
       Exit;
    end;
 
    Grid.BeginUpdate();
    try
-      if ShowCurrentBandOnly.Checked then begin
-         L := Log.BandList[CurrentQSO.Band];
-      end
-      else begin
-         L := Log.QsoList;
-      end;
+      L := GetQsoList();
       Grid.Tag := Integer(L);
 
       if Grid.VisibleRowCount > L.Count then begin
@@ -2163,6 +2173,8 @@ begin
    end;
    FRigSwitchTime := Now();
    FPastEditMode := False;
+   FQsyViolation := False;
+   FQsyCountPrevHour := '';
 
    // Out of contest period表示
    FFirstOutOfContestPeriod := True;
@@ -3575,12 +3587,7 @@ begin
       DeleteCurrentRow;
    end
    else begin
-      if ShowCurrentBandOnly.Checked then begin
-         L := Log.BandList[CurrentQSO.Band];
-      end
-      else begin
-         L := Log.QsoList;
-      end;
+      L := GetQsoList();
 
       if (_top < L.Count - 1) and (_bottom <= L.Count - 1) then begin
          R := MessageDlg(TMainForm_Comfirm_Delete_Qsos, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
@@ -3601,12 +3608,7 @@ procedure TMainForm.GridKeyDown(Sender: TObject; var Key: word; Shift: TShiftSta
 var
    L: TQSOList;
 begin
-   if ShowCurrentBandOnly.Checked then begin
-      L := Log.BandList[CurrentQSO.Band];
-   end
-   else begin
-      L := Log.QsoList;
-   end;
+   L := GetQsoList();
 
    case Key of
       VK_DELETE: begin
@@ -4975,6 +4977,7 @@ var
    fQsyOK: Boolean;
    nCountDownMinute: Integer;
    strTxNo: string;
+   strHour: string;
 begin
    S := TimeToStr(CurrentTime);
    if length(S) = 7 then begin
@@ -5021,6 +5024,17 @@ begin
    end;
 
    if dmZlogGlobal.Settings._qsycount then begin
+
+      // "時"が変わったらカウンターリセット
+      strHour := Copy(S, 1, 2);
+      if FQsyCountPrevHour <> strHour then begin
+         QsyCount := 0;
+         FQsyCountPrevHour := strHour;
+      end;
+
+      // QSY回数を数える
+      ReEvaluateQsyCount();
+
       S2 := 'QSY# ' + IntToStr(QSYCount);
 
       if QSYCount < dmZLogGlobal.Settings._countperhour then begin
@@ -5260,7 +5274,7 @@ begin
       end;
 
       // Out of contest period表示
-      FOutOfContestPeriod := Log.IsOutOfPeriod(CurrentQSO);
+      FOutOfContestPeriod := Log.IsOutOfPeriod(CurrentQSO) and MyContest.UseContestPeriod;
       if (FPrevOutOfContestPeriod <> FOutOfContestPeriod) or (FFirstOutOfContestPeriod = True) then begin
          if panelOutOfPeriod.Visible <> FOutOfContestPeriod then begin
             ShowOutOfContestPeriod(FOutOfContestPeriod);
@@ -5473,6 +5487,23 @@ end;
 procedure TMainForm.menuSortByTxNoBandTimeClick(Sender: TObject);
 begin
    Log.SortByTxNoBandTime();
+   GridRefreshScreen();
+end;
+
+procedure TMainForm.menuShowOnlyTxClick(Sender: TObject);
+var
+   seltx: Integer;
+begin
+   seltx := TMenuItem(Sender).Tag;
+   if FFilterTx = seltx then begin
+      menuShowOnlySpecifiedTX.Checked := False;
+   end
+   else begin
+      menuShowOnlySpecifiedTX.Checked := True;
+   end;
+   FFilterTx := seltx;
+   menuShowCurrentBandOnly.Checked := False;
+   menuShowThisTxOnly.Checked := False;
    GridRefreshScreen();
 end;
 
@@ -5774,7 +5805,9 @@ var
 begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
-   FCurrentRigSet := edit.Tag;
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      FCurrentRigSet := edit.Tag;
+   end;
 
    if FPastEditMode = True then begin
       ShowInfoPanel('', nil, False);
@@ -7236,6 +7269,7 @@ begin
 
       // 初期化完了
       FInitialized := True;
+      Timer1.Interval := dmZLogGlobal.Settings.FInfoUpdateInterval;
       Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
 
@@ -8896,7 +8930,9 @@ end;
 // #49 同じバンドのみ表示
 procedure TMainForm.actionShowCurrentBandOnlyExecute(Sender: TObject);
 begin
-   ShowCurrentBandOnly.Checked := not(ShowCurrentBandOnly.Checked);
+   menuShowCurrentBandOnly.Checked := not menuShowCurrentBandOnly.Checked;
+   menuShowThisTxOnly.Checked := False;
+   menuShowOnlySpecifiedTX.Checked := False;
    GridRefreshScreen();
 end;
 
@@ -9984,6 +10020,15 @@ end;
 procedure TMainForm.actionShowCWMonitorExecute(Sender: TObject);
 begin
    FCWMonitor.Show();
+end;
+
+// #162 Show current TX only
+procedure TMainForm.actionShowCurrentTxOnlyExecute(Sender: TObject);
+begin
+   menuShowCurrentBandOnly.Checked := False;
+   menuShowThisTxOnly.Checked := not menuShowThisTxOnly.Checked;
+   menuShowOnlySpecifiedTX.Checked := False;
+   GridRefreshScreen();
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -11516,6 +11561,18 @@ begin
    end;
 end;
 
+procedure TMainForm.View1Click(Sender: TObject);
+begin
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      menuShowThisTXonly.Visible := False;
+      menuShowOnlySpecifiedTX.Visible := False;
+   end
+   else begin
+      menuShowThisTXonly.Visible := True;
+      menuShowOnlySpecifiedTX.Visible := True;
+   end;
+end;
+
 procedure TMainForm.VoiceControl(fOn: Boolean);
 var
    nID: Integer;
@@ -11523,6 +11580,7 @@ begin
    nID := FCurrentTx;
 
    if fOn = True then begin
+      dmZLogKeyer.SetVoiceFlag(1);
       if dmZLogGlobal.Settings._pttenabled then begin
          dmZLogKeyer.ControlPTT(nID, True);
          Sleep(dmZLogGlobal.Settings._pttbefore);
@@ -11533,6 +11591,7 @@ begin
          Sleep(dmZLogGlobal.Settings._pttafter);
          dmZLogKeyer.ControlPTT(nID, False);
       end;
+      dmZLogKeyer.SetVoiceFlag(0);
    end;
 end;
 
@@ -12267,6 +12326,26 @@ begin
    GridRefreshScreen();
    ShowInfoPanel('', nil, False);
    SetLastFocus();
+end;
+
+function TMainForm.GetQsoList(): TQSOList;
+var
+   L: TQSOList;
+begin
+   if menuShowCurrentBandOnly.Checked then begin
+      L := Log.BandList[CurrentQSO.Band];
+   end
+   else if menuShowThisTxOnly.Checked then begin
+      L := Log.TxList[CurrentQSO.TX];
+   end
+   else if menuShowOnlySpecifiedTX.Checked then begin
+      L := Log.TxList[FFilterTx];
+   end
+   else begin
+      L := Log.QsoList;
+   end;
+
+   Result := L;
 end;
 
 { TBandScopeNotifyThread }

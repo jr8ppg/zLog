@@ -355,6 +355,7 @@ var
    Str: string;
    diff: TDateTime;
    H, M, S, ms: Word;
+   D: Integer;
    i: Integer;
    n: Integer;
    hindex: Integer;
@@ -376,17 +377,17 @@ begin
    // Šî€Žž‚ð‹‚ß‚é
    if Log.TotalQSO = 0 then begin
       FStartTime := CalcStartTime( CurrentTime() );
-      FOriginTime := Log.StartTime;
+      FOriginTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, FStartTime);
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    FStartTime := Log.StartTime;  // Log.QsoList[1].Time;
+         spFirstQSO:    FStartTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
          spCurrentTime: FStartTime := CalcStartTime( IncHour(CurrentTime(), (FShowLast div 2) - 1) );
-         spLastQSO:     FStartTime := IncHour(Log.EndTime, (FShowLast * -1));    // CalcStartTime( Log.QsoList[Log.TotalQSO].Time );
+         spLastQSO:     FStartTime := ifthen(MyContest.UseContestPeriod, IncHour(Log.EndTime, (FShowLast * -1)), CalcStartTime( Log.QsoList[Log.TotalQSO].Time ));
          else           FStartTime := CalcStartTime( CurrentTime() );
       end;
 
-      FOriginTime := Log.StartTime;  //Log.QsoList[1].Time;
+      FOriginTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
    end;
 
    DecodeTime(FOriginTime, H, M, S, ms);
@@ -401,6 +402,11 @@ begin
    if (FStartTime >= FOriginTime) then begin
       diff := FStartTime - FOriginTime;
       DecodeTime(diff, H, M, S, ms);
+      D := Trunc(DaySpan(FStartTime, FOriginTime));
+      H := H + (D * 24);
+      if H > 47 then begin
+         H := 0;
+      end;
    end
    else begin
       FStartTime := Log.StartTime;   //Log.QsoList[1].Time;

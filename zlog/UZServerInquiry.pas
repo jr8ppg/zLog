@@ -10,9 +10,10 @@ type
   TZServerInquiry = class(TForm)
     Button1: TButton;
     Button2: TButton;
-    Label1: TLabel;
+    GroupBox1: TGroupBox;
     rbDownload: TRadioButton;
     rbMerge: TRadioButton;
+    rbConnectOnly: TRadioButton;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -48,14 +49,15 @@ end;
 procedure TZServerInquiry.FormShow(Sender: TObject);
 begin
    if Log.TotalQSO = 0 then begin
+      rbConnectOnly.Checked := False;
       rbMerge.Checked := False;
       rbDownload.Checked := True;
    end
    else begin
-      rbMerge.Checked := True;
+      rbConnectOnly.Checked := True;
+      rbMerge.Checked := False;
       rbDownload.Checked := False;
    end;
-   rbMerge.Enabled := True;
 end;
 
 end.

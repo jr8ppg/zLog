@@ -6042,14 +6042,105 @@ object MainForm: TMainForm
     end
     object View1: TMenuItem
       Caption = #34920#31034'(&V)'
-      object ShowCurrentBandOnly: TMenuItem
+      OnClick = View1Click
+      object menuShowCurrentBandOnly: TMenuItem
         Action = actionShowCurrentBandOnly
+        GroupIndex = 1
+      end
+      object menuShowThisTXonly: TMenuItem
+        Action = actionShowCurrentTxOnly
+        GroupIndex = 1
+      end
+      object menuShowOnlySpecifiedTX: TMenuItem
+        Caption = #25351#23450#12398'TX'#12398#12415#12434#34920#31034
+        GroupIndex = 1
+        object menuShowTx0: TMenuItem
+          AutoCheck = True
+          Caption = '#0'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx1: TMenuItem
+          Tag = 1
+          AutoCheck = True
+          Caption = '#1'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx2: TMenuItem
+          Tag = 2
+          AutoCheck = True
+          Caption = '#2'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx3: TMenuItem
+          Tag = 3
+          AutoCheck = True
+          Caption = '#3'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx4: TMenuItem
+          Tag = 4
+          AutoCheck = True
+          Caption = '#4'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx5: TMenuItem
+          Tag = 5
+          AutoCheck = True
+          Caption = '#5'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx6: TMenuItem
+          Tag = 6
+          AutoCheck = True
+          Caption = '#6'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx7: TMenuItem
+          Tag = 7
+          AutoCheck = True
+          Caption = '#7'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx8: TMenuItem
+          Tag = 8
+          AutoCheck = True
+          Caption = '#8'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx9: TMenuItem
+          Tag = 9
+          AutoCheck = True
+          Caption = '#9'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
       end
       object N10: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object Sort1: TMenuItem
         Caption = #20006#12403#26367#12360
+        GroupIndex = 1
         object menuSortByCallsign: TMenuItem
           Caption = #12467#12540#12523#12469#12452#12531#12391#20006#12403#26367#12360
           OnClick = menuSortByClick
@@ -6097,23 +6188,29 @@ object MainForm: TMainForm
       end
       object N9: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object mnHideCWPhToolBar: TMenuItem
         Caption = 'CW/Ph'#12484#12540#12523#12496#12540#12434#34920#31034#12375#12394#12356
+        GroupIndex = 1
         OnClick = mnHideCWPhToolBarClick
       end
       object mnHideMenuToolbar: TMenuItem
         Caption = 'Menu'#12484#12540#12523#12496#12540#12434#34920#31034#12375#12394#12356
+        GroupIndex = 1
         OnClick = mnHideMenuToolbarClick
       end
       object N12: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object IncreaseFontSize1: TMenuItem
         Action = actionIncreaseFontSize
+        GroupIndex = 1
       end
       object DecreaseFontSize1: TMenuItem
         Action = actionDecreaseFontSize
+        GroupIndex = 1
       end
     end
     object Help1: TMenuItem
@@ -7268,7 +7365,7 @@ object MainForm: TMainForm
       OnExecute = actionSo2rNeoCanRxSelExecute
     end
     object actionShowInformation: TAction
-      Caption = 'Information Window'
+      Caption = #24773#22577#12454#12452#12531#12489#12454
       OnExecute = actionShowInformationExecute
     end
     object actionToggleSo2r2bsiq: TAction
@@ -7352,6 +7449,10 @@ object MainForm: TMainForm
     object actionShowCWMonitor: TAction
       Caption = 'CW'#12514#12491#12479#12540
       OnExecute = actionShowCWMonitorExecute
+    end
+    object actionShowCurrentTxOnly: TAction
+      Caption = #12371#12398'TX'#12398#12415#12434#34920#31034
+      OnExecute = actionShowCurrentTxOnlyExecute
     end
   end
   object SPCMenu: TPopupMenu

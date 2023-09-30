@@ -127,8 +127,9 @@ end;
 
 procedure TSuperCheck.GridDblClick(Sender: TObject);
 var
-   str: string;
+   str, strCall, strNumber: string;
    c, r: Integer;
+   I: Integer;
 begin
    c := Grid.Col;
    r := Grid.Row;
@@ -138,10 +139,27 @@ begin
       Exit;
    end;
 
-   str := StringReplace(str, ' ', '', [rfReplaceAll]);
    str := StringReplace(str, '*', '', [rfReplaceAll]);
 
-   MainForm.SetYourCallsign(str, '');
+   I := Pos(' ', str);
+   if I = 0 then begin
+      strCall := str;
+      strNumber := '';
+   end
+   else begin
+      strCall := Copy(str, 1, I - 1);
+      str := Trim(Copy(str, I));
+
+      I := Pos(' ', str);
+      if I = 0 then begin
+         strNumber := str;
+      end
+      else begin
+         strNumber := Copy(str, 1, I - 1);
+      end;
+   end;
+
+   MainForm.SetYourCallsign(strCall, strNumber);
 end;
 
 procedure TSuperCheck.GridDrawCell(Sender: TObject; ACol, ARow: Integer;
