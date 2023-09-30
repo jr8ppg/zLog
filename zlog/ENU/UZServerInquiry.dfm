@@ -3,8 +3,8 @@ object ZServerInquiry: TZServerInquiry
   Top = 182
   BorderStyle = bsDialog
   Caption = 'Connected...'
-  ClientHeight = 104
-  ClientWidth = 295
+  ClientHeight = 166
+  ClientWidth = 324
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,49 +14,65 @@ object ZServerInquiry: TZServerInquiry
   OldCreateOrder = True
   Position = poScreenCenter
   OnShow = FormShow
+  DesignSize = (
+    324
+    166)
   PixelsPerInch = 96
   TextHeight = 12
-  object Label1: TLabel
-    Left = 24
-    Top = 10
-    Width = 118
-    Height = 12
-    Caption = 'Connected to Z-Server'
-  end
   object Button1: TButton
-    Left = 64
-    Top = 72
+    Left = 85
+    Top = 134
     Width = 75
     Height = 25
+    Anchors = [akLeft, akBottom]
     Caption = 'OK'
     TabOrder = 0
     OnClick = Button1Click
   end
   object Button2: TButton
-    Left = 153
-    Top = 72
+    Left = 174
+    Top = 134
     Width = 75
     Height = 25
+    Anchors = [akLeft, akBottom]
     Caption = 'Cancel'
     TabOrder = 1
     OnClick = Button2Click
   end
-  object rbDownload: TRadioButton
-    Left = 16
-    Top = 48
-    Width = 265
-    Height = 17
-    Caption = 'Download log from Z-Server (Delete local log)'
+  object GroupBox1: TGroupBox
+    Left = 8
+    Top = 8
+    Width = 305
+    Height = 118
+    Caption = 'Connected to Z-Server'
     TabOrder = 2
-  end
-  object rbMerge: TRadioButton
-    Left = 16
-    Top = 32
-    Width = 273
-    Height = 17
-    Caption = 'Merge local log with Z-Server'
-    Checked = True
-    TabOrder = 3
-    TabStop = True
+    object rbDownload: TRadioButton
+      Left = 16
+      Top = 75
+      Width = 270
+      Height = 34
+      Caption = 'Download log from Z-Server (Delete local log)'
+      TabOrder = 0
+      WordWrap = True
+    end
+    object rbMerge: TRadioButton
+      Left = 16
+      Top = 44
+      Width = 270
+      Height = 34
+      Caption = 'Merge local log with Z-Server'
+      TabOrder = 1
+      WordWrap = True
+    end
+    object rbConnectOnly: TRadioButton
+      Left = 16
+      Top = 14
+      Width = 270
+      Height = 34
+      Caption = 'Connect only'
+      Checked = True
+      TabOrder = 2
+      TabStop = True
+    end
   end
 end
