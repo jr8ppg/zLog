@@ -96,6 +96,8 @@ type
 resourcestring
     This_will_delete_all_data_and_loads_data_using_zlink = 'This will delete all data and loads data using Z-Link';
     ZServer_connection_failed = 'Z-Server connection failed.';
+    Connect_ZSERVER = 'Connect to Z-Server';
+    Disconnect_ZSERVER = 'Disconnect from Z-Server';
 
 implementation
 
@@ -993,7 +995,7 @@ procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
 begin
    Console.WriteString('disconnected...');
    ConnectButton.Caption := 'Connect';
-   MainForm.ConnectToZServer1.Caption := 'Connect to Z-Server';
+   MainForm.ConnectToZServer1.Caption := Connect_ZSERVER;
    MainForm.ZServerIcon.Visible := false;
    MainForm.DisableNetworkMenus;
    MainForm.ChatForm.SetConnectStatus(False);
@@ -1013,7 +1015,7 @@ begin
    end;
 
    ConnectButton.Caption := 'Disconnect';
-   MainForm.ConnectToZServer1.Caption := 'Disconnect Z-Server'; // 0.23
+   MainForm.ConnectToZServer1.Caption := Disconnect_ZSERVER; // 0.23
    Console.WriteString('connected to ' + ZSocket.Addr + LineBreakCode[Ord(Console.LineBreak)]);
    SendBand; { tell Z-Server current band }
    SendOperator;
