@@ -54,8 +54,8 @@ begin
       rbDownload.Checked := True;
    end
    else begin
-      rbConnectOnly.Checked := True;
-      rbMerge.Checked := False;
+      rbConnectOnly.Checked := False;
+      rbMerge.Checked := True;
       rbDownload.Checked := False;
    end;
 end;
