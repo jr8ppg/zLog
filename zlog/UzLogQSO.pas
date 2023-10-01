@@ -3641,6 +3641,7 @@ begin
 
       if (dmZLogGlobal.TXNr = bQSO.TX) then begin
          if (dd = dd2) and (hh = hh2) then begin
+            nStartIndex := i;
             fFound := True;
          end;
 

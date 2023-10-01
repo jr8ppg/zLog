@@ -48,31 +48,31 @@ object ZServerInquiry: TZServerInquiry
     TabOrder = 2
     object rbDownload: TRadioButton
       Left = 16
-      Top = 75
+      Top = 44
       Width = 270
       Height = 34
       Caption = 'Download log from Z-Server (Delete local log)'
-      TabOrder = 0
+      TabOrder = 1
       WordWrap = True
     end
     object rbMerge: TRadioButton
       Left = 16
-      Top = 44
+      Top = 14
       Width = 270
       Height = 34
       Caption = 'Merge local log with Z-Server'
-      TabOrder = 1
+      Checked = True
+      TabOrder = 0
+      TabStop = True
       WordWrap = True
     end
     object rbConnectOnly: TRadioButton
       Left = 16
-      Top = 14
+      Top = 75
       Width = 270
       Height = 34
       Caption = 'Connect only'
-      Checked = True
       TabOrder = 2
-      TabStop = True
     end
   end
 end
