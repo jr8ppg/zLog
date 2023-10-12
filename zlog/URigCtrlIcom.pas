@@ -262,6 +262,12 @@ begin
             end;
 
             freq := i1 + 100 * i2 + 10000 * i3 + 1000000 * i4 + 100000000 * i5 + 10000000000 * i6;
+
+            // 周波数有効範囲チェック
+            if ((freq < 1800000) or (freq > 10245000000)) then begin
+               Exit;
+            end;
+
             _currentfreq[_currentvfo] := freq;
             freq := freq + _freqoffset;
 
