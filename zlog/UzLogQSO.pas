@@ -2462,6 +2462,34 @@ var
    utc: TDateTime;
    offhour: Integer;
    offsetmin: Integer;
+
+   function FillRight(S: string; len: integer): string;
+   var
+      sjis: AnsiString;
+      len2: Integer;
+   begin
+      sjis := AnsiString(S);
+      len2 := Length(sjis);
+      if len2 < len then begin
+         sjis := sjis + AnsiString(DupeString(' ', len));
+         sjis := Copy(sjis, 1, len);
+      end;
+      Result := String(sjis);
+   end;
+
+   function FillLeft(S: string; len: integer): string;
+   var
+      sjis: AnsiString;
+      len2: Integer;
+   begin
+      sjis := AnsiString(S);
+      len2 := Length(sjis);
+      if len2 < len then begin
+         sjis := AnsiString(DupeString(' ', len)) + sjis;
+         sjis := Copy(sjis, Length(sjis) - len + 1, len);
+      end;
+      Result := String(sjis);
+   end;
 begin
    AssignFile(F, Filename);
    ReWrite(F);
