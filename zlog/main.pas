@@ -4360,6 +4360,7 @@ begin
             RigControl.Rig.Rit := False;
          end;
          if dmZLogGlobal.Settings.FAntiZeroinXitOff = True then begin
+            RigControl.Rig.RitClear();
             RigControl.Rig.Xit := False;
          end;
          if dmZLogGlobal.Settings.FAntiZeroinRitClear = True then begin
