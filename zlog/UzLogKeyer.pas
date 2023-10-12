@@ -99,6 +99,8 @@ type
     ZComRxRigSelect: TCommPortDriver;
     ZComKeying3: TCommPortDriver;
     ZComTxRigSelect: TCommPortDriver;
+    ZComKeying4: TCommPortDriver;
+    ZComKeying5: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -2570,7 +2572,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 2 do begin
+   for i := 0 to MAXPORT do begin
       if FComKeying[i] = nil then begin
          Continue;
       end;
@@ -2610,13 +2612,26 @@ begin
    for i := 0 to 2 do begin
       if FUsbInfo[i].FUSBIF4CW <> nil then begin
          FUsbInfo[i].FPORTDATA.Clear();
+
+         // TXセレクト
+         FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
+         if FGen3MicSelect = False then begin
+            FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
+         end;
+
+         // 送信
          SendUsbPortData(i);
+
+         // パドル動作をセット
          if FPaddleReverse = True then begin
             usbif4cwSetPaddle(i, 1);
          end
          else begin
             usbif4cwSetPaddle(i, 0);
          end;
+
+         // WPMをセット
+         usbif4cwSetWPM(i, FKeyerWPM);
       end;
    end;
 end;
