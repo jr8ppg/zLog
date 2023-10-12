@@ -9144,7 +9144,11 @@ begin
 
    // U‚ê•
    randmax := (dmZLogGlobal.Settings.FAntiZeroinShiftMax div 10) + 1;
-   offset := Random(randmax) * 10;    // 200Hz–¢–‚Å
+
+   // U‚ê•0‚Íœ‚­
+   repeat
+      offset := Random(randmax) * 10;    // 200Hz–¢–‚Å
+   until offset <> 0;
 
    // {‚©|‚©
    if Random(2) = 1 then begin
