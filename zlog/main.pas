@@ -23,7 +23,7 @@ uses
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, UConsolePad, USpotClass,
-  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
+  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogCabrillo, UQuickRef, UZAnalyze,
   UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
@@ -543,6 +543,7 @@ type
     menuShowTx7: TMenuItem;
     menuShowTx8: TMenuItem;
     menuShowTx9: TMenuItem;
+    CreateCabrillo: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -817,6 +818,7 @@ type
     procedure actionShowCurrentTxOnlyExecute(Sender: TObject);
     procedure menuShowOnlyTxClick(Sender: TObject);
     procedure View1Click(Sender: TObject);
+    procedure CreateCabrilloClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -6411,6 +6413,18 @@ var
    f: TformELogJarl2;
 begin
    f := TformELogJarl2.Create(Self);
+   try
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TMainForm.CreateCabrilloClick(Sender: TObject);
+var
+   f: TformELogCabrillo;
+begin
+   f := TformELogCabrillo.Create(Self);
    try
       f.ShowModal();
    finally

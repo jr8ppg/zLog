@@ -516,6 +516,10 @@
             <Form>formCWMonitor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UELogCabrillo.pas">
+            <Form>formELogCabrillo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -816,7 +820,8 @@
                     <RDP_Source_Files Name="Item110">UOperatorPowerDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item111">UDateDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item112">UCWMonitor.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item113">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item113">UELogCabrillo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item114">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

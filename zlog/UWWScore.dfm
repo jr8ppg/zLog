@@ -2,7 +2,6 @@ inherited WWScore: TWWScore
   Left = 311
   Top = 182
   Caption = 'Score'
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
   object Grid: TStringGrid [1]
