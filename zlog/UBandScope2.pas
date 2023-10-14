@@ -92,6 +92,8 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure GridMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
+    procedure GridContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -866,6 +868,22 @@ end;
 procedure TBandScope2.FormDeactivate(Sender: TObject);
 begin
    ActionList1.State := asSuspended;
+end;
+
+procedure TBandScope2.GridContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+var
+   C, R: Integer;
+begin
+   // 右クリックされた場所のスポットを選択
+   Grid.MouseToCell(MousePos.X, MousePos.Y, C, R);
+   Grid.Row := R;
+   Grid.Col := C;
+
+   // 右クリックされた場所にメニューを表示
+   MousePos := Grid.ClientToScreen(MousePos);
+   BSMenu.Popup(MousePos.X, MousePos.Y);
+
+   Handled := True;
 end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
