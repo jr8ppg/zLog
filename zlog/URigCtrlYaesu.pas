@@ -36,6 +36,8 @@ type
     procedure SetRit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
     procedure SetXit(flag: Boolean); override;
+  private
+    FVFO: Integer;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
@@ -368,6 +370,7 @@ begin
    TerminatorCode := ';';
    FComm.StopBits := sb2BITS;
    FComm.DataBits := db8BITS;
+   FVFO := 0;
 end;
 
 destructor TFT2000.Destroy;
@@ -421,18 +424,17 @@ begin
          else  M := mOther;
       end;
 
-      if FIgnoreRigMode = False then begin
-         _currentmode := M;
-      end;
-
       // é¸îgêî(Hz)
       strTemp := string(Copy(S, 6, 8));
       i := StrToIntDef(strTemp, 0);
-      _currentfreq[0] := i;
+      _currentfreq[FVFO] := i;
 
-      // ÉoÉìÉh(VFO-A)
-      if _currentvfo = 0 then begin
-         UpdateFreqMem(0, i, M);
+      if _currentvfo = FVFO then begin
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
+
+         UpdateFreqMem(FVFO, i, M);
       end;
 
       // RIT/XIT offset
@@ -450,6 +452,9 @@ begin
       if Selected then begin
          UpdateStatus;
       end;
+
+      Inc(FVFO);
+      FVFO := FVFO and 1;
    finally
       FPollingTimer.Enabled := True;
    end;
@@ -512,7 +517,12 @@ begin
       Exit;
    end;
 
-   WriteData('IF;');
+   if FVFO = 0 then begin
+      WriteData('IF;');
+   end
+   else begin
+      WriteData('OI;');
+   end;
 end;
 
 procedure TFT2000.Reset;
