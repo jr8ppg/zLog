@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1907,7 +1907,7 @@ object formOptions: TformOptions
         Left = 214
         Top = 264
         Width = 213
-        Height = 69
+        Height = 88
         Caption = 'USBIF4CW'
         TabOrder = 5
         object checkUsbif4cwSyncWpm: TCheckBox
@@ -1928,11 +1928,19 @@ object formOptions: TformOptions
         end
         object checkGen3MicSelect: TCheckBox
           Left = 8
-          Top = 42
+          Top = 40
           Width = 193
           Height = 17
           Caption = 'Select mic input for Gen.3'
           TabOrder = 2
+        end
+        object checkUsbif4cwUsePaddle: TCheckBox
+          Left = 8
+          Top = 62
+          Width = 193
+          Height = 17
+          Caption = 'Use paddle (V1 only)'
+          TabOrder = 3
         end
       end
       object groupOptCI_V: TGroupBox
@@ -5098,13 +5106,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#25945#31185#26360#20307
+          FontName = 'Cascadia Code SemiBold Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 5
+          ItemIndex = 37
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

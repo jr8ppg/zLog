@@ -551,6 +551,7 @@ type
     checkGen3MicSelect: TCheckBox;
     checkIgnoreRigMode: TCheckBox;
     checkUseContestPeriod: TCheckBox;
+    checkUsbif4cwUsePaddle: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -948,6 +949,7 @@ begin
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
       Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
+      Settings._usbif4cw_use_paddle_keyer := checkUsbif4cwUsePaddle.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -1468,6 +1470,7 @@ begin
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
       checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       checkGen3MicSelect.Checked := Settings._usbif4cw_gen3_micsel;
+      checkUsbif4cwUsePaddle.Checked := Settings._usbif4cw_use_paddle_keyer;
 
       SaveEvery.Value := Settings._saveevery;
 

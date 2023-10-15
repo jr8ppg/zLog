@@ -193,6 +193,8 @@ type
     FSideToneVolume: Integer;
     FSideTonePitch: Integer;       {side tone pitch}
 
+    FUsePaddleKeyer: Boolean;
+
     FPaddleReverse: Boolean;
 
     FOnCallsignSentProc: TNotifyEvent;
@@ -334,6 +336,7 @@ type
     property KeyingSignalReverse[Index: Integer]: Boolean read GetKeyingSignalReverse write SetKeyingSignalReverse;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
+    property UsePaddleKeyer: Boolean read FUsePaddleKeyer write FUsePaddleKeyer;
     property PaddleReverse: Boolean read FPaddleReverse write FPaddleReverse;
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
 
@@ -577,6 +580,32 @@ var
    {$ENDIF}
    p: PBYTE;
    nID: BYTE;
+   fPrevRight: Boolean;
+   fPrevLeft: Boolean;
+   fPaddleRight: Boolean;
+   fPaddleLeft: Boolean;
+
+   procedure paddle_finish();
+   var
+      i: Integer;
+   begin
+      FSendOK := False;
+      CWBufferSync.Enter();
+      try
+         for i := 1 to codemax do begin
+            if FCWSendBuf[0, i] = $A then begin
+               FCWSendBuf[0, i] := 9;
+            end;
+         end;
+
+         if FPTTEnabled then begin
+            SetCWSendBuf(0, 'o');
+         end;
+      finally
+         CWBufferSync.Leave();
+         FSendOK := True;
+      end;
+   end;
 begin
    if (FKeyingPort[0] <> tkpUSB) and
       (FKeyingPort[1] <> tkpUSB) and
@@ -630,18 +659,96 @@ begin
       FUsbInfo[nID].FPORTDATA.FUsbPortIn[0] := p[6];
       FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] := p[7];
 
-      // パドル入力があったか？
-      if ((FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0) or
-         ((FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0) then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('**PADDLE IN**'));
-         {$ENDIF}
+      // パドル状況
+      fPaddleRight := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0;
+      fPaddleLeft := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0;
 
-         // fire event
-         if usbif4cwGetVersion(nID) >= 20 then begin
+      fPrevRight := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $04) = 0;
+      fPrevLeft := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $01) = 0;
+
+      if ((FUsePaddleKeyer = False) and (usbif4cwGetVersion(nID) >= 20)) then begin
+         // パドル入力があったか？
+         if fPaddleRight or fPaddleLeft then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE IN**'));
+            {$ENDIF}
+
+            // fire event
             if Assigned(FOnPaddleEvent) then begin
                FOnPaddleEvent(Self);
             end;
+         end;
+      end
+      else begin  // 使う
+         // 左右OFFから左右どちらかがONになるタイミングでパドルイベントを発生
+         if ((fPrevRight = False) and (fPrevLeft = False)) and ((fPaddleRight = True) or (fPaddleLeft = True)) then begin
+            if Assigned(FOnPaddleEvent) then begin
+               FOnPaddleEvent(Self);
+            end;
+         end;
+
+         // パドル用キーヤー処理 USBIF4CW V2はスクイーズ操作不可
+         // パドル左右 OFF->ON 左右どっちかがOFFから両方ONを検出
+         if ((fPrevRight = False) or (fPrevLeft = False)) and ((fPaddleRight = True) and (fPaddleLeft = True)) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE SQUEEZE OFF->ON**'));
+            {$ENDIF}
+            if FPTTEnabled then begin
+               ControlPTT(FWkTx, True);
+            end;
+            SetCWSendBuf(0, 'r');
+            FSendOK := True;
+            FKeyingCounter := 0;
+         end
+
+         // パドル右 ON->OFF 左右ONから左右どちらかがOFFを検出
+         else if ((fPrevRight = True) and (fPrevLeft = True)) and ((fPaddleRight = False) or (fPaddleLeft = False)) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE SQUEEZE ON->OFF**'));
+            {$ENDIF}
+            paddle_finish();
+         end
+
+         // パドル右 OFF->ON
+         else if (fPrevRight = False) and (fPaddleRight = True) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE RIGHT OFF->ON**'));
+            {$ENDIF}
+            if FPTTEnabled then begin
+               ControlPTT(FWkTx, True);
+            end;
+            SetCWSendBuf(0, 'q');
+            FSendOK := True;
+            FKeyingCounter := 0;
+         end
+
+         // パドル右 ON->OFF
+         else if (fPrevRight = True) and (fPaddleRight = False) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE RIGHT ON->OFF**'));
+            {$ENDIF}
+            paddle_finish();
+         end
+
+         // パドル左 OFF->ON
+         else if (fPrevLeft = False) and (fPaddleLeft = True) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE LEFT OFF->ON**'));
+            {$ENDIF}
+            if FPTTEnabled then begin
+               ControlPTT(FWkTx, True);
+            end;
+            SetCWSendBuf(0, 'p');
+            FSendOK := True;
+            FKeyingCounter := 0;
+         end
+
+         // パドル左 ON->OFF
+         else if (fPrevLeft = True) and (fPaddleLeft = False) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE LEFT ON->OFF**'));
+            {$ENDIF}
+            paddle_finish();
          end;
       end;
 
@@ -1344,6 +1451,7 @@ begin
             FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
          end;
 
+         // dot
          1: begin
             CW_ON(FWkTx);
             if FUseSideTone then begin
@@ -1354,6 +1462,7 @@ begin
             FSendChar := True;
          end;
 
+         // dash
          3: begin
             CW_ON(FWkTx);
             if FUseSideTone then begin
@@ -1391,11 +1500,18 @@ begin
            5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end;
          *)
 
+         // next char
          9: begin
             cwstrptr := (cwstrptr div codemax + 1) * codemax;
             if Assigned(FOnOneCharSentProc) and FSendChar then begin
                FOnOneCharSentProc(Self);
             end;
+         end;
+
+         // repeat
+         $A: begin
+            cwstrptr := 0;
+            tailcwstrptr := 1;
          end;
 
          $A1: begin
@@ -1550,6 +1666,7 @@ begin
 
    FKeyerWeight := 50;
    FUseSideTone := True;
+   FUsePaddleKeyer := False;
    FPaddleReverse := False;
    FKeyerWPM := 1;
 
@@ -1948,6 +2065,7 @@ begin
    FCodeTable[Ord('/')][10] := 2;
    FCodeTable[Ord('/')][11] := 9;
 
+   // AR
    FCodeTable[Ord('a')][1] := 1;
    FCodeTable[Ord('a')][2] := 0;
    FCodeTable[Ord('a')][3] := 3;
@@ -1960,6 +2078,7 @@ begin
    FCodeTable[Ord('a')][10] := 2;
    FCodeTable[Ord('a')][11] := 9;
 
+   // BK
    FCodeTable[Ord('b')][1] := 3;
    FCodeTable[Ord('b')][2] := 0;
    FCodeTable[Ord('b')][3] := 1;
@@ -1976,6 +2095,7 @@ begin
    FCodeTable[Ord('b')][14] := 2;
    FCodeTable[Ord('b')][15] := 9;
 
+   // VA
    FCodeTable[Ord('s')][1] := 1;
    FCodeTable[Ord('s')][2] := 0;
    FCodeTable[Ord('s')][3] := 1;
@@ -1990,6 +2110,7 @@ begin
    FCodeTable[Ord('s')][12] := 2;
    FCodeTable[Ord('s')][13] := 9;
 
+   // KN
    FCodeTable[Ord('k')][1] := 3;
    FCodeTable[Ord('k')][2] := 0;
    FCodeTable[Ord('k')][3] := 1;
@@ -2002,6 +2123,7 @@ begin
    FCodeTable[Ord('k')][10] := 2;
    FCodeTable[Ord('k')][11] := 9;
 
+   // BT
    FCodeTable[Ord('t')][1] := 3;
    FCodeTable[Ord('t')][2] := 0;
    FCodeTable[Ord('t')][3] := 1;
@@ -2014,13 +2136,29 @@ begin
    FCodeTable[Ord('t')][10] := 2;
    FCodeTable[Ord('t')][11] := 9;
 
+   // PADDLE用DOT
    FCodeTable[Ord('p')][1] := 1;
    FCodeTable[Ord('p')][2] := 0;
-   FCodeTable[Ord('p')][3] := 9;
+   FCodeTable[Ord('p')][3] := $A;
 
+   // PADDLE用DASH
    FCodeTable[Ord('q')][1] := 3;
    FCodeTable[Ord('q')][2] := 0;
-   FCodeTable[Ord('q')][3] := 9;
+   FCodeTable[Ord('q')][3] := $A;
+
+   // PADDLE用SQUEEZE
+   FCodeTable[Ord('r')][1] := 1;
+   FCodeTable[Ord('r')][2] := 0;
+   FCodeTable[Ord('r')][3] := 3;
+   FCodeTable[Ord('r')][4] := 0;
+   FCodeTable[Ord('r')][5] := $A;
+
+   // PADDLE用PTTOFF
+   FCodeTable[Ord('o')][1] := 0;
+   FCodeTable[Ord('o')][2] := $A1; { set Hold Counter }
+   FCodeTable[Ord('o')][3] := $A3; { set PTT delay }
+   FCodeTable[Ord('o')][4] := $1F; { PTT off }
+   FCodeTable[Ord('o')][5] := 9;
 
    FCodeTable[Ord('?')][1] := 1;
    FCodeTable[Ord('?')][2] := 0;
