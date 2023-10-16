@@ -156,6 +156,8 @@ type
     procedure JudgeEstimatedMode();
     procedure SaveSettings(ini: TMemIniFile; section: string);
     procedure LoadSettings(ini: TMemIniFile; section: string);
+    procedure Suspend();
+    procedure Resume();
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Select: Boolean write SetSelect;
@@ -840,9 +842,6 @@ end;
 
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-   if (FUseResume = True) and (FResumeFile <> '') then begin
-      FBSList.SaveToFile(FResumeFile);
-   end;
    MainForm.DelTaskbar(Handle);
 end;
 
@@ -863,25 +862,6 @@ end;
 procedure TBandScope2.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
-
-   if FUseResume = True then begin
-      if FAllBands = True then begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
-      end
-      else if FNewMultiOnly = True then begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
-      end
-      else if FCurrentBandOnly = True then begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
-      end
-      else begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
-      end;
-      if FileExists(FResumeFile) then begin
-         FBSList.LoadFromFile(FResumeFile);
-      end;
-   end;
-
    ApplyShortcut();
    Timer1.Enabled := True;
 end;
@@ -1758,6 +1738,34 @@ begin
          if Screen.Forms[i] <> Self then begin
             TBandScope2(Screen.Forms[i]).FontSize := font_size;
          end;
+      end;
+   end;
+end;
+
+procedure TBandScope2.Suspend();
+begin
+   if (FUseResume = True) and (FResumeFile <> '') then begin
+      FBSList.SaveToFile(FResumeFile);
+   end;
+end;
+
+procedure TBandScope2.Resume();
+begin
+   if FUseResume = True then begin
+      if FAllBands = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
+      end
+      else if FNewMultiOnly = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
+      end
+      else if FCurrentBandOnly = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
+      end
+      else begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+      end;
+      if FileExists(FResumeFile) then begin
+         FBSList.LoadFromFile(FResumeFile);
       end;
    end;
 end;

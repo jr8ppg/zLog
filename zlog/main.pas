@@ -2142,22 +2142,26 @@ begin
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
       FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+      FBandScopeEx[b].Resume();
    end;
 
    // 現在バンド用
    FBandScope := TBandScope2.Create(Self, b19);
    FBandScope.CurrentBandOnly := True;
    FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScope.Resume();
 
    // ニューマルチ用
    FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
    FBandScopeNewMulti.NewMultiOnly := True;
    FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScopeNewMulti.Resume();
 
    // 全バンド用
    FBandScopeAllBands := TBandScope2.Create(Self, bUnknown);
    FBandScopeAllBands.AllBands := True;
    FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScopeAllBands.Resume();
 
    // Super Check
    FNPlusOneThread := nil;
@@ -4241,13 +4245,19 @@ begin
    FCheckCountry.Release();
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].Suspend();
       FBandScopeEx[b].Close();
       FBandScopeEx[b].Release();
    end;
+   FBandScope.Suspend();
    FBandScope.Close();
    FBandScope.Release();
+
+   FBandScopeNewMulti.Suspend();
    FBandScopeNewMulti.Close();
    FBandScopeNewMulti.Release();
+
+   FBandScopeAllBands.Suspend();
    FBandScopeAllBands.Close();
    FBandScopeAllBands.Release();
 
