@@ -907,7 +907,7 @@ begin
          else
             para := 1;
       mCW:
-         para := 2;
+         para := 3;  // CW-N
       mFM:
          para := 6;
       mAM:
