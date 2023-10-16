@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -4652,7 +4652,7 @@ object formOptions: TformOptions
           Width = 190
           Height = 17
           Caption = #21608#27874#25968#12424#12426#25512#23450#12375#12383#12514#12540#12489#12434#20351#12358
-          TabOrder = 3
+          TabOrder = 4
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -4685,7 +4685,7 @@ object formOptions: TformOptions
           Width = 157
           Height = 17
           Caption = #21608#27874#25968#12378#12428#12434#25233#21046
-          TabOrder = 5
+          TabOrder = 6
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 225
@@ -4693,7 +4693,15 @@ object formOptions: TformOptions
           Width = 176
           Height = 17
           Caption = 'LSB/USB'#12514#12540#12489#35492#12426#12434#25233#21046
-          TabOrder = 4
+          TabOrder = 5
+        end
+        object checkUseResume: TCheckBox
+          Left = 12
+          Top = 86
+          Width = 165
+          Height = 17
+          Caption = #12524#12472#12517#12540#12512#27231#33021#12434#20351#12358
+          TabOrder = 3
         end
       end
     end
@@ -5106,13 +5114,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code SemiBold Italic'
+          FontName = 'Courier New CE'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 37
+          ItemIndex = 62
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

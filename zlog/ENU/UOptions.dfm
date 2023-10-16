@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -4652,7 +4652,7 @@ object formOptions: TformOptions
           Width = 165
           Height = 17
           Caption = 'Use estimated mode by freq.'
-          TabOrder = 3
+          TabOrder = 4
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -4685,7 +4685,7 @@ object formOptions: TformOptions
           Width = 157
           Height = 17
           Caption = 'Suppress freq. deviation'
-          TabOrder = 4
+          TabOrder = 6
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 216
@@ -4694,6 +4694,14 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Suppress LSB/USB mode error'
           TabOrder = 5
+        end
+        object checkUseResume: TCheckBox
+          Left = 12
+          Top = 86
+          Width = 165
+          Height = 17
+          Caption = 'Use resume'
+          TabOrder = 3
         end
       end
     end
@@ -5106,13 +5114,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code SemiBold Italic'
+          FontName = 'Courier New CE'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 37
+          ItemIndex = 62
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

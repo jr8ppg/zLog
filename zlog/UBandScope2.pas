@@ -113,6 +113,8 @@ type
     FFreshnessType: Integer;
     FIconType: Integer;
 
+    FUseResume: Boolean;
+    FResumeFile: string;
     procedure AddBSList(D : TBSData);
     procedure AddAndDisplay(D : TBSData);
     procedure DeleteFromBSList(i : integer);
@@ -163,6 +165,7 @@ type
     property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
     property NewMultiOnly: Boolean read FNewMultiOnly write SetNewMultiOnly;
     property AllBands: Boolean read FAllBands write SetAllBands;
+    property UseResume: Boolean read FUseResume write FUseResume;
   end;
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
@@ -192,6 +195,8 @@ begin
    buttonShowWorked.Down := True;
    buttonShowWorked2.Down := True;
    buttonShowAllBands.Down := False;
+   FUseResume := False;
+   FResumeFile := '';
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -835,6 +840,9 @@ end;
 
 procedure TBandScope2.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+   if (FUseResume = True) and (FResumeFile <> '') then begin
+      FBSList.SaveToFile(FResumeFile);
+   end;
    MainForm.DelTaskbar(Handle);
 end;
 
@@ -855,6 +863,24 @@ end;
 procedure TBandScope2.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
+
+   if FUseResume = True then begin
+      if FAllBands = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
+      end
+      else if FNewMultiOnly = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
+      end
+      else if FCurrentBandOnly = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
+      end
+      else begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+      end;
+      if FileExists(FResumeFile) then begin
+         FBSList.LoadFromFile(FResumeFile);
+      end;
+   end;
 
    ApplyShortcut();
    Timer1.Enabled := True;

@@ -131,6 +131,8 @@ type
     procedure Sort(SortMethod: TBSSortMethod); overload;
     function BinarySearch(SortMethod: TBSSortMethod; D: TBSData): Integer; overload;
     function BinarySearch(SortMethod: TBSSortMethod; D: TBSData; var Found: Boolean): Integer; overload;
+    procedure SaveToFile(filename: string);
+    procedure LoadFromFile(filename: string);
   end;
 
   {$IFNDEF ZLOG_TELNET}
@@ -621,6 +623,77 @@ begin
       soBsTimeDesc: Found := BinarySearch(D, NewIndex, FTimeDescComparer);
    end;
    Result := NewIndex;
+end;
+
+procedure TBSList.SaveToFile(filename: string);
+var
+   i: Integer;
+   D: TBSData;
+   SL: TStringList;
+   S: string;
+begin
+   SL := TStringList.Create();
+   try
+      S := 'BANDSCOPE DATA';
+      SL.Add(S);
+
+      S := FormatDateTime('yyyymmddhhnnss', Now);
+      SL.Add(S);
+
+      for i := 0 to Count -1 do begin
+         D := Items[i];
+         S := D.InText();
+         SL.Add(S);
+      end;
+
+      SL.SaveToFile(filename);
+   finally
+      SL.Free();
+   end;
+end;
+
+procedure TBSList.LoadFromFile(filename: string);
+var
+   i: Integer;
+   D: TBSData;
+   SL: TStringList;
+   S: string;
+   t: TDatetime;
+   yyyy, mm, dd, hh, nn, ss: Word;
+begin
+   SL := TStringList.Create();
+   try
+      SL.LoadFromFile(filename);
+
+      if SL.Strings[0] <> 'BANDSCOPE DATA' then begin
+         Exit;
+      end;
+
+      S := SL.Strings[1];
+
+      t    := Now;
+      yyyy := StrToIntDef(Copy(S, 1, 4), YearOf(t));
+      mm   := StrToIntDef(Copy(S, 5, 2), MonthOf(t));
+      dd   := StrToIntDef(Copy(S, 7, 2), DayOf(t));
+      hh   := StrToIntDef(Copy(S, 9, 2), HourOf(t));
+      nn   := StrToIntDef(Copy(S, 11, 2), MinuteOf(t));
+      ss   := StrToIntDef(Copy(S, 13, 2), SecondOf(t));
+      t := EncodeDateTime(yyyy, mm, dd, hh, nn, ss, 0);
+
+      // 30分経過していたら無効なデータとしてロードしない
+      if (MinuteSpan(Now, t) > 30) then begin
+         Exit;
+      end;
+
+      for i := 2 to SL.Count - 1 do begin
+         S := SL[i];
+         D := TBSData.Create();
+         D.FromText(S);
+         Add(D);
+      end;
+   finally
+      SL.Free();
+   end;
 end;
 
 {$IFNDEF ZLOG_TELNET}
