@@ -422,4 +422,11 @@ object RateDialog: TRateDialog
     Left = 288
     Top = 12
   end
+  object timerRefresh: TTimer
+    Enabled = False
+    Interval = 180000
+    OnTimer = timerRefreshTimer
+    Left = 240
+    Top = 16
+  end
 end
