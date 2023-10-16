@@ -173,8 +173,7 @@ type
 
     cwstrptr: Integer;
     tailcwstrptr: Integer;
-    mousetail: Integer; {pointer in CWSendBuf}
-
+    
     callsignptr: Integer; {char pos. not absolute pos}
 
     FDotCount: Integer;
@@ -1383,7 +1382,6 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
    begin
       cwstrptr := 0;
       callsignptr := 0;
-      mousetail := 1;
       tailcwstrptr := 1;
       FCWSendBuf[FSelectedBuf, 1] := $FF;
       FSendChar := False;
@@ -2361,7 +2359,6 @@ begin
          FSelectedBuf := 0; // ver 2.1b
          FSendChar := False;
          callsignptr := 0;
-         mousetail := 1;
          tailcwstrptr := 1;
       finally
          CWBufferSync.Leave();
