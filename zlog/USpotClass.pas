@@ -83,10 +83,13 @@ type
     FIndex: Integer;
   public
     constructor Create; override;
-    function LabelStr : string;
-    function InText : string; override;
-    procedure FromText(S : string); override;
+    function LabelStr(): string;
+    function InText(): string; override;
+    procedure FromText(S: string); override;
     procedure Assign(O: TBaseSpot); override;
+
+    function InTextEx(): string;
+    procedure FromTextEx(S: string);
 
     property Bold: Boolean read FBold write FBold;
     property Index: Integer read FIndex write FIndex;
@@ -431,18 +434,7 @@ begin
    FReportedBy := O.ReportedBy;
 end;
 
-function TBSData.InText : string;
-(*  Call : string;
-    FreqHz : LongInt;
-    CtyIndex : integer;
-    Zone : integer;
-    NewCty : boolean;
-    NewZone : boolean;
-    Worked : boolean;
-    Band : TBand;
-    Mode : TMode;
-    Time : TDateTime;
-    LabelRect : TRect;  *)
+function TBSData.InText(): string;
 var
    SL: TStringList;
 begin
@@ -458,6 +450,39 @@ begin
       SL.Add(ZBoolToStr(CQ));
       SL.Add(Number);
       SL.Add(ReportedBy);
+      Result := SL.DelimitedText;
+   finally
+      SL.Free();
+   end;
+end;
+
+function TBSData.InTextEx(): string;
+var
+   SL: TStringList;
+begin
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.Add(Call);
+      SL.Add(IntToStr(FreqHz));
+      SL.Add(IntToStr(Ord(Band)));
+      SL.Add(IntToStr(Ord(Mode)));
+      SL.Add(FloatToStr(Time));
+      SL.Add(ZBoolToStr(CQ));
+      SL.Add(Number);
+      SL.Add(ReportedBy);
+
+      SL.Add(IntToStr(CtyIndex));
+      SL.Add(IntToStr(Zone));
+      SL.Add(ZBoolToStr(NewCty));
+      SL.Add(ZBoolToStr(NewZone));
+      SL.Add(ZBoolToStr(Worked));
+      SL.Add(IntToStr(Integer(SpotSource)));
+      SL.Add(IntToStr(SpotGroup));
+      SL.Add(ZBoolToStr(FNewJaMulti));
+      SL.Add(ZBoolToStr(FIsDomestic));
+
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -481,6 +506,37 @@ begin
       CQ := ZStrToBool(SL[5]);
       Number := SL[6];
       ReportedBy := SL[7];
+   finally
+      SL.Free();
+   end;
+end;
+
+procedure TBSData.FromTextEx(S : string);
+var
+   SL: TStringList;
+begin
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%';
+      Call := SL[0];
+      FreqHz := StrToIntDef(SL[1], 0);
+      Band := TBand(StrToIntDef(SL[2], Integer(b19)));
+      Mode := TMode(StrToIntDef(SL[3], Integer(mCW)));
+      Time := StrToFloatDef(SL[4], 0);
+      CQ := ZStrToBool(SL[5]);
+      Number := SL[6];
+      ReportedBy := SL[7];
+      CtyIndex := StrToIntDef(SL[8], 0);
+      Zone := StrToIntDef(SL[9], 0);
+      NewCty := ZStrToBool(SL[10]);
+      NewZone := ZStrToBool(SL[11]);
+      Worked := ZStrToBool(SL[12]);
+      SpotSource := TSpotSource(StrToIntDef(SL[13], 0));
+      SpotGroup := StrToIntDef(SL[14], 0);
+      NewJaMulti := ZStrToBool(SL[15]);
+      IsDomestic := ZStrToBool(SL[16]);
    finally
       SL.Free();
    end;
@@ -642,7 +698,7 @@ begin
 
       for i := 0 to Count -1 do begin
          D := Items[i];
-         S := D.InText();
+         S := D.InTextEx();
          SL.Add(S);
       end;
 
@@ -688,7 +744,7 @@ begin
       for i := 2 to SL.Count - 1 do begin
          S := SL[i];
          D := TBSData.Create();
-         D.FromText(S);
+         D.FromTextEx(S);
          Add(D);
       end;
    finally
