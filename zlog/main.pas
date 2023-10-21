@@ -10518,7 +10518,7 @@ begin
    fSetLastFreq := IsCQ();
 
    // CQ’†~
-   CQAbort(True);
+   CQAbort(False);
 
    // SPƒ‚[ƒh‚Ö•ÏX
    SetCQ(False);
