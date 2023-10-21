@@ -54,6 +54,7 @@ const
   WM_ZLOG_DOWNKEYPRESS = (WM_USER + 117);
   WM_ZLOG_PLAYMESSAGEA = (WM_USER + 118);
   WM_ZLOG_PLAYMESSAGEB = (WM_USER + 119);
+  WM_ZLOG_PLAYCQ = (WM_USER + 120);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -677,6 +678,7 @@ type
     procedure OnZLogSwitchRig( var Message: TMessage ); message WM_ZLOG_SWITCH_RIG;
     procedure OnZLogPlayMessageA( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEA;
     procedure OnZLogPlayMessageB( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEB;
+    procedure OnZLogPlayCQ( var Message: TMessage ); message WM_ZLOG_PLAYCQ;
     procedure OnZLogResetTx( var Message: TMessage ); message WM_ZLOG_RESET_TX;
     procedure OnZLogInvertTx( var Message: TMessage ); message WM_ZLOG_INVERT_TX;
     procedure OnZLogSwitchRx( var Message: TMessage ); message WM_ZLOG_SWITCH_RX;
@@ -1001,7 +1003,7 @@ type
     procedure QSY(b: TBand; m: TMode; r: Integer);
     procedure OnPlayMessageA(no: Integer);
     procedure OnPlayMessageB(no: Integer);
-    procedure PlayMessage(bank: Integer; no: Integer; fResetTx: Boolean);
+    procedure PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessagePH(no: Integer);
     procedure PlayMessageRTTY(no: Integer);
@@ -3686,6 +3688,7 @@ var
    nTxID: Integer;
    curQSO: TQSO;
    C, N, B, M, SE: TEdit;
+   mode: TMode;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('------ >>> Enter OnTabPress ------'));
@@ -3735,19 +3738,25 @@ begin
          end;
       end;
 
+      // ↓はTX側のモードを取得する
+      mode := TextToMode(FEditPanel[nTxID].ModeEdit.Text);
+      if mode = mOther then begin
+         mode := curQSO.Mode;
+      end;
+
       // PHONE
-      if curQSO.Mode in [mSSB, mFM, mAM] then begin
+      if mode in [mSSB, mFM, mAM] then begin
          Q := Log.QuickDupe(curQSO);
          if Q <> nil then begin  // dupe
             // ALLOW DUPEしない場合は4番を送出
             if dmZLogGlobal.Settings._allowdupe = False then begin
                C.SelectAll;
                C.SetFocus;
-               PlayMessage(1, 4, False);
+               PlayMessage(mode, 1, 4, False);
             end
             else begin
                CallSpaceBarProc(C, N, B);
-               PlayMessage(1, 2, False);
+               PlayMessage(mode, 1, 2, False);
             end;
 
             S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
@@ -3755,14 +3764,14 @@ begin
          end
          else begin  // not dupe
             CallSpaceBarProc(C, N, B);
-            PlayMessage(1, 2, False);
+            PlayMessage(mode, 1, 2, False);
          end;
 
          Exit;
       end;
 
       // RTTY
-      if curQSO.Mode = mRTTY then begin
+      if mode = mRTTY then begin
          if FTTYConsole <> nil then
             FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), curQSO));
 
@@ -3859,6 +3868,7 @@ var
    nRxID: Integer;
    nTxID: Integer;
    curQSO: TQSO;
+   mode: TMode;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('------ >>> Enter OnDownkeyPress ------'));
@@ -3906,7 +3916,13 @@ begin
          end;
       end;
 
-      case curQSO.Mode of
+      // ↓はTX側のモードを取得する
+      mode := TextToMode(FEditPanel[nTxID].ModeEdit.Text);
+      if mode = mOther then begin
+         mode := curQSO.Mode;
+      end;
+
+      case mode of
          mCW: begin
             // CWポート設定チェック
             if dmZLogKeyer.KeyingPort[nTxID] = tkpNone then begin
@@ -3979,14 +3995,14 @@ begin
 
          mSSB, mFM, mAM: begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
-               PlayMessage(1, 5, False);
+               PlayMessage(mode, 1, 5, False);
                WriteStatusLine(TMainForm_Invalid_number, False);
                NumberEdit.SetFocus;
                NumberEdit.SelectAll;
                exit;
             end;
 
-            PlayMessage(1, 3, False);
+            PlayMessage(mode, 1, 3, False);
             LogButtonProc(nTxID, curQSO);
          end;
       end;
@@ -4418,7 +4434,7 @@ var
    i: Integer;
 begin
    i := THemisphereButton(Sender).Tag;
-   PlayMessage(dmZlogGlobal.Settings.CW.CurrentBank, i, True);
+   PlayMessage(mCW, dmZlogGlobal.Settings.CW.CurrentBank, i, True);
 end;
 
 procedure TMainForm.FormDeactivate(Sender: TObject);
@@ -4618,15 +4634,8 @@ end;
 
 procedure TMainForm.CQRepeatProc(nSpeedUp: Integer);
 var
-   S: String;
-   nID: Integer;
    bank: Integer;
    msgno: Integer;
-   mode: TMode;
-//   newrig: Integer;
-   currig: Integer;
-   n: Integer;
-   RandCQStr: array[1..2] of string;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('**** CQRepeatProc() ****'));
@@ -4668,7 +4677,7 @@ begin
 
    WriteStatusLine('', False);
 
-   currig := RigControl.GetCurrentRig();
+//   currig := RigControl.GetCurrentRig();
 
    // SO2Rの場合
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
@@ -4719,64 +4728,8 @@ begin
       msgno := FCurrentCQMessageNo;
    end;
 
-   // 送信側RIGのモードを判定
-   nID := FCurrentTx;
-
-   // TODO:↓はTX側のモードを取得する
-   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
-   if mode = mOther then begin
-      mode := CurrentQSO.Mode;
-   end;
-
-   FCQRepeatStartMode := mode;
-
-   if mode = mCW then begin
-      if (dmZLogGlobal.Settings.CW._cq_random_repeat = True) and (FCQLoopCount > 4) then begin
-         RandCQStr[1] := SetStr(dmZLogGlobal.Settings.CW.AdditionalCQMessages[2], CurrentQSO);
-         RandCQStr[2] := SetStr(dmZLogGlobal.Settings.CW.AdditionalCQMessages[3], CurrentQSO);
-
-         n := FCQLoopCount mod 3; // random(3);
-         if n > 2 then begin
-            n := 0;
-         end;
-
-         if n in [1 .. 2] then begin
-            if RandCQStr[n] = '' then begin
-               n := 0;
-            end;
-         end;
-
-         if n = 0 then begin
-            S := dmZlogGlobal.CWMessage(bank, msgno);
-            S := SetStr(UpperCase(S), CurrentQSO);
-         end
-         else begin
-            S := RandCQStr[n];
-         end;
-      end
-      else begin
-         S := dmZlogGlobal.CWMessage(bank, msgno);
-         S := SetStr(UpperCase(S), CurrentQSO);
-      end;
-
-      // CWポート設定チェック
-      if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
-         WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
-         FCQRepeatPlaying := False;
-         Exit;
-      end;
-
-      if (nSpeedUp > 0) then begin
-         S := '\+' + IntToStr(nSpeedUp) + S + '\-' + IntToStr(nSpeedUp);
-      end;
-
-      // TODO: ここを1shotにすればOK
-      FMessageManager.AddQue(0, S, nil);
-   end
-   else begin
-      // Voice再生(1shot)
-      FMessageManager.AddQue(0, msgno);
-   end;
+   // CQ送信
+   FMessageManager.AddQue(WM_ZLOG_PLAYCQ, MAKEWPARAM(bank, msgno), MAKELPARAM(nSpeedUp, 0));
 
    finally
       FMessageManager.ContinueQue();
@@ -5125,7 +5078,7 @@ begin
 
             // 4番(QSO B4 TU)送出
             S := ' ' + dmZlogGlobal.CWMessage(1, 4);
-            nID := FCurrentTx;
+//            nID := FCurrentTx;
             FMessageManager.AddQue(0, S, curQSO);
 
 //            if dmZLogKeyer.UseWinKeyer = True then begin
@@ -5321,7 +5274,7 @@ var
    n: Integer;
 begin
    n := THemisphereButton(Sender).Tag;
-   PlayMessage(1, n, True);
+   PlayMessage(mSSB, 1, n, True);
 end;
 
 procedure TMainForm.TimeEdit1Change(Sender: TObject);
@@ -7341,6 +7294,81 @@ begin
    OnPlayMessageB(Message.WParam);
 end;
 
+procedure TMainForm.OnZLogPlayCQ( var Message: TMessage );
+var
+   bank: Integer;
+   msgno: Integer;
+   nID: Integer;
+   mode: TMode;
+   S: string;
+   nSpeedUp: Integer;
+   n: Integer;
+   RandCQStr: array[1..2] of string;
+begin
+   bank := Message.WParamLo;
+   msgno := Message.WParamHi;
+   nSpeedUp := Message.LParamLo;
+
+   // 送信側RIGのモードを判定
+   nID := FCurrentTx;
+
+   // TODO:↓はTX側のモードを取得する
+   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+   if mode = mOther then begin
+      mode := CurrentQSO.Mode;
+   end;
+
+   FCQRepeatStartMode := mode;
+
+   if mode = mCW then begin
+      if (dmZLogGlobal.Settings.CW._cq_random_repeat = True) and (FCQLoopCount > 4) then begin
+         RandCQStr[1] := SetStr(dmZLogGlobal.Settings.CW.AdditionalCQMessages[2], CurrentQSO);
+         RandCQStr[2] := SetStr(dmZLogGlobal.Settings.CW.AdditionalCQMessages[3], CurrentQSO);
+
+         n := FCQLoopCount mod 3; // random(3);
+         if n > 2 then begin
+            n := 0;
+         end;
+
+         if n in [1 .. 2] then begin
+            if RandCQStr[n] = '' then begin
+               n := 0;
+            end;
+         end;
+
+         if n = 0 then begin
+            S := dmZlogGlobal.CWMessage(bank, msgno);
+            S := SetStr(UpperCase(S), CurrentQSO);
+         end
+         else begin
+            S := RandCQStr[n];
+         end;
+      end
+      else begin
+         S := dmZlogGlobal.CWMessage(bank, msgno);
+         S := SetStr(UpperCase(S), CurrentQSO);
+      end;
+
+      // CWポート設定チェック
+      if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
+         WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+         FCQRepeatPlaying := False;
+         Exit;
+      end;
+
+      if (nSpeedUp > 0) then begin
+         S := '\+' + IntToStr(nSpeedUp) + S + '\-' + IntToStr(nSpeedUp);
+      end;
+
+      // TODO: ここを1shotにすればOK
+      FMessageManager.AddQue(0, S, nil);
+   end
+   else begin
+      // Voice再生(1shot)
+      FMessageManager.AddQue(0, msgno);
+   end;
+end;
+
 procedure TMainForm.OnZLogResetTx( var Message: TMessage );
 begin
    {$IFDEF DEBUG}
@@ -8210,7 +8238,7 @@ begin
       end;
    end;
 
-   PlayMessage(cb, no, True);
+   PlayMessage(CurrentQSO.Mode, cb, no, True);
 end;
 
 procedure TMainForm.OnPlayMessageB(no: Integer);
@@ -8239,10 +8267,10 @@ begin
       end;
    end;
 
-   PlayMessage(cb, no, True);
+   PlayMessage(CurrentQSO.Mode, cb, no, True);
 end;
 
-procedure TMainForm.PlayMessage(bank: Integer; no: Integer; fResetTx: Boolean);
+procedure TMainForm.PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
 var
    nID: Integer;
 begin
@@ -8260,7 +8288,7 @@ begin
       FMessageManager.ClearQue();
    end;
 
-   case CurrentQSO.Mode of
+   case mode of
       mCW: begin
          nID := FCurrentTx;
 
