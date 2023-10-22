@@ -1389,6 +1389,9 @@ end;
 //  FT-991の周波数桁数は9桁。なのでmode情報は、1文字後ろへ。
 //  rigの状態取得と周波数変更の2点をoverride
 //
+// 00000 000011111 11111 22 222222223
+// 12345 678901234 56789 01 234567890
+// IF001 007131790 +0000 10 140000;
 procedure TFT991.ExecuteCommand(S: AnsiString);
 var
    M: TMode;
@@ -1411,23 +1414,37 @@ begin
          else  M := mOther;
       end;
 
-      if FIgnoreRigMode = False then begin
-         _currentmode := M;
-      end;
-
       // 周波数(Hz)
       strTemp := string(Copy(S, 6, 9));        // 6桁目から9文字
       i := StrToIntDef(strTemp, 0);
-      _currentfreq[0] := i;
+      _currentfreq[FVFO] := i;
 
-      // バンド(VFO-A)
-      if _currentvfo = 0 then begin
-         UpdateFreqMem(0, i, M);
+      if _currentvfo = FVFO then begin
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
+
+         UpdateFreqMem(FVFO, i, M);
       end;
+
+      // RIT/XIT offset
+      strTemp := string(Copy(S, 15, 5));
+      FRitOffset := StrToIntDef(strTemp, 0);
+
+      // RIT Status
+      strTemp := string(Copy(S, 20, 1));
+      FRit := StrToBoolDef(strTemp, False);
+
+      // XIT Status
+      strTemp := string(Copy(S, 21, 1));
+      FXit := StrToBoolDef(strTemp, False);
 
       if Selected then begin
          UpdateStatus;
       end;
+
+      Inc(FVFO);
+      FVFO := FVFO and 1;
    finally
       FPollingTimer.Enabled := True;
    end;
