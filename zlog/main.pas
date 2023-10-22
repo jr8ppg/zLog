@@ -4831,16 +4831,6 @@ var
    Q: TQSO;
    S: String;
    nID: Integer;
-
-   procedure WinKeyerQSO();
-   begin
-      if dmZLogKeyer.UseWinKeyer = True then begin
-         S := dmZlogGlobal.CWMessage(2);
-         S := StringReplace(S, '$C', '', [rfReplaceAll]);
-         S := SetStr(S, CurrentQSO);
-         dmZLogKeyer.WinkeyerSendStr2(S);
-      end;
-   end;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- Begin CallsignSentProc() ---'));
@@ -4886,13 +4876,7 @@ begin
             CallsignEditEx.SelectAll;
 
             exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
-         end
-         else begin  // ALLOW DUPE!
-            WinKeyerQSO();
          end;
-      end
-      else begin  // NOT DUPE
-         WinKeyerQSO();
       end;
 
       if TabPressed2 then begin

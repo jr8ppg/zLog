@@ -14,7 +14,7 @@ uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
   System.SyncObjs,
-  UzLogConst
+  UzLogConst, WinKeyer
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -221,17 +221,16 @@ type
     FWkStatus: Integer;
     FWkEcho: Integer;
     FWkLastMessage: string;
-    FWkCallsignSending: Boolean;
     FWkCallsignIndex: Integer;
     FWkCallsignStr: string;
     FWkAbort: Boolean;
+    FWkLastSendChar: Char;
     FUseWkSo2rNeo: Boolean;
     FSo2rNeoCanRxSel: Boolean;
     FSo2rNeoUseRxSelect: Boolean;
-
-    FWkMessageSending: Boolean;
     FWkMessageIndex: Integer;
     FWkMessageStr: string;
+    FWkSendStatus: TWinKeyerSendStatus;
 
     // SO2R support
     FSo2rRxSelectPort: TKeyingPort;
@@ -357,8 +356,6 @@ type
     property UseWkOutpSelect: Boolean read FUseWkOutpSelect write FUseWkOutpSelect;
     property UseWkIgnoreSpeedPot: Boolean read FUseWkIgnoreSpeedPot write FUseWkIgnoreSpeedPot;
     property WinKeyerRevision: Integer read FWkRevision;
-    property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
-    procedure WinKeyerSendCallsign(S: string);
     procedure WinKeyerSendChar(C: Char);
     procedure WinKeyerSendStr(nID: Integer; S: string);
     procedure WinKeyerSendStr2(S: string);
@@ -408,9 +405,6 @@ const
   BGKCALLMAX = 16;
 
 implementation
-
-uses
-  WinKeyer;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -1111,7 +1105,7 @@ begin
       S := WinKeyerBuildMessage(C);
 
       // 初回送信？
-      if FWkMessageSending = False then begin
+      if FWkSendStatus = wkssNone then begin
          // PTT-ON
          ControlPTT(nID, True);
 
@@ -1121,7 +1115,7 @@ begin
          end;
 
          // 送信中
-         FWkMessageSending := True;
+         FWkSendStatus := wkssMessage;
 
          // S[1]が$1bは合わせ文字 $1bはecho backしない
          if Char(S[1]) = Char($1b) then begin
@@ -2420,25 +2414,30 @@ begin
       S := Copy(S, 1, i);
    end;
 
-   // 短くなる場合は送信ptrチェック
-   if Length(FWkCallsignStr) > Length(S) then begin
-      if cwstrptr > callsignptr then begin
+   if FUseWinKeyer = True then begin
+      FWkCallsignStr := S;
+   end
+   else begin
+      // 短くなる場合は送信ptrチェック
+      if Length(FWkCallsignStr) > Length(S) then begin
+         if cwstrptr > callsignptr then begin
+            Exit;
+         end;
+      end;
+
+      FWkCallsignStr := S;
+
+      if callsignptr = 0 then begin
          Exit;
       end;
-   end;
 
-   FWkCallsignStr := S;
+      SS := S + '*********************';
 
-   if callsignptr = 0 then begin
-      Exit;
-   end;
+      SS[BGKCALLMAX] := '^'; { pause }
 
-   SS := S + '*********************';
-
-   SS[BGKCALLMAX] := '^'; { pause }
-
-   for i := 1 to BGKCALLMAX do begin
-      SetCWSendBufChar2(char(SS[i]), callsignptr + i - 1);
+      for i := 1 to BGKCALLMAX do begin
+         SetCWSendBufChar2(char(SS[i]), callsignptr + i - 1);
+      end;
    end;
 end;
 
@@ -3077,7 +3076,7 @@ begin
    FWkStatus := 0;
    FWkEcho := 0;
    FWkLastMessage := '';
-   FWkCallsignSending := False;
+   FWkSendStatus := wkssNone;
    FWkAbort := False;
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
@@ -3262,8 +3261,7 @@ begin
    FComKeying[0].SendData(@Buff, 1);
    FWkLastMessage := '';
    FWkAbort := False;
-   FWkCallsignSending := False;
-   FWkMessageSending := False;
+   FWkSendStatus := wkssNone;
    FWkMessageStr := '';
    FWkMessageIndex := 1;
    WinKeyerControlPTT(False);
@@ -3414,24 +3412,6 @@ begin
    Sleep(50);
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendCallsign(S: string);
-var
-   C: Char;
-begin
-   if S = '' then begin
-      Exit;
-   end;
-
-   S := StringReplace(S, '.', '?', [rfReplaceAll]);
-
-   FWkAbort := False;
-   FWkCallsignIndex := 1;
-   FWkCallsignStr := S;
-   C := FWkCallsignStr[FWkCallsignIndex];
-   WinKeyerSendChar(C);
-   FWkCallsignSending := True;
-end;
-
 procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
 var
    S: string;
@@ -3439,12 +3419,16 @@ begin
    case C of
       ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', 't', 'v', '-', '=': begin
          S := C;
+         FWkLastSendChar := C;
          FComKeying[0].SendString(AnsiString(S));
-//         WinKeyerSendStr(FCurrentID, S);
       end;
    end;
 end;
 
+//
+// WinKeyerメッセージ送信（未使用）
+// 一度に送るため途中訂正不可
+//
 procedure TdmZLogKeyer.WinKeyerSendStr(nID: Integer; S: string);
 begin
    if FWkAbort = True then begin
@@ -3464,6 +3448,11 @@ begin
    FComKeying[0].SendString(AnsiString(S));
 end;
 
+//
+// WinKeyerメッセージ送信
+// エコーバックを待って１文字ずつ送信する方式
+// $Cがあったらコールサイン送信を行う
+//
 procedure TdmZLogKeyer.WinKeyerSendStr2(S: string);
 var
    C: Char;
@@ -3477,8 +3466,31 @@ begin
    FWkAbort := False;
    FWkMessageIndex := 1;
    FWkMessageStr := S;
-   FWkMessageSending := True;
+   FWkSendStatus := wkssMessage;
+   FWkLastSendChar := Char(0);
    C := FWkMessageStr[FWkMessageIndex];
+   if C = '$' then begin
+      // CWモニターを１文字進める
+      if Assigned(FOnOneCharSentProc) then begin
+         FOnOneCharSentProc(Self);
+      end;
+
+      Inc(FWkMessageIndex);
+
+      C := FWkMessageStr[FWkMessageIndex];
+      if C = 'C' then begin
+         // CWモニターを１文字進める
+         if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
+         end;
+
+         FWkSendStatus := wkssCallsign;
+         FWkCallsignIndex := 0;
+         PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+         Exit;
+      end;
+   end;
+
    WinKeyerSendChar(C);
 end;
 
@@ -3585,6 +3597,7 @@ var
    b: Byte;
    PP: PByte;
    newwpm: Integer;
+   C: Char;
 begin
    PP := DataPtr;
 
@@ -3607,7 +3620,7 @@ begin
 
          if FWkAbort = True then begin
             FWkAbort := False;
-            FWkCallsignSending := False;
+            FWkSendStatus := wkssNone;
             FWkLastMessage := '';
             Break;
          end;
@@ -3632,25 +3645,8 @@ begin
                {$ENDIF}
             end;
 
-            //コールサイン送信時：１文字送信終了
-//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
-//               {$IFDEF DEBUG}
-//               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
-//               {$ENDIF}
-//
-//               // 次の文字を送信
-//               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
-//            end;
-
-            // コールサイン送信時：１文字送信開始
-//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
-//               {$IFDEF DEBUG}
-//               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
-//               {$ENDIF}
-//            end;
-
             // 送信中→送信終了に変わったら、リピートタイマー起動
-            if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+            if (FWkSendStatus = wkssMessage) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
 
                if Assigned(FOnSendFinishProc) then begin
                   {$IFDEF DEBUG}
@@ -3680,25 +3676,64 @@ begin
             OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
 
-            // CWモニターを１文字進める
-            if Assigned(FOnOneCharSentProc) then begin
-               FOnOneCharSentProc(Self);
+            // ECHO BACK文字確認
+            if (Char(b) <> FWkLastSendChar) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey BAD ECHOBACK'));
+               {$ENDIF}
+               Exit;
             end;
 
-            // コールサイン送信
-            if (FWkCallsignSending = True) and
-               (Length(FWkCallsignStr) >= FWkCallsignIndex) and
-               (Char(b) = FWkCallsignStr[FWkCallsignIndex]) then begin
+            // コールサイン送信中
+            if (FWkSendStatus = wkssCallsign) and
+               (Length(FWkCallsignStr) >= FWkCallsignIndex) then begin
                // 次の文字を送信
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+               Exit;
             end;
 
-            // 通常メッセージ送信
-            if (FWkMessageSending = True) and
-               (Length(FWkMessageStr) >= FWkMessageIndex) and
-               (Char(b) = FWkMessageStr[FWkMessageIndex]) then begin
+            // 通常メッセージ送信中
+            if (FWkSendStatus = wkssMessage) and
+               (Length(FWkMessageStr) >= FWkMessageIndex) then begin
+
+               // CWモニターを１文字進める
+               if Assigned(FOnOneCharSentProc) then begin
+                  FOnOneCharSentProc(Self);
+               end;
+
+               // 次の文字を取得
+               if (Length(FWkMessageStr) > FWkMessageIndex) then begin
+                  C := FWkMessageStr[FWkMessageIndex + 1];
+                  if (C = '$') then begin
+
+                     // CWモニターを１文字進める
+                     if Assigned(FOnOneCharSentProc) then begin
+                        FOnOneCharSentProc(Self);
+                     end;
+
+                     Inc(FWkMessageIndex);
+                     C := FWkMessageStr[FWkMessageIndex + 1];
+                     if (C = 'C') then begin
+
+                        // CWモニターを１文字進める
+                        if Assigned(FOnOneCharSentProc) then begin
+                           FOnOneCharSentProc(Self);
+                        end;
+
+                        Inc(FWkMessageIndex);
+
+                        // コールサイン送信に移行
+                        FWkSendStatus := wkssCallsign;
+                        FWkCallsignIndex := 0;
+                        PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+                        Exit;
+                     end;
+                  end;
+               end;
+
                // 次の文字を送信
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+               Exit;
             end;
          end;
       end;
@@ -3765,11 +3800,13 @@ begin
             WinKeyerSendChar(C);
          end
          else begin
-            FWkCallsignSending := False;
+            FWkSendStatus := wkssMessage;
 
             if Assigned(FOnCallsignSentProc) then begin
                FOnCallsignSentProc(Self);
             end;
+
+            PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
          end;
 
          msg.Result := 0;
@@ -3782,7 +3819,7 @@ begin
             WinKeyerSendChar(C);
          end
          else begin
-            FWkMessageSending := False;
+            FWkSendStatus := wkssNone;
             FWkMessageIndex := 1;
             FWkMessageStr := '';
 

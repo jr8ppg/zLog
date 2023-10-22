@@ -139,7 +139,7 @@ begin
    end
    else begin
       if dmZLogKeyer.UseWinKeyer = True then begin
-         S := aQSO.Callsign;
+         S := '$C';  //aQSO.Callsign;
       end
       else begin
          S := ':***************';
