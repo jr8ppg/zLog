@@ -346,7 +346,7 @@ type
     Label81: TLabel;
     groupUsif4cw: TGroupBox;
     checkUsbif4cwSyncWpm: TCheckBox;
-    checkUsbif4cwPaddleReverse: TCheckBox;
+    checkPaddleReverse: TCheckBox;
     GroupBox14: TGroupBox;
     Label9: TLabel;
     Label10: TLabel;
@@ -911,6 +911,9 @@ begin
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := checkNotSendLeadingZeros.Checked;
 
+      // Paddle reverse
+      Settings.CW._paddlereverse := checkPaddleReverse.Checked;
+
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
 
@@ -948,7 +951,6 @@ begin
 
       // USBIF4CW
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
-      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
       Settings._usbif4cw_use_paddle_keyer := checkUsbif4cwUsePaddle.Checked;
 
@@ -1470,7 +1472,6 @@ begin
 
       // USBIF4CW
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
-      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       checkGen3MicSelect.Checked := Settings._usbif4cw_gen3_micsel;
       checkUsbif4cwUsePaddle.Checked := Settings._usbif4cw_use_paddle_keyer;
 
@@ -1547,6 +1548,9 @@ begin
 
       // Not send leading zeros in serial number
       checkNotSendLeadingZeros.Checked := Settings.CW._not_send_leading_zeros;
+
+      // Paddle reverse
+      checkPaddleReverse.Checked := Settings.CW._paddlereverse;
 
       // QSL Default
       if Settings._qsl_default = qsNone then begin

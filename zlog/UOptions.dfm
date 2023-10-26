@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1301,7 +1301,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 15
+        TabOrder = 16
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1312,7 +1312,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 16
+        TabOrder = 17
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1323,7 +1323,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 17
+        TabOrder = 18
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1421,6 +1421,14 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'Not send leading zeros in serial numbers'
         TabOrder = 14
+      end
+      object checkPaddleReverse: TCheckBox
+        Left = 228
+        Top = 349
+        Width = 96
+        Height = 17
+        Caption = 'Paddle Reverse'
+        TabOrder = 15
       end
     end
     object tabsheetVoice: TTabSheet
@@ -1918,21 +1926,13 @@ object formOptions: TformOptions
           Caption = 'Sync WPM'
           TabOrder = 0
         end
-        object checkUsbif4cwPaddleReverse: TCheckBox
-          Left = 93
-          Top = 19
-          Width = 96
-          Height = 17
-          Caption = 'Paddle Reverse'
-          TabOrder = 1
-        end
         object checkGen3MicSelect: TCheckBox
           Left = 8
           Top = 40
           Width = 193
           Height = 17
           Caption = 'Select mic input for Gen.3'
-          TabOrder = 2
+          TabOrder = 1
         end
         object checkUsbif4cwUsePaddle: TCheckBox
           Left = 8
@@ -1940,7 +1940,7 @@ object formOptions: TformOptions
           Width = 193
           Height = 17
           Caption = 'Use paddle (V1 only)'
-          TabOrder = 3
+          TabOrder = 2
         end
       end
       object groupOptCI_V: TGroupBox
@@ -5114,13 +5114,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Courier New CE'
+          FontName = '@HG'#21109#33521#35282#65422#65439#65391#65420#65439#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 62
+          ItemIndex = 9
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

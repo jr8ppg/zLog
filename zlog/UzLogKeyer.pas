@@ -3405,6 +3405,11 @@ begin
       Sleep(50);
    end;
 
+   // Paddle reverse
+   if FPaddleReverse = True then begin
+      WinKeyerSetMode(WK_SETMODE_PADDLESWAP);
+   end;
+
    // Set PTT Mode(PINCFG)
    WinKeyerSetPinCfg(FPTTEnabled);
 

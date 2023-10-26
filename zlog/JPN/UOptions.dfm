@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1301,7 +1301,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 15
+        TabOrder = 16
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1312,7 +1312,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 16
+        TabOrder = 17
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1323,7 +1323,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 17
+        TabOrder = 18
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1421,6 +1421,14 @@ object formOptions: TformOptions
         Height = 17
         Caption = #12471#12522#12450#12523#12490#12531#12496#12540#12398#21069'0'#12434#36865#20449#12375#12394#12356
         TabOrder = 14
+      end
+      object checkPaddleReverse: TCheckBox
+        Left = 228
+        Top = 349
+        Width = 96
+        Height = 17
+        Caption = #12497#12489#12523#24038#21491#21453#36578
+        TabOrder = 15
       end
     end
     object tabsheetVoice: TTabSheet
@@ -1918,21 +1926,13 @@ object formOptions: TformOptions
           Caption = 'WPM'#21516#26399
           TabOrder = 0
         end
-        object checkUsbif4cwPaddleReverse: TCheckBox
-          Left = 93
-          Top = 19
-          Width = 110
-          Height = 17
-          Caption = #12497#12489#12523#12434#24038#21491#21453#36578
-          TabOrder = 1
-        end
         object checkGen3MicSelect: TCheckBox
           Left = 8
           Top = 40
           Width = 193
           Height = 17
           Caption = 'Gen.3'#12398#12510#12452#12463#20837#21147#20999#26367#12434#12377#12427
-          TabOrder = 2
+          TabOrder = 1
         end
         object checkUsbif4cwUsePaddle: TCheckBox
           Left = 8
@@ -1940,7 +1940,7 @@ object formOptions: TformOptions
           Width = 193
           Height = 17
           Caption = #12497#12489#12523#12434#20351#29992'(V1)'
-          TabOrder = 3
+          TabOrder = 2
         end
       end
       object groupOptCI_V: TGroupBox
@@ -5114,13 +5114,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Courier New CE'
+          FontName = '@HG'#21109#33521#35282#65422#65439#65391#65420#65439#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 62
+          ItemIndex = 9
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
