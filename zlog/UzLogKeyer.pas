@@ -69,6 +69,17 @@ type
     constructor Create(AKeyer: TdmZLogKeyer);
   end;
 
+  TPaddleThread = class(TThread)
+  private
+    { Private declarations }
+    FKeyer: TdmZLogKeyer;
+    FPrevInReport: array[0..8] of Byte;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(AKeyer: TdmZLogKeyer);
+  end;
+
   TUsbPortDataArray = array[0..1] of Byte;
 
   TUsbPortInfo = class
@@ -118,6 +129,7 @@ type
     FComKeying: array[0..MAXPORT] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
+    FPaddleThread: TPaddleThread;
 
     HidController: TJvHidDeviceController;
     usbdevlist: TList<TJvHIDDevice>;
@@ -134,8 +146,6 @@ type
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
     {$ENDIF}
-
-    FUsbPortDataLock: TRTLCriticalSection;
 
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
     FVoiceFlag: Integer;  //temporary
@@ -195,6 +205,8 @@ type
     FUsePaddleKeyer: Boolean;
 
     FPaddleReverse: Boolean;
+    FPaddleSqueeze: Boolean;
+    FSqueezeDotDash: Integer;
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
@@ -264,6 +276,11 @@ type
     procedure USB_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
+
+    procedure paddle_dot();
+    procedure paddle_dash();
+    procedure paddle_finish();
+    procedure paddle_finish2();
 
     procedure WinKeyerOpen(nPort: TKeyingPort);
     procedure WinKeyerClose();
@@ -338,6 +355,10 @@ type
     property PaddleReverse: Boolean read FPaddleReverse write FPaddleReverse;
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
 
+    // paddle support
+    procedure Squeeze();
+    procedure PaddleProc(fLeft, fRight, fPrevLeft, fPrevRight: Boolean);
+
     // USBIF4CW support
     function usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
     function usbif4cwSetPTTParam(nId: Integer; nLen1: Byte; nLen2: Byte): Long;
@@ -396,6 +417,7 @@ type
 var
   dmZLogKeyer: TdmZLogKeyer;
   CWBufferSync: TCriticalSection;
+  FUsbPortDataLock: TRTLCriticalSection;
 
 const
   USBIF4CW_VENDORID = $BFE;
@@ -479,6 +501,7 @@ begin
    FEISpaceFactor := 100; {space length factor after E and I}
 
    FMonitorThread := nil;
+   FPaddleThread := nil;
    FOnCallsignSentProc := nil;
    FOnOneCharSentProc := nil;
    FOnSendFinishProc := nil;
@@ -503,6 +526,7 @@ begin
    FTone.Free();
    {$ENDIF}
    FMonitorThread.Free();
+   FPaddleThread.Free();
    COM_OFF();
    USB_OFF();
    DeallocateHWnd(FWnd);
@@ -573,32 +597,10 @@ var
    {$ENDIF}
    p: PBYTE;
    nID: BYTE;
-   fPrevRight: Boolean;
-   fPrevLeft: Boolean;
+//   fPrevRight: Boolean;
+//   fPrevLeft: Boolean;
    fPaddleRight: Boolean;
    fPaddleLeft: Boolean;
-
-   procedure paddle_finish();
-   var
-      i: Integer;
-   begin
-      FSendOK := False;
-      CWBufferSync.Enter();
-      try
-         for i := 1 to codemax do begin
-            if FCWSendBuf[0, i] = $A then begin
-               FCWSendBuf[0, i] := 9;
-            end;
-         end;
-
-         if FPTTEnabled then begin
-            SetCWSendBuf(0, 'o');
-         end;
-      finally
-         CWBufferSync.Leave();
-         FSendOK := True;
-      end;
-   end;
 begin
    if (FKeyingPort[0] <> tkpUSB) and
       (FKeyingPort[1] <> tkpUSB) and
@@ -623,6 +625,11 @@ begin
    {$IFDEF DEBUG}
 //   OutputDebugString(PChar('**ID=[' + IntToStr(nID) + ']**'));
    {$ENDIF}
+
+   // パドル利用有りならここまで
+   if FUsePaddleKeyer = True then begin
+      Exit;
+   end;
 
    {$IFDEF DEBUG}
    s := IntToHex(p[0], 2) + ' ' +
@@ -656,8 +663,8 @@ begin
       fPaddleRight := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0;
       fPaddleLeft := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0;
 
-      fPrevRight := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $04) = 0;
-      fPrevLeft := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $01) = 0;
+//      fPrevRight := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $04) = 0;
+//      fPrevLeft := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $01) = 0;
 
       if ((FUsePaddleKeyer = False) and (usbif4cwGetVersion(nID) >= 20)) then begin
          // パドル入力があったか？
@@ -673,76 +680,7 @@ begin
          end;
       end
       else begin  // 使う
-         // 左右OFFから左右どちらかがONになるタイミングでパドルイベントを発生
-         if ((fPrevRight = False) and (fPrevLeft = False)) and ((fPaddleRight = True) or (fPaddleLeft = True)) then begin
-            if Assigned(FOnPaddleEvent) then begin
-               FOnPaddleEvent(Self);
-            end;
-         end;
-
-         // パドル用キーヤー処理 USBIF4CW V2はスクイーズ操作不可
-         // パドル左右 OFF->ON 左右どっちかがOFFから両方ONを検出
-         if ((fPrevRight = False) or (fPrevLeft = False)) and ((fPaddleRight = True) and (fPaddleLeft = True)) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**PADDLE SQUEEZE OFF->ON**'));
-            {$ENDIF}
-            if FPTTEnabled then begin
-               ControlPTT(FWkTx, True);
-            end;
-            SetCWSendBuf(0, 'r');
-            FSendOK := True;
-            FKeyingCounter := 0;
-         end
-
-         // パドル右 ON->OFF 左右ONから左右どちらかがOFFを検出
-         else if ((fPrevRight = True) and (fPrevLeft = True)) and ((fPaddleRight = False) or (fPaddleLeft = False)) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**PADDLE SQUEEZE ON->OFF**'));
-            {$ENDIF}
-            paddle_finish();
-         end
-
-         // パドル右 OFF->ON
-         else if (fPrevRight = False) and (fPaddleRight = True) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**PADDLE RIGHT OFF->ON**'));
-            {$ENDIF}
-            if FPTTEnabled then begin
-               ControlPTT(FWkTx, True);
-            end;
-            SetCWSendBuf(0, 'q');
-            FSendOK := True;
-            FKeyingCounter := 0;
-         end
-
-         // パドル右 ON->OFF
-         else if (fPrevRight = True) and (fPaddleRight = False) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**PADDLE RIGHT ON->OFF**'));
-            {$ENDIF}
-            paddle_finish();
-         end
-
-         // パドル左 OFF->ON
-         else if (fPrevLeft = False) and (fPaddleLeft = True) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**PADDLE LEFT OFF->ON**'));
-            {$ENDIF}
-            if FPTTEnabled then begin
-               ControlPTT(FWkTx, True);
-            end;
-            SetCWSendBuf(0, 'p');
-            FSendOK := True;
-            FKeyingCounter := 0;
-         end
-
-         // パドル左 ON->OFF
-         else if (fPrevLeft = True) and (fPaddleLeft = False) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**PADDLE LEFT ON->OFF**'));
-            {$ENDIF}
-            paddle_finish();
-         end;
+//         PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
       end;
 
       CopyMemory(@FUsbInfo[nID].FPORTDATA.FPrevPortIn, p, 8);
@@ -1660,6 +1598,7 @@ begin
    FUseSideTone := True;
    FUsePaddleKeyer := False;
    FPaddleReverse := False;
+   FPaddleSqueeze := False;
    FKeyerWPM := 1;
 
    timeBeginPeriod(1);
@@ -2126,30 +2065,33 @@ begin
    FCodeTable[Ord('t')][8] := 0;
    FCodeTable[Ord('t')][9] := 3;
    FCodeTable[Ord('t')][10] := 2;
-   FCodeTable[Ord('t')][11] := 9;
+   FCodeTable[Ord('t')][11] := 9;   { Next char }
 
    // PADDLE用DOT
    FCodeTable[Ord('p')][1] := 1;
    FCodeTable[Ord('p')][2] := 0;
-   FCodeTable[Ord('p')][3] := $A;
+   FCodeTable[Ord('p')][3] := $A;   { repeat }
 
    // PADDLE用DASH
    FCodeTable[Ord('q')][1] := 3;
    FCodeTable[Ord('q')][2] := 0;
-   FCodeTable[Ord('q')][3] := $A;
+   FCodeTable[Ord('q')][3] := $A;   { repeat }
 
-   // PADDLE用SQUEEZE
-   FCodeTable[Ord('r')][1] := 1;
+   // PADDLE用SQUEEZE(DASH)
+   FCodeTable[Ord('r')][1] := 3;
    FCodeTable[Ord('r')][2] := 0;
-   FCodeTable[Ord('r')][3] := 3;
-   FCodeTable[Ord('r')][4] := 0;
-   FCodeTable[Ord('r')][5] := $A;
+   FCodeTable[Ord('r')][3] := 9;    { Next char }
+
+   // PADDLE用SQUEEZE(DOT)
+   FCodeTable[Ord('v')][1] := 1;
+   FCodeTable[Ord('v')][2] := 0;
+   FCodeTable[Ord('v')][3] := 9;    { Next char }
 
    // PADDLE用PTTOFF
    FCodeTable[Ord('o')][1] := 0;
-   FCodeTable[Ord('o')][2] := $A1; { set Hold Counter }
-   FCodeTable[Ord('o')][3] := $A3; { set PTT delay }
-   FCodeTable[Ord('o')][4] := $1F; { PTT off }
+   FCodeTable[Ord('o')][2] := $A1;  { set Hold Counter }
+   FCodeTable[Ord('o')][3] := $A3;  { set PTT delay }
+   FCodeTable[Ord('o')][4] := $1F;  { PTT off }
    FCodeTable[Ord('o')][5] := 9;
 
    FCodeTable[Ord('?')][1] := 1;
@@ -2188,28 +2130,28 @@ begin
 
    FCodeTable[Ord('#')][1] := $BB;
 
-   FCodeTable[Ord('*')][1] := 9; { skips to the next char }
-   FCodeTable[Ord(':')][1] := 9; { skips to the next char; callsign 1st char }
+   FCodeTable[Ord('*')][1] := 9;    { skips to the next char }
+   FCodeTable[Ord(':')][1] := 9;    { skips to the next char; callsign 1st char }
 
-   FCodeTable[Ord('^')][1] := $99; { pause }
+   FCodeTable[Ord('^')][1] := $99;  { pause }
    FCodeTable[Ord('^')][2] := 9;
 
-   FCodeTable[Ord('(')][1] := $10; { PTT on }
-   FCodeTable[Ord('(')][2] := $55; { set PTT delay }
+   FCodeTable[Ord('(')][1] := $10;  { PTT on }
+   FCodeTable[Ord('(')][2] := $55;  { set PTT delay }
    FCodeTable[Ord('(')][3] := 9;
 
-   FCodeTable[Ord(')')][1] := $A1; { set Hold Counter }
-   FCodeTable[Ord(')')][2] := $A3; { set PTT delay }
-   FCodeTable[Ord(')')][3] := $1F; { PTT off }
+   FCodeTable[Ord(')')][1] := $A1;  { set Hold Counter }
+   FCodeTable[Ord(')')][2] := $A3;  { set PTT delay }
+   FCodeTable[Ord(')')][3] := $1F;  { PTT off }
    FCodeTable[Ord(')')][4] := 9;
 
-   FCodeTable[_inccw][1] := $41; { IncWPM }
+   FCodeTable[_inccw][1] := $41;    { IncWPM }
    FCodeTable[_inccw][2] := 9;
 
-   FCodeTable[Ord('u')][1] := $41; { IncWPM }
+   FCodeTable[Ord('u')][1] := $41;  { IncWPM }
    FCodeTable[Ord('u')][2] := 9;
 
-   FCodeTable[_deccw][1] := $42; { DecWPM }
+   FCodeTable[_deccw][1] := $42;    { DecWPM }
    FCodeTable[_deccw][2] := 9;
 
    for n := 1 to codemax do begin
@@ -2232,6 +2174,11 @@ begin
    end;
    FMonitorThread.Start();
 
+   if FPaddleThread = nil then begin
+      FPaddleThread := TPaddleThread.Create(Self);
+   end;
+   FPaddleThread.Start();
+
    FInitialized := True;
 end;
 
@@ -2245,6 +2192,12 @@ begin
       FMonitorThread.Terminate();
       FMonitorThread.Free();
       FMonitorThread := nil;
+   end;
+
+   if Assigned(FPaddleThread) then begin
+      FPaddleThread.Terminate();
+      FPaddleThread.Free();
+      FPaddleThread := nil;
    end;
 
    if FInitialized = False then begin
@@ -2849,6 +2802,260 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** end - TKeyerMonitorThread.Execute - ****'));
    {$ENDIF}
+end;
+
+{ TPaddleThread }
+
+constructor TPaddleThread.Create(AKeyer: TdmZLogKeyer);
+begin
+   inherited Create(True);
+   FKeyer := AKeyer;
+   FPrevInReport[2] := $0F;
+end;
+
+procedure TPaddleThread.Execute;
+var
+   OutReport : array[0..8] of byte;
+   InReport : array[0..8] of byte;
+   BR : DWORD;
+   fPaddleRight, fPaddleLeft: Boolean;
+   fPrevRight, fPrevLeft: Boolean;
+label nextnext;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** begin - TPaddleThread.Execute - ****'));
+   {$ENDIF}
+   repeat
+      Sleep(1);
+
+      if FKeyer.FUsbInfo[0].FUSBIF4CW = nil then begin
+         Sleep(10);
+         goto nextnext;
+      end;
+
+      if FKeyer.UsePaddleKeyer = False then begin
+         Sleep(10);
+         goto nextnext;
+      end;
+
+      EnterCriticalSection(FUsbPortDataLock);
+      InReport[0] := 0;
+      InReport[1] := 4;
+      InReport[2] := $0F;
+      InReport[3] := 4;
+      InReport[4] := 0;
+      InReport[5] := 0;
+      InReport[6] := 0;
+      InReport[7] := 0;
+      InReport[8] := 0;
+
+      FKeyer.FUsbInfo[0].FUSBIF4CW.ReadFile(InReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.InputReportByteLength, BR);
+
+      LeaveCriticalSection(FUsbPortDataLock);
+
+      if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
+         if (InReport[2] <> FPrevInReport[2]) then begin
+
+            // パドル状況
+            if FKeyer.PaddleReverse = False then begin
+               fPaddleLeft := (InReport[2] and $04) = 0;
+               fPaddleRight := (InReport[2] and $01) = 0;
+
+               fPrevLeft := (FPrevInReport[2] and $04) = 0;
+               fPrevRight := (FPrevInReport[2] and $01) = 0;
+            end
+            else begin
+               fPaddleRight := (InReport[2] and $04) = 0;
+               fPaddleLeft := (InReport[2] and $01) = 0;
+
+               fPrevRight := (FPrevInReport[2] and $04) = 0;
+               fPrevLeft := (FPrevInReport[2] and $01) = 0;
+            end;
+
+            FKeyer.PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
+
+            CopyMemory(@FPrevInReport, @InReport, 9);
+         end
+         else begin
+            FKeyer.Squeeze();
+         end;
+      end;
+
+      EnterCriticalSection(FUsbPortDataLock);
+      OutReport[0] := 0;
+      OutReport[1] := 4;
+      OutReport[2] := $0F;
+      OutReport[3] := 4;
+      OutReport[4] := 0;
+      OutReport[5] := 0;
+      OutReport[6] := 0;
+      OutReport[7] := 0;
+      OutReport[8] := 0;
+      FKeyer.FUsbInfo[0].FUSBIF4CW.WriteFile(OutReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.OutputReportByteLength, BR);
+      LeaveCriticalSection(FUsbPortDataLock);
+
+nextnext:
+   until Terminated;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** end - TPaddleThread.Execute - ****'));
+   {$ENDIF}
+end;
+
+procedure TdmZLogKeyer.paddle_dot();
+begin
+   FSendOK := False;
+   if FPTTEnabled then begin
+      ControlPTT(FWkTx, True);
+   end;
+   FSqueezeDotDash := 0;
+   SetCWSendBuf(0, 'p');
+   FSendOK := True;
+end;
+
+procedure TdmZLogKeyer.paddle_dash();
+begin
+   FSendOK := False;
+   if FPTTEnabled then begin
+      ControlPTT(FWkTx, True);
+   end;
+   FSqueezeDotDash := 1;
+   SetCWSendBuf(0, 'q');
+   FSendOK := True;
+end;
+
+procedure TdmZLogKeyer.paddle_finish();
+var
+   i: Integer;
+begin
+   FSendOK := False;
+   CWBufferSync.Enter();
+   try
+      for i := 1 to codemax do begin
+         if FCWSendBuf[0, i] = $A then begin
+            FCWSendBuf[0, i] := 9;
+         end;
+      end;
+
+      if FPTTEnabled then begin
+         SetCWSendBuf(0, 'o');
+      end;
+   finally
+      CWBufferSync.Leave();
+      FSendOK := True;
+   end;
+end;
+
+procedure TdmZLogKeyer.paddle_finish2();
+var
+   i: Integer;
+begin
+   FSendOK := False;
+   CWBufferSync.Enter();
+   try
+      for i := 1 to codemax do begin
+         if FCWSendBuf[0, i] = $A then begin
+            FCWSendBuf[0, i] := 9;
+         end;
+      end;
+   finally
+      CWBufferSync.Leave();
+      FSendOK := True;
+   end;
+end;
+
+procedure TdmZLogKeyer.Squeeze();
+begin
+   if FPaddleSqueeze = True then begin
+      if FSendOK = False then begin
+         Inc(FSqueezeDotDash);
+         FSqueezeDotDash := FSqueezeDotDash and 1;
+         if FSqueezeDotDash = 0 then begin
+            SetCWSendBufChar(0, Char('v'));
+         end
+         else begin
+            SetCWSendBufChar(0, Char('r'));
+         end;
+         FSendOK := True;
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.PaddleProc(fLeft, fRight, fPrevLeft, fPrevRight: Boolean);
+begin
+   // 左右OFFから左右どちらかがONになるタイミングでパドルイベントを発生
+   if ((fPrevRight = False) and (fPrevLeft = False)) and ((fRight = True) or (fLeft = True)) then begin
+      if Assigned(FOnPaddleEvent) then begin
+         FOnPaddleEvent(Self);
+      end;
+   end;
+
+   // パドル用キーヤー処理 USBIF4CW V2はスクイーズ操作不可
+   // パドル左右 OFF->ON 左右どっちかがOFFから両方ONを検出
+   if ((fPrevRight = False) or (fPrevLeft = False)) and ((fRight = True) and (fLeft = True)) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE SQUEEZE OFF->ON**'));
+      {$ENDIF}
+      paddle_finish2();
+
+      if FPTTEnabled then begin
+         ControlPTT(FWkTx, True);
+      end;
+      FPaddleSqueeze := True;
+      Squeeze();
+   end
+
+   // パドル右 ON->OFF 左右ONから左右どちらかがOFFを検出
+   else if ((fPrevRight = True) and (fPrevLeft = True)) and ((fRight = False) or (fLeft = False)) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE SQUEEZE ON->OFF**'));
+      {$ENDIF}
+      paddle_finish();
+
+      if FPaddleSqueeze = True then begin
+         FPaddleSqueeze := False;
+
+         if fLeft = True then begin
+            paddle_dot();
+         end;
+         if fRight = True then begin
+            paddle_dash();
+            paddle_dot();
+         end;
+      end;
+   end
+
+   // パドル右(DASH) OFF->ON
+   else if (fPrevRight = False) and (fRight = True) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE RIGHT OFF->ON**'));
+      {$ENDIF}
+      paddle_dash();
+   end
+
+   // パドル右(DASH) ON->OFF
+   else if (fPrevRight = True) and (fRight = False) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE RIGHT ON->OFF**'));
+      {$ENDIF}
+      paddle_finish();
+   end
+
+   // パドル左(DOT) OFF->ON
+   else if (fPrevLeft = False) and (fLeft = True) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE LEFT OFF->ON**'));
+      {$ENDIF}
+      paddle_dot();
+   end
+
+   // パドル左(DOT) ON->OFF
+   else if (fPrevLeft = True) and (fLeft = False) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE LEFT ON->OFF**'));
+      {$ENDIF}
+      paddle_finish();
+   end;
 end;
 
 function TdmZLogKeyer.usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
@@ -4103,6 +4310,5 @@ initialization
 
 finalization
    CWBufferSync.Free();
-
 
 end.
