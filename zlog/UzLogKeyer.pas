@@ -3277,6 +3277,7 @@ procedure TdmZLogKeyer.WinKeyerOpen(nPort: TKeyingPort);
 var
    Buff: array[0..10] of Byte;
    dwTick: DWORD;
+   mode: Byte;
 begin
    FWkInitializeMode := False;
    FWkRevision := 0;
@@ -3365,7 +3366,12 @@ begin
    Sleep(50);
 
    // set serial echo back to on
-   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
+   mode := WK_SETMODE_SERIALECHOBACK;
+   // Paddle reverse
+   if FPaddleReverse = True then begin
+      mode := mode or WK_SETMODE_PADDLESWAP;
+   end;
+   WinKeyerSetMode(mode);
 
    //set speed pot range  5 to 50wpm
    FillChar(Buff, SizeOf(Buff), 0);
@@ -3403,11 +3409,6 @@ begin
       Buff[0] := WK_GET_SPEEDPOT_CMD;
       FComKeying[0].SendData(@Buff, 1);
       Sleep(50);
-   end;
-
-   // Paddle reverse
-   if FPaddleReverse = True then begin
-      WinKeyerSetMode(WK_SETMODE_PADDLESWAP);
    end;
 
    // Set PTT Mode(PINCFG)
