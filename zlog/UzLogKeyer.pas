@@ -31,6 +31,7 @@ const
   WM_USER_WKCHANGEWPM = (WM_USER + 2);
   WM_USER_WKPADDLE = (WM_USER + 3);
   WM_USER_WKSENDNEXTCHAR2 = (WM_USER + 4);
+  WM_USER_POST_PADDLE = (WM_USER + 5);
 
 const
   USBIF4CW_KEY = $01;
@@ -2288,10 +2289,22 @@ end;
 procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
+//   mode: Byte;
 begin
    FTune := False;
    if FUseWinKeyer = True then begin
       WinKeyerClear();
+
+//      // Set PTT Mode(PINCFG)
+//      WinKeyerSetPinCfg(FPTTEnabled);
+//
+//      // set serial echo back to on
+//      mode := WK_SETMODE_SERIALECHOBACK;
+//      // Paddle reverse
+//      if FPaddleReverse = True then begin
+//         mode := mode or WK_SETMODE_PADDLESWAP;
+//      end;
+//      WinKeyerSetMode(mode);
    end
    else begin
       { SendOK:=False; }
@@ -2319,10 +2332,10 @@ begin
       FUserFlag := False;
 
       FSendOK := True;
+   end;
 
-      if FPTTEnabled then begin
-         ControlPTT(FWkTx, False);
-      end;
+   if FPTTEnabled then begin
+      ControlPTT(FWkTx, False);
    end;
 end;
 
@@ -3469,15 +3482,16 @@ procedure TdmZLogKeyer.WinKeyerClear();
 var
    Buff: array[0..10] of Byte;
 begin
-   FillChar(Buff, SizeOf(Buff), 0);
-   Buff[0] := WK_CLEAR_CMD;
-   FComKeying[0].SendData(@Buff, 1);
    FWkLastMessage := '';
    FWkAbort := False;
    FWkSendStatus := wkssNone;
    FWkMessageStr := '';
    FWkMessageIndex := 1;
-   WinKeyerControlPTT(False);
+
+   FillChar(Buff, SizeOf(Buff), 0);
+   Buff[0] := WK_CLEAR_CMD;
+   FComKeying[0].SendData(@Buff, 1);
+   Sleep(100);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -3516,10 +3530,8 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   if FUseWkSo2rNeo = True then begin
-      if fUsePttPort = True then begin
-         Buff[1] := Buff[1] or $1;
-      end;
+   if fUsePttPort = True then begin
+      Buff[1] := Buff[1] or $1;
    end;
 
    if FUseSideTone = True then begin
@@ -4004,6 +4016,7 @@ end;
 procedure TdmZLogKeyer.WndMethod(var msg: TMessage);
 var
    C: Char;
+   nID: Integer;
 begin
    case msg.Msg of
       WM_USER_WKSENDNEXTCHAR: begin
@@ -4068,13 +4081,29 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- ON ---'));
             {$ENDIF}
-
             if Assigned(FOnPaddleEvent) then begin
-               FOnPaddleEvent(Self);
+               if FWkSendStatus <> wkssNone then begin
+                  FOnPaddleEvent(Self);
+               end;
             end;
          end;
 
          msg.Result := 0;
+      end;
+
+      WM_USER_POST_PADDLE: begin
+         nID := msg.WParam;
+         if FKeyingPort[nID] = tkpUSB then begin
+            if Assigned(FUsbInfo[nID].FPORTDATA) then begin
+               EnterCriticalSection(FUsbPortDataLock);
+               FUsbInfo[nID].FPORTDATA.SetRigFlag(FWkTx);
+               if FGen3MicSelect = False then begin
+                  FUsbInfo[nID].FPORTDATA.SetVoiceFlag(FWkTx);
+               end;
+               SendUsbPortData(nID);
+               LeaveCriticalSection(FUsbPortDataLock);
+            end;
+         end;
       end;
 
       else begin

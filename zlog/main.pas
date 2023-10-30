@@ -4320,9 +4320,6 @@ begin
    dmZLogKeyer.PauseCW();
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
-   if dmZLogKeyer.UseWinKeyer = True then begin
-      dmZLogKeyer.WinKeyerClear();
-   end;
    FCQRepeatPlaying := False;
 end;
 
