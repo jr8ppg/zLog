@@ -2289,22 +2289,22 @@ end;
 procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
-//   mode: Byte;
+   mode: Byte;
 begin
    FTune := False;
    if FUseWinKeyer = True then begin
       WinKeyerClear();
 
-//      // Set PTT Mode(PINCFG)
-//      WinKeyerSetPinCfg(FPTTEnabled);
-//
-//      // set serial echo back to on
-//      mode := WK_SETMODE_SERIALECHOBACK;
-//      // Paddle reverse
-//      if FPaddleReverse = True then begin
-//         mode := mode or WK_SETMODE_PADDLESWAP;
-//      end;
-//      WinKeyerSetMode(mode);
+      // Set PTT Mode(PINCFG)
+      WinKeyerSetPinCfg(FPTTEnabled);
+
+      // set serial echo back to on
+      mode := WK_SETMODE_SERIALECHOBACK;
+      // Paddle reverse
+      if FPaddleReverse = True then begin
+         mode := mode or WK_SETMODE_PADDLESWAP;
+      end;
+      WinKeyerSetMode(mode);
    end
    else begin
       { SendOK:=False; }
@@ -3482,16 +3482,20 @@ procedure TdmZLogKeyer.WinKeyerClear();
 var
    Buff: array[0..10] of Byte;
 begin
-   FWkLastMessage := '';
-   FWkAbort := False;
-   FWkSendStatus := wkssNone;
-   FWkMessageStr := '';
-   FWkMessageIndex := 1;
-
-   FillChar(Buff, SizeOf(Buff), 0);
-   Buff[0] := WK_CLEAR_CMD;
-   FComKeying[0].SendData(@Buff, 1);
-   Sleep(100);
+   if FWkSendStatus = wkssNone then begin
+      FillChar(Buff, SizeOf(Buff), 0);
+      Buff[0] := WK_CLEAR_CMD;
+      FComKeying[0].SendData(@Buff, 1);
+      FWkLastMessage := '';
+      FWkAbort := False;
+      FWkSendStatus := wkssNone;
+      FWkMessageStr := '';
+      FWkMessageIndex := 1;
+      Sleep(50);
+   end
+   else begin
+      FWkAbort := True;
+   end;
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -3844,9 +3848,13 @@ begin
       {$ENDIF}
 
          if FWkAbort = True then begin
-            FWkAbort := False;
+            if FWkSendStatus <> wkssNone then begin
+               if Assigned(FOnSendFinishProc) then begin
+                  FOnSendFinishProc(nil, mCW, True);
+               end;
+            end;
             FWkSendStatus := wkssNone;
-            FWkLastMessage := '';
+            ClrBuffer();
             Break;
          end;
 
@@ -4070,8 +4078,6 @@ begin
       end;
 
       WM_USER_WKPADDLE: begin
-//         WinKeyerClear();
-
          if msg.LParam = 0 then begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- OFF ---'));
