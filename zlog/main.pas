@@ -674,6 +674,7 @@ type
     procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
     procedure OnZLogCqAbortProc( var Message: TMessage ); message WM_ZLOG_CQABORT;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
+    procedure OnPowerBroadcast( var Message: TMessage ); message WM_POWERBROADCAST;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -7150,6 +7151,16 @@ begin
 
       // DBT_DEVICEREMOVECOMPLETE
       $8004: begin
+         CQAbort(True);
+         FRigControl.ForcePowerOff();
+      end;
+   end;
+end;
+
+procedure TMainForm.OnPowerBroadcast( var Message: TMessage );
+begin
+   case Message.WParam of
+      PBT_APMSUSPEND: begin
          CQAbort(True);
          FRigControl.ForcePowerOff();
       end;
