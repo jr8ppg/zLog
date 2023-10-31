@@ -553,6 +553,8 @@ type
     checkUseContestPeriod: TCheckBox;
     checkUsbif4cwUsePaddle: TCheckBox;
     checkUseResume: TCheckBox;
+    checkTurnoffSleep: TCheckBox;
+    checkTurnonResume: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1050,6 +1052,8 @@ begin
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
       Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
+      Settings._turnoff_sleep := checkTurnoffSleep.Checked;
+      Settings._turnon_resume := checkTurnonResume.Checked;
 
       // Ant Control
       Settings._useant[b19]   := comboAnt19.ItemIndex;
@@ -1585,6 +1589,8 @@ begin
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
       checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
+      checkTurnoffSleep.Checked := Settings._turnoff_sleep;
+      checkTurnonResume.Checked := Settings._turnon_resume;
 
       // Ant Control
       comboAnt19.ItemIndex    := Settings._useant[b19];

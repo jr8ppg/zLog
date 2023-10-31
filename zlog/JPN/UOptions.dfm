@@ -4,7 +4,7 @@ object formOptions: TformOptions
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
-  ClientWidth = 444
+  ClientWidth = 471
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -2765,14 +2765,14 @@ object formOptions: TformOptions
       Caption = #12522#12464#21046#24481
       object Label45: TLabel
         Left = 8
-        Top = 127
+        Top = 125
         Width = 114
         Height = 13
         Caption = #29694#22312#21608#27874#25968#12434'Z-Server'#12395#36865#20449
       end
       object Label46: TLabel
         Left = 130
-        Top = 150
+        Top = 148
         Width = 20
         Height = 13
         Caption = #31186#27598
@@ -2787,7 +2787,7 @@ object formOptions: TformOptions
       end
       object cbDontAllowSameBand: TCheckBox
         Left = 8
-        Top = 34
+        Top = 32
         Width = 141
         Height = 32
         Caption = #65298#21488#12398#12522#12464#12434#21516#12376#12496#12531#12489#12395#12375#12394#12356
@@ -2796,7 +2796,7 @@ object formOptions: TformOptions
       end
       object SendFreqEdit: TEdit
         Left = 73
-        Top = 146
+        Top = 144
         Width = 35
         Height = 21
         Hint = 'Only when using Z-Server network'
@@ -2806,7 +2806,7 @@ object formOptions: TformOptions
       end
       object cbRecordRigFreq: TCheckBox
         Left = 8
-        Top = 68
+        Top = 66
         Width = 161
         Height = 19
         Caption = #36939#29992#21608#27874#25968#12434#35352#37682#12377#12427
@@ -2815,7 +2815,7 @@ object formOptions: TformOptions
       end
       object cbAutoBandMap: TCheckBox
         Left = 8
-        Top = 90
+        Top = 88
         Width = 141
         Height = 31
         Caption = #12496#12531#12489#12473#12467#12540#12503#33258#21205#20316#25104
@@ -2824,11 +2824,11 @@ object formOptions: TformOptions
       end
       object GroupBox15: TGroupBox
         Left = 6
-        Top = 230
+        Top = 234
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
-        TabOrder = 8
+        TabOrder = 10
         object Label28: TLabel
           Left = 185
           Top = 21
@@ -2944,13 +2944,13 @@ object formOptions: TformOptions
       end
       object updownSendFreqInterval: TUpDown
         Left = 108
-        Top = 146
+        Top = 144
         Width = 16
         Height = 21
         Associate = SendFreqEdit
         Max = 300
         Position = 60
-        TabOrder = 6
+        TabOrder = 5
       end
       object GroupBox25: TGroupBox
         Left = 181
@@ -2958,7 +2958,7 @@ object formOptions: TformOptions
         Width = 248
         Height = 206
         Caption = #12450#12531#12486#12490#20999#26367
-        TabOrder = 7
+        TabOrder = 9
         object Label104: TLabel
           Left = 8
           Top = 21
@@ -3338,11 +3338,27 @@ object formOptions: TformOptions
       end
       object checkIgnoreRigMode: TCheckBox
         Left = 8
-        Top = 172
+        Top = 170
         Width = 141
         Height = 18
         Caption = #12522#12464#12398#12514#12540#12489#12434#28961#35222
-        TabOrder = 5
+        TabOrder = 6
+      end
+      object checkTurnoffSleep: TCheckBox
+        Left = 8
+        Top = 191
+        Width = 168
+        Height = 18
+        Caption = #12473#12522#12540#12503#26178#12399'OFF'#12395#12377#12427
+        TabOrder = 7
+      end
+      object checkTurnonResume: TCheckBox
+        Left = 8
+        Top = 212
+        Width = 168
+        Height = 18
+        Caption = #20877#38283#26178#12399'ON'#12395#12377#12427
+        TabOrder = 8
       end
     end
     object tabsheetPath: TTabSheet
@@ -5114,13 +5130,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#21109#33521#35282#65422#65439#65391#65420#65439#20307
+          FontName = 'Cascadia Mono ExtraLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 9
+          ItemIndex = 43
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

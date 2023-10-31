@@ -214,6 +214,8 @@ type
     _autobandmap: boolean;
     _send_freq_interval: Integer;
     _ignore_rig_mode: Boolean;
+    _turnoff_sleep: Boolean;
+    _turnon_resume: Boolean;
 
     _searchafter : integer; // 0 default. for super / partial check
     _savewhennocw : boolean; // def=false. save when cw is not being sent
@@ -1092,6 +1094,12 @@ begin
       // Ignore RIG mode
       Settings._ignore_rig_mode := ini.ReadBool('Rig', 'IgnoreRigMode', False);
 
+      // Turn off when in sleep mode
+      Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
+
+      // Turn on when resume
+      Settings._turnon_resume := ini.ReadBool('Rig', 'TurnOnWhenResume', False);
+
       // Anti Zeroin
       Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
       Settings.FAntiZeroinShiftMax := Min(ini.ReadInteger('Rig', 'anti_zeroin_shift_max', 100), 200);
@@ -1754,6 +1762,12 @@ begin
 
       // Ignore RIG mode
       ini.WriteBool('Rig', 'IgnoreRigMode', Settings._ignore_rig_mode);
+
+      // Turn off when in sleep mode
+      ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);
+
+      // Turn on when resume
+      ini.WriteBool('Rig', 'TurnOnWhenResume', Settings._turnon_resume);
 
       // Anti Zeroin
       ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);

@@ -7160,9 +7160,17 @@ end;
 procedure TMainForm.OnPowerBroadcast( var Message: TMessage );
 begin
    case Message.WParam of
+      PBT_APMRESUMESUSPEND: begin
+         if dmZLogGlobal.Settings._turnon_resume then begin
+            FRigControl.ForcePowerOn();
+         end;
+      end;
+
       PBT_APMSUSPEND: begin
-         CQAbort(True);
-         FRigControl.ForcePowerOff();
+         if dmZLogGlobal.Settings._turnoff_sleep then begin
+            CQAbort(True);
+            FRigControl.ForcePowerOff();
+         end;
       end;
    end;
 end;
