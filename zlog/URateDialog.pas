@@ -516,7 +516,7 @@ begin
       end;
    end;
    finally
-      timerRefresh.Enabled := True;
+      timerRefresh.Enabled := False;
    end;
 end;
 

@@ -536,7 +536,7 @@ begin
 
    TargetToGrid2(dmZLogGlobal.Target);
    finally
-      timerRefresh.Enabled := True;
+      timerRefresh.Enabled := False;
    end;
 end;
 

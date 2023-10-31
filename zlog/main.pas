@@ -6472,6 +6472,15 @@ begin
 
       CWPauseButton.Enabled := False;
       CWStopButton.Enabled := False;
+
+      if FInitialized = True then begin
+         if Assigned(FRateDialog) then begin
+            FRateDialog.UpdateGraph();
+         end;
+         if Assigned(FRateDialogEx) then begin
+            FRateDialogEx.UpdateGraph();
+         end;
+      end;
    end;
 
    if CurrentQSO.Mode = mRTTY then begin
