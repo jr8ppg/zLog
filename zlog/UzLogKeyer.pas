@@ -3491,6 +3491,7 @@ begin
       FWkSendStatus := wkssNone;
       FWkMessageStr := '';
       FWkMessageIndex := 1;
+      FWkStatus := 0;
       Sleep(50);
    end
    else begin
@@ -4056,6 +4057,7 @@ begin
             FWkSendStatus := wkssNone;
             FWkMessageIndex := 1;
             FWkMessageStr := '';
+            FWkStatus := 0;
 
             {$IFDEF DEBUG}
             OutputDebugString(PChar(' *** Send Finish !!! ***'));
