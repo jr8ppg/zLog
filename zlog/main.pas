@@ -857,6 +857,7 @@ type
 
     FInitialized: Boolean;
 
+    FPrevTotalQSO: Integer;
     FTempQSOList: TQSOList;
     clStatusLine : TColor;
     OldCallsign, OldNumber : string;
@@ -2130,6 +2131,7 @@ begin
    FPastEditMode := False;
    FQsyViolation := False;
    FQsyCountPrevHour := '';
+   FPrevTotalQSO := 0;
 
    // Out of contest period•\Ž¦
    FFirstOutOfContestPeriod := True;
@@ -6474,13 +6476,14 @@ begin
       CWPauseButton.Enabled := False;
       CWStopButton.Enabled := False;
 
-      if FInitialized = True then begin
+      if (FInitialized = True) and (FPrevTotalQSO <> Log.TotalQSO) then begin
          if Assigned(FRateDialog) then begin
             FRateDialog.UpdateGraph();
          end;
          if Assigned(FRateDialogEx) then begin
             FRateDialogEx.UpdateGraph();
          end;
+         FPrevTotalQSO := Log.TotalQSO;
       end;
    end;
 
