@@ -422,9 +422,15 @@ begin
       Result := False;
 end;
 
-procedure TRig.MoveToLastFreq;
+procedure TRig.MoveToLastFreq();
+var
+   b: TBand;
 begin
    SetFreq(FLastFreq, False);
+
+   // Antenna Select
+   b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
+   AntSelect(dmZLogGlobal.Settings._useant[b]);
 
    if FLastMode <> _currentmode then begin
       SetMode(FLastMode);

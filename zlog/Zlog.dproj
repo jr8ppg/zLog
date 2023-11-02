@@ -68,7 +68,7 @@
         <SanitizedProjectName>zlog</SanitizedProjectName>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1041</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.8.6.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.8.7.2;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -76,20 +76,20 @@
         <VerInfo_MinorVer>8</VerInfo_MinorVer>
         <DCC_MapFile>3</DCC_MapFile>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
-        <VerInfo_Release>6</VerInfo_Release>
+        <VerInfo_Release>7</VerInfo_Release>
         <DCC_OutputDRCFile>true</DCC_OutputDRCFile>
+        <VerInfo_Build>2</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.6.6;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.7.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_Build>6</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
@@ -97,10 +97,9 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.6.6;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.7.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_Build>6</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -112,14 +111,12 @@
         <BT_BuildType>Debug</BT_BuildType>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.6.6;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.7.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_Build>6</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.6.6;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_Build>6</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.7.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -129,19 +126,17 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.6.6;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.7.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <VerInfo_Debug>true</VerInfo_Debug>
-        <VerInfo_Build>6</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.6.6;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.8.7.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2023 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.8.0.0;Comments=</VerInfo_Keys>
         <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
         <DCC_RangeChecking>true</DCC_RangeChecking>
-        <VerInfo_Build>6</VerInfo_Build>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -516,6 +511,10 @@
             <Form>formCWMonitor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UELogCabrillo.pas">
+            <Form>formELogCabrillo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -704,8 +703,8 @@
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">Win32\Release\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item2">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item2">Win32\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item5">UBasicScore.dfm</RDP_Source_Files>
@@ -816,7 +815,8 @@
                     <RDP_Source_Files Name="Item110">UOperatorPowerDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item111">UDateDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item112">UCWMonitor.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item113">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item113">UELogCabrillo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item114">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

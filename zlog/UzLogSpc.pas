@@ -18,6 +18,7 @@ type
     FCallsign : string;
     FNumber : string;
     FDisplay: string;
+    FSerial: Integer;
     procedure SetNumber(v: string);
     function GetText(): string;
   public
@@ -27,6 +28,7 @@ type
     property Callsign: string read FCallsign write FCallsign;
     property Number: string read FNumber write SetNumber;
     property Text: string read GetText;
+    property Serial: Integer read FSerial write FSerial;
   end;
 
   TSuperDataComparer = class(TComparer<TSuperData>)
@@ -34,14 +36,22 @@ type
     function Compare(const Left, Right: TSuperData): Integer; override;
   end;
 
+  TSuperDataComparer2 = class(TComparer<TSuperData>)
+  public
+    function Compare(const Left, Right: TSuperData): Integer; override;
+  end;
+
   TSuperDataList = class(TObjectList<TSuperData>)
   private
     FSuperDataComparer: TSuperDataComparer;
+    FSuperDataComparer2: TSuperDataComparer2;
   public
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
     function IndexOf(SD: TSuperData): Integer;
     procedure Add(SD: TSuperData);
+    procedure SortBySerial();
+    procedure SaveToFile(filename: string);
   end;
 
   TSuperIndex = class(TObject)
@@ -156,6 +166,7 @@ begin
    FDate := 0;
    FCallsign := '';
    FNumber := '';
+   FSerial := 0;
 end;
 
 constructor TSuperData.Create(D: TDateTime; C, N: string);
@@ -191,12 +202,14 @@ constructor TSuperDataList.Create(OwnsObjects: Boolean);
 begin
    Inherited Create(OwnsObjects);
    FSuperDataComparer := TSuperDataComparer.Create();
+   FSuperDataComparer2 := TSuperDataComparer2.Create();
 end;
 
 destructor TSuperDataList.Destroy();
 begin
    Inherited;
    FSuperDataComparer.Free();
+   FSuperDataComparer2.Free();
 end;
 
 function TSuperDataList.IndexOf(SD: TSuperData): Integer;
@@ -224,6 +237,26 @@ begin
    else begin
       Insert(Index, SD);
    end;
+end;
+
+procedure TSuperDataList.SortBySerial();
+begin
+   Sort(FSuperDataComparer2);
+end;
+
+procedure TSuperDataList.SaveToFile(filename: string);
+var
+   F: TextFile;
+   i: Integer;
+begin
+   AssignFile(F, filename);
+   ReWrite(F);
+
+   for i := 0 to Count - 1 do begin
+      WriteLn(F, items[i].Callsign + #09 + items[i].Number + #09 + IntToStr(items[i].Serial));
+   end;
+
+   CloseFile(F);
 end;
 
 { TSuperIndex }
@@ -313,6 +346,7 @@ begin
    if BinarySearch(SI, Index, FIndexComparer) = True then begin
       // 重複有りならリストに追加する
       if FAcceptDuplicates = True then begin
+         SD.Serial := Items[Index].List.Count + 1;
          Items[Index].List.Add(SD);
       end
       else begin  // 重複無しは日付をUPDATEする
@@ -326,6 +360,7 @@ begin
       SI.Free();
    end
    else begin  // 無ければIndexリストに追加
+      SD.Serial := 1;
       SI.List.Add(SD);
       Insert(Index, SI);
    end;
@@ -352,6 +387,13 @@ function TSuperDataComparer.Compare(const Left, Right: TSuperData): Integer;
 begin
    Result := CompareText(Left.Callsign, Right.Callsign) +
              CompareText(Left.Number, Right.Number) * 10;
+end;
+
+{ TSuperDataComparer2 }
+
+function TSuperDataComparer2.Compare(const Left, Right: TSuperData): Integer;
+begin
+   Result := Left.Serial - Right.Serial;
 end;
 
 { TSuperListComparer1 }
@@ -444,7 +486,8 @@ end;
 procedure TSuperCheckDataLoadThread.Execute();
 var
    strFolder: string;
-   //x, y: Integer;
+   i: Integer;
+   x, y: Integer;
    {$IFDEF DEBUG}
    dwTick: DWORD;
    {$ENDIF}
@@ -477,7 +520,20 @@ begin
          end;
       end;
 
-      //FSuperList.SaveToFile('superlist.txt');
+      // ロード順に並び替え
+      for i := 0 to FSuperList.Count - 1 do begin
+         FSuperList.Items[i].List.SortBySerial();
+         //FSuperList.Items[i].List.SaveToFile(FSuperList.Items[i].Callsign + '_list.txt');
+      end;
+
+      for x := 0 to 255 do begin
+         for y := 0 to 255 do begin
+            for i := 0 to FPSuperListTwoLetterMatrix^[x, y].Count - 1 do begin
+               FPSuperListTwoLetterMatrix^[x, y].Items[i].List.SortBySerial();
+            end;
+         end;
+      end;
+
    finally
       {$IFDEF DEBUG}
       OutputDebugString(PChar('--- END TSuperCheckDataLoadThread --- time=' + IntToStr(GetTickCount() - dwTick) + 'ms'));

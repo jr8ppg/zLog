@@ -60,6 +60,7 @@ type
     N1: TMenuItem;
     menuDispAlternating: TMenuItem;
     menuDispOrder: TMenuItem;
+    timerRefresh: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -77,6 +78,7 @@ type
     procedure menuAchievementRateClick(Sender: TObject);
     procedure ScoreGrid2DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure menuDispAlternatingClick(Sender: TObject);
+    procedure timerRefreshTimer(Sender: TObject);
   private
     { Private declarations }
     FBand: TBand;
@@ -340,6 +342,13 @@ begin
 //      FormStyle := fsNormal;
 end;
 
+procedure TRateDialogEx.timerRefreshTimer(Sender: TObject);
+begin
+   if timerRefresh.Enabled = True then begin
+      UpdateGraph();
+   end;
+end;
+
 procedure TRateDialogEx.check3DClick(Sender: TObject);
 begin
    Chart1.View3D := TCheckBox(Sender).Checked;
@@ -367,6 +376,8 @@ var
       Result := IncHour(dt, (FShowLast * -1) + 1);
    end;
 begin
+   timerRefresh.Enabled := False;
+   try
    for b := b19 to bTarget do begin
       FGraphSeries[b].Clear();
    end;
@@ -524,6 +535,9 @@ begin
    end;
 
    TargetToGrid2(dmZLogGlobal.Target);
+   finally
+      timerRefresh.Enabled := False;
+   end;
 end;
 
 function TRateDialogEx.UpdateGraphOriginal(hh: Integer): Integer;

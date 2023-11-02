@@ -35,6 +35,7 @@ library Zlog;
 {ITE} {DFMFileType} {UCWMonitor.dfm}
 {ITE} {DFMFileType} {UDateDialog.dfm}
 {ITE} {DFMFileType} {UEditDialog.dfm}
+{ITE} {DFMFileType} {UELogCabrillo.dfm}
 {ITE} {DFMFileType} {UELogJarl1.dfm}
 {ITE} {DFMFileType} {UELogJarl2.dfm}
 {ITE} {DFMFileType} {UExceptionDialog.dfm}
@@ -146,6 +147,7 @@ library Zlog;
 {$R 'UCWMonitor.dfm' 'formCWMonitor:TForm'}
 {$R 'UDateDialog.dfm' 'DateDialog:TForm'}
 {$R 'UEditDialog.dfm' 'EditDialog:TForm'}
+{$R 'UELogCabrillo.dfm' 'formELogCabrillo:TForm'}
 {$R 'UELogJarl1.dfm' 'formELogJarl1:TForm'}
 {$R 'UELogJarl2.dfm' 'formELogJarl2:TForm'}
 {$R 'UExceptionDialog.dfm' 'ExceptionDialog:TForm'}

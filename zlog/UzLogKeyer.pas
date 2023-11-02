@@ -14,7 +14,7 @@ uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
   System.SyncObjs,
-  UzLogConst
+  UzLogConst, WinKeyer
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -31,6 +31,7 @@ const
   WM_USER_WKCHANGEWPM = (WM_USER + 2);
   WM_USER_WKPADDLE = (WM_USER + 3);
   WM_USER_WKSENDNEXTCHAR2 = (WM_USER + 4);
+  WM_USER_POST_PADDLE = (WM_USER + 5);
 
 const
   USBIF4CW_KEY = $01;
@@ -69,6 +70,17 @@ type
     constructor Create(AKeyer: TdmZLogKeyer);
   end;
 
+  TPaddleThread = class(TThread)
+  private
+    { Private declarations }
+    FKeyer: TdmZLogKeyer;
+    FPrevInReport: array[0..8] of Byte;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(AKeyer: TdmZLogKeyer);
+  end;
+
   TUsbPortDataArray = array[0..1] of Byte;
 
   TUsbPortInfo = class
@@ -99,6 +111,8 @@ type
     ZComRxRigSelect: TCommPortDriver;
     ZComKeying3: TCommPortDriver;
     ZComTxRigSelect: TCommPortDriver;
+    ZComKeying4: TCommPortDriver;
+    ZComKeying5: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -116,6 +130,7 @@ type
     FComKeying: array[0..MAXPORT] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
+    FPaddleThread: TPaddleThread;
 
     HidController: TJvHidDeviceController;
     usbdevlist: TList<TJvHIDDevice>;
@@ -132,8 +147,6 @@ type
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
     {$ENDIF}
-
-    FUsbPortDataLock: TRTLCriticalSection;
 
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
     FVoiceFlag: Integer;  //temporary
@@ -171,8 +184,7 @@ type
 
     cwstrptr: Integer;
     tailcwstrptr: Integer;
-    mousetail: Integer; {pointer in CWSendBuf}
-
+    
     callsignptr: Integer; {char pos. not absolute pos}
 
     FDotCount: Integer;
@@ -191,7 +203,11 @@ type
     FSideToneVolume: Integer;
     FSideTonePitch: Integer;       {side tone pitch}
 
+    FUsePaddleKeyer: Boolean;
+
     FPaddleReverse: Boolean;
+    FPaddleSqueeze: Boolean;
+    FSqueezeDotDash: Integer;
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
@@ -218,17 +234,16 @@ type
     FWkStatus: Integer;
     FWkEcho: Integer;
     FWkLastMessage: string;
-    FWkCallsignSending: Boolean;
     FWkCallsignIndex: Integer;
     FWkCallsignStr: string;
     FWkAbort: Boolean;
+    FWkLastSendChar: Char;
     FUseWkSo2rNeo: Boolean;
     FSo2rNeoCanRxSel: Boolean;
     FSo2rNeoUseRxSelect: Boolean;
-
-    FWkMessageSending: Boolean;
     FWkMessageIndex: Integer;
     FWkMessageStr: string;
+    FWkSendStatus: TWinKeyerSendStatus;
 
     // SO2R support
     FSo2rRxSelectPort: TKeyingPort;
@@ -262,6 +277,11 @@ type
     procedure USB_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
+
+    procedure paddle_dot();
+    procedure paddle_dash();
+    procedure paddle_finish();
+    procedure paddle_finish2();
 
     procedure WinKeyerOpen(nPort: TKeyingPort);
     procedure WinKeyerClose();
@@ -332,8 +352,13 @@ type
     property KeyingSignalReverse[Index: Integer]: Boolean read GetKeyingSignalReverse write SetKeyingSignalReverse;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
+    property UsePaddleKeyer: Boolean read FUsePaddleKeyer write FUsePaddleKeyer;
     property PaddleReverse: Boolean read FPaddleReverse write FPaddleReverse;
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
+
+    // paddle support
+    procedure Squeeze();
+    procedure PaddleProc(fLeft, fRight, fPrevLeft, fPrevRight: Boolean);
 
     // USBIF4CW support
     function usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
@@ -353,8 +378,6 @@ type
     property UseWkOutpSelect: Boolean read FUseWkOutpSelect write FUseWkOutpSelect;
     property UseWkIgnoreSpeedPot: Boolean read FUseWkIgnoreSpeedPot write FUseWkIgnoreSpeedPot;
     property WinKeyerRevision: Integer read FWkRevision;
-    property WkCallsignSending: Boolean read FWkCallsignSending write FWkCallsignSending;
-    procedure WinKeyerSendCallsign(S: string);
     procedure WinKeyerSendChar(C: Char);
     procedure WinKeyerSendStr(nID: Integer; S: string);
     procedure WinKeyerSendStr2(S: string);
@@ -395,6 +418,7 @@ type
 var
   dmZLogKeyer: TdmZLogKeyer;
   CWBufferSync: TCriticalSection;
+  FUsbPortDataLock: TRTLCriticalSection;
 
 const
   USBIF4CW_VENDORID = $BFE;
@@ -404,9 +428,6 @@ const
   BGKCALLMAX = 16;
 
 implementation
-
-uses
-  WinKeyer;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -481,6 +502,7 @@ begin
    FEISpaceFactor := 100; {space length factor after E and I}
 
    FMonitorThread := nil;
+   FPaddleThread := nil;
    FOnCallsignSentProc := nil;
    FOnOneCharSentProc := nil;
    FOnSendFinishProc := nil;
@@ -505,6 +527,7 @@ begin
    FTone.Free();
    {$ENDIF}
    FMonitorThread.Free();
+   FPaddleThread.Free();
    COM_OFF();
    USB_OFF();
    DeallocateHWnd(FWnd);
@@ -575,6 +598,10 @@ var
    {$ENDIF}
    p: PBYTE;
    nID: BYTE;
+//   fPrevRight: Boolean;
+//   fPrevLeft: Boolean;
+   fPaddleRight: Boolean;
+   fPaddleLeft: Boolean;
 begin
    if (FKeyingPort[0] <> tkpUSB) and
       (FKeyingPort[1] <> tkpUSB) and
@@ -599,6 +626,11 @@ begin
    {$IFDEF DEBUG}
 //   OutputDebugString(PChar('**ID=[' + IntToStr(nID) + ']**'));
    {$ENDIF}
+
+   // パドル利用有りならここまで
+   if FUsePaddleKeyer = True then begin
+      Exit;
+   end;
 
    {$IFDEF DEBUG}
    s := IntToHex(p[0], 2) + ' ' +
@@ -628,19 +660,28 @@ begin
       FUsbInfo[nID].FPORTDATA.FUsbPortIn[0] := p[6];
       FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] := p[7];
 
-      // パドル入力があったか？
-      if ((FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0) or
-         ((FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0) then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('**PADDLE IN**'));
-         {$ENDIF}
+      // パドル状況
+      fPaddleRight := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0;
+      fPaddleLeft := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0;
 
-         // fire event
-         if usbif4cwGetVersion(nID) >= 20 then begin
+//      fPrevRight := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $04) = 0;
+//      fPrevLeft := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $01) = 0;
+
+      if ((FUsePaddleKeyer = False) and (usbif4cwGetVersion(nID) >= 20)) then begin
+         // パドル入力があったか？
+         if fPaddleRight or fPaddleLeft then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**PADDLE IN**'));
+            {$ENDIF}
+
+            // fire event
             if Assigned(FOnPaddleEvent) then begin
                FOnPaddleEvent(Self);
             end;
          end;
+      end
+      else begin  // 使う
+//         PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
       end;
 
       CopyMemory(@FUsbInfo[nID].FPORTDATA.FPrevPortIn, p, 8);
@@ -1003,7 +1044,7 @@ begin
       S := WinKeyerBuildMessage(C);
 
       // 初回送信？
-      if FWkMessageSending = False then begin
+      if FWkSendStatus = wkssNone then begin
          // PTT-ON
          ControlPTT(nID, True);
 
@@ -1013,7 +1054,7 @@ begin
          end;
 
          // 送信中
-         FWkMessageSending := True;
+         FWkSendStatus := wkssMessage;
 
          // S[1]が$1bは合わせ文字 $1bはecho backしない
          if Char(S[1]) = Char($1b) then begin
@@ -1274,7 +1315,6 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
    begin
       cwstrptr := 0;
       callsignptr := 0;
-      mousetail := 1;
       tailcwstrptr := 1;
       FCWSendBuf[FSelectedBuf, 1] := $FF;
       FSendChar := False;
@@ -1342,6 +1382,7 @@ begin
             FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
          end;
 
+         // dot
          1: begin
             CW_ON(FWkTx);
             if FUseSideTone then begin
@@ -1352,6 +1393,7 @@ begin
             FSendChar := True;
          end;
 
+         // dash
          3: begin
             CW_ON(FWkTx);
             if FUseSideTone then begin
@@ -1389,11 +1431,18 @@ begin
            5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end;
          *)
 
+         // next char
          9: begin
             cwstrptr := (cwstrptr div codemax + 1) * codemax;
             if Assigned(FOnOneCharSentProc) and FSendChar then begin
                FOnOneCharSentProc(Self);
             end;
+         end;
+
+         // repeat
+         $A: begin
+            cwstrptr := 0;
+            tailcwstrptr := 1;
          end;
 
          $A1: begin
@@ -1548,7 +1597,9 @@ begin
 
    FKeyerWeight := 50;
    FUseSideTone := True;
+   FUsePaddleKeyer := False;
    FPaddleReverse := False;
+   FPaddleSqueeze := False;
    FKeyerWPM := 1;
 
    timeBeginPeriod(1);
@@ -1946,6 +1997,7 @@ begin
    FCodeTable[Ord('/')][10] := 2;
    FCodeTable[Ord('/')][11] := 9;
 
+   // AR
    FCodeTable[Ord('a')][1] := 1;
    FCodeTable[Ord('a')][2] := 0;
    FCodeTable[Ord('a')][3] := 3;
@@ -1958,6 +2010,7 @@ begin
    FCodeTable[Ord('a')][10] := 2;
    FCodeTable[Ord('a')][11] := 9;
 
+   // BK
    FCodeTable[Ord('b')][1] := 3;
    FCodeTable[Ord('b')][2] := 0;
    FCodeTable[Ord('b')][3] := 1;
@@ -1974,6 +2027,7 @@ begin
    FCodeTable[Ord('b')][14] := 2;
    FCodeTable[Ord('b')][15] := 9;
 
+   // VA
    FCodeTable[Ord('s')][1] := 1;
    FCodeTable[Ord('s')][2] := 0;
    FCodeTable[Ord('s')][3] := 1;
@@ -1988,6 +2042,7 @@ begin
    FCodeTable[Ord('s')][12] := 2;
    FCodeTable[Ord('s')][13] := 9;
 
+   // KN
    FCodeTable[Ord('k')][1] := 3;
    FCodeTable[Ord('k')][2] := 0;
    FCodeTable[Ord('k')][3] := 1;
@@ -2000,6 +2055,7 @@ begin
    FCodeTable[Ord('k')][10] := 2;
    FCodeTable[Ord('k')][11] := 9;
 
+   // BT
    FCodeTable[Ord('t')][1] := 3;
    FCodeTable[Ord('t')][2] := 0;
    FCodeTable[Ord('t')][3] := 1;
@@ -2010,15 +2066,34 @@ begin
    FCodeTable[Ord('t')][8] := 0;
    FCodeTable[Ord('t')][9] := 3;
    FCodeTable[Ord('t')][10] := 2;
-   FCodeTable[Ord('t')][11] := 9;
+   FCodeTable[Ord('t')][11] := 9;   { Next char }
 
+   // PADDLE用DOT
    FCodeTable[Ord('p')][1] := 1;
    FCodeTable[Ord('p')][2] := 0;
-   FCodeTable[Ord('p')][3] := 9;
+   FCodeTable[Ord('p')][3] := $A;   { repeat }
 
+   // PADDLE用DASH
    FCodeTable[Ord('q')][1] := 3;
    FCodeTable[Ord('q')][2] := 0;
-   FCodeTable[Ord('q')][3] := 9;
+   FCodeTable[Ord('q')][3] := $A;   { repeat }
+
+   // PADDLE用SQUEEZE(DASH)
+   FCodeTable[Ord('r')][1] := 3;
+   FCodeTable[Ord('r')][2] := 0;
+   FCodeTable[Ord('r')][3] := 9;    { Next char }
+
+   // PADDLE用SQUEEZE(DOT)
+   FCodeTable[Ord('v')][1] := 1;
+   FCodeTable[Ord('v')][2] := 0;
+   FCodeTable[Ord('v')][3] := 9;    { Next char }
+
+   // PADDLE用PTTOFF
+   FCodeTable[Ord('o')][1] := 0;
+   FCodeTable[Ord('o')][2] := $A1;  { set Hold Counter }
+   FCodeTable[Ord('o')][3] := $A3;  { set PTT delay }
+   FCodeTable[Ord('o')][4] := $1F;  { PTT off }
+   FCodeTable[Ord('o')][5] := 9;
 
    FCodeTable[Ord('?')][1] := 1;
    FCodeTable[Ord('?')][2] := 0;
@@ -2056,28 +2131,28 @@ begin
 
    FCodeTable[Ord('#')][1] := $BB;
 
-   FCodeTable[Ord('*')][1] := 9; { skips to the next char }
-   FCodeTable[Ord(':')][1] := 9; { skips to the next char; callsign 1st char }
+   FCodeTable[Ord('*')][1] := 9;    { skips to the next char }
+   FCodeTable[Ord(':')][1] := 9;    { skips to the next char; callsign 1st char }
 
-   FCodeTable[Ord('^')][1] := $99; { pause }
+   FCodeTable[Ord('^')][1] := $99;  { pause }
    FCodeTable[Ord('^')][2] := 9;
 
-   FCodeTable[Ord('(')][1] := $10; { PTT on }
-   FCodeTable[Ord('(')][2] := $55; { set PTT delay }
+   FCodeTable[Ord('(')][1] := $10;  { PTT on }
+   FCodeTable[Ord('(')][2] := $55;  { set PTT delay }
    FCodeTable[Ord('(')][3] := 9;
 
-   FCodeTable[Ord(')')][1] := $A1; { set Hold Counter }
-   FCodeTable[Ord(')')][2] := $A3; { set PTT delay }
-   FCodeTable[Ord(')')][3] := $1F; { PTT off }
+   FCodeTable[Ord(')')][1] := $A1;  { set Hold Counter }
+   FCodeTable[Ord(')')][2] := $A3;  { set PTT delay }
+   FCodeTable[Ord(')')][3] := $1F;  { PTT off }
    FCodeTable[Ord(')')][4] := 9;
 
-   FCodeTable[_inccw][1] := $41; { IncWPM }
+   FCodeTable[_inccw][1] := $41;    { IncWPM }
    FCodeTable[_inccw][2] := 9;
 
-   FCodeTable[Ord('u')][1] := $41; { IncWPM }
+   FCodeTable[Ord('u')][1] := $41;  { IncWPM }
    FCodeTable[Ord('u')][2] := 9;
 
-   FCodeTable[_deccw][1] := $42; { DecWPM }
+   FCodeTable[_deccw][1] := $42;    { DecWPM }
    FCodeTable[_deccw][2] := 9;
 
    for n := 1 to codemax do begin
@@ -2100,6 +2175,11 @@ begin
    end;
    FMonitorThread.Start();
 
+   if FPaddleThread = nil then begin
+      FPaddleThread := TPaddleThread.Create(Self);
+   end;
+   FPaddleThread.Start();
+
    FInitialized := True;
 end;
 
@@ -2113,6 +2193,12 @@ begin
       FMonitorThread.Terminate();
       FMonitorThread.Free();
       FMonitorThread := nil;
+   end;
+
+   if Assigned(FPaddleThread) then begin
+      FPaddleThread.Terminate();
+      FPaddleThread.Free();
+      FPaddleThread := nil;
    end;
 
    if FInitialized = False then begin
@@ -2203,10 +2289,22 @@ end;
 procedure TdmZLogKeyer.ClrBuffer;
 var
    m: Integer;
+   mode: Byte;
 begin
    FTune := False;
    if FUseWinKeyer = True then begin
       WinKeyerClear();
+
+      // Set PTT Mode(PINCFG)
+      WinKeyerSetPinCfg(FPTTEnabled);
+
+      // set serial echo back to on
+      mode := WK_SETMODE_SERIALECHOBACK;
+      // Paddle reverse
+      if FPaddleReverse = True then begin
+         mode := mode or WK_SETMODE_PADDLESWAP;
+      end;
+      WinKeyerSetMode(mode);
    end
    else begin
       { SendOK:=False; }
@@ -2221,7 +2319,6 @@ begin
          FSelectedBuf := 0; // ver 2.1b
          FSendChar := False;
          callsignptr := 0;
-         mousetail := 1;
          tailcwstrptr := 1;
       finally
          CWBufferSync.Leave();
@@ -2235,10 +2332,10 @@ begin
       FUserFlag := False;
 
       FSendOK := True;
+   end;
 
-      if FPTTEnabled then begin
-         ControlPTT(FWkTx, False);
-      end;
+   if FPTTEnabled then begin
+      ControlPTT(FWkTx, False);
    end;
 end;
 
@@ -2283,18 +2380,30 @@ begin
       S := Copy(S, 1, i);
    end;
 
-   FWkCallsignStr := S;
+   if FUseWinKeyer = True then begin
+      FWkCallsignStr := S;
+   end
+   else begin
+      // 短くなる場合は送信ptrチェック
+      if Length(FWkCallsignStr) > Length(S) then begin
+         if cwstrptr > callsignptr then begin
+            Exit;
+         end;
+      end;
 
-   if callsignptr = 0 then begin
-      Exit;
-   end;
+      FWkCallsignStr := S;
 
-   SS := S + '*********************';
+      if callsignptr = 0 then begin
+         Exit;
+      end;
 
-   SS[BGKCALLMAX] := '^'; { pause }
+      SS := S + '*********************';
 
-   for i := 1 to BGKCALLMAX do begin
-      SetCWSendBufChar2(char(SS[i]), callsignptr + i - 1);
+      SS[BGKCALLMAX] := '^'; { pause }
+
+      for i := 1 to BGKCALLMAX do begin
+         SetCWSendBufChar2(char(SS[i]), callsignptr + i - 1);
+      end;
    end;
 end;
 
@@ -2570,7 +2679,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 2 do begin
+   for i := 0 to MAXPORT do begin
       if FComKeying[i] = nil then begin
          Continue;
       end;
@@ -2610,13 +2719,26 @@ begin
    for i := 0 to 2 do begin
       if FUsbInfo[i].FUSBIF4CW <> nil then begin
          FUsbInfo[i].FPORTDATA.Clear();
+
+         // TXセレクト
+         FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
+         if FGen3MicSelect = False then begin
+            FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
+         end;
+
+         // 送信
          SendUsbPortData(i);
+
+         // パドル動作をセット
          if FPaddleReverse = True then begin
             usbif4cwSetPaddle(i, 1);
          end
          else begin
             usbif4cwSetPaddle(i, 0);
          end;
+
+         // WPMをセット
+         usbif4cwSetWPM(i, FKeyerWPM);
       end;
    end;
 end;
@@ -2693,6 +2815,260 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** end - TKeyerMonitorThread.Execute - ****'));
    {$ENDIF}
+end;
+
+{ TPaddleThread }
+
+constructor TPaddleThread.Create(AKeyer: TdmZLogKeyer);
+begin
+   inherited Create(True);
+   FKeyer := AKeyer;
+   FPrevInReport[2] := $0F;
+end;
+
+procedure TPaddleThread.Execute;
+var
+   OutReport : array[0..8] of byte;
+   InReport : array[0..8] of byte;
+   BR : DWORD;
+   fPaddleRight, fPaddleLeft: Boolean;
+   fPrevRight, fPrevLeft: Boolean;
+label nextnext;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** begin - TPaddleThread.Execute - ****'));
+   {$ENDIF}
+   repeat
+      Sleep(1);
+
+      if FKeyer.FUsbInfo[0].FUSBIF4CW = nil then begin
+         Sleep(10);
+         goto nextnext;
+      end;
+
+      if FKeyer.UsePaddleKeyer = False then begin
+         Sleep(10);
+         goto nextnext;
+      end;
+
+      EnterCriticalSection(FUsbPortDataLock);
+      InReport[0] := 0;
+      InReport[1] := 4;
+      InReport[2] := $0F;
+      InReport[3] := 4;
+      InReport[4] := 0;
+      InReport[5] := 0;
+      InReport[6] := 0;
+      InReport[7] := 0;
+      InReport[8] := 0;
+
+      FKeyer.FUsbInfo[0].FUSBIF4CW.ReadFile(InReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.InputReportByteLength, BR);
+
+      LeaveCriticalSection(FUsbPortDataLock);
+
+      if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
+         if (InReport[2] <> FPrevInReport[2]) then begin
+
+            // パドル状況
+            if FKeyer.PaddleReverse = False then begin
+               fPaddleLeft := (InReport[2] and $04) = 0;
+               fPaddleRight := (InReport[2] and $01) = 0;
+
+               fPrevLeft := (FPrevInReport[2] and $04) = 0;
+               fPrevRight := (FPrevInReport[2] and $01) = 0;
+            end
+            else begin
+               fPaddleRight := (InReport[2] and $04) = 0;
+               fPaddleLeft := (InReport[2] and $01) = 0;
+
+               fPrevRight := (FPrevInReport[2] and $04) = 0;
+               fPrevLeft := (FPrevInReport[2] and $01) = 0;
+            end;
+
+            FKeyer.PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
+
+            CopyMemory(@FPrevInReport, @InReport, 9);
+         end
+         else begin
+            FKeyer.Squeeze();
+         end;
+      end;
+
+      EnterCriticalSection(FUsbPortDataLock);
+      OutReport[0] := 0;
+      OutReport[1] := 4;
+      OutReport[2] := $0F;
+      OutReport[3] := 4;
+      OutReport[4] := 0;
+      OutReport[5] := 0;
+      OutReport[6] := 0;
+      OutReport[7] := 0;
+      OutReport[8] := 0;
+      FKeyer.FUsbInfo[0].FUSBIF4CW.WriteFile(OutReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.OutputReportByteLength, BR);
+      LeaveCriticalSection(FUsbPortDataLock);
+
+nextnext:
+   until Terminated;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** end - TPaddleThread.Execute - ****'));
+   {$ENDIF}
+end;
+
+procedure TdmZLogKeyer.paddle_dot();
+begin
+   FSendOK := False;
+   if FPTTEnabled then begin
+      ControlPTT(FWkTx, True);
+   end;
+   FSqueezeDotDash := 0;
+   SetCWSendBuf(0, 'p');
+   FSendOK := True;
+end;
+
+procedure TdmZLogKeyer.paddle_dash();
+begin
+   FSendOK := False;
+   if FPTTEnabled then begin
+      ControlPTT(FWkTx, True);
+   end;
+   FSqueezeDotDash := 1;
+   SetCWSendBuf(0, 'q');
+   FSendOK := True;
+end;
+
+procedure TdmZLogKeyer.paddle_finish();
+var
+   i: Integer;
+begin
+   FSendOK := False;
+   CWBufferSync.Enter();
+   try
+      for i := 1 to codemax do begin
+         if FCWSendBuf[0, i] = $A then begin
+            FCWSendBuf[0, i] := 9;
+         end;
+      end;
+
+      if FPTTEnabled then begin
+         SetCWSendBuf(0, 'o');
+      end;
+   finally
+      CWBufferSync.Leave();
+      FSendOK := True;
+   end;
+end;
+
+procedure TdmZLogKeyer.paddle_finish2();
+var
+   i: Integer;
+begin
+   FSendOK := False;
+   CWBufferSync.Enter();
+   try
+      for i := 1 to codemax do begin
+         if FCWSendBuf[0, i] = $A then begin
+            FCWSendBuf[0, i] := 9;
+         end;
+      end;
+   finally
+      CWBufferSync.Leave();
+      FSendOK := True;
+   end;
+end;
+
+procedure TdmZLogKeyer.Squeeze();
+begin
+   if FPaddleSqueeze = True then begin
+      if FSendOK = False then begin
+         Inc(FSqueezeDotDash);
+         FSqueezeDotDash := FSqueezeDotDash and 1;
+         if FSqueezeDotDash = 0 then begin
+            SetCWSendBufChar(0, Char('v'));
+         end
+         else begin
+            SetCWSendBufChar(0, Char('r'));
+         end;
+         FSendOK := True;
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.PaddleProc(fLeft, fRight, fPrevLeft, fPrevRight: Boolean);
+begin
+   // 左右OFFから左右どちらかがONになるタイミングでパドルイベントを発生
+   if ((fPrevRight = False) and (fPrevLeft = False)) and ((fRight = True) or (fLeft = True)) then begin
+      if Assigned(FOnPaddleEvent) then begin
+         FOnPaddleEvent(Self);
+      end;
+   end;
+
+   // パドル用キーヤー処理 USBIF4CW V2はスクイーズ操作不可
+   // パドル左右 OFF->ON 左右どっちかがOFFから両方ONを検出
+   if ((fPrevRight = False) or (fPrevLeft = False)) and ((fRight = True) and (fLeft = True)) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE SQUEEZE OFF->ON**'));
+      {$ENDIF}
+      paddle_finish2();
+
+      if FPTTEnabled then begin
+         ControlPTT(FWkTx, True);
+      end;
+      FPaddleSqueeze := True;
+      Squeeze();
+   end
+
+   // パドル右 ON->OFF 左右ONから左右どちらかがOFFを検出
+   else if ((fPrevRight = True) and (fPrevLeft = True)) and ((fRight = False) or (fLeft = False)) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE SQUEEZE ON->OFF**'));
+      {$ENDIF}
+      paddle_finish();
+
+      if FPaddleSqueeze = True then begin
+         FPaddleSqueeze := False;
+
+         if fLeft = True then begin
+            paddle_dot();
+         end;
+         if fRight = True then begin
+            paddle_dash();
+            paddle_dot();
+         end;
+      end;
+   end
+
+   // パドル右(DASH) OFF->ON
+   else if (fPrevRight = False) and (fRight = True) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE RIGHT OFF->ON**'));
+      {$ENDIF}
+      paddle_dash();
+   end
+
+   // パドル右(DASH) ON->OFF
+   else if (fPrevRight = True) and (fRight = False) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE RIGHT ON->OFF**'));
+      {$ENDIF}
+      paddle_finish();
+   end
+
+   // パドル左(DOT) OFF->ON
+   else if (fPrevLeft = False) and (fLeft = True) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE LEFT OFF->ON**'));
+      {$ENDIF}
+      paddle_dot();
+   end
+
+   // パドル左(DOT) ON->OFF
+   else if (fPrevLeft = True) and (fLeft = False) then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('**PADDLE LEFT ON->OFF**'));
+      {$ENDIF}
+      paddle_finish();
+   end;
 end;
 
 function TdmZLogKeyer.usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
@@ -2914,13 +3290,14 @@ procedure TdmZLogKeyer.WinKeyerOpen(nPort: TKeyingPort);
 var
    Buff: array[0..10] of Byte;
    dwTick: DWORD;
+   mode: Byte;
 begin
    FWkInitializeMode := False;
    FWkRevision := 0;
    FWkStatus := 0;
    FWkEcho := 0;
    FWkLastMessage := '';
-   FWkCallsignSending := False;
+   FWkSendStatus := wkssNone;
    FWkAbort := False;
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
@@ -3002,7 +3379,12 @@ begin
    Sleep(50);
 
    // set serial echo back to on
-   WinKeyerSetMode(WK_SETMODE_SERIALECHOBACK);
+   mode := WK_SETMODE_SERIALECHOBACK;
+   // Paddle reverse
+   if FPaddleReverse = True then begin
+      mode := mode or WK_SETMODE_PADDLESWAP;
+   end;
+   WinKeyerSetMode(mode);
 
    //set speed pot range  5 to 50wpm
    FillChar(Buff, SizeOf(Buff), 0);
@@ -3100,16 +3482,21 @@ procedure TdmZLogKeyer.WinKeyerClear();
 var
    Buff: array[0..10] of Byte;
 begin
-   FillChar(Buff, SizeOf(Buff), 0);
-   Buff[0] := WK_CLEAR_CMD;
-   FComKeying[0].SendData(@Buff, 1);
-   FWkLastMessage := '';
-   FWkAbort := False;
-   FWkCallsignSending := False;
-   FWkMessageSending := False;
-   FWkMessageStr := '';
-   FWkMessageIndex := 1;
-   WinKeyerControlPTT(False);
+   if FWkSendStatus = wkssNone then begin
+      FillChar(Buff, SizeOf(Buff), 0);
+      Buff[0] := WK_CLEAR_CMD;
+      FComKeying[0].SendData(@Buff, 1);
+      FWkLastMessage := '';
+      FWkAbort := False;
+      FWkSendStatus := wkssNone;
+      FWkMessageStr := '';
+      FWkMessageIndex := 1;
+      FWkStatus := 0;
+      Sleep(50);
+   end
+   else begin
+      FWkAbort := True;
+   end;
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetSideTone(fOn: Boolean);
@@ -3148,10 +3535,8 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   if FUseWkSo2rNeo = True then begin
-      if fUsePttPort = True then begin
-         Buff[1] := Buff[1] or $1;
-      end;
+   if fUsePttPort = True then begin
+      Buff[1] := Buff[1] or $1;
    end;
 
    if FUseSideTone = True then begin
@@ -3257,24 +3642,6 @@ begin
    Sleep(50);
 end;
 
-procedure TdmZLogKeyer.WinKeyerSendCallsign(S: string);
-var
-   C: Char;
-begin
-   if S = '' then begin
-      Exit;
-   end;
-
-   S := StringReplace(S, '.', '?', [rfReplaceAll]);
-
-   FWkAbort := False;
-   FWkCallsignIndex := 1;
-   FWkCallsignStr := S;
-   C := FWkCallsignStr[FWkCallsignIndex];
-   WinKeyerSendChar(C);
-   FWkCallsignSending := True;
-end;
-
 procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
 var
    S: string;
@@ -3282,12 +3649,16 @@ begin
    case C of
       ' ', 'A'..'Z', '0'..'9', '/', '?', '.', 'a', 'b', 'k', 's', 't', 'v', '-', '=': begin
          S := C;
+         FWkLastSendChar := C;
          FComKeying[0].SendString(AnsiString(S));
-//         WinKeyerSendStr(FCurrentID, S);
       end;
    end;
 end;
 
+//
+// WinKeyerメッセージ送信（未使用）
+// 一度に送るため途中訂正不可
+//
 procedure TdmZLogKeyer.WinKeyerSendStr(nID: Integer; S: string);
 begin
    if FWkAbort = True then begin
@@ -3307,6 +3678,11 @@ begin
    FComKeying[0].SendString(AnsiString(S));
 end;
 
+//
+// WinKeyerメッセージ送信
+// エコーバックを待って１文字ずつ送信する方式
+// $Cがあったらコールサイン送信を行う
+//
 procedure TdmZLogKeyer.WinKeyerSendStr2(S: string);
 var
    C: Char;
@@ -3320,8 +3696,31 @@ begin
    FWkAbort := False;
    FWkMessageIndex := 1;
    FWkMessageStr := S;
-   FWkMessageSending := True;
+   FWkSendStatus := wkssMessage;
+   FWkLastSendChar := Char(0);
    C := FWkMessageStr[FWkMessageIndex];
+   if C = '$' then begin
+      // CWモニターを１文字進める
+      if Assigned(FOnOneCharSentProc) then begin
+         FOnOneCharSentProc(Self);
+      end;
+
+      Inc(FWkMessageIndex);
+
+      C := FWkMessageStr[FWkMessageIndex];
+      if C = 'C' then begin
+         // CWモニターを１文字進める
+         if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
+         end;
+
+         FWkSendStatus := wkssCallsign;
+         FWkCallsignIndex := 0;
+         PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+         Exit;
+      end;
+   end;
+
    WinKeyerSendChar(C);
 end;
 
@@ -3428,6 +3827,7 @@ var
    b: Byte;
    PP: PByte;
    newwpm: Integer;
+   C: Char;
 begin
    PP := DataPtr;
 
@@ -3449,9 +3849,13 @@ begin
       {$ENDIF}
 
          if FWkAbort = True then begin
-            FWkAbort := False;
-            FWkCallsignSending := False;
-            FWkLastMessage := '';
+            if FWkSendStatus <> wkssNone then begin
+               if Assigned(FOnSendFinishProc) then begin
+                  FOnSendFinishProc(nil, mCW, True);
+               end;
+            end;
+            FWkSendStatus := wkssNone;
+            ClrBuffer();
             Break;
          end;
 
@@ -3475,25 +3879,8 @@ begin
                {$ENDIF}
             end;
 
-            //コールサイン送信時：１文字送信終了
-//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
-//               {$IFDEF DEBUG}
-//               OutputDebugString(PChar('WinKey BUSY->IDLE [' + IntToHex(b, 2) + ']'));
-//               {$ENDIF}
-//
-//               // 次の文字を送信
-//               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
-//            end;
-
-            // コールサイン送信時：１文字送信開始
-//            if (FWkCallsignSending = True) and ((FWkStatus and WK_STATUS_BUSY) = 0) and ((b and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
-//               {$IFDEF DEBUG}
-//               OutputDebugString(PChar('WinKey IDLE->BUSY [' + IntToHex(b, 2) + ']'));
-//               {$ENDIF}
-//            end;
-
             // 送信中→送信終了に変わったら、リピートタイマー起動
-            if (FWkCallsignSending = False) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
+            if (FWkSendStatus = wkssMessage) and (FWkLastMessage <> '') and ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) and ((b and WK_STATUS_BUSY) = 0) then begin
 
                if Assigned(FOnSendFinishProc) then begin
                   {$IFDEF DEBUG}
@@ -3523,25 +3910,64 @@ begin
             OutputDebugString(PChar('WinKey ECHOBACK=[' + IntToHex(b, 2) + '(' + Chr(b) + ')]'));
             {$ENDIF}
 
-            // CWモニターを１文字進める
-            if Assigned(FOnOneCharSentProc) then begin
-               FOnOneCharSentProc(Self);
+            // ECHO BACK文字確認
+            if (Char(b) <> FWkLastSendChar) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('WinKey BAD ECHOBACK'));
+               {$ENDIF}
+               Exit;
             end;
 
-            // コールサイン送信
-            if (FWkCallsignSending = True) and
-               (Length(FWkCallsignStr) >= FWkCallsignIndex) and
-               (Char(b) = FWkCallsignStr[FWkCallsignIndex]) then begin
+            // コールサイン送信中
+            if (FWkSendStatus = wkssCallsign) and
+               (Length(FWkCallsignStr) >= FWkCallsignIndex) then begin
                // 次の文字を送信
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+               Exit;
             end;
 
-            // 通常メッセージ送信
-            if (FWkMessageSending = True) and
-               (Length(FWkMessageStr) >= FWkMessageIndex) and
-               (Char(b) = FWkMessageStr[FWkMessageIndex]) then begin
+            // 通常メッセージ送信中
+            if (FWkSendStatus = wkssMessage) and
+               (Length(FWkMessageStr) >= FWkMessageIndex) then begin
+
+               // CWモニターを１文字進める
+               if Assigned(FOnOneCharSentProc) then begin
+                  FOnOneCharSentProc(Self);
+               end;
+
+               // 次の文字を取得
+               if (Length(FWkMessageStr) > FWkMessageIndex) then begin
+                  C := FWkMessageStr[FWkMessageIndex + 1];
+                  if (C = '$') then begin
+
+                     // CWモニターを１文字進める
+                     if Assigned(FOnOneCharSentProc) then begin
+                        FOnOneCharSentProc(Self);
+                     end;
+
+                     Inc(FWkMessageIndex);
+                     C := FWkMessageStr[FWkMessageIndex + 1];
+                     if (C = 'C') then begin
+
+                        // CWモニターを１文字進める
+                        if Assigned(FOnOneCharSentProc) then begin
+                           FOnOneCharSentProc(Self);
+                        end;
+
+                        Inc(FWkMessageIndex);
+
+                        // コールサイン送信に移行
+                        FWkSendStatus := wkssCallsign;
+                        FWkCallsignIndex := 0;
+                        PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR, 0, 0);
+                        Exit;
+                     end;
+                  end;
+               end;
+
                // 次の文字を送信
                PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+               Exit;
             end;
          end;
       end;
@@ -3599,6 +4025,7 @@ end;
 procedure TdmZLogKeyer.WndMethod(var msg: TMessage);
 var
    C: Char;
+   nID: Integer;
 begin
    case msg.Msg of
       WM_USER_WKSENDNEXTCHAR: begin
@@ -3608,11 +4035,13 @@ begin
             WinKeyerSendChar(C);
          end
          else begin
-            FWkCallsignSending := False;
+            FWkSendStatus := wkssMessage;
 
             if Assigned(FOnCallsignSentProc) then begin
                FOnCallsignSentProc(Self);
             end;
+
+            PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
          end;
 
          msg.Result := 0;
@@ -3625,9 +4054,10 @@ begin
             WinKeyerSendChar(C);
          end
          else begin
-            FWkMessageSending := False;
+            FWkSendStatus := wkssNone;
             FWkMessageIndex := 1;
             FWkMessageStr := '';
+            FWkStatus := 0;
 
             {$IFDEF DEBUG}
             OutputDebugString(PChar(' *** Send Finish !!! ***'));
@@ -3650,8 +4080,6 @@ begin
       end;
 
       WM_USER_WKPADDLE: begin
-//         WinKeyerClear();
-
          if msg.LParam = 0 then begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- OFF ---'));
@@ -3661,13 +4089,29 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('WinKey WM_USER_WKPADDLE --- ON ---'));
             {$ENDIF}
-
             if Assigned(FOnPaddleEvent) then begin
-               FOnPaddleEvent(Self);
+               if FWkSendStatus <> wkssNone then begin
+                  FOnPaddleEvent(Self);
+               end;
             end;
          end;
 
          msg.Result := 0;
+      end;
+
+      WM_USER_POST_PADDLE: begin
+         nID := msg.WParam;
+         if FKeyingPort[nID] = tkpUSB then begin
+            if Assigned(FUsbInfo[nID].FPORTDATA) then begin
+               EnterCriticalSection(FUsbPortDataLock);
+               FUsbInfo[nID].FPORTDATA.SetRigFlag(FWkTx);
+               if FGen3MicSelect = False then begin
+                  FUsbInfo[nID].FPORTDATA.SetVoiceFlag(FWkTx);
+               end;
+               SendUsbPortData(nID);
+               LeaveCriticalSection(FUsbPortDataLock);
+            end;
+         end;
       end;
 
       else begin
@@ -3909,6 +4353,5 @@ initialization
 
 finalization
    CWBufferSync.Free();
-
 
 end.

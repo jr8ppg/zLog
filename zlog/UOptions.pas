@@ -346,7 +346,7 @@ type
     Label81: TLabel;
     groupUsif4cw: TGroupBox;
     checkUsbif4cwSyncWpm: TCheckBox;
-    checkUsbif4cwPaddleReverse: TCheckBox;
+    checkPaddleReverse: TCheckBox;
     GroupBox14: TGroupBox;
     Label9: TLabel;
     Label10: TLabel;
@@ -551,6 +551,10 @@ type
     checkGen3MicSelect: TCheckBox;
     checkIgnoreRigMode: TCheckBox;
     checkUseContestPeriod: TCheckBox;
+    checkUsbif4cwUsePaddle: TCheckBox;
+    checkUseResume: TCheckBox;
+    checkTurnoffSleep: TCheckBox;
+    checkTurnonResume: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -909,6 +913,9 @@ begin
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := checkNotSendLeadingZeros.Checked;
 
+      // Paddle reverse
+      Settings.CW._paddlereverse := checkPaddleReverse.Checked;
+
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
 
@@ -946,8 +953,8 @@ begin
 
       // USBIF4CW
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
-      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
+      Settings._usbif4cw_use_paddle_keyer := checkUsbif4cwUsePaddle.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -1045,6 +1052,8 @@ begin
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
       Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
+      Settings._turnoff_sleep := checkTurnoffSleep.Checked;
+      Settings._turnon_resume := checkTurnonResume.Checked;
 
       // Ant Control
       Settings._useant[b19]   := comboAnt19.ItemIndex;
@@ -1174,6 +1183,7 @@ begin
       Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
       Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // 国内のみ
       Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
+      Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
       Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
       Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
 
@@ -1466,8 +1476,8 @@ begin
 
       // USBIF4CW
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
-      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       checkGen3MicSelect.Checked := Settings._usbif4cw_gen3_micsel;
+      checkUsbif4cwUsePaddle.Checked := Settings._usbif4cw_use_paddle_keyer;
 
       SaveEvery.Value := Settings._saveevery;
 
@@ -1543,6 +1553,9 @@ begin
       // Not send leading zeros in serial number
       checkNotSendLeadingZeros.Checked := Settings.CW._not_send_leading_zeros;
 
+      // Paddle reverse
+      checkPaddleReverse.Checked := Settings.CW._paddlereverse;
+
       // QSL Default
       if Settings._qsl_default = qsNone then begin
          radioQslNone.Checked := True;
@@ -1576,6 +1589,8 @@ begin
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
       checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
+      checkTurnoffSleep.Checked := Settings._turnoff_sleep;
+      checkTurnonResume.Checked := Settings._turnon_resume;
 
       // Ant Control
       comboAnt19.ItemIndex    := Settings._useant[b19];
@@ -1686,6 +1701,7 @@ begin
       checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
       checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // 国内のみ
       checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
+      checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
       checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
       checkUseEstimatedModeClick(nil);

@@ -944,6 +944,9 @@ begin
    buttonReconnectRigs.Enabled := True;
    buttonJumpLastFreq.Enabled := True;
 
+   FFreqLabel[0].Font.Color := clBlack;
+   FFreqLabel[1].Font.Color := clBlack;
+
    // CWŠJŽn
    dmZLogKeyer.Open();
 end;

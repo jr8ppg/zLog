@@ -83,10 +83,13 @@ type
     FIndex: Integer;
   public
     constructor Create; override;
-    function LabelStr : string;
-    function InText : string; override;
-    procedure FromText(S : string); override;
+    function LabelStr(): string;
+    function InText(): string; override;
+    procedure FromText(S: string); override;
     procedure Assign(O: TBaseSpot); override;
+
+    function InTextEx(): string;
+    procedure FromTextEx(S: string);
 
     property Bold: Boolean read FBold write FBold;
     property Index: Integer read FIndex write FIndex;
@@ -131,6 +134,8 @@ type
     procedure Sort(SortMethod: TBSSortMethod); overload;
     function BinarySearch(SortMethod: TBSSortMethod; D: TBSData): Integer; overload;
     function BinarySearch(SortMethod: TBSSortMethod; D: TBSData; var Found: Boolean): Integer; overload;
+    procedure SaveToFile(filename: string);
+    procedure LoadFromFile(filename: string);
   end;
 
   {$IFNDEF ZLOG_TELNET}
@@ -429,18 +434,7 @@ begin
    FReportedBy := O.ReportedBy;
 end;
 
-function TBSData.InText : string;
-(*  Call : string;
-    FreqHz : LongInt;
-    CtyIndex : integer;
-    Zone : integer;
-    NewCty : boolean;
-    NewZone : boolean;
-    Worked : boolean;
-    Band : TBand;
-    Mode : TMode;
-    Time : TDateTime;
-    LabelRect : TRect;  *)
+function TBSData.InText(): string;
 var
    SL: TStringList;
 begin
@@ -456,6 +450,39 @@ begin
       SL.Add(ZBoolToStr(CQ));
       SL.Add(Number);
       SL.Add(ReportedBy);
+      Result := SL.DelimitedText;
+   finally
+      SL.Free();
+   end;
+end;
+
+function TBSData.InTextEx(): string;
+var
+   SL: TStringList;
+begin
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.Add(Call);
+      SL.Add(IntToStr(FreqHz));
+      SL.Add(IntToStr(Ord(Band)));
+      SL.Add(IntToStr(Ord(Mode)));
+      SL.Add(FloatToStr(Time));
+      SL.Add(ZBoolToStr(CQ));
+      SL.Add(Number);
+      SL.Add(ReportedBy);
+
+      SL.Add(IntToStr(CtyIndex));
+      SL.Add(IntToStr(Zone));
+      SL.Add(ZBoolToStr(NewCty));
+      SL.Add(ZBoolToStr(NewZone));
+      SL.Add(ZBoolToStr(Worked));
+      SL.Add(IntToStr(Integer(SpotSource)));
+      SL.Add(IntToStr(SpotGroup));
+      SL.Add(ZBoolToStr(FNewJaMulti));
+      SL.Add(ZBoolToStr(FIsDomestic));
+
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -479,6 +506,37 @@ begin
       CQ := ZStrToBool(SL[5]);
       Number := SL[6];
       ReportedBy := SL[7];
+   finally
+      SL.Free();
+   end;
+end;
+
+procedure TBSData.FromTextEx(S : string);
+var
+   SL: TStringList;
+begin
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%';
+      Call := SL[0];
+      FreqHz := StrToIntDef(SL[1], 0);
+      Band := TBand(StrToIntDef(SL[2], Integer(b19)));
+      Mode := TMode(StrToIntDef(SL[3], Integer(mCW)));
+      Time := StrToFloatDef(SL[4], 0);
+      CQ := ZStrToBool(SL[5]);
+      Number := SL[6];
+      ReportedBy := SL[7];
+      CtyIndex := StrToIntDef(SL[8], 0);
+      Zone := StrToIntDef(SL[9], 0);
+      NewCty := ZStrToBool(SL[10]);
+      NewZone := ZStrToBool(SL[11]);
+      Worked := ZStrToBool(SL[12]);
+      SpotSource := TSpotSource(StrToIntDef(SL[13], 0));
+      SpotGroup := StrToIntDef(SL[14], 0);
+      NewJaMulti := ZStrToBool(SL[15]);
+      IsDomestic := ZStrToBool(SL[16]);
    finally
       SL.Free();
    end;
@@ -621,6 +679,77 @@ begin
       soBsTimeDesc: Found := BinarySearch(D, NewIndex, FTimeDescComparer);
    end;
    Result := NewIndex;
+end;
+
+procedure TBSList.SaveToFile(filename: string);
+var
+   i: Integer;
+   D: TBSData;
+   SL: TStringList;
+   S: string;
+begin
+   SL := TStringList.Create();
+   try
+      S := 'BANDSCOPE DATA';
+      SL.Add(S);
+
+      S := FormatDateTime('yyyymmddhhnnss', Now);
+      SL.Add(S);
+
+      for i := 0 to Count -1 do begin
+         D := Items[i];
+         S := D.InTextEx();
+         SL.Add(S);
+      end;
+
+      SL.SaveToFile(filename);
+   finally
+      SL.Free();
+   end;
+end;
+
+procedure TBSList.LoadFromFile(filename: string);
+var
+   i: Integer;
+   D: TBSData;
+   SL: TStringList;
+   S: string;
+   t: TDatetime;
+   yyyy, mm, dd, hh, nn, ss: Word;
+begin
+   SL := TStringList.Create();
+   try
+      SL.LoadFromFile(filename);
+
+      if SL.Strings[0] <> 'BANDSCOPE DATA' then begin
+         Exit;
+      end;
+
+      S := SL.Strings[1];
+
+      t    := Now;
+      yyyy := StrToIntDef(Copy(S, 1, 4), YearOf(t));
+      mm   := StrToIntDef(Copy(S, 5, 2), MonthOf(t));
+      dd   := StrToIntDef(Copy(S, 7, 2), DayOf(t));
+      hh   := StrToIntDef(Copy(S, 9, 2), HourOf(t));
+      nn   := StrToIntDef(Copy(S, 11, 2), MinuteOf(t));
+      ss   := StrToIntDef(Copy(S, 13, 2), SecondOf(t));
+      t := EncodeDateTime(yyyy, mm, dd, hh, nn, ss, 0);
+
+      // 30分経過していたら無効なデータとしてロードしない
+      if (MinuteSpan(Now, t) > 30) then begin
+         Exit;
+      end;
+
+      for i := 2 to SL.Count - 1 do begin
+         S := SL[i];
+         D := TBSData.Create();
+         D.FromTextEx(S);
+         Add(D);
+      end;
+   finally
+      SL.Free();
+   end;
 end;
 
 {$IFNDEF ZLOG_TELNET}
