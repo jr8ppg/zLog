@@ -92,6 +92,8 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure GridMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
+    procedure GridContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private 宣言 }
     FProcessing: Boolean;
@@ -111,6 +113,8 @@ type
     FFreshnessType: Integer;
     FIconType: Integer;
 
+    FUseResume: Boolean;
+    FResumeFile: string;
     procedure AddBSList(D : TBSData);
     procedure AddAndDisplay(D : TBSData);
     procedure DeleteFromBSList(i : integer);
@@ -152,6 +156,8 @@ type
     procedure JudgeEstimatedMode();
     procedure SaveSettings(ini: TMemIniFile; section: string);
     procedure LoadSettings(ini: TMemIniFile; section: string);
+    procedure Suspend();
+    procedure Resume();
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Select: Boolean write SetSelect;
@@ -161,6 +167,7 @@ type
     property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
     property NewMultiOnly: Boolean read FNewMultiOnly write SetNewMultiOnly;
     property AllBands: Boolean read FAllBands write SetAllBands;
+    property UseResume: Boolean read FUseResume write FUseResume;
   end;
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
@@ -190,6 +197,8 @@ begin
    buttonShowWorked.Down := True;
    buttonShowWorked2.Down := True;
    buttonShowAllBands.Down := False;
+   FUseResume := False;
+   FResumeFile := '';
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -853,7 +862,6 @@ end;
 procedure TBandScope2.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
-
    ApplyShortcut();
    Timer1.Enabled := True;
 end;
@@ -866,6 +874,22 @@ end;
 procedure TBandScope2.FormDeactivate(Sender: TObject);
 begin
    ActionList1.State := asSuspended;
+end;
+
+procedure TBandScope2.GridContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+var
+   C, R: Integer;
+begin
+   // 右クリックされた場所のスポットを選択
+   Grid.MouseToCell(MousePos.X, MousePos.Y, C, R);
+   Grid.Row := R;
+   Grid.Col := C;
+
+   // 右クリックされた場所にメニューを表示
+   MousePos := Grid.ClientToScreen(MousePos);
+   BSMenu.Popup(MousePos.X, MousePos.Y);
+
+   Handled := True;
 end;
 
 procedure TBandScope2.GridDblClick(Sender: TObject);
@@ -1714,6 +1738,34 @@ begin
          if Screen.Forms[i] <> Self then begin
             TBandScope2(Screen.Forms[i]).FontSize := font_size;
          end;
+      end;
+   end;
+end;
+
+procedure TBandScope2.Suspend();
+begin
+   if (FUseResume = True) and (FResumeFile <> '') then begin
+      FBSList.SaveToFile(FResumeFile);
+   end;
+end;
+
+procedure TBandScope2.Resume();
+begin
+   if FUseResume = True then begin
+      if FAllBands = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
+      end
+      else if FNewMultiOnly = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
+      end
+      else if FCurrentBandOnly = True then begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
+      end
+      else begin
+         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+      end;
+      if FileExists(FResumeFile) then begin
+         FBSList.LoadFromFile(FResumeFile);
       end;
    end;
 end;

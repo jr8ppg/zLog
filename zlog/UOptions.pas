@@ -330,7 +330,7 @@ type
     Label81: TLabel;
     groupUsif4cw: TGroupBox;
     checkUsbif4cwSyncWpm: TCheckBox;
-    checkUsbif4cwPaddleReverse: TCheckBox;
+    checkPaddleReverse: TCheckBox;
     GroupBox14: TGroupBox;
     Label9: TLabel;
     Label10: TLabel;
@@ -648,6 +648,10 @@ type
     checkGen3MicSelect: TCheckBox;
     checkIgnoreRigMode: TCheckBox;
     checkUseContestPeriod: TCheckBox;
+    checkUseResume: TCheckBox;
+    checkTurnoffSleep: TCheckBox;
+    checkTurnonResume: TCheckBox;
+    checkUsbif4cwUsePaddle: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -1016,6 +1020,9 @@ begin
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := checkNotSendLeadingZeros.Checked;
 
+      // Paddle reverse
+      Settings.CW._paddlereverse := checkPaddleReverse.Checked;
+
       Settings._clusterport := ClusterCombo.ItemIndex;
    //   Settings._clusterbaud := ClusterCOMSet.BaudCombo.ItemIndex;
 
@@ -1065,8 +1072,8 @@ begin
 
       // USBIF4CW
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
-      Settings.CW._paddlereverse := checkUsbif4cwPaddleReverse.Checked;
       Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
+      Settings._usbif4cw_use_paddle_keyer := checkUsbif4cwUsePaddle.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -1165,6 +1172,8 @@ begin
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
       Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
+      Settings._turnoff_sleep := checkTurnoffSleep.Checked;
+      Settings._turnon_resume := checkTurnonResume.Checked;
 
       // Anti Zeroin
       Settings.FUseAntiZeroin := checkUseAntiZeroin.Checked;
@@ -1276,6 +1285,7 @@ begin
       Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
       Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // 国内のみ
       Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
+      Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
       Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
       Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
 
@@ -1450,20 +1460,14 @@ begin
          radioSingleOp.Checked := True;
       end
       else if ContestCategory = ccMultiOpMultiTx then begin
-         radioMultiOpMultiTx.Checked := True
+         radioMultiOpMultiTx.Checked := True;
       end
       else if ContestCategory = ccMultiOpSingleTx then begin
-         radioMultiOpSingleTx.Checked := True
+         radioMultiOpSingleTx.Checked := True;
       end
       else if ContestCategory = ccMultiOpTwoTx then begin
-         radioMultiOpTwoTx.Checked := True
+         radioMultiOpTwoTx.Checked := True;
       end;
-//      case ContestCategory of
-//         ccSingleOp:          radioSingleOp.Checked := True;
-//         ccMultiOpMultiTx:    radioMultiOpMultiTx.Checked := True;
-//         ccMultiOpSingleTx:   radioMultiOpSingleTx.Checked := True;
-//         ccMultiOpTwoTx:      radioMultiOpTwoTx.Checked := True;
-//      end;
 
       // #TXNR
       comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(Settings._txnr));
@@ -1587,8 +1591,8 @@ begin
 
       // USBIF4CW
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
-      checkUsbif4cwPaddleReverse.Checked := Settings.CW._paddlereverse;
       checkGen3MicSelect.Checked := Settings._usbif4cw_gen3_micsel;
+      checkUsbif4cwUsePaddle.Checked := Settings._usbif4cw_use_paddle_keyer;
 
       SaveEvery.Value := Settings._saveevery;
 
@@ -1666,6 +1670,9 @@ begin
       // Not send leading zeros in serial number
       checkNotSendLeadingZeros.Checked := Settings.CW._not_send_leading_zeros;
 
+      // Paddle reverse
+      checkPaddleReverse.Checked := Settings.CW._paddlereverse;
+
       // QSL Default
       if Settings._qsl_default = qsNone then begin
          radioQslNone.Checked := True;
@@ -1699,6 +1706,8 @@ begin
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
       checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
+      checkTurnoffSleep.Checked := Settings._turnoff_sleep;
+      checkTurnonResume.Checked := Settings._turnon_resume;
 
       // Anti Zeroin
       checkUseAntiZeroin.Checked := Settings.FUseAntiZeroin;
@@ -1791,6 +1800,7 @@ begin
       checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
       checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // 国内のみ
       checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
+      checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
       checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
       checkUseEstimatedModeClick(nil);

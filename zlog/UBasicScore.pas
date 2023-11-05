@@ -33,6 +33,7 @@ type
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
     procedure AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
+    function GetScore(): Integer;
   private
     { Private declarations }
   public
@@ -42,6 +43,7 @@ type
     FMQSO : array[b19..HiBand] of LongInt;
     Points : array[b19..HiBand] of LongInt;
     Multi : array[b19..HiBand] of LongInt;
+    Multi2 : array[b19..HiBand] of LongInt;
     ShowCWRatio : boolean;
     constructor Create(AOwner: TComponent); override;
     procedure Renew; virtual;
@@ -59,6 +61,7 @@ type
     function _TotalPoints : integer;
     function IntToStr3(v: Integer): string;
     property FontSize: Integer read GetFontSize write SetFontSize;
+    property Score: Integer read GetScore;
   end;
 
 const
@@ -240,6 +243,7 @@ begin
       FMQSO[band] := 0;
       Points[band] := 0;
       Multi[band] := 0;
+      Multi2[band] := 0;
    end;
 end;
 
@@ -448,6 +452,23 @@ begin
    for i := 0 to Grid.RowCount - 1 do begin
       Grid.RowHeights[i] := h;
    end;
+end;
+
+function TBasicScore.GetScore(): Integer;
+var
+   B: TBand;
+   pts, m1, m2: Integer;
+begin
+   pts := 0;
+   m1 := 0;
+   m2 := 0;
+   for B := b19 to HiBand do begin
+      pts := pts + Points[B];
+      m1 := m1 + Multi[B];
+      m2 := m2 + Multi2[B];
+   end;
+
+   Result := pts * (m1 + m2);
 end;
 
 end.

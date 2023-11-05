@@ -145,7 +145,8 @@ uses
   UOperatorPowerDialog in 'UOperatorPowerDialog.pas' {OperatorPowerDialog},
   URigCtrlElecraft in 'URigCtrlElecraft.pas',
   UDateDialog in 'UDateDialog.pas' {DateDialog},
-  UCWMonitor in 'UCWMonitor.pas' {formCWMonitor};
+  UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
+  UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo};
 
 {$R *.res}
 

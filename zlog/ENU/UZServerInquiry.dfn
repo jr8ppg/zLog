@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45199.9312268519</prop>
-        <prop prop-type="OrigDateTime">45199.8933564815</prop>
+        <prop prop-type="SelfDateTime">45235.7371759259</prop>
+        <prop prop-type="OrigDateTime">45200.4181712963</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">63</prop>
@@ -224,7 +224,7 @@
         <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbDownload.Top" resname="O:ZServerInquiry.O:GroupBox1.O:rbDownload.Top">
-        <source>75</source>
+        <source>44</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -244,7 +244,7 @@
         <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbDownload.TabOrder" resname="O:ZServerInquiry.O:GroupBox1.O:rbDownload.TabOrder">
-        <source>0</source>
+        <source>1</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -259,7 +259,7 @@
         <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbMerge.Top" resname="O:ZServerInquiry.O:GroupBox1.O:rbMerge.Top">
-        <source>44</source>
+        <source>14</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -278,53 +278,53 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbMerge.TabOrder" resname="O:ZServerInquiry.O:GroupBox1.O:rbMerge.TabOrder">
-        <source>1</source>
+      <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbMerge.Checked" resname="O:ZServerInquiry.O:GroupBox1.O:rbMerge.Checked">
+        <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45235.737177662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbMerge.TabOrder" resname="O:ZServerInquiry.O:GroupBox1.O:rbMerge.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbMerge.TabStop" resname="O:ZServerInquiry.O:GroupBox1.O:rbMerge.TabStop">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.737177662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbMerge.WordWrap" resname="O:ZServerInquiry.O:GroupBox1.O:rbMerge.WordWrap">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Left" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Left">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Top" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Top">
-        <source>14</source>
+        <source>75</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Width" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Width">
         <source>270</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45199.931234537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Height" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Height">
         <source>34</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.9312345486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45199.9312345486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Caption" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Caption">
         <source>'Connect only'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.9312345486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Checked" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.Checked">
-        <source>True</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.9312345486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45199.9312345486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.TabOrder" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.TabOrder">
         <source>2</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45199.9312345486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.TabStop" resname="O:ZServerInquiry.O:GroupBox1.O:rbConnectOnly.TabStop">
-        <source>True</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">45199.9312345486</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TRadioButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

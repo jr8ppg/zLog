@@ -437,7 +437,7 @@ object formOptions: TformOptions
       end
       object AllowDupeCheckBox: TCheckBox
         Left = 273
-        Top = 87
+        Top = 89
         Width = 113
         Height = 17
         Caption = 'Allow to log dupes'
@@ -464,7 +464,7 @@ object formOptions: TformOptions
       end
       object cbJMode: TCheckBox
         Left = 273
-        Top = 66
+        Top = 68
         Width = 97
         Height = 17
         Caption = 'J-mode'
@@ -611,7 +611,7 @@ object formOptions: TformOptions
       end
       object checkUseContestPeriod: TCheckBox
         Left = 273
-        Top = 109
+        Top = 110
         Width = 160
         Height = 17
         Caption = 'Use contest period'
@@ -1301,7 +1301,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 15
+        TabOrder = 18
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1421,6 +1421,14 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'Not send leading zeros in serial numbers'
         TabOrder = 14
+      end
+      object checkPaddleReverse: TCheckBox
+        Left = 228
+        Top = 349
+        Width = 96
+        Height = 17
+        Caption = 'Paddle Reverse'
+        TabOrder = 15
       end
     end
     object tabsheetVoice: TTabSheet
@@ -3948,20 +3956,20 @@ object formOptions: TformOptions
           Caption = 'Sync WPM'
           TabOrder = 0
         end
-        object checkUsbif4cwPaddleReverse: TCheckBox
-          Left = 93
-          Top = 19
-          Width = 96
-          Height = 17
-          Caption = 'Paddle Reverse'
-          TabOrder = 1
-        end
         object checkGen3MicSelect: TCheckBox
-          Left = 200
+          Left = 101
           Top = 19
-          Width = 193
+          Width = 149
           Height = 17
           Caption = 'Select mic input for Gen.3'
+          TabOrder = 1
+        end
+        object checkUsbif4cwUsePaddle: TCheckBox
+          Left = 272
+          Top = 19
+          Width = 136
+          Height = 17
+          Caption = 'Use paddle (V1 only)'
           TabOrder = 2
         end
       end
@@ -4377,14 +4385,14 @@ object formOptions: TformOptions
       Caption = 'Rig control'
       object Label45: TLabel
         Left = 8
-        Top = 127
+        Top = 125
         Width = 114
         Height = 13
         Caption = 'Send current freq. every'
       end
       object Label46: TLabel
         Left = 130
-        Top = 150
+        Top = 148
         Width = 20
         Height = 13
         Caption = 'sec.'
@@ -4399,7 +4407,7 @@ object formOptions: TformOptions
       end
       object cbDontAllowSameBand: TCheckBox
         Left = 8
-        Top = 34
+        Top = 32
         Width = 141
         Height = 32
         Caption = 'Do not allow two rigs to be on same band'
@@ -4408,7 +4416,7 @@ object formOptions: TformOptions
       end
       object SendFreqEdit: TEdit
         Left = 73
-        Top = 146
+        Top = 144
         Width = 35
         Height = 21
         Hint = 'Only when using Z-Server network'
@@ -4418,7 +4426,7 @@ object formOptions: TformOptions
       end
       object cbRecordRigFreq: TCheckBox
         Left = 8
-        Top = 68
+        Top = 66
         Width = 161
         Height = 19
         Caption = 'Record rig frequency in memo'
@@ -4427,7 +4435,7 @@ object formOptions: TformOptions
       end
       object cbAutoBandMap: TCheckBox
         Left = 8
-        Top = 90
+        Top = 88
         Width = 141
         Height = 31
         Caption = 'Automatically create band scope'
@@ -4436,11 +4444,11 @@ object formOptions: TformOptions
       end
       object GroupBox15: TGroupBox
         Left = 6
-        Top = 230
+        Top = 234
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
-        TabOrder = 6
+        TabOrder = 5
         object Label28: TLabel
           Left = 185
           Top = 21
@@ -4556,21 +4564,37 @@ object formOptions: TformOptions
       end
       object updownSendFreqInterval: TUpDown
         Left = 108
-        Top = 146
+        Top = 144
         Width = 16
         Height = 21
         Associate = SendFreqEdit
         Max = 300
         Position = 60
-        TabOrder = 7
+        TabOrder = 9
       end
       object checkIgnoreRigMode: TCheckBox
         Left = 8
-        Top = 172
+        Top = 170
         Width = 141
         Height = 18
         Caption = 'Ignore rig mode'
-        TabOrder = 5
+        TabOrder = 6
+      end
+      object checkTurnoffSleep: TCheckBox
+        Left = 8
+        Top = 191
+        Width = 168
+        Height = 18
+        Caption = 'Turn off when in sleep mode'
+        TabOrder = 7
+      end
+      object checkTurnonResume: TCheckBox
+        Left = 8
+        Top = 212
+        Width = 168
+        Height = 18
+        Caption = 'Turn on when resume'
+        TabOrder = 8
       end
     end
     object tabsheetPath: TTabSheet
@@ -5880,7 +5904,7 @@ object formOptions: TformOptions
           Width = 165
           Height = 17
           Caption = 'Use estimated mode by freq.'
-          TabOrder = 3
+          TabOrder = 4
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -5913,7 +5937,7 @@ object formOptions: TformOptions
           Width = 157
           Height = 17
           Caption = 'Suppress freq. deviation'
-          TabOrder = 5
+          TabOrder = 6
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 216
@@ -5921,7 +5945,15 @@ object formOptions: TformOptions
           Width = 176
           Height = 17
           Caption = 'Suppress LSB/USB mode error'
-          TabOrder = 4
+          TabOrder = 5
+        end
+        object checkUseResume: TCheckBox
+          Left = 12
+          Top = 86
+          Width = 165
+          Height = 17
+          Caption = 'Use resume'
+          TabOrder = 3
         end
       end
     end
@@ -6334,13 +6366,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Fira Code Retina'
+          FontName = #65325#65331' '#26126#26397
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 69
+          ItemIndex = 100
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

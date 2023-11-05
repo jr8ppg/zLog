@@ -555,4 +555,11 @@ object RateDialogEx: TRateDialogEx
       OnClick = menuAchievementRateClick
     end
   end
+  object timerRefresh: TTimer
+    Enabled = False
+    Interval = 180000
+    OnTimer = timerRefreshTimer
+    Left = 240
+    Top = 16
+  end
 end

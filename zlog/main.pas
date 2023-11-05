@@ -23,7 +23,7 @@ uses
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, URigCtrlLib, UConsolePad, USpotClass,
-  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UQuickRef, UZAnalyze,
+  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogCabrillo, UQuickRef, UZAnalyze,
   UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
@@ -557,6 +557,7 @@ type
     menuShowTx7: TMenuItem;
     menuShowTx8: TMenuItem;
     menuShowTx9: TMenuItem;
+    CreateCabrillo: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -702,6 +703,7 @@ type
     procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
     procedure OnZLogCqAbortProc( var Message: TMessage ); message WM_ZLOG_CQABORT;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
+    procedure OnPowerBroadcast( var Message: TMessage ); message WM_POWERBROADCAST;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -846,6 +848,7 @@ type
     procedure actionShowCurrentTxOnlyExecute(Sender: TObject);
     procedure menuShowOnlyTxClick(Sender: TObject);
     procedure View1Click(Sender: TObject);
+    procedure CreateCabrilloClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -883,6 +886,7 @@ type
 
     FInitialized: Boolean;
 
+    FPrevTotalQSO: Integer;
     FTempQSOList: TQSOList;
     clStatusLine : TColor;
     OldCallsign, OldNumber : string;
@@ -2177,6 +2181,7 @@ begin
    FPastEditMode := False;
    FQsyViolation := False;
    FQsyCountPrevHour := '';
+   FPrevTotalQSO := 0;
 
    // Out of contest period表示
    FFirstOutOfContestPeriod := True;
@@ -2189,19 +2194,27 @@ begin
    // バンド別用
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
+      FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+      FBandScopeEx[b].Resume();
    end;
 
    // 現在バンド用
    FBandScope := TBandScope2.Create(Self, b19);
    FBandScope.CurrentBandOnly := True;
+   FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScope.Resume();
 
    // ニューマルチ用
    FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
    FBandScopeNewMulti.NewMultiOnly := True;
+   FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScopeNewMulti.Resume();
 
    // 全バンド用
    FBandScopeAllBands := TBandScope2.Create(Self, bUnknown);
    FBandScopeAllBands.AllBands := True;
+   FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScopeAllBands.Resume();
 
    // Super Check
    FNPlusOneThread := nil;
@@ -4465,10 +4478,20 @@ begin
    FCheckCountry.Release();
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].Suspend();
+      FBandScopeEx[b].Close();
       FBandScopeEx[b].Release();
    end;
+   FBandScope.Suspend();
+   FBandScope.Close();
    FBandScope.Release();
+
+   FBandScopeNewMulti.Suspend();
+   FBandScopeNewMulti.Close();
    FBandScopeNewMulti.Release();
+
+   FBandScopeAllBands.Suspend();
+   FBandScopeAllBands.Close();
    FBandScopeAllBands.Release();
 
    if MyContest <> nil then begin
@@ -4530,9 +4553,6 @@ begin
    dmZLogKeyer.PauseCW();
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
-   if dmZLogKeyer.UseWinKeyer = True then begin
-      dmZLogKeyer.WinKeyerClear();
-   end;
    FCQRepeatPlaying := False;
 end;
 
@@ -5020,21 +5040,7 @@ var
    S: String;
    nID: Integer;
    curQSO: TQSO;
-//   strNumber: string;
-//   str: string;
-//   strPower: string;
    C, N, B, M, SE: TEdit;
-
-   procedure WinKeyerQSO(aQSO: TQSO);
-   begin
-      if dmZLogKeyer.UseWinKeyer = True then begin
-         S := dmZlogGlobal.CWMessage(2);
-         S := StringReplace(S, '$C', '', [rfReplaceAll]);
-         S := SetStr(S, aQSO);
-         FMessageManager.AddQue(0, S, nil);
-         dmZLogKeyer.WinkeyerSendStr2(S);
-      end;
-   end;
 begin
    nID := FCurrentTx;   //Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
@@ -5092,13 +5098,7 @@ begin
             C.SelectAll;
 
             exit; { BECAREFUL!!!!!!!!!!!!!!!!!!!!!!!! }
-         end
-         else begin  // ALLOW DUPE!
-            WinKeyerQSO(curQSO);
          end;
-      end
-      else begin  // NOT DUPE
-         WinKeyerQSO(curQSO);
       end;
 
       if FTabKeyPressed[nID] then begin
@@ -5572,13 +5572,17 @@ begin
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
          FBandScopeEx[b].IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+         FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
       end;
       FBandScope.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScope.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+      FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
       FBandScopeNewMulti.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScopeNewMulti.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+      FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
       FBandScopeAllBands.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScopeAllBands.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
+      FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
       actionShowBandScope.Execute();
 
       // OpList再ロード
@@ -6686,6 +6690,18 @@ begin
    end;
 end;
 
+procedure TMainForm.CreateCabrilloClick(Sender: TObject);
+var
+   f: TformELogCabrillo;
+begin
+   f := TformELogCabrillo.Create(Self);
+   try
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
+end;
+
 procedure TMainForm.MyIdleEvent(Sender: TObject; var Done: Boolean);
 var
    fPlaying: Boolean;
@@ -6722,6 +6738,16 @@ begin
 
       CWPauseButton.Enabled := False;
       CWStopButton.Enabled := False;
+
+      if (FInitialized = True) and (FPrevTotalQSO <> Log.TotalQSO) then begin
+         if Assigned(FRateDialog) then begin
+            FRateDialog.UpdateGraph();
+         end;
+         if Assigned(FRateDialogEx) then begin
+            FRateDialogEx.UpdateGraph();
+         end;
+         FPrevTotalQSO := Log.TotalQSO;
+      end;
    end;
 
    if CurrentQSO.Mode = mRTTY then begin
@@ -7672,6 +7698,24 @@ begin
       $8004: begin
          CQAbort(True);
          FRigControl.ForcePowerOff();
+      end;
+   end;
+end;
+
+procedure TMainForm.OnPowerBroadcast( var Message: TMessage );
+begin
+   case Message.WParam of
+      PBT_APMRESUMESUSPEND: begin
+         if dmZLogGlobal.Settings._turnon_resume then begin
+            FRigControl.ForcePowerOn();
+         end;
+      end;
+
+      PBT_APMSUSPEND: begin
+         if dmZLogGlobal.Settings._turnoff_sleep then begin
+            CQAbort(True);
+            FRigControl.ForcePowerOff();
+         end;
       end;
    end;
 end;
@@ -9801,7 +9845,11 @@ begin
 
    // 振れ幅
    randmax := (dmZLogGlobal.Settings.FAntiZeroinShiftMax div 10) + 1;
-   offset := Random(randmax) * 10;    // 200Hz未満で
+
+   // 振れ幅0は除く
+   repeat
+      offset := Random(randmax) * 10;    // 200Hz未満で
+   until offset <> 0;
 
    // ＋か－か
    if Random(2) = 1 then begin

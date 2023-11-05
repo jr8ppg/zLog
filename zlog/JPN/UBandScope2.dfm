@@ -53,10 +53,10 @@ object BandScope2: TBandScope2
       Options = []
       ParentDoubleBuffered = False
       ParentShowHint = False
-      PopupMenu = BSMenu
       ScrollBars = ssVertical
       ShowHint = True
       TabOrder = 0
+      OnContextPopup = GridContextPopup
       OnDblClick = GridDblClick
       OnDrawCell = GridDrawCell
       OnMouseMove = GridMouseMove
@@ -183,6 +183,7 @@ object BandScope2: TBandScope2
   object BSMenu: TPopupMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
+    AutoPopup = False
     Left = 48
     Top = 48
     object menuDeleteSpot: TMenuItem

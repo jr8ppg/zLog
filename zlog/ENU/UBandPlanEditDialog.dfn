@@ -5,8 +5,8 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.9701157407</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45235.7369212963</prop>
+        <prop prop-type="OrigDateTime">45235.7022222222</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
         <prop prop-type="UnTranslated">662</prop>
@@ -989,7 +989,7 @@
         <prop prop-type="Created">44906.6002575694</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label18.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label18.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002575694</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -999,7 +999,7 @@
         <prop prop-type="Created">44906.600257581</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label18.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label18.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.600257581</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1039,7 +1039,7 @@
         <prop prop-type="Created">44906.600257581</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label20.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label20.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002575926</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1049,7 +1049,7 @@
         <prop prop-type="Created">44906.6002575926</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label20.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label20.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002575926</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1089,7 +1089,7 @@
         <prop prop-type="Created">44906.6002576042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label22.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label22.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1099,7 +1099,7 @@
         <prop prop-type="Created">44906.6002576042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label22.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label22.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1139,7 +1139,7 @@
         <prop prop-type="Created">44906.6002576157</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label24.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label24.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576157</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1149,7 +1149,7 @@
         <prop prop-type="Created">44906.6002576157</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label24.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label24.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576157</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1189,7 +1189,7 @@
         <prop prop-type="Created">44906.6002576273</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label26.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label26.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576273</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1199,7 +1199,7 @@
         <prop prop-type="Created">44906.6002576273</prop><prop prop-type="Status">0</prop><prop prop-type="Order">236</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label26.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label26.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576273</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1239,7 +1239,7 @@
         <prop prop-type="Created">44906.6002576389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">244</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label28.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label28.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1249,7 +1249,7 @@
         <prop prop-type="Created">44906.6002576389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">246</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label28.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label28.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576505</prop><prop prop-type="Status">0</prop><prop prop-type="Order">247</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1289,7 +1289,7 @@
         <prop prop-type="Created">44906.6002576505</prop><prop prop-type="Status">0</prop><prop prop-type="Order">254</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label30.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label30.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576505</prop><prop prop-type="Status">0</prop><prop prop-type="Order">255</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1299,7 +1299,7 @@
         <prop prop-type="Created">44906.600257662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">256</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label30.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label30.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.600257662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">257</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1339,7 +1339,7 @@
         <prop prop-type="Created">44906.6002576736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">264</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label32.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label32.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">265</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1349,7 +1349,7 @@
         <prop prop-type="Created">44906.6002576736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">266</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label32.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label32.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576736</prop><prop prop-type="Status">0</prop><prop prop-type="Order">267</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1389,7 +1389,7 @@
         <prop prop-type="Created">44906.6002576852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">274</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label34.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label34.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">275</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1399,7 +1399,7 @@
         <prop prop-type="Created">44906.6002576852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">276</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label34.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label34.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576852</prop><prop prop-type="Status">0</prop><prop prop-type="Order">277</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1439,7 +1439,7 @@
         <prop prop-type="Created">44906.6002576968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">284</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label36.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label36.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">285</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1449,7 +1449,7 @@
         <prop prop-type="Created">44906.6002576968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">286</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label36.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label36.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002576968</prop><prop prop-type="Status">0</prop><prop prop-type="Order">287</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1489,7 +1489,7 @@
         <prop prop-type="Created">44906.6002577083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label38.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label38.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1499,7 +1499,7 @@
         <prop prop-type="Created">44906.6002577083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label38.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label38.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577083</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1539,7 +1539,7 @@
         <prop prop-type="Created">44906.6002577199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">304</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label40.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label40.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577199</prop><prop prop-type="Status">0</prop><prop prop-type="Order">305</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1549,7 +1549,7 @@
         <prop prop-type="Created">44906.6002577315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">306</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label40.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label40.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577315</prop><prop prop-type="Status">0</prop><prop prop-type="Order">307</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1589,7 +1589,7 @@
         <prop prop-type="Created">44906.6002577431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">314</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label42.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label42.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">315</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1599,7 +1599,7 @@
         <prop prop-type="Created">44906.6002577431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">316</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label42.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label42.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577431</prop><prop prop-type="Status">0</prop><prop prop-type="Order">317</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1639,7 +1639,7 @@
         <prop prop-type="Created">44906.6002577546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">324</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label44.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label44.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">325</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1649,7 +1649,7 @@
         <prop prop-type="Created">44906.6002577546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">326</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label44.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label44.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577546</prop><prop prop-type="Status">0</prop><prop prop-type="Order">327</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1689,7 +1689,7 @@
         <prop prop-type="Created">44906.6002577662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">334</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label46.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label46.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">335</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1699,7 +1699,7 @@
         <prop prop-type="Created">44906.6002577662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">336</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label46.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label46.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577662</prop><prop prop-type="Status">0</prop><prop prop-type="Order">337</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1739,7 +1739,7 @@
         <prop prop-type="Created">44906.6002577778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">344</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label48.Width" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label48.Width">
-        <source>20</source>
+        <source>19</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">345</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
@@ -1749,7 +1749,7 @@
         <prop prop-type="Created">44906.6002577778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">346</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label48.Caption" resname="O:BandPlanEditDialog.O:tabctrlPreset.O:tabctrlMode.O:Label48.Caption">
-        <source>'KHz'</source>
+        <source>'kHz'</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44906.6002577778</prop><prop prop-type="Status">0</prop><prop prop-type="Order">347</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>

@@ -349,7 +349,7 @@ type
     FBandList: TQSOListArray;
     FTxList: TQSOListArrayByTx;
     FAllPhone: Boolean;    // True: SSB, FM, AM are same
-    FQsoIdDic: TDictionary<Integer, string>;
+    FQsoIdDic: TDictionary<Integer, TQSO>;
     FStartTime: TDateTime;
     FEndTime: TDateTime;
     FPeriod: Integer;
@@ -390,7 +390,7 @@ type
     {$IFNDEF ZSERVER}
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
-    procedure SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer);
+    procedure SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList = nil);
     procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
@@ -415,6 +415,7 @@ type
 
     function IndexOf(aQSO: TQSO): Integer; overload;
     function ObjectOf(callsign: string): TQSO; overload;
+    function ObjectOf(qsoid: Integer): TQSO; overload;
 
     function LoadFromFile(filename: string): Integer;
     function LoadFromFileEx(filename: string): Integer;
@@ -1633,7 +1634,7 @@ begin
    FCountHigherPoints := False;
    FDifferentModePointer := 0;
    FAllPhone := True;
-   FQsoIdDic := TDictionary<Integer, string>.Create(120000);
+   FQsoIdDic := TDictionary<Integer, TQSO>.Create(120000);
    FStartTime := 0;
 end;
 
@@ -1796,7 +1797,7 @@ begin
    FTxList[xQSO.TX].Add(aQSO);
 
    if FQsoIdDic.ContainsKey(xQSO.QsoId) = False then begin
-      FQsoIdDic.Add(xQSO.QsoId, xQSO.Callsign);
+      FQsoIdDic.Add(xQSO.QsoId, xQSO);
    end;
 
    FSaved := False;
@@ -2047,7 +2048,7 @@ begin
    FSaved := False;
 
    if FQsoIdDic.ContainsKey(aQSO.QsoId) = False then begin
-      FQsoIdDic.Add(aQSO.QsoId, aQSO.Callsign);
+      FQsoIdDic.Add(aQSO.QsoId, aQSO);
    end;
 
    zyloLogUpdated(evInsertQSO, nil, aQSO);
@@ -2453,7 +2454,7 @@ end;
 //QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
 
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer);
+procedure TLog.SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList);
 var
    F: TextFile;
    i: Integer;
@@ -2462,38 +2463,74 @@ var
    utc: TDateTime;
    offhour: Integer;
    offsetmin: Integer;
+
+   function FillRight(S: string; len: integer): string;
+   var
+      sjis: AnsiString;
+      len2: Integer;
+   begin
+      sjis := AnsiString(S);
+      len2 := Length(sjis);
+      if len2 < len then begin
+         sjis := sjis + AnsiString(DupeString(' ', len));
+         sjis := Copy(sjis, 1, len);
+      end;
+      Result := String(sjis);
+   end;
+
+   function FillLeft(S: string; len: integer): string;
+   var
+      sjis: AnsiString;
+      len2: Integer;
+   begin
+      sjis := AnsiString(S);
+      len2 := Length(sjis);
+      if len2 < len then begin
+         sjis := AnsiString(DupeString(' ', len)) + sjis;
+         sjis := Copy(sjis, Length(sjis) - len + 1, len);
+      end;
+      Result := String(sjis);
+   end;
 begin
    AssignFile(F, Filename);
    ReWrite(F);
 
    WriteLn(F, 'START-OF-LOG: 3.0');
-   WriteLn(F, 'CALLSIGN: ' + dmZLogGlobal.MyCall);
-   WriteLn(F, 'CONTEST: ');
-   WriteLn(F, 'CATEGORY-ASSISTED: ');
-   WriteLn(F, 'CATEGORY-BAND: ');
-   WriteLn(F, 'CATEGORY-MODE: ');
-   WriteLn(F, 'CATEGORY-OPERATOR: ');
-   WriteLn(F, 'CATEGORY-POWER: ');
-   WriteLn(F, 'CATEGORY-STATION: ');
-   WriteLn(F, 'CATEGORY-TIME: ');
-   WriteLn(F, 'CATEGORY-TRANSMITTER: ');
-   WriteLn(F, 'CATEGORY-OVERLAY: ');
-   WriteLn(F, 'CERTIFICATE: ');
-   WriteLn(F, 'CLAIMED-SCORE: ');
-   WriteLn(F, 'CLUB: ');
-   WriteLn(F, 'CREATED-BY: ');
-   WriteLn(F, 'EMAIL: ');
-   WriteLn(F, 'GRID-LOCATOR: ');
-   WriteLn(F, 'LOCATION: ');
-   WriteLn(F, 'NAME: ');
-   WriteLn(F, 'ADDRESS: ');
-   WriteLn(F, 'ADDRESS-CITY: ');
-   WriteLn(F, 'ADDRESS-STATE-PROVINCE: ');
-   WriteLn(F, 'ADDRESS-POSTALCODE: ');
-   WriteLn(F, 'ADDRESS-COUNTRY: ');
-   WriteLn(F, 'OPERATORS: ');
-   WriteLn(F, 'OFFTIME: ');
-   WriteLn(F, 'SOAPBOX: ');
+
+   if slSummaryInfo = nil then begin
+      WriteLn(F, 'CALLSIGN: ' + dmZLogGlobal.MyCall);
+      WriteLn(F, 'CONTEST: ');
+      WriteLn(F, 'CATEGORY-ASSISTED: ');
+      WriteLn(F, 'CATEGORY-BAND: ');
+      WriteLn(F, 'CATEGORY-MODE: ');
+      WriteLn(F, 'CATEGORY-OPERATOR: ');
+      WriteLn(F, 'CATEGORY-POWER: ');
+      WriteLn(F, 'CATEGORY-STATION: ');
+      WriteLn(F, 'CATEGORY-TIME: ');
+      WriteLn(F, 'CATEGORY-TRANSMITTER: ');
+      WriteLn(F, 'CATEGORY-OVERLAY: ');
+      WriteLn(F, 'CERTIFICATE: ');
+      WriteLn(F, 'CLAIMED-SCORE: ');
+      WriteLn(F, 'CLUB: ');
+      WriteLn(F, 'CREATED-BY: ');
+      WriteLn(F, 'EMAIL: ');
+      WriteLn(F, 'GRID-LOCATOR: ');
+      WriteLn(F, 'LOCATION: ');
+      WriteLn(F, 'NAME: ');
+      WriteLn(F, 'ADDRESS: ');
+      WriteLn(F, 'ADDRESS-CITY: ');
+      WriteLn(F, 'ADDRESS-STATE-PROVINCE: ');
+      WriteLn(F, 'ADDRESS-POSTALCODE: ');
+      WriteLn(F, 'ADDRESS-COUNTRY: ');
+      WriteLn(F, 'OPERATORS: ');
+      WriteLn(F, 'OFFTIME: ');
+      WriteLn(F, 'SOAPBOX: ');
+   end
+   else begin
+      for i := 0 to slSummaryInfo.Count - 1 do begin
+         WriteLn(F, slSummaryInfo.Strings[i]);
+      end;
+   end;
 
    offsetmin := FQsoList[0].RSTsent;
    if offsetmin = _USEUTC then begin
@@ -3158,6 +3195,18 @@ begin
    Result := nil;
 end;
 
+function TLog.ObjectOf(qsoid: Integer): TQSO;
+var
+   i: Integer;
+   aQSO: TQSO;
+begin
+   if FQsoIdDic.TryGetValue(qsoid, aQSO) = True then begin
+      Result := aQSO;
+   end
+   else begin
+      Result := nil;
+   end;
+end;
 
 function TLog.LoadFromFile(filename: string): Integer;
 var
@@ -3740,10 +3789,10 @@ end;
 
 function TLog.IsContainsSameQSO(Q: TQSO): Boolean;
 var
-   strCall: string;
+   aQSO: TQSO;
 begin
-   if FQsoIdDic.TryGetValue(Q.QsoId, strCall) = True then begin
-      if strCall = Q.Callsign then begin
+   if FQsoIdDic.TryGetValue(Q.QsoId, aQSO) = True then begin
+      if aQSO.Callsign = Q.Callsign then begin
          Result := True;
          Exit;
       end;

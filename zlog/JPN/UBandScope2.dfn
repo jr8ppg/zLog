@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45172.7471527778</prop>
-        <prop prop-type="OrigDateTime">45172.7348148148</prop>
+        <prop prop-type="SelfDateTime">45235.7365509259</prop>
+        <prop prop-type="OrigDateTime">45235.7023842593</prop>
         <prop prop-type="XlatDateTime">45154.4844675926</prop>
         <prop prop-type="Translated">15</prop>
-        <prop prop-type="UnTranslated">290</prop>
+        <prop prop-type="UnTranslated">291</prop>
       </prop-group>
     </header>
     <body>
@@ -273,25 +273,25 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:BandScope2.O:Panel1.O:Grid.PopupMenu" resname="O:BandScope2.O:Panel1.O:Grid.PopupMenu">
-        <source>BSMenu</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:BandScope2.O:Panel1.O:Grid.ScrollBars" resname="O:BandScope2.O:Panel1.O:Grid.ScrollBars">
         <source>ssVertical</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:Panel1.O:Grid.ShowHint" resname="O:BandScope2.O:Panel1.O:Grid.ShowHint">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:Panel1.O:Grid.TabOrder" resname="O:BandScope2.O:Panel1.O:Grid.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:BandScope2.O:Panel1.O:Grid.OnContextPopup" resname="O:BandScope2.O:Panel1.O:Grid.OnContextPopup">
+        <source>GridContextPopup</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.7365642361</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TStringGrid</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:Panel1.O:Grid.OnDblClick" resname="O:BandScope2.O:Panel1.O:Grid.OnDblClick">
         <source>GridDblClick</source>
@@ -832,738 +832,743 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">158</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
+      <trans-unit id="O:BandScope2.O:BSMenu.AutoPopup" resname="O:BandScope2.O:BSMenu.AutoPopup">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.7365642477</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.Left" resname="O:BandScope2.O:BSMenu.Left">
         <source>48</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">159</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.Top" resname="O:BandScope2.O:BSMenu.Top">
         <source>48</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">160</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TPopupMenu</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteSpot.Caption" resname="O:BandScope2.O:BSMenu.O:menuDeleteSpot.Caption">
         <source>'Delete'</source>
         <target>'このスポットを削除'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">161</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteSpot.OnClick" resname="O:BandScope2.O:BSMenu.O:menuDeleteSpot.OnClick">
         <source>menuDeleteSpotClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">162</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.Caption" resname="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.Caption">
         <source>'Delete all worked stations'</source>
         <target>'交信済みスポットを全て削除'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">163</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.OnClick" resname="O:BandScope2.O:BSMenu.O:menuDeleteAllWorkedStations.OnClick">
         <source>menuDeleteAllWorkedStationsClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">164</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:N1.Caption" resname="O:BandScope2.O:BSMenu.O:N1.Caption">
         <source>'-'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">165</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuAddToDenyList.Caption" resname="O:BandScope2.O:BSMenu.O:menuAddToDenyList.Caption">
         <source>'Add this reporter to deny list'</source>
         <target>'この報告者を拒否リストに追加'</target>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">166</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">1</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:BSMenu.O:menuAddToDenyList.OnClick" resname="O:BandScope2.O:BSMenu.O:menuAddToDenyList.OnClick">
         <source>menuAddToDenyListClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">167</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44868.6271876042</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TMenuItem</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:Timer1.Enabled" resname="O:BandScope2.O:Timer1.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">168</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:Timer1.OnTimer" resname="O:BandScope2.O:Timer1.OnTimer">
         <source>Timer1Timer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">169</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:Timer1.Left" resname="O:BandScope2.O:Timer1.Left">
         <source>56</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">170</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:Timer1.Top" resname="O:BandScope2.O:Timer1.Top">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">171</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ImageList1.Left" resname="O:BandScope2.O:ImageList1.Left">
         <source>56</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">172</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ImageList1.Top" resname="O:BandScope2.O:ImageList1.Top">
         <source>176</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">173</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8925135069</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:timerCleanup.Enabled" resname="O:BandScope2.O:timerCleanup.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">174</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:timerCleanup.Interval" resname="O:BandScope2.O:timerCleanup.Interval">
         <source>60000</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">175</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:timerCleanup.OnTimer" resname="O:BandScope2.O:timerCleanup.OnTimer">
         <source>timerCleanupTimer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">176</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:timerCleanup.Left" resname="O:BandScope2.O:timerCleanup.Left">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">177</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:timerCleanup.Top" resname="O:BandScope2.O:timerCleanup.Top">
         <source>136</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">178</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44827.8938097222</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.State" resname="O:BandScope2.O:ActionList1.State">
         <source>asSuspended</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203206</prop><prop prop-type="Status">0</prop><prop prop-type="Order">179</prop><prop prop-type="Type">TActionList</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203206</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TActionList</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.Left" resname="O:BandScope2.O:ActionList1.Left">
         <source>118</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203206</prop><prop prop-type="Status">0</prop><prop prop-type="Order">180</prop><prop prop-type="Type">TActionList</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203206</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TActionList</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.Top" resname="O:BandScope2.O:ActionList1.Top">
         <source>68</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203206</prop><prop prop-type="Status">0</prop><prop prop-type="Order">181</prop><prop prop-type="Type">TActionList</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203206</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TActionList</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">182</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.Caption">
         <source>'actionPlayMessageA01'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">183</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.ShortCut">
         <source>112</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">184</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA01.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">185</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.Tag">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">186</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.Caption">
         <source>'actionPlayMessageA02'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">187</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.ShortCut">
         <source>113</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">188</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA02.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">189</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032176</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.Tag">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">190</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.Caption">
         <source>'actionPlayMessageA03'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">191</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.ShortCut">
         <source>114</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">192</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA03.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">193</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.Tag">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">194</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.Caption">
         <source>'actionPlayMessageA04'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">195</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.ShortCut">
         <source>115</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">196</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA04.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">197</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.Tag">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">198</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032292</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.Caption">
         <source>'actionPlayMessageA05'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">199</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.ShortCut">
         <source>116</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">200</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA05.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">201</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.Tag">
         <source>6</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">202</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.Caption">
         <source>'actionPlayMessageA06'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">203</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.ShortCut">
         <source>117</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">204</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA06.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">205</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.Tag">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">206</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032407</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.Caption">
         <source>'actionPlayMessageA07'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">207</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.ShortCut">
         <source>118</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">208</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA07.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">209</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.Tag">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">210</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.Caption">
         <source>'actionPlayMessageA08'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">211</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.ShortCut">
         <source>119</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">212</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA08.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">213</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.Tag">
         <source>9</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">214</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.Caption">
         <source>'actionPlayMessageA09'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">215</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032523</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.ShortCut">
         <source>120</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">216</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA09.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">217</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.Tag">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">218</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.Caption">
         <source>'actionPlayMessageA10'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">219</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.ShortCut">
         <source>121</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">220</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA10.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">221</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.Tag">
         <source>11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">222</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.Caption">
         <source>'actionPlayMessageA11'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">223</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.ShortCut">
         <source>122</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">224</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032639</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA11.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">225</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.Tag">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">226</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.Caption">
         <source>'actionPlayMessageA12'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">227</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.ShortCut">
         <source>123</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">228</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageA12.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">229</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.Tag">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">230</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.Caption">
         <source>'actionPlayMessageB01'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">231</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.ShortCut">
         <source>8304</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">232</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032755</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB01.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">233</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.Tag">
         <source>2</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">234</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.Caption">
         <source>'actionPlayMessageB02'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">235</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">236</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.ShortCut">
         <source>8305</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">236</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB02.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">237</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">238</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.Tag">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">238</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">239</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.Caption">
         <source>'actionPlayMessageB03'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">239</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.ShortCut">
         <source>8306</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">240</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">241</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB03.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">241</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.051203287</prop><prop prop-type="Status">0</prop><prop prop-type="Order">242</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.Tag">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">242</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">243</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.Caption">
         <source>'actionPlayMessageB04'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">243</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">244</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.ShortCut">
         <source>8307</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">244</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB04.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">245</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">246</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.Tag">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">246</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">247</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.Caption">
         <source>'actionPlayMessageB05'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">247</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">248</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.ShortCut">
         <source>8308</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">248</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">249</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB05.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">249</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512032986</prop><prop prop-type="Status">0</prop><prop prop-type="Order">250</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.Tag">
         <source>6</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">250</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">251</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.Caption">
         <source>'actionPlayMessageB06'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">251</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">252</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.ShortCut">
         <source>8309</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">252</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">253</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB06.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">253</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">254</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.Tag">
         <source>7</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">254</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">255</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.Caption">
         <source>'actionPlayMessageB07'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">255</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">256</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.ShortCut">
         <source>8310</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">256</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">257</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB07.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">257</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033102</prop><prop prop-type="Status">0</prop><prop prop-type="Order">258</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.Tag">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">258</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">259</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.Caption">
         <source>'actionPlayMessageB08'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">259</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">260</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.ShortCut">
         <source>8311</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">260</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">261</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB08.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">261</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">262</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.Tag">
         <source>9</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">262</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">263</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.Caption">
         <source>'actionPlayMessageB09'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">263</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">264</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.ShortCut">
         <source>8312</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">264</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">265</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB09.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">265</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">266</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.Tag">
         <source>10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">266</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033218</prop><prop prop-type="Status">0</prop><prop prop-type="Order">267</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.Caption">
         <source>'actionPlayMessageB10'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">267</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">268</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.ShortCut">
         <source>8313</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">268</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">269</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB10.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">269</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">270</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.Tag">
         <source>11</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">270</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">271</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.Caption">
         <source>'actionPlayMessageB11'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">271</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">272</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.ShortCut">
         <source>8314</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">272</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">273</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB11.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">273</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">274</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.Tag">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">274</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">275</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.Caption">
         <source>'actionPlayMessageB12'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">275</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033333</prop><prop prop-type="Status">0</prop><prop prop-type="Order">276</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.ShortCut">
         <source>8315</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">276</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">277</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayMessageB12.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">277</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">278</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA1.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA1.Tag">
         <source>101</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">278</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">279</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA1.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA1.Caption">
         <source>'actionPlayCQA1'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">279</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">280</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA1.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA1.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">280</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">281</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA2.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA2.Tag">
         <source>102</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">281</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033449</prop><prop prop-type="Status">0</prop><prop prop-type="Order">282</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA2.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA2.Caption">
         <source>'actionPlayCQA2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">282</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">283</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA2.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA2.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">283</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">284</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA3.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA3.Tag">
         <source>103</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">284</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">285</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA3.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA3.Caption">
         <source>'actionPlayCQA3'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">285</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">286</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQA3.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayCQA3.OnExecute">
         <source>actionPlayMessageAExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">286</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">287</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB1.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB1.Tag">
         <source>101</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">287</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">288</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB1.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB1.Caption">
         <source>'actionPlayCQB1'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">288</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">289</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB1.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB1.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">289</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033565</prop><prop prop-type="Status">0</prop><prop prop-type="Order">290</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB2.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB2.Tag">
         <source>102</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">290</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">291</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB2.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB2.Caption">
         <source>'actionPlayCQB2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">291</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">292</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB2.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB2.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">292</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB3.Tag" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB3.Tag">
         <source>103</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">293</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB3.Caption" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB3.Caption">
         <source>'actionPlayCQB3'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">294</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionPlayCQB3.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionPlayCQB3.OnExecute">
         <source>actionPlayMessageBExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">295</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionDecreaseCwSpeed.Caption" resname="O:BandScope2.O:ActionList1.O:actionDecreaseCwSpeed.Caption">
         <source>'actionDecreaseCwSpeed'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">296</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionDecreaseCwSpeed.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionDecreaseCwSpeed.ShortCut">
         <source>8277</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">297</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionDecreaseCwSpeed.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionDecreaseCwSpeed.OnExecute">
         <source>actionDecreaseCwSpeedExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">298</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033681</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionIncreaseCwSpeed.Caption" resname="O:BandScope2.O:ActionList1.O:actionIncreaseCwSpeed.Caption">
         <source>'actionIncreaseCwSpeed'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033796</prop><prop prop-type="Status">0</prop><prop prop-type="Order">299</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033796</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionIncreaseCwSpeed.ShortCut" resname="O:BandScope2.O:ActionList1.O:actionIncreaseCwSpeed.ShortCut">
         <source>8281</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033796</prop><prop prop-type="Status">0</prop><prop prop-type="Order">300</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033796</prop><prop prop-type="Status">0</prop><prop prop-type="Order">301</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ActionList1.O:actionIncreaseCwSpeed.OnExecute" resname="O:BandScope2.O:ActionList1.O:actionIncreaseCwSpeed.OnExecute">
         <source>actionIncreaseCwSpeedExecute</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44850.0512033796</prop><prop prop-type="Status">0</prop><prop prop-type="Order">301</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44850.0512033796</prop><prop prop-type="Status">0</prop><prop prop-type="Order">302</prop><prop prop-type="Type">TAction</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ImageList2.Left" resname="O:BandScope2.O:ImageList2.Left">
         <source>56</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44941.671377037</prop><prop prop-type="Status">0</prop><prop prop-type="Order">302</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44941.671377037</prop><prop prop-type="Status">0</prop><prop prop-type="Order">303</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ImageList2.Top" resname="O:BandScope2.O:ImageList2.Top">
         <source>236</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44941.671377037</prop><prop prop-type="Status">0</prop><prop prop-type="Order">303</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44941.671377037</prop><prop prop-type="Status">0</prop><prop prop-type="Order">304</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:BandScope2.O:ImageList2.Bitmap" resname="O:BandScope2.O:ImageList2.Bitmap">
         <source>494C010102000800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600000000000000360000002800000040000000100000000100200000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000424D3E000000000000003E0000002800000040000000100000000100010000000000800000000000000000000000000000000000000000000000FFFFFF00FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF00000000F00FFE7F00000000F81FFC3F00000000FC3FF81F00000000FE7FF00F00000000FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF00000000FFFFFFFF0000000000000000000000000000000000000000000000000000</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44941.671377037</prop><prop prop-type="Status">0</prop><prop prop-type="Order">304</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">{</prop><prop prop-type="Close">}</prop></prop-group>
+        <prop prop-type="Created">44941.671377037</prop><prop prop-type="Status">0</prop><prop prop-type="Order">305</prop><prop prop-type="Type">TImageList</prop><prop prop-type="Localize">1</prop><prop prop-type="Open">{</prop><prop prop-type="Close">}</prop></prop-group>
       </trans-unit>
     </body>
   </file>

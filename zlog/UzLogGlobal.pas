@@ -130,6 +130,7 @@ type
     _bandscope_show_only_in_bandplan: Boolean;
     _bandscope_show_only_domestic: Boolean;
     _bandscope_use_lookup_server: Boolean;
+    _bandscope_use_resume: Boolean;
     _bandscope_setfreq_after_mode_change: Boolean;
     _bandscope_always_change_mode: Boolean;
 
@@ -144,6 +145,7 @@ type
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
     _usbif4cw_gen3_micsel: Boolean;
+    _usbif4cw_use_paddle_keyer: Boolean;
     _polling_interval: Integer;
 
     // WinKeyer
@@ -212,6 +214,8 @@ type
     _autobandmap: boolean;
     _send_freq_interval: Integer;
     _ignore_rig_mode: Boolean;
+    _turnoff_sleep: Boolean;
+    _turnon_resume: Boolean;
 
     _searchafter : integer; // 0 default. for super / partial check
     _savewhennocw : boolean; // def=false. save when cw is not being sent
@@ -1030,6 +1034,9 @@ begin
       // USBIF4CW Use Gen.3 mic. select
       Settings._usbif4cw_gen3_micsel := ini.ReadBool('Hardware', 'Usbif4cwGen3MicSelect', False);
 
+      // Use paddle and keyer
+      Settings._usbif4cw_use_paddle_keyer := ini.ReadBool('Hardware', 'Usbif4cwUsePaddleKeyer', False);
+
       // Polling Interval
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
 
@@ -1089,6 +1096,12 @@ begin
 
       // Ignore RIG mode
       Settings._ignore_rig_mode := ini.ReadBool('Rig', 'IgnoreRigMode', False);
+
+      // Turn off when in sleep mode
+      Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
+
+      // Turn on when resume
+      Settings._turnon_resume := ini.ReadBool('Rig', 'TurnOnWhenResume', False);
 
       // Anti Zeroin
       Settings.FUseAntiZeroin := ini.ReadBool('Rig', 'use_anti_zeroin', True);
@@ -1279,6 +1292,7 @@ begin
       Settings._bandscope_show_only_in_bandplan := ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', True);
       Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
       Settings._bandscope_use_lookup_server := ini.ReadBool('BandScopeOptions', 'use_lookup_server', False);
+      Settings._bandscope_use_resume := ini.ReadBool('BandScopeOptions', 'use_resume', False);
       Settings._bandscope_setfreq_after_mode_change := ini.ReadBool('BandScopeOptions', 'setfreq_after_mode_change', False);
       Settings._bandscope_always_change_mode := ini.ReadBool('BandScopeOptions', 'always_change_mode', True);
 
@@ -1685,6 +1699,9 @@ begin
       // USBIF4CW Use Gen.3 mic. select
       ini.WriteBool('Hardware', 'Usbif4cwGen3MicSelect', Settings._usbif4cw_gen3_micsel);
 
+      // USBIF4CW Use paddle and keyer
+      ini.WriteBool('Hardware', 'Usbif4cwUsePaddleKeyer', Settings._usbif4cw_use_paddle_keyer);
+
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
@@ -1738,6 +1755,12 @@ begin
 
       // Ignore RIG mode
       ini.WriteBool('Rig', 'IgnoreRigMode', Settings._ignore_rig_mode);
+
+      // Turn off when in sleep mode
+      ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);
+
+      // Turn on when resume
+      ini.WriteBool('Rig', 'TurnOnWhenResume', Settings._turnon_resume);
 
       // Anti Zeroin
       ini.WriteBool('Rig', 'use_anti_zeroin', Settings.FUseAntiZeroin);
@@ -1908,6 +1931,7 @@ begin
       ini.WriteBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
       ini.WriteBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
       ini.WriteBool('BandScopeOptions', 'use_lookup_server', Settings._bandscope_use_lookup_server);
+      ini.WriteBool('BandScopeOptions', 'use_resume', Settings._bandscope_use_resume);
       ini.WriteBool('BandScopeOptions', 'setfreq_after_mode_change', Settings._bandscope_setfreq_after_mode_change);
       ini.WriteBool('BandScopeOptions', 'always_change_mode', Settings._bandscope_always_change_mode);
 
@@ -2078,6 +2102,7 @@ begin
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
    dmZLogKeyer.Gen3MicSelect := Settings._usbif4cw_gen3_micsel;
+   dmZLogKeyer.UsePaddleKeyer := Settings._usbif4cw_use_paddle_keyer;
 
    dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 

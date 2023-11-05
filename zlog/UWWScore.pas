@@ -20,7 +20,6 @@ type
     { Private declarations }
   public
     { Public declarations }
-    Multi2 : array[b19..HiBand] of LongInt;
     constructor Create(AOwner: TComponent); override;
     procedure Renew; override;
     procedure Reset; override;
@@ -38,14 +37,8 @@ implementation
 {$R *.DFM}
 
 constructor TWWScore.Create(AOwner: TComponent);
-var
-   band : TBand;
 begin
    inherited Create(AOwner);
-
-   for band := b19 to HiBand do begin
-      Multi2[band] := 0;
-   end;
 end;
 
 procedure TWWScore.FormCreate(Sender: TObject);

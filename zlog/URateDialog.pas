@@ -45,6 +45,7 @@ type
     radioOriginCurrentTime: TRadioButton;
     radioOriginLastQSO: TRadioButton;
     radioOriginFirstQSO: TRadioButton;
+    timerRefresh: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -56,6 +57,7 @@ type
     procedure check3DClick(Sender: TObject);
     procedure radioOriginClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure timerRefreshTimer(Sender: TObject);
   private
     { Private declarations }
     FLast10QsoRateMax: Double;
@@ -288,6 +290,13 @@ begin
 //      FormStyle := fsNormal;
 end;
 
+procedure TRateDialog.timerRefreshTimer(Sender: TObject);
+begin
+   if timerRefresh.Enabled = True then begin
+      UpdateGraph();
+   end;
+end;
+
 procedure TRateDialog.check3DClick(Sender: TObject);
 begin
    Chart1.View3D := TCheckBox(Sender).Checked;
@@ -314,6 +323,8 @@ var
       Result := dt - (FShowLast - 1) / 24;
    end;
 begin
+   timerRefresh.Enabled := False;
+   try
    for b := b19 to b10g do begin
       FGraphSeries[b].Clear();
    end;
@@ -503,6 +514,9 @@ begin
       else begin
          Axes.Right.Increment := 50;
       end;
+   end;
+   finally
+      timerRefresh.Enabled := False;
    end;
 end;
 

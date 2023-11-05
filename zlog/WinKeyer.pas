@@ -81,6 +81,9 @@ const
   WK_PTT_ON = 1;
   WK_PTT_OFF = 0;
 
+type
+  TWinKeyerSendStatus = (wkssNone = 0, wkssMessage, wkssCallsign);
+
 implementation
 
 end.

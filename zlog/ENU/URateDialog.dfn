@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.9703935185</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45235.7371527778</prop>
+        <prop prop-type="OrigDateTime">45235.7054166667</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">350</prop>
+        <prop prop-type="UnTranslated">355</prop>
       </prop-group>
     </header>
     <body>
@@ -1766,6 +1766,31 @@
         <source>12</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8935067824</prop><prop prop-type="Status">0</prop><prop prop-type="Order">349</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialog.O:timerRefresh.Enabled" resname="O:RateDialog.O:timerRefresh.Enabled">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.7371622917</prop><prop prop-type="Status">0</prop><prop prop-type="Order">350</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialog.O:timerRefresh.Interval" resname="O:RateDialog.O:timerRefresh.Interval">
+        <source>180000</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.7371622917</prop><prop prop-type="Status">0</prop><prop prop-type="Order">351</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialog.O:timerRefresh.OnTimer" resname="O:RateDialog.O:timerRefresh.OnTimer">
+        <source>timerRefreshTimer</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.7371622917</prop><prop prop-type="Status">0</prop><prop prop-type="Order">352</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialog.O:timerRefresh.Left" resname="O:RateDialog.O:timerRefresh.Left">
+        <source>240</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.7371622917</prop><prop prop-type="Status">0</prop><prop prop-type="Order">353</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:RateDialog.O:timerRefresh.Top" resname="O:RateDialog.O:timerRefresh.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">45235.7371622917</prop><prop prop-type="Status">0</prop><prop prop-type="Order">354</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>
