@@ -10594,7 +10594,9 @@ begin
    fSetLastFreq := IsCQ();
 
    // CQ’†~
-   CQAbort(False);
+   if FCurrentTx = FCurrentRx then begin
+      CQAbort(False);
+   end;
 
    // SPƒ‚[ƒh‚Ö•ÏX
    SetCQ(False);
