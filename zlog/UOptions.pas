@@ -660,6 +660,10 @@ type
     buttonXvtConfig2: TButton;
     buttonXvtConfig3: TButton;
     buttonXvtConfig4: TButton;
+    checkRig1ChangePTT: TCheckBox;
+    checkRig2ChangePTT: TCheckBox;
+    checkRig3ChangePTT: TCheckBox;
+    checkRig4ChangePTT: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -764,6 +768,7 @@ type
     FKeyingPortConfig: array[1..5] of TButton;
     FRigXvt: array[1..5] of TCheckBox;
     FRigXvtConfig: array[1..5] of TButton;
+    FRigPhoneChgPTT: array[1..5] of TCheckBox;
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
     procedure SetEditNumber(no: Integer);
@@ -908,6 +913,10 @@ var
 
          if Assigned(T) then begin
             Settings.FRigControl[no].FUseTransverter := T.Checked;
+         end;
+
+         if Assigned(FRigPhoneChgPTT[no]) then begin
+            Settings.FRigControl[no].FPhoneChgPTT := FRigPhoneChgPTT[no].Checked;
          end;
       end;
    end;
@@ -1418,6 +1427,10 @@ var
          if Assigned(T) then begin
             T.Checked := Settings.FRigControl[no].FUseTransverter;
             T.OnClick(T);
+         end;
+
+         if Assigned(FRigPhoneChgPTT[no]) then begin
+            FRigPhoneChgPTT[no].Checked := Settings.FRigControl[no].FPhoneChgPTT;
          end;
       end;
    end;
@@ -2144,6 +2157,11 @@ begin
    FRigXvtConfig[3] := buttonXvtConfig3;
    FRigXvtConfig[4] := buttonXvtConfig4;
    FRigXvtConfig[5] := nil;
+   FRigPhoneChgPTT[1] := checkRig1ChangePTT;
+   FRigPhoneChgPTT[2] := checkRig2ChangePTT;
+   FRigPhoneChgPTT[3] := checkRig3ChangePTT;
+   FRigPhoneChgPTT[4] := checkRig4ChangePTT;
+   FRigPhoneChgPTT[5] := nil;
 
    // Set of RIG
    FRigSetA_rig[b19]    := comboRigA_b19;

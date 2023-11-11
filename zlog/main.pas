@@ -11628,8 +11628,10 @@ end;
 procedure TMainForm.ControlPTT(fOn: Boolean);
 var
    nID: Integer;
+   r: Integer;
 begin
-   nID := FCurrentTx;
+   r := RigControl.GetCurrentRig();
+   nID := r - 1;
 
    if dmZLogGlobal.Settings._use_winkeyer = True then begin
       dmZLogKeyer.WinKeyerControlPTT2(fOn);
@@ -11654,20 +11656,25 @@ end;
 procedure TMainForm.VoiceControl(fOn: Boolean);
 var
    nID: Integer;
+   r: Integer;
+   fPhonePTT: Boolean;
 begin
-   nID := FCurrentTx;
+   r := RigControl.GetCurrentRig();
+   nID := r - 1;
+
+   fPhonePTT := dmZLogGlobal.Settings.FRigControl[r].FPhoneChgPTT;
 
    if fOn = True then begin
       dmZLogKeyer.SetVoiceFlag(1);
       if dmZLogGlobal.Settings._pttenabled then begin
-         dmZLogKeyer.ControlPTT(nID, True);
+         dmZLogKeyer.ControlPTT(nID, True, fPhonePTT);
          Sleep(dmZLogGlobal.Settings._pttbefore);
       end;
    end
    else begin
       if dmZLogGlobal.Settings._pttenabled then begin
          Sleep(dmZLogGlobal.Settings._pttafter);
-         dmZLogKeyer.ControlPTT(nID, False);
+         dmZLogKeyer.ControlPTT(nID, False, fPhonePTT);
       end;
       dmZLogKeyer.SetVoiceFlag(0);
    end;

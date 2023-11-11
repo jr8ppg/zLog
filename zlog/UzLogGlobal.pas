@@ -94,6 +94,7 @@ type
     FKeyingPortConfig: TPortConfig;
     FUseTransverter: Boolean;
     FTransverterOffset: Integer;
+    FPhoneChgPTT: Boolean;
   end;
 
   TRigSet = record
@@ -1016,6 +1017,7 @@ begin
          Settings.FRigControl[i].FKeyingPort    := ini.ReadInteger(s, 'KeyingPort', 0);
          Settings.FRigControl[i].FKeyingPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'keying_port_rts', Integer(paPtt)));
          Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
+         Settings.FRigControl[i].FPhoneChgPTT := ini.ReadBool(s, 'PhoneChgPTTTransverterOffset', False);
       end;
 
       //
@@ -1684,6 +1686,7 @@ begin
          ini.WriteInteger(s, 'TransverterOffset', Settings.FRigControl[i].FTransverterOffset);
          ini.WriteInteger(s, 'keying_port_rts', Integer(Settings.FRigControl[i].FKeyingPortConfig.FRts));
          ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
+         ini.WriteBool(s, 'PhoneChgPTT', Settings.FRigControl[i].FPhoneChgPTT);
       end;
 
       //

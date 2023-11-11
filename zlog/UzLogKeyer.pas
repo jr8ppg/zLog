@@ -303,7 +303,7 @@ type
     function Paused : Boolean; {Returns True if SendOK is False}
     function CallSignSent : Boolean; {Returns True if realtime callsign is sent already}
 
-    procedure ControlPTT(nID: Integer; PTTON : Boolean); {Sets PTT on/off}
+    procedure ControlPTT(nID: Integer; PTTON : Boolean; fPhonePTT: Boolean = False); {Sets PTT on/off}
     procedure ResetPTT();
     procedure TuneOn(nID: Integer);
 
@@ -908,7 +908,7 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.ControlPTT(nID: Integer; PTTON: Boolean);
+procedure TdmZLogKeyer.ControlPTT(nID: Integer; PTTON: Boolean; fPhonePTT: Boolean);
 begin
    try
       FPTTFLAG := PTTON;
@@ -928,10 +928,20 @@ begin
       // COM port
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
          if FKeyingPortConfig[nID].FRts = paPtt then begin
-            FComKeying[nID].ToggleRTS(PTTON);
+            if fPhonePTT = False then begin
+               FComKeying[nID].ToggleRTS(PTTON);   // CW
+            end
+            else begin
+               FComKeying[nID].ToggleDTR(PTTON);   // PH
+            end;
          end;
          if FKeyingPortConfig[nID].FDtr = paPtt then begin
-            FComKeying[nID].ToggleDTR(PTTON);
+            if fPhonePTT = False then begin
+               FComKeying[nID].ToggleDTR(PTTON);   // CW
+            end
+            else begin
+               FComKeying[nID].ToggleRTS(PTTON);   // PH
+            end;
          end;
          Exit;
       end;

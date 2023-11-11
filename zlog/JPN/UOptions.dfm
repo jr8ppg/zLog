@@ -1965,7 +1965,7 @@ object formOptions: TformOptions
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 6
+          TabOrder = 7
           OnClick = checkRigXvtClick
         end
         object comboRig2Name: TComboBox
@@ -2038,7 +2038,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 4
+          TabOrder = 5
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2071,7 +2071,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonPortConfigCWClick
         end
         object buttonRig2PortConfig: TButton
@@ -2091,8 +2091,17 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 7
+          TabOrder = 8
           OnClick = buttonXvtConfigClick
+        end
+        object checkRig2ChangePTT: TCheckBox
+          Tag = 2
+          Left = 119
+          Top = 52
+          Width = 153
+          Height = 17
+          Caption = 'For Phone, use KEY for PTT'
+          TabOrder = 4
         end
       end
       object groupRig1: TGroupBox
@@ -2200,7 +2209,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 4
+          TabOrder = 5
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2234,7 +2243,7 @@ object formOptions: TformOptions
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 6
+          TabOrder = 7
           OnClick = checkRigXvtClick
         end
         object buttonRig1PortConfig: TButton
@@ -2254,7 +2263,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonPortConfigCWClick
         end
         object buttonXvtConfig1: TButton
@@ -2264,8 +2273,17 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 7
+          TabOrder = 8
           OnClick = buttonXvtConfigClick
+        end
+        object checkRig1ChangePTT: TCheckBox
+          Tag = 1
+          Left = 119
+          Top = 52
+          Width = 153
+          Height = 17
+          Caption = 'For Phone, use KEY for PTT'
+          TabOrder = 4
         end
       end
       object groupRig4: TGroupBox
@@ -2311,7 +2329,7 @@ object formOptions: TformOptions
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 6
+          TabOrder = 7
           OnClick = checkRigXvtClick
         end
         object comboRig4Name: TComboBox
@@ -2384,7 +2402,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 4
+          TabOrder = 5
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2417,7 +2435,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonPortConfigCWClick
         end
         object buttonRig4PortConfig: TButton
@@ -2437,8 +2455,17 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 7
+          TabOrder = 8
           OnClick = buttonXvtConfigClick
+        end
+        object checkRig4ChangePTT: TCheckBox
+          Tag = 4
+          Left = 119
+          Top = 52
+          Width = 153
+          Height = 17
+          Caption = 'For Phone, use KEY for PTT'
+          TabOrder = 4
         end
       end
       object groupRig3: TGroupBox
@@ -2484,7 +2511,7 @@ object formOptions: TformOptions
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 6
+          TabOrder = 7
           OnClick = checkRigXvtClick
         end
         object comboRig3Name: TComboBox
@@ -2557,7 +2584,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 4
+          TabOrder = 5
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2590,7 +2617,7 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonPortConfigCWClick
         end
         object buttonRig3PortConfig: TButton
@@ -2610,8 +2637,17 @@ object formOptions: TformOptions
           Width = 64
           Height = 22
           Caption = 'Config'
-          TabOrder = 7
+          TabOrder = 8
           OnClick = buttonXvtConfigClick
+        end
+        object checkRig3ChangePTT: TCheckBox
+          Tag = 3
+          Left = 119
+          Top = 52
+          Width = 153
+          Height = 17
+          Caption = 'For Phone, use KEY for PTT'
+          TabOrder = 4
         end
       end
     end
@@ -6449,13 +6485,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code Bold Italic'
+          FontName = 'Courier New'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 24
+          ItemIndex = 60
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
