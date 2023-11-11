@@ -93,7 +93,7 @@ uses
   UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
   DialogHook in 'DialogHook.pas',
   UZAnalyze in 'UZAnalyze.pas' {ZAnalyze},
-  UzLogConst in 'UzLogConst.pas',
+  UzLogConst in 'UzlogConst.pas',
   UzLogQSO in 'UzLogQSO.pas',
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',
@@ -146,7 +146,8 @@ uses
   URigCtrlElecraft in 'URigCtrlElecraft.pas',
   UDateDialog in 'UDateDialog.pas' {DateDialog},
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
-  UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo};
+  UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
+  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig};
 
 {$R *.res}
 

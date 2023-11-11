@@ -76,6 +76,7 @@ library Zlog;
 {ITE} {DFMFileType} {UPartials.dfm}
 {ITE} {DFMFileType} {UPediScore.dfm}
 {ITE} {DFMFileType} {UPluginManager.dfm}
+{ITE} {DFMFileType} {UPortConfigDialog.dfm}
 {ITE} {DFMFileType} {UQsyInfo.dfm}
 {ITE} {DFMFileType} {UQTCForm.dfm}
 {ITE} {DFMFileType} {UQuickRef.dfm}
@@ -189,6 +190,7 @@ library Zlog;
 {$R 'UPartials.dfm' 'PartialCheck:TForm'}
 {$R 'UPediScore.dfm' 'PediScore:TForm(BasicScore)'}
 {$R 'UPluginManager.dfm' 'MarketForm:TForm'}
+{$R 'UPortConfigDialog.dfm' 'formPortConfig:TForm'}
 {$R 'UQsyInfo.dfm' 'formQsyInfo:TForm'}
 {$R 'UQTCForm.dfm' 'QTCForm:TForm'}
 {$R 'UQuickRef.dfm' 'QuickRef:TForm'}

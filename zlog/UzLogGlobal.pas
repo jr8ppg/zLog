@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry,
-  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
+  UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget;
 
 type
@@ -80,14 +80,20 @@ type
     FBackColor3: TColor;
   end;
 
+  TPortConfig = record
+    FRts: TPortAction;  // default: PTT
+    FDtr: TPortAction;  // default: KEY
+  end;
+
   TRigSetting = record
     FControlPort: Integer; {0 : none 1-4 : com#}
+    FControlPortConfig: TPortConfig;
     FSpeed: Integer;
     FRigName: string;
     FKeyingPort: Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
+    FKeyingPortConfig: TPortConfig;
     FUseTransverter: Boolean;
     FTransverterOffset: Integer;
-    FKeyingIsRTS: Boolean;
   end;
 
   TRigSet = record
@@ -617,7 +623,7 @@ implementation
 
 uses
   Main, URigControl, UZLinkForm, UComm, UzLogCW, UClusterTelnetSet, UClusterCOMSet,
-  UZlinkTelnetSet;
+  UZlinkTelnetSet, UzLogKeyer;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -1001,12 +1007,15 @@ begin
       for i := 1 to 5 do begin
          s := 'RigControl#' + IntToStr(i);
          Settings.FRigControl[i].FControlPort   := ini.ReadInteger(s, 'ControlPort', 0);
+         Settings.FRigControl[i].FControlPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'control_port_rts', Integer(paNone)));
+         Settings.FRigControl[i].FControlPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'control_port_dtr', Integer(paNone)));
          Settings.FRigControl[i].FSpeed         := ini.ReadInteger(s, 'Speed', 0);
          Settings.FRigControl[i].FRigName       := ini.ReadString(s, 'RigName', '');
          Settings.FRigControl[i].FUseTransverter := ini.ReadBool(s, 'UseTransverter', False);
          Settings.FRigControl[i].FTransverterOffset := ini.ReadInteger(s, 'TransverterOffset', 0);
          Settings.FRigControl[i].FKeyingPort    := ini.ReadInteger(s, 'KeyingPort', 0);
-	     Settings.FRigControl[i].FKeyingIsRTS   := ini.ReadBool(s, 'keying_signal_reverse', False);
+         Settings.FRigControl[i].FKeyingPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'keying_port_rts', Integer(paPtt)));
+         Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
       end;
 
       //
@@ -1666,12 +1675,15 @@ begin
       for i := 1 to 5 do begin
          s := 'RigControl#' + IntToStr(i);
          ini.WriteInteger(s, 'ControlPort', Settings.FRigControl[i].FControlPort);
+         ini.WriteInteger(s, 'control_port_rts', Integer(Settings.FRigControl[i].FControlPortConfig.FRts));
+         ini.WriteInteger(s, 'control_port_dtr', Integer(Settings.FRigControl[i].FControlPortConfig.FDtr));
          ini.WriteInteger(s, 'Speed', Settings.FRigControl[i].FSpeed);
          ini.WriteString(s, 'RigName', Settings.FRigControl[i].FRigName);
          ini.WriteInteger(s, 'KeyingPort', Settings.FRigControl[i].FKeyingPort);
          ini.WriteBool(s, 'UseTransverter', Settings.FRigControl[i].FUseTransverter);
          ini.WriteInteger(s, 'TransverterOffset', Settings.FRigControl[i].FTransverterOffset);
-         ini.WriteBool(s, 'keying_signal_reverse', Settings.FRigControl[i].FKeyingIsRTS);
+         ini.WriteInteger(s, 'keying_port_rts', Integer(Settings.FRigControl[i].FKeyingPortConfig.FRts));
+         ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
       end;
 
       //
@@ -2093,11 +2105,11 @@ begin
       end;
    end;
    dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings.FRigControl[5].FKeyingPort);
-   dmZLogKeyer.KeyingSignalReverse[0] := Settings.FRigControl[1].FKeyingIsRTS;
-   dmZLogKeyer.KeyingSignalReverse[1] := Settings.FRigControl[2].FKeyingIsRTS;
-   dmZLogKeyer.KeyingSignalReverse[2] := Settings.FRigControl[3].FKeyingIsRTS;
-   dmZLogKeyer.KeyingSignalReverse[3] := Settings.FRigControl[4].FKeyingIsRTS;
-   dmZLogKeyer.KeyingSignalReverse[4] := Settings.FRigControl[5].FKeyingIsRTS;
+   dmZLogKeyer.KeyingPortConfig[0] := Settings.FRigControl[1].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[1] := Settings.FRigControl[2].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[2] := Settings.FRigControl[3].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[3] := Settings.FRigControl[4].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[4] := Settings.FRigControl[5].FKeyingPortConfig;
 
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;

@@ -422,7 +422,7 @@ type
     checkZLinkSyncSerial: TCheckBox;
     groupRig5: TGroupBox;
     Label99: TLabel;
-    comboRig3Keying: TComboBox;
+    comboRig5Keying: TComboBox;
     GroupBox6: TGroupBox;
     Label31: TLabel;
     comboSo2rTxSelectPort: TComboBox;
@@ -470,41 +470,41 @@ type
     Label92: TLabel;
     Label93: TLabel;
     Label94: TLabel;
-    comboRig1AName: TComboBox;
-    comboRig1AControl: TComboBox;
-    comboRig1ASpeed: TComboBox;
-    comboRig1AKeying: TComboBox;
-    checkRig1AXvt: TCheckBox;
+    comboRig1Name: TComboBox;
+    comboRig1Control: TComboBox;
+    comboRig1Speed: TComboBox;
+    comboRig1Keying: TComboBox;
+    checkRig1Xvt: TCheckBox;
     groupRig2: TGroupBox;
     Label120: TLabel;
     Label121: TLabel;
     Label122: TLabel;
     Label123: TLabel;
-    checkRig1BXvt: TCheckBox;
-    comboRig1BName: TComboBox;
-    comboRig1BControl: TComboBox;
-    comboRig1BSpeed: TComboBox;
-    comboRig1BKeying: TComboBox;
+    checkRig2Xvt: TCheckBox;
+    comboRig2Name: TComboBox;
+    comboRig2Control: TComboBox;
+    comboRig2Speed: TComboBox;
+    comboRig2Keying: TComboBox;
     groupRig3: TGroupBox;
     Label95: TLabel;
     Label96: TLabel;
     Label97: TLabel;
     Label98: TLabel;
-    checkRig2AXvt: TCheckBox;
-    comboRig2AName: TComboBox;
-    comboRig2AControl: TComboBox;
-    comboRig2ASpeed: TComboBox;
-    comboRig2AKeying: TComboBox;
+    checkRig3Xvt: TCheckBox;
+    comboRig3Name: TComboBox;
+    comboRig3Control: TComboBox;
+    comboRig3Speed: TComboBox;
+    comboRig3Keying: TComboBox;
     groupRig4: TGroupBox;
     Label124: TLabel;
     Label125: TLabel;
     Label126: TLabel;
     Label127: TLabel;
-    checkRig2BXvt: TCheckBox;
-    comboRig2BName: TComboBox;
-    comboRig2BControl: TComboBox;
-    comboRig2BSpeed: TComboBox;
-    comboRig2BKeying: TComboBox;
+    checkRig4Xvt: TCheckBox;
+    comboRig4Name: TComboBox;
+    comboRig4Control: TComboBox;
+    comboRig4Speed: TComboBox;
+    comboRig4Keying: TComboBox;
     tabsheetHardware2: TTabSheet;
     groupRigSetA: TGroupBox;
     Label128: TLabel;
@@ -620,11 +620,6 @@ type
     editSpcFolder: TEdit;
     Label108: TLabel;
     Label109: TLabel;
-    checkRig1AKeyIsRTS: TCheckBox;
-    checkRig1BKeyIsRTS: TCheckBox;
-    checkRig2AKeyIsRTS: TCheckBox;
-    checkRig2BKeyIsRTS: TCheckBox;
-    checkRig3KeyIsRTS: TCheckBox;
     Label110: TLabel;
     editIcomResponseTimout: TEdit;
     checkDispLongDateTime: TCheckBox;
@@ -652,6 +647,19 @@ type
     checkTurnoffSleep: TCheckBox;
     checkTurnonResume: TCheckBox;
     checkUsbif4cwUsePaddle: TCheckBox;
+    buttonRig1PortConfig: TButton;
+    buttonPortConfigCW1: TButton;
+    buttonPortConfigCW2: TButton;
+    buttonRig2PortConfig: TButton;
+    buttonPortConfigCW3: TButton;
+    buttonRig3PortConfig: TButton;
+    buttonPortConfigCW4: TButton;
+    buttonRig4PortConfig: TButton;
+    buttonPortConfigCW5: TButton;
+    buttonXvtConfig1: TButton;
+    buttonXvtConfig2: TButton;
+    buttonXvtConfig3: TButton;
+    buttonXvtConfig4: TButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -672,8 +680,8 @@ type
     procedure editMessage1Change(Sender: TObject);
     procedure CWBankClick(Sender: TObject);
     procedure checkRig1AXvtClick(Sender: TObject);
-    procedure comboRig1ANameChange(Sender: TObject);
-    procedure comboRig2ANameChange(Sender: TObject);
+    procedure comboRig1NameChange(Sender: TObject);
+    procedure comboRig3NameChange(Sender: TObject);
     procedure checkUseQuickQSYClick(Sender: TObject);
     procedure OnNeedSuperCheckLoad(Sender: TObject);
     procedure buttonFullmatchSelectColorClick(Sender: TObject);
@@ -705,6 +713,11 @@ type
     procedure checkUseEstimatedModeClick(Sender: TObject);
     procedure buttonSpotterListClick(Sender: TObject);
     procedure buttonOpEditClick(Sender: TObject);
+    procedure buttonPortConfigRigClick(Sender: TObject);
+    procedure buttonPortConfigCWClick(Sender: TObject);
+    procedure buttonXvtConfigClick(Sender: TObject);
+    procedure checkRigXvtClick(Sender: TObject);
+    procedure comboRigControlChange(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -743,6 +756,14 @@ type
     FRigSetB_rig: array[b19..b10g] of TComboBox;
     FRigSetB_ant: array[b19..b10g] of TComboBox;
 
+    FRigControlPort: array[1..5] of TComboBox;
+    FRigControlPortConfig: array[1..5] of TButton;
+    FRigControlSpeed: array[1..5] of TComboBox;
+    FRigName: array[1..5] of TComboBox;
+    FKeyingPort: array[1..5] of TComboBox;
+    FKeyingPortConfig: array[1..5] of TButton;
+    FRigXvt: array[1..5] of TCheckBox;
+    FRigXvtConfig: array[1..5] of TButton;
     procedure RenewCWStrBankDisp();
     procedure InitRigNames();
     procedure SetEditNumber(no: Integer);
@@ -797,7 +818,7 @@ resourcestring
 
 implementation
 
-uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet,
+uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet, UPortConfigDialog,
   UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager, USpotterListDlg;
 
 {$R *.DFM}
@@ -850,11 +871,11 @@ var
    i, j: integer;
    b: TBand;
 
-   procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
    var
       KeyPort: Integer;
    begin
-      with dmZlogGlobal do begin
+      with dmZLogGlobal do begin
          if Assigned(C) then begin
             Settings.FRigControl[no].FControlPort := TCommPort(C.Items.Objects[C.ItemIndex]).Number;
          end;
@@ -888,14 +909,10 @@ var
          if Assigned(T) then begin
             Settings.FRigControl[no].FUseTransverter := T.Checked;
          end;
-
-         if Assigned(R) then begin
-            Settings.FRigControl[no].FKeyingIsRTS := R.Checked;
-         end;
       end;
    end;
 begin
-   with dmZlogGlobal do begin
+   with dmZLogGlobal do begin
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
       Settings._jmode := cbJMode.Checked;
       Settings._searchafter := rgSearchAfter.ItemIndex;
@@ -1029,11 +1046,11 @@ begin
       //
       // RIG1-5
       //
-      SetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt, checkRig1AKeyIsRTS);
-      SetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt, checkRig1BKeyIsRTS);
-      SetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt, checkRig2AKeyIsRTS);
-      SetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt, checkRig2BKeyIsRTS);
-      SetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil,           checkRig3KeyIsRTS);
+      SetRigControlParam(1, comboRig1Control, comboRig1Speed, comboRig1Name, comboRig1Keying, checkRig1Xvt);
+      SetRigControlParam(2, comboRig2Control, comboRig2Speed, comboRig2Name, comboRig2Keying, checkRig2Xvt);
+      SetRigControlParam(3, comboRig3Control, comboRig3Speed, comboRig3Name, comboRig3Keying, checkRig3Xvt);
+      SetRigControlParam(4, comboRig4Control, comboRig4Speed, comboRig4Name, comboRig4Keying, checkRig4Xvt);
+      SetRigControlParam(5, nil,              nil,            nil,           comboRig5Keying, nil);
 
       //
       // Set of RIG
@@ -1358,7 +1375,7 @@ var
    i, j: integer;
    b: TBand;
 
-   procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T, R: TCheckBox);
+   procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
    var
       i: Integer;
    begin
@@ -1368,6 +1385,7 @@ var
             for i := 0 to C.Items.Count - 1 do begin
                if TCommPort(C.Items.Objects[i]).Number = Settings.FRigControl[no].FControlPort then begin
                   C.ItemIndex := i;
+                  C.OnChange(C);
                   Break;
                end;
             end;
@@ -1391,6 +1409,7 @@ var
             for i := 0 to K.Items.Count - 1 do begin
                if TCommPort(K.Items.Objects[i]).Number = Settings.FRigControl[no].FKeyingPort then begin
                   K.ItemIndex := i;
+                  K.OnChange(K);
                   Break;
                end;
             end;
@@ -1398,10 +1417,7 @@ var
 
          if Assigned(T) then begin
             T.Checked := Settings.FRigControl[no].FUseTransverter;
-         end;
-
-         if Assigned(R) then begin
-            R.Checked := Settings.FRigControl[no].FKeyingIsRTS;
+            T.OnClick(T);
          end;
       end;
    end;
@@ -1544,11 +1560,11 @@ begin
       //
       // RIG1-5
       //
-      GetRigControlParam(1, comboRig1AControl, comboRig1ASpeed, comboRig1AName, comboRig1AKeying, checkRig1AXvt, checkRig1AKeyIsRTS);
-      GetRigControlParam(2, comboRig1BControl, comboRig1BSpeed, comboRig1BName, comboRig1BKeying, checkRig1BXvt, checkRig1BKeyIsRTS);
-      GetRigControlParam(3, comboRig2AControl, comboRig2ASpeed, comboRig2AName, comboRig2AKeying, checkRig2AXvt, checkRig2AKeyIsRTS);
-      GetRigControlParam(4, comboRig2BControl, comboRig2BSpeed, comboRig2BName, comboRig2BKeying, checkRig2BXvt, checkRig2BKeyIsRTS);
-      GetRigControlParam(5, nil,               nil,             nil,            comboRig3Keying,  nil,           checkRig3KeyIsRTS);
+      GetRigControlParam(1, comboRig1Control, comboRig1Speed, comboRig1Name, comboRig1Keying, checkRig1Xvt);
+      GetRigControlParam(2, comboRig2Control, comboRig2Speed, comboRig2Name, comboRig2Keying, checkRig2Xvt);
+      GetRigControlParam(3, comboRig3Control, comboRig3Speed, comboRig3Name, comboRig3Keying, checkRig3Xvt);
+      GetRigControlParam(4, comboRig4Control, comboRig4Speed, comboRig4Name, comboRig4Keying, checkRig4Xvt);
+      GetRigControlParam(5, nil,              nil,            nil,           comboRig5Keying, nil);
 
       //
       // Set of RIG
@@ -2088,6 +2104,47 @@ begin
       OpListBox.Items.AddObject(dmZlogGlobal.OpList[i].Callsign, dmZlogGlobal.OpList[i]);
    end;
 
+   FRigControlPort[1] := comboRig1Control;
+   FRigControlPort[2] := comboRig2Control;
+   FRigControlPort[3] := comboRig3Control;
+   FRigControlPort[4] := comboRig4Control;
+   FRigControlPort[5] := nil;
+   FRigControlPortConfig[1] := buttonRig1PortConfig;
+   FRigControlPortConfig[2] := buttonRig2PortConfig;
+   FRigControlPortConfig[3] := buttonRig3PortConfig;
+   FRigControlPortConfig[4] := buttonRig4PortConfig;
+   FRigControlPortConfig[5] := nil;
+   FRigControlSpeed[1] := comboRig1Speed;
+   FRigControlSpeed[2] := comboRig2Speed;
+   FRigControlSpeed[3] := comboRig3Speed;
+   FRigControlSpeed[4] := comboRig4Speed;
+   FRigControlSpeed[5] := nil;
+   FRigName[1] := comboRig1Name;
+   FRigName[2] := comboRig2Name;
+   FRigName[3] := comboRig3Name;
+   FRigName[4] := comboRig4Name;
+   FRigName[5] := nil;
+   FKeyingPort[1] := comboRig1Keying;
+   FKeyingPort[2] := comboRig2Keying;
+   FKeyingPort[3] := comboRig3Keying;
+   FKeyingPort[4] := comboRig4Keying;
+   FKeyingPort[5] := comboRig5Keying;
+   FKeyingPortConfig[1] := buttonPortConfigCW1;
+   FKeyingPortConfig[2] := buttonPortConfigCW2;
+   FKeyingPortConfig[3] := buttonPortConfigCW3;
+   FKeyingPortConfig[4] := buttonPortConfigCW4;
+   FKeyingPortConfig[5] := buttonPortConfigCW5;
+   FRigXvt[1] := checkRig1Xvt;
+   FRigXvt[2] := checkRig2Xvt;
+   FRigXvt[3] := checkRig3Xvt;
+   FRigXvt[4] := checkRig4Xvt;
+   FRigXvt[5] := nil;
+   FRigXvtConfig[1] := buttonXvtConfig1;
+   FRigXvtConfig[2] := buttonXvtConfig2;
+   FRigXvtConfig[3] := buttonXvtConfig3;
+   FRigXvtConfig[4] := buttonXvtConfig4;
+   FRigXvtConfig[5] := nil;
+
    // Set of RIG
    FRigSetA_rig[b19]    := comboRigA_b19;
    FRigSetA_rig[b35]    := comboRigA_b35;
@@ -2167,31 +2224,31 @@ begin
    FNeedSuperCheckLoad := False;
 
    // CommPorts
-   comboRig1AControl.Items.Clear();
-   comboRig1BControl.Items.Clear();
-   comboRig2AControl.Items.Clear();
-   comboRig2BControl.Items.Clear();
-   comboRig1AKeying.Items.Clear();
-   comboRig1BKeying.Items.Clear();
-   comboRig2AKeying.Items.Clear();
-   comboRig2BKeying.Items.Clear();
+   comboRig1Control.Items.Clear();
+   comboRig2Control.Items.Clear();
+   comboRig3Control.Items.Clear();
+   comboRig4Control.Items.Clear();
+   comboRig1Keying.Items.Clear();
+   comboRig2Keying.Items.Clear();
    comboRig3Keying.Items.Clear();
+   comboRig4Keying.Items.Clear();
+   comboRig5Keying.Items.Clear();
 
    list := dmZLogGlobal.CommPortList;
    for i := 0 to list.Count - 1 do begin
       CP := list[i];
       if CP.RigControl = True then begin
-         comboRig1AControl.Items.AddObject(CP.Name, CP);
-         comboRig1BControl.Items.AddObject(CP.Name, CP);
-         comboRig2AControl.Items.AddObject(CP.Name, CP);
-         comboRig2BControl.Items.AddObject(CP.Name, CP);
+         comboRig1Control.Items.AddObject(CP.Name, CP);
+         comboRig2Control.Items.AddObject(CP.Name, CP);
+         comboRig3Control.Items.AddObject(CP.Name, CP);
+         comboRig4Control.Items.AddObject(CP.Name, CP);
       end;
       if CP.Keying = True then begin
-         comboRig1AKeying.Items.AddObject(CP.Name, CP);
-         comboRig1BKeying.Items.AddObject(CP.Name, CP);
-         comboRig2AKeying.Items.AddObject(CP.Name, CP);
-         comboRig2BKeying.Items.AddObject(CP.Name, CP);
+         comboRig1Keying.Items.AddObject(CP.Name, CP);
+         comboRig2Keying.Items.AddObject(CP.Name, CP);
          comboRig3Keying.Items.AddObject(CP.Name, CP);
+         comboRig4Keying.Items.AddObject(CP.Name, CP);
+         comboRig5Keying.Items.AddObject(CP.Name, CP);
       end;
    end;
 end;
@@ -2512,6 +2569,14 @@ begin
    end;
 end;
 
+procedure TformOptions.checkRigXvtClick(Sender: TObject);
+var
+   r: Integer;
+begin
+   r := TCheckBox(Sender).Tag;
+   FRigXvtConfig[r].Enabled := TCheckBox(Sender).Checked;
+end;
+
 procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
    Index: Integer;
@@ -2531,12 +2596,14 @@ begin
          checkWkIgnoreSpeedPot.Enabled := False;
       end;
       checkUseWinKeyer.Checked := False;
+      FKeyingPortConfig[rigno].Enabled := False;
    end
    else begin
       checkUseWinKeyer.Enabled := True;
       checkWk9600.Enabled := True;
       checkWkOutportSelect.Enabled := True;
       checkWkIgnoreSpeedPot.Enabled := True;
+      FKeyingPortConfig[rigno].Enabled := True;
    end;
 end;
 
@@ -2551,7 +2618,24 @@ begin
    end;
 end;
 
-procedure TformOptions.comboRig1ANameChange(Sender: TObject);
+procedure TformOptions.comboRigControlChange(Sender: TObject);
+var
+   r: Integer;
+   cp: TCommPort;
+   combo: TComboBox;
+begin
+   combo := TComboBox(Sender);
+   r := combo.Tag;
+   cp := TCommPort(combo.items.Objects[combo.ItemIndex]);
+   if (cp <> nil) and ((cp.Number >= 1) and (cp.Number <= 20)) then begin
+      FRigControlPortConfig[r].Enabled := True;
+   end
+   else begin
+      FRigControlPortConfig[r].Enabled := False;
+   end;
+end;
+
+procedure TformOptions.comboRig1NameChange(Sender: TObject);
 begin
    // 選択されているのがOmni-Rigの場合
 //   if comboRig1AName.ItemIndex = comboRig1AName.Items.Count - 1 then begin
@@ -2583,7 +2667,7 @@ begin
 //   end;
 end;
 
-procedure TformOptions.comboRig2ANameChange(Sender: TObject);
+procedure TformOptions.comboRig3NameChange(Sender: TObject);
 begin
 //   if comboRig2AName.ItemIndex = comboRig2AName.Items.Count - 1 then begin
 //      comboRig1AName.ItemIndex := comboRig1AName.Items.Count - 1;
@@ -2683,24 +2767,24 @@ end;
 procedure TformOptions.checkUseWinKeyerClick(Sender: TObject);
 begin
    if TCheckBox(Sender).Checked = True then begin
-      comboRig1BKeying.ItemIndex := comboRig1AKeying.ItemIndex;
-      comboRig2AKeying.ItemIndex := comboRig1AKeying.ItemIndex;
-      comboRig2BKeying.ItemIndex := comboRig1AKeying.ItemIndex;
+      comboRig2Keying.ItemIndex := comboRig1Keying.ItemIndex;
+      comboRig3Keying.ItemIndex := comboRig1Keying.ItemIndex;
+      comboRig4Keying.ItemIndex := comboRig1Keying.ItemIndex;
    end;
 end;
 
 procedure TformOptions.InitRigNames();
 begin
-   comboRig1AName.Items.Clear;
-   comboRig1BName.Items.Clear;
-   comboRig2AName.Items.Clear;
-   comboRig2BName.Items.Clear;
+   comboRig1Name.Items.Clear;
+   comboRig2Name.Items.Clear;
+   comboRig3Name.Items.Clear;
+   comboRig4Name.Items.Clear;
 
-   dmZlogGlobal.MakeRigList(comboRig1AName.Items);
+   dmZlogGlobal.MakeRigList(comboRig1Name.Items);
 
-   comboRig1BName.Items.Assign(comboRig1AName.Items);
-   comboRig2AName.Items.Assign(comboRig1AName.Items);
-   comboRig2BName.Items.Assign(comboRig1AName.Items);
+   comboRig2Name.Items.Assign(comboRig1Name.Items);
+   comboRig3Name.Items.Assign(comboRig1Name.Items);
+   comboRig4Name.Items.Assign(comboRig1Name.Items);
 end;
 
 procedure TformOptions.SetEditNumber(no: Integer);
@@ -2931,10 +3015,81 @@ begin
    end;
 end;
 
+procedure TformOptions.buttonPortConfigCWClick(Sender: TObject);
+var
+   f: TformPortConfig;
+   r: Integer;
+begin
+   f := TformPortConfig.Create(Self);
+   try
+      r := TButton(sender).Tag;
+
+      f.PortName := FKeyingPort[r].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[r].FKeyingPortConfig;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[r].FKeyingPortConfig := f.PortConfig;
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TformOptions.buttonPortConfigRigClick(Sender: TObject);
+var
+   f: TformPortConfig;
+   r: Integer;
+begin
+   f := TformPortConfig.Create(Self);
+   try
+      r := TButton(sender).Tag;
+
+      f.PortName := FRigControlPort[r].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[r].FControlPortConfig;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[r].FControlPortConfig := f.PortConfig;
+   finally
+      f.Release();
+   end;
+end;
+
 procedure TformOptions.buttonStopVoiceClick(Sender: TObject);
 begin
    FVoiceSound.Stop();
    FVoiceSound.Close();
+end;
+
+procedure TformOptions.buttonXvtConfigClick(Sender: TObject);
+var
+   i, r: integer;
+   F: TIntegerDialog;
+begin
+   F := TIntegerDialog.Create(Self);
+   try
+      r := TButton(Sender).Tag;
+
+      i := dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset;
+
+      F.Init(i, PLEASE_INPUT_OFFSET_FREQ);
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      i := F.GetValue;
+      if i = -1 then begin
+         Exit;
+      end;
+
+      dmZlogGlobal.Settings.FRigControl[r].FTransverterOffset := i;
+   finally
+      F.Release();
+   end;
 end;
 
 procedure TformOptions.buttonSpotterListClick(Sender: TObject);

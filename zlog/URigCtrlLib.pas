@@ -63,6 +63,7 @@ type
     FLastCall: string;
     FLastRcvd: string;
 
+    FPortConfig: TPortConfig;
     function GetCurrentFreq(Index: Integer): TFrequency;
     procedure SetCurrentFreq(Index: Integer; freq: TFrequency);
     function GetFreqMem(b: TBand; m: TMode): TFrequency;
@@ -120,6 +121,8 @@ type
     property Rit: Boolean read FRit write SetRit;
     property Xit: Boolean read FXit write SetXit;
     property RitOffset: Integer read FRitOffset write SetRitOffset;
+
+    property PortConfig: TPortConfig read FPortConfig write FPortConfig;
 
     property OnUpdateStatus: TRigUpdateStatusEvent read FOnUpdateStatus write FOnUpdateStatus;
     property OnError: TRigErrorEvent read FOnError write FOnError;
@@ -232,9 +235,9 @@ begin
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
    FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed ];
-   FComm.HwFlow := hfRTSCTS;
+   FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
-   FComm.EnableDTROnOpen := True;
+   FComm.EnableDTROnOpen := False;
 
    TerminatorCode := ';';
    BufferString := '';
@@ -274,6 +277,9 @@ begin
    FOnError := nil;
 
    FStopRequest := False;
+
+   FPortConfig.FRts := paNone;
+   FPortConfig.FDtr := paNone;
 end;
 
 destructor TRig.Destroy;
@@ -291,9 +297,36 @@ procedure TRig.Initialize();
 begin
    FPollingTimer.Interval := FPollingInterval;
    FComm.Connect();
-   if FComm.HwFlow = hfNONE then begin
-      FComm.ToggleDTR(False);
-      FComm.ToggleRTS(False);
+
+   case FPortConfig.FRts of
+      paAlwaysOn: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(True);
+      end;
+
+      paHandshake: begin
+         FComm.HwFlow := hfRtsCts;
+         FComm.ToggleRTS(True);
+      end
+
+      else begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(False);
+      end;
+   end;
+
+   case FPortConfig.FDtr of
+      paAlwaysOn: begin
+         FComm.ToggleDTR(True);
+      end;
+
+      paNone, paAlwaysOff: begin
+         FComm.ToggleDTR(False);
+      end;
+
+      else begin
+         FComm.ToggleDTR(True);
+      end;
    end;
 
    FStopRequest := False;

@@ -14,7 +14,7 @@ uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
   System.SyncObjs,
-  UzLogConst, WinKeyer
+  UzLogConst, UzLogGlobal, WinKeyer
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -152,6 +152,7 @@ type
     FVoiceFlag: Integer;  //temporary
 
     FKeyingPort: array[0..MAXPORT] of TKeyingPort;
+    FKeyingPortConfig: array[0..MAXPORT] of TPortConfig;
 
     FSpaceFactor: Integer; {space length factor in %}
     FEISpaceFactor: Integer; {space length factor after E and I}
@@ -184,7 +185,7 @@ type
 
     cwstrptr: Integer;
     tailcwstrptr: Integer;
-    
+
     callsignptr: Integer; {char pos. not absolute pos}
 
     FDotCount: Integer;
@@ -216,10 +217,6 @@ type
     FOnWkStatusProc: TWkStatusEvent;
     FOnSpeedChanged: TNotifyEvent;
     FCancelSpeedChangedEvent: Boolean;
-
-    // False: PTT=RTS,KEY=DTR
-    // True:  PTT=DTR,KEY=RTS
-    FKeyingSignalReverse: array[0..MAXPORT] of Boolean;
 
     FUsbDetecting: Boolean;
     FUsbif4cwSyncWpm: Boolean;
@@ -294,8 +291,8 @@ type
     procedure SetSo2rRxSelectPort(port: TKeyingPort);
     procedure SetSo2rTxSelectPort(port: TKeyingPort);
 
-    function GetKeyingSignalReverse(Index: Integer): Boolean;
-    procedure SetKeyingSignalReverse(Index: Integer; v: Boolean);
+    function GetKeyingPortConfig(Index: Integer): TPortConfig;
+    procedure SetKeyingPortConfig(Index: Integer; v: TPortConfig);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -349,7 +346,7 @@ type
     property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
-    property KeyingSignalReverse[Index: Integer]: Boolean read GetKeyingSignalReverse write SetKeyingSignalReverse;
+    property KeyingPortConfig[Index: Integer]: TPortConfig read GetKeyingPortConfig write SetKeyingPortConfig;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
     property UsePaddleKeyer: Boolean read FUsePaddleKeyer write FUsePaddleKeyer;
@@ -516,7 +513,8 @@ begin
 
    for i := 0 to MAXPORT do begin
       KeyingPort[i] := tkpNone;
-      FKeyingSignalReverse[i] := False;
+      FKeyingPortConfig[i].FRts := paPtt;
+      FKeyingPortConfig[i].FDtr := paKey;
    end;
 
    tailcwstrptr := 1;
@@ -929,10 +927,10 @@ begin
 
       // COM port
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-         if FKeyingSignalReverse[nID] = False then begin
+         if FKeyingPortConfig[nID].FRts = paPtt then begin
             FComKeying[nID].ToggleRTS(PTTON);
-         end
-         else begin
+         end;
+         if FKeyingPortConfig[nID].FDtr = paPtt then begin
             FComKeying[nID].ToggleDTR(PTTON);
          end;
          Exit;
@@ -973,10 +971,10 @@ begin
          end;
 
          if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-            if FKeyingSignalReverse[nID] = False then begin
+            if FKeyingPortConfig[nID].FRts = paPtt then begin
                FComKeying[nID].ToggleRTS(False);
-            end
-            else begin
+            end;
+            if FKeyingPortConfig[nID].FDtr = paPtt then begin
                FComKeying[nID].ToggleDTR(False);
             end;
          end;
@@ -1315,11 +1313,11 @@ procedure TdmZLogKeyer.CW_ON(nID: Integer);
 begin
    case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
-         if FKeyingSignalReverse[nID] = False then begin
-            FComKeying[nID].ToggleDTR(True);
-         end
-         else begin
+         if FKeyingPortConfig[nID].FRts = paKey then begin
             FComKeying[nID].ToggleRTS(True);
+         end;
+         if FKeyingPortConfig[nID].FDtr = paKey then begin
+            FComKeying[nID].ToggleDTR(True);
          end;
       end;
 
@@ -1338,11 +1336,11 @@ procedure TdmZLogKeyer.CW_OFF(nID: Integer);
 begin
    case FKeyingPort[nID] of
       tkpSerial1..tkpSerial20: begin
-         if FKeyingSignalReverse[nID] = False then begin
-            FComKeying[nID].ToggleDTR(False);
-         end
-         else begin
+         if FKeyingPortConfig[nID].FRts = paKey then begin
             FComKeying[nID].ToggleRTS(False);
+         end;
+         if FKeyingPortConfig[nID].FDtr = paKey then begin
+            FComKeying[nID].ToggleDTR(False);
          end;
       end;
 
@@ -2737,6 +2735,20 @@ begin
       if FComKeying[i].Connected = False then begin
          FComKeying[i].Port := TPortNumber(FKeyingPort[i]);
          FComKeying[i].Connect;
+      end;
+
+      if FKeyingPortConfig[i].FRts = paAlwaysOn then begin
+         FComKeying[i].ToggleRTS(True);
+      end
+      else begin
+         FComKeying[i].ToggleRTS(False);
+      end;
+
+      if FKeyingPortConfig[i].FDtr = paAlwaysOn then begin
+         FComKeying[i].ToggleDTR(True);
+      end
+      else begin
+         FComKeying[i].ToggleDTR(False);
       end;
 
       FComKeying[i].ToggleDTR(False);
@@ -4335,14 +4347,14 @@ begin
    FSo2rTxSelectPort := port;
 end;
 
-function TdmZLogKeyer.GetKeyingSignalReverse(Index: Integer): Boolean;
+function TdmZLogKeyer.GetKeyingPortConfig(Index: Integer): TPortConfig;
 begin
-   Result := FKeyingSignalReverse[Index];
+   Result := FKeyingPortConfig[Index];
 end;
 
-procedure TdmZLogKeyer.SetKeyingSignalReverse(Index: Integer; v: Boolean);
+procedure TdmZLogKeyer.SetKeyingPortConfig(Index: Integer; v: TPortConfig);
 begin
-   FKeyingSignalReverse[Index] := v;
+   FKeyingPortConfig[Index] := v;
 end;
 
 { TUSBPortInfo }

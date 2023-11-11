@@ -685,6 +685,8 @@ begin
             FRigs[i].FreqOffset := 0;
          end;
 
+         FRigs[i].PortConfig := dmZLogGlobal.Settings.FRigControl[i].FControlPortConfig;
+
          // Initialize & Start
          FRigs[i].Initialize();
       end;

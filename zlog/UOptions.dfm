@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetHardware
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -1866,9 +1866,9 @@ object formOptions: TformOptions
       Caption = 'Hardware'
       object groupRig5: TGroupBox
         Left = 6
-        Top = 256
+        Top = 324
         Width = 423
-        Height = 56
+        Height = 78
         Caption = 'RIG-5'
         TabOrder = 4
         object Label99: TLabel
@@ -1878,8 +1878,8 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'CW port'
         end
-        object comboRig3Keying: TComboBox
-          Tag = 3
+        object comboRig5Keying: TComboBox
+          Tag = 5
           Left = 278
           Top = 27
           Width = 64
@@ -1911,23 +1911,22 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
-        object checkRig3KeyIsRTS: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
+        object buttonPortConfigCW5: TButton
+          Tag = 5
+          Left = 278
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
           TabOrder = 1
+          OnClick = buttonPortConfigCWClick
         end
       end
       object groupRig2: TGroupBox
         Left = 6
-        Top = 66
+        Top = 84
         Width = 423
-        Height = 56
+        Height = 78
         Caption = 'RIG-2'
         TabOrder = 1
         object Label120: TLabel
@@ -1958,34 +1957,36 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'CW port'
         end
-        object checkRig1BXvt: TCheckBox
-          Tag = 102
+        object checkRig2Xvt: TCheckBox
+          Tag = 2
           Left = 351
-          Top = 12
+          Top = 29
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 4
-          OnClick = checkRig1AXvtClick
+          TabOrder = 6
+          OnClick = checkRigXvtClick
         end
-        object comboRig1BName: TComboBox
+        object comboRig2Name: TComboBox
           Left = 152
           Top = 27
           Width = 120
           Height = 21
           Style = csDropDownList
           DropDownCount = 20
-          TabOrder = 2
-          OnChange = comboRig2ANameChange
+          TabOrder = 3
+          OnChange = comboRig3NameChange
         end
-        object comboRig1BControl: TComboBox
+        object comboRig2Control: TComboBox
+          Tag = 2
           Left = 11
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
           TabOrder = 0
+          OnChange = comboRigControlChange
           Items.Strings = (
             'None'
             'COM1'
@@ -2009,13 +2010,13 @@ object formOptions: TformOptions
             'COM19'
             'COM20')
         end
-        object comboRig1BSpeed: TComboBox
+        object comboRig2Speed: TComboBox
           Left = 81
           Top = 27
           Width = 65
           Height = 21
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 2
           Items.Strings = (
             '300'
             '1200'
@@ -2030,14 +2031,14 @@ object formOptions: TformOptions
             '128000'
             '256000')
         end
-        object comboRig1BKeying: TComboBox
+        object comboRig2Keying: TComboBox
           Tag = 2
           Left = 278
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 3
+          TabOrder = 4
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2063,23 +2064,42 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
-        object checkRig1BKeyIsRTS: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
+        object buttonPortConfigCW2: TButton
+          Tag = 2
+          Left = 278
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
           TabOrder = 5
+          OnClick = buttonPortConfigCWClick
+        end
+        object buttonRig2PortConfig: TButton
+          Tag = 2
+          Left = 11
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 1
+          OnClick = buttonPortConfigRigClick
+        end
+        object buttonXvtConfig2: TButton
+          Tag = 2
+          Left = 351
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 7
+          OnClick = buttonXvtConfigClick
         end
       end
       object groupRig1: TGroupBox
         Left = 6
         Top = 4
         Width = 423
-        Height = 56
+        Height = 78
         Caption = 'RIG-1'
         TabOrder = 0
         object Label43: TLabel
@@ -2110,23 +2130,25 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'CW port'
         end
-        object comboRig1AName: TComboBox
+        object comboRig1Name: TComboBox
           Left = 152
           Top = 27
           Width = 120
           Height = 21
           Style = csDropDownList
           DropDownCount = 20
-          TabOrder = 2
-          OnChange = comboRig1ANameChange
+          TabOrder = 3
+          OnChange = comboRig1NameChange
         end
-        object comboRig1AControl: TComboBox
+        object comboRig1Control: TComboBox
+          Tag = 1
           Left = 11
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
           TabOrder = 0
+          OnChange = comboRigControlChange
           Items.Strings = (
             'None'
             'COM1'
@@ -2150,13 +2172,13 @@ object formOptions: TformOptions
             'COM19'
             'COM20')
         end
-        object comboRig1ASpeed: TComboBox
+        object comboRig1Speed: TComboBox
           Left = 81
           Top = 27
           Width = 65
           Height = 21
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 2
           Items.Strings = (
             '300'
             '1200'
@@ -2171,14 +2193,14 @@ object formOptions: TformOptions
             '128000'
             '256000')
         end
-        object comboRig1AKeying: TComboBox
+        object comboRig1Keying: TComboBox
           Tag = 1
           Left = 278
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 3
+          TabOrder = 4
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2204,34 +2226,53 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
-        object checkRig1AXvt: TCheckBox
-          Tag = 101
+        object checkRig1Xvt: TCheckBox
+          Tag = 1
           Left = 351
-          Top = 12
+          Top = 29
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 4
-          OnClick = checkRig1AXvtClick
+          TabOrder = 6
+          OnClick = checkRigXvtClick
         end
-        object checkRig1AKeyIsRTS: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
+        object buttonRig1PortConfig: TButton
+          Tag = 1
+          Left = 11
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 1
+          OnClick = buttonPortConfigRigClick
+        end
+        object buttonPortConfigCW1: TButton
+          Tag = 1
+          Left = 278
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
           TabOrder = 5
+          OnClick = buttonPortConfigCWClick
+        end
+        object buttonXvtConfig1: TButton
+          Tag = 1
+          Left = 351
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 7
+          OnClick = buttonXvtConfigClick
         end
       end
       object groupRig4: TGroupBox
         Left = 6
-        Top = 194
+        Top = 244
         Width = 423
-        Height = 56
+        Height = 78
         Caption = 'RIG-4'
         TabOrder = 3
         object Label124: TLabel
@@ -2262,34 +2303,36 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'CW port'
         end
-        object checkRig2BXvt: TCheckBox
-          Tag = 104
+        object checkRig4Xvt: TCheckBox
+          Tag = 4
           Left = 351
-          Top = 12
+          Top = 29
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 4
-          OnClick = checkRig1AXvtClick
+          TabOrder = 6
+          OnClick = checkRigXvtClick
         end
-        object comboRig2BName: TComboBox
+        object comboRig4Name: TComboBox
           Left = 152
           Top = 27
           Width = 120
           Height = 21
           Style = csDropDownList
           DropDownCount = 20
-          TabOrder = 2
-          OnChange = comboRig2ANameChange
+          TabOrder = 3
+          OnChange = comboRig3NameChange
         end
-        object comboRig2BControl: TComboBox
+        object comboRig4Control: TComboBox
+          Tag = 4
           Left = 11
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
           TabOrder = 0
+          OnChange = comboRigControlChange
           Items.Strings = (
             'None'
             'COM1'
@@ -2313,13 +2356,13 @@ object formOptions: TformOptions
             'COM19'
             'COM20')
         end
-        object comboRig2BSpeed: TComboBox
+        object comboRig4Speed: TComboBox
           Left = 81
           Top = 27
           Width = 65
           Height = 21
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 2
           Items.Strings = (
             '300'
             '1200'
@@ -2334,14 +2377,14 @@ object formOptions: TformOptions
             '128000'
             '256000')
         end
-        object comboRig2BKeying: TComboBox
-          Tag = 2
+        object comboRig4Keying: TComboBox
+          Tag = 4
           Left = 278
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 3
+          TabOrder = 4
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2367,23 +2410,42 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
-        object checkRig2BKeyIsRTS: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
+        object buttonPortConfigCW4: TButton
+          Tag = 4
+          Left = 278
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
           TabOrder = 5
+          OnClick = buttonPortConfigCWClick
+        end
+        object buttonRig4PortConfig: TButton
+          Tag = 4
+          Left = 11
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 1
+          OnClick = buttonPortConfigRigClick
+        end
+        object buttonXvtConfig4: TButton
+          Tag = 4
+          Left = 351
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 7
+          OnClick = buttonXvtConfigClick
         end
       end
       object groupRig3: TGroupBox
         Left = 6
-        Top = 130
+        Top = 164
         Width = 423
-        Height = 56
+        Height = 78
         Caption = 'RIG-3'
         TabOrder = 2
         object Label95: TLabel
@@ -2414,34 +2476,36 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'CW port'
         end
-        object checkRig2AXvt: TCheckBox
-          Tag = 103
+        object checkRig3Xvt: TCheckBox
+          Tag = 3
           Left = 351
-          Top = 12
+          Top = 29
           Width = 41
           Height = 17
           Hint = 'Check here if you are using a transverter'
           Caption = 'XVT'
-          TabOrder = 4
-          OnClick = checkRig1AXvtClick
+          TabOrder = 6
+          OnClick = checkRigXvtClick
         end
-        object comboRig2AName: TComboBox
+        object comboRig3Name: TComboBox
           Left = 152
           Top = 27
           Width = 120
           Height = 21
           Style = csDropDownList
           DropDownCount = 20
-          TabOrder = 2
-          OnChange = comboRig2ANameChange
+          TabOrder = 3
+          OnChange = comboRig3NameChange
         end
-        object comboRig2AControl: TComboBox
+        object comboRig3Control: TComboBox
+          Tag = 3
           Left = 11
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
           TabOrder = 0
+          OnChange = comboRigControlChange
           Items.Strings = (
             'None'
             'COM1'
@@ -2465,13 +2529,13 @@ object formOptions: TformOptions
             'COM19'
             'COM20')
         end
-        object comboRig2ASpeed: TComboBox
+        object comboRig3Speed: TComboBox
           Left = 81
           Top = 27
           Width = 65
           Height = 21
           Style = csDropDownList
-          TabOrder = 1
+          TabOrder = 2
           Items.Strings = (
             '300'
             '1200'
@@ -2486,14 +2550,14 @@ object formOptions: TformOptions
             '128000'
             '256000')
         end
-        object comboRig2AKeying: TComboBox
-          Tag = 2
+        object comboRig3Keying: TComboBox
+          Tag = 3
           Left = 278
           Top = 27
           Width = 64
           Height = 21
           Style = csDropDownList
-          TabOrder = 3
+          TabOrder = 4
           OnChange = comboCwPttPortChange
           Items.Strings = (
             'None'
@@ -2519,16 +2583,35 @@ object formOptions: TformOptions
             'COM20'
             'USB')
         end
-        object checkRig2AKeyIsRTS: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
+        object buttonPortConfigCW3: TButton
+          Tag = 3
+          Left = 278
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
           TabOrder = 5
+          OnClick = buttonPortConfigCWClick
+        end
+        object buttonRig3PortConfig: TButton
+          Tag = 3
+          Left = 11
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 1
+          OnClick = buttonPortConfigRigClick
+        end
+        object buttonXvtConfig3: TButton
+          Tag = 3
+          Left = 351
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Config'
+          TabOrder = 7
+          OnClick = buttonXvtConfigClick
         end
       end
     end
@@ -6366,13 +6449,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = #65325#65331' '#26126#26397
+          FontName = 'Cascadia Code Bold Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 100
+          ItemIndex = 24
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
