@@ -317,9 +317,9 @@ object MainForm: TMainForm
         object labelRig3Title: TLabel
           Left = 25
           Top = 5
-          Width = 35
+          Width = 40
           Height = 18
-          Caption = 'RIG3'
+          Caption = 'RIG-C'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -580,9 +580,9 @@ object MainForm: TMainForm
           object labelRig1Title: TLabel
             Left = 6
             Top = 5
-            Width = 35
+            Width = 40
             Height = 18
-            Caption = 'RIG1'
+            Caption = 'RIG-A'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
@@ -719,9 +719,9 @@ object MainForm: TMainForm
           object labelRig2Title: TLabel
             Left = 5
             Top = 5
-            Width = 35
+            Width = 40
             Height = 18
-            Caption = 'RIG2'
+            Caption = 'RIG-B'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
@@ -7481,6 +7481,7 @@ object MainForm: TMainForm
   end
   object timerCqRepeat: TTimer
     Enabled = False
+    Interval = 100
     OnTimer = timerCqRepeatTimer
     Left = 240
     Top = 171

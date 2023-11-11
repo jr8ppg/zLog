@@ -317,9 +317,9 @@ object MainForm: TMainForm
         object labelRig3Title: TLabel
           Left = 25
           Top = 5
-          Width = 35
+          Width = 40
           Height = 18
-          Caption = 'RIG3'
+          Caption = 'RIG-C'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -580,9 +580,9 @@ object MainForm: TMainForm
           object labelRig1Title: TLabel
             Left = 6
             Top = 5
-            Width = 35
+            Width = 40
             Height = 18
-            Caption = 'RIG1'
+            Caption = 'RIG-A'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
@@ -719,9 +719,9 @@ object MainForm: TMainForm
           object labelRig2Title: TLabel
             Left = 5
             Top = 5
-            Width = 35
+            Width = 40
             Height = 18
-            Caption = 'RIG2'
+            Caption = 'RIG-B'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
@@ -5889,7 +5889,7 @@ object MainForm: TMainForm
         OnClick = CreateELogJARL2Click
       end
       object CreateCabrillo: TMenuItem
-        Caption = 'Cabrillo '#12501#12449#12452#12523#12398#20316#25104
+        Caption = 'Create Cabrillo'
         OnClick = CreateCabrilloClick
       end
       object CreateDupeCheckSheetZPRINT1: TMenuItem
@@ -6617,7 +6617,7 @@ object MainForm: TMainForm
     Left = 376
     Top = 137
     object Edit1: TMenuItem
-      Caption = #20462#27491
+      Caption = 'Edit'
       OnClick = Edit1Click
     end
   end
@@ -7479,6 +7479,7 @@ object MainForm: TMainForm
   end
   object timerCqRepeat: TTimer
     Enabled = False
+    Interval = 100
     OnTimer = timerCqRepeatTimer
     Left = 240
     Top = 171

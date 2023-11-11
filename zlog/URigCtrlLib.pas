@@ -78,7 +78,7 @@ type
     procedure PollingProcess; virtual;
     procedure SetMode(Q: TQSO); overload; virtual;
     procedure SetMode(M: TMode); overload; virtual;
-    procedure SetBand(Q: TQSO); virtual; // abstract;
+    procedure SetBand(rigset: Integer; Q: TQSO); virtual; // abstract;
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
@@ -92,7 +92,7 @@ type
     procedure UpdateStatus; virtual;// Renews RigControl Window and Main Window
     procedure WriteData(str : AnsiString);
     procedure InquireStatus; virtual; abstract;
-    procedure MoveToLastFreq; virtual;
+    procedure MoveToLastFreq(fFreq: TFrequency); virtual;
     procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
@@ -106,6 +106,7 @@ type
     property MaxBand: TBand read _maxband write _maxband;
     property CurrentBand: TBand read _currentband write _currentband;
     property CurrentMode: TMode read _currentmode write _currentmode;
+    property RigNumber: Integer read _rignumber;
     property CurrentVFO: Integer read _currentvfo write _currentvfo;
     property FreqOffset: TFrequency read _freqoffset write _freqoffset;
     property CurrentFreq[Index: Integer]: TFrequency read GetCurrentFreq write SetCurrentFreq;
@@ -167,13 +168,13 @@ type
     procedure InquireStatus; override;
     procedure ParseBufferString; override;
     procedure Reset; override;
-    procedure SetBand(Q: TQSO); override;
+    procedure SetBand(rigset: Integer; Q: TQSO); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
   end;
 
-  TRigArray = array[1..3] of TRig;
+  TRigArray = array[1..5] of TRig;
   TFreqArray = array [b19..HiBand] of TFrequency;
 
 function hex2dec(i: Integer): Integer;
@@ -422,22 +423,16 @@ begin
       Result := False;
 end;
 
-procedure TRig.MoveToLastFreq();
-var
-   b: TBand;
+procedure TRig.MoveToLastFreq(fFreq: TFrequency);
 begin
-   SetFreq(FLastFreq, False);
-
-   // Antenna Select
-   b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
-   AntSelect(dmZLogGlobal.Settings._useant[b]);
+   SetFreq(fFreq, False);
 
    if FLastMode <> _currentmode then begin
       SetMode(FLastMode);
 
       // Ç‡Ç§àÍìxé¸îgêîÇê›íË(side bandÇ∏ÇÍëŒçÙ)
       if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
-         SetFreq(FLastFreq, False);
+         SetFreq(fFreq, False);
       end;
    end;
 end;
@@ -466,7 +461,7 @@ begin
    end;
 end;
 
-procedure TRig.SetBand(Q: TQSO);
+procedure TRig.SetBand(rigset: Integer; Q: TQSO);
 var
    f: TFrequency;
 begin
@@ -495,7 +490,7 @@ begin
    SetFreq(f, Q.CQ);
 
    // Antenna Select
-   AntSelect(dmZLogGlobal.Settings._useant[Q.Band]);
+   AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[Q.Band]);
 end;
 
 procedure TRig.RitClear();
@@ -961,7 +956,7 @@ begin
    Inherited;
 end;
 
-procedure TVirtualRig.SetBand(Q: TQSO);
+procedure TVirtualRig.SetBand(rigset: Integer; Q: TQSO);
 begin
    _currentband := Q.Band;
 end;

@@ -21,6 +21,9 @@ type
     buttonWait: TSpeedButton;
     ledWait: TJvLED;
     Label2: TLabel;
+    ledCqRepeat: TJvLED;
+    Label3: TLabel;
+    panelCqRepeat: TPanel;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -46,6 +49,8 @@ type
     procedure SetSo2rMode(fOn: Boolean);
     procedure SetRx(rx: Integer);
     procedure SetTx(tx: Integer);
+    procedure SetCqRepeat(fOn: Boolean);
+    procedure SetCqRptCountDown(remain: Integer);
   public
     { Public êÈåæ }
     procedure DispUpdate();
@@ -59,6 +64,8 @@ type
     property IsWait: Boolean read GetIsWait write SetIsWait;
     property Rx: Integer write SetRx;
     property Tx: Integer write SetTx;
+    property CqRepeat: Boolean write SetCqRepeat;
+    property CqRptCountDown: Integer write SetCqRptCountDown;
   end;
 
 implementation
@@ -181,6 +188,7 @@ end;
 procedure TformInformation.SetIs2bsiq(fOn: Boolean);
 begin
    button2bsiq.Down := fOn;
+   button2bsiqClick(nil);
 end;
 
 procedure TformInformation.SetSo2rMode(fOn: Boolean);
@@ -228,6 +236,17 @@ begin
       ledWait.ColorOff := clSilver;
       ledWait.Status := False;
    end;
+end;
+
+procedure TformInformation.SetCqRepeat(fOn: Boolean);
+begin
+   ledCqRepeat.Status := fOn;
+   panelCqRepeat.Caption := '';
+end;
+
+procedure TformInformation.SetCqRptCountDown(remain: Integer);
+begin
+   panelCqRepeat.Caption := IntToStr(remain);
 end;
 
 end.

@@ -8,199 +8,200 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsUnitVersioningIntro 64240
-#define UExceptionDialog_RsStackList 64256
-#define UExceptionDialog_RsModulesList 64257
-#define UExceptionDialog_RsOSVersion 64258
-#define UExceptionDialog_RsProcessor 64259
-#define UExceptionDialog_RsMemory 64260
-#define UExceptionDialog_RsScreenRes 64261
-#define UExceptionDialog_RsActiveControl 64262
-#define UExceptionDialog_RsThread 64263
-#define UExceptionDialog_RsMissingVersionInfo 64264
-#define UExceptionDialog_RsExceptionStack 64265
-#define UExceptionDialog_RsMainThreadID 64266
-#define UExceptionDialog_RsExceptionThreadID 64267
-#define UExceptionDialog_RsMainThreadCallStack 64268
-#define UExceptionDialog_RsThreadCallStack 64269
-#define UExceptionDialog_RsErrorMessage 64270
-#define UExceptionDialog_RsDetailsIntro 64271
-#define Main_TMainForm_Merging_now 64272
-#define Main_TMainForm_Some_qsos_merged 64273
-#define Main_TMainForm_CtyDat_not_loaded 64274
-#define Main_TMainForm_RIT_XIT_Cleared 64275
-#define Main_TMainForm_Anti_zeroin 64276
-#define Main_TMainForm_Set_CQ_Repeat_Int 64277
-#define Main_TMainForm_Invalid_zone 64278
-#define Main_TMainForm_JudgePeriod 64279
-#define Main_TMainForm_EmptyOpList 64280
-#define Main_TMainForm_Setup_SentNR_first 64281
-#define Main_TMainForm_New_QSO_Arrived 64282
-#define Main_TMainForm_Select_Operator 64283
-#define UExceptionDialog_RsAppError 64284
-#define UExceptionDialog_RsExceptionClass 64285
-#define UExceptionDialog_RsExceptionMessage 64286
-#define UExceptionDialog_RsExceptionAddr 64287
-#define Main_TMainForm_Change_TXNO_QSOs 64288
-#define Main_TMainForm_Need_File_Name 64289
-#define Main_TMainForm_QTC_Sent 64290
-#define Main_TMainForm_Less_Than_10min 64291
-#define Main_TMainForm_QSY_Count_Exceeded 64292
-#define Main_TMainForm_Loading_now 64293
-#define Main_TMainForm_Switch_CW_Bank_A 64294
-#define Main_TMainForm_Switch_CW_Bank_B 64295
-#define Main_TMainForm_This_QSO_is_locked 64296
-#define Main_TMainForm_Invalid_number 64297
-#define Main_TMainForm_Callsign_not_entered 64298
-#define Main_TMainForm_Dupe_qso 64299
-#define Main_TMainForm_Thankyou_for_your_qso 64300
-#define Main_TMainForm_CW_port_is_no_set 64301
-#define Main_TMainForm_Not_a_new_multi 64302
-#define Main_TMainForm_Cannot_merge_current_file 64303
-#define USelectUserDefinedContest_Setup_prov_first 64304
-#define USelectUserDefinedContest_Setup_city_first 64305
-#define UMenu_UMenu_PleaseEnterYourCallsign 64306
-#define UBandPlanEditDialog_Input_Text 64307
-#define UBandPlanEditDialog_Delete_Preset 64308
-#define Main_TMainForm_Enter_Frequency 64309
-#define Main_TMainForm_Comfirm_Delete_Qso 64310
-#define Main_TMainForm_Comfirm_Delete_Qsos 64311
-#define Main_TMainForm_New_Multi_Only 64312
-#define Main_TMainForm_Change_Date 64313
-#define Main_TMainForm_Confirm_Save_Changes 64314
-#define Main_TMainForm_Active_Band_Adjusted 64315
-#define Main_TMainForm_Change_Band_QSOs 64316
-#define Main_TMainForm_Change_Mode_QSOs 64317
-#define Main_TMainForm_Change_Operator_QSOs 64318
-#define Main_TMainForm_Change_Power_QSOs 64319
-#define System_Bindings_Consts_sFloatToIntegerDesc 64320
-#define System_Bindings_Consts_sTStringsToString 64321
-#define System_Bindings_Consts_sTStringToStringDesc 64322
-#define System_Bindings_Consts_sStringToTStrings 64323
-#define System_Bindings_Consts_sStringToTStringsDesc 64324
-#define System_Bindings_Consts_sStringToChar 64325
-#define System_Bindings_Consts_sStringToCharDesc 64326
-#define URateDialogEx_SCOREGRID_TOTAL 64327
-#define URateDialogEx_SCOREGRID_TARGET 64328
-#define URateDialogEx_SCOREGRID_DIFF 64329
-#define URateDialogEx_SCOREGRID_DIFF2 64330
-#define URateDialogEx_SCOREGRID_CUMULATIVE 64331
-#define URateDialogEx_SCOREGRID_WINLOSS_L 64332
-#define URateDialogEx_SCOREGRID_WINLOSS_S 64333
-#define UCFGEdit_Please_enter_the_prov_code 64334
-#define UCFGEdit_Please_enter_the_city_code 64335
-#define System_Bindings_Consts_sNilToBooleanDesc 64336
-#define System_Bindings_Consts_sNilToVariant 64337
-#define System_Bindings_Consts_sNilToVariantDesc 64338
-#define System_Bindings_Consts_sStringToVariant 64339
-#define System_Bindings_Consts_sStringToVariantDesc 64340
-#define System_Bindings_Consts_sFloatToVariant 64341
-#define System_Bindings_Consts_sFloatToVariantDesc 64342
-#define System_Bindings_Consts_sIntToVariant 64343
-#define System_Bindings_Consts_sIntToVariantDesc 64344
-#define System_Bindings_Consts_sBoolToVariant 64345
-#define System_Bindings_Consts_sBoolToVariantDesc 64346
-#define System_Bindings_Consts_sVariantToBool 64347
-#define System_Bindings_Consts_sVariantToBoolDesc 64348
-#define System_Bindings_Consts_sStrToFloat 64349
-#define System_Bindings_Consts_sStrToFloatDesc 64350
-#define System_Bindings_Consts_sFloatToInteger 64351
-#define System_Bindings_Consts_sIntegerToStringDesc 64352
-#define System_Bindings_Consts_sStringToInteger 64353
-#define System_Bindings_Consts_sStringToIntegerDesc 64354
-#define System_Bindings_Consts_sFloatToString 64355
-#define System_Bindings_Consts_sFloatToStringDesc 64356
-#define System_Bindings_Consts_sStrToTDateTime 64357
-#define System_Bindings_Consts_sStrToTDateTimeDesc 64358
-#define System_Bindings_Consts_sTDateTimeToStr 64359
-#define System_Bindings_Consts_sTDateTimeToStrDesc 64360
-#define System_Bindings_Consts_sStrToTDate 64361
-#define System_Bindings_Consts_sStrToTDateDesc 64362
-#define System_Bindings_Consts_sStrToTTime 64363
-#define System_Bindings_Consts_sStrToTTimeDesc 64364
-#define System_Bindings_Consts_sNilToString 64365
-#define System_Bindings_Consts_sNilToStringDesc 64366
-#define System_Bindings_Consts_sNilToBoolean 64367
-#define System_Bindings_Consts_sPersistentToStringDesc 64368
-#define System_Bindings_Consts_sBoolToString 64369
-#define System_Bindings_Consts_sBoolToStringDesc 64370
-#define System_Bindings_Consts_sStringToBool 64371
-#define System_Bindings_Consts_sStringToBoolDesc 64372
-#define System_Bindings_Consts_sBoolToInteger 64373
-#define System_Bindings_Consts_sBoolToIntegerDesc 64374
-#define System_Bindings_Consts_sIntegerToBool 64375
-#define System_Bindings_Consts_sIntegerToBoolDesc 64376
-#define System_Bindings_Consts_sBoolToFloat 64377
-#define System_Bindings_Consts_sBoolToFloatDesc 64378
-#define System_Bindings_Consts_sFloatToBool 64379
-#define System_Bindings_Consts_sFloatToBoolDesc 64380
-#define System_Bindings_Consts_sNilToNumber 64381
-#define System_Bindings_Consts_sNilToNumberDesc 64382
-#define System_Bindings_Consts_sIntegerToString 64383
-#define System_Bindings_Consts_sScopeClassNotRegistered 64384
-#define System_Bindings_Consts_sScopeClassAlreadyRegistered 64385
-#define System_Bindings_Consts_sInvalidCustomWrapper 64386
-#define System_Bindings_Consts_sPropertyNotFound 64387
-#define System_Bindings_Consts_sNoGetterOrSetter 64388
-#define System_Bindings_Consts_sUpdateOutputLocFailed 64389
-#define System_Bindings_Consts_sNoOutputScopes 64390
-#define System_Bindings_Consts_sVirtualMemberReadOnly 64391
-#define System_Bindings_Consts_sConvertWrapperFail 64392
-#define System_Bindings_Consts_sNilToTDateTime 64393
-#define System_Bindings_Consts_sNilToTDateTimeDesc 64394
-#define System_Bindings_Consts_sNilToTStrings 64395
-#define System_Bindings_Consts_sNilToTStringsDesc 64396
-#define System_Bindings_Consts_sPersistentToPersistent 64397
-#define System_Bindings_Consts_sPersistentToPersistentDesc 64398
-#define System_Bindings_Consts_sPersistentToString 64399
-#define System_Bindings_Consts_sParserUnexpected 64400
-#define System_Bindings_Consts_sInvalidFloatingPt 64401
-#define System_Bindings_Consts_sInvalidFloatingPtExpt 64402
-#define System_Bindings_Consts_sUnterminatedString 64403
-#define System_Bindings_Consts_sInvalidOperator 64404
-#define System_Bindings_Consts_sInvalidOperatorNum 64405
-#define System_Bindings_Consts_sExpectedEOF 64406
-#define System_Bindings_Consts_sTooManyArgs 64407
-#define System_Bindings_Consts_sExpectedIdentifier 64408
-#define System_Bindings_Consts_sExpressionTooComplex 64409
-#define System_Bindings_Consts_sEvalStackOverflow 64410
-#define System_Bindings_Consts_sLookupError 64411
-#define System_Bindings_Consts_sInvokeError 64412
-#define System_Bindings_Consts_sUnsupportedWrapper 64413
-#define System_Bindings_Consts_sUnsupportedGroup 64414
-#define System_Bindings_Consts_sObjectTypeNotRegistered 64415
-#define System_Bindings_Consts_sOutputIsReadOnly 64416
-#define System_Bindings_Consts_sUnavailNotifier 64417
-#define System_Bindings_Consts_sConverterNotFound 64418
-#define System_Bindings_Consts_sConverterIDNotFound 64419
-#define System_Bindings_Consts_sConverterIDNotRegistered 64420
-#define System_Bindings_Consts_sDuplicatedConverterType 64421
-#define System_Bindings_Consts_sDuplicatedConverterType2 64422
-#define System_Bindings_Consts_sMismatchArgCount 64423
-#define System_Bindings_Consts_sAddOpFail 64424
-#define System_Bindings_Consts_sSubtractOpFail 64425
-#define System_Bindings_Consts_sMultiplyOpFail 64426
-#define System_Bindings_Consts_sDivideOpFail 64427
-#define System_Bindings_Consts_sNegateOpFail 64428
-#define System_Bindings_Consts_sCompareOpFail 64429
-#define System_Bindings_Consts_sBoolOpFail 64430
-#define System_Bindings_Consts_sBoolNegateOpFail 64431
+#define UExceptionDialog_RsDetailsIntro 64240
+#define UExceptionDialog_RsUnitVersioningIntro 64241
+#define UExceptionDialog_RsExceptionAddr 64256
+#define UExceptionDialog_RsStackList 64257
+#define UExceptionDialog_RsModulesList 64258
+#define UExceptionDialog_RsOSVersion 64259
+#define UExceptionDialog_RsProcessor 64260
+#define UExceptionDialog_RsMemory 64261
+#define UExceptionDialog_RsScreenRes 64262
+#define UExceptionDialog_RsActiveControl 64263
+#define UExceptionDialog_RsThread 64264
+#define UExceptionDialog_RsMissingVersionInfo 64265
+#define UExceptionDialog_RsExceptionStack 64266
+#define UExceptionDialog_RsMainThreadID 64267
+#define UExceptionDialog_RsExceptionThreadID 64268
+#define UExceptionDialog_RsMainThreadCallStack 64269
+#define UExceptionDialog_RsThreadCallStack 64270
+#define UExceptionDialog_RsErrorMessage 64271
+#define Main_TMainForm_Cannot_merge_current_file 64272
+#define Main_TMainForm_Merging_now 64273
+#define Main_TMainForm_Some_qsos_merged 64274
+#define Main_TMainForm_CtyDat_not_loaded 64275
+#define Main_TMainForm_RIT_XIT_Cleared 64276
+#define Main_TMainForm_Anti_zeroin 64277
+#define Main_TMainForm_Set_CQ_Repeat_Int 64278
+#define Main_TMainForm_Invalid_zone 64279
+#define Main_TMainForm_JudgePeriod 64280
+#define Main_TMainForm_EmptyOpList 64281
+#define Main_TMainForm_Setup_SentNR_first 64282
+#define Main_TMainForm_New_QSO_Arrived 64283
+#define Main_TMainForm_Select_Operator 64284
+#define UExceptionDialog_RsAppError 64285
+#define UExceptionDialog_RsExceptionClass 64286
+#define UExceptionDialog_RsExceptionMessage 64287
+#define Main_TMainForm_Change_Power_QSOs 64288
+#define Main_TMainForm_Change_TXNO_QSOs 64289
+#define Main_TMainForm_Need_File_Name 64290
+#define Main_TMainForm_QTC_Sent 64291
+#define Main_TMainForm_Less_Than_10min 64292
+#define Main_TMainForm_QSY_Count_Exceeded 64293
+#define Main_TMainForm_Loading_now 64294
+#define Main_TMainForm_Switch_CW_Bank_A 64295
+#define Main_TMainForm_Switch_CW_Bank_B 64296
+#define Main_TMainForm_This_QSO_is_locked 64297
+#define Main_TMainForm_Invalid_number 64298
+#define Main_TMainForm_Callsign_not_entered 64299
+#define Main_TMainForm_Dupe_qso 64300
+#define Main_TMainForm_Thankyou_for_your_qso 64301
+#define Main_TMainForm_CW_port_is_no_set 64302
+#define Main_TMainForm_Not_a_new_multi 64303
+#define UCFGEdit_Please_enter_the_city_code 64304
+#define USelectUserDefinedContest_Setup_prov_first 64305
+#define USelectUserDefinedContest_Setup_city_first 64306
+#define UMenu_UMenu_PleaseEnterYourCallsign 64307
+#define UBandPlanEditDialog_Input_Text 64308
+#define UBandPlanEditDialog_Delete_Preset 64309
+#define Main_TMainForm_Enter_Frequency 64310
+#define Main_TMainForm_Comfirm_Delete_Qso 64311
+#define Main_TMainForm_Comfirm_Delete_Qsos 64312
+#define Main_TMainForm_New_Multi_Only 64313
+#define Main_TMainForm_Change_Date 64314
+#define Main_TMainForm_Confirm_Save_Changes 64315
+#define Main_TMainForm_Active_Band_Adjusted 64316
+#define Main_TMainForm_Change_Band_QSOs 64317
+#define Main_TMainForm_Change_Mode_QSOs 64318
+#define Main_TMainForm_Change_Operator_QSOs 64319
+#define System_Bindings_Consts_sFloatToInteger 64320
+#define System_Bindings_Consts_sFloatToIntegerDesc 64321
+#define System_Bindings_Consts_sTStringsToString 64322
+#define System_Bindings_Consts_sTStringToStringDesc 64323
+#define System_Bindings_Consts_sStringToTStrings 64324
+#define System_Bindings_Consts_sStringToTStringsDesc 64325
+#define System_Bindings_Consts_sStringToChar 64326
+#define System_Bindings_Consts_sStringToCharDesc 64327
+#define URateDialogEx_SCOREGRID_TOTAL 64328
+#define URateDialogEx_SCOREGRID_TARGET 64329
+#define URateDialogEx_SCOREGRID_DIFF 64330
+#define URateDialogEx_SCOREGRID_DIFF2 64331
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64332
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64333
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64334
+#define UCFGEdit_Please_enter_the_prov_code 64335
+#define System_Bindings_Consts_sNilToBoolean 64336
+#define System_Bindings_Consts_sNilToBooleanDesc 64337
+#define System_Bindings_Consts_sNilToVariant 64338
+#define System_Bindings_Consts_sNilToVariantDesc 64339
+#define System_Bindings_Consts_sStringToVariant 64340
+#define System_Bindings_Consts_sStringToVariantDesc 64341
+#define System_Bindings_Consts_sFloatToVariant 64342
+#define System_Bindings_Consts_sFloatToVariantDesc 64343
+#define System_Bindings_Consts_sIntToVariant 64344
+#define System_Bindings_Consts_sIntToVariantDesc 64345
+#define System_Bindings_Consts_sBoolToVariant 64346
+#define System_Bindings_Consts_sBoolToVariantDesc 64347
+#define System_Bindings_Consts_sVariantToBool 64348
+#define System_Bindings_Consts_sVariantToBoolDesc 64349
+#define System_Bindings_Consts_sStrToFloat 64350
+#define System_Bindings_Consts_sStrToFloatDesc 64351
+#define System_Bindings_Consts_sIntegerToString 64352
+#define System_Bindings_Consts_sIntegerToStringDesc 64353
+#define System_Bindings_Consts_sStringToInteger 64354
+#define System_Bindings_Consts_sStringToIntegerDesc 64355
+#define System_Bindings_Consts_sFloatToString 64356
+#define System_Bindings_Consts_sFloatToStringDesc 64357
+#define System_Bindings_Consts_sStrToTDateTime 64358
+#define System_Bindings_Consts_sStrToTDateTimeDesc 64359
+#define System_Bindings_Consts_sTDateTimeToStr 64360
+#define System_Bindings_Consts_sTDateTimeToStrDesc 64361
+#define System_Bindings_Consts_sStrToTDate 64362
+#define System_Bindings_Consts_sStrToTDateDesc 64363
+#define System_Bindings_Consts_sStrToTTime 64364
+#define System_Bindings_Consts_sStrToTTimeDesc 64365
+#define System_Bindings_Consts_sNilToString 64366
+#define System_Bindings_Consts_sNilToStringDesc 64367
+#define System_Bindings_Consts_sPersistentToString 64368
+#define System_Bindings_Consts_sPersistentToStringDesc 64369
+#define System_Bindings_Consts_sBoolToString 64370
+#define System_Bindings_Consts_sBoolToStringDesc 64371
+#define System_Bindings_Consts_sStringToBool 64372
+#define System_Bindings_Consts_sStringToBoolDesc 64373
+#define System_Bindings_Consts_sBoolToInteger 64374
+#define System_Bindings_Consts_sBoolToIntegerDesc 64375
+#define System_Bindings_Consts_sIntegerToBool 64376
+#define System_Bindings_Consts_sIntegerToBoolDesc 64377
+#define System_Bindings_Consts_sBoolToFloat 64378
+#define System_Bindings_Consts_sBoolToFloatDesc 64379
+#define System_Bindings_Consts_sFloatToBool 64380
+#define System_Bindings_Consts_sFloatToBoolDesc 64381
+#define System_Bindings_Consts_sNilToNumber 64382
+#define System_Bindings_Consts_sNilToNumberDesc 64383
+#define System_Bindings_Consts_sObjectTypeNotRegistered 64384
+#define System_Bindings_Consts_sScopeClassNotRegistered 64385
+#define System_Bindings_Consts_sScopeClassAlreadyRegistered 64386
+#define System_Bindings_Consts_sInvalidCustomWrapper 64387
+#define System_Bindings_Consts_sPropertyNotFound 64388
+#define System_Bindings_Consts_sNoGetterOrSetter 64389
+#define System_Bindings_Consts_sUpdateOutputLocFailed 64390
+#define System_Bindings_Consts_sNoOutputScopes 64391
+#define System_Bindings_Consts_sVirtualMemberReadOnly 64392
+#define System_Bindings_Consts_sConvertWrapperFail 64393
+#define System_Bindings_Consts_sNilToTDateTime 64394
+#define System_Bindings_Consts_sNilToTDateTimeDesc 64395
+#define System_Bindings_Consts_sNilToTStrings 64396
+#define System_Bindings_Consts_sNilToTStringsDesc 64397
+#define System_Bindings_Consts_sPersistentToPersistent 64398
+#define System_Bindings_Consts_sPersistentToPersistentDesc 64399
+#define System_Bindings_Consts_sBoolNegateOpFail 64400
+#define System_Bindings_Consts_sParserUnexpected 64401
+#define System_Bindings_Consts_sInvalidFloatingPt 64402
+#define System_Bindings_Consts_sInvalidFloatingPtExpt 64403
+#define System_Bindings_Consts_sUnterminatedString 64404
+#define System_Bindings_Consts_sInvalidOperator 64405
+#define System_Bindings_Consts_sInvalidOperatorNum 64406
+#define System_Bindings_Consts_sExpectedEOF 64407
+#define System_Bindings_Consts_sTooManyArgs 64408
+#define System_Bindings_Consts_sExpectedIdentifier 64409
+#define System_Bindings_Consts_sExpressionTooComplex 64410
+#define System_Bindings_Consts_sEvalStackOverflow 64411
+#define System_Bindings_Consts_sLookupError 64412
+#define System_Bindings_Consts_sInvokeError 64413
+#define System_Bindings_Consts_sUnsupportedWrapper 64414
+#define System_Bindings_Consts_sUnsupportedGroup 64415
+#define System_Bindings_Consts_sClassTypeNotFound 64416
+#define System_Bindings_Consts_sOutputIsReadOnly 64417
+#define System_Bindings_Consts_sUnavailNotifier 64418
+#define System_Bindings_Consts_sConverterNotFound 64419
+#define System_Bindings_Consts_sConverterIDNotFound 64420
+#define System_Bindings_Consts_sConverterIDNotRegistered 64421
+#define System_Bindings_Consts_sDuplicatedConverterType 64422
+#define System_Bindings_Consts_sDuplicatedConverterType2 64423
+#define System_Bindings_Consts_sMismatchArgCount 64424
+#define System_Bindings_Consts_sAddOpFail 64425
+#define System_Bindings_Consts_sSubtractOpFail 64426
+#define System_Bindings_Consts_sMultiplyOpFail 64427
+#define System_Bindings_Consts_sDivideOpFail 64428
+#define System_Bindings_Consts_sNegateOpFail 64429
+#define System_Bindings_Consts_sCompareOpFail 64430
+#define System_Bindings_Consts_sBoolOpFail 64431
 #define UOptions_Installed_Plugins_Disabled 64432
-#define UOptions_EnterTheFullPathOfRootFolder 64433
-#define UOptions_zLogRootFolderNotExist 64434
-#define System_RegularExpressionsConsts_SRegExMissingExpression 64435
-#define System_RegularExpressionsConsts_SRegExExpressionError 64436
-#define System_RegularExpressionsConsts_SRegExStudyError 64437
-#define System_RegularExpressionsConsts_SRegExMatchRequired 64438
-#define System_RegularExpressionsConsts_SRegExStringsRequired 64439
-#define System_RegularExpressionsConsts_SRegExInvalidIndexType 64440
-#define System_RegularExpressionsConsts_SRegExIndexOutOfBounds 64441
-#define System_RegularExpressionsConsts_SRegExInvalidGroupName 64442
-#define System_Bindings_Consts_sOwnerNotFound 64443
-#define System_Bindings_Consts_sScopeObjNull 64444
-#define System_Bindings_Consts_sUncompiledExpression 64445
-#define System_Bindings_Consts_sUnsupportedManager 64446
-#define System_Bindings_Consts_sClassTypeNotFound 64447
+#define UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64433
+#define UOptions_EnterTheFullPathOfRootFolder 64434
+#define UOptions_zLogRootFolderNotExist 64435
+#define System_RegularExpressionsConsts_SRegExMissingExpression 64436
+#define System_RegularExpressionsConsts_SRegExExpressionError 64437
+#define System_RegularExpressionsConsts_SRegExStudyError 64438
+#define System_RegularExpressionsConsts_SRegExMatchRequired 64439
+#define System_RegularExpressionsConsts_SRegExStringsRequired 64440
+#define System_RegularExpressionsConsts_SRegExInvalidIndexType 64441
+#define System_RegularExpressionsConsts_SRegExIndexOutOfBounds 64442
+#define System_RegularExpressionsConsts_SRegExInvalidGroupName 64443
+#define System_Bindings_Consts_sOwnerNotFound 64444
+#define System_Bindings_Consts_sScopeObjNull 64445
+#define System_Bindings_Consts_sUncompiledExpression 64446
+#define System_Bindings_Consts_sUnsupportedManager 64447
 #define System_NetConsts_SNetHttpRequestConnectError 64448
 #define System_NetConsts_SNetHttpRequestOpenError 64449
 #define System_NetConsts_SNetHttpRequestAddHeaderError 64450
@@ -1291,7 +1292,9 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
@@ -1307,7 +1310,7 @@ BEGIN
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
-	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
+	Main_TMainForm_Cannot_merge_current_file,	L"\x73FE\x5728\x306E\x30D5\x30A1\x30A4\x30EB\x3092\x30DE\x30FC\x30B8\x3067\x304D\x307E\x305B\x3093"
 	Main_TMainForm_Merging_now,	L"\x30DE\x30FC\x30B8\x4E2D..."
 	Main_TMainForm_Some_qsos_merged,	L"%s QSO\x3092\x30DE\x30FC\x30B8\x3057\x307E\x3057\x305F"
 	Main_TMainForm_CtyDat_not_loaded,	L"CTY.DAT\x30D5\x30A1\x30A4\x30EB\x304C\x30ED\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093"
@@ -1323,7 +1326,7 @@ BEGIN
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
-	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
+	Main_TMainForm_Change_Power_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x96FB\x529B\x7B26\x53F7\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Change_TXNO_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E TX# \x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Need_File_Name,	L"\x30D5\x30A1\x30A4\x30EB\x540D\x3092\x5165\x529B\x3059\x308B\x307E\x3067\x30C7\x30FC\x30BF\x306F\x4FDD\x5B58\x3055\x308C\x307E\x305B\x3093"
 	Main_TMainForm_QTC_Sent,	L"Ctrl+Q\x3092\x62BC\x3059\x3068QTC\x3092\x9001\x4FE1\x3067\x304D\x307E\x3059"
@@ -1339,7 +1342,7 @@ BEGIN
 	Main_TMainForm_Thankyou_for_your_qso,	L"QSO\x3042\x308A\x304C\x3068\x3046\x3054\x3056\x3044\x307E\x3059"
 	Main_TMainForm_CW_port_is_no_set,	L"CW\x30DD\x30FC\x30C8\x304C\x672A\x8A2D\x5B9A\x3067\x3059"
 	Main_TMainForm_Not_a_new_multi,	L"NEW\x30DE\x30EB\x30C1\x3067\x306F\x3042\x308A\x307E\x305B\x3093(\x30DE\x30EB\x30C1\x30B9\x30C6\x30FC\x30B7\x30E7\x30F3\x3067\x3059)"
-	Main_TMainForm_Cannot_merge_current_file,	L"\x73FE\x5728\x306E\x30D5\x30A1\x30A4\x30EB\x3092\x30DE\x30FC\x30B8\x3067\x304D\x307E\x305B\x3093"
+	UCFGEdit_Please_enter_the_city_code,	L"\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x5165\x529B\x3057\x3066\x304F\x3060\x3055\x3044"
 	USelectUserDefinedContest_Setup_prov_first,	L"\x6700\x521D\x306B\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
 	USelectUserDefinedContest_Setup_city_first,	L"\x6700\x521D\x306B\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
 	UMenu_UMenu_PleaseEnterYourCallsign,	L"\x8CB4\x5C40\x306E\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
@@ -1355,7 +1358,7 @@ BEGIN
 	Main_TMainForm_Change_Band_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Change_Mode_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Change_Operator_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x540D\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
-	Main_TMainForm_Change_Power_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x96FB\x529B\x7B26\x53F7\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	System_Bindings_Consts_sFloatToInteger,	L"FloatToInteger"
 	System_Bindings_Consts_sFloatToIntegerDesc,	L"\x6D6E\x52D5\x5C0F\x6570\x70B9\x6570\x3092 Round() \x3067\x6574\x6570\x306B\x5909\x63DB"
 	System_Bindings_Consts_sTStringsToString,	L"TStringsToString"
 	System_Bindings_Consts_sTStringToStringDesc,	L""
@@ -1371,7 +1374,7 @@ BEGIN
 	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
 	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
 	UCFGEdit_Please_enter_the_prov_code,	L"\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3092\x5165\x529B\x3057\x3066\x304F\x3060\x3055\x3044"
-	UCFGEdit_Please_enter_the_city_code,	L"\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x5165\x529B\x3057\x3066\x304F\x3060\x3055\x3044"
+	System_Bindings_Consts_sNilToBoolean,	L"NilToBoolean"
 	System_Bindings_Consts_sNilToBooleanDesc,	L""
 	System_Bindings_Consts_sNilToVariant,	L"Nil \x304B\x3089\x30D0\x30EA\x30A2\x30F3\x30C8\x3078"
 	System_Bindings_Consts_sNilToVariantDesc,	L""
@@ -1387,7 +1390,7 @@ BEGIN
 	System_Bindings_Consts_sVariantToBoolDesc,	L""
 	System_Bindings_Consts_sStrToFloat,	L"StrToFloat"
 	System_Bindings_Consts_sStrToFloatDesc,	L""
-	System_Bindings_Consts_sFloatToInteger,	L"FloatToInteger"
+	System_Bindings_Consts_sIntegerToString,	L"IntegerToString"
 	System_Bindings_Consts_sIntegerToStringDesc,	L""
 	System_Bindings_Consts_sStringToInteger,	L"StringToInteger"
 	System_Bindings_Consts_sStringToIntegerDesc,	L""
@@ -1403,7 +1406,7 @@ BEGIN
 	System_Bindings_Consts_sStrToTTimeDesc,	L""
 	System_Bindings_Consts_sNilToString,	L"NilToString"
 	System_Bindings_Consts_sNilToStringDesc,	L""
-	System_Bindings_Consts_sNilToBoolean,	L"NilToBoolean"
+	System_Bindings_Consts_sPersistentToString,	L"PersistentToString"
 	System_Bindings_Consts_sPersistentToStringDesc,	L""
 	System_Bindings_Consts_sBoolToString,	L"BoolToString"
 	System_Bindings_Consts_sBoolToStringDesc,	L""
@@ -1419,7 +1422,7 @@ BEGIN
 	System_Bindings_Consts_sFloatToBoolDesc,	L""
 	System_Bindings_Consts_sNilToNumber,	L"NilToNumber"
 	System_Bindings_Consts_sNilToNumberDesc,	L""
-	System_Bindings_Consts_sIntegerToString,	L"IntegerToString"
+	System_Bindings_Consts_sObjectTypeNotRegistered,	L"\x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x578B %s \x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_Bindings_Consts_sScopeClassNotRegistered,	L"\x30B9\x30B3\x30FC\x30D7 \x30AF\x30E9\x30B9 %s \x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_Bindings_Consts_sScopeClassAlreadyRegistered,	L"\x30B9\x30B3\x30FC\x30D7 \x30AF\x30E9\x30B9 %s \x306F\x65E2\x306B\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x3059"
 	System_Bindings_Consts_sInvalidCustomWrapper,	L"\x6307\x5B9A\x3055\x308C\x305F\x30AB\x30B9\x30BF\x30E0 \x30E9\x30C3\x30D1\x30FC\x306F %s \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x307E\x305B\x3093"
@@ -1435,7 +1438,7 @@ BEGIN
 	System_Bindings_Consts_sNilToTStringsDesc,	L""
 	System_Bindings_Consts_sPersistentToPersistent,	L"PersistentToPersistent"
 	System_Bindings_Consts_sPersistentToPersistentDesc,	L""
-	System_Bindings_Consts_sPersistentToString,	L"PersistentToString"
+	System_Bindings_Consts_sBoolNegateOpFail,	L"""%s"" \x8AD6\x7406\x5426\x5B9A\x6F14\x7B97\x5B50\x306E\x5B9F\x884C\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sParserUnexpected,	L"%s \x304C\x5FC5\x8981\x3067\x3059\x304C\x53D7\x3051\x53D6\x3063\x305F\x306E\x306F %s \x3067\x3059"
 	System_Bindings_Consts_sInvalidFloatingPt,	L"\x6D6E\x52D5\x5C0F\x6570\x70B9\x5B9A\x6570\x304C\x7121\x52B9\x3067\x3059\x3002""."" \x306E\x5F8C\x306B 1 \x6841\x4EE5\x4E0A\x306E\x6570\x5B57\x304C\x5FC5\x8981\x3067\x3059"
 	System_Bindings_Consts_sInvalidFloatingPtExpt,	L"\x6D6E\x52D5\x5C0F\x6570\x70B9\x5B9A\x6570\x304C\x7121\x52B9\x3067\x3059\x3002\x6307\x6570\x90E8\x306B\x306F 1 \x6841\x4EE5\x4E0A\x306E\x6570\x5B57\x304C\x5FC5\x8981\x3067\x3059"
@@ -1451,7 +1454,7 @@ BEGIN
 	System_Bindings_Consts_sInvokeError,	L"\x95A2\x6570/\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x4ED8\x304D\x30D7\x30ED\x30D1\x30C6\x30A3\x4EE5\x5916\x306E\x3082\x306E\x3092\x547C\x3073\x51FA\x305D\x3046\x3068\x3057\x307E\x3057\x305F"
 	System_Bindings_Consts_sUnsupportedWrapper,	L"\x30E9\x30C3\x30D1\x30FC\x304C IValue \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x306A\x3044\x305F\x3081\x5024\x3092\x6C7A\x5B9A\x3067\x304D\x307E\x305B\x3093"
 	System_Bindings_Consts_sUnsupportedGroup,	L"\x30E1\x30F3\x30D0 \x30E9\x30C3\x30D1\x30FC\x304C IGroup \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x306A\x3044\x305F\x3081\x3001\x7D50\x679C\x30E9\x30C3\x30D1\x30FC\x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093"
-	System_Bindings_Consts_sObjectTypeNotRegistered,	L"\x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x578B %s \x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
+	System_Bindings_Consts_sClassTypeNotFound,	L"ClassType \x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059\x3002"
 	System_Bindings_Consts_sOutputIsReadOnly,	L"\x51FA\x529B\x5F0F\x3067\x8AAD\x307F\x53D6\x308A\x5C02\x7528\x5024\x3092\x8A55\x4FA1\x3057\x3066\x3044\x307E\x3059"
 	System_Bindings_Consts_sUnavailNotifier,	L"\x901A\x77E5\x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093"
 	System_Bindings_Consts_sConverterNotFound,	L"%s \x578B\x3068 %s \x578B\x306E\x9593\x3067\x30AD\x30E3\x30B9\x30C8\x304C\x3067\x304D\x305A\x3001\x5909\x63DB\x30B3\x30F3\x30DD\x30FC\x30CD\x30F3\x30C8\x3082\x898B\x3064\x304B\x308A\x307E\x305B\x3093\x3002"
@@ -1467,8 +1470,8 @@ BEGIN
 	System_Bindings_Consts_sNegateOpFail,	L"""%s"" \x306E\x5426\x5B9A\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sCompareOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x6BD4\x8F03\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sBoolOpFail,	L"""%s"" \x3068 ""%s"" \x3067\x306E\x8AD6\x7406\x6F14\x7B97\x306E\x5B9F\x884C\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
-	System_Bindings_Consts_sBoolNegateOpFail,	L"""%s"" \x8AD6\x7406\x5426\x5B9A\x6F14\x7B97\x5B50\x306E\x5B9F\x884C\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	UOptions_Installed_Plugins_Disabled,	L"\x30D7\x30E9\x30B0\x30A4\x30F3\x306E\x30D5\x30A9\x30EB\x30C0\x304C\x5909\x66F4\x3055\x308C\x307E\x3057\x305F\x3002\x30A4\x30F3\x30B9\x30C8\x30FC\x30EB\x3055\x308C\x305F\x30D7\x30E9\x30B0\x30A4\x30F3\x306F\x7121\x52B9\x306B\x306A\x308A\x307E\x3059\x3002\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins,	L"Do you want the following bands to have the same settings?"
 	UOptions_EnterTheFullPathOfRootFolder,	L"zLog\x30EB\x30FC\x30C8\x30D5\x30A9\x30EB\x30C0\x306F\x30D5\x30EB\x30D1\x30B9\x3067\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
 	UOptions_zLogRootFolderNotExist,	L"zLog\x30EB\x30FC\x30C8\x30D5\x30A9\x30EB\x30C0\x304C\x5B58\x5728\x3057\x307E\x305B\x3093"
 	System_RegularExpressionsConsts_SRegExMissingExpression,	L"RegEx \x306B\x6B63\x898F\x8868\x73FE\x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059"
@@ -1483,7 +1486,6 @@ BEGIN
 	System_Bindings_Consts_sScopeObjNull,	L"\x30B9\x30B3\x30FC\x30D7 \x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x306F Nil \x306B\x3067\x304D\x307E\x305B\x3093\x3002"
 	System_Bindings_Consts_sUncompiledExpression,	L"\x5F0F\x304C\x307E\x3060\x30B3\x30F3\x30D1\x30A4\x30EB\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
 	System_Bindings_Consts_sUnsupportedManager,	L"\x30DE\x30CD\x30FC\x30B8\x30E3\x304C IBindingNotification \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x307E\x305B\x3093\x3002"
-	System_Bindings_Consts_sClassTypeNotFound,	L"ClassType \x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059\x3002"
 	System_NetConsts_SNetHttpRequestConnectError,	L"\x30B5\x30FC\x30D0\x30FC\x3078\x306E\x63A5\x7D9A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: %s"
 	System_NetConsts_SNetHttpRequestOpenError,	L"\x8981\x6C42\x3092\x958B\x304F\x969B\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpRequestAddHeaderError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x8FFD\x52A0\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
@@ -2578,129 +2580,130 @@ END
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\Dialogs.res */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\Buttons.res */
 /* d:\Users\owner\Documents\Embarcadero\Studio\21.0\CatalogRepository\JEDICodeLibraryJCL-2022.02\lib\d27\win64\JclUnicode.res */
-/* D:\github\zLog_v2870\zlog\UzLogKeyer.dfm */
+/* D:\github\zLog_v2900\zlog\UzLogKeyer.dfm */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\SPIN.RES */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\FileCtrl.res */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\ExtDlgs.res */
 /* d:\Users\owner\Documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-2022.02\Resources\JvConsts.res */
 /* d:\Users\owner\Documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-2022.02\Resources\JvToolEdit.res */
 /* d:\Users\owner\Documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-2022.02\Resources\JvColorCombo.res */
-/* D:\github\zLog_v2870\zlog\UIntegerDialog.DFM */
-/* D:\github\zLog_v2870\zlog\UOperatorPowerDialog.dfm */
-/* D:\github\zLog_v2870\zlog\UOperatorEdit.dfm */
-/* D:\github\zLog_v2870\zlog\USuperCheck2.DFM */
-/* D:\github\zLog_v2870\zlog\UBasicMulti.DFM */
-/* D:\github\zLog_v2870\zlog\USummaryInfo.DFM */
-/* D:\github\zLog_v2870\zlog\UBasicScore.DFM */
-/* D:\github\zLog_v2870\zlog\UConsolePad.DFM */
-/* D:\github\zLog_v2870\zlog\UScratchSheet.DFM */
+/* D:\github\zLog_v2900\zlog\UIntegerDialog.DFM */
+/* D:\github\zLog_v2900\zlog\UOperatorPowerDialog.dfm */
+/* D:\github\zLog_v2900\zlog\UOperatorEdit.dfm */
+/* D:\github\zLog_v2900\zlog\USuperCheck2.DFM */
+/* D:\github\zLog_v2900\zlog\UBasicMulti.DFM */
+/* D:\github\zLog_v2900\zlog\USummaryInfo.DFM */
+/* D:\github\zLog_v2900\zlog\UBasicScore.DFM */
+/* D:\github\zLog_v2900\zlog\UConsolePad.DFM */
+/* D:\github\zLog_v2900\zlog\UScratchSheet.DFM */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\CategoryButtons.res */
-/* D:\github\zLog_v2870\zlog\UChat.DFM */
-/* D:\github\zLog_v2870\zlog\UZServerInquiry.DFM */
+/* D:\github\zLog_v2900\zlog\UChat.DFM */
+/* D:\github\zLog_v2900\zlog\UZServerInquiry.DFM */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\WinXCtrls.res */
-/* D:\github\zLog_v2870\zlog\UCheckWin.DFM */
-/* D:\github\zLog_v2870\zlog\UFreqList.DFM */
-/* D:\github\zLog_v2870\zlog\UBandScope2.dfm */
-/* D:\github\zLog_v2870\zlog\URigControl.DFM */
-/* D:\github\zLog_v2870\zlog\UZLinkForm.DFM */
-/* D:\github\zLog_v2870\zlog\UQTCForm.DFM */
-/* D:\github\zLog_v2870\zlog\UPartials.DFM */
-/* D:\github\zLog_v2870\zlog\UEditDialog.DFM */
-/* D:\github\zLog_v2870\zlog\UWWZone.DFM */
-/* D:\github\zLog_v2870\zlog\UACAGMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UNewIOTARef.DFM */
-/* D:\github\zLog_v2870\zlog\UIOTACategory.DFM */
-/* D:\github\zLog_v2870\zlog\UIOTAMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UNewPrefix.DFM */
-/* D:\github\zLog_v2870\zlog\UWWMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UJIDXMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UJIDXScore2.DFM */
-/* D:\github\zLog_v2870\zlog\UWWScore.DFM */
-/* D:\github\zLog_v2870\zlog\UARRLDXMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UARRLDXScore.DFM */
-/* D:\github\zLog_v2870\zlog\UWPXMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UAPSprintScore.DFM */
-/* D:\github\zLog_v2870\zlog\UJA0Score.DFM */
-/* D:\github\zLog_v2870\zlog\UJA0Multi.DFM */
-/* D:\github\zLog_v2870\zlog\UARRLWMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UIARUScore.DFM */
-/* D:\github\zLog_v2870\zlog\UAllAsianScore.DFM */
-/* D:\github\zLog_v2870\zlog\UJIDX_DX_Multi.DFM */
-/* D:\github\zLog_v2870\zlog\UJIDX_DX_Score.DFM */
-/* D:\github\zLog_v2870\zlog\UWPXScore.DFM */
-/* D:\github\zLog_v2870\zlog\UWAEMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UWAEScore.DFM */
-/* D:\github\zLog_v2870\zlog\UIARUMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UARRL10Multi.DFM */
-/* D:\github\zLog_v2870\zlog\UARRL10Score.DFM */
-/* D:\github\zLog_v2870\zlog\UPediScore.DFM */
-/* D:\github\zLog_v2870\zlog\UALLJAMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UALLJAScore.DFM */
-/* D:\github\zLog_v2870\zlog\UFDMulti.DFM */
-/* D:\github\zLog_v2870\zlog\USixDownMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UGeneralScore.DFM */
-/* D:\github\zLog_v2870\zlog\UGeneralMulti2.DFM */
-/* D:\github\zLog_v2870\zlog\UComm.DFM */
-/* D:\github\zLog_v2870\zlog\UClusterTelnetSet.DFM */
-/* D:\github\zLog_v2870\zlog\UClusterCOMSet.DFM */
-/* D:\github\zLog_v2870\zlog\UZlinkTelnetSet.DFM */
-/* D:\github\zLog_v2870\zlog\UPackageLoader.dfm */
-/* D:\github\zLog_v2870\zlog\UPluginManager.dfm */
-/* D:\github\zLog_v2870\zlog\USpotterListDlg.dfm */
-/* D:\github\zLog_v2870\zlog\UOptions.DFM */
-/* D:\github\zLog_v2870\zlog\UCWMonitor.dfm */
-/* D:\github\zLog_v2870\zlog\UzLogGlobal.dfm */
-/* D:\github\zLog_v2870\zlog\UTTYConsole.DFM */
-/* D:\github\zLog_v2870\zlog\UELogJarl1.dfm */
-/* D:\github\zLog_v2870\zlog\UELogJarl2.dfm */
-/* D:\github\zLog_v2870\zlog\UELogCabrillo.dfm */
-/* D:\github\zLog_v2870\zlog\UQuickRef.dfm */
-/* D:\github\zLog_v2870\zlog\UZAnalyze.dfm */
+/* D:\github\zLog_v2900\zlog\UCheckWin.DFM */
+/* D:\github\zLog_v2900\zlog\UFreqList.DFM */
+/* D:\github\zLog_v2900\zlog\UBandScope2.dfm */
+/* D:\github\zLog_v2900\zlog\URigControl.DFM */
+/* D:\github\zLog_v2900\zlog\UZLinkForm.DFM */
+/* D:\github\zLog_v2900\zlog\UQTCForm.DFM */
+/* D:\github\zLog_v2900\zlog\UPartials.DFM */
+/* D:\github\zLog_v2900\zlog\UEditDialog.DFM */
+/* D:\github\zLog_v2900\zlog\UWWZone.DFM */
+/* D:\github\zLog_v2900\zlog\UACAGMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UNewIOTARef.DFM */
+/* D:\github\zLog_v2900\zlog\UIOTACategory.DFM */
+/* D:\github\zLog_v2900\zlog\UIOTAMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UNewPrefix.DFM */
+/* D:\github\zLog_v2900\zlog\UWWMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UJIDXMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UJIDXScore2.DFM */
+/* D:\github\zLog_v2900\zlog\UWWScore.DFM */
+/* D:\github\zLog_v2900\zlog\UARRLDXMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UARRLDXScore.DFM */
+/* D:\github\zLog_v2900\zlog\UWPXMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UAPSprintScore.DFM */
+/* D:\github\zLog_v2900\zlog\UJA0Score.DFM */
+/* D:\github\zLog_v2900\zlog\UJA0Multi.DFM */
+/* D:\github\zLog_v2900\zlog\UARRLWMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UIARUScore.DFM */
+/* D:\github\zLog_v2900\zlog\UAllAsianScore.DFM */
+/* D:\github\zLog_v2900\zlog\UJIDX_DX_Multi.DFM */
+/* D:\github\zLog_v2900\zlog\UJIDX_DX_Score.DFM */
+/* D:\github\zLog_v2900\zlog\UWPXScore.DFM */
+/* D:\github\zLog_v2900\zlog\UWAEMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UWAEScore.DFM */
+/* D:\github\zLog_v2900\zlog\UIARUMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UARRL10Multi.DFM */
+/* D:\github\zLog_v2900\zlog\UARRL10Score.DFM */
+/* D:\github\zLog_v2900\zlog\UPediScore.DFM */
+/* D:\github\zLog_v2900\zlog\UALLJAMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UALLJAScore.DFM */
+/* D:\github\zLog_v2900\zlog\UFDMulti.DFM */
+/* D:\github\zLog_v2900\zlog\USixDownMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UGeneralScore.DFM */
+/* D:\github\zLog_v2900\zlog\UGeneralMulti2.DFM */
+/* D:\github\zLog_v2900\zlog\UComm.DFM */
+/* D:\github\zLog_v2900\zlog\UClusterTelnetSet.DFM */
+/* D:\github\zLog_v2900\zlog\UClusterCOMSet.DFM */
+/* D:\github\zLog_v2900\zlog\UZlinkTelnetSet.DFM */
+/* D:\github\zLog_v2900\zlog\UPackageLoader.dfm */
+/* D:\github\zLog_v2900\zlog\UPluginManager.dfm */
+/* D:\github\zLog_v2900\zlog\USpotterListDlg.dfm */
+/* D:\github\zLog_v2900\zlog\UOptions.DFM */
+/* D:\github\zLog_v2900\zlog\UCWMonitor.dfm */
+/* D:\github\zLog_v2900\zlog\UzLogGlobal.dfm */
+/* D:\github\zLog_v2900\zlog\UTTYConsole.DFM */
+/* D:\github\zLog_v2900\zlog\UELogJarl1.dfm */
+/* D:\github\zLog_v2900\zlog\UELogJarl2.dfm */
+/* D:\github\zLog_v2900\zlog\UELogCabrillo.dfm */
+/* D:\github\zLog_v2900\zlog\UQuickRef.dfm */
+/* D:\github\zLog_v2900\zlog\UZAnalyze.dfm */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\TeeFonts.res */
 /* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\TeeResou.res */
-/* D:\github\zLog_v2870\zlog\URateDialog.DFM */
-/* D:\github\zLog_v2870\zlog\URateDialogEx.DFM */
-/* D:\github\zLog_v2870\zlog\USuperCheck.DFM */
-/* D:\github\zLog_v2870\zlog\UCWKeyBoard.DFM */
-/* D:\github\zLog_v2870\zlog\USpotForm.DFM */
-/* D:\github\zLog_v2870\zlog\UCheckCall2.DFM */
-/* D:\github\zLog_v2870\zlog\UCheckMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UCheckCountry.DFM */
-/* D:\github\zLog_v2870\zlog\UTextEditor.dfm */
-/* D:\github\zLog_v2870\zlog\UCwMessageEditor.dfm */
-/* D:\github\zLog_v2870\zlog\UCwMessagePad.dfm */
-/* D:\github\zLog_v2870\zlog\UNRDialog.dfm */
-/* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\MPlayer.res */
-/* D:\github\zLog_v2870\zlog\UVoiceForm.dfm */
-/* D:\github\zLog_v2870\zlog\UFunctionKeyPanel.dfm */
-/* D:\github\zLog_v2870\zlog\UQsyInfo.dfm */
+/* D:\github\zLog_v2900\zlog\URateDialog.DFM */
+/* D:\github\zLog_v2900\zlog\URateDialogEx.DFM */
+/* D:\github\zLog_v2900\zlog\USuperCheck.DFM */
+/* D:\github\zLog_v2900\zlog\UCWKeyBoard.DFM */
+/* D:\github\zLog_v2900\zlog\USpotForm.DFM */
+/* D:\github\zLog_v2900\zlog\UCheckCall2.DFM */
+/* D:\github\zLog_v2900\zlog\UCheckMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UCheckCountry.DFM */
+/* D:\github\zLog_v2900\zlog\UTextEditor.dfm */
+/* D:\github\zLog_v2900\zlog\UCwMessageEditor.dfm */
+/* D:\github\zLog_v2900\zlog\UCwMessagePad.dfm */
+/* D:\github\zLog_v2900\zlog\UNRDialog.dfm */
+/* D:\github\zLog_v2900\zlog\UFunctionKeyPanel.dfm */
+/* D:\github\zLog_v2900\zlog\UQsyInfo.dfm */
 /* d:\Users\owner\Documents\Embarcadero\Studio\21.0\CatalogRepository\JEDIVisualComponentLibraryJVCL-2022.02\Resources\JvLED.res */
-/* D:\github\zLog_v2870\zlog\USo2rNeoCp.dfm */
-/* D:\github\zLog_v2870\zlog\UInformation.dfm */
-/* D:\github\zLog_v2870\zlog\UWinKeyerTester.dfm */
-/* D:\github\zLog_v2870\zlog\UStatusEdit.dfm */
-/* D:\github\zLog_v2870\zlog\UFreqTest.dfm */
-/* D:\github\zLog_v2870\zlog\UAbout.DFM */
-/* D:\github\zLog_v2870\zlog\UCFGEdit.dfm */
-/* D:\github\zLog_v2870\zlog\USelectUserDefinedContest.dfm */
-/* D:\github\zLog_v2870\zlog\UMenu.DFM */
-/* D:\github\zLog_v2870\zlog\UJIDXScore.DFM */
-/* D:\github\zLog_v2870\zlog\UKCJZone.DFM */
-/* D:\github\zLog_v2870\zlog\UKCJMulti.DFM */
-/* D:\github\zLog_v2870\zlog\UKCJScore.DFM */
-/* D:\github\zLog_v2870\zlog\UBandPlanEditDialog.dfm */
-/* D:\github\zLog_v2870\zlog\UGraphColorDialog.dfm */
-/* D:\github\zLog_v2870\zlog\UAgeDialog.DFM */
-/* D:\github\zLog_v2870\zlog\UUTCDialog.DFM */
-/* D:\github\zLog_v2870\zlog\Progress.dfm */
-/* D:\github\zLog_v2870\zlog\UTargetEditor.dfm */
-/* D:\github\zLog_v2870\zlog\UExportHamlog.dfm */
-/* D:\github\zLog_v2870\zlog\UExportCabrillo.dfm */
-/* D:\github\zLog_v2870\zlog\UStartTimeDialog.dfm */
-/* D:\github\zLog_v2870\zlog\UDateDialog.dfm */
-/* D:\github\zLog_v2870\zlog\Main.DFM */
-/* D:\github\zLog_v2870\zlog\UExceptionDialog.dfm */
-/* D:\github\zLog_v2870\zlog\resource.res */
-/* D:\github\zLog_v2870\zlog\zLog.dres */
-/* D:\github\zLog_v2870\zlog\zLog.res */
-/* D:\github\zLog_v2870\zlog\zLog.drf */
+/* D:\github\zLog_v2900\zlog\USo2rNeoCp.dfm */
+/* D:\github\zLog_v2900\zlog\UInformation.dfm */
+/* D:\github\zLog_v2900\zlog\UWinKeyerTester.dfm */
+/* D:\github\zLog_v2900\zlog\UStatusEdit.dfm */
+/* D:\github\zLog_v2900\zlog\UMessageManager.dfm */
+/* D:\github\zLog_v2900\zlog\UFreqTest.dfm */
+/* D:\github\zLog_v2900\zlog\UAbout.DFM */
+/* D:\github\zLog_v2900\zlog\UCFGEdit.dfm */
+/* D:\github\zLog_v2900\zlog\USelectUserDefinedContest.dfm */
+/* D:\github\zLog_v2900\zlog\UMenu.DFM */
+/* D:\github\zLog_v2900\zlog\UJIDXScore.DFM */
+/* D:\github\zLog_v2900\zlog\UKCJZone.DFM */
+/* D:\github\zLog_v2900\zlog\UKCJMulti.DFM */
+/* D:\github\zLog_v2900\zlog\UKCJScore.DFM */
+/* D:\github\zLog_v2900\zlog\UBandPlanEditDialog.dfm */
+/* D:\github\zLog_v2900\zlog\UGraphColorDialog.dfm */
+/* D:\github\zLog_v2900\zlog\UAgeDialog.DFM */
+/* D:\github\zLog_v2900\zlog\UUTCDialog.DFM */
+/* D:\github\zLog_v2900\zlog\Progress.dfm */
+/* D:\github\zLog_v2900\zlog\UTargetEditor.dfm */
+/* D:\github\zLog_v2900\zlog\UExportHamlog.dfm */
+/* D:\github\zLog_v2900\zlog\UExportCabrillo.dfm */
+/* D:\github\zLog_v2900\zlog\UStartTimeDialog.dfm */
+/* D:\github\zLog_v2900\zlog\UDateDialog.dfm */
+/* D:\github\zLog_v2900\zlog\Main.DFM */
+/* c:\program files (x86)\embarcadero\studio\21.0\lib\Win64\release\MPlayer.res */
+/* D:\github\zLog_v2900\zlog\UVoiceForm.dfm */
+/* D:\github\zLog_v2900\zlog\UExceptionDialog.dfm */
+/* D:\github\zLog_v2900\zlog\resource.res */
+/* D:\github\zLog_v2900\zlog\zLog.dres */
+/* D:\github\zLog_v2900\zlog\zLog.res */
+/* D:\github\zLog_v2900\zlog\zLog.drf */

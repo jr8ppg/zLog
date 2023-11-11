@@ -868,7 +868,7 @@ object formOptions: TformOptions
         Height = 127
         Caption = 'Power($N)'
         TabOrder = 8
-        object Label123: TLabel
+        object Label111: TLabel
           Left = 16
           Top = 23
           Width = 34
@@ -876,7 +876,7 @@ object formOptions: TformOptions
           AutoSize = False
           Caption = 'H'
         end
-        object Label124: TLabel
+        object Label112: TLabel
           Left = 16
           Top = 48
           Width = 34
@@ -884,7 +884,7 @@ object formOptions: TformOptions
           AutoSize = False
           Caption = 'M'
         end
-        object Label125: TLabel
+        object Label113: TLabel
           Left = 16
           Top = 73
           Width = 34
@@ -892,7 +892,7 @@ object formOptions: TformOptions
           AutoSize = False
           Caption = 'L'
         end
-        object Label126: TLabel
+        object Label114: TLabel
           Left = 16
           Top = 98
           Width = 34
@@ -1301,7 +1301,7 @@ object formOptions: TformOptions
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 16
+        TabOrder = 18
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1312,7 +1312,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 17
+        TabOrder = 16
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1323,7 +1323,7 @@ object formOptions: TformOptions
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 18
+        TabOrder = 17
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1864,92 +1864,1976 @@ object formOptions: TformOptions
     end
     object tabsheetHardware: TTabSheet
       Caption = 'Hardware'
-      object groupOptCwPtt: TGroupBox
+      object groupRig5: TGroupBox
         Left = 6
-        Top = 264
-        Width = 202
-        Height = 88
-        Caption = 'CW/PTT control'
+        Top = 256
+        Width = 423
+        Height = 56
+        Caption = 'RIG-5'
         TabOrder = 4
-        object Label38: TLabel
-          Left = 8
-          Top = 39
-          Width = 70
+        object Label99: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
           Height = 13
-          Caption = 'Before TX (ms)'
+          Caption = 'CW port'
         end
-        object Label39: TLabel
-          Left = 8
+        object comboRig3Keying: TComboBox
+          Tag = 3
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+        object checkRig3KeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = 'if checked, PTT is DTR, Keying is RTS'
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+        end
+      end
+      object groupRig2: TGroupBox
+        Left = 6
+        Top = 66
+        Width = 423
+        Height = 56
+        Caption = 'RIG-2'
+        TabOrder = 1
+        object Label120: TLabel
+          Left = 156
+          Top = 13
+          Width = 16
+          Height = 13
+          Caption = 'Rig'
+        end
+        object Label121: TLabel
+          Left = 15
+          Top = 13
+          Width = 54
+          Height = 13
+          Caption = 'Control port'
+        end
+        object Label122: TLabel
+          Left = 88
+          Top = 13
+          Width = 31
+          Height = 13
+          Caption = 'Speed'
+        end
+        object Label123: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object checkRig1BXvt: TCheckBox
+          Tag = 102
+          Left = 351
+          Top = 12
+          Width = 41
+          Height = 17
+          Hint = 'Check here if you are using a transverter'
+          Caption = 'XVT'
+          TabOrder = 4
+          OnClick = checkRig1AXvtClick
+        end
+        object comboRig1BName: TComboBox
+          Left = 152
+          Top = 27
+          Width = 120
+          Height = 21
+          Style = csDropDownList
+          DropDownCount = 20
+          TabOrder = 2
+          OnChange = comboRig2ANameChange
+        end
+        object comboRig1BControl: TComboBox
+          Left = 11
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20')
+        end
+        object comboRig1BSpeed: TComboBox
+          Left = 81
+          Top = 27
+          Width = 65
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+          Items.Strings = (
+            '300'
+            '1200'
+            '2400'
+            '4800'
+            '9600'
+            '19200'
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
+        end
+        object comboRig1BKeying: TComboBox
+          Tag = 2
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+        object checkRig1BKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = 'if checked, PTT is DTR, Keying is RTS'
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+      end
+      object groupRig1: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 423
+        Height = 56
+        Caption = 'RIG-1'
+        TabOrder = 0
+        object Label43: TLabel
+          Left = 156
+          Top = 13
+          Width = 16
+          Height = 13
+          Caption = 'Rig'
+        end
+        object Label92: TLabel
+          Left = 15
+          Top = 13
+          Width = 54
+          Height = 13
+          Caption = 'Control port'
+        end
+        object Label93: TLabel
+          Left = 88
+          Top = 13
+          Width = 31
+          Height = 13
+          Caption = 'Speed'
+        end
+        object Label94: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object comboRig1AName: TComboBox
+          Left = 152
+          Top = 27
+          Width = 120
+          Height = 21
+          Style = csDropDownList
+          DropDownCount = 20
+          TabOrder = 2
+          OnChange = comboRig1ANameChange
+        end
+        object comboRig1AControl: TComboBox
+          Left = 11
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20')
+        end
+        object comboRig1ASpeed: TComboBox
+          Left = 81
+          Top = 27
+          Width = 65
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+          Items.Strings = (
+            '300'
+            '1200'
+            '2400'
+            '4800'
+            '9600'
+            '19200'
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
+        end
+        object comboRig1AKeying: TComboBox
+          Tag = 1
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+        object checkRig1AXvt: TCheckBox
+          Tag = 101
+          Left = 351
+          Top = 12
+          Width = 41
+          Height = 17
+          Hint = 'Check here if you are using a transverter'
+          Caption = 'XVT'
+          TabOrder = 4
+          OnClick = checkRig1AXvtClick
+        end
+        object checkRig1AKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = 'if checked, PTT is DTR, Keying is RTS'
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+      end
+      object groupRig4: TGroupBox
+        Left = 6
+        Top = 194
+        Width = 423
+        Height = 56
+        Caption = 'RIG-4'
+        TabOrder = 3
+        object Label124: TLabel
+          Left = 156
+          Top = 13
+          Width = 16
+          Height = 13
+          Caption = 'Rig'
+        end
+        object Label125: TLabel
+          Left = 15
+          Top = 13
+          Width = 54
+          Height = 13
+          Caption = 'Control port'
+        end
+        object Label126: TLabel
+          Left = 88
+          Top = 13
+          Width = 31
+          Height = 13
+          Caption = 'Speed'
+        end
+        object Label127: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object checkRig2BXvt: TCheckBox
+          Tag = 104
+          Left = 351
+          Top = 12
+          Width = 41
+          Height = 17
+          Hint = 'Check here if you are using a transverter'
+          Caption = 'XVT'
+          TabOrder = 4
+          OnClick = checkRig1AXvtClick
+        end
+        object comboRig2BName: TComboBox
+          Left = 152
+          Top = 27
+          Width = 120
+          Height = 21
+          Style = csDropDownList
+          DropDownCount = 20
+          TabOrder = 2
+          OnChange = comboRig2ANameChange
+        end
+        object comboRig2BControl: TComboBox
+          Left = 11
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20')
+        end
+        object comboRig2BSpeed: TComboBox
+          Left = 81
+          Top = 27
+          Width = 65
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+          Items.Strings = (
+            '300'
+            '1200'
+            '2400'
+            '4800'
+            '9600'
+            '19200'
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
+        end
+        object comboRig2BKeying: TComboBox
+          Tag = 2
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+        object checkRig2BKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = 'if checked, PTT is DTR, Keying is RTS'
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+      end
+      object groupRig3: TGroupBox
+        Left = 6
+        Top = 130
+        Width = 423
+        Height = 56
+        Caption = 'RIG-3'
+        TabOrder = 2
+        object Label95: TLabel
+          Left = 156
+          Top = 13
+          Width = 16
+          Height = 13
+          Caption = 'Rig'
+        end
+        object Label96: TLabel
+          Left = 15
+          Top = 13
+          Width = 54
+          Height = 13
+          Caption = 'Control port'
+        end
+        object Label97: TLabel
+          Left = 88
+          Top = 13
+          Width = 31
+          Height = 13
+          Caption = 'Speed'
+        end
+        object Label98: TLabel
+          Left = 282
+          Top = 13
+          Width = 39
+          Height = 13
+          Caption = 'CW port'
+        end
+        object checkRig2AXvt: TCheckBox
+          Tag = 103
+          Left = 351
+          Top = 12
+          Width = 41
+          Height = 17
+          Hint = 'Check here if you are using a transverter'
+          Caption = 'XVT'
+          TabOrder = 4
+          OnClick = checkRig1AXvtClick
+        end
+        object comboRig2AName: TComboBox
+          Left = 152
+          Top = 27
+          Width = 120
+          Height = 21
+          Style = csDropDownList
+          DropDownCount = 20
+          TabOrder = 2
+          OnChange = comboRig2ANameChange
+        end
+        object comboRig2AControl: TComboBox
+          Left = 11
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20')
+        end
+        object comboRig2ASpeed: TComboBox
+          Left = 81
+          Top = 27
+          Width = 65
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+          Items.Strings = (
+            '300'
+            '1200'
+            '2400'
+            '4800'
+            '9600'
+            '19200'
+            '38400'
+            '56000'
+            '57600'
+            '115200'
+            '128000'
+            '256000')
+        end
+        object comboRig2AKeying: TComboBox
+          Tag = 2
+          Left = 278
+          Top = 27
+          Width = 64
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = comboCwPttPortChange
+          Items.Strings = (
+            'None'
+            'COM1'
+            'COM2'
+            'COM3'
+            'COM4'
+            'COM5'
+            'COM6'
+            'COM7'
+            'COM8'
+            'COM9'
+            'COM10'
+            'COM11'
+            'COM12'
+            'COM13'
+            'COM14'
+            'COM15'
+            'COM16'
+            'COM17'
+            'COM18'
+            'COM19'
+            'COM20'
+            'USB')
+        end
+        object checkRig2AKeyIsRTS: TCheckBox
+          Left = 351
+          Top = 32
+          Width = 62
+          Height = 17
+          Hint = 'if checked, PTT is DTR, Keying is RTS'
+          Caption = 'Key=RTS'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+        end
+      end
+    end
+    object tabsheetHardware2: TTabSheet
+      Caption = 'Hardware2'
+      ImageIndex = 15
+      object groupRigSetA: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 200
+        Height = 393
+        Caption = 'Assign to the set of RIG-A'
+        TabOrder = 0
+        object Label128: TLabel
+          Left = 16
+          Top = 42
+          Width = 40
+          Height = 13
+          Caption = '1.9 MHz'
+        end
+        object Label129: TLabel
+          Left = 16
           Top = 63
-          Width = 130
+          Width = 40
           Height = 13
-          Caption = 'After TX paddle/keybd (ms)'
+          Caption = '3.5 MHz'
         end
-        object PTTEnabledCheckBox: TCheckBox
-          Left = 8
-          Top = 14
-          Width = 129
-          Height = 17
-          Caption = 'Enable PTT control'
-          TabOrder = 0
-          OnClick = PTTEnabledCheckBoxClick
+        object Label130: TLabel
+          Left = 25
+          Top = 84
+          Width = 31
+          Height = 13
+          Caption = '7 MHz'
         end
-        object BeforeEdit: TEdit
-          Left = 144
-          Top = 36
+        object Label131: TLabel
+          Left = 19
+          Top = 105
+          Width = 37
+          Height = 13
+          Caption = '10 MHz'
+        end
+        object Label132: TLabel
+          Left = 19
+          Top = 126
+          Width = 37
+          Height = 13
+          Caption = '14 MHz'
+        end
+        object Label133: TLabel
+          Left = 19
+          Top = 147
+          Width = 37
+          Height = 13
+          Caption = '18 MHz'
+        end
+        object Label134: TLabel
+          Left = 19
+          Top = 168
+          Width = 37
+          Height = 13
+          Caption = '21 MHz'
+        end
+        object Label135: TLabel
+          Left = 19
+          Top = 189
+          Width = 37
+          Height = 13
+          Caption = '24 MHz'
+        end
+        object Label136: TLabel
+          Left = 19
+          Top = 210
+          Width = 37
+          Height = 13
+          Caption = '28 MHz'
+        end
+        object Label137: TLabel
+          Left = 19
+          Top = 231
+          Width = 37
+          Height = 13
+          Caption = '50 MHz'
+        end
+        object Label138: TLabel
+          Left = 13
+          Top = 252
+          Width = 43
+          Height = 13
+          Caption = '144 MHz'
+        end
+        object Label139: TLabel
+          Left = 13
+          Top = 273
+          Width = 43
+          Height = 13
+          Caption = '430 MHz'
+        end
+        object Label140: TLabel
+          Left = 7
+          Top = 294
+          Width = 49
+          Height = 13
+          Caption = '1200 MHz'
+        end
+        object Label141: TLabel
+          Left = 7
+          Top = 315
+          Width = 49
+          Height = 13
+          Caption = '2400 MHz'
+        end
+        object Label142: TLabel
+          Left = 7
+          Top = 336
+          Width = 49
+          Height = 13
+          Caption = '5600 MHz'
+        end
+        object Label143: TLabel
+          Left = 9
+          Top = 357
+          Width = 47
+          Height = 13
+          Caption = '10 G && up'
+        end
+        object Label104: TLabel
+          Left = 80
+          Top = 20
+          Width = 19
+          Height = 13
+          Caption = 'RIG'
+        end
+        object Label105: TLabel
+          Left = 141
+          Top = 20
           Width = 40
-          Height = 21
-          TabOrder = 1
-          Text = 'CWPortEdit'
+          Height = 13
+          Caption = 'Antenna'
         end
-        object AfterEdit: TEdit
-          Left = 144
+        object comboRigA_b19: TComboBox
+          Left = 66
+          Top = 39
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 0
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b35: TComboBox
+          Tag = 1
+          Left = 66
           Top = 60
-          Width = 40
+          Width = 58
           Height = 21
-          TabOrder = 2
-          Text = 'CWPortEdit'
-        end
-      end
-      object groupUsif4cw: TGroupBox
-        Left = 214
-        Top = 264
-        Width = 213
-        Height = 88
-        Caption = 'USBIF4CW'
-        TabOrder = 5
-        object checkUsbif4cwSyncWpm: TCheckBox
-          Left = 8
-          Top = 19
-          Width = 82
-          Height = 17
-          Caption = 'Sync WPM'
-          TabOrder = 0
-        end
-        object checkGen3MicSelect: TCheckBox
-          Left = 8
-          Top = 40
-          Width = 193
-          Height = 17
-          Caption = 'Select mic input for Gen.3'
+          ImeMode = imDisable
           TabOrder = 1
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
         end
-        object checkUsbif4cwUsePaddle: TCheckBox
-          Left = 8
-          Top = 62
-          Width = 193
-          Height = 17
-          Caption = 'Use paddle (V1 only)'
+        object comboRigA_b7: TComboBox
+          Tag = 2
+          Left = 66
+          Top = 81
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
           TabOrder = 2
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b10: TComboBox
+          Tag = 3
+          Left = 66
+          Top = 102
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 3
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b14: TComboBox
+          Tag = 4
+          Left = 66
+          Top = 123
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 4
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b18: TComboBox
+          Tag = 5
+          Left = 66
+          Top = 144
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 5
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b21: TComboBox
+          Tag = 6
+          Left = 66
+          Top = 165
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 6
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b24: TComboBox
+          Tag = 7
+          Left = 66
+          Top = 186
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 7
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b28: TComboBox
+          Tag = 8
+          Left = 66
+          Top = 207
+          Width = 58
+          Height = 21
+          TabOrder = 8
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b50: TComboBox
+          Tag = 9
+          Left = 66
+          Top = 228
+          Width = 58
+          Height = 21
+          TabOrder = 9
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b144: TComboBox
+          Tag = 10
+          Left = 66
+          Top = 249
+          Width = 58
+          Height = 21
+          TabOrder = 10
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b430: TComboBox
+          Tag = 11
+          Left = 66
+          Top = 270
+          Width = 58
+          Height = 21
+          TabOrder = 11
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b1200: TComboBox
+          Tag = 12
+          Left = 66
+          Top = 291
+          Width = 58
+          Height = 21
+          TabOrder = 12
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b2400: TComboBox
+          Tag = 13
+          Left = 66
+          Top = 312
+          Width = 58
+          Height = 21
+          TabOrder = 13
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b5600: TComboBox
+          Tag = 14
+          Left = 66
+          Top = 333
+          Width = 58
+          Height = 21
+          TabOrder = 14
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_b10g: TComboBox
+          Tag = 15
+          Left = 66
+          Top = 354
+          Width = 58
+          Height = 21
+          TabOrder = 15
+          Text = 'none'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_Antb19: TComboBox
+          Left = 135
+          Top = 39
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 16
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb35: TComboBox
+          Tag = 1
+          Left = 135
+          Top = 60
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 17
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb7: TComboBox
+          Tag = 2
+          Left = 135
+          Top = 81
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 18
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb10: TComboBox
+          Tag = 3
+          Left = 135
+          Top = 102
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 19
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb14: TComboBox
+          Tag = 4
+          Left = 135
+          Top = 123
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 20
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb18: TComboBox
+          Tag = 5
+          Left = 135
+          Top = 144
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 21
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb21: TComboBox
+          Tag = 6
+          Left = 135
+          Top = 165
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 22
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb24: TComboBox
+          Tag = 7
+          Left = 135
+          Top = 186
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 23
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb28: TComboBox
+          Tag = 8
+          Left = 135
+          Top = 207
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 24
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb50: TComboBox
+          Tag = 9
+          Left = 135
+          Top = 228
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 25
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb144: TComboBox
+          Tag = 10
+          Left = 135
+          Top = 249
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 26
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb430: TComboBox
+          Tag = 11
+          Left = 135
+          Top = 270
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 27
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb1200: TComboBox
+          Tag = 12
+          Left = 135
+          Top = 291
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 28
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb2400: TComboBox
+          Tag = 13
+          Left = 135
+          Top = 312
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 29
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb5600: TComboBox
+          Tag = 14
+          Left = 135
+          Top = 333
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 30
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigA_Antb10g: TComboBox
+          Tag = 15
+          Left = 135
+          Top = 354
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 31
+          Text = 'none'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
         end
       end
+      object groupRigSetB: TGroupBox
+        Left = 225
+        Top = 4
+        Width = 200
+        Height = 393
+        Caption = 'Assign to the set of RIG-B'
+        TabOrder = 1
+        object Label144: TLabel
+          Left = 16
+          Top = 42
+          Width = 40
+          Height = 13
+          Caption = '1.9 MHz'
+        end
+        object Label145: TLabel
+          Left = 16
+          Top = 63
+          Width = 40
+          Height = 13
+          Caption = '3.5 MHz'
+        end
+        object Label146: TLabel
+          Left = 25
+          Top = 84
+          Width = 31
+          Height = 13
+          Caption = '7 MHz'
+        end
+        object Label147: TLabel
+          Left = 19
+          Top = 105
+          Width = 37
+          Height = 13
+          Caption = '10 MHz'
+        end
+        object Label148: TLabel
+          Left = 19
+          Top = 126
+          Width = 37
+          Height = 13
+          Caption = '14 MHz'
+        end
+        object Label149: TLabel
+          Left = 19
+          Top = 147
+          Width = 37
+          Height = 13
+          Caption = '18 MHz'
+        end
+        object Label150: TLabel
+          Left = 19
+          Top = 168
+          Width = 37
+          Height = 13
+          Caption = '21 MHz'
+        end
+        object Label151: TLabel
+          Left = 19
+          Top = 189
+          Width = 37
+          Height = 13
+          Caption = '24 MHz'
+        end
+        object Label152: TLabel
+          Left = 19
+          Top = 210
+          Width = 37
+          Height = 13
+          Caption = '28 MHz'
+        end
+        object Label153: TLabel
+          Left = 19
+          Top = 231
+          Width = 37
+          Height = 13
+          Caption = '50 MHz'
+        end
+        object Label154: TLabel
+          Left = 13
+          Top = 252
+          Width = 43
+          Height = 13
+          Caption = '144 MHz'
+        end
+        object Label155: TLabel
+          Left = 13
+          Top = 273
+          Width = 43
+          Height = 13
+          Caption = '430 MHz'
+        end
+        object Label156: TLabel
+          Left = 7
+          Top = 294
+          Width = 49
+          Height = 13
+          Caption = '1200 MHz'
+        end
+        object Label157: TLabel
+          Left = 7
+          Top = 315
+          Width = 49
+          Height = 13
+          Caption = '2400 MHz'
+        end
+        object Label158: TLabel
+          Left = 7
+          Top = 336
+          Width = 49
+          Height = 13
+          Caption = '5600 MHz'
+        end
+        object Label159: TLabel
+          Left = 9
+          Top = 357
+          Width = 47
+          Height = 13
+          Caption = '10 G && up'
+        end
+        object Label106: TLabel
+          Left = 142
+          Top = 20
+          Width = 40
+          Height = 13
+          Caption = 'Antenna'
+        end
+        object Label107: TLabel
+          Left = 81
+          Top = 20
+          Width = 19
+          Height = 13
+          Caption = 'RIG'
+        end
+        object comboRigB_b19: TComboBox
+          Left = 66
+          Top = 39
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 0
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b35: TComboBox
+          Tag = 1
+          Left = 66
+          Top = 60
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 1
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b7: TComboBox
+          Tag = 2
+          Left = 66
+          Top = 81
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 2
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b10: TComboBox
+          Tag = 3
+          Left = 66
+          Top = 102
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 3
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b14: TComboBox
+          Tag = 4
+          Left = 66
+          Top = 123
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 4
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b18: TComboBox
+          Tag = 5
+          Left = 66
+          Top = 144
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 5
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b21: TComboBox
+          Tag = 6
+          Left = 66
+          Top = 165
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 6
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b24: TComboBox
+          Tag = 7
+          Left = 66
+          Top = 186
+          Width = 58
+          Height = 21
+          ImeMode = imDisable
+          TabOrder = 7
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b28: TComboBox
+          Tag = 8
+          Left = 66
+          Top = 207
+          Width = 58
+          Height = 21
+          TabOrder = 8
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b50: TComboBox
+          Tag = 9
+          Left = 66
+          Top = 228
+          Width = 58
+          Height = 21
+          TabOrder = 9
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b144: TComboBox
+          Tag = 10
+          Left = 66
+          Top = 249
+          Width = 58
+          Height = 21
+          TabOrder = 10
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b430: TComboBox
+          Tag = 11
+          Left = 66
+          Top = 270
+          Width = 58
+          Height = 21
+          TabOrder = 11
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b1200: TComboBox
+          Tag = 12
+          Left = 66
+          Top = 291
+          Width = 58
+          Height = 21
+          TabOrder = 12
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b2400: TComboBox
+          Tag = 13
+          Left = 66
+          Top = 312
+          Width = 58
+          Height = 21
+          TabOrder = 13
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b5600: TComboBox
+          Tag = 14
+          Left = 66
+          Top = 333
+          Width = 58
+          Height = 21
+          TabOrder = 14
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_b10g: TComboBox
+          Tag = 15
+          Left = 66
+          Top = 354
+          Width = 58
+          Height = 21
+          TabOrder = 15
+          Text = 'none'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'none'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_Antb19: TComboBox
+          Left = 135
+          Top = 39
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 16
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb35: TComboBox
+          Tag = 1
+          Left = 135
+          Top = 60
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 17
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb7: TComboBox
+          Tag = 2
+          Left = 135
+          Top = 81
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 18
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb10: TComboBox
+          Tag = 3
+          Left = 135
+          Top = 102
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 19
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb14: TComboBox
+          Tag = 4
+          Left = 135
+          Top = 123
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 20
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb18: TComboBox
+          Tag = 5
+          Left = 135
+          Top = 144
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 21
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb21: TComboBox
+          Tag = 6
+          Left = 135
+          Top = 165
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 22
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb24: TComboBox
+          Tag = 7
+          Left = 135
+          Top = 186
+          Width = 54
+          Height = 21
+          ImeMode = imDisable
+          ItemIndex = 0
+          TabOrder = 23
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb28: TComboBox
+          Tag = 8
+          Left = 135
+          Top = 207
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 24
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb50: TComboBox
+          Tag = 9
+          Left = 135
+          Top = 228
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 25
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb144: TComboBox
+          Tag = 10
+          Left = 135
+          Top = 249
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 26
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb430: TComboBox
+          Tag = 11
+          Left = 135
+          Top = 270
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 27
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb1200: TComboBox
+          Tag = 12
+          Left = 135
+          Top = 291
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 28
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb2400: TComboBox
+          Tag = 13
+          Left = 135
+          Top = 312
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 29
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb5600: TComboBox
+          Tag = 14
+          Left = 135
+          Top = 333
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 30
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+        object comboRigB_Antb10g: TComboBox
+          Tag = 15
+          Left = 135
+          Top = 354
+          Width = 54
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 31
+          Text = 'none'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'none'
+            'ANT1'
+            'ANT2')
+        end
+      end
+    end
+    object tabsheetHardware3: TTabSheet
+      Caption = 'Hardware3'
+      ImageIndex = 14
       object groupOptCI_V: TGroupBox
         Left = 6
-        Top = 184
+        Top = 158
         Width = 423
         Height = 74
         Caption = 'ICOM CI-V Options'
-        TabOrder = 3
+        TabOrder = 0
         object Label83: TLabel
           Left = 9
           Top = 23
@@ -1964,7 +3848,7 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'Method'
         end
-        object Label122: TLabel
+        object Label110: TLabel
           Left = 262
           Top = 49
           Width = 104
@@ -2010,371 +3894,83 @@ object formOptions: TformOptions
           Text = '1000'
         end
       end
-      object groupRig1: TGroupBox
+      object groupOptCwPtt: TGroupBox
         Left = 6
-        Top = 4
+        Top = 237
         Width = 423
-        Height = 56
-        Caption = 'RIG1'
-        TabOrder = 0
-        object Label43: TLabel
-          Left = 156
-          Top = 13
-          Width = 16
-          Height = 13
-          Caption = 'Rig'
-        end
-        object Label92: TLabel
-          Left = 15
-          Top = 13
-          Width = 54
-          Height = 13
-          Caption = 'Control port'
-        end
-        object Label93: TLabel
-          Left = 88
-          Top = 13
-          Width = 31
-          Height = 13
-          Caption = 'Speed'
-        end
-        object Label94: TLabel
-          Left = 282
-          Top = 13
-          Width = 39
-          Height = 13
-          Caption = 'CW port'
-        end
-        object comboRig1Name: TComboBox
-          Left = 152
-          Top = 27
-          Width = 120
-          Height = 21
-          Style = csDropDownList
-          DropDownCount = 20
-          TabOrder = 2
-          OnChange = comboRig1NameChange
-        end
-        object comboRig1Port: TComboBox
-          Left = 11
-          Top = 27
-          Width = 64
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 0
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
-        end
-        object comboRig1Speed: TComboBox
-          Left = 81
-          Top = 27
-          Width = 65
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 1
-          Items.Strings = (
-            '300'
-            '1200'
-            '2400'
-            '4800'
-            '9600'
-            '19200'
-            '38400'
-            '56000'
-            '57600'
-            '115200'
-            '128000'
-            '256000')
-        end
-        object comboCwPttPort1: TComboBox
-          Tag = 1
-          Left = 278
-          Top = 27
-          Width = 64
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 3
-          OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
-        end
-        object cbTransverter1: TCheckBox
-          Tag = 101
-          Left = 351
-          Top = 12
-          Width = 41
-          Height = 17
-          Hint = 'Check here if you are using a transverter'
-          Caption = 'XVT'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 4
-          OnClick = cbTransverter1Click
-        end
-        object checkCwReverseSignal1: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 5
-        end
-      end
-      object groupRig2: TGroupBox
-        Left = 6
-        Top = 64
-        Width = 423
-        Height = 56
-        Caption = 'RIG2'
+        Height = 62
+        Caption = 'CW/PTT control'
         TabOrder = 1
-        object Label95: TLabel
-          Left = 156
-          Top = 13
-          Width = 16
+        object Label38: TLabel
+          Left = 8
+          Top = 38
+          Width = 70
           Height = 13
-          Caption = 'Rig'
+          Caption = 'Before TX (ms)'
         end
-        object Label96: TLabel
-          Left = 15
-          Top = 13
-          Width = 54
+        object Label39: TLabel
+          Left = 128
+          Top = 38
+          Width = 130
           Height = 13
-          Caption = 'Control port'
+          Caption = 'After TX paddle/keybd (ms)'
         end
-        object Label97: TLabel
-          Left = 88
-          Top = 13
-          Width = 31
-          Height = 13
-          Caption = 'Speed'
-        end
-        object Label98: TLabel
-          Left = 282
-          Top = 13
-          Width = 39
-          Height = 13
-          Caption = 'CW port'
-        end
-        object cbTransverter2: TCheckBox
-          Tag = 102
-          Left = 351
-          Top = 12
-          Width = 41
+        object PTTEnabledCheckBox: TCheckBox
+          Left = 8
+          Top = 14
+          Width = 129
           Height = 17
-          Hint = 'Check here if you are using a transverter'
-          Caption = 'XVT'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 4
-          OnClick = cbTransverter1Click
-        end
-        object comboRig2Name: TComboBox
-          Left = 152
-          Top = 27
-          Width = 120
-          Height = 21
-          Style = csDropDownList
-          DropDownCount = 20
-          TabOrder = 2
-          OnChange = comboRig2NameChange
-        end
-        object comboRig2Port: TComboBox
-          Left = 11
-          Top = 27
-          Width = 64
-          Height = 21
-          Style = csDropDownList
+          Caption = 'Enable PTT control'
           TabOrder = 0
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
+          OnClick = PTTEnabledCheckBoxClick
         end
-        object comboRig2Speed: TComboBox
-          Left = 81
-          Top = 27
-          Width = 65
+        object BeforeEdit: TEdit
+          Left = 80
+          Top = 35
+          Width = 40
           Height = 21
-          Style = csDropDownList
           TabOrder = 1
-          Items.Strings = (
-            '300'
-            '1200'
-            '2400'
-            '4800'
-            '9600'
-            '19200'
-            '38400'
-            '56000'
-            '57600'
-            '115200'
-            '128000'
-            '256000')
+          Text = 'CWPortEdit'
         end
-        object comboCwPttPort2: TComboBox
-          Tag = 2
-          Left = 278
-          Top = 27
-          Width = 64
+        object AfterEdit: TEdit
+          Left = 264
+          Top = 35
+          Width = 40
           Height = 21
-          Style = csDropDownList
-          TabOrder = 3
-          OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
-        end
-        object checkCwReverseSignal2: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
-          Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 5
+          TabOrder = 2
+          Text = 'CWPortEdit'
         end
       end
-      object groupRig3: TGroupBox
+      object groupUsif4cw: TGroupBox
         Left = 6
-        Top = 124
+        Top = 303
         Width = 423
-        Height = 56
-        Caption = 'RIG3'
+        Height = 45
+        Caption = 'USBIF4CW'
         TabOrder = 2
-        object Label99: TLabel
-          Left = 282
-          Top = 13
-          Width = 39
-          Height = 13
-          Caption = 'CW port'
-        end
-        object comboCwPttPort3: TComboBox
-          Tag = 3
-          Left = 278
-          Top = 27
-          Width = 64
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 0
-          OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
-        end
-        object checkCwReverseSignal3: TCheckBox
-          Left = 351
-          Top = 32
-          Width = 62
+        object checkUsbif4cwSyncWpm: TCheckBox
+          Left = 8
+          Top = 19
+          Width = 82
           Height = 17
-          Hint = 'if checked, PTT is DTR, Keying is RTS'
-          Caption = 'Key=RTS'
-          ParentShowHint = False
-          ShowHint = True
+          Caption = 'Sync WPM'
+          TabOrder = 0
+        end
+        object checkGen3MicSelect: TCheckBox
+          Left = 101
+          Top = 19
+          Width = 149
+          Height = 17
+          Caption = 'Select mic input for Gen.3'
           TabOrder = 1
+        end
+        object checkUsbif4cwUsePaddle: TCheckBox
+          Left = 272
+          Top = 19
+          Width = 136
+          Height = 17
+          Caption = 'Use paddle (V1 only)'
+          TabOrder = 2
         end
       end
       object groupWinKeyer: TGroupBox
@@ -2383,7 +3979,7 @@ object formOptions: TformOptions
         Width = 423
         Height = 45
         Caption = 'WinKeyer Option'
-        TabOrder = 6
+        TabOrder = 3
         object checkUseWinKeyer: TCheckBox
           Left = 8
           Top = 18
@@ -2420,7 +4016,7 @@ object formOptions: TformOptions
       end
     end
     object tabsheetNetwork: TTabSheet
-      Caption = 'Hardware2'
+      Caption = 'Hardware4'
       ImageIndex = 12
       object groupNetwork: TGroupBox
         Left = 6
@@ -2535,9 +4131,23 @@ object formOptions: TformOptions
         Left = 6
         Top = 147
         Width = 423
-        Height = 238
+        Height = 252
         Caption = 'SO2R Support'
         TabOrder = 1
+        object Label115: TLabel
+          Left = 8
+          Top = 225
+          Width = 210
+          Height = 13
+          Caption = 'Accelerate keying speed  after pressing TAB'
+        end
+        object Label116: TLabel
+          Left = 314
+          Top = 225
+          Width = 27
+          Height = 13
+          Caption = 'WPM'
+        end
         object GroupBox7: TGroupBox
           Left = 8
           Top = 20
@@ -2759,6 +4369,16 @@ object formOptions: TformOptions
             OnKeyPress = CQRepEditKeyPress
           end
         end
+        object spinSo2rAccelerateCW: TSpinEdit
+          Left = 272
+          Top = 222
+          Width = 34
+          Height = 22
+          MaxValue = 9
+          MinValue = 0
+          TabOrder = 2
+          Value = 3
+        end
       end
     end
     object tabsheetRigControl: TTabSheet
@@ -2828,7 +4448,7 @@ object formOptions: TformOptions
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
-        TabOrder = 10
+        TabOrder = 5
         object Label28: TLabel
           Left = 185
           Top = 21
@@ -2950,391 +4570,7 @@ object formOptions: TformOptions
         Associate = SendFreqEdit
         Max = 300
         Position = 60
-        TabOrder = 5
-      end
-      object GroupBox25: TGroupBox
-        Left = 181
-        Top = 11
-        Width = 248
-        Height = 206
-        Caption = 'ANT Control'
         TabOrder = 9
-        object Label104: TLabel
-          Left = 8
-          Top = 21
-          Width = 40
-          Height = 13
-          Caption = '1.9 MHz'
-        end
-        object Label105: TLabel
-          Left = 8
-          Top = 43
-          Width = 40
-          Height = 13
-          Caption = '3.5 MHz'
-        end
-        object Label106: TLabel
-          Left = 8
-          Top = 65
-          Width = 31
-          Height = 13
-          Caption = '7 MHz'
-        end
-        object Label107: TLabel
-          Left = 8
-          Top = 87
-          Width = 37
-          Height = 13
-          Caption = '10 MHz'
-        end
-        object Label108: TLabel
-          Left = 8
-          Top = 109
-          Width = 37
-          Height = 13
-          Caption = '14 MHz'
-        end
-        object Label109: TLabel
-          Left = 8
-          Top = 131
-          Width = 37
-          Height = 13
-          Caption = '18 MHz'
-        end
-        object Label110: TLabel
-          Left = 8
-          Top = 153
-          Width = 37
-          Height = 13
-          Caption = '21 MHz'
-        end
-        object Label111: TLabel
-          Left = 8
-          Top = 175
-          Width = 37
-          Height = 13
-          Caption = '24 MHz'
-        end
-        object Label112: TLabel
-          Left = 123
-          Top = 21
-          Width = 37
-          Height = 13
-          Caption = '28 MHz'
-        end
-        object Label113: TLabel
-          Left = 123
-          Top = 43
-          Width = 37
-          Height = 13
-          Caption = '50 MHz'
-        end
-        object Label114: TLabel
-          Left = 123
-          Top = 65
-          Width = 43
-          Height = 13
-          Caption = '144 MHz'
-        end
-        object Label115: TLabel
-          Left = 123
-          Top = 87
-          Width = 43
-          Height = 13
-          Caption = '430 MHz'
-        end
-        object Label116: TLabel
-          Left = 123
-          Top = 109
-          Width = 49
-          Height = 13
-          Caption = '1200 MHz'
-        end
-        object Label117: TLabel
-          Left = 123
-          Top = 131
-          Width = 49
-          Height = 13
-          Caption = '2400 MHz'
-        end
-        object Label118: TLabel
-          Left = 123
-          Top = 153
-          Width = 49
-          Height = 13
-          Caption = '5600 MHz'
-        end
-        object Label119: TLabel
-          Left = 123
-          Top = 175
-          Width = 47
-          Height = 13
-          Caption = '10 G && up'
-        end
-        object comboAnt19: TComboBox
-          Left = 55
-          Top = 18
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 0
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt35: TComboBox
-          Left = 55
-          Top = 40
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 1
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt7: TComboBox
-          Left = 55
-          Top = 62
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 2
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt10: TComboBox
-          Left = 55
-          Top = 84
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 3
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt14: TComboBox
-          Left = 55
-          Top = 106
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 4
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt18: TComboBox
-          Left = 55
-          Top = 128
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 5
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt21: TComboBox
-          Left = 55
-          Top = 150
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 6
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt24: TComboBox
-          Left = 55
-          Top = 172
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 7
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt28: TComboBox
-          Left = 180
-          Top = 18
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 8
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt50: TComboBox
-          Left = 180
-          Top = 40
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 9
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt144: TComboBox
-          Left = 180
-          Top = 62
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 10
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt430: TComboBox
-          Left = 180
-          Top = 84
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 11
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt1200: TComboBox
-          Left = 180
-          Top = 106
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 12
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt2400: TComboBox
-          Left = 180
-          Top = 128
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 13
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt5600: TComboBox
-          Left = 180
-          Top = 150
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 14
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
-        object comboAnt10g: TComboBox
-          Left = 180
-          Top = 172
-          Width = 54
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 15
-          Text = 'none'
-          Items.Strings = (
-            'none'
-            'ANT1'
-            'ANT2'
-            'ANT3'
-            'ANT4')
-        end
       end
       object checkIgnoreRigMode: TCheckBox
         Left = 8
@@ -3398,14 +4634,14 @@ object formOptions: TformOptions
         Height = 13
         Caption = 'Plugins'
       end
-      object Label120: TLabel
+      object Label108: TLabel
         Left = 8
         Top = 19
         Width = 44
         Height = 13
         Caption = 'zLog root'
       end
-      object Label121: TLabel
+      object Label109: TLabel
         Left = 8
         Top = 169
         Width = 62
@@ -4663,8 +5899,8 @@ object formOptions: TformOptions
         Caption = 'BandScope Options'
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
-          Left = 12
-          Top = 18
+          Left = 205
+          Top = 17
           Width = 165
           Height = 17
           Caption = 'Use estimated mode by freq.'
@@ -4673,11 +5909,11 @@ object formOptions: TformOptions
         end
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
-          Top = 40
+          Top = 17
           Width = 181
           Height = 17
           Caption = 'Show only spots in the band plan'
-          TabOrder = 1
+          TabOrder = 0
         end
         object checkShowOnlyDomestic: TCheckBox
           Left = 12
@@ -4685,7 +5921,7 @@ object formOptions: TformOptions
           Width = 165
           Height = 17
           Caption = 'Show only domestic spots'
-          TabOrder = 2
+          TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
@@ -4697,7 +5933,7 @@ object formOptions: TformOptions
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 216
-          Top = 18
+          Top = 63
           Width = 157
           Height = 17
           Caption = 'Suppress freq. deviation'
@@ -5130,13 +6366,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono ExtraLight'
+          FontName = #65325#65331' '#26126#26397
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 43
+          ItemIndex = 100
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -241,9 +241,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label18: TLabel
         Left = 215
         Top = 40
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label19: TLabel
         Left = 378
@@ -255,9 +255,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label20: TLabel
         Left = 459
         Top = 40
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label21: TLabel
         Left = 134
@@ -269,9 +269,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label22: TLabel
         Left = 215
         Top = 66
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label23: TLabel
         Left = 378
@@ -283,9 +283,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label24: TLabel
         Left = 459
         Top = 66
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label25: TLabel
         Left = 134
@@ -297,9 +297,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label26: TLabel
         Left = 215
         Top = 92
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label27: TLabel
         Left = 378
@@ -311,9 +311,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label28: TLabel
         Left = 459
         Top = 92
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label29: TLabel
         Left = 134
@@ -325,9 +325,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label30: TLabel
         Left = 215
         Top = 118
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label31: TLabel
         Left = 378
@@ -339,9 +339,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label32: TLabel
         Left = 459
         Top = 118
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label33: TLabel
         Left = 134
@@ -353,9 +353,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label34: TLabel
         Left = 215
         Top = 144
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label35: TLabel
         Left = 378
@@ -367,9 +367,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label36: TLabel
         Left = 459
         Top = 144
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label37: TLabel
         Left = 134
@@ -381,9 +381,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label38: TLabel
         Left = 215
         Top = 170
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label39: TLabel
         Left = 378
@@ -395,9 +395,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label40: TLabel
         Left = 459
         Top = 170
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label41: TLabel
         Left = 134
@@ -409,9 +409,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label42: TLabel
         Left = 215
         Top = 196
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label43: TLabel
         Left = 378
@@ -423,9 +423,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label44: TLabel
         Left = 459
         Top = 196
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label45: TLabel
         Left = 134
@@ -437,9 +437,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label46: TLabel
         Left = 215
         Top = 222
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object Label47: TLabel
         Left = 378
@@ -451,9 +451,9 @@ object BandPlanEditDialog: TBandPlanEditDialog
       object Label48: TLabel
         Left = 459
         Top = 222
-        Width = 20
+        Width = 19
         Height = 13
-        Caption = 'KHz'
+        Caption = 'kHz'
       end
       object editLower01: TEdit
         Left = 71

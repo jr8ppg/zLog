@@ -139,7 +139,7 @@ object formELogJarl1: TformELogJarl1
     Left = 86
     Top = 577
     Width = 24
-    Height = 15
+    Height = 12
     Caption = #26085#20184
   end
   object Label23: TLabel

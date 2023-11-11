@@ -24,7 +24,7 @@ const
   MINWPM = 5;
   _inccw = $80;
   _deccw = $81;
-  MAXPORT = 2;
+  MAXPORT = 4;
 
 const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
@@ -323,8 +323,8 @@ type
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
-    procedure SetTxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
-    procedure SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetRxRigFlag(rigset, rigno: Integer);
     procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     procedure SetPTT(_on : Boolean);
@@ -446,9 +446,13 @@ begin
    FDefautCom[0] := ZComKeying1;
    FDefautCom[1] := ZComKeying2;
    FDefautCom[2] := ZComKeying3;
+   FDefautCom[3] := ZComKeying4;
+   FDefautCom[4] := ZComKeying5;
    FComKeying[0] := FDefautCom[0];
    FComKeying[1] := FDefautCom[1];
    FComKeying[2] := FDefautCom[2];
+   FComKeying[3] := FDefautCom[3];
+   FComKeying[4] := FDefautCom[4];
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
@@ -605,7 +609,9 @@ var
 begin
    if (FKeyingPort[0] <> tkpUSB) and
       (FKeyingPort[1] <> tkpUSB) and
-      (FKeyingPort[2] <> tkpUSB) then begin
+      (FKeyingPort[2] <> tkpUSB) and
+      (FKeyingPort[3] <> tkpUSB) and
+      (FKeyingPort[4] <> tkpUSB) then begin
       Exit;
    end;
 
@@ -619,6 +625,12 @@ begin
    end
    else if FUsbInfo[2].FUSBIF4CW = HidDev then begin
       nID := 2;
+   end
+   else if FUsbInfo[3].FUSBIF4CW = HidDev then begin
+      nID := 3;
+   end
+   else if FUsbInfo[4].FUSBIF4CW = HidDev then begin
+      nID := 4;
    end
    else begin
       Exit;
@@ -653,7 +665,7 @@ begin
       (p[6] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[6]) or
       (p[7] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[7]) then begin
       {$IFDEF DEBUG}
-      OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
+//      OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
       {$ENDIF}
 
       // Port Data In
@@ -702,14 +714,14 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.SetTxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
 var
    i: Integer;
 begin
-   if (flag = 0) or (flag = 1) then begin
+   if (rigset = 0) or (rigset = 1) then begin
       FWkTx := 0;
    end
-   else if (flag = 2) then begin
+   else if (rigset = 2) then begin
       FWkTx := 1;
    end
    else begin
@@ -718,25 +730,23 @@ begin
 
    // COMポートでのRIG SELECT
    if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      case flag of
-         0: begin
+      case rigset of
+         // RIG-A
+         0, 1: begin
             ZComTxRigSelect.ToggleDTR(False);
             ZComTxRigSelect.ToggleRTS(False);
          end;
 
-         1: begin
-            ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(False);
-         end;
-
+         // RIG-B
          2: begin
-            ZComTxRigSelect.ToggleDTR(False);
-            ZComTxRigSelect.ToggleRTS(True);
+            ZComTxRigSelect.ToggleDTR(True);
+            ZComTxRigSelect.ToggleRTS(False);
          end;
 
-         3: begin
+         // RIG-C
+         else begin
             ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(True);
+            ZComTxRigSelect.ToggleRTS(False);
          end;
       end;
    end;
@@ -749,7 +759,7 @@ begin
 
    // SO2R Neoの場合
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if flag = 2 then begin
+      if rigset = 2 then begin
          So2rNeoSwitchRig(1, FWkRx);
       end
       else begin
@@ -774,12 +784,20 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetRxRigFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+//
+// rigset 1: 左
+//        2: 右
+// rigno  1: HF
+//        2: VU
+//        3: HF
+//        4: VU
+//
+procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer);
 begin
-   if (flag = 0) or (flag = 1) then begin
+   if (rigset = 0) or (rigset = 1) then begin
       FWkRx := 0;
    end
-   else if (flag = 2) then begin
+   else if (rigset = 2) then begin
       FWkRx := 1;
    end
    else begin
@@ -788,24 +806,54 @@ begin
 
    // COMポートでのRIG SELECT
    if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      case flag of
-         0: begin
-            ZComRxRigSelect.ToggleDTR(False);
-            ZComRxRigSelect.ToggleRTS(False);
-         end;
-
+      // 左右選択
+      case rigset of
+         // 左
          1: begin
-            ZComRxRigSelect.ToggleDTR(True);
-            ZComRxRigSelect.ToggleRTS(False);
+            case rigno of
+               // HF
+               1, 3: begin
+                  ZComRxRigSelect.ToggleDTR(False);
+               end;
+
+               // VU
+               2, 4: begin
+                  ZComRxRigSelect.ToggleDTR(True);
+               end;
+            end;
          end;
 
+         // 右
          2: begin
-            ZComRxRigSelect.ToggleDTR(False);
-            ZComRxRigSelect.ToggleRTS(True);
+            case rigno of
+               // HF
+               1, 3: begin
+                  ZComRxRigSelect.ToggleRTS(False);
+               end;
+
+               // VU
+               2, 4: begin
+                  ZComRxRigSelect.ToggleRTS(True);
+               end;
+            end;
          end;
 
-         3: begin
-            ZComRxRigSelect.ToggleDTR(True);
+         // 下
+         else begin
+            // 左
+            case rigno of
+               // HF
+               1, 3: begin
+                  ZComRxRigSelect.ToggleDTR(False);
+               end;
+
+               // VU
+               2, 4: begin
+                  ZComRxRigSelect.ToggleDTR(True);
+               end;
+            end;
+
+            // 右
             ZComRxRigSelect.ToggleRTS(True);
          end;
       end;
@@ -814,7 +862,7 @@ begin
 
    // SO2R Neoの場合
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if flag = 2 then begin
+      if rigset = 2 then begin
          So2rNeoSwitchRig(FWkTx, 1);
       end
       else begin
@@ -2253,7 +2301,7 @@ begin
    end;
 
    if FPTTEnabled then begin
-      ControlPTT(FWkTx, True);
+//      ControlPTT(FWkTx, True);
       FKeyingCounter := FPttDelayBeforeCount;
    end;
 
@@ -2531,7 +2579,9 @@ begin
    // RIG1/RIG2/RIG3全て無し
    if (FKeyingPort[0] = tkpNone) and
       (FKeyingPort[1] = tkpNone) and
-      (FKeyingPort[2] = tkpNone) then begin
+      (FKeyingPort[2] = tkpNone) and
+      (FKeyingPort[3] = tkpNone) and
+      (FKeyingPort[4] = tkpNone) then begin
       COM_OFF();
       USB_OFF();
       Exit;
@@ -2797,7 +2847,7 @@ begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('*** TKeyerMonitorThread.DotheJob ****'));
       {$ENDIF}
-      FKeyer.OnCallsignSentProc(FKeyer);
+      FKeyer.OnCallsignSentProc(TObject(FKeyer.FWkTx));
    end;
 end;
 
@@ -3535,8 +3585,10 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   if fUsePttPort = True then begin
-      Buff[1] := Buff[1] or $1;
+   if FUseWkSo2rNeo = True then begin
+      if fUsePttPort = True then begin
+         Buff[1] := Buff[1] or $1;
+      end;
    end;
 
    if FUseSideTone = True then begin

@@ -94,7 +94,7 @@ object CommForm: TCommForm
     object checkRecordLogs: TCheckBox
       Left = 176
       Top = 57
-      Width = 96
+      Width = 81
       Height = 17
       Caption = #21463#20449#12525#12464#12434#20445#23384
       TabOrder = 6
@@ -108,11 +108,11 @@ object CommForm: TCommForm
       TabOrder = 8
     end
     object checkIgnoreBEL: TCheckBox
-      Left = 278
+      Left = 269
       Top = 57
       Width = 74
       Height = 17
-      Caption = 'BEL'#12434#28961#35222
+      Caption = 'Ignore BEL'
       TabOrder = 7
     end
   end
