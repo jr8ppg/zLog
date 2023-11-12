@@ -11683,6 +11683,7 @@ end;
 procedure TMainForm.OnNonconvertKeyProc();
 var
    fBeforePTT: Boolean;
+   fPTT: Boolean;
    nID: Integer;
    mode: TMode;
 begin
@@ -11696,6 +11697,10 @@ begin
    // 現在のPTT状態
    fBeforePTT := dmZLogKeyer.PTTIsOn;
 
+   // 現在のモード
+   nID := FCurrentTx;
+   mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+
    // 2BSIQ時は受信中の方でPTT制御する
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (Is2bsiq() = True) then begin
@@ -11704,8 +11709,6 @@ begin
          // CQを中止して
 //         CQAbort(False);
 
-         nID := FCurrentTx;
-         mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
          StopMessage(mode);
 
          // TXをRXに合わせる
@@ -11714,11 +11717,11 @@ begin
          end;
 
          // PTT ON
-         ControlPTT(True);
+         fPTT := True;
       end
       else begin
          if fBeforePTT = True then begin
-            ControlPTT(False);
+            fPTT := False;
          end
          else begin
             // TXをRXに合わせる
@@ -11731,7 +11734,7 @@ begin
                FMessageManager.ClearQue2();
             end;
 
-            ControlPTT(True);
+            fPTT := True;
          end;
       end;
    end
@@ -11742,17 +11745,24 @@ begin
          CQAbort(False);
 
          // PTT ON
-         ControlPTT(True);
+         fPTT := True;
       end
       else begin
          // PTTをトグル
          if fBeforePTT = True then begin
-            ControlPTT(False);
+            fPTT := False;
          end
          else begin
-            ControlPTT(True);
+            fPTT := True;
          end;
       end;
+   end;
+
+   if mode = mCW then begin
+      ControlPTT(fPTT);
+   end
+   else begin
+      VoiceControl(fPTT);
    end;
 end;
 
