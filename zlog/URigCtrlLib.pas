@@ -304,6 +304,11 @@ begin
          FComm.ToggleRTS(True);
       end;
 
+      paAlwaysOff: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(False);
+      end;
+
       paHandshake: begin
          FComm.HwFlow := hfRtsCts;
          FComm.ToggleRTS(True);
@@ -311,7 +316,7 @@ begin
 
       else begin
          FComm.HwFlow := hfNone;
-         FComm.ToggleRTS(False);
+         FComm.ToggleRTS(True);
       end;
    end;
 
