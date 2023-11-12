@@ -1060,7 +1060,7 @@ type
     function GetMemoEdit(): TEdit;        // 10
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
-    procedure SwitchRig(rigno: Integer);
+    procedure SwitchRig(rigset: Integer);
     procedure SwitchTxRx(tx_rig, rx_rig: Integer);
     procedure SwitchTx(rigno: Integer);
     procedure SwitchRx(rigno: Integer; focusonly: Boolean = False);
@@ -1206,6 +1206,7 @@ type
 
     procedure MsgMgrAddQue(nID: Integer; S: string; aQSO: TQSO);
     procedure MsgMgrContinueQue();
+    function GetTxRigID(): Integer;
   end;
 
   TBandScopeNotifyThread = class(TThread)
@@ -9225,7 +9226,8 @@ begin
 
    // 1RÇÃèÍçá
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-      rig := RigControl.GetCurrentRig();
+      rig := FCurrentRigSet;
+//      rig := RigControl.GetCurrentRig();
       rig := GetNextRigID(rig - 1) + 1;
       SwitchRig(rig);
    end
@@ -11251,37 +11253,37 @@ begin
    end;
 end;
 
-procedure TMainForm.SwitchRig(rigno: Integer);
+procedure TMainForm.SwitchRig(rigset: Integer);
 var
    rig: TRig;
 begin
    FRigSwitchTime := Now();
-   FCurrentRigSet := rigno;
-   FCurrentRx := rigno - 1;
-   FCurrentTx := rigno - 1;
-   FInformation.Rx := rigno - 1;
-   FInformation.Tx := rigno - 1;
+   FCurrentRigSet := rigset;
+   FCurrentRx := rigset - 1;
+   FCurrentTx := rigset - 1;
+   FInformation.Rx := rigset - 1;
+   FInformation.Tx := rigset - 1;
 
-   rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(rigset, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(rigno);
-      dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rigset);
+      dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
    end;
 
    UpdateBandAndMode();
 
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      UpdateQsoEditPanel(rigno);
-      if LastFocus = FEditPanel[rigno - 1].NumberEdit then begin
-         EditEnter(FEditPanel[rigno - 1].NumberEdit);
+      UpdateQsoEditPanel(rigset);
+      if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
+         EditEnter(FEditPanel[rigset - 1].NumberEdit);
       end
       else begin
-         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigno - 1, 0);
+         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigset - 1, 0);
       end;
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-         PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
+         PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigset - 1, 0);
       end;
    end;
 
@@ -11687,9 +11689,6 @@ var
    nID: Integer;
    mode: TMode;
 begin
-   // åªç›ÇÃPTTèÛë‘
-   fBeforePTT := dmZLogKeyer.PTTIsOn;
-
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[ñ≥ïœä∑]'));
    {$ENDIF}
@@ -12153,6 +12152,19 @@ end;
 procedure TMainForm.MsgMgrContinueQue();
 begin
    FMessageManager.ContinueQue();
+end;
+
+function TMainForm.GetTxRigID(): Integer;
+var
+   rig: TRig;
+begin
+   rig := RigControl.GetRig(FCurrentTx + 1, TextToBand(BandEdit.Text));
+   if rig = nil then begin
+      Result := 0;
+   end
+   else begin
+      Result := rig.RigNumber - 1;
+   end;
 end;
 
 procedure TMainForm.SetCurrentQSO(nID: Integer);

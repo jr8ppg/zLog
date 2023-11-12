@@ -144,6 +144,10 @@ type
     FWkRx: Integer;
     FWkTx: Integer;
 
+    // 現在送信中のRIGSET
+    FWkRxRigSet: Integer;
+    FWkTxRigSet: Integer;
+
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
     {$ENDIF}
@@ -498,6 +502,8 @@ begin
 
    FWkTx := 0;
    FWkRx := 0;
+   FWkTxRigSet := 0;
+   FWkRxRigSet := 0;
 
    FSpaceFactor := 100; {space length factor in %}
    FEISpaceFactor := 100; {space length factor after E and I}
@@ -717,13 +723,13 @@ var
    i: Integer;
 begin
    if (rigset = 0) or (rigset = 1) then begin
-      FWkTx := 0;
+      FWkTxRigSet := 0;
    end
    else if (rigset = 2) then begin
-      FWkTx := 1;
+      FWkTxRigSet := 1;
    end
    else begin
-      FWkTx := 2;
+      FWkTxRigSet := 2;
    end;
 
    // COMポートでのRIG SELECT
@@ -758,10 +764,10 @@ begin
    // SO2R Neoの場合
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
       if rigset = 2 then begin
-         So2rNeoSwitchRig(1, FWkRx);
+         So2rNeoSwitchRig(1, FWkRxRigSet);
       end
       else begin
-         So2rNeoSwitchRig(0, FWkRx);
+         So2rNeoSwitchRig(0, FWkRxRigSet);
       end;
       Exit;
    end;
@@ -771,9 +777,9 @@ begin
       if FKeyingPort[i] = tkpUSB then begin
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
             EnterCriticalSection(FUsbPortDataLock);
-            FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
+            FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTxRigSet);
             if FGen3MicSelect = False then begin
-               FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
+               FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTxRigSet);
             end;
             SendUsbPortData(i);
             LeaveCriticalSection(FUsbPortDataLock);
@@ -793,13 +799,13 @@ end;
 procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer);
 begin
    if (rigset = 0) or (rigset = 1) then begin
-      FWkRx := 0;
+      FWkRxRigSet := 0;
    end
    else if (rigset = 2) then begin
-      FWkRx := 1;
+      FWkRxRigSet := 1;
    end
    else begin
-      FWkRx := 2;
+      FWkRxRigSet := 2;
    end;
 
    // COMポートでのRIG SELECT
@@ -861,10 +867,10 @@ begin
    // SO2R Neoの場合
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
       if rigset = 2 then begin
-         So2rNeoSwitchRig(FWkTx, 1);
+         So2rNeoSwitchRig(FWkTxRigSet, 1);
       end
       else begin
-         So2rNeoSwitchRig(FWkTx, 0);
+         So2rNeoSwitchRig(FWkTxRigSet, 0);
       end;
       Exit;
    end;
@@ -1258,7 +1264,7 @@ begin
    if sStr = '' then
       Exit;
 
-   if ((nID = 0) or (nID = 1) or (nID = 2)) then begin
+   if ((nID >= 0) and (nID <= 4)) then begin
       CW := Char($90 + nID);
    end
    else begin
@@ -1285,7 +1291,7 @@ var
    SS: string;
    CW: string;
 begin
-   if ((nID = 0) or (nID = 1) or (nID = 2)) then begin
+   if ((nID >= 0) and (nID <= 4)) then begin
       CW := Char($90 + nID);
    end
    else begin
@@ -1577,6 +1583,14 @@ begin
 
          $22: begin
             FWkTx := 2;
+         end;
+
+         $23: begin
+            FWkTx := 3;
+         end;
+
+         $24: begin
+            FWkTx := 4;
          end;
       end;
 
@@ -2225,6 +2239,10 @@ begin
    FCodeTable[$91][2] := 9;
    FCodeTable[$92][1] := $22;
    FCodeTable[$92][2] := 9;
+   FCodeTable[$93][1] := $23;
+   FCodeTable[$93][2] := 9;
+   FCodeTable[$94][1] := $24;
+   FCodeTable[$94][2] := 9;
 
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
@@ -2793,9 +2811,9 @@ begin
          FUsbInfo[i].FPORTDATA.Clear();
 
          // TXセレクト
-         FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
+         FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTxRigSet);
          if FGen3MicSelect = False then begin
-            FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
+            FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTxRigSet);
          end;
 
          // 送信
@@ -2869,7 +2887,7 @@ begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('*** TKeyerMonitorThread.DotheJob ****'));
       {$ENDIF}
-      FKeyer.OnCallsignSentProc(TObject(FKeyer.FWkTx));
+      FKeyer.OnCallsignSentProc(TObject(FKeyer.FWkTxRigSet));
    end;
 end;
 
@@ -3619,10 +3637,10 @@ begin
 
    // b2とb3の両方を0にするとKEY/PTT両方が全く出力されなくなる
    if FUseWkOutpSelect = True then begin
-      if FWkTx = 0 then begin
+      if FWkTxRigSet = 0 then begin
          Buff[1] := Buff[1] or $4;
       end
-      else if FWkTx = 1 then begin
+      else if FWkTxRigSet = 1 then begin
          Buff[1] := Buff[1] or $8;
       end
       else begin
@@ -3674,7 +3692,7 @@ begin
    Sleep(50);
 
    if Assigned(FOnWkStatusProc) then begin
-      FOnWkStatusProc(nil, FWkTx, FWkRx, FPTTFLAG);
+      FOnWkStatusProc(nil, FWkTxRigSet, FWkRxRigSet, FPTTFLAG);
    end;
 end;
 
@@ -4178,9 +4196,9 @@ begin
          if FKeyingPort[nID] = tkpUSB then begin
             if Assigned(FUsbInfo[nID].FPORTDATA) then begin
                EnterCriticalSection(FUsbPortDataLock);
-               FUsbInfo[nID].FPORTDATA.SetRigFlag(FWkTx);
+               FUsbInfo[nID].FPORTDATA.SetRigFlag(FWkTxRigSet);
                if FGen3MicSelect = False then begin
-                  FUsbInfo[nID].FPORTDATA.SetVoiceFlag(FWkTx);
+                  FUsbInfo[nID].FPORTDATA.SetVoiceFlag(FWkTxRigSet);
                end;
                SendUsbPortData(nID);
                LeaveCriticalSection(FUsbPortDataLock);
@@ -4305,10 +4323,10 @@ begin
 
    FComKeying[0].SendData(@Buff, 1);
 
-   FWkTx := tx;
-   FWkRx := rx;
+   FWkTxRigSet := tx;
+   FWkRxRigSet := rx;
    if Assigned(FOnWkStatusProc) then begin
-      FOnWkStatusProc(nil, FWkTx, FWkRx, FPTTFLAG);
+      FOnWkStatusProc(nil, FWkTxRigSet, FWkRxRigSet, FPTTFLAG);
    end;
 end;
 

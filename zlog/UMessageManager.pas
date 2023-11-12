@@ -342,6 +342,8 @@ begin
                   nID := msg2.FRigID - 10;
                end;
 
+               // TODO: nID‚ÍCurrentTx‚Ìrigid‚É‚µ‚½‚¢
+               nID := MainForm.GetTxRigID();
                zLogSendStr(nID, msg2.FText, msg2.FCallsign);
             end;
 
