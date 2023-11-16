@@ -515,6 +515,10 @@
             <Form>formELogCabrillo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UJarlMemberInfo.pas">
+            <Form>formJarlMemberInfo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -703,8 +707,8 @@
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item2">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item2">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item5">UBasicScore.dfm</RDP_Source_Files>
@@ -816,7 +820,8 @@
                     <RDP_Source_Files Name="Item111">UDateDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item112">UCWMonitor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item113">UELogCabrillo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item114">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item114">UJarlMemberInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item115">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
