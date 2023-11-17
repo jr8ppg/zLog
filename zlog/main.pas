@@ -1077,6 +1077,7 @@ type
     procedure ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
     procedure DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
     function GetQsoList(): TQSOList;
+    procedure JarlMemberCheck();
     procedure ExportHamlog(f: string);
   public
     EditScreen : TBasicEdit;
@@ -11613,7 +11614,7 @@ begin
    Result := L;
 end;
 
-procedure TMainForm.ExportHamlog(f: string);
+procedure TMainForm.JarlMemberCheck();
 var
    i: Integer;
    dlg: TformExportHamlog;
@@ -11623,83 +11624,86 @@ var
    Q: TQSO;
    S: string;
    dic: TDictionary<string, TJarlMemberInfo>;
-   progress: TformProgress;
    arr: TArray<TPair<string,TJarlMemberInfo>>;
 begin
-   dlg := TformExportHamlog.Create(Self);
    web := TformJarlMemberInfo.Create(Self);
    list := TJarlMemberInfoList.Create();
    dic := TDictionary<string, TJarlMemberInfo>.Create();
-   progress := TformProgress.Create(Self);
+   web.Title := TMainForm_JARL_Member_Info;
+   web.Text := TMainForm_Inquire_JARL_Member_Info;
+   web.Show();
+   Enabled := False;
+
+   try
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+
+         S := CoreCall(Q.Callsign);
+
+         if IsDomestic(S) = False then begin
+            Continue;
+         end;
+
+         if dic.ContainsKey(S) = False then begin
+            O := TJarlMemberInfo.Create();
+            O.Callsign := S;
+            dic.Add(S, O);
+            list.Add(O);
+         end;
+
+         if (list.Count = 20) then begin
+            web.QueryMemberInfo(list);
+            list.Clear();
+         end;
+      end;
+
+      if (list.Count > 0) then begin
+         web.QueryMemberInfo(list);
+         list.Clear();
+      end;
+
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+
+         S := CoreCall(Q.Callsign);
+         if dic.TryGetValue(S, O) then begin
+            if O.Transfer = False then begin
+               Q.QslState := qsNoQsl;
+            end;
+         end;
+      end;
+
+      Log.Saved := False;
+   finally
+      Enabled := True;
+      web.Hide();
+      arr := dic.ToArray();
+      for i := dic.count - 1 downto 0 do begin
+         arr[i].Value.Free();
+      end;
+      web.Release();
+      dic.Free();
+      list.Free();
+   end;
+end;
+
+procedure TMainForm.ExportHamlog(f: string);
+var
+   dlg: TformExportHamlog;
+begin
+   dlg := TformExportHamlog.Create(Self);
    try
       if dlg.ShowModal() = mrCancel then begin
          Exit;
       end;
 
       if dlg.InquireJarlMemberInfo = True then begin
-         Enabled := False;
-         progress.Title := TMainForm_JARL_Member_Info;
-         progress.Text := TMainForm_Inquire_JARL_Member_Info;
-         progress.Show();
-         try
-            web.Show();
-            web.Enabled := False;
-
-            for i := 1 to Log.TotalQSO do begin
-               Q := Log.QsoList[i];
-
-               S := CoreCall(Q.Callsign);
-
-               if IsDomestic(S) = False then begin
-                  Continue;
-               end;
-
-               if dic.ContainsKey(S) = False then begin
-                  O := TJarlMemberInfo.Create();
-                  O.Callsign := S;
-                  dic.Add(S, O);
-                  list.Add(O);
-               end;
-
-               if (list.Count = 20) then begin
-                  web.QueryMemberInfo(list);
-                  list.Clear();
-               end;
-            end;
-
-            if (list.Count > 0) then begin
-               web.QueryMemberInfo(list);
-               list.Clear();
-            end;
-
-            for i := 1 to Log.TotalQSO do begin
-               Q := Log.QsoList[i];
-
-               S := CoreCall(Q.Callsign);
-               if dic.TryGetValue(S, O) then begin
-                  if O.Transfer = False then begin
-                     Q.QslState := qsNoQsl;
-                  end;
-               end;
-            end;
-         finally
-            Enabled := True;
-            web.Hide();
-            progress.Hide();
-         end;
+         JarlMemberCheck();
       end;
 
       Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText);
    finally
-      arr := dic.ToArray();
-      for i := dic.count - 1 downto 0 do begin
-         arr[i].Value.Free();
-      end;
-      progress.Release();
       dlg.Release();
-      web.Release();
-      dic.Free();
-      list.Free();
    end;
 end;
 

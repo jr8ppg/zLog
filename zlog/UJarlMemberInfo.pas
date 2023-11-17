@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.OleCtrls, SHDocVw, MSHTML,
-  System.Generics.Collections;
+  System.Generics.Collections, Vcl.StdCtrls;
 
 type
   TJarlMemberInfo = class
@@ -29,14 +29,22 @@ type
 
   TformJarlMemberInfo = class(TForm)
     WebBrowser1: TWebBrowser;
+    labelTitle: TLabel;
+    labelProgress: TLabel;
     procedure WebBrowser1DocumentComplete(ASender: TObject;
       const pDisp: IDispatch; const URL: OleVariant);
   private
     { Private êÈåæ }
-   m_fDocumentComplete: Boolean;
+    m_fDocumentComplete: Boolean;
+    procedure SetTitle(v: string);
+    function GetTitle(): string;
+    procedure SetText(v: string);
+    function GetText(): string;
   public
     { Public êÈåæ }
     function QueryMemberInfo(list: TJarlMemberInfoList): Integer;
+    property Title: string read GetTitle write SetTitle;
+    property Text: string read GetText write SetText;
   end;
 
 implementation
@@ -121,6 +129,27 @@ begin
 
    Result := c;
 end;
+
+procedure TformJarlMemberInfo.SetTitle(v: string);
+begin
+   labelTitle.Caption := v;
+end;
+
+function TformJarlMemberInfo.GetTitle(): string;
+begin
+   Result := labelTitle.Caption;
+end;
+
+procedure TformJarlMemberInfo.SetText(v: string);
+begin
+   labelProgress.Caption := v;
+end;
+
+function TformJarlMemberInfo.GetText(): string;
+begin
+   Result := labelProgress.Caption;
+end;
+
 { TJarlMemberInfo }
 
 constructor TJarlMemberInfo.Create();
