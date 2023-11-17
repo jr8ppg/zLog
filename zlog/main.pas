@@ -18,7 +18,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
-  System.DateUtils, System.SyncObjs,
+  System.DateUtils, System.SyncObjs, System.Generics.Collections,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -1077,6 +1077,8 @@ type
     procedure ShowInfoPanel(text: string; handler: TSysLinkEvent; fShow: Boolean);
     procedure DoNewDataArrived(Sender: TObject; const Link: string; LinkType: TSysLinkType);
     function GetQsoList(): TQSOList;
+    procedure JarlMemberCheck();
+    procedure ExportHamlog(f: string);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1219,6 +1221,8 @@ resourcestring
   TMainForm_Setup_SentNR_first = 'Setup Prov/State and City code first';
   TMainForm_New_QSO_Arrived = 'New QSO data has arrived. click here to view.';
   TMainForm_Select_Operator = 'Please select an operator';
+  TMainForm_JARL_Member_Info = 'JARL Member information.';
+  TMainForm_Inquire_JARL_Member_Info = 'Querying QSL transfer status.';
 
 var
   MainForm: TMainForm;
@@ -1239,7 +1243,7 @@ uses
   UKCJMulti, USixDownMulti, UIARUMulti,
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score,
-  UIntegerDialog, UNewPrefix, UKCJScore,
+  UIntegerDialog, UNewPrefix, UKCJScore, UJarlMemberInfo,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog;
@@ -5053,7 +5057,6 @@ end;
 procedure TMainForm.Export1Click(Sender: TObject);
 var
    f, ext: string;
-   dlg: TformExportHamlog;
    dlg2: TformExportCabrillo;
 begin
    FileExportDialog.InitialDir := ExtractFilePath(CurrentFileName);
@@ -5103,15 +5106,7 @@ begin
 
    if ext = '.CSV' then begin
       if FileExportDialog.FilterIndex = 7 then begin
-         dlg := TformExportHamlog.Create(Self);
-         try
-            if dlg.ShowModal() = mrCancel then begin
-               Exit;
-            end;
-            Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText);
-         finally
-            dlg.Release();
-         end;
+         ExportHamlog(f);
       end
       else begin
          Log.SaveToFilezLogCsv(f);
@@ -11617,6 +11612,101 @@ begin
    end;
 
    Result := L;
+end;
+
+procedure TMainForm.JarlMemberCheck();
+var
+   i: Integer;
+   dlg: TformExportHamlog;
+   web: TformJarlMemberInfo;
+   list: TJarlMemberInfoList;
+   O: TJarlMemberInfo;
+   Q: TQSO;
+   S: string;
+   dic: TDictionary<string, TJarlMemberInfo>;
+   arr: TArray<TPair<string,TJarlMemberInfo>>;
+begin
+   web := TformJarlMemberInfo.Create(Self);
+   list := TJarlMemberInfoList.Create();
+   dic := TDictionary<string, TJarlMemberInfo>.Create();
+   web.Title := TMainForm_JARL_Member_Info;
+   web.Text := TMainForm_Inquire_JARL_Member_Info;
+   web.Show();
+   web.IndicatorAnimate := True;
+   Enabled := False;
+
+   try
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+
+         S := CoreCall(Q.Callsign);
+
+         if IsDomestic(S) = False then begin
+            Continue;
+         end;
+
+         if dic.ContainsKey(S) = False then begin
+            O := TJarlMemberInfo.Create();
+            O.Callsign := S;
+            dic.Add(S, O);
+            list.Add(O);
+         end;
+
+         if (list.Count = 20) then begin
+            web.QueryMemberInfo(list);
+            list.Clear();
+         end;
+      end;
+
+      if (list.Count > 0) then begin
+         web.QueryMemberInfo(list);
+         list.Clear();
+      end;
+
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+
+         S := CoreCall(Q.Callsign);
+         if dic.TryGetValue(S, O) then begin
+            if O.Transfer = False then begin
+               Q.QslState := qsNoQsl;
+            end;
+         end;
+      end;
+
+      Log.Saved := False;
+   finally
+      Enabled := True;
+      web.IndicatorAnimate := False;
+      web.Hide();
+      arr := dic.ToArray();
+      for i := dic.count - 1 downto 0 do begin
+         arr[i].Value.Free();
+      end;
+      web.Release();
+      dic.Free();
+      list.Free();
+   end;
+end;
+
+procedure TMainForm.ExportHamlog(f: string);
+var
+   dlg: TformExportHamlog;
+begin
+   dlg := TformExportHamlog.Create(Self);
+   try
+      if dlg.ShowModal() = mrCancel then begin
+         Exit;
+      end;
+
+      if dlg.InquireJarlMemberInfo = True then begin
+         JarlMemberCheck();
+      end;
+
+      Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText);
+   finally
+      dlg.Release();
+   end;
 end;
 
 { TBandScopeNotifyThread }

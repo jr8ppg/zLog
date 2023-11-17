@@ -145,7 +145,8 @@ uses
   URigCtrlElecraft in 'URigCtrlElecraft.pas',
   UDateDialog in 'UDateDialog.pas' {DateDialog},
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
-  UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo};
+  UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
+  UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo};
 
 {$R *.res}
 
