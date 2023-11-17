@@ -11632,6 +11632,7 @@ begin
    web.Title := TMainForm_JARL_Member_Info;
    web.Text := TMainForm_Inquire_JARL_Member_Info;
    web.Show();
+   web.IndicatorAnimate := True;
    Enabled := False;
 
    try
@@ -11676,6 +11677,7 @@ begin
       Log.Saved := False;
    finally
       Enabled := True;
+      web.IndicatorAnimate := False;
       web.Hide();
       arr := dic.ToArray();
       for i := dic.count - 1 downto 0 do begin

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.OleCtrls, SHDocVw, MSHTML,
-  System.Generics.Collections, Vcl.StdCtrls;
+  System.Generics.Collections, Vcl.StdCtrls, Vcl.WinXCtrls;
 
 type
   TJarlMemberInfo = class
@@ -31,6 +31,7 @@ type
     WebBrowser1: TWebBrowser;
     labelTitle: TLabel;
     labelProgress: TLabel;
+    ActivityIndicator1: TActivityIndicator;
     procedure WebBrowser1DocumentComplete(ASender: TObject;
       const pDisp: IDispatch; const URL: OleVariant);
   private
@@ -40,11 +41,14 @@ type
     function GetTitle(): string;
     procedure SetText(v: string);
     function GetText(): string;
+    procedure SetIndicatorAnimate(v: Boolean);
+    function GetIndicatorAnimate(): Boolean;
   public
     { Public êÈåæ }
     function QueryMemberInfo(list: TJarlMemberInfoList): Integer;
     property Title: string read GetTitle write SetTitle;
     property Text: string read GetText write SetText;
+    property IndicatorAnimate: Boolean read GetIndicatorAnimate write SetIndicatorAnimate;
   end;
 
 implementation
@@ -148,6 +152,16 @@ end;
 function TformJarlMemberInfo.GetText(): string;
 begin
    Result := labelProgress.Caption;
+end;
+
+procedure TformJarlMemberInfo.SetIndicatorAnimate(v: Boolean);
+begin
+   ActivityIndicator1.Animate := v;
+end;
+
+function TformJarlMemberInfo.GetIndicatorAnimate(): Boolean;
+begin
+   Result := ActivityIndicator1.Animate;
 end;
 
 { TJarlMemberInfo }
