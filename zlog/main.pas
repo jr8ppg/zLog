@@ -55,6 +55,7 @@ const
   WM_ZLOG_PLAYMESSAGEA = (WM_USER + 118);
   WM_ZLOG_PLAYMESSAGEB = (WM_USER + 119);
   WM_ZLOG_PLAYCQ = (WM_USER + 120);
+  WM_ZLOG_TOGGLE_PTT = (WM_USER + 121);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -680,6 +681,7 @@ type
     procedure OnZLogPlayMessageA( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEA;
     procedure OnZLogPlayMessageB( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEB;
     procedure OnZLogPlayCQ( var Message: TMessage ); message WM_ZLOG_PLAYCQ;
+    procedure OnZLogTogglePtt( var Message: TMessage ); message WM_ZLOG_TOGGLE_PTT;
     procedure OnZLogResetTx( var Message: TMessage ); message WM_ZLOG_RESET_TX;
     procedure OnZLogInvertTx( var Message: TMessage ); message WM_ZLOG_INVERT_TX;
     procedure OnZLogSwitchRx( var Message: TMessage ); message WM_ZLOG_SWITCH_RX;
@@ -1082,6 +1084,7 @@ type
     procedure StopMessage(mode: TMode);
     procedure ControlPTT(fOn: Boolean);
     procedure VoiceControl(fOn: Boolean);
+    procedure TogglePTTfor2bsiq();
     procedure OnNonconvertKeyProc();
     procedure OnUpKeyProc(Sender: TObject);
     procedure OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
@@ -7395,6 +7398,11 @@ begin
    end;
 end;
 
+procedure TMainForm.OnZLogTogglePtt( var Message: TMessage );
+begin
+   TogglePTTfor2bsiq();
+end;
+
 procedure TMainForm.OnZLogResetTx( var Message: TMessage );
 begin
    {$IFDEF DEBUG}
@@ -11714,58 +11722,68 @@ begin
    end;
 end;
 
+procedure TMainForm.TogglePTTfor2bsiq();
+var
+   fBeforePTT: Boolean;
+begin
+   // åªç›ÇÃPTTèÛë‘
+   fBeforePTT := dmZLogKeyer.PTTIsOn;
+
+   if fBeforePTT = True then begin
+      ControlPTT(False);
+   end
+   else begin
+      // TXÇRXÇ…çáÇÌÇπÇÈ
+      if FCurrentTx <> FCurrentRx then begin
+         ResetTx(FCurrentRigSet);
+      end;
+
+      if FCQLoopRunning = True then begin
+         timerCqRepeat.Enabled := False;
+         FMessageManager.ClearQue2();
+      end;
+
+      ControlPTT(True);
+   end;
+end;
+
 procedure TMainForm.OnNonconvertKeyProc();
 var
    fBeforePTT: Boolean;
    nID: Integer;
    mode: TMode;
 begin
-   // åªç›ÇÃPTTèÛë‘
-   fBeforePTT := dmZLogKeyer.PTTIsOn;
-
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[ñ≥ïœä∑]'));
    {$ENDIF}
 
-   // åªç›ÇÃPTTèÛë‘
-   fBeforePTT := dmZLogKeyer.PTTIsOn;
-
    // 2BSIQéûÇÕéÛêMíÜÇÃï˚Ç≈PTTêßå‰Ç∑ÇÈ
    if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
       (Is2bsiq() = True) then begin
-      // çƒê∂íÜÇ»ÇÁ
-      if FMessageManager.IsPlaying = True then begin
-         // CQÇíÜé~ÇµÇƒ
-//         CQAbort(False);
-
-         nID := FCurrentTx;
-         mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
-         StopMessage(mode);
-
-         // TXÇRXÇ…çáÇÌÇπÇÈ
-         if FCurrentTx <> FCurrentRx then begin
-            ResetTx(FCurrentRigSet);
-         end;
-
-         // PTT ON
-         ControlPTT(True);
+      if FInformation.IsWait = True then begin
+         FMessageManager.AddQue(WM_ZLOG_TOGGLE_PTT, 0, 0);
+         FMessageManager.ContinueQue();
       end
       else begin
-         if fBeforePTT = True then begin
-            ControlPTT(False);
-         end
-         else begin
+         // WAIT=OFFÇ≈çƒê∂íÜÇ»ÇÁ
+         if FMessageManager.IsPlaying = True then begin
+            // CQÇíÜé~ÇµÇƒ
+//               CQAbort(False);
+
+            nID := FCurrentTx;
+            mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+            StopMessage(mode);
+
             // TXÇRXÇ…çáÇÌÇπÇÈ
             if FCurrentTx <> FCurrentRx then begin
                ResetTx(FCurrentRigSet);
             end;
 
-            if FCQLoopRunning = True then begin
-               timerCqRepeat.Enabled := False;
-               FMessageManager.ClearQue2();
-            end;
-
+            // PTT ON
             ControlPTT(True);
+         end
+         else begin
+            TogglePTTfor2bsiq();
          end;
       end;
    end
@@ -11779,6 +11797,9 @@ begin
          ControlPTT(True);
       end
       else begin
+         // åªç›ÇÃPTTèÛë‘
+         fBeforePTT := dmZLogKeyer.PTTIsOn;
+
          // PTTÇÉgÉOÉã
          if fBeforePTT = True then begin
             ControlPTT(False);
