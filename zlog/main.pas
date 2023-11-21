@@ -1009,7 +1009,7 @@ type
     procedure OnPlayMessageB(no: Integer);
     procedure PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
-    procedure PlayMessagePH(no: Integer);
+    procedure PlayMessagePH(no: Integer; fResetTx: Boolean);
     procedure PlayMessageRTTY(no: Integer);
     procedure OnVoicePlayStarted(Sender: TObject);
     procedure OnOneCharSentProc(Sender: TObject);
@@ -8265,6 +8265,7 @@ procedure TMainForm.OnPlayMessageA(no: Integer);
 var
    cb: Integer;
    rig: TRig;
+   mode: TMode;
 begin
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
@@ -8282,7 +8283,12 @@ begin
       end;
    end;
 
-   PlayMessage(CurrentQSO.Mode, cb, no, True);
+   mode := TextToMode(FEditPanel[FCurrentRx].ModeEdit.Text);
+   if mode = mOther then begin
+      mode := CurrentQSO.Mode;
+   end;
+
+   PlayMessage(mode, cb, no, True);
 end;
 
 procedure TMainForm.OnPlayMessageB(no: Integer);
@@ -8346,7 +8352,7 @@ begin
       end;
 
       mSSB, mFM, mAM: begin
-         PlayMessagePH(no);
+         PlayMessagePH(no, fResetTx);
       end;
 
       mRTTY: begin
@@ -8364,7 +8370,7 @@ var
    S: string;
 begin
    if no >= 101 then begin
-      SetCQ(True);
+      FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       bank := dmZlogGlobal.Settings.CW.CurrentBank;
       S := dmZLogGlobal.CWMessage(bank, FCurrentCQMessageNo);
    end
@@ -8391,16 +8397,12 @@ begin
       if (Is2bsiq() = False) then begin
          // ↓キーを押した方にTXを合わせる
          if FCurrentTx <> FCurrentRx then begin
-//            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
             FMessageManager.AddQue(WM_ZLOG_SETCQ, 0, 0);
          end;
       end;
 
       // 2BSIQ=ON
       if (Is2bsiq() = True) then begin
-         // ↓キーを押した方にTXを合わせる
-//         FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FKeyPressedRigID[FCurrentRigSet - 1]);
-
          // RXは反対側へ
          FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 3, 0);
       end;
@@ -8424,8 +8426,37 @@ begin
    FMessageManager.ContinueQue();
 end;
 
-procedure TMainForm.PlayMessagePH(no: Integer);
+procedure TMainForm.PlayMessagePH(no: Integer; fResetTx: Boolean);
 begin
+   if no >= 101 then begin
+      FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
+   end;
+
+   // リピート停止
+   timerCqRepeat.Enabled := False;
+   FMessageManager.ClearQue2();
+
+   // Fキー操作ではTXをRXと同じにする
+   if (fResetTx = True) then begin
+      FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 1, 0);
+
+      // 2BSIQ=OFF
+      if (Is2bsiq() = False) then begin
+         // ↓キーを押した方にTXを合わせる
+         if FCurrentTx <> FCurrentRx then begin
+            FMessageManager.AddQue(WM_ZLOG_SETCQ, 0, 0);
+         end;
+      end;
+
+      // 2BSIQ=ON
+      if (Is2bsiq() = True) then begin
+         // RXは反対側へ
+         FMessageManager.AddQue(WM_ZLOG_SWITCH_RX, 3, 0);
+      end;
+   end;
+
+   // 音声再生
+   // CWの→ FMessageManager.AddQue(0, S, CurrentQSO); と同等
    case no of
       1, 2, 3, 4, 5, 6,
       7, 8, 9, 10, 11, 12: begin
@@ -8434,19 +8465,29 @@ begin
 
       101: begin
          FMessageManager.AddQue(0, FCurrentCQMessageNo);
-         FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       end;
 
       102: begin
          FMessageManager.AddQue(0, 102);
-         FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       end;
 
       103: begin
          FMessageManager.AddQue(0, 103);
-         FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       end;
    end;
+
+   // SO2Rモードの場合
+   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      // 2BSIQ=OFF
+      if (Is2bsiq() = False) then begin
+         // 送受が異なる場合はpickupなので、TXを戻す
+         if FCurrentTx <> FCurrentRx then begin
+            FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
+            FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
+         end;
+      end;
+   end;
+
    FMessageManager.ContinueQue();
 end;
 
