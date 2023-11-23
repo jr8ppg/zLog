@@ -534,6 +534,10 @@
             <Form>formPortConfig</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UJarlMemberInfo.pas">
+            <Form>formJarlMemberInfo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -836,7 +840,8 @@
                     <RDP_Source_Files Name="Item112">UCWMonitor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item113">UELogCabrillo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item114">UPortConfigDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item115">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item115">UJarlMemberInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item116">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
