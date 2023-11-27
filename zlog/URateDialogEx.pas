@@ -438,6 +438,10 @@ begin
    // グラフに値セット
    hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
+      if ((i + H + 1) > 48) then begin
+         Break;
+      end;
+
       n := GetHour(FStartTime + (1 / 24) * i);
       Str := IntToStr(n);
 
