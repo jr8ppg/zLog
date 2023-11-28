@@ -2384,13 +2384,6 @@ begin
       FWkCallsignStr := S;
    end
    else begin
-      // 短くなる場合は送信ptrチェック
-      if Length(FWkCallsignStr) > Length(S) then begin
-         if cwstrptr > callsignptr then begin
-            Exit;
-         end;
-      end;
-
       FWkCallsignStr := S;
 
       if callsignptr = 0 then begin
