@@ -2384,6 +2384,11 @@ begin
       FWkCallsignStr := S;
    end
    else begin
+      // 送信中は0文字にはできない
+      if (IsPlaying = True) and (S = '') then begin
+         Exit;
+      end;
+
       FWkCallsignStr := S;
 
       if callsignptr = 0 then begin
