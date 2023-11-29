@@ -810,7 +810,9 @@ begin
    end
    else begin
       SL := TStringList.Create();
-      SL.LoadFromFile(fullpath);
+      if FileExists(fullpath) then begin
+         SL.LoadFromFile(fullpath);
+      end;
    end;
 
    for L := 1 to SL.Count - 1 do begin

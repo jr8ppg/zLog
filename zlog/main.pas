@@ -1223,6 +1223,7 @@ resourcestring
   TMainForm_Select_Operator = 'Please select an operator';
   TMainForm_JARL_Member_Info = 'JARL Member information.';
   TMainForm_Inquire_JARL_Member_Info = 'Querying QSL transfer status.';
+  TMainForm_UserDat_not_loaded = ' not loaded';
 
 var
   MainForm: TMainForm;
@@ -6926,6 +6927,11 @@ begin
       // CTY.DATが必要なコンテストでロードされていない場合はお知らせする
       if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = False) then begin
          WriteStatusLineRed(TMainForm_CtyDat_not_loaded, True);
+      end;
+
+      // User Defined ContestでDATファイルがロードされていない場合はお知らせする
+      if (MyContest is TGeneralContest) and (TGeneralContest(MyContest).UserDatLoaded = False) then begin
+         WriteStatusLineRed(TGeneralContest(MyContest).Config.DatFileName + TMainForm_UserDat_not_loaded, True);
       end;
 
       // 最初はRIG1から
