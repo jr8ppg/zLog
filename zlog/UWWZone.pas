@@ -28,12 +28,10 @@ type
     procedure Mark(B : TBand; Zone : integer);
   end;
 
-//const
-//  MaxWidth = 592;
-
 implementation
 
-uses Main;
+uses
+  Main;
 
 {$R *.DFM}
 
@@ -41,21 +39,32 @@ procedure TWWZone.Reset;
 var
    R: Integer;
    Z: Integer;
-   B : TBand;
+   band: TBand;
 begin
    Grid.ColWidths[0] := 24;
-   R := 1;
-   for B := b19 to b28 do begin
-      if NotWARC(B) then begin
-         Grid.Cells[0, R] := MHzString[B];
-         for Z := 1 to 40 do begin
-            Grid.Cells[Z, 0] := IntToStr(Z);
-            Grid.Cells[Z, R] := '.';
-         end;
 
-         Inc(R);
+   R := 1;
+   for band := b19 to b28 do begin
+      // WARC除外
+      if IsWARC(band) = True then begin
+         Continue;
       end;
+
+      // QRVできないバンドは除外
+      if dmZlogGlobal.Settings._activebands[band] = False then begin
+         Continue;
+      end;
+
+      Grid.Cells[0, R] := MHzString[band];
+      for Z := 1 to 40 do begin
+         Grid.Cells[Z, 0] := IntToStr(Z);
+         Grid.Cells[Z, R] := '.';
+      end;
+
+      Inc(R);
    end;
+
+   Grid.RowCount := R;
 
    ClientWidth := (Grid.DefaultColWidth * Grid.ColCount) + (Grid.ColCount * Grid.GridLineWidth) + 6;
    ClientHeight := (Grid.DefaultRowHeight * Grid.RowCount) + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
