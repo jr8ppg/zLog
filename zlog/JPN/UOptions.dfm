@@ -4,7 +4,7 @@ object formOptions: TformOptions
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
-  ClientWidth = 471
+  ClientWidth = 444
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
