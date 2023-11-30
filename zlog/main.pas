@@ -7258,7 +7258,12 @@ begin
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
 
       // Sent NRチェック
-      if (dmZLogGlobal.Settings._prov = '') or (dmZLogGlobal.Settings._city = '') then begin
+      if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '')) or
+         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._city = '')) or
+         ((dmZLogGlobal.Settings._prov = '') and (dmZLogGlobal.Settings._city = '')) then begin
+         if (MyContest is TGeneralContest) then begin
+            dmZLogGlobal.Settings.ReadOnlyParamImported := False;
+         end;
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
       end;
@@ -12533,7 +12538,6 @@ end;
 procedure TMainForm.JarlMemberCheck();
 var
    i: Integer;
-   dlg: TformExportHamlog;
    web: TformJarlMemberInfo;
    list: TJarlMemberInfoList;
    O: TJarlMemberInfo;
