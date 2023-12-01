@@ -33,6 +33,7 @@ type
     procedure Reset; override;
     procedure UpdateData; override;
     property Config: TUserDefinedContest read FConfig write FConfig;
+    property MultiList: TCityList read CityList;
   end;
 
 implementation
