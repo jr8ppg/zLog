@@ -16,7 +16,7 @@ uses
   UEditDialog in 'UEditDialog.pas' {EditDialog},
   UAbout in 'UAbout.pas' {AboutBox},
   URateDialog in 'URateDialog.pas' {RateDialog},
-  UOptions in 'UOptions.pas' {formOptions},
+  UOptions2 in 'UOptions2.pas' {formOptions2},
   UMenu in 'UMenu.pas' {MenuForm},
   UACAGMulti in 'UACAGMulti.pas' {ACAGMulti},
   USuperCheck2 in 'USuperCheck2.pas' {SuperCheck2},
@@ -148,7 +148,8 @@ uses
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
   UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
   UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
-  UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo};
+  UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo},
+  UOptions in 'UOptions.pas' {formOptions};
 
 {$R *.res}
 

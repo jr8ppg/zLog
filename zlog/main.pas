@@ -20,7 +20,7 @@ uses
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   System.DateUtils, System.SyncObjs, System.Generics.Collections,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
-  UOptions, UEditDialog, UGeneralMulti2,
+  UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, URigCtrlLib, UConsolePad, USpotClass,
   UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogCabrillo, UQuickRef, UZAnalyze,
@@ -5518,11 +5518,11 @@ end;
 
 procedure TMainForm.ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
 var
-   f: TformOptions;
+   f: TformOptions2;
    b: TBand;
    rig: Integer;
 begin
-   f := TformOptions.Create(Self);
+   f := TformOptions2.Create(Self);
    rig := RigControl.GetCurrentRig();
    try
       // KeyingÇ∆RigControlÇàÍíUèIóπ

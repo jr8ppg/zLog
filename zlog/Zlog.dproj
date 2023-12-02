@@ -181,8 +181,8 @@
         <DCCReference Include="URateDialog.pas">
             <Form>RateDialog</Form>
         </DCCReference>
-        <DCCReference Include="UOptions.pas">
-            <Form>formOptions</Form>
+        <DCCReference Include="UOptions2.pas">
+            <Form>formOptions2</Form>
         </DCCReference>
         <DCCReference Include="UMenu.pas">
             <Form>MenuForm</Form>
@@ -536,6 +536,10 @@
         </DCCReference>
         <DCCReference Include="UJarlMemberInfo.pas">
             <Form>formJarlMemberInfo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UOptions.pas">
+            <Form>formOptions</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
