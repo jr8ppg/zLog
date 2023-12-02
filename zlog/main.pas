@@ -1266,6 +1266,7 @@ resourcestring
   TMainForm_Select_Operator = 'Please select an operator';
   TMainForm_JARL_Member_Info = 'JARL Member information.';
   TMainForm_Inquire_JARL_Member_Info = 'Querying QSL transfer status.';
+  TMainForm_UserDat_not_loaded = ' not loaded';
 
 var
   MainForm: TMainForm;
@@ -7234,6 +7235,11 @@ begin
          WriteStatusLineRed(TMainForm_CtyDat_not_loaded, True);
       end;
 
+      // User Defined ContestでDATファイルがロードされていない場合はお知らせする
+      if (MyContest is TGeneralContest) and (TGeneralContest(MyContest).UserDatLoaded = False) then begin
+         WriteStatusLineRed(TGeneralContest(MyContest).Config.DatFileName + TMainForm_UserDat_not_loaded, True);
+      end;
+
       // 最初はRIG1から
       SwitchRig(1);
 
@@ -7252,7 +7258,12 @@ begin
       zyloContestOpened(MyContest.Name, menu.CFGFileName);
 
       // Sent NRチェック
-      if (dmZLogGlobal.Settings._prov = '') or (dmZLogGlobal.Settings._city = '') then begin
+      if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '')) or
+         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._city = '')) or
+         ((dmZLogGlobal.Settings._prov = '') and (dmZLogGlobal.Settings._city = '')) then begin
+         if (MyContest is TGeneralContest) then begin
+            dmZLogGlobal.Settings.ReadOnlyParamImported := False;
+         end;
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
       end;
@@ -12527,7 +12538,6 @@ end;
 procedure TMainForm.JarlMemberCheck();
 var
    i: Integer;
-   dlg: TformExportHamlog;
    web: TformJarlMemberInfo;
    list: TJarlMemberInfoList;
    O: TJarlMemberInfo;

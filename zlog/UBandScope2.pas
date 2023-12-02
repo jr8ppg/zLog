@@ -537,6 +537,8 @@ var
    FreqDispIndex: Integer;
    fFound: Boolean;
    DataIndex: Integer;
+   up_offset: Integer;
+   down_offset: Integer;
 begin
    if FProcessing = True then begin
       Exit;
@@ -582,15 +584,19 @@ begin
             str := '>>' + str + '<<';
             Grid.Cells[0, R] := str;
             Grid.Objects[0, R] := D;
+            up_offset := 1;
+            down_offset := 1;
          end
          else begin  // ‚È‚©‚Á‚½
             R := FreqDispIndex;
             Grid.Cells[0, R] := '>>' + kHzStr(CurrentRigFrequency);
             Grid.Objects[0, R] := nil;
+            up_offset := 1;
+            down_offset := 0;
          end;
 
          // Žü”g”‚æ‚èã
-         DataIndex := Index - 1;
+         DataIndex := Index - up_offset;
          for R := FreqDispIndex - 1 downto 0 do begin
             if (DataIndex >= 0) and (FBSList.Count > DataIndex) then begin
                D := FBSList[DataIndex];
@@ -614,7 +620,7 @@ begin
          end;
 
          // Žü”g”‚æ‚è‰º
-         DataIndex := Index + 1;
+         DataIndex := Index + down_offset;
          for R := FreqDispIndex + 1 to (Grid.VisibleRowCount - 1) do begin
             if (DataIndex >= 0) and (FBSList.Count > DataIndex) then begin
                D := FBSList[DataIndex];

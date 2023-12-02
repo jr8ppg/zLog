@@ -1369,8 +1369,13 @@ begin
    for i := 1 to maxmessage do begin
       FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
       if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
-         FEditMessage[i].Color := clBtnFace;
          FEditMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+         if FEditMessage[i].ReadOnly = True then begin
+            FEditMessage[i].Color := clBtnFace; // gray
+         end
+         else begin
+            FEditMessage[i].Color := $00EADEFF; // light pink
+         end;
       end
       else begin
          FEditMessage[i].Color := clWindow;
@@ -1542,10 +1547,17 @@ begin
       ProvEdit.Text := Settings._prov;
       CityEdit.Text := Settings._city;
       if Settings.ProvCityImported = True then begin
-         ProvEdit.Color := clBtnFace;
-         CityEdit.Color := clBtnFace;
          ProvEdit.ReadOnly := Settings.ReadOnlyParamImported;
          CityEdit.ReadOnly := Settings.ReadOnlyParamImported;
+
+         if ProvEdit.ReadOnly = True then begin
+            ProvEdit.Color := clBtnFace;
+            CityEdit.Color := clBtnFace;
+         end
+         else begin
+            ProvEdit.Color := $00EADEFF;
+            CityEdit.Color := $00EADEFF;
+         end;
       end
       else begin
          ProvEdit.Color := clWindow;

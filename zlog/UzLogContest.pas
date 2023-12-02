@@ -123,12 +123,14 @@ type
 
   TGeneralContest = class(TContest)
     FConfig: TUserDefinedContest;
+    FUserDatLoaded: Boolean;
   public
     constructor Create(AOwner: TComponent; N, CFGFileName: string); reintroduce;
     destructor Destroy(); override;
     procedure SetPoints(aQSO : TQSO); override;
 
     property Config: TUserDefinedContest read FConfig;
+    property UserDatLoaded: Boolean read FUserDatLoaded;
   end;
 
   TCQWPXContest = class(TContest)
@@ -1355,6 +1357,7 @@ var
    B: TBand;
 begin
    inherited Create(AOwner, N);
+   FUserDatLoaded := False;
    MultiForm := TGeneralMulti2.Create(AOwner);
    ScoreForm := TGeneralScore.Create(AOwner);
    TGeneralScore(ScoreForm).formMulti := TGeneralMulti2(MultiForm);
@@ -1364,7 +1367,16 @@ begin
    TGeneralScore(ScoreForm).Config := FConfig;
    TGeneralMulti2(MultiForm).Config := FConfig;
 
-   TGeneralMulti2(MultiForm).LoadDAT(FConfig.DatFileName);
+   if FConfig.DatFileName <> '' then begin
+      TGeneralMulti2(MultiForm).LoadDAT(FConfig.DatFileName);
+      if TGeneralMulti2(MultiForm).MultiList.List.Count > 0 then begin
+         FUserDatLoaded := True;
+      end;
+   end
+   else begin
+      FUserDatLoaded := True;
+   end;
+
    dmZlogGlobal.Settings._sentstr         := FConfig.Sent;
 
    Log.AcceptDifferentMode                := FConfig.AcceptDifferentMode;
