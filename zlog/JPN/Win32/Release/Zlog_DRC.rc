@@ -8,29 +8,30 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadID 64240
-#define UExceptionDialog_RsExceptionThreadID 64241
-#define UExceptionDialog_RsMainThreadCallStack 64242
-#define UExceptionDialog_RsThreadCallStack 64243
-#define UExceptionDialog_RsErrorMessage 64244
-#define UExceptionDialog_RsDetailsIntro 64245
-#define UExceptionDialog_RsUnitVersioningIntro 64246
+#define UExceptionDialog_RsExceptionStack 64240
+#define UExceptionDialog_RsMainThreadID 64241
+#define UExceptionDialog_RsExceptionThreadID 64242
+#define UExceptionDialog_RsMainThreadCallStack 64243
+#define UExceptionDialog_RsThreadCallStack 64244
+#define UExceptionDialog_RsErrorMessage 64245
+#define UExceptionDialog_RsDetailsIntro 64246
+#define UExceptionDialog_RsUnitVersioningIntro 64247
 #define Main_TMainForm_JARL_Member_Info 64256
 #define Main_TMainForm_Inquire_JARL_Member_Info 64257
-#define UExceptionDialog_RsAppError 64258
-#define UExceptionDialog_RsExceptionClass 64259
-#define UExceptionDialog_RsExceptionMessage 64260
-#define UExceptionDialog_RsExceptionAddr 64261
-#define UExceptionDialog_RsStackList 64262
-#define UExceptionDialog_RsModulesList 64263
-#define UExceptionDialog_RsOSVersion 64264
-#define UExceptionDialog_RsProcessor 64265
-#define UExceptionDialog_RsMemory 64266
-#define UExceptionDialog_RsScreenRes 64267
-#define UExceptionDialog_RsActiveControl 64268
-#define UExceptionDialog_RsThread 64269
-#define UExceptionDialog_RsMissingVersionInfo 64270
-#define UExceptionDialog_RsExceptionStack 64271
+#define Main_TMainForm_UserDat_not_loaded 64258
+#define UExceptionDialog_RsAppError 64259
+#define UExceptionDialog_RsExceptionClass 64260
+#define UExceptionDialog_RsExceptionMessage 64261
+#define UExceptionDialog_RsExceptionAddr 64262
+#define UExceptionDialog_RsStackList 64263
+#define UExceptionDialog_RsModulesList 64264
+#define UExceptionDialog_RsOSVersion 64265
+#define UExceptionDialog_RsProcessor 64266
+#define UExceptionDialog_RsMemory 64267
+#define UExceptionDialog_RsScreenRes 64268
+#define UExceptionDialog_RsActiveControl 64269
+#define UExceptionDialog_RsThread 64270
+#define UExceptionDialog_RsMissingVersionInfo 64271
 #define Main_TMainForm_Thankyou_for_your_qso 64272
 #define Main_TMainForm_CW_port_is_no_set 64273
 #define Main_TMainForm_Not_a_new_multi 64274
@@ -1297,6 +1298,7 @@
 #define System_SysConst_SFileNotFound 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
@@ -1306,6 +1308,7 @@ BEGIN
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_JARL_Member_Info,	L"JARL Member information."
 	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
+	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1319,7 +1322,6 @@ BEGIN
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	Main_TMainForm_Thankyou_for_your_qso,	L"QSO\x3042\x308A\x304C\x3068\x3046\x3054\x3056\x3044\x307E\x3059"
 	Main_TMainForm_CW_port_is_no_set,	L"CW\x30DD\x30FC\x30C8\x304C\x672A\x8A2D\x5B9A\x3067\x3059"
 	Main_TMainForm_Not_a_new_multi,	L"NEW\x30DE\x30EB\x30C1\x3067\x306F\x3042\x308A\x307E\x305B\x3093(\x30DE\x30EB\x30C1\x30B9\x30C6\x30FC\x30B7\x30E7\x30F3\x3067\x3059)"
