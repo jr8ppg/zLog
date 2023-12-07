@@ -6001,8 +6001,12 @@ object MainForm: TMainForm
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
+      object menuHardwareSettings: TMenuItem
+        Caption = '&Hardware settings'
+        OnClick = menuHardwareSettingsClick
+      end
       object menuOptions: TMenuItem
-        Caption = '&Options'
+        Caption = '&Operation settings'
         OnClick = menuOptionsClick
       end
       object menuBandPlanSettings: TMenuItem

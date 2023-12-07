@@ -740,7 +740,7 @@
                     <RDP_Source_Files Name="Item8">UEditDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item9">UAbout.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item10">URateDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item11">UOptions.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item11">UOptions2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">UMenu.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">UACAGMulti.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">USuperCheck2.dfm</RDP_Source_Files>
@@ -845,7 +845,8 @@
                     <RDP_Source_Files Name="Item113">UELogCabrillo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item114">UPortConfigDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item115">UJarlMemberInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item116">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item116">UOptions.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item117">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

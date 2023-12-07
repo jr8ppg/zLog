@@ -6001,8 +6001,12 @@ object MainForm: TMainForm
     end
     object menuSettings: TMenuItem
       Caption = #21508#31278#35373#23450'(&S)'
+      object menuHardwareSettings: TMenuItem
+        Caption = #12495#12540#12489#12454#12455#12450#35373#23450'(&H)'
+        OnClick = menuHardwareSettingsClick
+      end
       object menuOptions: TMenuItem
-        Caption = #12458#12503#12471#12519#12531'(&O)'
+        Caption = #36939#29992#35373#23450'(&O)'
         OnClick = menuOptionsClick
       end
       object menuBandPlanSettings: TMenuItem

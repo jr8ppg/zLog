@@ -559,6 +559,7 @@ type
     menuShowTx8: TMenuItem;
     menuShowTx9: TMenuItem;
     CreateCabrillo: TMenuItem;
+    menuHardwareSettings: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -851,6 +852,7 @@ type
     procedure menuShowOnlyTxClick(Sender: TObject);
     procedure View1Click(Sender: TObject);
     procedure CreateCabrilloClick(Sender: TObject);
+    procedure menuHardwareSettingsClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -5512,6 +5514,54 @@ begin
    SetListWidth();
 end;
 
+procedure TMainForm.menuHardwareSettingsClick(Sender: TObject);
+var
+   f: TformOptions;
+   rig: Integer;
+begin
+   f := TformOptions.Create(Self);
+   rig := RigControl.GetCurrentRig();
+   try
+      // KeyingとRigControlを一旦終了
+      FRigControl.ForcePowerOff();
+      CancelCqRepeat();
+      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+      dmZlogGlobal.ImplementSettings(False);
+      dmZlogGlobal.SaveCurrentSettings();
+      InitBandMenu();
+
+      RenewCWToolBar;
+      RenewVoiceToolBar;
+
+      InitQsoEditPanel();
+      InitSerialPanel();
+      UpdateQsoEditPanel(rig);
+      LastFocus := CallsignEdit;
+      ShowCurrentQSO();
+
+      SetWindowCaption();
+   finally
+      f.Release();
+
+      // リグコントロール/Keying再開
+      WriteStatusLine('', False);
+      FRigControl.ForcePowerOn();
+
+      // Accessibility
+      if LastFocus.Visible then begin
+         EditExit(LastFocus);
+         EditEnter(LastFocus);
+         LastFocus.SetFocus;
+      end;
+   end;
+end;
+
 procedure TMainForm.menuOptionsClick(Sender: TObject);
 begin
    ShowOptionsDialog(0, 0, 1, 0);
@@ -5521,16 +5571,9 @@ procedure TMainForm.ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; n
 var
    f: TformOptions2;
    b: TBand;
-   rig: Integer;
 begin
    f := TformOptions2.Create(Self);
-   rig := RigControl.GetCurrentRig();
    try
-      // KeyingとRigControlを一旦終了
-      FRigControl.ForcePowerOff();
-      CancelCqRepeat();
-      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
-
       f.EditMode := nEditMode;
       f.EditNumber := nEditNumer;
       f.EditBank := nEditBank;
@@ -5550,7 +5593,6 @@ begin
 
       InitQsoEditPanel();
       InitSerialPanel();
-      UpdateQsoEditPanel(rig);
       LastFocus := CallsignEdit;
       ShowCurrentQSO();
 
@@ -5604,7 +5646,6 @@ begin
 
       // リグコントロール/Keying再開
       WriteStatusLine('', False);
-      FRigControl.ForcePowerOn();
 
       // Accessibility
       if LastFocus.Visible then begin
