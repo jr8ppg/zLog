@@ -3197,7 +3197,6 @@ end;
 
 function TLog.ObjectOf(qsoid: Integer): TQSO;
 var
-   i: Integer;
    aQSO: TQSO;
 begin
    if FQsoIdDic.TryGetValue(qsoid, aQSO) = True then begin
@@ -3804,7 +3803,7 @@ end;
 function TLog.IsOutOfPeriod(Q: TQSO): Boolean;
 begin
    {$IFNDEF ZSERVER}
-   if dmZLogGlobal.Settings._use_contest_period = False then begin
+   if MyContest.UseContestPeriod = False then begin
       Result := False;
       Exit;
    end;
