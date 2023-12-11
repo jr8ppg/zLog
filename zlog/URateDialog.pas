@@ -390,10 +390,6 @@ begin
 
    hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
-      if ((i + H + 1) > 48) then begin
-         Break;
-      end;
-
       Str := IntToStr(GetHour(_start + (1 / 24) * i));
 
       if FShowLast > 12 then begin
