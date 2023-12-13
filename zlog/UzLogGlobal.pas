@@ -3220,14 +3220,16 @@ begin
    list.Add(O);
 
    if Settings.FCommPortTest = False then begin
-      for i := 0 to numofports - 1 do begin
-         O := TCommPort.Create();
-         if portNumbers[i] < 21 then begin
-            O.Number := portNumbers[i];
-            O.Name := 'COM' + IntToStr(portNumbers[i]);
-            O.RigControl := True;
-            O.Keying := True;
-            list.Add(O);
+      if numofports > 0 then begin
+         for i := 0 to numofports - 1 do begin
+            O := TCommPort.Create();
+            if portNumbers[i] < 21 then begin
+               O.Number := portNumbers[i];
+               O.Name := 'COM' + IntToStr(portNumbers[i]);
+               O.RigControl := True;
+               O.Keying := True;
+               list.Add(O);
+            end;
          end;
       end;
    end
