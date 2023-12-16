@@ -8379,6 +8379,7 @@ end;
 procedure TMainForm.PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
 var
    nID: Integer;
+   m: TMode;
 begin
    WriteStatusLine('', False);
 
@@ -8392,6 +8393,9 @@ begin
 
    if FInformation.IsWait = False then begin
       FMessageManager.ClearQue();
+      nID := FCurrentTx;
+      m := TextToMode(FEditPanel[nID].ModeEdit.Text);
+      StopMessage(m);
    end;
 
    case mode of
