@@ -20,6 +20,11 @@ type
   TRigUpdateStatusEvent = procedure(Sender: TObject; rigno: Integer; currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode) of object;
   TRigErrorEvent = procedure(Sender: TObject; msg: string) of object;
 
+  TMemCh = record
+    FFreq: TFrequency;
+    FMode: TMode;
+  end;
+
   TRig = class
   protected
     FFILO : Boolean; // FILO buffer flag used for YAESU
@@ -64,10 +69,14 @@ type
     FLastRcvd: string;
 
     FPortConfig: TPortConfig;
+    FMemCh: array[1..5] of TMemCh;
     function GetCurrentFreq(Index: Integer): TFrequency;
     procedure SetCurrentFreq(Index: Integer; freq: TFrequency);
     function GetFreqMem(b: TBand; m: TMode): TFrequency;
     procedure SetFreqMem(b: TBand; m: TMode; freq: TFrequency);
+    function GetMemCh(Index: Integer): TMemCh;
+    procedure SetMemCh(Index: Integer; v: TMemCh);
+    procedure InitMemCh();
   public
     constructor Create(RigNum : Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); virtual;
     destructor Destroy; override;
@@ -98,6 +107,9 @@ type
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
     procedure StopRequest(); virtual;
+    procedure MemChCall(ch: Integer); virtual;
+    procedure MemChWrite(ch: Integer; f: TFrequency; m: TMode);
+    procedure MemChClear(ch: Integer);
 
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
@@ -123,6 +135,8 @@ type
     property RitOffset: Integer read FRitOffset write SetRitOffset;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
+
+    property MemCh[Index: Integer]: TMemCh read GetMemCh write SetMemCh;
 
     property OnUpdateStatus: TRigUpdateStatusEvent read FOnUpdateStatus write FOnUpdateStatus;
     property OnError: TRigErrorEvent read FOnError write FOnError;
@@ -453,6 +467,19 @@ begin
    FStopRequest := True;
 end;
 
+procedure TRig.MemChCall(ch: Integer);
+var
+   f: TFrequency;
+   m: TMode;
+begin
+   f := FMemCh[ch].FFreq;
+   m := FMemCh[ch].FMode;
+   if f > 0 then begin
+      SetFreq(f, False);
+      SetMode(m);
+   end;
+end;
+
 function TRig.Selected: Boolean;
 begin
    if _rignumber = MainForm.RigControl.CurrentRigNumber then
@@ -562,6 +589,42 @@ end;
 procedure TRig.SetFreqMem(b: TBand; m: TMode; freq: TFrequency);
 begin
    FFreqMem[b, m] := freq;
+end;
+
+procedure TRig.InitMemCh();
+var
+   i: Integer;
+begin
+   for i := Low(FMemCh) to High(FMemCh) do begin
+      FMemCh[i].FFreq := 0;
+      FMemCh[i].FMode := mCW;
+   end;
+end;
+
+procedure TRig.MemChWrite(ch: Integer; f: TFrequency; m: TMode);
+begin
+   if (ch >= Low(FMemCh)) and (ch <= High(FMemCh)) then begin
+      FMemCh[ch].FFreq := f;
+      FMemCh[ch].FMode := m;
+   end;
+end;
+
+procedure TRig.MemChClear(ch: Integer);
+begin
+   if (ch >= Low(FMemCh)) and (ch <= High(FMemCh)) then begin
+      FMemCh[ch].FFreq := 0;
+      FMemCh[ch].FMode := mCW;
+   end;
+end;
+
+function TRig.GetMemCh(Index: Integer): TMemCh;
+begin
+   Result := FMemCh[Index];
+end;
+
+procedure TRig.SetMemCh(Index: Integer; v: TMemCh);
+begin
+   FMemCh[Index] := v;
 end;
 
 { TJST145 }

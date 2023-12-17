@@ -2,10 +2,10 @@ object RigControl: TRigControl
   Left = 666
   Top = 35
   Caption = 'Rig Control'
-  ClientHeight = 136
+  ClientHeight = 156
   ClientWidth = 318
   Color = clBtnFace
-  Constraints.MinHeight = 175
+  Constraints.MinHeight = 195
   Constraints.MinWidth = 330
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -27,9 +27,10 @@ object RigControl: TRigControl
     Left = 0
     Top = 30
     Width = 318
-    Height = 106
+    Height = 102
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 106
     object buttonJumpLastFreq: TSpeedButton
       Left = 264
       Top = 21
@@ -54,7 +55,7 @@ object RigControl: TRigControl
     end
     object Label3: TLabel
       Left = 8
-      Top = 74
+      Top = 75
       Width = 34
       Height = 15
       Caption = 'VFO B'
@@ -199,6 +200,24 @@ object RigControl: TRigControl
     DesignSize = (
       318
       30)
+    object buttonMemoryWrite: TSpeedButton
+      Tag = 1
+      Left = 95
+      Top = 4
+      Width = 36
+      Height = 20
+      Caption = 'MW'
+      OnClick = buttonMemoryWriteClick
+    end
+    object buttonMemoryClear: TSpeedButton
+      Tag = 2
+      Left = 132
+      Top = 4
+      Width = 36
+      Height = 20
+      Caption = 'MC'
+      OnClick = buttonMemoryWriteClick
+    end
     object ToggleSwitch1: TToggleSwitch
       Left = 4
       Top = 4
@@ -210,8 +229,8 @@ object RigControl: TRigControl
       OnClick = ToggleSwitch1Click
     end
     object buttonOmniRig: TButton
-      Left = 168
-      Top = 2
+      Left = 179
+      Top = 3
       Width = 73
       Height = 25
       Anchors = [akTop, akRight]
@@ -220,28 +239,62 @@ object RigControl: TRigControl
       OnClick = buttonOmniRigClick
     end
     object buttonReconnectRigs: TButton
-      Left = 242
-      Top = 2
-      Width = 73
+      Left = 253
+      Top = 3
+      Width = 61
       Height = 25
       Anchors = [akTop, akRight]
-      Caption = 'Reset Rig'
+      Caption = 'Reset'
       TabOrder = 2
       OnClick = buttonReconnectRigsClick
     end
+  end
+  object buttongrpFreqMemory: TButtonGroup
+    Left = 0
+    Top = 132
+    Width = 318
+    Height = 24
+    Align = alBottom
+    BorderStyle = bsNone
+    ButtonWidth = 63
+    Items = <
+      item
+        Caption = 'M1'
+        OnClick = buttongrpFreqMemoryItems0Click
+      end
+      item
+        Caption = 'M2'
+        OnClick = buttongrpFreqMemoryItems1Click
+      end
+      item
+        Caption = 'M3'
+        OnClick = buttongrpFreqMemoryItems2Click
+      end
+      item
+        Caption = 'M4'
+        OnClick = buttongrpFreqMemoryItems3Click
+      end
+      item
+        Caption = 'M5'
+        OnClick = buttongrpFreqMemoryItems4Click
+      end>
+    ShowHint = True
+    TabOrder = 2
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 60000
     OnTimer = Timer1Timer
-    Left = 136
+    Left = 32
+    Top = 212
   end
   object PollingTimer1: TTimer
     Tag = 1
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
-    Left = 164
+    Left = 60
+    Top = 212
   end
   object ZCom1: TCommPortDriver
     Tag = 1
@@ -250,7 +303,8 @@ object RigControl: TRigControl
     HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 244
+    Left = 44
+    Top = 160
   end
   object ZCom2: TCommPortDriver
     Tag = 2
@@ -259,14 +313,16 @@ object RigControl: TRigControl
     HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 272
+    Left = 72
+    Top = 160
   end
   object PollingTimer2: TTimer
     Tag = 2
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
-    Left = 192
+    Left = 88
+    Top = 212
   end
   object ZCom3: TCommPortDriver
     Tag = 3
@@ -275,8 +331,8 @@ object RigControl: TRigControl
     HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 212
-    Top = 192
+    Left = 100
+    Top = 160
   end
   object ZCom4: TCommPortDriver
     Tag = 4
@@ -285,23 +341,55 @@ object RigControl: TRigControl
     HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 240
-    Top = 192
+    Left = 128
+    Top = 160
   end
   object PollingTimer3: TTimer
     Tag = 3
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
-    Left = 132
-    Top = 196
+    Left = 116
+    Top = 212
   end
   object PollingTimer4: TTimer
     Tag = 4
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
+    Left = 144
+    Top = 212
+  end
+  object popupMemoryCh: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    OnPopup = popupMemoryChPopup
     Left = 160
-    Top = 196
+    Top = 38
+    object menuM1: TMenuItem
+      Tag = 1
+      Caption = 'M1'
+      OnClick = menuMnClick
+    end
+    object menuM2: TMenuItem
+      Tag = 2
+      Caption = 'M2'
+      OnClick = menuMnClick
+    end
+    object menuM3: TMenuItem
+      Tag = 3
+      Caption = 'M3'
+      OnClick = menuMnClick
+    end
+    object menuM4: TMenuItem
+      Tag = 4
+      Caption = 'M4'
+      OnClick = menuMnClick
+    end
+    object menuM5: TMenuItem
+      Tag = 5
+      Caption = 'M5'
+      OnClick = menuMnClick
+    end
   end
 end

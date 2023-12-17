@@ -7,7 +7,8 @@ uses
   StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math, System.StrUtils,
   System.SyncObjs, Generics.Collections, Vcl.Buttons, Vcl.WinXCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB,
-  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft;
+  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft,
+  Vcl.ButtonGroup, Vcl.Menus;
 
 type
   TRigControl = class(TForm)
@@ -41,6 +42,15 @@ type
     ZCom4: TCommPortDriver;
     PollingTimer3: TTimer;
     PollingTimer4: TTimer;
+    buttongrpFreqMemory: TButtonGroup;
+    buttonMemoryWrite: TSpeedButton;
+    buttonMemoryClear: TSpeedButton;
+    popupMemoryCh: TPopupMenu;
+    menuM1: TMenuItem;
+    menuM2: TMenuItem;
+    menuM3: TMenuItem;
+    menuM4: TMenuItem;
+    menuM5: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -53,6 +63,14 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ToggleSwitch1Click(Sender: TObject);
+    procedure buttongrpFreqMemoryItems0Click(Sender: TObject);
+    procedure buttongrpFreqMemoryItems1Click(Sender: TObject);
+    procedure buttongrpFreqMemoryItems2Click(Sender: TObject);
+    procedure buttongrpFreqMemoryItems3Click(Sender: TObject);
+    procedure buttongrpFreqMemoryItems4Click(Sender: TObject);
+    procedure buttonMemoryWriteClick(Sender: TObject);
+    procedure menuMnClick(Sender: TObject);
+    procedure popupMemoryChPopup(Sender: TObject);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -66,6 +84,10 @@ type
     FMaxRig: Integer;            // default = 2.  may be larger with virtual rigs
 
     FOmniRig: TOmniRigX;
+
+    // Freq Memory
+    FMemEditMode: Integer;
+    FMenuMn: array[1..5] of TMenuItem;
     procedure VisibleChangeEvent(Sender: TObject);
     procedure RigTypeChangeEvent(Sender: TObject; RigNumber: Integer);
     procedure StatusChangeEvent(Sender: TObject; RigNumber: Integer);
@@ -82,6 +104,7 @@ type
 
     procedure SetLastFreq(v: TFrequency);
     function GetLastFreq(): TFrequency;
+    procedure ShowMemCh();
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -154,6 +177,13 @@ begin
    FPollingTimer[2] := PollingTimer2;
    FPollingTimer[3] := PollingTimer3;
    FPollingTimer[4] := PollingTimer4;
+
+   FMemEditMode := 0;
+   FMenuMn[1] := menuM1;
+   FMenuMn[2] := menuM2;
+   FMenuMn[3] := menuM3;
+   FMenuMn[4] := menuM4;
+   FMenuMn[5] := menuM5;
 end;
 
 procedure TRigControl.FormDestroy(Sender: TObject);
@@ -934,6 +964,8 @@ begin
    dispLastFreq.Font.Color := clBlack;
    dispMode.Font.Color := clBlack;
    dispVFO.Font.Color := clBlack;
+
+   ShowMemCh();
 end;
 
 //procedure TRigControl.SetRit(fOnOff: Boolean);
@@ -1077,6 +1109,121 @@ end;
 function TRigControl.GetLastFreq(): TFrequency;
 begin
    Result := 0;
+end;
+
+procedure TRigControl.buttongrpFreqMemoryItems0Click(Sender: TObject);
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+   FCurrentRig.MemChCall(1);
+end;
+
+procedure TRigControl.buttongrpFreqMemoryItems1Click(Sender: TObject);
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+   FCurrentRig.MemChCall(2);
+end;
+
+procedure TRigControl.buttongrpFreqMemoryItems2Click(Sender: TObject);
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+   FCurrentRig.MemChCall(3);
+end;
+
+procedure TRigControl.buttongrpFreqMemoryItems3Click(Sender: TObject);
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+   FCurrentRig.MemChCall(4);
+end;
+
+procedure TRigControl.buttongrpFreqMemoryItems4Click(Sender: TObject);
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+   FCurrentRig.MemChCall(5);
+end;
+
+procedure TRigControl.buttonMemoryWriteClick(Sender: TObject);
+var
+   pt: TPoint;
+begin
+   FMemEditMode := TSpeedButton(Sender).Tag;
+   pt.X := buttonMemoryWrite.Left + buttonMemoryWrite.Width;
+   pt.Y := buttonMemoryWrite.Top;
+   pt := ClientToScreen(pt);
+   popupMemoryCh.Popup(pt.X, pt.Y);
+end;
+
+procedure TRigControl.popupMemoryChPopup(Sender: TObject);
+var
+   i: Integer;
+   f: TFrequency;
+   m: TMode;
+begin
+   for i := 1 to 5 do begin
+      f := FCurrentRig.MemCh[i].FFreq;
+      m := FCurrentRig.MemCh[i].FMode;
+      if f = 0 then begin
+         FMenuMn[i].Caption := 'M' + IntToStr(i);
+      end
+      else begin
+         FMenuMn[i].Caption := 'M' + IntToStr(i) + ': ' + kHzStr(f) + ' ' + ModeString[m];
+      end;
+   end;
+end;
+
+procedure TRigControl.menuMnClick(Sender: TObject);
+var
+   n: Integer;
+   f: TFrequency;
+   m: TMode;
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+
+   n := TMenuItem(Sender).Tag;
+   if FMemEditMode = 1 then begin
+      f := FCurrentRig.CurrentFreqHz;
+      m := FCurrentRig.CurrentMode;
+      FCurrentRig.MemChWrite(n, f, m);
+   end;
+   if FMemEditMode = 2 then begin
+      FCurrentRig.MemChClear(n);
+   end;
+
+   ShowMemCh();
+end;
+
+procedure TRigControl.ShowMemCh();
+var
+   i: Integer;
+   f: TFrequency;
+   m: TMode;
+   b: TBand;
+begin
+   for i := 1 to 5 do begin
+      f := FCurrentRig.MemCh[i].FFreq;
+      m := FCurrentRig.MemCh[i].FMode;
+      b := dmZLogGlobal.BandPlan.FreqToBand(f);
+
+      if f = 0 then begin
+         buttongrpFreqMemory.Items[i - 1].Caption := 'M' + IntToStr(i);
+         buttongrpFreqMemory.Items[i - 1].Hint := '';
+      end
+      else begin
+         buttongrpFreqMemory.Items[i - 1].Caption := 'M' + IntToStr(i) + ':' + BandToText(b);
+         buttongrpFreqMemory.Items[i - 1].Hint := kHzStr(f);
+      end;
+   end;
 end;
 
 end.
