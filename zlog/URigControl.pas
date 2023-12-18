@@ -51,6 +51,7 @@ type
     menuM3: TMenuItem;
     menuM4: TMenuItem;
     menuM5: TMenuItem;
+    buttonMemScan: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -71,6 +72,7 @@ type
     procedure buttonMemoryWriteClick(Sender: TObject);
     procedure menuMnClick(Sender: TObject);
     procedure popupMemoryChPopup(Sender: TObject);
+    procedure buttonMemScanClick(Sender: TObject);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -237,9 +239,16 @@ end;
 procedure TRigControl.PollingTimerTimer(Sender: TObject);
 var
    nRigNo: Integer;
+   fActive: Boolean;
 begin
    nRigNo := TTimer(Sender).Tag;
-   FRigs[nRigNo].PollingProcess();
+   fActive := (FCurrentRig = FRigs[nRigNo]);
+   if (fActive = True) or (FRigs[nRigNo].MemScan = False) then begin
+      FRigs[nRigNo].PollingProcess();
+   end
+   else begin
+      FRigs[nRigNo].MemScanProcess();
+   end;
 end;
 
 procedure TRigControl.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -426,10 +435,12 @@ begin
 
       SetRigName(FCurrentRigNumber, FCurrentRig.Name);
       FCurrentRig.UpdateStatus;
+      buttonMemScan.Down := FCurrentRig.MemScan;
    end
    else begin
       FCurrentRig := nil;
       SetRigName(FCurrentRigNumber, '(none)');
+      buttonMemScan.Down := False;
    end;
 
    Result := True;
@@ -1048,6 +1059,10 @@ begin
    ToggleSwitch1.ThumbColor := clBlack;
    buttonReconnectRigs.Enabled := True;
    buttonJumpLastFreq.Enabled := True;
+   buttonMemoryWrite.Enabled := True;
+   buttonMemoryClear.Enabled := True;
+   buttonMemScan.Enabled := True;
+   buttongrpFreqMemory.Enabled := True;
 
    FFreqLabel[0].Font.Color := clBlack;
    FFreqLabel[1].Font.Color := clBlack;
@@ -1089,6 +1104,11 @@ begin
    buttonOmniRig.Enabled := False;
    buttonReconnectRigs.Enabled := False;
    buttonJumpLastFreq.Enabled := False;
+   buttonMemoryWrite.Enabled := False;
+   buttonMemoryClear.Enabled := False;
+   buttonMemScan.Enabled := False;
+   buttonMemScan.Down := False;
+   buttongrpFreqMemory.Enabled := False;
 end;
 
 procedure TRigControl.ForcePowerOff();
@@ -1116,7 +1136,7 @@ begin
    if FCurrentRig = nil then begin
       Exit;
    end;
-   FCurrentRig.MemChCall(1);
+   FCurrentRig.MemCh[1].Call();
 end;
 
 procedure TRigControl.buttongrpFreqMemoryItems1Click(Sender: TObject);
@@ -1124,7 +1144,7 @@ begin
    if FCurrentRig = nil then begin
       Exit;
    end;
-   FCurrentRig.MemChCall(2);
+   FCurrentRig.MemCh[2].Call();
 end;
 
 procedure TRigControl.buttongrpFreqMemoryItems2Click(Sender: TObject);
@@ -1132,7 +1152,7 @@ begin
    if FCurrentRig = nil then begin
       Exit;
    end;
-   FCurrentRig.MemChCall(3);
+   FCurrentRig.MemCh[3].Call();
 end;
 
 procedure TRigControl.buttongrpFreqMemoryItems3Click(Sender: TObject);
@@ -1140,7 +1160,7 @@ begin
    if FCurrentRig = nil then begin
       Exit;
    end;
-   FCurrentRig.MemChCall(4);
+   FCurrentRig.MemCh[4].Call();
 end;
 
 procedure TRigControl.buttongrpFreqMemoryItems4Click(Sender: TObject);
@@ -1148,7 +1168,7 @@ begin
    if FCurrentRig = nil then begin
       Exit;
    end;
-   FCurrentRig.MemChCall(5);
+   FCurrentRig.MemCh[5].Call();
 end;
 
 procedure TRigControl.buttonMemoryWriteClick(Sender: TObject);
@@ -1160,6 +1180,14 @@ begin
    pt.Y := buttonMemoryWrite.Top;
    pt := ClientToScreen(pt);
    popupMemoryCh.Popup(pt.X, pt.Y);
+end;
+
+procedure TRigControl.buttonMemScanClick(Sender: TObject);
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+   FCurrentRig.MemScan := buttonMemScan.Down;
 end;
 
 procedure TRigControl.popupMemoryChPopup(Sender: TObject);
@@ -1194,10 +1222,10 @@ begin
    if FMemEditMode = 1 then begin
       f := FCurrentRig.CurrentFreqHz;
       m := FCurrentRig.CurrentMode;
-      FCurrentRig.MemChWrite(n, f, m);
+      FCurrentRig.MemCh[n].Write(f, m);
    end;
    if FMemEditMode = 2 then begin
-      FCurrentRig.MemChClear(n);
+      FCurrentRig.MemCh[n].Clear();
    end;
 
    ShowMemCh();
@@ -1220,7 +1248,7 @@ begin
          buttongrpFreqMemory.Items[i - 1].Hint := '';
       end
       else begin
-         buttongrpFreqMemory.Items[i - 1].Caption := 'M' + IntToStr(i) + ':' + BandToText(b);
+         buttongrpFreqMemory.Items[i - 1].Caption := 'M' + IntToStr(i) + ':' + BandToText(b) + ' ' + ModeString[m];
          buttongrpFreqMemory.Items[i - 1].Hint := kHzStr(f);
       end;
    end;

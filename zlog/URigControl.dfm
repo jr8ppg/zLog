@@ -3,7 +3,7 @@ object RigControl: TRigControl
   Top = 35
   Caption = 'Rig Control'
   ClientHeight = 156
-  ClientWidth = 318
+  ClientWidth = 314
   Color = clBtnFace
   Constraints.MinHeight = 195
   Constraints.MinWidth = 330
@@ -26,13 +26,16 @@ object RigControl: TRigControl
   object Panel6: TPanel
     Left = 0
     Top = 30
-    Width = 318
+    Width = 314
     Height = 102
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 106
+    ExplicitWidth = 318
+    DesignSize = (
+      314
+      102)
     object buttonJumpLastFreq: TSpeedButton
-      Left = 264
+      Left = 265
       Top = 21
       Width = 44
       Height = 20
@@ -72,7 +75,40 @@ object RigControl: TRigControl
       Top = 5
       Width = 50
       Height = 15
+      AutoSize = False
       Caption = 'RigLabel'
+    end
+    object buttonMemoryClear: TSpeedButton
+      Tag = 2
+      Left = 215
+      Top = 2
+      Width = 36
+      Height = 20
+      Anchors = [akTop, akRight]
+      Caption = 'MC'
+      OnClick = buttonMemoryWriteClick
+    end
+    object buttonMemoryWrite: TSpeedButton
+      Tag = 1
+      Left = 180
+      Top = 2
+      Width = 36
+      Height = 20
+      Anchors = [akTop, akRight]
+      Caption = 'MW'
+      OnClick = buttonMemoryWriteClick
+    end
+    object buttonMemScan: TSpeedButton
+      Tag = 2
+      Left = 254
+      Top = 2
+      Width = 55
+      Height = 20
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 1
+      Caption = 'M-Scan'
+      OnClick = buttonMemScanClick
     end
     object Panel1: TPanel
       Left = 50
@@ -193,31 +229,14 @@ object RigControl: TRigControl
   object Panel7: TPanel
     Left = 0
     Top = 0
-    Width = 318
+    Width = 314
     Height = 30
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 318
     DesignSize = (
-      318
+      314
       30)
-    object buttonMemoryWrite: TSpeedButton
-      Tag = 1
-      Left = 95
-      Top = 4
-      Width = 36
-      Height = 20
-      Caption = 'MW'
-      OnClick = buttonMemoryWriteClick
-    end
-    object buttonMemoryClear: TSpeedButton
-      Tag = 2
-      Left = 132
-      Top = 4
-      Width = 36
-      Height = 20
-      Caption = 'MC'
-      OnClick = buttonMemoryWriteClick
-    end
     object ToggleSwitch1: TToggleSwitch
       Left = 4
       Top = 4
@@ -229,9 +248,9 @@ object RigControl: TRigControl
       OnClick = ToggleSwitch1Click
     end
     object buttonOmniRig: TButton
-      Left = 179
+      Left = 178
       Top = 3
-      Width = 73
+      Width = 65
       Height = 25
       Anchors = [akTop, akRight]
       Caption = 'Omni-Rig'
@@ -239,9 +258,9 @@ object RigControl: TRigControl
       OnClick = buttonOmniRigClick
     end
     object buttonReconnectRigs: TButton
-      Left = 253
+      Left = 244
       Top = 3
-      Width = 61
+      Width = 65
       Height = 25
       Anchors = [akTop, akRight]
       Caption = 'Reset'
@@ -252,11 +271,11 @@ object RigControl: TRigControl
   object buttongrpFreqMemory: TButtonGroup
     Left = 0
     Top = 132
-    Width = 318
+    Width = 314
     Height = 24
     Align = alBottom
     BorderStyle = bsNone
-    ButtonWidth = 63
+    ButtonWidth = 62
     Items = <
       item
         Caption = 'M1'
@@ -280,6 +299,7 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
+    ExplicitWidth = 333
   end
   object Timer1: TTimer
     Enabled = False
@@ -364,8 +384,8 @@ object RigControl: TRigControl
     AutoHotkeys = maManual
     AutoLineReduction = maManual
     OnPopup = popupMemoryChPopup
-    Left = 160
-    Top = 38
+    Left = 104
+    Top = 65534
     object menuM1: TMenuItem
       Tag = 1
       Caption = 'M1'
