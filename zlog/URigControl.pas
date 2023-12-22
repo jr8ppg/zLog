@@ -6,9 +6,9 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, AnsiStrings, Vcl.Grids, System.Math, System.StrUtils,
   System.SyncObjs, Generics.Collections, Vcl.Buttons, Vcl.WinXCtrls,
+  Vcl.ButtonGroup, Vcl.Menus, System.IniFiles,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB,
-  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft,
-  Vcl.ButtonGroup, Vcl.Menus;
+  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft;
 
 type
   TRigControl = class(TForm)
@@ -34,8 +34,8 @@ type
     Panel4: TPanel;
     dispMode: TLabel;
     Panel5: TPanel;
-    Panel6: TPanel;
-    Panel7: TPanel;
+    panelBody: TPanel;
+    panelHeader: TPanel;
     dispVFO: TLabel;
     dispLastFreq: TLabel;
     ZCom3: TCommPortDriver;
@@ -107,6 +107,8 @@ type
     procedure SetLastFreq(v: TFrequency);
     function GetLastFreq(): TFrequency;
     procedure ShowMemCh();
+    procedure SaveMemCh();
+    procedure LoadMemCh();
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -436,6 +438,7 @@ begin
       SetRigName(FCurrentRigNumber, FCurrentRig.Name);
       FCurrentRig.UpdateStatus;
       buttonMemScan.Down := FCurrentRig.MemScan;
+      LoadMemCh();
    end
    else begin
       FCurrentRig := nil;
@@ -1178,7 +1181,7 @@ begin
    FMemEditMode := TSpeedButton(Sender).Tag;
    pt.X := buttonMemoryWrite.Left + buttonMemoryWrite.Width;
    pt.Y := buttonMemoryWrite.Top;
-   pt := ClientToScreen(pt);
+   pt := panelBody.ClientToScreen(pt);
    popupMemoryCh.Popup(pt.X, pt.Y);
 end;
 
@@ -1219,16 +1222,22 @@ begin
    end;
 
    n := TMenuItem(Sender).Tag;
+
+   // write
    if FMemEditMode = 1 then begin
       f := FCurrentRig.CurrentFreqHz;
       m := FCurrentRig.CurrentMode;
       FCurrentRig.MemCh[n].Write(f, m);
    end;
+
+   // clear
    if FMemEditMode = 2 then begin
       FCurrentRig.MemCh[n].Clear();
    end;
 
    ShowMemCh();
+
+   SaveMemCh();
 end;
 
 procedure TRigControl.ShowMemCh();
@@ -1251,6 +1260,54 @@ begin
          buttongrpFreqMemory.Items[i - 1].Caption := 'M' + IntToStr(i) + ':' + BandToText(b) + ' ' + ModeString[m];
          buttongrpFreqMemory.Items[i - 1].Hint := kHzStr(f);
       end;
+   end;
+end;
+
+procedure TRigControl.SaveMemCh();
+var
+   i: Integer;
+   f: TFrequency;
+   m: TMode;
+   ini: TMemIniFile;
+   strKey: string;
+   fname: string;
+begin
+   fname := ExtractFilePath(Application.ExeName) + 'zlog_rigcontrol.ini';
+   ini := TMemIniFile.Create(fname);
+   try
+      for i := 1 to 5 do begin
+         f := FCurrentRig.MemCh[i].FFreq;
+         m := FCurrentRig.MemCh[i].FMode;
+         strKey := 'M' + IntToStr(i);
+
+         ini.WriteInt64(FCurrentRig.Name, strKey + '_freq', f);
+         ini.WriteInteger(FCurrentRig.Name, strKey + '_mode', Integer(m));
+      end;
+
+      ini.UpdateFile();
+   finally
+      ini.Free();
+   end;
+end;
+
+procedure TRigControl.LoadMemCh();
+var
+   i: Integer;
+   ini: TMemIniFile;
+   strKey: string;
+   fname: string;
+begin
+   fname := ExtractFilePath(Application.ExeName) + 'zlog_rigcontrol.ini';
+   ini := TMemIniFile.Create(fname);
+   try
+      for i := 1 to 5 do begin
+         strKey := 'M' + IntToStr(i);
+
+         FCurrentRig.MemCh[i].FFreq := ini.ReadInt64(FCurrentRig.Name, strKey + '_freq', 0);
+         FCurrentRig.MemCh[i].FMode := TMode(ini.ReadInteger(FCurrentRig.Name, strKey + '_mode', Integer(mCW)));
+      end;
+   finally
+      ini.Free();
    end;
 end;
 

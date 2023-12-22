@@ -23,14 +23,13 @@ object RigControl: TRigControl
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 15
-  object Panel6: TPanel
+  object panelBody: TPanel
     Left = 0
     Top = 30
     Width = 314
     Height = 102
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 318
     DesignSize = (
       314
       102)
@@ -226,14 +225,13 @@ object RigControl: TRigControl
       end
     end
   end
-  object Panel7: TPanel
+  object panelHeader: TPanel
     Left = 0
     Top = 0
     Width = 314
     Height = 30
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 318
     DesignSize = (
       314
       30)
@@ -299,7 +297,6 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
-    ExplicitWidth = 333
   end
   object Timer1: TTimer
     Enabled = False
