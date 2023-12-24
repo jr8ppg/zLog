@@ -221,6 +221,7 @@ type
     FOnWkStatusProc: TWkStatusEvent;
     FOnSpeedChanged: TNotifyEvent;
     FCancelSpeedChangedEvent: Boolean;
+    FOnCommand: TNotifyEvent;
 
     FUsbDetecting: Boolean;
     FUsbif4cwSyncWpm: Boolean;
@@ -350,6 +351,7 @@ type
     property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
+    property OnCommand: TNotifyEvent read FOnCommand write FOnCommand;
     property KeyingPortConfig[Index: Integer]: TPortConfig read GetKeyingPortConfig write SetKeyingPortConfig;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
@@ -459,6 +461,7 @@ begin
    FUseWkOutpSelect := True;
    FOnSpeedChanged := nil;
    FCancelSpeedChangedEvent := False;
+   FOnCommand := nil;
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
    FFixedSpeed := 0;
@@ -1592,6 +1595,12 @@ begin
          $24: begin
             FWkTx := 4;
          end;
+
+         $30: begin
+            if Assigned(FOnCommand) then begin
+               FOnCommand(Self);
+            end;
+         end;
       end;
 
       Inc(cwstrptr);
@@ -2243,6 +2252,9 @@ begin
    FCodeTable[$93][2] := 9;
    FCodeTable[$94][1] := $24;
    FCodeTable[$94][2] := 9;
+
+   FCodeTable[Ord('@')][1] := $30;    { Execute Command }
+   FCodeTable[Ord('@')][2] := 9;
 
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
