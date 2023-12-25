@@ -58,6 +58,7 @@ type
 type
   TdmZLogKeyer = class;
   TWkStatusEvent = procedure(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean) of object;
+  TCommandEvent = procedure(Sender: TObject; nCommand: Integer) of object;
 
   TKeyerMonitorThread = class(TThread)
   private
@@ -221,7 +222,7 @@ type
     FOnWkStatusProc: TWkStatusEvent;
     FOnSpeedChanged: TNotifyEvent;
     FCancelSpeedChangedEvent: Boolean;
-    FOnCommand: TNotifyEvent;
+    FOnCommand: TCommandEvent;
 
     FUsbDetecting: Boolean;
     FUsbif4cwSyncWpm: Boolean;
@@ -351,7 +352,7 @@ type
     property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
     property OnSpeedChanged: TNotifyEvent read FOnSpeedChanged write FOnSpeedChanged;
     property OnWkStatusProc: TWkStatusEvent read FOnWkStatusProc write FOnWkStatusProc;
-    property OnCommand: TNotifyEvent read FOnCommand write FOnCommand;
+    property OnCommand: TCommandEvent read FOnCommand write FOnCommand;
     property KeyingPortConfig[Index: Integer]: TPortConfig read GetKeyingPortConfig write SetKeyingPortConfig;
 
     property Usbif4cwSyncWpm: Boolean read FUsbif4cwSyncWpm write FUsbif4cwSyncWpm;
@@ -1243,12 +1244,25 @@ begin
       tailcwstrptr := 1;
 
       Len := length(SS);
-      for n := 1 to Len do begin
+      n := 1;
+      while n <= Len do begin
+//      for n := 1 to Len do begin
          if SS[n] = ':' then begin { callsign 1st char }
             callsignptr := n;
          end;
 
-         SetCWSendBufChar(b, SS[n]);
+         if SS[n] = '@' then begin
+            FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
+            FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
+            FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
+            SetCWSendBufChar(b, '@');
+            Inc(n, 3)
+         end
+         else begin
+            SetCWSendBufChar(b, SS[n]);
+         end;
+
+         Inc(n);
       end;
 
       SetCWSendBufFinish(b);
@@ -1311,11 +1325,25 @@ begin
 
    CWBufferSync.Enter();
    try
-      for n := 1 to length(SS) do begin
-         if SS[n] = ':' then { callsign 1st char }
+      n := 1;
+      while n <= length(SS) do begin
+//      for n := 1 to length(SS) do begin
+         if SS[n] = ':' then begin { callsign 1st char }
             callsignptr := n;
+         end;
 
-         SetCWSendBufChar(0, SS[n]);
+         if SS[n] = '@' then begin
+            FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
+            FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
+            FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
+            SetCWSendBufChar(0, '@');
+            Inc(n, 3)
+         end
+         else begin
+            SetCWSendBufChar(0, SS[n]);
+         end;
+
+         Inc(n);
       end;
 
       SetCWSendBufFinish(0);
@@ -1375,6 +1403,8 @@ begin
 end;
 
 procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: Longint); stdcall;
+var
+   nCommand: Integer;
 
    procedure Finish();
    begin
@@ -1597,8 +1627,15 @@ begin
          end;
 
          $30: begin
+            Inc(cwstrptr);
+            nCommand := FCWSendBuf[FSelectedBuf, cwstrptr] * 100;
+            Inc(cwstrptr);
+            nCommand := nCommand + FCWSendBuf[FSelectedBuf, cwstrptr] * 10;
+            Inc(cwstrptr);
+            nCommand := nCommand + FCWSendBuf[FSelectedBuf, cwstrptr];
+
             if Assigned(FOnCommand) then begin
-               FOnCommand(Self);
+               FOnCommand(Self, nCommand);
             end;
          end;
       end;
@@ -2254,7 +2291,10 @@ begin
    FCodeTable[$94][2] := 9;
 
    FCodeTable[Ord('@')][1] := $30;    { Execute Command }
-   FCodeTable[Ord('@')][2] := 9;
+   FCodeTable[Ord('@')][2] := 0;
+   FCodeTable[Ord('@')][3] := 0;
+   FCodeTable[Ord('@')][4] := 0;
+   FCodeTable[Ord('@')][5] := 9;
 
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
