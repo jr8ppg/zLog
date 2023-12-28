@@ -382,6 +382,7 @@ type
     property UseWkOutpSelect: Boolean read FUseWkOutpSelect write FUseWkOutpSelect;
     property UseWkIgnoreSpeedPot: Boolean read FUseWkIgnoreSpeedPot write FUseWkIgnoreSpeedPot;
     property WinKeyerRevision: Integer read FWkRevision;
+    procedure WinKeyerSendCharEx(C: Char);
     procedure WinKeyerSendChar(C: Char);
     procedure WinKeyerSendStr(nID: Integer; S: string);
     procedure WinKeyerSendStr2(S: string);
@@ -1132,7 +1133,7 @@ begin
             FWkMessageIndex := 1;
             FWkMessageStr := S;
             C := FWkMessageStr[FWkMessageIndex];
-            WinKeyerSendChar(C);
+            WinKeyerSendCharEx(C);
          end;
       end
       else begin
@@ -3797,6 +3798,27 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.WinKeyerSendCharEx(C: Char);
+var
+   nCommand: Integer;
+begin
+   if C = '@' then begin
+      nCommand := StrToIntDef(FWkMessageStr[FWkMessageIndex + 1], 0) * 100;
+      nCommand := nCommand + StrToIntDef(FWkMessageStr[FWkMessageIndex + 2], 0) * 10;
+      nCommand := nCommand + StrToIntDef(FWkMessageStr[FWkMessageIndex + 3], 0);
+      Inc(FWkMessageIndex, 3);
+
+      if Assigned(FOnCommand) then begin
+         FOnCommand(Self, nCommand);
+      end;
+
+      PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+   end
+   else begin
+      WinKeyerSendChar(C);
+   end;
+end;
+
 //
 // WinKeyerメッセージ送信（未使用）
 // 一度に送るため途中訂正不可
@@ -3863,7 +3885,7 @@ begin
       end;
    end;
 
-   WinKeyerSendChar(C);
+   WinKeyerSendCharEx(C);
 end;
 
 function TdmZLogKeyer.WinKeyerBuildMessage(S: string): string;
@@ -4193,7 +4215,7 @@ begin
          Inc(FWkMessageIndex);
          if FWkMessageIndex <= Length(FWkMessageStr) then begin
             C := FWkMessageStr[FWkMessageIndex];
-            WinKeyerSendChar(C);
+            WinKeyerSendCharEx(C);
          end
          else begin
             FWkSendStatus := wkssNone;
