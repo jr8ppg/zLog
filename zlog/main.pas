@@ -560,6 +560,7 @@ type
     menuShowTx9: TMenuItem;
     CreateCabrillo: TMenuItem;
     menuHardwareSettings: TMenuItem;
+    actionLogging: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -853,6 +854,7 @@ type
     procedure View1Click(Sender: TObject);
     procedure CreateCabrilloClick(Sender: TObject);
     procedure menuHardwareSettingsClick(Sender: TObject);
+    procedure actionLoggingExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -10208,6 +10210,12 @@ begin
    menuShowThisTxOnly.Checked := not menuShowThisTxOnly.Checked;
    menuShowOnlySpecifiedTX.Checked := False;
    GridRefreshScreen();
+end;
+
+// #163 QSO Complete (logging only)
+procedure TMainForm.actionLoggingExecute(Sender: TObject);
+begin
+   LogButtonClick(Self);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
