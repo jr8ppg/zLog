@@ -1247,7 +1247,6 @@ begin
       Len := length(SS);
       n := 1;
       while n <= Len do begin
-//      for n := 1 to Len do begin
          if SS[n] = ':' then begin { callsign 1st char }
             callsignptr := n;
          end;
@@ -1328,7 +1327,6 @@ begin
    try
       n := 1;
       while n <= length(SS) do begin
-//      for n := 1 to length(SS) do begin
          if SS[n] = ':' then begin { callsign 1st char }
             callsignptr := n;
          end;

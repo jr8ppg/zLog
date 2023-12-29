@@ -1036,6 +1036,7 @@ type
     procedure TerminateSuperCheckDataLoad();
     procedure OnSPCMenuItemCick(Sender: TObject);
 
+    procedure DoCwCommandProc(Sebder: TObject; nCommand: Integer);
     procedure DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
     procedure DoCwSpeedChange(Sender: TObject);
     procedure DoVFOChange(Sender: TObject);
@@ -2283,7 +2284,7 @@ begin
          dmZLogKeyer.OnOneCharSentProc := OnOneCharSentProc;
          dmZLogKeyer.OnSendFinishProc := OnPlayMessageFinished;
          dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
-//         dmZLogKeyer.OnSendRepeatEvent := DoSendRepeatProc;
+         dmZLogKeyer.OnCommand := DoCwCommandProc;
          dmZLogKeyer.InitializeBGK(mSec);
       end;
    end;
@@ -11555,6 +11556,23 @@ begin
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETPTT, Integer(ptt), 0);
    end;
+end;
+
+// CW電文中のコマンド処理イベント(@001～)
+procedure TMainForm.DoCwCommandProc(Sebder: TObject; nCommand: Integer);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** DoCwCommandProc(' + IntToStr(nCommand) + ') ***'));
+   {$ENDIF}
+
+   if ActionList1.ActionCount <= nCommand then begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** Command no too large ***'));
+      {$ENDIF}
+      Exit;
+   end;
+
+   ActionList1.Actions[nCommand].Execute();
 end;
 
 procedure TMainForm.checkUseRig3Click(Sender: TObject);
