@@ -10215,7 +10215,9 @@ end;
 // #163 QSO Complete (logging only)
 procedure TMainForm.actionLoggingExecute(Sender: TObject);
 begin
-   LogButtonClick(Self);
+   if (CurrentQSO.Callsign <> '') and (CurrentQSO.NrRcvd <> '') then begin
+      LogButtonProc(FCurrentRx, CurrentQSO);
+   end;
 end;
 
 procedure TMainForm.RestoreWindowsPos();
