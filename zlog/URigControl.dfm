@@ -70,9 +70,9 @@ object RigControl: TRigControl
       Caption = 'Current Freq.'
     end
     object RigLabel: TLabel
-      Left = 8
+      Left = 6
       Top = 5
-      Width = 50
+      Width = 171
       Height = 15
       AutoSize = False
       Caption = 'RigLabel'
