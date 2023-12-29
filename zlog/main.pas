@@ -2278,18 +2278,15 @@ begin
       end;
    end;
 
-   if (Pos('/NOBGK', UpperCase(S)) = 0) then begin
-      if GetAsyncKeyState(VK_SHIFT) = 0 then begin
-         dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
-         dmZLogKeyer.OnPaddle := OnPaddle;
-         dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
-         dmZLogKeyer.OnOneCharSentProc := OnOneCharSentProc;
-         dmZLogKeyer.OnSendFinishProc := OnPlayMessageFinished;
-         dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
-         dmZLogKeyer.OnCommand := DoCwCommandProc;
-         dmZLogKeyer.InitializeBGK(mSec);
-      end;
-   end;
+   // initialize keyer
+   dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
+   dmZLogKeyer.OnPaddle := OnPaddle;
+   dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
+   dmZLogKeyer.OnOneCharSentProc := OnOneCharSentProc;
+   dmZLogKeyer.OnSendFinishProc := OnPlayMessageFinished;
+   dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
+   dmZLogKeyer.OnCommand := DoCwCommandProc;
+   dmZLogKeyer.InitializeBGK(mSec);
 
    RenewCWToolBar;
    LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
