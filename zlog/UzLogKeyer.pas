@@ -2313,6 +2313,8 @@ begin
    ControlPTT(0, False);
    ControlPTT(1, False);
    ControlPTT(2, False);
+   ControlPTT(3, False);
+   ControlPTT(4, False);
 
    if Assigned(FMonitorThread) then begin
       FMonitorThread.Terminate();
@@ -2340,10 +2342,14 @@ begin
    CW_OFF(0);
    CW_OFF(1);
    CW_OFF(2);
+   CW_OFF(3);
+   CW_OFF(4);
 
    KeyingPort[0] := tkpNone;
    KeyingPort[1] := tkpNone;
    KeyingPort[2] := tkpNone;
+   KeyingPort[3] := tkpNone;
+   KeyingPort[4] := tkpNone;
 
    if ZComTxRigSelect.Connected then begin
       ZComTxRigSelect.Disconnect();
