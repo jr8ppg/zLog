@@ -45,6 +45,10 @@ type
     procedure StartPolling();
     procedure StopRequest(); override;
 
+    procedure SetWPM(wpm: Integer); override;
+    procedure PlayMessageCW(msg: string); override;
+    procedure StopMessageCW(); override;
+
     property UseTransceiveMode: Boolean read FUseTransceiveMode write FUseTransceiveMode;
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
@@ -591,6 +595,48 @@ begin
    FCommThread.WaitFor();
 end;
 
+// 14 0C 00 00
+//       02 55
+procedure TICOM.SetWPM(wpm: Integer);
+var
+   a: Extended;
+   b: Integer;
+   S: string;
+begin
+   if FPlayMessageCwSupported = False then begin
+      Exit;
+   end;
+
+   a := (48 - 6) / 256;
+   b := Trunc( wpm / (a * 6) );
+   S := RightStr('0000' + IntToStr(b), 4);
+   ICOMWriteData(AnsiCHar($14) + AnsiChar($0c) + AnsiChar(StrToIntDef(Copy(S, 1, 2), 0)) + AnsiChar(StrToIntDef(Copy(S, 3, 2), 0)));
+end;
+
+procedure TICOM.PlayMessageCW(msg: string);
+var
+   CMD: AnsiString;
+begin
+   if FPlayMessageCwSupported = False then begin
+      Exit;
+   end;
+
+   if Length(msg) > 30 then begin
+      Exit;
+   end;
+
+   CMD := AnsiChar($17) + AnsiString(msg);
+   ICOMWriteData(CMD);
+end;
+
+procedure TICOM.StopMessageCW();
+begin
+   if FPlayMessageCwSupported = False then begin
+      Exit;
+   end;
+
+   ICOMWriteData(AnsiChar($17) + AnsiChar($ff));
+end;
 
 { TIC756 }
 

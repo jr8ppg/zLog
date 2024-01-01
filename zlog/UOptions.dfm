@@ -24,7 +24,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetRigControl
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     object tabsheetOperateStyle: TTabSheet
@@ -3171,13 +3171,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono Italic'
+          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 45
+          ItemIndex = 77
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

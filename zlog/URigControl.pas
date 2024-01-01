@@ -635,6 +635,8 @@ begin
             TICOM(rig).RigAddr := ICOMLIST[i].addr;
             TICOM(rig).RitCtrlSupported := ICOMLIST[i].RitCtrl;
             TICOM(rig).XitCtrlSupported := ICOMLIST[i].XitCtrl;
+            TICOM(rig).PlayMessageCwSupported := ICOMLIST[i].PlayCW;
+            TICOM(rig).PlayMessagePhSupported := ICOMLIST[i].PlayPh;
 
             if Pos('IC-731', rname) > 0 then begin
                TICOM(rig).Freq4Bytes := True;

@@ -63,6 +63,9 @@ type
 
     FStopRequest: Boolean;
 
+    FPlayMessageCwSupported: Boolean;
+    FPlayMessagePhSupported: Boolean;
+
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
 
@@ -121,6 +124,10 @@ type
     procedure SetBaudRate(i : integer);
     procedure StopRequest(); virtual;
 
+    procedure SetWPM(wpm: Integer); virtual;
+    procedure PlayMessageCW(msg: string); virtual;
+    procedure StopMessageCW(); virtual;
+
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
     property PollingTimer: TTimer read FPollingTimer write FPollingTimer;
@@ -143,6 +150,9 @@ type
     property Rit: Boolean read FRit write SetRit;
     property Xit: Boolean read FXit write SetXit;
     property RitOffset: Integer read FRitOffset write SetRitOffset;
+
+    property PlayMessageCwSupported: Boolean read FPlayMessageCwSupported write FPlayMessageCwSupported;
+    property PlayMessagePhSupported: Boolean read FPlayMessagePhSupported write FPlayMessagePhSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
 
@@ -303,6 +313,9 @@ begin
    FOnError := nil;
 
    FStopRequest := False;
+
+   FPlayMessageCwSupported := False;
+   FPlayMessagePhSupported := False;
 
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;
@@ -527,6 +540,21 @@ end;
 procedure TRig.StopRequest();
 begin
    FStopRequest := True;
+end;
+
+procedure TRig.SetWPM(wpm: Integer);
+begin
+//
+end;
+
+procedure TRig.PlayMessageCW(msg: string);
+begin
+//
+end;
+
+procedure TRig.StopMessageCW();
+begin
+//
 end;
 
 function TRig.Selected: Boolean;

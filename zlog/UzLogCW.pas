@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.StrUtils,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, UOptions, URigCtrlLib;
 
 const tabstate_normal = 0;
       tabstate_tabpressedbutnotedited = 1;
@@ -229,6 +229,8 @@ begin
 end;
 
 procedure zLogSendStr(nID: Integer; S: string; C: string);
+var
+   rig: TRig;
 begin
    dmZLogKeyer.ResetSpeed();
    zLogSetSendText(nID, S, C);
@@ -242,6 +244,13 @@ begin
       dmZLogKeyer.WinKeyerClear();
       dmZLogKeyer.ControlPTT(nID, True);
       dmZLogKeyer.WinKeyerSendStr2(S);
+   end
+   else if dmZLogGlobal.Settings.FRigControl[nID].FKeyingPort = Integer(tkpRIG) then begin
+      rig := MainForm.RigControl.Rigs[nId];
+      if rig <> nil then begin
+         rig.SetWPM(dmZLogKeyer.WPM);
+         rig.PlayMessageCW(S);
+      end;
    end
    else begin
       dmZLogKeyer.PauseCW;

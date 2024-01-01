@@ -49,7 +49,7 @@ type
                  tkpSerial6, tkpSerial7, tkpSerial8, tkpSerial9, tkpSerial10,
                  tkpSerial11, tkpSerial12, tkpSerial13, tkpSerial14, tkpSerial15,
                  tkpSerial16, tkpSerial17, tkpSerial18, tkpSerial19, tkpSerial20,
-                 tkpUSB);
+                 tkpUSB, tkpRIG);
 
 type
   CodeData = array[1..codemax] of byte;

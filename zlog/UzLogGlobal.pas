@@ -3250,6 +3250,12 @@ begin
    O.Keying := True;
    list.Add(O);
 
+   O := TCommPort.Create();
+   O.Number := 22;
+   O.Name := 'RIG';
+   O.Keying := True;
+   list.Add(O);
+
    Comparer := TCommPortComparer.Create();
    list.Sort(Comparer);
    Comparer.Free();
