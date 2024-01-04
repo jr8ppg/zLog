@@ -246,7 +246,7 @@ begin
       dmZLogKeyer.WinKeyerSendStr2(S);
    end
    else if dmZLogGlobal.Settings.FRigControl[nID].FKeyingPort = Integer(tkpRIG) then begin
-      rig := MainForm.RigControl.Rigs[nId];
+      rig := MainForm.RigControl.Rigs[nID];
       if rig <> nil then begin
          rig.SetWPM(dmZLogKeyer.WPM);
          rig.PlayMessageCW(S);

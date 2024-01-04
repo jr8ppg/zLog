@@ -4554,14 +4554,27 @@ begin
 end;
 
 procedure TMainForm.CWStopButtonClick(Sender: TObject);
+var
+   rig: TRig;
+   nID: Integer;
 begin
 //   CancelCqRepeat();
    if dmZLogKeyer.IsPlaying = False then begin
       Exit;
    end;
 
-   dmZLogKeyer.ClrBuffer;
-   dmZLogKeyer.PauseCW();
+   nID := FCurrentTx;
+   if dmZLogGlobal.Settings.FRigControl[nID].FKeyingPort = Integer(tkpRIG) then begin
+      rig := MainForm.RigControl.Rigs[nID];
+      if rig <> nil then begin
+         rig.StopMessageCW();
+      end;
+   end
+   else begin
+      dmZLogKeyer.ClrBuffer;
+      dmZLogKeyer.PauseCW();
+   end;
+
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
    FCQRepeatPlaying := False;
