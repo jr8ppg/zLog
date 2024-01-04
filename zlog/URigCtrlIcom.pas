@@ -602,6 +602,8 @@ var
    a: Extended;
    b: Integer;
    S: string;
+   X1: Byte;
+   X2: Byte;
 begin
    if FPlayMessageCwSupported = False then begin
       Exit;
@@ -610,7 +612,13 @@ begin
    a := (48 - 6) / 256;
    b := Trunc( wpm / (a * 6) );
    S := RightStr('0000' + IntToStr(b), 4);
-   ICOMWriteData(AnsiCHar($14) + AnsiChar($0c) + AnsiChar(StrToIntDef(Copy(S, 1, 2), 0)) + AnsiChar(StrToIntDef(Copy(S, 3, 2), 0)));
+
+   X1 := StrToIntDef(Copy(S, 1, 1), 0) shl 4;
+   X1 := X1 or StrToIntDef(Copy(S, 2, 1), 0);
+   X2 := StrToIntDef(Copy(S, 3, 1), 0) shl 4;
+   X2 := X2 or StrToIntDef(Copy(S, 4, 1), 0);
+
+   ICOMWriteData(AnsiChar($14) + AnsiChar($0c) + AnsiChar(X1) + AnsiChar(X2));
 end;
 
 procedure TICOM.PlayMessageCW(msg: string);

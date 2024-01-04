@@ -1162,11 +1162,8 @@ var
 
          if Assigned(K) then begin
             KeyPort := TCommPort(K.Items.Objects[K.ItemIndex]).Number;
-            if (KeyPort >= 1) and (KeyPort <= 20) then begin
+            if (KeyPort >= 1) and (KeyPort <= 22) then begin
                Settings.FRigControl[no].FKeyingPort := KeyPort;
-            end
-            else if KeyPort = 21 then begin    // USB
-               Settings.FRigControl[no].FKeyingPort := 21;
             end
             else begin
                Settings.FRigControl[no].FKeyingPort := 0;

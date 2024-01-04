@@ -250,6 +250,7 @@ begin
       if rig <> nil then begin
          rig.SetWPM(dmZLogKeyer.WPM);
          rig.PlayMessageCW(S);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
       end;
    end
    else begin
