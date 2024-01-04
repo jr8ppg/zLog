@@ -4565,7 +4565,7 @@ begin
 
    nID := FCurrentTx;
    if dmZLogGlobal.Settings.FRigControl[nID].FKeyingPort = Integer(tkpRIG) then begin
-      rig := MainForm.RigControl.Rigs[nID];
+      rig := MainForm.RigControl.Rigs[nID + 1];
       if rig <> nil then begin
          rig.StopMessageCW();
       end;

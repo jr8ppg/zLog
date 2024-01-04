@@ -2099,7 +2099,7 @@ begin
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
    // RIGコントロールと同じポートの場合は無しとする
-   for i := 0 to 1 do begin
+   for i := 0 to 3 do begin
       if (Settings.FRigControl[i + 1].FControlPort <> Settings.FRigControl[i + 1].FKeyingPort) then begin
          dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FKeyingPort);
       end
@@ -2107,7 +2107,7 @@ begin
          dmZLogKeyer.KeyingPort[i] := tkpNone;
       end;
    end;
-   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings.FRigControl[5].FKeyingPort);
+   dmZLogKeyer.KeyingPort[4] := TKeyingPort(Settings.FRigControl[5].FKeyingPort);
    dmZLogKeyer.KeyingPortConfig[0] := Settings.FRigControl[1].FKeyingPortConfig;
    dmZLogKeyer.KeyingPortConfig[1] := Settings.FRigControl[2].FKeyingPortConfig;
    dmZLogKeyer.KeyingPortConfig[2] := Settings.FRigControl[3].FKeyingPortConfig;
