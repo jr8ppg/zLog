@@ -1249,6 +1249,10 @@ var
    m: TMode;
    b: TBand;
 begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+
    for i := 1 to 5 do begin
       f := FCurrentRig.MemCh[i].FFreq;
       m := FCurrentRig.MemCh[i].FMode;
@@ -1274,6 +1278,10 @@ var
    strKey: string;
    fname: string;
 begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+
    fname := ExtractFilePath(Application.ExeName) + 'zlog_rigcontrol.ini';
    ini := TMemIniFile.Create(fname);
    try
@@ -1299,6 +1307,10 @@ var
    strKey: string;
    fname: string;
 begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+
    fname := ExtractFilePath(Application.ExeName) + 'zlog_rigcontrol.ini';
    ini := TMemIniFile.Create(fname);
    try
