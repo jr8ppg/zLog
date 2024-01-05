@@ -5830,6 +5830,7 @@ begin
    if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       if FCurrentRx <> (FCurrentRigSet - 1) then begin
          SwitchRig(FCurrentRigSet);
+         FCQLoopStartRig := FCurrentRigSet;
       end;
    end;
 
@@ -9350,6 +9351,7 @@ begin
          rig := FCurrentRigSet;
          rig := GetNextRigID(rig - 1) + 1;
          SwitchRig(rig);
+         FCQLoopStartRig := rig;
       end
       else begin
          // RXÇ…TXÇçáÇÌÇπÇÈ
