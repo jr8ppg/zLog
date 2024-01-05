@@ -9288,6 +9288,7 @@ begin
          rig := FCurrentRigSet;
          rig := GetNextRigID(rig - 1) + 1;
          SwitchRig(rig);
+         FCQLoopStartRig := rig;
       end
       else begin
          // RXÇ…TXÇçáÇÌÇπÇÈ
