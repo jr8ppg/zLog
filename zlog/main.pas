@@ -8414,7 +8414,7 @@ begin
 
    case mode of
       mCW: begin
-         nID := FCurrentTx;
+         nID := GetTxRigID();
 
          // CWポート設定チェック
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
@@ -9170,7 +9170,7 @@ var
 begin
    if CurrentQSO.Mode = mCW then begin
       FCtrlZCQLoop := True;
-      nID := FCurrentTx;
+      nID := GetTxRigID();
       dmZLogKeyer.TuneOn(nID);
    end;
 end;
