@@ -7464,6 +7464,10 @@ object MainForm: TMainForm
       Caption = #12371#12398'TX'#12398#12415#12434#34920#31034
       OnExecute = actionShowCurrentTxOnlyExecute
     end
+    object actionLogging: TAction
+      Caption = 'actionLogging'
+      OnExecute = actionLoggingExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

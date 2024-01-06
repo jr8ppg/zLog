@@ -182,7 +182,7 @@ object formOptions: TformOptions
           object Label44: TLabel
             Left = 12
             Top = 23
-            Width = 96
+            Width = 112
             Height = 13
             Caption = 'CQ rpt. interval (sec)'
           end
@@ -194,9 +194,9 @@ object formOptions: TformOptions
             Caption = 'Message Number'
           end
           object Label101: TLabel
-            Left = 188
+            Left = 187
             Top = 23
-            Width = 71
+            Width = 94
             Height = 13
             Caption = 'After Delay(ms)'
           end
@@ -214,14 +214,14 @@ object formOptions: TformOptions
           object panelSo2rMessageNumber: TPanel
             Left = 116
             Top = 46
-            Width = 221
+            Width = 253
             Height = 23
             BevelOuter = bvNone
             TabOrder = 2
             object radioSo2rCqMsgBankA: TRadioButton
               Left = 12
               Top = 4
-              Width = 53
+              Width = 66
               Height = 17
               Caption = 'Bank-A'
               Checked = True
@@ -229,15 +229,15 @@ object formOptions: TformOptions
               TabStop = True
             end
             object radioSo2rCqMsgBankB: TRadioButton
-              Left = 76
+              Left = 84
               Top = 4
-              Width = 53
+              Width = 66
               Height = 17
               Caption = 'Bank-B'
               TabOrder = 1
             end
             object comboSo2rCqMsgNumber: TComboBox
-              Left = 148
+              Left = 168
               Top = 2
               Width = 37
               Height = 21
@@ -261,7 +261,7 @@ object formOptions: TformOptions
             end
           end
           object editSo2rRigSwAfterDelay: TEdit
-            Left = 264
+            Left = 284
             Top = 20
             Width = 41
             Height = 21
@@ -292,9 +292,9 @@ object formOptions: TformOptions
         TabOrder = 0
         object Label1: TLabel
           Left = 92
-          Top = 32
+          Top = 28
           Width = 222
-          Height = 32
+          Height = 30
           AutoSize = False
           Caption = 
             'Select for Single OP one radio, 2TX, Multi-TX. This is the class' +
@@ -303,9 +303,9 @@ object formOptions: TformOptions
         end
         object Label2: TLabel
           Left = 92
-          Top = 79
+          Top = 75
           Width = 313
-          Height = 32
+          Height = 30
           AutoSize = False
           Caption = 
             'Select for Single OP two radio. In this style, the input fields ' +
@@ -357,29 +357,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 0
           OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
         end
         object buttonPortConfigCW5: TButton
           Tag = 5
@@ -457,28 +434,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 0
           OnChange = comboRigControlChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
         end
         object comboRig2Speed: TComboBox
           Left = 81
@@ -510,29 +465,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 5
           OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
         end
         object buttonPortConfigCW2: TButton
           Tag = 2
@@ -628,28 +560,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 0
           OnChange = comboRigControlChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
         end
         object comboRig1Speed: TComboBox
           Left = 81
@@ -681,29 +591,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 5
           OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
         end
         object checkRig1Xvt: TCheckBox
           Tag = 1
@@ -821,28 +708,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 0
           OnChange = comboRigControlChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
         end
         object comboRig4Speed: TComboBox
           Left = 81
@@ -874,29 +739,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 5
           OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
         end
         object buttonPortConfigCW4: TButton
           Tag = 4
@@ -1003,28 +845,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 0
           OnChange = comboRigControlChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20')
         end
         object comboRig3Speed: TComboBox
           Left = 81
@@ -1056,29 +876,6 @@ object formOptions: TformOptions
           Style = csDropDownList
           TabOrder = 5
           OnChange = comboCwPttPortChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'COM7'
-            'COM8'
-            'COM9'
-            'COM10'
-            'COM11'
-            'COM12'
-            'COM13'
-            'COM14'
-            'COM15'
-            'COM16'
-            'COM17'
-            'COM18'
-            'COM19'
-            'COM20'
-            'USB')
         end
         object buttonPortConfigCW3: TButton
           Tag = 3
@@ -2543,7 +2340,7 @@ object formOptions: TformOptions
         object checkUsbif4cwSyncWpm: TCheckBox
           Left = 8
           Top = 18
-          Width = 82
+          Width = 126
           Height = 17
           Caption = 'Sync WPM'
           TabOrder = 0
@@ -2551,7 +2348,7 @@ object formOptions: TformOptions
         object checkGen3MicSelect: TCheckBox
           Left = 140
           Top = 18
-          Width = 149
+          Width = 245
           Height = 17
           Caption = 'Select mic input for Gen.3'
           TabOrder = 1
@@ -2559,7 +2356,7 @@ object formOptions: TformOptions
         object checkUsbif4cwUsePaddle: TCheckBox
           Left = 8
           Top = 42
-          Width = 136
+          Width = 296
           Height = 17
           Caption = 'Use paddle (V1 only)'
           TabOrder = 2
@@ -2575,7 +2372,7 @@ object formOptions: TformOptions
         object checkUseWinKeyer: TCheckBox
           Left = 8
           Top = 18
-          Width = 89
+          Width = 126
           Height = 17
           Caption = 'Use WinKeyer'
           TabOrder = 0
@@ -2584,7 +2381,7 @@ object formOptions: TformOptions
         object checkWk9600: TCheckBox
           Left = 140
           Top = 18
-          Width = 89
+          Width = 118
           Height = 17
           Caption = 'WK 9600bps'
           TabOrder = 1
@@ -2592,7 +2389,7 @@ object formOptions: TformOptions
         object checkWkOutportSelect: TCheckBox
           Left = 8
           Top = 42
-          Width = 112
+          Width = 126
           Height = 17
           Caption = 'Use Out port Select'
           TabOrder = 2
@@ -2600,7 +2397,7 @@ object formOptions: TformOptions
         object checkWkIgnoreSpeedPot: TCheckBox
           Left = 140
           Top = 42
-          Width = 105
+          Width = 118
           Height = 17
           Caption = 'Ignore Speed Pot'
           TabOrder = 3
@@ -2608,7 +2405,7 @@ object formOptions: TformOptions
         object checkWkAlways9600: TCheckBox
           Left = 264
           Top = 18
-          Width = 89
+          Width = 129
           Height = 17
           Caption = 'Always 9600bps'
           TabOrder = 4
@@ -2715,7 +2512,7 @@ object formOptions: TformOptions
           object checkAntiZeroinXitOn2: TCheckBox
             Left = 10
             Top = 41
-            Width = 119
+            Width = 143
             Height = 17
             Caption = 'XIT ON (VFO)'
             TabOrder = 1
@@ -2723,7 +2520,7 @@ object formOptions: TformOptions
           object checkAntiZeroinStopCq: TCheckBox
             Left = 10
             Top = 64
-            Width = 73
+            Width = 143
             Height = 17
             Caption = 'Stop CQ'
             TabOrder = 2
@@ -2731,7 +2528,7 @@ object formOptions: TformOptions
           object checkAntiZeroinAutoCancel: TCheckBox
             Left = 10
             Top = 85
-            Width = 90
+            Width = 143
             Height = 17
             Caption = 'Auto Cancel'
             TabOrder = 3
@@ -2770,15 +2567,15 @@ object formOptions: TformOptions
         Caption = 'General settings'
         TabOrder = 2
         object Label45: TLabel
-          Left = 23
-          Top = 116
-          Width = 114
+          Left = 8
+          Top = 114
+          Width = 220
           Height = 13
           Caption = 'Send current freq. every'
         end
         object Label46: TLabel
           Left = 203
-          Top = 116
+          Top = 133
           Width = 20
           Height = 13
           Caption = 'sec.'
@@ -2820,7 +2617,7 @@ object formOptions: TformOptions
         end
         object checkIgnoreRigMode: TCheckBox
           Left = 8
-          Top = 140
+          Top = 156
           Width = 141
           Height = 18
           Caption = 'Ignore rig mode'
@@ -2828,7 +2625,7 @@ object formOptions: TformOptions
         end
         object SendFreqEdit: TEdit
           Left = 146
-          Top = 113
+          Top = 130
           Width = 35
           Height = 21
           Hint = 'Only when using Z-Server network'
@@ -2840,7 +2637,7 @@ object formOptions: TformOptions
         end
         object updownSendFreqInterval: TUpDown
           Left = 181
-          Top = 113
+          Top = 130
           Width = 16
           Height = 21
           Associate = SendFreqEdit
@@ -2868,7 +2665,7 @@ object formOptions: TformOptions
           Caption = 'PacketCluster'
         end
         object Port: TLabel
-          Left = 112
+          Left = 134
           Top = 14
           Width = 19
           Height = 13
@@ -2889,7 +2686,7 @@ object formOptions: TformOptions
           Caption = 'Z-Link PC Name'
         end
         object ClusterCombo: TComboBox
-          Left = 96
+          Left = 118
           Top = 28
           Width = 73
           Height = 21
@@ -2907,7 +2704,7 @@ object formOptions: TformOptions
             'TELNET')
         end
         object buttonClusterSettings: TButton
-          Left = 179
+          Left = 201
           Top = 28
           Width = 102
           Height = 21
@@ -2916,7 +2713,7 @@ object formOptions: TformOptions
           OnClick = buttonClusterSettingsClick
         end
         object ZLinkCombo: TComboBox
-          Left = 96
+          Left = 118
           Top = 55
           Width = 73
           Height = 21
@@ -2928,7 +2725,7 @@ object formOptions: TformOptions
             'TELNET')
         end
         object buttonZLinkSettings: TButton
-          Left = 179
+          Left = 201
           Top = 55
           Width = 102
           Height = 21
@@ -2937,14 +2734,14 @@ object formOptions: TformOptions
           OnClick = buttonZLinkSettingsClick
         end
         object editZLinkPcName: TEdit
-          Left = 96
+          Left = 118
           Top = 84
           Width = 101
           Height = 21
           TabOrder = 4
         end
         object checkZLinkSyncSerial: TCheckBox
-          Left = 210
+          Left = 232
           Top = 86
           Width = 91
           Height = 17
@@ -2953,7 +2750,7 @@ object formOptions: TformOptions
           OnClick = PTTEnabledCheckBoxClick
         end
         object buttonSpotterList: TButton
-          Left = 290
+          Left = 312
           Top = 28
           Width = 102
           Height = 21
@@ -3171,13 +2968,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
+          FontName = 'Fira Code Retina'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 77
+          ItemIndex = 69
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

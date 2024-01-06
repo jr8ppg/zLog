@@ -20,8 +20,8 @@ type
 type
   TPortAction = ( paNone = 0, paPtt, paKey, paAlwaysOn, paAlwaysOff, paHandshake );
 
-const
-  PortActionList: string = 'None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake';
+resourcestring
+  PortActionList = 'None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake';
 
 const
   HiBand = b10g;

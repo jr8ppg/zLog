@@ -480,34 +480,6 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
   );
 
-resourcestring
-  // COMポート設定
-  COM_PORT_SETTING = 'COM port settings';
-
-  // TELNET設定
-  TELNET_SETTING = 'TELNET settings';
-
-  // SuperCheck用のファイルが保存されているフォルダを選択して下さい
-  SELECT_SPC_FOLDER = 'Select the folder where the files for SuperCheck';
-
-  // フォルダの参照
-  SELECT_FOLDER = 'Select folder';
-
-  // オフセット周波数を kHz で入力してください
-  PLEASE_INPUT_OFFSET_FREQ = 'Please input the offset frequency in kHz';
-
-  // プラグインのフォルダが変更されました。インストールされたプラグインは無効になります。よろしいですか？
-  Installed_Plugins_Disabled = 'Plugins folder changed. Installed plugins will be disabled. Are you sure?';
-
-  // 以降のバンドも同じ設定に変更しますか？
-  DoYouWantTheFollowingBandsToHaveTheSameSettins = 'Do you want the following bands to have the same settings?';
-
-  // zLogルートフォルダはフルパスで入力して下さい。
-  EnterTheFullPathOfRootFolder = 'Enter the full path of the zLog root folder';
-
-  // zLogルートフォルダが存在しません
-  zLogRootFolderNotExist = 'zLog root folder does not exist';
-
 implementation
 
 uses Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet, UPortConfigDialog,

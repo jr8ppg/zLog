@@ -47,11 +47,6 @@ object formPortConfig: TformPortConfig
       Height = 21
       Style = csDropDownList
       TabOrder = 0
-      Items.Strings = (
-        'PTT'
-        'KEY'
-        'Always ON'
-        'Always OFF')
     end
     object comboDtr: TComboBox
       Left = 64
@@ -60,11 +55,6 @@ object formPortConfig: TformPortConfig
       Height = 21
       Style = csDropDownList
       TabOrder = 1
-      Items.Strings = (
-        'PTT'
-        'KEY'
-        'Always ON'
-        'Always OFF')
     end
   end
   object buttonOK: TButton
@@ -77,7 +67,6 @@ object formPortConfig: TformPortConfig
     Default = True
     ModalResult = 1
     TabOrder = 1
-    ExplicitLeft = 208
   end
   object buttonCancel: TButton
     Left = 194
@@ -89,6 +78,5 @@ object formPortConfig: TformPortConfig
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 2
-    ExplicitLeft = 208
   end
 end

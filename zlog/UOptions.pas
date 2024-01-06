@@ -844,6 +844,7 @@ begin
          checkWk9600.Enabled := False;
          checkWkOutportSelect.Enabled := False;
          checkWkIgnoreSpeedPot.Enabled := False;
+         checkWkAlways9600.Enabled := False;
       end;
       checkUseWinKeyer.Checked := False;
       FKeyingPortConfig[rigno].Enabled := False;
@@ -853,6 +854,7 @@ begin
       checkWk9600.Enabled := True;
       checkWkOutportSelect.Enabled := True;
       checkWkIgnoreSpeedPot.Enabled := True;
+      checkWkAlways9600.Enabled := True;
       FKeyingPortConfig[rigno].Enabled := True;
    end;
 end;

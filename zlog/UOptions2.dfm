@@ -657,8 +657,8 @@ object formOptions2: TformOptions2
       end
       object GroupBox1: TGroupBox
         Left = 6
-        Top = 4
-        Width = 143
+        Top = 3
+        Width = 150
         Height = 129
         Caption = 'Category'
         TabOrder = 0
@@ -672,7 +672,7 @@ object formOptions2: TformOptions2
         object radioSingleOp: TRadioButton
           Left = 11
           Top = 16
-          Width = 113
+          Width = 130
           Height = 17
           Caption = 'Single-Op'
           Checked = True
@@ -692,7 +692,7 @@ object formOptions2: TformOptions2
           Tag = 1
           Left = 11
           Top = 34
-          Width = 113
+          Width = 130
           Height = 17
           Caption = 'Multi-Op/Multi-TX'
           TabOrder = 1
@@ -702,7 +702,7 @@ object formOptions2: TformOptions2
           Tag = 2
           Left = 11
           Top = 52
-          Width = 113
+          Width = 130
           Height = 17
           Caption = 'Multi-Op/Single-TX'
           TabOrder = 2
@@ -712,7 +712,7 @@ object formOptions2: TformOptions2
           Tag = 3
           Left = 11
           Top = 70
-          Width = 113
+          Width = 130
           Height = 17
           Caption = 'Multi-Op/Two-TX'
           TabOrder = 3
@@ -832,10 +832,9 @@ object formOptions2: TformOptions2
         object checkSelectLastOperator: TCheckBox
           Left = 11
           Top = 218
-          Width = 121
+          Width = 182
           Height = 17
-          Hint = 'Select last operator on startup.'
-          Caption = 'Select last operator'
+          Caption = 'Select last operator on startup'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 4
@@ -975,35 +974,35 @@ object formOptions2: TformOptions2
       object Label15: TLabel
         Left = 277
         Top = 234
-        Width = 37
+        Width = 68
         Height = 13
         Caption = 'CQ max'
       end
       object Label16: TLabel
         Left = 255
         Top = 126
-        Width = 74
+        Width = 90
         Height = 13
         Caption = 'Tone Pitch (Hz)'
       end
       object Label17: TLabel
         Left = 228
         Top = 207
-        Width = 96
+        Width = 117
         Height = 13
         Caption = 'CQ rpt. interval (sec)'
       end
       object Label12: TLabel
         Left = 228
         Top = 180
-        Width = 86
+        Width = 117
         Height = 13
         Caption = 'Abbreviation (019)'
       end
       object Label85: TLabel
         Left = 255
         Top = 152
-        Width = 71
+        Width = 90
         Height = 13
         Caption = 'Volume (1-100)'
       end
@@ -1276,7 +1275,7 @@ object formOptions2: TformOptions2
       object FIFOCheck: TCheckBox
         Left = 228
         Top = 80
-        Width = 97
+        Width = 204
         Height = 17
         Caption = 'Que messages'
         Checked = True
@@ -1330,7 +1329,7 @@ object formOptions2: TformOptions2
       object cbCQSP: TCheckBox
         Left = 228
         Top = 280
-        Width = 196
+        Width = 204
         Height = 17
         Hint = 
           'This option will switch the CW message sent when TAB or ; key is' +
@@ -1342,7 +1341,7 @@ object formOptions2: TformOptions2
       object checkSendNrAuto: TCheckBox
         Left = 228
         Top = 303
-        Width = 161
+        Width = 204
         Height = 17
         Caption = 'Send NR? automatically'
         TabOrder = 13
@@ -1390,7 +1389,7 @@ object formOptions2: TformOptions2
       object SideToneCheck: TCheckBox
         Left = 228
         Top = 103
-        Width = 97
+        Width = 204
         Height = 17
         Caption = 'Use Side Tone'
         TabOrder = 5
@@ -1398,7 +1397,7 @@ object formOptions2: TformOptions2
       object checkUseCQRamdomRepeat: TCheckBox
         Left = 228
         Top = 258
-        Width = 149
+        Width = 204
         Height = 17
         Caption = 'Use CQ Random Repeat'
         TabOrder = 11
@@ -1425,7 +1424,7 @@ object formOptions2: TformOptions2
       object checkPaddleReverse: TCheckBox
         Left = 228
         Top = 349
-        Width = 96
+        Width = 204
         Height = 17
         Caption = 'Paddle Reverse'
         TabOrder = 15
@@ -1865,16 +1864,16 @@ object formOptions2: TformOptions2
     object tabsheetMisc: TTabSheet
       Caption = 'Misc'
       object Label47: TLabel
-        Left = 177
+        Left = 168
         Top = 14
-        Width = 117
+        Width = 175
         Height = 13
         Caption = 'Max super check search'
       end
       object Label48: TLabel
-        Left = 177
+        Left = 168
         Top = 39
-        Width = 138
+        Width = 175
         Height = 13
         Caption = 'Delete band scope data after'
       end
@@ -1886,9 +1885,9 @@ object formOptions2: TformOptions2
         Caption = 'min'
       end
       object Label52: TLabel
-        Left = 177
+        Left = 168
         Top = 66
-        Width = 102
+        Width = 175
         Height = 13
         Caption = 'Delete spot data after'
       end
@@ -1935,9 +1934,9 @@ object formOptions2: TformOptions2
         Value = 60
       end
       object cbUpdateThread: TCheckBox
-        Left = 177
+        Left = 168
         Top = 112
-        Width = 161
+        Width = 175
         Height = 17
         Caption = 'Update using a thread'
         TabOrder = 5
@@ -1954,9 +1953,9 @@ object formOptions2: TformOptions2
         Value = 60
       end
       object cbDisplayDatePartialCheck: TCheckBox
-        Left = 177
+        Left = 168
         Top = 89
-        Width = 169
+        Width = 175
         Height = 17
         Caption = 'Display date in partial check'
         TabOrder = 4
@@ -2803,7 +2802,7 @@ object formOptions2: TformOptions2
         object checkBsCurrent: TCheckBox
           Left = 205
           Top = 104
-          Width = 67
+          Width = 90
           Height = 17
           Caption = 'Current'
           Checked = True
@@ -2813,7 +2812,7 @@ object formOptions2: TformOptions2
         object checkBsNewMulti: TCheckBox
           Left = 301
           Top = 104
-          Width = 67
+          Width = 112
           Height = 17
           Caption = 'New Multi'
           Checked = True
@@ -2823,7 +2822,7 @@ object formOptions2: TformOptions2
         object checkBsAllBands: TCheckBox
           Left = 12
           Top = 104
-          Width = 67
+          Width = 141
           Height = 17
           Caption = 'All bands'
           Checked = True
@@ -2890,7 +2889,7 @@ object formOptions2: TformOptions2
           Tag = 1
           Left = 368
           Top = 20
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 4
@@ -2931,7 +2930,7 @@ object formOptions2: TformOptions2
           Tag = 2
           Left = 368
           Top = 46
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 9
@@ -2972,7 +2971,7 @@ object formOptions2: TformOptions2
           Tag = 3
           Left = 368
           Top = 71
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 14
@@ -3013,7 +3012,7 @@ object formOptions2: TformOptions2
           Tag = 4
           Left = 368
           Top = 96
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 19
@@ -3079,9 +3078,9 @@ object formOptions2: TformOptions2
         Caption = 'BandScope Options'
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
-          Left = 205
+          Left = 215
           Top = 17
-          Width = 165
+          Width = 190
           Height = 17
           Caption = 'Use estimated mode by freq.'
           TabOrder = 4
@@ -3090,7 +3089,7 @@ object formOptions2: TformOptions2
         object checkShowOnlyInBandplan: TCheckBox
           Left = 12
           Top = 17
-          Width = 181
+          Width = 190
           Height = 17
           Caption = 'Show only spots in the band plan'
           TabOrder = 0
@@ -3112,7 +3111,7 @@ object formOptions2: TformOptions2
           TabOrder = 2
         end
         object checkSetFreqAfterModeChange: TCheckBox
-          Left = 216
+          Left = 226
           Top = 63
           Width = 157
           Height = 17
@@ -3120,7 +3119,7 @@ object formOptions2: TformOptions2
           TabOrder = 6
         end
         object checkAlwaysChangeMode: TCheckBox
-          Left = 216
+          Left = 226
           Top = 40
           Width = 176
           Height = 17
@@ -3235,7 +3234,7 @@ object formOptions2: TformOptions2
           Tag = 5
           Left = 368
           Top = 21
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 4
@@ -3287,7 +3286,7 @@ object formOptions2: TformOptions2
           Tag = 6
           Left = 368
           Top = 48
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 9
@@ -3339,7 +3338,7 @@ object formOptions2: TformOptions2
           Tag = 7
           Left = 368
           Top = 75
-          Width = 41
+          Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 14

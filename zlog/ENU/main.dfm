@@ -7467,6 +7467,10 @@ object MainForm: TMainForm
       Caption = 'Show this TX only'
       OnExecute = actionShowCurrentTxOnlyExecute
     end
+    object actionLogging: TAction
+      Caption = 'actionLogging'
+      OnExecute = actionLoggingExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

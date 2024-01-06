@@ -2,14 +2,14 @@ object formPortConfig: TformPortConfig
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Port config'
+  Caption = #12509#12540#12488#35373#23450
   ClientHeight = 110
   ClientWidth = 274
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
@@ -47,11 +47,6 @@ object formPortConfig: TformPortConfig
       Height = 21
       Style = csDropDownList
       TabOrder = 0
-      Items.Strings = (
-        'PTT'
-        'KEY'
-        'Always ON'
-        'Always OFF')
     end
     object comboDtr: TComboBox
       Left = 64
@@ -60,11 +55,6 @@ object formPortConfig: TformPortConfig
       Height = 21
       Style = csDropDownList
       TabOrder = 1
-      Items.Strings = (
-        'PTT'
-        'KEY'
-        'Always ON'
-        'Always OFF')
     end
   end
   object buttonOK: TButton
@@ -77,7 +67,6 @@ object formPortConfig: TformPortConfig
     Default = True
     ModalResult = 1
     TabOrder = 1
-    ExplicitLeft = 208
   end
   object buttonCancel: TButton
     Left = 194
@@ -86,9 +75,8 @@ object formPortConfig: TformPortConfig
     Height = 25
     Anchors = [akTop, akRight]
     Cancel = True
-    Caption = 'Cancel'
+    Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 2
-    ExplicitLeft = 208
   end
 end
