@@ -4066,7 +4066,17 @@ begin
 end;
 
 procedure TMainForm.GridDblClick(Sender: TObject);
+var
+   C: Integer;
 begin
+   // セル境界でのダブルクリックの場合、列幅を適正化する
+   C := Grid.GetColBoundary();
+   if C >= 0 then begin
+      Grid.AdjustColWidth(C);
+      Exit;
+   end;
+
+   // 選択行を編集
    EditCurrentRow;
 end;
 
