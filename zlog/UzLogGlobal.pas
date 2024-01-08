@@ -818,7 +818,7 @@ begin
       Settings._jmode := ini.ReadBool('Preferences', 'JMode', False);
 
       // Allow to log dupes
-      Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', True);
+      Settings._allowdupe := True;  //ini.ReadBool('Preferences', 'AllowDupe', True);
 
       // Output out of contest period
       Settings._output_outofperiod := ini.ReadBool('Preferences', 'OutputOutOfPeriod', False);

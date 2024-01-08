@@ -442,6 +442,7 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = 'Allow to log dupes'
         TabOrder = 2
+        Visible = False
       end
       object SaveEvery: TSpinEdit
         Left = 271
@@ -951,10 +952,11 @@ object formOptions2: TformOptions2
         Caption = 'Speed'
       end
       object SpeedLabel: TLabel
-        Left = 395
+        Left = 384
         Top = 19
-        Width = 37
+        Width = 48
         Height = 13
+        AutoSize = False
         Caption = '25 wpm'
       end
       object Label13: TLabel
@@ -965,45 +967,51 @@ object formOptions2: TformOptions2
         Caption = 'Weight'
       end
       object WeightLabel: TLabel
-        Left = 395
+        Left = 384
         Top = 59
-        Width = 23
+        Width = 48
         Height = 13
+        AutoSize = False
         Caption = '50 %'
       end
       object Label15: TLabel
         Left = 277
-        Top = 234
+        Top = 233
         Width = 68
         Height = 13
+        AutoSize = False
         Caption = 'CQ max'
       end
       object Label16: TLabel
         Left = 255
-        Top = 126
+        Top = 124
         Width = 90
         Height = 13
+        AutoSize = False
         Caption = 'Tone Pitch (Hz)'
       end
       object Label17: TLabel
         Left = 228
-        Top = 207
+        Top = 206
         Width = 117
         Height = 13
+        AutoSize = False
         Caption = 'CQ rpt. interval (sec)'
       end
       object Label12: TLabel
         Left = 228
-        Top = 180
+        Top = 178
         Width = 117
         Height = 13
+        AutoSize = False
         Caption = 'Abbreviation (019)'
       end
       object Label85: TLabel
         Left = 255
-        Top = 152
+        Top = 150
         Width = 90
         Height = 13
+        AutoSize = False
         Caption = 'Volume (1-100)'
       end
       object GroupBox2: TGroupBox
@@ -1868,6 +1876,7 @@ object formOptions2: TformOptions2
         Top = 14
         Width = 175
         Height = 13
+        AutoSize = False
         Caption = 'Max super check search'
       end
       object Label48: TLabel
@@ -1875,6 +1884,7 @@ object formOptions2: TformOptions2
         Top = 39
         Width = 175
         Height = 13
+        AutoSize = False
         Caption = 'Delete band scope data after'
       end
       object Label49: TLabel
@@ -1889,6 +1899,7 @@ object formOptions2: TformOptions2
         Top = 66
         Width = 175
         Height = 13
+        AutoSize = False
         Caption = 'Delete spot data after'
       end
       object Label53: TLabel
