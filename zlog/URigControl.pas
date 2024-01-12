@@ -1181,8 +1181,8 @@ var
    pt: TPoint;
 begin
    FMemEditMode := TSpeedButton(Sender).Tag;
-   pt.X := buttonMemoryWrite.Left + buttonMemoryWrite.Width;
-   pt.Y := buttonMemoryWrite.Top;
+   pt.X := TSpeedButton(Sender).Left + TSpeedButton(Sender).Width;
+   pt.Y := TSpeedButton(Sender).Top;
    pt := panelBody.ClientToScreen(pt);
    popupMemoryCh.Popup(pt.X, pt.Y);
 end;
