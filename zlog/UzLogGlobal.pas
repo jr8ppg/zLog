@@ -154,12 +154,17 @@ type
     _usbif4cw_gen3_micsel: Boolean;
     _usbif4cw_use_paddle_keyer: Boolean;
     _polling_interval: Integer;
+    _memscan_interval: Integer;  // sec
 
     // WinKeyer
     _use_winkeyer: Boolean;
     _use_wk_9600: Boolean;
     _use_wk_outp_select: Boolean;
     _use_wk_ignore_speed_pot: Boolean;
+    _use_wk_always9600: Boolean;
+
+    // Operate Style
+    _operate_style: TOperateStyle;
 
     // SO2R Support
     _so2r_type: TSo2rType;       // 0:none 1:zlog 2:SO2R Neo
@@ -1048,14 +1053,21 @@ begin
       // Use paddle and keyer
       Settings._usbif4cw_use_paddle_keyer := ini.ReadBool('Hardware', 'Usbif4cwUsePaddleKeyer', False);
 
-      // Polling Interval
+      // Polling Interval(milisec)
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
+
+      // Memory scan interval(sec)
+      Settings._memscan_interval := ini.ReadInteger('Hardware', 'MemscanInterval', 30);
 
       // Use WinKeyer USB
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
       Settings._use_wk_9600 := ini.ReadBool('Hardware', 'UseWk9600', False);
       Settings._use_wk_outp_select := ini.ReadBool('Hardware', 'UseWkOutpSelect', True);
       Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
+      Settings._use_wk_always9600 := ini.ReadBool('Hardware', 'UseWkAlways9600', False);
+
+      // Operate Style
+      Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
@@ -1720,11 +1732,18 @@ begin
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
+      // Memory scan interval(sec)
+      ini.WriteInteger('Hardware', 'MemscanInterval', Settings._memscan_interval);
+
       // Use WinKeyer USB
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
       ini.WriteBool('Hardware', 'UseWk9600', Settings._use_wk_9600);
       ini.WriteBool('Hardware', 'UseWkOutpSelect', Settings._use_wk_outp_select);
       ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
+      ini.WriteBool('Hardware', 'UseWkAlways9600', Settings._use_wk_always9600);
+
+      // Operate Style
+      ini.WriteInteger('OPERATE_STYLE', 'style', Integer(Settings._operate_style));
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
@@ -2091,6 +2110,7 @@ begin
    dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
    dmZLogKeyer.UseWkIgnoreSpeedPot := Settings._use_wk_ignore_speed_pot;
+   dmZLogKeyer.UseWkAlways9600 := Settings._use_wk_always9600;
    dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);

@@ -2,8 +2,8 @@ object RigControl: TRigControl
   Left = 666
   Top = 35
   Caption = 'Rig Control'
-  ClientHeight = 156
-  ClientWidth = 314
+  ClientHeight = 157
+  ClientWidth = 318
   Color = clBtnFace
   Constraints.MinHeight = 195
   Constraints.MinWidth = 330
@@ -13,7 +13,6 @@ object RigControl: TRigControl
   Font.Name = 'Arial'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poDesigned
   Scaled = False
   OnClose = FormClose
@@ -21,18 +20,19 @@ object RigControl: TRigControl
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 15
   object panelBody: TPanel
     Left = 0
     Top = 30
-    Width = 314
-    Height = 102
+    Width = 318
+    Height = 103
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 314
+    ExplicitHeight = 102
     DesignSize = (
-      314
-      102)
+      318
+      103)
     object buttonJumpLastFreq: TSpeedButton
       Left = 265
       Top = 21
@@ -79,27 +79,29 @@ object RigControl: TRigControl
     end
     object buttonMemoryClear: TSpeedButton
       Tag = 2
-      Left = 215
+      Left = 219
       Top = 2
       Width = 36
       Height = 20
       Anchors = [akTop, akRight]
       Caption = 'MC'
       OnClick = buttonMemoryWriteClick
+      ExplicitLeft = 215
     end
     object buttonMemoryWrite: TSpeedButton
       Tag = 1
-      Left = 180
+      Left = 184
       Top = 2
       Width = 36
       Height = 20
       Anchors = [akTop, akRight]
       Caption = 'MW'
       OnClick = buttonMemoryWriteClick
+      ExplicitLeft = 180
     end
     object buttonMemScan: TSpeedButton
       Tag = 2
-      Left = 254
+      Left = 258
       Top = 2
       Width = 55
       Height = 20
@@ -108,6 +110,7 @@ object RigControl: TRigControl
       GroupIndex = 1
       Caption = 'M-Scan'
       OnClick = buttonMemScanClick
+      ExplicitLeft = 254
     end
     object Panel1: TPanel
       Left = 50
@@ -228,12 +231,13 @@ object RigControl: TRigControl
   object panelHeader: TPanel
     Left = 0
     Top = 0
-    Width = 314
+    Width = 318
     Height = 30
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 314
     DesignSize = (
-      314
+      318
       30)
     object ToggleSwitch1: TToggleSwitch
       Left = 4
@@ -246,7 +250,7 @@ object RigControl: TRigControl
       OnClick = ToggleSwitch1Click
     end
     object buttonOmniRig: TButton
-      Left = 178
+      Left = 182
       Top = 3
       Width = 65
       Height = 25
@@ -254,9 +258,10 @@ object RigControl: TRigControl
       Caption = 'Omni-Rig'
       TabOrder = 1
       OnClick = buttonOmniRigClick
+      ExplicitLeft = 178
     end
     object buttonReconnectRigs: TButton
-      Left = 244
+      Left = 248
       Top = 3
       Width = 65
       Height = 25
@@ -264,12 +269,13 @@ object RigControl: TRigControl
       Caption = 'Reset'
       TabOrder = 2
       OnClick = buttonReconnectRigsClick
+      ExplicitLeft = 244
     end
   end
   object buttongrpFreqMemory: TButtonGroup
     Left = 0
-    Top = 132
-    Width = 314
+    Top = 133
+    Width = 318
     Height = 24
     Align = alBottom
     BorderStyle = bsNone
@@ -297,6 +303,8 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
+    ExplicitTop = 132
+    ExplicitWidth = 314
   end
   object Timer1: TTimer
     Enabled = False

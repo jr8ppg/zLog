@@ -232,6 +232,7 @@ type
     FUseWk9600: Boolean;
     FUseWkOutpSelect: Boolean;
     FUseWkIgnoreSpeedPot: Boolean;
+    FUseWkAlways9600: Boolean;
     FWkInitializeMode: Boolean;
     FWkRevision: Integer;
     FWkStatus: Integer;
@@ -381,6 +382,7 @@ type
     property UseWk9600: Boolean read FUseWk9600 write FUseWk9600;
     property UseWkOutpSelect: Boolean read FUseWkOutpSelect write FUseWkOutpSelect;
     property UseWkIgnoreSpeedPot: Boolean read FUseWkIgnoreSpeedPot write FUseWkIgnoreSpeedPot;
+    property UseWkAlways9600: Boolean read FUseWkAlways9600 write FUseWkAlways9600;
     property WinKeyerRevision: Integer read FWkRevision;
     procedure WinKeyerSendCharEx(C: Char);
     procedure WinKeyerSendChar(C: Char);
@@ -461,6 +463,8 @@ begin
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
+   FUseWkIgnoreSpeedPot := False;
+   FUseWkAlways9600 := False;
    FOnSpeedChanged := nil;
    FCancelSpeedChangedEvent := False;
    FOnCommand := nil;
@@ -3447,7 +3451,7 @@ begin
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
    FComKeying[0].Port := TPortNumber(nPort);
-   if FUseWkSo2rNeo = True then begin
+   if (FUseWkSo2rNeo = True) or (FUseWkAlways9600 = True) then begin
       FComKeying[0].BaudRate := br9600;
    end
    else begin
@@ -3482,7 +3486,7 @@ begin
    // application wants to run at 9600 baud, it must start out at 1200 baud mode and then issue the Set
    // High Baud command. When the application closes it should issue a WK close command which will
    // reset the baud rate to 1200.
-   if (FUseWkSo2rNeo = False) and (FUseWk9600 = True)then begin
+   if (FUseWkSo2rNeo = False) and (FUseWk9600 = True) and (FUseWkAlways9600 = False) then begin
       FillChar(Buff, SizeOf(Buff), 0);
       Buff[0] := WK_ADMIN_CMD;
       Buff[1] := WK_ADMIN_SET_HIGH_BAUD;

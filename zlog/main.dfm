@@ -13,7 +13,6 @@ object MainForm: TMainForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Menu = MainMenu
-  OldCreateOrder = True
   Position = poScreenCenter
   Scaled = False
   OnActivate = FormActivate
@@ -24,7 +23,6 @@ object MainForm: TMainForm
   OnDeactivate = FormDeactivate
   OnResize = FormResize
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object TLabel
     Left = 235

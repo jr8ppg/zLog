@@ -1438,7 +1438,7 @@ begin
    SpeedBar.Position := dmZLogKeyer.WPM;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
    FInformation.WPM := dmZLogKeyer.WPM;
-   FInformation.So2rMode :=(dmZLogGlobal.Settings._so2r_type <> so2rNone);
+   FInformation.So2rMode := (dmZLogGlobal.Settings._operate_style = os2Radio);
    i := dmZlogGlobal.Settings.CW.CurrentBank;
    CWF1.Hint := dmZlogGlobal.CWMessage(i, 1);
    CWF2.Hint := dmZlogGlobal.CWMessage(i, 2);
@@ -3739,7 +3739,7 @@ begin
       curQSO.Serial   := StrToIntDef(SE.Text, 1);
 
       // SO2Rモード
-      if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          // 2BSIQ OFFの場合はTXをRXにあわせる
          // CQ+S&P
          // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
@@ -3839,7 +3839,7 @@ begin
       end;
 
       // SO2Rモードの場合
-      if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          // 2BSIQ=OFF
          if (Is2bsiq() = False) then begin
             // 送受が異なる場合はpickupなので、TXを戻す
@@ -3917,7 +3917,7 @@ begin
       curQSO.Assign(CurrentQSO);
 
       // SO2Rモードの場合
-      if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          // 2BSIQ=OFF
          if (Is2bsiq() = False) then begin
             // ↓キーを押した方にTXを合わせる
@@ -3980,7 +3980,7 @@ begin
             LogButtonProc(nTxID, curQSO);
 
             // SO2Rモードの場合
-            if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
                // 2BSIQ=OFF
                if (Is2bsiq() = False) then begin
                   // 送受が異なる場合はpickupなので、TXを戻す
@@ -4395,8 +4395,8 @@ begin
    FEditPanel[nID].OpEdit.Text := Q.Operator;
    FEditPanel[nID].MemoEdit.Text := '';
 
-   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
-      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = False)) then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) or
+      ((dmZLogGlobal.Settings._operate_style = os2Radio) and (Is2bsiq() = False)) then begin
       if FPostContest then begin
          TimeEdit.SetFocus;
       end
@@ -4697,7 +4697,7 @@ begin
 
    try
    // 確定待ち中で、現在の受信と次の送信が同じRIGの場合はパス
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
       (FWaitForQsoFinish[FCurrentRigSet - 1] = True) then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('**** QSO確定待ち ****'));
@@ -4715,7 +4715,7 @@ begin
 
    // CQ+S&P
    // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
       (Is2bsiq() = False) then begin
       // 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない
       if ((FCQLoopStartRig - 1) <> FCurrentTx) then begin
@@ -4734,7 +4734,7 @@ begin
 //   currig := RigControl.GetCurrentRig();
 
    // SO2Rの場合
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       // 2BSIQの場合
       if Is2bsiq() = True then begin
          // TXとRXが違う場合、RXをTXに合わせてからInvertTxする
@@ -4772,7 +4772,7 @@ begin
    FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
 
    // 自動リグ変更の場合Messageを切り替える
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
       (Is2bsiq() = True) then begin
       bank := dmZLogGlobal.Settings._so2r_cq_msg_bank;
       msgno := dmZLogGlobal.Settings._so2r_cq_msg_number;
@@ -4930,7 +4930,7 @@ begin
    end;
 
    // Last Band/Mode
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       dmZLogGlobal.LastBand[0] := CurrentQSO.Band;
       dmZLogGlobal.LastMode[0] := CurrentQSO.Mode;
    end
@@ -5155,7 +5155,7 @@ end;
 
 procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S: TEdit);
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       C := CallsignEdit1;
       N := NumberEdit1;
       B := BandEdit1;
@@ -5826,7 +5826,7 @@ var
 begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       FCurrentRigSet := edit.Tag;
    end;
 
@@ -5837,7 +5837,7 @@ begin
    end;
 
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       if FCurrentRx <> (FCurrentRigSet - 1) then begin
          SwitchRig(FCurrentRigSet);
          FCQLoopStartRig := FCurrentRigSet;
@@ -6875,8 +6875,8 @@ begin
 
       // SO2RはSingleOpのみが設定可能
       if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
-         if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-            dmZLogGlobal.Settings._so2r_type := so2rNone;
+         if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+            dmZLogGlobal.Settings._operate_style := os1Radio;
             InitQsoEditPanel();
             UpdateQsoEditPanel(1);
             LastFocus := CallsignEdit;
@@ -7062,7 +7062,7 @@ begin
          // PH/CW
          cmMix: begin
             CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
-            if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
                FEditPanel[0].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[0]);
                FEditPanel[1].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[1]);
                FEditPanel[2].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[2]);
@@ -7082,7 +7082,7 @@ begin
          // Other
          else begin
             CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
-            if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
                FEditPanel[0].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[0]);
                FEditPanel[1].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[1]);
                FEditPanel[2].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[2]);
@@ -7185,7 +7185,7 @@ begin
          CurrentQSO.Band := MyContest.BandLow;
       end;
 
-      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          for i := 0 to 2 do begin
             FEditPanel[i].BandEdit.Text := BandToText(dmZLogGlobal.LastBand[i]);
          end;
@@ -7258,7 +7258,7 @@ begin
       LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
 
       // SO2R
-      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       end;
 
@@ -7273,7 +7273,7 @@ begin
       // リグコントロール開始
       FRigControl.ForcePowerOn();
 
-      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          // 右側のバンドとモードを取得＆設定
          for BB := b19 to b10g do begin
             rigno := dmZLogGlobal.Settings.FRigSet[2].FRig[BB];
@@ -8408,7 +8408,7 @@ begin
    WriteStatusLine('', False);
 
    // 2R:CQ+S&P時、F1/F2/F3以外はSPモード
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
       (Is2bsiq() = False) then begin
       if no > 3 then begin
          SetCQ(False);
@@ -8496,7 +8496,7 @@ begin
    FMessageManager.AddQue(0, S, CurrentQSO);
 
    // SO2Rモードの場合
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       // 2BSIQ=OFF
       if (Is2bsiq() = False) then begin
          // 送受が異なる場合はpickupなので、TXを戻す
@@ -8561,7 +8561,7 @@ begin
    end;
 
    // SO2Rモードの場合
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       // 2BSIQ=OFF
       if (Is2bsiq() = False) then begin
          // 送受が異なる場合はpickupなので、TXを戻す
@@ -8675,7 +8675,7 @@ begin
       // TABキー押下後
       if FTabKeyPressed[tx] = True then begin
          // SO2R
-         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+         if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
             // CQ+SP
             if (Is2bsiq() = False) and (FCQLoopRunning = True) then begin
 //               if (CurrentQSO.CQ = False) and (dmZlogGlobal.Settings._switchcqsp = True) then begin
@@ -8695,7 +8695,7 @@ begin
          FCQLoopCount := 0;
 
          // SO2R
-         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+         if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
             // 2BSIQ
             if (Is2bsiq() = True) and (FCQLoopRunning = True) then begin
 //               FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
@@ -8715,7 +8715,7 @@ begin
       // CQリピート再開
       if (FCQLoopRunning = True) then begin
          // TAB or ↓キーは即実行
-         if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+         if (dmZLogGlobal.Settings._operate_style = os2Radio) and
             (Is2bsiq() = True) then begin
             if ((FTabKeyPressed[tx] = True) or (FDownKeyPressed[tx] = True)) then begin
                FTabKeyPressed[tx] := False;
@@ -9349,7 +9349,7 @@ begin
    StopMessage(mode);
 
    // 1Rの場合
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       rig := FCurrentRigSet;
 //      rig := RigControl.GetCurrentRig();
       rig := GetNextRigID(rig - 1) + 1;
@@ -9864,7 +9864,7 @@ end;
 // #121 CQ間隔UP
 procedure TMainForm.actionCQRepeatIntervalUpExecute(Sender: TObject);
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat + 1.0;
    end
    else begin
@@ -9876,7 +9876,7 @@ end;
 // #122 CQ間隔DOWN
 procedure TMainForm.actionCQRepeatIntervalDownExecute(Sender: TObject);
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       dmZLogGlobal.Settings.CW._cqrepeat := dmZLogGlobal.Settings.CW._cqrepeat - 1.0;
    end
    else begin
@@ -10706,7 +10706,8 @@ begin
    end;
 
    // 現在の2BSIQ状態を保存してOFFにする
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq()) then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
+      (Is2bsiq()) then begin
       FPrev2bsiqMode := FInformation.Is2bsiq;
       FInformation.Is2bsiq := False;
       F2bsiqStart := False;
@@ -10811,7 +10812,7 @@ end;
 
 procedure TMainForm.Restore2bsiqMode();
 begin
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       FInformation.Is2bsiq := FPrev2bsiqMode;
    end;
 end;
@@ -11012,7 +11013,7 @@ var
    msg: string;
    interval: double;
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       interval := Max(Min(dmZLogGlobal.Settings.CW._cqrepeat, 60), 0);
       dmZLogGlobal.Settings.CW._cqrepeat := interval;
    end
@@ -11204,7 +11205,7 @@ end;
 
 procedure TMainForm.InitQsoEditPanel();
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       // 1R
       FEditPanel[0].SerialEdit   := SerialEdit1;
       FEditPanel[0].DateEdit     := DateEdit1;
@@ -11345,7 +11346,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       end;
    end;
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       LastFocus := CallsignEdit1;
       Exit;
    end
@@ -11406,7 +11407,7 @@ begin
 
    UpdateBandAndMode();
 
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       UpdateQsoEditPanel(rigset);
       if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
          EditEnter(FEditPanel[rigset - 1].NumberEdit);
@@ -11471,7 +11472,7 @@ begin
       dmZLogKeyer.SetTxRigFlag(rigno);
    end;
 
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       UpdateQsoEditPanel(rigno);
       if LastFocus = FEditPanel[rigno - 1].NumberEdit then begin
          EditEnter(FEditPanel[rigno - 1].NumberEdit);
@@ -11503,7 +11504,7 @@ begin
       end;
    end;
 
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       UpdateQsoEditPanel(rigno);
       if LastFocus = FEditPanel[rigno - 1].NumberEdit then begin
 //         EditEnter(FEditPanel[rigno - 1].NumberEdit);
@@ -11676,7 +11677,8 @@ var
       Result := id;
    end;
 begin
-   if ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (RigControl.MaxRig = 3)) then begin
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
+      (RigControl.MaxRig = 3) then begin
       // RIG1,RIG2両方にチェックがある場合と
       // RIG1,RIG2両方にチェックがない場合
       // RIG1-RIG3を巡回
@@ -11876,7 +11878,7 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
 
    // 2BSIQ時は受信中の方でPTT制御する
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
       (Is2bsiq() = True) then begin
       // 再生中なら
       if FMessageManager.IsPlaying = True then begin
@@ -11958,7 +11960,7 @@ begin
 //   FMessageManager.ClearQue2();
 
    // CQループ中のキー入力割り込み
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
          CancelCqRepeat();
          if FCQRepeatStartMode = mCW then begin
@@ -12038,7 +12040,7 @@ begin
 
    // 2R:2BSIQ OFFの場合はRIG1に戻す
    if fReturnStartRig = True then begin
-      if (dmZLogGlobal.Settings._so2r_type <> so2rNone) then begin
+      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          if (Is2bsiq() = False) then begin
             // TXとRXが違う場合は、RXに合わせる
             SwitchRig(FCQLoopStartRig);
@@ -12052,7 +12054,7 @@ begin
    end;
 
    // 1R:TXとRXを合わせる
-   if (dmZLogGlobal.Settings._so2r_type = so2rNone) then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       if FCurrentTx <> FCurrentRx then begin
          SwitchRig(FCurrentRx + 1);
       end;
@@ -12114,7 +12116,7 @@ end;
 
 procedure TMainForm.InitSerialPanel();
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
 
    end
    else begin
@@ -12133,7 +12135,7 @@ end;
 
 procedure TMainForm.DispSerialNumber(Q: TQSO; B: TBand);
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       if SerialContestType = SER_BAND then begin
          Q.Serial := SerialArrayBand[B];
       end
@@ -12344,7 +12346,7 @@ end;
 
 procedure TMainForm.SetCurrentQSO(nID: Integer);
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       CurrentQSO.Callsign := CallsignEdit.Text;
       CurrentQSO.Mode := TextToMode(ModeEdit.Text);
       CurrentQSO.Band := TextToBand(BandEdit.Text);
@@ -12431,7 +12433,7 @@ procedure TMainForm.StartCqRepeatTimer();
 var
    interval: Double;
 begin
-   if (dmZLogGlobal.Settings._so2r_type <> so2rNone) and
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
       (Is2bsiq() = True) then begin
       interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
    end

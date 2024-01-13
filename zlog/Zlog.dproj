@@ -856,124 +856,64 @@
                 <DeployFile LocalName="resource\XPO.DAT" Configuration="Debug" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\XPO.DAT" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\b4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\bb4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\e4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\n4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\r4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t0.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t1.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t2.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t3.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t4.bmp" Configuration="Debug" Class="ProjectFile"/>
-                <DeployFile LocalName="resource\t4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">

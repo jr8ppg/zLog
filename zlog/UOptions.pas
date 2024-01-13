@@ -283,7 +283,7 @@ type
     comboSo2rTxSelectPort: TComboBox;
     radioSo2rNeo: TRadioButton;
     radioSo2rNone: TRadioButton;
-    radioSo2rZLog: TRadioButton;
+    radioSo2rCom: TRadioButton;
     groupSo2rCqOption: TGroupBox;
     Label44: TLabel;
     Label100: TLabel;
@@ -296,13 +296,19 @@ type
     editSo2rRigSwAfterDelay: TEdit;
     spinSo2rAccelerateCW: TSpinEdit;
     GroupBox1: TGroupBox;
-    RadioButton1: TRadioButton;
-    RadioButton2: TRadioButton;
+    radio1Radio: TRadioButton;
+    radio2Radio: TRadioButton;
     Label1: TLabel;
     Label2: TLabel;
     checkWkAlways9600: TCheckBox;
     groupRcSleepMode: TGroupBox;
     groupRcGeneral: TGroupBox;
+    groupRcMemoryScan: TGroupBox;
+    Label3: TLabel;
+    editMemScanInterval: TEdit;
+    updownMemScanInterval: TUpDown;
+    Label4: TLabel;
+    Label5: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -333,14 +339,13 @@ type
     procedure comboRigControlChange(Sender: TObject);
     procedure NumberEditKeyPress(Sender: TObject; var Key: Char);
   private
-    FEditMode: Integer;
-    FEditNumber: Integer;
-    FActiveTab: Integer;
+//    FEditMode: Integer;
+//    FEditNumber: Integer;
+//    FActiveTab: Integer;
 
     FTempClusterTelnet: TCommParam;
     FTempClusterCom: TCommParam;
     FTempZLinkTelnet: TCommParam;
-
 
     FNeedSuperCheckLoad: Boolean;
 
@@ -359,7 +364,6 @@ type
     FRigXvtConfig: array[1..5] of TButton;
     FRigPhoneChgPTT: array[1..5] of TCheckBox;
     procedure InitRigNames();
-    procedure SetEditNumber(no: Integer);
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -404,8 +408,6 @@ uses
 procedure TformOptions.FormCreate(Sender: TObject);
 var
    i: integer;
-   b: TBand;
-   m: TMode;
    CP: TCommPort;
    list: TList<TCommPort>;
 begin
@@ -538,6 +540,8 @@ begin
    comboRig3Keying.Items.Clear();
    comboRig4Keying.Items.Clear();
    comboRig5Keying.Items.Clear();
+   comboSo2rTxSelectPort.Items.Clear();
+   comboSo2rRxSelectPort.Items.Clear();
 
    list := dmZLogGlobal.CommPortList;
    for i := 0 to list.Count - 1 do begin
@@ -547,6 +551,8 @@ begin
          comboRig2Control.Items.AddObject(CP.Name, CP);
          comboRig3Control.Items.AddObject(CP.Name, CP);
          comboRig4Control.Items.AddObject(CP.Name, CP);
+         comboSo2rTxSelectPort.Items.AddObject(CP.Name, CP);
+         comboSo2rRxSelectPort.Items.AddObject(CP.Name, CP);
       end;
       if CP.Keying = True then begin
          comboRig1Keying.Items.AddObject(CP.Name, CP);
@@ -1020,22 +1026,6 @@ begin
    comboRig4Name.Items.Assign(comboRig1Name.Items);
 end;
 
-procedure TformOptions.SetEditNumber(no: Integer);
-begin
-   if (no >= 1) and (no <= 12) then begin
-      FEditNumber := no;
-   end;
-   if (no = 101) then begin
-      FEditNumber := 1;
-   end;
-   if (no = 102) then begin
-      FEditNumber := 1;
-   end;
-   if (no = 103) then begin
-      FEditNumber := 1;
-   end;
-end;
-
 procedure TformOptions.buttonPortConfigCWClick(Sender: TObject);
 var
    f: TformPortConfig;
@@ -1137,7 +1127,6 @@ end;
 procedure TformOptions.RenewSettings();
 var
    r: double;
-   i, j: integer;
    b: TBand;
 
    procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
@@ -1186,12 +1175,18 @@ begin
       //
       // Operate style
       //
+      if radio1Radio.Checked = True then begin
+         Settings._operate_style := os1Radio;
+      end
+      else begin
+         Settings._operate_style := os2Radio;
+      end;
 
       // SO2R Support
       if radioSo2rNone.Checked = True then begin
          Settings._so2r_type := so2rNone;
       end
-      else if radioSo2rZLog.Checked = True then begin
+      else if radioSo2rCom.Checked = True then begin
          Settings._so2r_type := so2rCom;
       end
       else begin
@@ -1271,6 +1266,7 @@ begin
       Settings._use_wk_9600 := checkWk9600.Checked;
       Settings._use_wk_outp_select := checkWkOutportSelect.Checked;
       Settings._use_wk_ignore_speed_pot := checkWkIgnoreSpeedPot.Checked;
+      Settings._use_wk_always9600 := checkWkAlways9600.Checked;
 
       //
       // Rig control
@@ -1283,6 +1279,7 @@ begin
       Settings._autobandmap := cbAutoBandMap.Checked;
       Settings._send_freq_interval := updownSendFreqInterval.Position;
       Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
+      Settings._memscan_interval := updownMemScanInterval.Position;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -1339,7 +1336,6 @@ end;
 
 procedure TformOptions.ImplementSettings();
 var
-   i, j: integer;
    b: TBand;
 
    procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
@@ -1397,6 +1393,19 @@ begin
       //
       // Operate style
       //
+      case Settings._operate_style of
+         os1Radio: begin
+            radio1Radio.Checked := True;
+         end;
+
+         os2Radio: begin
+            radio2Radio.Checked := True;
+         end;
+
+         else begin
+            radio1Radio.Checked := True;
+         end;
+      end;
 
       // SO2R Support
       case Settings._so2r_type of
@@ -1406,8 +1415,8 @@ begin
          end;
 
          so2rCom: begin
-            radioSo2rZLog.Checked := True;
-            radioSo2rClick(radioSo2rZLog);
+            radioSo2rCom.Checked := True;
+            radioSo2rClick(radioSo2rCom);
          end;
 
          so2rNeo: begin
@@ -1502,6 +1511,7 @@ begin
       checkWk9600.Checked := Settings._use_wk_9600;
       checkWkOutportSelect.Checked := Settings._use_wk_outp_select;
       checkWkIgnoreSpeedPot.Checked := Settings._use_wk_ignore_speed_pot;
+      checkWkAlways9600.Checked := Settings._use_wk_always9600;
 
       //
       // Rig control
@@ -1514,6 +1524,7 @@ begin
       cbAutoBandMap.Checked := Settings._autobandmap;
       updownSendFreqInterval.Position := Settings._send_freq_interval;
       checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
+      updownMemScanInterval.Position := Settings._memscan_interval;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;

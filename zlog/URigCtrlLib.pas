@@ -324,7 +324,7 @@ begin
       FMemCh[i] := TMemCh.Create(Self);
    end;
    FMemScan := False;
-   FMemScanInterval := 10 * 1000;
+   FMemScanInterval := dmZLogGlobal.Settings._memscan_interval * 1000;
    FMemScanCount := 0;
    FMemScanNo := 1;
 end;

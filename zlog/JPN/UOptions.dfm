@@ -11,22 +11,22 @@ object formOptions: TformOptions
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object PageControl: TPageControl
     Left = 0
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetHardware3
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 440
+    ExplicitHeight = 433
     object tabsheetOperateStyle: TTabSheet
       Caption = #36939#29992#12473#12479#12452#12523
       ImageIndex = 7
@@ -60,7 +60,7 @@ object formOptions: TformOptions
           TabOrder = 0
           object GroupBox6: TGroupBox
             Left = 155
-            Top = 27
+            Top = 29
             Width = 206
             Height = 53
             Caption = #20986#21147#12509#12540#12488
@@ -86,28 +86,6 @@ object formOptions: TformOptions
               Height = 21
               Style = csDropDownList
               TabOrder = 1
-              Items.Strings = (
-                'None'
-                'COM1'
-                'COM2'
-                'COM3'
-                'COM4'
-                'COM5'
-                'COM6'
-                'COM7'
-                'COM8'
-                'COM9'
-                'COM10'
-                'COM11'
-                'COM12'
-                'COM13'
-                'COM14'
-                'COM15'
-                'COM16'
-                'COM17'
-                'COM18'
-                'COM19'
-                'COM20')
             end
             object comboSo2rTxSelectPort: TComboBox
               Left = 32
@@ -116,36 +94,14 @@ object formOptions: TformOptions
               Height = 21
               Style = csDropDownList
               TabOrder = 0
-              Items.Strings = (
-                'None'
-                'COM1'
-                'COM2'
-                'COM3'
-                'COM4'
-                'COM5'
-                'COM6'
-                'COM7'
-                'COM8'
-                'COM9'
-                'COM10'
-                'COM11'
-                'COM12'
-                'COM13'
-                'COM14'
-                'COM15'
-                'COM16'
-                'COM17'
-                'COM18'
-                'COM19'
-                'COM20')
             end
           end
           object radioSo2rNeo: TRadioButton
             Tag = 2
             Left = 12
-            Top = 81
+            Top = 73
             Width = 85
-            Height = 13
+            Height = 17
             Caption = 'SO2R Neo'
             TabOrder = 2
             OnClick = radioSo2rClick
@@ -154,20 +110,20 @@ object formOptions: TformOptions
             Left = 12
             Top = 23
             Width = 46
-            Height = 13
+            Height = 17
             Caption = 'None'
             Checked = True
             TabOrder = 0
             TabStop = True
             OnClick = radioSo2rClick
           end
-          object radioSo2rZLog: TRadioButton
+          object radioSo2rCom: TRadioButton
             Tag = 1
             Left = 12
-            Top = 52
+            Top = 48
             Width = 69
-            Height = 13
-            Caption = 'COM'#12509#12540#12488
+            Height = 17
+            Caption = 'COM Port'
             TabOrder = 1
             OnClick = radioSo2rClick
           end
@@ -182,7 +138,7 @@ object formOptions: TformOptions
           object Label44: TLabel
             Left = 12
             Top = 23
-            Width = 112
+            Width = 96
             Height = 13
             Caption = 'CQ'#32368#12426#36820#12375#38291#38548'('#31186')'
           end
@@ -196,7 +152,7 @@ object formOptions: TformOptions
           object Label101: TLabel
             Left = 187
             Top = 23
-            Width = 94
+            Width = 71
             Height = 13
             Caption = #20999#26367#24460#12487#12451#12524#12452'('#31186')'
           end
@@ -308,7 +264,7 @@ object formOptions: TformOptions
           Caption = '2Radio'#29992#20837#21147#27396#24038#21491#37197#32622
           WordWrap = True
         end
-        object RadioButton1: TRadioButton
+        object radio1Radio: TRadioButton
           Left = 13
           Top = 32
           Width = 58
@@ -318,7 +274,7 @@ object formOptions: TformOptions
           TabOrder = 0
           TabStop = True
         end
-        object RadioButton2: TRadioButton
+        object radio2Radio: TRadioButton
           Left = 13
           Top = 79
           Width = 58
@@ -2416,7 +2372,7 @@ object formOptions: TformOptions
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
-        TabOrder = 0
+        TabOrder = 3
         object Label28: TLabel
           Left = 185
           Top = 19
@@ -2532,24 +2488,24 @@ object formOptions: TformOptions
         end
       end
       object groupRcSleepMode: TGroupBox
-        Left = 245
+        Left = 256
         Top = 4
-        Width = 184
+        Width = 173
         Height = 81
         Caption = #12473#12522#12540#12503#12514#12540#12489
         TabOrder = 1
         object checkTurnoffSleep: TCheckBox
-          Left = 16
+          Left = 8
           Top = 23
-          Width = 168
+          Width = 164
           Height = 18
           Caption = #12473#12522#12540#12503#26178#12399'OFF'#12395#12377#12427
           TabOrder = 0
         end
         object checkTurnonResume: TCheckBox
-          Left = 16
+          Left = 8
           Top = 47
-          Width = 168
+          Width = 164
           Height = 18
           Caption = #20877#38283#26178#12399'ON'#12395#12377#12427
           TabOrder = 1
@@ -2558,14 +2514,14 @@ object formOptions: TformOptions
       object groupRcGeneral: TGroupBox
         Left = 6
         Top = 4
-        Width = 231
+        Width = 244
         Height = 224
         Caption = #20840#33324
-        TabOrder = 2
+        TabOrder = 0
         object Label45: TLabel
           Left = 8
           Top = 114
-          Width = 220
+          Width = 114
           Height = 13
           Caption = #29694#22312#21608#27874#25968#12434'Z-Server'#12395#36865#20449
         end
@@ -2588,7 +2544,7 @@ object formOptions: TformOptions
         object cbDontAllowSameBand: TCheckBox
           Left = 8
           Top = 42
-          Width = 220
+          Width = 233
           Height = 17
           Caption = #65298#21488#12398#12522#12464#12434#21516#12376#12496#12531#12489#12395#12375#12394#12356
           TabOrder = 1
@@ -2597,7 +2553,7 @@ object formOptions: TformOptions
         object cbRecordRigFreq: TCheckBox
           Left = 8
           Top = 66
-          Width = 161
+          Width = 220
           Height = 19
           Caption = #36939#29992#21608#27874#25968#12434#35352#37682#12377#12427
           TabOrder = 2
@@ -2640,6 +2596,57 @@ object formOptions: TformOptions
           Max = 300
           Position = 60
           TabOrder = 6
+        end
+      end
+      object groupRcMemoryScan: TGroupBox
+        Left = 256
+        Top = 91
+        Width = 172
+        Height = 52
+        Caption = 'Memory scan'
+        TabOrder = 2
+        object Label3: TLabel
+          Left = 104
+          Top = 27
+          Width = 20
+          Height = 13
+          Caption = 'sec.'
+        end
+        object Label4: TLabel
+          Left = 146
+          Top = 22
+          Width = 20
+          Height = 13
+          Caption = 'sec.'
+        end
+        object Label5: TLabel
+          Left = 8
+          Top = 22
+          Width = 54
+          Height = 13
+          Caption = 'Scan every'
+        end
+        object editMemScanInterval: TEdit
+          Left = 89
+          Top = 19
+          Width = 35
+          Height = 21
+          MaxLength = 3
+          NumbersOnly = True
+          TabOrder = 0
+          Text = '10'
+          OnKeyPress = NumberEditKeyPress
+        end
+        object updownMemScanInterval: TUpDown
+          Left = 124
+          Top = 19
+          Width = 16
+          Height = 21
+          Associate = editMemScanInterval
+          Min = 1
+          Max = 999
+          Position = 10
+          TabOrder = 1
         end
       end
     end
@@ -2964,13 +2971,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Fira Code Retina'
+          FontName = 'JetBrains Mono NL ExtraLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 69
+          ItemIndex = 89
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
@@ -2987,6 +2994,8 @@ object formOptions: TformOptions
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 433
+    ExplicitWidth = 440
     DesignSize = (
       444
       37)
