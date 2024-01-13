@@ -10976,12 +10976,22 @@ end;
 procedure TMainForm.DoCwSpeedChange(Sender: TObject);
 var
    i: Integer;
+   nID: Integer;
+   rig: TRig;
 begin
    i := dmZLogKeyer.WPM;
    dmZLogGlobal.Settings.CW._speed := i;
    SpeedBar.Position := i;
    SpeedLabel.Caption := IntToStr(i) + ' wpm';
    FInformation.WPM := i;
+
+   nID := GetTxRigID();
+   if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
+      rig := RigControl.Rigs[nID + 1];
+      if rig <> nil then begin
+         rig.SetWPM(i);
+      end;
+   end;
 end;
 
 procedure TMainForm.DoVFOChange(Sender: TObject);

@@ -167,7 +167,7 @@ type
     _operate_style: TOperateStyle;
 
     // SO2R Support
-    _so2r_type: TSo2rType;       // 0:none 1:zlog 2:SO2R Neo
+    _so2r_type: TSo2rType;       // 0:none 1:COM port 2:SO2R Neo
     _so2r_tx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_use_rig3: Boolean;

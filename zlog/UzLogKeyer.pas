@@ -1669,18 +1669,20 @@ begin
 
       FKeyerWPM := wpm;
 
-   for i := 0 to MAXPORT do begin
-         if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
-            usbif4cwSetWPM(i, FKeyerWPM);
-         end;
+      for i := 0 to MAXPORT do begin
+         if FKeyingPort[i] <> tkpNone then begin
+            if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
+               usbif4cwSetWPM(i, FKeyerWPM);
+            end;
 
-         if (FKeyingPort[i] in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
-            WinKeyerSetSpeed(FKeyerWPM);
+            if (FKeyingPort[i] in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
+               WinKeyerSetSpeed(FKeyerWPM);
+            end;
          end;
+      end;
 
-         if Assigned(FOnSpeedChanged) and (FCancelSpeedChangedEvent = False) then begin
-            FOnSpeedChanged(Self);
-         end;
+      if Assigned(FOnSpeedChanged) and (FCancelSpeedChangedEvent = False) then begin
+         FOnSpeedChanged(Self);
       end;
    end;
 end;
@@ -4150,20 +4152,12 @@ procedure TdmZLogKeyer.IncCWSpeed();
 begin
    WPM := WPM + 1;
    InitWPM := WPM;
-
-   if Assigned(FOnSpeedChanged) then begin
-      FOnSpeedChanged(Self);
-   end;
 end;
 
 procedure TdmZLogKeyer.DecCWSpeed();
 begin
    WPM := WPM - 1;
    InitWPM := WPM;
-
-   if Assigned(FOnSpeedChanged) then begin
-      FOnSpeedChanged(Self);
-   end;
 end;
 
 procedure TdmZLogKeyer.ToggleFixedSpeed();

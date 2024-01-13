@@ -4,7 +4,7 @@ object MainForm: TMainForm
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
   ClientHeight = 423
-  ClientWidth = 524
+  ClientWidth = 528
   Color = clBtnFace
   Constraints.MinWidth = 540
   Font.Charset = DEFAULT_CHARSET
@@ -33,7 +33,7 @@ object MainForm: TMainForm
   object StatusLine: TStatusBar
     Left = 0
     Top = 403
-    Width = 524
+    Width = 528
     Height = 20
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBtnText
@@ -61,19 +61,23 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
+    ExplicitTop = 402
+    ExplicitWidth = 524
   end
   object MainPanel: TPanel
     Left = 0
     Top = 122
-    Width = 524
+    Width = 528
     Height = 281
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 524
+    ExplicitHeight = 280
     object EditPanel1R: TPanel
       Left = 0
       Top = 171
-      Width = 524
+      Width = 528
       Height = 27
       Align = alBottom
       Font.Charset = DEFAULT_CHARSET
@@ -83,6 +87,8 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitTop = 170
+      ExplicitWidth = 524
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -273,7 +279,7 @@ object MainForm: TMainForm
     object EditPanel2R: TPanel
       Left = 0
       Top = 198
-      Width = 524
+      Width = 528
       Height = 83
       Align = alBottom
       Font.Charset = DEFAULT_CHARSET
@@ -283,22 +289,25 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
+      ExplicitTop = 197
+      ExplicitWidth = 524
       object RigPanelC: TPanel
         Left = 1
         Top = 54
-        Width = 522
+        Width = 526
         Height = 28
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 522
         DesignSize = (
-          522
+          526
           28)
         object RigPanelShape2C: TShape
           Tag = 3
           Left = 0
           Top = 0
-          Width = 522
+          Width = 526
           Height = 28
           Align = alClient
           Brush.Style = bsClear
@@ -441,7 +450,7 @@ object MainForm: TMainForm
           OnClick = checkUseRig3Click
         end
         object checkWithRig1: TCheckBox
-          Left = 447
+          Left = 451
           Top = 7
           Width = 31
           Height = 13
@@ -456,10 +465,11 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 6
           OnClick = checkWithRigClick
+          ExplicitLeft = 447
         end
         object checkWithRig2: TCheckBox
           Tag = 1
-          Left = 484
+          Left = 488
           Top = 7
           Width = 28
           Height = 13
@@ -474,6 +484,7 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
+          ExplicitLeft = 484
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -521,7 +532,7 @@ object MainForm: TMainForm
       object EditUpperRightPanel: TGridPanel
         Left = 66
         Top = 1
-        Width = 457
+        Width = 461
         Height = 53
         Align = alClient
         BevelOuter = bvNone
@@ -548,10 +559,11 @@ object MainForm: TMainForm
             Value = 100.000000000000000000
           end>
         TabOrder = 2
+        ExplicitWidth = 457
         object RigPanelA: TPanel
           Left = 0
           Top = 0
-          Width = 228
+          Width = 230
           Height = 53
           Align = alClient
           BevelOuter = bvNone
@@ -560,7 +572,7 @@ object MainForm: TMainForm
             Tag = 1
             Left = 0
             Top = 0
-            Width = 228
+            Width = 230
             Height = 53
             Align = alClient
             Brush.Style = bsClear
@@ -688,9 +700,9 @@ object MainForm: TMainForm
           end
         end
         object RigPanelB: TPanel
-          Left = 228
+          Left = 230
           Top = 0
-          Width = 229
+          Width = 231
           Height = 53
           Align = alClient
           BevelOuter = bvNone
@@ -699,7 +711,7 @@ object MainForm: TMainForm
             Tag = 2
             Left = 0
             Top = 0
-            Width = 229
+            Width = 231
             Height = 53
             Align = alClient
             Brush.Style = bsClear
@@ -831,7 +843,7 @@ object MainForm: TMainForm
     object Grid: TStringGrid
       Left = 0
       Top = 0
-      Width = 524
+      Width = 528
       Height = 171
       TabStop = False
       Align = alClient
@@ -858,6 +870,8 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
+      ExplicitWidth = 524
+      ExplicitHeight = 170
       ColWidths = (
         38
         65
@@ -976,23 +990,25 @@ object MainForm: TMainForm
   object ToolBarPanel: TPanel
     Left = 0
     Top = 0
-    Width = 524
+    Width = 528
     Height = 66
     Align = alTop
     BevelOuter = bvNone
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
+    ExplicitWidth = 524
     object CWToolBar: TPanel
       Left = 0
       Top = 0
-      Width = 524
+      Width = 528
       Height = 33
       Align = alTop
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
       Visible = False
+      ExplicitWidth = 524
       object CWStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -3114,10 +3130,11 @@ object MainForm: TMainForm
     object SSBToolBar: TPanel
       Left = 0
       Top = 33
-      Width = 524
+      Width = 528
       Height = 33
       Align = alTop
       TabOrder = 1
+      ExplicitWidth = 524
       object VoiceStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -5216,12 +5233,13 @@ object MainForm: TMainForm
     object MainToolBar: TPanel
       Left = 0
       Top = 66
-      Width = 524
+      Width = 528
       Height = 33
       Align = alTop
       TabOrder = 2
+      ExplicitWidth = 524
       DesignSize = (
-        524
+        528
         33)
       object SpeedButton4: TSpeedButton
         Left = 8
@@ -5736,7 +5754,7 @@ object MainForm: TMainForm
         Visible = False
       end
       object panelCQMode: TPanel
-        Left = 490
+        Left = 494
         Top = 1
         Width = 33
         Height = 31
@@ -5751,9 +5769,10 @@ object MainForm: TMainForm
         ParentFont = False
         TabOrder = 0
         OnClick = panelCQModeClick
+        ExplicitLeft = 490
       end
       object comboBandPlan: TComboBox
-        Left = 420
+        Left = 424
         Top = 6
         Width = 65
         Height = 21
@@ -5763,13 +5782,14 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
+        ExplicitLeft = 420
       end
     end
   end
   object panelOutOfPeriod: TPanel
     Left = 0
     Top = 66
-    Width = 524
+    Width = 528
     Height = 28
     Align = alTop
     BevelOuter = bvNone
@@ -5784,11 +5804,12 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 3
     Visible = False
+    ExplicitWidth = 524
   end
   object panelShowInfo: TPanel
     Left = 0
     Top = 94
-    Width = 524
+    Width = 528
     Height = 28
     Align = alTop
     BevelOuter = bvNone
@@ -5802,6 +5823,7 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 4
     Visible = False
+    ExplicitWidth = 524
     object linklabelInfo: TLinkLabel
       Left = 117
       Top = 5
