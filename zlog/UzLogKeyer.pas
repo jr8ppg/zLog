@@ -758,8 +758,8 @@ begin
 
          // RIG-C
          else begin
-            ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(False);
+            ZComTxRigSelect.ToggleDTR(False);
+            ZComTxRigSelect.ToggleRTS(True);
          end;
       end;
    end;
