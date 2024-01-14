@@ -2603,28 +2603,28 @@ object formOptions: TformOptions
         Top = 91
         Width = 172
         Height = 52
-        Caption = 'Memory scan'
+        Caption = #12513#12514#12522#12540#12473#12461#12515#12531
         TabOrder = 2
         object Label3: TLabel
           Left = 104
           Top = 27
           Width = 20
           Height = 13
-          Caption = 'sec.'
+          Caption = #31186
         end
         object Label4: TLabel
           Left = 146
           Top = 22
           Width = 20
           Height = 13
-          Caption = 'sec.'
+          Caption = #31186
         end
         object Label5: TLabel
           Left = 8
           Top = 22
           Width = 54
           Height = 13
-          Caption = 'Scan every'
+          Caption = #12473#12461#12515#12531#38291#38548
         end
         object editMemScanInterval: TEdit
           Left = 89
