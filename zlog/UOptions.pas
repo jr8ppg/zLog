@@ -304,7 +304,6 @@ type
     groupRcSleepMode: TGroupBox;
     groupRcGeneral: TGroupBox;
     groupRcMemoryScan: TGroupBox;
-    Label3: TLabel;
     editMemScanInterval: TEdit;
     updownMemScanInterval: TUpDown;
     Label4: TLabel;

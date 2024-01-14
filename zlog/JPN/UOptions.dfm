@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware3
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -2605,13 +2605,6 @@ object formOptions: TformOptions
         Height = 52
         Caption = #12513#12514#12522#12540#12473#12461#12515#12531
         TabOrder = 2
-        object Label3: TLabel
-          Left = 104
-          Top = 27
-          Width = 20
-          Height = 13
-          Caption = #31186
-        end
         object Label4: TLabel
           Left = 146
           Top = 22
@@ -2971,13 +2964,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'JetBrains Mono NL ExtraLight'
+          FontName = 'NSimSun'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 89
+          ItemIndex = 101
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

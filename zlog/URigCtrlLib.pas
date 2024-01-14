@@ -83,6 +83,8 @@ type
     FLastRcvd: string;
 
     FPortConfig: TPortConfig;
+
+    FUseMemChScan: Boolean;
     FMemCh: TMemChArray;
     FMemScan: Boolean;
     FMemScanInterval: Integer;
@@ -156,6 +158,7 @@ type
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
 
+    property UseMemChScan: Boolean read FUseMemChScan write FUseMemChScan;
     property MemCh: TMemChArray read FMemCh;
     property MemScan: Boolean read FMemScan write FMemScan;
 
@@ -320,6 +323,7 @@ begin
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;
 
+   FUseMemChScan := True;
    for i := Low(FMemCh) to High(FMemCh) do begin
       FMemCh[i] := TMemCh.Create(Self);
    end;
@@ -890,6 +894,8 @@ begin
          FreqMem[B, M] := 0;
       end;
    end;
+
+   FUseMemChScan := False;
 end;
 
 procedure TOmni.ExecuteCommand(S: AnsiString);
@@ -1066,6 +1072,8 @@ begin
    end;
 
    Self.name := 'VirtualRig';
+
+   FUseMemChScan := False;
 end;
 
 destructor TVirtualRig.Destroy;

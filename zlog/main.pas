@@ -1672,21 +1672,25 @@ begin
 
    rig := RigControl.GetRig(FCurrentRigSet, B);
    if rig = nil then begin
-      FZLinkForm.SendFreqInfo(RigControl.TempFreq[B] * 1000);
+      if B <= HiBand then begin
+         FZLinkForm.SendFreqInfo(RigControl.TempFreq[B] * 1000);
+      end;
    end
    else begin
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
-   for bb := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[bb].Select := False;
-   end;
-   FBandScopeEx[B].Select := True;
+   if B <= HiBand then begin
+      for bb := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[bb].Select := False;
+      end;
+      FBandScopeEx[B].Select := True;
 
-   if FBandScope.CurrentBand <> B then begin
-      FBandScope.CurrentBand := B;
+      if FBandScope.CurrentBand <> B then begin
+         FBandScope.CurrentBand := B;
+      end;
+      FBandScope.Select := True;
    end;
-   FBandScope.Select := True;
 
    FRateDialogEx.Band := CurrentQSO.Band;
 

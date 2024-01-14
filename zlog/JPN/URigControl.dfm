@@ -79,29 +79,27 @@ object RigControl: TRigControl
     end
     object buttonMemoryClear: TSpeedButton
       Tag = 2
-      Left = 219
+      Left = 215
       Top = 2
       Width = 36
       Height = 20
       Anchors = [akTop, akRight]
       Caption = 'MC'
       OnClick = buttonMemoryWriteClick
-      ExplicitLeft = 215
     end
     object buttonMemoryWrite: TSpeedButton
       Tag = 1
-      Left = 184
+      Left = 180
       Top = 2
       Width = 36
       Height = 20
       Anchors = [akTop, akRight]
       Caption = 'MW'
       OnClick = buttonMemoryWriteClick
-      ExplicitLeft = 180
     end
     object buttonMemScan: TSpeedButton
       Tag = 2
-      Left = 258
+      Left = 254
       Top = 2
       Width = 55
       Height = 20
@@ -110,7 +108,6 @@ object RigControl: TRigControl
       GroupIndex = 1
       Caption = 'M-Scan'
       OnClick = buttonMemScanClick
-      ExplicitLeft = 254
     end
     object Panel1: TPanel
       Left = 50
@@ -250,7 +247,7 @@ object RigControl: TRigControl
       OnClick = ToggleSwitch1Click
     end
     object buttonOmniRig: TButton
-      Left = 182
+      Left = 178
       Top = 3
       Width = 65
       Height = 25
@@ -258,10 +255,10 @@ object RigControl: TRigControl
       Caption = 'Omni-Rig'
       TabOrder = 1
       OnClick = buttonOmniRigClick
-      ExplicitLeft = 178
+      ExplicitLeft = 174
     end
     object buttonReconnectRigs: TButton
-      Left = 248
+      Left = 244
       Top = 3
       Width = 65
       Height = 25
@@ -269,7 +266,7 @@ object RigControl: TRigControl
       Caption = 'Reset'
       TabOrder = 2
       OnClick = buttonReconnectRigsClick
-      ExplicitLeft = 244
+      ExplicitLeft = 240
     end
   end
   object buttongrpFreqMemory: TButtonGroup

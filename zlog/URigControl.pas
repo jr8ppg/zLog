@@ -661,7 +661,7 @@ var
 begin
    Stop();
 
-   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) or (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
       FMaxRig := 2;
    end
    else begin
@@ -1020,15 +1020,15 @@ function TRigControl.GetRig(setno: Integer; b: TBand): TRig;
 var
    rigno: Integer;
 begin
-   if b = bUnknown then begin
-      Result := nil;
-      Exit;
-   end;
-
    if setno = 3 then begin
       Result := FRigs[5];
    end
    else begin
+      if b = bUnknown then begin
+         Result := nil;
+         Exit;
+      end;
+
       rigno := dmZLogGlobal.Settings.FRigSet[setno].FRig[b];
       if rigno = 0 then begin
          Result := FRigs[5];  // nil
@@ -1253,6 +1253,24 @@ begin
       Exit;
    end;
 
+   if (FCurrentRig <> nil) and (FCurrentRig.UseMemChScan = True) then begin
+      buttonMemoryWrite.Enabled := True;
+      buttonMemoryClear.Enabled := True;
+      buttonMemScan.Enabled := True;
+      buttongrpFreqMemory.Enabled := True;
+   end
+   else begin
+      buttonMemoryWrite.Enabled := False;
+      buttonMemoryClear.Enabled := False;
+      buttonMemScan.Enabled := False;
+      buttongrpFreqMemory.Enabled := False;
+      for i := 1 to 5 do begin
+         buttongrpFreqMemory.Items[i - 1].Caption := 'M' + IntToStr(i);
+         buttongrpFreqMemory.Items[i - 1].Hint := '';
+      end;
+      Exit;
+   end;
+
    for i := 1 to 5 do begin
       f := FCurrentRig.MemCh[i].FFreq;
       m := FCurrentRig.MemCh[i].FMode;
@@ -1282,6 +1300,10 @@ begin
       Exit;
    end;
 
+   if FCurrentRig.UseMemChScan = False then begin
+      Exit;
+   end;
+
    fname := ExtractFilePath(Application.ExeName) + 'zlog_rigcontrol.ini';
    ini := TMemIniFile.Create(fname);
    try
@@ -1308,6 +1330,10 @@ var
    fname: string;
 begin
    if FCurrentRig = nil then begin
+      Exit;
+   end;
+
+   if FCurrentRig.UseMemChScan = False then begin
       Exit;
    end;
 
