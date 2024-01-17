@@ -435,9 +435,9 @@ object MainForm: TMainForm
         end
         object checkUseRig3: TCheckBox
           Left = 7
-          Top = 7
+          Top = 6
           Width = 18
-          Height = 13
+          Height = 15
           Checked = True
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -451,12 +451,12 @@ object MainForm: TMainForm
         end
         object checkWithRig1: TCheckBox
           Left = 451
-          Top = 7
-          Width = 31
-          Height = 13
+          Top = 6
+          Width = 34
+          Height = 15
           TabStop = False
           Anchors = [akTop, akRight]
-          Caption = '1'
+          Caption = 'A'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -15
@@ -465,17 +465,16 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 6
           OnClick = checkWithRigClick
-          ExplicitLeft = 447
         end
         object checkWithRig2: TCheckBox
           Tag = 1
           Left = 488
-          Top = 7
-          Width = 28
-          Height = 13
+          Top = 6
+          Width = 34
+          Height = 15
           TabStop = False
           Anchors = [akTop, akRight]
-          Caption = '2'
+          Caption = 'B'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -15
@@ -484,7 +483,6 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
-          ExplicitLeft = 484
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -568,6 +566,7 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -707,6 +706,8 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
+          ExplicitLeft = 228
+          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
