@@ -446,6 +446,8 @@ begin
       buttonMemScan.Down := False;
    end;
 
+   ShowMemCh();
+
    Result := True;
 end;
 
@@ -1249,10 +1251,6 @@ var
    m: TMode;
    b: TBand;
 begin
-   if FCurrentRig = nil then begin
-      Exit;
-   end;
-
    if (FCurrentRig <> nil) and (FCurrentRig.UseMemChScan = True) then begin
       buttonMemoryWrite.Enabled := True;
       buttonMemoryClear.Enabled := True;
