@@ -248,6 +248,7 @@ begin
    else if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
       rig := MainForm.RigControl.Rigs[nID + 1];
       if rig <> nil then begin
+         S := StringReplace(S, ':***************', C, [rfReplaceAll]);
          rig.SetWPM(dmZLogKeyer.WPM);
          rig.PlayMessageCW(S);
          dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);

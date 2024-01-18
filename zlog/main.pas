@@ -1216,7 +1216,7 @@ type
 
     procedure MsgMgrAddQue(nID: Integer; S: string; aQSO: TQSO);
     procedure MsgMgrContinueQue();
-    function GetTxRigID(): Integer;
+    function GetTxRigID(nTxRigSet: Integer = -1): Integer;
   end;
 
   TBandScopeNotifyThread = class(TThread)
@@ -3813,6 +3813,7 @@ begin
       // CW
 
       // CWポート設定チェック
+      nTxID := GetTxRigID(nTxID + 1);
       if dmZLogKeyer.KeyingPort[nTxID] = tkpNone then begin
          WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          Exit;
@@ -3953,6 +3954,7 @@ begin
       case mode of
          mCW: begin
             // CWポート設定チェック
+            nTxID := GetTxRigID(nTxID + 1);
             if dmZLogKeyer.KeyingPort[nTxID] = tkpNone then begin
                WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
                Exit;
@@ -7455,6 +7457,7 @@ begin
       end;
 
       // CWポート設定チェック
+      nID := GetTxRigID();
       if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
          WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          FCQRepeatPlaying := False;
@@ -8428,9 +8431,8 @@ begin
 
    case mode of
       mCW: begin
-         nID := GetTxRigID();
-
          // CWポート設定チェック
+         nID := GetTxRigID();
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
             WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
@@ -12345,11 +12347,16 @@ begin
    FMessageManager.ContinueQue();
 end;
 
-function TMainForm.GetTxRigID(): Integer;
+// RigSet(1,2,3) to RigID(0,1,2,3,4)
+function TMainForm.GetTxRigID(nTxRigSet: Integer): Integer;
 var
    rig: TRig;
 begin
-   rig := RigControl.GetRig(FCurrentTx + 1, TextToBand(BandEdit.Text));
+   if nTxRigSet = -1 then begin
+      nTxRigSet := FCurrentTx + 1;
+   end;
+
+   rig := RigControl.GetRig(nTxRigSet, TextToBand(BandEdit.Text));
    if rig = nil then begin
       Result := 0;
    end
