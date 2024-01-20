@@ -10,10 +10,8 @@ object formMain: TformMain
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 12
   object PageControl1: TPageControl
     Left = 0
@@ -23,6 +21,8 @@ object formMain: TformMain
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 571
+    ExplicitHeight = 420
     object TabSheet1: TTabSheet
       Caption = #12525#12462#12531#12464
       object vleLogging: TValueListEditor
@@ -69,6 +69,8 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitWidth = 563
+        ExplicitHeight = 392
         ColWidths = (
           448
           96)
@@ -215,7 +217,8 @@ object formMain: TformMain
           '#145 '#36865#20449#12522#12464#12398#20999#12426#26367#12360'='
           '#147 '#21463#20449#12522#12464#12398#20999#12426#26367#12360'='
           '#148 '#21463#20449#12522#12464#12434#36865#20449#12522#12464#12395#21512#12431#12379#12427'='
-          '#149 '#36865#20449#12522#12464#12434#21463#20449#12522#12464#12395#21512#12431#12379#12427'=')
+          '#149 '#36865#20449#12522#12464#12434#21463#20449#12522#12464#12395#21512#12431#12379#12427'='
+          '#164 '#12522#12464#12395'WPM'#12467#12510#12531#12489#36865#20449'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -223,7 +226,7 @@ object formMain: TformMain
         OnDblClick = vleDblClick
         ColWidths = (
           448
-          113)
+          96)
       end
     end
     object TabSheet5: TTabSheet
@@ -362,6 +365,8 @@ object formMain: TformMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 420
+    ExplicitWidth = 571
     DesignSize = (
       575
       44)
@@ -374,6 +379,7 @@ object formMain: TformMain
       Caption = 'OK'
       TabOrder = 0
       OnClick = buttonOKClick
+      ExplicitLeft = 344
     end
     object buttonCancel: TButton
       Left = 460
@@ -386,6 +392,7 @@ object formMain: TformMain
       ModalResult = 2
       TabOrder = 1
       OnClick = buttonCancelClick
+      ExplicitLeft = 456
     end
     object buttonAllReset: TButton
       Left = 8

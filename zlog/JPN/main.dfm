@@ -465,6 +465,7 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 6
           OnClick = checkWithRigClick
+          ExplicitLeft = 447
         end
         object checkWithRig2: TCheckBox
           Tag = 1
@@ -483,6 +484,7 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
+          ExplicitLeft = 484
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -5783,6 +5785,7 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
+        ExplicitLeft = 420
       end
     end
   end
@@ -7487,6 +7490,10 @@ object MainForm: TMainForm
     object actionLogging: TAction
       Caption = 'actionLogging'
       OnExecute = actionLoggingExecute
+    end
+    object actionSetRigWPM: TAction
+      Caption = #12522#12464#12395'WPM'#12467#12510#12531#12489#12434#36865#20449
+      OnExecute = actionSetRigWPMExecute
     end
   end
   object SPCMenu: TPopupMenu

@@ -561,6 +561,7 @@ type
     CreateCabrillo: TMenuItem;
     menuHardwareSettings: TMenuItem;
     actionLogging: TAction;
+    actionSetRigWPM: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -855,6 +856,7 @@ type
     procedure CreateCabrilloClick(Sender: TObject);
     procedure menuHardwareSettingsClick(Sender: TObject);
     procedure actionLoggingExecute(Sender: TObject);
+    procedure actionSetRigWPMExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1125,6 +1127,7 @@ type
     function GetQsoList(): TQSOList;
     procedure JarlMemberCheck();
     procedure ExportHamlog(f: string);
+    procedure SetRigWpm(wpm: Integer);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -10248,6 +10251,15 @@ begin
    end;
 end;
 
+// #164 Send WPM command to RIG
+procedure TMainForm.actionSetRigWPMExecute(Sender: TObject);
+var
+   wpm: Integer;
+begin
+   wpm := dmZLogKeyer.WPM;
+   SetRigWpm(wpm);
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -10981,23 +10993,14 @@ end;
 
 procedure TMainForm.DoCwSpeedChange(Sender: TObject);
 var
-   i: Integer;
-   nID: Integer;
-   rig: TRig;
+   wpm: Integer;
 begin
-   i := dmZLogKeyer.WPM;
-   dmZLogGlobal.Settings.CW._speed := i;
-   SpeedBar.Position := i;
-   SpeedLabel.Caption := IntToStr(i) + ' wpm';
-   FInformation.WPM := i;
-
-   nID := GetTxRigID();
-   if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
-      rig := RigControl.Rigs[nID + 1];
-      if rig <> nil then begin
-         rig.SetWPM(i);
-      end;
-   end;
+   wpm := dmZLogKeyer.WPM;
+   dmZLogGlobal.Settings.CW._speed := wpm;
+   SpeedBar.Position := wpm;
+   SpeedLabel.Caption := IntToStr(wpm) + ' wpm';
+   FInformation.WPM := wpm;
+   SetRigWpm(wpm);
 end;
 
 procedure TMainForm.DoVFOChange(Sender: TObject);
@@ -12744,6 +12747,20 @@ begin
       Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText);
    finally
       dlg.Release();
+   end;
+end;
+
+procedure TMainForm.SetRigWpm(wpm: Integer);
+var
+   nID: Integer;
+   rig: TRig;
+begin
+   nID := GetTxRigID();
+   if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
+      rig := RigControl.Rigs[nID + 1];
+      if rig <> nil then begin
+         rig.SetWPM(wpm);
+      end;
    end;
 end;
 
