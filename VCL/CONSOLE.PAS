@@ -347,14 +347,10 @@ type
     FList: TList;
     FCache: TAttr;
     FCacheIndex: Integer;
-    FFreeList: Integer;
     function GetCount: Integer;
   protected
     function  GetAttr(Index: Integer): TAttr;
     procedure SetAttr(Index: Integer; NewAttr: TAttr);
-    function  InFreeList(P: Pointer): Boolean;
-    function  FirstFreeIndex: Integer;
-    function  NextFreeIndex(P: Pointer): Integer;
     procedure SetFree(Index: Integer);
     function  AllocIndex: Integer;
   public
@@ -918,7 +914,6 @@ begin
   begin
     BlockEnd := Min(Cols - Cursor.X, Count);
     P := Buffer;
-{$IFDEF WIN32}
     BlockStart := BlockEnd;
     while (BlockEnd > 0) and (Buffer^ in [#32..#255]) do
     begin
@@ -926,30 +921,6 @@ begin
       Dec(BlockEnd);
     end;
     BlockLen := BlockStart - BlockEnd;
-{$ELSE}
-    asm
-      PUSH   DS
-      PUSH   SI
-      LDS    SI, Buffer
-      MOV    CX, BlockEnd
-      MOV    DX, CX
-      CLD
-    @@1:
-      LODSB
-      CMP    AL,' '
-      JB     @@2
-      LOOP   @@1
-      INC    SI
-    @@2:
-      DEC    SI
-      MOV    Buffer.Word[0],SI
-      MOV    BlockEnd, CX
-      SUB    DX,CX
-      MOV    BlockLen, DX
-      POP    SI
-      POP    DS
-    end;
-{$ENDIF}
     if BlockLen > 0 then
     begin
       Dec(Count, BlockLen);
@@ -1431,42 +1402,15 @@ begin
   Result := FList.Count;
 end;
 
-function  TAttrManager.InFreeList(P: Pointer): Boolean;
-begin
-  Result := (EndOfList <= Longint(P)) and (Longint(P) < 0);
-end;
-
-function  TAttrManager.FirstFreeIndex: Integer;
-begin
-  Result := FFreeList;
-end;
-
-function  TAttrManager.NextFreeIndex(P: Pointer): Integer;
-begin
-  if (EndOfList < Longint(P)) and (Longint(P) < 0) then
-    Result := -Longint(P) - 1
-  else
-    Result := -1;
-end;
-
 procedure TAttrManager.SetFree(Index: Integer);
 begin
-  if FFreeList < 0 then
-    FList[Index] := Pointer(Longint(EndOfList))
-  else
-    FList[Index] := Pointer(Longint(-FFreeList - 1));
-  FFreeList := Index;
+  FList[Index] := nil;
 end;
 
 function TAttrManager.AllocIndex: Integer;
 begin
-  if FFreeList >= 0 then
-  begin
-    Result := FFreeList;
-    FFreeList := NextFreeIndex(FList[FFreeList]);
-  end
-  else
-    Result := FList.Count;
+  FList.Add(nil);
+  Result := FList.Count - 1;
 end;
 
 function  TAttrManager.Allocate(F: TFixedFont): Integer;
@@ -1493,7 +1437,6 @@ begin
   P := Pointer(FList.List);  { Use pointer iterator instead of For loop }
   while (Result > 0) do
   begin
-    if not InFreeList(P^) then
     with TAttr(P^) do
       if (Color = C) and (BkColor = B) and (Handle = H) then
       begin
@@ -1515,13 +1458,13 @@ procedure TAttrManager.Clear;
 var
   I: Integer;
 begin
-  for I := 0 to FList.Count - 1 do
-    if not InFreeList(FList[I]) then
-      TObject(FList[I]).Free;
+  for I := 0 to FList.Count - 1 do begin
+    TObject(FList[I]).Free;
+  end;
+
   FList.Clear;
   FCacheIndex := 0;
   FCache := nil;
-  FFreeList := -1;
 end;
 
 procedure TAttrManager.Reference(Index: Integer; Delta: Integer);
@@ -1537,13 +1480,9 @@ end;
 function  TAttrManager.GetAttr(Index: Integer): TAttr;
 begin
   Result := TAttr(FList[Index]);
-  if InFreeList(Result) then
-    Result := nil;
 end;
 
 procedure TAttrManager.SetAttr(Index: Integer; NewAttr: TAttr);
-//var
-//  Temp: TAttr;
 begin
   if NewAttr = nil then
   begin
@@ -1823,9 +1762,5 @@ begin
   RegisterClasses([TFixedFont]);
 end;
 
-
 end.
-
-
-
 
