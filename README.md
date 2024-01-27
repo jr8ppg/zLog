@@ -1,4 +1,4 @@
-![image](https://img.shields.io/badge/Delphi-10.4-brightgreen)
+![Image](https://img.shields.io/badge/Delphi-11.3-brightgreen)
 ![image](https://img.shields.io/github/v/release/jr8ppg/zLog?include_prereleases)
 ![image](https://img.shields.io/github/license/jr8ppg/zLog)
 # zLog 令和 Edition
@@ -6,10 +6,10 @@
 Amateur Radio Contest Logging Program
 
 # Dependency
-Delphi 10.4
+Delphi 11.3
 
 # Requirement
-Windows 10(64bit)
+Windows 11(64bit)
 
 # Licence
 This software is released under the MIT License.
@@ -30,56 +30,36 @@ zLog for Windowsは元東京大学アマチュア無線部JA1ZLOの横林洋平�
 https://zlog.org/
 
 ------
-# Delphi 10.4.2 Community Editionでのビルド方法
+# Delphi 11.3 Community Editionでのビルド方法
 
 1. TeeChart Standard（Delphi付属）のインストール
    - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
 
-2. ICS for VCL 8.65 のインストール
+2. ICS for VCL 8.7 のインストール
    - ウェルカムページの「GetItからアドオンを取得する」をクリック。
-   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL 8.65」を選択し、「インストール」ボタンをクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL 8.7」を選択し、「インストール」ボタンをクリック。
    - 後は画面の指示に従ってインストールする。
 
-3. JEDI Code Library 3.4 のインストール
+3. JEDI Code Library 3.x とJEDI Visual Component Library 3.x のインストール
 
-   - 既にDelphi 10.3がインストールされている場合は、先に10.3側でJEDI Code Libraryをアンインストールして下さい。
-   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
-   - 「GetItパッケージマネージャ」ウインドウで「JEDI Code Library 3.4」を選択し、「インストール」ボタンをクリック。
-   - 後は画面の指示に従ってインストールする。
-   - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
-   - 終了させるとJEDIインストーラがいるので、指示に従ってインストールを完了させる。
-   - インストール後、Delphiを起動する。
-
-4. JEDI Visual Component Library 3.9 のインストール
-
-   - 既にDelphi 10.3がインストールされている場合は、先に10.3側でVisual Component Libraryをアンインストールして下さい。
-   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
-   - 「GetItパッケージマネージャ」ウインドウで「JEDI Visual Component Library 3.9」を選択し、「インストール」ボタンをクリック。
-   - 後は画面の指示に従ってインストールする。
-   - RAD Studioを再起動するようにとのメッセージが出るので、Delphiを終了する。
-   - 終了させるとJVCLインストーラがいるので、指示に従ってインストールを完了させる。
-   - インストール後、Delphiを起動する。
-   - 時間かかります。
-
-5. JCL/JVCLがインストールできない場合
-   - Delphi/C++Builder Community Edition 10.4.2を利用時、GetItパッケージマネージャ経由でJEDI/JVCLパッケージがインストールできない問題があることが判明しています。
-   - その場合、Andreas Hausladen氏が用意しているコンパイル済みファイルをインストールすることで利用可能になります。  
- https://www.idefixpack.de/blog/bugfix-units/jedi-binary-installer/
-   - 詳しい情報はこちらです。  https://docwiki.embarcadero.com/Support/ja/Delphi/C%2B%2BBuilder_Community_Edition_10.4.2%E3%82%92%E5%88%A9%E7%94%A8%E6%99%82%E3%80%81GetIt%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%83%9E%E3%83%8D%E3%83%BC%E3%82%B8%E3%83%A3%E7%B5%8C%E7%94%B1%E3%81%A7JEDI/JVCL%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%8C%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84
+   - Community Editionからdcc32.exeが除かれたためGetItからはインストールできません。
+   - 次のページの手順で手作業でインストールする必要があります。かなり面倒です。  
+   https://github.com/jr8ppg/zLog/wiki/Delphi11-Community-Ed.%E3%81%A7%E3%81%AEJEDI-JCL-JVCL%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%96%B9%E6%B3%95
    
-6. zlog_requires のインストール
+4. zlog_requires のインストール
 
+   - 今回Delphi11向けに変更があります。
    - VCLフォルダのzlog_requires.dpkを開き、32ビットを選択しビルド→インストール。
    - 次に64ビットを選択しビルド。
    - ツール－オプション－言語－Delphiでライブラリのライブラリパスに VCLフォルダ\\$(Platform)\\Release を追加。32ビットと64ビットの両方に設定する。
       - ライブラリパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Release」
       - デバッグ用DCUパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Debug」
-7. zlogフォルダのzlog_project.groupprojを開く
-8. 「プロジェクト」－「言語」－「ローカライズ済みプロジェクトの更新」をクリック
-9. プロジェクトウインドウのzlog.exeを右クリックし「ビルド」をクリック
-10. プロジェクトウインドウのzlog.JPNを右クリックし「ビルド」をクリック
-11. 完成
-12. Release/Debug又はWin64/Win32を切り替えた際は、8.から順に再度行う。
+5. zlogフォルダのzlog_project.groupprojを開く
+6. 「プロジェクト」－「言語」－「ローカライズ済みプロジェクトの更新」をクリック
+7. プロジェクトウインドウのzlog.exeを右クリックし「ビルド」をクリック
+8. プロジェクトウインドウのzlog.JPNを右クリックし「ビルド」をクリック
+9. 完成
+10. Release/Debug又はWin64/Win32を切り替えた際は、6.から順に再度行う。
 
 ## オリジナルからの変更点
 
@@ -94,10 +74,8 @@ https://zlog.org/
 
 ## 動作確認済みWindows
 
-* Windows XP SP3 (32bit)
-* Windows 7 Home (64bit)
-* Windows 10 Home (64bit)
-* Windows 10 Pro (64bit)
+* Windows 10 (64bit)
+* Windows 11 (64bit)
 
 ## 動作確認済みコンテスト
 
@@ -124,15 +102,18 @@ https://zlog.org/
 ## 動作確認済み無線機
 
 ### ICOM
-* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300他
+* IC-706mkII,IC-756PRO,IC-756PRO2,IC-7100,IC-7200,IC-7300,IC-705,IC-905,IC-7851他
 ### KENWOOD
-* TS-570,TS-590,TS-2000,TS-590G
+* TS-690/TS-570
+* TS-2000,TS-590,TS-890,TS-990
 ### YAESU
-* FT-2000/FT-950/FT-450/FTDX-5000
+* FT-2000/FT-950/FT-450/FTDX-3000,FTDX-5000,FTDX-9000
 * FT-920
 * FT-1000MP
-* FT-991
+* FT-991,FT-710
 * FT-847,FT-817
+
+など
 
 最新情報はこちら
 https://github.com/jr8ppg/zLog/wiki/%E3%83%AA%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB
