@@ -278,10 +278,9 @@ type
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
 
-    procedure paddle_dot();
-    procedure paddle_dash();
+    procedure paddle_dot(fRepeat: Boolean = True);
+    procedure paddle_dash(fRepeat: Boolean = True);
     procedure paddle_finish();
-    procedure paddle_finish2();
 
     procedure WinKeyerOpen(nPort: TKeyingPort);
     procedure WinKeyerClose();
@@ -2865,31 +2864,25 @@ begin
       LeaveCriticalSection(FUsbPortDataLock);
 
       if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
-         if (InReport[2] <> FPrevInReport[2]) then begin
+         // パドル状況
+         if FKeyer.PaddleReverse = False then begin
+            fPaddleLeft := (InReport[2] and $04) = 0;
+            fPaddleRight := (InReport[2] and $01) = 0;
 
-            // パドル状況
-            if FKeyer.PaddleReverse = False then begin
-               fPaddleLeft := (InReport[2] and $04) = 0;
-               fPaddleRight := (InReport[2] and $01) = 0;
-
-               fPrevLeft := (FPrevInReport[2] and $04) = 0;
-               fPrevRight := (FPrevInReport[2] and $01) = 0;
-            end
-            else begin
-               fPaddleRight := (InReport[2] and $04) = 0;
-               fPaddleLeft := (InReport[2] and $01) = 0;
-
-               fPrevRight := (FPrevInReport[2] and $04) = 0;
-               fPrevLeft := (FPrevInReport[2] and $01) = 0;
-            end;
-
-            FKeyer.PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
-
-            CopyMemory(@FPrevInReport, @InReport, 9);
+            fPrevLeft := (FPrevInReport[2] and $04) = 0;
+            fPrevRight := (FPrevInReport[2] and $01) = 0;
          end
          else begin
-            FKeyer.Squeeze();
+            fPaddleRight := (InReport[2] and $04) = 0;
+            fPaddleLeft := (InReport[2] and $01) = 0;
+
+            fPrevRight := (FPrevInReport[2] and $04) = 0;
+            fPrevLeft := (FPrevInReport[2] and $01) = 0;
          end;
+
+         FKeyer.PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
+
+         CopyMemory(@FPrevInReport, @InReport, 9);
       end;
 
       EnterCriticalSection(FUsbPortDataLock);
@@ -2913,25 +2906,35 @@ nextnext:
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.paddle_dot();
+procedure TdmZLogKeyer.paddle_dot(fRepeat: Boolean);
 begin
    FSendOK := False;
    if FPTTEnabled then begin
       ControlPTT(FWkTx, True);
    end;
    FSqueezeDotDash := 0;
-   SetCWSendBuf(0, 'p');
+   if fRepeat = True then begin
+      SetCWSendBuf(0, 'p');
+   end
+   else begin
+      SetCWSendBuf(0, 'v');
+   end;
    FSendOK := True;
 end;
 
-procedure TdmZLogKeyer.paddle_dash();
+procedure TdmZLogKeyer.paddle_dash(fRepeat: Boolean);
 begin
    FSendOK := False;
    if FPTTEnabled then begin
       ControlPTT(FWkTx, True);
    end;
    FSqueezeDotDash := 1;
-   SetCWSendBuf(0, 'q');
+   if fRepeat = True then begin
+      SetCWSendBuf(0, 'q');
+   end
+   else begin
+      SetCWSendBuf(0, 'r');
+   end;
    FSendOK := True;
 end;
 
@@ -2955,41 +2958,25 @@ begin
       CWBufferSync.Leave();
       FSendOK := True;
    end;
-end;
 
-procedure TdmZLogKeyer.paddle_finish2();
-var
-   i: Integer;
-begin
-   FSendOK := False;
-   CWBufferSync.Enter();
-   try
-      for i := 1 to codemax do begin
-         if FCWSendBuf[0, i] = $A then begin
-            FCWSendBuf[0, i] := 9;
-         end;
-      end;
-   finally
-      CWBufferSync.Leave();
-      FSendOK := True;
+   while IsPlaying = True do begin
+      //
    end;
 end;
 
 procedure TdmZLogKeyer.Squeeze();
 begin
-   if FPaddleSqueeze = True then begin
-      if FSendOK = False then begin
-         Inc(FSqueezeDotDash);
-         FSqueezeDotDash := FSqueezeDotDash and 1;
-         if FSqueezeDotDash = 0 then begin
-            SetCWSendBufChar(0, Char('v'));
-         end
-         else begin
-            SetCWSendBufChar(0, Char('r'));
-         end;
-         FSendOK := True;
-      end;
+   Inc(FSqueezeDotDash);
+   FSqueezeDotDash := FSqueezeDotDash and 1;
+   if FSqueezeDotDash = 0 then begin
+//      paddle_dot(False);
+      SetCWSendBufChar(0, Char('v'));
+   end
+   else begin
+//      paddle_dash(False);
+      SetCWSendBufChar(0, Char('r'));
    end;
+   FSendOK := True;
 end;
 
 procedure TdmZLogKeyer.PaddleProc(fLeft, fRight, fPrevLeft, fPrevRight: Boolean);
@@ -3001,71 +2988,44 @@ begin
       end;
    end;
 
-   // パドル用キーヤー処理 USBIF4CW V2はスクイーズ操作不可
-   // パドル左右 OFF->ON 左右どっちかがOFFから両方ONを検出
-   if ((fPrevRight = False) or (fPrevLeft = False)) and ((fRight = True) and (fLeft = True)) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE SQUEEZE OFF->ON**'));
-      {$ENDIF}
-      paddle_finish2();
+   // 左右OFF
+   if ((fRight = False) and (fLeft = False)) then begin
+      if FPaddleSqueeze = True then begin
+         FPaddleSqueeze := False;
+
+         Squeeze();
+
+         paddle_finish();
+      end;
+      Exit;
+   end;
+
+   // 左右ON
+   if ((fRight = True) and (fLeft = True)) then begin
+      FPaddleSqueeze := True;
 
       if FPTTEnabled then begin
          ControlPTT(FWkTx, True);
       end;
-      FPaddleSqueeze := True;
+
       Squeeze();
-   end
+      Exit;
+   end;
 
-   // パドル右 ON->OFF 左右ONから左右どちらかがOFFを検出
-   else if ((fPrevRight = True) and (fPrevLeft = True)) and ((fRight = False) or (fLeft = False)) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE SQUEEZE ON->OFF**'));
-      {$ENDIF}
-      paddle_finish();
-
-      if FPaddleSqueeze = True then begin
-         FPaddleSqueeze := False;
-
-         if fLeft = True then begin
-            paddle_dot();
-         end;
-         if fRight = True then begin
-            paddle_dash();
-            paddle_dot();
-         end;
+   // 左ON
+   if (fLeft = True) then begin
+      if FSendOK = False then begin
+         paddle_dot(False);
       end;
-   end
+      Exit;
+   end;
 
-   // パドル右(DASH) OFF->ON
-   else if (fPrevRight = False) and (fRight = True) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE RIGHT OFF->ON**'));
-      {$ENDIF}
-      paddle_dash();
-   end
-
-   // パドル右(DASH) ON->OFF
-   else if (fPrevRight = True) and (fRight = False) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE RIGHT ON->OFF**'));
-      {$ENDIF}
-      paddle_finish();
-   end
-
-   // パドル左(DOT) OFF->ON
-   else if (fPrevLeft = False) and (fLeft = True) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE LEFT OFF->ON**'));
-      {$ENDIF}
-      paddle_dot();
-   end
-
-   // パドル左(DOT) ON->OFF
-   else if (fPrevLeft = True) and (fLeft = False) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE LEFT ON->OFF**'));
-      {$ENDIF}
-      paddle_finish();
+   // 右ON
+   if (fRight = True) then begin
+      if FSendOK = False then begin
+         paddle_dash(False);
+      end;
+      Exit;
    end;
 end;
 
