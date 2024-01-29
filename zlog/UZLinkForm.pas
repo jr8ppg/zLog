@@ -169,8 +169,7 @@ procedure TZLinkForm.MergeLogWithZServer;
 var
    str: string;
 begin
-   str := ZLinkHeader + ' GETQSOIDS';
-   FMergeTempList := TDictionary<Integer,TQSOID>.Create();
+   str := ZLinkHeader + ' BEGINMERGE';
    WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
@@ -282,6 +281,7 @@ var
    temp: string;
    aQSO: TQSO;
    i: integer;
+   str: string;
 begin
    while CommandQue.count > 0 do begin
       temp := CommandQue.Strings[0];
@@ -308,6 +308,16 @@ begin
       if pos('FREQ', temp) = 1 then begin
          temp := copy(temp, 6, 255);
          MainForm.FreqList.ProcessFreqData(temp);
+      end;
+
+      if pos('BEGINMERGE-OK', temp) = 1 then begin
+         str := ZLinkHeader + ' GETQSOIDS';
+         FMergeTempList := TDictionary<Integer,TQSOID>.Create();
+         WriteData(str + LineBreakCode[Ord(Console.LineBreak)]);
+      end;
+
+      if pos('BEGINMERGE-NG', temp) = 1 then begin
+         //
       end;
 
       if pos('QSOIDS', temp) = 1 then begin
@@ -795,6 +805,9 @@ begin
    end;
 
    SendMergeTempList;
+
+   // マージ終了
+   WriteData(ZLinkHeader + ' ' + 'ENDMERGE' + LineBreakCode[Ord(Console.LineBreak)]);
 end;
 
 procedure TZLinkForm.CommProcess;
