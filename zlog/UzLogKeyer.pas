@@ -190,6 +190,11 @@ type
 
     cwstrptr: Integer;
     tailcwstrptr: Integer;
+    paddle_waiting: Boolean; {true if ready to receive paddle input}
+    mousetail: Integer; {pointer in CWSendBuf}
+    p_char_count: Integer; {counter which determines the end of a word}
+                           {set in m_set and decremented in $AA }
+    mouX, mouY: Integer;  { 1 or 3 dot or dash}
 
     callsignptr: Integer; {char pos. not absolute pos}
 
@@ -213,7 +218,6 @@ type
 
     FPaddleReverse: Boolean;
     FPaddleSqueeze: Boolean;
-    FSqueezeDotDash: Integer;
 
     FOnCallsignSentProc: TNotifyEvent;
     FOnPaddleEvent: TNotifyEvent;
@@ -282,10 +286,7 @@ type
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
 
-    procedure paddle_dot();
-    procedure paddle_dash();
-    procedure paddle_finish();
-    procedure paddle_finish2();
+    procedure m_set(b: Byte);
 
     procedure WinKeyerOpen(nPort: TKeyingPort);
     procedure WinKeyerClose();
@@ -362,8 +363,7 @@ type
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
 
     // paddle support
-    procedure Squeeze();
-    procedure PaddleProc(fLeft, fRight, fPrevLeft, fPrevRight: Boolean);
+    procedure PaddleProc(CurStatus: Byte; PrevStatus: Byte);
 
     // USBIF4CW support
     function usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
@@ -1413,7 +1413,9 @@ var
    begin
       cwstrptr := 0;
       callsignptr := 0;
+      mousetail:=1;
       tailcwstrptr := 1;
+      paddle_waiting := True;
       FCWSendBuf[FSelectedBuf, 1] := $FF;
       FSendChar := False;
 
@@ -1567,6 +1569,28 @@ begin
             end;
          end;
 
+         $AA: begin {paddle waiting routine. if p_char_count expires, }
+            paddle_waiting := True;
+            if p_char_count = 0 then begin
+
+               if FPTTEnabled then begin
+                  FPttHoldCounter := FPttDelayAfterCount;
+                  FCWSendBuf[FSelectedBuf, cwstrptr] := $A2;
+                  FCWSendBuf[FSelectedBuf, cwstrptr + 1] := $FF;
+                  Exit;
+               end;
+
+               cwstrptr := 1;
+               mousetail := 1;
+               paddle_waiting := True;
+               FCWSendBuf[FSelectedBuf, 1] := $FF;
+            end
+            else begin
+              dec(p_char_count);
+            end;
+            Exit;
+         end;
+
          $BB: begin
             Dec(cwstrptr);
          end;
@@ -1698,6 +1722,7 @@ begin
    FSendChar := False;
    cwstrptr := 1;
    tailcwstrptr := 1;
+   mousetail := 1;
    FTimerMilliSec := msec; { timer interval, default = 1}
    FTimerMicroSec := FTimerMilliSec * 1000;
 
@@ -2457,6 +2482,8 @@ begin
          FSendChar := False;
          callsignptr := 0;
          tailcwstrptr := 1;
+         mousetail := 1;
+         paddle_waiting := True;
       finally
          CWBufferSync.Leave();
       end;
@@ -2883,9 +2910,13 @@ begin
          // パドル動作をセット
          if FPaddleReverse = True then begin
             usbif4cwSetPaddle(i, 1);
+            mouX := 3;
+            mouY := 1;
          end
          else begin
             usbif4cwSetPaddle(i, 0);
+            mouX := 1;
+            mouY := 3;
          end;
 
          // WPMをセット
@@ -3012,37 +3043,35 @@ begin
       InReport[6] := 0;
       InReport[7] := 0;
       InReport[8] := 0;
-
       FKeyer.FUsbInfo[0].FUSBIF4CW.ReadFile(InReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.InputReportByteLength, BR);
-
       LeaveCriticalSection(FUsbPortDataLock);
 
-      if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
-         if (InReport[2] <> FPrevInReport[2]) then begin
+      if (InReport[1] = 4) and (InReport[3] = 4) {and (InReport[2] <> $F)} then begin
 
-            // パドル状況
-            if FKeyer.PaddleReverse = False then begin
-               fPaddleLeft := (InReport[2] and $04) = 0;
-               fPaddleRight := (InReport[2] and $01) = 0;
+         // パドル状況
+         if FKeyer.PaddleReverse = False then begin
+            fPaddleLeft := (InReport[2] and $04) = 0;
+            fPaddleRight := (InReport[2] and $01) = 0;
 
-               fPrevLeft := (FPrevInReport[2] and $04) = 0;
-               fPrevRight := (FPrevInReport[2] and $01) = 0;
-            end
-            else begin
-               fPaddleRight := (InReport[2] and $04) = 0;
-               fPaddleLeft := (InReport[2] and $01) = 0;
-
-               fPrevRight := (FPrevInReport[2] and $04) = 0;
-               fPrevLeft := (FPrevInReport[2] and $01) = 0;
-            end;
-
-            FKeyer.PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
-
-            CopyMemory(@FPrevInReport, @InReport, 9);
+            fPrevLeft := (FPrevInReport[2] and $04) = 0;
+            fPrevRight := (FPrevInReport[2] and $01) = 0;
          end
          else begin
-            FKeyer.Squeeze();
+            fPaddleRight := (InReport[2] and $04) = 0;
+            fPaddleLeft := (InReport[2] and $01) = 0;
+
+            fPrevRight := (FPrevInReport[2] and $04) = 0;
+            fPrevLeft := (FPrevInReport[2] and $01) = 0;
          end;
+
+         if ((fPrevRight = False) and (fPrevLeft = False)) and ((fPaddleRight = True) or (fPaddleLeft = True)) then begin
+            FKeyer.PaddleProc((InReport[2] and $05), 1);
+         end
+         else begin
+            FKeyer.PaddleProc((InReport[2] and $05), 0);
+         end;
+
+         CopyMemory(@FPrevInReport, @InReport, 9);
       end;
 
       EnterCriticalSection(FUsbPortDataLock);
@@ -3066,159 +3095,122 @@ nextnext:
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.paddle_dot();
-begin
-   FSendOK := False;
-   if FPTTEnabled then begin
-      ControlPTT(FWkTx, True);
-   end;
-   FSqueezeDotDash := 0;
-   SetCWSendBuf(0, 'p');
-   FSendOK := True;
-end;
-
-procedure TdmZLogKeyer.paddle_dash();
-begin
-   FSendOK := False;
-   if FPTTEnabled then begin
-      ControlPTT(FWkTx, True);
-   end;
-   FSqueezeDotDash := 1;
-   SetCWSendBuf(0, 'q');
-   FSendOK := True;
-end;
-
-procedure TdmZLogKeyer.paddle_finish();
-var
-   i: Integer;
+procedure TdmZLogKeyer.m_set(b: Byte);
 begin
    FSendOK := False;
    CWBufferSync.Enter();
    try
-      for i := 1 to codemax do begin
-         if FCWSendBuf[0, i] = $A then begin
-            FCWSendBuf[0, i] := 9;
-         end;
+      if FPTTEnabled and (mousetail = 1) then begin
+         ControlPTT(FWkTx, True);
+         FCWSendBuf[0, 1] := $55; {set PTT delay}
+         inc(mousetail);
       end;
 
-      if FPTTEnabled then begin
-         SetCWSendBuf(0, 'o');
-      end;
+      if (mousetail + 2) > (charmax * codemax) then mousetail := 1;
+
+      FCWSendBuf[0, mousetail]     := b;
+      FCWSendBuf[0, mousetail + 1] := 0;
+      FCWSendBuf[0, mousetail + 2] := $AA;
+      inc(mousetail, 2);
+      p_char_count := (FDotCount * 3) div 2;
    finally
       CWBufferSync.Leave();
       FSendOK := True;
+      paddle_waiting := False;
    end;
 end;
 
-procedure TdmZLogKeyer.paddle_finish2();
+procedure TdmZLogKeyer.PaddleProc(CurStatus: Byte; PrevStatus: Byte);
 var
-   i: Integer;
-begin
-   FSendOK := False;
-   CWBufferSync.Enter();
-   try
-      for i := 1 to codemax do begin
-         if FCWSendBuf[0, i] = $A then begin
-            FCWSendBuf[0, i] := 9;
-         end;
-      end;
-   finally
-      CWBufferSync.Leave();
-      FSendOK := True;
-   end;
-end;
-
-procedure TdmZLogKeyer.Squeeze();
-begin
-   if FPaddleSqueeze = True then begin
-      if FSendOK = False then begin
-         Inc(FSqueezeDotDash);
-         FSqueezeDotDash := FSqueezeDotDash and 1;
-         if FSqueezeDotDash = 0 then begin
-            SetCWSendBufChar(0, Char('v'));
-         end
-         else begin
-            SetCWSendBufChar(0, Char('r'));
-         end;
-         FSendOK := True;
-      end;
-   end;
-end;
-
-procedure TdmZLogKeyer.PaddleProc(fLeft, fRight, fPrevLeft, fPrevRight: Boolean);
+   ptr: Integer;
 begin
    // 左右OFFから左右どちらかがONになるタイミングでパドルイベントを発生
-   if ((fPrevRight = False) and (fPrevLeft = False)) and ((fRight = True) or (fLeft = True)) then begin
+//   if (PrevStatus = 5) and ((CurStatus = $00) or (CurStatus = $01) or (CurStatus = $04)) then begin
+   if PrevStatus = 1 then begin
       if Assigned(FOnPaddleEvent) then begin
          FOnPaddleEvent(Self);
+         if cwstrptr = 0 then begin
+            cwstrptr := 1;
+         end;
       end;
    end;
 
-   // パドル用キーヤー処理 USBIF4CW V2はスクイーズ操作不可
-   // パドル左右 OFF->ON 左右どっちかがOFFから両方ONを検出
-   if ((fPrevRight = False) or (fPrevLeft = False)) and ((fRight = True) and (fLeft = True)) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE SQUEEZE OFF->ON**'));
-      {$ENDIF}
-      paddle_finish2();
+   if CurStatus = $05 then begin
+      Exit;
+   end;
 
-      if FPTTEnabled then begin
-         ControlPTT(FWkTx, True);
-      end;
-      FPaddleSqueeze := True;
-      Squeeze();
-   end
+   ptr := mousetail - cwstrptr;
+   if ptr < 0 then begin
+      ptr := 0;
+      cwstrptr := 1;
+      mousetail := 1;
+   end;
 
-   // パドル右 ON->OFF 左右ONから左右どちらかがOFFを検出
-   else if ((fPrevRight = True) and (fPrevLeft = True)) and ((fRight = False) or (fLeft = False)) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE SQUEEZE ON->OFF**'));
-      {$ENDIF}
-      paddle_finish();
+   case ptr of
+      0: begin
+         case CurStatus of
+            $00: begin { both }
+               ptr := mousetail - 2;
+               if ptr < 1 then begin
+                  ptr := 1;
+                  mousetail := 3;
+               end;
 
-      if FPaddleSqueeze = True then begin
-         FPaddleSqueeze := False;
+               case FCWSendBuf[0, ptr] of
+                  1 : m_set(3);
+                  3 : m_set(1);
+               end;
+            end;
 
-         if fLeft = True then begin
-            paddle_dot();
+            $01: begin {dit}
+               if paddle_waiting then m_set(mouX);
+            end;
+
+            $04: begin {dah}
+               if paddle_waiting then m_set(mouY);
+            end;
          end;
-         if fRight = True then begin
-            paddle_dash();
-            paddle_dot();
+      end;
+
+      1: begin
+         ptr := cwstrptr - 1;
+         if ptr < 1 then begin
+            ptr := 1;
+            cwstrptr := 2;
+         end;
+
+         case CurStatus of
+            $00: begin
+               case FCWSendBuf[0, ptr] of
+                  1: m_set(3);
+                  3: m_set(1);
+               end;
+            end;
+
+            $01: begin
+               if FCWSendBuf[0, ptr] = mouY then
+                  m_set(mouX);
+            end;
+
+            $04: begin
+               if FCWSendBuf[0, ptr] = mouX then
+                  m_set(mouY);
+            end;
          end;
       end;
-   end
 
-   // パドル右(DASH) OFF->ON
-   else if (fPrevRight = False) and (fRight = True) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE RIGHT OFF->ON**'));
-      {$ENDIF}
-      paddle_dash();
-   end
-
-   // パドル右(DASH) ON->OFF
-   else if (fPrevRight = True) and (fRight = False) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE RIGHT ON->OFF**'));
-      {$ENDIF}
-      paddle_finish();
-   end
-
-   // パドル左(DOT) OFF->ON
-   else if (fPrevLeft = False) and (fLeft = True) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE LEFT OFF->ON**'));
-      {$ENDIF}
-      paddle_dot();
-   end
-
-   // パドル左(DOT) ON->OFF
-   else if (fPrevLeft = True) and (fLeft = False) then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('**PADDLE LEFT ON->OFF**'));
-      {$ENDIF}
-      paddle_finish();
+      else begin
+         if (CurStatus = $01) or (CurStatus = $04) then begin
+            if abs(mousetail - cwstrptr) > 5 then begin
+               FSelectedBuf := 0;
+               cwstrptr := 1;
+               mousetail := 1;
+               FKeyingCounter := 1;
+               paddle_waiting := True;
+               m_set(0);
+            end;
+         end;
+      end;
    end;
 end;
 
@@ -4152,12 +4144,20 @@ procedure TdmZLogKeyer.IncCWSpeed();
 begin
    WPM := WPM + 1;
    InitWPM := WPM;
+
+   if Assigned(FOnSpeedChanged) then begin
+      FOnSpeedChanged(Self);
+   end;
 end;
 
 procedure TdmZLogKeyer.DecCWSpeed();
 begin
    WPM := WPM - 1;
    InitWPM := WPM;
+
+   if Assigned(FOnSpeedChanged) then begin
+      FOnSpeedChanged(Self);
+   end;
 end;
 
 procedure TdmZLogKeyer.ToggleFixedSpeed();
