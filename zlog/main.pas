@@ -10832,6 +10832,9 @@ procedure TMainForm.Restore2bsiqMode();
 begin
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       FInformation.Is2bsiq := FPrev2bsiqMode;
+      if FPrev2bsiqMode = True then begin
+         actionToggleRx.Execute();
+      end;
    end;
 end;
 
