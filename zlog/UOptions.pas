@@ -1196,8 +1196,9 @@ begin
       else begin
          Settings._so2r_type := so2rNeo;
       end;
-      Settings._so2r_tx_port := comboSo2rTxSelectPort.ItemIndex;
-      Settings._so2r_rx_port := comboSo2rRxSelectPort.ItemIndex;
+
+      Settings._so2r_tx_port := TCommPort(comboSo2rTxSelectPort.Items.Objects[comboSo2rTxSelectPort.ItemIndex]).Number;
+      Settings._so2r_rx_port := TCommPort(comboSo2rRxSelectPort.Items.Objects[comboSo2rRxSelectPort.ItemIndex]).Number;
       Settings._so2r_tx_rigc := comboSo2rTxRigC.ItemIndex;
 
       r := Settings._so2r_cq_rpt_interval_sec;
@@ -1342,6 +1343,7 @@ end;
 procedure TformOptions.ImplementSettings();
 var
    b: TBand;
+   i: Integer;
 
    procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
    var
@@ -1429,8 +1431,25 @@ begin
             radioSo2rClick(radioSo2rNeo);
          end;
       end;
-      comboSo2rTxSelectPort.ItemIndex := Settings._so2r_tx_port;
-      comboSo2rRxSelectPort.ItemIndex := Settings._so2r_rx_port;
+
+      // TX Selector
+      comboSo2rTxSelectPort.ItemIndex := 0;
+      for i := 0 to comboSo2rTxSelectPort.Items.Count - 1 do begin
+         if TCommPort(comboSo2rTxSelectPort.Items.Objects[i]).Number = Settings._so2r_tx_port then begin
+            comboSo2rTxSelectPort.ItemIndex := i;
+            Break;
+         end;
+      end;
+
+      // RX Selector
+      comboSo2rRxSelectPort.ItemIndex := 0;
+      for i := 0 to comboSo2rRxSelectPort.Items.Count - 1 do begin
+         if TCommPort(comboSo2rRxSelectPort.Items.Objects[i]).Number = Settings._so2r_rx_port then begin
+            comboSo2rRxSelectPort.ItemIndex := i;
+            Break;
+         end;
+      end;
+
       comboSo2rTxRigC.ItemIndex := Settings._so2r_tx_rigc;
 
       editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
