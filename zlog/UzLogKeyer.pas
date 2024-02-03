@@ -256,6 +256,7 @@ type
     // SO2R support
     FSo2rRxSelectPort: TKeyingPort;
     FSo2rTxSelectPort: TKeyingPort;
+    FSo2rTxRigC: Integer;
 
     FWnd: HWND;
 
@@ -401,6 +402,7 @@ type
     // SO2R support
     property So2rRxSelectPort: TKeyingPort read FSo2rRxSelectPort write SetSo2rRxSelectPort;
     property So2rTxSelectPort: TKeyingPort read FSo2rTxSelectPort write SetSo2rTxSelectPort;
+    property So2rTxRigC: Integer read FSo2rTxRigC write FSo2rTxRigC;
 
     // SO2R Neo support
     property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
@@ -476,6 +478,7 @@ begin
    FSo2rNeoUseRxSelect := False;
    FSo2rRxSelectPort := tkpNone;
    FSo2rTxSelectPort := tkpNone;
+   FSo2rTxRigC := 0;
    FTune := False;
 
    FWnd := AllocateHWnd(WndMethod);
@@ -730,6 +733,24 @@ end;
 procedure TdmZLogKeyer.SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
 var
    i: Integer;
+
+   procedure SelectRigA();
+   begin
+      ZComTxRigSelect.ToggleDTR(False);
+      ZComTxRigSelect.ToggleRTS(False);
+   end;
+
+   procedure SelectRigB();
+   begin
+      ZComTxRigSelect.ToggleDTR(True);
+      ZComTxRigSelect.ToggleRTS(False);
+   end;
+
+   procedure SelectRigC();
+   begin
+      ZComTxRigSelect.ToggleDTR(False);
+      ZComTxRigSelect.ToggleRTS(True);
+   end;
 begin
    if (rigset = 0) or (rigset = 1) then begin
       FWkTxRigSet := 0;
@@ -746,20 +767,32 @@ begin
       case rigset of
          // RIG-A
          0, 1: begin
-            ZComTxRigSelect.ToggleDTR(False);
-            ZComTxRigSelect.ToggleRTS(False);
+            SelectRigA();
          end;
 
          // RIG-B
          2: begin
-            ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(False);
+            SelectRigB();
          end;
 
          // RIG-C
          else begin
-            ZComTxRigSelect.ToggleDTR(False);
-            ZComTxRigSelect.ToggleRTS(True);
+            case FSo2rTxRigC of
+               // RIG-C
+               0: begin
+                  SelectRigC();
+               end;
+
+               // Same RIG-A
+               1: begin
+                  SelectRigA();
+               end;
+
+               // Same RIG-B
+               2: begin
+                  SelectRigB();
+               end;
+            end;
          end;
       end;
    end;

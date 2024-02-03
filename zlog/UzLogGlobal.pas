@@ -170,6 +170,7 @@ type
     _so2r_type: TSo2rType;       // 0:none 1:COM port 2:SO2R Neo
     _so2r_tx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
+    _so2r_tx_rigc: Integer;
     _so2r_use_rig3: Boolean;
     _so2r_cq_rpt_interval_sec: Double;
     _so2r_rigsw_after_delay: Integer;
@@ -1073,6 +1074,7 @@ begin
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
       Settings._so2r_tx_port  := ini.ReadInteger('SO2R', 'tx_select_port', 0);
       Settings._so2r_rx_port  := ini.ReadInteger('SO2R', 'rx_select_port', 0);
+      Settings._so2r_tx_rigc  := ini.ReadInteger('SO2R', 'tx_rigc_option', 0);
       Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
 
       Settings._so2r_cq_rpt_interval_sec := ini.ReadFloat('SO2R', 'cq_repeat_interval_sec', 2.0);
@@ -1749,6 +1751,7 @@ begin
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
       ini.WriteInteger('SO2R', 'tx_select_port', Settings._so2r_tx_port);
       ini.WriteInteger('SO2R', 'rx_select_port', Settings._so2r_rx_port);
+      ini.WriteInteger('SO2R', 'tx_rigc_option', Settings._so2r_tx_rigc);
       ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
 
       ini.WriteFloat('SO2R', 'cq_repeat_interval_sec', Settings._so2r_cq_rpt_interval_sec);
@@ -2114,6 +2117,7 @@ begin
    dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
+   dmZLogKeyer.So2rTxRigC := Settings._so2r_tx_rigc;
 
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;

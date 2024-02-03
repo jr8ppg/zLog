@@ -59,10 +59,10 @@ object formOptions: TformOptions
           Caption = #12522#12464#36984#25246
           TabOrder = 0
           object GroupBox6: TGroupBox
-            Left = 155
-            Top = 29
+            Left = 187
+            Top = 13
             Width = 206
-            Height = 53
+            Height = 84
             Caption = #20986#21147#12509#12540#12488
             TabOrder = 3
             object Label31: TLabel
@@ -79,6 +79,13 @@ object formOptions: TformOptions
               Height = 13
               Caption = 'RX'
             end
+            object Label3: TLabel
+              Left = 12
+              Top = 55
+              Width = 49
+              Height = 13
+              Caption = 'TX=RIG-C'
+            end
             object comboSo2rRxSelectPort: TComboBox
               Left = 127
               Top = 20
@@ -94,6 +101,20 @@ object formOptions: TformOptions
               Height = 21
               Style = csDropDownList
               TabOrder = 0
+            end
+            object comboSo2rTxRigC: TComboBox
+              Left = 78
+              Top = 52
+              Width = 81
+              Height = 21
+              Style = csDropDownList
+              ItemIndex = 0
+              TabOrder = 2
+              Text = 'Normal'
+              Items.Strings = (
+                'Normal'
+                'RIG-A'
+                'RIG-B')
             end
           end
           object radioSo2rNeo: TRadioButton
@@ -2964,13 +2985,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'NSimSun'
+          FontName = '@Small Fonts'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 101
+          ItemIndex = 16
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

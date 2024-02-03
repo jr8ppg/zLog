@@ -308,6 +308,8 @@ type
     updownMemScanInterval: TUpDown;
     Label4: TLabel;
     Label5: TLabel;
+    Label3: TLabel;
+    comboSo2rTxRigC: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -613,16 +615,19 @@ begin
       0: begin
          comboSo2rTxSelectPort.Enabled := False;
          comboSo2rRxSelectPort.Enabled := False;
+         comboSo2rTxRigC.Enabled := False;
       end;
 
       1: begin
          comboSo2rTxSelectPort.Enabled := True;
          comboSo2rRxSelectPort.Enabled := True;
+         comboSo2rTxRigC.Enabled := True;
       end;
 
       2: begin
          comboSo2rTxSelectPort.Enabled := False;
          comboSo2rRxSelectPort.Enabled := False;
+         comboSo2rTxRigC.Enabled := False;
       end;
    end;
 end;
@@ -1193,6 +1198,7 @@ begin
       end;
       Settings._so2r_tx_port := comboSo2rTxSelectPort.ItemIndex;
       Settings._so2r_rx_port := comboSo2rRxSelectPort.ItemIndex;
+      Settings._so2r_tx_rigc := comboSo2rTxRigC.ItemIndex;
 
       r := Settings._so2r_cq_rpt_interval_sec;
       Settings._so2r_cq_rpt_interval_sec := StrToFloatDef(editSo2rCqRptIntervalSec.Text, r);
@@ -1425,6 +1431,7 @@ begin
       end;
       comboSo2rTxSelectPort.ItemIndex := Settings._so2r_tx_port;
       comboSo2rRxSelectPort.ItemIndex := Settings._so2r_rx_port;
+      comboSo2rTxRigC.ItemIndex := Settings._so2r_tx_rigc;
 
       editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
       editSo2rRigSwAfterDelay.Text := IntToStr(Settings._so2r_rigsw_after_delay);
