@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45017.9700231481</prop>
-        <prop prop-type="OrigDateTime">44936.9525694444</prop>
-        <prop prop-type="XlatDateTime">44936.9525694444</prop>
+        <prop prop-type="SelfDateTime">45325.9797685185</prop>
+        <prop prop-type="OrigDateTime">45275.9598611111</prop>
+        <prop prop-type="XlatDateTime">45275.9598611111</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">69</prop>
+        <prop prop-type="UnTranslated">65</prop>
       </prop-group>
     </header>
     <body>
@@ -39,10 +39,14 @@
         <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TdmZLogKeyer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying1.Tag" resname="O:dmZLogKeyer.O:ZComKeying1.Tag">
-        <source>3</source>
+        <source>1</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>3</source>
+          <target>1</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">45325.604787338</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying1.Port" resname="O:dmZLogKeyer.O:ZComKeying1.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
@@ -89,10 +93,14 @@
         <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying2.Tag" resname="O:dmZLogKeyer.O:ZComKeying2.Tag">
-        <source>3</source>
+        <source>2</source>
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
+      <alt-trans>  <source>3</source>
+          <target>2</target>
+          <prop-group name="ITEFieldProp">
+          <prop prop-type="Modified">45325.6047873495</prop></prop-group>
+        </alt-trans></trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying2.Port" resname="O:dmZLogKeyer.O:ZComKeying2.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
@@ -133,230 +141,210 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.Tag" resname="O:dmZLogKeyer.O:ZComRxRigSelect.Tag">
-        <source>3</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.Port" resname="O:dmZLogKeyer.O:ZComRxRigSelect.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.PortName" resname="O:dmZLogKeyer.O:ZComRxRigSelect.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.HwFlow" resname="O:dmZLogKeyer.O:ZComRxRigSelect.HwFlow">
         <source>hfNONE</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.InBufSize" resname="O:dmZLogKeyer.O:ZComRxRigSelect.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.EnableDTROnOpen" resname="O:dmZLogKeyer.O:ZComRxRigSelect.EnableDTROnOpen">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.OnReceiveData" resname="O:dmZLogKeyer.O:ZComRxRigSelect.OnReceiveData">
-        <source>ZComKeying1ReceiveData</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.Left" resname="O:dmZLogKeyer.O:ZComRxRigSelect.Left">
         <source>27</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComRxRigSelect.Top" resname="O:dmZLogKeyer.O:ZComRxRigSelect.Top">
         <source>64</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.Tag" resname="O:dmZLogKeyer.O:ZComKeying3.Tag">
         <source>3</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.Port" resname="O:dmZLogKeyer.O:ZComKeying3.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.PortName" resname="O:dmZLogKeyer.O:ZComKeying3.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.HwFlow" resname="O:dmZLogKeyer.O:ZComKeying3.HwFlow">
         <source>hfNONE</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.InBufSize" resname="O:dmZLogKeyer.O:ZComKeying3.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.EnableDTROnOpen" resname="O:dmZLogKeyer.O:ZComKeying3.EnableDTROnOpen">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.OnReceiveData" resname="O:dmZLogKeyer.O:ZComKeying3.OnReceiveData">
         <source>ZComKeying1ReceiveData</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.Left" resname="O:dmZLogKeyer.O:ZComKeying3.Left">
         <source>211</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying3.Top" resname="O:dmZLogKeyer.O:ZComKeying3.Top">
         <source>16</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.Tag" resname="O:dmZLogKeyer.O:ZComTxRigSelect.Tag">
-        <source>3</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.Port" resname="O:dmZLogKeyer.O:ZComTxRigSelect.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.PortName" resname="O:dmZLogKeyer.O:ZComTxRigSelect.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.HwFlow" resname="O:dmZLogKeyer.O:ZComTxRigSelect.HwFlow">
         <source>hfNONE</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.InBufSize" resname="O:dmZLogKeyer.O:ZComTxRigSelect.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.EnableDTROnOpen" resname="O:dmZLogKeyer.O:ZComTxRigSelect.EnableDTROnOpen">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.OnReceiveData" resname="O:dmZLogKeyer.O:ZComTxRigSelect.OnReceiveData">
-        <source>ZComKeying1ReceiveData</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.Left" resname="O:dmZLogKeyer.O:ZComTxRigSelect.Left">
         <source>27</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComTxRigSelect.Top" resname="O:dmZLogKeyer.O:ZComTxRigSelect.Top">
         <source>116</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929162153</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.Tag" resname="O:dmZLogKeyer.O:ZComKeying4.Tag">
         <source>4</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.Port" resname="O:dmZLogKeyer.O:ZComKeying4.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.PortName" resname="O:dmZLogKeyer.O:ZComKeying4.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824537</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.HwFlow" resname="O:dmZLogKeyer.O:ZComKeying4.HwFlow">
         <source>hfNONE</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.InBufSize" resname="O:dmZLogKeyer.O:ZComKeying4.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.EnableDTROnOpen" resname="O:dmZLogKeyer.O:ZComKeying4.EnableDTROnOpen">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.OnReceiveData" resname="O:dmZLogKeyer.O:ZComKeying4.OnReceiveData">
         <source>ZComKeying1ReceiveData</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.Left" resname="O:dmZLogKeyer.O:ZComKeying4.Left">
         <source>151</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying4.Top" resname="O:dmZLogKeyer.O:ZComKeying4.Top">
         <source>76</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.Tag" resname="O:dmZLogKeyer.O:ZComKeying5.Tag">
         <source>5</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.Port" resname="O:dmZLogKeyer.O:ZComKeying5.Port">
         <source>pnCustom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.PortName" resname="O:dmZLogKeyer.O:ZComKeying5.PortName">
         <source>'\\.\COM2'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824653</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.HwFlow" resname="O:dmZLogKeyer.O:ZComKeying5.HwFlow">
         <source>hfNONE</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.InBufSize" resname="O:dmZLogKeyer.O:ZComKeying5.InBufSize">
         <source>4096</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.EnableDTROnOpen" resname="O:dmZLogKeyer.O:ZComKeying5.EnableDTROnOpen">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.OnReceiveData" resname="O:dmZLogKeyer.O:ZComKeying5.OnReceiveData">
         <source>ZComKeying1ReceiveData</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.Left" resname="O:dmZLogKeyer.O:ZComKeying5.Left">
         <source>211</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:dmZLogKeyer.O:ZComKeying5.Top" resname="O:dmZLogKeyer.O:ZComKeying5.Top">
         <source>76</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44801.7152824768</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TCommPortDriver</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45197.8825231481</prop>
-        <prop prop-type="OrigDateTime">45197.8716203704</prop>
+        <prop prop-type="SelfDateTime">45325.9797685185</prop>
+        <prop prop-type="OrigDateTime">45325.9699537037</prop>
         <prop prop-type="XlatDateTime">44936.9525694444</prop>
         <prop prop-type="Translated">0</prop>
-        <prop prop-type="UnTranslated">89</prop>
+        <prop prop-type="UnTranslated">87</prop>
       </prop-group>
     </header>
     <body>
@@ -83,380 +83,370 @@
         <prop-group name="ITEFieldProp">
         <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
-      <trans-unit id="O:ZLinkForm.OldCreateOrder" resname="O:ZLinkForm.OldCreateOrder">
-        <source>True</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
       <trans-unit id="O:ZLinkForm.OnClose" resname="O:ZLinkForm.OnClose">
         <source>FormClose</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44946.9319222685</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44946.9319222685</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.OnCreate" resname="O:ZLinkForm.OnCreate">
         <source>FormCreate</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.OnDestroy" resname="O:ZLinkForm.OnDestroy">
         <source>FormDestroy</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.OnKeyDown" resname="O:ZLinkForm.OnKeyDown">
         <source>FormKeyDown</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.OnShow" resname="O:ZLinkForm.OnShow">
         <source>FormShow</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44946.9319222685</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
-      </trans-unit>
-      <trans-unit id="O:ZLinkForm.PixelsPerInch" resname="O:ZLinkForm.PixelsPerInch">
-        <source>96</source>
-        <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44946.9319222685</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.TextHeight" resname="O:ZLinkForm.TextHeight">
         <source>12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TZLinkForm</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:StatusLine.Left" resname="O:ZLinkForm.O:StatusLine.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:StatusLine.Top" resname="O:ZLinkForm.O:StatusLine.Top">
         <source>189</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:StatusLine.Width" resname="O:ZLinkForm.O:StatusLine.Width">
         <source>334</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:StatusLine.Height" resname="O:ZLinkForm.O:StatusLine.Height">
         <source>23</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:StatusLine.Panels" resname="O:ZLinkForm.O:StatusLine.Panels">
         <source>&lt;&gt;</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:StatusLine.SimplePanel" resname="O:ZLinkForm.O:StatusLine.SimplePanel">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TStatusBar</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.Left" resname="O:ZLinkForm.O:Panel1.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.Top" resname="O:ZLinkForm.O:Panel1.Top">
         <source>132</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.Width" resname="O:ZLinkForm.O:Panel1.Width">
         <source>334</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.Height" resname="O:ZLinkForm.O:Panel1.Height">
         <source>57</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.Align" resname="O:ZLinkForm.O:Panel1.Align">
         <source>alBottom</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.BevelOuter" resname="O:ZLinkForm.O:Panel1.BevelOuter">
         <source>bvNone</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.TabOrder" resname="O:ZLinkForm.O:Panel1.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Left" resname="O:ZLinkForm.O:Panel1.O:Edit.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Top" resname="O:ZLinkForm.O:Panel1.O:Edit.Top">
         <source>6</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Width" resname="O:ZLinkForm.O:Panel1.O:Edit.Width">
         <source>161</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Height" resname="O:ZLinkForm.O:Panel1.O:Edit.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.AutoSize" resname="O:ZLinkForm.O:Panel1.O:Edit.AutoSize">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Font.Charset" resname="O:ZLinkForm.O:Panel1.O:Edit.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Font.Color" resname="O:ZLinkForm.O:Panel1.O:Edit.Font.Color">
         <source>clBlack</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Font.Height" resname="O:ZLinkForm.O:Panel1.O:Edit.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Font.Name" resname="O:ZLinkForm.O:Panel1.O:Edit.Font.Name">
         <source>'ＭＳ ゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.Font.Style" resname="O:ZLinkForm.O:Panel1.O:Edit.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.ParentFont" resname="O:ZLinkForm.O:Panel1.O:Edit.ParentFont">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.TabOrder" resname="O:ZLinkForm.O:Panel1.O:Edit.TabOrder">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:Edit.OnKeyPress" resname="O:ZLinkForm.O:Panel1.O:Edit.OnKeyPress">
         <source>EditKeyPress</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:ConnectButton.Left" resname="O:ZLinkForm.O:Panel1.O:ConnectButton.Left">
         <source>8</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:ConnectButton.Top" resname="O:ZLinkForm.O:Panel1.O:ConnectButton.Top">
         <source>32</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:ConnectButton.Width" resname="O:ZLinkForm.O:Panel1.O:ConnectButton.Width">
         <source>90</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:ConnectButton.Height" resname="O:ZLinkForm.O:Panel1.O:ConnectButton.Height">
         <source>20</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:ConnectButton.Caption" resname="O:ZLinkForm.O:Panel1.O:ConnectButton.Caption">
         <source>'Connect'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:ConnectButton.TabOrder" resname="O:ZLinkForm.O:Panel1.O:ConnectButton.TabOrder">
         <source>1</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Panel1.O:ConnectButton.OnClick" resname="O:ZLinkForm.O:Panel1.O:ConnectButton.OnClick">
         <source>ConnectButtonClick</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Left" resname="O:ZLinkForm.O:Console.Left">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Top" resname="O:ZLinkForm.O:Console.Top">
         <source>0</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Width" resname="O:ZLinkForm.O:Console.Width">
         <source>334</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Height" resname="O:ZLinkForm.O:Console.Height">
         <source>132</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Align" resname="O:ZLinkForm.O:Console.Align">
         <source>alClient</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.ParentColor" resname="O:ZLinkForm.O:Console.ParentColor">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Font.Charset" resname="O:ZLinkForm.O:Console.Font.Charset">
         <source>DEFAULT_CHARSET</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Font.Color" resname="O:ZLinkForm.O:Console.Font.Color">
         <source>clWindowText</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Font.Height" resname="O:ZLinkForm.O:Console.Font.Height">
         <source>-12</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Font.Name" resname="O:ZLinkForm.O:Console.Font.Name">
         <source>'ＭＳ ゴシック'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Font.Style" resname="O:ZLinkForm.O:Console.Font.Style">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.Rows" resname="O:ZLinkForm.O:Console.Rows">
         <source>500</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Console.LineBreak" resname="O:ZLinkForm.O:Console.LineBreak">
         <source>CR</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TColorConsole2</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Timer1.Enabled" resname="O:ZLinkForm.O:Timer1.Enabled">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Timer1.Interval" resname="O:ZLinkForm.O:Timer1.Interval">
         <source>100</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Timer1.OnTimer" resname="O:ZLinkForm.O:Timer1.OnTimer">
         <source>Timer1Timer</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Timer1.Left" resname="O:ZLinkForm.O:Timer1.Left">
         <source>36</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:Timer1.Top" resname="O:ZLinkForm.O:Timer1.Top">
         <source>36</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TTimer</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LineMode" resname="O:ZLinkForm.O:ZSocket.LineMode">
         <source>True</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">45197.8825290856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">45197.8825290856</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LineEnd" resname="O:ZLinkForm.O:ZSocket.LineEnd">
         <source>#13#10</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.Proto" resname="O:ZLinkForm.O:ZSocket.Proto">
         <source>'tcp'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LocalAddr" resname="O:ZLinkForm.O:ZSocket.LocalAddr">
         <source>'0.0.0.0'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LocalAddr6" resname="O:ZLinkForm.O:ZSocket.LocalAddr6">
         <source>'::'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.LocalPort" resname="O:ZLinkForm.O:ZSocket.LocalPort">
         <source>'0'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.SocksLevel" resname="O:ZLinkForm.O:ZSocket.SocksLevel">
         <source>'5'</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.ExclusiveAddr" resname="O:ZLinkForm.O:ZSocket.ExclusiveAddr">
         <source>False</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.ComponentOptions" resname="O:ZLinkForm.O:ZSocket.ComponentOptions">
         <source>[]</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.ListenBacklog" resname="O:ZLinkForm.O:ZSocket.ListenBacklog">
         <source>15</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.OnDataAvailable" resname="O:ZLinkForm.O:ZSocket.OnDataAvailable">
         <source>ZSocketDataAvailable</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.OnSessionClosed" resname="O:ZLinkForm.O:ZSocket.OnSessionClosed">
         <source>ZSocketSessionClosed</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.OnSessionConnected" resname="O:ZLinkForm.O:ZSocket.OnSessionConnected">
         <source>ZSocketSessionConnected</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.SocketErrs" resname="O:ZLinkForm.O:ZSocket.SocketErrs">
         <source>wsErrTech</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.Left" resname="O:ZLinkForm.O:ZSocket.Left">
         <source>68</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
       <trans-unit id="O:ZLinkForm.O:ZSocket.Top" resname="O:ZLinkForm.O:ZSocket.Top">
         <source>36</source>
         <prop-group name="ITEFieldProp">
-        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
+        <prop prop-type="Created">44796.8929151389</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TWSocket</prop><prop prop-type="Localize">1</prop></prop-group>
       </trans-unit>
     </body>
   </file>

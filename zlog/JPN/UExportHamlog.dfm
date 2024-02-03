@@ -361,6 +361,14 @@ object formExportHamlog: TformExportHamlog
         OnClick = radioRemarks1Opt3Click
       end
     end
+    object checkInquireJarlMemberInfo: TCheckBox
+      Left = 376
+      Top = 448
+      Width = 151
+      Height = 17
+      Caption = 'Inquire JARL member info.'
+      TabOrder = 6
+    end
   end
   object Panel1: TPanel
     Left = 0

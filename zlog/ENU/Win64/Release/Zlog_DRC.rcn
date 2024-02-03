@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">45235.7433796296</prop>
-        <prop prop-type="OrigDateTime">45235.742962963</prop>
+        <prop prop-type="SelfDateTime">45325.9799537037</prop>
+        <prop prop-type="OrigDateTime">45325.9793287037</prop>
         <prop prop-type="XlatDateTime">45016.8840972222</prop>
-        <prop prop-type="Translated">11</prop>
-        <prop prop-type="UnTranslated">1271</prop>
+        <prop prop-type="Translated">19</prop>
+        <prop prop-type="UnTranslated">1286</prop>
       </prop-group>
     </header>
     <body>
@@ -448,14 +448,14 @@
         </prop-group>
       </trans-unit>
       <trans-unit id="System_NetConsts_SNetHttpCertFileOpenError" resname="System_NetConsts_SNetHttpCertFileOpenError">
-        <source>"証明書ファイルを開く際にエラーが発生しました: (%d) %s"</source>
+        <source>"認証ファイルのオープン時にエラーが発生しました: (%d) %s"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.8935295486</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="System_NetConsts_SNetHttpCertNotFoundError" resname="System_NetConsts_SNetHttpCertNotFoundError">
-        <source>"証明書が次のファイル内に見つかりません: (%d) %s"</source>
+        <source>"ファイルで証明書が見つかりません: (%d) %s"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.8935295486</prop>
           <prop prop-type="Status">0</prop>
@@ -4088,7 +4088,7 @@
         </prop-group>
       </trans-unit>
       <trans-unit id="JclResources_RsEWindowsVersionNotSupported" resname="JclResources_RsEWindowsVersionNotSupported">
-        <source>"This windows version is not supported"</source>
+        <source>"This Windows version is not supported"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.8935297338</prop>
           <prop prop-type="Status">0</prop>
@@ -4109,7 +4109,7 @@
         </prop-group>
       </trans-unit>
       <trans-unit id="JclResources_RsEModuleNotValid" resname="JclResources_RsEModuleNotValid">
-        <source>"The Module with handle %d is not valid"</source>
+        <source>"The module with handle %d is not valid"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.8935297338</prop>
           <prop prop-type="Status">0</prop>
@@ -4193,7 +4193,7 @@
         </prop-group>
       </trans-unit>
       <trans-unit id="Vcl_ComStrs_sInvalidLevelEx" resname="Vcl_ComStrs_sInvalidLevelEx">
-        <source>"項目 \"%s\" のレベル (%d) が無効です"</source>
+        <source>"項目 \"%1:s\" の階層 (%0:d) が不正です"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.8935297338</prop>
           <prop prop-type="Status">0</prop>
@@ -4725,7 +4725,7 @@
         </prop-group>
       </trans-unit>
       <trans-unit id="Vcl_Consts_sCannotAddToEmpty" resname="Vcl_Consts_sCannotAddToEmpty">
-        <source>"空の行および列では GridPanel にコントロールは追加できません"</source>
+        <source>"行と列が空の GridPanel にはコントロールを追加できません"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.893529919</prop>
           <prop prop-type="Status">0</prop>
@@ -6303,7 +6303,7 @@
         <source>"インデックスが範囲外です (%d)。0 以上 %d 未満でなければなりません"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.893529919</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="System_RTLConsts_sInvalidStringAndObjectArrays" resname="System_RTLConsts_sInvalidStringAndObjectArrays">
@@ -7472,7 +7472,7 @@
         <source>"'%s' は %s 型の値として有効な浮動小数点値ではありません"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44796.893529919</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">3</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="System_SysConst_SInvalidDate" resname="System_SysConst_SInvalidDate">
@@ -8232,14 +8232,14 @@
         </prop-group>
       </trans-unit>
       <trans-unit id="System_Bindings_Consts_sBoolOpFail" resname="System_Bindings_Consts_sBoolOpFail">
-        <source>"\"%s\" と \"%s\" での論理演算の実行方法が不明です"</source>
+        <source>"\"%s\" および \"%s\" でブーリアン演算を実行する方法が不明です。"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44849.9794843171</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>
       <trans-unit id="System_Bindings_Consts_sBoolNegateOpFail" resname="System_Bindings_Consts_sBoolNegateOpFail">
-        <source>"\"%s\" 論理否定演算子の実行方法が不明です"</source>
+        <source>"\"%s\" のブーリアン否定を実行する方法が不明です"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">44849.9794843171</prop>
           <prop prop-type="Status">0</prop>
@@ -8902,7 +8902,7 @@
         </prop-group>
       </trans-unit>
       <trans-unit id="System_RTLConsts_SParseError" resname="System_RTLConsts_SParseError">
-        <source>"%d 行目: %s"</source>
+        <source>"%1:d 行目: %0:s"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45058.9957273495</prop>
           <prop prop-type="Status">0</prop>
@@ -9051,6 +9051,189 @@
         <source>"Disconnect from Z-Server"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">45199.9312362269</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_JARL_Member_Info" resname="Main_TMainForm_JARL_Member_Info">
+        <source>"JARL Member information."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799540278</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Main_TMainForm_Inquire_JARL_Member_Info" resname="Main_TMainForm_Inquire_JARL_Member_Info">
+        <source>"Querying QSL transfer status."</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799540394</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_EdgeConst_SWebViewFailure" resname="Vcl_EdgeConst_SWebViewFailure">
+        <source>"Edge ブラウザ コントロールを作成できませんでした"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799540856</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_EdgeConst_SNoWebView" resname="Vcl_EdgeConst_SNoWebView">
+        <source>"基礎とする WebView2 コントロールが初期化されていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799540972</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="IEConst_sNotSupportedByEdge" resname="IEConst_sNotSupportedByEdge">
+        <source>"操作は Edge WebView2 コントロールでサポートされていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799540972</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_NetConsts_SNetUriInvalidRelPath" resname="System_NetConsts_SNetUriInvalidRelPath">
+        <source>"相対 URL パスが無効です: \"%s\""</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.979954294</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_OleConst_SBadPropValue" resname="Vcl_OleConst_SBadPropValue">
+        <source>"'%s' は無効なプロパティ値です"</source>
+        <target>"'%s' is not a valid property value"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543056</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_OleConst_SCannotActivate" resname="Vcl_OleConst_SCannotActivate">
+        <source>"OLE コントロールのアクティブ化に失敗しました"</source>
+        <target>"OLE control activation failed"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543056</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_OleConst_SNoWindowHandle" resname="Vcl_OleConst_SNoWindowHandle">
+        <source>"OLE コントロールのウィンドウハンドルの取得に失敗しました"</source>
+        <target>"Could not obtain OLE control window handle"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543056</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_OleConst_SInvalidLicense" resname="Vcl_OleConst_SInvalidLicense">
+        <source>"%s の使用許諾情報が正しくありません"</source>
+        <target>"License information for %s is invalid"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543056</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_OleConst_SNotLicensed" resname="Vcl_OleConst_SNotLicensed">
+        <source>"%s の使用許諾情報が見つかりません。このコントロールはデザイン時には使えません"</source>
+        <target>"License information for %s not found. You cannot use this control in design mode"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543171</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="JclResources_RsOSVersionWinServer2022" resname="JclResources_RsOSVersionWinServer2022">
+        <source>"Windows Server 2022"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543287</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SControlNonMainThreadUsage" resname="Vcl_Consts_SControlNonMainThreadUsage">
+        <source>"コントロール '%s' が main ではないスレッド上で使用されています"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543403</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SCannotSetCheckState" resname="Vcl_Consts_SCannotSetCheckState">
+        <source>"チェック状態は、CheckBoxes が True の場合にのみ設定できます"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543519</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SInvalidCheckState" resname="Vcl_Consts_SInvalidCheckState">
+        <source>"チェック状態がツリービューの CheckStyles と合っていません"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543519</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SInvalidFrameIndex" resname="Vcl_Consts_SInvalidFrameIndex">
+        <source>"不正なイメージ フレーム インデックス %d: %d 個のフレームがあります (0-%d)"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="Vcl_Consts_SOleGraphic" resname="Vcl_Consts_SOleGraphic">
+        <source>"TOleGraphic に対する不正な操作です"</source>
+        <target>"Invalid operation on TOleGraphic"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SWindowsServer2022" resname="System_RTLConsts_SWindowsServer2022">
+        <source>"Windows Server 2022"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SWindows11" resname="System_RTLConsts_SWindows11">
+        <source>"Windows 11"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SEmptyPath" resname="System_RTLConsts_SEmptyPath">
+        <source>"パスが空です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SEmptyFileName" resname="System_RTLConsts_SEmptyFileName">
+        <source>"ファイル名が空です"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SInvalidDateDay" resname="System_RTLConsts_SInvalidDateDay">
+        <source>"DateDay は (%d, %d) の値を処理できません"</source>
+        <target>"(%d, %d) is not a valid DateDay pair"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SInvalidDateWeek" resname="System_RTLConsts_SInvalidDateWeek">
+        <source>"DateWeek は (%d, %d, %d) の値を処理できません"</source>
+        <target>"(%d, %d, %d) is not a valid DateWeek triplet"</target>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">2</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SInvalidCharsInFileName" resname="System_RTLConsts_SInvalidCharsInFileName">
+        <source>"ファイル名に無効な文字が含まれています"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.9799543634</prop>
+          <prop prop-type="Status">0</prop>
+        </prop-group>
+      </trans-unit>
+      <trans-unit id="System_RTLConsts_SListIndexErrorExt" resname="System_RTLConsts_SListIndexErrorExt">
+        <source>"リスト インデックスが範囲外です(%0:d)。%2:s オブジェクトの範囲は 0..%1:d です。"</source>
+        <prop-group name="ITEFieldProp">
+          <prop prop-type="Created">45325.979954375</prop>
           <prop prop-type="Status">0</prop>
         </prop-group>
       </trans-unit>

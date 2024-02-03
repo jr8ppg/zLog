@@ -60,6 +60,7 @@ type
     menuReplaceKeyword12: TMenuItem;
     menuReplaceKeyword13: TMenuItem;
     menuReplaceKeyword15: TMenuItem;
+    checkInquireJarlMemberInfo: TCheckBox;
     procedure radioRemarks1Opt1Click(Sender: TObject);
     procedure radioRemarks1Opt2Click(Sender: TObject);
     procedure radioRemarks1Opt3Click(Sender: TObject);
@@ -88,6 +89,8 @@ type
     procedure SetTimeOption(v: Integer);
     function GetQslStateText(): string;
     procedure SetQslStateText(v: string);
+    function GetInquireJarlMemberInfo(): Boolean;
+    procedure SetInquireJarlMemberInfo(v: Boolean);
     procedure Save();
     procedure Load();
   public
@@ -100,6 +103,7 @@ type
     property NameOption: Integer read GetNameOption write SetNameOption;
     property TimeOption: Integer read GetTimeOption write SetTimeOption;
     property QslStateText: string read GetQslStateText write SetQslStateText;
+    property InquireJarlMemberInfo: Boolean read GetInquireJarlMemberInfo write SetInquireJarlMemberInfo;
   end;
 
 implementation
@@ -384,6 +388,16 @@ begin
    editNoQsl.Text   := Trim(Copy(v, 3, 1));
 end;
 
+function TformExportHamlog.GetInquireJarlMemberInfo(): Boolean;
+begin
+   Result := checkInquireJarlMemberInfo.Checked;
+end;
+
+procedure TformExportHamlog.SetInquireJarlMemberInfo(v: Boolean);
+begin
+   checkInquireJarlMemberInfo.Checked := v;
+end;
+
 procedure TformExportHamlog.Save();
 var
    ini: TMemIniFile;
@@ -397,6 +411,7 @@ begin
       ini.WriteInteger('OPTION', 'codeoption', CodeOption);
       ini.WriteInteger('OPTION', 'nameoption', NameOption);
       ini.WriteInteger('OPTION', 'timeoption', TimeOption);
+      ini.WriteBool('OPTION', 'InquireJarlMemberInfo', InquireJarlMemberInfo);
 
       ini.UpdateFile();
    finally
@@ -417,6 +432,7 @@ begin
       CodeOption := ini.ReadInteger('OPTION', 'codeoption', 0);
       NameOption := ini.ReadInteger('OPTION', 'nameoption', 0);
       TimeOption := ini.ReadInteger('OPTION', 'timeoption', 0);
+      InquireJarlMemberInfo := ini.ReadBool('OPTION', 'InquireJarlMemberInfo', False);
    finally
       ini.Free();
    end;
