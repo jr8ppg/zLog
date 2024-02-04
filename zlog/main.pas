@@ -4730,6 +4730,10 @@ begin
       (Is2bsiq() = False) then begin
       // 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない
       if ((FCQLoopStartRig - 1) <> FCurrentTx) then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('**** 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない ****'));
+         {$ENDIF}
+         FCQRepeatPlaying := False;
          Exit;
       end;
 //      currig := FCurrentRigSet;  //RigControl.GetCurrentRig();
@@ -4767,6 +4771,7 @@ begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar('**** Other Key ****'));
          {$ENDIF}
+         FCQRepeatPlaying := False;
          Exit;
       end;
 
@@ -10731,6 +10736,7 @@ begin
       FPrev2bsiqMode := FInformation.Is2bsiq;
       FInformation.Is2bsiq := False;
       F2bsiqStart := False;
+      FCQRepeatPlaying := False;
    end;
 
    // 現在の周波数とモードを記憶
@@ -10835,8 +10841,12 @@ begin
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       FInformation.Is2bsiq := FPrev2bsiqMode;
       if FPrev2bsiqMode = True then begin
+         F2bsiqStart := True;
          actionToggleRx.Execute();
+//         timerCqRepeatTimer(nil);
+         timerCqRepeat.Enabled := True;
       end;
+      FCQRepeatPlaying := False;
    end;
 end;
 
