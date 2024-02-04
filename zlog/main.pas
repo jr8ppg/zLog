@@ -3717,6 +3717,7 @@ var
    Q: TQSO;
    nRxID: Integer;
    nTxID: Integer;
+   nTxRigID: Integer;
    curQSO: TQSO;
    C, N, B, M, SE: TEdit;
    mode: TMode;
@@ -3816,8 +3817,8 @@ begin
       // CW
 
       // CWポート設定チェック
-      nTxID := GetTxRigID(nTxID + 1);
-      if dmZLogKeyer.KeyingPort[nTxID] = tkpNone then begin
+      nTxRigID := GetTxRigID(nTxID + 1);
+      if dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone then begin
          WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
          Exit;
       end;
@@ -3837,13 +3838,13 @@ begin
             dmZLogKeyer.So2rNeoReverseRx(nRxID)
          end;
 
-         zLogSendStr2(nTxID, S, nil);
+         zLogSendStr2(nTxRigID, S, nil);
       end
       else begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar(S));
          {$ENDIF}
-         zLogSendStr2(nTxID, S, curQSO);
+         zLogSendStr2(nTxRigID, S, curQSO);
       end;
 
       // SO2Rモードの場合
@@ -3899,6 +3900,7 @@ var
    S: String;
    nRxID: Integer;
    nTxID: Integer;
+   nTxRigID: Integer;
    curQSO: TQSO;
    mode: TMode;
 begin
@@ -3957,8 +3959,8 @@ begin
       case mode of
          mCW: begin
             // CWポート設定チェック
-            nTxID := GetTxRigID(nTxID + 1);
-            if dmZLogKeyer.KeyingPort[nTxID] = tkpNone then begin
+            nTxRigID := GetTxRigID(nTxID + 1);
+            if dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone then begin
                WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
                Exit;
             end;
@@ -3967,7 +3969,7 @@ begin
                // NR?自動送出使う場合
                if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
                   S := dmZlogGlobal.CWMessage(5);
-                  zLogSendStr2(nTxID, S, curQSO);
+                  zLogSendStr2(nTxRigID, S, curQSO);
                end;
 
                WriteStatusLine(TMainForm_Invalid_number, False);
@@ -3983,7 +3985,7 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar(S));
             {$ENDIF}
-            zLogSendStr2(nTxID, S, curQSO);
+            zLogSendStr2(nTxRigID, S, curQSO);
 
             // ログに記録
             LogButtonProc(nTxID, curQSO);
