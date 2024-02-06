@@ -3054,7 +3054,7 @@ begin
    OutputDebugString(PChar('*** begin - TPaddleThread.Execute - ****'));
    {$ENDIF}
    repeat
-      Sleep(1);
+      SleepEx(1, False);
 
       if FKeyer.FUsbInfo[0].FUSBIF4CW = nil then begin
          Sleep(10);
