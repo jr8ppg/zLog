@@ -873,7 +873,9 @@ begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetPttFlag(PTTON);
-            SendUsbPortData(nID);
+            if UsePaddleKeyer = False then begin
+               SendUsbPortData(nID);
+            end;
          end;
          LeaveCriticalSection(FUsbPortDataLock);
          Exit;
@@ -1279,7 +1281,9 @@ begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(True);
-            SendUsbPortData(nID);
+            if UsePaddleKeyer = False then begin
+               SendUsbPortData(nID);
+            end;
          end;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
@@ -1302,7 +1306,9 @@ begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(False);
-            SendUsbPortData(nID);
+            if UsePaddleKeyer = False then begin
+               SendUsbPortData(nID);
+            end;
          end;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
@@ -2922,16 +2928,21 @@ begin
       end;
 
       EnterCriticalSection(FUsbPortDataLock);
-      OutReport[0] := 0;
-      OutReport[1] := 4;
-      OutReport[2] := $0F;
-      OutReport[3] := 4;
-      OutReport[4] := 0;
-      OutReport[5] := 0;
-      OutReport[6] := 0;
-      OutReport[7] := 0;
-      OutReport[8] := 0;
-      FKeyer.FUsbInfo[0].FUSBIF4CW.WriteFile(OutReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.OutputReportByteLength, BR);
+      if FKeyer.FUsbInfo[0].FPORTDATA.FUsbPortData = FKeyer.FUsbInfo[0].FPORTDATA.FPrevUsbPortData then begin
+         OutReport[0] := 0;
+         OutReport[1] := 4;
+         OutReport[2] := $0F;
+         OutReport[3] := 4;
+         OutReport[4] := 0;
+         OutReport[5] := 0;
+         OutReport[6] := 0;
+         OutReport[7] := 0;
+         OutReport[8] := 0;
+         FKeyer.FUsbInfo[0].FUSBIF4CW.WriteFile(OutReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.OutputReportByteLength, BR);
+      end
+      else begin
+         FKeyer.SendUsbPortData(0);
+      end;
       LeaveCriticalSection(FUsbPortDataLock);
 
 nextnext:
@@ -2999,8 +3010,9 @@ begin
             $00: begin { both }
                ptr := mousetail - 2;
                if ptr < 1 then begin
-                  ptr := 1;
-                  mousetail := 3;
+//                  ptr := 1;
+//                  mousetail := 3;
+                  Exit;
                end;
 
                case FCWSendBuf[0, ptr] of
@@ -3022,8 +3034,9 @@ begin
       1: begin
          ptr := cwstrptr - 1;
          if ptr < 1 then begin
-            ptr := 1;
-            cwstrptr := 2;
+//            ptr := 1;
+//            cwstrptr := 2;
+            Exit;
          end;
 
          case CurStatus of
