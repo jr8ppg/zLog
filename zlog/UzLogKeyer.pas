@@ -598,8 +598,6 @@ var
    {$ENDIF}
    p: PBYTE;
    nID: BYTE;
-//   fPrevRight: Boolean;
-//   fPrevLeft: Boolean;
    fPaddleRight: Boolean;
    fPaddleLeft: Boolean;
 begin
@@ -626,11 +624,6 @@ begin
    {$IFDEF DEBUG}
 //   OutputDebugString(PChar('**ID=[' + IntToStr(nID) + ']**'));
    {$ENDIF}
-
-   // パドル利用有りならここまで
-   if FUsePaddleKeyer = True then begin
-      Exit;
-   end;
 
    {$IFDEF DEBUG}
    s := IntToHex(p[0], 2) + ' ' +
@@ -664,9 +657,6 @@ begin
       fPaddleRight := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0;
       fPaddleLeft := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0;
 
-//      fPrevRight := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $04) = 0;
-//      fPrevLeft := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $01) = 0;
-
       if ((FUsePaddleKeyer = False) and (usbif4cwGetVersion(nID) >= 20)) then begin
          // パドル入力があったか？
          if fPaddleRight or fPaddleLeft then begin
@@ -679,9 +669,6 @@ begin
                FOnPaddleEvent(Self);
             end;
          end;
-      end
-      else begin  // 使う
-//         PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
       end;
 
       CopyMemory(@FUsbInfo[nID].FPORTDATA.FPrevPortIn, p, 8);
@@ -2549,6 +2536,13 @@ var
       end;
    end;
 begin
+   if FUsePaddleKeyer = True then begin
+      HidController.OnDeviceData := nil;
+   end
+   else begin
+      HidController.OnDeviceData := HidControllerDeviceData;
+   end;
+
    USB_OFF();
    HidController.Enumerate;
    repeat
