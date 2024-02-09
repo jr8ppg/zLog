@@ -618,8 +618,6 @@ var
    {$ENDIF}
    p: PBYTE;
    nID: BYTE;
-//   fPrevRight: Boolean;
-//   fPrevLeft: Boolean;
    fPaddleRight: Boolean;
    fPaddleLeft: Boolean;
 begin
@@ -655,11 +653,6 @@ begin
 //   OutputDebugString(PChar('**ID=[' + IntToStr(nID) + ']**'));
    {$ENDIF}
 
-   // パドル利用有りならここまで
-   if FUsePaddleKeyer = True then begin
-      Exit;
-   end;
-
    {$IFDEF DEBUG}
    s := IntToHex(p[0], 2) + ' ' +
         IntToHex(p[1], 2) + ' ' +
@@ -692,9 +685,6 @@ begin
       fPaddleRight := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0;
       fPaddleLeft := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0;
 
-//      fPrevRight := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $04) = 0;
-//      fPrevLeft := (FUsbInfo[nID].FPORTDATA.FPrevPortIn[7] and $01) = 0;
-
       if ((FUsePaddleKeyer = False) and (usbif4cwGetVersion(nID) >= 20)) then begin
          // パドル入力があったか？
          if fPaddleRight or fPaddleLeft then begin
@@ -707,9 +697,6 @@ begin
                FOnPaddleEvent(Self);
             end;
          end;
-      end
-      else begin  // 使う
-//         PaddleProc(fPaddleLeft, fPaddleRight, fPrevLeft, fPrevRight);
       end;
 
       CopyMemory(@FUsbInfo[nID].FPORTDATA.FPrevPortIn, p, 8);
@@ -2713,6 +2700,13 @@ var
       end;
    end;
 begin
+   if FUsePaddleKeyer = True then begin
+      HidController.OnDeviceData := nil;
+   end
+   else begin
+      HidController.OnDeviceData := HidControllerDeviceData;
+   end;
+
    USB_OFF();
    HidController.Enumerate;
    repeat
@@ -3108,16 +3102,21 @@ begin
       end;
 
       EnterCriticalSection(FUsbPortDataLock);
-      OutReport[0] := 0;
-      OutReport[1] := 4;
-      OutReport[2] := $0F;
-      OutReport[3] := 4;
-      OutReport[4] := 0;
-      OutReport[5] := 0;
-      OutReport[6] := 0;
-      OutReport[7] := 0;
-      OutReport[8] := 0;
-      FKeyer.FUsbInfo[0].FUSBIF4CW.WriteFile(OutReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.OutputReportByteLength, BR);
+      if FKeyer.FUsbInfo[0].FPORTDATA.FUsbPortData = FKeyer.FUsbInfo[0].FPORTDATA.FPrevUsbPortData then begin
+         OutReport[0] := 0;
+         OutReport[1] := 4;
+         OutReport[2] := $0F;
+         OutReport[3] := 4;
+         OutReport[4] := 0;
+         OutReport[5] := 0;
+         OutReport[6] := 0;
+         OutReport[7] := 0;
+         OutReport[8] := 0;
+         FKeyer.FUsbInfo[0].FUSBIF4CW.WriteFile(OutReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.OutputReportByteLength, BR);
+      end
+      else begin
+         FKeyer.SendUsbPortData(0);
+      end;
       LeaveCriticalSection(FUsbPortDataLock);
 
 nextnext:
