@@ -1275,6 +1275,7 @@ resourcestring
   TMainForm_JARL_Member_Info = 'JARL Member information.';
   TMainForm_Inquire_JARL_Member_Info = 'Querying QSL transfer status.';
   TMainForm_UserDat_not_loaded = ' not loaded';
+  TMainForm_ZserverNotConfigured = 'Z-Server settings are not configured.';
 
 var
   MainForm: TMainForm;
@@ -5906,6 +5907,11 @@ end;
 
 procedure TMainForm.ConnecttoZServer1Click(Sender: TObject);
 begin
+   if dmZlogGlobal.Settings._zlink_telnet.FHostName = '' then begin
+      MessageBox(Handle, PChar(TMainForm_ZserverNotConfigured), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
    FZLinkForm.ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
    FZLinkForm.ZSocket.Port := 'telnet';
    if FZLinkForm.ZServerConnected then begin

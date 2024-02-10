@@ -8,19 +8,20 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMemory 64224
-#define UExceptionDialog_RsScreenRes 64225
-#define UExceptionDialog_RsActiveControl 64226
-#define UExceptionDialog_RsThread 64227
-#define UExceptionDialog_RsMissingVersionInfo 64228
-#define UExceptionDialog_RsExceptionStack 64229
-#define UExceptionDialog_RsMainThreadID 64230
-#define UExceptionDialog_RsExceptionThreadID 64231
-#define UExceptionDialog_RsMainThreadCallStack 64232
-#define UExceptionDialog_RsThreadCallStack 64233
-#define UExceptionDialog_RsErrorMessage 64234
-#define UExceptionDialog_RsDetailsIntro 64235
-#define UExceptionDialog_RsUnitVersioningIntro 64236
+#define UExceptionDialog_RsProcessor 64224
+#define UExceptionDialog_RsMemory 64225
+#define UExceptionDialog_RsScreenRes 64226
+#define UExceptionDialog_RsActiveControl 64227
+#define UExceptionDialog_RsThread 64228
+#define UExceptionDialog_RsMissingVersionInfo 64229
+#define UExceptionDialog_RsExceptionStack 64230
+#define UExceptionDialog_RsMainThreadID 64231
+#define UExceptionDialog_RsExceptionThreadID 64232
+#define UExceptionDialog_RsMainThreadCallStack 64233
+#define UExceptionDialog_RsThreadCallStack 64234
+#define UExceptionDialog_RsErrorMessage 64235
+#define UExceptionDialog_RsDetailsIntro 64236
+#define UExceptionDialog_RsUnitVersioningIntro 64237
 #define Main_TMainForm_JudgePeriod 64240
 #define Main_TMainForm_EmptyOpList 64241
 #define Main_TMainForm_Setup_SentNR_first 64242
@@ -29,14 +30,14 @@
 #define Main_TMainForm_JARL_Member_Info 64245
 #define Main_TMainForm_Inquire_JARL_Member_Info 64246
 #define Main_TMainForm_UserDat_not_loaded 64247
-#define UExceptionDialog_RsAppError 64248
-#define UExceptionDialog_RsExceptionClass 64249
-#define UExceptionDialog_RsExceptionMessage 64250
-#define UExceptionDialog_RsExceptionAddr 64251
-#define UExceptionDialog_RsStackList 64252
-#define UExceptionDialog_RsModulesList 64253
-#define UExceptionDialog_RsOSVersion 64254
-#define UExceptionDialog_RsProcessor 64255
+#define Main_TMainForm_ZserverNotConfigured 64248
+#define UExceptionDialog_RsAppError 64249
+#define UExceptionDialog_RsExceptionClass 64250
+#define UExceptionDialog_RsExceptionMessage 64251
+#define UExceptionDialog_RsExceptionAddr 64252
+#define UExceptionDialog_RsStackList 64253
+#define UExceptionDialog_RsModulesList 64254
+#define UExceptionDialog_RsOSVersion 64255
 #define Main_TMainForm_Switch_CW_Bank_B 64256
 #define Main_TMainForm_This_QSO_is_locked 64257
 #define Main_TMainForm_Invalid_number 64258
@@ -1319,6 +1320,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
@@ -1340,6 +1342,7 @@ BEGIN
 	Main_TMainForm_JARL_Member_Info,	L"JARL Member information."
 	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
 	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
+	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1347,7 +1350,6 @@ BEGIN
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
-	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
 	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
 	Main_TMainForm_Invalid_number,	L"Invalid number"
