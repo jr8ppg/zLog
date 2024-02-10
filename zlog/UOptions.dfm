@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetHardware2
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -1037,11 +1037,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 0
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1054,11 +1055,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 1
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1071,11 +1073,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 2
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1088,11 +1091,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 3
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1105,11 +1109,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 4
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1122,11 +1127,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 5
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1139,11 +1145,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 6
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1156,11 +1163,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 7
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1172,11 +1180,12 @@ object formOptions: TformOptions
           Top = 207
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 8
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1188,11 +1197,12 @@ object formOptions: TformOptions
           Top = 228
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 9
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1204,11 +1214,12 @@ object formOptions: TformOptions
           Top = 249
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 10
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1220,11 +1231,12 @@ object formOptions: TformOptions
           Top = 270
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 11
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1236,11 +1248,12 @@ object formOptions: TformOptions
           Top = 291
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 12
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1252,11 +1265,12 @@ object formOptions: TformOptions
           Top = 312
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 13
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1268,11 +1282,12 @@ object formOptions: TformOptions
           Top = 333
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 14
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1284,11 +1299,12 @@ object formOptions: TformOptions
           Top = 354
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 15
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1302,12 +1318,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 16
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb35: TComboBox
           Tag = 1
@@ -1318,12 +1336,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 17
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb7: TComboBox
           Tag = 2
@@ -1334,12 +1354,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 18
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb10: TComboBox
           Tag = 3
@@ -1350,12 +1372,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 19
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb14: TComboBox
           Tag = 4
@@ -1366,12 +1390,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 20
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb18: TComboBox
           Tag = 5
@@ -1382,12 +1408,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 21
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb21: TComboBox
           Tag = 6
@@ -1398,12 +1426,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 22
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb24: TComboBox
           Tag = 7
@@ -1414,12 +1444,14 @@ object formOptions: TformOptions
           ImeMode = imDisable
           ItemIndex = 0
           TabOrder = 23
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb28: TComboBox
           Tag = 8
@@ -1429,12 +1461,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 24
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb50: TComboBox
           Tag = 9
@@ -1444,12 +1478,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 25
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb144: TComboBox
           Tag = 10
@@ -1459,12 +1495,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 26
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb430: TComboBox
           Tag = 11
@@ -1474,12 +1512,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 27
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb1200: TComboBox
           Tag = 12
@@ -1489,12 +1529,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 28
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb2400: TComboBox
           Tag = 13
@@ -1504,12 +1546,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 29
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb5600: TComboBox
           Tag = 14
@@ -1519,12 +1563,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 30
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigA_Antb10g: TComboBox
           Tag = 15
@@ -1534,12 +1580,14 @@ object formOptions: TformOptions
           Height = 21
           ItemIndex = 0
           TabOrder = 31
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigA_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
       end
       object groupRigSetB: TGroupBox
@@ -1681,11 +1729,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 0
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1698,11 +1747,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 1
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1715,11 +1765,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 2
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1732,11 +1783,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 3
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1749,11 +1801,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 4
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1766,11 +1819,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 5
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1783,11 +1837,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 6
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1800,11 +1855,12 @@ object formOptions: TformOptions
           Width = 58
           Height = 21
           ImeMode = imDisable
+          ItemIndex = 0
           TabOrder = 7
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1816,11 +1872,12 @@ object formOptions: TformOptions
           Top = 207
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 8
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1832,11 +1889,12 @@ object formOptions: TformOptions
           Top = 228
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 9
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1848,11 +1906,12 @@ object formOptions: TformOptions
           Top = 249
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 10
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1864,11 +1923,12 @@ object formOptions: TformOptions
           Top = 270
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 11
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1880,11 +1940,12 @@ object formOptions: TformOptions
           Top = 291
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 12
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1896,11 +1957,12 @@ object formOptions: TformOptions
           Top = 312
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 13
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1912,11 +1974,12 @@ object formOptions: TformOptions
           Top = 333
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 14
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1928,11 +1991,12 @@ object formOptions: TformOptions
           Top = 354
           Width = 58
           Height = 21
+          ItemIndex = 0
           TabOrder = 15
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_b19Change
           Items.Strings = (
-            'none'
+            'None'
             'RIG-1'
             'RIG-2'
             'RIG-3'
@@ -1944,14 +2008,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 16
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb35: TComboBox
           Tag = 1
@@ -1960,14 +2025,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 17
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb7: TComboBox
           Tag = 2
@@ -1976,14 +2042,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 18
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb10: TComboBox
           Tag = 3
@@ -1992,14 +2059,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 19
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb14: TComboBox
           Tag = 4
@@ -2008,14 +2076,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 20
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb18: TComboBox
           Tag = 5
@@ -2024,14 +2093,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 21
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb21: TComboBox
           Tag = 6
@@ -2040,14 +2110,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 22
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb24: TComboBox
           Tag = 7
@@ -2056,14 +2127,15 @@ object formOptions: TformOptions
           Width = 54
           Height = 21
           ImeMode = imDisable
-          ItemIndex = 0
           TabOrder = 23
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb28: TComboBox
           Tag = 8
@@ -2071,14 +2143,15 @@ object formOptions: TformOptions
           Top = 207
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 24
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb50: TComboBox
           Tag = 9
@@ -2086,14 +2159,15 @@ object formOptions: TformOptions
           Top = 228
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 25
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb144: TComboBox
           Tag = 10
@@ -2101,14 +2175,15 @@ object formOptions: TformOptions
           Top = 249
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 26
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb430: TComboBox
           Tag = 11
@@ -2116,14 +2191,15 @@ object formOptions: TformOptions
           Top = 270
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 27
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb1200: TComboBox
           Tag = 12
@@ -2131,14 +2207,15 @@ object formOptions: TformOptions
           Top = 291
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 28
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb2400: TComboBox
           Tag = 13
@@ -2146,14 +2223,15 @@ object formOptions: TformOptions
           Top = 312
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 29
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb5600: TComboBox
           Tag = 14
@@ -2161,14 +2239,15 @@ object formOptions: TformOptions
           Top = 333
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 30
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
         object comboRigB_Antb10g: TComboBox
           Tag = 15
@@ -2176,14 +2255,15 @@ object formOptions: TformOptions
           Top = 354
           Width = 54
           Height = 21
-          ItemIndex = 0
           TabOrder = 31
-          Text = 'none'
+          Text = 'None'
           OnChange = comboRigB_Antb19Change
           Items.Strings = (
-            'none'
+            'None'
             'ANT1'
-            'ANT2')
+            'ANT2'
+            'ANT3'
+            'ANT4')
         end
       end
     end
@@ -2989,13 +3069,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@Small Fonts'
+          FontName = 'Cascadia Code SemiBold Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 16
+          ItemIndex = 37
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -365,6 +365,7 @@ type
     FRigXvtConfig: array[1..5] of TButton;
     FRigPhoneChgPTT: array[1..5] of TCheckBox;
     procedure InitRigNames();
+    function CheckRigSetting(): Boolean;
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -397,6 +398,12 @@ resourcestring
 
   // zLogルートフォルダが存在しません
   zLogRootFolderNotExist = 'zLog root folder does not exist';
+
+  //　RIG-%d の %s はどのバンドにも割り当てされていません. 今すぐ割り当てますか？
+  RigIsNotAssignedToAntBand = 'RIG-%d %s is not assigned to any band. Do you want to assign it now?';
+
+  // リグが割り当てられていないバンドがあります. 今すぐ割り当てますか？
+  BandsHaveNoRigsAssigned = 'There are bands that have no rigs assigned. Do you want to assign them now?';
 
 implementation
 
@@ -590,6 +597,11 @@ begin
          Application.MessageBox(PChar(zLogRootFolderNotExist), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          Exit;
       end;
+   end;
+
+   // RIG設定のチェック
+   if CheckRigSetting() = False then begin
+      Exit;
    end;
 
    // 入力された設定を保存
@@ -1602,6 +1614,74 @@ begin
       //
       comboFontBase.FontName := Settings.FBaseFontName;
    end;
+end;
+
+function TformOptions.CheckRigSetting(): Boolean;
+var
+   text: string;
+   rigno: Integer;
+   band: TBand;
+   rig_a_assign: Integer;
+   rig_b_assign: Integer;
+   rig_a_noassign: Integer;
+   rig_b_noassign: Integer;
+begin
+   for rigno := 1 to 4 do begin
+      // RIG使用有無
+      rig_a_assign := 0;
+      rig_b_assign := 0;
+      if (FRigControlPort[rigno].ItemIndex > 0) and (FRigName[rigno].ItemIndex > 0) then begin
+         // RIG-Aでの使用あり？
+         for band := Low(FRigSetA_rig) to High(FRigSetA_rig) do begin
+            //
+            if FRigSetA_rig[band].ItemIndex = rigno then begin
+               Inc(rig_a_assign);
+            end;
+         end;
+
+         // RIG-Bでの使用あり？
+         for band := Low(FRigSetB_rig) to High(FRigSetB_rig) do begin
+            if FRigSetB_rig[band].ItemIndex = rigno then begin
+               Inc(rig_b_assign);
+            end;
+         end;
+
+         // 割当が無かった
+         if (rig_a_assign = 0) and (rig_b_assign = 0) then begin
+            text := Format(RigIsNotAssignedToAntBand, [rigno, FRigName[rigno].Items[FRigName[rigno].ItemIndex]]);
+            if Application.MessageBox(PChar(text), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
+               PageControl.ActivePage := tabsheetHardware2;
+               Result := False;
+               Exit;
+            end;
+         end;
+      end;
+   end;
+
+   // RIG割当なしのバンド確認
+   rig_a_noassign := 0;
+   rig_b_noassign := 0;
+   for band := Low(FRigSetA_rig) to High(FRigSetA_rig) do begin
+      // RIG-A
+      if FRigSetA_rig[band].ItemIndex = 0 then begin
+         Inc(rig_a_noassign);
+      end;
+
+      // RIG-B
+      if FRigSetB_rig[band].ItemIndex = 0 then begin
+         Inc(rig_b_noassign);
+      end;
+   end;
+
+   if (rig_a_noassign > 0) or (rig_b_noassign > 0) then begin
+      if Application.MessageBox(PChar(BandsHaveNoRigsAssigned), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
+         PageControl.ActivePage := tabsheetHardware2;
+         Result := False;
+         Exit;
+      end;
+   end;
+
+   Result := True;
 end;
 
 end.
