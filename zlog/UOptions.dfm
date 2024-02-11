@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware2
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -34,19 +34,19 @@ object formOptions: TformOptions
         Left = 6
         Top = 139
         Width = 423
-        Height = 253
+        Height = 258
         Caption = 'SO2R options'
         TabOrder = 1
         object Label115: TLabel
           Left = 20
-          Top = 225
+          Top = 229
           Width = 210
           Height = 13
           Caption = 'Accelerate keying speed  after pressing TAB'
         end
         object Label116: TLabel
           Left = 314
-          Top = 225
+          Top = 229
           Width = 27
           Height = 13
           Caption = 'WPM'
@@ -251,7 +251,7 @@ object formOptions: TformOptions
         end
         object spinSo2rAccelerateCW: TSpinEdit
           Left = 272
-          Top = 222
+          Top = 226
           Width = 34
           Height = 22
           MaxValue = 9
@@ -3069,13 +3069,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code SemiBold Italic'
+          FontName = '@HG'#21109#33521#35282#65422#65439#65391#65420#65439#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 37
+          ItemIndex = 9
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
