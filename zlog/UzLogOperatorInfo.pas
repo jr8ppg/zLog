@@ -152,7 +152,7 @@ var
    section: string;
    filename: string;
 begin
-   filename := ExtractFilePath(Application.ExeName) + 'zlog_oplist.ini';
+   filename := ExtractFilePath(Application.ExeName) + ZLOG_OPLIST_INI;
    if FileExists(filename) = True then begin
       System.SysUtils.DeleteFile(fileName);
    end;
@@ -204,7 +204,7 @@ var
    S: string;
 begin
    SL := TStringList.Create();
-   ini := TMemIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_oplist.ini');;
+   ini := TMemIniFile.Create(ExtractFilePath(Application.ExeName) + ZLOG_OPLIST_INI);
    try
       ini.ReadSections(SL);
 

@@ -6048,22 +6048,35 @@ object MainForm: TMainForm
     end
     object Network1: TMenuItem
       Caption = '&Network'
-      object ConnecttoZServer1: TMenuItem
+      object menuConnectToZServer: TMenuItem
         Caption = 'Connect to Z-Server'
-        OnClick = ConnecttoZServer1Click
+        OnClick = menuConnectToZServerClick
       end
       object N6: TMenuItem
         Caption = '-'
       end
-      object mnDownload: TMenuItem
+      object menuDownloadAllLogs: TMenuItem
         Caption = 'Download log from Z-Server (Erase local log)'
         Enabled = False
-        OnClick = Load1Click
+        OnClick = menuDownloadAllLogsClick
       end
-      object mnMerge: TMenuItem
+      object menuMergeAllLogs: TMenuItem
         Caption = 'Merge local log with Z-Server'
         Enabled = False
-        OnClick = mnMergeClick
+        OnClick = menuMergeAllLogsClick
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object menuDownloadOplist: TMenuItem
+        Caption = 'Download operator list from Z-Server'
+        Enabled = False
+        OnClick = menuDownloadOplistClick
+      end
+      object menuUploadOplist: TMenuItem
+        Caption = 'Upload oprator list to Z-Server'
+        Enabled = False
+        OnClick = menuUploadOplistClick
       end
     end
     object PluginMenu: TMenuItem

@@ -6048,22 +6048,35 @@ object MainForm: TMainForm
     end
     object Network1: TMenuItem
       Caption = #12493#12483#12488#12527#12540#12463'(&N)'
-      object ConnecttoZServer1: TMenuItem
+      object menuConnectToZServer: TMenuItem
         Caption = 'Z-Server'#12395#25509#32154
-        OnClick = ConnecttoZServer1Click
+        OnClick = menuConnectToZServerClick
       end
       object N6: TMenuItem
         Caption = '-'
       end
-      object mnDownload: TMenuItem
+      object menuDownloadAllLogs: TMenuItem
         Caption = 'Z-Server'#12424#12426#12525#12464#12434#12480#12454#12531#12525#12540#12489'('#12525#12464#12399#28040#21435#12373#12428#12414#12377')'
         Enabled = False
-        OnClick = Load1Click
+        OnClick = menuDownloadAllLogsClick
       end
-      object mnMerge: TMenuItem
-        Caption = 'Z-Server'#12408#12525#12464#12434#12450#12483#12503#12525#12540#12489'('#12510#12540#12472')'
+      object menuMergeAllLogs: TMenuItem
+        Caption = 'Z-Server'#12408#12525#12464#12434#12450#12483#12503#12525#12540#12489
         Enabled = False
-        OnClick = mnMergeClick
+        OnClick = menuMergeAllLogsClick
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object menuDownloadOplist: TMenuItem
+        Caption = 'Z-Server'#12424#12426#12458#12506#12524#12540#12479#12540#12522#12473#12488#12434#12480#12454#12531#12525#12540#12489
+        Enabled = False
+        OnClick = menuDownloadOplistClick
+      end
+      object menuUploadOplist: TMenuItem
+        Caption = 'Z-Server'#12408#12458#12506#12524#12540#12479#12540#12522#12473#12488#12434#12450#12483#12503#12525#12540#12489
+        Enabled = False
+        OnClick = menuUploadOplistClick
       end
     end
     object PluginMenu: TMenuItem

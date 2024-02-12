@@ -56,6 +56,8 @@ const
   WM_ZLOG_PLAYMESSAGEB = (WM_USER + 119);
   WM_ZLOG_PLAYCQ = (WM_USER + 120);
   WM_ZLOG_TOGGLE_PTT = (WM_USER + 121);
+  WM_ZLOG_SHOWMESSAGE = (WM_USER + 122);
+  WM_ZLOG_FILEDOWNLOAD_COMPLETE = (WM_USER + 123);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -205,9 +207,9 @@ type
     CWKeyboard1: TMenuItem;
     ZServer1: TMenuItem;
     Network1: TMenuItem;
-    mnDownload: TMenuItem;
-    mnMerge: TMenuItem;
-    ConnecttoZServer1: TMenuItem;
+    menuDownloadAllLogs: TMenuItem;
+    menuMergeAllLogs: TMenuItem;
+    menuConnectToZServer: TMenuItem;
     N6: TMenuItem;
     G10MHz: TMenuItem;
     G18MHz: TMenuItem;
@@ -562,6 +564,9 @@ type
     menuHardwareSettings: TMenuItem;
     actionLogging: TAction;
     actionSetRigWPM: TAction;
+    N3: TMenuItem;
+    menuDownloadOplist: TMenuItem;
+    menuUploadOplist: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -621,7 +626,7 @@ type
     procedure SpeedButton9Click(Sender: TObject);
     procedure SerialEdit1Change(Sender: TObject);
     procedure GridBandChangeClick(Sender: TObject);
-    procedure Load1Click(Sender: TObject);
+    procedure menuDownloadAllLogsClick(Sender: TObject);
     procedure menuSortByTimeClick(Sender: TObject);
     procedure menuAboutClick(Sender: TObject);
     procedure HelpZyLOClick(Sender: TObject);
@@ -633,8 +638,8 @@ type
     procedure CWFMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure EditEnter(Sender: TObject);
-    procedure mnMergeClick(Sender: TObject);
-    procedure ConnecttoZServer1Click(Sender: TObject);
+    procedure menuMergeAllLogsClick(Sender: TObject);
+    procedure menuConnectToZServerClick(Sender: TObject);
     procedure GridModeChangeClick(Sender: TObject);
     procedure GridOperatorClick(Sender: TObject);
     procedure SendSpot1Click(Sender: TObject);
@@ -685,6 +690,8 @@ type
     procedure OnZLogPlayMessageB( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEB;
     procedure OnZLogPlayCQ( var Message: TMessage ); message WM_ZLOG_PLAYCQ;
     procedure OnZLogTogglePtt( var Message: TMessage ); message WM_ZLOG_TOGGLE_PTT;
+    procedure OnZLogShowMessage( var Message: TMessage ); message WM_ZLOG_SHOWMESSAGE;
+    procedure OnZLogFileDownloadComplete( var Message: TMessage ); message WM_ZLOG_FILEDOWNLOAD_COMPLETE;
     procedure OnZLogResetTx( var Message: TMessage ); message WM_ZLOG_RESET_TX;
     procedure OnZLogInvertTx( var Message: TMessage ); message WM_ZLOG_INVERT_TX;
     procedure OnZLogSwitchRx( var Message: TMessage ); message WM_ZLOG_SWITCH_RX;
@@ -857,6 +864,8 @@ type
     procedure menuHardwareSettingsClick(Sender: TObject);
     procedure actionLoggingExecute(Sender: TObject);
     procedure actionSetRigWPMExecute(Sender: TObject);
+    procedure menuDownloadOplistClick(Sender: TObject);
+    procedure menuUploadOplistClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1276,7 +1285,8 @@ resourcestring
   TMainForm_Inquire_JARL_Member_Info = 'Querying QSL transfer status.';
   TMainForm_UserDat_not_loaded = ' not loaded';
   TMainForm_ZserverNotConfigured = 'Z-Server settings are not configured.';
-
+  TMainForm_ComfirmUploadOpList = 'Would you like to download the operator list?' + #13#10 + 'Overwrite the existing operator list.';
+  TMainForm_ComfirmDownloadOpList = 'Upload the operator list to Z-Server. Are you sure?';
 var
   MainForm: TMainForm;
   CurrentQSO: TQSO;
@@ -5463,16 +5473,6 @@ begin
    Log.Saved := False;
 end;
 
-procedure TMainForm.Load1Click(Sender: TObject);
-begin
-   FZLinkForm.LoadLogFromZLink;
-   {
-     if ZLinkForm.Transparent then
-     ZLinkForm.LoadLogFromZLink   // clears current log
-     else
-     ZLinkForm.LoadLogFromZServer;  // does not clear }
-end;
-
 procedure TMainForm.menuSortByTimeClick(Sender: TObject);
 begin
    Log.SortByTime();
@@ -5900,12 +5900,7 @@ begin
    end;
 end;
 
-procedure TMainForm.mnMergeClick(Sender: TObject);
-begin
-   FZLinkForm.MergeLogWithZServer;
-end;
-
-procedure TMainForm.ConnecttoZServer1Click(Sender: TObject);
+procedure TMainForm.menuConnectToZServerClick(Sender: TObject);
 begin
    if dmZlogGlobal.Settings._zlink_telnet.FHostName = '' then begin
       MessageBox(Handle, PChar(TMainForm_ZserverNotConfigured), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
@@ -5923,16 +5918,54 @@ begin
    end;
 end;
 
+procedure TMainForm.menuDownloadAllLogsClick(Sender: TObject);
+begin
+   FZLinkForm.LoadLogFromZLink;
+   {
+     if ZLinkForm.Transparent then
+     ZLinkForm.LoadLogFromZLink   // clears current log
+     else
+     ZLinkForm.LoadLogFromZServer;  // does not clear }
+end;
+
+procedure TMainForm.menuMergeAllLogsClick(Sender: TObject);
+begin
+   FZLinkForm.MergeLogWithZServer;
+end;
+
+procedure TMainForm.menuDownloadOplistClick(Sender: TObject);
+begin
+   if MessageBox(Handle, PChar(TMainForm_ComfirmUploadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+      Exit;
+   end;
+
+   // ファイルダウンロード
+   FZLinkForm.GetFile(ZLOG_OPLIST_INI, ExtractFilePath(Application.ExeName));
+end;
+
+procedure TMainForm.menuUploadOplistClick(Sender: TObject);
+begin
+   if MessageBox(Handle, PChar(TMainForm_ComfirmDownloadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+      Exit;
+   end;
+
+   FZLinkForm.PutFile(ExtractFilePath(Application.ExeName) + ZLOG_OPLIST_INI);
+end;
+
 procedure TMainForm.DisableNetworkMenus;
 begin
-   mnDownload.Enabled := False;
-   mnMerge.Enabled := False;
+   menuDownloadAllLogs.Enabled := False;
+   menuMergeAllLogs.Enabled := False;
+   menuDownloadOplist.Enabled := False;
+   menuUploadOplist.Enabled := False;
 end;
 
 procedure TMainForm.EnableNetworkMenus;
 begin
-   mnDownload.Enabled := True;
-   mnMerge.Enabled := True;
+   menuDownloadAllLogs.Enabled := True;
+   menuMergeAllLogs.Enabled := True;
+   menuDownloadOplist.Enabled := True;
+   menuUploadOplist.Enabled := True;
 end;
 
 procedure TMainForm.GridModeChangeClick(Sender: TObject);
@@ -7496,6 +7529,33 @@ end;
 procedure TMainForm.OnZLogTogglePtt( var Message: TMessage );
 begin
    TogglePTTfor2bsiq();
+end;
+
+procedure TMainForm.OnZLogShowMessage( var Message: TMessage );
+var
+   strMessage: string;
+   uType: UINT;
+begin
+   strMessage := StrPas(PChar(Message.WParam));
+   uType := Message.LParam;
+   MessageBox(Handle, PChar(strMessage), PChar(Application.Title), uType);
+end;
+
+procedure TMainForm.OnZLogFileDownloadComplete( var Message: TMessage );
+var
+   strMessage: string;
+   strFileName: string;
+begin
+   strMessage := StrPas(PChar(Message.WParam));
+   strFileName := StrPas(PChar(Message.LParam));
+
+   // OPLIST再ロード
+   if strFileName = ZLOG_OPLIST_INI then begin
+      dmZLogGlobal.OpList.LoadFromIniFile();
+      BuildOpListMenu2(OpMenu.Items, OpMenuClick);
+   end;
+
+   MessageBox(Handle, PChar(strMessage), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
 end;
 
 procedure TMainForm.OnZLogResetTx( var Message: TMessage );
