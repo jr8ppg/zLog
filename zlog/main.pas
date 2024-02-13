@@ -18,7 +18,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
-  System.DateUtils, System.SyncObjs, System.Generics.Collections,
+  System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -567,6 +567,9 @@ type
     N3: TMenuItem;
     menuDownloadOplist: TMenuItem;
     menuUploadOplist: TMenuItem;
+    menuDownloadSounds: TMenuItem;
+    N14: TMenuItem;
+    menuUploadSounds: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -866,6 +869,8 @@ type
     procedure actionSetRigWPMExecute(Sender: TObject);
     procedure menuDownloadOplistClick(Sender: TObject);
     procedure menuUploadOplistClick(Sender: TObject);
+    procedure menuUploadSoundsClick(Sender: TObject);
+    procedure menuDownloadSoundsClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1137,6 +1142,8 @@ type
     procedure JarlMemberCheck();
     procedure ExportHamlog(f: string);
     procedure SetRigWpm(wpm: Integer);
+    procedure ExtractSoundFiles();
+    function CompressSoundFiles(): Boolean;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -5943,6 +5950,17 @@ begin
    FZLinkForm.GetFile(ZLOG_OPLIST_INI, ExtractFilePath(Application.ExeName));
 end;
 
+procedure TMainForm.menuDownloadSoundsClick(Sender: TObject);
+begin
+   if dmZLogGlobal.SoundPath = '' then begin
+      MessageBox(Handle, PChar('サウンドファイルフォルダが設定されていません'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   // ファイルダウンロード
+   FZLinkForm.GetFile(ZLOG_SOUND_FILES, ExtractFilePath(Application.ExeName));
+end;
+
 procedure TMainForm.menuUploadOplistClick(Sender: TObject);
 begin
    if MessageBox(Handle, PChar(TMainForm_ComfirmDownloadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
@@ -5952,12 +5970,31 @@ begin
    FZLinkForm.PutFile(ExtractFilePath(Application.ExeName) + ZLOG_OPLIST_INI);
 end;
 
+procedure TMainForm.menuUploadSoundsClick(Sender: TObject);
+begin
+   if dmZLogGlobal.SoundPath = '' then begin
+      MessageBox(Handle, PChar('サウンドファイルフォルダが設定されていません'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   // ZIPファイル作成
+   if CompressSoundFiles() = False then begin
+      MessageBox(Handle, PChar('サウンドファイルの圧縮に失敗しました'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   // ZIPファイルアップロード
+   FZLinkForm.PutFile(dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES);
+end;
+
 procedure TMainForm.DisableNetworkMenus;
 begin
    menuDownloadAllLogs.Enabled := False;
    menuMergeAllLogs.Enabled := False;
    menuDownloadOplist.Enabled := False;
    menuUploadOplist.Enabled := False;
+   menuDownloadSounds.Enabled := False;
+   menuUploadSounds.Enabled := False;
 end;
 
 procedure TMainForm.EnableNetworkMenus;
@@ -5966,6 +6003,8 @@ begin
    menuMergeAllLogs.Enabled := True;
    menuDownloadOplist.Enabled := True;
    menuUploadOplist.Enabled := True;
+   menuDownloadSounds.Enabled := True;
+   menuUploadSounds.Enabled := True;
 end;
 
 procedure TMainForm.GridModeChangeClick(Sender: TObject);
@@ -7553,6 +7592,11 @@ begin
    if strFileName = ZLOG_OPLIST_INI then begin
       dmZLogGlobal.OpList.LoadFromIniFile();
       BuildOpListMenu2(OpMenu.Items, OpMenuClick);
+   end;
+
+   // SOUNDS.ZIP展開
+   if strFileName = ZLOG_SOUND_FILES then begin
+      ExtractSoundFiles();
    end;
 
    MessageBox(Handle, PChar(strMessage), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
@@ -12844,6 +12888,114 @@ begin
       end;
    end;
 end;
+
+procedure TMainForm.ExtractSoundFiles();
+var
+   zip: TZipFile;
+   zipfilename: string;
+   filename: string;
+   path: string;
+   i: Integer;
+   bakfile: string;
+begin
+   zip := TZipFile.Create();
+   try
+      zipfilename := dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES;
+
+      zip.Open(zipfilename, zmRead);
+
+      for i := 0 to zip.FileCount - 1 do begin
+         filename := zip.FileNames[i];
+         path := dmZLogGlobal.SoundPath + filename;
+
+         if FileExists(path) = True then begin
+            bakfile := ChangeFileExt(path, '.' + FormatDateTime('yyyymmddhhnnss', Now));
+            CopyFile(PChar(path), PChar(bakfile), False);
+         end;
+
+         zip.Extract(filename, dmZLogGlobal.SoundPath, True);
+      end;
+
+   finally
+      zip.Free();
+   end;
+end;
+
+function TMainForm.CompressSoundFiles(): Boolean;
+var
+   zip: TZipFile;
+   filename: string;
+   filelist: TStringList;
+   i: Integer;
+
+   procedure dir(strFolder: string; strPattern: string; flist: TStringList);
+   var
+      F: TSearchRec;
+      path: string;
+      ret: Integer;
+      ext: string;
+   begin
+      ret := FindFirst(strFolder + strPattern, faAnyFile, f);
+
+      while ret = 0 do begin
+         if ((F.Attr and faDirectory) = 0) and
+            ((F.Attr and faVolumeID) = 0) and
+            ((F.Attr and faSysFile) = 0) then begin
+            ext := ExtractFileExt(UpperCase(F.Name));
+            if (ext = '.WAV') or (ext = '.MP3') then begin
+               path := strFolder + f.Name;
+               path := StringReplace(path, '\', '/', [rfReplaceAll]);
+               flist.Add(path);
+            end;
+         end;
+
+         if (f.Attr and faDirectory) <> 0 then begin
+            if (f.Name <> '.') and (f.Name <> '..') then begin
+               path := IncludeTrailingPathDelimiter(strFolder + f.Name);
+               dir(path, strPattern, flist);
+            end;
+         end;
+
+         ret := FindNext(f);
+      end;
+
+      FindClose(f);
+   end;
+begin
+   filelist := TStringList.Create();
+   zip := TZipFile.Create();
+   try
+   try
+      filename := dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES;
+
+      if FileExists(filename) = True then begin
+         DeleteFile(filename);
+      end;
+
+      zip.Open(filename, zmWrite);
+
+      ChDir(dmZLogGlobal.SoundPath);
+
+      dir('', '*.*', filelist);
+
+      for i := 0 to filelist.Count - 1 do begin
+         zip.Add(filelist[i]);
+      end;
+
+      zip.Close();
+
+      Result := True;
+   except
+      on E: Exception do begin
+         MessageBox(Handle, PChar(E.Message), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Result := False;
+      end;
+   end;
+   finally
+      zip.Free();
+   end;
+end;
+
 
 { TBandScopeNotifyThread }
 
