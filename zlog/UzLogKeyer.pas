@@ -74,7 +74,6 @@ type
   private
     { Private declarations }
     FKeyer: TdmZLogKeyer;
-    FPrevInReport: array[0..8] of Byte;
   protected
     procedure Execute; override;
   public
@@ -358,7 +357,7 @@ type
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
 
     // paddle support
-    procedure PaddleProc(CurStatus: Byte; PrevStatus: Byte);
+    procedure PaddleProc(PaddleStatus: Byte);
 
     // USBIF4CW support
     function usbif4cwSetWPM(nID: Integer; nWPM: Integer): Long;
@@ -2852,7 +2851,6 @@ constructor TPaddleThread.Create(AKeyer: TdmZLogKeyer);
 begin
    inherited Create(True);
    FKeyer := AKeyer;
-   FPrevInReport[2] := $0F;
 end;
 
 procedure TPaddleThread.Execute;
@@ -2860,8 +2858,6 @@ var
    OutReport : array[0..8] of byte;
    InReport : array[0..8] of byte;
    BR : DWORD;
-   fPaddleRight, fPaddleLeft: Boolean;
-   fPrevRight, fPrevLeft: Boolean;
 label nextnext;
 begin
    {$IFDEF DEBUG}
@@ -2893,32 +2889,8 @@ begin
       FKeyer.FUsbInfo[0].FUSBIF4CW.ReadFile(InReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.InputReportByteLength, BR);
       LeaveCriticalSection(FUsbPortDataLock);
 
-      if (InReport[1] = 4) and (InReport[3] = 4) {and (InReport[2] <> $F)} then begin
-
-         // パドル状況
-         if FKeyer.PaddleReverse = False then begin
-            fPaddleLeft := (InReport[2] and $04) = 0;
-            fPaddleRight := (InReport[2] and $01) = 0;
-
-            fPrevLeft := (FPrevInReport[2] and $04) = 0;
-            fPrevRight := (FPrevInReport[2] and $01) = 0;
-         end
-         else begin
-            fPaddleRight := (InReport[2] and $04) = 0;
-            fPaddleLeft := (InReport[2] and $01) = 0;
-
-            fPrevRight := (FPrevInReport[2] and $04) = 0;
-            fPrevLeft := (FPrevInReport[2] and $01) = 0;
-         end;
-
-         if ((fPrevRight = False) and (fPrevLeft = False)) and ((fPaddleRight = True) or (fPaddleLeft = True)) then begin
-            FKeyer.PaddleProc((InReport[2] and $05), 1);
-         end
-         else begin
-            FKeyer.PaddleProc((InReport[2] and $05), 0);
-         end;
-
-         CopyMemory(@FPrevInReport, @InReport, 9);
+      if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
+         FKeyer.PaddleProc((InReport[2] and $05));
       end;
 
       EnterCriticalSection(FUsbPortDataLock);
@@ -2960,6 +2932,10 @@ begin
 
       if (mousetail + 2) > (charmax * codemax) then mousetail := 1;
 
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('m_set: mousetail=' + IntToStr(mousetail) + ' cwstrptr=' + IntToStr(cwstrptr)));
+      {$ENDIF}
+
       FCWSendBuf[0, mousetail]     := b;
       FCWSendBuf[0, mousetail + 1] := 0;
       FCWSendBuf[0, mousetail + 2] := $AA;
@@ -2972,40 +2948,16 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.PaddleProc(CurStatus: Byte; PrevStatus: Byte);
+procedure TdmZLogKeyer.PaddleProc(PaddleStatus: Byte);
 var
    ptr: Integer;
 begin
-   // 左右OFFから左右どちらかがONになるタイミングでパドルイベントを発生
-//   if (PrevStatus = 5) and ((CurStatus = $00) or (CurStatus = $01) or (CurStatus = $04)) then begin
-   if PrevStatus = 1 then begin
-      if Assigned(FOnPaddleEvent) then begin
-         FOnPaddleEvent(Self);
-         if cwstrptr = 0 then begin
-            cwstrptr := 1;
-         end;
-      end;
-   end;
-
-   if CurStatus = $05 then begin
-      Exit;
-   end;
-
-   ptr := mousetail - cwstrptr;
-   if ptr < 0 then begin
-      ptr := 0;
-      cwstrptr := 1;
-      mousetail := 1;
-   end;
-
-   case ptr of
+   case mousetail - cwstrptr of
       0: begin
-         case CurStatus of
+         case PaddleStatus of
             $00: begin { both }
                ptr := mousetail - 2;
                if ptr < 1 then begin
-//                  ptr := 1;
-//                  mousetail := 3;
                   Exit;
                end;
 
@@ -3028,12 +2980,10 @@ begin
       1: begin
          ptr := cwstrptr - 1;
          if ptr < 1 then begin
-//            ptr := 1;
-//            cwstrptr := 2;
             Exit;
          end;
 
-         case CurStatus of
+         case PaddleStatus of
             $00: begin
                case FCWSendBuf[0, ptr] of
                   1: m_set(3);
@@ -3054,7 +3004,7 @@ begin
       end;
 
       else begin
-         if (CurStatus = $01) or (CurStatus = $04) then begin
+         if (PaddleStatus = $01) or (PaddleStatus = $04) then begin
             if abs(mousetail - cwstrptr) > 5 then begin
                FSelectedBuf := 0;
                cwstrptr := 1;
