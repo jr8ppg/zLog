@@ -1507,6 +1507,7 @@ begin
             end;
 
             FSendOK := False;
+            Exit;
          end;
 
          $99: begin { pause }
@@ -2952,6 +2953,10 @@ procedure TdmZLogKeyer.PaddleProc(PaddleStatus: Byte);
 var
    ptr: Integer;
 begin
+   if cwstrptr = 0 then begin
+      cwstrptr := 1;
+   end;
+
    case mousetail - cwstrptr of
       0: begin
          case PaddleStatus of
