@@ -546,11 +546,7 @@ begin
    FTone.Free();
    {$ENDIF}
    FMonitorThread.Free();
-   if Assigned(FPaddleThread) then begin
-      FPaddleThread.Terminate();
-      FPaddleThread.Free();
-      FPaddleThread := nil;
-   end;
+   FPaddleThread.Free();
    COM_OFF();
    USB_OFF();
    DeallocateHWnd(FWnd);
@@ -1527,33 +1523,6 @@ begin
             FSendChar := True;
          end;
 
-         // 4 : begin
-         // if BGKsidetone then sound(Hz);
-         // SetPort(PRTport, GetPort(PRTport) or $80);
-         // sss:=100; {30 ms}
-         // end;
-         // 5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end; {???}
-         (*
-           0 : begin SetPort(PRTport, GetPort(PRTport) and $FE); nosound; sss:=_bl1; end;
-           2 : begin SetPort(PRTport, GetPort(PRTport) and $FE); nosound; sss:=_bl3; end;
-           1 : begin
-           SetPort(PRTport, GetPort(PRTport) or $01);
-           if BGKsidetone then sound(Hz);
-           sss:=_dot;
-           end;
-           3 : begin
-           SetPort(PRTport, GetPort(PRTport) or $01);
-           if BGKsidetone then sound(Hz);
-           sss:=_dash;
-           end;
-           4 : begin
-           if BGKsidetone then sound(Hz);
-           SetPort(PRTport, GetPort(PRTport) or $80);
-           sss:=100; {30 ms}
-           end;
-           5 : begin SetPort(PRTport, GetPort(PRTport) and $7F); nosound; sss:=_bl1; end;
-         *)
-
          // next char
          9: begin
             cwstrptr := (cwstrptr div codemax + 1) * codemax;
@@ -1581,8 +1550,8 @@ begin
             end
             else begin
                Dec(FPttHoldCounter);
-               Exit;
             end;
+            Exit;
          end;
 
          $A3: begin
@@ -1594,7 +1563,7 @@ begin
 
          $AA: begin {paddle waiting routine. if p_char_count expires, }
             paddle_waiting := True;
-            if p_char_count = 0 then begin
+            if p_char_count <= 0 then begin
 
                if FPTTEnabled then begin
                   FPttHoldCounter := FPttDelayAfterCount;
@@ -2238,33 +2207,6 @@ begin
    FCodeTable[Ord('t')][10] := 2;
    FCodeTable[Ord('t')][11] := 9;   { Next char }
 
-   // PADDLE用DOT
-   FCodeTable[Ord('p')][1] := 1;
-   FCodeTable[Ord('p')][2] := 0;
-   FCodeTable[Ord('p')][3] := $A;   { repeat }
-
-   // PADDLE用DASH
-   FCodeTable[Ord('q')][1] := 3;
-   FCodeTable[Ord('q')][2] := 0;
-   FCodeTable[Ord('q')][3] := $A;   { repeat }
-
-   // PADDLE用SQUEEZE(DASH)
-   FCodeTable[Ord('r')][1] := 3;
-   FCodeTable[Ord('r')][2] := 0;
-   FCodeTable[Ord('r')][3] := 9;    { Next char }
-
-   // PADDLE用SQUEEZE(DOT)
-   FCodeTable[Ord('v')][1] := 1;
-   FCodeTable[Ord('v')][2] := 0;
-   FCodeTable[Ord('v')][3] := 9;    { Next char }
-
-   // PADDLE用PTTOFF
-   FCodeTable[Ord('o')][1] := 0;
-   FCodeTable[Ord('o')][2] := $A1;  { set Hold Counter }
-   FCodeTable[Ord('o')][3] := $A3;  { set PTT delay }
-   FCodeTable[Ord('o')][4] := $1F;  { PTT off }
-   FCodeTable[Ord('o')][5] := 9;
-
    FCodeTable[Ord('?')][1] := 1;
    FCodeTable[Ord('?')][2] := 0;
    FCodeTable[Ord('?')][3] := 1;
@@ -2355,6 +2297,11 @@ begin
    end;
    FMonitorThread.Start();
 
+   if FPaddleThread = nil then begin
+      FPaddleThread := TPaddleThread.Create(Self);
+   end;
+   FPaddleThread.Start();
+
    FInitialized := True;
 end;
 
@@ -2370,6 +2317,12 @@ begin
       FMonitorThread.Terminate();
       FMonitorThread.Free();
       FMonitorThread := nil;
+   end;
+
+   if Assigned(FPaddleThread) then begin
+      FPaddleThread.Terminate();
+      FPaddleThread.Free();
+      FPaddleThread := nil;
    end;
 
    if FInitialized = False then begin
@@ -2693,8 +2646,6 @@ var
       end;
    end;
 begin
-   ClrBuffer();
-
    if FUsePaddleKeyer = True then begin
       HidController.OnDeviceData := nil;
    end
@@ -2783,21 +2734,10 @@ begin
       ZComTxRigSelect.ToggleDTR(False);
       ZComTxRigSelect.ToggleRTS(False);
    end;
-
-   // パドルスレッド開始
-   FPaddleThread := TPaddleThread.Create(Self);
-   FPaddleThread.Start();
 end;
 
 procedure TdmZLogKeyer.Close();
 begin
-   // パドルスレッド終了
-   if Assigned(FPaddleThread) then begin
-      FPaddleThread.Terminate();
-      FPaddleThread.Free();
-      FPaddleThread := nil;
-   end;
-
    COM_OFF();
    USB_OFF();
 
