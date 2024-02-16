@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls, IniFiles,
-  Console2, OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
+  StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, IniFiles,
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
   UOptions, USpotClass, UzLogConst, HelperLib;
 
 const
@@ -18,7 +18,6 @@ type
     Edit: TEdit;
     Panel2: TPanel;
     ListBox: TListBox;
-    Console: TColorConsole2;
     Splitter1: TSplitter;
     Telnet: TTnCnx;
     buttonConnect: TButton;
@@ -32,12 +31,12 @@ type
     ZServer: TWSocket;
     panelShowInfo: TPanel;
     timerShowInfo: TTimer;
+    Console: TListBox;
     procedure buttonCloseClick(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure TimerProcess(Sender: TObject);
-    procedure TelnetDisplay(Sender: TTnCnx; Str: String);
     procedure buttonConnectClick(Sender: TObject);
     procedure TelnetSessionConnected(Sender: TTnCnx; Error: Word);
     procedure TelnetSessionClosed(Sender: TTnCnx; Error: Word);
@@ -66,7 +65,6 @@ type
     FZServerHostname: string;
     FZServerPortNumber: string;
     FCommBuffer: TStringList;
-    FCommTemp: string; {command work string}
 
     FUseClusterLog: Boolean;
     FClusterLog: TextFile;
@@ -78,6 +76,7 @@ type
     FAllowList: TStringList;
     FDenyList: TStringList;
 
+    FLineBreak: string;
     procedure LoadSettings();
     procedure SaveSettings();
     procedure ImplementOptions;
@@ -90,6 +89,7 @@ type
     procedure WriteConsole(strText: string);
     procedure LoadAllowDenyList();
     procedure ShowInfo(fShow: Boolean);
+    procedure AddConsole(str: string);
   public
     { Public declarations }
   end;
@@ -110,7 +110,6 @@ uses
 procedure TClusterClient.FormCreate(Sender: TObject);
 begin
    FCommBuffer := TStringList.Create;
-   FCommTemp := '';
    Timer1.Enabled := False;
    FAutoLogined := False;
    LoadSettings();
@@ -153,7 +152,7 @@ end;
 
 procedure TClusterClient.WriteLine(str: string);
 begin
-   WriteData(str + LineBreakCode[ord(Console.LineBreak)]);
+   WriteData(str + FLineBreak);
 end;
 
 procedure TClusterClient.WriteData(str : string);
@@ -180,10 +179,10 @@ begin
    s := '';
    if Key = Chr($0D) then begin
 
-      WriteData(Edit.Text + LineBreakCode[ord(Console.LineBreak)]);
+      WriteData(Edit.Text + FLineBreak);
 
       if boo then begin
-         WriteConsole(Edit.Text+LineBreakCode[ord(Console.LineBreak)]);
+         WriteConsole(Edit.Text+FLineBreak);
       end;
 
       Key := Chr($0);
@@ -254,7 +253,7 @@ procedure TClusterClient.ImplementOptions();
 var
    i: Integer;
 begin
-   Console.LineBreak := TConsole2LineBreak(FClusterLineBreak);
+   FLineBreak := LineBreakCode[FClusterLineBreak];
 
    i := Pos(':', FClusterHostName);
    if i = 0 then begin
@@ -307,7 +306,9 @@ begin
    end;
 
    // リストへ追加
+   ListBox.Items.BeginUpdate();
    ListBox.Items.AddObject(Sp.ClusterSummary, Sp);
+   ListBox.Items.EndUpdate();
    ListBox.ShowLast();
 end;
 
@@ -329,76 +330,60 @@ end;
 
 procedure TClusterClient.CommProcess;
 var
-   max , i, j: integer;
-   str: string;
    Sp : TSpot;
+   strTemp: string;
+label
+   nextnext;
 begin
-   max := FCommBuffer.Count - 1;
-   for i := 0 to max do begin
-      WriteConsole(FCommBuffer.Strings[i]);
-   end;
-
-   for i := 0 to max do begin
-      str := FCommBuffer.Strings[0];
+   while FCommBuffer.Count > 0 do begin
+      strTemp := FCommBuffer.Strings[0];
 
       // Auto Login
       if (FClusterAutoLogin = True) and (FClusterLoginID <> '') and (FAutoLogined = False) then begin
-         if (Pos('login:', str) > 0) or
-            (Pos('Please enter your call:', str) > 0) or
-            (Pos('Please enter your callsign:', str) > 0) then begin
+         if (Pos('login:', strTemp) > 0) or
+            (Pos('Please enter your call:', strTemp) > 0) or
+            (Pos('Please enter your callsign:', strTemp) > 0) then begin
             Sleep(500);
             WriteLine(FClusterLoginID);
             FAutoLogined := True;
          end;
       end;
 
-      for j := 1 to length(str) do begin
-         if str[j] = Chr($0A) then begin
-            FCommTemp := TrimCRLF(FCommTemp);
+      Sp := TSpot.Create;
+      if Sp.Analyze(strTemp) = True then begin
+         ProcessSpot(Sp);
 
-            Sp := TSpot.Create;
-            if Sp.Analyze(FCommTemp) = True then begin
-               ProcessSpot(Sp);
-
-               // Spotterのチェック
-               if FClusterUseAllowDenyLists = True then begin
-                  if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
-                     Sp.Free();
-                     FCommTemp := '';
-                     Continue;
-                  end;
-                  if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
-                     Sp.Free();
-                     FCommTemp := '';
-                     Continue;
-                  end;
-               end;
-
-               // Z-Serverへ送信
-               if ZServer.State = wsConnected then begin
-                  RelaySpot(FCommTemp);
-               end
-               else if (ZServer.State = wsClosed) and (ZServer.Addr <> '') then begin
-                  ZServer.Addr := FZServerHostName;
-                  ZServer.Port := FZServerPortNumber;
-                  ZServer.Connect();
-               end;
-
-               if FSpotterList.IndexOf(Sp.ReportedBy) = -1 then begin
-                  FSpotterList.Add(Sp.ReportedBy);
-               end;
-            end
-            else begin
-              Sp.Free;
+         // Spotterのチェック
+         if FClusterUseAllowDenyLists = True then begin
+            if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+               Sp.Free();
+               goto nextnext;
             end;
-
-            FCommTemp := '';
-         end
-         else begin
-            FCommTemp := FCommTemp + str[j];
+            if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+               Sp.Free();
+               goto nextnext;
+            end;
          end;
+
+         // Z-Serverへ送信
+         if ZServer.State = wsConnected then begin
+            RelaySpot(strTemp);
+         end
+         else if (ZServer.State = wsClosed) and (ZServer.Addr <> '') then begin
+            ZServer.Addr := FZServerHostName;
+            ZServer.Port := FZServerPortNumber;
+            ZServer.Connect();
+         end;
+
+         if FSpotterList.IndexOf(Sp.ReportedBy) = -1 then begin
+            FSpotterList.Add(Sp.ReportedBy);
+         end;
+      end
+      else begin
+        Sp.Free;
       end;
 
+nextnext:
       FCommBuffer.Delete(0);
    end;
 end;
@@ -443,11 +428,6 @@ begin
    end;
 end;
 
-procedure TClusterClient.TelnetDisplay(Sender: TTnCnx; Str: String);
-begin
-   FCommBuffer.Add(str);
-end;
-
 procedure TClusterClient.buttonConnectClick(Sender: TObject);
 begin
    if Telnet.IsConnected then begin
@@ -489,7 +469,7 @@ begin
             FUseClusterLog := True;
          end
          else begin
-            Console.WriteString('**** Not enough free disk space (Not Record!) ****');
+            AddConsole('**** Not enough free disk space (Not Record!) ****');
             FUseClusterLog := False;
          end;
       end;
@@ -500,7 +480,7 @@ begin
       FAutoLogined := False;
    except
       on E: Exception do begin
-         Console.WriteString(E.Message);
+         AddConsole(E.Message);
          FUseClusterLog := False;
       end;
    end;
@@ -562,15 +542,15 @@ begin
                Font.Color := clWhite;
             end
             else begin
-            Font.Color := clBlack;
+               Font.Color := clBlack;
             end;
          end
          else begin
             if odSelected in State then begin
                Font.Color := clYellow;
-         end
-         else begin
-            Font.Color := clGreen;
+            end
+            else begin
+               Font.Color := clGreen;
             end;
          end;
       end;
@@ -582,16 +562,34 @@ end;
 procedure TClusterClient.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
 var
    str : string;
+   i: Integer;
+   st: Integer;
+   line: string;
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
-   FCommBuffer.Add(str);
+
+   st := 1;
+   for i := 1 to Length(str) do begin
+      if str[i] = #10 then begin
+         line := TrimCRLF(Copy(str, st, i - st + 1));
+         WriteConsole(line);
+         FCommBuffer.Add(line);
+         st := i + 1;
+      end;
+   end;
+
+   line := TrimCRLF(Copy(str, st));
+   if line <> '' then begin
+      WriteConsole(line);
+      FCommBuffer.Add(line);
+   end;
 end;
 
 procedure TClusterClient.RelaySpot(S: string);
 var
    str: string;
 begin
-   str := ZLinkHeader + ' ' + SPOT_COMMAND[FSpotGroup] + ' ' + S + LineBreakCode[Ord(Console.LineBreak)];
+   str := ZLinkHeader + ' ' + SPOT_COMMAND[FSpotGroup] + ' ' + S + FLineBreak;
    ZServer.SendStr(str);
 end;
 
@@ -648,7 +646,7 @@ end;
 
 procedure TClusterClient.WriteLineConsole(str : string);
 begin
-   WriteConsole(str + LineBreakCode[ord(Console.LineBreak)]);
+   WriteConsole(str + FLineBreak);
 end;
 
 procedure TClusterClient.ZServerSessionClosed(Sender: TObject; ErrCode: Word);
@@ -664,16 +662,16 @@ begin
 
    // BANDコマンド
    S := ZLinkHeader + ' BAND ' + IntToStr(Ord(bUnknown));
-   ZServer.SendStr(S + LineBreakCode[Ord(Console.LineBreak)]);
+   ZServer.SendStr(S + FLineBreak);
 
    // OPERATORコマンドで端末名を送る
    S := ZLinkHeader + ' OPERATOR ' + FZServerClientName;
-   ZServer.SendStr(S + LineBreakCode[Ord(Console.LineBreak)]);
+   ZServer.SendStr(S + FLineBreak);
 end;
 
 procedure TClusterClient.WriteConsole(strText: string);
 begin
-   Console.WriteString(strText);
+   AddConsole(strText);
 
    try
       if (FClusterRecordLogs = True) and (FUseClusterLog = True) then begin
@@ -682,7 +680,7 @@ begin
       end;
    except
       on E: Exception do begin
-         Console.WriteString(E.Message);
+         AddConsole(E.Message);
          FUseClusterLog := False;
          CloseFile(FClusterLog);
       end;
@@ -723,6 +721,17 @@ begin
       timerShowInfo.Tag := 0;
    end;
    timerShowInfo.Enabled := True;
+end;
+
+procedure TClusterClient.AddConsole(str: string);
+begin
+   Console.Items.BeginUpdate();
+   Console.Items.Add(str);
+   if Console.Items.Count > 1000 then begin
+      Console.Items.Delete(0);
+   end;
+   Console.Items.EndUpdate();
+   Console.ShowLast();
 end;
 
 end.

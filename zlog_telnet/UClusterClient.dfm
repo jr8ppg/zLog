@@ -2,8 +2,8 @@ object ClusterClient: TClusterClient
   Left = 117
   Top = 174
   Caption = 'Cluster'
-  ClientHeight = 241
-  ClientWidth = 284
+  ClientHeight = 242
+  ClientWidth = 288
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 300
@@ -14,23 +14,23 @@ object ClusterClient: TClusterClient
   Font.Style = []
   KeyPreview = True
   Menu = MainMenu1
-  OldCreateOrder = True
   Scaled = False
   Visible = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 208
-    Width = 284
+    Top = 209
+    Width = 288
     Height = 33
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 208
+    ExplicitWidth = 284
     DesignSize = (
-      284
+      288
       33)
     object Edit: TEdit
       Left = 6
@@ -56,22 +56,23 @@ object ClusterClient: TClusterClient
       Caption = 'Connect'
       TabOrder = 1
       OnClick = buttonConnectClick
+      ExplicitLeft = 196
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 28
-    Width = 284
-    Height = 180
+    Width = 288
+    Height = 181
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitTop = 0
-    ExplicitHeight = 208
+    ExplicitWidth = 284
+    ExplicitHeight = 180
     object Splitter1: TSplitter
       Left = 1
-      Top = 87
-      Width = 282
+      Top = 90
+      Width = 286
       Height = 4
       Cursor = crVSplit
       Align = alBottom
@@ -82,8 +83,8 @@ object ClusterClient: TClusterClient
     object ListBox: TListBox
       Left = 1
       Top = 1
-      Width = 282
-      Height = 86
+      Width = 286
+      Height = 89
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -96,29 +97,31 @@ object ClusterClient: TClusterClient
       TabOrder = 0
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitHeight = 114
+      ExplicitWidth = 282
+      ExplicitHeight = 88
     end
-    object Console: TColorConsole2
+    object Console: TListBox
       Left = 1
-      Top = 91
-      Width = 282
-      Height = 88
+      Top = 94
+      Width = 286
+      Height = 86
       Align = alBottom
-      ParentColor = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
-      Rows = 500
-      LineBreak = CR
-      ExplicitTop = 119
+      ItemHeight = 12
+      ParentFont = False
+      TabOrder = 1
+      ExplicitTop = 93
+      ExplicitWidth = 282
     end
   end
   object panelShowInfo: TPanel
     Left = 0
     Top = 0
-    Width = 284
+    Width = 288
     Height = 28
     Align = alTop
     BevelOuter = bvNone
@@ -133,9 +136,7 @@ object ClusterClient: TClusterClient
     ParentFont = False
     TabOrder = 2
     Visible = False
-    ExplicitLeft = -240
-    ExplicitTop = 66
-    ExplicitWidth = 524
+    ExplicitWidth = 284
   end
   object Timer1: TTimer
     Enabled = False
@@ -154,7 +155,6 @@ object ClusterClient: TClusterClient
     OnSessionConnected = TelnetSessionConnected
     OnSessionClosed = TelnetSessionClosed
     OnDataAvailable = TelnetDataAvailable
-    OnDisplay = TelnetDisplay
     Left = 88
     Top = 53
   end
@@ -166,8 +166,8 @@ object ClusterClient: TClusterClient
     end
   end
   object MainMenu1: TMainMenu
-    Left = 144
-    Top = 76
+    Left = 152
+    Top = 44
     object menuFunc: TMenuItem
       Caption = #27231#33021'(&F)'
       object menuSettings: TMenuItem

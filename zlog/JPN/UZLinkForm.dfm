@@ -36,7 +36,7 @@ object ZLinkForm: TZLinkForm
     Height = 57
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 2
     ExplicitTop = 131
     ExplicitWidth = 330
     object Edit: TEdit
@@ -64,22 +64,24 @@ object ZLinkForm: TZLinkForm
       OnClick = ConnectButtonClick
     end
   end
-  object Console: TColorConsole2
+  object Console: TListBox
     Left = 0
     Top = 0
     Width = 334
     Height = 132
     Align = alClient
-    ParentColor = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
-    Rows = 500
-    LineBreak = CR
-    ExplicitWidth = 330
-    ExplicitHeight = 131
+    ItemHeight = 12
+    ParentFont = False
+    TabOrder = 0
+    ExplicitLeft = 152
+    ExplicitTop = 35
+    ExplicitWidth = 121
+    ExplicitHeight = 97
   end
   object Timer1: TTimer
     Enabled = False

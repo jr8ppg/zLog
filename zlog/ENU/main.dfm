@@ -6073,10 +6073,23 @@ object MainForm: TMainForm
         Enabled = False
         OnClick = menuDownloadOplistClick
       end
+      object menuDownloadSounds: TMenuItem
+        Caption = 'Download sound files from Z-Server'
+        Enabled = False
+        OnClick = menuDownloadSoundsClick
+      end
+      object N14: TMenuItem
+        Caption = '-'
+      end
       object menuUploadOplist: TMenuItem
         Caption = 'Upload oprator list to Z-Server'
         Enabled = False
         OnClick = menuUploadOplistClick
+      end
+      object menuUploadSounds: TMenuItem
+        Caption = 'Upload sound files to Z-Server'
+        Enabled = False
+        OnClick = menuUploadSoundsClick
       end
     end
     object PluginMenu: TMenuItem

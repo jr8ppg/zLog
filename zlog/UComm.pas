@@ -6,8 +6,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Console, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
-  Console2, USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
+  StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
+  USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
   OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs, System.SyncObjs;
 
 const
@@ -30,7 +30,6 @@ type
     Panel2: TPanel;
     ListBox: TListBox;
     StatusLine: TStatusBar;
-    Console: TColorConsole2;
     Splitter1: TSplitter;
     Telnet: TTnCnx;
     ConnectButton: TButton;
@@ -48,6 +47,7 @@ type
     checkUseAllowDenyLists: TCheckBox;
     timerReConnect: TTimer;
     checkIgnoreBEL: TCheckBox;
+    Console: TListBox;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -80,11 +80,11 @@ type
   private
     { Private declarations }
     FCommBuffer : TStringList;
-    FCommTemp : string; {command work string}
     FCommStarted : boolean;
     FRelayPacketData : boolean;
     FSpotList : TSpotList;
     FSpotListLock: TRTLCriticalSection;
+    FLineBreak: string;
 
     FUseClusterLog: Boolean;
     FClusterLog: TextFile;
@@ -115,8 +115,8 @@ type
 
     procedure WriteData(str : string);
     procedure WriteConsole(strText: string);
+    procedure AddConsole(str: string);
 
-    procedure RenewListBox;
     procedure EnableConnectButton(boo : boolean);
     function GetLocalEcho(): Boolean;
     procedure TerminateCommProcessThread();
@@ -215,17 +215,17 @@ end;
 
 procedure TCommForm.WriteLine(str: string);
 begin
-   WriteData(str + LineBreakCode[ord(Console.LineBreak)]);
+   WriteData(str + FLineBreak);
 end;
 
 procedure TCommForm.WriteLineConsole(str : string);
 begin
-   WriteConsole(str + LineBreakCode[ord(Console.LineBreak)]);
+   WriteConsole(str + FLineBreak);
 end;
 
 procedure TCommForm.WriteConsole(strText: string);
 begin
-   Console.WriteString(strText);
+   AddConsole(strText);
 
    try
       if (checkRecordLogs.Checked = True) and (FUseClusterLog = True) then begin
@@ -234,11 +234,22 @@ begin
       end;
    except
       on E: Exception do begin
-         Console.WriteString(E.Message);
+         AddConsole(E.Message);
          FUseClusterLog := False;
          CloseFile(FClusterLog);
       end;
    end;
+end;
+
+procedure TCommForm.AddConsole(str: string);
+begin
+   Console.Items.BeginUpdate();
+   Console.Items.Add(str);
+   if Console.Items.Count > 1000 then begin
+      Console.Items.Delete(0);
+   end;
+   Console.Items.EndUpdate();
+   Console.ShowLast();
 end;
 
 procedure TCommForm.WriteData(str : string);
@@ -293,7 +304,7 @@ begin
          MainForm.ZLinkForm.SendRemoteCluster(Edit.Text);
       end
       else begin
-         WriteData(Edit.Text + LineBreakCode[ord(Console.LineBreak)]);
+         WriteData(Edit.Text + FLineBreak);
       end;
 
       if fLocalEcho then begin
@@ -339,8 +350,8 @@ begin
    end;
 
    case dmZlogGlobal.Settings._clusterport of
-      1..6 : Console.LineBreak := TConsole2LineBreak(dmZlogGlobal.Settings._cluster_com.FLineBreak);
-      7 :    Console.LineBreak := TConsole2LineBreak(dmZlogGlobal.Settings._cluster_telnet.FLineBreak);
+      1..6 : FLineBreak := LineBreakCode[dmZlogGlobal.Settings._cluster_com.FLineBreak];
+      7 :    FLineBreak := LineBreakCode[dmZlogGlobal.Settings._cluster_telnet.FLineBreak];
    end;
 
    i := Pos(':', dmZlogGlobal.Settings._cluster_telnet.FHostName);
@@ -382,7 +393,6 @@ begin
    FSpotList := TSpotList.Create;
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
-   FCommTemp := '';
    FSpotterList := TStringList.Create();
    FSpotterList.Duplicates := dupIgnore;
    FSpotterList.Sorted := True;
@@ -416,26 +426,6 @@ begin
    Disconnect();
 
    MainForm.DelTaskbar(Handle);
-end;
-
-procedure TCommForm.RenewListBox;
-var
-   i: Integer;
-begin
-   ListBox.Items.BeginUpdate();
-   Lock();
-   try
-      ListBox.Clear;
-
-      for i := 0 to FSpotList.Count - 1 do begin
-         ListBox.AddItem(FSpotList[i].ClusterSummary, FSpotList[i]);
-      end;
-   finally
-      Unlock();
-      ListBox.Items.EndUpdate();
-   end;
-
-   ListBox.ShowLast();
 end;
 
 procedure TCommForm.PreProcessSpotFromZLink(S : string; N: Integer);
@@ -553,6 +543,9 @@ begin
 
       ListBox.Items.BeginUpdate();
       ListBox.AddItem(Sp.ClusterSummary, Sp);
+      if ListBox.Items.Count > 1000 then begin
+         ListBox.Items.Delete(0);
+      end;
       ListBox.Items.EndUpdate();
       ListBox.ShowLast();
 
@@ -576,114 +569,83 @@ begin
    end;
 end;
 
-function TrimCRLF(SS : string) : string;
-var
-   S: string;
-begin
-   S := SS;
-   while (length(S) > 0) and ((S[1] = Chr($0A)) or (S[1] = Chr($0D))) do begin
-      Delete(S, 1, 1);
-   end;
-
-   while (length(S) > 0) and ((S[length(S)] = Chr($0A)) or (S[length(S)] = Chr($0D))) do begin
-      Delete(S, length(S), 1);
-   end;
-
-   Result := S;
-end;
-
 procedure TCommForm.CommProcess;
 var
-   max , i, j: integer;
-   str: string;
+   strTemp: string;
    Sp : TSpot;
+label
+   nextnext;
 begin
-   max := FCommBuffer.Count - 1;
-   for i := 0 to max do begin
-      WriteConsole(FCommBuffer.Strings[i]);
-   end;
-
-   for i := 0 to max do begin
-      str := FCommBuffer.Strings[0];
+   while FCommBuffer.Count > 0 do begin
+      strTemp := FCommBuffer.Strings[0];
 
       // Auto Login
       if (checkAutoLogin.Checked = True) and (FAutoLogined = False) then begin
-         if (Pos('login:', str) > 0) or
-            (Pos('Please enter your call:', str) > 0) or
-            (Pos('Please enter your callsign:', str) > 0) then begin
+         if (Pos('login:', strTemp) > 0) or
+            (Pos('Please enter your call:', strTemp) > 0) or
+            (Pos('Please enter your callsign:', strTemp) > 0) then begin
             Sleep(500);
             WriteLine(dmZlogGlobal.MyCall);
             FAutoLogined := True;
          end;
       end;
 
-      for j := 1 to length(str) do begin
-         if (str[j] = Chr($0A)) then begin
-            FCommTemp := TrimCRLF(FCommTemp);
-
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('FCommTemp = [' + FCommTemp + ']'));
-            {$ENDIF}
-
-            if FRelayPacketData then begin
-               MainForm.ZLinkForm.SendPacketData(FCommTemp);
-            end;
-
-            Sp := TSpot.Create;
-            if Sp.Analyze(FCommTemp) = True then begin
-
-               // Spotterのチェック
-               if checkUseAllowDenyLists.Checked = True then begin
-                  if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
-                     {$IFDEF DEBUG}
-                     OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been rejected by the deny list'));
-                     {$ENDIF}
-                     Sp.Free();
-                     FCommTemp := '';
-                     Continue;
-                  end;
-                  if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
-                     {$IFDEF DEBUG}
-                     OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
-                     {$ENDIF}
-                     Sp.Free();
-                     FCommTemp := '';
-                     Continue;
-                  end;
-               end;
-
-               // データ発生源はCluster
-               Sp.SpotSource := ssCluster;
-
-               ProcessSpot(Sp);
-
-               if checkRelaySpot.Checked then begin
-                  MainForm.ZLinkForm.RelaySpot(FCommTemp);
-               end;
-
-               // Spotterリストに登録
-               if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
-                  FSpotterList.Add(Sp.ReportedBy);
-                  {$IFDEF DEBUG}
-                  OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
-                  {$ENDIF}
-               end;
-            end
-            else begin
-              Sp.Free;
-            end;
-
-            FCommTemp := '';
-         end
-         else begin
-            FCommTemp := FCommTemp + str[j];
-         end;
+      if FRelayPacketData then begin
+         MainForm.ZLinkForm.SendPacketData(strTemp);
       end;
 
+      Sp := TSpot.Create;
+      if Sp.Analyze(strTemp) = True then begin
+
+         // Spotterのチェック
+         if checkUseAllowDenyLists.Checked = True then begin
+            if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been rejected by the deny list'));
+               {$ENDIF}
+               Sp.Free();
+               goto nextnext;
+            end;
+            if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
+               {$ENDIF}
+               Sp.Free();
+               goto nextnext;
+            end;
+         end;
+
+         // データ発生源はCluster
+         Sp.SpotSource := ssCluster;
+
+         ProcessSpot(Sp);
+
+         if checkRelaySpot.Checked then begin
+            MainForm.ZLinkForm.RelaySpot(strTemp);
+         end;
+
+         // Spotterリストに登録
+         if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
+            FSpotterList.Add(Sp.ReportedBy);
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
+            {$ENDIF}
+         end;
+      end
+      else begin
+        Sp.Free;
+      end;
+
+nextnext:
       CommBufferLock.Enter();
       FCommBuffer.Delete(0);
       CommBufferLock.Leave();
    end;
+
+   {$IFDEF DEBUG}
+   var S := Format('MSpots=%d DSpots=%d CSpots=%d', [FSpotList.Count, ListBox.Items.Count, Console.Items.Count]);
+   WriteStatusLine(S);
+   {$ENDIF}
 end;
 
 procedure TCommForm.TimerProcess;
@@ -710,8 +672,6 @@ begin
          ConnectButton.Click();
          Inc(FReConnectCount);
       end;
-
-//      CommProcess;
    finally
       Timer1.Enabled := True;
    end;
@@ -836,7 +796,7 @@ begin
             FUseClusterLog := True;
          end
          else begin
-            Console.WriteString('**** Not enough free disk space (Not Record!) ****');
+            AddConsole('**** Not enough free disk space (Not Record!) ****');
             FUseClusterLog := False;
          end;
       end;
@@ -862,7 +822,7 @@ begin
       end;
    except
       on E: Exception do begin
-         Console.WriteString(E.Message);
+         AddConsole(E.Message);
          FUseClusterLog := False;
       end;
    end;
@@ -1037,20 +997,36 @@ end;
 procedure TCommForm.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
 var
    str: string;
-   S: string;
+   st: Integer;
+   line: string;
+   i: Integer;
 begin
    str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
 
-   S := '';
+   // BELコード削除
    if checkIgnoreBEL.Checked = True then begin
-      S := StringReplace(str, #07, '', [rfReplaceAll]);
-   end
-   else begin
-      S := str;
+      str := StringReplace(str, #07, '', [rfReplaceAll]);
    end;
 
+   // CRLFで分割
    CommBufferLock.Enter();
-   FCommBuffer.Add(S);
+
+   st := 1;
+   for i := 1 to Length(str) do begin
+      if str[i] = #10 then begin
+         line := TrimCRLF(Copy(str, st, i - st + 1));
+         AddConsole(line);
+         FCommBuffer.Add(line);
+         st := i + 1;
+      end;
+   end;
+
+   line := TrimCRLF(Copy(str, st));
+   if line <> '' then begin
+      AddConsole(line);
+      FCommBuffer.Add(line);
+   end;
+
    CommBufferLock.Leave();
 end;
 
@@ -1083,7 +1059,7 @@ begin
       slText.Text := ClipBoard.AsText;
       for i := 0 to slText.Count - 1 do begin
          strCommand := slText.Strings[i];
-         WriteData(strCommand + LineBreakCode[ord(Console.LineBreak)]);
+         WriteData(strCommand + FLineBreak);
 
          if fLocalEcho then begin
             WriteLineConsole(strCommand);

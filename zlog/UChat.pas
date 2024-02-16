@@ -107,7 +107,7 @@ begin
 
       Delete(str, 1, 1);
       str := ZLinkHeader + ' ' + str;
-      MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
+      MainForm.ZLinkForm.WriteData(str);
       Exit;
    end;
 
@@ -119,7 +119,7 @@ begin
       str := ZLinkHeader + ' PUTMESSAGE !' + strMessage;
       Add(strMessage);
 
-      MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
+      MainForm.ZLinkForm.WriteData(str);
       Exit;
    end;
 
@@ -127,7 +127,7 @@ begin
    str := ZLinkHeader + ' PUTMESSAGE ' + strMessage;
    Add(strMessage);
 
-   MainForm.ZLinkForm.WriteData(str + LineBreakCode[ord(MainForm.ZLinkForm.Console.LineBreak)]);
+   MainForm.ZLinkForm.WriteData(str);
 end;
 
 procedure TChatForm.editMessageEnter(Sender: TObject);

@@ -622,6 +622,7 @@ function ExpandEnvironmentVariables(strOriginal: string): string;
 procedure FormShowAndRestore(F: TForm);
 function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
 function GetCommPortsForOldVersion(lpPortNumbers: PULONG; uPortNumbersCount: ULONG; var puPortNumbersFound: ULONG): ULONG;
+function TrimCRLF(SS : string) : string;
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -4367,6 +4368,22 @@ begin
    end;
 
    Result := 0;
+end;
+
+function TrimCRLF(SS : string) : string;
+var
+   S: string;
+begin
+   S := SS;
+   while (length(S) > 0) and ((S[1] = Chr($0A)) or (S[1] = Chr($0D))) do begin
+      Delete(S, 1, 1);
+   end;
+
+   while (length(S) > 0) and ((S[length(S)] = Chr($0A)) or (S[length(S)] = Chr($0D))) do begin
+      Delete(S, length(S), 1);
+   end;
+
+   Result := S;
 end;
 
 end.
