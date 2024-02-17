@@ -1,5 +1,4 @@
 object dmZLogKeyer: TdmZLogKeyer
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
   Height = 175

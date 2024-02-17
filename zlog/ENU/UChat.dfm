@@ -2,7 +2,7 @@ object ChatForm: TChatForm
   Left = 199
   Top = 287
   Caption = 'Z-Server Messages'
-  ClientHeight = 152
+  ClientHeight = 151
   ClientWidth = 374
   Color = clBtnFace
   Constraints.MinHeight = 190
@@ -13,29 +13,28 @@ object ChatForm: TChatForm
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 124
+    Top = 123
     Width = 374
     Height = 28
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 124
     DesignSize = (
       374
       28)
     object editMessage: TEdit
       Left = 80
       Top = 4
-      Width = 238
+      Width = 234
       Height = 20
       Anchors = [akLeft, akTop, akRight]
       Font.Charset = DEFAULT_CHARSET
@@ -48,9 +47,10 @@ object ChatForm: TChatForm
       OnEnter = editMessageEnter
       OnExit = editMessageExit
       OnKeyPress = editMessageKeyPress
+      ExplicitWidth = 238
     end
     object buttonSend: TButton
-      Left = 320
+      Left = 316
       Top = 4
       Width = 51
       Height = 20
@@ -58,6 +58,7 @@ object ChatForm: TChatForm
       Caption = 'Send'
       TabOrder = 1
       OnClick = buttonSendClick
+      ExplicitLeft = 320
     end
     object comboPromptType: TComboBox
       Left = 4
@@ -80,7 +81,7 @@ object ChatForm: TChatForm
     Left = 0
     Top = 25
     Width = 374
-    Height = 99
+    Height = 98
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -112,7 +113,7 @@ object ChatForm: TChatForm
       OnClick = comboPromptTypeChange
     end
     object Button2: TButton
-      Left = 304
+      Left = 300
       Top = 4
       Width = 67
       Height = 18
@@ -120,6 +121,7 @@ object ChatForm: TChatForm
       Caption = 'Clear'
       TabOrder = 1
       OnClick = Button2Click
+      ExplicitLeft = 304
     end
     object checkStayOnTop: TCheckBox
       Left = 155

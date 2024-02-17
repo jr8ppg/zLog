@@ -13,7 +13,6 @@ object CommForm: TCommForm
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Scaled = False
   OnActivate = FormActivate
   OnClose = FormClose
@@ -21,7 +20,6 @@ object CommForm: TCommForm
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
@@ -30,6 +28,8 @@ object CommForm: TCommForm
     Height = 92
     Align = alBottom
     TabOrder = 0
+    ExplicitTop = 124
+    ExplicitWidth = 350
     object Edit: TEdit
       Left = 8
       Top = 6
@@ -124,9 +124,11 @@ object CommForm: TCommForm
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
+    ExplicitWidth = 350
+    ExplicitHeight = 124
     object Splitter1: TSplitter
       Left = 1
-      Top = 32
+      Top = 60
       Width = 352
       Height = 4
       Cursor = crVSplit
@@ -139,7 +141,7 @@ object CommForm: TCommForm
       Left = 1
       Top = 1
       Width = 352
-      Height = 31
+      Height = 59
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -156,20 +158,20 @@ object CommForm: TCommForm
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
     end
-    object Console: TColorConsole2
+    object Console: TListBox
       Left = 1
-      Top = 36
+      Top = 64
       Width = 352
-      Height = 88
+      Height = 60
       Align = alBottom
-      ParentColor = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = []
-      Rows = 500
-      LineBreak = CR
+      ItemHeight = 12
+      ParentFont = False
+      TabOrder = 1
     end
   end
   object StatusLine: TStatusBar
@@ -177,8 +179,13 @@ object CommForm: TCommForm
     Top = 217
     Width = 354
     Height = 23
-    Panels = <>
+    Panels = <
+      item
+        Width = 500
+      end>
     SimplePanel = True
+    ExplicitTop = 216
+    ExplicitWidth = 350
   end
   object Timer1: TTimer
     Enabled = False

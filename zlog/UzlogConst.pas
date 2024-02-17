@@ -151,6 +151,9 @@ const
     = (Chr($0d)+Chr($0a), Chr($0d), Chr($0a));
   _sep = '~'; {separator character}
 
+  ZLOG_OPLIST_INI = 'zlog_oplist.ini';
+  ZLOG_SOUND_FILES = 'zlog_sounds.zip';
+
 const
   NewPowerString : array[p001..p1000] of string =
                        ('P', 'L', 'M', 'H',  '',  '',  '',  '',  '',  '',  '');

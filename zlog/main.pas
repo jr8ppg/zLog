@@ -18,7 +18,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
-  System.DateUtils, System.SyncObjs, System.Generics.Collections,
+  System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -40,14 +40,31 @@ const
   WM_ZLOG_CQREPEAT_CONTINUE = (WM_USER + 103);
   WM_ZLOG_SPACEBAR_PROC = (WM_USER + 104);
   WM_ZLOG_SWITCH_RIG = (WM_USER + 105);
+  WM_ZLOG_RESET_TX = (WM_USER + 106);
+  WM_ZLOG_INVERT_TX = (WM_USER + 107);
+  WM_ZLOG_SWITCH_RX = (WM_USER + 108);
+  WM_ZLOG_SWITCH_TXRX = (WM_USER + 109);
+  WM_ZLOG_AFTER_DELAY = (WM_USER + 110);
+  WM_ZLOG_SETCQ = (WM_USER + 111);
+  WM_ZLOG_SET_CQ_LOOP = (WM_USER + 112);
+  WM_ZLOG_CALLSIGNSENT = (WM_USER + 113);
+  WM_ZLOG_SWITCH_TX = (WM_USER + 114);
+  WM_ZLOG_SETCURRENTQSO = (WM_USER + 115);
+  WM_ZLOG_TABKEYPRESS = (WM_USER + 116);
+  WM_ZLOG_DOWNKEYPRESS = (WM_USER + 117);
   WM_ZLOG_PLAYMESSAGEA = (WM_USER + 118);
   WM_ZLOG_PLAYMESSAGEB = (WM_USER + 119);
+  WM_ZLOG_PLAYCQ = (WM_USER + 120);
+  WM_ZLOG_TOGGLE_PTT = (WM_USER + 121);
+  WM_ZLOG_SHOWMESSAGE = (WM_USER + 122);
+  WM_ZLOG_FILEDOWNLOAD_COMPLETE = (WM_USER + 123);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
   WM_ZLOG_SETTXINDICATOR = (WM_USER + 203);
   WM_ZLOG_SETFOCUS_CALLSIGN = (WM_USER + 204);
   WM_ZLOG_SETSTATUSTEXT = (WM_USER + 205);
+  WM_ZLOG_MOVELASTFREQ = (WM_USER + 206);
   WM_ZLOG_SHOWOPTIONS = (WM_USER + 207);
   WM_ZLOG_CQABORT = (WM_USER + 208);
 
@@ -192,7 +209,7 @@ type
     Network1: TMenuItem;
     mnDownload: TMenuItem;
     mnMerge: TMenuItem;
-    ConnecttoZServer1: TMenuItem;
+    menuConnectToZServer: TMenuItem;
     N6: TMenuItem;
     G10MHz: TMenuItem;
     G18MHz: TMenuItem;
@@ -616,7 +633,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure EditEnter(Sender: TObject);
     procedure mnMergeClick(Sender: TObject);
-    procedure ConnecttoZServer1Click(Sender: TObject);
+    procedure menuConnectToZServerClick(Sender: TObject);
     procedure GridModeChangeClick(Sender: TObject);
     procedure GridOperatorClick(Sender: TObject);
     procedure SendSpot1Click(Sender: TObject);
@@ -665,6 +682,8 @@ type
     procedure OnZLogSwitchRig( var Message: TMessage ); message WM_ZLOG_SWITCH_RIG;
     procedure OnZLogPlayMessageA( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEA;
     procedure OnZLogPlayMessageB( var Message: TMessage ); message WM_ZLOG_PLAYMESSAGEB;
+    procedure OnZLogShowMessage( var Message: TMessage ); message WM_ZLOG_SHOWMESSAGE;
+    procedure OnZLogFileDownloadComplete( var Message: TMessage ); message WM_ZLOG_FILEDOWNLOAD_COMPLETE;
     procedure OnZLogGetCallsign( var Message: TMessage ); message WM_ZLOG_GETCALLSIGN;
     procedure OnZLogGetVersion( var Message: TMessage ); message WM_ZLOG_GETVERSION;
     procedure OnZLogSetPttState( var Message: TMessage ); message WM_ZLOG_SETPTTSTATE;
@@ -1079,6 +1098,8 @@ type
     function GetQsoList(): TQSOList;
     procedure JarlMemberCheck();
     procedure ExportHamlog(f: string);
+    procedure ExtractSoundFiles();
+    function CompressSoundFiles(): Boolean;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -5570,7 +5591,7 @@ begin
    FZLinkForm.MergeLogWithZServer;
 end;
 
-procedure TMainForm.ConnecttoZServer1Click(Sender: TObject);
+procedure TMainForm.menuConnectToZServerClick(Sender: TObject);
 begin
    FZLinkForm.ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
    FZLinkForm.ZSocket.Port := 'telnet';
@@ -7015,6 +7036,37 @@ begin
    OnPlayMessageB(Message.WParam);
 end;
 
+procedure TMainForm.OnZLogShowMessage( var Message: TMessage );
+var
+   strMessage: string;
+   uType: UINT;
+begin
+   strMessage := StrPas(PChar(Message.WParam));
+   uType := Message.LParam;
+   MessageBox(Handle, PChar(strMessage), PChar(Application.Title), uType);
+end;
+
+procedure TMainForm.OnZLogFileDownloadComplete( var Message: TMessage );
+var
+   strMessage: string;
+   strFileName: string;
+begin
+   strMessage := StrPas(PChar(Message.WParam));
+   strFileName := StrPas(PChar(Message.LParam));
+
+   // OPLISTçƒÉçÅ[Éh
+   if strFileName = ZLOG_OPLIST_INI then begin
+      dmZLogGlobal.OpList.LoadFromIniFile();
+      BuildOpListMenu2(OpMenu.Items, OpMenuClick);
+   end;
+
+   // SOUNDS.ZIPìWäJ
+   if strFileName = ZLOG_SOUND_FILES then begin
+      ExtractSoundFiles();
+   end;
+
+   MessageBox(Handle, PChar(strMessage), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
+end;
 procedure TMainForm.OnZLogGetCallsign( var Message: TMessage );
 var
    callsign_atom: ATOM;
@@ -11718,6 +11770,113 @@ begin
       dlg.Release();
    end;
 end;
+procedure TMainForm.ExtractSoundFiles();
+var
+   zip: TZipFile;
+   zipfilename: string;
+   filename: string;
+   path: string;
+   i: Integer;
+   bakfile: string;
+begin
+   zip := TZipFile.Create();
+   try
+      zipfilename := dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES;
+
+      zip.Open(zipfilename, zmRead);
+
+      for i := 0 to zip.FileCount - 1 do begin
+         filename := zip.FileNames[i];
+         path := dmZLogGlobal.SoundPath + filename;
+
+         if FileExists(path) = True then begin
+            bakfile := ChangeFileExt(path, '.' + FormatDateTime('yyyymmddhhnnss', Now));
+            CopyFile(PChar(path), PChar(bakfile), False);
+         end;
+
+         zip.Extract(filename, dmZLogGlobal.SoundPath, True);
+      end;
+
+   finally
+      zip.Free();
+   end;
+end;
+
+function TMainForm.CompressSoundFiles(): Boolean;
+var
+   zip: TZipFile;
+   filename: string;
+   filelist: TStringList;
+   i: Integer;
+
+   procedure dir(strFolder: string; strPattern: string; flist: TStringList);
+   var
+      F: TSearchRec;
+      path: string;
+      ret: Integer;
+      ext: string;
+   begin
+      ret := FindFirst(strFolder + strPattern, faAnyFile, f);
+
+      while ret = 0 do begin
+         if ((F.Attr and faDirectory) = 0) and
+            ((F.Attr and faVolumeID) = 0) and
+            ((F.Attr and faSysFile) = 0) then begin
+            ext := ExtractFileExt(UpperCase(F.Name));
+            if (ext = '.WAV') or (ext = '.MP3') then begin
+               path := strFolder + f.Name;
+               path := StringReplace(path, '\', '/', [rfReplaceAll]);
+               flist.Add(path);
+            end;
+         end;
+
+         if (f.Attr and faDirectory) <> 0 then begin
+            if (f.Name <> '.') and (f.Name <> '..') then begin
+               path := IncludeTrailingPathDelimiter(strFolder + f.Name);
+               dir(path, strPattern, flist);
+            end;
+         end;
+
+         ret := FindNext(f);
+      end;
+
+      FindClose(f);
+   end;
+begin
+   filelist := TStringList.Create();
+   zip := TZipFile.Create();
+   try
+   try
+      filename := dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES;
+
+      if FileExists(filename) = True then begin
+         DeleteFile(filename);
+      end;
+
+      zip.Open(filename, zmWrite);
+
+      ChDir(dmZLogGlobal.SoundPath);
+
+      dir('', '*.*', filelist);
+
+      for i := 0 to filelist.Count - 1 do begin
+         zip.Add(filelist[i]);
+      end;
+
+      zip.Close();
+
+      Result := True;
+   except
+      on E: Exception do begin
+         MessageBox(Handle, PChar(E.Message), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Result := False;
+      end;
+   end;
+   finally
+      zip.Free();
+   end;
+end;
+
 
 { TBandScopeNotifyThread }
 
