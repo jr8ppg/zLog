@@ -3,27 +3,25 @@ object formOptions2: TformOptions2
   Top = 236
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 471
-  ClientWidth = 444
+  ClientHeight = 470
+  ClientWidth = 440
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object PageControl: TPageControl
     Left = 0
     Top = 0
-    Width = 444
-    Height = 434
+    Width = 440
+    Height = 433
     ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
@@ -3440,14 +3438,14 @@ object formOptions2: TformOptions2
   end
   object Panel1: TPanel
     Left = 0
-    Top = 434
-    Width = 444
+    Top = 433
+    Width = 440
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     DesignSize = (
-      444
+      440
       37)
     object buttonOK: TButton
       Left = 149

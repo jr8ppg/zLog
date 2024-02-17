@@ -8,23 +8,28 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsUnitVersioningIntro 64192
-#define UExceptionDialog_RsStackList 64208
-#define UExceptionDialog_RsModulesList 64209
-#define UExceptionDialog_RsOSVersion 64210
-#define UExceptionDialog_RsProcessor 64211
-#define UExceptionDialog_RsMemory 64212
-#define UExceptionDialog_RsScreenRes 64213
-#define UExceptionDialog_RsActiveControl 64214
-#define UExceptionDialog_RsThread 64215
-#define UExceptionDialog_RsMissingVersionInfo 64216
-#define UExceptionDialog_RsExceptionStack 64217
-#define UExceptionDialog_RsMainThreadID 64218
-#define UExceptionDialog_RsExceptionThreadID 64219
-#define UExceptionDialog_RsMainThreadCallStack 64220
-#define UExceptionDialog_RsThreadCallStack 64221
-#define UExceptionDialog_RsErrorMessage 64222
-#define UExceptionDialog_RsDetailsIntro 64223
+#define UExceptionDialog_RsExceptionThreadID 64192
+#define UExceptionDialog_RsMainThreadCallStack 64193
+#define UExceptionDialog_RsThreadCallStack 64194
+#define UExceptionDialog_RsErrorMessage 64195
+#define UExceptionDialog_RsDetailsIntro 64196
+#define UExceptionDialog_RsUnitVersioningIntro 64197
+#define Main_TMainForm_FailedToCompressSoundFiles 64208
+#define UExceptionDialog_RsAppError 64209
+#define UExceptionDialog_RsExceptionClass 64210
+#define UExceptionDialog_RsExceptionMessage 64211
+#define UExceptionDialog_RsExceptionAddr 64212
+#define UExceptionDialog_RsStackList 64213
+#define UExceptionDialog_RsModulesList 64214
+#define UExceptionDialog_RsOSVersion 64215
+#define UExceptionDialog_RsProcessor 64216
+#define UExceptionDialog_RsMemory 64217
+#define UExceptionDialog_RsScreenRes 64218
+#define UExceptionDialog_RsActiveControl 64219
+#define UExceptionDialog_RsThread 64220
+#define UExceptionDialog_RsMissingVersionInfo 64221
+#define UExceptionDialog_RsExceptionStack 64222
+#define UExceptionDialog_RsMainThreadID 64223
 #define Main_TMainForm_Invalid_zone 64224
 #define Main_TMainForm_JudgePeriod 64225
 #define Main_TMainForm_EmptyOpList 64226
@@ -37,10 +42,10 @@
 #define Main_TMainForm_ZserverNotConfigured 64233
 #define Main_TMainForm_ComfirmUploadOpList 64234
 #define Main_TMainForm_ComfirmDownloadOpList 64235
-#define UExceptionDialog_RsAppError 64236
-#define UExceptionDialog_RsExceptionClass 64237
-#define UExceptionDialog_RsExceptionMessage 64238
-#define UExceptionDialog_RsExceptionAddr 64239
+#define Main_TMainForm_DownloadFile 64236
+#define Main_TMainForm_UploadFile 64237
+#define Main_TMainForm_SoundFileFolderNotSet 64238
+#define Main_TMainForm_Compressing 64239
 #define Main_TMainForm_Switch_CW_Bank_A 64240
 #define Main_TMainForm_Switch_CW_Bank_B 64241
 #define Main_TMainForm_This_QSO_is_locked 64242
@@ -1339,7 +1344,17 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
+	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
+	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
+	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
+	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
+	UExceptionDialog_RsAppError,	L"%s - application error"
+	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
+	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
+	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
@@ -1351,11 +1366,6 @@ BEGIN
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
-	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
-	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
-	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
-	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
-	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	Main_TMainForm_Invalid_zone,	L"Invalid zone"
 	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
 	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
@@ -1368,10 +1378,10 @@ BEGIN
 	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
 	Main_TMainForm_ComfirmUploadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
 	Main_TMainForm_ComfirmDownloadOpList,	L"Upload the operator list to Z-Server. Are you sure?"
-	UExceptionDialog_RsAppError,	L"%s - application error"
-	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
-	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
-	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
+	Main_TMainForm_DownloadFile,	L"Downloading..."
+	Main_TMainForm_UploadFile,	L"Uploading..."
+	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
+	Main_TMainForm_Compressing,	L"Compressing..."
 	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
 	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
 	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
@@ -2769,6 +2779,7 @@ END
 /* D:\github\zLog_v2900\zlog\UCwMessagePad.dfm */
 /* D:\github\zLog_v2900\zlog\UNRDialog.dfm */
 /* D:\github\zLog_v2900\zlog\UFunctionKeyPanel.dfm */
+/* D:\github\zLog_v2900\zlog\Progress.dfm */
 /* D:\github\zLog_v2900\zlog\UQsyInfo.dfm */
 /* D:\JEDI\jvcl\resources\JvLED.res */
 /* D:\github\zLog_v2900\zlog\USo2rNeoCp.dfm */
@@ -2790,7 +2801,6 @@ END
 /* D:\github\zLog_v2900\zlog\UGraphColorDialog.dfm */
 /* D:\github\zLog_v2900\zlog\UAgeDialog.DFM */
 /* D:\github\zLog_v2900\zlog\UUTCDialog.DFM */
-/* D:\github\zLog_v2900\zlog\Progress.dfm */
 /* D:\github\zLog_v2900\zlog\UTargetEditor.dfm */
 /* D:\github\zLog_v2900\zlog\UExportHamlog.dfm */
 /* D:\github\zLog_v2900\zlog\UExportCabrillo.dfm */

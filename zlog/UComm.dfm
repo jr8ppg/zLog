@@ -157,8 +157,6 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 348
-      ExplicitHeight = 58
     end
     object Console: TListBox
       Left = 1
@@ -174,8 +172,6 @@ object CommForm: TCommForm
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 63
-      ExplicitWidth = 348
     end
   end
   object StatusLine: TStatusBar

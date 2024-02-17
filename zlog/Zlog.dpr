@@ -148,8 +148,8 @@ uses
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
   UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
   UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
-  UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo},
-  UOptions in 'UOptions.pas' {formOptions};
+  UOptions in 'UOptions.pas' {formOptions},
+  UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo};
 
 {$R *.res}
 

@@ -4027,6 +4027,11 @@ begin
       Exit;
    end;
 
+   if Length(strCallsign) < 3 then begin
+      Result := False;
+      Exit;
+   end;
+
    S1 := strCallsign[1];
    S2 := strCallsign[2];
    S3 := strCallsign[3];

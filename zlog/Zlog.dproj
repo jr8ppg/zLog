@@ -521,12 +521,12 @@
             <Form>formPortConfig</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="UJarlMemberInfo.pas">
-            <Form>formJarlMemberInfo</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="UOptions.pas">
             <Form>formOptions</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UJarlMemberInfo.pas">
+            <Form>formJarlMemberInfo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
@@ -717,7 +717,7 @@
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win32\Release\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item2">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">UBasicScore.dfm</RDP_Source_Files>
@@ -831,9 +831,9 @@
                     <RDP_Source_Files Name="Item112">UCWMonitor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item113">UELogCabrillo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item114">UPortConfigDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item115">UJarlMemberInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item116">UOptions.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item117">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item115">UOptions.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item116">UJarlMemberInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item117">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
@@ -844,76 +844,292 @@
                 <DeployFile LocalName="Win32\Debug\zlog.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="Win32\Release\zlog.exe" Configuration="Release" Class="ProjectOutput"/>
                 <DeployFile LocalName="Win64\Debug\zlog.exe" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName="Win64\Debug\zlog.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>Zlog.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win64\Release\zlog.exe" Configuration="Release" Class="ProjectOutput"/>
                 <DeployFile LocalName="resource\ACAG.DAT" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\ACAG.DAT" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\ACAG.DAT" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\ARDX.DAT" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\ARDX.DAT" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\ARDX.DAT" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\ARRL10.DAT" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\ARRL10.DAT" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\ARRL10.DAT" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\IOTA.DAT" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\IOTA.DAT" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\IOTA.DAT" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\XPO.DAT" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\XPO.DAT" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\XPO.DAT" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b0.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\b0.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\b0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b1.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\b1.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\b1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b2.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\b2.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\b2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b3.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\b3.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\b3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\b4.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\b4.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\b4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb0.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\bb0.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\bb0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb1.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\bb1.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\bb1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb2.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\bb2.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\bb2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb3.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\bb3.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\bb3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\bb4.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\bb4.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\bb4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e0.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\e0.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\e0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e1.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\e1.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\e1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e2.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\e2.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\e2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e3.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\e3.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\e3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\e4.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\e4.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\e4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n0.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\n0.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\n0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n1.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\n1.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\n1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n2.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\n2.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\n2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n3.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\n3.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\n3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\n4.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\n4.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\n4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r0.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\r0.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\r0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r1.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\r1.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\r1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r2.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\r2.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\r2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r3.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\r3.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\r3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\r4.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\r4.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\r4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t0.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\t0.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\t0.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t1.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\t1.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\t1.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t2.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\t2.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\t2.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t3.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\t3.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\t3.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployFile LocalName="resource\t4.bmp" Configuration="Debug" Class="ProjectFile"/>
+                <DeployFile LocalName="resource\t4.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="resource\t4.bmp" Configuration="Release" Class="ProjectFile"/>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">

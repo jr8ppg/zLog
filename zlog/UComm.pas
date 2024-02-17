@@ -468,11 +468,12 @@ begin
                FSpotList.Delete(i);
                ListBox.Items.Delete(i);
                _deleted := True;
-            end;
-
-            if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
-               dupe := True;
-               break;
+            end
+            else begin
+               if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
+                  dupe := True;
+                  break;
+               end;
             end;
          end;
          ListBox.Items.EndUpdate();
@@ -531,6 +532,14 @@ begin
 
          // SpotƒŠƒXƒg‚Ö’Ç‰Á
          FSpotList.Add(Sp);
+
+         // SpotterƒŠƒXƒg‚É“o˜^
+         if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
+            FSpotterList.Add(Sp.ReportedBy);
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
+            {$ENDIF}
+         end;
       finally
          Unlock();
       end;
@@ -623,14 +632,6 @@ begin
          if checkRelaySpot.Checked then begin
             MainForm.ZLinkForm.RelaySpot(strTemp);
          end;
-
-         // SpotterƒŠƒXƒg‚É“o˜^
-         if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
-            FSpotterList.Add(Sp.ReportedBy);
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
-            {$ENDIF}
-         end;
       end
       else begin
         Sp.Free;
@@ -640,12 +641,12 @@ nextnext:
       CommBufferLock.Enter();
       FCommBuffer.Delete(0);
       CommBufferLock.Leave();
-   end;
 
-   {$IFDEF DEBUG}
-   var S := Format('MSpots=%d DSpots=%d CSpots=%d', [FSpotList.Count, ListBox.Items.Count, Console.Items.Count]);
-   WriteStatusLine(S);
-   {$ENDIF}
+      {$IFDEF DEBUG}
+      var S := Format('MSpots=%d DSpots=%d CSpots=%d', [FSpotList.Count, ListBox.Items.Count, Console.Items.Count]);
+      WriteStatusLine(S);
+      {$ENDIF}
+   end;
 end;
 
 procedure TCommForm.TimerProcess;

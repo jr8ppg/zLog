@@ -28,7 +28,7 @@ uses
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
-  UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel,
+  UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan, UCWMonitor,
   JvExControls, JvLED;
@@ -905,6 +905,7 @@ type
     FWinKeyerTester: TformWinKeyerTester;
     FFreqTest: TformFreqTest;
     FCWMonitor: TformCWMonitor;
+    FProgress: TformProgress;
 
     FInitialized: Boolean;
 
@@ -1294,6 +1295,11 @@ resourcestring
   TMainForm_ZserverNotConfigured = 'Z-Server settings are not configured.';
   TMainForm_ComfirmUploadOpList = 'Would you like to download the operator list?' + #13#10 + 'Overwrite the existing operator list.';
   TMainForm_ComfirmDownloadOpList = 'Upload the operator list to Z-Server. Are you sure?';
+  TMainForm_DownloadFile = 'Downloading...';
+  TMainForm_UploadFile = 'Uploading...';
+  TMainForm_SoundFileFolderNotSet = 'Sound file folder not set.';
+  TMainForm_Compressing = 'Compressing...';
+  TMainForm_FailedToCompressSoundFiles = 'Failed to compress sound files.';
 var
   MainForm: TMainForm;
   CurrentQSO: TQSO;
@@ -1315,7 +1321,7 @@ uses
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore, UJarlMemberInfo,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
-  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, Progress, UzLogExtension,
+  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog;
 
 {$R *.DFM}
@@ -2203,6 +2209,7 @@ begin
    FWinKeyerTester := TformWinKeyerTester.Create(Self);
    FFreqTest      := TformFreqTest.Create(Self);
    FCWMonitor     := TformCWMonitor.Create(Self);
+   FProgress      := TformProgress.Create(Self);
 
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
@@ -4561,6 +4568,7 @@ begin
    FWinKeyerTester.Release();
    FFreqTest.Release();
    FCWMonitor.Release();
+   FProgress.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -5946,6 +5954,11 @@ begin
       Exit;
    end;
 
+   FProgress.Title := TMainForm_DownloadFile;
+   FProgress.Text := ZLOG_OPLIST_INI;
+   FProgress.Show();
+   Enabled := False;
+
    // ファイルダウンロード
    FZLinkForm.GetFile(ZLOG_OPLIST_INI, ExtractFilePath(Application.ExeName));
 end;
@@ -5953,9 +5966,14 @@ end;
 procedure TMainForm.menuDownloadSoundsClick(Sender: TObject);
 begin
    if dmZLogGlobal.SoundPath = '' then begin
-      MessageBox(Handle, PChar('サウンドファイルフォルダが設定されていません'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      MessageBox(Handle, PChar(TMainForm_SoundFileFolderNotSet), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       Exit;
    end;
+
+   FProgress.Title := TMainForm_DownloadFile;
+   FProgress.Text := ZLOG_SOUND_FILES;
+   FProgress.Show();
+   Enabled := False;
 
    // ファイルダウンロード
    FZLinkForm.GetFile(ZLOG_SOUND_FILES, ExtractFilePath(Application.ExeName));
@@ -5967,21 +5985,36 @@ begin
       Exit;
    end;
 
+   FProgress.Title := TMainForm_UploadFile;
+   FProgress.Text := ZLOG_OPLIST_INI;
+   FProgress.Show();
+   Enabled := False;
+
    FZLinkForm.PutFile(ExtractFilePath(Application.ExeName) + ZLOG_OPLIST_INI);
 end;
 
 procedure TMainForm.menuUploadSoundsClick(Sender: TObject);
 begin
    if dmZLogGlobal.SoundPath = '' then begin
-      MessageBox(Handle, PChar('サウンドファイルフォルダが設定されていません'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      MessageBox(Handle, PChar(TMainForm_SoundFileFolderNotSet), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       Exit;
    end;
 
+   FProgress.Title := TMainForm_Compressing;
+   FProgress.Text := dmZLogGlobal.SoundPath;
+   FProgress.Show();
+   Enabled := False;
+
    // ZIPファイル作成
    if CompressSoundFiles() = False then begin
-      MessageBox(Handle, PChar('サウンドファイルの圧縮に失敗しました'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      MessageBox(Handle, PChar(TMainForm_FailedToCompressSoundFiles), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      FProgress.Hide();
+      Enabled := True;
       Exit;
    end;
+
+   FProgress.Title := TMainForm_UploadFile;
+   FProgress.Text := ZLOG_SOUND_FILES;
 
    // ZIPファイルアップロード
    FZLinkForm.PutFile(dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES);
@@ -7577,6 +7610,10 @@ var
 begin
    strMessage := StrPas(PChar(Message.WParam));
    uType := Message.LParam;
+
+   FProgress.Hide();
+   Enabled := True;
+
    MessageBox(Handle, PChar(strMessage), PChar(Application.Title), uType);
 end;
 
@@ -7596,8 +7633,12 @@ begin
 
    // SOUNDS.ZIP展開
    if strFileName = ZLOG_SOUND_FILES then begin
+      FProgress.Title := 'ファイルを展開しています・・・';
       ExtractSoundFiles();
    end;
+
+   FProgress.Hide();
+   Enabled := True;
 
    MessageBox(Handle, PChar(strMessage), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
 end;
@@ -12905,6 +12946,8 @@ begin
       zip.Open(zipfilename, zmRead);
 
       for i := 0 to zip.FileCount - 1 do begin
+         Application.ProcessMessages();
+
          filename := zip.FileNames[i];
          path := dmZLogGlobal.SoundPath + filename;
 
@@ -12979,6 +13022,8 @@ begin
       dir('', '*.*', filelist);
 
       for i := 0 to filelist.Count - 1 do begin
+         Application.ProcessMessages();
+
          zip.Add(filelist[i]);
       end;
 
@@ -12993,6 +13038,7 @@ begin
    end;
    finally
       zip.Free();
+      filelist.Free();
    end;
 end;
 
