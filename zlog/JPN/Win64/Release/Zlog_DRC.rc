@@ -8,28 +8,29 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsExceptionThreadID 64192
-#define UExceptionDialog_RsMainThreadCallStack 64193
-#define UExceptionDialog_RsThreadCallStack 64194
-#define UExceptionDialog_RsErrorMessage 64195
-#define UExceptionDialog_RsDetailsIntro 64196
-#define UExceptionDialog_RsUnitVersioningIntro 64197
+#define UExceptionDialog_RsMainThreadID 64192
+#define UExceptionDialog_RsExceptionThreadID 64193
+#define UExceptionDialog_RsMainThreadCallStack 64194
+#define UExceptionDialog_RsThreadCallStack 64195
+#define UExceptionDialog_RsErrorMessage 64196
+#define UExceptionDialog_RsDetailsIntro 64197
+#define UExceptionDialog_RsUnitVersioningIntro 64198
 #define Main_TMainForm_FailedToCompressSoundFiles 64208
-#define UExceptionDialog_RsAppError 64209
-#define UExceptionDialog_RsExceptionClass 64210
-#define UExceptionDialog_RsExceptionMessage 64211
-#define UExceptionDialog_RsExceptionAddr 64212
-#define UExceptionDialog_RsStackList 64213
-#define UExceptionDialog_RsModulesList 64214
-#define UExceptionDialog_RsOSVersion 64215
-#define UExceptionDialog_RsProcessor 64216
-#define UExceptionDialog_RsMemory 64217
-#define UExceptionDialog_RsScreenRes 64218
-#define UExceptionDialog_RsActiveControl 64219
-#define UExceptionDialog_RsThread 64220
-#define UExceptionDialog_RsMissingVersionInfo 64221
-#define UExceptionDialog_RsExceptionStack 64222
-#define UExceptionDialog_RsMainThreadID 64223
+#define Main_TMainForm_FileNotFound 64209
+#define UExceptionDialog_RsAppError 64210
+#define UExceptionDialog_RsExceptionClass 64211
+#define UExceptionDialog_RsExceptionMessage 64212
+#define UExceptionDialog_RsExceptionAddr 64213
+#define UExceptionDialog_RsStackList 64214
+#define UExceptionDialog_RsModulesList 64215
+#define UExceptionDialog_RsOSVersion 64216
+#define UExceptionDialog_RsProcessor 64217
+#define UExceptionDialog_RsMemory 64218
+#define UExceptionDialog_RsScreenRes 64219
+#define UExceptionDialog_RsActiveControl 64220
+#define UExceptionDialog_RsThread 64221
+#define UExceptionDialog_RsMissingVersionInfo 64222
+#define UExceptionDialog_RsExceptionStack 64223
 #define Main_TMainForm_Invalid_zone 64224
 #define Main_TMainForm_JudgePeriod 64225
 #define Main_TMainForm_EmptyOpList 64226
@@ -1344,6 +1345,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
@@ -1351,6 +1353,7 @@ BEGIN
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_FailedToCompressSoundFiles,	L"\x30B5\x30A6\x30F3\x30C9\x30D5\x30A1\x30A4\x30EB\x306E\x5727\x7E2E\x306B\x5931\x6557\x3057\x307E\x3057\x305F"
+	Main_TMainForm_FileNotFound,	L"file not found."
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1365,7 +1368,6 @@ BEGIN
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
-	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	Main_TMainForm_Invalid_zone,	L"\x7121\x52B9\x306AZone\x3067\x3059"
 	Main_TMainForm_JudgePeriod,	L"\x5168\x3066\x306EQSO\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x671F\x9593\x5185\x3067\x3042\x308B\x304B\x5224\x5B9A\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_EmptyOpList,	L"\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"

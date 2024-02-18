@@ -1143,7 +1143,7 @@ type
     procedure JarlMemberCheck();
     procedure ExportHamlog(f: string);
     procedure SetRigWpm(wpm: Integer);
-    procedure ExtractSoundFiles();
+    procedure ExtractSoundFiles(zipfilename: string);
     function CompressSoundFiles(): Boolean;
   public
     EditScreen : TBasicEdit;
@@ -1300,6 +1300,7 @@ resourcestring
   TMainForm_SoundFileFolderNotSet = 'Sound file folder not set.';
   TMainForm_Compressing = 'Compressing...';
   TMainForm_FailedToCompressSoundFiles = 'Failed to compress sound files.';
+  TMainForm_FileNotFound = 'file not found.';
 var
   MainForm: TMainForm;
   CurrentQSO: TQSO;
@@ -5976,7 +5977,7 @@ begin
    Enabled := False;
 
    // ファイルダウンロード
-   FZLinkForm.GetFile(ZLOG_SOUND_FILES, ExtractFilePath(Application.ExeName));
+   FZLinkForm.GetFile(ZLOG_SOUND_FILES, dmZLogGlobal.SoundPath);
 end;
 
 procedure TMainForm.menuUploadOplistClick(Sender: TObject);
@@ -7621,26 +7622,44 @@ procedure TMainForm.OnZLogFileDownloadComplete( var Message: TMessage );
 var
    strMessage: string;
    strFileName: string;
+   zipfilename: string;
 begin
-   strMessage := StrPas(PChar(Message.WParam));
-   strFileName := StrPas(PChar(Message.LParam));
+   try
+      strMessage := StrPas(PChar(Message.WParam));
+      strFileName := StrPas(PChar(Message.LParam));
 
-   // OPLIST再ロード
-   if strFileName = ZLOG_OPLIST_INI then begin
-      dmZLogGlobal.OpList.LoadFromIniFile();
-      BuildOpListMenu2(OpMenu.Items, OpMenuClick);
+      // OPLIST再ロード
+      if strFileName = ZLOG_OPLIST_INI then begin
+         dmZLogGlobal.OpList.LoadFromIniFile();
+         BuildOpListMenu2(OpMenu.Items, OpMenuClick);
+      end;
+
+      // SOUNDS.ZIP展開
+      if strFileName = ZLOG_SOUND_FILES then begin
+         zipfilename := dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES;
+
+         if FileExists(zipfilename) = False then begin
+            MessageBox(Handle, PChar(ZLOG_SOUND_FILES + ' ' + TMainForm_FileNotFound), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+            FProgress.Hide();
+            Enabled := True;
+            Exit;
+         end;
+
+         FProgress.Title := 'ファイルを展開しています・・・';
+         ExtractSoundFiles(zipfilename);
+      end;
+
+      FProgress.Hide();
+      Enabled := True;
+
+      MessageBox(Handle, PChar(strMessage), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
+   except
+      on E: Exception do begin
+         FProgress.Hide();
+         Enabled := True;
+         MessageBox(Handle, PChar(E.Message), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
+      end;
    end;
-
-   // SOUNDS.ZIP展開
-   if strFileName = ZLOG_SOUND_FILES then begin
-      FProgress.Title := 'ファイルを展開しています・・・';
-      ExtractSoundFiles();
-   end;
-
-   FProgress.Hide();
-   Enabled := True;
-
-   MessageBox(Handle, PChar(strMessage), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
 end;
 
 procedure TMainForm.OnZLogResetTx( var Message: TMessage );
@@ -12930,10 +12949,9 @@ begin
    end;
 end;
 
-procedure TMainForm.ExtractSoundFiles();
+procedure TMainForm.ExtractSoundFiles(zipfilename: string);
 var
    zip: TZipFile;
-   zipfilename: string;
    filename: string;
    path: string;
    i: Integer;
@@ -12941,8 +12959,6 @@ var
 begin
    zip := TZipFile.Create();
    try
-      zipfilename := dmZLogGlobal.SoundPath + ZLOG_SOUND_FILES;
-
       zip.Open(zipfilename, zmRead);
 
       for i := 0 to zip.FileCount - 1 do begin

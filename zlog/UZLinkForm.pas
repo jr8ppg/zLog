@@ -1009,7 +1009,6 @@ end;
 procedure TZLinkForm.GetFile(filename: string; download_folder: string);
 var
    str: string;
-   bakfile: string;
 begin
    if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
       if DirectoryExists(download_folder) = False then begin
