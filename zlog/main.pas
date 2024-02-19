@@ -1293,14 +1293,17 @@ resourcestring
   TMainForm_Inquire_JARL_Member_Info = 'Querying QSL transfer status.';
   TMainForm_UserDat_not_loaded = ' not loaded';
   TMainForm_ZserverNotConfigured = 'Z-Server settings are not configured.';
-  TMainForm_ComfirmUploadOpList = 'Would you like to download the operator list?' + #13#10 + 'Overwrite the existing operator list.';
-  TMainForm_ComfirmDownloadOpList = 'Upload the operator list to Z-Server. Are you sure?';
+  TMainForm_ComfirmUploadOpList = 'Upload the operator list to Z-Server. Are you sure?';
+  TMainForm_ComfirmDownloadOpList = 'Would you like to download the operator list?' + #13#10 + 'Overwrite the existing operator list.';
   TMainForm_DownloadFile = 'Downloading...';
   TMainForm_UploadFile = 'Uploading...';
   TMainForm_SoundFileFolderNotSet = 'Sound file folder not set.';
   TMainForm_Compressing = 'Compressing...';
   TMainForm_FailedToCompressSoundFiles = 'Failed to compress sound files.';
   TMainForm_FileNotFound = 'file not found.';
+  TMainForm_ComfirmUploadSound = 'Upload the sound file to Z-Server. Are you sure?';
+  TMainForm_ComfirmDownloadSound = 'Would you like to download the sound file?' + #13#10 + 'Overwrite the existing sound file.';
+
 var
   MainForm: TMainForm;
   CurrentQSO: TQSO;
@@ -5951,7 +5954,7 @@ end;
 
 procedure TMainForm.menuDownloadOplistClick(Sender: TObject);
 begin
-   if MessageBox(Handle, PChar(TMainForm_ComfirmUploadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+   if MessageBox(Handle, PChar(TMainForm_ComfirmDownloadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
       Exit;
    end;
 
@@ -5971,6 +5974,10 @@ begin
       Exit;
    end;
 
+   if MessageBox(Handle, PChar(TMainForm_ComfirmDownloadSound), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+      Exit;
+   end;
+
    FProgress.Title := TMainForm_DownloadFile;
    FProgress.Text := ZLOG_SOUND_FILES;
    FProgress.Show();
@@ -5982,7 +5989,7 @@ end;
 
 procedure TMainForm.menuUploadOplistClick(Sender: TObject);
 begin
-   if MessageBox(Handle, PChar(TMainForm_ComfirmDownloadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
+   if MessageBox(Handle, PChar(TMainForm_ComfirmUploadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
       Exit;
    end;
 
@@ -5998,6 +6005,10 @@ procedure TMainForm.menuUploadSoundsClick(Sender: TObject);
 begin
    if dmZLogGlobal.SoundPath = '' then begin
       MessageBox(Handle, PChar(TMainForm_SoundFileFolderNotSet), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   if MessageBox(Handle, PChar(TMainForm_ComfirmUploadSound), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
       Exit;
    end;
 

@@ -5785,7 +5785,6 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
-        ExplicitLeft = 420
       end
     end
   end
@@ -6077,7 +6076,7 @@ object MainForm: TMainForm
         OnClick = menuDownloadOplistClick
       end
       object menuDownloadSounds: TMenuItem
-        Caption = 'Z-Server'#12424#12426#12469#12454#12531#12489#12501#12449#12452#12523#12434#12480#12454#12531#12525#12540#12489
+        Caption = 'Z-Server'#12424#12426#38899#22768#12501#12449#12452#12523#12434#12480#12454#12531#12525#12540#12489
         Enabled = False
         OnClick = menuDownloadSoundsClick
       end
@@ -6090,7 +6089,7 @@ object MainForm: TMainForm
         OnClick = menuUploadOplistClick
       end
       object menuUploadSounds: TMenuItem
-        Caption = 'Z-Server'#12408#12469#12454#12531#12489#12501#12449#12452#12523#12434#12450#12483#12503#12525#12540#12489
+        Caption = 'Z-Server'#12408#38899#22768#12501#12449#12452#12523#12434#12450#12483#12503#12525#12540#12489
         Enabled = False
         OnClick = menuUploadSoundsClick
       end

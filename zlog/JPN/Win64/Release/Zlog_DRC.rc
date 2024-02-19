@@ -8,29 +8,31 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadID 64192
-#define UExceptionDialog_RsExceptionThreadID 64193
-#define UExceptionDialog_RsMainThreadCallStack 64194
-#define UExceptionDialog_RsThreadCallStack 64195
-#define UExceptionDialog_RsErrorMessage 64196
-#define UExceptionDialog_RsDetailsIntro 64197
-#define UExceptionDialog_RsUnitVersioningIntro 64198
+#define UExceptionDialog_RsMissingVersionInfo 64192
+#define UExceptionDialog_RsExceptionStack 64193
+#define UExceptionDialog_RsMainThreadID 64194
+#define UExceptionDialog_RsExceptionThreadID 64195
+#define UExceptionDialog_RsMainThreadCallStack 64196
+#define UExceptionDialog_RsThreadCallStack 64197
+#define UExceptionDialog_RsErrorMessage 64198
+#define UExceptionDialog_RsDetailsIntro 64199
+#define UExceptionDialog_RsUnitVersioningIntro 64200
 #define Main_TMainForm_FailedToCompressSoundFiles 64208
 #define Main_TMainForm_FileNotFound 64209
-#define UExceptionDialog_RsAppError 64210
-#define UExceptionDialog_RsExceptionClass 64211
-#define UExceptionDialog_RsExceptionMessage 64212
-#define UExceptionDialog_RsExceptionAddr 64213
-#define UExceptionDialog_RsStackList 64214
-#define UExceptionDialog_RsModulesList 64215
-#define UExceptionDialog_RsOSVersion 64216
-#define UExceptionDialog_RsProcessor 64217
-#define UExceptionDialog_RsMemory 64218
-#define UExceptionDialog_RsScreenRes 64219
-#define UExceptionDialog_RsActiveControl 64220
-#define UExceptionDialog_RsThread 64221
-#define UExceptionDialog_RsMissingVersionInfo 64222
-#define UExceptionDialog_RsExceptionStack 64223
+#define Main_TMainForm_ComfirmUploadSound 64210
+#define Main_TMainForm_ComfirmDownloadSound 64211
+#define UExceptionDialog_RsAppError 64212
+#define UExceptionDialog_RsExceptionClass 64213
+#define UExceptionDialog_RsExceptionMessage 64214
+#define UExceptionDialog_RsExceptionAddr 64215
+#define UExceptionDialog_RsStackList 64216
+#define UExceptionDialog_RsModulesList 64217
+#define UExceptionDialog_RsOSVersion 64218
+#define UExceptionDialog_RsProcessor 64219
+#define UExceptionDialog_RsMemory 64220
+#define UExceptionDialog_RsScreenRes 64221
+#define UExceptionDialog_RsActiveControl 64222
+#define UExceptionDialog_RsThread 64223
 #define Main_TMainForm_Invalid_zone 64224
 #define Main_TMainForm_JudgePeriod 64225
 #define Main_TMainForm_EmptyOpList 64226
@@ -1345,6 +1347,8 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
@@ -1353,7 +1357,9 @@ BEGIN
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_FailedToCompressSoundFiles,	L"\x30B5\x30A6\x30F3\x30C9\x30D5\x30A1\x30A4\x30EB\x306E\x5727\x7E2E\x306B\x5931\x6557\x3057\x307E\x3057\x305F"
-	Main_TMainForm_FileNotFound,	L"file not found."
+	Main_TMainForm_FileNotFound,	L"\x30D5\x30A1\x30A4\x30EB\x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093"
+	Main_TMainForm_ComfirmUploadSound,	L"Z-Server\x306B\x97F3\x58F0\x30D5\x30A1\x30A4\x30EB\x3092\x30A2\x30C3\x30D7\x30ED\x30FC\x30C9\x3057\x307E\x3059.\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_ComfirmDownloadSound,	L"Z-Server\x3088\x308A\x97F3\x58F0\x30D5\x30A1\x30A4\x30EB\x3092\x30C0\x30A6\x30F3\x30ED\x30FC\x30C9\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F\r\n\x65E2\x5B58\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x4E0A\x66F8\x304D\x3057\x307E\x3059."
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1366,8 +1372,6 @@ BEGIN
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
-	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	Main_TMainForm_Invalid_zone,	L"\x7121\x52B9\x306AZone\x3067\x3059"
 	Main_TMainForm_JudgePeriod,	L"\x5168\x3066\x306EQSO\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x671F\x9593\x5185\x3067\x3042\x308B\x304B\x5224\x5B9A\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_EmptyOpList,	L"\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
@@ -1378,8 +1382,8 @@ BEGIN
 	Main_TMainForm_Inquire_JARL_Member_Info,	L"QSL\x306E\x8EE2\x9001\x53EF\x5426\x3092\x7167\x4F1A\x4E2D\x3067\x3059"
 	Main_TMainForm_UserDat_not_loaded,	L" \x304C\x30ED\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093"
 	Main_TMainForm_ZserverNotConfigured,	L"Z-Server\x306E\x8A2D\x5B9A\x304C\x884C\x308F\x308C\x3066\x3044\x307E\x305B\x3093"
-	Main_TMainForm_ComfirmUploadOpList,	L"Z-Server\x3088\x308A\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x30EA\x30B9\x30C8\x3092\x30C0\x30A6\x30F3\x30ED\x30FC\x30C9\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F\r\n\x65E2\x5B58\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x4E0A\x66F8\x304D\x3057\x307E\x3059."
-	Main_TMainForm_ComfirmDownloadOpList,	L"Z-Server\x306B\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x30EA\x30B9\x30C8\x3092\x30A2\x30C3\x30D7\x30ED\x30FC\x30C9\x3057\x307E\x3059. \x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_ComfirmUploadOpList,	L"Z-Server\x306B\x30AA\x30DA\x30EC\x30FC\x30BF\x30EA\x30B9\x30C8\x3092\x30A2\x30C3\x30D7\x30ED\x30FC\x30C9\x3057\x307E\x3059.\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
+	Main_TMainForm_ComfirmDownloadOpList,	L"Z-Server\x3088\x308A\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x30EA\x30B9\x30C8\x3092\x30C0\x30A6\x30F3\x30ED\x30FC\x30C9\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F\r\n\x65E2\x5B58\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x4E0A\x66F8\x304D\x3057\x307E\x3059."
 	Main_TMainForm_DownloadFile,	L"\x30D5\x30A1\x30A4\x30EB\x3092\x30C0\x30A6\x30F3\x30ED\x30FC\x30C9\x4E2D\x30FB\x30FB\x30FB"
 	Main_TMainForm_UploadFile,	L"\x30D5\x30A1\x30A4\x30EB\x3092\x30A2\x30C3\x30D7\x30ED\x30FC\x30C9\x4E2D\x30FB\x30FB\x30FB"
 	Main_TMainForm_SoundFileFolderNotSet,	L"\x30B5\x30A6\x30F3\x30C9\x30D5\x30A1\x30A4\x30EB\x30D5\x30A9\x30EB\x30C0\x304C\x8A2D\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
