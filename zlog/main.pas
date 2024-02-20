@@ -1932,7 +1932,7 @@ begin
    Grid.BeginUpdate();
    try
       L := GetQsoList();
-      Grid.Tag := Integer(L);
+      Grid.Tag := NativeInt(L);
 
       if Grid.VisibleRowCount > L.Count then begin
          Grid.RowCount := Grid.VisibleRowCount + 1;   // +1‚ÍFixedRow‚Ì•ª
@@ -12158,8 +12158,16 @@ begin
 end;
 
 procedure TMainForm.OnUpKeyProc(Sender: TObject);
+var
+   L: TQSOList;
 begin
-   Grid.Row := TQSOList(Grid.Tag).Count - 1;
+   L := TQSOList(Grid.Tag);
+   if L.Count = 1 then begin
+      Grid.Row := 1;
+   end
+   else begin
+      Grid.Row := L.Count - 1;
+   end;
    LastFocus := TEdit(Sender);
    Grid.SetFocus;
 end;
