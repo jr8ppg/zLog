@@ -11036,7 +11036,9 @@ begin
       if FPrev2bsiqMode = True then begin
          F2bsiqStart := True;
          actionToggleRx.Execute();
-//         timerCqRepeatTimer(nil);
+
+         InvertTx();
+
          timerCqRepeat.Enabled := True;
       end;
       FCQRepeatPlaying := False;
