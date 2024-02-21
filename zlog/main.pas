@@ -58,6 +58,7 @@ const
   WM_ZLOG_TOGGLE_PTT = (WM_USER + 121);
   WM_ZLOG_SHOWMESSAGE = (WM_USER + 122);
   WM_ZLOG_FILEDOWNLOAD_COMPLETE = (WM_USER + 123);
+  WM_ZLOG_SETFOCUS = (WM_USER + 124);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -695,6 +696,7 @@ type
     procedure OnZLogTogglePtt( var Message: TMessage ); message WM_ZLOG_TOGGLE_PTT;
     procedure OnZLogShowMessage( var Message: TMessage ); message WM_ZLOG_SHOWMESSAGE;
     procedure OnZLogFileDownloadComplete( var Message: TMessage ); message WM_ZLOG_FILEDOWNLOAD_COMPLETE;
+    procedure OnZLogSetFocus( var Message: TMessage ); message WM_ZLOG_SETFOCUS;
     procedure OnZLogResetTx( var Message: TMessage ); message WM_ZLOG_RESET_TX;
     procedure OnZLogInvertTx( var Message: TMessage ); message WM_ZLOG_INVERT_TX;
     procedure OnZLogSwitchRx( var Message: TMessage ); message WM_ZLOG_SWITCH_RX;
@@ -4441,7 +4443,7 @@ begin
          TimeEdit.SetFocus;
       end
       else begin
-         CallsignEdit.SetFocus;
+         PostMessage(Handle, WM_ZLOG_SETFOCUS, 0, 0);
       end;
    end;
 
@@ -7670,6 +7672,16 @@ begin
          Enabled := True;
          MessageBox(Handle, PChar(E.Message), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
       end;
+   end;
+end;
+
+procedure TMainForm.OnZLogSetFocus( var Message: TMessage );
+begin
+   if Message.WParam = 0 then begin
+      CallsignEdit.SetFocus();
+   end
+   else begin
+      NumberEdit.SetFocus();
    end;
 end;
 

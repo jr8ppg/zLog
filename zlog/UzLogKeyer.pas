@@ -1654,6 +1654,13 @@ begin
             Inc(cwstrptr);
             nCommand := nCommand + FCWSendBuf[FSelectedBuf, cwstrptr];
 
+            if Assigned(FOnOneCharSentProc) then begin
+               FOnOneCharSentProc(Self);
+               FOnOneCharSentProc(Self);
+               FOnOneCharSentProc(Self);
+               FOnOneCharSentProc(Self);
+            end;
+
             if Assigned(FOnCommand) then begin
                FOnCommand(Self, nCommand);
             end;
