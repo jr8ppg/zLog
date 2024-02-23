@@ -78,6 +78,8 @@ object ZLinkForm: TZLinkForm
     ItemHeight = 12
     ParentFont = False
     TabOrder = 0
+    ExplicitWidth = 330
+    ExplicitHeight = 131
   end
   object Timer1: TTimer
     Enabled = False

@@ -5607,6 +5607,8 @@ begin
       ShowCurrentQSO();
 
       SetWindowCaption();
+
+      ZLinkForm.SendPcName();
    finally
       f.Release();
 

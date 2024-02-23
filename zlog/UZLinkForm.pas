@@ -69,6 +69,7 @@ type
     procedure WriteData(str : string);
     procedure SendBand; {Sends current band (to Z-Server) #ZLOG# BAND 3 etc}
     procedure SendOperator;
+    procedure SendPcName();
     procedure SendQSO(aQSO : TQSO);
     procedure RelaySpot(S : string); //called from CommForm to relay spot info
     procedure SendSpotViaNetwork(S : string);
@@ -597,6 +598,16 @@ begin
    end;
 end;
 
+procedure TZLinkForm.SendPcName();
+var
+   str: string;
+begin
+   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+      str := ZLinkHeader + ' PCNAME ' + dmZlogGlobal.Settings._pcname;
+      WriteData(str);
+   end;
+end;
+
 procedure TZLinkForm.SendFreqInfo(Hz: TFrequency);
 var
    str: string;
@@ -1000,6 +1011,7 @@ begin
    AddConsole('connected to ' + ZSocket.Addr);
    SendBand; { tell Z-Server current band }
    SendOperator;
+   SendPcName();
    MainForm.ZServerInquiry.ShowModal;
    MainForm.ZServerIcon.Visible := true;
    MainForm.EnableNetworkMenus;
