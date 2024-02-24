@@ -50,6 +50,7 @@ type
     FMergeTempList: TDictionary<Integer, TQSOID>;
 
     FDownloadFileName: string;
+    FFileData: TStringList;
 
     procedure EnableConnectButton(boo : boolean);
     procedure CommProcess;
@@ -58,8 +59,8 @@ type
     procedure EndQsoIDsProc();
     procedure SendMergeTempList; // request to send the qsos in the MergeTempList
     procedure SendQSO_PUTLOG(aQSO : TQSO);
-    procedure Process_GetFile();
     procedure Process_PutFileOk();
+    procedure Process_PutFile(S: string);
     procedure AddConsole(str: string);
   public
     { Public declarations }
@@ -68,6 +69,7 @@ type
     procedure WriteData(str : string);
     procedure SendBand; {Sends current band (to Z-Server) #ZLOG# BAND 3 etc}
     procedure SendOperator;
+    procedure SendPcName();
     procedure SendQSO(aQSO : TQSO);
     procedure RelaySpot(S : string); //called from CommForm to relay spot info
     procedure SendSpotViaNetwork(S : string);
@@ -508,13 +510,16 @@ begin
          WriteData(ZLinkHeader + ' ' + 'RENEW');
       end;
 
-      if pos('GETFILE', temp) = 1 then begin
-         Process_GetFile();
-         Continue;
-      end;
-
       if pos('PUTFILE-OK', temp) = 1 then begin
          Process_PutFileOk();
+      end
+      else if Pos('PUTFILE', temp) = 1 then begin
+         Process_PutFile(temp);
+      end;
+
+      if Pos('FILEDATA', temp) = 1 then begin
+         Delete(temp, 1, 9);
+         FFileData.Add(temp);
       end;
 
       FCommandQue.Delete(0);
@@ -589,6 +594,16 @@ var
 begin
    if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' OPERATOR ' + Main.CurrentQSO.Operator;
+      WriteData(str);
+   end;
+end;
+
+procedure TZLinkForm.SendPcName();
+var
+   str: string;
+begin
+   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+      str := ZLinkHeader + ' PCNAME ' + dmZlogGlobal.Settings._pcname;
       WriteData(str);
    end;
 end;
@@ -823,10 +838,12 @@ begin
       // no rs232c allowed!
    end;
 
-   CommStarted := false;
-   FCommBuffer := TStringList.Create;
-   FCommandQue := TStringList.Create;
-   Timer1.Enabled := true;
+   CommStarted := False;
+   FCommBuffer := TStringList.Create();
+   FCommandQue := TStringList.Create();
+   FFileData := TStringList.Create();
+   Timer1.Enabled := True;
+
    ImplementOptions;
 
    FLineBreak := LineBreakCode[dmZlogGlobal.Settings._zlink_telnet.FLineBreak];
@@ -836,6 +853,7 @@ procedure TZLinkForm.FormDestroy(Sender: TObject);
 begin
    FCommBuffer.Free();
    FCommandQue.Free();
+   FFileData.Free();
 end;
 
 procedure TZLinkForm.EnableConnectButton(boo : boolean);
@@ -993,6 +1011,7 @@ begin
    AddConsole('connected to ' + ZSocket.Addr);
    SendBand; { tell Z-Server current band }
    SendOperator;
+   SendPcName();
    MainForm.ZServerInquiry.ShowModal;
    MainForm.ZServerIcon.Visible := true;
    MainForm.EnableNetworkMenus;
@@ -1002,53 +1021,45 @@ end;
 procedure TZLinkForm.GetFile(filename: string; download_folder: string);
 var
    str: string;
-   bakfile: string;
 begin
    if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
-      str := ZLinkHeader + ' GETFILE ' + filename;
-      WriteData(str);
-
       if DirectoryExists(download_folder) = False then begin
          ForceDirectories(download_folder);
       end;
 
       FDownloadFileName := IncludeTrailingPathDelimiter(download_folder) + filename;
 
-      if FileExists(FDownloadFileName) = True then begin
-         bakfile := ChangeFileExt(FDownloadFileName, '.' + FormatDateTime('yyyymmddhhnnss', Now));
-         CopyFile(PChar(FDownloadFileName), PChar(bakfile), False);
-      end;
+      str := ZLinkHeader + ' GETFILE ' + filename;
+      WriteData(str);
    end;
 end;
 
-procedure TZLinkForm.Process_GetFile();
+procedure TZLinkForm.Process_PutFile(S: string);
 var
+   mem: TMemoryStream;
+   base64: TBase64Encoding;
    sl: TStringList;
+   i: Integer;
+   str: string;
+   file_name: string;
    file_size: Integer;
    line_count: Integer;
-   i: Integer;
-   base64: TBase64Encoding;
-   mem: TMemoryStream;
    bytes: TBytes;
-   str: string;
+   bakfile: string;
    text1: string;
    text2: string;
 begin
-   sl := TStringList.Create();
-   sl.StrictDelimiter := True;
+   Delete(S, 1, 8);
+
    base64 := TBase64Encoding.Create();
    mem := TMemoryStream.Create();
+   sl := TStringList.Create();
+   sl.StrictDelimiter := True;
    try
-      FCommandQue.Delete(0);
-
-      while FCommandQue.Count = 0 do begin
-         Application.ProcessMessages();
-      end;
-
-      str := FCommandQue.Strings[0];
-      Delete(str, 1, 7);
-      sl.CommaText := str + ',,,';
-      FCommandQue.Delete(0);
+      sl.CommaText := Trim(S) + ',,,';
+      file_name := sl[0];
+      file_size := StrToIntDef(sl[1], 0);
+      line_count := StrToIntDef(sl[2], 0);
 
       if (sl[0] = 'ERROR') then begin
          text1 := Format(FileDownloadFailed, [sl[1]]);
@@ -1056,15 +1067,11 @@ begin
          Exit;
       end;
 
-      file_size := StrToIntDef(sl[0], 0);
-      line_count := StrToIntDef(sl[1], 0);
-
       sl.Clear();
-      for i := 1 to line_count do begin
-         text1 := FCommandQue.Strings[0];
-         Delete(text1, 1, 7);
-         sl.Add(text1);
-         FCommandQue.Delete(0);
+      for i := 0 to FFileData.Count - 1 do begin
+         Application.ProcessMessages();
+         str := FFileData[i];
+         sl.Add(str);
       end;
 
       bytes := base64.DecodeStringToBytes(sl.Text);
@@ -1072,15 +1079,29 @@ begin
       mem.Size := Length(bytes);
       mem.Position := 0;
       mem.WriteBuffer(bytes, Length(bytes));
-      mem.SaveToFile(FDownloadFileName);
+
+      file_name := ExtractFilePath(FDownloadFileName) + file_name;
+
+      if FileExists(file_name) = True then begin
+         bakfile := ChangeFileExt(file_name, '.' + FormatDateTime('yyyymmddhhnnss', Now));
+         CopyFile(PChar(file_name), PChar(bakfile), False);
+      end;
+
+      mem.SaveToFile(file_name);
+
+      {$IFDEF DEBUG}
+      FFileData.SaveToFile(ChangeFileExt(file_name, '.txt'));
+      {$ENDIF}
+
+      FFileData.Clear();
 
       text1 := FileDownloadSuccessfully;
-      text2 := ExtractFileName(FDownloadFileName);
+      text2 := ExtractFileName(file_name);
       PostMessage(MainForm.Handle, WM_ZLOG_FILEDOWNLOAD_COMPLETE, WPARAM(PChar(text1)), LPARAM(PChar(text2)));
    finally
-      sl.Free();
-      base64.Free();
       mem.Free();
+      base64.Free();
+      sl.Free();
    end;
 end;
 
@@ -1095,7 +1116,6 @@ var
    str: string;
    text: string;
    filename: string;
-   slBuffer: TStringList;
    c: Integer;
    sendbuf: string;
 begin
@@ -1103,7 +1123,6 @@ begin
       base64 := TBase64Encoding.Create();
       mem := TMemoryStream.Create();
       sl := TStringList.Create();
-      slBuffer := TStringList.Create();
       try
          if FileExists(filepath) = False then begin
             text := NoFilesFoundToUpload;
@@ -1116,11 +1135,16 @@ begin
          mem.Position := 0;
          sl.Text := base64.EncodeBytesToString(mem.Memory, mem.Size);
 
+         {$IFDEF DEBUG}
+         sl.SaveToFile(ChangeFileExt(filepath, '.txt'));
+         {$ENDIF}
+
          file_size := mem.Size;
          line_count := sl.Count;
          sendbuf := '';
          c := 0;
          for i := 0 to sl.Count - 1 do begin
+            Application.ProcessMessages();
 
             if c >= 5000 then begin
                ZSocket.SendStr(sendbuf);
@@ -1129,7 +1153,7 @@ begin
                sendbuf := '';
             end;
 
-            sendbuf := sendbuf + ZLinkHeader + ' ' + sl[i] + #13#10;
+            sendbuf := sendbuf + ZLinkHeader + ' FILEDATA ' + sl[i] + #13#10;
             Inc(c);
          end;
 
@@ -1141,7 +1165,6 @@ begin
          mem.Free();
          base64.Free();
          sl.Free();
-         slBuffer.Free();
       end;
    end;
 end;
@@ -1156,6 +1179,10 @@ end;
 
 procedure TZLinkForm.AddConsole(str: string);
 begin
+   if Pos('FILEDATA', str) > 0 then begin
+      Exit;
+   end;
+
    Console.Items.BeginUpdate();
    Console.Items.Add(str);
    if Console.Items.Count > 1000 then begin

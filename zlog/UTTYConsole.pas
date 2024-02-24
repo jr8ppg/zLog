@@ -15,7 +15,7 @@ type
     CallsignList: TListBox;
     Splitter1: TSplitter;
     Timer1: TTimer;
-    RXLog: TColorConsole2;
+    RXLog: TConsole2;
     MainMenu1: TMainMenu;
     mnConsole: TMenuItem;
     ClearRXlog1: TMenuItem;

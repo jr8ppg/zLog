@@ -37,7 +37,7 @@ object TTYConsole: TTTYConsole
       ExplicitTop = 196
       ExplicitWidth = 364
     end
-    object RXLog: TColorConsole2
+    object RXLog: TConsole2
       Left = 1
       Top = 1
       Width = 356
