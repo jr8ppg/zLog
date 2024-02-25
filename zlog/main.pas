@@ -12044,8 +12044,8 @@ var
    r: Integer;
    fPhonePTT: Boolean;
 begin
-   r := RigControl.GetCurrentRig();
-   nID := r - 1;
+   nID := GetTxRigID();
+   r := nID + 1;
 
    fPhonePTT := dmZLogGlobal.Settings.FRigControl[r].FPhoneChgPTT;
 
