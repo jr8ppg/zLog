@@ -35,7 +35,7 @@ object formOptions: TformOptions
         Top = 139
         Width = 423
         Height = 258
-        Caption = 'SO2R options'
+        Caption = 'SO2R'#12458#12503#12471#12519#12531
         TabOrder = 1
         object Label115: TLabel
           Left = 20
@@ -270,10 +270,10 @@ object formOptions: TformOptions
         object Label1: TLabel
           Left = 92
           Top = 28
-          Width = 222
+          Width = 313
           Height = 30
           AutoSize = False
-          Caption = #12463#12521#12471#12483#12463#12473#12479#12452#12523#65288'Single OP one radio, 2TX, Multi-TX'#12398#22580#21512#12395#36984#25246#65289
+          Caption = #12463#12521#12471#12483#12463#12473#12479#12452#12523#65288#12471#12531#12464#12523#12458#12506#12391#12522#12464#12364'1'#21488#12289' 2TX'#12289' '#12510#12523#12481#12458#12506#65288#12522#12464#12364'1'#21488#65289#12398#22580#21512#12395#36984#25246#12375#12390#19979#12373#12356#12290#65289
           WordWrap = True
         end
         object Label2: TLabel
@@ -282,7 +282,7 @@ object formOptions: TformOptions
           Width = 313
           Height = 30
           AutoSize = False
-          Caption = '2Radio'#29992#20837#21147#27396#24038#21491#37197#32622
+          Caption = #65298#65330#12473#12479#12452#12523#65288'2Radio'#29992#20837#21147#27396#24038#21491#37197#32622#12391#12377#12290#12471#12531#12464#12523#12458#12506#12391#12522#12464#12364'2'#21488#12398#22580#21512#12395#36984#25246#12375#12414#12377#12290#65289
           WordWrap = True
         end
         object radio1Radio: TRadioButton

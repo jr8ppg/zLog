@@ -1626,6 +1626,33 @@ var
    rig_a_noassign: Integer;
    rig_b_noassign: Integer;
 begin
+   // 1Radio時はRIG-1/2のみ使用可
+   if radio1Radio.Checked = True then begin
+      FRigControlPort[3].ItemIndex := 0;
+      FRigControlPort[4].ItemIndex := 0;
+   end;
+
+   // リグ設定が無いのに割当がある場合は消去する
+   for rigno := 1 to 4 do begin
+      if (FRigControlPort[rigno].ItemIndex = 0) or (FRigName[rigno].ItemIndex = 0) then begin
+         // RIG-Aでの使用あり？
+         for band := Low(FRigSetA_rig) to High(FRigSetA_rig) do begin
+            //
+            if FRigSetA_rig[band].ItemIndex = rigno then begin
+               FRigSetA_rig[band].ItemIndex := 0;
+            end;
+         end;
+
+         // RIG-Bでの使用あり？
+         for band := Low(FRigSetB_rig) to High(FRigSetB_rig) do begin
+            if FRigSetB_rig[band].ItemIndex = rigno then begin
+               FRigSetB_rig[band].ItemIndex := 0;
+            end;
+         end;
+      end;
+   end;
+
+   // 各RIGに割当バンドがあるかチェック
    for rigno := 1 to 4 do begin
       // RIG使用有無
       rig_a_assign := 0;
