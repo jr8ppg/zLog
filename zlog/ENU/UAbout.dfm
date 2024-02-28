@@ -11,7 +11,6 @@ object AboutBox: TAboutBox
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = True
   Position = poScreenCenter
   Scaled = False
   OnCreate = FormCreate
@@ -19,7 +18,6 @@ object AboutBox: TAboutBox
   DesignSize = (
     321
     402)
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 8
@@ -170,6 +168,7 @@ object AboutBox: TAboutBox
     ModalResult = 1
     TabOrder = 1
     OnClick = OKButtonClick
+    ExplicitTop = 376
   end
   object Panel2: TPanel
     Left = 8
@@ -187,6 +186,7 @@ object AboutBox: TAboutBox
     ParentColor = True
     ParentFont = False
     TabOrder = 2
+    ExplicitHeight = 192
     DesignSize = (
       305
       193)
@@ -256,12 +256,13 @@ object AboutBox: TAboutBox
         'JL1LNC, 7M4KSC, JA1ABC, JO3JYE, JE1CKA, '
         'JH5GHM, JS6RTJ, JJ1CVH, JS2GGD, JE3VRJ, '
         'JJ8DAN, 7N4LNK, JI0VWL, JK1JHU, JS1OYN, '
-        'JI1XSE, JG1VPP, JS2FVO'
+        'JI1XSE, JG1VPP, JS2FVO, JN2AMD, JJ3TBB'
         'ZLOG-REIWA ML'#21442#21152#32773#12398#12415#12394#12373#12435
         'JA1ZLO'#12398#12415#12394#12373#12435)
       ParentFont = False
       ReadOnly = True
       TabOrder = 1
+      ExplicitHeight = 98
     end
   end
 end
