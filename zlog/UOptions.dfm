@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware1
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -298,6 +298,7 @@ object formOptions: TformOptions
           Checked = True
           TabOrder = 0
           TabStop = True
+          OnClick = radio1RadioClick
         end
         object radio2Radio: TRadioButton
           Left = 13
@@ -306,6 +307,7 @@ object formOptions: TformOptions
           Height = 17
           Caption = '2Radio'
           TabOrder = 1
+          OnClick = radio2RadioClick
         end
       end
     end
@@ -3069,13 +3071,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono ExtraLight'
+          FontName = 'HG'#65402#65438#65404#65391#65400'M'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 43
+          ItemIndex = 62
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -339,6 +339,8 @@ type
     procedure checkRigXvtClick(Sender: TObject);
     procedure comboRigControlChange(Sender: TObject);
     procedure NumberEditKeyPress(Sender: TObject; var Key: Char);
+    procedure radio1RadioClick(Sender: TObject);
+    procedure radio2RadioClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
@@ -355,6 +357,7 @@ type
     FRigSetB_rig: array[b19..b10g] of TComboBox;
     FRigSetB_ant: array[b19..b10g] of TComboBox;
 
+    FRigConfig: array[1..5] of TGroupBox;
     FRigControlPort: array[1..5] of TComboBox;
     FRigControlPortConfig: array[1..5] of TButton;
     FRigControlSpeed: array[1..5] of TComboBox;
@@ -366,6 +369,9 @@ type
     FRigPhoneChgPTT: array[1..5] of TCheckBox;
     procedure InitRigNames();
     function CheckRigSetting(): Boolean;
+    procedure EnableRigConfig(Index: Integer; fEnable: Boolean);
+    procedure Assign1Radio();
+    procedure Assign2Radio();
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -419,6 +425,11 @@ var
    CP: TCommPort;
    list: TList<TCommPort>;
 begin
+   FRigConfig[1] := groupRig1;
+   FRigConfig[2] := groupRig2;
+   FRigConfig[3] := groupRig3;
+   FRigConfig[4] := groupRig4;
+   FRigConfig[5] := groupRig5;
    FRigControlPort[1] := comboRig1Control;
    FRigControlPort[2] := comboRig2Control;
    FRigControlPort[3] := comboRig3Control;
@@ -575,6 +586,13 @@ end;
 procedure TformOptions.FormShow(Sender: TObject);
 begin
    ImplementSettings();
+
+   if radio1Radio.Checked = True then begin
+      radio1RadioClick(radio1Radio);
+   end
+   else begin
+      radio2RadioClick(radio2Radio);
+   end;
 end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
@@ -616,6 +634,20 @@ end;
 procedure TformOptions.buttonCancelClick(Sender: TObject);
 begin
 //   Close;
+end;
+
+procedure TformOptions.radio1RadioClick(Sender: TObject);
+begin
+   EnableRigConfig(3, False);
+   EnableRigConfig(4, False);
+   Assign1Radio();
+end;
+
+procedure TformOptions.radio2RadioClick(Sender: TObject);
+begin
+   EnableRigConfig(3, True);
+   EnableRigConfig(4, True);
+   Assign2Radio();
 end;
 
 procedure TformOptions.radioSo2rClick(Sender: TObject);
@@ -1709,6 +1741,73 @@ begin
    end;
 
    Result := True;
+end;
+
+procedure TformOptions.EnableRigConfig(Index: Integer; fEnable: Boolean);
+begin
+   if FRigControlPort[Index] <> nil then begin
+      FRigControlPort[Index].Enabled := fEnable;
+
+      if fEnable = False then begin
+         FRigControlPort[Index].ItemIndex := 0;
+      end;
+   end;
+
+   if FRigControlPortConfig[Index] <> nil then begin
+      FRigControlPortConfig[Index].Enabled := fEnable;
+   end;
+
+   if FRigControlSpeed[Index] <> nil then begin
+      FRigControlSpeed[Index].Enabled := fEnable;
+   end;
+
+   if FRigName[Index] <> nil then begin
+      FRigName[Index].Enabled := fEnable;
+   end;
+
+   if FKeyingPort[Index] <> nil then begin
+      FKeyingPort[Index].Enabled := fEnable;
+   end;
+
+   if FKeyingPortConfig[Index] <> nil then begin
+      FKeyingPortConfig[Index].Enabled := fEnable;
+   end;
+
+   if FRigXvt[Index] <> nil then begin
+      FRigXvt[Index].Enabled := fEnable;
+   end;
+
+   if FRigXvtConfig[Index] <> nil then begin
+      FRigXvtConfig[Index].Enabled := fEnable;
+   end;
+
+   if FRigPhoneChgPTT[Index] <> nil then begin
+      FRigPhoneChgPTT[Index].Enabled := fEnable;
+   end;
+
+   FRigConfig[Index].Enabled := fEnable;
+end;
+
+procedure TformOptions.Assign1Radio();
+var
+   b: TBand;
+begin
+   for b := b19 to b10g do begin
+      FRigSetA_rig[b].ItemIndex := 1;
+      FRigSetA_rig[b].Enabled := False;
+      FRigSetB_rig[b].ItemIndex := 2;
+      FRigSetB_rig[b].Enabled := False;
+   end;
+end;
+
+procedure TformOptions.Assign2Radio();
+var
+   b: TBand;
+begin
+   for b := b19 to b10g do begin
+      FRigSetA_rig[b].Enabled := True;
+      FRigSetB_rig[b].Enabled := True;
+   end;
 end;
 
 end.
