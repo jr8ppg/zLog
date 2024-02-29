@@ -2,10 +2,10 @@ object RigControl: TRigControl
   Left = 666
   Top = 35
   Caption = 'Rig Control'
-  ClientHeight = 136
+  ClientHeight = 157
   ClientWidth = 318
   Color = clBtnFace
-  Constraints.MinHeight = 175
+  Constraints.MinHeight = 195
   Constraints.MinWidth = 330
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,6 @@ object RigControl: TRigControl
   Font.Name = 'Arial'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poDesigned
   Scaled = False
   OnClose = FormClose
@@ -21,17 +20,21 @@ object RigControl: TRigControl
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 15
-  object Panel6: TPanel
+  object panelBody: TPanel
     Left = 0
     Top = 30
     Width = 318
-    Height = 106
+    Height = 103
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 314
+    ExplicitHeight = 102
+    DesignSize = (
+      318
+      103)
     object buttonJumpLastFreq: TSpeedButton
-      Left = 264
+      Left = 265
       Top = 21
       Width = 44
       Height = 20
@@ -54,7 +57,7 @@ object RigControl: TRigControl
     end
     object Label3: TLabel
       Left = 8
-      Top = 74
+      Top = 75
       Width = 34
       Height = 15
       Caption = 'VFO B'
@@ -67,11 +70,44 @@ object RigControl: TRigControl
       Caption = 'Current Freq.'
     end
     object RigLabel: TLabel
-      Left = 8
+      Left = 6
       Top = 5
-      Width = 50
+      Width = 171
       Height = 15
+      AutoSize = False
       Caption = 'RigLabel'
+    end
+    object buttonMemoryClear: TSpeedButton
+      Tag = 2
+      Left = 215
+      Top = 2
+      Width = 36
+      Height = 20
+      Anchors = [akTop, akRight]
+      Caption = 'MC'
+      OnClick = buttonMemoryWriteClick
+    end
+    object buttonMemoryWrite: TSpeedButton
+      Tag = 1
+      Left = 180
+      Top = 2
+      Width = 36
+      Height = 20
+      Anchors = [akTop, akRight]
+      Caption = 'MW'
+      OnClick = buttonMemoryWriteClick
+    end
+    object buttonMemScan: TSpeedButton
+      Tag = 2
+      Left = 254
+      Top = 2
+      Width = 55
+      Height = 20
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 1
+      Caption = 'M-Scan'
+      OnClick = buttonMemScanClick
     end
     object Panel1: TPanel
       Left = 50
@@ -189,13 +225,14 @@ object RigControl: TRigControl
       end
     end
   end
-  object Panel7: TPanel
+  object panelHeader: TPanel
     Left = 0
     Top = 0
     Width = 318
     Height = 30
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 314
     DesignSize = (
       318
       30)
@@ -210,38 +247,76 @@ object RigControl: TRigControl
       OnClick = ToggleSwitch1Click
     end
     object buttonOmniRig: TButton
-      Left = 168
-      Top = 2
-      Width = 73
+      Left = 178
+      Top = 3
+      Width = 65
       Height = 25
       Anchors = [akTop, akRight]
       Caption = 'Omni-Rig'
       TabOrder = 1
       OnClick = buttonOmniRigClick
+      ExplicitLeft = 174
     end
     object buttonReconnectRigs: TButton
-      Left = 242
-      Top = 2
-      Width = 73
+      Left = 244
+      Top = 3
+      Width = 65
       Height = 25
       Anchors = [akTop, akRight]
-      Caption = 'Reset Rig'
+      Caption = 'Reset'
       TabOrder = 2
       OnClick = buttonReconnectRigsClick
+      ExplicitLeft = 240
     end
+  end
+  object buttongrpFreqMemory: TButtonGroup
+    Left = 0
+    Top = 133
+    Width = 318
+    Height = 24
+    Align = alBottom
+    BorderStyle = bsNone
+    ButtonWidth = 62
+    Items = <
+      item
+        Caption = 'M1'
+        OnClick = buttongrpFreqMemoryItems0Click
+      end
+      item
+        Caption = 'M2'
+        OnClick = buttongrpFreqMemoryItems1Click
+      end
+      item
+        Caption = 'M3'
+        OnClick = buttongrpFreqMemoryItems2Click
+      end
+      item
+        Caption = 'M4'
+        OnClick = buttongrpFreqMemoryItems3Click
+      end
+      item
+        Caption = 'M5'
+        OnClick = buttongrpFreqMemoryItems4Click
+      end>
+    ShowHint = True
+    TabOrder = 2
+    ExplicitTop = 132
+    ExplicitWidth = 314
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 60000
     OnTimer = Timer1Timer
-    Left = 136
+    Left = 32
+    Top = 212
   end
   object PollingTimer1: TTimer
     Tag = 1
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
-    Left = 164
+    Left = 60
+    Top = 212
   end
   object ZCom1: TCommPortDriver
     Tag = 1
@@ -250,7 +325,8 @@ object RigControl: TRigControl
     HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 244
+    Left = 44
+    Top = 160
   end
   object ZCom2: TCommPortDriver
     Tag = 2
@@ -259,13 +335,83 @@ object RigControl: TRigControl
     HwFlow = hfRTSCTS
     InBufSize = 4096
     OnReceiveData = ZCom1ReceiveData
-    Left = 272
+    Left = 72
+    Top = 160
   end
   object PollingTimer2: TTimer
     Tag = 2
     Enabled = False
     Interval = 100
     OnTimer = PollingTimerTimer
-    Left = 192
+    Left = 88
+    Top = 212
+  end
+  object ZCom3: TCommPortDriver
+    Tag = 3
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfRTSCTS
+    InBufSize = 4096
+    OnReceiveData = ZCom1ReceiveData
+    Left = 100
+    Top = 160
+  end
+  object ZCom4: TCommPortDriver
+    Tag = 4
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfRTSCTS
+    InBufSize = 4096
+    OnReceiveData = ZCom1ReceiveData
+    Left = 128
+    Top = 160
+  end
+  object PollingTimer3: TTimer
+    Tag = 3
+    Enabled = False
+    Interval = 100
+    OnTimer = PollingTimerTimer
+    Left = 116
+    Top = 212
+  end
+  object PollingTimer4: TTimer
+    Tag = 4
+    Enabled = False
+    Interval = 100
+    OnTimer = PollingTimerTimer
+    Left = 144
+    Top = 212
+  end
+  object popupMemoryCh: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    OnPopup = popupMemoryChPopup
+    Left = 104
+    Top = 65534
+    object menuM1: TMenuItem
+      Tag = 1
+      Caption = 'M1'
+      OnClick = menuMnClick
+    end
+    object menuM2: TMenuItem
+      Tag = 2
+      Caption = 'M2'
+      OnClick = menuMnClick
+    end
+    object menuM3: TMenuItem
+      Tag = 3
+      Caption = 'M3'
+      OnClick = menuMnClick
+    end
+    object menuM4: TMenuItem
+      Tag = 4
+      Caption = 'M4'
+      OnClick = menuMnClick
+    end
+    object menuM5: TMenuItem
+      Tag = 5
+      Caption = 'M5'
+      OnClick = menuMnClick
+    end
   end
 end

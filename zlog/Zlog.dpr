@@ -16,7 +16,7 @@ uses
   UEditDialog in 'UEditDialog.pas' {EditDialog},
   UAbout in 'UAbout.pas' {AboutBox},
   URateDialog in 'URateDialog.pas' {RateDialog},
-  UOptions in 'UOptions.pas' {formOptions},
+  UOptions2 in 'UOptions2.pas' {formOptions2},
   UMenu in 'UMenu.pas' {MenuForm},
   UACAGMulti in 'UACAGMulti.pas' {ACAGMulti},
   USuperCheck2 in 'USuperCheck2.pas' {SuperCheck2},
@@ -93,7 +93,7 @@ uses
   UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
   DialogHook in 'DialogHook.pas',
   UZAnalyze in 'UZAnalyze.pas' {ZAnalyze},
-  UzLogConst in 'UzLogConst.pas',
+  UzlogConst in 'UzlogConst.pas',
   UzLogQSO in 'UzLogQSO.pas',
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',
@@ -133,6 +133,7 @@ uses
   UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester},
   UStatusEdit in 'UStatusEdit.pas' {formStatusEdit},
   UzLogContest in 'UzLogContest.pas',
+  UMessageManager in 'UMessageManager.pas' {formMessageManager},
   UExportCabrillo in 'UExportCabrillo.pas' {formExportCabrillo},
   USpotterListDlg in 'USpotterListDlg.pas' {formSpotterListDlg},
   UFreqTest in 'UFreqTest.pas' {formFreqTest},
@@ -146,6 +147,8 @@ uses
   UDateDialog in 'UDateDialog.pas' {DateDialog},
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
   UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
+  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
+  UOptions in 'UOptions.pas' {formOptions},
   UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo};
 
 {$R *.res}

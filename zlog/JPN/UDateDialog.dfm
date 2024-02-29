@@ -9,7 +9,7 @@ object DateDialog: TDateDialog
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
@@ -22,14 +22,14 @@ object DateDialog: TDateDialog
     Top = 20
     Width = 58
     Height = 13
-    Caption = #29694#22312#12398#26085#20184
+    Caption = 'Current date'
   end
   object Label2: TLabel
     Left = 146
     Top = 20
     Width = 46
     Height = 13
-    Caption = #26032#12375#12356#26085#20184
+    Caption = 'New date'
   end
   object Label3: TLabel
     Left = 105

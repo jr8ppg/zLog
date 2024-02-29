@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry,
-  UzLogKeyer, UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
+  UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget;
 
 type
@@ -80,14 +80,21 @@ type
     FBackColor3: TColor;
   end;
 
+  TPortConfig = record
+    FRts: TPortAction;  // default: PTT
+    FDtr: TPortAction;  // default: KEY
+  end;
+
   TRigSetting = record
     FControlPort: Integer; {0 : none 1-4 : com#}
+    FControlPortConfig: TPortConfig;
     FSpeed: Integer;
     FRigName: string;
     FKeyingPort: Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
+    FKeyingPortConfig: TPortConfig;
     FUseTransverter: Boolean;
     FTransverterOffset: Integer;
-    FKeyingIsRTS: Boolean;
+    FPhoneChgPTT: Boolean;
   end;
 
   TRigSet = record
@@ -118,7 +125,6 @@ type
 
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
-    _useant: array[b19..HiBand] of Integer;
     _usebandscope: array[b19..HiBand] of Boolean;
     _usebandscope_current: Boolean;
     _usebandscope_newmulti: Boolean;
@@ -148,22 +154,29 @@ type
     _usbif4cw_gen3_micsel: Boolean;
     _usbif4cw_use_paddle_keyer: Boolean;
     _polling_interval: Integer;
+    _memscan_interval: Integer;  // sec
 
     // WinKeyer
     _use_winkeyer: Boolean;
     _use_wk_9600: Boolean;
     _use_wk_outp_select: Boolean;
     _use_wk_ignore_speed_pot: Boolean;
+    _use_wk_always9600: Boolean;
+
+    // Operate Style
+    _operate_style: TOperateStyle;
 
     // SO2R Support
-    _so2r_type: TSo2rType;       // 0:none 1:zlog 2:SO2R Neo
+    _so2r_type: TSo2rType;       // 0:none 1:COM port 2:SO2R Neo
     _so2r_tx_port: Integer;      // 0:none 1-20:com1-20
     _so2r_rx_port: Integer;      // 0:none 1-20:com1-20
+    _so2r_tx_rigc: Integer;
     _so2r_use_rig3: Boolean;
     _so2r_cq_rpt_interval_sec: Double;
     _so2r_rigsw_after_delay: Integer;
     _so2r_cq_msg_bank: Integer;     // 0:Bank-A 1:Bank-B
     _so2r_cq_msg_number: Integer;   // 1-12
+    _so2r_2bsiq_pluswpm: Integer;
 
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
@@ -272,8 +285,8 @@ type
     FTimeToChangeGreetings: array[0..2] of Integer;
 
     // Last Band/Mode
-    FLastBand: Integer;
-    FLastMode: Integer;
+    FLastBand: array[0..2] of Integer;
+    FLastMode: array[0..2] of Integer;
 
     // Last CQ mode
     FLastCQMode: Boolean;
@@ -422,10 +435,10 @@ type
     procedure SetSuperCheck2Columns(v: Integer);
     function GetPowerOfBand(band: TBand): TPower;
     function GetPowerOfBand2(band: TBand): string;
-    function GetLastBand(): TBand;
-    procedure SetLastBand(b: TBand);
-    function GetLastMode(): TMode;
-    procedure SetLastMode(m: TMode);
+    function GetLastBand(Index: Integer): TBand;
+    procedure SetLastBand(Index: Integer; b: TBand);
+    function GetLastMode(Index: Integer): TMode;
+    procedure SetLastMode(Index: Integer; m: TMode);
 
     function GetRootPath(): string;
     procedure SetRootPath(v: string);
@@ -504,8 +517,8 @@ public
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
     property PowerOfBand2[b: TBand]: string read GetPowerOfBand2;
 
-    property LastBand: TBand read GetLastBand write SetLastBand;
-    property LastMode: TMode read GetLastMode write SetLastMode;
+    property LastBand[Index: Integer]: TBand read GetLastBand write SetLastBand;
+    property LastMode[Index: Integer]: TMode read GetLastMode write SetLastMode;
 
     property CtyDatLoaded: Boolean read FCtyDatLoaded;
     property CountryList: TCountryList read FCountryList;
@@ -618,7 +631,7 @@ implementation
 
 uses
   Main, URigControl, UZLinkForm, UComm, UzLogCW, UClusterTelnetSet, UClusterCOMSet,
-  UZlinkTelnetSet;
+  UZlinkTelnetSet, UzLogKeyer;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -812,7 +825,7 @@ begin
       Settings._jmode := ini.ReadBool('Preferences', 'JMode', False);
 
       // Allow to log dupes
-      Settings._allowdupe := ini.ReadBool('Preferences', 'AllowDupe', True);
+      Settings._allowdupe := True;  //ini.ReadBool('Preferences', 'AllowDupe', True);
 
       // Output out of contest period
       Settings._output_outofperiod := ini.ReadBool('Preferences', 'OutputOutOfPeriod', False);
@@ -996,27 +1009,33 @@ begin
       Settings._zlink_telnet.FLineBreak := ini.ReadInteger('Z-Link', 'TELNETlinebreak', 0);
       Settings._zlink_telnet.FLocalEcho := ini.ReadBool('Z-Link', 'TELNETlocalecho', False);
 
-      // RIG1
-      Settings.FRigControl[1].FControlPort      := ini.ReadInteger('Hardware', 'Rig', 0);
-      Settings.FRigControl[1].FRigName          := ini.ReadString('Hardware', 'RigName', '');
-      Settings.FRigControl[1].FSpeed            := ini.ReadInteger('Hardware', 'RigSpeed', 0);
-      Settings.FRigControl[1].FUseTransverter   := ini.ReadBool('Hardware', 'Transverter1', False);
-      Settings.FRigControl[1].FTransverterOffset := ini.ReadInteger('Hardware', 'Transverter1Offset', 0);
-      Settings.FRigControl[1].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort', 0);
-      Settings.FRigControl[1].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse', False);
+      //
+      // RIG1-5
+      //
+      for i := 1 to 5 do begin
+         s := 'RigControl#' + IntToStr(i);
+         Settings.FRigControl[i].FControlPort   := ini.ReadInteger(s, 'ControlPort', 0);
+         Settings.FRigControl[i].FControlPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'control_port_rts', Integer(paNone)));
+         Settings.FRigControl[i].FControlPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'control_port_dtr', Integer(paNone)));
+         Settings.FRigControl[i].FSpeed         := ini.ReadInteger(s, 'Speed', 0);
+         Settings.FRigControl[i].FRigName       := ini.ReadString(s, 'RigName', '');
+         Settings.FRigControl[i].FUseTransverter := ini.ReadBool(s, 'UseTransverter', False);
+         Settings.FRigControl[i].FTransverterOffset := ini.ReadInteger(s, 'TransverterOffset', 0);
+         Settings.FRigControl[i].FKeyingPort    := ini.ReadInteger(s, 'KeyingPort', 0);
+         Settings.FRigControl[i].FKeyingPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'keying_port_rts', Integer(paPtt)));
+         Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
+         Settings.FRigControl[i].FPhoneChgPTT := ini.ReadBool(s, 'PhoneChgPTTTransverterOffset', False);
+      end;
 
-      // RIG2
-      Settings.FRigControl[2].FControlPort      := ini.ReadInteger('Hardware', 'Rig2', 0);
-      Settings.FRigControl[2].FRigName          := ini.ReadString('Hardware', 'RigName2', '');
-      Settings.FRigControl[2].FSpeed            := ini.ReadInteger('Hardware', 'RigSpeed2', 0);
-      Settings.FRigControl[2].FUseTransverter   := ini.ReadBool('Hardware', 'Transverter2', False);
-      Settings.FRigControl[2].FTransverterOffset := ini.ReadInteger('Hardware', 'Transverter2Offset', 0);
-      Settings.FRigControl[2].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort2', 0);
-      Settings.FRigControl[2].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse2', False);
-
-      // RIG3
-      Settings.FRigControl[3].FKeyingPort       := ini.ReadInteger('Hardware', 'CWLPTPort3', 0);
-      Settings.FRigControl[3].FKeyingIsRTS      := ini.ReadBool('Hardware', 'keying_signal_reverse3', False);
+      //
+      // Set of RIG
+      //
+      for b := b19 to b10g do begin
+         Settings.FRigSet[1].FRig[b] := ini.ReadInteger('RigSetA', 'Rig_' + MHzString[b], 0);
+         Settings.FRigSet[1].FAnt[b] := ini.ReadInteger('RigSetA', 'Ant_' + MHzString[b], 0);
+         Settings.FRigSet[2].FRig[b] := ini.ReadInteger('RigSetB', 'Rig_' + MHzString[b], 0);
+         Settings.FRigSet[2].FAnt[b] := ini.ReadInteger('RigSetB', 'Ant_' + MHzString[b], 0);
+      end;
 
       // USE TRANSCEIVE MODE(ICOM only)
       Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
@@ -1036,19 +1055,27 @@ begin
       // Use paddle and keyer
       Settings._usbif4cw_use_paddle_keyer := ini.ReadBool('Hardware', 'Usbif4cwUsePaddleKeyer', False);
 
-      // Polling Interval
+      // Polling Interval(milisec)
       Settings._polling_interval := ini.ReadInteger('Hardware', 'PollingInterval', 200);
+
+      // Memory scan interval(sec)
+      Settings._memscan_interval := ini.ReadInteger('Hardware', 'MemscanInterval', 30);
 
       // Use WinKeyer USB
       Settings._use_winkeyer := ini.ReadBool('Hardware', 'UseWinKeyer', False);
       Settings._use_wk_9600 := ini.ReadBool('Hardware', 'UseWk9600', False);
       Settings._use_wk_outp_select := ini.ReadBool('Hardware', 'UseWkOutpSelect', True);
       Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
+      Settings._use_wk_always9600 := ini.ReadBool('Hardware', 'UseWkAlways9600', False);
+
+      // Operate Style
+      Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
       Settings._so2r_tx_port  := ini.ReadInteger('SO2R', 'tx_select_port', 0);
       Settings._so2r_rx_port  := ini.ReadInteger('SO2R', 'rx_select_port', 0);
+      Settings._so2r_tx_rigc  := ini.ReadInteger('SO2R', 'tx_rigc_option', 0);
       Settings._so2r_use_rig3 := ini.ReadBool('SO2R', 'use_rig3', True);
 
       Settings._so2r_cq_rpt_interval_sec := ini.ReadFloat('SO2R', 'cq_repeat_interval_sec', 2.0);
@@ -1061,6 +1088,7 @@ begin
       if (Settings._so2r_cq_msg_number < 1) or (Settings._so2r_cq_msg_number > 12) then begin
          Settings._so2r_cq_msg_number := 1;
       end;
+      Settings._so2r_2bsiq_pluswpm := ini.ReadInteger('SO2R', '2bsiq_pluswpm', 3);
 
       // CW PTT control
 
@@ -1227,24 +1255,6 @@ begin
       Settings.FAccessibility.FFocusedBackColor := ZStringToColorDef(ini.ReadString('Accessibility', 'FocusedBackColor', '$ffffff'), clWhite);
       Settings.FAccessibility.FFocusedBold      := ini.ReadBool('Accessibility', 'FocusedBold', False);
 
-      // Use Ant
-      Settings._useant[b19]         := ini.ReadInteger('Ant', '1.9MHz', 0);
-      Settings._useant[b35]         := ini.ReadInteger('Ant', '3.5MHz', 0);
-      Settings._useant[b7]          := ini.ReadInteger('Ant', '7MHz', 0);
-      Settings._useant[b10]         := ini.ReadInteger('Ant', '10MHz', 0);
-      Settings._useant[b14]         := ini.ReadInteger('Ant', '14MHz', 0);
-      Settings._useant[b18]         := ini.ReadInteger('Ant', '18MHz', 0);
-      Settings._useant[b21]         := ini.ReadInteger('Ant', '21MHz', 0);
-      Settings._useant[b24]         := ini.ReadInteger('Ant', '24MHz', 0);
-      Settings._useant[b28]         := ini.ReadInteger('Ant', '28MHz', 0);
-      Settings._useant[b50]         := ini.ReadInteger('Ant', '50MHz', 0);
-      Settings._useant[b144]        := ini.ReadInteger('Ant', '144MHz', 0);
-      Settings._useant[b430]        := ini.ReadInteger('Ant', '430MHz', 0);
-      Settings._useant[b1200]       := ini.ReadInteger('Ant', '1200MHz', 0);
-      Settings._useant[b2400]       := ini.ReadInteger('Ant', '2400MHz', 0);
-      Settings._useant[b5600]       := ini.ReadInteger('Ant', '5600MHz', 0);
-      Settings._useant[b10g]        := ini.ReadInteger('Ant', '10GHz', 0);
-
       // BandScope
       Settings._usebandscope[b19]   := ini.ReadBool('BandScopeEx', 'BandScope1.9MHz', False);
       Settings._usebandscope[b35]   := ini.ReadBool('BandScopeEx', 'BandScope3.5MHz', False);
@@ -1375,8 +1385,12 @@ begin
       Settings.FTimeToChangeGreetings[2] := ini.ReadInteger('greetings', 'evening', 18);
 
       // Last Band/Mode
-      Settings.FLastBand := ini.ReadInteger('main', 'last_band', 0);
-      Settings.FLastMode := ini.ReadInteger('main', 'last_mode', 0);
+      Settings.FLastBand[0] := ini.ReadInteger('main', 'last_band', 0);
+      Settings.FLastMode[0] := ini.ReadInteger('main', 'last_mode', 0);
+      Settings.FLastBand[1] := ini.ReadInteger('main', 'last_band1', 0);
+      Settings.FLastMode[1] := ini.ReadInteger('main', 'last_mode1', 0);
+      Settings.FLastBand[2] := ini.ReadInteger('main', 'last_band2', 0);
+      Settings.FLastMode[2] := ini.ReadInteger('main', 'last_mode2', 0);
 
       // Last CQ mode
       Settings.FLastCQMode := ini.ReadBool('main', 'last_cqmode', False);
@@ -1445,6 +1459,7 @@ var
    slParam: TStringList;
    b: TBand;
    strKey: string;
+   s: string;
 begin
    slParam := TStringList.Create();
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
@@ -1671,27 +1686,33 @@ begin
       ini.WriteInteger('Z-Link', 'TELNETlinebreak', Settings._zlink_telnet.FLineBreak);
       ini.WriteBool('Z-Link', 'TELNETlocalecho', Settings._zlink_telnet.FLocalEcho);
 
-      // RIG1
-      ini.WriteInteger('Hardware', 'Rig', Settings.FRigControl[1].FControlPort);
-      ini.WriteString('Hardware', 'RigName', Settings.FRigControl[1].FRigName);
-      ini.WriteInteger('Hardware', 'RigSpeed', Settings.FRigControl[1].FSpeed);
-      ini.WriteBool('Hardware', 'Transverter1', Settings.FRigControl[1].FUseTransverter);
-      ini.WriteInteger('Hardware', 'Transverter1Offset', Settings.FRigControl[1].FTransverterOffset);
-      ini.WriteInteger('Hardware', 'CWLPTPort', Settings.FRigControl[1].FKeyingPort);
-      ini.WriteBool('Hardware', 'keying_signal_reverse', Settings.FRigControl[1].FKeyingIsRTS);
+      //
+      // RIG1-5
+      //
+      for i := 1 to 5 do begin
+         s := 'RigControl#' + IntToStr(i);
+         ini.WriteInteger(s, 'ControlPort', Settings.FRigControl[i].FControlPort);
+         ini.WriteInteger(s, 'control_port_rts', Integer(Settings.FRigControl[i].FControlPortConfig.FRts));
+         ini.WriteInteger(s, 'control_port_dtr', Integer(Settings.FRigControl[i].FControlPortConfig.FDtr));
+         ini.WriteInteger(s, 'Speed', Settings.FRigControl[i].FSpeed);
+         ini.WriteString(s, 'RigName', Settings.FRigControl[i].FRigName);
+         ini.WriteInteger(s, 'KeyingPort', Settings.FRigControl[i].FKeyingPort);
+         ini.WriteBool(s, 'UseTransverter', Settings.FRigControl[i].FUseTransverter);
+         ini.WriteInteger(s, 'TransverterOffset', Settings.FRigControl[i].FTransverterOffset);
+         ini.WriteInteger(s, 'keying_port_rts', Integer(Settings.FRigControl[i].FKeyingPortConfig.FRts));
+         ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
+         ini.WriteBool(s, 'PhoneChgPTT', Settings.FRigControl[i].FPhoneChgPTT);
+      end;
 
-      // RIG2
-      ini.WriteInteger('Hardware', 'Rig2', Settings.FRigControl[2].FControlPort);
-      ini.WriteString('Hardware', 'RigName2', Settings.FRigControl[2].FRigName);
-      ini.WriteInteger('Hardware', 'RigSpeed2', Settings.FRigControl[2].FSpeed);
-      ini.WriteBool('Hardware', 'Transverter2', Settings.FRigControl[2].FUseTransverter);
-      ini.WriteInteger('Hardware', 'Transverter2Offset', Settings.FRigControl[2].FTransverterOffset);
-      ini.WriteInteger('Hardware', 'CWLPTPort2', Settings.FRigControl[2].FKeyingPort);
-      ini.WriteBool('Hardware', 'keying_signal_reverse2', Settings.FRigControl[2].FKeyingIsRTS);
-
-      // RIG3
-      ini.WriteInteger('Hardware', 'CWLPTPort3', Settings.FRigControl[3].FKeyingPort);
-      ini.WriteBool('Hardware', 'keying_signal_reverse3', Settings.FRigControl[3].FKeyingIsRTS);
+      //
+      // Set of RIG
+      //
+      for b := b19 to b10g do begin
+         ini.WriteInteger('RigSetA', 'Rig_' + MHzString[b], Settings.FRigSet[1].FRig[b]);
+         ini.WriteInteger('RigSetA', 'Ant_' + MHzString[b], Settings.FRigSet[1].FAnt[b]);
+         ini.WriteInteger('RigSetB', 'Rig_' + MHzString[b], Settings.FRigSet[2].FRig[b]);
+         ini.WriteInteger('RigSetB', 'Ant_' + MHzString[b], Settings.FRigSet[2].FAnt[b]);
+      end;
 
       // USE TRANSCEIVE MODE(ICOM only)
       ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
@@ -1714,22 +1735,31 @@ begin
       // Polling Interval
       ini.WriteInteger('Hardware', 'PollingInterval', Settings._polling_interval);
 
+      // Memory scan interval(sec)
+      ini.WriteInteger('Hardware', 'MemscanInterval', Settings._memscan_interval);
+
       // Use WinKeyer USB
       ini.WriteBool('Hardware', 'UseWinKeyer', Settings._use_winkeyer);
       ini.WriteBool('Hardware', 'UseWk9600', Settings._use_wk_9600);
       ini.WriteBool('Hardware', 'UseWkOutpSelect', Settings._use_wk_outp_select);
       ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
+      ini.WriteBool('Hardware', 'UseWkAlways9600', Settings._use_wk_always9600);
+
+      // Operate Style
+      ini.WriteInteger('OPERATE_STYLE', 'style', Integer(Settings._operate_style));
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
       ini.WriteInteger('SO2R', 'tx_select_port', Settings._so2r_tx_port);
       ini.WriteInteger('SO2R', 'rx_select_port', Settings._so2r_rx_port);
+      ini.WriteInteger('SO2R', 'tx_rigc_option', Settings._so2r_tx_rigc);
       ini.WriteBool('SO2R', 'use_rig3', Settings._so2r_use_rig3);
 
       ini.WriteFloat('SO2R', 'cq_repeat_interval_sec', Settings._so2r_cq_rpt_interval_sec);
       ini.WriteInteger('SO2R', 'rigsw_after_delay', Settings._so2r_rigsw_after_delay);
       ini.WriteInteger('SO2R', 'cq_msg_bank', Settings._so2r_cq_msg_bank);
       ini.WriteInteger('SO2R', 'cq_msg_number', Settings._so2r_cq_msg_number);
+      ini.WriteInteger('SO2R', '2bsiq_pluswpm', Settings._so2r_2bsiq_pluswpm);
 
       // CW PTT control
 
@@ -1884,24 +1914,6 @@ begin
       ini.WriteString('Accessibility', 'FocusedBackColor', ZColorToString(Settings.FAccessibility.FFocusedBackColor));
       ini.WriteBool('Accessibility', 'FocusedBold', Settings.FAccessibility.FFocusedBold);
 
-      // Use Ant
-      ini.WriteInteger('Ant', '1.9MHz', Settings._useant[b19]);
-      ini.WriteInteger('Ant', '3.5MHz', Settings._useant[b35]);
-      ini.WriteInteger('Ant', '7MHz', Settings._useant[b7]);
-      ini.WriteInteger('Ant', '10MHz', Settings._useant[b10]);
-      ini.WriteInteger('Ant', '14MHz', Settings._useant[b14]);
-      ini.WriteInteger('Ant', '18MHz', Settings._useant[b18]);
-      ini.WriteInteger('Ant', '21MHz', Settings._useant[b21]);
-      ini.WriteInteger('Ant', '24MHz', Settings._useant[b24]);
-      ini.WriteInteger('Ant', '28MHz', Settings._useant[b28]);
-      ini.WriteInteger('Ant', '50MHz', Settings._useant[b50]);
-      ini.WriteInteger('Ant', '144MHz', Settings._useant[b144]);
-      ini.WriteInteger('Ant', '430MHz', Settings._useant[b430]);
-      ini.WriteInteger('Ant', '1200MHz', Settings._useant[b1200]);
-      ini.WriteInteger('Ant', '2400MHz', Settings._useant[b2400]);
-      ini.WriteInteger('Ant', '5600MHz', Settings._useant[b5600]);
-      ini.WriteInteger('Ant', '10GHz', Settings._useant[b10g]);
-
       // BandScope
       ini.WriteBool('BandScopeEx', 'BandScope1.9MHz', Settings._usebandscope[b19]);
       ini.WriteBool('BandScopeEx', 'BandScope3.5MHz', Settings._usebandscope[b35]);
@@ -1991,8 +2003,12 @@ begin
       ini.WriteInteger('Score', 'ExtraInfo', Settings.FLastScoreExtraInfo);
 
       // Last Band/Mode
-      ini.WriteInteger('main', 'last_band', Settings.FLastBand);
-      ini.WriteInteger('main', 'last_mode', Settings.FLastMode);
+      ini.WriteInteger('main', 'last_band', Settings.FLastBand[0]);
+      ini.WriteInteger('main', 'last_mode', Settings.FLastMode[0]);
+      ini.WriteInteger('main', 'last_band1', Settings.FLastBand[1]);
+      ini.WriteInteger('main', 'last_mode1', Settings.FLastMode[1]);
+      ini.WriteInteger('main', 'last_band2', Settings.FLastBand[2]);
+      ini.WriteInteger('main', 'last_mode2', Settings.FLastMode[2]);
 
       // Last CQ mode
       ini.WriteBool('main', 'last_cqmode', Settings.FLastCQMode);
@@ -2098,15 +2114,17 @@ begin
    dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
    dmZLogKeyer.UseWkIgnoreSpeedPot := Settings._use_wk_ignore_speed_pot;
+   dmZLogKeyer.UseWkAlways9600 := Settings._use_wk_always9600;
    dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
+   dmZLogKeyer.So2rTxRigC := Settings._so2r_tx_rigc;
 
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
    // RIGコントロールと同じポートの場合は無しとする
-   for i := 0 to 1 do begin
+   for i := 0 to 3 do begin
       if (Settings.FRigControl[i + 1].FControlPort <> Settings.FRigControl[i + 1].FKeyingPort) then begin
          dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FKeyingPort);
       end
@@ -2114,11 +2132,12 @@ begin
          dmZLogKeyer.KeyingPort[i] := tkpNone;
       end;
    end;
-   dmZLogKeyer.KeyingPort[2] := TKeyingPort(Settings.FRigControl[3].FKeyingPort);
-
-   dmZLogKeyer.KeyingSignalReverse[0] := Settings.FRigControl[1].FKeyingIsRTS;
-   dmZLogKeyer.KeyingSignalReverse[1] := Settings.FRigControl[2].FKeyingIsRTS;
-   dmZLogKeyer.KeyingSignalReverse[2] := Settings.FRigControl[3].FKeyingIsRTS;
+   dmZLogKeyer.KeyingPort[4] := TKeyingPort(Settings.FRigControl[5].FKeyingPort);
+   dmZLogKeyer.KeyingPortConfig[0] := Settings.FRigControl[1].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[1] := Settings.FRigControl[2].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[2] := Settings.FRigControl[3].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[3] := Settings.FRigControl[4].FKeyingPortConfig;
+   dmZLogKeyer.KeyingPortConfig[4] := Settings.FRigControl[5].FKeyingPortConfig;
 
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
@@ -2345,24 +2364,24 @@ begin
    end;
 end;
 
-function TdmZLogGlobal.GetLastBand(): TBand;
+function TdmZLogGlobal.GetLastBand(Index: Integer): TBand;
 begin
-   Result := TBand(Settings.FLastBand);
+   Result := TBand(Settings.FLastBand[Index]);
 end;
 
-procedure TdmZLogGlobal.SetLastBand(b: TBand);
+procedure TdmZLogGlobal.SetLastBand(Index: Integer; b: TBand);
 begin
-   Settings.FLastBand := Integer(b);
+   Settings.FLastBand[Index] := Integer(b);
 end;
 
-function TdmZLogGlobal.GetLastMode(): TMode;
+function TdmZLogGlobal.GetLastMode(Index: Integer): TMode;
 begin
-   Result := TMode(Settings.FLastMode);
+   Result := TMode(Settings.FLastMode[Index]);
 end;
 
-procedure TdmZLogGlobal.SetLastMode(m: TMode);
+procedure TdmZLogGlobal.SetLastMode(Index: Integer; m: TMode);
 begin
-   Settings.FLastMode := Integer(m);
+   Settings.FLastMode[Index] := Integer(m);
 end;
 
 procedure TdmZLogGlobal.SetPaddleReverse(boo: boolean);
@@ -3253,6 +3272,12 @@ begin
    O := TCommPort.Create();
    O.Number := 21;
    O.Name := 'USBIF4CW';
+   O.Keying := True;
+   list.Add(O);
+
+   O := TCommPort.Create();
+   O.Number := 22;
+   O.Name := 'RIG';
    O.Keying := True;
    list.Add(O);
 

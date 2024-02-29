@@ -324,9 +324,9 @@ object MainForm: TMainForm
         object labelRig3Title: TLabel
           Left = 25
           Top = 5
-          Width = 35
+          Width = 40
           Height = 18
-          Caption = 'RIG3'
+          Caption = 'RIG-C'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -435,9 +435,9 @@ object MainForm: TMainForm
         end
         object checkUseRig3: TCheckBox
           Left = 7
-          Top = 7
+          Top = 6
           Width = 18
-          Height = 13
+          Height = 15
           Checked = True
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -451,12 +451,12 @@ object MainForm: TMainForm
         end
         object checkWithRig1: TCheckBox
           Left = 451
-          Top = 7
-          Width = 31
-          Height = 13
+          Top = 6
+          Width = 34
+          Height = 15
           TabStop = False
           Anchors = [akTop, akRight]
-          Caption = '1'
+          Caption = 'A'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -15
@@ -470,12 +470,12 @@ object MainForm: TMainForm
         object checkWithRig2: TCheckBox
           Tag = 1
           Left = 488
-          Top = 7
-          Width = 28
-          Height = 13
+          Top = 6
+          Width = 34
+          Height = 15
           TabStop = False
           Anchors = [akTop, akRight]
-          Caption = '2'
+          Caption = 'B'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -15
@@ -591,9 +591,9 @@ object MainForm: TMainForm
           object labelRig1Title: TLabel
             Left = 6
             Top = 5
-            Width = 35
+            Width = 40
             Height = 18
-            Caption = 'RIG1'
+            Caption = 'RIG-A'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
@@ -732,9 +732,9 @@ object MainForm: TMainForm
           object labelRig2Title: TLabel
             Left = 5
             Top = 5
-            Width = 35
+            Width = 40
             Height = 18
-            Caption = 'RIG2'
+            Caption = 'RIG-B'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
@@ -5785,6 +5785,7 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
+        ExplicitLeft = 420
       end
     end
   end
@@ -6023,8 +6024,12 @@ object MainForm: TMainForm
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
+      object menuHardwareSettings: TMenuItem
+        Caption = '&Hardware settings'
+        OnClick = menuHardwareSettingsClick
+      end
       object menuOptions: TMenuItem
-        Caption = '&Options'
+        Caption = '&Operation settings'
         OnClick = menuOptionsClick
       end
       object menuBandPlanSettings: TMenuItem
@@ -6053,15 +6058,41 @@ object MainForm: TMainForm
       object N6: TMenuItem
         Caption = '-'
       end
-      object mnDownload: TMenuItem
+      object menuDownloadAllLogs: TMenuItem
         Caption = 'Download log from Z-Server (Erase local log)'
         Enabled = False
-        OnClick = Load1Click
+        OnClick = menuDownloadAllLogsClick
       end
-      object mnMerge: TMenuItem
+      object menuMergeAllLogs: TMenuItem
         Caption = 'Merge local log with Z-Server'
         Enabled = False
-        OnClick = mnMergeClick
+        OnClick = menuMergeAllLogsClick
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object menuDownloadOplist: TMenuItem
+        Caption = 'Download operator list from Z-Server'
+        Enabled = False
+        OnClick = menuDownloadOplistClick
+      end
+      object menuDownloadSounds: TMenuItem
+        Caption = 'Download sound files from Z-Server'
+        Enabled = False
+        OnClick = menuDownloadSoundsClick
+      end
+      object N14: TMenuItem
+        Caption = '-'
+      end
+      object menuUploadOplist: TMenuItem
+        Caption = 'Upload oprator list to Z-Server'
+        Enabled = False
+        OnClick = menuUploadOplistClick
+      end
+      object menuUploadSounds: TMenuItem
+        Caption = 'Upload sound files to Z-Server'
+        Enabled = False
+        OnClick = menuUploadSoundsClick
       end
     end
     object PluginMenu: TMenuItem
@@ -7484,6 +7515,14 @@ object MainForm: TMainForm
       Caption = 'Show this TX only'
       OnExecute = actionShowCurrentTxOnlyExecute
     end
+    object actionLogging: TAction
+      Caption = 'actionLogging'
+      OnExecute = actionLoggingExecute
+    end
+    object actionSetRigWPM: TAction
+      Caption = 'Send WPM command to RIG'
+      OnExecute = actionSetRigWPMExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
@@ -7503,6 +7542,7 @@ object MainForm: TMainForm
   end
   object timerCqRepeat: TTimer
     Enabled = False
+    Interval = 100
     OnTimer = timerCqRepeatTimer
     Left = 240
     Top = 171

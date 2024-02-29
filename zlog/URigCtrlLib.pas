@@ -20,6 +20,22 @@ type
   TRigUpdateStatusEvent = procedure(Sender: TObject; rigno: Integer; currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode) of object;
   TRigErrorEvent = procedure(Sender: TObject; msg: string) of object;
 
+  TRig = class;
+
+  TMemCh = class
+    FFreq: TFrequency;
+    FMode: TMode;
+    FRig: TRig;
+  public
+    constructor Create(); overload;
+    constructor Create(AOwner: TRig); overload;
+    destructor Destroy(); override;
+    procedure Call();
+    procedure Write(f: TFrequency; m: TMode);
+    procedure Clear();
+  end;
+  TMemChArray = array[1..5] of TMemCh;
+
   TRig = class
   protected
     FFILO : Boolean; // FILO buffer flag used for YAESU
@@ -47,6 +63,9 @@ type
 
     FStopRequest: Boolean;
 
+    FPlayMessageCwSupported: Boolean;
+    FPlayMessagePhSupported: Boolean;
+
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
 
@@ -63,6 +82,14 @@ type
     FLastCall: string;
     FLastRcvd: string;
 
+    FPortConfig: TPortConfig;
+
+    FUseMemChScan: Boolean;
+    FMemCh: TMemChArray;
+    FMemScan: Boolean;
+    FMemScanInterval: Integer;
+    FMemScanCount: Integer;
+    FMemScanNo: Integer;
     function GetCurrentFreq(Index: Integer): TFrequency;
     procedure SetCurrentFreq(Index: Integer; freq: TFrequency);
     function GetFreqMem(b: TBand; m: TMode): TFrequency;
@@ -75,10 +102,11 @@ type
     function CurrentFreqHz : TFrequency; //in Hz
     function CurrentFreqKHz : TFrequency;
     function CurrentFreqkHzStr : string;
-    procedure PollingProcess; virtual;
+    procedure PollingProcess(); virtual;
+    procedure MemScanProcess(); virtual;
     procedure SetMode(Q: TQSO); overload; virtual;
     procedure SetMode(M: TMode); overload; virtual;
-    procedure SetBand(Q: TQSO); virtual; // abstract;
+    procedure SetBand(rigset: Integer; Q: TQSO); virtual; // abstract;
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
@@ -92,11 +120,15 @@ type
     procedure UpdateStatus; virtual;// Renews RigControl Window and Main Window
     procedure WriteData(str : AnsiString);
     procedure InquireStatus; virtual; abstract;
-    procedure MoveToLastFreq; virtual;
+    procedure MoveToLastFreq(fFreq: TFrequency); virtual;
     procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
     procedure StopRequest(); virtual;
+
+    procedure SetWPM(wpm: Integer); virtual;
+    procedure PlayMessageCW(msg: string); virtual;
+    procedure StopMessageCW(); virtual;
 
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
@@ -106,6 +138,7 @@ type
     property MaxBand: TBand read _maxband write _maxband;
     property CurrentBand: TBand read _currentband write _currentband;
     property CurrentMode: TMode read _currentmode write _currentmode;
+    property RigNumber: Integer read _rignumber;
     property CurrentVFO: Integer read _currentvfo write _currentvfo;
     property FreqOffset: TFrequency read _freqoffset write _freqoffset;
     property CurrentFreq[Index: Integer]: TFrequency read GetCurrentFreq write SetCurrentFreq;
@@ -119,6 +152,15 @@ type
     property Rit: Boolean read FRit write SetRit;
     property Xit: Boolean read FXit write SetXit;
     property RitOffset: Integer read FRitOffset write SetRitOffset;
+
+    property PlayMessageCwSupported: Boolean read FPlayMessageCwSupported write FPlayMessageCwSupported;
+    property PlayMessagePhSupported: Boolean read FPlayMessagePhSupported write FPlayMessagePhSupported;
+
+    property PortConfig: TPortConfig read FPortConfig write FPortConfig;
+
+    property UseMemChScan: Boolean read FUseMemChScan write FUseMemChScan;
+    property MemCh: TMemChArray read FMemCh;
+    property MemScan: Boolean read FMemScan write FMemScan;
 
     property OnUpdateStatus: TRigUpdateStatusEvent read FOnUpdateStatus write FOnUpdateStatus;
     property OnError: TRigErrorEvent read FOnError write FOnError;
@@ -167,13 +209,13 @@ type
     procedure InquireStatus; override;
     procedure ParseBufferString; override;
     procedure Reset; override;
-    procedure SetBand(Q: TQSO); override;
+    procedure SetBand(rigset: Integer; Q: TQSO); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
   end;
 
-  TRigArray = array[1..3] of TRig;
+  TRigArray = array[1..5] of TRig;
   TFreqArray = array [b19..HiBand] of TFrequency;
 
 function hex2dec(i: Integer): Integer;
@@ -191,6 +233,7 @@ var
    B: TBand;
    M: TMode;
    prtnr: Integer;
+   i: Integer;
 begin
    // inherited
    for M := mCW to mOther do begin
@@ -231,9 +274,9 @@ begin
    FComm.Disconnect;
    FComm.Port := TPortNumber(prtnr);
    FComm.BaudRate := BaudRateToSpeed[ dmZlogGlobal.Settings.FRigControl[RigNum].FSpeed ];
-   FComm.HwFlow := hfRTSCTS;
+   FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
-   FComm.EnableDTROnOpen := True;
+   FComm.EnableDTROnOpen := False;
 
    TerminatorCode := ';';
    BufferString := '';
@@ -273,9 +316,26 @@ begin
    FOnError := nil;
 
    FStopRequest := False;
+
+   FPlayMessageCwSupported := False;
+   FPlayMessagePhSupported := False;
+
+   FPortConfig.FRts := paNone;
+   FPortConfig.FDtr := paNone;
+
+   FUseMemChScan := True;
+   for i := Low(FMemCh) to High(FMemCh) do begin
+      FMemCh[i] := TMemCh.Create(Self);
+   end;
+   FMemScan := False;
+   FMemScanInterval := dmZLogGlobal.Settings._memscan_interval * 1000;
+   FMemScanCount := 0;
+   FMemScanNo := 1;
 end;
 
 destructor TRig.Destroy;
+var
+   i: Integer;
 begin
    inherited;
    if Assigned(FPollingTimer) then begin
@@ -284,15 +344,51 @@ begin
    if Assigned(FComm) then begin
       FComm.Disconnect();
    end;
+
+   for i := Low(FMemCh) to High(FMemCh) do begin
+      FMemCh[i].Free();
+   end;
 end;
 
 procedure TRig.Initialize();
 begin
    FPollingTimer.Interval := FPollingInterval;
    FComm.Connect();
-   if FComm.HwFlow = hfNONE then begin
-      FComm.ToggleDTR(False);
-      FComm.ToggleRTS(False);
+
+   case FPortConfig.FRts of
+      paAlwaysOn: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(True);
+      end;
+
+      paAlwaysOff: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(False);
+      end;
+
+      paHandshake: begin
+         FComm.HwFlow := hfRtsCts;
+         FComm.ToggleRTS(True);
+      end
+
+      else begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(True);
+      end;
+   end;
+
+   case FPortConfig.FDtr of
+      paAlwaysOn: begin
+         FComm.ToggleDTR(True);
+      end;
+
+      paNone, paAlwaysOff: begin
+         FComm.ToggleDTR(False);
+      end;
+
+      else begin
+         FComm.ToggleDTR(True);
+      end;
    end;
 
    FStopRequest := False;
@@ -356,8 +452,44 @@ begin
    end;
 end;
 
-procedure TRig.PollingProcess;
+procedure TRig.PollingProcess();
 begin
+end;
+
+procedure TRig.MemScanProcess();
+var
+   msec: Integer;
+begin
+   if (FMemCh[1].FFreq = 0) and
+      (FMemCh[2].FFreq = 0) and
+      (FMemCh[3].FFreq = 0) and
+      (FMemCh[4].FFreq = 0) and
+      (FMemCh[5].FFreq = 0) then begin
+      Exit;
+   end;
+
+   // 経過時間
+   msec := FMemScanCount * FPollingInterval;
+
+   // スキャン間隔経過か？
+   if (msec > FMemScanInterval) then begin
+      // 次のMemCh番号
+      repeat
+         Inc(FMemScanNo);
+         if FMemScanNo > High(FMemCh) then begin
+            FMemScanNo := 1;
+         end;
+      until FMemCh[FMemScanNo].FFreq > 0;
+
+      // 次のMemChに移る
+      FMemCh[FMemScanNo].Call();
+
+      // カウントは０から
+      FMemScanCount := 0;
+   end
+   else begin
+      Inc(FMemScanCount);
+   end;
 end;
 
 procedure TRig.SetStopBits(i: byte);
@@ -414,6 +546,21 @@ begin
    FStopRequest := True;
 end;
 
+procedure TRig.SetWPM(wpm: Integer);
+begin
+//
+end;
+
+procedure TRig.PlayMessageCW(msg: string);
+begin
+//
+end;
+
+procedure TRig.StopMessageCW();
+begin
+//
+end;
+
 function TRig.Selected: Boolean;
 begin
    if _rignumber = MainForm.RigControl.CurrentRigNumber then
@@ -422,22 +569,16 @@ begin
       Result := False;
 end;
 
-procedure TRig.MoveToLastFreq();
-var
-   b: TBand;
+procedure TRig.MoveToLastFreq(fFreq: TFrequency);
 begin
-   SetFreq(FLastFreq, False);
-
-   // Antenna Select
-   b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
-   AntSelect(dmZLogGlobal.Settings._useant[b]);
+   SetFreq(fFreq, False);
 
    if FLastMode <> _currentmode then begin
       SetMode(FLastMode);
 
       // もう一度周波数を設定(side bandずれ対策)
       if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
-         SetFreq(FLastFreq, False);
+         SetFreq(fFreq, False);
       end;
    end;
 end;
@@ -466,7 +607,7 @@ begin
    end;
 end;
 
-procedure TRig.SetBand(Q: TQSO);
+procedure TRig.SetBand(rigset: Integer; Q: TQSO);
 var
    f: TFrequency;
 begin
@@ -495,7 +636,7 @@ begin
    SetFreq(f, Q.CQ);
 
    // Antenna Select
-   AntSelect(dmZLogGlobal.Settings._useant[Q.Band]);
+   AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[Q.Band]);
 end;
 
 procedure TRig.RitClear();
@@ -753,6 +894,8 @@ begin
          FreqMem[B, M] := 0;
       end;
    end;
+
+   FUseMemChScan := False;
 end;
 
 procedure TOmni.ExecuteCommand(S: AnsiString);
@@ -929,6 +1072,8 @@ begin
    end;
 
    Self.name := 'VirtualRig';
+
+   FUseMemChScan := False;
 end;
 
 destructor TVirtualRig.Destroy;
@@ -961,7 +1106,7 @@ begin
    Inherited;
 end;
 
-procedure TVirtualRig.SetBand(Q: TQSO);
+procedure TVirtualRig.SetBand(rigset: Integer; Q: TQSO);
 begin
    _currentband := Q.Band;
 end;
@@ -984,6 +1129,51 @@ end;
 procedure TVirtualRig.SetVFO(i : integer);
 begin
    Inherited;
+end;
+
+{ TMemCh }
+
+constructor TMemCh.Create();
+begin
+   FFreq := 0;
+   FMode := mCW;
+   FRig := nil;
+end;
+
+constructor TMemCh.Create(AOwner: TRig);
+begin
+   Inherited Create();
+   FRig := AOwner;
+end;
+
+destructor TMemCh.Destroy();
+begin
+//
+end;
+
+procedure TMemCh.Call();
+var
+   f: TFrequency;
+   m: TMode;
+begin
+   f := FFreq;
+   m := FMode;
+   if f > 0 then begin
+      FRig.SetFreq(f, False);
+      FRig.SetMode(m);
+   end;
+end;
+
+procedure TMemCh.Write(f: TFrequency; m: TMode);
+begin
+   FFreq := f;
+   FMode := m;
+end;
+
+procedure TMemCh.Clear();
+begin
+   FFreq := 0;
+   FMode := mCW;
 end;
 
 function hex2dec(i: Integer): Integer;

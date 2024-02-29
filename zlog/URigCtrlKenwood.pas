@@ -39,6 +39,9 @@ type
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure Initialize(); override;
+    procedure SetWPM(wpm: Integer); override;
+    procedure PlayMessageCW(msg: string); override;
+    procedure StopMessageCW(); override;
   end;
 
   TTS2000P = class(TTS2000)
@@ -439,6 +442,7 @@ begin
    Inherited;
    TerminatorCode := ';';
    FComm.StopBits := sb1BITS;
+   FPlayMessageCwSupported := True;
 end;
 
 destructor TTS2000P.Destroy;
@@ -478,6 +482,37 @@ begin
    end;
 
    Inherited;
+end;
+
+procedure TTS2000.SetWPM(wpm: Integer);
+var
+   CMD: AnsiString;
+begin
+   CMD := AnsiString('KS' + RightStr('000' + IntToStr(wpm), 3) + ';');
+   WriteData(CMD);
+end;
+
+// 0  0  0  0  0000011111111112222222 2  2
+// 1  2  3  4  5678901234567890123456 7  8
+// K  Y  P1 P2                        P2 ;   max 24 characters
+procedure TTS2000.PlayMessageCW(msg: string);
+var
+   CMD: AnsiString;
+begin
+   if Length(msg) > 24 then begin
+      Exit;
+   end;
+
+   CMD := AnsiString('KY' + ' ' + LeftStr(msg + DupeString(' ', 24), 24) + ';');
+   WriteData(CMD);
+end;
+
+procedure TTS2000.StopMessageCW();
+var
+   CMD: AnsiString;
+begin
+   CMD := AnsiString('KY0;');
+   WriteData(CMD);
 end;
 
 { TS2000(Polling) }

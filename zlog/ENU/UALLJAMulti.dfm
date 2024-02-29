@@ -52,8 +52,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel2: TRotateLabel
           Left = 95
           Top = 4
-          Width = 14
-          Height = 15
+          Width = 15
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '3.5'
@@ -67,8 +67,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel3: TRotateLabel
           Left = 107
           Top = 13
-          Width = 14
-          Height = 6
+          Width = 6
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '7'
@@ -82,8 +82,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel4: TRotateLabel
           Left = 119
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '14'
@@ -97,8 +97,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel5: TRotateLabel
           Left = 131
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '21'
@@ -112,8 +112,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel6: TRotateLabel
           Left = 143
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '28'
@@ -127,8 +127,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel7: TRotateLabel
           Left = 155
           Top = 7
-          Width = 14
-          Height = 12
+          Width = 12
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '50'
@@ -142,8 +142,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel1: TRotateLabel
           Left = 82
           Top = 4
-          Width = 14
-          Height = 15
+          Width = 15
+          Height = 14
           Escapement = 90
           TextStyle = tsNone
           Caption = '1.9'

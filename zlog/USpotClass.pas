@@ -780,6 +780,9 @@ begin
          // SPC‚©‚ç‚àæ“¾‚Å‚«‚È‚¢ê‡‚ÍLookup Server‚ÉˆË—Š‚·‚é
          if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
             Sp.Number := ExecLookup(Sp.Call, Sp.Band);
+            if Sp.Number = '' then begin
+               Sp.SpotGroup := 3;
+            end;
          end;
          SD.Free();
       end;

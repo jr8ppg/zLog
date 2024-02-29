@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{F896C089-DB49-4E74-907F-8C7B4E26EDF6}</ProjectGuid>
+        <ProjectGuid>{C19F1CCA-6904-4FAD-BD6F-FB1144494960}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="Zlog.dproj">

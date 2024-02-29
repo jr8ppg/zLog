@@ -888,6 +888,10 @@ var
 begin
    // 右クリックされた場所のスポットを選択
    Grid.MouseToCell(MousePos.X, MousePos.Y, C, R);
+   if (R = -1) or (C = -1) then begin
+      Exit;
+   end;
+
    Grid.Row := R;
    Grid.Col := C;
 

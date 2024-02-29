@@ -3,8 +3,9 @@ unit HelperLib;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids, Vcl.CategoryButtons;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
+  System.Math, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.Grids, Vcl.CategoryButtons;
 
 type
   TListBoxHelper = class helper for TListBox
@@ -17,6 +18,8 @@ type
   public
     procedure ShowFirst();
     procedure ShowLast(datarows: Integer = -1);
+    function GetColBoundary(): Integer;
+    procedure AdjustColWidth(C: Integer);
   end;
 
   TCategoryButtonsHelper = class helper for TCategoryButtons
@@ -77,6 +80,72 @@ begin
          TopRow := (datarows + FixedRows) - VisibleRowCount;
       end;
    end;
+end;
+
+function TStringGridHelper.GetColBoundary(): Integer;
+var
+   i: Integer;
+   pt: TPoint;
+   rect: TRect;
+   w: Integer;
+   coord: TGridCoord;
+begin
+   // ダブルクリック位置を取得
+   GetCursorPos(pt);
+   pt := Self.ScreenToClient(pt);
+
+   // １行目以外は無かったことにする
+   coord := Self.MouseCoord(pt.X, pt.Y);
+   if (coord.Y > 0) then begin
+      Result := -1;
+      Exit;
+   end;
+
+   // ダブルクリックされたセルを探す
+   w := 0;
+
+   rect.Top := 0;
+   rect.Bottom := Self.RowHeights[0];
+
+   for i := 0 to Self.ColCount - 1 do begin
+      // 隣のセルとの境界座標
+      w := w + Self.ColWidths[i];
+
+      // 前後5pixelを有効クリック範囲とする
+      rect.Left := w - 10;
+      rect.Right := w + 10;
+
+      // 範囲にあればそこがセル位置
+      if PtInRect(rect, pt) = true then begin
+         Result := i;
+         Exit;
+      end;
+   end;
+
+   // 無かった
+   Result := -1;
+end;
+
+procedure TStringGridHelper.AdjustColWidth(C: Integer);
+var
+   R: Integer;
+   L: Integer;
+   w: Integer;
+begin
+   // 最大長さを求める
+   L := 0;
+   for R := 1 to Self.RowCount - 1 do begin
+      L := Max(L, Length(Self.Cells[C, R]));
+   end;
+
+   // １文字あたりの幅
+   w := Self.Canvas.TextWidth('X');
+
+   // 幅を設定
+   Self.ColWidths[C] := w * (L + 1);
+
+   // 再描画
+   Self.Invalidate();
 end;
 
 { TCategoryButtonsHelper }
