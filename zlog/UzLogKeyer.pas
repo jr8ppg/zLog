@@ -953,7 +953,9 @@ begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetPttFlag(PTTON);
-            SendUsbPortData(nID);
+            if UsePaddleKeyer = False then begin
+               SendUsbPortData(nID);
+            end;
          end;
          LeaveCriticalSection(FUsbPortDataLock);
          Exit;
@@ -1394,7 +1396,9 @@ begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(True);
-            SendUsbPortData(nID);
+            if UsePaddleKeyer = False then begin
+               SendUsbPortData(nID);
+            end;
          end;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
@@ -1417,7 +1421,9 @@ begin
          EnterCriticalSection(FUsbPortDataLock);
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(False);
-            SendUsbPortData(nID);
+            if UsePaddleKeyer = False then begin
+               SendUsbPortData(nID);
+            end;
          end;
          LeaveCriticalSection(FUsbPortDataLock);
       end;
