@@ -12976,11 +12976,9 @@ var
    rig: TRig;
 begin
    nID := GetTxRigID();
-   if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
-      rig := RigControl.Rigs[nID + 1];
-      if rig <> nil then begin
-         rig.SetWPM(wpm);
-      end;
+   rig := RigControl.Rigs[nID + 1];
+   if rig <> nil then begin
+      rig.SetWPM(wpm);
    end;
 end;
 
