@@ -1,4 +1,4 @@
-unit Main;
+﻿unit Main;
 
 {
   zLog for Windows 令和Edition
@@ -8542,11 +8542,13 @@ begin
       end;
    end;
 
-// SO2Rではモード変更不要
-//   if CurrentQSO.Mode <> m then begin
-//      UpdateMode(m);
-//   end;
-//
+   // SO2Rではモード変更不要
+   if dmZLogGlobal.Settings._operate_style = os1Radio then begin
+      if CurrentQSO.Mode <> m then begin
+         UpdateMode(m);
+      end;
+   end;
+
    if rig <> nil then begin
       rig.SetMode(CurrentQSO);
    end;
