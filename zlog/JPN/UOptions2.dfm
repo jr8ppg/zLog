@@ -25,6 +25,8 @@ object formOptions2: TformOptions2
     ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 436
+    ExplicitHeight = 432
     object tabsheetPreferences: TTabSheet
       Caption = #21508#31278#35373#23450
       object Label40: TLabel
@@ -831,9 +833,9 @@ object formOptions2: TformOptions2
         object checkSelectLastOperator: TCheckBox
           Left = 11
           Top = 218
-          Width = 182
+          Width = 190
           Height = 17
-          Caption = 'Select last operator on startup'
+          Caption = #36215#21205#26178#12289#26368#24460#12398'OP'#12434#36984#25246
           ParentShowHint = False
           ShowHint = True
           TabOrder = 4
@@ -1990,7 +1992,7 @@ object formOptions2: TformOptions2
         object radioSuperCheck1: TRadioButton
           Left = 64
           Top = 20
-          Width = 70
+          Width = 83
           Height = 17
           Caption = 'ZLO/ZLOX'
           TabOrder = 1
@@ -1999,7 +2001,7 @@ object formOptions2: TformOptions2
         object radioSuperCheck2: TRadioButton
           Left = 153
           Top = 20
-          Width = 41
+          Width = 96
           Height = 17
           Caption = #20001#26041
           TabOrder = 2
@@ -2025,7 +2027,7 @@ object formOptions2: TformOptions2
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
-          Width = 113
+          Width = 127
           Height = 17
           Caption = #23436#20840#19968#33268#12391#12495#12452#12521#12452#12488
           TabOrder = 0
@@ -2157,9 +2159,9 @@ object formOptions2: TformOptions2
         end
         object checkFocusedBold: TCheckBox
           Left = 145
-          Top = 47
+          Top = 46
           Width = 45
-          Height = 14
+          Height = 22
           Caption = #22826#23383
           TabOrder = 4
           OnClick = checkFocusedBoldClick
@@ -2183,7 +2185,7 @@ object formOptions2: TformOptions2
         Top = 260
         Width = 423
         Height = 140
-        Caption = #12463#12452#12483#12463'QSY'
+        Caption = #12463#12452#12483#12463'Memo'
         TabOrder = 1
         object Label63: TLabel
           Left = 16
@@ -3444,6 +3446,8 @@ object formOptions2: TformOptions2
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 432
+    ExplicitWidth = 436
     DesignSize = (
       440
       37)

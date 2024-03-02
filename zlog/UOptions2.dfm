@@ -25,6 +25,8 @@ object formOptions2: TformOptions2
     ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 436
+    ExplicitHeight = 432
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
@@ -1990,7 +1992,7 @@ object formOptions2: TformOptions2
         object radioSuperCheck1: TRadioButton
           Left = 64
           Top = 20
-          Width = 70
+          Width = 83
           Height = 17
           Caption = 'ZLO/ZLOX'
           TabOrder = 1
@@ -1999,7 +2001,7 @@ object formOptions2: TformOptions2
         object radioSuperCheck2: TRadioButton
           Left = 153
           Top = 20
-          Width = 41
+          Width = 96
           Height = 17
           Caption = 'Both'
           TabOrder = 2
@@ -2025,7 +2027,7 @@ object formOptions2: TformOptions2
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
-          Width = 113
+          Width = 127
           Height = 17
           Caption = 'Highlight FullMatch'
           TabOrder = 0
@@ -2157,9 +2159,9 @@ object formOptions2: TformOptions2
         end
         object checkFocusedBold: TCheckBox
           Left = 145
-          Top = 47
+          Top = 46
           Width = 45
-          Height = 14
+          Height = 22
           Caption = 'Bold'
           TabOrder = 4
           OnClick = checkFocusedBoldClick
@@ -3444,6 +3446,8 @@ object formOptions2: TformOptions2
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 432
+    ExplicitWidth = 436
     DesignSize = (
       440
       37)
