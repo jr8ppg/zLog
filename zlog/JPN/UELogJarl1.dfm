@@ -11,10 +11,8 @@ object formELogJarl1: TformELogJarl1
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 12
   object Label1: TLabel
     Left = 24
@@ -136,14 +134,14 @@ object formELogJarl1: TformELogJarl1
     Caption = #30331#37682#12463#12521#12502#21517#31216
   end
   object Label21: TLabel
-    Left = 86
+    Left = 321
     Top = 577
     Width = 24
     Height = 15
     Caption = #26085#20184
   end
   object Label23: TLabel
-    Left = 267
+    Left = 578
     Top = 577
     Width = 24
     Height = 12
@@ -379,7 +377,7 @@ object formELogJarl1: TformELogJarl1
     Text = #12467#12531#12486#12473#12488
   end
   object edDate: TEdit
-    Left = 116
+    Left = 405
     Top = 574
     Width = 121
     Height = 21
@@ -393,7 +391,7 @@ object formELogJarl1: TformELogJarl1
     Text = #12467#12531#12486#12473#12488
   end
   object edSignature: TEdit
-    Left = 297
+    Left = 666
     Top = 574
     Width = 121
     Height = 21
@@ -436,7 +434,7 @@ object formELogJarl1: TformELogJarl1
     TabOrder = 14
   end
   object GroupBox1: TGroupBox
-    Left = 504
+    Left = 505
     Top = 8
     Width = 281
     Height = 449
@@ -1061,7 +1059,8 @@ object formELogJarl1: TformELogJarl1
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 22
-    ExplicitTop = 600
+    ExplicitTop = 602
+    ExplicitWidth = 789
     object buttonCreateLog: TButton
       Left = 356
       Top = 3
@@ -1093,14 +1092,14 @@ object formELogJarl1: TformELogJarl1
   object GroupBox2: TGroupBox
     Left = 24
     Top = 498
-    Width = 689
+    Width = 762
     Height = 68
     Caption = #23459#35475#25991
     TabOrder = 18
     object mOath: TMemo
-      Left = 74
+      Left = 72
       Top = 14
-      Width = 607
+      Width = 681
       Height = 45
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1115,7 +1114,7 @@ object formELogJarl1: TformELogJarl1
       TabOrder = 0
     end
     object radioOrganizerJarl: TRadioButton
-      Left = 12
+      Left = 10
       Top = 17
       Width = 56
       Height = 17
@@ -1126,8 +1125,8 @@ object formELogJarl1: TformELogJarl1
       OnClick = radioOrganizerJarlClick
     end
     object radioOrganizerOther: TRadioButton
-      Left = 12
-      Top = 36
+      Left = 10
+      Top = 37
       Width = 56
       Height = 17
       Caption = #20027#20652#32773
@@ -1141,6 +1140,6 @@ object formELogJarl1: TformELogJarl1
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Save E-Log file'
     Left = 736
-    Top = 476
+    Top = 468
   end
 end
