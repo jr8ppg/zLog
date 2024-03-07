@@ -310,6 +310,7 @@ type
     Label5: TLabel;
     Label3: TLabel;
     comboSo2rTxRigC: TComboBox;
+    checkSo2rIgnoreModeChange: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1256,6 +1257,7 @@ begin
       end;
       Settings._so2r_cq_msg_number  := comboSo2rCqMsgNumber.ItemIndex + 1;
       Settings._so2r_2bsiq_pluswpm  := spinSo2rAccelerateCW.Value;
+      Settings._so2r_ignore_mode_change := checkSo2rIgnoreModeChange.Checked;
 
       //
       // Hardware1
@@ -1508,6 +1510,7 @@ begin
       comboSo2rCqMsgNumber.ItemIndex := Settings._so2r_cq_msg_number - 1;
 
       spinSo2rAccelerateCW.Value:= Settings._so2r_2bsiq_pluswpm;
+      checkSo2rIgnoreModeChange.Checked := Settings._so2r_ignore_mode_change;
 
 
       //

@@ -8543,7 +8543,8 @@ begin
    end;
 
    // SO2Rではモード変更不要
-   if dmZLogGlobal.Settings._operate_style = os1Radio then begin
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) or
+      ((dmZLogGlobal.Settings._operate_style = os2Radio) and (dmZLogGlobal.Settings._so2r_ignore_mode_change = False)) then begin
       if CurrentQSO.Mode <> m then begin
          UpdateMode(m);
       end;
