@@ -1,4 +1,4 @@
-unit Main;
+﻿unit Main;
 
 {
   zLog for Windows 令和Edition
@@ -8542,11 +8542,14 @@ begin
       end;
    end;
 
-// SO2Rではモード変更不要
-//   if CurrentQSO.Mode <> m then begin
-//      UpdateMode(m);
-//   end;
-//
+   // SO2Rではモード変更不要
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) or
+      ((dmZLogGlobal.Settings._operate_style = os2Radio) and (dmZLogGlobal.Settings._so2r_ignore_mode_change = False)) then begin
+      if CurrentQSO.Mode <> m then begin
+         UpdateMode(m);
+      end;
+   end;
+
    if rig <> nil then begin
       rig.SetMode(CurrentQSO);
    end;
@@ -12975,11 +12978,9 @@ var
    rig: TRig;
 begin
    nID := GetTxRigID();
-   if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
-      rig := RigControl.Rigs[nID + 1];
-      if rig <> nil then begin
-         rig.SetWPM(wpm);
-      end;
+   rig := RigControl.Rigs[nID + 1];
+   if rig <> nil then begin
+      rig.SetWPM(wpm);
    end;
 end;
 

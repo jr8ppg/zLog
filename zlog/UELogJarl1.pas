@@ -307,6 +307,12 @@ begin
 
       edDate.Text := FormatDateTime('yyyy"”N"m"ŒŽ"d"“ú"',Now);
 
+      case ini.ReadInteger('SummaryInfo', 'Organizer', 0) of
+         0: radioOrganizerJarl.Checked := True;
+         1: radioOrganizerOther.Checked := True;
+         else radioOrganizerJarl.Checked := True;
+      end;
+
       if Log.ScoreCoeff > 0 then begin
          editFdcoeff.Text := FloatToStr(Log.ScoreCoeff);
       end
@@ -426,6 +432,13 @@ begin
       ini.WriteString('SummaryInfo', 'Oath3', mOath.Lines[2]);
       ini.WriteString('SummaryInfo', 'Oath4', mOath.Lines[3]);
       ini.WriteString('SummaryInfo', 'Oath5', mOath.Lines[4]);
+
+      if radioOrganizerJarl.Checked = True then begin
+         ini.WriteInteger('SummaryInfo', 'Organizer', 0);
+      end
+      else begin
+         ini.WriteInteger('SummaryInfo', 'Organizer', 1);
+      end;
 
       ini.UpdateFile();
    finally

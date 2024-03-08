@@ -31,16 +31,16 @@ object formOptions: TformOptions
       Caption = #36939#29992#12473#12479#12452#12523
       ImageIndex = 7
       object groupSo2rSupport: TGroupBox
-        Left = 6
-        Top = 139
+        Left = 10
+        Top = 119
         Width = 423
-        Height = 258
+        Height = 278
         Caption = 'SO2R'#12458#12503#12471#12519#12531
         TabOrder = 1
         object Label115: TLabel
           Left = 20
           Top = 229
-          Width = 210
+          Width = 246
           Height = 13
           Caption = 'TAB'#12461#12540#25276#19979#24460#12289'CW'#36895#24230#12434#21152#36895#12377#12427
         end
@@ -259,17 +259,25 @@ object formOptions: TformOptions
           TabOrder = 2
           Value = 3
         end
+        object checkSo2rIgnoreModeChange: TCheckBox
+          Left = 20
+          Top = 252
+          Width = 246
+          Height = 17
+          Caption = #12509#12483#12503#12450#12483#12503#12513#12491#12517#12540#12363#12425#12398#12514#12540#12489#22793#26356#12434#28961#35222
+          TabOrder = 3
+        end
       end
       object GroupBox1: TGroupBox
         Left = 6
         Top = 4
         Width = 423
-        Height = 129
+        Height = 109
         Caption = #36939#29992#12473#12479#12452#12523
         TabOrder = 0
         object Label1: TLabel
           Left = 92
-          Top = 28
+          Top = 20
           Width = 313
           Height = 30
           AutoSize = False
@@ -278,7 +286,7 @@ object formOptions: TformOptions
         end
         object Label2: TLabel
           Left = 92
-          Top = 75
+          Top = 67
           Width = 313
           Height = 30
           AutoSize = False
@@ -287,7 +295,7 @@ object formOptions: TformOptions
         end
         object radio1Radio: TRadioButton
           Left = 13
-          Top = 32
+          Top = 24
           Width = 58
           Height = 17
           Caption = '1Radio'
@@ -298,7 +306,7 @@ object formOptions: TformOptions
         end
         object radio2Radio: TRadioButton
           Left = 13
-          Top = 79
+          Top = 71
           Width = 58
           Height = 17
           Caption = '2Radio'
@@ -3067,13 +3075,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#65402#65438#65404#65391#65400'M'
+          FontName = 'Courier New CE'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 62
+          ItemIndex = 63
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
