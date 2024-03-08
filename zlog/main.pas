@@ -3868,7 +3868,7 @@ begin
             dmZLogKeyer.So2rNeoReverseRx(nRxID)
          end;
 
-         zLogSendStr2(nTxRigID, S, nil);
+         zLogSendStr2(nTxRigID, S, curQSO);
       end
       else begin
          {$IFDEF DEBUG}
