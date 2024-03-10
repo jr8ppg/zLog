@@ -588,6 +588,8 @@ begin
    while FCommBuffer.Count > 0 do begin
       strTemp := FCommBuffer.Strings[0];
 
+      WriteLineConsole(strTemp);
+
       // Auto Login
       if (checkAutoLogin.Checked = True) and (FAutoLogined = False) then begin
          if (Pos('login:', strTemp) > 0) or
