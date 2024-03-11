@@ -3467,11 +3467,11 @@ begin
 
    Log.LoadFromFile(filename);
 
-   // 各バンドのSerialを復帰
-   RestoreSerialNumber();
-
    // 最後のレコード取りだし
    if Log.TotalQSO > 0 then begin
+      // 各バンドのSerialを復帰
+      RestoreSerialNumber();
+
       Q := Log.QsoList[Log.TotalQSO];
 
       // 現在QSOへセット
