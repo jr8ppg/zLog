@@ -1304,6 +1304,7 @@ resourcestring
   TMainForm_FileNotFound = 'file not found.';
   TMainForm_ComfirmUploadSound = 'Upload the sound file to Z-Server. Are you sure?';
   TMainForm_ComfirmDownloadSound = 'Would you like to download the sound file?' + #13#10 + 'Overwrite the existing sound file.';
+  TMainForm_ConfirmRewindSerialNumber = 'Do you want to rewind the serial number?';
 
 var
   MainForm: TMainForm;
@@ -3628,9 +3629,9 @@ end;
 procedure TMainForm.DeleteQSO1Click(Sender: TObject);
 var
    _top, _bottom: LongInt;
-   R: word;
    aQSO: TQSO;
    L: TQSOList;
+   fLastQso: Boolean;
 begin
    with Grid do begin
       _top := Selection.top;
@@ -3643,19 +3644,39 @@ begin
          WriteStatusLine(TMainForm_This_QSO_is_locked, True);
          exit;
       end;
-      R := MessageDlg(TMainForm_Comfirm_Delete_Qso, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
-      if R = mrNo then
-         exit;
 
+      // 最終QSO判定
+      fLastQso := Log.QSOList.Last.SameQSOID(aQSO);
+
+      // 削除確認
+      if MessageBox(Handle, PChar(TMainForm_Comfirm_Delete_Qso), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+         Exit;
+      end;
+
+      // 選択行を削除
       DeleteCurrentRow;
+
+      // シリアルナンバーで最後のQSOの場合は、番号を巻き戻すか確認する
+      if (SerialContestType <> 0) and (fLastQso) then begin
+         if MessageBox(Handle, PChar(TMainForm_ConfirmRewindSerialNumber), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
+            if Log.TotalQSO = 0 then begin
+               InitSerialNumber();
+            end
+            else begin
+               RestoreSerialNumber();
+            end;
+            SetInitSerialNumber(CurrentQSO);
+            DispSerialNumber(CurrentQSO, CurrentQSO.Band);
+         end;
+      end;
    end
    else begin
       L := GetQsoList();
 
       if (_top < L.Count - 1) and (_bottom <= L.Count - 1) then begin
-         R := MessageDlg(TMainForm_Comfirm_Delete_Qsos, mtConfirmation, [mbYes, mbNo], 0); { HELP context 0 }
-         if R = mrNo then begin
-            exit;
+         // 削除確認
+         if MessageBox(Handle, PChar(TMainForm_Comfirm_Delete_Qsos), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+            Exit;
          end;
 
          MultipleDelete(_top, _bottom);

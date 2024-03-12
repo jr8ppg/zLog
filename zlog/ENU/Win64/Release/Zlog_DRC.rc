@@ -8,31 +8,32 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMissingVersionInfo 64192
-#define UExceptionDialog_RsExceptionStack 64193
-#define UExceptionDialog_RsMainThreadID 64194
-#define UExceptionDialog_RsExceptionThreadID 64195
-#define UExceptionDialog_RsMainThreadCallStack 64196
-#define UExceptionDialog_RsThreadCallStack 64197
-#define UExceptionDialog_RsErrorMessage 64198
-#define UExceptionDialog_RsDetailsIntro 64199
-#define UExceptionDialog_RsUnitVersioningIntro 64200
+#define UExceptionDialog_RsThread 64192
+#define UExceptionDialog_RsMissingVersionInfo 64193
+#define UExceptionDialog_RsExceptionStack 64194
+#define UExceptionDialog_RsMainThreadID 64195
+#define UExceptionDialog_RsExceptionThreadID 64196
+#define UExceptionDialog_RsMainThreadCallStack 64197
+#define UExceptionDialog_RsThreadCallStack 64198
+#define UExceptionDialog_RsErrorMessage 64199
+#define UExceptionDialog_RsDetailsIntro 64200
+#define UExceptionDialog_RsUnitVersioningIntro 64201
 #define Main_TMainForm_FailedToCompressSoundFiles 64208
 #define Main_TMainForm_FileNotFound 64209
 #define Main_TMainForm_ComfirmUploadSound 64210
 #define Main_TMainForm_ComfirmDownloadSound 64211
-#define UExceptionDialog_RsAppError 64212
-#define UExceptionDialog_RsExceptionClass 64213
-#define UExceptionDialog_RsExceptionMessage 64214
-#define UExceptionDialog_RsExceptionAddr 64215
-#define UExceptionDialog_RsStackList 64216
-#define UExceptionDialog_RsModulesList 64217
-#define UExceptionDialog_RsOSVersion 64218
-#define UExceptionDialog_RsProcessor 64219
-#define UExceptionDialog_RsMemory 64220
-#define UExceptionDialog_RsScreenRes 64221
-#define UExceptionDialog_RsActiveControl 64222
-#define UExceptionDialog_RsThread 64223
+#define Main_TMainForm_ConfirmRewindSerialNumber 64212
+#define UExceptionDialog_RsAppError 64213
+#define UExceptionDialog_RsExceptionClass 64214
+#define UExceptionDialog_RsExceptionMessage 64215
+#define UExceptionDialog_RsExceptionAddr 64216
+#define UExceptionDialog_RsStackList 64217
+#define UExceptionDialog_RsModulesList 64218
+#define UExceptionDialog_RsOSVersion 64219
+#define UExceptionDialog_RsProcessor 64220
+#define UExceptionDialog_RsMemory 64221
+#define UExceptionDialog_RsScreenRes 64222
+#define UExceptionDialog_RsActiveControl 64223
 #define Main_TMainForm_Invalid_zone 64224
 #define Main_TMainForm_JudgePeriod 64225
 #define Main_TMainForm_EmptyOpList 64226
@@ -1347,6 +1348,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
@@ -1360,6 +1362,7 @@ BEGIN
 	Main_TMainForm_FileNotFound,	L"file not found."
 	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
 	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
+	Main_TMainForm_ConfirmRewindSerialNumber,	L"Do you want to rewind the serial number?"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1371,7 +1374,6 @@ BEGIN
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
-	UExceptionDialog_RsThread,	L"Thread: %s"
 	Main_TMainForm_Invalid_zone,	L"Invalid zone"
 	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
 	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
