@@ -517,6 +517,7 @@ begin
       end;
    except
       on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog('TBandScope2.RewriteBandScope1()');
          dmZLogGlobal.WriteErrorLog(E.Message);
          dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
@@ -648,6 +649,7 @@ begin
 
    except
       on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog('TBandScope2.RewriteBandScope2()');
          dmZLogGlobal.WriteErrorLog(E.Message);
          dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
@@ -1108,6 +1110,7 @@ var
    elapsed: Integer;
    T2: TDateTime;
 begin
+   strText := '';
    try
       pt.X := X;
       pt.Y := Y;
@@ -1156,6 +1159,8 @@ begin
       Application.ActivateHint(pt);
    except
       on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog('TBandScope2.GridMouseMove()');
+         dmZLogGlobal.WriteErrorLog(strText);
          dmZLogGlobal.WriteErrorLog(E.Message);
          dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;

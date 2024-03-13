@@ -69,7 +69,7 @@ type
     constructor Create; override;
     function Analyze(S : string) : boolean; // true if successful
     function ClusterSummary : string;
-    function InText : string; override;
+    function InText(): string; override;
     procedure FromText(S : string); override;
     procedure Assign(O: TBaseSpot); override;
 
@@ -381,8 +381,25 @@ begin
 end;
 
 function TSpot.InText : string;
+var
+   SL: TStringList;
 begin
-   Result := '';
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.Add(Call);
+      SL.Add(IntToStr(FreqHz));
+      SL.Add(IntToStr(Ord(Band)));
+      SL.Add(IntToStr(Ord(Mode)));
+      SL.Add(FloatToStr(Time));
+      SL.Add(ZBoolToStr(CQ));
+      SL.Add(Number);
+      SL.Add(ReportedBy);
+      Result := SL.DelimitedText;
+   finally
+      SL.Free();
+   end;
 end;
 
 procedure TSpot.FromText(S : string);
