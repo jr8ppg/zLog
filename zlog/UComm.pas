@@ -111,7 +111,7 @@ type
     procedure SetFontSize(v: Integer);
 
     procedure CommProcess;
-    procedure ProcessSpot(Sp : TSpot);
+    procedure ProcessSpot(Sp: TSpot);
 
     procedure WriteData(str : string);
     procedure WriteConsole(strText: string);
@@ -446,7 +446,7 @@ begin
    end;
 end;
 
-procedure TCommForm.ProcessSpot(Sp : TSpot);
+procedure TCommForm.ProcessSpot(Sp: TSpot);
 var
    i : integer;
    S : TSpot;
@@ -562,6 +562,8 @@ begin
       MainForm.BandScopeAddClusterSpot(Sp);
    except
       on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog('TCommForm.ProcessSpot()');
+         dmZLogGlobal.WriteErrorLog(Sp.InText());
          dmZLogGlobal.WriteErrorLog(E.Message);
          dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
@@ -587,6 +589,8 @@ label
 begin
    while FCommBuffer.Count > 0 do begin
       strTemp := FCommBuffer.Strings[0];
+
+      WriteLineConsole(strTemp);
 
       // Auto Login
       if (checkAutoLogin.Checked = True) and (FAutoLogined = False) then begin

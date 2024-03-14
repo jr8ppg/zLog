@@ -5785,6 +5785,7 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
+        ExplicitLeft = 420
       end
     end
   end
