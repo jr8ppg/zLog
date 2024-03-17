@@ -10948,30 +10948,35 @@ begin
       Exit;
    end;
 
-   // 現在の2BSIQ状態を保存してOFFにする
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (Is2bsiq()) then begin
-      FPrev2bsiqMode := FInformation.Is2bsiq;
-      FInformation.Is2bsiq := False;
-      F2bsiqStart := False;
-      FCQRepeatPlaying := False;
+   // 1Radioの場合
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+      // 現在のCQモードに従う
+      fSetLastFreq := IsCQ();
    end;
 
-   // 現在の周波数とモードを記憶
-   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-   if (rig = nil) then begin
-      FLastFreq := 0;
-   end
-   else begin
-      FLastFreq := rig.CurrentFreqHz;
+   // 2Radioの場合、現在の2BSIQ状態を保存してOFFにする
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if (Is2bsiq()) then begin
+         FPrev2bsiqMode := FInformation.Is2bsiq;
+         FInformation.Is2bsiq := False;
+         F2bsiqStart := False;
+         FCQRepeatPlaying := False;
+      end;
+
+      // 現在の周波数とモードを記憶
+      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+      if (rig = nil) then begin
+         FLastFreq := 0;
+      end
+      else begin
+         FLastFreq := rig.CurrentFreqHz;
+      end;
+      FLastMode := TextToMode(ModeEdit.Text);
+
+      // リグコントロール画面に表示
+      RigControl.LastFreq := FLastFreq;
+      fSetLastFreq := False;
    end;
-   FLastMode := TextToMode(ModeEdit.Text);
-
-   // リグコントロール画面に表示
-   RigControl.LastFreq := FLastFreq;
-
-   // 現在のCQモード
-   fSetLastFreq := IsCQ();
 
    // CQ中止
    if FCurrentTx = FCurrentRx then begin
