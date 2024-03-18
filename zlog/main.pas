@@ -11360,6 +11360,8 @@ begin
    FMessageManager.SetOperator(op);
 
    ShowSentNumber();
+
+   FFunctionKeyPanel.UpdateInfo();
 end;
 
 procedure TMainForm.SetEditColor(edit: TEdit; fHighlight: Boolean);

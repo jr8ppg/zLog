@@ -151,13 +151,24 @@ begin
       else begin
          act := FFKeyAction2[i + 1];
       end;
+
       if act = nil then begin
          ButtonGroup1.Items[i].Caption := '';
       end
       else begin
          if (CurrentQSO.Mode = mCW) and (Pos('Play', act.Name) > 0) then begin
             if act.Hint = '' then begin
-               ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
+               if dmZLogGlobal.CurrentOperator = nil then begin
+                  ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
+               end
+               else begin
+                  if dmZLogGlobal.CurrentOperator.CWMessages[cb, i + 1] = '' then begin
+                     ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
+                  end
+                  else begin
+                     ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.CurrentOperator.CWMessages[cb, i + 1];
+                  end;
+               end;
             end
             else begin
                ButtonGroup1.Items[i].Caption := s + ':' + act.Hint;
