@@ -968,8 +968,8 @@ type
 
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
-    FLastFreq: TFrequency;
-    FLastMode: TMode;
+    FLastFreq: array[1..3] of TFrequency;
+    FLastMode: array[1..3] of TMode;
 
     FPastEditMode: Boolean;
     FFilterTx: Integer;
@@ -1087,8 +1087,8 @@ type
     procedure UpdateQsoEditPanel(rig: Integer);
     procedure SwitchRig(rigset: Integer);
     procedure SwitchTxRx(tx_rig, rx_rig: Integer);
-    procedure SwitchTx(rigno: Integer);
-    procedure SwitchRx(rigno: Integer; focusonly: Boolean = False);
+    procedure SwitchTx(rigset: Integer);
+    procedure SwitchRx(rigset: Integer; focusonly: Boolean = False);
     procedure ShowTxIndicator();
     procedure InvertTx();
     procedure ShowCurrentQSO();
@@ -1146,6 +1146,7 @@ type
     procedure SetRigWpm(wpm: Integer);
     procedure ExtractSoundFiles(zipfilename: string);
     function CompressSoundFiles(): Boolean;
+    procedure SaveLastFreq();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -4778,22 +4779,20 @@ begin
 
    // CQ+S&P
    // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (Is2bsiq() = False) then begin
-      // 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない
-      if ((FCQLoopStartRig - 1) <> FCurrentTx) then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('**** 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない ****'));
-         {$ENDIF}
-         FCQRepeatPlaying := False;
-         Exit;
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if (Is2bsiq() = False) then begin
+         // 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない
+         if ((FCQLoopStartRig - 1) <> FCurrentTx) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('**** 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない ****'));
+            {$ENDIF}
+            FCQRepeatPlaying := False;
+            Exit;
+         end;
       end;
-//      currig := FCurrentRigSet;  //RigControl.GetCurrentRig();
-//      if currig <> FCQLoopStartRig then begin
-//         newrig := FCQLoopStartRig;
-//         SwitchTxRX(newrig, currig);
-//         FMessageManager.AddQue(WM_ZLOG_SWITCH_TXRX, newrig, currig);
-//      end;
+
+      // 現在の周波数とモードを記憶
+      SaveLastFreq();
    end;
 
    WriteStatusLine('', False);
@@ -10022,25 +10021,28 @@ procedure TMainForm.actionSetLastFreqExecute(Sender: TObject);
 var
    rig: TRig;
    b: TBand;
+   rigset: Integer;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
    {$ENDIF}
 
+   rigset := FCurrentRigSet;
+
    // last freq.が無ければ何もしない
-   if FLastFreq = 0 then begin
+   if FLastFreq[rigset] = 0 then begin
       Exit;
    end;
 
    // last freqのバンドを求める
-   b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
+   b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq[rigset]);
 
    // last freqに適したリグを探す
    rig := RigControl.GetRig(FCurrentRigSet, b);
    if rig <> nil then begin
       FRigControl.SetCurrentRig(rig.RigNumber);
 
-      rig.MoveToLastFreq(FLastFreq);
+      rig.MoveToLastFreq(FLastFreq[rigset], FLastMode[rigset]);
    end;
 
    Restore2bsiqMode();
@@ -10940,7 +10942,6 @@ var
    m: TMode;
    rig: TRig;
    rigset: Integer;
-   fSetLastFreq: Boolean;
    nID: Integer;
    mode: TMode;
 begin
@@ -10950,32 +10951,20 @@ begin
 
    // 1Radioの場合
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
-      // 現在のCQモードに従う
-      fSetLastFreq := IsCQ();
+      // CQモードなら現在の周波数とモードを記憶
+      if (IsCQ() = True) then begin
+         SaveLastFreq();
+      end;
    end;
 
    // 2Radioの場合、現在の2BSIQ状態を保存してOFFにする
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
-      if (Is2bsiq()) then begin
+      if (Is2bsiq() = True) then begin
          FPrev2bsiqMode := FInformation.Is2bsiq;
          FInformation.Is2bsiq := False;
          F2bsiqStart := False;
          FCQRepeatPlaying := False;
       end;
-
-      // 現在の周波数とモードを記憶
-      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-      if (rig = nil) then begin
-         FLastFreq := 0;
-      end
-      else begin
-         FLastFreq := rig.CurrentFreqHz;
-      end;
-      FLastMode := TextToMode(ModeEdit.Text);
-
-      // リグコントロール画面に表示
-      RigControl.LastFreq := FLastFreq;
-      fSetLastFreq := False;
    end;
 
    // CQ中止
@@ -10995,7 +10984,7 @@ begin
    rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
       // RIGにfreq設定
-      rig.SetFreq(freq, fSetLastFreq);
+      rig.SetFreq(freq, False);
 
       FRigControl.SetCurrentRig(rig.RigNumber);
 
@@ -11664,6 +11653,7 @@ begin
       RigControl.SetCurrentRig(rig.RigNumber);
       dmZLogKeyer.SetTxRigFlag(rigset);
       dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
+      RigControl.LastFreq := FLastFreq[rigset];
    end;
 
    UpdateBandAndMode();
@@ -11717,66 +11707,67 @@ begin
    UpdateCurrentQSO();
 end;
 
-procedure TMainForm.SwitchTx(rigno: Integer);
+procedure TMainForm.SwitchTx(rigset: Integer);
 var
    rig: TRig;
 begin
    // CQ Repeat 中止
 //   SetCqRepeatMode(False);
 
-   FCurrentTx := rigno - 1;
-   FInformation.Tx := rigno - 1;
+   FCurrentTx := rigset - 1;
+   FInformation.Tx := rigset - 1;
    ShowTxIndicator();
 
-   rig := RigControl.GetRig(rigno, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(rigset, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(rigno);
+      dmZLogKeyer.SetTxRigFlag(rigset);
    end;
 
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
-      UpdateQsoEditPanel(rigno);
-      if LastFocus = FEditPanel[rigno - 1].NumberEdit then begin
-         EditEnter(FEditPanel[rigno - 1].NumberEdit);
+      UpdateQsoEditPanel(rigset);
+      if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
+         EditEnter(FEditPanel[rigset - 1].NumberEdit);
       end
       else begin
-         FEditPanel[rigno - 1].CallsignEdit.SetFocus();
-         EditEnter(FEditPanel[rigno - 1].CallsignEdit);
+         FEditPanel[rigset - 1].CallsignEdit.SetFocus();
+         EditEnter(FEditPanel[rigset - 1].CallsignEdit);
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
    end;
 end;
 
-procedure TMainForm.SwitchRx(rigno: Integer; focusonly: Boolean);
+procedure TMainForm.SwitchRx(rigset: Integer; focusonly: Boolean);
 var
    rig: TRig;
 begin
-   FCurrentRx := rigno - 1;
-   FInformation.Rx := rigno - 1;
-   FCurrentRigSet := rigno;
+   FCurrentRx := rigset - 1;
+   FInformation.Rx := rigset - 1;
+   FCurrentRigSet := rigset;
 
    if focusonly = False then begin
       rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
       if Assigned(rig) then begin
          RigControl.SetCurrentRig(rig.RigNumber);
 //         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
-         dmZLogKeyer.SetRxRigFlag(rigno, rig.RigNumber);
+         dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
          UpdateBand(rig.CurrentBand);
          UpdateMode(rig.CurrentMode);
+         RigControl.LastFreq := FLastFreq[rigset];
       end;
    end;
 
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
-      UpdateQsoEditPanel(rigno);
-      if LastFocus = FEditPanel[rigno - 1].NumberEdit then begin
-//         EditEnter(FEditPanel[rigno - 1].NumberEdit);
+      UpdateQsoEditPanel(rigset);
+      if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
+//         EditEnter(FEditPanel[rigset - 1].NumberEdit);
       end
       else begin
-         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigno - 1, 0);
+         SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigset - 1, 0);
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-         PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigno - 1, 0);
+         PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigset - 1, 0);
       end;
 
       UpdateCurrentQSO();
@@ -13121,6 +13112,23 @@ begin
    end;
 end;
 
+procedure TMainForm.SaveLastFreq();
+var
+   rig: TRig;
+begin
+   // 現在の周波数とモードを記憶
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if (rig = nil) then begin
+      FLastFreq[FCurrentRigSet] := 0;
+   end
+   else begin
+      FLastFreq[FCurrentRigSet] := rig.CurrentFreqHz;
+   end;
+   FLastMode[FCurrentRigSet] := TextToMode(ModeEdit.Text);
+
+   // リグコントロール画面に表示
+   RigControl.LastFreq := FLastFreq[FCurrentRigSet];
+end;
 
 { TBandScopeNotifyThread }
 

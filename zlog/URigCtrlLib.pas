@@ -76,12 +76,6 @@ type
     procedure SetRitOffset(offset: Integer); virtual;
     procedure UpdateFreqMem(vfo: Integer; Hz: TFrequency; M: TMode);
   private
-    FLastFreq: TFrequency;
-    FLastMode: TMode;
-
-    FLastCall: string;
-    FLastRcvd: string;
-
     FPortConfig: TPortConfig;
 
     FUseMemChScan: Boolean;
@@ -120,7 +114,7 @@ type
     procedure UpdateStatus; virtual;// Renews RigControl Window and Main Window
     procedure WriteData(str : AnsiString);
     procedure InquireStatus; virtual; abstract;
-    procedure MoveToLastFreq(fFreq: TFrequency); virtual;
+    procedure MoveToLastFreq(fFreq: TFrequency; lastmode: TMode);
     procedure AntSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
@@ -292,10 +286,6 @@ begin
    _currentfreq[0] := 0;
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
-   FLastCall := '';
-   FLastRcvd := '';
-   FLastFreq := 0;
-   FLastMode := _currentmode;
    FIgnoreRigMode := False;
 
    // LastMode := mCW;
@@ -405,7 +395,7 @@ begin
                       _currentvfo,
                       _freqoffset + _currentfreq[0],
                       _freqoffset + _currentfreq[1],
-                      _freqoffset + FLastFreq,
+                      _freqoffset + _currentfreq[_currentvfo],
                       _currentband,
                       _currentmode);
    end;
@@ -569,12 +559,12 @@ begin
       Result := False;
 end;
 
-procedure TRig.MoveToLastFreq(fFreq: TFrequency);
+procedure TRig.MoveToLastFreq(fFreq: TFrequency; lastmode: TMode);
 begin
    SetFreq(fFreq, False);
 
-   if FLastMode <> _currentmode then begin
-      SetMode(FLastMode);
+   if lastmode <> _currentmode then begin
+      SetMode(lastmode);
 
       // Ç‡Ç§àÍìxé¸îgêîÇê›íË(side bandÇ∏ÇÍëŒçÙ)
       if dmZLogGlobal.Settings._bandscope_setfreq_after_mode_change = True then begin
@@ -600,7 +590,7 @@ begin
    Q := TQSO.Create();
    try
       Q.Mode := M;
-      Q.Band := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq);
+      Q.Band := dmZLogGlobal.BandPlan.FreqToBand(_currentfreq[_currentvfo]);
       SetMode(Q);
    finally
       Q.Free();
@@ -647,8 +637,6 @@ end;
 procedure TRig.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 begin
    if fSetLastFreq = True then begin
-      FLastFreq := _currentfreq[_currentvfo];
-      FLastMode := _currentmode;
    end;
 end;
 
@@ -886,8 +874,6 @@ begin
    _currentfreq[0] := 0;
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
-   FLastFreq := 0;
-   FLastMode := _currentmode;
 
    for B := b19 to b10g do begin
       for M := mCW to mOther do begin
@@ -1062,8 +1048,6 @@ begin
    _currentfreq[0] := 0;
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
-   FLastFreq := 0;
-   FLastMode := _currentmode;
 
    for B := b19 to b10g do begin
       for M := mCW to mOther do begin
