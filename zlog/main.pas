@@ -12237,7 +12237,7 @@ begin
    end
    else begin
       if Is2bsiq() = False then begin
-         if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
+         if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) and (FCurrentTx = FCurrentRx) then begin
             CancelCqRepeat();
             if FCQRepeatStartMode = mCW then begin
                dmZLogKeyer.ClrBuffer;
