@@ -1044,7 +1044,7 @@ type
     procedure ReadKeymap();
     procedure ResetKeymap();
     procedure SetShortcutEnabled(shortcut: string; fEnabled: Boolean);
-    procedure CQRepeatProc(nSpeedUp: Integer);
+    procedure CQRepeatProc(nSpeedUp: Integer; fFirst: Boolean);
 
     // Super Check関係
     procedure SuperCheckDataLoad();
@@ -1129,7 +1129,7 @@ type
     procedure AssignControls(nID: Integer; var C, N, B, M, S: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
-    procedure SetCqRepeatMode(fOn: Boolean);
+    procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
     procedure StartCqRepeatTimer();
     procedure StopCqRepeatTimer();
     function Is2bsiq(): Boolean;
@@ -4737,7 +4737,7 @@ begin
    end;
 
    FCtrlZCQLoop := False;
-   SetCqRepeatMode(True);
+   SetCqRepeatMode(True, True);
 end;
 
 procedure TMainForm.CQRepeatClick2(Sender: TObject);
@@ -4747,10 +4747,10 @@ begin
    end;
 
    FCtrlZCQLoop := True;
-   SetCqRepeatMode(True);
+   SetCqRepeatMode(True, True);
 end;
 
-procedure TMainForm.CQRepeatProc(nSpeedUp: Integer);
+procedure TMainForm.CQRepeatProc(nSpeedUp: Integer; fFirst: Boolean);
 var
    bank: Integer;
    msgno: Integer;
@@ -4792,7 +4792,9 @@ begin
       end;
 
       // 現在の周波数とモードを記憶
-      SaveLastFreq();
+      if (fFirst = True) then begin
+         SaveLastFreq();
+      end;
    end;
 
    WriteStatusLine('', False);
@@ -7516,7 +7518,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Enter - OnZLogCqRepeatContinue() '));
    {$ENDIF}
-   CQRepeatProc(Message.WParam);
+   CQRepeatProc(Message.WParam, False);
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Leave - OnZLogCqRepeatContinue() '));
    {$ENDIF}
@@ -9445,7 +9447,7 @@ begin
    end;
 
    FCtrlZCQLoop := True;
-   SetCqRepeatMode(True);
+   SetCqRepeatMode(True, True);
 end;
 
 // #58 Backup / Alt+B
@@ -9575,7 +9577,7 @@ begin
    {$ENDIF}
 
    // CQ Repeat 中止
-   SetCqRepeatMode(False);
+   SetCqRepeatMode(False, False);
 
    nID := FCurrentTx;
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
@@ -9931,7 +9933,7 @@ begin
    end;
 
    FCtrlZCQLoop := False;
-   SetCqRepeatMode(True);
+   SetCqRepeatMode(True, True);
 end;
 
 // #99 VFOのトグル
@@ -10311,7 +10313,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #145 ToggleTx ---'));
    {$ENDIF}
-   SetCqRepeatMode(False);
+   SetCqRepeatMode(False, False);
    FCQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
 
@@ -10371,7 +10373,7 @@ var
    rx: Integer;
 begin
    // CQ Repeat 中止
-   SetCqRepeatMode(False);
+   SetCqRepeatMode(False, False);
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #149 Match TX to RX ---'));
@@ -11683,7 +11685,7 @@ var
    rig: TRig;
 begin
    // CQ Repeat 中止
-   SetCqRepeatMode(False);
+   SetCqRepeatMode(False, False);
 
    FCurrentTx := tx_rig - 1;
    FInformation.Tx := tx_rig - 1;
@@ -11999,7 +12001,7 @@ end;
 
 procedure TMainForm.CancelCqRepeat();
 begin
-   SetCqRepeatMode(False);
+   SetCqRepeatMode(False, False);
 end;
 
 procedure TMainForm.ResetTx(rigset: Integer);
@@ -12284,7 +12286,7 @@ var
 begin
    WriteStatusLine('', False);
 
-   SetCqRepeatMode(False);
+   SetCqRepeatMode(False, False);
 
    nID := FCurrentTx;
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
@@ -12665,7 +12667,7 @@ begin
    BSRefresh();
 end;
 
-procedure TMainForm.SetCqRepeatMode(fOn: Boolean);
+procedure TMainForm.SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
 var
    i: Integer;
 begin
@@ -12690,7 +12692,7 @@ begin
       FCQLoopRunning := True;
       FCQLoopCount := 0;
       FCQLoopStartRig := (FCurrentTx + 1); //FCurrentRigSet;
-      CQRepeatProc(0);
+      CQRepeatProc(0, fFirst);
    end;
 end;
 
@@ -13115,16 +13117,19 @@ end;
 procedure TMainForm.SaveLastFreq();
 var
    rig: TRig;
+   rigset: Integer;
 begin
    // 現在の周波数とモードを記憶
-   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-   if (rig = nil) then begin
-      FLastFreq[FCurrentRigSet] := 0;
-   end
-   else begin
-      FLastFreq[FCurrentRigSet] := rig.CurrentFreqHz;
+   for rigset := 1 to 2 do begin
+      rig := RigControl.GetRig(rigset, TextToBand(FEditPanel[rigset - 1].BandEdit.Text));
+      if (rig = nil) then begin
+         FLastFreq[rigset] := 0;
+      end
+      else begin
+         FLastFreq[rigset] := rig.CurrentFreqHz;
+      end;
+      FLastMode[rigset] := rig.CurrentMode;
    end;
-   FLastMode[FCurrentRigSet] := TextToMode(ModeEdit.Text);
 
    // リグコントロール画面に表示
    RigControl.LastFreq := FLastFreq[FCurrentRigSet];
