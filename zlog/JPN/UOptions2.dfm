@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -3144,6 +3144,15 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = #12524#12472#12517#12540#12512#27231#33021#12434#20351#12358
           TabOrder = 3
+        end
+        object checkSaveCurrentFreq: TCheckBox
+          Left = 215
+          Top = 86
+          Width = 198
+          Height = 17
+          Caption = 'S&&P'#26178#12289#29694#22312#21608#27874#25968#12434#20445#23384'(1R)'
+          TabOrder = 7
+          OnClick = checkUseEstimatedModeClick
         end
       end
     end

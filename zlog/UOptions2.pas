@@ -387,6 +387,7 @@ type
     comboQuickQsyRig06: TComboBox;
     comboQuickQsyRig07: TComboBox;
     comboQuickQsyRig08: TComboBox;
+    checkSaveCurrentFreq: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -794,6 +795,7 @@ begin
       Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
       Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
       Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
+      Settings._bandscope_save_current_freq := checkSaveCurrentFreq.Checked;        // S&P時、現在周波数を保存する
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1109,6 +1111,7 @@ begin
       checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
       checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
+      checkSaveCurrentFreq.Checked := Settings._bandscope_save_current_freq;        // S&P時、現在周波数を保存する
       checkUseEstimatedModeClick(nil);
 
       // Quick Memo

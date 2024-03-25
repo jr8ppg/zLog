@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -3144,6 +3144,15 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Use resume'
           TabOrder = 3
+        end
+        object checkSaveCurrentFreq: TCheckBox
+          Left = 215
+          Top = 86
+          Width = 198
+          Height = 17
+          Caption = 'Save current frequency when S&&P'
+          TabOrder = 7
+          OnClick = checkUseEstimatedModeClick
         end
       end
     end

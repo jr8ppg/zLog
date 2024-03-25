@@ -4777,6 +4777,15 @@ begin
       FMessageManager.ClearQue();
    end;
 
+   // 1Radioの場合
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+      // 現在の周波数とモードを記憶
+      if (fFirst = True) and (dmZLogGlobal.Settings._bandscope_save_current_freq = False)then begin
+         SaveLastFreq();
+      end;
+   end;
+
+   // 2Radioの場合
    // CQ+S&P
    // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
@@ -10954,7 +10963,7 @@ begin
    // 1Radioの場合
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       // CQモードなら現在の周波数とモードを記憶
-      if (IsCQ() = True) then begin
+      if (IsCQ() = True) and (dmZLogGlobal.Settings._bandscope_save_current_freq = True)then begin
          SaveLastFreq();
       end;
    end;
