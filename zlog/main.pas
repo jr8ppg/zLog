@@ -8900,11 +8900,11 @@ begin
 
       // Ctrl+Zでのキー入力
       if (FCtrlZCQLoop = True) then begin
-         CancelCqRepeat();
-         FTabKeyPressed[tx] := False;
-         FDownKeyPressed[tx] := False;
-         FOtherKeyPressed[rx] := False;
-         Exit;
+//         CancelCqRepeat();
+//         FTabKeyPressed[tx] := False;
+//         FDownKeyPressed[tx] := False;
+//         FOtherKeyPressed[rx] := False;
+//         Exit;
       end;
 
       // 中止
