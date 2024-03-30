@@ -1078,7 +1078,7 @@ type
     procedure ShowToolBar(M: TMode);
     procedure SetSo2rCqMode();
     procedure InitSerialPanel();
-    procedure DispSerialNumber(B: TBand);
+    procedure DispSerialNumber(aQSO: TQSO);
     procedure InitSerialNumber();
     procedure RestoreSerialNumber();
     procedure SetInitSerialNumber(aQSO: TQSO);
@@ -1590,9 +1590,8 @@ begin
    BandEdit.Text := MHzString[B];
 
    // Serial Numberをバンドに合わせて表示
-   DispSerialNumber(B);
-
    CurrentQSO.Band := B;
+   DispSerialNumber(CurrentQSO);
 
    if MyContest <> nil then begin
       MyContest.SetPoints(CurrentQSO);
@@ -6888,7 +6887,7 @@ begin
 
       // CurrentQSO.Serial := SerialArray[b19]; // in case SERIALSTART is defined. SERIALSTART applies to all bands.
       SetInitSerialNumber(CurrentQSO);
-      DispSerialNumber(CurrentQSO.Band);
+      DispSerialNumber(CurrentQSO);
 
       // フォントサイズの設定
 //      SetFontSize(dmZlogGlobal.Settings._mainfontsize);
@@ -11289,42 +11288,33 @@ begin
    end;
 end;
 
-procedure TMainForm.DispSerialNumber(B: TBand);
+procedure TMainForm.DispSerialNumber(aQSO: TQSO);
 begin
-   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-      if SerialContestType = SER_BAND then begin
-         CurrentQSO.Serial := SerialArrayBand[B];
-      end
-      else begin
-         CurrentQSO.Serial := SerialNumber;
+   case SerialContestType of
+      0: begin
+         Exit;
       end;
-      SerialEdit.Text := CurrentQSO.SerialStr;
+
+      SER_ALL: begin
+         aQSO.Serial := SerialNumber;
+      end;
+
+      SER_BAND: begin
+         aQSO.Serial := SerialArrayBand[aQSO.Band];
+      end;
+
+      SER_MS: begin
+         aQSO.Serial := SerialArrayTX[aQSO.TX];
+      end;
+   end;
+
+   if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
+      SerialEdit.Text := aQSO.SerialStr;
    end
    else begin
-      case SerialContestType of
-         0: begin
-            //
-         end;
-
-         SER_ALL: begin
-            CurrentQSO.Serial := SerialNumber;
-            SerialEdit2A.Text := CurrentQSO.SerialStr;
-            SerialEdit2B.Text := CurrentQSO.SerialStr;
-            SerialEdit2C.Text := CurrentQSO.SerialStr;
-         end;
-
-         SER_BAND: begin
-            CurrentQSO.Serial := SerialArrayBand[B];
-            SerialEdit.Text := CurrentQSO.SerialStr;
-         end;
-
-         SER_MS: begin
-            CurrentQSO.Serial := SerialArrayTX[CurrentQSO.TX];
-            SerialEdit2A.Text := CurrentQSO.SerialStr;
-            SerialEdit2B.Text := CurrentQSO.SerialStr;
-            SerialEdit2C.Text := CurrentQSO.SerialStr;
-         end;
-      end;
+      SerialEdit2A.Text := aQSO.SerialStr;
+      SerialEdit2B.Text := aQSO.SerialStr;
+      SerialEdit2C.Text := aQSO.SerialStr;
    end;
 
    ShowSentNumber();
@@ -11420,7 +11410,7 @@ begin
       end;
    end;
 
-   DispSerialNumber(aQSO.Band);
+   DispSerialNumber(aQSO);
 end;
 
 procedure TMainForm.SetNextSerialNumber2(aQSO: TQSO; Local : Boolean);
@@ -11440,7 +11430,7 @@ begin
          end;
       end;
 
-      DispSerialNumber(aQSO.Band);
+      DispSerialNumber(aQSO);
    end;
 end;
 
@@ -11448,7 +11438,7 @@ procedure TMainForm.SetNextSerialNumber3(aQSO: TQSO);
 begin
    if (dmZlogGlobal.Settings._syncserial) and (SerialContestType = SER_MS) then begin
       aQSO.Serial := SerialArrayTX[aQSO.TX];
-      DispSerialNumber(aQSO.Band);
+      DispSerialNumber(aQSO);
    end;
 end;
 
