@@ -515,6 +515,18 @@ begin
       Exit;
    end;
 
+   msg := StringReplace(msg, 'a', '_', [rfReplaceAll]);  // AR
+   msg := StringReplace(msg, 's', '>', [rfReplaceAll]);  // SK
+   msg := StringReplace(msg, 'v', '>', [rfReplaceAll]);  // VA
+   msg := StringReplace(msg, 'k', ']', [rfReplaceAll]);  // KN
+   msg := StringReplace(msg, 'b', '\', [rfReplaceAll]);  // BK
+   msg := StringReplace(msg, '~', '\', [rfReplaceAll]);  // BK
+   msg := StringReplace(msg, 't', '[', [rfReplaceAll]);  // BT
+
+   if msg = '' then begin
+      Exit;
+   end;
+
    CMD := AnsiString('KY' + ' ' + LeftStr(msg + DupeString(' ', 24), 24) + ';');
    WriteData(CMD);
 end;

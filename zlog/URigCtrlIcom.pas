@@ -636,6 +636,18 @@ begin
       Exit;
    end;
 
+   msg := StringReplace(msg, 'a', '', [rfReplaceAll]);  // AR
+   msg := StringReplace(msg, 's', '', [rfReplaceAll]);  // SK
+   msg := StringReplace(msg, 'v', '', [rfReplaceAll]);  // VA
+   msg := StringReplace(msg, 'k', '', [rfReplaceAll]);  // KN
+   msg := StringReplace(msg, 'b', '', [rfReplaceAll]);  // BK
+   msg := StringReplace(msg, '~', '', [rfReplaceAll]);  // BK
+   msg := StringReplace(msg, 't', '', [rfReplaceAll]);  // BT
+
+   if msg = '' then begin
+      Exit;
+   end;
+
    CMD := AnsiChar($17) + AnsiString(msg);
    ICOMWriteData(CMD);
 end;

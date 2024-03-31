@@ -66,7 +66,8 @@ begin
    temp := StringReplace(temp, '[SK]', 's', [rfReplaceAll]);
    temp := StringReplace(temp, '[VA]', 's', [rfReplaceAll]);
    temp := StringReplace(temp, '[KN]', 'k', [rfReplaceAll]);
-   temp := StringReplace(temp, '[BK]', '~', [rfReplaceAll]);
+   temp := StringReplace(temp, '[BK]', 'b', [rfReplaceAll]);
+   temp := StringReplace(temp, '[BT]', 't', [rfReplaceAll]);
 
    temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
    temp := StringReplace(temp, '$x', LowerCase(dmZLogGlobal.Settings._sentstr), [rfReplaceAll]);
@@ -199,6 +200,7 @@ begin
    temp := StringReplace(temp, '[VA]', '', [rfReplaceAll]);
    temp := StringReplace(temp, '[KN]', '', [rfReplaceAll]);
    temp := StringReplace(temp, '[BK]', '', [rfReplaceAll]);
+   temp := StringReplace(temp, '[BT]', '', [rfReplaceAll]);
 
    temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
    temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
