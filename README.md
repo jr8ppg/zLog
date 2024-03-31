@@ -116,7 +116,7 @@ https://zlog.org/
 など
 
 最新情報はこちら
-https://github.com/jr8ppg/zLog/wiki/%E3%83%AA%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB
+https://use.zlog.org/manual/%E3%83%AA%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB
 
 ## 第三者著作権情報
 
