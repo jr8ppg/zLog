@@ -143,7 +143,7 @@ type
     ModeEdit1: TEdit;
     PointEdit1: TEdit;
     OpEdit1: TEdit;
-    OptionsButton: TSpeedButton;
+    Options2Button: TSpeedButton;
     OpMenu: TPopupMenu;
     SuperCheckButtpn: TSpeedButton;
     CWStopButton: TSpeedButton;
@@ -571,6 +571,7 @@ type
     menuDownloadSounds: TMenuItem;
     N14: TMenuItem;
     menuUploadSounds: TMenuItem;
+    OptionsButton: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -604,7 +605,6 @@ type
     procedure CallsignEdit1KeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure LogButtonClick(Sender: TObject);
-    procedure OptionsButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure CWFButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -4477,11 +4477,6 @@ begin
    if FZAnalyze.Visible then begin
       PostMessage(FZAnalyze.Handle, WM_ANALYZE_UPDATE, 0, 0);
    end;
-end;
-
-procedure TMainForm.OptionsButtonClick(Sender: TObject);
-begin
-   menuOptions.Click();
 end;
 
 procedure TMainForm.panelCQModeClick(Sender: TObject);
