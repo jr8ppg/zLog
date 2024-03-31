@@ -955,9 +955,9 @@ type
     FCtrlZCQLoop: Boolean;
     FCQRepeatStartMode: TMode;
     FCQRepeatPlaying: Boolean;
-    FTabKeyPressed: array[0..2] of Boolean;
-    FDownKeyPressed: array[0..2] of Boolean;
-    FOtherKeyPressed: array[0..2] of Boolean;
+    FTabKeyPressed: array[0..4] of Boolean;
+    FDownKeyPressed: array[0..4] of Boolean;
+    FOtherKeyPressed: array[0..4] of Boolean;
     F2bsiqStart: Boolean;
 
     FCQRepeatCount: Integer;
@@ -2223,7 +2223,7 @@ begin
    FCtrlZCQLoop := False;
    FCQRepeatPlaying := False;
 
-   for i := 0 to 2 do begin
+   for i := 0 to 4 do begin
       FTabKeyPressed[i] := False;
       FDownKeyPressed[i] := False;
       FOtherKeyPressed[i] := False;
@@ -8857,7 +8857,7 @@ begin
    FCWMonitor.ClearSendingText();
 
    try
-      tx := FCurrentTx;
+      tx := GetTxRigID();
       rx := FCurrentRigSet - 1;
 
       if mode = mCW then begin
@@ -12039,11 +12039,8 @@ end;
 procedure TMainForm.ControlPTT(fOn: Boolean);
 var
    nID: Integer;
-   r: Integer;
 begin
-   r := RigControl.GetCurrentRig();
-   nID := r - 1;
-
+   nID := GetTxRigID();
    if dmZLogGlobal.Settings._use_winkeyer = True then begin
       dmZLogKeyer.WinKeyerControlPTT2(fOn);
    end
@@ -12676,7 +12673,7 @@ var
 begin
    FInformation.CqRepeat := fOn;
 
-   for i := 0 to 2 do begin
+   for i := 0 to 4 do begin
       FWaitForQsoFinish[i] := False;
       FTabKeyPressed[i] := False;
       FDownKeyPressed[i] := False;
