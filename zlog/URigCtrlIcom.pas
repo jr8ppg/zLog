@@ -636,13 +636,13 @@ begin
       Exit;
    end;
 
-   msg := StringReplace(msg, 'a', '', [rfReplaceAll]);  // AR
-   msg := StringReplace(msg, 's', '', [rfReplaceAll]);  // SK
-   msg := StringReplace(msg, 'v', '', [rfReplaceAll]);  // VA
-   msg := StringReplace(msg, 'k', '', [rfReplaceAll]);  // KN
-   msg := StringReplace(msg, 'b', '', [rfReplaceAll]);  // BK
-   msg := StringReplace(msg, '~', '', [rfReplaceAll]);  // BK
-   msg := StringReplace(msg, 't', '', [rfReplaceAll]);  // BT
+   msg := StringReplace(msg, 'a', '^AR', [rfReplaceAll]);  // AR
+   msg := StringReplace(msg, 's', '^SK', [rfReplaceAll]);  // SK
+   msg := StringReplace(msg, 'v', '^VA', [rfReplaceAll]);  // VA
+   msg := StringReplace(msg, 'k', '^KN', [rfReplaceAll]);  // KN
+   msg := StringReplace(msg, 'b', '^BK', [rfReplaceAll]);  // BK
+   msg := StringReplace(msg, '~', '^BK', [rfReplaceAll]);  // BK
+   msg := StringReplace(msg, 't', '^BT', [rfReplaceAll]);  // BT
 
    if msg = '' then begin
       Exit;
