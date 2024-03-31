@@ -229,6 +229,7 @@ type
     _autobandmap: boolean;
     _send_freq_interval: Integer;
     _ignore_rig_mode: Boolean;
+    _use_ptt_command: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -1126,6 +1127,9 @@ begin
       // Ignore RIG mode
       Settings._ignore_rig_mode := ini.ReadBool('Rig', 'IgnoreRigMode', False);
 
+      // Use PTT command
+      Settings._use_ptt_command := ini.ReadBool('Rig', 'UsePttCommand', False);
+
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
 
@@ -1798,6 +1802,9 @@ begin
 
       // Ignore RIG mode
       ini.WriteBool('Rig', 'IgnoreRigMode', Settings._ignore_rig_mode);
+
+      // Use PTT command
+      ini.ReadBool('Rig', 'UsePttCommand', Settings._use_ptt_command);
 
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);

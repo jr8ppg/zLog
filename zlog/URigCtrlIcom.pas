@@ -48,6 +48,7 @@ type
     procedure SetWPM(wpm: Integer); override;
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
+    procedure ControlPTT(fOn: Boolean); override;
 
     property UseTransceiveMode: Boolean read FUseTransceiveMode write FUseTransceiveMode;
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
@@ -103,6 +104,8 @@ begin
    FCommThread := TIcomCommThread.Create(Self);
 
    FFreq4Bytes := False;
+
+   FControlPTTSupported := True;
 end;
 
 destructor TICOM.Destroy;
@@ -644,6 +647,16 @@ begin
    end;
 
    ICOMWriteData(AnsiChar($17) + AnsiChar($ff));
+end;
+
+procedure TICOM.ControlPTT(fOn: Boolean);
+begin
+   if fOn = True then begin
+      ICOMWriteData(AnsiChar($1c) + AnsiChar($00) + AnsiChar($01));
+   end
+   else begin
+      ICOMWriteData(AnsiChar($1c) + AnsiChar($00) + AnsiChar($00));
+   end;
 end;
 
 { TIC756 }

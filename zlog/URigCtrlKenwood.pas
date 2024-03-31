@@ -30,6 +30,7 @@ type
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
+    procedure ControlPTT(fOn: Boolean); override;
   end;
 
   // TS-2000,TS-480,TS-590,TS-890
@@ -72,6 +73,7 @@ begin
    FComm.StopBits := sb2BITS;
    _CWR := False;
    FFineStep := False;
+   FControlPTTSupported := True;
 end;
 
 destructor TTS690.Destroy;
@@ -432,6 +434,16 @@ begin
    end
    else begin
       WriteData('XT0;');
+   end;
+end;
+
+procedure TTS690.ControlPTT(fOn: Boolean);
+begin
+   if fOn = True then begin
+      WriteData('TX;');
+   end
+   else begin
+      WriteData('RX;');
    end;
 end;
 

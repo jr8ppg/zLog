@@ -65,6 +65,7 @@ type
 
     FPlayMessageCwSupported: Boolean;
     FPlayMessagePhSupported: Boolean;
+    FControlPTTSupported: Boolean;
 
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
@@ -123,6 +124,7 @@ type
     procedure SetWPM(wpm: Integer); virtual;
     procedure PlayMessageCW(msg: string); virtual;
     procedure StopMessageCW(); virtual;
+    procedure ControlPTT(fOn: Boolean); virtual;
 
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
@@ -149,6 +151,7 @@ type
 
     property PlayMessageCwSupported: Boolean read FPlayMessageCwSupported write FPlayMessageCwSupported;
     property PlayMessagePhSupported: Boolean read FPlayMessagePhSupported write FPlayMessagePhSupported;
+    property ControlPTTSupported: Boolean read FControlPTTSupported write FControlPTTSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
 
@@ -309,6 +312,7 @@ begin
 
    FPlayMessageCwSupported := False;
    FPlayMessagePhSupported := False;
+   FControlPTTSupported := False;
 
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;
@@ -547,6 +551,11 @@ begin
 end;
 
 procedure TRig.StopMessageCW();
+begin
+//
+end;
+
+procedure TRig.ControlPTT(fOn: Boolean);
 begin
 //
 end;

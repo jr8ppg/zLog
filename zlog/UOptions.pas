@@ -311,6 +311,7 @@ type
     Label3: TLabel;
     comboSo2rTxRigC: TComboBox;
     checkSo2rIgnoreModeChange: TCheckBox;
+    checkUsePttCommand: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1332,6 +1333,7 @@ begin
       Settings._send_freq_interval := updownSendFreqInterval.Position;
       Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
       Settings._memscan_interval := updownMemScanInterval.Position;
+      Settings._use_ptt_command := checkUsePttCommand.Checked;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -1597,6 +1599,7 @@ begin
       updownSendFreqInterval.Position := Settings._send_freq_interval;
       checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
       updownMemScanInterval.Position := Settings._memscan_interval;
+      checkUsePttCommand.Checked := Settings._use_ptt_command;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;

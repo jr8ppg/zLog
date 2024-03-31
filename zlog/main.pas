@@ -12127,6 +12127,8 @@ var
    fPTT: Boolean;
    nID: Integer;
    mode: TMode;
+   band: TBand;
+   rig: TRig;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('[無変換]'));
@@ -12138,6 +12140,7 @@ begin
    // 現在のモード
    nID := FCurrentTx;
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
+   band := TextToBand(FEditPanel[nID].BandEdit.Text);
 
    // 2BSIQ時は受信中の方でPTT制御する
    if (dmZLogGlobal.Settings._operate_style = os2Radio) and
@@ -12194,6 +12197,12 @@ begin
             fPTT := True;
          end;
       end;
+   end;
+
+   rig := RigControl.GetRig(FCurrentRigSet, band);
+   if (rig <> nil) and (rig.ControlPTTSupported = True) and
+      (dmZLogGlobal.Settings._use_ptt_command = True) then begin
+      rig.ControlPTT(fPTT);
    end;
 
    if mode = mCW then begin

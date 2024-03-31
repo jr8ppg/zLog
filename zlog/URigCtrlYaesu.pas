@@ -53,6 +53,7 @@ type
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
+    procedure ControlPTT(fOn: Boolean); override;
   end;
 
   TMARKVF = class(TFT1000MP)
@@ -371,6 +372,7 @@ begin
    FComm.StopBits := sb2BITS;
    FComm.DataBits := db8BITS;
    FVFO := 0;
+   FControlPTTSupported := True;
 end;
 
 destructor TFT2000.Destroy;
@@ -657,6 +659,16 @@ begin
    end
    else begin
       WriteData('XT0;');
+   end;
+end;
+
+procedure TFT2000.ControlPTT(fOn: Boolean);
+begin
+   if fOn = True then begin
+      WriteData('TX1;');
+   end
+   else begin
+      WriteData('TX0;');
    end;
 end;
 
