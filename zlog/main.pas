@@ -946,7 +946,7 @@ type
     FCurrentTx: Integer;
     FEditPanel: TEditPanelArray;
     FRigSwitchTime: TDateTime;
-    FKeyPressedRigID: array[0..2] of Integer;
+    FKeyPressedRigID: array[0..4] of Integer;
 
     // NEW CQRepeat
     FCQLoopRunning: Boolean;
@@ -964,7 +964,7 @@ type
     FCQRepeatInterval: Integer;
 
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
-    FWaitForQsoFinish: array[0..2] of Boolean;
+    FWaitForQsoFinish: array[0..4] of Boolean;
 
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
@@ -3804,7 +3804,8 @@ begin
          // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
          if Is2bsiq() = False then begin
             if nTxID <> nRxID then begin
-               ResetTx(nRxID + 1);
+               nTxID := nRxID;
+               ResetTx(nTxID + 1);
                SetCQ(False);
             end;
          end;
@@ -3909,6 +3910,11 @@ begin
                //SetCQ(True);
             end;
          end;
+      end;
+
+      // キーイングがRIGの場合、送信完了を待たない
+      if dmZLogKeyer.KeyingPort[nTxRigID] = tkpRig then begin
+         CallsignSentProc(nil);
       end;
    finally
       curQSO.Free();
