@@ -8,24 +8,25 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsDetailsIntro 64192
-#define UExceptionDialog_RsUnitVersioningIntro 64193
-#define UExceptionDialog_RsExceptionAddr 64208
-#define UExceptionDialog_RsStackList 64209
-#define UExceptionDialog_RsModulesList 64210
-#define UExceptionDialog_RsOSVersion 64211
-#define UExceptionDialog_RsProcessor 64212
-#define UExceptionDialog_RsMemory 64213
-#define UExceptionDialog_RsScreenRes 64214
-#define UExceptionDialog_RsActiveControl 64215
-#define UExceptionDialog_RsThread 64216
-#define UExceptionDialog_RsMissingVersionInfo 64217
-#define UExceptionDialog_RsExceptionStack 64218
-#define UExceptionDialog_RsMainThreadID 64219
-#define UExceptionDialog_RsExceptionThreadID 64220
-#define UExceptionDialog_RsMainThreadCallStack 64221
-#define UExceptionDialog_RsThreadCallStack 64222
-#define UExceptionDialog_RsErrorMessage 64223
+#define UExceptionDialog_RsErrorMessage 64192
+#define UExceptionDialog_RsDetailsIntro 64193
+#define UExceptionDialog_RsUnitVersioningIntro 64194
+#define UExceptionDialog_RsExceptionMessage 64208
+#define UExceptionDialog_RsExceptionAddr 64209
+#define UExceptionDialog_RsStackList 64210
+#define UExceptionDialog_RsModulesList 64211
+#define UExceptionDialog_RsOSVersion 64212
+#define UExceptionDialog_RsProcessor 64213
+#define UExceptionDialog_RsMemory 64214
+#define UExceptionDialog_RsScreenRes 64215
+#define UExceptionDialog_RsActiveControl 64216
+#define UExceptionDialog_RsThread 64217
+#define UExceptionDialog_RsMissingVersionInfo 64218
+#define UExceptionDialog_RsExceptionStack 64219
+#define UExceptionDialog_RsMainThreadID 64220
+#define UExceptionDialog_RsExceptionThreadID 64221
+#define UExceptionDialog_RsMainThreadCallStack 64222
+#define UExceptionDialog_RsThreadCallStack 64223
 #define Main_TMainForm_Inquire_JARL_Member_Info 64224
 #define Main_TMainForm_UserDat_not_loaded 64225
 #define Main_TMainForm_ZserverNotConfigured 64226
@@ -39,9 +40,9 @@
 #define Main_TMainForm_FileNotFound 64234
 #define Main_TMainForm_ComfirmUploadSound 64235
 #define Main_TMainForm_ComfirmDownloadSound 64236
-#define UExceptionDialog_RsAppError 64237
-#define UExceptionDialog_RsExceptionClass 64238
-#define UExceptionDialog_RsExceptionMessage 64239
+#define Main_TMainForm_ConfirmRewindSerialNumber 64237
+#define UExceptionDialog_RsAppError 64238
+#define UExceptionDialog_RsExceptionClass 64239
 #define Main_TMainForm_CW_port_is_no_set 64240
 #define Main_TMainForm_Not_a_new_multi 64241
 #define Main_TMainForm_Cannot_merge_current_file 64242
@@ -1340,8 +1341,10 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
@@ -1357,7 +1360,6 @@ BEGIN
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
-	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
 	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
 	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
@@ -1371,9 +1373,9 @@ BEGIN
 	Main_TMainForm_FileNotFound,	L"file not found."
 	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
 	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
+	Main_TMainForm_ConfirmRewindSerialNumber,	L"Do you want to rewind the serial number?"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
-	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	Main_TMainForm_CW_port_is_no_set,	L"CW port is not set"
 	Main_TMainForm_Not_a_new_multi,	L"NOT a new multiplier. (This is a multi stn)"
 	Main_TMainForm_Cannot_merge_current_file,	L"Cannot merge current file"

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ClipBrd, System.Actions, Vcl.ActnList,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib;
 
 type
   TCWKeyBoard = class(TForm)
@@ -78,6 +78,7 @@ type
     procedure ApplyShortcut();
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
+    procedure SendChar(C: Char);
   public
     { Public declarations }
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -132,6 +133,7 @@ procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
    nID: Integer;
+   rig: TRig;
 begin
    if Key = Chr($1B) then begin
       Exit;
@@ -162,9 +164,8 @@ begin
    // CQÉãÅ[ÉvíÜÇ»ÇÁíÜé~Ç∑ÇÈ
    SendMessage(MainForm.Handle, WM_ZLOG_CQABORT, 1, 0);
 
-   nID := MainForm.CurrentRigID;
-
-   dmZLogKeyer.SetCWSendBufCharPTT(nID, K);
+   // ÇPï∂éöëóêM
+   SendChar(K);
 
    Key := K;
 end;
@@ -222,42 +223,42 @@ end;
 
 procedure TCWKeyBoard.actionPlayMessageARExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID, 'a');
+   SendChar('a');
    Console.Text := Console.Text + '[AR]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBKExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID, 'b');
+   SendChar('b');
    Console.Text := Console.Text + '[BK]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBTExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID, 't');
+   SendChar('t');
    Console.Text := Console.Text + '[BT]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageKNExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID,'k');
+   SendChar('k');
    Console.Text := Console.Text + '[KN]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageSKExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID,'s');
+   SendChar('s');
    Console.Text := Console.Text + '[SK]';
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageVAExecute(Sender: TObject);
 begin
-   dmZLogKeyer.SetCWSendBufCharPTT(MainForm.CurrentRigID,'s');
+   SendChar('s');
    Console.Text := Console.Text + '[VA]';
    Console.SelStart := Length(Console.Text);
 end;
@@ -379,6 +380,25 @@ procedure TCWKeyBoard.SetFontSize(v: Integer);
 begin
    FFontSize := v;
    Console.Font.Size := v;
+end;
+
+procedure TCWKeyBoard.SendChar(C: Char);
+var
+   nID: Integer;
+   rig: TRig;
+begin
+   nID := MainForm.GetTxRigID();
+
+   if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
+      rig := MainForm.RigControl.Rigs[nID + 1];
+      if rig <> nil then begin
+         rig.PlayMessageCW(C);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+      end;
+   end
+   else begin
+      dmZLogKeyer.SetCWSendBufCharPTT(nID, C);
+   end;
 end;
 
 end.

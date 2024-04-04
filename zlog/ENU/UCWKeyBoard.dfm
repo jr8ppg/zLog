@@ -11,14 +11,12 @@ object CWKeyBoard: TCWKeyBoard
   Font.Name = #65325#65331' '#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object Console: TMemo
     Left = 0
@@ -29,6 +27,8 @@ object CWKeyBoard: TCWKeyBoard
     ImeMode = imDisable
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
+    ExplicitWidth = 375
+    ExplicitHeight = 70
   end
   object Panel1: TPanel
     Left = 0
@@ -38,6 +38,8 @@ object CWKeyBoard: TCWKeyBoard
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 70
+    ExplicitWidth = 375
     object buttonOK: TButton
       Left = 6
       Top = 8

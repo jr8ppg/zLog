@@ -108,11 +108,11 @@ object CommForm: TCommForm
       TabOrder = 8
     end
     object checkIgnoreBEL: TCheckBox
-      Left = 269
+      Left = 278
       Top = 57
       Width = 74
       Height = 17
-      Caption = 'Ignore BEL'
+      Caption = 'BEL'#12434#28961#35222
       TabOrder = 7
     end
   end
@@ -157,6 +157,8 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitWidth = 348
+      ExplicitHeight = 58
     end
     object Console: TListBox
       Left = 1
@@ -172,6 +174,8 @@ object CommForm: TCommForm
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
+      ExplicitTop = 63
+      ExplicitWidth = 348
     end
   end
   object StatusLine: TStatusBar

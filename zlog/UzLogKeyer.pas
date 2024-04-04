@@ -2220,6 +2220,7 @@ begin
    FCodeTable[Ord('t')][10] := 2;
    FCodeTable[Ord('t')][11] := 9;   { Next char }
 
+   // ?
    FCodeTable[Ord('?')][1] := 1;
    FCodeTable[Ord('?')][2] := 0;
    FCodeTable[Ord('?')][3] := 1;
@@ -2234,6 +2235,7 @@ begin
    FCodeTable[Ord('?')][12] := 2;
    FCodeTable[Ord('?')][13] := 9;
 
+   // BK
    FCodeTable[Ord('~')][1] := 3;
    FCodeTable[Ord('~')][2] := 0;
    FCodeTable[Ord('~')][3] := 1;

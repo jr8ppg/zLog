@@ -121,6 +121,7 @@ type
     function GetLocalEcho(): Boolean;
     procedure TerminateCommProcessThread();
     procedure LoadAllowDenyList();
+    function DeleteControlChar(S: string): string;
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
@@ -243,6 +244,7 @@ end;
 
 procedure TCommForm.AddConsole(str: string);
 begin
+   str := DeleteControlChar(str);
    Console.Items.BeginUpdate();
    Console.Items.Add(str);
    if Console.Items.Count > 1000 then begin
@@ -1155,6 +1157,23 @@ begin
    if FileExists(fname) then begin
       FDenyList.LoadFromFile(fname);
    end;
+end;
+
+function TCommForm.DeleteControlChar(S: string): string;
+var
+   i: Integer;
+   C: Char;
+   OutStr: string;
+begin
+   OutStr := '';
+   for i := 1 to Length(S) do begin
+      C := S[i];
+      if (Ord(C) >= $20) and (Ord(C) <= $7F) then begin
+         OutStr := OutStr + C;
+      end;
+   end;
+
+   Result := OutStr;
 end;
 
 { TCommProcessThread }

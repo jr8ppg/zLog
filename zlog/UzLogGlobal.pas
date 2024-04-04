@@ -140,6 +140,7 @@ type
     _bandscope_use_resume: Boolean;
     _bandscope_setfreq_after_mode_change: Boolean;
     _bandscope_always_change_mode: Boolean;
+    _bandscope_save_current_freq: Boolean;
 
     CW : TCWSettingsParam;
     _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
@@ -228,6 +229,7 @@ type
     _autobandmap: boolean;
     _send_freq_interval: Integer;
     _ignore_rig_mode: Boolean;
+    _use_ptt_command: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -1125,6 +1127,9 @@ begin
       // Ignore RIG mode
       Settings._ignore_rig_mode := ini.ReadBool('Rig', 'IgnoreRigMode', False);
 
+      // Use PTT command
+      Settings._use_ptt_command := ini.ReadBool('Rig', 'UsePttCommand', False);
+
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
 
@@ -1323,6 +1328,7 @@ begin
       Settings._bandscope_use_resume := ini.ReadBool('BandScopeOptions', 'use_resume', False);
       Settings._bandscope_setfreq_after_mode_change := ini.ReadBool('BandScopeOptions', 'setfreq_after_mode_change', False);
       Settings._bandscope_always_change_mode := ini.ReadBool('BandScopeOptions', 'always_change_mode', True);
+      Settings._bandscope_save_current_freq := ini.ReadBool('BandScopeOptions', 'save_current_freq', True);
 
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
@@ -1797,6 +1803,9 @@ begin
       // Ignore RIG mode
       ini.WriteBool('Rig', 'IgnoreRigMode', Settings._ignore_rig_mode);
 
+      // Use PTT command
+      ini.ReadBool('Rig', 'UsePttCommand', Settings._use_ptt_command);
+
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);
 
@@ -1975,6 +1984,7 @@ begin
       ini.WriteBool('BandScopeOptions', 'use_resume', Settings._bandscope_use_resume);
       ini.WriteBool('BandScopeOptions', 'setfreq_after_mode_change', Settings._bandscope_setfreq_after_mode_change);
       ini.WriteBool('BandScopeOptions', 'always_change_mode', Settings._bandscope_always_change_mode);
+      ini.WriteBool('BandScopeOptions', 'save_current_freq', Settings._bandscope_save_current_freq);
 
       // Quick Memo
       for i := 1 to 5 do begin

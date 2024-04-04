@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -40,7 +40,7 @@ object formOptions: TformOptions
         object Label115: TLabel
           Left = 20
           Top = 229
-          Width = 246
+          Width = 210
           Height = 13
           Caption = 'TAB'#12461#12540#25276#19979#24460#12289'CW'#36895#24230#12434#21152#36895#12377#12427
         end
@@ -2708,6 +2708,14 @@ object formOptions: TformOptions
           Position = 60
           TabOrder = 6
         end
+        object checkUsePttCommand: TCheckBox
+          Left = 8
+          Top = 180
+          Width = 141
+          Height = 18
+          Caption = 'PTT'#12467#12510#12531#12489#12434#20351#29992#12377#12427
+          TabOrder = 7
+        end
       end
       object groupRcMemoryScan: TGroupBox
         Left = 256
@@ -3075,13 +3083,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Courier New CE'
+          FontName = 'Cascadia Mono Bold Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 63
+          ItemIndex = 43
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
