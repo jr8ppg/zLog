@@ -1668,6 +1668,8 @@ begin
    if radio1Radio.Checked = True then begin
       FRigControlPort[3].ItemIndex := 0;
       FRigControlPort[4].ItemIndex := 0;
+      Result := True;
+      Exit;
    end;
 
    // リグ設定が無いのに割当がある場合は消去する
