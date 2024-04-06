@@ -8702,7 +8702,6 @@ var
    S: string;
 begin
    if no >= 101 then begin
-      FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       bank := dmZlogGlobal.Settings.CW.CurrentBank;
       S := dmZLogGlobal.CWMessage(bank, FCurrentCQMessageNo);
    end
@@ -8720,6 +8719,10 @@ begin
    // リピート停止
    timerCqRepeat.Enabled := False;
    FMessageManager.ClearQue2();
+
+   if no >= 101 then begin
+      FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
+   end;
 
    // Fキー操作ではTXをRXと同じにする
    if (fResetTx = True) then begin
