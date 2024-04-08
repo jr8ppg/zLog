@@ -13157,11 +13157,12 @@ begin
       rig := RigControl.GetRig(rigset, TextToBand(FEditPanel[rigset - 1].BandEdit.Text));
       if (rig = nil) then begin
          FLastFreq[rigset] := 0;
+         FLastMode[rigset] := mCW;
       end
       else begin
          FLastFreq[rigset] := rig.CurrentFreqHz;
+         FLastMode[rigset] := rig.CurrentMode;
       end;
-      FLastMode[rigset] := rig.CurrentMode;
    end;
 
    // リグコントロール画面に表示
