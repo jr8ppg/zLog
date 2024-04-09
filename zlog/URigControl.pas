@@ -109,6 +109,9 @@ type
     procedure ShowMemCh();
     procedure SaveMemCh();
     procedure LoadMemCh();
+
+    procedure SetPrevVFO(Index: Integer; fFreq: TFrequency);
+    function GetPrevVFO(Index: Integer): TFrequency;
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -121,6 +124,8 @@ type
     function GetCurrentRig : integer;
     function CheckSameBand(B : TBand) : boolean; // returns true if inactive rig is in B
     function IsAvailableBand(B: TBand): Boolean;
+
+    property PrevVFO[Index: Integer]: TFrequency read GetPrevVFO write SetPrevVFO;
 
 //    procedure SetRit(fOnOff: Boolean);
 //    procedure SetXit(fOnOff: Boolean);
@@ -416,6 +421,16 @@ begin
 //      Result := False;
 //   end;
    Result := True;
+end;
+
+procedure TRigControl.SetPrevVFO(Index: Integer; fFreq: TFrequency);
+begin
+   FPrevVfo[Index] := fFreq;
+end;
+
+function TRigControl.GetPrevVFO(Index: Integer): TFrequency;
+begin
+   Result := FPrevVfo[Index];
 end;
 
 function TRigControl.SetCurrentRig(N: Integer): Boolean;

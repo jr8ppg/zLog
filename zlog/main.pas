@@ -10061,6 +10061,10 @@ begin
       FRigControl.SetCurrentRig(rig.RigNumber);
 
       rig.MoveToLastFreq(FLastFreq[rigset], FLastMode[rigset]);
+
+      while RigControl.PrevVFO[0] <> FLastFreq[rigset] do begin
+         Application.ProcessMessages();
+      end;
    end;
 
    Restore2bsiqMode();
