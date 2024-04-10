@@ -568,7 +568,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -708,8 +707,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 228
-          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -5822,6 +5819,7 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
+        ExplicitLeft = 420
       end
     end
   end
@@ -5844,6 +5842,25 @@ object MainForm: TMainForm
     TabOrder = 3
     Visible = False
     ExplicitWidth = 524
+    DesignSize = (
+      528
+      28)
+    object buttonCancelOutOfPeriod: TSpeedButton
+      Left = 502
+      Top = 5
+      Width = 20
+      Height = 20
+      Anchors = [akTop, akRight]
+      Caption = #215
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = #65325#65331' '#12468#12471#12483#12463
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = buttonCancelOutOfPeriodClick
+    end
   end
   object panelShowInfo: TPanel
     Left = 0

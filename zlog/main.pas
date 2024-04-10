@@ -572,6 +572,7 @@ type
     N14: TMenuItem;
     menuUploadSounds: TMenuItem;
     OptionsButton: TSpeedButton;
+    buttonCancelOutOfPeriod: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -872,6 +873,7 @@ type
     procedure menuUploadOplistClick(Sender: TObject);
     procedure menuUploadSoundsClick(Sender: TObject);
     procedure menuDownloadSoundsClick(Sender: TObject);
+    procedure buttonCancelOutOfPeriodClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1306,6 +1308,7 @@ resourcestring
   TMainForm_ComfirmUploadSound = 'Upload the sound file to Z-Server. Are you sure?';
   TMainForm_ComfirmDownloadSound = 'Would you like to download the sound file?' + #13#10 + 'Overwrite the existing sound file.';
   TMainForm_ConfirmRewindSerialNumber = 'Do you want to rewind the serial number?';
+  TMainForm_ConfirmContestPeriod = 'Do you want to change the contest period to "not used"?';
 
 var
   MainForm: TMainForm;
@@ -4934,6 +4937,14 @@ begin
    end;
 end;
 
+procedure TMainForm.buttonCancelOutOfPeriodClick(Sender: TObject);
+begin
+   if MessageBox(Handle, PChar(TMainForm_ConfirmContestPeriod), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+   dmZLogGlobal.Settings._use_contest_period := False;
+end;
+
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
    FormShowAndRestore(FCWKeyBoard);
@@ -5607,6 +5618,7 @@ end;
 procedure TMainForm.FormResize(Sender: TObject);
 begin
    SetListWidth();
+   buttonCancelOutOfPeriod.Left := panelOutOfPeriod.Width - 26;
 end;
 
 procedure TMainForm.menuHardwareSettingsClick(Sender: TObject);
