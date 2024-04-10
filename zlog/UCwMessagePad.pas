@@ -170,6 +170,7 @@ begin
       Insert(CurrentQSO.Callsign, S, i);
    end;
 
+   MainForm.MsgMgrContinueQue();
    MainForm.SetLastFocus();
 end;
 
