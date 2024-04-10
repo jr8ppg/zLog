@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -1966,7 +1966,7 @@ object formOptions2: TformOptions2
       object cbDisplayDatePartialCheck: TCheckBox
         Left = 168
         Top = 89
-        Width = 175
+        Width = 200
         Height = 17
         Caption = #12497#12540#12471#12515#12523#12481#12455#12483#12463#20869#12395#26085#20184#12434#34920#31034
         TabOrder = 4
@@ -3148,9 +3148,9 @@ object formOptions2: TformOptions2
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
           Top = 86
-          Width = 198
+          Width = 204
           Height = 17
-          Caption = 'S&&P'#26178#12289#29694#22312#21608#27874#25968#12434#20445#23384'(1R)'
+          Caption = 'Spot'#12395'QSY'#12377#12427#30452#21069#12398#21608#27874#25968#12434#35352#25014
           TabOrder = 7
           OnClick = checkUseEstimatedModeClick
         end
