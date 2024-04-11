@@ -5841,7 +5841,6 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 3
     Visible = False
-    ExplicitWidth = 524
     DesignSize = (
       528
       28)
@@ -5854,7 +5853,7 @@ object MainForm: TMainForm
       Caption = #215
       Flat = True
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
+      Font.Color = clGray
       Font.Height = -13
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = [fsBold]
