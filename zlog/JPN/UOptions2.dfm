@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetCategories
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -458,7 +458,7 @@ object formOptions2: TformOptions2
       object cbDispExchange: TCheckBox
         Left = 17
         Top = 257
-        Width = 193
+        Width = 240
         Height = 17
         Caption = #20182#12398#12496#12531#12489#12391#20132#25563#12375#12383#12490#12531#12496#12540#12434#33258#21205#20837#21147
         TabOrder = 8
