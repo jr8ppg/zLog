@@ -764,7 +764,7 @@ begin
       for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
          s := Grid.Cells[0, i];
          for j := 0 to FBSList.Count - 1 do begin
-            if pos(FBSList[j].LabelStr, s) = 1 then begin
+            if pos(FBSList[j].LabelStr, s) > 0 then begin
                DeleteFromBSList(j);
                Break;
             end;
