@@ -1112,6 +1112,15 @@ begin
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
       checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
       checkSaveCurrentFreq.Checked := Settings._bandscope_save_current_freq;        // S&P時、現在周波数を保存する
+
+      // 1Radio時のみ設定可能とする
+      if Settings._operate_style = os1Radio then begin
+         checkSaveCurrentFreq.Enabled := True;
+      end
+      else begin
+         checkSaveCurrentFreq.Enabled := False;
+      end;
+
       checkUseEstimatedModeClick(nil);
 
       // Quick Memo

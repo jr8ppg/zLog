@@ -572,6 +572,7 @@ type
     N14: TMenuItem;
     menuUploadSounds: TMenuItem;
     OptionsButton: TSpeedButton;
+    buttonCancelOutOfPeriod: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -872,6 +873,7 @@ type
     procedure menuUploadOplistClick(Sender: TObject);
     procedure menuUploadSoundsClick(Sender: TObject);
     procedure menuDownloadSoundsClick(Sender: TObject);
+    procedure buttonCancelOutOfPeriodClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1126,7 +1128,7 @@ type
     procedure ScrollGrid();
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
-    procedure AssignControls(nID: Integer; var C, N, B, M, S: TEdit);
+    procedure AssignControls(nID: Integer; var C, N, B, M, S, O: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
     procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
@@ -1306,6 +1308,7 @@ resourcestring
   TMainForm_ComfirmUploadSound = 'Upload the sound file to Z-Server. Are you sure?';
   TMainForm_ComfirmDownloadSound = 'Would you like to download the sound file?' + #13#10 + 'Overwrite the existing sound file.';
   TMainForm_ConfirmRewindSerialNumber = 'Do you want to rewind the serial number?';
+  TMainForm_ConfirmContestPeriod = 'Do you want to change the contest period to "not used"?';
 
 var
   MainForm: TMainForm;
@@ -3391,9 +3394,9 @@ procedure TMainForm.SpaceBarProc(nID: Integer);
 var
    Q: TQSO;
    S: string;
-   C, N, B, M, SE: TEdit;
+   C, N, B, M, SE, OP: TEdit;
 begin
-   AssignControls(nID, C, N, B, M, SE);
+   AssignControls(nID, C, N, B, M, SE, OP);
 
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
@@ -3419,9 +3422,9 @@ end;
 
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
 var
-   C, N, B, M, SE: TEdit;
+   C, N, B, M, SE, OP: TEdit;
 begin
-   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE);
+   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE, OP);
 
    CurrentQSO.Callsign := C.Text;
 
@@ -3770,7 +3773,7 @@ var
    nTxID: Integer;
    nTxRigID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE: TEdit;
+   C, N, B, M, SE, OP: TEdit;
    mode: TMode;
 begin
    {$IFDEF DEBUG}
@@ -3788,13 +3791,14 @@ begin
       // 確定待ち
       FWaitForQsoFinish[nRxID] := True;
 
-      AssignControls(FKeyPressedRigID[nRxID], C, N, B, M, SE);
+      AssignControls(FKeyPressedRigID[nRxID], C, N, B, M, SE, OP);
 
       curQSO.Callsign := C.Text;
       curQSO.NrRcvd   := N.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
-      curQSO.Power    := BandToPower(curQSO.Band);
+      curQSO.Operator := OP.Text;
+      dmZlogGlobal.SetOpPower(curQSO);
       curQSO.Serial   := StrToIntDef(SE.Text, 1);
 
       // SO2Rモード
@@ -4933,6 +4937,14 @@ begin
    end;
 end;
 
+procedure TMainForm.buttonCancelOutOfPeriodClick(Sender: TObject);
+begin
+   if MessageBox(Handle, PChar(TMainForm_ConfirmContestPeriod), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+   dmZLogGlobal.Settings._use_contest_period := False;
+end;
+
 procedure TMainForm.buttonCwKeyboardClick(Sender: TObject);
 begin
    FormShowAndRestore(FCWKeyBoard);
@@ -5152,12 +5164,12 @@ var
    S: String;
    nID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE: TEdit;
+   C, N, B, M, SE, OP: TEdit;
 begin
    nID := FCurrentTx;   //Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
 
-   AssignControls(nID, C, N, B, M, SE);
+   AssignControls(nID, C, N, B, M, SE, OP);
 
    // .か?があるときは以降の送信は行わない
    if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
@@ -5172,7 +5184,8 @@ begin
       curQSO.Callsign := C.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
-      curQSO.Power    := BandToPower(curQSO.Band);
+      curQSO.Operator := OP.Text;
+      dmZLogGlobal.SetOpPower(curQSO);
 
       Q := Log.QuickDupe(curQSO);
       if FTabKeyPressed[nID] and (Q <> nil) then begin
@@ -5231,7 +5244,7 @@ begin
    end;
 end;
 
-procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S: TEdit);
+procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S, O: TEdit);
 begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       C := CallsignEdit1;
@@ -5239,6 +5252,7 @@ begin
       B := BandEdit1;
       M := ModeEdit1;
       S := SerialEdit1;
+      O := OpEdit1;
    end
    else begin
       C := FEditPanel[nID].CallsignEdit;
@@ -5246,6 +5260,7 @@ begin
       B := FEditPanel[nID].BandEdit;
       M := FEditPanel[nID].ModeEdit;
       S := FEditPanel[nID].SerialEdit;
+      O := FEditPanel[nID].OpEdit;
    end;
 end;
 
@@ -5603,6 +5618,7 @@ end;
 procedure TMainForm.FormResize(Sender: TObject);
 begin
    SetListWidth();
+   buttonCancelOutOfPeriod.Left := panelOutOfPeriod.Width - 26;
 end;
 
 procedure TMainForm.menuHardwareSettingsClick(Sender: TObject);
@@ -8698,7 +8714,6 @@ var
    S: string;
 begin
    if no >= 101 then begin
-      FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
       bank := dmZlogGlobal.Settings.CW.CurrentBank;
       S := dmZLogGlobal.CWMessage(bank, FCurrentCQMessageNo);
    end
@@ -8716,6 +8731,10 @@ begin
    // リピート停止
    timerCqRepeat.Enabled := False;
    FMessageManager.ClearQue2();
+
+   if no >= 101 then begin
+      FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
+   end;
 
    // Fキー操作ではTXをRXと同じにする
    if (fResetTx = True) then begin
@@ -10054,6 +10073,10 @@ begin
       FRigControl.SetCurrentRig(rig.RigNumber);
 
       rig.MoveToLastFreq(FLastFreq[rigset], FLastMode[rigset]);
+
+      while RigControl.PrevVFO[0] <> FLastFreq[rigset] do begin
+         Application.ProcessMessages();
+      end;
    end;
 
    Restore2bsiqMode();
@@ -10913,11 +10936,11 @@ end;
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
 var
    nID: Integer;
-   C, N, B, M, SE: TEdit;
+   C, N, B, M, SE, OP: TEdit;
 begin
    nID := FCurrentRx;
 
-   AssignControls(nID, C, N, B, M, SE);
+   AssignControls(nID, C, N, B, M, SE, OP);
 
    CurrentQSO.CallSign := strCallsign;
 
@@ -13150,11 +13173,12 @@ begin
       rig := RigControl.GetRig(rigset, TextToBand(FEditPanel[rigset - 1].BandEdit.Text));
       if (rig = nil) then begin
          FLastFreq[rigset] := 0;
+         FLastMode[rigset] := mCW;
       end
       else begin
          FLastFreq[rigset] := rig.CurrentFreqHz;
+         FLastMode[rigset] := rig.CurrentMode;
       end;
-      FLastMode[rigset] := rig.CurrentMode;
    end;
 
    // リグコントロール画面に表示

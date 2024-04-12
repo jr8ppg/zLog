@@ -4,7 +4,7 @@ object CwMessagePad: TCwMessagePad
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'CW Message Pad'
   ClientHeight = 402
-  ClientWidth = 179
+  ClientWidth = 183
   Color = clBtnFace
   Constraints.MinHeight = 150
   Constraints.MinWidth = 195
@@ -14,18 +14,16 @@ object CwMessagePad: TCwMessagePad
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object CategoryButtons1: TCategoryButtons
     Left = 0
     Top = 0
-    Width = 179
+    Width = 183
     Height = 402
     Align = alClient
     ButtonFlow = cbfVertical
@@ -38,6 +36,8 @@ object CwMessagePad: TCwMessagePad
     ShowHint = True
     TabOrder = 0
     OnButtonClicked = CategoryButtons1ButtonClicked
+    ExplicitWidth = 179
+    ExplicitHeight = 401
   end
   object PopupMenu1: TPopupMenu
     AutoHotkeys = maManual

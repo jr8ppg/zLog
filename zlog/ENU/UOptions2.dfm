@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -3148,9 +3148,9 @@ object formOptions2: TformOptions2
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
           Top = 86
-          Width = 198
+          Width = 204
           Height = 17
-          Caption = 'Save current frequency when S&&P'
+          Caption = 'Save the freq. before QSY to Spot'
           TabOrder = 7
           OnClick = checkUseEstimatedModeClick
         end
