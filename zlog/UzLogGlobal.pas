@@ -179,7 +179,7 @@ type
     _so2r_cq_msg_number: Integer;   // 1-12
     _so2r_2bsiq_pluswpm: Integer;
     _so2r_ignore_mode_change: Boolean;
-
+    _so2r_rigselect_v28: Boolean;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
@@ -1093,6 +1093,7 @@ begin
       end;
       Settings._so2r_2bsiq_pluswpm := ini.ReadInteger('SO2R', '2bsiq_pluswpm', 3);
       Settings._so2r_ignore_mode_change := ini.ReadBool('SO2R', 'ignore_mode_change', True);
+      Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
 
       // CW PTT control
 
@@ -1769,6 +1770,7 @@ begin
       ini.WriteInteger('SO2R', 'cq_msg_number', Settings._so2r_cq_msg_number);
       ini.WriteInteger('SO2R', '2bsiq_pluswpm', Settings._so2r_2bsiq_pluswpm);
       ini.WriteBool('SO2R', 'ignore_mode_change', Settings._so2r_ignore_mode_change);
+      ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
 
       // CW PTT control
 
@@ -2132,6 +2134,7 @@ begin
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
    dmZLogKeyer.So2rTxRigC := Settings._so2r_tx_rigc;
+   dmZLogKeyer.So2rRigSelectV28 := Settings._so2r_rigselect_v28;
 
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
