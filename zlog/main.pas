@@ -4650,7 +4650,6 @@ begin
       end;
 
       dmZLogKeyer.ClrBuffer;
-      dmZLogKeyer.PauseCW();
    end;
 
    CWPlayButton.Visible := False;
@@ -8864,7 +8863,12 @@ end;
 
 procedure TMainForm.OnOneCharSentProc(Sender: TObject);
 begin
-   FCWMonitor.OneCharSentProc();
+   if Sender = nil then begin
+      //FCWMonitor.ClearSendingText();
+   end
+   else begin
+      FCWMonitor.OneCharSentProc();
+   end;
 end;
 
 procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
