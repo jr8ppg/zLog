@@ -12889,6 +12889,7 @@ end;
 procedure TMainForm.ShowOutOfContestPeriod(fShow: Boolean);
 begin
    panelOutOfPeriod.Visible := True;
+   buttonCancelOutOfPeriod.Left := panelOutOfPeriod.Width - 26;
    if fShow = True then begin
       timerOutOfPeriod.Tag := 1;
    end
