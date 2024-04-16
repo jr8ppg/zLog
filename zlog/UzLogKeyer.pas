@@ -260,6 +260,17 @@ type
 
     FWnd: HWND;
 
+    // TX select sub
+    procedure SetTxRigFlag_com(rigset: Integer);
+    procedure SetTxRigFlag_com_v28(rigset: Integer);
+    procedure SetTxRigFlag_so2rneo(rigset: Integer);
+    procedure SetTxRigFlag_usbif4cw(rigset: Integer);
+
+    // RX select sub
+    procedure SetRxRigFlag_com(rigset, rigno: Integer);
+    procedure SetRxRigFlag_com_v28(rigset, rigno: Integer);
+    procedure SetRxRigFlag_so2rneo(rigset, rigno: Integer);
+
     procedure Sound();
     procedure NoSound();
 
@@ -329,10 +340,13 @@ type
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
+    // TX select
     procedure SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
+
+    // RX select
     procedure SetRxRigFlag(rigset, rigno: Integer);
-    procedure SetTxRigFlagV28(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
-    procedure SetRxRigFlagV28(rigset, rigno: Integer);
+
+    // Voice select
     procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     procedure SetPTT(_on : Boolean);
@@ -430,7 +444,7 @@ type
 var
   dmZLogKeyer: TdmZLogKeyer;
   CWBufferSync: TCriticalSection;
-  FUsbPortDataLock: TRTLCriticalSection;
+  UsbPortDataLock: TCriticalSection;
 
 const
   USBIF4CW_VENDORID = $BFE;
@@ -510,8 +524,6 @@ begin
       FUsbInfo[i].FUSBIF4CW := nil;
       FUsbInfo[i].FPORTDATA := nil;
    end;
-
-   InitializeCriticalSection(FUsbPortDataLock);
 
    FUserFlag := False;
    FVoiceFlag := 0;
@@ -722,9 +734,45 @@ begin
 end;
 
 procedure TdmZLogKeyer.SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
-var
-   i: Integer;
+begin
+   if (rigset = 0) or (rigset = 1) then begin
+      FWkTxRigSet := 0;
+   end
+   else if (rigset = 2) then begin
+      FWkTxRigSet := 1;
+   end
+   else begin
+      FWkTxRigSet := 2;
+   end;
 
+   // COMポートでのRIG SELECT
+   if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+      if FRigSelectV28 = True then begin
+         SetTxRigFlag_com_v28(rigset);
+      end
+      else begin
+         SetTxRigFlag_com(rigset);
+      end;
+      Exit;
+   end;
+
+   // WinKeyerの場合
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
+      WinKeyerSetPinCfg(FPTTEnabled);
+      Exit;
+   end;
+
+   // SO2R Neoの場合
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
+      SetTxRigFlag_so2rneo(rigset);
+      Exit;
+   end;
+
+   // USBIF4CWでのRIG SELECT
+   SetTxRigFlag_usbif4cw(rigset);
+end;
+
+procedure TdmZLogKeyer.SetTxRigFlag_com(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
    procedure SelectRigA();
    begin
       ZComTxRigSelect.ToggleDTR(False);
@@ -743,84 +791,88 @@ var
       ZComTxRigSelect.ToggleRTS(True);
    end;
 begin
-   if FRigSelectV28 = True then begin
-      SetTxRigFlagV28(rigset);
-      Exit;
-   end;
+   case rigset of
+      // RIG-A
+      0, 1: begin
+         SelectRigA();
+      end;
 
-   if (rigset = 0) or (rigset = 1) then begin
-      FWkTxRigSet := 0;
-   end
-   else if (rigset = 2) then begin
-      FWkTxRigSet := 1;
-   end
-   else begin
-      FWkTxRigSet := 2;
-   end;
+      // RIG-B
+      2: begin
+         SelectRigB();
+      end;
 
-   // COMポートでのRIG SELECT
-   if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      case rigset of
-         // RIG-A
-         0, 1: begin
-            SelectRigA();
-         end;
+      // RIG-C
+      else begin
+         case FSo2rTxRigC of
+            // RIG-C
+            0: begin
+               SelectRigC();
+            end;
 
-         // RIG-B
-         2: begin
-            SelectRigB();
-         end;
+            // Same RIG-A
+            1: begin
+               SelectRigA();
+            end;
 
-         // RIG-C
-         else begin
-            case FSo2rTxRigC of
-               // RIG-C
-               0: begin
-                  SelectRigC();
-               end;
-
-               // Same RIG-A
-               1: begin
-                  SelectRigA();
-               end;
-
-               // Same RIG-B
-               2: begin
-                  SelectRigB();
-               end;
+            // Same RIG-B
+            2: begin
+               SelectRigB();
             end;
          end;
       end;
    end;
+end;
 
-   // WinKeyerの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-      WinKeyerSetPinCfg(FPTTEnabled);
-      Exit;
-   end;
-
-   // SO2R Neoの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if rigset = 2 then begin
-         So2rNeoSwitchRig(1, FWkRxRigSet);
-      end
-      else begin
-         So2rNeoSwitchRig(0, FWkRxRigSet);
+procedure TdmZLogKeyer.SetTxRigFlag_com_v28(rigset: Integer);
+begin
+   case rigset of
+      0: begin
+         ZComTxRigSelect.ToggleDTR(False);
+         ZComTxRigSelect.ToggleRTS(False);
       end;
-      Exit;
-   end;
 
+      1: begin
+         ZComTxRigSelect.ToggleDTR(True);
+         ZComTxRigSelect.ToggleRTS(False);
+      end;
+
+      2: begin
+         ZComTxRigSelect.ToggleDTR(False);
+         ZComTxRigSelect.ToggleRTS(True);
+      end;
+
+      3: begin
+         ZComTxRigSelect.ToggleDTR(True);
+         ZComTxRigSelect.ToggleRTS(True);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetTxRigFlag_so2rneo(rigset: Integer);
+begin
+   if rigset = 2 then begin
+      So2rNeoSwitchRig(1, FWkRxRigSet);
+   end
+   else begin
+      So2rNeoSwitchRig(0, FWkRxRigSet);
+   end;
+end;
+
+procedure TdmZLogKeyer.SetTxRigFlag_usbif4cw(rigset: Integer);
+var
+   i: Integer;
+begin
    for i := 0 to MAXPORT do begin
-      // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
-            EnterCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Enter();
             FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTxRigSet);
             if FGen3MicSelect = False then begin
                FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTxRigSet);
             end;
             SendUsbPortData(i);
-            LeaveCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Leave();
          end;
       end;
    end;
@@ -836,11 +888,6 @@ end;
 //
 procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer);
 begin
-   if FRigSelectV28 = True then begin
-      SetRxRigFlagV28(rigset, rigno);
-      Exit;
-   end;
-
    if (rigset = 0) or (rigset = 1) then begin
       FWkRxRigSet := 0;
    end
@@ -853,191 +900,109 @@ begin
 
    // COMポートでのRIG SELECT
    if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      // 左右選択
-      case rigset of
-         // 左
-         1: begin
-            case rigno of
-               // HF
-               1, 3: begin
-                  ZComRxRigSelect.ToggleDTR(False);
-               end;
+      if FRigSelectV28 = True then begin
+         SetRxRigFlag_com_v28(rigset, rigno);
+      end
+      else begin
+         SetRxRigFlag_com(rigset, rigno);
+      end;
+      Exit;
+   end;
 
-               // VU
-               2, 4: begin
-                  ZComRxRigSelect.ToggleDTR(True);
-               end;
+   // SO2R Neoの場合
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
+      SetRxRigFlag_so2rneo(rigset, rigno);
+      Exit;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag_com(rigset, rigno: Integer);
+begin
+   // 左右選択
+   case rigset of
+      // 左
+      1: begin
+         case rigno of
+            // HF
+            1, 3: begin
+               ZComRxRigSelect.ToggleDTR(False);
+            end;
+
+            // VU
+            2, 4: begin
+               ZComRxRigSelect.ToggleDTR(True);
+            end;
+         end;
+      end;
+
+      // 右
+      2: begin
+         case rigno of
+            // HF
+            1, 3: begin
+               ZComRxRigSelect.ToggleRTS(False);
+            end;
+
+            // VU
+            2, 4: begin
+               ZComRxRigSelect.ToggleRTS(True);
+            end;
+         end;
+      end;
+
+      // 下
+      else begin
+         // 左
+         case rigno of
+            // HF
+            1, 3: begin
+               ZComRxRigSelect.ToggleDTR(False);
+            end;
+
+            // VU
+            2, 4: begin
+               ZComRxRigSelect.ToggleDTR(True);
             end;
          end;
 
          // 右
-         2: begin
-            case rigno of
-               // HF
-               1, 3: begin
-                  ZComRxRigSelect.ToggleRTS(False);
-               end;
-
-               // VU
-               2, 4: begin
-                  ZComRxRigSelect.ToggleRTS(True);
-               end;
-            end;
-         end;
-
-         // 下
-         else begin
-            // 左
-            case rigno of
-               // HF
-               1, 3: begin
-                  ZComRxRigSelect.ToggleDTR(False);
-               end;
-
-               // VU
-               2, 4: begin
-                  ZComRxRigSelect.ToggleDTR(True);
-               end;
-            end;
-
-            // 右
-            ZComRxRigSelect.ToggleRTS(True);
-         end;
-      end;
-      Exit;
-   end;
-
-   // SO2R Neoの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if rigset = 2 then begin
-         So2rNeoSwitchRig(FWkTxRigSet, 1);
-      end
-      else begin
-         So2rNeoSwitchRig(FWkTxRigSet, 0);
-      end;
-      Exit;
-   end;
-end;
-
-procedure TdmZLogKeyer.SetTxRigFlagV28(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
-var
-   i: Integer;
-begin
-   if (rigset = 0) or (rigset = 1) then begin
-      FWkTx := 0;
-   end
-   else if (rigset = 2) then begin
-      FWkTx := 1;
-   end
-   else begin
-      FWkTx := 2;
-   end;
-
-   // COMポートでのRIG SELECT
-   if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      case rigset of
-         0: begin
-            ZComTxRigSelect.ToggleDTR(False);
-            ZComTxRigSelect.ToggleRTS(False);
-         end;
-
-         1: begin
-            ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(False);
-         end;
-
-         2: begin
-            ZComTxRigSelect.ToggleDTR(False);
-            ZComTxRigSelect.ToggleRTS(True);
-         end;
-
-         3: begin
-            ZComTxRigSelect.ToggleDTR(True);
-            ZComTxRigSelect.ToggleRTS(True);
-         end;
-      end;
-   end;
-
-   // WinKeyerの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-      WinKeyerSetPinCfg(FPTTEnabled);
-      Exit;
-   end;
-
-   // SO2R Neoの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if rigset = 2 then begin
-         So2rNeoSwitchRig(1, FWkRx);
-      end
-      else begin
-         So2rNeoSwitchRig(0, FWkRx);
-      end;
-      Exit;
-   end;
-
-   for i := 0 to MAXPORT do begin
-      // USBIF4CWでのRIG SELECT
-      if FKeyingPort[i] = tkpUSB then begin
-         if Assigned(FUsbInfo[i].FPORTDATA) then begin
-            EnterCriticalSection(FUsbPortDataLock);
-            FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTx);
-            if FGen3MicSelect = False then begin
-               FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTx);
-            end;
-            SendUsbPortData(i);
-            LeaveCriticalSection(FUsbPortDataLock);
-         end;
+         ZComRxRigSelect.ToggleRTS(True);
       end;
    end;
 end;
 
-procedure TdmZLogKeyer.SetRxRigFlagV28(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetRxRigFlag_com_v28(rigset, rigno: Integer);
 begin
-   if (rigset = 0) or (rigset = 1) then begin
-      FWkRxRigSet := 0;
-   end
-   else if (rigset = 2) then begin
-      FWkRxRigSet := 1;
+   case rigset of
+      0: begin
+         ZComRxRigSelect.ToggleDTR(False);
+         ZComRxRigSelect.ToggleRTS(False);
+      end;
+
+      1: begin
+         ZComRxRigSelect.ToggleDTR(True);
+         ZComRxRigSelect.ToggleRTS(False);
+      end;
+
+      2: begin
+         ZComRxRigSelect.ToggleDTR(False);
+         ZComRxRigSelect.ToggleRTS(True);
+      end;
+
+      3: begin
+         ZComRxRigSelect.ToggleDTR(True);
+         ZComRxRigSelect.ToggleRTS(True);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag_so2rneo(rigset, rigno: Integer);
+begin
+   if rigset = 2 then begin
+      So2rNeoSwitchRig(FWkTxRigSet, 1);
    end
    else begin
-      FWkRxRigSet := 2;
-   end;
-
-   // COMポートでのRIG SELECT
-   if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      case rigset of
-         0: begin
-            ZComRxRigSelect.ToggleDTR(False);
-            ZComRxRigSelect.ToggleRTS(False);
-         end;
-
-         1: begin
-            ZComRxRigSelect.ToggleDTR(True);
-            ZComRxRigSelect.ToggleRTS(False);
-         end;
-
-         2: begin
-            ZComRxRigSelect.ToggleDTR(False);
-            ZComRxRigSelect.ToggleRTS(True);
-         end;
-
-         3: begin
-            ZComRxRigSelect.ToggleDTR(True);
-            ZComRxRigSelect.ToggleRTS(True);
-         end;
-      end;
-      Exit;
-   end;
-
-   // SO2R Neoの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if rigset = 2 then begin
-         So2rNeoSwitchRig(FWkTx, 1);
-      end
-      else begin
-         So2rNeoSwitchRig(FWkTx, 0);
-      end;
-      Exit;
+      So2rNeoSwitchRig(FWkTxRigSet, 0);
    end;
 end;
 
@@ -1049,14 +1014,15 @@ begin
       Exit;
    end;
 
+   // USBIF4CW gen.3による音声選択
    for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
             FUsbInfo[i].FPORTDATA.SetVoiceFlag(flag);
             SendUsbPortData(i);
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -1087,14 +1053,14 @@ begin
 
       // USBIF4CW
       if FKeyingPort[nID] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetPttFlag(PTTON);
             if UsePaddleKeyer = False then begin
                SendUsbPortData(nID);
             end;
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
          Exit;
       end;
 
@@ -1145,12 +1111,12 @@ begin
 
       for nID := 0 to MAXPORT do begin
          if FKeyingPort[nID] = tkpUSB then begin
-            EnterCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Enter();
             if Assigned(FUsbInfo[nID].FPORTDATA) then begin
                FUsbInfo[nID].FPORTDATA.SetPttFlag(False);
                SendUsbPortData(nID);
             end;
-            LeaveCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Leave();
          end;
 
          if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
@@ -1530,14 +1496,14 @@ begin
       end;
 
       tkpUSB: begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(True);
             if UsePaddleKeyer = False then begin
                SendUsbPortData(nID);
             end;
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -1555,14 +1521,14 @@ begin
       end;
 
       tkpUSB: begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(False);
             if UsePaddleKeyer = False then begin
                SendUsbPortData(nID);
             end;
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -3213,7 +3179,7 @@ begin
          goto nextnext;
       end;
 
-      EnterCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Enter();
       InReport[0] := 0;
       InReport[1] := 4;
       InReport[2] := $0F;
@@ -3224,13 +3190,13 @@ begin
       InReport[7] := 0;
       InReport[8] := 0;
       FKeyer.FUsbInfo[0].FUSBIF4CW.ReadFile(InReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.InputReportByteLength, BR);
-      LeaveCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Leave();
 
       if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
          FKeyer.PaddleProc((InReport[2] and $05));
       end;
 
-      EnterCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Enter();
       if FKeyer.FUsbInfo[0].FPORTDATA.FUsbPortData = FKeyer.FUsbInfo[0].FPORTDATA.FPrevUsbPortData then begin
          OutReport[0] := 0;
          OutReport[1] := 4;
@@ -3246,7 +3212,7 @@ begin
       else begin
          FKeyer.SendUsbPortData(0);
       end;
-      LeaveCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Leave();
 
 nextnext:
    until Terminated;
@@ -3528,7 +3494,7 @@ begin
    if value then v := 1 else v := 0;
    for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
             case port of
                0: FUsbInfo[i].FPORTDATA.SetKeyFlag(value);
@@ -3538,7 +3504,7 @@ begin
             end;
             SendUsbPortData(i);
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -4414,13 +4380,13 @@ begin
          nID := msg.WParam;
          if FKeyingPort[nID] = tkpUSB then begin
             if Assigned(FUsbInfo[nID].FPORTDATA) then begin
-               EnterCriticalSection(FUsbPortDataLock);
+               UsbPortDataLock.Enter();
                FUsbInfo[nID].FPORTDATA.SetRigFlag(FWkTxRigSet);
                if FGen3MicSelect = False then begin
                   FUsbInfo[nID].FPORTDATA.SetVoiceFlag(FWkTxRigSet);
                end;
                SendUsbPortData(nID);
-               LeaveCriticalSection(FUsbPortDataLock);
+               UsbPortDataLock.Leave();
             end;
          end;
       end;
@@ -4661,8 +4627,10 @@ end;
 
 initialization
    CWBufferSync := TCriticalSection.Create();
+   UsbPortDataLock := TCriticalSection.Create();
 
 finalization
    CWBufferSync.Free();
+   UsbPortDataLock.Free();
 
 end.
