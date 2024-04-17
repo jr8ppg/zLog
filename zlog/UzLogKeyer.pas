@@ -282,7 +282,9 @@ type
     procedure TimerProcess(uTimerID, uMessage: Word; dwUser, dw1, dw2: Longint); stdcall;
     procedure IncWPM; {Increases CW speed by 1WPM}
     procedure DecWPM; {Decreases CW speed by 1WPM}
+    procedure ChangeWPM(sign: Integer; change: Integer);
     procedure SetCWSendBufChar2(C: char; CharPos: word);
+    procedure ExpandCWSendBuffer(b: Integer; SS: string);
 
     procedure SetWPM(wpm: Integer); {Sets CW speed 1-60 wpm}
     procedure SetSideTonePitch(Hertz: Integer); {Sets the pitch of the side tone}
@@ -1355,43 +1357,15 @@ end;
 
 procedure TdmZLogKeyer.SetCWSendBuf(b: byte; S: string);
 var
-   n, Len: word;
-   Code: Integer;
    SS: string;
 begin
    SS := S;
-   if SS[1] = '>' then begin
-      Val(SS[2] + SS[3], n, Code);
-      WPM := n;
-      SS := copy(SS, 4, 255);
-   end;
-
-   SS := DecodeCommands(SS);
 
    CWBufferSync.Enter();
    try
       tailcwstrptr := 1;
 
-      Len := length(SS);
-      n := 1;
-      while n <= Len do begin
-         if SS[n] = ':' then begin { callsign 1st char }
-            callsignptr := n;
-         end;
-
-         if SS[n] = '@' then begin
-            FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
-            FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
-            FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
-            SetCWSendBufChar(b, '@');
-            Inc(n, 3)
-         end
-         else begin
-            SetCWSendBufChar(b, SS[n]);
-         end;
-
-         Inc(n);
-      end;
+      ExpandCWSendBuffer(b, SS);
 
       SetCWSendBufFinish(b);
 
@@ -1416,9 +1390,9 @@ begin
       CW := Char($90);
    end;
 
-   SS := SS + DecodeCommands(sStr);
+   SS := sStr;
 
-   if FPTTEnabled { and Not(PTTIsOn) } then begin
+   if FPTTEnabled then begin
       SS := '(' + SS + ')';
    end;
 
@@ -1432,7 +1406,6 @@ end;
 
 procedure TdmZLogKeyer.SendStrFIFO(nID: Integer; sStr: string);
 var
-   n: Integer;
    SS: string;
    CW: string;
 begin
@@ -1443,8 +1416,8 @@ begin
       CW := Char($90);
    end;
 
-   { StringBuffer := StringBuffer + sStr; }
-   SS := SS + DecodeCommands(sStr);
+   SS := sStr;
+
    if FPTTEnabled then begin
       SS := '(' + SS + ')';
    end;
@@ -1453,25 +1426,7 @@ begin
 
    CWBufferSync.Enter();
    try
-      n := 1;
-      while n <= length(SS) do begin
-         if SS[n] = ':' then begin { callsign 1st char }
-            callsignptr := n;
-         end;
-
-         if SS[n] = '@' then begin
-            FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
-            FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
-            FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
-            SetCWSendBufChar(0, '@');
-            Inc(n, 3)
-         end
-         else begin
-            SetCWSendBufChar(0, SS[n]);
-         end;
-
-         Inc(n);
-      end;
+      ExpandCWSendBuffer(0, SS);
 
       SetCWSendBufFinish(0);
 
@@ -1480,6 +1435,42 @@ begin
       end;
    finally
       CWBufferSync.Leave();
+   end;
+end;
+
+procedure TdmZLogKeyer.ExpandCWSendBuffer(b: Integer; SS: string);
+var
+   n: Integer;
+begin
+   n := 1;
+   while n <= Length(SS) do begin
+      if SS[n] = ':' then begin { callsign 1st char }
+         callsignptr := n;
+      end;
+
+      if SS[n] = '@' then begin
+         FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
+         FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
+         FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
+         SetCWSendBufChar(b, '@');
+         Inc(n, 3)
+      end
+      else if SS[n] = '\' then begin
+         if SS[n + 1] = '+' then begin
+            FCodeTable[Ord('w')][2] := 0;
+         end
+         else begin
+            FCodeTable[Ord('w')][2] := 1;
+         end;
+         FCodeTable[Ord('w')][3] := StrToIntDef(SS[n + 2], 0);
+         SetCWSendBufChar(b, 'w');
+         Inc(n, 2)
+      end
+      else begin
+         SetCWSendBufChar(b, SS[n]);
+      end;
+
+      Inc(n);
    end;
 end;
 
@@ -1537,6 +1528,8 @@ procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: 
 var
    nCommand: Integer;
    cmd: Byte;
+   wpm_change: Integer;
+   wpm_sign: Integer;
 
    procedure Finish();
    begin
@@ -1774,6 +1767,25 @@ begin
          FSendChar := True;
       end;
 
+      $43: begin
+         CWBufferSync.Enter();
+         try
+            Inc(cwstrptr);
+            wpm_sign := FCWSendBuf[FSelectedBuf, cwstrptr];
+            Inc(cwstrptr);
+            wpm_change := FCWSendBuf[FSelectedBuf, cwstrptr];
+         finally
+            CWBufferSync.Leave();
+         end;
+
+         ChangeWPM(wpm_sign, wpm_change);
+
+         if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
+            FOnOneCharSentProc(Self);
+         end;
+      end;
+
       $0B: begin
          FUserFlag := False;
       end;
@@ -1812,7 +1824,6 @@ begin
          end;
 
          if Assigned(FOnOneCharSentProc) then begin
-            FOnOneCharSentProc(Self);
             FOnOneCharSentProc(Self);
             FOnOneCharSentProc(Self);
             FOnOneCharSentProc(Self);
@@ -2437,6 +2448,11 @@ begin
    FCodeTable[_deccw][1] := $42;    { DecWPM }
    FCodeTable[_deccw][2] := 9;
 
+   FCodeTable[Ord('w')][1] := $43;  { ChangeWPM }
+   FCodeTable[Ord('w')][2] := 0;
+   FCodeTable[Ord('w')][3] := 0;
+   FCodeTable[Ord('w')][4] := 9;
+
    for n := 1 to codemax do begin
       FCodeTable[Ord('%')][n] := $EE;
    end;
@@ -2573,6 +2589,26 @@ begin
    if FKeyerWPM > MINWPM then begin
       WPM := FKeyerWPM - 1;
    end;
+   FCancelSpeedChangedEvent := False;
+end;
+
+procedure TdmZLogKeyer.ChangeWPM(sign: Integer; change: Integer);
+var
+   new_wpm: Integer;
+begin
+   FCancelSpeedChangedEvent := True;
+
+   if sign = 0 then begin
+      new_wpm := FKeyerWPM + change;
+   end
+   else begin
+      new_wpm := FKeyerWPM - change;
+   end;
+
+   if (new_wpm >= MINWPM) and (new_wpm <= MAXWPM) then begin
+      WPM := new_wpm;
+   end;
+
    FCancelSpeedChangedEvent := False;
 end;
 
@@ -3963,6 +3999,7 @@ end;
 procedure TdmZLogKeyer.WinKeyerSendStr2(S: string);
 var
    C: Char;
+   SS: string;
 begin
    if FWkAbort = True then begin
       Exit;
@@ -3976,6 +4013,34 @@ begin
    FWkSendStatus := wkssMessage;
    FWkLastSendChar := Char(0);
    C := FWkMessageStr[FWkMessageIndex];
+
+   if C = Char($1c) then begin
+      Inc(FWkMessageIndex);
+      SS := C + FWkMessageStr[FWkMessageIndex];
+      FComKeying[0].SendString(AnsiString(SS));
+
+      if Assigned(FOnOneCharSentProc) then begin
+         FOnOneCharSentProc(Self);
+         FOnOneCharSentProc(Self);
+         FOnOneCharSentProc(Self);
+      end;
+
+      PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+      Exit;
+   end;
+
+   if C = '|' then begin
+      SS := C;
+      FComKeying[0].SendString(AnsiString(SS));
+
+      if Assigned(FOnOneCharSentProc) then begin
+         FOnOneCharSentProc(Self);
+      end;
+
+      PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+      Exit;
+   end;
+
    if C = '$' then begin
       // CWモニターを１文字進める
       if Assigned(FOnOneCharSentProc) then begin
@@ -4303,6 +4368,7 @@ procedure TdmZLogKeyer.WndMethod(var msg: TMessage);
 var
    C: Char;
    nID: Integer;
+   SS: string;
 begin
    case msg.Msg of
       WM_USER_WKSENDNEXTCHAR: begin
@@ -4328,7 +4394,33 @@ begin
          Inc(FWkMessageIndex);
          if FWkMessageIndex <= Length(FWkMessageStr) then begin
             C := FWkMessageStr[FWkMessageIndex];
-            WinKeyerSendCharEx(C);
+
+            if C = Char($1c) then begin
+               Inc(FWkMessageIndex);
+               SS := C + FWkMessageStr[FWkMessageIndex];
+               FComKeying[0].SendString(AnsiString(SS));
+
+               if Assigned(FOnOneCharSentProc) then begin
+                  FOnOneCharSentProc(Self);
+                  FOnOneCharSentProc(Self);
+                  FOnOneCharSentProc(Self);
+               end;
+
+               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+            end
+            else if C = '|' then begin
+               SS := C;
+               FComKeying[0].SendString(AnsiString(SS));
+
+               if Assigned(FOnOneCharSentProc) then begin
+                  FOnOneCharSentProc(Self);
+               end;
+
+               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+            end
+            else begin
+               WinKeyerSendCharEx(C);
+            end;
          end
          else begin
             FWkSendStatus := wkssNone;
