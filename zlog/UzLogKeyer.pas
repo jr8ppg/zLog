@@ -256,8 +256,20 @@ type
     FSo2rRxSelectPort: TKeyingPort;
     FSo2rTxSelectPort: TKeyingPort;
     FSo2rTxRigC: Integer;
+    FRigSelectV28: Boolean;
 
     FWnd: HWND;
+
+    // TX select sub
+    procedure SetTxRigFlag_com(rigset: Integer);
+    procedure SetTxRigFlag_com_v28(rigset: Integer);
+    procedure SetTxRigFlag_so2rneo(rigset: Integer);
+    procedure SetTxRigFlag_usbif4cw(rigset: Integer);
+
+    // RX select sub
+    procedure SetRxRigFlag_com(rigset, rigno: Integer);
+    procedure SetRxRigFlag_com_v28(rigset, rigno: Integer);
+    procedure SetRxRigFlag_so2rneo(rigset, rigno: Integer);
 
     procedure Sound();
     procedure NoSound();
@@ -270,7 +282,9 @@ type
     procedure TimerProcess(uTimerID, uMessage: Word; dwUser, dw1, dw2: Longint); stdcall;
     procedure IncWPM; {Increases CW speed by 1WPM}
     procedure DecWPM; {Decreases CW speed by 1WPM}
+    procedure ChangeWPM(sign: Integer; change: Integer);
     procedure SetCWSendBufChar2(C: char; CharPos: word);
+    procedure ExpandCWSendBuffer(b: Integer; SS: string);
 
     procedure SetWPM(wpm: Integer); {Sets CW speed 1-60 wpm}
     procedure SetSideTonePitch(Hertz: Integer); {Sets the pitch of the side tone}
@@ -328,8 +342,13 @@ type
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
+    // TX select
     procedure SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
+
+    // RX select
     procedure SetRxRigFlag(rigset, rigno: Integer);
+
+    // Voice select
     procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     procedure SetPTT(_on : Boolean);
@@ -399,6 +418,7 @@ type
     procedure WinKeyerTuneOn();
 
     // SO2R support
+    property So2rRigSelectV28: Boolean read FRigSelectV28 write FRigSelectV28;
     property So2rRxSelectPort: TKeyingPort read FSo2rRxSelectPort write SetSo2rRxSelectPort;
     property So2rTxSelectPort: TKeyingPort read FSo2rTxSelectPort write SetSo2rTxSelectPort;
     property So2rTxRigC: Integer read FSo2rTxRigC write FSo2rTxRigC;
@@ -426,7 +446,7 @@ type
 var
   dmZLogKeyer: TdmZLogKeyer;
   CWBufferSync: TCriticalSection;
-  FUsbPortDataLock: TRTLCriticalSection;
+  UsbPortDataLock: TCriticalSection;
 
 const
   USBIF4CW_VENDORID = $BFE;
@@ -478,6 +498,7 @@ begin
    FSo2rRxSelectPort := tkpNone;
    FSo2rTxSelectPort := tkpNone;
    FSo2rTxRigC := 0;
+   FRigSelectV28 := False;
    FTune := False;
 
    FWnd := AllocateHWnd(WndMethod);
@@ -505,8 +526,6 @@ begin
       FUsbInfo[i].FUSBIF4CW := nil;
       FUsbInfo[i].FPORTDATA := nil;
    end;
-
-   InitializeCriticalSection(FUsbPortDataLock);
 
    FUserFlag := False;
    FVoiceFlag := 0;
@@ -717,9 +736,45 @@ begin
 end;
 
 procedure TdmZLogKeyer.SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
-var
-   i: Integer;
+begin
+   if (rigset = 0) or (rigset = 1) then begin
+      FWkTxRigSet := 0;
+   end
+   else if (rigset = 2) then begin
+      FWkTxRigSet := 1;
+   end
+   else begin
+      FWkTxRigSet := 2;
+   end;
 
+   // COMポートでのRIG SELECT
+   if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+      if FRigSelectV28 = True then begin
+         SetTxRigFlag_com_v28(rigset);
+      end
+      else begin
+         SetTxRigFlag_com(rigset);
+      end;
+      Exit;
+   end;
+
+   // WinKeyerの場合
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
+      WinKeyerSetPinCfg(FPTTEnabled);
+      Exit;
+   end;
+
+   // SO2R Neoの場合
+   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
+      SetTxRigFlag_so2rneo(rigset);
+      Exit;
+   end;
+
+   // USBIF4CWでのRIG SELECT
+   SetTxRigFlag_usbif4cw(rigset);
+end;
+
+procedure TdmZLogKeyer.SetTxRigFlag_com(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
    procedure SelectRigA();
    begin
       ZComTxRigSelect.ToggleDTR(False);
@@ -738,79 +793,88 @@ var
       ZComTxRigSelect.ToggleRTS(True);
    end;
 begin
-   if (rigset = 0) or (rigset = 1) then begin
-      FWkTxRigSet := 0;
-   end
-   else if (rigset = 2) then begin
-      FWkTxRigSet := 1;
-   end
-   else begin
-      FWkTxRigSet := 2;
-   end;
+   case rigset of
+      // RIG-A
+      0, 1: begin
+         SelectRigA();
+      end;
 
-   // COMポートでのRIG SELECT
-   if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      case rigset of
-         // RIG-A
-         0, 1: begin
-            SelectRigA();
-         end;
+      // RIG-B
+      2: begin
+         SelectRigB();
+      end;
 
-         // RIG-B
-         2: begin
-            SelectRigB();
-         end;
+      // RIG-C
+      else begin
+         case FSo2rTxRigC of
+            // RIG-C
+            0: begin
+               SelectRigC();
+            end;
 
-         // RIG-C
-         else begin
-            case FSo2rTxRigC of
-               // RIG-C
-               0: begin
-                  SelectRigC();
-               end;
+            // Same RIG-A
+            1: begin
+               SelectRigA();
+            end;
 
-               // Same RIG-A
-               1: begin
-                  SelectRigA();
-               end;
-
-               // Same RIG-B
-               2: begin
-                  SelectRigB();
-               end;
+            // Same RIG-B
+            2: begin
+               SelectRigB();
             end;
          end;
       end;
    end;
+end;
 
-   // WinKeyerの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-      WinKeyerSetPinCfg(FPTTEnabled);
-      Exit;
-   end;
-
-   // SO2R Neoの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if rigset = 2 then begin
-         So2rNeoSwitchRig(1, FWkRxRigSet);
-      end
-      else begin
-         So2rNeoSwitchRig(0, FWkRxRigSet);
+procedure TdmZLogKeyer.SetTxRigFlag_com_v28(rigset: Integer);
+begin
+   case rigset of
+      0: begin
+         ZComTxRigSelect.ToggleDTR(False);
+         ZComTxRigSelect.ToggleRTS(False);
       end;
-      Exit;
-   end;
 
+      1: begin
+         ZComTxRigSelect.ToggleDTR(True);
+         ZComTxRigSelect.ToggleRTS(False);
+      end;
+
+      2: begin
+         ZComTxRigSelect.ToggleDTR(False);
+         ZComTxRigSelect.ToggleRTS(True);
+      end;
+
+      3: begin
+         ZComTxRigSelect.ToggleDTR(True);
+         ZComTxRigSelect.ToggleRTS(True);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetTxRigFlag_so2rneo(rigset: Integer);
+begin
+   if rigset = 2 then begin
+      So2rNeoSwitchRig(1, FWkRxRigSet);
+   end
+   else begin
+      So2rNeoSwitchRig(0, FWkRxRigSet);
+   end;
+end;
+
+procedure TdmZLogKeyer.SetTxRigFlag_usbif4cw(rigset: Integer);
+var
+   i: Integer;
+begin
    for i := 0 to MAXPORT do begin
-      // USBIF4CWでのRIG SELECT
       if FKeyingPort[i] = tkpUSB then begin
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
-            EnterCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Enter();
             FUsbInfo[i].FPORTDATA.SetRigFlag(FWkTxRigSet);
             if FGen3MicSelect = False then begin
                FUsbInfo[i].FPORTDATA.SetVoiceFlag(FWkTxRigSet);
             end;
             SendUsbPortData(i);
-            LeaveCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Leave();
          end;
       end;
    end;
@@ -838,69 +902,109 @@ begin
 
    // COMポートでのRIG SELECT
    if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      // 左右選択
-      case rigset of
-         // 左
-         1: begin
-            case rigno of
-               // HF
-               1, 3: begin
-                  ZComRxRigSelect.ToggleDTR(False);
-               end;
-
-               // VU
-               2, 4: begin
-                  ZComRxRigSelect.ToggleDTR(True);
-               end;
-            end;
-         end;
-
-         // 右
-         2: begin
-            case rigno of
-               // HF
-               1, 3: begin
-                  ZComRxRigSelect.ToggleRTS(False);
-               end;
-
-               // VU
-               2, 4: begin
-                  ZComRxRigSelect.ToggleRTS(True);
-               end;
-            end;
-         end;
-
-         // 下
-         else begin
-            // 左
-            case rigno of
-               // HF
-               1, 3: begin
-                  ZComRxRigSelect.ToggleDTR(False);
-               end;
-
-               // VU
-               2, 4: begin
-                  ZComRxRigSelect.ToggleDTR(True);
-               end;
-            end;
-
-            // 右
-            ZComRxRigSelect.ToggleRTS(True);
-         end;
+      if FRigSelectV28 = True then begin
+         SetRxRigFlag_com_v28(rigset, rigno);
+      end
+      else begin
+         SetRxRigFlag_com(rigset, rigno);
       end;
       Exit;
    end;
 
    // SO2R Neoの場合
    if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      if rigset = 2 then begin
-         So2rNeoSwitchRig(FWkTxRigSet, 1);
-      end
-      else begin
-         So2rNeoSwitchRig(FWkTxRigSet, 0);
-      end;
+      SetRxRigFlag_so2rneo(rigset, rigno);
       Exit;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag_com(rigset, rigno: Integer);
+begin
+   // 左右選択
+   case rigset of
+      // 左
+      1: begin
+         case rigno of
+            // HF
+            1, 3: begin
+               ZComRxRigSelect.ToggleDTR(False);
+            end;
+
+            // VU
+            2, 4: begin
+               ZComRxRigSelect.ToggleDTR(True);
+            end;
+         end;
+      end;
+
+      // 右
+      2: begin
+         case rigno of
+            // HF
+            1, 3: begin
+               ZComRxRigSelect.ToggleRTS(False);
+            end;
+
+            // VU
+            2, 4: begin
+               ZComRxRigSelect.ToggleRTS(True);
+            end;
+         end;
+      end;
+
+      // 下
+      else begin
+         // 左
+         case rigno of
+            // HF
+            1, 3: begin
+               ZComRxRigSelect.ToggleDTR(False);
+            end;
+
+            // VU
+            2, 4: begin
+               ZComRxRigSelect.ToggleDTR(True);
+            end;
+         end;
+
+         // 右
+         ZComRxRigSelect.ToggleRTS(True);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag_com_v28(rigset, rigno: Integer);
+begin
+   case rigset of
+      0: begin
+         ZComRxRigSelect.ToggleDTR(False);
+         ZComRxRigSelect.ToggleRTS(False);
+      end;
+
+      1: begin
+         ZComRxRigSelect.ToggleDTR(True);
+         ZComRxRigSelect.ToggleRTS(False);
+      end;
+
+      2: begin
+         ZComRxRigSelect.ToggleDTR(False);
+         ZComRxRigSelect.ToggleRTS(True);
+      end;
+
+      3: begin
+         ZComRxRigSelect.ToggleDTR(True);
+         ZComRxRigSelect.ToggleRTS(True);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag_so2rneo(rigset, rigno: Integer);
+begin
+   if rigset = 2 then begin
+      So2rNeoSwitchRig(FWkTxRigSet, 1);
+   end
+   else begin
+      So2rNeoSwitchRig(FWkTxRigSet, 0);
    end;
 end;
 
@@ -912,14 +1016,15 @@ begin
       Exit;
    end;
 
+   // USBIF4CW gen.3による音声選択
    for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
             FUsbInfo[i].FPORTDATA.SetVoiceFlag(flag);
             SendUsbPortData(i);
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -950,14 +1055,14 @@ begin
 
       // USBIF4CW
       if FKeyingPort[nID] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetPttFlag(PTTON);
             if UsePaddleKeyer = False then begin
                SendUsbPortData(nID);
             end;
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
          Exit;
       end;
 
@@ -1008,12 +1113,12 @@ begin
 
       for nID := 0 to MAXPORT do begin
          if FKeyingPort[nID] = tkpUSB then begin
-            EnterCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Enter();
             if Assigned(FUsbInfo[nID].FPORTDATA) then begin
                FUsbInfo[nID].FPORTDATA.SetPttFlag(False);
                SendUsbPortData(nID);
             end;
-            LeaveCriticalSection(FUsbPortDataLock);
+            UsbPortDataLock.Leave();
          end;
 
          if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
@@ -1100,7 +1205,7 @@ procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: Char);
 var
    m: Integer;
 begin
-   CWBufferSync.Enter();
+//   CWBufferSync.Enter();
    try
       for m := 1 to codemax do begin
          FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
@@ -1111,7 +1216,7 @@ begin
          tailcwstrptr := 1;
       end;
    finally
-      CWBufferSync.Leave();
+//      CWBufferSync.Leave();
    end;
 end;
 
@@ -1252,43 +1357,15 @@ end;
 
 procedure TdmZLogKeyer.SetCWSendBuf(b: byte; S: string);
 var
-   n, Len: word;
-   Code: Integer;
    SS: string;
 begin
    SS := S;
-   if SS[1] = '>' then begin
-      Val(SS[2] + SS[3], n, Code);
-      WPM := n;
-      SS := copy(SS, 4, 255);
-   end;
-
-   SS := DecodeCommands(SS);
 
    CWBufferSync.Enter();
    try
       tailcwstrptr := 1;
 
-      Len := length(SS);
-      n := 1;
-      while n <= Len do begin
-         if SS[n] = ':' then begin { callsign 1st char }
-            callsignptr := n;
-         end;
-
-         if SS[n] = '@' then begin
-            FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
-            FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
-            FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
-            SetCWSendBufChar(b, '@');
-            Inc(n, 3)
-         end
-         else begin
-            SetCWSendBufChar(b, SS[n]);
-         end;
-
-         Inc(n);
-      end;
+      ExpandCWSendBuffer(b, SS);
 
       SetCWSendBufFinish(b);
 
@@ -1313,9 +1390,9 @@ begin
       CW := Char($90);
    end;
 
-   SS := SS + DecodeCommands(sStr);
+   SS := sStr;
 
-   if FPTTEnabled { and Not(PTTIsOn) } then begin
+   if FPTTEnabled then begin
       SS := '(' + SS + ')';
    end;
 
@@ -1329,7 +1406,6 @@ end;
 
 procedure TdmZLogKeyer.SendStrFIFO(nID: Integer; sStr: string);
 var
-   n: Integer;
    SS: string;
    CW: string;
 begin
@@ -1340,8 +1416,8 @@ begin
       CW := Char($90);
    end;
 
-   { StringBuffer := StringBuffer + sStr; }
-   SS := SS + DecodeCommands(sStr);
+   SS := sStr;
+
    if FPTTEnabled then begin
       SS := '(' + SS + ')';
    end;
@@ -1350,25 +1426,7 @@ begin
 
    CWBufferSync.Enter();
    try
-      n := 1;
-      while n <= length(SS) do begin
-         if SS[n] = ':' then begin { callsign 1st char }
-            callsignptr := n;
-         end;
-
-         if SS[n] = '@' then begin
-            FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
-            FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
-            FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
-            SetCWSendBufChar(0, '@');
-            Inc(n, 3)
-         end
-         else begin
-            SetCWSendBufChar(0, SS[n]);
-         end;
-
-         Inc(n);
-      end;
+      ExpandCWSendBuffer(0, SS);
 
       SetCWSendBufFinish(0);
 
@@ -1377,6 +1435,42 @@ begin
       end;
    finally
       CWBufferSync.Leave();
+   end;
+end;
+
+procedure TdmZLogKeyer.ExpandCWSendBuffer(b: Integer; SS: string);
+var
+   n: Integer;
+begin
+   n := 1;
+   while n <= Length(SS) do begin
+      if SS[n] = ':' then begin { callsign 1st char }
+         callsignptr := n;
+      end;
+
+      if SS[n] = '@' then begin
+         FCodeTable[Ord('@')][2] := StrToIntDef(SS[n + 1], 0);
+         FCodeTable[Ord('@')][3] := StrToIntDef(SS[n + 2], 0);
+         FCodeTable[Ord('@')][4] := StrToIntDef(SS[n + 3], 0);
+         SetCWSendBufChar(b, '@');
+         Inc(n, 3)
+      end
+      else if SS[n] = '\' then begin
+         if SS[n + 1] = '+' then begin
+            FCodeTable[Ord('w')][2] := 0;
+         end
+         else begin
+            FCodeTable[Ord('w')][2] := 1;
+         end;
+         FCodeTable[Ord('w')][3] := StrToIntDef(SS[n + 2], 0);
+         SetCWSendBufChar(b, 'w');
+         Inc(n, 2)
+      end
+      else begin
+         SetCWSendBufChar(b, SS[n]);
+      end;
+
+      Inc(n);
    end;
 end;
 
@@ -1393,14 +1487,14 @@ begin
       end;
 
       tkpUSB: begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(True);
             if UsePaddleKeyer = False then begin
                SendUsbPortData(nID);
             end;
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -1418,14 +1512,14 @@ begin
       end;
 
       tkpUSB: begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[nID].FPORTDATA) then begin
             FUsbInfo[nID].FPORTDATA.SetKeyFlag(False);
             if UsePaddleKeyer = False then begin
                SendUsbPortData(nID);
             end;
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -1433,16 +1527,24 @@ end;
 procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: Longint); stdcall;
 var
    nCommand: Integer;
+   cmd: Byte;
+   wpm_change: Integer;
+   wpm_sign: Integer;
 
    procedure Finish();
    begin
-      cwstrptr := 0;
-      callsignptr := 0;
-      mousetail:=1;
-      tailcwstrptr := 1;
-      paddle_waiting := True;
-      FCWSendBuf[FSelectedBuf, 1] := $FF;
-      FSendChar := False;
+      CWBufferSync.Enter();
+      try
+         cwstrptr := 0;
+         callsignptr := 0;
+         mousetail:=1;
+         tailcwstrptr := 1;
+         paddle_waiting := True;
+         FCWSendBuf[FSelectedBuf, 1] := $FF;
+         FSendChar := False;
+      finally
+         CWBufferSync.Leave();
+      end;
 
       if FKeyingPort[FWkTx] <> tkpUSB then begin
          CW_OFF(FWkTx);
@@ -1451,228 +1553,290 @@ var
       if FUseSideTone then begin
          NoSound();
       end;
+
       { if PTTEnabled then  // 1.3c
         ControlPTT(False); } // PTT doesn't work with \
    end;
 begin
+   if FKeyingCounter > 0 then begin
+      Dec(FKeyingCounter);
+      Exit;
+   end;
+
+   if FSendOK = False then begin
+      Exit;
+   end;
+
+   if cwstrptr = 0 then begin
+      Exit;
+   end;
+
    CWBufferSync.Enter();
    try
-      if FKeyingCounter > 0 then begin
-         Dec(FKeyingCounter);
-         Exit;
+      cmd := FCWSendBuf[FSelectedBuf, cwstrptr];
+   finally
+      CWBufferSync.Leave();
+   end;
+
+   case cmd of
+      $55: begin { set ptt delay before }
+         FKeyingCounter := FPttDelayBeforeCount;
       end;
 
-      if FSendOK = False then begin
-         Exit;
+      $10: begin
+         ControlPTT(FWkTx, True);
       end;
 
-      if cwstrptr = 0 then begin
-         Exit;
+      $1F: begin
+         ControlPTT(FWkTx, False);
       end;
 
-      case FCWSendBuf[FSelectedBuf, cwstrptr] of
-         $55: begin { set ptt delay before }
-            FKeyingCounter := FPttDelayBeforeCount;
+      0: begin
+         CW_OFF(FWkTx);
+         if FUseSideTone then begin
+            NoSound();
+         end;
+         FKeyingCounter := FBlank1Count;
+      end;
+
+      2: begin { normal space x space factor (%) }
+         CW_OFF(FWkTx);
+         if FUseSideTone then begin
+            NoSound();
+         end;
+         FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
+      end;
+
+      $E: begin { normal space x space factor x eispacefactor(%) }
+         CW_OFF(FWkTx);
+         if FUseSideTone then begin
+            NoSound();
+         end;
+         FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
+      end;
+
+      // dot
+      1: begin
+         CW_ON(FWkTx);
+         if FUseSideTone then begin
+            Sound();
          end;
 
-         $10: begin
-            ControlPTT(FWkTx, True);
+         FKeyingCounter := FDotCount;
+         FSendChar := True;
+      end;
+
+      // dash
+      3: begin
+         CW_ON(FWkTx);
+         if FUseSideTone then begin
+            Sound();
          end;
 
-         $1F: begin
-            ControlPTT(FWkTx, False);
-         end;
+         FKeyingCounter := FDashCount;
+         FSendChar := True;
+      end;
 
-         0: begin
-            CW_OFF(FWkTx);
-            if FUseSideTone then begin
-               NoSound();
-            end;
-            FKeyingCounter := FBlank1Count;
-         end;
-
-         2: begin { normal space x space factor (%) }
-            CW_OFF(FWkTx);
-            if FUseSideTone then begin
-               NoSound();
-            end;
-            FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
-         end;
-
-         $E: begin { normal space x space factor x eispacefactor(%) }
-            CW_OFF(FWkTx);
-            if FUseSideTone then begin
-               NoSound();
-            end;
-            FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
-         end;
-
-         // dot
-         1: begin
-            CW_ON(FWkTx);
-            if FUseSideTone then begin
-               Sound();
-            end;
-
-            FKeyingCounter := FDotCount;
-            FSendChar := True;
-         end;
-
-         // dash
-         3: begin
-            CW_ON(FWkTx);
-            if FUseSideTone then begin
-               Sound();
-            end;
-
-            FKeyingCounter := FDashCount;
-            FSendChar := True;
-         end;
-
-         // next char
-         9: begin
+      // next char
+      9: begin
+         CWBufferSync.Enter();
+         try
             cwstrptr := (cwstrptr div codemax + 1) * codemax;
-            if Assigned(FOnOneCharSentProc) and FSendChar then begin
-               FOnOneCharSentProc(Self);
-            end;
+         finally
+            CWBufferSync.Leave();
          end;
 
-         // repeat
-         $A: begin
+         if Assigned(FOnOneCharSentProc) and FSendChar then begin
+            FOnOneCharSentProc(Self);
+         end;
+      end;
+
+      // repeat
+      $A: begin
+         CWBufferSync.Enter();
+         try
             cwstrptr := 0;
             tailcwstrptr := 1;
+         finally
+            CWBufferSync.Leave();
          end;
+      end;
 
-         $A1: begin
-            FPttHoldCounter := FPttDelayAfterCount;
-         end;
+      $A1: begin
+         FPttHoldCounter := FPttDelayAfterCount;
+      end;
 
-         $A2: begin
-            if FPttHoldCounter <= 0 then begin
-               Finish();
-               if FPTTEnabled then begin
-                  ControlPTT(FWkTx, False);
-               end;
-            end
-            else begin
-               Dec(FPttHoldCounter);
+      $A2: begin
+         if FPttHoldCounter <= 0 then begin
+            Finish();
+            if FPTTEnabled then begin
+               ControlPTT(FWkTx, False);
             end;
+         end
+         else begin
+            Dec(FPttHoldCounter);
+         end;
+         Exit;
+      end;
+
+      $A3: begin
+         if FPttHoldCounter > 0 then begin
+            Dec(FPttHoldCounter);
             Exit;
          end;
+      end;
 
-         $A3: begin
-            if FPttHoldCounter > 0 then begin
-               Dec(FPttHoldCounter);
-               Exit;
-            end;
-         end;
+      $AA: begin {paddle waiting routine. if p_char_count expires, }
+         paddle_waiting := True;
+         if p_char_count <= 0 then begin
 
-         $AA: begin {paddle waiting routine. if p_char_count expires, }
-            paddle_waiting := True;
-            if p_char_count <= 0 then begin
-
-               if FPTTEnabled then begin
+            if FPTTEnabled then begin
+               CWBufferSync.Enter();
+               try
                   FPttHoldCounter := FPttDelayAfterCount;
                   FCWSendBuf[FSelectedBuf, cwstrptr] := $A2;
                   FCWSendBuf[FSelectedBuf, cwstrptr + 1] := $FF;
-                  Exit;
+               finally
+                  CWBufferSync.Leave();
                end;
+               Exit;
+            end;
 
+            CWBufferSync.Enter();
+            try
                cwstrptr := 1;
                mousetail := 1;
                paddle_waiting := True;
                FCWSendBuf[FSelectedBuf, 1] := $FF;
-            end
-            else begin
-              dec(p_char_count);
+            finally
+               CWBufferSync.Leave();
             end;
-            Exit;
+         end
+         else begin
+           dec(p_char_count);
          end;
+         Exit;
+      end;
 
-         $BB: begin
+      $BB: begin
+         CWBufferSync.Enter();
+         try
             Dec(cwstrptr);
+         finally
+            CWBufferSync.Leave();
          end;
+      end;
 
-         $EE: begin { cwstrptr:=(BGKcall+callmax-1)*codemax; }
-         end;
+      $EE: begin { cwstrptr:=(BGKcall+callmax-1)*codemax; }
+      end;
 
-         $FA: begin
+      $FA: begin
+         CWBufferSync.Enter();
+         try
             Dec(cwstrptr);
+         finally
+            CWBufferSync.Leave();
+         end;
+      end;
+
+      $FF: begin { SendOK:=False; }
+         Finish();
+
+         if Assigned(FOnSendFinishProc) then begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
+            {$ENDIF}
+            FOnSendFinishProc(Self, mCW, False);
          end;
 
-         $FF: begin { SendOK:=False; }
-            Finish();
+         FSendOK := False;
+         Exit;
+      end;
 
-            if Assigned(FOnSendFinishProc) then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
-               {$ENDIF}
-               FOnSendFinishProc(Self, mCW, False);
-            end;
+      $99: begin { pause }
+         FSendOK := False;
+      end;
 
-            FSendOK := False;
-            Exit;
+      $41: begin
+         IncWPM;
+         FSendChar := True;
+      end;
+
+      $42: begin
+         DecWPM;
+         FSendChar := True;
+      end;
+
+      $43: begin
+         CWBufferSync.Enter();
+         try
+            Inc(cwstrptr);
+            wpm_sign := FCWSendBuf[FSelectedBuf, cwstrptr];
+            Inc(cwstrptr);
+            wpm_change := FCWSendBuf[FSelectedBuf, cwstrptr];
+         finally
+            CWBufferSync.Leave();
          end;
 
-         $99: begin { pause }
-            FSendOK := False;
-         end;
+         ChangeWPM(wpm_sign, wpm_change);
 
-         $41: begin
-            IncWPM;
-            FSendChar := True;
+         if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
+            FOnOneCharSentProc(Self);
          end;
+      end;
 
-         $42: begin
-            DecWPM;
-            FSendChar := True;
-         end;
+      $0B: begin
+         FUserFlag := False;
+      end;
 
-         $0B: begin
-            FUserFlag := False;
-         end;
+      $20: begin
+         FWkTx := 0;
+      end;
 
-         $20: begin
-            FWkTx := 0;
-         end;
+      $21: begin
+         FWkTx := 1;
+      end;
 
-         $21: begin
-            FWkTx := 1;
-         end;
+      $22: begin
+         FWkTx := 2;
+      end;
 
-         $22: begin
-            FWkTx := 2;
-         end;
+      $23: begin
+         FWkTx := 3;
+      end;
 
-         $23: begin
-            FWkTx := 3;
-         end;
+      $24: begin
+         FWkTx := 4;
+      end;
 
-         $24: begin
-            FWkTx := 4;
-         end;
-
-         $30: begin
+      $30: begin
+         CWBufferSync.Enter();
+         try
             Inc(cwstrptr);
             nCommand := FCWSendBuf[FSelectedBuf, cwstrptr] * 100;
             Inc(cwstrptr);
             nCommand := nCommand + FCWSendBuf[FSelectedBuf, cwstrptr] * 10;
             Inc(cwstrptr);
             nCommand := nCommand + FCWSendBuf[FSelectedBuf, cwstrptr];
+         finally
+            CWBufferSync.Leave();
+         end;
 
-            if Assigned(FOnOneCharSentProc) then begin
-               FOnOneCharSentProc(Self);
-               FOnOneCharSentProc(Self);
-               FOnOneCharSentProc(Self);
-               FOnOneCharSentProc(Self);
-            end;
+         if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
+            FOnOneCharSentProc(Self);
+            FOnOneCharSentProc(Self);
+         end;
 
-            if Assigned(FOnCommand) then begin
-               FOnCommand(Self, nCommand);
-            end;
+         if Assigned(FOnCommand) then begin
+            FOnCommand(Self, nCommand);
          end;
       end;
+   end;
 
+   CWBufferSync.Enter();
+   try
       Inc(cwstrptr);
    finally
       CWBufferSync.Leave();
@@ -1699,20 +1863,22 @@ begin
 
       FKeyerWPM := wpm;
 
-      for i := 0 to MAXPORT do begin
-         if FKeyingPort[i] <> tkpNone then begin
-            if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
-               usbif4cwSetWPM(i, FKeyerWPM);
-            end;
+      if (FCancelSpeedChangedEvent = False) then begin
+         for i := 0 to MAXPORT do begin
+            if FKeyingPort[i] <> tkpNone then begin
+               if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
+                  usbif4cwSetWPM(i, FKeyerWPM);
+               end;
 
-            if (FKeyingPort[i] in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
-               WinKeyerSetSpeed(FKeyerWPM);
+               if (FKeyingPort[i] in [tkpSerial1 .. tkpSerial20]) and (FUseWinKeyer = True) then begin
+                  WinKeyerSetSpeed(FKeyerWPM);
+               end;
             end;
          end;
-      end;
 
-      if Assigned(FOnSpeedChanged) and (FCancelSpeedChangedEvent = False) then begin
-         FOnSpeedChanged(Self);
+         if Assigned(FOnSpeedChanged) then begin
+            FOnSpeedChanged(Self);
+         end;
       end;
    end;
 end;
@@ -2282,6 +2448,11 @@ begin
    FCodeTable[_deccw][1] := $42;    { DecWPM }
    FCodeTable[_deccw][2] := 9;
 
+   FCodeTable[Ord('w')][1] := $43;  { ChangeWPM }
+   FCodeTable[Ord('w')][2] := 0;
+   FCodeTable[Ord('w')][3] := 0;
+   FCodeTable[Ord('w')][4] := 9;
+
    for n := 1 to codemax do begin
       FCodeTable[Ord('%')][n] := $EE;
    end;
@@ -2421,6 +2592,26 @@ begin
    FCancelSpeedChangedEvent := False;
 end;
 
+procedure TdmZLogKeyer.ChangeWPM(sign: Integer; change: Integer);
+var
+   new_wpm: Integer;
+begin
+   FCancelSpeedChangedEvent := True;
+
+   if sign = 0 then begin
+      new_wpm := FKeyerWPM + change;
+   end
+   else begin
+      new_wpm := FKeyerWPM - change;
+   end;
+
+   if (new_wpm >= MINWPM) and (new_wpm <= MAXWPM) then begin
+      WPM := new_wpm;
+   end;
+
+   FCancelSpeedChangedEvent := False;
+end;
+
 procedure TdmZLogKeyer.SetWeight(W: word);
 begin
    if W in [0 .. 100] then begin
@@ -2465,9 +2656,7 @@ begin
          tailcwstrptr := 1;
          mousetail := 1;
          paddle_waiting := True;
-      finally
-         CWBufferSync.Leave();
-      end;
+
 
       if FUseSideTone then begin
          NoSound();
@@ -2477,10 +2666,18 @@ begin
       FUserFlag := False;
 
       FSendOK := True;
+
+      finally
+         CWBufferSync.Leave();
+      end;
    end;
 
    if FPTTEnabled then begin
       ControlPTT(FWkTx, False);
+   end;
+
+   if Assigned(FOnOneCharSentProc) then begin
+      FOnOneCharSentProc(nil);
    end;
 end;
 
@@ -3018,7 +3215,7 @@ begin
          goto nextnext;
       end;
 
-      EnterCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Enter();
       InReport[0] := 0;
       InReport[1] := 4;
       InReport[2] := $0F;
@@ -3029,13 +3226,13 @@ begin
       InReport[7] := 0;
       InReport[8] := 0;
       FKeyer.FUsbInfo[0].FUSBIF4CW.ReadFile(InReport, FKeyer.FUsbInfo[0].FUSBIF4CW.Caps.InputReportByteLength, BR);
-      LeaveCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Leave();
 
       if (InReport[1] = 4) and (InReport[3] = 4) and (InReport[2] <> $F) then begin
          FKeyer.PaddleProc((InReport[2] and $05));
       end;
 
-      EnterCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Enter();
       if FKeyer.FUsbInfo[0].FPORTDATA.FUsbPortData = FKeyer.FUsbInfo[0].FPORTDATA.FPrevUsbPortData then begin
          OutReport[0] := 0;
          OutReport[1] := 4;
@@ -3051,7 +3248,7 @@ begin
       else begin
          FKeyer.SendUsbPortData(0);
       end;
-      LeaveCriticalSection(FUsbPortDataLock);
+      UsbPortDataLock.Leave();
 
 nextnext:
    until Terminated;
@@ -3333,7 +3530,7 @@ begin
    if value then v := 1 else v := 0;
    for i := 0 to MAXPORT do begin
       if FKeyingPort[i] = tkpUSB then begin
-         EnterCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Enter();
          if Assigned(FUsbInfo[i].FPORTDATA) then begin
             case port of
                0: FUsbInfo[i].FPORTDATA.SetKeyFlag(value);
@@ -3343,7 +3540,7 @@ begin
             end;
             SendUsbPortData(i);
          end;
-         LeaveCriticalSection(FUsbPortDataLock);
+         UsbPortDataLock.Leave();
       end;
    end;
 end;
@@ -3802,6 +3999,7 @@ end;
 procedure TdmZLogKeyer.WinKeyerSendStr2(S: string);
 var
    C: Char;
+   SS: string;
 begin
    if FWkAbort = True then begin
       Exit;
@@ -3815,6 +4013,34 @@ begin
    FWkSendStatus := wkssMessage;
    FWkLastSendChar := Char(0);
    C := FWkMessageStr[FWkMessageIndex];
+
+   if C = Char($1c) then begin
+      Inc(FWkMessageIndex);
+      SS := C + FWkMessageStr[FWkMessageIndex];
+      FComKeying[0].SendString(AnsiString(SS));
+
+      if Assigned(FOnOneCharSentProc) then begin
+         FOnOneCharSentProc(Self);
+         FOnOneCharSentProc(Self);
+         FOnOneCharSentProc(Self);
+      end;
+
+      PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+      Exit;
+   end;
+
+   if C = '|' then begin
+      SS := C;
+      FComKeying[0].SendString(AnsiString(SS));
+
+      if Assigned(FOnOneCharSentProc) then begin
+         FOnOneCharSentProc(Self);
+      end;
+
+      PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+      Exit;
+   end;
+
    if C = '$' then begin
       // CWモニターを１文字進める
       if Assigned(FOnOneCharSentProc) then begin
@@ -4142,6 +4368,7 @@ procedure TdmZLogKeyer.WndMethod(var msg: TMessage);
 var
    C: Char;
    nID: Integer;
+   SS: string;
 begin
    case msg.Msg of
       WM_USER_WKSENDNEXTCHAR: begin
@@ -4167,7 +4394,33 @@ begin
          Inc(FWkMessageIndex);
          if FWkMessageIndex <= Length(FWkMessageStr) then begin
             C := FWkMessageStr[FWkMessageIndex];
-            WinKeyerSendCharEx(C);
+
+            if C = Char($1c) then begin
+               Inc(FWkMessageIndex);
+               SS := C + FWkMessageStr[FWkMessageIndex];
+               FComKeying[0].SendString(AnsiString(SS));
+
+               if Assigned(FOnOneCharSentProc) then begin
+                  FOnOneCharSentProc(Self);
+                  FOnOneCharSentProc(Self);
+                  FOnOneCharSentProc(Self);
+               end;
+
+               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+            end
+            else if C = '|' then begin
+               SS := C;
+               FComKeying[0].SendString(AnsiString(SS));
+
+               if Assigned(FOnOneCharSentProc) then begin
+                  FOnOneCharSentProc(Self);
+               end;
+
+               PostMessage(FWnd, WM_USER_WKSENDNEXTCHAR2, 0, 0);
+            end
+            else begin
+               WinKeyerSendCharEx(C);
+            end;
          end
          else begin
             FWkSendStatus := wkssNone;
@@ -4219,13 +4472,13 @@ begin
          nID := msg.WParam;
          if FKeyingPort[nID] = tkpUSB then begin
             if Assigned(FUsbInfo[nID].FPORTDATA) then begin
-               EnterCriticalSection(FUsbPortDataLock);
+               UsbPortDataLock.Enter();
                FUsbInfo[nID].FPORTDATA.SetRigFlag(FWkTxRigSet);
                if FGen3MicSelect = False then begin
                   FUsbInfo[nID].FPORTDATA.SetVoiceFlag(FWkTxRigSet);
                end;
                SendUsbPortData(nID);
-               LeaveCriticalSection(FUsbPortDataLock);
+               UsbPortDataLock.Leave();
             end;
          end;
       end;
@@ -4466,8 +4719,10 @@ end;
 
 initialization
    CWBufferSync := TCriticalSection.Create();
+   UsbPortDataLock := TCriticalSection.Create();
 
 finalization
    CWBufferSync.Free();
+   UsbPortDataLock.Free();
 
 end.

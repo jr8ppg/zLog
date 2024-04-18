@@ -312,6 +312,7 @@ type
     comboSo2rTxRigC: TComboBox;
     checkSo2rIgnoreModeChange: TCheckBox;
     checkUsePttCommand: TCheckBox;
+    checkRigSelectV28: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -662,18 +663,21 @@ begin
          comboSo2rTxSelectPort.Enabled := False;
          comboSo2rRxSelectPort.Enabled := False;
          comboSo2rTxRigC.Enabled := False;
+         checkRigSelectV28.Enabled := False;
       end;
 
       1: begin
          comboSo2rTxSelectPort.Enabled := True;
          comboSo2rRxSelectPort.Enabled := True;
          comboSo2rTxRigC.Enabled := True;
+         checkRigSelectV28.Enabled := True;
       end;
 
       2: begin
          comboSo2rTxSelectPort.Enabled := False;
          comboSo2rRxSelectPort.Enabled := False;
          comboSo2rTxRigC.Enabled := False;
+         checkRigSelectV28.Enabled := False;
       end;
    end;
 end;
@@ -1246,6 +1250,7 @@ begin
       Settings._so2r_tx_port := TCommPort(comboSo2rTxSelectPort.Items.Objects[comboSo2rTxSelectPort.ItemIndex]).Number;
       Settings._so2r_rx_port := TCommPort(comboSo2rRxSelectPort.Items.Objects[comboSo2rRxSelectPort.ItemIndex]).Number;
       Settings._so2r_tx_rigc := comboSo2rTxRigC.ItemIndex;
+      Settings._so2r_rigselect_v28 := checkRigSelectV28.Checked;
 
       r := Settings._so2r_cq_rpt_interval_sec;
       Settings._so2r_cq_rpt_interval_sec := StrToFloatDef(editSo2rCqRptIntervalSec.Text, r);
@@ -1499,6 +1504,7 @@ begin
       end;
 
       comboSo2rTxRigC.ItemIndex := Settings._so2r_tx_rigc;
+      checkRigSelectV28.Checked := Settings._so2r_rigselect_v28;
 
       editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
       editSo2rRigSwAfterDelay.Text := IntToStr(Settings._so2r_rigsw_after_delay);

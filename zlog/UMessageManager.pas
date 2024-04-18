@@ -278,10 +278,6 @@ begin
    end;
 
    dmZLogKeyer.ClrBuffer;
-   dmZLogKeyer.PauseCW();
-   if dmZLogKeyer.UseWinKeyer = True then begin
-      dmZLogKeyer.WinKeyerClear();
-   end;
 end;
 
 procedure TformMessageManager.WMPlayQueue( var Message: TMessage );

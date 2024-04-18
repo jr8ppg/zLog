@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetRigControl
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -59,9 +59,9 @@ object formOptions: TformOptions
           Caption = 'RIG Select'
           TabOrder = 0
           object GroupBox6: TGroupBox
-            Left = 187
+            Left = 128
             Top = 13
-            Width = 206
+            Width = 265
             Height = 84
             Caption = 'Output Port'
             TabOrder = 3
@@ -115,6 +115,15 @@ object formOptions: TformOptions
                 'Normal'
                 'RIG-A'
                 'RIG-B')
+            end
+            object checkRigSelectV28: TCheckBox
+              Left = 184
+              Top = 51
+              Width = 75
+              Height = 24
+              Caption = 'V2.8 compatible'
+              TabOrder = 3
+              WordWrap = True
             end
           end
           object radioSo2rNeo: TRadioButton
@@ -3087,13 +3096,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono Bold Italic'
+          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 43
+          ItemIndex = 78
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
