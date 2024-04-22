@@ -756,8 +756,15 @@ var
    fFreq: Extended;
    b2: TBand;
 begin
-   strFreq := GetFreqStr2();
+   strFreq := Self.Freq;
+
    if strFreq = '' then begin
+      Result := Self.BandStr;
+      Exit;
+   end;
+
+   fFreq := StrToFloatDef(strFreq, 0);
+   if fFreq = 0 then begin
       Result := Self.BandStr;
       Exit;
    end;
