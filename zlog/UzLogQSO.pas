@@ -2795,7 +2795,11 @@ begin
          slCsv.Add(Q.RSTRcvdStr);
 
          //6—ñ–Ú@ü”g”
-         slCsv.Add(Q.FreqStr);
+         strText := Q.FreqStr2;
+         if strText = '' then begin
+            strText := Q.BandStr;
+         end;
+         slCsv.Add(strText);
 
          //7—ñ–Ú@“d”gŒ^®
          slCsv.Add(Q.ModeStr);
