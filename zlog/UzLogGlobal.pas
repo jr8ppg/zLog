@@ -2139,21 +2139,11 @@ begin
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
 
-   // RIGコントロールと同じポートの場合は無しとする
-   for i := 0 to 3 do begin
-      if (Settings.FRigControl[i + 1].FControlPort <> Settings.FRigControl[i + 1].FKeyingPort) then begin
-         dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FKeyingPort);
-      end
-      else begin
-         dmZLogKeyer.KeyingPort[i] := tkpNone;
-      end;
+   // CWキーイングポートの設定
+   for i := 0 to 4 do begin
+      dmZLogKeyer.KeyingPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FKeyingPort);
+      dmZLogKeyer.KeyingPortConfig[i] := Settings.FRigControl[i + 1].FKeyingPortConfig;
    end;
-   dmZLogKeyer.KeyingPort[4] := TKeyingPort(Settings.FRigControl[5].FKeyingPort);
-   dmZLogKeyer.KeyingPortConfig[0] := Settings.FRigControl[1].FKeyingPortConfig;
-   dmZLogKeyer.KeyingPortConfig[1] := Settings.FRigControl[2].FKeyingPortConfig;
-   dmZLogKeyer.KeyingPortConfig[2] := Settings.FRigControl[3].FKeyingPortConfig;
-   dmZLogKeyer.KeyingPortConfig[3] := Settings.FRigControl[4].FKeyingPortConfig;
-   dmZLogKeyer.KeyingPortConfig[4] := Settings.FRigControl[5].FKeyingPortConfig;
 
    dmZLogKeyer.Usbif4cwSyncWpm := Settings._usbif4cw_sync_wpm;
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;

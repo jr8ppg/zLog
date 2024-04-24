@@ -10245,7 +10245,7 @@ begin
    Randomize();
 
    // 振れ幅
-   randmax := (dmZLogGlobal.Settings.FAntiZeroinShiftMax div 10) + 1;
+   randmax := (Max(dmZLogGlobal.Settings.FAntiZeroinShiftMax, 10) div 10) + 1;
 
    // 振れ幅0は除く
    repeat

@@ -472,13 +472,13 @@ type
 
 const
   BandScopeDefaultColor: array[1..7] of TColorSetting = (
-    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clRed;   FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True; FBackColor2: clWhite; FBackColor3: clWhite ),
+    ( FForeColor: clRed;   FBackColor: clWhite; FBold: True; FBackColor2: clWhite; FBackColor3: clWhite ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True; FBackColor2: clWhite; FBackColor3: clWhite ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True; FBackColor2: clWhite; FBackColor3: clWhite ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True; FBackColor2: clWhite; FBackColor3: clWhite ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True; FBackColor2: clWhite; FBackColor3: clWhite ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True; FBackColor2: clWhite; FBackColor3: clWhite )
   );
 
 implementation
