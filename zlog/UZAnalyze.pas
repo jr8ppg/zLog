@@ -3,7 +3,7 @@ unit UZAnalyze;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages,
+  Winapi.Windows, Winapi.Messages, System.Math,
   System.SysUtils, System.Classes, System.DateUtils, System.StrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.ClipBrd, Vcl.ComCtrls, Generics.Collections, Generics.Defaults,
@@ -93,7 +93,7 @@ type
     FMultiGet: array[02..114] of array[b19..b50] of Boolean;
     procedure ShowAll(sl: TStrings);
     procedure InitTimeChart();
-    procedure TotalTimeChart(Log: TQSOList);
+    procedure TotalTimeChart(qsolist: TQSOList);
     function GetAreaNumber(strCallsign: string): Integer;
     function GetLastHour(): Integer;
     procedure ShowZAQ(sl: TStrings);
@@ -348,7 +348,7 @@ begin
    end;
 end;
 
-procedure TZAnalyze.TotalTimeChart(Log: TQSOList);
+procedure TZAnalyze.TotalTimeChart(qsolist: TQSOList);
 var
    i: Integer;
    j: Integer;
@@ -378,7 +378,7 @@ var
 begin
    InitTimeChart();
 
-   if Log.Count = 1 then begin
+   if qsolist.Count = 1 then begin
       Exit;
    end;
 
@@ -388,18 +388,22 @@ begin
       FZADSupport := True;
    end;
 
-   base_dt := Log.List[1].Time;
+   base_dt := ifthen(MyContest.UseContestPeriod, Log.StartTime, qsolist.List[1].Time);
 
    offset_hour := HourOf(base_dt) - 1;
    FStartHour := HourOf(base_dt);
 
-   for i := 1 to Log.Count - 1 do begin
-      qso := Log.List[i];
+   for i := 1 to qsolist.Count - 1 do begin
+      qso := qsolist.List[i];
       b := qso.Band;
       m := qso.Mode;
       dt := qso.Time;
 
-      if (qso.Invalid = True) then begin    // 無効もスキップ
+      if (qso.Invalid = True) then begin     // 無効もスキップ
+         Continue;
+      end;
+
+      if (qso.Time < base_dt) then begin     // 開始時間前の交信はスキップ
          Continue;
       end;
 
