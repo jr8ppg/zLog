@@ -5173,6 +5173,7 @@ begin
    // .か?があるときは以降の送信は行わない
    if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
       dmZLogKeyer.ClrBuffer();
+      OnPlayMessageFinished(Sender, mCW, True);
       Exit;
    end;
 
