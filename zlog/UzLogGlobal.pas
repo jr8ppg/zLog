@@ -230,6 +230,7 @@ type
     _send_freq_interval: Integer;
     _ignore_rig_mode: Boolean;
     _use_ptt_command: Boolean;
+    _sync_rig_wpm: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -1131,6 +1132,9 @@ begin
       // Use PTT command
       Settings._use_ptt_command := ini.ReadBool('Rig', 'UsePttCommand', False);
 
+      // Sync. rig wpm
+      Settings._sync_rig_wpm := ini.ReadBool('Rig', 'SyncRigWpm', False);
+
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
 
@@ -1806,7 +1810,10 @@ begin
       ini.WriteBool('Rig', 'IgnoreRigMode', Settings._ignore_rig_mode);
 
       // Use PTT command
-      ini.ReadBool('Rig', 'UsePttCommand', Settings._use_ptt_command);
+      ini.WriteBool('Rig', 'UsePttCommand', Settings._use_ptt_command);
+
+      // Sync. rig wpm
+      ini.WriteBool('Rig', 'SyncRigWpm', Settings._sync_rig_wpm);
 
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);

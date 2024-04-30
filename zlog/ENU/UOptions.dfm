@@ -2644,14 +2644,14 @@ object formOptions: TformOptions
         TabOrder = 0
         object Label45: TLabel
           Left = 8
-          Top = 114
+          Top = 115
           Width = 114
           Height = 13
           Caption = 'Send current freq. every'
         end
         object Label46: TLabel
-          Left = 203
-          Top = 133
+          Left = 215
+          Top = 115
           Width = 20
           Height = 13
           Caption = 'sec.'
@@ -2693,16 +2693,16 @@ object formOptions: TformOptions
         end
         object checkIgnoreRigMode: TCheckBox
           Left = 8
-          Top = 156
+          Top = 138
           Width = 141
           Height = 18
           Caption = 'Ignore rig mode'
           TabOrder = 4
         end
         object SendFreqEdit: TEdit
-          Left = 146
-          Top = 130
-          Width = 35
+          Left = 163
+          Top = 112
+          Width = 30
           Height = 21
           Hint = 'Only when using Z-Server network'
           MaxLength = 3
@@ -2712,8 +2712,8 @@ object formOptions: TformOptions
           OnKeyPress = NumberEditKeyPress
         end
         object updownSendFreqInterval: TUpDown
-          Left = 181
-          Top = 130
+          Left = 193
+          Top = 112
           Width = 16
           Height = 21
           Associate = SendFreqEdit
@@ -2723,11 +2723,19 @@ object formOptions: TformOptions
         end
         object checkUsePttCommand: TCheckBox
           Left = 8
-          Top = 180
+          Top = 162
           Width = 141
           Height = 18
           Caption = 'Use PTT command'
           TabOrder = 7
+        end
+        object checkSyncRigWPM: TCheckBox
+          Left = 8
+          Top = 186
+          Width = 141
+          Height = 18
+          Caption = 'Sync. rig WPM'
+          TabOrder = 8
         end
       end
       object groupRcMemoryScan: TGroupBox
@@ -3096,13 +3104,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
+          FontName = 'JetBrains Mono Thin'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 78
+          ItemIndex = 96
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

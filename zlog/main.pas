@@ -13052,6 +13052,10 @@ var
    nID: Integer;
    rig: TRig;
 begin
+   if dmZLogGlobal.Settings._sync_rig_wpm = False then begin
+      Exit;
+   end;
+
    nID := GetTxRigID();
    rig := RigControl.Rigs[nID + 1];
    if rig <> nil then begin

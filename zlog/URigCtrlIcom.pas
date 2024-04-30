@@ -26,6 +26,9 @@ type
     FCommThread: TIcomCommThread;
     FCommandList: TList<AnsiString>;
 
+    FMinWPM: Integer;      // 6
+    FMaxWPM: Integer;      // 48
+
     FFreq4Bytes: Boolean;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
@@ -102,6 +105,9 @@ begin
 
    FCommandList := TList<AnsiString>.Create();
    FCommThread := TIcomCommThread.Create(Self);
+
+   FMinWPM := 6;
+   FMaxWPM := 48;
 
    FFreq4Bytes := False;
 
@@ -612,8 +618,7 @@ begin
       Exit;
    end;
 
-   a := (48 - 6) / 256;
-   b := Trunc( wpm / (a * 6) );
+   b := Trunc((wpm - FMinWpm) / ((FMaxWPM - FMinWPM) / 255));
    S := RightStr('0000' + IntToStr(b), 4);
 
    X1 := StrToIntDef(Copy(S, 1, 1), 0) shl 4;

@@ -313,6 +313,7 @@ type
     checkSo2rIgnoreModeChange: TCheckBox;
     checkUsePttCommand: TCheckBox;
     checkRigSelectV28: TCheckBox;
+    checkSyncRigWPM: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1339,6 +1340,7 @@ begin
       Settings._ignore_rig_mode := checkIgnoreRigMode.Checked;
       Settings._memscan_interval := updownMemScanInterval.Position;
       Settings._use_ptt_command := checkUsePttCommand.Checked;
+      Settings._sync_rig_wpm := checkSyncRigWPM.Checked;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -1606,6 +1608,7 @@ begin
       checkIgnoreRigMode.Checked := Settings._ignore_rig_mode;
       updownMemScanInterval.Position := Settings._memscan_interval;
       checkUsePttCommand.Checked := Settings._use_ptt_command;
+      checkSyncRigWPM.Checked := Settings._sync_rig_wpm;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;
