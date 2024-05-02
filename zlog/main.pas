@@ -8610,6 +8610,7 @@ var
 begin
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
+   FTabKeyPressed[FCurrentRigSet - 1] := False;
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
@@ -8639,6 +8640,7 @@ var
 begin
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
+   FTabKeyPressed[FCurrentRigSet - 1] := False;
 
    if cb = 1 then
       cb := 2
