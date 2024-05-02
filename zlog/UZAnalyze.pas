@@ -1361,7 +1361,7 @@ var
          end;
 
          // –{Bƒ}ƒ‹ƒ`
-         for i := 2 to 50 do begin
+         for i := 2 to 48 do begin
             if FMultiGet[i][b] = fGet then begin
                strMulti := ' ' + RightStr('00' + IntToStr(i), 2);
                if Length(strText + strMulti) >= 80 then begin
@@ -1405,9 +1405,9 @@ begin
    sl.Add('');
    strTitle := '    11111111111111';
    sl.Add(strTitle);
-   strTitle := '    000000000111110000000011111111112222222222333333333344444444445';
+   strTitle := '    0000000001111100000000111111111122222222223333333333444444444';
    sl.Add(strTitle);
-   strTitle := '    123456789012342345678901234567890123456789012345678901234567890';
+   strTitle := '    1234567890123423456789012345678901234567890123456789012345678';
    sl.Add(strTitle);
 
    for b := b19 to b50 do begin
@@ -1432,7 +1432,7 @@ begin
          end;
       end;
 
-      for i := 2 to 50 do begin
+      for i := 2 to 48 do begin
          if FMultiGet[i][b] = True then begin
             strText := strText + '*';
          end
