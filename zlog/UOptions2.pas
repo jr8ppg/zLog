@@ -501,6 +501,14 @@ var
       checkSelectLastOperator.Enabled := f;
       checkApplyPowerCodeOnBandChange.Enabled := f;
    end;
+
+   function SelectTxNo(): Integer;
+   begin
+      Result := comboTxNo.Items.IndexOf(IntToStr(dmZLogGlobal.Settings._txnr));
+      if Result = -1 then begin
+         Result := 0;
+      end;
+   end;
 begin
    n := TRadioButton(Sender).Tag;
    case n of
@@ -508,7 +516,7 @@ begin
       0: begin
          comboTxNo.Enabled := False;
          comboTxNo.Items.CommaText := '0,1';
-         comboTxNo.ItemIndex := 0;
+         comboTxNo.ItemIndex := SelectTxNo();
          OperatorsEnable(False);
       end;
 
@@ -516,7 +524,7 @@ begin
       1: begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MM;
-         comboTxNo.ItemIndex := 0;
+         comboTxNo.ItemIndex := SelectTxNo();
          OperatorsEnable(True);
       end;
 
@@ -524,7 +532,7 @@ begin
       2, 3: begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MS;
-         comboTxNo.ItemIndex := 0;
+         comboTxNo.ItemIndex := SelectTxNo();
          OperatorsEnable(True);
       end;
    end;
@@ -914,9 +922,6 @@ begin
       else if ContestCategory = ccMultiOpTwoTx then begin
          radioMultiOpTwoTx.Checked := True;
       end;
-
-      // #TXNR
-      comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(Settings._txnr));
 
       ModeGroup.ItemIndex := Integer(Settings._mode);
       { OpListBox.Items := OpList; }
