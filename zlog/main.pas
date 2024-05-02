@@ -10090,7 +10090,8 @@ begin
 
    SetCQ(True);
 
-   CallsignEdit.SetFocus;
+   // ALT+W
+   actoinClearCallAndNumAftFocus.Execute();
 end;
 
 // #101,#102,#106,#107,#108 QuickMemo3-5
