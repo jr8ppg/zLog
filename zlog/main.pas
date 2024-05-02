@@ -11001,8 +11001,8 @@ begin
 
    // 2Radioの場合、現在の2BSIQ状態を保存してOFFにする
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      FPrev2bsiqMode := FInformation.Is2bsiq;
       if (Is2bsiq() = True) then begin
-         FPrev2bsiqMode := FInformation.Is2bsiq;
          FInformation.Is2bsiq := False;
          F2bsiqStart := False;
          FCQRepeatPlaying := False;
