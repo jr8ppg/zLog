@@ -2237,7 +2237,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","QslState","Invalid","Area"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","Forced","PCName","QslState","Invalid","Area"';
 var
    F: TextFile;
    i: Integer;
