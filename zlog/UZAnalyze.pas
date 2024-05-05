@@ -1219,17 +1219,17 @@ begin
    sl.Add(strText);
 
    if fShowCW = True then begin
-      strText := '       ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[1], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[2], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[3], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[4], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[5], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[6], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[7], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[8], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[9], 4) + '  ';
-      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[10], 4) + '  ';
+      strText := '      ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[1], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[2], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[3], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[4], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[5], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[6], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[7], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[8], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[9], 5) + ' ';
+      strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[10], 5) + '  ';
       strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[11], 5);
       sl.Add(strText);
    end;
