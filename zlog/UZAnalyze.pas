@@ -1595,6 +1595,37 @@ var
 
       Result := strText2;
    end;
+
+   function BuildTitle(len: Integer): string;
+   var
+      b: TBand;
+      l: Integer;
+      strTitle: string;
+   begin
+      strTitle := DupeString(' ', len);
+      for b := b19 to b10g do begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
+            Continue;
+         end;
+
+         l := Length(MHzString[b]);
+         if l < 3 then begin
+            strTitle := strTitle + LeftStr(DupeString(' ', 3 - L) + MHzString[b] + DupeString(' ', 9), 9);
+         end
+         else begin
+            strTitle := strTitle + LeftStr(MHzString[b] + DupeString(' ', 9), 9);
+         end;
+      end;
+
+      if len = 9 then begin
+         strTitle := strTitle + ' ';
+      end;
+
+      strTitle := strTitle + 'ALL';
+
+      Result := strTitle;
+   end;
+
 begin
    sl.Clear();
 
@@ -1609,21 +1640,7 @@ begin
    sl.Add('');
 
    // バンド見出し
-   strTitle := DupeString(' ', 9);
-   for b := b19 to b10g do begin
-      if FCountData[HTOTAL][b].FQso = 0 then begin
-         Continue;
-      end;
-
-      l := Length(MHzString[b]);
-      if l < 3 then begin
-         strTitle := strTitle + LeftStr(DupeString(' ', 3 - L) + MHzString[b] + DupeString(' ', 9), 9);
-      end
-      else begin
-         strTitle := strTitle + LeftStr(MHzString[b] + DupeString(' ', 9), 9);
-      end;
-   end;
-   strTitle := strTitle + ' ALL     ';
+   strTitle := BuildTitle(10);
    sl.Add(strTitle);
    sl.Add('');
 
@@ -1661,6 +1678,7 @@ begin
    sl.Add('');
 
    // バンド別見出し
+   strTitle := BuildTitle(9);
    sl.Add(strTitle);
    sl.Add('');
 
