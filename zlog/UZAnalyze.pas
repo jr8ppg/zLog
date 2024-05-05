@@ -720,14 +720,15 @@ end;
 
 //＜時間ごとの交信局数＞
 //
-//      XXXX     XXXX     XXXX     XXXX     XXXX     XXXX     XXXX      XXXX
-//       3.5        7       14       21       50      144      430       ALL
+//12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX
+//       1.9       3.5         7        14        21        28        50       ALL
 //
-// [21]    0       29        0        0        1        1        0        31
-// [22]  111(111) 118(118)  22(19)    0        0        0        0        0        0        41(38)
-// [20]    3       12        0        0        2        0        17
+// [21]    0        29         0         0         1         1        0         31
+// [22]  111(111)  118(118)   22(19)     0         0         0        0         41(38)
+// [23]    3        12         0         0         2         0        17        34
 //
-//Total  133(16)  423(2)    47        5        4        1       613(18)
+//Total    0       133(16)   423(2)     47         5         4         1       613(18)
+//
 procedure TZAnalyze.ShowZAF_Time(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
 var
    strText: string;
@@ -748,10 +749,20 @@ begin
          Continue;
       end;
 
-      strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
+      if fShowCW = True then begin
+         strText := strText + '     ' + RightStr('     ' + MHzString[b], 5);
+      end
+      else begin
+         strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
+      end;
    end;
 
-   strText := strText + '       ALL';
+   if fShowCW = True then begin
+      strText := strText + '       ALL';
+   end
+   else begin
+      strText := strText + '      ALL';
+   end;
 
    sl.Add('       ' + Trim(strText));
    sl.Add('');
@@ -817,7 +828,7 @@ begin
    // ALL
    if fShowCW = True then begin
       strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FQso, 5) +
-                           Trim(CwToStr(FCountData[HTOTAL][VTOTAL].FCw, 5));
+                           Trim(CwToStr(FCountData[HTOTAL][VTOTAL].FCw, 6));
    end
    else begin
       strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FQso, 5);
@@ -831,12 +842,14 @@ end;
 
 //＜時間ごとの累積交信局数＞　（括弧内は電信の内数）
 //
-//       3.5        7       14       21       50      430       ALL
+//12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX12345XXXXX
+//       1.9       3.5         7        14        21        28        50       ALL
 //
-// [21]    0       50        0        0        2        0        52
-// [22]   19       60        0        0        2        1        82
-// [23]   56(5)    60        0        0        2        1       119(5)
-// [20]  133(16)  423(2)    47        5        4        1       613(18)
+// [21]    0         0        50         0         0         2         0        52
+// [22]    0        19        60         0         0         2         1        82
+// [23]    0        56(5)     60         0         0         2         1       119(5)
+// [20]    0       133(16)   423(2)     47         5         4         1       613(18)
+//
 procedure TZAnalyze.ShowZAF_Accumulation(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
 var
    strText: string;
@@ -862,12 +875,23 @@ begin
          Continue;
       end;
 
-      strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
+      if fShowCW = True then begin
+         strText := strText + '     ' + RightStr('     ' + MHzString[b], 5);
+      end
+      else begin
+         strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
+      end;
+   end;
+
+   if fShowCW = True then begin
+      strText := strText + '       ALL';
+   end
+   else begin
+      strText := strText + '      ALL';
    end;
 
    accumulation_count[VTOTAL] := 0;
    accumulation_count2[VTOTAL] := 0;
-   strText := strText + '       ALL';
 
    sl.Add('       ' + Trim(strText));
    sl.Add('');
@@ -905,7 +929,7 @@ begin
 
       if fShowCW = True then begin
          strText := strText + QsoToStr(accumulation_count[VTOTAL], 5) +
-                              Trim(CwToStr(accumulation_count2[VTOTAL], 5));
+                              Trim(CwToStr(accumulation_count2[VTOTAL], 6));
       end
       else begin
          strText := strText + QsoToStr(accumulation_count[VTOTAL], 5);
