@@ -29,6 +29,8 @@ type
     FNewJaMulti: Boolean;
     FReportedBy: string;
     FIsDomestic: Boolean;
+    FLookupFailed: Boolean;
+    FReliableSpotter: Boolean;
     procedure SetCall(v: string);
     function GetIsNewMulti(): Boolean; // newcty or newzone
     function GetIsPortable(): Boolean;
@@ -59,6 +61,8 @@ type
     property CQ: Boolean read FCQ write FCQ;
     property NewJaMulti: Boolean read FNewJaMulti write FNewJaMulti;
     property ReportedBy: string read FReportedBy write FReportedBy;
+    property LookupFailed: Boolean read FLookupFailed write FLookupFailed;
+    property ReliableSpotter: Boolean read FReliableSpotter write FReliableSpotter;
   end;
 
   TSpot = class(TBaseSpot)
@@ -176,6 +180,8 @@ begin
    FNewJaMulti := False;
    FReportedBy := '';
    FIsDomestic := True;
+   FLookupFailed := False;
+   FReliableSpotter := True;
 end;
 
 constructor TSpot.Create;
@@ -449,6 +455,9 @@ begin
    FCQ := O.FCQ;
    FNewJaMulti := O.FNewJaMulti;
    FReportedBy := O.ReportedBy;
+   FIsDomestic := O.IsDomestic;
+   FLookupFailed := O.LookupFailed;
+   FReliableSpotter := O.ReliableSpotter;
 end;
 
 function TBSData.InText(): string;
@@ -499,6 +508,8 @@ begin
       SL.Add(IntToStr(SpotGroup));
       SL.Add(ZBoolToStr(FNewJaMulti));
       SL.Add(ZBoolToStr(FIsDomestic));
+      SL.Add(ZBoolToStr(LookupFailed));
+      SL.Add(ZBoolToStr(ReliableSpotter));
 
       Result := SL.DelimitedText;
    finally
@@ -536,7 +547,7 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
@@ -554,6 +565,8 @@ begin
       SpotGroup := StrToIntDef(SL[14], 0);
       NewJaMulti := ZStrToBool(SL[15]);
       IsDomestic := ZStrToBool(SL[16]);
+      LookupFailed := ZStrToBool(SL[17]);
+      ReliableSpotter := ZStrToBool(SL[18]);
    finally
       SL.Free();
    end;
@@ -798,7 +811,7 @@ begin
          if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
             Sp.Number := ExecLookup(Sp.Call, Sp.Band);
             if Sp.Number = '' then begin
-               Sp.SpotGroup := 3;
+               Sp.LookupFailed := True;
             end;
          end;
          SD.Free();

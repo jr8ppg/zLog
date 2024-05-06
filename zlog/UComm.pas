@@ -96,7 +96,8 @@ type
     FCommProcessThread: TCommProcessThread;
 
     FSpotterList: TStringList;
-    FAllowList: TStringList;
+    FAllowList1: TStringList;
+    FAllowList2: TStringList;
     FDenyList: TStringList;
 
     // Auto Reconnect
@@ -399,10 +400,14 @@ begin
    FSpotterList.Duplicates := dupIgnore;
    FSpotterList.Sorted := True;
    FSpotterList.CaseSensitive := False;
-   FAllowList := TStringList.Create();
-   FAllowList.Duplicates := dupIgnore;
-   FAllowList.Sorted := True;
-   FAllowList.CaseSensitive := False;
+   FAllowList1 := TStringList.Create();
+   FAllowList1.Duplicates := dupIgnore;
+   FAllowList1.Sorted := True;
+   FAllowList1.CaseSensitive := False;
+   FAllowList2 := TStringList.Create();
+   FAllowList2.Duplicates := dupIgnore;
+   FAllowList2.Sorted := True;
+   FAllowList2.CaseSensitive := False;
    FDenyList := TStringList.Create();
    FDenyList.Duplicates := dupIgnore;
    FDenyList.Sorted := True;
@@ -621,7 +626,17 @@ begin
                Sp.Free();
                goto nextnext;
             end;
-            if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+
+            if (FAllowList1.Count > 0) and (FAllowList1.IndexOf(Sp.ReportedBy) >= 0) then begin
+               Sp.ReliableSpotter := True;
+            end
+            else if (FAllowList2.Count > 0) and (FAllowList2.IndexOf(Sp.ReportedBy) >= 0) then begin
+               Sp.ReliableSpotter := False;
+            end
+            else if (FAllowList1.Count = 0) and (FAllowList2.Count = 0) then begin
+               Sp.ReliableSpotter := True;
+            end
+            else begin
                {$IFDEF DEBUG}
                OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
                {$ENDIF}
@@ -713,7 +728,8 @@ begin
    FCommBuffer.Free();
 
    FSpotterList.Free();
-   FAllowList.Free();
+   FAllowList1.Free();
+   FAllowList2.Free();
    FDenyList.Free();
 end;
 
@@ -1140,7 +1156,8 @@ var
    fname: string;
 begin
    FSpotterList.Clear();
-   FAllowList.Clear();
+   FAllowList1.Clear();
+   FAllowList2.Clear();
    FDenyList.Clear();
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
@@ -1150,7 +1167,12 @@ begin
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_allow.txt';
    if FileExists(fname) then begin
-      FAllowList.LoadFromFile(fname);
+      FAllowList1.LoadFromFile(fname);
+   end;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_allow2.txt';
+   if FileExists(fname) then begin
+      FAllowList2.LoadFromFile(fname);
    end;
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
