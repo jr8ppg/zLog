@@ -13,7 +13,7 @@ interface
 uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
-  System.SyncObjs,
+  System.SyncObjs, System.StrUtils,
   UzLogConst, UzLogGlobal, WinKeyer
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
@@ -315,6 +315,7 @@ type
 
     function GetKeyingPortConfig(Index: Integer): TPortConfig;
     procedure SetKeyingPortConfig(Index: Integer; v: TPortConfig);
+    procedure DumpSendBuf();
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -1441,11 +1442,13 @@ end;
 procedure TdmZLogKeyer.ExpandCWSendBuffer(b: Integer; SS: string);
 var
    n: Integer;
+   ptr: Integer;
 begin
    n := 1;
+   ptr := 1;
    while n <= Length(SS) do begin
       if SS[n] = ':' then begin { callsign 1st char }
-         callsignptr := n;
+         callsignptr := ptr
       end;
 
       if SS[n] = '@' then begin
@@ -1471,6 +1474,7 @@ begin
       end;
 
       Inc(n);
+      Inc(ptr);
    end;
 end;
 
@@ -1597,6 +1601,7 @@ begin
             NoSound();
          end;
          FKeyingCounter := FBlank1Count;
+         FSendChar := True;
       end;
 
       2: begin { normal space x space factor (%) }
@@ -1754,6 +1759,7 @@ begin
       end;
 
       $99: begin { pause }
+         FSendChar := False;
          FSendOK := False;
       end;
 
@@ -1770,6 +1776,7 @@ begin
       $43: begin
          CWBufferSync.Enter();
          try
+            FSendChar := False;
             Inc(cwstrptr);
             wpm_sign := FCWSendBuf[FSelectedBuf, cwstrptr];
             Inc(cwstrptr);
@@ -1783,6 +1790,7 @@ begin
          if Assigned(FOnOneCharSentProc) then begin
             FOnOneCharSentProc(Self);
             FOnOneCharSentProc(Self);
+            FOnOneCharSentProc(Self);
          end;
       end;
 
@@ -1792,27 +1800,34 @@ begin
 
       $20: begin
          FWkTx := 0;
+         FSendChar := False;
       end;
 
       $21: begin
          FWkTx := 1;
+         FSendChar := False;
       end;
 
       $22: begin
          FWkTx := 2;
+         FSendChar := False;
       end;
 
       $23: begin
          FWkTx := 3;
+         FSendChar := False;
       end;
 
       $24: begin
          FWkTx := 4;
+         FSendChar := False;
       end;
 
       $30: begin
          CWBufferSync.Enter();
          try
+            FSendChar := False;
+
             Inc(cwstrptr);
             nCommand := FCWSendBuf[FSelectedBuf, cwstrptr] * 100;
             Inc(cwstrptr);
@@ -1824,6 +1839,7 @@ begin
          end;
 
          if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
             FOnOneCharSentProc(Self);
             FOnOneCharSentProc(Self);
             FOnOneCharSentProc(Self);
@@ -2744,7 +2760,39 @@ begin
       for i := 1 to BGKCALLMAX do begin
          SetCWSendBufChar2(char(SS[i]), callsignptr + i - 1);
       end;
+
+      {$IFDEF DEBUG}
+      DumpSendBuf();
+      {$ENDIF}
    end;
+end;
+
+procedure TdmZLogKeyer.DumpSendBuf();
+var
+   i: Integer;
+   j: Integer;
+   p: Integer;
+   ch: Byte;
+   S: string;
+begin
+   OutputDebugString(PChar('*** dump cw buffer ***'));
+   OutputDebugString(PChar('NO:00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F'));
+   for i := 1 to charmax do begin
+      p := ((i - 1) * codemax) + 1;
+      ch := FCWSendBuf[0, p];
+      if ch = $ff then begin
+         Break;
+      end;
+
+      S := '';
+      for j := 1 to codemax do begin
+         p := ((i - 1) * codemax) + j;
+         ch := FCWSendBuf[0, p];
+         S := S + IntToHex(ch, 2) + ' ';
+      end;
+      OutputDebugString(PChar(RightStr('00' + IntToStr(i), 2) + ':' + S));
+   end;
+   OutputDebugString(PChar('*** end ***'));
 end;
 
 function TdmZLogKeyer.CallSignSent: Boolean;
