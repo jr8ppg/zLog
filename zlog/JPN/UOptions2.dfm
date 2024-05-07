@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetBandScope2
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -3316,7 +3316,7 @@ object formOptions2: TformOptions2
           Top = 101
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 10
           OnClick = buttonBSBackClick
         end
@@ -3326,7 +3326,7 @@ object formOptions2: TformOptions2
           Top = 127
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 13
           OnClick = buttonBSBackClick
         end
@@ -3347,7 +3347,7 @@ object formOptions2: TformOptions2
           Top = 101
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 11
           OnClick = buttonBSResetClick
         end
@@ -3357,7 +3357,7 @@ object formOptions2: TformOptions2
           Top = 127
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
@@ -3407,28 +3407,28 @@ object formOptions2: TformOptions2
         Top = 167
         Width = 423
         Height = 108
-        Caption = 'Other colors'
+        Caption = #12381#12398#20182#12398#33394#35373#23450
         TabOrder = 1
         object Label28: TLabel
           Left = 8
           Top = 23
           Width = 64
           Height = 13
-          Caption = 'Lookup failed'
+          Caption = 'Lookup'#22833#25943
         end
         object Label29: TLabel
           Left = 8
           Top = 50
           Width = 61
           Height = 13
-          Caption = 'Current band'
+          Caption = #29694#22312#12496#12531#12489
         end
         object Label30: TLabel
           Left = 8
           Top = 77
           Width = 82
           Height = 13
-          Caption = 'Unreliable spotter'
+          Caption = #20302#20449#38972#12398#12473#12509#12483#12479#12540
         end
         object editBSColor10: TEdit
           Tag = 10
@@ -3469,7 +3469,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 1
           OnClick = buttonBSBackClick
         end
@@ -3479,7 +3479,7 @@ object formOptions2: TformOptions2
           Top = 48
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 4
           OnClick = buttonBSBackClick
         end
@@ -3489,7 +3489,7 @@ object formOptions2: TformOptions2
           Top = 75
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 7
           OnClick = buttonBSBackClick
         end
@@ -3499,7 +3499,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 2
           OnClick = buttonBSResetClick
         end
@@ -3509,7 +3509,7 @@ object formOptions2: TformOptions2
           Top = 48
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 5
           OnClick = buttonBSResetClick
         end
@@ -3519,7 +3519,7 @@ object formOptions2: TformOptions2
           Top = 75
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 8
           OnClick = buttonBSResetClick
         end

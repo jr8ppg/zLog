@@ -24,7 +24,7 @@ object formSpotterListDlg: TformSpotterListDlg
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 287
+    ExplicitTop = 343
     ExplicitWidth = 468
     DesignSize = (
       472
@@ -40,6 +40,7 @@ object formSpotterListDlg: TformSpotterListDlg
       ModalResult = 1
       TabOrder = 0
       OnClick = buttonOKClick
+      ExplicitLeft = 159
     end
     object buttonCancel: TButton
       Left = 244
@@ -51,6 +52,7 @@ object formSpotterListDlg: TformSpotterListDlg
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 240
     end
   end
   object Panel2: TPanel
@@ -62,7 +64,7 @@ object formSpotterListDlg: TformSpotterListDlg
     BevelOuter = bvNone
     TabOrder = 0
     ExplicitWidth = 468
-    ExplicitHeight = 287
+    ExplicitHeight = 343
     object Label1: TLabel
       Left = 340
       Top = 8
@@ -87,9 +89,9 @@ object formSpotterListDlg: TformSpotterListDlg
     object Label4: TLabel
       Left = 340
       Top = 120
-      Width = 100
+      Width = 103
       Height = 13
-      Caption = 'Allow list 2(unreliable)'
+      Caption = 'Allow list 2 (unreliable)'
     end
     object listAllow1: TListBox
       Left = 340

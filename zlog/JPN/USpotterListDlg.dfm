@@ -24,7 +24,7 @@ object formSpotterListDlg: TformSpotterListDlg
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 287
+    ExplicitTop = 343
     ExplicitWidth = 468
     DesignSize = (
       472
@@ -40,6 +40,7 @@ object formSpotterListDlg: TformSpotterListDlg
       ModalResult = 1
       TabOrder = 0
       OnClick = buttonOKClick
+      ExplicitLeft = 159
     end
     object buttonCancel: TButton
       Left = 244
@@ -51,6 +52,7 @@ object formSpotterListDlg: TformSpotterListDlg
       Caption = #12461#12515#12531#12475#12523
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 240
     end
   end
   object Panel2: TPanel
@@ -62,13 +64,13 @@ object formSpotterListDlg: TformSpotterListDlg
     BevelOuter = bvNone
     TabOrder = 0
     ExplicitWidth = 468
-    ExplicitHeight = 287
+    ExplicitHeight = 343
     object Label1: TLabel
       Left = 340
       Top = 8
       Width = 88
       Height = 13
-      Caption = 'Allow list1 (reliable)'
+      Caption = #21463#20837#35377#21487#12522#12473#12488#65297#65288#39640#20449#38972#65289
     end
     object Label2: TLabel
       Left = 340
@@ -87,9 +89,9 @@ object formSpotterListDlg: TformSpotterListDlg
     object Label4: TLabel
       Left = 340
       Top = 120
-      Width = 100
+      Width = 103
       Height = 13
-      Caption = 'Allow list 2(unreliable)'
+      Caption = #21463#20837#35377#21487#12522#12473#12488#65298#65288#20302#20449#38972#65289
     end
     object listAllow1: TListBox
       Left = 340
@@ -118,7 +120,7 @@ object formSpotterListDlg: TformSpotterListDlg
       Top = 36
       Width = 133
       Height = 21
-      Caption = 'Add to allow list1'
+      Caption = #35377#21487#12522#12473#12488#65297#12408#36861#21152
       TabOrder = 1
       OnClick = buttonAddToAllowListClick
     end
@@ -127,7 +129,7 @@ object formSpotterListDlg: TformSpotterListDlg
       Top = 68
       Width = 133
       Height = 21
-      Caption = 'Remove from allow list1'
+      Caption = #35377#21487#12522#12473#12488#65297#12363#12425#21066#38500
       TabOrder = 2
       OnClick = buttonRemoveFromAllowListClick
     end
@@ -177,7 +179,7 @@ object formSpotterListDlg: TformSpotterListDlg
       Top = 144
       Width = 133
       Height = 21
-      Caption = 'Add to allow list2'
+      Caption = #35377#21487#12522#12473#12488#65298#12408#36861#21152
       TabOrder = 4
       OnClick = buttonAddToAllowList2Click
     end
@@ -186,7 +188,7 @@ object formSpotterListDlg: TformSpotterListDlg
       Top = 176
       Width = 133
       Height = 21
-      Caption = 'Remove from allow list2'
+      Caption = #35377#21487#12522#12473#12488#65298#12363#12425#21066#38500
       TabOrder = 5
       OnClick = buttonRemoveFromAllowList2Click
     end
