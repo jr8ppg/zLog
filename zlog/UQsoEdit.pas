@@ -41,6 +41,7 @@ type
 
     constructor Create(AOwner: TComponent); virtual;
     function GetNewMulti1(aQSO : TQSO) : string; virtual;
+    function GetNewMulti2(aQSO: TQSO): string; virtual;
   end;
 
   TGeneralEdit = class(TBasicEdit)
@@ -48,6 +49,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     function GetNewMulti1(aQSO : TQSO) : string; override;
+    function GetNewMulti2(aQSO : TQSO) : string; override;
   end;
 
   TALLJAEdit = class(TBasicEdit)
@@ -172,6 +174,14 @@ begin
       Result := '';
 end;
 
+function TBasicEdit.GetNewMulti2(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti2 then
+      Result := '*'
+   else
+      Result := '';
+end;
+
 constructor TGeneralEdit.Create;
 begin
    inherited;
@@ -184,18 +194,22 @@ begin
    colMode := 5;
    colPoint := 6;
    colNewMulti1 := 7;
+   colNewMulti2 := 8;
+
+   NewMulti1Wid := 5;
+   NewMulti2Wid := 5;
 
    if Pos('$P', dmZlogGlobal.Settings._sentstr) > 0 then begin
-      colNewPower := 8;
-      colOp := 9;
-      colMemo := 10;
-      GridColCount := 11;
+      colNewPower := 9;
+      colOp := 10;
+      colMemo := 11;
+      GridColCount := 12;
    end
    else begin
       colNewPower := -1;
-      colOp := 8;
-      colMemo := 9;
-      GridColCount := 10;
+      colOp := 9;
+      colMemo := 10;
+      GridColCount := 11;
    end;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
@@ -417,8 +431,9 @@ begin
    { colPower := 6; }
    colPoint := 7;
    colNewMulti1 := 8;
-   colOp := 9;
-   colMemo := 10;
+   colNewMulti2 := 9;
+   colOp := 10;
+   colMemo := 11;
 
    SerialWid := 4;
    TimeWid := 4;
@@ -431,8 +446,9 @@ begin
    OpWid := 6;
    MemoWid := 7;
    NewMulti1Wid := 5;
+   NewMulti2Wid := 5;
 
-   GridColCount := 11;
+   GridColCount := 12;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
@@ -517,6 +533,17 @@ var
 begin
    if aQSO.NewMulti1 then
       temp := aQSO.Multi1
+   else
+      temp := '';
+   Result := temp;
+end;
+
+function TGeneralEdit.GetNewMulti2(aQSO: TQSO): string;
+var
+   temp: string;
+begin
+   if aQSO.NewMulti2 then
+      temp := aQSO.Multi2
    else
       temp := '';
    Result := temp;

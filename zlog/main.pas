@@ -1900,6 +1900,9 @@ begin
       if editor.colNewMulti1 >= 0 then
          Cells[editor.colNewMulti1, R] := editor.GetNewMulti1(aQSO);
 
+      if editor.colNewMulti2 >= 0 then
+         Cells[editor.colNewMulti2, R] := editor.GetNewMulti2(aQSO);
+
       if editor.colMemo >= 0 then
          Cells[editor.colMemo, R] := aQSO.MemoStr; // + IntToStr(aQSO.Reserve3);
 
@@ -2052,13 +2055,13 @@ begin
 
       // New Multi1
       if editor.colNewMulti1 >= 0 then begin
-         Cells[editor.colNewMulti1, 0] := 'new';
+         Cells[editor.colNewMulti1, 0] := 'multi';
          ColWidths[editor.colNewMulti1] := editor.NewMulti1Wid * nColWidth;
       end;
 
       // New Multi2
       if editor.colNewMulti2 >= 0 then begin
-         Cells[editor.colNewMulti2, 0] := 'new';
+         Cells[editor.colNewMulti2, 0] := 'multi2';
          ColWidths[editor.colNewMulti2] := editor.NewMulti2Wid * nColWidth;
       end;
 
