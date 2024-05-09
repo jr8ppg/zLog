@@ -8193,7 +8193,7 @@ begin
       MultiButton.Enabled := False; // toolbar
       Multipliers1.Enabled := False; // menu
 
-      EditScreen := TGeneralEdit.Create(Self);
+      EditScreen := TGeneralEdit.Create(Self, False);
 
       MyContest := TPedi.Create(Self, 'Pedition mode');
       MyContest.UseUTC := F.UseUTC;
@@ -8225,7 +8225,7 @@ begin
    end;
 
    if SerialContestType = 0 then begin
-      EditScreen := TGeneralEdit.Create(Self);
+      EditScreen := TGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2);
    end
    else begin
       EditScreen := TSerialGeneralEdit.Create(Self);
@@ -8287,7 +8287,7 @@ begin
       MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)');
    end
    else begin
-      EditScreen := TGeneralEdit.Create(Self);
+      EditScreen := TGeneralEdit.Create(Self, False);
       MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)');
    end;
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);

@@ -442,28 +442,56 @@ object formELogJarl1: TformELogJarl1
     TabOrder = 21
     object Label22: TLabel
       Left = 16
-      Top = 390
+      Top = 398
       Width = 48
       Height = 12
       Caption = #23616#31278#20418#25968
     end
     object Label24: TLabel
       Left = 16
-      Top = 416
+      Top = 424
       Width = 26
       Height = 12
       Caption = 'Total'
     end
     object Label6: TLabel
       Left = 16
-      Top = 362
+      Top = 370
       Width = 49
       Height = 12
       Caption = 'Sub Total'
     end
+    object Label20: TLabel
+      Left = 118
+      Top = 14
+      Width = 29
+      Height = 12
+      Caption = 'QSOs'
+    end
+    object Label25: TLabel
+      Left = 164
+      Top = 14
+      Width = 31
+      Height = 12
+      Caption = 'Multi1'
+    end
+    object Label26: TLabel
+      Left = 211
+      Top = 14
+      Width = 31
+      Height = 12
+      Caption = 'Multi2'
+    end
+    object Label27: TLabel
+      Left = 266
+      Top = 14
+      Width = 32
+      Height = 12
+      Caption = 'Points'
+    end
     object checkBand00: TCheckBox
       Left = 16
-      Top = 23
+      Top = 31
       Width = 81
       Height = 17
       Caption = '1.9MHz'
@@ -474,7 +502,7 @@ object formELogJarl1: TformELogJarl1
     end
     object editQso00: TEdit
       Left = 112
-      Top = 21
+      Top = 29
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -483,7 +511,7 @@ object formELogJarl1: TformELogJarl1
     end
     object editMulti00: TEdit
       Left = 159
-      Top = 21
+      Top = 29
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -492,7 +520,7 @@ object formELogJarl1: TformELogJarl1
     end
     object editPoints00: TEdit
       Left = 253
-      Top = 21
+      Top = 29
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -502,7 +530,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand01: TCheckBox
       Tag = 1
       Left = 16
-      Top = 49
+      Top = 57
       Width = 81
       Height = 17
       Caption = '3.5MHz'
@@ -514,7 +542,7 @@ object formELogJarl1: TformELogJarl1
     object editQso01: TEdit
       Tag = 1
       Left = 112
-      Top = 47
+      Top = 55
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -524,7 +552,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti01: TEdit
       Tag = 1
       Left = 159
-      Top = 47
+      Top = 55
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -534,7 +562,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints01: TEdit
       Tag = 1
       Left = 253
-      Top = 47
+      Top = 55
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -544,7 +572,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand02: TCheckBox
       Tag = 2
       Left = 16
-      Top = 75
+      Top = 83
       Width = 81
       Height = 17
       Caption = '7MHz'
@@ -556,7 +584,7 @@ object formELogJarl1: TformELogJarl1
     object editQso02: TEdit
       Tag = 2
       Left = 112
-      Top = 73
+      Top = 81
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -566,7 +594,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti02: TEdit
       Tag = 2
       Left = 159
-      Top = 73
+      Top = 81
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -576,7 +604,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints02: TEdit
       Tag = 2
       Left = 253
-      Top = 73
+      Top = 81
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -586,7 +614,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand04: TCheckBox
       Tag = 4
       Left = 16
-      Top = 101
+      Top = 109
       Width = 81
       Height = 17
       Caption = '14MHz'
@@ -598,7 +626,7 @@ object formELogJarl1: TformELogJarl1
     object editQso04: TEdit
       Tag = 4
       Left = 112
-      Top = 99
+      Top = 107
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -608,7 +636,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti04: TEdit
       Tag = 4
       Left = 159
-      Top = 99
+      Top = 107
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -618,7 +646,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints04: TEdit
       Tag = 4
       Left = 253
-      Top = 99
+      Top = 107
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -628,7 +656,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand06: TCheckBox
       Tag = 6
       Left = 16
-      Top = 127
+      Top = 135
       Width = 81
       Height = 17
       Caption = '21MHz'
@@ -640,7 +668,7 @@ object formELogJarl1: TformELogJarl1
     object editQso06: TEdit
       Tag = 6
       Left = 112
-      Top = 125
+      Top = 133
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -650,7 +678,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti06: TEdit
       Tag = 6
       Left = 159
-      Top = 125
+      Top = 133
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -660,7 +688,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints06: TEdit
       Tag = 6
       Left = 253
-      Top = 125
+      Top = 133
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -670,7 +698,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand08: TCheckBox
       Tag = 8
       Left = 16
-      Top = 153
+      Top = 161
       Width = 81
       Height = 17
       Caption = '28MHz'
@@ -682,7 +710,7 @@ object formELogJarl1: TformELogJarl1
     object editQso08: TEdit
       Tag = 8
       Left = 112
-      Top = 151
+      Top = 159
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -692,7 +720,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti08: TEdit
       Tag = 8
       Left = 159
-      Top = 151
+      Top = 159
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -702,7 +730,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints08: TEdit
       Tag = 8
       Left = 253
-      Top = 151
+      Top = 159
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -712,7 +740,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand09: TCheckBox
       Tag = 9
       Left = 16
-      Top = 179
+      Top = 187
       Width = 81
       Height = 17
       Caption = '50MHz'
@@ -724,7 +752,7 @@ object formELogJarl1: TformELogJarl1
     object editQso09: TEdit
       Tag = 9
       Left = 112
-      Top = 177
+      Top = 185
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -734,7 +762,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti09: TEdit
       Tag = 9
       Left = 159
-      Top = 177
+      Top = 185
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -744,7 +772,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints09: TEdit
       Tag = 9
       Left = 253
-      Top = 177
+      Top = 185
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -754,7 +782,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand10: TCheckBox
       Tag = 10
       Left = 16
-      Top = 205
+      Top = 213
       Width = 81
       Height = 17
       Caption = '144MHz'
@@ -766,7 +794,7 @@ object formELogJarl1: TformELogJarl1
     object editQso10: TEdit
       Tag = 10
       Left = 112
-      Top = 203
+      Top = 211
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -776,7 +804,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti10: TEdit
       Tag = 10
       Left = 159
-      Top = 203
+      Top = 211
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -786,7 +814,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints10: TEdit
       Tag = 10
       Left = 253
-      Top = 203
+      Top = 211
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -796,7 +824,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand11: TCheckBox
       Tag = 11
       Left = 16
-      Top = 231
+      Top = 239
       Width = 81
       Height = 17
       Caption = '430MHz'
@@ -808,7 +836,7 @@ object formELogJarl1: TformELogJarl1
     object editQso11: TEdit
       Tag = 11
       Left = 112
-      Top = 229
+      Top = 237
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -818,7 +846,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti11: TEdit
       Tag = 11
       Left = 159
-      Top = 229
+      Top = 237
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -828,7 +856,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints11: TEdit
       Tag = 11
       Left = 253
-      Top = 229
+      Top = 237
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -838,7 +866,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand12: TCheckBox
       Tag = 12
       Left = 16
-      Top = 257
+      Top = 265
       Width = 81
       Height = 17
       Caption = '1200MHz'
@@ -850,7 +878,7 @@ object formELogJarl1: TformELogJarl1
     object editQso12: TEdit
       Tag = 12
       Left = 112
-      Top = 255
+      Top = 263
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -860,7 +888,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti12: TEdit
       Tag = 12
       Left = 159
-      Top = 255
+      Top = 263
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -870,7 +898,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints12: TEdit
       Tag = 12
       Left = 253
-      Top = 255
+      Top = 263
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -880,7 +908,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand13: TCheckBox
       Tag = 13
       Left = 16
-      Top = 283
+      Top = 291
       Width = 81
       Height = 17
       Caption = '2400MHz'
@@ -892,7 +920,7 @@ object formELogJarl1: TformELogJarl1
     object editQso13: TEdit
       Tag = 13
       Left = 112
-      Top = 281
+      Top = 289
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -902,7 +930,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti13: TEdit
       Tag = 13
       Left = 159
-      Top = 281
+      Top = 289
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -912,7 +940,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints13: TEdit
       Tag = 13
       Left = 253
-      Top = 281
+      Top = 289
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -922,7 +950,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand14: TCheckBox
       Tag = 14
       Left = 16
-      Top = 309
+      Top = 317
       Width = 81
       Height = 17
       Caption = '5600MHz'
@@ -934,7 +962,7 @@ object formELogJarl1: TformELogJarl1
     object editQso14: TEdit
       Tag = 14
       Left = 112
-      Top = 307
+      Top = 315
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -944,7 +972,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti14: TEdit
       Tag = 14
       Left = 159
-      Top = 307
+      Top = 315
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -954,7 +982,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints14: TEdit
       Tag = 14
       Left = 253
-      Top = 307
+      Top = 315
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -964,7 +992,7 @@ object formELogJarl1: TformELogJarl1
     object checkBand15: TCheckBox
       Tag = 15
       Left = 16
-      Top = 335
+      Top = 343
       Width = 81
       Height = 17
       Caption = '10G && Up'
@@ -976,7 +1004,7 @@ object formELogJarl1: TformELogJarl1
     object editQso15: TEdit
       Tag = 15
       Left = 112
-      Top = 333
+      Top = 341
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -986,7 +1014,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti15: TEdit
       Tag = 15
       Left = 159
-      Top = 333
+      Top = 341
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -996,7 +1024,7 @@ object formELogJarl1: TformELogJarl1
     object editPoints15: TEdit
       Tag = 15
       Left = 253
-      Top = 333
+      Top = 341
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -1005,7 +1033,7 @@ object formELogJarl1: TformELogJarl1
     end
     object editFDCOEFF: TEdit
       Left = 253
-      Top = 387
+      Top = 395
       Width = 59
       Height = 20
       TabOrder = 69
@@ -1013,7 +1041,7 @@ object formELogJarl1: TformELogJarl1
     end
     object editTotalScore: TEdit
       Left = 253
-      Top = 413
+      Top = 421
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -1023,7 +1051,7 @@ object formELogJarl1: TformELogJarl1
     object editQsoTotal: TEdit
       Tag = 15
       Left = 112
-      Top = 359
+      Top = 367
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1033,7 +1061,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti1Total: TEdit
       Tag = 15
       Left = 159
-      Top = 359
+      Top = 367
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1043,7 +1071,7 @@ object formELogJarl1: TformELogJarl1
     object editPointsTotal: TEdit
       Tag = 15
       Left = 253
-      Top = 359
+      Top = 367
       Width = 59
       Height = 20
       NumbersOnly = True
@@ -1052,7 +1080,7 @@ object formELogJarl1: TformELogJarl1
     end
     object editMulti2_00: TEdit
       Left = 206
-      Top = 21
+      Top = 29
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1062,7 +1090,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_01: TEdit
       Tag = 1
       Left = 206
-      Top = 47
+      Top = 55
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1072,7 +1100,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_02: TEdit
       Tag = 2
       Left = 206
-      Top = 73
+      Top = 81
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1082,7 +1110,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_04: TEdit
       Tag = 4
       Left = 206
-      Top = 99
+      Top = 107
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1092,7 +1120,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_06: TEdit
       Tag = 6
       Left = 206
-      Top = 125
+      Top = 133
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1102,7 +1130,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_08: TEdit
       Tag = 8
       Left = 206
-      Top = 151
+      Top = 159
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1112,7 +1140,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_09: TEdit
       Tag = 9
       Left = 206
-      Top = 177
+      Top = 185
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1122,7 +1150,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_10: TEdit
       Tag = 10
       Left = 206
-      Top = 203
+      Top = 211
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1132,7 +1160,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_11: TEdit
       Tag = 11
       Left = 206
-      Top = 229
+      Top = 237
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1142,7 +1170,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_12: TEdit
       Tag = 12
       Left = 206
-      Top = 255
+      Top = 263
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1152,7 +1180,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_13: TEdit
       Tag = 13
       Left = 206
-      Top = 281
+      Top = 289
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1162,7 +1190,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_14: TEdit
       Tag = 14
       Left = 206
-      Top = 307
+      Top = 315
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1172,7 +1200,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2_15: TEdit
       Tag = 15
       Left = 206
-      Top = 333
+      Top = 341
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1182,7 +1210,7 @@ object formELogJarl1: TformELogJarl1
     object editMulti2Total: TEdit
       Tag = 15
       Left = 206
-      Top = 359
+      Top = 367
       Width = 41
       Height = 20
       NumbersOnly = True
@@ -1199,7 +1227,7 @@ object formELogJarl1: TformELogJarl1
     BevelOuter = bvNone
     TabOrder = 22
     ExplicitTop = 602
-    ExplicitWidth = 789
+    ExplicitWidth = 842
     object buttonCreateLog: TButton
       Left = 386
       Top = 2

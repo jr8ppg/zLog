@@ -47,7 +47,7 @@ type
   TGeneralEdit = class(TBasicEdit)
   private
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent; UseMulti2: Boolean);
     function GetNewMulti1(aQSO : TQSO) : string; override;
     function GetNewMulti2(aQSO : TQSO) : string; override;
   end;
@@ -182,9 +182,11 @@ begin
       Result := '';
 end;
 
-constructor TGeneralEdit.Create;
+constructor TGeneralEdit.Create(AOwner: TComponent; UseMulti2: Boolean);
+var
+ colno: Integer;
 begin
-   inherited;
+   inherited Create(AOwner);
 
    colTime := 0;
    colCall := 1;
@@ -194,21 +196,34 @@ begin
    colMode := 5;
    colPoint := 6;
    colNewMulti1 := 7;
-   colNewMulti2 := 8;
-
    NewMulti1Wid := 5;
-   NewMulti2Wid := 5;
+
+   colno := 8;
+   if UseMulti2 = True then begin
+      colNewMulti2 := colno;
+      NewMulti2Wid := 5;
+      Inc(colno);
+   end
+   else begin
+      colNewMulti2 := -1;
+      NewMulti2Wid := 0;
+   end;
 
    if Pos('$P', dmZlogGlobal.Settings._sentstr) > 0 then begin
-      colNewPower := 9;
-      colOp := 10;
-      colMemo := 11;
+      colNewPower := colno;
+      Inc(colno);
+      colOp := colno;
+      Inc(colno);
+      colMemo := colno;
+      Inc(colno);
       GridColCount := 12;
    end
    else begin
       colNewPower := -1;
-      colOp := 9;
-      colMemo := 10;
+      colOp := colno;
+      Inc(colno);
+      colMemo := colno;
+      Inc(colno);
       GridColCount := 11;
    end;
 
@@ -219,7 +234,7 @@ begin
    else begin
       OpWid := 6;
       MemoWid := 7;
-   end;
+   end
 end;
 
 constructor TARRLDXEdit.Create(AOwner: TComponent);

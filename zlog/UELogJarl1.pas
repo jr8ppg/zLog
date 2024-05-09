@@ -133,6 +133,10 @@ type
     editMulti2_14: TEdit;
     editMulti2_15: TEdit;
     editMulti2Total: TEdit;
+    Label20: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);

@@ -238,7 +238,12 @@ begin
    Grid.ColWidths[1] := w * 7;
    Grid.ColWidths[2] := w * 7;
    Grid.ColWidths[3] := w * Max(8, Length(strScore)+1);
-   Grid.ColWidths[4] := w * 7;
+   if FConfig.UseMulti2 = True then begin
+      Grid.ColWidths[4] := w * 7;
+   end
+   else begin
+      Grid.ColWidths[4] := -1;
+   end;
    Grid.ColWidths[5] := w * 7;
    Grid.ColWidths[6] := w * 7;
    Grid.ColWidths[7] := w * 7;

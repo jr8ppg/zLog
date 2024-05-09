@@ -74,6 +74,7 @@ type
     FCutTailingAlphabets: Boolean;
     FAllowUnlistedMulti: Boolean;
     FNoMulti: Boolean;
+    FUseMulti2: Boolean;
 
     FPXMulti: Integer;
     FSerialContestType: Integer;
@@ -172,6 +173,7 @@ type
     property CutTailingAlphabets: Boolean read FCutTailingAlphabets;
     property AllowUnlistedMulti: Boolean read FAllowUnlistedMulti;
     property NoMulti: Boolean read FNoMulti write FNoMulti;
+    property UseMulti2: Boolean read FUseMulti2 write FUseMulti2;
 
     property PXMulti: Integer read FPXMulti;
     property SerialContestType: Integer read FSerialContestType;
@@ -265,6 +267,7 @@ begin
    FCutTailingAlphabets := False;
    FAllowUnlistedMulti := False;
    FNoMulti := False;
+   FUseMulti2 := False;
    FPXMulti := 0;
    FSerialContestType := 0;
    FCountHigherPoints := False;
@@ -682,6 +685,10 @@ begin
 
          if strCmd = 'PERIOD' then begin
             D.FPeriod := StrToIntDef(strParam, 0);
+         end;
+
+         if strCmd = 'USEMULTI2' then begin
+            D.FUseMulti2 := ParseOnOff(strParam);
          end;
       end;
    finally
