@@ -13182,19 +13182,16 @@ end;
 procedure TMainForm.SaveLastFreq();
 var
    rig: TRig;
-   rigset: Integer;
 begin
    // 現在の周波数とモードを記憶
-   for rigset := 1 to 2 do begin
-      rig := RigControl.GetRig(rigset, TextToBand(FEditPanel[rigset - 1].BandEdit.Text));
-      if (rig = nil) then begin
-         FLastFreq[rigset] := 0;
-         FLastMode[rigset] := mCW;
-      end
-      else begin
-         FLastFreq[rigset] := rig.CurrentFreqHz;
-         FLastMode[rigset] := rig.CurrentMode;
-      end;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(FEditPanel[FCurrentRigSet - 1].BandEdit.Text));
+   if (rig = nil) then begin
+      FLastFreq[FCurrentRigSet] := 0;
+      FLastMode[FCurrentRigSet] := mCW;
+   end
+   else begin
+      FLastFreq[FCurrentRigSet] := rig.CurrentFreqHz;
+      FLastMode[FCurrentRigSet] := rig.CurrentMode;
    end;
 
    // リグコントロール画面に表示
