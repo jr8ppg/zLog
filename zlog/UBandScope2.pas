@@ -297,6 +297,8 @@ begin
    D.Number := Sp.Number;
    D.NewJaMulti := Sp.NewJaMulti;
    D.ReportedBy := Sp.ReportedBy;
+   D.LookupFailed := Sp.LookupFailed;
+   D.ReliableSpotter := Sp.ReliableSpotter;
    AddAndDisplay(D);
 end;
 
