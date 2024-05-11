@@ -94,7 +94,7 @@ object CommForm: TCommForm
     object checkRecordLogs: TCheckBox
       Left = 176
       Top = 57
-      Width = 81
+      Width = 100
       Height = 17
       Caption = #21463#20449#12525#12464#12434#20445#23384
       TabOrder = 6
