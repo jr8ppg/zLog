@@ -618,7 +618,7 @@ begin
       Exit;
    end;
 
-   b := Trunc((wpm - FMinWpm) / ((FMaxWPM - FMinWPM) / 255));
+   b := Ceil((wpm - FMinWpm) / ((FMaxWPM - FMinWPM) / 255));
    S := RightStr('0000' + IntToStr(b), 4);
 
    X1 := StrToIntDef(Copy(S, 1, 1), 0) shl 4;
