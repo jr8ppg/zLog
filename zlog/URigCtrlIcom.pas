@@ -608,7 +608,6 @@ end;
 //       02 55
 procedure TICOM.SetWPM(wpm: Integer);
 var
-   a: Extended;
    b: Integer;
    S: string;
    X1: Byte;
