@@ -31,6 +31,8 @@ type
     FPeriod: Integer;      // ŠúŠÔ 12,24,48‚È‚Ç
     FUseUTC: Boolean;      // False:JST True:UTC
 
+    FAdifContestId: string;
+
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
     function GetUseUTC(): Boolean;
     procedure SetUseUTC(v: Boolean);
@@ -85,6 +87,7 @@ type
     property StartTime: Integer read FStartTime write FStartTime;
     property Period: Integer read FPeriod write FPeriod;
     property UseUTC: Boolean read GetUseUTC write SetUseUTC;
+    property AdifContestId: string read FAdifContestId write FAdifContestId;
 
     procedure RenewScoreAndMulti();
   end;
@@ -134,14 +137,14 @@ type
   end;
 
   TCQWPXContest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
     function ADIF_ExtraFieldName : string; override;
     function ADIF_ExtraField(aQSO : TQSO) : string; override;
   end;
 
   TWAEContest = class(TContest)
     QTCForm: TQTCForm;
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
     destructor Destroy(); override;
   end;
 
@@ -170,7 +173,7 @@ type
   end;
 
   TCQWWContest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string; fJIDX: Boolean = False); reintroduce;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode; fJIDX: Boolean = False); reintroduce;
     function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
     procedure ShowMulti; override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
@@ -184,27 +187,27 @@ type
   end;
 
   TJIDXContest = class(TCQWWContest)
-    constructor Create(AOwner: TComponent; N : string); overload;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
     procedure SetPoints(aQSO : TQSO); override;
   end;
 
   TJIDXContestDX = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
     procedure SetPoints(aQSO : TQSO); override;
   end;
 
   TARRLDXContestDX = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
     function ADIF_ExchangeRX_FieldName : string; override;
   end;
 
   TARRLDXContestW = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
     function ADIF_ExchangeRX_FieldName : string; override;
   end;
 
   TAllAsianContest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
     procedure SetPoints(aQSO : TQSO); override;
     function ADIF_ExchangeRX_FieldName : string; override;
   end;
@@ -484,6 +487,8 @@ begin
    FStartTime := 21;
    FPeriod := 18;
    UseUTC := False;
+
+   AdifContestId := '';
 end;
 
 procedure TContest.PostWanted(S: string);
@@ -636,7 +641,7 @@ begin
    if SerialContestType <> 0 then
       Result := 'srx'
    else
-      Result := 'qth';
+      Result := 'srx_string';
 end;
 
 function TCQWWContest.ADIF_ExchangeRX_FieldName: string;
@@ -697,6 +702,11 @@ var
    aQSO: TQSO;
    offsetmin: Integer;
    dbl: double;
+
+   function AdifField(F, V: string): string;
+   begin
+      Result := '<' + F + ':' + IntToStr(Length(V)) + '>' + V;
+   end;
 begin
    Header := 'ADIF export from zLog for Windows'; // +dmZlogGlobal.Settings._mycall;
 
@@ -717,52 +727,57 @@ begin
 
    for i := 1 to Log.TotalQSO do begin
       aQSO := Log.QsoList[i];
-      S := '<qso_date:8>';
-      S := S + FormatDateTime('yyyymmdd', aQSO.Time + dbl);
-      S := S + '<time_on:4>' + FormatDateTime('hhnn', aQSO.Time + dbl);
-      S := S + '<time_off:4>' + FormatDateTime('hhnn', aQSO.Time + dbl);
 
-      temp := aQSO.Callsign;
-      S := S + '<call:' + IntToStr(length(temp)) + '>' + temp;
+      S := AdifField('qso_date', FormatDateTime('yyyymmdd', aQSO.Time + dbl));
+      S := S + AdifField('time_on', FormatDateTime('hhnn', aQSO.Time + dbl));
+      S := S + AdifField('time_off', FormatDateTime('hhnn', aQSO.Time + dbl));
 
-      temp := IntToStr(aQSO.RSTsent);
-      S := S + '<rst_sent:' + IntToStr(length(temp)) + '>' + temp;
+      S := S + AdifField('call', aQSO.Callsign);
 
-      if SerialContestType <> 0 then begin
-         temp := IntToStr(aQSO.Serial);
-         S := S + '<stx:' + IntToStr(length(temp)) + '>' + temp;
+      S := S + AdifField('rst_sent', IntToStr(aQSO.RSTsent));
+
+      if SerialContestType = 0 then begin
+         S := S + AdifField('stx_string', aQSO.NrSent);
+      end
+      else begin
+         S := S + AdifField('stx', IntToStr(aQSO.Serial));
       end;
 
-      temp := IntToStr(aQSO.RSTRcvd);
-      S := S + '<rst_rcvd:' + IntToStr(length(temp)) + '>' + temp;
+      S := S + AdifField('rst_rcvd', IntToStr(aQSO.RSTRcvd));
 
-      temp := ADIF_ExchangeRX(aQSO);
-      S := S + '<' + ADIF_ExchangeRX_FieldName + ':' + IntToStr(length(temp)) + '>' + temp;
+      if SerialContestType = 0 then begin
+         S := S + AdifField('srx_string', aQSO.NrRcvd);
+      end
+      else begin
+         S := S + AdifField('srx', aQSO.NrRcvd);
+      end;
+
+      S := S + AdifField(ADIF_ExchangeRX_FieldName, ADIF_ExchangeRX(aQSO));
 
       temp := ADIF_ExtraField(aQSO);
       if temp <> '' then begin
-         S := S + '<' + ADIF_ExtraFieldName + ':' + IntToStr(length(temp)) + '>' + temp;
+         S := S + AdifField(ADIF_ExtraFieldName, temp);
       end;
 
-      temp := ADIFBandString[aQSO.Band];
-      S := S + '<band:' + IntToStr(length(temp)) + '>' + temp;
-
-      temp := ModeString[aQSO.mode];
-      S := S + '<mode:' + IntToStr(length(temp)) + '>' + temp;
+      S := S + AdifField('band', ADIFBandString[aQSO.Band]);
+      S := S + AdifField('mode', ModeString[aQSO.mode]);
 
       if aQSO.Operator <> '' then begin
-         temp := aQSO.Operator;
-         S := S + '<operator:' + IntToStr(length(temp)) + '>' + temp;
+         S := S + AdifField('operator', aQSO.Operator);
       end;
 
       if aQSO.Memo <> '' then begin
-         temp := aQSO.Memo;
-         S := S + '<comment:' + IntToStr(length(temp)) + '>' + temp;
+         S := S + AdifField('comment', aQSO.Memo);
       end;
 
       temp := aQSO.FreqStr2;
       if temp <> '' then begin
-         S := S + '<freq:' + IntToStr(length(temp)) + '>' + temp;
+         S := S + AdifField('freq', temp);
+      end;
+
+      temp := AdifContestId;
+      if temp <> '' then begin
+         S := S + AdifField('contest_id', temp);
       end;
 
       S := S + '<eor>';
@@ -845,9 +860,9 @@ begin
    end;
 end;
 
-constructor TJIDXContest.Create(AOwner: TComponent; N: string);
+constructor TJIDXContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N, True);    //   <-TCQWWContest‚©‚ç‚ÌŒp³‚È‚Ì‚Åinherited•s‰Â
+   inherited Create(AOwner, N, M, True);    //   <-TCQWWContest‚©‚ç‚ÌŒp³‚È‚Ì‚Åinherited•s‰Â
    MultiForm := TJIDXMulti.Create(AOwner);
    ScoreForm := TJIDXScore2.Create(AOwner);
    ZoneForm := TWWZone.Create(AOwner);
@@ -863,6 +878,13 @@ begin
 
    FStartTime := 7;  // UTC
    FPeriod := 6;
+
+   case M of
+      cmMix: AdifContestId := '';
+      cmCw: AdifContestId := 'JIDX-CW';
+      cmPh: AdifContestId := 'JIDX-SSB';
+      else AdifContestId := '';
+   end;
 end;
 
 procedure TJIDXContest.SetPoints(aQSO: TQSO);
@@ -870,9 +892,9 @@ begin
    TJIDXScore2(ScoreForm).CalcPoints(aQSO);
 end;
 
-constructor TARRLDXContestDX.Create(AOwner: TComponent; N: string);
+constructor TARRLDXContestDX.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited;
+   inherited Create(AOwner, N);
    MultiForm := TARRLDXMulti.Create(AOwner);
    ScoreForm := TARRLDXScore.Create(AOwner);
    PastEditForm := TEditDialog.Create(AOwner);
@@ -888,11 +910,18 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := '';
+      cmCw: AdifContestId := 'ARRLDX-CW';
+      cmPh: AdifContestId := 'ARRLSX-SSB';
+      else AdifContestId := '';
+   end;
 end;
 
-constructor TARRLDXContestW.Create(AOwner: TComponent; N: string);
+constructor TARRLDXContestW.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited;
+   inherited Create(AOwner, N);
    MultiForm := TARRLWMulti.Create(AOwner);
    TARRLWMulti(MultiForm).ALLASIANFLAG := False;
    ScoreForm := TARRLDXScore.Create(AOwner);
@@ -910,11 +939,18 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := '';
+      cmCw: AdifContestId := 'ARRLDX-CW';
+      cmPh: AdifContestId := 'ARRLSX-SSB';
+      else AdifContestId := '';
+   end;
 end;
 
-constructor TAllAsianContest.Create(AOwner: TComponent; N: string);
+constructor TAllAsianContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited;
+   inherited Create(AOwner, N);
 
    MultiForm := TARRLWMulti.Create(AOwner);
    TARRLWMulti(MultiForm).ALLASIANFLAG := True;
@@ -932,6 +968,13 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := '';
+      cmCw: AdifContestId := 'ALL-ASIAN-DX-CW';
+      cmPh: AdifContestId := 'ALL-ASIAN-DX-SSB';
+      else AdifContestId := '';
+   end;
 end;
 
 procedure TAllAsianContest.SetPoints(aQSO: TQSO);
@@ -939,9 +982,10 @@ begin
    TAllAsianScore(ScoreForm).CalcPoints(aQSO);
 end;
 
-constructor TJIDXContestDX.Create(AOwner: TComponent; N: string);
+constructor TJIDXContestDX.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited;
+   inherited Create(AOwner, N);
+
    MultiForm := TJIDX_DX_Multi.Create(AOwner);
    ScoreForm := TJIDX_DX_Score.Create(AOwner);
    PastEditForm := TEditDialog.Create(AOwner);
@@ -953,6 +997,13 @@ begin
 
    FStartTime := 7;  // UTC
    FPeriod := 6;
+
+   case M of
+      cmMix: AdifContestId := '';
+      cmCw: AdifContestId := 'JIDX-CW';
+      cmPh: AdifContestId := 'JIDX-SSB';
+      else AdifContestId := '';
+   end;
 end;
 
 procedure TJIDXContestDX.SetPoints(aQSO: TQSO);
@@ -960,9 +1011,10 @@ begin
    TJIDX_DX_Score(ScoreForm).CalcPoints(aQSO);
 end;
 
-constructor TCQWPXContest.Create(AOwner: TComponent; N: string);
+constructor TCQWPXContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited;
+   inherited Create(AOwner, N);
+
    MultiForm := TWPXMulti.Create(AOwner);
    ScoreForm := TWPXScore.Create(AOwner);
    ZoneForm := nil;
@@ -987,11 +1039,18 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := '';
+      cmCw: AdifContestId := 'CQWPX-CW';
+      cmPh: AdifContestId := 'CQWPX-SSB';
+      else AdifContestId := 'CQWPX-RTTY';
+   end;
 end;
 
-constructor TWAEContest.Create(AOwner: TComponent; N: string);
+constructor TWAEContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited;
+   inherited Create(AOwner, N);
 
    MultiForm := TWAEMulti.Create(AOwner);
    ScoreForm := TWAEScore.Create(AOwner);
@@ -1014,6 +1073,13 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := '';
+      cmCw: AdifContestId := 'DARC-WAEDC-CW';
+      cmPh: AdifContestId := 'DARC-WAEDC-SSB';
+      else AdifContestId := 'DARC-WAEDC-RTTY';
+   end;
 end;
 
 destructor TWAEContest.Destroy();
@@ -1049,6 +1115,8 @@ begin
 
    FStartTime := 12; // UTC
    FPeriod := 24;
+
+   AdifContestId := 'RSGB-IOTA';
 end;
 
 constructor TARRL10Contest.Create(AOwner: TComponent; N: string);
@@ -1076,6 +1144,8 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   AdifContestId := 'ARRL-10';
 end;
 
 constructor TJA0Contest.Create(AOwner: TComponent; N: string);
@@ -1098,6 +1168,8 @@ begin
    FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 0;
+
+   AdifContestId := 'JA_DOMESTIC';
 end;
 
 constructor TJA0ContestZero.Create(AOwner: TComponent; N: string);
@@ -1111,6 +1183,8 @@ begin
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
+
+   AdifContestId := 'JA_DOMESTIC';
 end;
 
 procedure TJA0Contest.Renew;
@@ -1144,9 +1218,11 @@ begin
    FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 0;
+
+   AdifContestId := 'AP-SPRINT';
 end;
 
-constructor TCQWWContest.Create(AOwner: TComponent; N: string; fJIDX: Boolean);
+constructor TCQWWContest.Create(AOwner: TComponent; N: string; M: TContestMode; fJIDX: Boolean);
 begin
    inherited Create(AOwner, N);
 
@@ -1171,6 +1247,13 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   case M of
+      cmMIx: AdifContestId := '';
+      cmCw: AdifContestId := 'CQWW-CW';
+      cmPh: AdifContestId := 'CQWW-SSB';
+      else AdifContestId := 'CQWW-RTTY';
+   end;
 end;
 
 function TCQWWContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
@@ -1222,6 +1305,8 @@ begin
 
    FStartTime := 12; // UTC
    FPeriod := 24;
+
+   AdifContestId := 'IARU-HF';
 end;
 
 function TIARUContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
@@ -1262,6 +1347,8 @@ begin
    FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 0;
+
+   AdifContestId := '';
 end;
 
 constructor TALLJAContest.Create(AOwner: TComponent; N: string);
@@ -1273,6 +1360,7 @@ begin
    SentStr := '$V$P';
    FStartTime := 21;
    FPeriod := 24;
+   AdifContestId := 'JA_DOMESTIC';
 end;
 
 function TALLJAContest.QTHString(aQSO: TQSO): string;
@@ -1320,6 +1408,7 @@ begin
    FBandHigh := b10g;
    FStartTime := 21;
    FPeriod := 24;
+   AdifContestId := 'JA_DOMESTIC';
 end;
 
 constructor TFDContest.Create(AOwner: TComponent; N: string);
@@ -1334,6 +1423,7 @@ begin
    FBandHigh := b10g;
    FStartTime := 21;
    FPeriod := 18;
+   AdifContestId := 'JA_DOMESTIC';
 end;
 
 constructor TSixDownContest.Create(AOwner: TComponent; N: string);
@@ -1350,6 +1440,7 @@ begin
    FBandHigh := b10g;
    FStartTime := 21;
    FPeriod := 18;
+   AdifContestId := 'JA_DOMESTIC';
 end;
 
 constructor TGeneralContest.Create(AOwner: TComponent; N, CFGFileName: string);
@@ -1408,6 +1499,8 @@ begin
    FUseContestPeriod := FConfig.UseContestPeriod;
    FStartTime := FConfig.StartTime;
    FPeriod := FConfig.Period;
+
+   AdifContestId := FConfig.ContestId;
 end;
 
 destructor TGeneralContest.Destroy();

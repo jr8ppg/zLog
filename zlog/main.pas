@@ -8250,7 +8250,7 @@ begin
    mnCheckMulti.Caption := 'Check Zone';
    EditScreen := TWWEdit.Create(Self);
 
-   MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest');
+   MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', dmZLogGlobal.ContestMode);
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
 end;
 
@@ -8263,7 +8263,7 @@ begin
 
    Grid.Cells[EditScreen.colNewMulti1, 0] := 'prefix';
 
-   MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest');
+   MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', dmZLogGlobal.ContestMode);
 
    case ContestCategory of
       ccSingleOp:          SerialContestType := SER_ALL;
@@ -8284,11 +8284,11 @@ begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
       EditScreen := TWWEdit.Create(Self);
-      MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)');
+      MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', dmZLogGlobal.ContestMode);
    end
    else begin
       EditScreen := TGeneralEdit.Create(Self, False);
-      MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)');
+      MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)', dmZLogGlobal.ContestMode);
    end;
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
 end;
@@ -8313,7 +8313,7 @@ begin
 
    EditScreen := TDXCCEdit.Create(Self);
 
-   MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)');
+   MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)', dmZLogGlobal.ContestMode);
 end;
 
 procedure TMainForm.InitARRL_DX();
@@ -8323,7 +8323,7 @@ begin
 
    EditScreen := TARRLDXEdit.Create(Self);
 
-   MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)');
+   MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)', dmZLogGlobal.ContestMode);
 end;
 
 procedure TMainForm.InitARRL10m();
@@ -8370,7 +8370,7 @@ begin
 
       EditScreen := TDXCCEdit.Create(Self);
 
-      MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)');
+      MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', dmZLogGlobal.ContestMode);
 
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -8401,7 +8401,7 @@ begin
 
    EditScreen := TWPXEdit.Create(Self);
 
-   MyContest := TWAEContest.Create(Self, 'WAEDC Contest');
+   MyContest := TWAEContest.Create(Self, 'WAEDC Contest', dmZLogGlobal.ContestMode);
 end;
 
 procedure TMainForm.ShowBandMenu(b: TBand);

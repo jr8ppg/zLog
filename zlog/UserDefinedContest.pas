@@ -92,6 +92,8 @@ type
     FUseContestPeriod: Boolean;
     FStartTime: Integer;
     FPeriod: Integer;
+
+    FContestId: string;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -194,6 +196,8 @@ type
     property UseContestPeriod: Boolean read FUseContestPeriod write SetUseContestPeriod;
     property StartTime: Integer read FStartTime write SetStartTime;
     property Period: Integer read FPeriod write SetPeriod;
+
+    property ContestId: string read FContestId write FContestId;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -284,6 +288,8 @@ begin
    FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 24;
+
+   FContestId := '';
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -689,6 +695,10 @@ begin
 
          if strCmd = 'USEMULTI2' then begin
             D.FUseMulti2 := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'CONTESTID' then begin
+            D.FContestId := UpperCase(strParam);
          end;
       end;
    finally
