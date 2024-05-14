@@ -10,12 +10,10 @@ object ALLJAMulti: TALLJAMulti
   Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = True
   Scaled = False
   OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object PageControl: TPageControl
     Left = 0
@@ -32,6 +30,8 @@ object ALLJAMulti: TALLJAMulti
     ParentFont = False
     TabOrder = 0
     OnChange = PageControlChange
+    ExplicitWidth = 328
+    ExplicitHeight = 300
     object TabALL: TTabSheet
       Tag = 99
       Caption = 'ALL'
@@ -48,7 +48,14 @@ object ALLJAMulti: TALLJAMulti
         Height = 25
         Align = alTop
         BevelOuter = bvNone
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 0
+        ExplicitWidth = 320
         object RotateLabel2: TRotateLabel
           Left = 95
           Top = 4
@@ -154,6 +161,16 @@ object ALLJAMulti: TALLJAMulti
           Font.Style = []
           ParentFont = False
         end
+        object checkJumpLatestMulti: TCheckBox
+          Left = 192
+          Top = 3
+          Width = 121
+          Height = 17
+          Caption = 'Jump to Latest Multi'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+        end
       end
       object Grid: TStringGrid
         Left = 0
@@ -177,6 +194,8 @@ object ALLJAMulti: TALLJAMulti
         ScrollBars = ssVertical
         TabOrder = 1
         OnDrawCell = GridDrawCell
+        ExplicitWidth = 320
+        ExplicitHeight = 247
       end
     end
     object Tab19: TTabSheet
@@ -258,6 +277,8 @@ object ALLJAMulti: TALLJAMulti
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 300
+    ExplicitWidth = 328
     object Button2: TButton
       Left = 8
       Top = 8

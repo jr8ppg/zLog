@@ -43,6 +43,7 @@ type
     Tab19: TTabSheet;
     RotateLabel1: TRotateLabel;
     Grid: TStringGrid;
+    checkJumpLatestMulti: TCheckBox;
     procedure PageControlChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -57,6 +58,7 @@ type
     { Private declarations }
     KenLabels: array[b19..b50, m101..m48] of TLabel;
     MultiTable: array[b19..b50, m101..m48] of Boolean;
+    LatestMultiAddition: Integer;
     function KenToInt(strKenCode: string): TKen;
     procedure DeletePowerCode(var strMulti: string);
     function HasPowerCode(strMulti: string): Boolean;
@@ -101,6 +103,7 @@ uses
 
 procedure TALLJAMulti.FormCreate(Sender: TObject);
 begin
+   LatestMultiAddition := 0;
    InitKenLabels();
    UpdateKenLabels();
    InitAllList();
@@ -118,6 +121,8 @@ begin
    inherited;
    SelectBandTab(Main.CurrentQSO.band, True);
    AdjustGridSize(Grid);
+   LatestMultiAddition := 0;
+   UpdateData();
 end;
 
 procedure TALLJAMulti.InitKenLabels();
@@ -260,6 +265,12 @@ begin
 
       Grid.Cells[0, Ord(K)] := str;
    end;
+
+   if checkJumpLatestMulti.Checked = True then begin
+      Grid.TopRow := LatestMultiAddition;
+   end;
+
+   Grid.Refresh();
 end;
 
 function TALLJAMulti.ExtractMulti(aQSO: TQSO): string;
@@ -305,6 +316,7 @@ begin
    if MultiTable[aQSO.band, K] = False then begin
       MultiTable[aQSO.band, K] := True;
       aQSO.NewMulti1 := True;
+      LatestMultiAddition := Integer(K);
    end;
 end;
 
