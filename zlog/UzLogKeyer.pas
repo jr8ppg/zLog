@@ -417,6 +417,7 @@ type
     procedure WinKeyerSendCommand(cmd: Byte; p1: Byte);
     procedure WinKeyerSendMessage(S: string);
     procedure WinKeyerTuneOn();
+    procedure WinKeyerTuneOff();
 
     // SO2R support
     property So2rRigSelectV28: Boolean read FRigSelectV28 write FRigSelectV28;
@@ -2641,8 +2642,12 @@ var
    m: Integer;
    mode: Byte;
 begin
-   FTune := False;
    if FUseWinKeyer = True then begin
+      if FTune = True then begin
+         WinKeyerTuneOff();
+         FTune := False;
+      end;
+
       WinKeyerClear();
 
       // Set PTT Mode(PINCFG)
@@ -2657,6 +2662,7 @@ begin
       WinKeyerSetMode(mode);
    end
    else begin
+      FTune := False;
       { SendOK:=False; }
       { StringBuffer := ''; }
 
@@ -2821,6 +2827,11 @@ begin
          Result := False;
    end
    else begin
+      if (FTune = True) then begin
+         Result := True;
+         Exit;
+      end;
+
       if ((FWkStatus and WK_STATUS_BUSY) = WK_STATUS_BUSY) then begin
          Result := True;
       end
@@ -4209,6 +4220,11 @@ end;
 procedure TdmZLogKeyer.WinKeyerTuneOn();
 begin
    WinKeyerSendCommand(WK_KEY_IMMEDIATE_CMD, WK_KEY_IMMEDIATE_KEYDOWN);
+end;
+
+procedure TdmZLogKeyer.WinKeyerTuneOff();
+begin
+   WinKeyerSendCommand(WK_KEY_IMMEDIATE_CMD, WK_KEY_IMMEDIATE_KEYUP);
 end;
 
 procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
