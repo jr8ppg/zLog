@@ -55,7 +55,7 @@ end;
 procedure TGeneralScore.UpdateData;
 var
    band: TBand;
-   TotQSO, TotPoints, TotMulti: LongInt;
+   TotQSO, TotPoints, TotMulti1, TotMulti2: LongInt;
    row: Integer;
    w: Integer;
    strScore: string;
@@ -67,32 +67,35 @@ begin
 
    TotQSO := 0;
    TotPoints := 0;
-   TotMulti := 0;
+   TotMulti1 := 0;
+   TotMulti2 := 0;
    row := 1;
 
    // 見出し行
    Grid.Cells[0, 0] := 'MHz';
    Grid.Cells[1, 0] := 'QSOs';
    Grid.Cells[2, 0] := 'Points';
-   Grid.Cells[3, 0] := 'Multi';
-   Grid.Cells[4, 0] := EXTRAINFO_CAPTION[FExtraInfo];
+   Grid.Cells[3, 0] := 'Multi1';
+   Grid.Cells[4, 0] := 'Multi2';
+   Grid.Cells[5, 0] := EXTRAINFO_CAPTION[FExtraInfo];
 
    if ShowCWRatio then begin
-      Grid.Cells[5, 0] := 'CW Q''s';
-      Grid.Cells[6, 0] := 'CW %';
-      DispColCount := 7;
+      Grid.Cells[6, 0] := 'CW Q''s';
+      Grid.Cells[7, 0] := 'CW %';
+      DispColCount := 8;
    end
    else begin
-      Grid.Cells[5, 0] := '';
       Grid.Cells[6, 0] := '';
-      DispColCount := 5;
+      Grid.Cells[7, 0] := '';
+      DispColCount := 6;
    end;
 
    // バンド別スコア行
    for band := b19 to HiBand do begin
       TotQSO := TotQSO + QSO[band];
       TotPoints := TotPoints + Points[band];
-      TotMulti := TotMulti + Multi[band];
+      TotMulti1 := TotMulti1 + Multi[band];
+      TotMulti2 := TotMulti2 + Multi2[band];
 
       if (MainForm.BandMenu.Items[Ord(band)].Visible = True) and
          (dmZlogGlobal.Settings._activebands[band] = True) then begin
@@ -103,9 +106,11 @@ begin
 
          if FConfig.NoMulti then begin
             Grid.Cells[3, row] := '-';
+            Grid.Cells[4, row] := '-';
          end
          else begin
             Grid.Cells[3, row] := IntToStr3(Multi[band]);
+            Grid.Cells[4, row] := IntToStr3(Multi2[band]);
          end;
 
          // Multi率
@@ -129,21 +134,21 @@ begin
                end;
             end;
          end;
-         Grid.Cells[4, row] := strExtraInfo;
+         Grid.Cells[5, row] := strExtraInfo;
 
          // CW率
          if ShowCWRatio then begin
-            Grid.Cells[5, row] := IntToStr3(CWQSO[band]);
+            Grid.Cells[6, row] := IntToStr3(CWQSO[band]);
             if QSO[band] > 0 then begin
-               Grid.Cells[6, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
+               Grid.Cells[7, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
             end
             else begin
-               Grid.Cells[6, row] := '-';
+               Grid.Cells[7, row] := '-';
             end;
          end
          else begin
-            Grid.Cells[5, row] := '';
             Grid.Cells[6, row] := '';
+            Grid.Cells[7, row] := '';
          end;
 
          Inc(row);
@@ -156,9 +161,11 @@ begin
    Grid.Cells[2, row] := IntToStr3(TotPoints);
    if FConfig.NoMulti then begin
       Grid.Cells[3, row] := '-';
+      Grid.Cells[4, row] := '-';
    end
    else begin
-      Grid.Cells[3, row] := IntToStr(TotMulti);
+      Grid.Cells[3, row] := IntToStr(TotMulti1);
+      Grid.Cells[4, row] := IntToStr(TotMulti2);
    end;
 
    // Multi率
@@ -166,37 +173,37 @@ begin
    case FExtraInfo of
       0: begin
          if TotQSO > 0 then begin
-            strExtraInfo := FloatToStrF((TotMulti / TotQSO * 100), ffFixed, 1000, 1);
+            strExtraInfo := FloatToStrF((TotMulti1 / TotQSO * 100), ffFixed, 1000, 1);
          end;
       end;
 
       1: begin
-         if TotMulti > 0 then begin
-            strExtraInfo := FloatToStrF((TotPoints / TotMulti), ffFixed, 1000, 1);
+         if TotMulti1 > 0 then begin
+            strExtraInfo := FloatToStrF((TotPoints / TotMulti1), ffFixed, 1000, 1);
          end;
       end;
 
       2: begin
          if TotQSO > 0 then begin
-            strExtraInfo := FloatToStrF((TotPoints * TotMulti / TotQSO), ffFixed, 1000, 1);
+            strExtraInfo := FloatToStrF((TotPoints * TotMulti1 / TotQSO), ffFixed, 1000, 1);
          end;
       end;
    end;
-   Grid.Cells[4, row] := strExtraInfo;
+   Grid.Cells[5, row] := strExtraInfo;
 
    // CW率
    if ShowCWRatio then begin
-      Grid.Cells[5, row] := IntToStr3(TotalCWQSOs);
+      Grid.Cells[6, row] := IntToStr3(TotalCWQSOs);
       if TotQSO > 0 then begin
-         Grid.Cells[6, row] := FloatToStrF(100 * (TotalCWQSOs / TotQSO), ffFixed, 1000, 1);
+         Grid.Cells[7, row] := FloatToStrF(100 * (TotalCWQSOs / TotQSO), ffFixed, 1000, 1);
       end
       else begin
-         Grid.Cells[6, row] := '-';
+         Grid.Cells[7, row] := '-';
       end;
    end
    else begin
-      Grid.Cells[5, row] := '';
       Grid.Cells[6, row] := '';
+      Grid.Cells[7, row] := '';
    end;
    Inc(row);
 
@@ -205,9 +212,9 @@ begin
       strScore := IntToStr3(TotPoints);
    end
    else begin
-      nScore := zyloRequestTotal(TotPoints, TotMulti);
+      nScore := zyloRequestTotal(TotPoints, (TotMulti1 + TotMulti2));
       if nScore = -1 then begin
-         nScore := TotPoints * TotMulti;
+         nScore := TotPoints * (TotMulti1 + TotMulti2);
       end;
       strScore := IntToStr3(nScore);
    end;
@@ -218,6 +225,8 @@ begin
    Grid.Cells[3, row] := strScore;
    Grid.Cells[4, row] := '';
    Grid.Cells[5, row] := '';
+   Grid.Cells[6, row] := '';
+   Grid.Cells[7, row] := '';
    Inc(row);
 
    // 行数をセット
@@ -229,8 +238,15 @@ begin
    Grid.ColWidths[1] := w * 7;
    Grid.ColWidths[2] := w * 7;
    Grid.ColWidths[3] := w * Max(8, Length(strScore)+1);
-   Grid.ColWidths[4] := w * 7;
+   if FConfig.UseMulti2 = True then begin
+      Grid.ColWidths[4] := w * 7;
+   end
+   else begin
+      Grid.ColWidths[4] := -1;
+   end;
    Grid.ColWidths[5] := w * 7;
+   Grid.ColWidths[6] := w * 7;
+   Grid.ColWidths[7] := w * 7;
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, DispColCount, Grid.RowCount);

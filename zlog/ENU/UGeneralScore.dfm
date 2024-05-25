@@ -2,16 +2,19 @@ inherited GeneralScore: TGeneralScore
   Left = 133
   Top = 136
   Caption = 'Score'
+  ClientHeight = 235
   ClientWidth = 200
-  OnShow = FormShow
-  ExplicitWidth = 216
-  PixelsPerInch = 96
+  ExplicitWidth = 212
   TextHeight = 12
   inherited Panel1: TPanel
+    Top = 202
     Width = 200
-    ExplicitWidth = 200
+    ExplicitWidth = 196
+    DesignSize = (
+      200
+      33)
     inherited CWButton: TSpeedButton
-      Left = 160
+      Left = 156
       ExplicitLeft = 160
     end
     inherited StayOnTop: TCheckBox
@@ -24,7 +27,7 @@ inherited GeneralScore: TGeneralScore
     Width = 200
     Height = 202
     Align = alClient
-    ColCount = 6
+    ColCount = 8
     DefaultDrawing = False
     FixedCols = 0
     RowCount = 15
@@ -40,7 +43,11 @@ inherited GeneralScore: TGeneralScore
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell
+    ExplicitWidth = 196
+    ExplicitHeight = 201
     ColWidths = (
+      64
+      64
       64
       64
       64

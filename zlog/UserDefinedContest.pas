@@ -74,6 +74,7 @@ type
     FCutTailingAlphabets: Boolean;
     FAllowUnlistedMulti: Boolean;
     FNoMulti: Boolean;
+    FUseMulti2: Boolean;
 
     FPXMulti: Integer;
     FSerialContestType: Integer;
@@ -91,6 +92,8 @@ type
     FUseContestPeriod: Boolean;
     FStartTime: Integer;
     FPeriod: Integer;
+
+    FContestId: string;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -172,6 +175,7 @@ type
     property CutTailingAlphabets: Boolean read FCutTailingAlphabets;
     property AllowUnlistedMulti: Boolean read FAllowUnlistedMulti;
     property NoMulti: Boolean read FNoMulti write FNoMulti;
+    property UseMulti2: Boolean read FUseMulti2 write FUseMulti2;
 
     property PXMulti: Integer read FPXMulti;
     property SerialContestType: Integer read FSerialContestType;
@@ -192,6 +196,8 @@ type
     property UseContestPeriod: Boolean read FUseContestPeriod write SetUseContestPeriod;
     property StartTime: Integer read FStartTime write SetStartTime;
     property Period: Integer read FPeriod write SetPeriod;
+
+    property ContestId: string read FContestId write FContestId;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -265,6 +271,7 @@ begin
    FCutTailingAlphabets := False;
    FAllowUnlistedMulti := False;
    FNoMulti := False;
+   FUseMulti2 := False;
    FPXMulti := 0;
    FSerialContestType := 0;
    FCountHigherPoints := False;
@@ -281,6 +288,8 @@ begin
    FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 24;
+
+   FContestId := '';
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -682,6 +691,14 @@ begin
 
          if strCmd = 'PERIOD' then begin
             D.FPeriod := StrToIntDef(strParam, 0);
+         end;
+
+         if strCmd = 'USEMULTI2' then begin
+            D.FUseMulti2 := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'CONTESTID' then begin
+            D.FContestId := UpperCase(strParam);
          end;
       end;
    finally

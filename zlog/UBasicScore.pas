@@ -219,8 +219,8 @@ begin
    if aQSO.NewMulti1 then
       inc(Multi[B]);
 
-   { if aQSO.NewMulti2 then
-     inc(Multi2[B]); }
+   if aQSO.NewMulti2 then
+      inc(Multi2[B]);
 end;
 
 procedure TBasicScore.Add(var aQSO: TQSO);

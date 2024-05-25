@@ -297,6 +297,8 @@ begin
    D.Number := Sp.Number;
    D.NewJaMulti := Sp.NewJaMulti;
    D.ReportedBy := Sp.ReportedBy;
+   D.LookupFailed := Sp.LookupFailed;
+   D.ReliableSpotter := Sp.ReliableSpotter;
    AddAndDisplay(D);
 end;
 
@@ -1025,38 +1027,28 @@ begin
          // îwåiêFÇÕSpotSourceï Ç…Ç∑ÇÈ
          case D.SpotSource of
             ssSelf, ssSelfFromZserver: begin
-               case D.SpotGroup of
-                  1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
-                  2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor2;
-                  3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor3;
-                  else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
-               end;
+               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
             end;
 
             ssCluster: begin
                if FAllBands = True then begin
                   if D.Band = CurrentQSO.Band then begin
-                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor3;
+                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[11].FBackColor;
                   end
                   else begin
                      Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
                   end;
                end
                else begin
-                  case D.SpotGroup of
-                     1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-                     2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor2;
-                     3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor3;
-                     else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-                  end;
+                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
                end;
             end;
 
             ssClusterFromZServer: begin
                case D.SpotGroup of
                   1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
-                  2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor2;
-                  3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor3;
+                  2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[8].FBackColor;
+                  3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[9].FBackColor;
                   else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
                end;
             end;
@@ -1064,6 +1056,14 @@ begin
             else begin
                Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
             end;
+         end;
+
+         if D.LookupFailed = True then begin
+            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[10].FBackColor;
+         end;
+
+         if D.ReliableSpotter = False then begin
+            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[12].FBackColor;
          end;
 
          if D.Bold then begin

@@ -1183,7 +1183,7 @@ begin
          else
             para := 1;
       mCW:
-         para := 2;
+         para := $82;   // 2:CW(W) 82:CW(N)
       mFM:
          para := 8;
       mAM:

@@ -336,6 +336,10 @@ aaa:
    if aQSO.Dupe then
       exit;
 
+   if aQSO.Multi2 <> '' then begin
+      aQSO.NewMulti2 := True;
+   end;
+
    for i := 0 to CityList.List.Count-1 do begin
       C := TCity(CityList.List[i]);
 

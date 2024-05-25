@@ -1900,6 +1900,9 @@ begin
       if editor.colNewMulti1 >= 0 then
          Cells[editor.colNewMulti1, R] := editor.GetNewMulti1(aQSO);
 
+      if editor.colNewMulti2 >= 0 then
+         Cells[editor.colNewMulti2, R] := editor.GetNewMulti2(aQSO);
+
       if editor.colMemo >= 0 then
          Cells[editor.colMemo, R] := aQSO.MemoStr; // + IntToStr(aQSO.Reserve3);
 
@@ -2052,13 +2055,13 @@ begin
 
       // New Multi1
       if editor.colNewMulti1 >= 0 then begin
-         Cells[editor.colNewMulti1, 0] := 'new';
+         Cells[editor.colNewMulti1, 0] := 'multi';
          ColWidths[editor.colNewMulti1] := editor.NewMulti1Wid * nColWidth;
       end;
 
       // New Multi2
       if editor.colNewMulti2 >= 0 then begin
-         Cells[editor.colNewMulti2, 0] := 'new';
+         Cells[editor.colNewMulti2, 0] := 'multi2';
          ColWidths[editor.colNewMulti2] := editor.NewMulti2Wid * nColWidth;
       end;
 
@@ -5173,6 +5176,7 @@ begin
    // .か?があるときは以降の送信は行わない
    if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
       dmZLogKeyer.ClrBuffer();
+      OnPlayMessageFinished(Sender, mCW, True);
       Exit;
    end;
 
@@ -8189,7 +8193,7 @@ begin
       MultiButton.Enabled := False; // toolbar
       Multipliers1.Enabled := False; // menu
 
-      EditScreen := TGeneralEdit.Create(Self);
+      EditScreen := TGeneralEdit.Create(Self, False);
 
       MyContest := TPedi.Create(Self, 'Pedition mode');
       MyContest.UseUTC := F.UseUTC;
@@ -8221,7 +8225,7 @@ begin
    end;
 
    if SerialContestType = 0 then begin
-      EditScreen := TGeneralEdit.Create(Self);
+      EditScreen := TGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2);
    end
    else begin
       EditScreen := TSerialGeneralEdit.Create(Self);
@@ -8246,7 +8250,7 @@ begin
    mnCheckMulti.Caption := 'Check Zone';
    EditScreen := TWWEdit.Create(Self);
 
-   MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest');
+   MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', dmZLogGlobal.ContestMode);
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
 end;
 
@@ -8259,7 +8263,7 @@ begin
 
    Grid.Cells[EditScreen.colNewMulti1, 0] := 'prefix';
 
-   MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest');
+   MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', dmZLogGlobal.ContestMode);
 
    case ContestCategory of
       ccSingleOp:          SerialContestType := SER_ALL;
@@ -8280,11 +8284,11 @@ begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
       EditScreen := TWWEdit.Create(Self);
-      MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)');
+      MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', dmZLogGlobal.ContestMode);
    end
    else begin
-      EditScreen := TGeneralEdit.Create(Self);
-      MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)');
+      EditScreen := TGeneralEdit.Create(Self, False);
+      MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)', dmZLogGlobal.ContestMode);
    end;
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
 end;
@@ -8309,7 +8313,7 @@ begin
 
    EditScreen := TDXCCEdit.Create(Self);
 
-   MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)');
+   MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)', dmZLogGlobal.ContestMode);
 end;
 
 procedure TMainForm.InitARRL_DX();
@@ -8319,7 +8323,7 @@ begin
 
    EditScreen := TARRLDXEdit.Create(Self);
 
-   MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)');
+   MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)', dmZLogGlobal.ContestMode);
 end;
 
 procedure TMainForm.InitARRL10m();
@@ -8366,7 +8370,7 @@ begin
 
       EditScreen := TDXCCEdit.Create(Self);
 
-      MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)');
+      MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', dmZLogGlobal.ContestMode);
 
       if F.ShowModal() <> mrOK then begin
          Exit;
@@ -8397,7 +8401,7 @@ begin
 
    EditScreen := TWPXEdit.Create(Self);
 
-   MyContest := TWAEContest.Create(Self, 'WAEDC Contest');
+   MyContest := TWAEContest.Create(Self, 'WAEDC Contest', dmZLogGlobal.ContestMode);
 end;
 
 procedure TMainForm.ShowBandMenu(b: TBand);
@@ -8609,6 +8613,7 @@ var
 begin
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
+   FTabKeyPressed[FCurrentRigSet - 1] := False;
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('PlayMessageA(' + IntToStr(cb) + ',' + IntToStr(no) + ')'));
@@ -8638,6 +8643,7 @@ var
 begin
    cb := dmZlogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
+   FTabKeyPressed[FCurrentRigSet - 1] := False;
 
    if cb = 1 then
       cb := 2
@@ -10087,7 +10093,8 @@ begin
 
    SetCQ(True);
 
-   CallsignEdit.SetFocus;
+   // ALT+W
+   actoinClearCallAndNumAftFocus.Execute();
 end;
 
 // #101,#102,#106,#107,#108 QuickMemo3-5
@@ -10997,8 +11004,8 @@ begin
 
    // 2Radioの場合、現在の2BSIQ状態を保存してOFFにする
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      FPrev2bsiqMode := FInformation.Is2bsiq;
       if (Is2bsiq() = True) then begin
-         FPrev2bsiqMode := FInformation.Is2bsiq;
          FInformation.Is2bsiq := False;
          F2bsiqStart := False;
          FCQRepeatPlaying := False;
@@ -13052,6 +13059,10 @@ var
    nID: Integer;
    rig: TRig;
 begin
+   if dmZLogGlobal.Settings._sync_rig_wpm = False then begin
+      Exit;
+   end;
+
    nID := GetTxRigID();
    rig := RigControl.Rigs[nID + 1];
    if rig <> nil then begin
@@ -13171,19 +13182,16 @@ end;
 procedure TMainForm.SaveLastFreq();
 var
    rig: TRig;
-   rigset: Integer;
 begin
    // 現在の周波数とモードを記憶
-   for rigset := 1 to 2 do begin
-      rig := RigControl.GetRig(rigset, TextToBand(FEditPanel[rigset - 1].BandEdit.Text));
-      if (rig = nil) then begin
-         FLastFreq[rigset] := 0;
-         FLastMode[rigset] := mCW;
-      end
-      else begin
-         FLastFreq[rigset] := rig.CurrentFreqHz;
-         FLastMode[rigset] := rig.CurrentMode;
-      end;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(FEditPanel[FCurrentRigSet - 1].BandEdit.Text));
+   if (rig = nil) then begin
+      FLastFreq[FCurrentRigSet] := 0;
+      FLastMode[FCurrentRigSet] := mCW;
+   end
+   else begin
+      FLastFreq[FCurrentRigSet] := rig.CurrentFreqHz;
+      FLastMode[FCurrentRigSet] := rig.CurrentMode;
    end;
 
    // リグコントロール画面に表示

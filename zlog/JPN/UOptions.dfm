@@ -2640,14 +2640,14 @@ object formOptions: TformOptions
         TabOrder = 0
         object Label45: TLabel
           Left = 8
-          Top = 114
+          Top = 115
           Width = 114
           Height = 13
           Caption = #29694#22312#21608#27874#25968#12434'Z-Server'#12395#36865#20449
         end
         object Label46: TLabel
-          Left = 203
-          Top = 133
+          Left = 215
+          Top = 115
           Width = 20
           Height = 13
           Caption = #31186#27598
@@ -2689,16 +2689,16 @@ object formOptions: TformOptions
         end
         object checkIgnoreRigMode: TCheckBox
           Left = 8
-          Top = 156
+          Top = 138
           Width = 141
           Height = 18
           Caption = #12522#12464#12398#12514#12540#12489#12434#28961#35222#12377#12427
           TabOrder = 4
         end
         object SendFreqEdit: TEdit
-          Left = 146
-          Top = 130
-          Width = 35
+          Left = 163
+          Top = 112
+          Width = 30
           Height = 21
           Hint = 'Only when using Z-Server network'
           MaxLength = 3
@@ -2708,8 +2708,8 @@ object formOptions: TformOptions
           OnKeyPress = NumberEditKeyPress
         end
         object updownSendFreqInterval: TUpDown
-          Left = 181
-          Top = 130
+          Left = 193
+          Top = 112
           Width = 16
           Height = 21
           Associate = SendFreqEdit
@@ -2719,11 +2719,19 @@ object formOptions: TformOptions
         end
         object checkUsePttCommand: TCheckBox
           Left = 8
-          Top = 180
+          Top = 162
           Width = 141
           Height = 18
           Caption = 'PTT'#12467#12510#12531#12489#12434#20351#29992#12377#12427
           TabOrder = 7
+        end
+        object checkSyncRigWPM: TCheckBox
+          Left = 8
+          Top = 186
+          Width = 141
+          Height = 18
+          Caption = 'WPM'#21516#26399#12434#34892#12358
+          TabOrder = 8
         end
       end
       object groupRcMemoryScan: TGroupBox
@@ -3092,13 +3100,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
+          FontName = 'JetBrains Mono Thin'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 78
+          ItemIndex = 96
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -109,7 +109,7 @@ type
     Label22: TLabel;
     Label24: TLabel;
     editQsoTotal: TEdit;
-    editMultiTotal: TEdit;
+    editMulti1Total: TEdit;
     editPointsTotal: TEdit;
     Label6: TLabel;
     Panel1: TPanel;
@@ -119,6 +119,24 @@ type
     radioOrganizerJarl: TRadioButton;
     radioOrganizerOther: TRadioButton;
     GroupBox2: TGroupBox;
+    editMulti2_00: TEdit;
+    editMulti2_01: TEdit;
+    editMulti2_02: TEdit;
+    editMulti2_04: TEdit;
+    editMulti2_06: TEdit;
+    editMulti2_08: TEdit;
+    editMulti2_09: TEdit;
+    editMulti2_10: TEdit;
+    editMulti2_11: TEdit;
+    editMulti2_12: TEdit;
+    editMulti2_13: TEdit;
+    editMulti2_14: TEdit;
+    editMulti2_15: TEdit;
+    editMulti2Total: TEdit;
+    Label20: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -131,7 +149,8 @@ type
     { Private êÈåæ }
     FScoreBand: array[b19..HiBand] of TCheckBox;
     FScoreQso: array[b19..HiBand] of TEdit;
-    FScoreMulti: array[b19..HiBand] of TEdit;
+    FScoreMulti1: array[b19..HiBand] of TEdit;
+    FScoreMulti2: array[b19..HiBand] of TEdit;
     FScorePoints: array[b19..HiBand] of TEdit;
 
     procedure RemoveBlankLines(M : TMemo);
@@ -185,22 +204,38 @@ begin
    FScoreQso[b2400]  := editQso13;
    FScoreQso[b5600]  := editQso14;
    FScoreQso[b10g]   := editQso15;
-   FScoreMulti[b19]  := editMulti00;
-   FScoreMulti[b35]  := editMulti01;
-   FScoreMulti[b7]   := editMulti02;
-   FScoreMulti[b10]  := nil;
-   FScoreMulti[b14]  := editMulti04;
-   FScoreMulti[b18]  := nil;
-   FScoreMulti[b21]  := editMulti06;
-   FScoreMulti[b24]  := nil;
-   FScoreMulti[b28]  := editMulti08;
-   FScoreMulti[b50]  := editMulti09;
-   FScoreMulti[b144] := editMulti10;
-   FScoreMulti[b430] := editMulti11;
-   FScoreMulti[b1200] := editMulti12;
-   FScoreMulti[b2400] := editMulti13;
-   FScoreMulti[b5600] := editMulti14;
-   FScoreMulti[b10g] := editMulti15;
+   FScoreMulti1[b19]  := editMulti00;
+   FScoreMulti1[b35]  := editMulti01;
+   FScoreMulti1[b7]   := editMulti02;
+   FScoreMulti1[b10]  := nil;
+   FScoreMulti1[b14]  := editMulti04;
+   FScoreMulti1[b18]  := nil;
+   FScoreMulti1[b21]  := editMulti06;
+   FScoreMulti1[b24]  := nil;
+   FScoreMulti1[b28]  := editMulti08;
+   FScoreMulti1[b50]  := editMulti09;
+   FScoreMulti1[b144] := editMulti10;
+   FScoreMulti1[b430] := editMulti11;
+   FScoreMulti1[b1200] := editMulti12;
+   FScoreMulti1[b2400] := editMulti13;
+   FScoreMulti1[b5600] := editMulti14;
+   FScoreMulti1[b10g] := editMulti15;
+   FScoreMulti2[b19]  := editMulti2_00;
+   FScoreMulti2[b35]  := editMulti2_01;
+   FScoreMulti2[b7]   := editMulti2_02;
+   FScoreMulti2[b10]  := nil;
+   FScoreMulti2[b14]  := editMulti2_04;
+   FScoreMulti2[b18]  := nil;
+   FScoreMulti2[b21]  := editMulti2_06;
+   FScoreMulti2[b24]  := nil;
+   FScoreMulti2[b28]  := editMulti2_08;
+   FScoreMulti2[b50]  := editMulti2_09;
+   FScoreMulti2[b144] := editMulti2_10;
+   FScoreMulti2[b430] := editMulti2_11;
+   FScoreMulti2[b1200] := editMulti2_12;
+   FScoreMulti2[b2400] := editMulti2_13;
+   FScoreMulti2[b5600] := editMulti2_14;
+   FScoreMulti2[b10g] := editMulti2_15;
    FScorePoints[b19] := editPoints00;
    FScorePoints[b35] := editPoints01;
    FScorePoints[b7]  := editPoints02;
@@ -321,8 +356,13 @@ begin
       end;
 
       for b := Low(FScoreQso) to High(FScoreQso) do begin
+         if not Assigned(FScoreQso[b]) then begin
+            Continue;
+         end;
+
          FScoreQso[b].Text := IntToStr(MyContest.ScoreForm.QSO[b]);
-         FScoreMulti[b].Text := IntToStr(MyContest.ScoreForm.Multi[b]);
+         FScoreMulti1[b].Text := IntToStr(MyContest.ScoreForm.Multi[b]);
+         FScoreMulti2[b].Text := IntToStr(MyContest.ScoreForm.Multi2[b]);
          FScorePoints[b].Text := IntToStr(MyContest.ScoreForm.Points[b]);
 
          if (MyContest.ScoreForm.Points[b] = 0) or
@@ -456,6 +496,7 @@ var
    fFdCoeff: Extended;
    b: TBand;
    S: string;
+   multi1, multi2: Integer;
 begin
    WriteLn(f, '<SUMMARYSHEET VERSION=R1.0>');
    WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
@@ -467,7 +508,9 @@ begin
    for b := b19 to HiBand do begin
       if Assigned(FScoreBand[b]) and
          (FScoreBand[b].Checked = True) then begin
-         S := FScoreQso[b].Text + ',' + FScorePoints[b].Text + ',' + FScoreMulti[b].Text;
+         multi1 := StrToIntDef(FScoreMulti1[b].Text, 0);
+         multi2 := StrToIntDef(FScoreMulti2[b].Text, 0);
+         S := FScoreQso[b].Text + ',' + FScorePoints[b].Text + ',' + IntToStr(multi1 + multi2);
          if b = b10G then begin
             WriteLn(f, '<SCORE BAND=10.1GHz>' + S + '</SCORE>')
          end
@@ -477,7 +520,9 @@ begin
       end;
    end;
 
-   S := editQsoTotal.Text + ',' + editPointsTotal.Text + ',' + editMultiTotal.Text;
+   multi1 := StrToIntDef(editMulti1Total.Text, 0);
+   multi2 := StrToIntDef(editMulti2Total.Text, 0);
+   S := editQsoTotal.Text + ',' + editPointsTotal.Text + ',' + IntToStr(multi1 + multi2);
    WriteLn(f, '<SCORE BAND=TOTAL>' + S + '</SCORE>');
 
    fFdCoeff := StrToFloatDef(editFdcoeff.Text, 1);
@@ -614,12 +659,14 @@ begin
 
    if fChecked = True then begin
       FScoreQso[TBand(n)].Color := clWindow;
-      FScoreMulti[TBand(n)].Color := clWindow;
+      FScoreMulti1[TBand(n)].Color := clWindow;
+      FScoreMulti2[TBand(n)].Color := clWindow;
       FScorePoints[TBand(n)].Color := clWindow;
    end
    else begin
       FScoreQso[TBand(n)].Color := clBtnFace;
-      FScoreMulti[TBand(n)].Color := clBtnFace;
+      FScoreMulti1[TBand(n)].Color := clBtnFace;
+      FScoreMulti2[TBand(n)].Color := clBtnFace;
       FScorePoints[TBand(n)].Color := clBtnFace;
    end;
 
@@ -638,12 +685,13 @@ end;
 procedure TformELogJarl1.CalcAll();
 var
    b: TBand;
-   qso, multi, points: Integer;
+   qso, multi1, multi2, points: Integer;
    fdcoeff: Extended;
    fScore: Extended;
 begin
    qso := 0;
-   multi := 0;
+   multi1 := 0;
+   multi2 := 0;
    points := 0;
 
    for b := b19 to HiBand do begin
@@ -656,16 +704,18 @@ begin
       end;
 
       qso := qso + StrToIntDef(FScoreQso[b].Text, 0);
-      multi := multi + StrToIntDef(FScoreMulti[b].Text, 0);
+      multi1 := multi1 + StrToIntDef(FScoreMulti1[b].Text, 0);
+      multi2 := multi2 + StrToIntDef(FScoreMulti2[b].Text, 0);
       points := points + StrToIntDef(FScorePoints[b].Text, 0);
    end;
 
    editQsoTotal.Text := IntToStr(qso);
-   editMultiTotal.Text := IntToStr(multi);
+   editMulti1Total.Text := IntToStr(multi1);
+   editMulti2Total.Text := IntToStr(multi2);
    editPointsTotal.Text := IntToStr(points);
 
    fdcoeff := StrToFloatDef(editFdcoeff.Text, 1);
-   fScore := multi * points * fdcoeff;
+   fScore := (multi1 + multi2) * points * fdcoeff;
 
    editTotalScore.Text := FloatToStr(fScore);
 end;

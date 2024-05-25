@@ -131,6 +131,7 @@ type
     function GetMode2(): TMode;
     function GetPoints(): Integer;
     function GetQsoId(): Integer;
+    function GetArea(): string;
 
     function GetFileRecord(): TQSOData;
     procedure SetFileRecord(src: TQSOData);
@@ -212,6 +213,7 @@ type
     property QslState: TQslState read FQslState write FQslState;
     property Invalid: Boolean read FInvalid write SetInvalid;
     property QsoId: Integer read GetQsoId;
+    property Area: string read GetArea;
 
     property SerialStr: string read GetSerialStr;
     property DateTimeStr: string read GetDateTimeStr;
@@ -1147,6 +1149,27 @@ end;
 function TQSO.GetQsoId(): Integer;
 begin
    Result := FReserve3 div 100;
+end;
+
+function TQSO.GetArea(): string;
+var
+   area: string;
+   Index: Integer;
+begin
+   if IsDomestic(Callsign) = False then begin
+      Result := '';
+      Exit;
+   end;
+
+   Index := Pos('/', Callsign);
+   if Index > 0 then begin
+      area := Copy(Callsign, Index + 1);
+   end
+   else begin
+      area := Copy(Callsign, 3, 1);
+   end;
+
+   Result := area;
 end;
 
 procedure TQSO.Assign(src: TQSO);
@@ -2214,7 +2237,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","QslState","Invalid"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","Forced","PCName","QslState","Invalid","Area"';
 var
    F: TextFile;
    i: Integer;
@@ -2340,6 +2363,9 @@ begin
 
          // 32—ñ–Ú Invalid
          slCsv.Add(BoolToStr(Q.Invalid, True));
+
+         // 33—ñ–Ú Area
+         slCsv.Add(Q.Area);
 
          WriteLn(F, slCsv.DelimitedText);
       end;
