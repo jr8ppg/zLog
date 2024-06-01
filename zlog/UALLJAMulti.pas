@@ -114,6 +114,7 @@ procedure TALLJAMulti.FormResize(Sender: TObject);
 begin
    inherited;
    AdjustGridSize(Grid);
+   checkJumpLatestMulti.Left := Panel.Width - checkJumpLatestMulti.Width - 2;
 end;
 
 procedure TALLJAMulti.FormShow(Sender: TObject);
