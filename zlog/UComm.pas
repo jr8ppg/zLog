@@ -478,6 +478,11 @@ begin
             end
             else begin
                if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
+                  if (Sp.ReliableSpotter = True) and (S.ReliableSpotter = False) then begin
+                     S.ReliableSpotter := True;
+                     S.ReportedBy := Sp.ReportedBy;
+                     MainForm.BandScopeAddClusterSpot(Sp);
+                  end;
                   dupe := True;
                   break;
                end;
