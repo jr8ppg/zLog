@@ -314,6 +314,7 @@ type
     checkUsePttCommand: TCheckBox;
     checkRigSelectV28: TCheckBox;
     checkSyncRigWPM: TCheckBox;
+    checkSo2rCqRestartAfterSetLast: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1265,6 +1266,7 @@ begin
       Settings._so2r_cq_msg_number  := comboSo2rCqMsgNumber.ItemIndex + 1;
       Settings._so2r_2bsiq_pluswpm  := spinSo2rAccelerateCW.Value;
       Settings._so2r_ignore_mode_change := checkSo2rIgnoreModeChange.Checked;
+      Settings._so2r_cqrestart := checkSo2rCqRestartAfterSetLast.Checked;
 
       //
       // Hardware1
@@ -1521,6 +1523,7 @@ begin
 
       spinSo2rAccelerateCW.Value:= Settings._so2r_2bsiq_pluswpm;
       checkSo2rIgnoreModeChange.Checked := Settings._so2r_ignore_mode_change;
+      checkSo2rCqRestartAfterSetLast.Checked := Settings._so2r_cqrestart;
 
 
       //

@@ -11103,7 +11103,10 @@ begin
 
          InvertTx();
 
-         timerCqRepeat.Enabled := True;
+         // CQ再開
+         if (dmZLogGlobal.Settings._so2r_cqrestart = True) then begin
+            timerCqRepeat.Enabled := True;
+         end;
       end;
       FCQRepeatPlaying := False;
    end;

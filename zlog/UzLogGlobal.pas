@@ -178,6 +178,7 @@ type
     _so2r_2bsiq_pluswpm: Integer;
     _so2r_ignore_mode_change: Boolean;
     _so2r_rigselect_v28: Boolean;
+    _so2r_cqrestart: Boolean;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
@@ -1093,6 +1094,7 @@ begin
       Settings._so2r_2bsiq_pluswpm := ini.ReadInteger('SO2R', '2bsiq_pluswpm', 3);
       Settings._so2r_ignore_mode_change := ini.ReadBool('SO2R', 'ignore_mode_change', True);
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
+      Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
 
       // CW PTT control
 
@@ -1774,6 +1776,7 @@ begin
       ini.WriteInteger('SO2R', '2bsiq_pluswpm', Settings._so2r_2bsiq_pluswpm);
       ini.WriteBool('SO2R', 'ignore_mode_change', Settings._so2r_ignore_mode_change);
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
+      ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
 
       // CW PTT control
 
