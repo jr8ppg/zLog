@@ -9797,11 +9797,8 @@ end;
 
 // #86 PTT制御出力の手動トグル
 procedure TMainForm.actionControlPTTExecute(Sender: TObject);
-var
-   fOn: Boolean;
 begin
-   fOn := not dmZLogKeyer.PTTIsOn;
-   ControlPTT(fOn);
+   OnNonconvertKeyProc();
 end;
 
 // #87 N+1ウインドウの表示
