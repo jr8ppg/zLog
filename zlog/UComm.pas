@@ -8,7 +8,8 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
   USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs, System.SyncObjs;
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs, System.SyncObjs,
+  System.DateUtils;
 
 const
   SPOTMAX = 20000;
@@ -82,8 +83,7 @@ type
     FCommBuffer : TStringList;
     FCommStarted : boolean;
     FRelayPacketData : boolean;
-    FSpotList : TSpotList;
-    FSpotListLock: TRTLCriticalSection;
+    FSpotListLastCleanup: TDateTime;
     FLineBreak: string;
 
     FUseClusterLog: Boolean;
@@ -113,6 +113,7 @@ type
 
     procedure CommProcess;
     procedure ProcessSpot(Sp: TSpot);
+    procedure Cleanup();
 
     procedure WriteData(str : string);
     procedure WriteConsole(strText: string);
@@ -139,13 +140,9 @@ type
     procedure WriteLineConsole(str : string);
     procedure WriteStatusLine(S : string);
 
-    procedure Lock();
-    procedure Unlock();
-
     procedure Disconnect();
 
     property FontSize: Integer read GetFontSize write SetFontSize;
-    property SpotList: TSpotList read FSpotList;
 
     property DenyList: TStringList read FDenyList;
   end;
@@ -172,7 +169,6 @@ procedure TCommForm.DeleteSpot(_from, _to : integer);
 var
    i : integer;
 begin
-   Lock();
    try
       if _from < 0 then begin
          Exit;
@@ -182,18 +178,13 @@ begin
          Exit;
       end;
 
-      if _to > FSpotList.Count - 1 then begin
-         Exit;
-      end;
-
       ListBox.Items.BeginUpdate();
       for i := _from to _to do begin
-         FSpotList.Delete(_from);
+         TSpot(ListBox.Items.Objects[_from]).Free();
          ListBox.Items.Delete(_from);
       end;
       ListBox.Items.EndUpdate();
    finally
-      Unlock();
    end;
 end;
 
@@ -389,11 +380,10 @@ end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
 begin
-   InitializeCriticalSection(FSpotListLock);
    ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    FRelayPacketData := False;
-   FSpotList := TSpotList.Create;
+   FSpotListLastCleanup := Now;
    FCommStarted := False;
    FCommBuffer := TStringList.Create;
    FSpotterList := TStringList.Create();
@@ -454,106 +444,50 @@ begin
 end;
 
 procedure TCommForm.ProcessSpot(Sp: TSpot);
-var
-   i : integer;
-   S : TSpot;
-   dupe, _deleted : boolean;
-   Expire : double;
 begin
    try
-      Lock();
-      try
-         dupe := false;
-         _deleted := false;
+      // ５分ごとに期限切れSpotを消す
+      if MinutesBetween(Now, FSpotListLastCleanup) > 5 then begin
+         Cleanup();
+         FSpotListLastCleanup := Now;
+      end;
 
-         Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
+      // このコンテストで使用しないバンドは除く
+      if (MainForm.BandMenu.Items[ord(Sp.Band)].Visible = False) or
+         (MainForm.BandMenu.Items[ord(Sp.Band)].Enabled = False) then begin
+         Sp.Free();
+         Exit;
+      end;
 
-         ListBox.Items.BeginUpdate();
-         for i := FSpotList.Count - 1 downto 0 do begin
-            S := FSpotList[i];
-            if Now - S.Time > Expire then begin
-               FSpotList.Delete(i);
-               ListBox.Items.Delete(i);
-               _deleted := True;
-            end
-            else begin
-               if (S.Call = Sp.Call) and (S.FreqHz = Sp.FreqHz) then begin
-                  if (Sp.ReliableSpotter = True) and (S.ReliableSpotter = False) then begin
-                     S.ReliableSpotter := True;
-                     S.ReportedBy := Sp.ReportedBy;
-                     MainForm.BandScopeAddClusterSpot(Sp);
-                  end;
-                  dupe := True;
-                  break;
-               end;
-            end;
-         end;
-         ListBox.Items.EndUpdate();
-
-         if _deleted then begin
-   //         RenewListBox;
-         end;
-
-         // このコンテストで使用しないバンドは除く
-         if (MainForm.BandMenu.Items[ord(Sp.Band)].Visible = False) or
-            (MainForm.BandMenu.Items[ord(Sp.Band)].Enabled = False) then begin
+      // JAのみ？
+      if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
+         if IsDomestic(Sp.Call) = False then begin
             Sp.Free();
             Exit;
          end;
+      end;
 
-// #300 これは余計だった
-//         // 使わないBandScopeは除く
-//         if dmZLogGlobal.Settings._usebandscope[Sp.Band] = False then begin
-//            Sp.Free();
-//            Exit;
-//         end;
+      // 周波数よりモードを決める
+      // この時点でmOtherならBAND PLAN外と見なして良い
+      Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
 
-         // Spot上限を超えたか？
-         if FSpotList.Count > SPOTMAX then begin
+      // BAND PLAN内？
+      if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
+         if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
             Sp.Free();
             Exit;
          end;
+      end;
 
-         if dupe then begin
-            Sp.Free();
-            Exit;
-         end;
+      // 交信済みチェック
+      SpotCheckWorked(Sp);
 
-         // JAのみ？
-         if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
-            if IsDomestic(Sp.Call) = False then begin
-               Sp.Free();
-               Exit;
-            end;
-         end;
-
-         // 周波数よりモードを決める
-         // この時点でmOtherならBAND PLAN外と見なして良い
-         Sp.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(Sp.FreqHz);
-
-         // BAND PLAN内？
-         if dmZLogGlobal.Settings._bandscope_show_only_in_bandplan = True then begin
-            if dmZLogGlobal.BandPlan.IsInBand(Sp.Band, Sp.Mode, Sp.FreqHz) = False then begin
-               Sp.Free();
-               Exit;
-            end;
-         end;
-
-         // 交信済みチェック
-         SpotCheckWorked(Sp);
-
-         // Spotリストへ追加
-         FSpotList.Add(Sp);
-
-         // Spotterリストに登録
-         if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
-            FSpotterList.Add(Sp.ReportedBy);
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
-            {$ENDIF}
-         end;
-      finally
-         Unlock();
+      // Spotterリストに登録
+      if (Sp.ReportedBy <> '') and (FSpotterList.IndexOf(Sp.ReportedBy) = -1) then begin
+         FSpotterList.Add(Sp.ReportedBy);
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
+         {$ENDIF}
       end;
 
       if checkNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
@@ -562,9 +496,11 @@ begin
          MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
       end;
 
+      // リスト表示上限は1000
       ListBox.Items.BeginUpdate();
       ListBox.AddItem(Sp.ClusterSummary, Sp);
       if ListBox.Items.Count > 1000 then begin
+         TSpot(ListBox.Items.Objects[0]).Free();
          ListBox.Items.Delete(0);
       end;
       ListBox.Items.EndUpdate();
@@ -580,6 +516,25 @@ begin
          dmZLogGlobal.WriteErrorLog(E.StackTrace);
       end;
    end;
+end;
+
+procedure TCommForm.Cleanup();
+var
+   i: Integer;
+   Expire: TDateTime;
+   S: TSpot;
+begin
+   Expire := dmZlogGlobal.Settings._spotexpire / (60 * 24);
+
+   ListBox.Items.BeginUpdate();
+   for i := ListBox.Count - 1 downto 0 do begin
+      S := TSpot(ListBox.Items.Objects[i]);
+      if Now - S.Time > Expire then begin
+         S.Free();
+         ListBox.Items.Delete(i);
+      end;
+   end;
+   ListBox.Items.EndUpdate();
 end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
@@ -669,8 +624,8 @@ nextnext:
       CommBufferLock.Leave();
 
       {$IFDEF DEBUG}
-      var S := Format('MSpots=%d DSpots=%d CSpots=%d', [FSpotList.Count, ListBox.Items.Count, Console.Items.Count]);
-      WriteStatusLine(S);
+//      var S := Format('MSpots=%d DSpots=%d CSpots=%d', [FSpotList.Count, ListBox.Items.Count, Console.Items.Count]);
+//      WriteStatusLine(S);
       {$ENDIF}
    end;
 end;
@@ -721,6 +676,8 @@ begin
 end;
 
 procedure TCommForm.FormDestroy(Sender: TObject);
+var
+   i: Integer;
 begin
    ClusterComm.Disconnect;
    ClusterComm.Free;
@@ -729,7 +686,11 @@ begin
 
    TerminateCommProcessThread();
 
-   FSpotList.Free();
+   for i := 0 to ListBox.Count - 1 do begin
+      TSpot(ListBox.Items.Objects[i]).Free();
+   end;
+
+//   FSpotList.Free();
    FCommBuffer.Free();
 
    FSpotterList.Free();
@@ -1118,16 +1079,6 @@ begin
    end;
 
    CloseFile(F);
-end;
-
-procedure TCommForm.Lock();
-begin
-   EnterCriticalSection(FSpotListLock);
-end;
-
-procedure TCommForm.Unlock();
-begin
-   LeaveCriticalSection(FSpotListLock);
 end;
 
 procedure TCommForm.Disconnect();
