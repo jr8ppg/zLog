@@ -4,21 +4,19 @@ object formClusterTelnetSet: TformClusterTelnetSet
   BorderStyle = bsDialog
   Caption = 'TELNET settings'
   ClientHeight = 159
-  ClientWidth = 265
+  ClientWidth = 266
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -12
+  Font.Name = #65325#65331' '#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
   DesignSize = (
-    265
+    266
     159)
-  PixelsPerInch = 96
   TextHeight = 13
   object Bevel1: TBevel
     Left = 7
@@ -32,41 +30,41 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Top = 24
     Width = 51
     Height = 13
-    Caption = 'Host name'
+    Caption = #12507#12473#12488#21517
   end
   object Label2: TLabel
     Left = 16
     Top = 56
     Width = 50
     Height = 13
-    Caption = 'Line break'
+    Caption = #25913#34892#12467#12540#12489
   end
   object Label3: TLabel
     Left = 152
     Top = 56
     Width = 29
     Height = 13
-    Caption = 'Port #'
+    Caption = #12509#12540#12488
   end
   object buttonOK: TButton
-    Left = 67
-    Top = 130
-    Width = 63
-    Height = 21
+    Left = 59
+    Top = 128
+    Width = 75
+    Height = 25
     Anchors = [akLeft, akBottom]
     Caption = 'OK'
     Default = True
-    ModalResult = 1
     TabOrder = 0
+    OnClick = buttonOKClick
   end
   object buttonCancel: TButton
-    Left = 135
-    Top = 130
-    Width = 63
-    Height = 21
+    Left = 141
+    Top = 128
+    Width = 75
+    Height = 25
     Anchors = [akLeft, akBottom]
     Cancel = True
-    Caption = 'Cancel'
+    Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 1
   end
@@ -77,8 +75,6 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Height = 21
     TabOrder = 2
     Text = 'Host name'
-    Items.Strings = (
-      'ac4et.ampr.org')
   end
   object comboLineBreak: TComboBox
     Left = 80
