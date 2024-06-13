@@ -52,6 +52,10 @@ type
     checkUseUTC: TCheckBox;
     checkUseContestPeriod: TCheckBox;
     Label10: TLabel;
+    editCWCQ2: TEdit;
+    editCWCQ3: TEdit;
+    Label11: TLabel;
+    Label12: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure checkUseContestPeriodClick(Sender: TObject);
@@ -59,6 +63,7 @@ type
   private
     { Private êÈåæ }
     FCwMessageA: array[1..4] of TEdit;
+    FCwMessageCQ: array[1..3] of TEdit;
     FBandToUse: array[1..13] of TCheckBox;
     function GetSent(): string;
     procedure SetSent(v: string);
@@ -70,6 +75,8 @@ type
     procedure SetPower(v: string);
     function GetCwMessageA(Index: Integer): string;
     procedure SetCwMessageA(Index: Integer; v: string);
+    function GetCwMessageCQ(Index: Integer): string;
+    procedure SetCwMessageCQ(Index: Integer; v: string);
     function GetUseUTC(): Boolean;
     procedure SetUseUTC(v: Boolean);
     function GetUseContestPeriod(): Boolean;
@@ -85,6 +92,7 @@ type
     property City: string read GetCity write SetCity;
     property Power: string read GetPower write SetPower;
     property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
+    property CwMessageCQ[Index: Integer]: string read GetCwMessageCQ write SetCwMessageCQ;
     property UseUTC: Boolean read GetUseUTC write SetUseUTC;
     property UseContestPeriod: Boolean read GetUseContestPeriod write SetUseContestPeriod;
     property StartTime: Integer read GetStartTime write SetStartTime;
@@ -108,6 +116,9 @@ begin
    FCwMessageA[2] := editCWF2A;
    FCwMessageA[3] := editCWF3A;
    FCwMessageA[4] := editCWF4A;
+   FCwMessageCQ[1] := editCWF1A;
+   FCwMessageCQ[2] := editCWCQ2;
+   FCwMessageCQ[3] := editCWCQ3;
 
    // WARCÉoÉìÉhÇÕä‹ÇﬂÇ»Ç¢
    FBandToUse[1] := checkBand01;       // 1.9M
@@ -226,6 +237,16 @@ end;
 procedure TCFGEdit.SetCwMessageA(Index: Integer; v: string);
 begin
    FCwMessageA[Index].Text := v;
+end;
+
+function TCFGEdit.GetCwMessageCQ(Index: Integer): string;
+begin
+   Result := FCwMessageCQ[Index].Text;
+end;
+
+procedure TCFGEdit.SetCwMessageCQ(Index: Integer; v: string);
+begin
+   FCwMessageCQ[Index].Text := v;
 end;
 
 function TCFGEdit.GetUseUTC(): Boolean;

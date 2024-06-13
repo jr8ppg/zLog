@@ -3,7 +3,7 @@ object CFGEdit: TCFGEdit
   Top = 0
   BorderStyle = bsDialog
   Caption = 'CFG Edit'
-  ClientHeight = 257
+  ClientHeight = 304
   ClientWidth = 609
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +16,7 @@ object CFGEdit: TCFGEdit
   OnShow = FormShow
   DesignSize = (
     609
-    257)
+    304)
   TextHeight = 12
   object buttonOK: TButton
     Left = 516
@@ -46,7 +46,7 @@ object CFGEdit: TCFGEdit
     Left = 8
     Top = 115
     Width = 309
-    Height = 134
+    Height = 181
     Caption = 'CW Message'
     TabOrder = 2
     object Label5: TLabel
@@ -77,6 +77,20 @@ object CFGEdit: TCFGEdit
       Height = 12
       Caption = 'f4_a'
     end
+    object Label11: TLabel
+      Left = 8
+      Top = 128
+      Width = 22
+      Height = 12
+      Caption = 'CQ2'
+    end
+    object Label12: TLabel
+      Left = 8
+      Top = 154
+      Width = 22
+      Height = 12
+      Caption = 'CQ3'
+    end
     object editCWF1A: TEdit
       Left = 44
       Top = 21
@@ -104,6 +118,20 @@ object CFGEdit: TCFGEdit
       Width = 250
       Height = 20
       TabOrder = 3
+    end
+    object editCWCQ2: TEdit
+      Left = 44
+      Top = 125
+      Width = 250
+      Height = 20
+      TabOrder = 4
+    end
+    object editCWCQ3: TEdit
+      Left = 44
+      Top = 151
+      Width = 250
+      Height = 20
+      TabOrder = 5
     end
   end
   object GroupBox2: TGroupBox

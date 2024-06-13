@@ -298,6 +298,14 @@ begin
             dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
          end;
       end;
+
+      // CQ2,CQ3éÊÇËçûÇ›
+      for i := 2 to 3 do begin
+         if FSelectDlg.ImportCQMessage[i] = True then begin
+            dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := FSelectedContest.CwMessageCQ[i];
+            dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] := True;
+         end;
+      end;
    end;
 
    ModalResult := mrOK;

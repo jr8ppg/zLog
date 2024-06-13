@@ -29,6 +29,8 @@ type
     checkImportCwMessage3: TCheckBox;
     checkImportCwMessage4: TCheckBox;
     buttonCFGEdit: TButton;
+    checkImportCQMessage2: TCheckBox;
+    checkImportCQMessage3: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonCfgFolderRefClick(Sender: TObject);
@@ -51,12 +53,14 @@ type
     procedure SetCfgFolder(v: string);
     function GetImportProvCity(): Boolean;
     function GetImportCwMessage(Index: Integer): Boolean;
+    function GetImportCQMessage(Index: Integer): Boolean;
   public
     { Public êÈåæ }
     property CfgFolder: string read GetCfgFolder write SetCfgFolder;
     property SelectedContest: TUserDefinedContest read FSelectedContest;
     property ImportProvCity: Boolean read GetImportProvCity;
     property ImportCwMessage[Index: Integer]: Boolean read GetImportCwMessage;
+    property ImportCQMessage[Index: Integer]: Boolean read GetImportCQMessage;
     property InitialContestName: string read FInitialContestName write FInitialContestName;
   end;
 
@@ -79,6 +83,8 @@ begin
    checkImportCwMessage2.Checked := dmZLogGlobal.Settings.FImpCwMessage[2];
    checkImportCwMessage3.Checked := dmZLogGlobal.Settings.FImpCwMessage[3];
    checkImportCwMessage4.Checked := dmZLogGlobal.Settings.FImpCwMessage[4];
+   checkImportCQMessage2.Checked := dmZLogGlobal.Settings.FImpCQMessage[2];
+   checkImportCQMessage3.Checked := dmZLogGlobal.Settings.FImpCQMessage[3];
 end;
 
 procedure TSelectUserDefinedContest.FormDestroy(Sender: TObject);
@@ -89,6 +95,8 @@ begin
    dmZLogGlobal.Settings.FImpCwMessage[2] := checkImportCwMessage2.Checked;
    dmZLogGlobal.Settings.FImpCwMessage[3] := checkImportCwMessage3.Checked;
    dmZLogGlobal.Settings.FImpCwMessage[4] := checkImportCwMessage4.Checked;
+   dmZLogGlobal.Settings.FImpCQMessage[2] := checkImportCQMessage2.Checked;
+   dmZLogGlobal.Settings.FImpCQMessage[3] := checkImportCQMessage3.Checked;
 end;
 
 procedure TSelectUserDefinedContest.FormShow(Sender: TObject);
@@ -142,6 +150,8 @@ begin
       f.CwMessageA[2] := D.CwMessageA[2];
       f.CwMessageA[3] := D.CwMessageA[3];
       f.CwMessageA[4] := D.CwMessageA[4];
+      f.CwMessageCQ[2] := D.CwMessageCQ[2];
+      f.CwMessageCQ[3] := D.CwMessageCQ[3];
       f.UseContestPeriod := D.UseContestPeriod;
       f.UseUTC := D.UseUTC;
       f.StartTime := D.StartTime;
@@ -159,6 +169,8 @@ begin
       D.CwMessageA[2] := f.CwMessageA[2];
       D.CwMessageA[3] := f.CwMessageA[3];
       D.CwMessageA[4] := f.CwMessageA[4];
+      D.CwMessageCQ[2] := f.CwMessageCQ[2];
+      D.CwMessageCQ[3] := f.CwMessageCQ[3];
       D.UseUTC := f.UseUTC;
       D.UseContestPeriod := f.UseContestPeriod;
       D.StartTime := f.StartTime;
@@ -171,6 +183,8 @@ begin
       ListView1.Selected.SubItems[4] := D.CwMessageA[2];
       ListView1.Selected.SubItems[5] := D.CwMessageA[3];
       ListView1.Selected.SubItems[6] := D.CwMessageA[4];
+      ListView1.Selected.SubItems[7] := D.CwMessageCQ[2];
+      ListView1.Selected.SubItems[8] := D.CwMessageCQ[3];
    finally
       f.Release();
    end;
@@ -274,6 +288,8 @@ begin
       listitem.SubItems.Add(D.FCwMessageA[2]);
       listitem.SubItems.Add(D.FCwMessageA[3]);
       listitem.SubItems.Add(D.FCwMessageA[4]);
+      listitem.SubItems.Add(D.FCwMessageCQ[2]);
+      listitem.SubItems.Add(D.FCwMessageCQ[3]);
       listitem.Data := D;
 
       if D.ContestName = FInitialContestName then begin
@@ -307,6 +323,15 @@ begin
       2: Result := checkImportCwMessage2.Checked;
       3: Result := checkImportCwMessage3.Checked;
       4: Result := checkImportCwMessage4.Checked;
+      else Result := False;
+   end;
+end;
+
+function TSelectUserDefinedContest.GetImportCQMessage(Index: Integer): Boolean;
+begin
+   case Index of
+      2: Result := checkImportCQMessage2.Checked;
+      3: Result := checkImportCQMessage3.Checked;
       else Result := False;
    end;
 end;

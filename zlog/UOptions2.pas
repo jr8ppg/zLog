@@ -460,6 +460,7 @@ type
     FQuickMemoText: array[1..5] of TEdit;
 
     FEditMessage: array[1..maxmessage] of TEdit;
+    FEditAdditionalCQMessage: array[2..3] of TEdit;
 
     FVoiceEdit: array[1..maxmessage] of TEdit;
     FVoiceButton: array[1..maxmessage] of TButton;
@@ -869,6 +870,22 @@ begin
       else begin
          FEditMessage[i].Color := clWindow;
          FEditMessage[i].ReadOnly := False;
+      end;
+   end;
+
+   for i := 2 to 3 do begin
+      if dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] = True then begin
+         FEditAdditionalCQMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+         if FEditAdditionalCQMessage[i].ReadOnly = True then begin
+            FEditAdditionalCQMessage[i].Color := clBtnFace; // gray
+         end
+         else begin
+            FEditAdditionalCQMessage[i].Color := $00EADEFF; // light pink
+         end;
+      end
+      else begin
+         FEditAdditionalCQMessage[i].Color := clWindow;
+         FEditAdditionalCQMessage[i].ReadOnly := False;
       end;
    end;
 end;
@@ -1402,6 +1419,9 @@ begin
    FEditMessage[10] := editMessage10;
    FEditMessage[11] := editMessage11;
    FEditMessage[12] := editMessage12;
+
+   FEditAdditionalCQMessage[2] := editCQMessage2;
+   FEditAdditionalCQMessage[3] := editCQMessage3;
 
    // Voice Memory
    InitVoice();

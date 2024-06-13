@@ -11,12 +11,10 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
@@ -26,6 +24,8 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 312
+    ExplicitWidth = 736
     DesignSize = (
       740
       33)
@@ -53,7 +53,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       TabOrder = 1
     end
     object checkImportProvCity: TCheckBox
-      Left = 8
+      Left = 4
       Top = 10
       Width = 93
       Height = 13
@@ -63,7 +63,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       TabOrder = 2
     end
     object checkImportCwMessage1: TCheckBox
-      Left = 107
+      Left = 99
       Top = 10
       Width = 58
       Height = 13
@@ -73,7 +73,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       TabOrder = 3
     end
     object checkImportCwMessage2: TCheckBox
-      Left = 167
+      Left = 159
       Top = 10
       Width = 58
       Height = 13
@@ -83,7 +83,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       TabOrder = 4
     end
     object checkImportCwMessage3: TCheckBox
-      Left = 227
+      Left = 219
       Top = 10
       Width = 58
       Height = 13
@@ -91,7 +91,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       TabOrder = 5
     end
     object checkImportCwMessage4: TCheckBox
-      Left = 287
+      Left = 279
       Top = 10
       Width = 58
       Height = 13
@@ -99,15 +99,31 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       TabOrder = 6
     end
     object buttonCFGEdit: TButton
-      Left = 403
+      Left = 486
       Top = 2
       Width = 70
       Height = 29
       Anchors = [akLeft, akBottom]
       Caption = 'CFG'#32232#38598
       Enabled = False
-      TabOrder = 7
+      TabOrder = 9
       OnClick = buttonCFGEditClick
+    end
+    object checkImportCQMessage2: TCheckBox
+      Left = 339
+      Top = 10
+      Width = 66
+      Height = 13
+      Caption = 'CQ2'#21462#36796
+      TabOrder = 7
+    end
+    object checkImportCQMessage3: TCheckBox
+      Left = 409
+      Top = 10
+      Width = 66
+      Height = 13
+      Caption = 'CQ3'#21462#36796
+      TabOrder = 8
     end
   end
   object Panel2: TPanel
@@ -118,6 +134,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 736
     DesignSize = (
       740
       26)
@@ -131,15 +148,16 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     object editCfgFolder: TEdit
       Left = 88
       Top = 3
-      Width = 593
+      Width = 589
       Height = 20
       Anchors = [akLeft, akTop, akRight]
       Color = clBtnFace
       ReadOnly = True
       TabOrder = 0
+      ExplicitWidth = 585
     end
     object buttonCfgFolderRef: TButton
-      Left = 687
+      Left = 683
       Top = 2
       Width = 49
       Height = 22
@@ -147,6 +165,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       Caption = #21442#29031'...'
       TabOrder = 1
       OnClick = buttonCfgFolderRefClick
+      ExplicitLeft = 679
     end
   end
   object ListView1: TListView
@@ -184,6 +203,14 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       end
       item
         Caption = 'f4_a'
+        Width = 80
+      end
+      item
+        Caption = 'CQ2'
+        Width = 80
+      end
+      item
+        Caption = 'CQ3'
         Width = 80
       end>
     DoubleBuffered = True
