@@ -34,6 +34,7 @@ type
     FSent: string;
     FCwMessageA: array[1..8] of string;
     FCwMessageB: array[1..8] of string;
+    FCwMessageCQ: array[1..3] of string;
     FCfgSource: TStringList;
 
     FPointsTable: TPointsTable;
@@ -100,6 +101,8 @@ type
     procedure SetCwMessageA(Index: Integer; v: string);
     function GetCwMessageB(Index: Integer): string;
     procedure SetCwMessageB(Index: Integer; v: string);
+    function GetCwMessageCQ(Index: Integer): string;
+    procedure SetCwMessageCQ(Index: Integer; v: string);
     procedure SetSent(v: string);
     procedure SetProv(v: string);
     procedure SetCity(v: string);
@@ -135,6 +138,7 @@ type
     property Sent: string read FSent write SetSent;
     property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
     property CwMessageB[Index: Integer]: string read GetCwMessageB write SetCwMessageB;
+    property CwMessageCQ[Index: Integer]: string read GetCwMessageCQ write SetCwMessageCQ;
     property CfgSource: TStringList read FCfgSource;
 
     property PointsTable: TPointsTable read FPointsTable;
@@ -226,6 +230,10 @@ begin
    for i := 1 to 8 do begin
       FCwMessageA[i] := '';
       FCwMessageB[i] := '';
+   end;
+
+   for i := 1 to 3 do begin
+      FCwMessageCQ[i] := '';
    end;
 
    ClearPointsTable(FPointsTable);
@@ -415,6 +423,12 @@ begin
          end
          else if strCmd = 'F8_B' then begin
             D.FCwMessageB[8] := strParam;
+         end
+         else if strCmd = 'CQ2' then begin
+            D.FCwMessageCQ[2] := strParam;
+         end
+         else if strCmd = 'CQ3' then begin
+            D.FCwMessageCQ[3] := strParam;
          end;
 
          if Pos('PT', strCmd) = 1 then begin
@@ -889,6 +903,18 @@ end;
 procedure TUserDefinedContest.SetCwMessageB(Index: Integer; v: string);
 begin
    FCwMessageB[Index] := v;
+   EditParam('F' + IntToStr(Index) + '_B', v);
+end;
+
+function TUserDefinedContest.GetCwMessageCQ(Index: Integer): string;
+begin
+   Result := FCwMessageCQ[Index];
+end;
+
+procedure TUserDefinedContest.SetCwMessageCQ(Index: Integer; v: string);
+begin
+   FCwMessageCQ[Index] := v;
+   EditParam('CQ' + IntToStr(Index), v);
 end;
 
 procedure TUserDefinedContest.SetSent(v: string);

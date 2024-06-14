@@ -204,6 +204,7 @@ end;
 procedure TBandScope2.AddBSList(D: TBSData);
 var
    i: Integer;
+   fFound: Boolean;
 begin
    Lock();
    try
@@ -212,8 +213,15 @@ begin
          Exit;
       end;
 
-      i := FBSList.BinarySearch(TBSSortMethod(FSortOrder), D);
-      FBSList.Insert(i, D);
+      i := FBSList.BinarySearch(TBSSortMethod(FSortOrder), D, fFound);
+      if fFound = False then begin
+         FBSList.Insert(i, D);
+      end
+      else begin
+         FBSList[i].ReportedBy := D.ReportedBy;
+         FBSList[i].ReliableSpotter := D.ReliableSpotter;
+         FBSList[i].Time := D.Time;
+      end;
    finally
       Unlock();
    end;

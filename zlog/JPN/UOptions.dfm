@@ -31,21 +31,21 @@ object formOptions: TformOptions
       Caption = #36939#29992#12473#12479#12452#12523
       ImageIndex = 7
       object groupSo2rSupport: TGroupBox
-        Left = 10
+        Left = 6
         Top = 119
         Width = 423
         Height = 278
         Caption = 'SO2R'#12458#12503#12471#12519#12531
         TabOrder = 1
         object Label115: TLabel
-          Left = 20
+          Left = 8
           Top = 229
           Width = 210
           Height = 13
           Caption = 'TAB'#12461#12540#25276#19979#24460#12289'CW'#36895#24230#12434#21152#36895#12377#12427
         end
         object Label116: TLabel
-          Left = 314
+          Left = 300
           Top = 229
           Width = 27
           Height = 13
@@ -259,7 +259,7 @@ object formOptions: TformOptions
           end
         end
         object spinSo2rAccelerateCW: TSpinEdit
-          Left = 272
+          Left = 258
           Top = 226
           Width = 34
           Height = 22
@@ -269,12 +269,20 @@ object formOptions: TformOptions
           Value = 3
         end
         object checkSo2rIgnoreModeChange: TCheckBox
-          Left = 20
+          Left = 8
           Top = 252
           Width = 246
           Height = 17
           Caption = #12509#12483#12503#12450#12483#12503#12513#12491#12517#12540#12363#12425#12398#12514#12540#12489#22793#26356#12434#28961#35222
           TabOrder = 3
+        end
+        object checkSo2rCqRestartAfterSetLast: TCheckBox
+          Left = 258
+          Top = 252
+          Width = 161
+          Height = 17
+          Caption = 'LastFreq.'#12395#12472#12515#12531#12503#24460'CQ'#20877#38283
+          TabOrder = 4
         end
       end
       object GroupBox1: TGroupBox
@@ -3100,13 +3108,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'JetBrains Mono Thin'
+          FontName = 'Lucida Sans Typewriter'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 96
+          ItemIndex = 98
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

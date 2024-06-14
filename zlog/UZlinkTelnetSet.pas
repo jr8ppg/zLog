@@ -16,6 +16,8 @@ type
     comboHostName: TComboBox;
     comboLineBreak: TComboBox;
     checkLocalEcho: TCheckBox;
+    procedure FormCreate(Sender: TObject);
+    procedure buttonOKClick(Sender: TObject);
   private
     { Private declarations }
     function GetHostName(): string;
@@ -34,6 +36,34 @@ type
 implementation
 
 {$R *.DFM}
+
+procedure TformZLinkTelnetSet.FormCreate(Sender: TObject);
+var
+   strFileName: string;
+begin
+   strFileName := ExtractFilePath(Application.ExeName) + 'zlinklist.txt';
+   if FileExists(strFileName) = True then begin
+      comboHostName.Items.LoadFromFile(strFileName);
+   end;
+end;
+
+procedure TformZLinkTelnetSet.buttonOKClick(Sender: TObject);
+var
+   strFileName: string;
+begin
+   if comboHostName.Text = '' then begin
+      Exit;
+   end;
+
+   strFileName := ExtractFilePath(Application.ExeName) + 'zlinklist.txt';
+   if comboHostName.Items.IndexOf(comboHostName.Text) = -1 then begin
+      comboHostName.Items.Add(comboHostName.Text);
+   end;
+
+   comboHostName.Items.SaveToFile(strFileName);
+
+   ModalResult := mrOK;
+end;
 
 function TformZLinkTelnetSet.GetHostName(): string;
 begin

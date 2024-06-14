@@ -31,21 +31,21 @@ object formOptions: TformOptions
       Caption = 'Operate Style'
       ImageIndex = 7
       object groupSo2rSupport: TGroupBox
-        Left = 10
+        Left = 6
         Top = 119
         Width = 423
         Height = 278
         Caption = 'SO2R options'
         TabOrder = 1
         object Label115: TLabel
-          Left = 20
+          Left = 8
           Top = 229
           Width = 210
           Height = 13
           Caption = 'Accelerate keying speed  after pressing TAB'
         end
         object Label116: TLabel
-          Left = 314
+          Left = 300
           Top = 229
           Width = 27
           Height = 13
@@ -259,7 +259,7 @@ object formOptions: TformOptions
           end
         end
         object spinSo2rAccelerateCW: TSpinEdit
-          Left = 272
+          Left = 258
           Top = 226
           Width = 34
           Height = 22
@@ -269,12 +269,20 @@ object formOptions: TformOptions
           Value = 3
         end
         object checkSo2rIgnoreModeChange: TCheckBox
-          Left = 20
+          Left = 8
           Top = 252
           Width = 246
           Height = 17
           Caption = 'Ignore mode changes from popup menu'
           TabOrder = 3
+        end
+        object checkSo2rCqRestartAfterSetLast: TCheckBox
+          Left = 258
+          Top = 252
+          Width = 161
+          Height = 17
+          Caption = 'CQ restart after set last freq.'
+          TabOrder = 4
         end
       end
       object GroupBox1: TGroupBox
@@ -3104,13 +3112,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'JetBrains Mono Thin'
+          FontName = 'Lucida Sans Typewriter'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 96
+          ItemIndex = 98
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

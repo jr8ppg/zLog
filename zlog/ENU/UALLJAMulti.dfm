@@ -56,6 +56,9 @@ object ALLJAMulti: TALLJAMulti
         ParentFont = False
         TabOrder = 0
         ExplicitWidth = 320
+        DesignSize = (
+          324
+          25)
         object RotateLabel2: TRotateLabel
           Left = 95
           Top = 4
@@ -166,10 +169,12 @@ object ALLJAMulti: TALLJAMulti
           Top = 3
           Width = 121
           Height = 17
+          Anchors = [akTop, akRight]
           Caption = 'Jump to Latest Multi'
           Checked = True
           State = cbChecked
           TabOrder = 0
+          ExplicitLeft = 188
         end
       end
       object Grid: TStringGrid

@@ -3,8 +3,8 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 306
-  ClientWidth = 524
+  ClientHeight = 305
+  ClientWidth = 520
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,25 +12,25 @@ object MenuForm: TMenuForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
-    524
-    306)
-  PixelsPerInch = 96
+    520
+    305)
   TextHeight = 13
   object Label1: TLabel
-    Left = 409
-    Top = 281
+    Left = 405
+    Top = 280
     Width = 36
     Height = 13
     Alignment = taRightJustify
     Anchors = [akRight, akBottom]
     Caption = 'Callsign'
+    ExplicitLeft = 409
+    ExplicitTop = 281
   end
   object Label3: TLabel
     Left = 177
@@ -41,7 +41,7 @@ object MenuForm: TMenuForm
   end
   object OKButton: TButton
     Left = 12
-    Top = 275
+    Top = 274
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -52,7 +52,7 @@ object MenuForm: TMenuForm
   end
   object CancelButton: TButton
     Left = 92
-    Top = 275
+    Top = 274
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -63,7 +63,7 @@ object MenuForm: TMenuForm
   end
   object Button3: TButton
     Left = 172
-    Top = 275
+    Top = 274
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -347,8 +347,8 @@ object MenuForm: TMenuForm
     TabOrder = 5
   end
   object editCallsign: TEdit
-    Left = 451
-    Top = 278
+    Left = 447
+    Top = 277
     Width = 65
     Height = 18
     Anchors = [akRight, akBottom]
@@ -357,8 +357,8 @@ object MenuForm: TMenuForm
     TabOrder = 6
   end
   object CheckBox1: TCheckBox
-    Left = 272
-    Top = 280
+    Left = 268
+    Top = 279
     Width = 87
     Height = 17
     Anchors = [akRight, akBottom]

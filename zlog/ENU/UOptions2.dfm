@@ -638,9 +638,9 @@ object formOptions2: TformOptions2
       object Label19: TLabel
         Left = 305
         Top = 224
-        Width = 22
+        Width = 41
         Height = 13
-        Caption = 'Sent'
+        Caption = 'Sent($X)'
       end
       object Label34: TLabel
         Left = 305

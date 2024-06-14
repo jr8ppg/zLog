@@ -36,6 +36,7 @@ type
     CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
 
     AdditionalCQMessages: array[2..3] of string;
+    AdditionalCQMessagesImported: array[2..3] of Boolean;
   end;
 
   TCommParam = record
@@ -178,6 +179,7 @@ type
     _so2r_2bsiq_pluswpm: Integer;
     _so2r_ignore_mode_change: Boolean;
     _so2r_rigselect_v28: Boolean;
+    _so2r_cqrestart: Boolean;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _clusterbaud : integer; {}
@@ -278,6 +280,7 @@ type
     // Select User Defined Contest
     FImpProvCity: Boolean;
     FImpCwMessage: array[1..4] of Boolean;
+    FImpCQMessage: array[1..3] of Boolean;
     FLastCFGFileName: string;
 
     // スコア表示の追加情報(評価用指数)
@@ -728,6 +731,8 @@ begin
          Settings.CW.CWStrImported[i, j] := False;
       end;
    end;
+   Settings.CW.AdditionalCQMessagesImported[2] := False;
+   Settings.CW.AdditionalCQMessagesImported[3] := False;
 
    // 対象項目を再ロード
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
@@ -1093,6 +1098,7 @@ begin
       Settings._so2r_2bsiq_pluswpm := ini.ReadInteger('SO2R', '2bsiq_pluswpm', 3);
       Settings._so2r_ignore_mode_change := ini.ReadBool('SO2R', 'ignore_mode_change', True);
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
+      Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
 
       // CW PTT control
 
@@ -1386,6 +1392,8 @@ begin
       Settings.FImpCwMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_f2a', True);
       Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
       Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
+      Settings.FImpCQMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_cq2', False);
+      Settings.FImpCQMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_cq3', False);
       Settings.FLastCFGFileName := ini.ReadString('UserDefinedContest', 'last_cfgfilename', '');
 
       // スコア表示の追加情報(評価用指数)
@@ -1774,6 +1782,7 @@ begin
       ini.WriteInteger('SO2R', '2bsiq_pluswpm', Settings._so2r_2bsiq_pluswpm);
       ini.WriteBool('SO2R', 'ignore_mode_change', Settings._so2r_ignore_mode_change);
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
+      ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
 
       // CW PTT control
 
@@ -1997,6 +2006,8 @@ begin
       ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
       ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
       ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
+      ini.WriteBool('UserDefinedContest', 'imp_cq2', Settings.FImpCQMessage[2]);
+      ini.WriteBool('UserDefinedContest', 'imp_cq3', Settings.FImpCQMessage[3]);
       ini.WriteString('UserDefinedContest', 'last_cfgfilename', Settings.FLastCFGFileName);
 
       // スコア表示の追加情報(評価用指数)

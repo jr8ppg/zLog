@@ -1309,6 +1309,7 @@ resourcestring
   TMainForm_ComfirmDownloadSound = 'Would you like to download the sound file?' + #13#10 + 'Overwrite the existing sound file.';
   TMainForm_ConfirmRewindSerialNumber = 'Do you want to rewind the serial number?';
   TMainForm_ConfirmContestPeriod = 'Do you want to change the contest period to "not used"?';
+  TMainForm_ConfirmOverwrite = '[%s] file already exists. overwrite?';
 
 var
   MainForm: TMainForm;
@@ -2450,12 +2451,23 @@ begin
 end;
 
 procedure TMainForm.FileSaveAs(Sender: TObject);
+var
+   S: string;
 begin
    SaveDialog.InitialDir := dmZlogGlobal.LogPath;
    SaveDialog.FileName := '';
    SaveDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
 
    if SaveDialog.Execute then begin
+
+      // 上書き確認
+      if FileExists(SaveDialog.filename) then begin
+         S := Format(TMainForm_ConfirmOverwrite, [SaveDialog.filename]);
+         if MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+            Exit;
+         end;
+      end;
+
       Log.SaveToFile(SaveDialog.filename);
       dmZLogGlobal.SetLogFileName(SaveDialog.filename);
       SetWindowCaption();
@@ -9785,11 +9797,8 @@ end;
 
 // #86 PTT制御出力の手動トグル
 procedure TMainForm.actionControlPTTExecute(Sender: TObject);
-var
-   fOn: Boolean;
 begin
-   fOn := not dmZLogKeyer.PTTIsOn;
-   ControlPTT(fOn);
+   OnNonconvertKeyProc();
 end;
 
 // #87 N+1ウインドウの表示
@@ -11103,7 +11112,10 @@ begin
 
          InvertTx();
 
-         timerCqRepeat.Enabled := True;
+         // CQ再開
+         if (dmZLogGlobal.Settings._so2r_cqrestart = True) then begin
+            timerCqRepeat.Enabled := True;
+         end;
       end;
       FCQRepeatPlaying := False;
    end;

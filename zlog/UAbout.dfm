@@ -211,7 +211,7 @@ object AboutBox: TAboutBox
       Top = 41
       Width = 287
       Height = 13
-      Caption = 'Portions created by JR8PPG are Copyright (C) 2023 JR8PPG'
+      Caption = 'Portions created by JR8PPG are Copyright (C) 2024 JR8PPG'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -256,8 +256,8 @@ object AboutBox: TAboutBox
         'JL1LNC, 7M4KSC, JA1ABC, JO3JYE, JE1CKA, '
         'JH5GHM, JS6RTJ, JJ1CVH, JS2GGD, JE3VRJ, '
         'JJ8DAN, 7N4LNK, JI0VWL, JK1JHU, JS1OYN, '
-        'JI1XSE, JG1VPP, JS2FVO, JN2AMD, JJ3TBB'
-        'ZLOG-REIWA ML'#21442#21152#32773#12398#12415#12394#12373#12435
+        'JI1XSE, JG1VPP, JS2FVO, JN2AMD, JJ3TBB,'
+        'JF1SXL, ZLOG-REIWA ML'#21442#21152#32773#12398#12415#12394#12373#12435
         'JA1ZLO'#12398#12415#12394#12373#12435)
       ParentFont = False
       ReadOnly = True

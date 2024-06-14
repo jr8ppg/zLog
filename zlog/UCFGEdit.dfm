@@ -3,7 +3,7 @@ object CFGEdit: TCFGEdit
   Top = 0
   BorderStyle = bsDialog
   Caption = 'CFG Edit'
-  ClientHeight = 257
+  ClientHeight = 304
   ClientWidth = 609
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,17 +11,15 @@ object CFGEdit: TCFGEdit
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnShow = FormShow
   DesignSize = (
     609
-    257)
-  PixelsPerInch = 96
+    304)
   TextHeight = 12
   object buttonOK: TButton
-    Left = 520
+    Left = 516
     Top = 8
     Width = 81
     Height = 29
@@ -30,9 +28,10 @@ object CFGEdit: TCFGEdit
     Default = True
     TabOrder = 4
     OnClick = buttonOKClick
+    ExplicitLeft = 512
   end
   object buttonCancel: TButton
-    Left = 520
+    Left = 516
     Top = 43
     Width = 81
     Height = 29
@@ -41,41 +40,56 @@ object CFGEdit: TCFGEdit
     Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 5
+    ExplicitLeft = 512
   end
   object GroupBox1: TGroupBox
     Left = 8
     Top = 115
     Width = 309
-    Height = 134
+    Height = 181
     Caption = 'CW Message'
     TabOrder = 2
     object Label5: TLabel
-      Left = 11
+      Left = 8
       Top = 24
       Width = 20
       Height = 12
       Caption = 'f1_a'
     end
     object Label6: TLabel
-      Left = 11
+      Left = 8
       Top = 50
       Width = 20
       Height = 12
       Caption = 'f2_a'
     end
     object Label7: TLabel
-      Left = 11
+      Left = 8
       Top = 76
       Width = 20
       Height = 12
       Caption = 'f3_a'
     end
     object Label8: TLabel
-      Left = 11
+      Left = 8
       Top = 102
       Width = 20
       Height = 12
       Caption = 'f4_a'
+    end
+    object Label11: TLabel
+      Left = 8
+      Top = 128
+      Width = 22
+      Height = 12
+      Caption = 'CQ2'
+    end
+    object Label12: TLabel
+      Left = 8
+      Top = 154
+      Width = 22
+      Height = 12
+      Caption = 'CQ3'
     end
     object editCWF1A: TEdit
       Left = 44
@@ -105,6 +119,20 @@ object CFGEdit: TCFGEdit
       Height = 20
       TabOrder = 3
     end
+    object editCWCQ2: TEdit
+      Left = 44
+      Top = 125
+      Width = 250
+      Height = 20
+      TabOrder = 4
+    end
+    object editCWCQ3: TEdit
+      Left = 44
+      Top = 151
+      Width = 250
+      Height = 20
+      TabOrder = 5
+    end
   end
   object GroupBox2: TGroupBox
     Left = 8
@@ -114,42 +142,42 @@ object CFGEdit: TCFGEdit
     Caption = 'NR'
     TabOrder = 0
     object Label1: TLabel
-      Left = 16
+      Left = 8
       Top = 20
-      Width = 23
+      Width = 44
       Height = 12
-      Caption = 'Sent'
+      Caption = 'Sent($X)'
     end
     object Label2: TLabel
-      Left = 16
+      Left = 8
       Top = 46
-      Width = 23
+      Width = 45
       Height = 12
-      Caption = 'Prov'
+      Caption = 'Prov($V)'
     end
     object Label3: TLabel
-      Left = 16
+      Left = 8
       Top = 72
-      Width = 21
+      Width = 43
       Height = 12
-      Caption = 'City'
+      Caption = 'City($Q)'
     end
     object editCity: TEdit
-      Left = 53
+      Left = 84
       Top = 69
       Width = 109
       Height = 20
       TabOrder = 2
     end
     object editProv: TEdit
-      Left = 53
+      Left = 84
       Top = 43
       Width = 109
       Height = 20
       TabOrder = 1
     end
     object editSent: TEdit
-      Left = 53
+      Left = 84
       Top = 17
       Width = 109
       Height = 20
