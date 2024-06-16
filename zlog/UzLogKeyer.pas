@@ -3976,8 +3976,8 @@ begin
 
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PTTDELAY_CMD;
-   Buff[1] := before;
-   Buff[2] := after;
+   Buff[1] := before div 10;
+   Buff[2] := after div 10;
    FComKeying[0].SendData(@Buff, 3);
    Sleep(50);
 end;
