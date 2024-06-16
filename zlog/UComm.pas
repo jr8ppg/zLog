@@ -444,6 +444,8 @@ begin
 end;
 
 procedure TCommForm.ProcessSpot(Sp: TSpot);
+var
+   isJA: Boolean;
 begin
    try
       // ‚T•ª‚²‚Æ‚ÉŠúŒÀØ‚êSpot‚ğÁ‚·
@@ -459,12 +461,19 @@ begin
          Exit;
       end;
 
-      // JA‚Ì‚İH
-      if dmZLogGlobal.Settings._bandscope_show_only_domestic = True then begin
-         if IsDomestic(Sp.Call) = False then begin
-            Sp.Free();
-            Exit;
-         end;
+      // JA‚©DX‚©”»’è
+      isJA := IsDomestic(Sp.Call);
+
+      // JA
+      if (dmZLogGlobal.Settings._bandscope_show_ja_spots = False) and (isJA = True) then begin
+         Sp.Free();
+         Exit;
+      end;
+
+      // DX
+      if (dmZLogGlobal.Settings._bandscope_show_dx_spots = False) and (isJA = False) then begin
+         Sp.Free();
+         Exit;
       end;
 
       // ü”g”‚æ‚èƒ‚[ƒh‚ğŒˆ‚ß‚é
