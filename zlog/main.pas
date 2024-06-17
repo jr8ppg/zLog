@@ -12178,6 +12178,11 @@ begin
    OutputDebugString(PChar('[無変換]'));
    {$ENDIF}
 
+   // PTT制御無効なら何もしない
+   if dmZLogGlobal.Settings._pttenabled = False then begin
+      Exit;
+   end;
+
    // 現在のPTT状態
    fBeforePTT := dmZLogKeyer.PTTIsOn;
 
