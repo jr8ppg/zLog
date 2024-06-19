@@ -675,7 +675,7 @@ begin
 
    try
       if (FClusterRecordLogs = True) and (FUseClusterLog = True) then begin
-         Write(FClusterLog, strText);
+         WriteLn(FClusterLog, strText);
          Flush(FClusterLog);
       end;
    except
