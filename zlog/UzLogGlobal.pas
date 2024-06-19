@@ -497,7 +497,7 @@ public
     procedure ReversePaddle();
 
     function CWMessage(bank, no: Integer): string; overload;
-    function CWMessage(no: Integer): string; overload;
+//    function CWMessage(no: Integer): string; overload;
 
     procedure ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
     procedure WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = '');
@@ -2404,6 +2404,15 @@ function TdmZLogGlobal.CWMessage(bank, no: integer): string;
 var
    S: string;
 begin
+   if bank = 0 then begin
+      if Settings._switchcqsp then begin
+         bank := Settings.CW.CurrentBank;
+      end
+      else begin
+         bank := 1;
+      end;
+   end;
+
    case no of
       1, 2, 3, 4, 5, 6,
       7, 8, 9, 10, 11, 12: begin
@@ -2459,6 +2468,7 @@ begin
    Result := S;
 end;
 
+{
 function TdmZLogGlobal.CWMessage(no: Integer): string;
 var
    S: string;
@@ -2472,6 +2482,7 @@ begin
 
    Result := S;
 end;
+}
 
 procedure TdmZLogGlobal.ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var

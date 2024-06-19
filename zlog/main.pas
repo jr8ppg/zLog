@@ -3900,7 +3900,7 @@ begin
          DateEdit.Text := curQSO.DateStr;
       end;
 
-      S := dmZlogGlobal.CWMessage(2);
+      S := dmZlogGlobal.CWMessage(0, 2);
       S := SetStr(S, curQSO);
 
       if dmZLogKeyer.UseWinKeyer = True then begin
@@ -4044,7 +4044,7 @@ begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
                // NR?自動送出使う場合
                if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
-                  S := dmZlogGlobal.CWMessage(5);
+                  S := dmZlogGlobal.CWMessage(0, 5);
                   zLogSendStr2(nTxRigID, S, curQSO);
                end;
 
@@ -4056,7 +4056,7 @@ begin
             end;
 
             // TU $M TEST
-            S := dmZlogGlobal.CWMessage(3);
+            S := dmZlogGlobal.CWMessage(0, 3);
 
             {$IFDEF DEBUG}
             OutputDebugString(PChar(S));
