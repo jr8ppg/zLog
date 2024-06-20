@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -3094,7 +3094,7 @@ object formOptions2: TformOptions2
           Width = 190
           Height = 17
           Caption = #21608#27874#25968#12424#12426#25512#23450#12375#12383#12514#12540#12489#12434#20351#12358
-          TabOrder = 4
+          TabOrder = 5
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -3105,12 +3105,12 @@ object formOptions2: TformOptions2
           Caption = #12496#12531#12489#12503#12521#12531#20869#12398#12473#12509#12483#12488#12398#12415#34920#31034
           TabOrder = 0
         end
-        object checkShowOnlyDomestic: TCheckBox
+        object checkShowJAspots: TCheckBox
           Left = 12
           Top = 40
-          Width = 165
+          Width = 93
           Height = 17
-          Caption = #22269#20869#12473#12509#12483#12488#12398#12415#34920#31034
+          Caption = 'JA'#12434#34920#31034
           TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
@@ -3119,7 +3119,7 @@ object formOptions2: TformOptions2
           Width = 165
           Height = 17
           Caption = 'Lookup Server'#12434#20351#12358
-          TabOrder = 2
+          TabOrder = 3
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 226
@@ -3127,7 +3127,7 @@ object formOptions2: TformOptions2
           Width = 157
           Height = 17
           Caption = #21608#27874#25968#12378#12428#12434#25233#21046
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 226
@@ -3135,7 +3135,7 @@ object formOptions2: TformOptions2
           Width = 176
           Height = 17
           Caption = 'LSB/USB'#12514#12540#12489#35492#12426#12434#25233#21046
-          TabOrder = 5
+          TabOrder = 6
         end
         object checkUseResume: TCheckBox
           Left = 12
@@ -3143,7 +3143,7 @@ object formOptions2: TformOptions2
           Width = 165
           Height = 17
           Caption = #12524#12472#12517#12540#12512#27231#33021#12434#20351#12358
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
@@ -3151,8 +3151,16 @@ object formOptions2: TformOptions2
           Width = 204
           Height = 17
           Caption = 'Spot'#12395'QSY'#12377#12427#30452#21069#12398#21608#27874#25968#12434#35352#25014
-          TabOrder = 7
+          TabOrder = 8
           OnClick = checkUseEstimatedModeClick
+        end
+        object checkShowDXspots: TCheckBox
+          Left = 112
+          Top = 40
+          Width = 93
+          Height = 17
+          Caption = 'DX'#12434#34920#31034
+          TabOrder = 2
         end
       end
     end

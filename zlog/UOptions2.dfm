@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -3094,7 +3094,7 @@ object formOptions2: TformOptions2
           Width = 190
           Height = 17
           Caption = 'Use estimated mode by freq.'
-          TabOrder = 4
+          TabOrder = 5
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -3105,12 +3105,12 @@ object formOptions2: TformOptions2
           Caption = 'Show only spots in the band plan'
           TabOrder = 0
         end
-        object checkShowOnlyDomestic: TCheckBox
+        object checkShowJAspots: TCheckBox
           Left = 12
           Top = 40
-          Width = 165
+          Width = 93
           Height = 17
-          Caption = 'Show only domestic spots'
+          Caption = 'Show JA spots'
           TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
@@ -3119,7 +3119,7 @@ object formOptions2: TformOptions2
           Width = 165
           Height = 17
           Caption = 'Use lookup server'
-          TabOrder = 2
+          TabOrder = 3
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 226
@@ -3127,7 +3127,7 @@ object formOptions2: TformOptions2
           Width = 157
           Height = 17
           Caption = 'Suppress freq. deviation'
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 226
@@ -3135,7 +3135,7 @@ object formOptions2: TformOptions2
           Width = 176
           Height = 17
           Caption = 'Suppress LSB/USB mode error'
-          TabOrder = 5
+          TabOrder = 6
         end
         object checkUseResume: TCheckBox
           Left = 12
@@ -3143,7 +3143,7 @@ object formOptions2: TformOptions2
           Width = 165
           Height = 17
           Caption = 'Use resume'
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
@@ -3151,8 +3151,16 @@ object formOptions2: TformOptions2
           Width = 204
           Height = 17
           Caption = 'Save the freq. before QSY to Spot'
-          TabOrder = 7
+          TabOrder = 8
           OnClick = checkUseEstimatedModeClick
+        end
+        object checkShowDXspots: TCheckBox
+          Left = 112
+          Top = 40
+          Width = 93
+          Height = 17
+          Caption = 'Show DX spots'
+          TabOrder = 2
         end
       end
     end

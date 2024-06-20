@@ -134,7 +134,8 @@ type
 
     _bandscope_use_estimated_mode: Boolean;
     _bandscope_show_only_in_bandplan: Boolean;
-    _bandscope_show_only_domestic: Boolean;
+    _bandscope_show_ja_spots: Boolean;
+    _bandscope_show_dx_spots: Boolean;
     _bandscope_use_lookup_server: Boolean;
     _bandscope_use_resume: Boolean;
     _bandscope_setfreq_after_mode_change: Boolean;
@@ -496,7 +497,7 @@ public
     procedure ReversePaddle();
 
     function CWMessage(bank, no: Integer): string; overload;
-    function CWMessage(no: Integer): string; overload;
+//    function CWMessage(no: Integer): string; overload;
 
     procedure ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
     procedure WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = '');
@@ -1333,7 +1334,8 @@ begin
 
       Settings._bandscope_use_estimated_mode := ini.ReadBool('BandScopeOptions', 'use_estimated_mode', True);
       Settings._bandscope_show_only_in_bandplan := ini.ReadBool('BandScopeOptions', 'show_only_in_bandplan', True);
-      Settings._bandscope_show_only_domestic := ini.ReadBool('BandScopeOptions', 'show_only_domestic', True);
+      Settings._bandscope_show_ja_spots := ini.ReadBool('BandScopeOptions', 'show_ja_spots', True);
+      Settings._bandscope_show_dx_spots := ini.ReadBool('BandScopeOptions', 'show_dx_spots', False);
       Settings._bandscope_use_lookup_server := ini.ReadBool('BandScopeOptions', 'use_lookup_server', False);
       Settings._bandscope_use_resume := ini.ReadBool('BandScopeOptions', 'use_resume', False);
       Settings._bandscope_setfreq_after_mode_change := ini.ReadBool('BandScopeOptions', 'setfreq_after_mode_change', False);
@@ -1975,7 +1977,8 @@ begin
 
       ini.WriteBool('BandScopeOptions', 'use_estimated_mode', Settings._bandscope_use_estimated_mode);
       ini.WriteBool('BandScopeOptions', 'show_only_in_bandplan', Settings._bandscope_show_only_in_bandplan);
-      ini.WriteBool('BandScopeOptions', 'show_only_domestic', Settings._bandscope_show_only_domestic);
+      ini.WriteBool('BandScopeOptions', 'show_ja_spots', Settings._bandscope_show_ja_spots);
+      ini.WriteBool('BandScopeOptions', 'show_dx_spots', Settings._bandscope_show_dx_spots);
       ini.WriteBool('BandScopeOptions', 'use_lookup_server', Settings._bandscope_use_lookup_server);
       ini.WriteBool('BandScopeOptions', 'use_resume', Settings._bandscope_use_resume);
       ini.WriteBool('BandScopeOptions', 'setfreq_after_mode_change', Settings._bandscope_setfreq_after_mode_change);
@@ -2401,6 +2404,15 @@ function TdmZLogGlobal.CWMessage(bank, no: integer): string;
 var
    S: string;
 begin
+   if bank = 0 then begin
+      if Settings._switchcqsp then begin
+         bank := Settings.CW.CurrentBank;
+      end
+      else begin
+         bank := 1;
+      end;
+   end;
+
    case no of
       1, 2, 3, 4, 5, 6,
       7, 8, 9, 10, 11, 12: begin
@@ -2456,6 +2468,7 @@ begin
    Result := S;
 end;
 
+{
 function TdmZLogGlobal.CWMessage(no: Integer): string;
 var
    S: string;
@@ -2469,6 +2482,7 @@ begin
 
    Result := S;
 end;
+}
 
 procedure TdmZLogGlobal.ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var

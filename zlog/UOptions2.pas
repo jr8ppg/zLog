@@ -273,7 +273,7 @@ type
     GroupBox20: TGroupBox;
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
-    checkShowOnlyDomestic: TCheckBox;
+    checkShowJAspots: TCheckBox;
     Label85: TLabel;
     VolumeSpinEdit: TSpinEdit;
     groupQsyAssist: TGroupBox;
@@ -397,6 +397,7 @@ type
     buttonBSOtherReset1: TButton;
     buttonBSOtherReset2: TButton;
     buttonBSOtherReset3: TButton;
+    checkShowDXspots: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -816,7 +817,8 @@ begin
       // BandScope Options
       Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // 周波数からのモードの推定
       Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
-      Settings._bandscope_show_only_domestic := checkShowOnlyDomestic.Checked;      // 国内のみ
+      Settings._bandscope_show_ja_spots := checkShowJAspots.Checked;                // JAを表示
+      Settings._bandscope_show_dx_spots := checkShowDXspots.Checked;                // DXを表示
       Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
       Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
       Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
@@ -1145,7 +1147,8 @@ begin
       // BandScope Options
       checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // 周波数からのモードの推定
       checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
-      checkShowOnlyDomestic.Checked := Settings._bandscope_show_only_domestic;      // 国内のみ
+      checkShowJAspots.Checked := Settings._bandscope_show_ja_spots;                // JAを表示
+      checkShowDXspots.Checked := Settings._bandscope_show_dx_spots;                // DXを表示
       checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
       checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
