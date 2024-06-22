@@ -1088,7 +1088,9 @@ begin
 
          {$IFDEF DEBUG}
 //         strText := strText + ' (' + IntToStr(sec) + ')';
-         strText := strText + ' (' + ModeString[D.Mode][1] + ')';
+         if D.Mode <= mOther then begin
+            strText := strText + ' (' + ModeString[D.Mode][1] + ')';
+         end;
          {$ENDIF}
       end;
 

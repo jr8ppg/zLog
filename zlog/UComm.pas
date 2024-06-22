@@ -36,7 +36,6 @@ type
     ConnectButton: TButton;
     checkAutoLogin: TCheckBox;
     checkRelaySpot: TCheckBox;
-    checkNotifyCurrentBand: TCheckBox;
     ClusterComm: TCommPortDriver;
     PopupMenu: TPopupMenu;
     menuSaveToFile: TMenuItem;
@@ -361,7 +360,6 @@ begin
    checkAutoLogin.Checked     := dmZLogGlobal.Settings.FClusterAutoLogin;
    checkAutoReconnect.Checked := dmZLogGlobal.Settings.FClusterAutoReconnect;
    checkRelaySpot.Checked     := dmZLogGlobal.Settings.FClusterRelaySpot;
-   checkNotifyCurrentBand.Checked := dmZLogGlobal.Settings.FClusterNotifyCurrentBand;
    checkRecordLogs.Checked    := dmZLogGlobal.Settings.FClusterRecordLogs;
    checkIgnoreBEL.Checked     := dmZLogGlobal.Settings.FClusterIgnoreBEL;
    checkUseAllowDenyLists.Checked := dmZLogGlobal.Settings.FClusterUseAllowDenyLists;
@@ -372,7 +370,6 @@ begin
    dmZLogGlobal.Settings.FClusterAutoLogin      := checkAutoLogin.Checked;
    dmZLogGlobal.Settings.FClusterAutoReconnect  := checkAutoReconnect.Checked;
    dmZLogGlobal.Settings.FClusterRelaySpot      := checkRelaySpot.Checked;
-   dmZLogGlobal.Settings.FClusterNotifyCurrentBand := checkNotifyCurrentBand.Checked;
    dmZLogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
    dmZLogGlobal.Settings.FClusterIgnoreBEL      := checkIgnoreBEL.Checked;
    dmZLogGlobal.Settings.FClusterUseAllowDenyLists := checkUseAllowDenyLists.Checked;
@@ -497,12 +494,6 @@ begin
          {$IFDEF DEBUG}
          OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been added to your spotter list'));
          {$ENDIF}
-      end;
-
-      if checkNotifyCurrentBand.Checked and (Sp.Band <> Main.CurrentQSO.Band) then begin
-      end
-      else begin
-         MyContest.MultiForm.ProcessCluster(TBaseSpot(Sp));
       end;
 
       // ÉäÉXÉgï\é¶è„å¿ÇÕ1000
@@ -802,7 +793,6 @@ begin
       checkAutoLogin.Enabled := False;
       checkAutoReconnect.Enabled := False;
       checkRelaySpot.Enabled := False;
-      checkNotifyCurrentBand.Enabled := False;
       checkRecordLogs.Enabled := False;
       checkIgnoreBEL.Enabled := False;
       checkUseAllowDenyLists.Enabled := False;
@@ -840,7 +830,6 @@ begin
    checkAutoLogin.Enabled := True;
    checkAutoReconnect.Enabled := True;
    checkRelaySpot.Enabled := True;
-   checkNotifyCurrentBand.Enabled := True;
    checkRecordLogs.Enabled := True;
    checkIgnoreBEL.Enabled := True;
    checkUseAllowDenyLists.Enabled := True;

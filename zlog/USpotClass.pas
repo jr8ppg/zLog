@@ -792,6 +792,10 @@ begin
    // 交信済みか確認する
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
 
+   if Sp.Worked = False then begin
+      MyContest.MultiForm.ProcessCluster(Sp);
+   end;
+
    // NR未入力の場合
    if (Sp.Number = '') and (fWorkedScrub = False) then begin
       // 他のバンドで交信済みならマルチを取得
@@ -819,17 +823,19 @@ begin
    end;
 
    // そのマルチはSp.BandでNEW MULTIか
-   if Sp.Number <> '' then begin
-      Q := TQSO.Create();
-      try
-         Q.Callsign := Sp.Call;
-         Q.Band := Sp.Band;
-         Q.Mode := Sp.Mode;
-         Q.NrRcvd := Sp.Number;
-         multi := MyContest.MultiForm.ExtractMulti(Q);
-         Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, multi);
-      finally
-         Q.Free();
+   if MyContest.NeedCtyDat = False then begin
+      if Sp.Number <> '' then begin
+         Q := TQSO.Create();
+         try
+            Q.Callsign := Sp.Call;
+            Q.Band := Sp.Band;
+            Q.Mode := Sp.Mode;
+            Q.NrRcvd := Sp.Number;
+            multi := MyContest.MultiForm.ExtractMulti(Q);
+            Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, multi);
+         finally
+            Q.Free();
+         end;
       end;
    end;
 end;

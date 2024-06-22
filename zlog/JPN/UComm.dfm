@@ -73,14 +73,6 @@ object CommForm: TCommForm
       Caption = #12473#12509#12483#12488#12434#20182#12398#12496#12531#12489#12408#12522#12524#12540
       TabOrder = 4
     end
-    object checkNotifyCurrentBand: TCheckBox
-      Left = 176
-      Top = 40
-      Width = 153
-      Height = 17
-      Caption = #29694#22312#12496#12531#12489#12398#12415#36890#30693
-      TabOrder = 5
-    end
     object checkAutoReconnect: TCheckBox
       Left = 270
       Top = 5
@@ -93,27 +85,27 @@ object CommForm: TCommForm
     end
     object checkRecordLogs: TCheckBox
       Left = 176
-      Top = 57
+      Top = 41
       Width = 100
       Height = 17
       Caption = #21463#20449#12525#12464#12434#20445#23384
-      TabOrder = 6
+      TabOrder = 5
     end
     object checkUseAllowDenyLists: TCheckBox
       Left = 176
-      Top = 74
+      Top = 59
       Width = 153
       Height = 17
       Caption = #35377#21487'/'#25298#21542#12522#12473#12488#12434#20351#29992
-      TabOrder = 8
+      TabOrder = 7
     end
     object checkIgnoreBEL: TCheckBox
       Left = 278
-      Top = 57
+      Top = 41
       Width = 74
       Height = 17
       Caption = 'BEL'#12434#28961#35222
-      TabOrder = 7
+      TabOrder = 6
     end
   end
   object Panel2: TPanel

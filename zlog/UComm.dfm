@@ -73,14 +73,6 @@ object CommForm: TCommForm
       Caption = 'Relay spot to other bands'
       TabOrder = 4
     end
-    object checkNotifyCurrentBand: TCheckBox
-      Left = 176
-      Top = 40
-      Width = 153
-      Height = 17
-      Caption = 'Notify current band only'
-      TabOrder = 5
-    end
     object checkAutoReconnect: TCheckBox
       Left = 255
       Top = 5
@@ -93,27 +85,27 @@ object CommForm: TCommForm
     end
     object checkRecordLogs: TCheckBox
       Left = 176
-      Top = 57
+      Top = 41
       Width = 81
       Height = 17
       Caption = 'Record logs'
-      TabOrder = 6
+      TabOrder = 5
     end
     object checkUseAllowDenyLists: TCheckBox
       Left = 176
-      Top = 74
+      Top = 59
       Width = 153
       Height = 17
       Caption = 'Use Allow/Deny Lists'
-      TabOrder = 8
+      TabOrder = 7
     end
     object checkIgnoreBEL: TCheckBox
       Left = 269
-      Top = 57
+      Top = 41
       Width = 74
       Height = 17
       Caption = 'Ignore BEL'
-      TabOrder = 7
+      TabOrder = 6
     end
   end
   object Panel2: TPanel

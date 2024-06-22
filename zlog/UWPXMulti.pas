@@ -272,12 +272,6 @@ begin
 
    Sp.NewCty := false;
    Sp.NewZone := false;
-   Sp.Worked := false;
-   if Log.IsDupe(aQSO) > 0 then begin
-      Sp.Worked := true;
-      aQSO.Free;
-      exit;
-   end;
 
    temp := aQSO.CallSign;
 
