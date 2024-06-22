@@ -2696,6 +2696,10 @@ begin
       // 並び替え（降順）
       FPrefixList.Sort();
 
+      {$IFDEF DEBUG}
+      FPrefixList.SaveToFile('prefixlist.txt');
+      {$ENDIF}
+
       Result := True;
    end
    else begin
@@ -2716,9 +2720,9 @@ var
    P: TPrefix;
    strCallRight: string;
    strCallFirst: string;
+   l1, l2: Integer;
 begin
-   str := strCallSign;
-   if str = '' then begin
+   if strCallSign = '' then begin
       Result := FPrefixList[0];
       Exit;
    end;
@@ -2729,33 +2733,31 @@ begin
    end;
 
    // 最初はコール一致確認
-   for i := 0 to FPrefixList.Count - 1 do begin
-      P := FPrefixList[i];
-
-      if (P.FullMatch = True) and (P.Prefix = str) then begin
-         Result := P;
-         Exit;
-      end;
+   P := FPrefixList.ObjectOf(strCallsign);
+   if (P <> nil) and (P.FullMatch = True) then begin
+      Result := P;
+      Exit;
    end;
 
-   i := Pos('/', str);
+   // "/"で分割
+   i := Pos('/', strCallSign);
    if i > 0 then begin
-      strCallFirst := Copy(str, 1, i - 1);
-      strCallRight := Copy(str, i + 1);
+      strCallFirst := Copy(strCallSign, 1, i - 1);
+      strCallRight := Copy(strCallSign, i + 1);
    end
    else begin
-      strCallFirst := str;
+      strCallFirst := strCallSign;
       strCallRight := '';
    end;
 
-   // Marine Mobile
+   // Marine Mobile はUnknownを返して終わり
    if strCallRight = 'MM' then begin
       Result := FPrefixList[0];
       Exit;
-   end
+   end;
 
    // 無視するもの
-   else if (strCallRight = 'AA') or (strCallRight = 'AT') or (strCallRight = 'AG') or
+   if (strCallRight = 'AA') or (strCallRight = 'AT') or (strCallRight = 'AG') or
       (strCallRight = 'AA') or (strCallRight = 'AE') or (strCallRight = 'M') or
       (strCallRight = 'P') or (strCallRight = 'AM') or (strCallRight = 'QRP') or
       (strCallRight = 'A') or (strCallRight = 'KT') or (strCallRight = 'N') or
@@ -2764,39 +2766,34 @@ begin
       (strCallRight = '3') or (strCallRight = '4') or (strCallRight = '5') or
       (strCallRight = '6') or (strCallRight = '7') or (strCallRight = '8') or
       (strCallRight = '9') then begin
-      str := Copy(str, 1, i - 1);
-   end
+      strCallFirst := Copy(strCallSign, 1, i - 1);
+      strCallRight := '';
+   end;
 
-   // 判別できない
-   else if i = 5 then begin
-      // まずは左側から前方一致で
-      for i := 1 to FPrefixList.Count - 1 do begin
-         P := FPrefixList[i];
-
-         if P.FullMatch = False then begin
-            if Copy(strCallFirst, 1, Length(P.Prefix)) = P.Prefix then begin
-               Result := P;
-               Exit;
-            end;
-         end;
-      end;
-
-      // 無ければ右側
+   // 短い方をFirstにする
+   l1 := Length(strCallFirst);
+   l2 := Length(strCallRight);
+   if (l1 > 0) and (l2 > 0) and (l1 > l2) then begin
+      str := strCallFirst;
       strCallFirst := strCallRight;
+      strCallRight := str;
    end;
 
-   // 続いて前方一致で
-   for i := 1 to FPrefixList.Count - 1 do begin
-      P := FPrefixList[i];
-
-      if P.FullMatch = False then begin
-         if Copy(strCallFirst, 1, Length(P.Prefix)) = P.Prefix then begin
-            Result := P;
-            Exit;
-         end;
-      end;
+   // まずは左側から前方一致で
+   P := FPrefixList.FindForword(strCallFirst);
+   if P <> nil then begin
+      Result := P;
+      Exit;
    end;
 
+   // 続いて右側を前方一致で
+   P := FPrefixList.FindForword(strCallRight);
+   if P <> nil then begin
+      Result := P;
+      Exit;
+   end;
+
+   // どこにも該当なし
    Result := FPrefixList[0];
 end;
 
