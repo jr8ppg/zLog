@@ -633,6 +633,11 @@ var
       Result := callsign;
    end;
 begin
+   if callsign = '' then begin
+      Result := nil;
+      Exit;
+   end;
+
    P := TPrefix.Create();
    P.Prefix := ExtractGuessPrefix(callsign);
    try

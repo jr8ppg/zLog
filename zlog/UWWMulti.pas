@@ -370,6 +370,8 @@ begin
          end;
       end;
    end;
+
+   Grid.Refresh();
 end;
 
 procedure TWWMulti.RefreshZone;
