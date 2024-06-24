@@ -4813,8 +4813,8 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('**** 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない ****'));
             {$ENDIF}
-            FCQRepeatPlaying := False;
-            Exit;
+//            FCQRepeatPlaying := False;
+//            Exit;
          end;
       end;
 
@@ -11108,14 +11108,15 @@ begin
       FInformation.Is2bsiq := FPrev2bsiqMode;
       if FPrev2bsiqMode = True then begin
          F2bsiqStart := True;
-         actionToggleRx.Execute();
 
-         InvertTx();
+         // 送受の入れ替えは送信していないとき
+         if dmZLogKeyer.IsPlaying() = False then begin
+            actionToggleRx.Execute();
+            InvertTx();
+         end;
 
          // CQ再開
-         if (dmZLogGlobal.Settings._so2r_cqrestart = True) then begin
-            timerCqRepeat.Enabled := True;
-         end;
+         timerCqRepeat.Enabled := dmZLogGlobal.Settings._so2r_cqrestart;
       end;
       FCQRepeatPlaying := False;
    end;
