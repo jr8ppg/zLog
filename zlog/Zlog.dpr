@@ -149,7 +149,8 @@ uses
   UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
   UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
   UOptions in 'UOptions.pas' {formOptions},
-  UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo};
+  UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo},
+  UCountryChecker in 'UCountryChecker.pas' {formCountryChecker};
 
 {$R *.res}
 

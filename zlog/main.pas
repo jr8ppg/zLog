@@ -1149,6 +1149,7 @@ type
     procedure ExtractSoundFiles(zipfilename: string);
     function CompressSoundFiles(): Boolean;
     procedure SaveLastFreq();
+    procedure ShowCtyChk();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1333,7 +1334,8 @@ uses
   UIntegerDialog, UNewPrefix, UKCJScore, UJarlMemberInfo,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
-  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog;
+  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
+  UCountryChecker;
 
 {$R *.DFM}
 
@@ -3144,6 +3146,10 @@ begin
    end;
    if S = 'HIDEINFO' then begin
       ShowInfoPanel('', nil, False);
+   end;
+
+   if S = 'CTYCHK' then begin
+      ShowCtyChk();
    end;
 end;
 
@@ -13214,6 +13220,18 @@ begin
 
    // リグコントロール画面に表示
    RigControl.LastFreq := FLastFreq[FCurrentRigSet];
+end;
+
+procedure TMainForm.ShowCtyChk();
+var
+   f: TformCountryChecker;
+begin
+   f := TformCountryChecker.Create(Self);
+   try
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
 end;
 
 { TBandScopeNotifyThread }

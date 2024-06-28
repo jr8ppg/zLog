@@ -534,6 +534,10 @@
             <Form>formJarlMemberInfo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UCountryChecker.pas">
+            <Form>formCountryChecker</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -839,7 +843,8 @@
                     <RDP_Source_Files Name="Item115">UPortConfigDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item116">UOptions.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item117">UJarlMemberInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item118">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item118">UCountryChecker.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item119">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
