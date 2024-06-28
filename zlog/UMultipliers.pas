@@ -639,7 +639,8 @@ begin
    end;
 
    P := TPrefix.Create();
-   P.Prefix := ExtractGuessPrefix(callsign);
+//   P.Prefix := ExtractGuessPrefix(callsign);
+   P.Prefix := callsign;
    try
       BinarySearch(P, FoundIndex, FPrefixComparer);
    finally
