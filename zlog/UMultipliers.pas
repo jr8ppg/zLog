@@ -625,7 +625,7 @@ var
       for i := 1 to Length(callsign) do begin
          C := callsign[i];
          if (i > 1) and ((C >= '0') and (C <= '9')) then begin
-            Result := Copy(callsign, 1, i - 1);
+            Result := Copy(callsign, 1, i);
             Exit;
          end;
       end;
@@ -650,17 +650,37 @@ begin
       FoundIndex := Self.Count - 1;
    end;
 
-   for i := FoundIndex downto 1 do begin
-      P := Items[i];
+   if CompareText(Items[FoundIndex].Prefix, callsign) < 0 then begin
+      // Œã‚ë‚É‚ ‚é
+      for i := FoundIndex to Self.Count - 1 do begin
+         P := Items[i];
 
-      if P.Prefix[1] <> callsign[1] then begin
-         Break;
+         if P.Prefix[1] <> callsign[1] then begin
+            Break;
+         end;
+
+         if P.FullMatch = False then begin
+            if Copy(callsign, 1, Length(P.Prefix)) = P.Prefix then begin
+               Result := P;
+               Exit;
+            end;
+         end;
       end;
+   end
+   else begin
+      // ‘O‚É‚ ‚é
+      for i := FoundIndex downto 0 do begin
+         P := Items[i];
 
-      if P.FullMatch = False then begin
-         if Copy(callsign, 1, Length(P.Prefix)) = P.Prefix then begin
-            Result := P;
-            Exit;
+         if P.Prefix[1] <> callsign[1] then begin
+            Break;
+         end;
+
+         if P.FullMatch = False then begin
+            if Copy(callsign, 1, Length(P.Prefix)) = P.Prefix then begin
+               Result := P;
+               Exit;
+            end;
          end;
       end;
    end;
