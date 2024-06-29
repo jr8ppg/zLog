@@ -375,6 +375,9 @@ begin
          Grid.Cells[0, j] := TIARUZone(ZoneList.List[j]).Summary;
       end;
    end;
+
+   Grid.Refresh();
+
    RenewCluster;
    RenewBandScope;
 end;

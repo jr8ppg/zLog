@@ -52,6 +52,8 @@ begin
             Grid.Cells[0, i] := '';
       end;
    end;
+
+   Grid.Refresh();
 end;
 
 procedure TWPXMulti.SavePXList(filename: string);

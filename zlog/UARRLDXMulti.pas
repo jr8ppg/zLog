@@ -193,6 +193,8 @@ begin
          Grid.Cells[0, i] := str;
       end;
    end;
+
+   Grid.Refresh();
 end;
 
 procedure TARRLDXMulti.GoButtonClick2(Sender: TObject);
