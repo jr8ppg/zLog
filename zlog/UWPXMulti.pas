@@ -52,6 +52,8 @@ begin
             Grid.Cells[0, i] := '';
       end;
    end;
+
+   Grid.Refresh();
 end;
 
 procedure TWPXMulti.SavePXList(filename: string);
@@ -272,12 +274,6 @@ begin
 
    Sp.NewCty := false;
    Sp.NewZone := false;
-   Sp.Worked := false;
-   if Log.IsDupe(aQSO) > 0 then begin
-      Sp.Worked := true;
-      aQSO.Free;
-      exit;
-   end;
 
    temp := aQSO.CallSign;
 

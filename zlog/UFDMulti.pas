@@ -213,6 +213,8 @@ begin
       _top := kenmax + 1;
 
    Grid.TopRow := _top;
+
+   Grid.Refresh();
 end;
 
 end.

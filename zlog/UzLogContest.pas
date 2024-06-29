@@ -966,6 +966,7 @@ begin
    FBandHigh := b28;
    FBandPlan := 'DX';
 
+   FNeedCtyDat := True;
    FStartTime := 0;  // UTC
    FPeriod := 48;
 

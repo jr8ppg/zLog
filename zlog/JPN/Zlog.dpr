@@ -30,6 +30,7 @@ library Zlog;
 {ITE} {DFMFileType} {UClusterTelnetSet.dfm}
 {ITE} {DFMFileType} {UComm.dfm}
 {ITE} {DFMFileType} {UConsolePad.dfm}
+{ITE} {DFMFileType} {UCountryChecker.dfm}
 {ITE} {DFMFileType} {UCWKeyBoard.dfm}
 {ITE} {DFMFileType} {UCwMessagePad.dfm}
 {ITE} {DFMFileType} {UCWMonitor.dfm}
@@ -116,7 +117,7 @@ library Zlog;
 {ITE} {DFMFileType} {UzLogKeyer.dfm}
 {ITE} {DFMFileType} {UZServerInquiry.dfm}
 {ITE} {RCFileType} {resource.rc}
-{ITE} {RCFileType} {Win64\Release\Zlog_DRC.rc}
+{ITE} {RCFileType} {Win32\Release\Zlog_DRC.rc}
 
 {$R 'main.dfm' 'MainForm:TForm'}
 {$R 'Progress.dfm' 'formProgress:TForm'}
@@ -146,6 +147,7 @@ library Zlog;
 {$R 'UClusterTelnetSet.dfm' 'formClusterTelnetSet:TForm'}
 {$R 'UComm.dfm' 'CommForm:TForm'}
 {$R 'UConsolePad.dfm' 'ConsolePad:TForm'}
+{$R 'UCountryChecker.dfm' 'formCountryChecker:TForm'}
 {$R 'UCWKeyBoard.dfm' 'CWKeyBoard:TForm'}
 {$R 'UCwMessagePad.dfm' 'CwMessagePad:TForm'}
 {$R 'UCWMonitor.dfm' 'formCWMonitor:TForm'}
@@ -232,7 +234,7 @@ library Zlog;
 {$R 'UzLogKeyer.dfm' 'dmZLogKeyer:TDataModule'}
 {$R 'UZServerInquiry.dfm' 'ZServerInquiry:TForm'}
 {$R 'resource.res' 'resource.rc'}
-{$R 'Win64\Release\Zlog_DRC.res' 'Win64\Release\Zlog_DRC.rc'}
+{$R 'Win32\Release\Zlog_DRC.res' 'Win32\Release\Zlog_DRC.rc'}
 
 {$E JPN}
 

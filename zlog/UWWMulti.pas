@@ -370,6 +370,8 @@ begin
          end;
       end;
    end;
+
+   Grid.Refresh();
 end;
 
 procedure TWWMulti.RefreshZone;
@@ -616,22 +618,17 @@ begin
 
       Sp.NewCty := False;
       Sp.NewZone := False;
-      Sp.Worked := False;
-      if Log.IsDupe(aQSO) > 0 then begin
-         Sp.Worked := True;
-         exit;
-      end;
 
+      // CQ Zoneを求める
       temp := GuessZone(aQSO.Callsign);
-      if temp <> '' then
-         Z := StrToInt(GuessZone(aQSO.Callsign))
-      else
-         Z := 0;
+      Z := StrToIntDef(temp, 0);
 
+      // Countryを求める
       C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
       Sp.Zone := Z;
       Sp.CtyIndex := C.Index;
 
+      // NEWマルチチェック
       temp := aQSO.CallSign;
       if (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
          temp := temp + '  new zone : ' + GuessZone(aQSO.Callsign);

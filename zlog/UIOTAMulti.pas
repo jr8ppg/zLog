@@ -216,6 +216,8 @@ begin
    end;
 
    Grid.TopRow := LatestMultiAddition;
+
+   Grid.Refresh();
 end;
 
 procedure TIOTAMulti.FormCreate(Sender: TObject);

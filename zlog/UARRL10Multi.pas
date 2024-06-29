@@ -307,6 +307,8 @@ begin
          end;
       end;
    end;
+
+   Grid.Refresh();
 end;
 
 function TARRL10Multi.ExtractMulti(aQSO: TQSO): string;

@@ -101,6 +101,8 @@ begin
    if checkJumpLatestMulti.Checked = True then begin
       Grid.TopRow := LatestMultiAddition;
    end;
+
+   Grid.Refresh();
 end;
 
 procedure TACAGMulti.CheckMulti(aQSO: TQSO);

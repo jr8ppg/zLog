@@ -92,6 +92,10 @@ type
     destructor Destroy(); override;
     procedure Parse(cty: TCountry);
     procedure Sort(); overload;
+    procedure SaveToFile(fname: string);
+    function FindForword(callsign: string): TPrefix;
+    function IndexOf(callsign: string): Integer;
+    function ObjectOf(callsign: string): TPrefix;
   end;
 
   TCity = class
@@ -476,6 +480,8 @@ begin
    FWorked[Index] := Value;
 end;
 
+{ TPrefix }
+
 constructor TPrefix.Create();
 begin
    Inherited;
@@ -486,6 +492,8 @@ begin
    FCountry := nil;
    FFullMatch := False;
 end;
+
+{ TPrefixList }
 
 constructor TPrefixList.Create(OwnsObjects: Boolean);
 begin
@@ -510,6 +518,7 @@ var
    strOvrContinent: string;
    strUnused: string;
    fFullMatch: Boolean;
+   FoundIndex: Integer;
 
    function ExtractNumber(var strPrefix: string; strBegin, strEnd: string): string;
    var
@@ -569,7 +578,13 @@ begin
          P.OvrITUZone := strOvrITUZone;
          P.OvrContinent := strOvrContinent;
          P.FFullMatch := fFullMatch;
-         Add(P);
+
+         if BinarySearch(P, FoundIndex, FPrefixComparer) = False then begin
+            Insert(FoundIndex, P);
+         end
+         else begin
+            P.Free();
+         end;
       end;
 
    finally
@@ -580,6 +595,130 @@ end;
 procedure TPrefixList.Sort();
 begin
    Sort(FPrefixComparer);
+end;
+
+procedure TPrefixList.SaveToFile(fname: string);
+var
+   i: Integer;
+   F: TextFile;
+begin
+   fname := ExtractFilePath(Application.ExeName) + fname;
+   AssignFile(F, fname);
+   Rewrite(F);
+   for i := 0 to Self.Count - 1 do begin
+      WriteLn(F, Items[i].FPrefix);
+   end;
+   CloseFile(F);
+end;
+
+function TPrefixList.FindForword(callsign: string): TPrefix;
+var
+   i: Integer;
+   FoundIndex: Integer;
+   P: TPrefix;
+
+   function ExtractGuessPrefix(callsign: string): string;
+   var
+      i: Integer;
+      C: Char;
+   begin
+      for i := 1 to Length(callsign) do begin
+         C := callsign[i];
+         if (i > 1) and ((C >= '0') and (C <= '9')) then begin
+            Result := Copy(callsign, 1, i);
+            Exit;
+         end;
+      end;
+
+      Result := callsign;
+   end;
+begin
+   if callsign = '' then begin
+      Result := nil;
+      Exit;
+   end;
+
+   P := TPrefix.Create();
+//   P.Prefix := ExtractGuessPrefix(callsign);
+   P.Prefix := callsign;
+   try
+      BinarySearch(P, FoundIndex, FPrefixComparer);
+   finally
+      P.Free();
+   end;
+
+   if FoundIndex >= Self.Count then begin
+      FoundIndex := Self.Count - 1;
+   end;
+
+   if CompareText(Items[FoundIndex].Prefix, callsign) < 0 then begin
+      // Œã‚ë‚É‚ ‚é
+      for i := FoundIndex to Self.Count - 1 do begin
+         P := Items[i];
+
+         if P.Prefix[1] <> callsign[1] then begin
+            Break;
+         end;
+
+         if P.FullMatch = False then begin
+            if Copy(callsign, 1, Length(P.Prefix)) = P.Prefix then begin
+               Result := P;
+               Exit;
+            end;
+         end;
+      end;
+   end
+   else begin
+      // ‘O‚É‚ ‚é
+      for i := FoundIndex downto 0 do begin
+         P := Items[i];
+
+         if P.Prefix[1] <> callsign[1] then begin
+            Break;
+         end;
+
+         if P.FullMatch = False then begin
+            if Copy(callsign, 1, Length(P.Prefix)) = P.Prefix then begin
+               Result := P;
+               Exit;
+            end;
+         end;
+      end;
+   end;
+
+   Result := nil;
+end;
+
+function TPrefixList.IndexOf(callsign: string): Integer;
+var
+   FoundIndex: Integer;
+   P: TPrefix;
+begin
+   P := TPrefix.Create();
+   P.Prefix := callsign;
+   try
+      if BinarySearch(P, FoundIndex, FPrefixComparer) = True then begin
+         Result := FoundIndex;
+      end
+      else begin
+         Result := -1;
+      end;
+   finally
+      P.Free();
+   end;
+end;
+
+function TPrefixList.ObjectOf(callsign: string): TPrefix;
+var
+   Index: Integer;
+begin
+   Index := IndexOf(callsign);
+   if Index = -1 then begin
+      Result := nil;
+   end
+   else begin
+      Result := Items[Index];
+   end;
 end;
 
 { TPrefixComparer }

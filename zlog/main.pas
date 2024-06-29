@@ -1149,6 +1149,7 @@ type
     procedure ExtractSoundFiles(zipfilename: string);
     function CompressSoundFiles(): Boolean;
     procedure SaveLastFreq();
+    procedure ShowCtyChk();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1333,7 +1334,8 @@ uses
   UIntegerDialog, UNewPrefix, UKCJScore, UJarlMemberInfo,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
-  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog;
+  UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
+  UCountryChecker;
 
 {$R *.DFM}
 
@@ -3145,6 +3147,10 @@ begin
    if S = 'HIDEINFO' then begin
       ShowInfoPanel('', nil, False);
    end;
+
+   if S = 'CTYCHK' then begin
+      ShowCtyChk();
+   end;
 end;
 
 procedure TMainForm.ChangeTxNr(txnr: Integer);
@@ -4813,8 +4819,8 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar('**** 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない ****'));
             {$ENDIF}
-            FCQRepeatPlaying := False;
-            Exit;
+//            FCQRepeatPlaying := False;
+//            Exit;
          end;
       end;
 
@@ -11108,14 +11114,15 @@ begin
       FInformation.Is2bsiq := FPrev2bsiqMode;
       if FPrev2bsiqMode = True then begin
          F2bsiqStart := True;
-         actionToggleRx.Execute();
 
-         InvertTx();
+         // 送受の入れ替えは送信していないとき
+         if dmZLogKeyer.IsPlaying() = False then begin
+            actionToggleRx.Execute();
+            InvertTx();
+         end;
 
          // CQ再開
-         if (dmZLogGlobal.Settings._so2r_cqrestart = True) then begin
-            timerCqRepeat.Enabled := True;
-         end;
+         timerCqRepeat.Enabled := dmZLogGlobal.Settings._so2r_cqrestart;
       end;
       FCQRepeatPlaying := False;
    end;
@@ -13213,6 +13220,18 @@ begin
 
    // リグコントロール画面に表示
    RigControl.LastFreq := FLastFreq[FCurrentRigSet];
+end;
+
+procedure TMainForm.ShowCtyChk();
+var
+   f: TformCountryChecker;
+begin
+   f := TformCountryChecker.Create(Self);
+   try
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
 end;
 
 { TBandScopeNotifyThread }
