@@ -616,11 +616,12 @@ begin
       exit;
 
    if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
-      if Hz > 60000 then
-         str := MainForm.RigControl.StatusSummaryFreq(round(Hz / 1000))
-      else
-         str := MainForm.RigControl.StatusSummaryFreqHz(Hz);
+//      if Hz > 60000 then
+//         str := MainForm.RigControl.StatusSummaryFreq(round(Hz / 1000))
+//      else
+//         str := MainForm.RigControl.StatusSummaryFreqHz(Hz);
 
+      str := MainForm.RigControl.StatusSummaryFreqHz(Hz);
       if str = '' then
          exit;
 

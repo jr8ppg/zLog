@@ -329,7 +329,7 @@ begin
 
    S := ss + S;
    S := S + FillRight(MHzString[Main.CurrentQSO.Band], 5);
-   S := S + FillRight(IntToStr(kHz), 8);
+   S := S + FillRight(IntToStr(kHz), 11);
    S := S + FillRight(ModeString[Main.CurrentQSO.Mode], 5);
 
    ss := TimeToStr(CurrentTime);
@@ -361,7 +361,7 @@ begin
    ss := FillRight(ss, 3);
    S := ss + S;
    S := S + FillRight(MHzString[Main.CurrentQSO.Band], 5);
-   S := S + FillRight(FloatToStrF(Hz / 1000.0, ffFixed, 12, 1), 8);
+   S := S + FillLeft(FloatToStrF(Hz / 1000.0, ffFixed, 12, 1), 10) + ' ';
    S := S + FillRight(ModeString[Main.CurrentQSO.Mode], 5);
    ss := TimeToStr(CurrentTime);
 
@@ -384,12 +384,13 @@ begin
       Exit;
    end;
 
-   if FCurrentRig.CurrentFreqKHz > 60000 then begin
-      Result := StatusSummaryFreq(FCurrentRig.CurrentFreqKHz);
-   end
-   else begin
-      Result := StatusSummaryFreqHz(FCurrentRig.CurrentFreqHz);
-   end;
+//   if FCurrentRig.CurrentFreqKHz > 60000 then begin
+//      Result := StatusSummaryFreq(FCurrentRig.CurrentFreqKHz);
+//   end
+//   else begin
+//      Result := StatusSummaryFreqHz(FCurrentRig.CurrentFreqHz);
+//   end;
+   Result := StatusSummaryFreqHz(FCurrentRig.CurrentFreqHz);
 end;
 
 function TRigControl.CheckSameBand(B: TBand): Boolean; // returns true if inactive rig is in B
