@@ -159,7 +159,7 @@ type
     buttonFullmatchSelectColor: TButton;
     buttonFullmatchInitColor: TButton;
     tabsheetBandScope1: TTabSheet;
-    GroupBox9: TGroupBox;
+    groupBandscopeBands: TGroupBox;
     checkBs01: TCheckBox;
     checkBs02: TCheckBox;
     checkBs03: TCheckBox;
@@ -176,7 +176,7 @@ type
     checkBs08: TCheckBox;
     checkBs06: TCheckBox;
     checkBs04: TCheckBox;
-    GroupBox10: TGroupBox;
+    groupBandscopeInfoColors: TGroupBox;
     editBSColor1: TEdit;
     buttonBSFore1: TButton;
     buttonBSReset1: TButton;
@@ -204,7 +204,7 @@ type
     ColorDialog1: TColorDialog;
     checkSendNrAuto: TCheckBox;
     tabsheetBandScope2: TTabSheet;
-    GroupBox12: TGroupBox;
+    groupBandscopeSpotSource: TGroupBox;
     Label61: TLabel;
     editBSColor5: TEdit;
     buttonBSBack5: TButton;
@@ -270,7 +270,7 @@ type
     vEdit13: TEdit;
     vButton13: TButton;
     vButton14: TButton;
-    GroupBox20: TGroupBox;
+    groupBandscopeOptions1: TGroupBox;
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
     checkShowJAspots: TCheckBox;
@@ -333,7 +333,6 @@ type
     buttonOpEdit: TButton;
     checkOutputOutofPeriod: TCheckBox;
     checkUseContestPeriod: TCheckBox;
-    checkUseResume: TCheckBox;
     groupQuickMemo: TGroupBox;
     Label63: TLabel;
     Label64: TLabel;
@@ -384,7 +383,7 @@ type
     checkSaveCurrentFreq: TCheckBox;
     buttonBSReset8: TButton;
     buttonBSReset9: TButton;
-    GroupBox6: TGroupBox;
+    groupBandscopeOtherColors: TGroupBox;
     Label28: TLabel;
     Label29: TLabel;
     Label30: TLabel;
@@ -398,6 +397,9 @@ type
     buttonBSOtherReset2: TButton;
     buttonBSOtherReset3: TButton;
     checkShowDXspots: TCheckBox;
+    groupBandscopeOptions2: TGroupBox;
+    checkUseResume: TCheckBox;
+    checkUseNumberLookup: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -435,6 +437,7 @@ type
     procedure checkUseEstimatedModeClick(Sender: TObject);
     procedure buttonSpotterListClick(Sender: TObject);
     procedure buttonOpEditClick(Sender: TObject);
+    procedure checkUseNumberLookupClick(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -819,11 +822,14 @@ begin
       Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
       Settings._bandscope_show_ja_spots := checkShowJAspots.Checked;                // JAを表示
       Settings._bandscope_show_dx_spots := checkShowDXspots.Checked;                // DXを表示
+      Settings._bandscope_use_number_lookup := checkUseNumberLookup.Checked;        // Number Lookup
       Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
-      Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
       Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
       Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
       Settings._bandscope_save_current_freq := checkSaveCurrentFreq.Checked;        // S&P時、現在周波数を保存する
+
+      // BandScope Options2
+      Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1149,11 +1155,14 @@ begin
       checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
       checkShowJAspots.Checked := Settings._bandscope_show_ja_spots;                // JAを表示
       checkShowDXspots.Checked := Settings._bandscope_show_dx_spots;                // DXを表示
+      checkUseNumberLookup.Checked := Settings._bandscope_use_number_lookup;        // Number Lookup
       checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
-      checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
       checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
       checkSaveCurrentFreq.Checked := Settings._bandscope_save_current_freq;        // S&P時、現在周波数を保存する
+
+      // BandScope Options2
+      checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
 
       // 1Radio時のみ設定可能とする
       if Settings._operate_style = os1Radio then begin
@@ -1164,6 +1173,7 @@ begin
       end;
 
       checkUseEstimatedModeClick(nil);
+      checkUseNumberLookupClick(nil);
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1569,6 +1579,14 @@ begin
    f := checkUseEstimatedMode.Checked;
    checkAlwaysChangeMode.Enabled := f;
    checkSetFreqAfterModeChange.Enabled := f;
+end;
+
+procedure TformOptions2.checkUseNumberLookupClick(Sender: TObject);
+var
+   f: Boolean;
+begin
+   f := checkUseNumberLookup.Checked;
+   checkUseLookupServer.Enabled := f;
 end;
 
 procedure TformOptions2.checkUseQuickQSYClick(Sender: TObject);

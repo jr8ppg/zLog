@@ -2643,7 +2643,7 @@ object formOptions2: TformOptions2
     object tabsheetBandScope1: TTabSheet
       Caption = 'BandScope'
       ImageIndex = 9
-      object GroupBox9: TGroupBox
+      object groupBandscopeBands: TGroupBox
         Left = 6
         Top = 4
         Width = 423
@@ -2841,7 +2841,7 @@ object formOptions2: TformOptions2
           TabOrder = 16
         end
       end
-      object GroupBox10: TGroupBox
+      object groupBandscopeInfoColors: TGroupBox
         Left = 6
         Top = 145
         Width = 423
@@ -3081,7 +3081,7 @@ object formOptions2: TformOptions2
           OnClick = checkBSBoldClick
         end
       end
-      object GroupBox20: TGroupBox
+      object groupBandscopeOptions1: TGroupBox
         Left = 6
         Top = 281
         Width = 423
@@ -3115,11 +3115,11 @@ object formOptions2: TformOptions2
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 63
+          Top = 86
           Width = 165
           Height = 17
           Caption = 'Use lookup server'
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 226
@@ -3136,14 +3136,6 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Suppress LSB/USB mode error'
           TabOrder = 6
-        end
-        object checkUseResume: TCheckBox
-          Left = 12
-          Top = 86
-          Width = 165
-          Height = 17
-          Caption = 'Use resume'
-          TabOrder = 4
         end
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
@@ -3162,12 +3154,21 @@ object formOptions2: TformOptions2
           Caption = 'Show DX spots'
           TabOrder = 2
         end
+        object checkUseNumberLookup: TCheckBox
+          Left = 12
+          Top = 63
+          Width = 165
+          Height = 17
+          Caption = 'Use number lookup'
+          TabOrder = 3
+          OnClick = checkUseNumberLookupClick
+        end
       end
     end
     object tabsheetBandScope2: TTabSheet
       Caption = 'BandScope2'
       ImageIndex = 11
-      object GroupBox12: TGroupBox
+      object groupBandscopeSpotSource: TGroupBox
         Left = 6
         Top = 4
         Width = 423
@@ -3373,7 +3374,7 @@ object formOptions2: TformOptions2
       object groupSpotFreshness: TGroupBox
         Left = 6
         Top = 281
-        Width = 423
+        Width = 252
         Height = 121
         Caption = 'Spot Freshness'
         TabOrder = 2
@@ -3410,7 +3411,7 @@ object formOptions2: TformOptions2
           TabOrder = 3
         end
       end
-      object GroupBox6: TGroupBox
+      object groupBandscopeOtherColors: TGroupBox
         Left = 6
         Top = 167
         Width = 423
@@ -3530,6 +3531,22 @@ object formOptions2: TformOptions2
           Caption = 'Reset'
           TabOrder = 8
           OnClick = buttonBSResetClick
+        end
+      end
+      object groupBandscopeOptions2: TGroupBox
+        Left = 264
+        Top = 281
+        Width = 165
+        Height = 121
+        Caption = 'Options2'
+        TabOrder = 3
+        object checkUseResume: TCheckBox
+          Left = 12
+          Top = 24
+          Width = 145
+          Height = 17
+          Caption = 'Use resume'
+          TabOrder = 0
         end
       end
     end

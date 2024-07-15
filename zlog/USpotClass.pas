@@ -802,7 +802,7 @@ begin
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
       end
-      else begin
+      else if dmZLogGlobal.Settings._bandscope_use_number_lookup = True then begin
          // 他のバンドで未交信ならSPCデータよりマルチを取得
          SD := TSuperData.Create();
          Sd.Callsign := Sp.Call;
