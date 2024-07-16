@@ -90,7 +90,7 @@ type
     FCountData2: array[1..49] of array[b19..TBand(17)] of TQsoCount2;
     FOpCount: TList<TOpCount>;
     FZADSupport: Boolean;
-    FMultiGet: array[02..114] of array[b19..b50] of Boolean;
+    FMultiGet: array[02..114] of array[b19..b1200] of Boolean;
     procedure ShowAll(sl: TStrings);
     procedure InitTimeChart();
     procedure TotalTimeChart(qsolist: TQSOList);
@@ -336,7 +336,7 @@ begin
    end;
 
    FZADSupport := False;
-   for b := b19 to b50 do begin
+   for b := b19 to b1200 do begin
       for i := 02 to 114 do begin
          FMultiGet[i][b] := False;
       end;
@@ -484,7 +484,7 @@ begin
       if (FZADSupport = True) and (qso.NewMulti1 = True) then begin
          multi := StrToIntDef(qso.Multi1, 0);
          if (multi >= 2) and (multi <= 114) then begin
-            if (qso.Band >= b19) and (qso.Band <= b50) then begin
+            if (qso.Band >= b19) and (qso.Band <= b1200) then begin
                FMultiGet[multi][qso.Band] := True;
             end;
          end;
@@ -1355,7 +1355,7 @@ var
       strText: string;
       strMulti: string;
    begin
-      for b := b19 to b50 do begin
+      for b := b19 to b1200 do begin
          // WARCバンド除く
          if (b = b10) or (b = b18) or (b = b24) then begin
             Continue;
@@ -1434,7 +1434,7 @@ begin
    strTitle := '    1234567890123423456789012345678901234567890123456789012345678';
    sl.Add(strTitle);
 
-   for b := b19 to b50 do begin
+   for b := b19 to b1200 do begin
       // WARCバンド除く
       if (b = b10) or (b = b18) or (b = b24) then begin
          Continue;
