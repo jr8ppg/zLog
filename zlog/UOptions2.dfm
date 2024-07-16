@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -622,35 +622,35 @@ object formOptions2: TformOptions2
     object tabsheetCategories: TTabSheet
       Caption = 'Categories'
       object Label14: TLabel
-        Left = 305
+        Left = 299
         Top = 128
         Width = 71
         Height = 13
         Caption = 'Prov/State($V)'
       end
       object Label18: TLabel
-        Left = 305
+        Left = 299
         Top = 152
         Width = 37
         Height = 13
         Caption = 'City($Q)'
       end
       object Label19: TLabel
-        Left = 305
+        Left = 299
         Top = 224
         Width = 41
         Height = 13
         Caption = 'Sent($X)'
       end
       object Label34: TLabel
-        Left = 305
+        Left = 299
         Top = 176
         Width = 62
         Height = 13
         Caption = 'CQ Zone($Z)'
       end
       object Label35: TLabel
-        Left = 305
+        Left = 299
         Top = 200
         Width = 61
         Height = 13
@@ -778,13 +778,13 @@ object formOptions2: TformOptions2
         Text = '25'
       end
       object IARUZoneEdit: TEdit
-        Left = 400
+        Left = 376
         Top = 196
-        Width = 25
+        Width = 49
         Height = 20
         AutoSize = False
         CharCase = ecUpperCase
-        MaxLength = 3
+        MaxLength = 6
         TabOrder = 5
         Text = '45'
       end
