@@ -3159,7 +3159,7 @@ object formOptions2: TformOptions2
           Top = 63
           Width = 165
           Height = 17
-          Caption = 'Use number lookup'
+          Caption = 'Use multi lookup'
           TabOrder = 3
           OnClick = checkUseNumberLookupClick
         end

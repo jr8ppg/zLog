@@ -3159,7 +3159,7 @@ object formOptions2: TformOptions2
           Top = 63
           Width = 165
           Height = 17
-          Caption = #12490#12531#12496#12540#29031#20250#12434#34892#12358
+          Caption = #12510#12523#12481#29031#20250#12434#34892#12358
           TabOrder = 3
           OnClick = checkUseNumberLookupClick
         end
