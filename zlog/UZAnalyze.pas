@@ -90,7 +90,8 @@ type
     FCountData2: array[1..49] of array[b19..TBand(17)] of TQsoCount2;
     FOpCount: TList<TOpCount>;
     FZADSupport: Boolean;
-    FMultiGet: array[02..114] of array[b19..b1200] of Boolean;
+    FMultiGet: array[02..114] of array[b19..b10g] of Integer;
+    FMultiGet2: array[b19..b10g] of TList<string>;
     procedure ShowAll(sl: TStrings);
     procedure InitTimeChart();
     procedure TotalTimeChart(qsolist: TQSOList);
@@ -131,27 +132,39 @@ uses
 
 {$R *.dfm}
 
+procedure TZAnalyze.FormCreate(Sender: TObject);
+var
+   b: TBand;
+begin
+   FOpCount := TList<TOpCount>.Create();
+
+   for b := b19 to b10g do begin
+      FMultiGet2[b] := TList<string>.Create();
+   end;
+
+   Memo1.Clear();
+   InitTimeChart();
+end;
+
 procedure TZAnalyze.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    MainForm.DelTaskbar(Handle);
 end;
 
-procedure TZAnalyze.FormCreate(Sender: TObject);
-begin
-   FOpCount := TList<TOpCount>.Create();
-   Memo1.Clear();
-   InitTimeChart();
-end;
-
 procedure TZAnalyze.FormDestroy(Sender: TObject);
 var
    i: Integer;
+   b: TBand;
 begin
    for i := FOpCount.Count - 1 downto 0 do begin
       FOpCount[i].Free();
       FOpCount.Delete(i);
    end;
    FOpCount.Free();
+
+   for b := b19 to b10g do begin
+      FMultiGet2[b].Free();
+   end;
 end;
 
 procedure TZAnalyze.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -336,10 +349,12 @@ begin
    end;
 
    FZADSupport := False;
-   for b := b19 to b1200 do begin
+   for b := b19 to b10g do begin
       for i := 02 to 114 do begin
-         FMultiGet[i][b] := False;
+         FMultiGet[i][b] := 0;
       end;
+
+      FMultiGet2[b].Clear();
    end;
 
    for i := FOpCount.Count - 1 downto 0 do begin
@@ -482,12 +497,22 @@ begin
 
       // マルチ
       if (FZADSupport = True) and (qso.NewMulti1 = True) then begin
-         multi := StrToIntDef(qso.Multi1, 0);
-         if (multi >= 2) and (multi <= 114) then begin
-            if (qso.Band >= b19) and (qso.Band <= b1200) then begin
-               FMultiGet[multi][qso.Band] := True;
+         if b < b2400 then begin
+            multi := StrToIntDef(qso.Multi1, 0);
+            if (multi >= 2) and (multi <= 114) then begin
+               Inc(FMultiGet[multi][qso.Band]);
+            end;
+         end
+         else begin  // >= b2400
+            multi := StrToIntDef(Copy(qso.Multi1, 1, 2), 0);
+            if multi = 1 then begin
+               Inc(FMultiGet[101][qso.Band]);      // 北海道は101にカウント
+            end
+            else if (multi >= 2) and (multi <= 48) then begin
+               Inc(FMultiGet[multi][qso.Band]);
             end;
          end;
+         FMultiGet2[qso.Band].Add(qso.Multi1);
       end;
 
       // Op別 (ZOP)
@@ -1346,15 +1371,19 @@ var
    strTitle: string;
    b: TBand;
    i: Integer;
+   n: Integer;
    strText: string;
 
+   // とれたマルチ／とれなかったマルチ
    procedure BuildMultiGet(fGet: Boolean);
    var
       b: TBand;
       i: Integer;
       strText: string;
       strMulti: string;
+      fJudge: Boolean;
    begin
+      // まずは1200Mまで
       for b := b19 to b1200 do begin
          // WARCバンド除く
          if (b = b10) or (b = b18) or (b = b24) then begin
@@ -1373,7 +1402,14 @@ var
          // 北海道マルチ
          strText := '';
          for i := 101 to 114 do begin
-            if FMultiGet[i][b] = fGet then begin
+            if fGet = True then begin
+               fJudge := FMultiGet[i][b] > 0;
+            end
+            else begin
+               fJudge := FMultiGet[i][b] = 0;
+            end;
+
+            if fJudge then begin
                strMulti := ' ' + IntToStr(i);
                if Length(strText + strMulti) >= 80 then begin
                   sl.Add(strText);
@@ -1386,7 +1422,14 @@ var
 
          // 本州マルチ
          for i := 2 to 48 do begin
-            if FMultiGet[i][b] = fGet then begin
+            if fGet = True then begin
+               fJudge := FMultiGet[i][b] > 0;
+            end
+            else begin
+               fJudge := FMultiGet[i][b] = 0;
+            end;
+
+            if fJudge then begin
                strMulti := ' ' + RightStr('00' + IntToStr(i), 2);
                if Length(strText + strMulti) >= 80 then begin
                   sl.Add(strText);
@@ -1402,6 +1445,66 @@ var
          end;
          sl.Add('');
       end;
+
+      // 2400以上はとれたマルチのみ
+      if fGet = True then begin
+         for b := b2400 to b10g do begin
+            // 交信の無いバンド除く
+            if FCountData[HTOTAL][b].FQso = 0 then begin
+               Continue;
+            end;
+
+            // 取得リスト並び替え
+            FMultiGet2[b].Sort();
+
+            // バンド見出し
+            strText := '[' + BandString[b] + ']';
+            sl.Add(strText);
+
+            // マルチ取得リストから取り出し
+            strText := '';
+            for i := 0 to FMultiGet2[b].Count - 1 do begin
+               strMulti := ' ' + FMultiGet2[b][i];
+               if Length(strText + strMulti) >= 80 then begin
+                  sl.Add(strText);
+                  strText := '';
+               end;
+
+               strText := strText + strMulti;
+            end;
+
+            if strText <> '' then begin
+               sl.Add(strText);
+            end;
+            sl.Add('');
+         end;
+      end;
+   end;
+
+   // マルチマップの表示キャラ取得
+   function GetMultiCountChar(multi: Integer; b: TBand): string;
+   const
+      multichar = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+   var
+      cntstr: string;
+   begin
+      if FMultiGet[multi][b] > 0 then begin
+         if b < b2400 then begin
+            cntstr := '*';
+         end
+         else begin
+            n := FMultiGet[multi][b];
+            if n > 35 then begin
+               n := 35;
+            end;
+            cntstr := multichar[n];
+         end;
+      end
+      else begin
+         cntstr := '.';
+      end;
+
+      Result := cntstr;
    end;
 begin
    sl.Clear();
@@ -1434,7 +1537,7 @@ begin
    strTitle := '    1234567890123423456789012345678901234567890123456789012345678';
    sl.Add(strTitle);
 
-   for b := b19 to b1200 do begin
+   for b := b19 to b10g do begin
       // WARCバンド除く
       if (b = b10) or (b = b18) or (b = b24) then begin
          Continue;
@@ -1445,24 +1548,17 @@ begin
          Continue;
       end;
 
+      // バンド名
       strText := RightStr('    ' + MHzString[b], 4);
 
+      // 北海道マルチ
       for i := 101 to 114 do begin
-         if FMultiGet[i][b] = True then begin
-            strText := strText + '*';
-         end
-         else begin
-            strText := strText + '.';
-         end;
+         strText := strText + GetMultiCountChar(i, b);
       end;
 
+      // 本州マルチ
       for i := 2 to 48 do begin
-         if FMultiGet[i][b] = True then begin
-            strText := strText + '*';
-         end
-         else begin
-            strText := strText + '.';
-         end;
+         strText := strText + GetMultiCountChar(i, b);
       end;
 
       sl.Add(strText);
