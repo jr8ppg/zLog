@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 440
     Height = 433
-    ActivePage = tabsheetBandScope1
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 436
@@ -622,35 +622,35 @@ object formOptions2: TformOptions2
     object tabsheetCategories: TTabSheet
       Caption = #12459#12486#12468#12522#12540
       object Label14: TLabel
-        Left = 305
+        Left = 299
         Top = 128
         Width = 71
         Height = 13
         Caption = #37117#36947#24220#30476'($V)'
       end
       object Label18: TLabel
-        Left = 305
+        Left = 299
         Top = 152
         Width = 37
         Height = 13
         Caption = #24066#37089'($Q)'
       end
       object Label19: TLabel
-        Left = 305
+        Left = 299
         Top = 224
         Width = 41
         Height = 13
         Caption = 'Sent($X)'
       end
       object Label34: TLabel
-        Left = 305
+        Left = 299
         Top = 176
         Width = 62
         Height = 13
         Caption = 'CQ Zone($Z)'
       end
       object Label35: TLabel
-        Left = 305
+        Left = 299
         Top = 200
         Width = 61
         Height = 13
@@ -778,13 +778,13 @@ object formOptions2: TformOptions2
         Text = '25'
       end
       object IARUZoneEdit: TEdit
-        Left = 400
+        Left = 376
         Top = 196
-        Width = 25
+        Width = 49
         Height = 20
         AutoSize = False
         CharCase = ecUpperCase
-        MaxLength = 3
+        MaxLength = 6
         TabOrder = 5
         Text = '45'
       end
@@ -2643,7 +2643,7 @@ object formOptions2: TformOptions2
     object tabsheetBandScope1: TTabSheet
       Caption = #12496#12531#12489#12473#12467#12540#12503
       ImageIndex = 9
-      object GroupBox9: TGroupBox
+      object groupBandscopeBands: TGroupBox
         Left = 6
         Top = 4
         Width = 423
@@ -2841,7 +2841,7 @@ object formOptions2: TformOptions2
           TabOrder = 16
         end
       end
-      object GroupBox10: TGroupBox
+      object groupBandscopeInfoColors: TGroupBox
         Left = 6
         Top = 145
         Width = 423
@@ -2892,7 +2892,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = #25991#23383#33394
+          Caption = 'Fore...'
           TabOrder = 1
           OnClick = buttonBSForeClick
         end
@@ -2902,7 +2902,7 @@ object formOptions2: TformOptions2
           Top = 20
           Width = 45
           Height = 20
-          Caption = #12522#12475#12483#12488
+          Caption = 'Reset'
           TabOrder = 4
           OnClick = buttonBSResetClick
         end
@@ -2912,7 +2912,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = #32972#26223#33394
+          Caption = 'Back...'
           TabOrder = 2
           Visible = False
           OnClick = buttonBSBackClick
@@ -2933,7 +2933,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = #25991#23383#33394
+          Caption = 'Fore...'
           TabOrder = 6
           OnClick = buttonBSForeClick
         end
@@ -2943,7 +2943,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = #12522#12475#12483#12488
+          Caption = 'Reset'
           TabOrder = 9
           OnClick = buttonBSResetClick
         end
@@ -2953,7 +2953,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = #32972#26223#33394
+          Caption = 'Back...'
           TabOrder = 7
           Visible = False
           OnClick = buttonBSBackClick
@@ -2974,7 +2974,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = #25991#23383#33394
+          Caption = 'Fore...'
           TabOrder = 11
           OnClick = buttonBSForeClick
         end
@@ -2984,7 +2984,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = #12522#12475#12483#12488
+          Caption = 'Reset'
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
@@ -2994,7 +2994,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = #32972#26223#33394
+          Caption = 'Back...'
           TabOrder = 12
           Visible = False
           OnClick = buttonBSBackClick
@@ -3015,7 +3015,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = #25991#23383#33394
+          Caption = 'Fore...'
           TabOrder = 16
           OnClick = buttonBSForeClick
         end
@@ -3025,7 +3025,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = #12522#12475#12483#12488
+          Caption = 'Reset'
           TabOrder = 19
           OnClick = buttonBSResetClick
         end
@@ -3035,7 +3035,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = #32972#26223#33394
+          Caption = 'Back...'
           TabOrder = 17
           Visible = False
           OnClick = buttonBSBackClick
@@ -3046,7 +3046,7 @@ object formOptions2: TformOptions2
           Top = 22
           Width = 41
           Height = 17
-          Caption = #22826#23383
+          Caption = 'Bold'
           TabOrder = 3
           OnClick = checkBSBoldClick
         end
@@ -3056,7 +3056,7 @@ object formOptions2: TformOptions2
           Top = 47
           Width = 41
           Height = 17
-          Caption = #22826#23383
+          Caption = 'Bold'
           TabOrder = 8
           OnClick = checkBSBoldClick
         end
@@ -3066,7 +3066,7 @@ object formOptions2: TformOptions2
           Top = 72
           Width = 41
           Height = 17
-          Caption = #22826#23383
+          Caption = 'Bold'
           TabOrder = 13
           OnClick = checkBSBoldClick
         end
@@ -3076,12 +3076,12 @@ object formOptions2: TformOptions2
           Top = 97
           Width = 41
           Height = 17
-          Caption = #22826#23383
+          Caption = 'Bold'
           TabOrder = 18
           OnClick = checkBSBoldClick
         end
       end
-      object GroupBox20: TGroupBox
+      object groupBandscopeOptions1: TGroupBox
         Left = 6
         Top = 281
         Width = 423
@@ -3115,11 +3115,11 @@ object formOptions2: TformOptions2
         end
         object checkUseLookupServer: TCheckBox
           Left = 12
-          Top = 63
+          Top = 86
           Width = 165
           Height = 17
           Caption = 'Lookup Server'#12434#20351#12358
-          TabOrder = 3
+          TabOrder = 4
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 226
@@ -3137,20 +3137,12 @@ object formOptions2: TformOptions2
           Caption = 'LSB/USB'#12514#12540#12489#35492#12426#12434#25233#21046
           TabOrder = 6
         end
-        object checkUseResume: TCheckBox
-          Left = 12
-          Top = 86
-          Width = 165
-          Height = 17
-          Caption = #12524#12472#12517#12540#12512#27231#33021#12434#20351#12358
-          TabOrder = 4
-        end
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
           Top = 86
           Width = 204
           Height = 17
-          Caption = 'Spot'#12395'QSY'#12377#12427#30452#21069#12398#21608#27874#25968#12434#35352#25014
+          Caption = 'SPOT'#12395'QSY'#12377#12427#30452#21069#12398#21608#27874#25968#12434#35352#25014
           TabOrder = 8
           OnClick = checkUseEstimatedModeClick
         end
@@ -3162,12 +3154,21 @@ object formOptions2: TformOptions2
           Caption = 'DX'#12434#34920#31034
           TabOrder = 2
         end
+        object checkUseNumberLookup: TCheckBox
+          Left = 12
+          Top = 63
+          Width = 165
+          Height = 17
+          Caption = #12510#12523#12481#29031#20250#12434#34892#12358
+          TabOrder = 3
+          OnClick = checkUseNumberLookupClick
+        end
       end
     end
     object tabsheetBandScope2: TTabSheet
       Caption = #12496#12531#12489#12473#12467#12540#12503'2'
       ImageIndex = 11
-      object GroupBox12: TGroupBox
+      object groupBandscopeSpotSource: TGroupBox
         Left = 6
         Top = 4
         Width = 423
@@ -3373,7 +3374,7 @@ object formOptions2: TformOptions2
       object groupSpotFreshness: TGroupBox
         Left = 6
         Top = 281
-        Width = 423
+        Width = 252
         Height = 121
         Caption = #12473#12509#12483#12488#12398#26032#39854#24230
         TabOrder = 2
@@ -3410,7 +3411,7 @@ object formOptions2: TformOptions2
           TabOrder = 3
         end
       end
-      object GroupBox6: TGroupBox
+      object groupBandscopeOtherColors: TGroupBox
         Left = 6
         Top = 167
         Width = 423
@@ -3530,6 +3531,22 @@ object formOptions2: TformOptions2
           Caption = #12522#12475#12483#12488
           TabOrder = 8
           OnClick = buttonBSResetClick
+        end
+      end
+      object groupBandscopeOptions2: TGroupBox
+        Left = 264
+        Top = 281
+        Width = 165
+        Height = 121
+        Caption = #12458#12503#12471#12519#12531#65298
+        TabOrder = 3
+        object checkUseResume: TCheckBox
+          Left = 12
+          Top = 24
+          Width = 145
+          Height = 17
+          Caption = #12524#12472#12517#12540#12512#27231#33021#12434#20351#12358
+          TabOrder = 0
         end
       end
     end

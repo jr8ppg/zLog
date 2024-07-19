@@ -638,10 +638,11 @@ end;
 
 function TContest.ADIF_ExchangeRX_FieldName: string;
 begin
-   if SerialContestType <> 0 then
-      Result := 'srx'
-   else
-      Result := 'srx_string';
+//   if SerialContestType <> 0 then
+//      Result := 'srx'
+//   else
+//      Result := 'srx_string';
+   Result := '';
 end;
 
 function TCQWWContest.ADIF_ExchangeRX_FieldName: string;
@@ -705,7 +706,12 @@ var
 
    function AdifField(F, V: string): string;
    begin
-      Result := '<' + F + ':' + IntToStr(Length(V)) + '>' + V;
+      if F = '' then begin
+         Result := '';
+      end
+      else begin
+         Result := '<' + F + ':' + IntToStr(Length(V)) + '>' + V;
+      end;
    end;
 begin
    Header := 'ADIF export from zLog for Windows'; // +dmZlogGlobal.Settings._mycall;

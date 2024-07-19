@@ -1174,7 +1174,7 @@ var
    Command: AnsiString;
    para: byte;
 begin
-   Inherited SetMode(Q);
+   _currentmode := Q.Mode;
 
    case Q.Mode of
       mSSB:
@@ -1240,8 +1240,30 @@ begin
 end;
 
 procedure TFT817.SetMode(Q: TQSO);
+var
+   Command: AnsiString;
+   para: byte;
 begin
-   Inherited SetMode(Q);
+   _currentmode := Q.Mode;
+
+   case Q.Mode of
+      mSSB:
+         if Q.Band <= b7 then
+            para := 0
+         else
+            para := 1;
+      mCW:
+         para := $2;
+      mFM:
+         para := 8;
+      mAM:
+         para := 4;
+      else
+         para := 0;
+   end;
+
+   Command := AnsiChar(para) + _nil3 + AnsiChar($07);
+   WriteData(Command);
 
    FPollingTimer.Enabled := False;
    Fchange := True;
