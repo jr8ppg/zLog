@@ -3710,6 +3710,9 @@ begin
    Log.SetDupeFlags;
 
    GridRefreshScreen();
+
+   // BandScopeの更新
+   BandScopeNotifyWorked(nil);
 end;
 
 procedure TMainForm.GridKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);

@@ -1266,7 +1266,7 @@ begin
             if (D.IsNewMulti = False) then begin
                FBSList[i] := nil;
             end;
-            if (D.Call = aQSO.Callsign) and (D.Band = aQSO.Band) then begin
+            if (aQSO <> nil) and (D.Call = aQSO.Callsign) and (D.Band = aQSO.Band) then begin
                FBSList[i] := nil;
             end;
          end;
