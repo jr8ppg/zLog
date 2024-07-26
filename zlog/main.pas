@@ -12406,22 +12406,18 @@ var
  v: Boolean;
  h: Integer;
 begin
+   // CW/PH ToolBar
    if (mnHideCWPhToolBar.Checked = False) then begin
       if M in [mCW, mRTTY] then begin
-         v := True; // CW
+         if CWToolBar.Visible = False then begin
+            CWToolBar.Visible := True;
+            SSBToolBar.Visible := False;
+         end;
       end
       else begin
-         v := False;
-      end;
-
-      if CWToolBar.Visible <> v then begin
-         if v = True then begin
-            CWToolBar.Visible := v;
-            SSBToolBar.Visible := not v;
-         end
-         else begin
-            SSBToolBar.Visible := not v;
-            CWToolBar.Visible := v;
+         if SSBToolBar.Visible = False then begin
+            SSBToolBar.Visible := True;
+            CWToolBar.Visible := False;
          end;
       end;
    end
@@ -12429,6 +12425,9 @@ begin
       CWToolBar.Visible := False;
       SSBToolBar.Visible := False;
    end;
+
+   // Main ToolBar
+   MainToolBar.Visible := not mnHideMenuToolbar.Checked;
 
    if (mnHideMenuToolbar.Checked = True) and (mnHideCWPhToolBar.Checked = True) then begin
       v := False;

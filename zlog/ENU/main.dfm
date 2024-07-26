@@ -1000,7 +1000,6 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
-    ExplicitWidth = 524
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -5235,11 +5234,12 @@ object MainForm: TMainForm
     end
     object MainToolBar: TPanel
       Left = 0
-      Top = 66
+      Top = 33
       Width = 528
       Height = 33
-      Align = alTop
+      Align = alBottom
       TabOrder = 2
+      ExplicitTop = 66
       ExplicitWidth = 524
       DesignSize = (
         528
