@@ -23,7 +23,7 @@ uses
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, URigCtrlLib, UConsolePad, USpotClass,
-  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogCabrillo, UQuickRef, UZAnalyze,
+  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogJarlEx, UELogCabrillo, UQuickRef, UZAnalyze,
   UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
@@ -573,6 +573,7 @@ type
     menuUploadSounds: TMenuItem;
     OptionsButton: TSpeedButton;
     buttonCancelOutOfPeriod: TSpeedButton;
+    CreateJARLELog: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -874,6 +875,7 @@ type
     procedure menuUploadSoundsClick(Sender: TObject);
     procedure menuDownloadSoundsClick(Sender: TObject);
     procedure buttonCancelOutOfPeriodClick(Sender: TObject);
+    procedure CreateJARLELogClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -6961,6 +6963,18 @@ var
    f: TformELogJarl2;
 begin
    f := TformELogJarl2.Create(Self);
+   try
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TMainForm.CreateJARLELogClick(Sender: TObject);
+var
+   f: TformELogJarlEx;
+begin
+   f := TformELogJarlEx.Create(Self);
    try
       f.ShowModal();
    finally
