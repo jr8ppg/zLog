@@ -24,8 +24,8 @@ object formELogJarlEx: TformELogJarlEx
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 619
-    ExplicitWidth = 790
+    ExplicitTop = 658
+    ExplicitWidth = 842
     object buttonCreateLog: TButton
       Left = 377
       Top = 6
@@ -75,10 +75,8 @@ object formELogJarlEx: TformELogJarlEx
       'R2.1')
     TabIndex = 0
     OnChange = TabControl1Change
-    ExplicitLeft = 1
-    ExplicitTop = 3
-    ExplicitWidth = 830
-    ExplicitHeight = 606
+    ExplicitWidth = 842
+    ExplicitHeight = 658
     object Label2: TLabel
       Left = 24
       Top = 60
@@ -301,8 +299,8 @@ object formELogJarlEx: TformELogJarlEx
       Caption = 'E-mail'#12450#12489#12524#12473
     end
     object labelCategoryName: TLabel
-      Left = 282
-      Top = 61
+      Left = 195
+      Top = 60
       Width = 72
       Height = 12
       Caption = #21442#21152#31278#30446#21517#31216
@@ -411,7 +409,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 15
         Width = 31
         Height = 12
-        Caption = 'Multis'
+        Caption = 'Multi1'
       end
       object Label26: TLabel
         Left = 266
@@ -443,6 +441,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 29
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 1
@@ -452,6 +451,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 29
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 2
@@ -461,6 +461,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 29
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 3
@@ -483,6 +484,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 55
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 5
@@ -493,6 +495,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 55
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 6
@@ -503,6 +506,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 55
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 7
@@ -525,6 +529,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 81
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 9
@@ -535,6 +540,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 81
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 10
@@ -545,6 +551,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 81
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 11
@@ -567,6 +574,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 107
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 13
@@ -577,6 +585,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 107
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 14
@@ -587,6 +596,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 107
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 15
@@ -609,6 +619,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 133
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 17
@@ -619,6 +630,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 133
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 18
@@ -629,6 +641,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 133
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 19
@@ -651,6 +664,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 159
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 21
@@ -661,6 +675,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 159
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 22
@@ -671,6 +686,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 159
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 23
@@ -693,6 +709,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 185
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 25
@@ -703,6 +720,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 185
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 26
@@ -713,6 +731,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 185
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 27
@@ -735,6 +754,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 211
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 29
@@ -745,6 +765,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 211
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 30
@@ -755,6 +776,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 211
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 31
@@ -777,6 +799,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 237
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 33
@@ -787,6 +810,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 237
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 34
@@ -797,6 +821,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 237
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 35
@@ -819,6 +844,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 263
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 37
@@ -829,6 +855,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 263
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 38
@@ -839,6 +866,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 263
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 39
@@ -861,6 +889,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 289
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 41
@@ -871,6 +900,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 289
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 42
@@ -881,6 +911,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 289
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 43
@@ -903,6 +934,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 315
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 45
@@ -913,6 +945,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 315
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 46
@@ -923,6 +956,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 315
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 47
@@ -945,6 +979,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 341
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 49
@@ -955,6 +990,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 341
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 50
@@ -965,6 +1001,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 341
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 51
@@ -974,6 +1011,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 395
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         ReadOnly = True
         TabOrder = 55
       end
@@ -982,6 +1020,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 421
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 56
@@ -992,6 +1031,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 367
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 52
@@ -1002,6 +1042,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 367
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 53
@@ -1012,6 +1053,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 367
         Width = 59
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 54
@@ -1021,6 +1063,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 29
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 57
@@ -1031,6 +1074,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 55
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 58
@@ -1041,6 +1085,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 81
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 59
@@ -1051,6 +1096,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 107
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 60
@@ -1061,6 +1107,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 133
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 61
@@ -1071,6 +1118,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 159
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 62
@@ -1081,6 +1129,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 185
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 63
@@ -1091,6 +1140,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 211
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 64
@@ -1101,6 +1151,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 237
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 65
@@ -1111,6 +1162,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 263
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 66
@@ -1121,6 +1173,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 289
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 67
@@ -1131,6 +1184,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 315
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 68
@@ -1141,6 +1195,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 341
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 69
@@ -1151,6 +1206,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 367
         Width = 41
         Height = 20
+        Alignment = taRightJustify
         NumbersOnly = True
         ReadOnly = True
         TabOrder = 70
@@ -1298,7 +1354,7 @@ object formELogJarlEx: TformELogJarlEx
     object edCategoryCode: TEdit
       Left = 116
       Top = 56
-      Width = 121
+      Width = 60
       Height = 21
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1441,9 +1497,9 @@ object formELogJarlEx: TformELogJarlEx
       TabOrder = 12
     end
     object edCategoryName: TEdit
-      Left = 369
+      Left = 273
       Top = 56
-      Width = 121
+      Width = 217
       Height = 21
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
