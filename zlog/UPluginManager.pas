@@ -366,7 +366,16 @@ begin
    		txt := res.ContentAsString(TEncoding.UTF8);
       end
       else begin
-         raise EXception.Create(res.StatusText);
+//         raise Exception.Create(res.StatusText);
+         var Toast := Toasts.CreateNotification;
+         Toast.Name := 'zLog';
+         Toast.Title := res.StatusText;
+         Toast.AlertBody := url;
+         try
+            Toasts.PresentNotification(Toast);
+         finally
+            Toast.Free;
+         end;
       end;
 	finally
 		FreeAndNil(buf);
