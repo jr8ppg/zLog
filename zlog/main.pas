@@ -3363,6 +3363,15 @@ begin
       end;
 
       ' ': begin
+         // memo欄は入力可
+         if TEdit(Sender).Tag = 1000 then begin
+            if dmZlogGlobal.Settings._movetomemo then begin
+               Key := #0;
+               CallsignEdit.SetFocus;
+            end;
+            Exit;
+         end;
+
          if Sender = CallsignEdit then begin { if space is pressed when Callsign edit is in focus }
             Key := #0;
 
