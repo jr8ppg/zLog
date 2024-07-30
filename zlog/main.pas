@@ -9519,6 +9519,10 @@ begin
       Exit;
    end;
 
+   if FInformation.Is2bsiq = True then begin
+      F2bsiqStart := True;
+   end;
+
    FCtrlZCQLoop := True;
    SetCqRepeatMode(True, True);
 end;
