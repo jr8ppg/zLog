@@ -236,9 +236,22 @@ procedure TMarketItem.Upgrade;
 procedure Backup(Item: TMarketItem);
 var
 	suf: string;
+   backup: string;
+   original: string;
 begin
 	suf := FormatDateTime('"."yymmdd', Now);
-	RenameFile(Item.ref, Item.ref + suf);
+   original := Item.ref;
+   backup := Item.ref + suf;
+
+   if FileExists(original) = False then begin
+      Exit;
+   end;
+
+   if FileExists(backup) then begin
+      DeleteFile(PChar(backup));
+   end;
+
+	RenameFile(original, backup);
 end;
 procedure Update(Item: TMarketItem);
 begin
@@ -246,9 +259,9 @@ begin
 end;
 procedure Verify(Item: TMarketItem);
 begin
-   if Item.sumfile = False then Exit;
+//   if Item.sumfile = False then Exit;
 	if Item.IsUpToDate then Exit;
-	raise Exception.Create('checksum');
+	raise Exception.Create('checksum mismatch');
 end;
 var
 	Item: TMarketItem;
@@ -259,7 +272,9 @@ begin
 			Update(Item);
 			Verify(Item);
 		except
-			TaskMessageDlg('download failed', Item.ref, mtWarning, [mbOK], 0);
+         on E: Exception do begin
+   			TaskMessageDlg('download failed (' + E.Message + ')', Item.ref, mtWarning, [mbOK], 0);
+         end;
 		end;
 	end;
 end;
