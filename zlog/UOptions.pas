@@ -346,10 +346,12 @@ type
     procedure NumberEditKeyPress(Sender: TObject; var Key: Char);
     procedure radio1RadioClick(Sender: TObject);
     procedure radio2RadioClick(Sender: TObject);
+    procedure PageControlChange(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
 //    FActiveTab: Integer;
+    FHardware2Changed: Boolean;
 
     FTempClusterTelnet: TCommParam;
     FTempClusterCom: TCommParam;
@@ -430,6 +432,7 @@ var
    CP: TCommPort;
    list: TList<TCommPort>;
 begin
+   FHardware2Changed := False;
    FRigConfig[1] := groupRig1;
    FRigConfig[2] := groupRig2;
    FRigConfig[3] := groupRig3;
@@ -836,6 +839,13 @@ begin
          editSpcFolder.Text := strDir;
          FNeedSuperCheckLoad := True;
       end;
+   end;
+end;
+
+procedure TformOptions.PageControlChange(Sender: TObject);
+begin
+   if PageControl.ActivePageIndex = 2 then begin
+      FHardware2Changed := True;
    end;
 end;
 
@@ -1752,7 +1762,8 @@ begin
       end;
    end;
 
-   if (rig_a_noassign > 0) or (rig_b_noassign > 0) then begin
+   // 未割当確認(
+   if (FHardware2Changed = True) and ((rig_a_noassign > 0) or (rig_b_noassign > 0)) then begin
       if Application.MessageBox(PChar(BandsHaveNoRigsAssigned), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
          PageControl.ActivePage := tabsheetHardware2;
          Result := False;
