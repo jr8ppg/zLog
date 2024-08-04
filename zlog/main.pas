@@ -1580,57 +1580,115 @@ end;
 function TMainForm.ScanNextBand(B0: TBand): TBand;
 var
    B: TBand;
+   nextband: TBand;
+   rig: TRig;
+   maxband, minband: TBand;
+   original: TBand;
 begin
-   Result := B0;
+   original := B0;
 
-   if B0 >= HiBand then begin
-      B0 := b19;
+   // 次のバンド候補
+   nextband := B0;
+   if nextband >= HiBand then begin
+      nextband := b19;
    end
    else begin
-      inc(B0);
+      Inc(nextband);
    end;
 
-   for B := B0 to HiBand do begin
+   // 次のバンドに対応したリグはあるか
+   rig := RigControl.GetRig(FCurrentRigSet, nextband);
+   if rig = nil then begin // ない
+      rig := RigControl.GetRig(FCurrentRigSet, B0);
+      if rig = nil then begin
+         B0 := nextband;
+         minband := b19;
+         maxband := HiBand;
+      end
+      else begin
+         minband := rig.MinBand;
+         maxband := rig.MaxBand;
+      end;
+   end
+   else begin  // あった
+      B0 := nextband;
+      minband := rig.MinBand;
+      maxband := rig.MaxBand;
+   end;
+
+   // minband～maxband内をスキャン
+   for B := B0 to maxband do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
 
-   for B := b19 to B0 do begin
+   for B := minband to B0 do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
+
+   Result := original;
 end;
 
 function TMainForm.ScanPrevBand(B0: TBand): TBand;
 var
    B: TBand;
+   prevband: TBand;
+   rig: TRig;
+   maxband, minband: TBand;
+   original: TBand;
 begin
-   Result := B0;
+   original := B0;
 
-   if B0 <= b19 then begin
-      B0 := HiBand;
+   // 次のバンド候補
+   prevband := B0;
+   if prevband <= b19 then begin
+      prevband := HiBand;
    end
    else begin
-      dec(B0);
+      Dec(prevband);
    end;
 
-   for B := B0 downto b19 do begin
+   // 前のバンドに対応したリグはあるか
+   rig := RigControl.GetRig(FCurrentRigSet, prevband);
+   if rig = nil then begin // ない
+      rig := RigControl.GetRig(FCurrentRigSet, B0);
+      if rig = nil then begin
+         B0 := prevband;
+         minband := b19;
+         maxband := HiBand;
+      end
+      else begin
+         minband := rig.MinBand;
+         maxband := rig.MaxBand;
+      end;
+   end
+   else begin  // あった
+      B0 := prevband;
+      minband := rig.MinBand;
+      maxband := rig.MaxBand;
+   end;
+
+   // minband～maxband内をスキャン
+   for B := B0 downto minband do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
 
-   for B := HiBand downto B0 do begin
+   for B := maxband downto B0 do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
+
+   Result := original;
 end;
 
 function TMainForm.IsAvailableBand(B: TBand): Boolean;
