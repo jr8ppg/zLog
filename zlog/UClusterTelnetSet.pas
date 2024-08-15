@@ -4,13 +4,12 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Spin;
+  Buttons, ExtCtrls, Spin, UTelnetSetting;
 
 type
   TformClusterTelnetSet = class(TForm)
     buttonOK: TButton;
     buttonCancel: TButton;
-    Bevel1: TBevel;
     comboHostName: TComboBox;
     comboLineBreak: TComboBox;
     checkLocalEcho: TCheckBox;
@@ -18,6 +17,11 @@ type
     Label2: TLabel;
     spPortNumber: TSpinEdit;
     Label3: TLabel;
+    GroupBox1: TGroupBox;
+    editSettingName: TEdit;
+    Label4: TLabel;
+    Label5: TLabel;
+    editLoginId: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
   private
@@ -30,12 +34,15 @@ type
     procedure SetPortNumber(v: Integer);
     function GetLocalEcho(): Boolean;
     procedure SetLocalEcho(v: Boolean);
+    function GetSetting(): TTelnetSetting;
+    procedure SetSetting(v: TTelnetSetting);
   public
     { Public declarations }
     property HostName: string read GetHostName write SetHostName;
     property LineBreak: Integer read GetLineBreak write SetLineBreak;
     property PortNumber: Integer read GetPortNumber write SetPortNumber;
     property LocalEcho: Boolean read GetLocalEcho write SetLocalEcho;
+    property Setting: TTelnetSetting read GetSetting write SetSetting;
   end;
 
 implementation
@@ -108,6 +115,30 @@ end;
 procedure TformClusterTelnetSet.SetLocalEcho(v: Boolean);
 begin
    checkLocalEcho.Checked := v;
+end;
+
+function TformClusterTelnetSet.GetSetting(): TTelnetSetting;
+var
+   obj: TTelnetSetting;
+begin
+   obj := TTelnetSetting.Create();
+   obj.Name := editSettingName.Text;
+   obj.HostName := comboHostName.Text;
+   obj.PortNumber := spPortNumber.Value;
+   obj.LineBreak := comboLineBreak.ItemIndex;
+   obj.LocalEcho := checkLocalEcho.Checked;
+   obj.LoginId := editLoginId.Text;
+   Result := obj;
+end;
+
+procedure TformClusterTelnetSet.SetSetting(v: TTelnetSetting);
+begin
+   editSettingName.Text := v.Name;
+   comboHostName.Text := v.HostName;
+   spPortNumber.Value := v.PortNumber;
+   comboLineBreak.ItemIndex := v.LineBreak;
+   checkLocalEcho.Checked := v.LocalEcho;
+   editLoginId.Text := v.LoginId;
 end;
 
 end.

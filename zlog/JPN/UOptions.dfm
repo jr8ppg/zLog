@@ -1,6 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
+  ActiveControl = radio1Radio
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -2794,16 +2795,9 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 423
-        Height = 137
-        Caption = #22806#37096#36899#25658
+        Height = 101
+        Caption = 'Z-Link'
         TabOrder = 0
-        object Label30: TLabel
-          Left = 8
-          Top = 31
-          Width = 66
-          Height = 13
-          Caption = 'PacketCluster'
-        end
         object Port: TLabel
           Left = 134
           Top = 14
@@ -2813,52 +2807,25 @@ object formOptions: TformOptions
         end
         object Label32: TLabel
           Left = 8
-          Top = 58
-          Width = 80
+          Top = 34
+          Width = 41
           Height = 13
-          Caption = 'Z-Link (Z-Server)'
+          Caption = 'Z-Server'
         end
         object Label55: TLabel
           Left = 8
-          Top = 87
-          Width = 78
+          Top = 63
+          Width = 45
           Height = 13
-          Caption = 'Z-Link PC'#21517
+          Caption = 'PC Name'
         end
-        object ClusterCombo: TComboBox
+        object ZLinkCombo: TComboBox
           Left = 118
-          Top = 28
+          Top = 31
           Width = 73
           Height = 21
           Style = csDropDownList
           TabOrder = 0
-          OnChange = ClusterComboChange
-          Items.Strings = (
-            'None'
-            'COM1'
-            'COM2'
-            'COM3'
-            'COM4'
-            'COM5'
-            'COM6'
-            'TELNET')
-        end
-        object buttonClusterSettings: TButton
-          Left = 201
-          Top = 28
-          Width = 102
-          Height = 21
-          Caption = 'COM'#12509#12540#12488#35373#23450
-          TabOrder = 1
-          OnClick = buttonClusterSettingsClick
-        end
-        object ZLinkCombo: TComboBox
-          Left = 118
-          Top = 55
-          Width = 73
-          Height = 21
-          Style = csDropDownList
-          TabOrder = 3
           OnChange = ZLinkComboChange
           Items.Strings = (
             'None'
@@ -2866,37 +2833,185 @@ object formOptions: TformOptions
         end
         object buttonZLinkSettings: TButton
           Left = 201
-          Top = 55
+          Top = 31
           Width = 102
           Height = 21
           Caption = 'TELNET'#35373#23450
-          TabOrder = 6
+          TabOrder = 3
           OnClick = buttonZLinkSettingsClick
         end
         object editZLinkPcName: TEdit
           Left = 118
-          Top = 84
+          Top = 60
           Width = 101
           Height = 21
-          TabOrder = 4
+          TabOrder = 1
         end
         object checkZLinkSyncSerial: TCheckBox
           Left = 232
-          Top = 86
+          Top = 62
           Width = 150
           Height = 17
           Caption = #12471#12522#12450#12523#12490#12531#12496#12540#21516#26399
-          TabOrder = 5
+          TabOrder = 2
           OnClick = PTTEnabledCheckBoxClick
+        end
+      end
+      object groupPacketCluster: TGroupBox
+        Left = 6
+        Top = 111
+        Width = 423
+        Height = 282
+        Caption = 'Packet Cluster'
+        TabOrder = 1
+        object Label6: TLabel
+          Left = 16
+          Top = 79
+          Width = 78
+          Height = 13
+          Caption = #24375#21046#20877#25509#32154
+        end
+        object Label7: TLabel
+          Left = 246
+          Top = 79
+          Width = 26
+          Height = 13
+          Caption = #26178#38291#27598
+        end
+        object Label8: TLabel
+          Left = 16
+          Top = 23
+          Width = 158
+          Height = 13
+          Caption = #33258#21205#20877#25509#32154#12398#26368#22823#22238#25968
+        end
+        object Label9: TLabel
+          Left = 16
+          Top = 51
+          Width = 110
+          Height = 13
+          Caption = #33258#21205#20877#25509#32154#12398#20877#35430#34892#38291#38548
+        end
+        object Label10: TLabel
+          Left = 246
+          Top = 23
+          Width = 24
+          Height = 13
+          Caption = #22238
+        end
+        object Label11: TLabel
+          Left = 246
+          Top = 51
+          Width = 40
+          Height = 13
+          Caption = #31186
+        end
+        object Label12: TLabel
+          Left = 160
+          Top = 79
+          Width = 26
+          Height = 13
+          Caption = ''
         end
         object buttonSpotterList: TButton
           Left = 312
-          Top = 28
+          Top = 247
           Width = 102
           Height = 21
-          Caption = #35377#21487'/'#25298#21542#12522#12473#12488
-          TabOrder = 2
+          Caption = #12473#12509#12483#12479#12540#12522#12473#12488
+          TabOrder = 7
           OnClick = buttonSpotterListClick
+        end
+        object listviewPacketCluster: TListView
+          Left = 14
+          Top = 112
+          Width = 400
+          Height = 129
+          Columns = <
+            item
+              Caption = '#'
+              Width = 30
+            end
+            item
+              Caption = #35373#23450#21517
+              Width = 80
+            end
+            item
+              Caption = #25509#32154#20808
+              Width = 200
+            end
+            item
+              Caption = #12525#12464#12452#12531'ID'
+            end>
+          GridLines = True
+          ReadOnly = True
+          RowSelect = True
+          TabOrder = 3
+          ViewStyle = vsReport
+          OnDblClick = listviewPacketClusterDblClick
+          OnSelectItem = listviewPacketClusterSelectItem
+        end
+        object buttonClusterAdd: TButton
+          Left = 14
+          Top = 247
+          Width = 83
+          Height = 21
+          Caption = #36861#21152
+          TabOrder = 4
+          OnClick = buttonClusterAddClick
+        end
+        object buttonClusterEdit: TButton
+          Left = 103
+          Top = 247
+          Width = 83
+          Height = 21
+          Caption = #32232#38598
+          Enabled = False
+          TabOrder = 5
+          OnClick = buttonClusterEditClick
+        end
+        object buttonClusterDelete: TButton
+          Left = 192
+          Top = 247
+          Width = 83
+          Height = 21
+          Caption = #21066#38500
+          Enabled = False
+          TabOrder = 6
+          OnClick = buttonClusterDeleteClick
+        end
+        object spForceReconnectIntervalHour: TSpinEdit
+          Left = 192
+          Top = 76
+          Width = 48
+          Height = 22
+          AutoSize = False
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 2
+          Value = 6
+        end
+        object spMaxAutoReconnect: TSpinEdit
+          Left = 192
+          Top = 20
+          Width = 48
+          Height = 22
+          AutoSize = False
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 0
+          Value = 10
+        end
+        object spAutoReconnectIntervalSec: TSpinEdit
+          Left = 192
+          Top = 48
+          Width = 48
+          Height = 22
+          AutoSize = False
+          MaxValue = 0
+          MinValue = 0
+          TabOrder = 1
+          Value = 180
         end
       end
     end
@@ -3108,13 +3223,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Lucida Sans Typewriter'
+          FontName = 'Cascadia Mono PL'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 98
+          ItemIndex = 49
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

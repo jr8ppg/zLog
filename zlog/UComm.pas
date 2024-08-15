@@ -7,9 +7,9 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
-  USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx, Vcl.ExtDlgs, System.SyncObjs,
-  System.DateUtils;
+  Vcl.ExtDlgs, System.SyncObjs, System.DateUtils,
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
+  USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib, UTelnetSetting;
 
 const
   SPOTMAX = 20000;
@@ -36,7 +36,6 @@ type
     ConnectButton: TButton;
     checkAutoLogin: TCheckBox;
     checkRelaySpot: TCheckBox;
-    ClusterComm: TCommPortDriver;
     PopupMenu: TPopupMenu;
     menuSaveToFile: TMenuItem;
     SaveTextFileDialog1: TSaveTextFileDialog;
@@ -48,6 +47,13 @@ type
     timerReConnect: TTimer;
     checkIgnoreBEL: TCheckBox;
     Console: TListBox;
+    TabControl1: TTabControl;
+    Label1: TLabel;
+    labelHostName: TLabel;
+    Label2: TLabel;
+    labelLoginID: TLabel;
+    checkForceReconnect: TCheckBox;
+    timerForceReconnect: TTimer;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -77,6 +83,8 @@ type
     procedure menuPasteCommandClick(Sender: TObject);
     procedure timerReConnectTimer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure TabControl1Change(Sender: TObject);
+    procedure timerForceReconnectTimer(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -105,6 +113,9 @@ type
     FRetryIntervalSec: Integer;
     FRetryIntervalCount: Integer;
 
+    // Force reconnect
+    FConnectTime: TDateTime;
+
     procedure DeleteSpot(_from, _to : integer);
 
     function GetFontSize(): Integer;
@@ -118,11 +129,11 @@ type
     procedure WriteConsole(strText: string);
     procedure AddConsole(str: string);
 
-    procedure EnableConnectButton(boo : boolean);
     function GetLocalEcho(): Boolean;
     procedure TerminateCommProcessThread();
     procedure LoadAllowDenyList();
     function DeleteControlChar(S: string): string;
+    procedure SelectSite(Index: Integer);
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
@@ -194,15 +205,7 @@ end;
 
 function TCommForm.MaybeConnected : boolean;
 begin
-   if (dmZlogGlobal.Settings._clusterport = 7) and (Telnet.IsConnected = False) then
-      Result := False
-   else
-      Result := True;
-end;
-
-procedure TCommForm.EnableConnectButton(boo : boolean);
-begin
-   ConnectButton.Enabled := boo;
+   Result := Telnet.IsConnected;
 end;
 
 procedure TCommForm.WriteLine(str: string);
@@ -247,18 +250,8 @@ end;
 
 procedure TCommForm.WriteData(str : string);
 begin
-   case dmZlogGlobal.Settings._clusterport of
-      1..6: begin
-         if ClusterComm.Connected then begin
-            ClusterComm.SendString(AnsiString(str));
-         end;
-      end;
-
-      7: begin
-         if Telnet.IsConnected then begin
-            Telnet.SendStr(str);
-         end;
-      end;
+   if Telnet.IsConnected then begin
+      Telnet.SendStr(str);
    end;
 end;
 
@@ -293,7 +286,7 @@ begin
          exit;
       end;
 
-      if dmZlogGlobal.Settings._clusterport = 0 then begin
+      if TabControl1.Tabs.Count = 0 then begin
          MainForm.ZLinkForm.SendRemoteCluster(Edit.Text);
       end
       else begin
@@ -314,7 +307,7 @@ begin
       ^M, ^N, ^O, ^P, ^Q, ^R, ^S, ^T, ^U, ^V, ^W, ^X, ^Y, ^Z: begin
          s := s + Key;
 
-         if dmZlogGlobal.Settings._clusterport = 0 then begin
+         if TabControl1.Tabs.Count = 0 then begin
             MainForm.ZLinkForm.SendRemoteCluster(s);
          end
          else begin
@@ -324,37 +317,53 @@ begin
    end;
 end;
 
+procedure TCommForm.SelectSite(Index: Integer);
+var
+   i: Integer;
+   setting: TTelnetSetting;
+begin
+   setting := TTelnetSetting(TabControl1.Tabs.Objects[Index]);
+
+   labelHostName.Caption := setting.HostName;
+
+   FLineBreak := LineBreakCode[setting.LineBreak];
+
+   i := Pos(':', setting.HostName);
+   if i = 0 then begin
+      Telnet.Host := setting.HostName;
+      Telnet.Port := IntToStr(setting.PortNumber);
+   end
+   else begin
+      Telnet.Host := Copy(setting.HostName, 1, i - 1);
+      Telnet.Port := Copy(setting.HostName, i + 1);
+   end;
+
+   if setting.LoginId = '' then begin
+      labelLoginID.Caption := '<Your callsign>';
+   end
+   else begin
+      labelLoginId.Caption := setting.LoginId;
+   end;
+end;
+
 procedure TCommForm.ImplementOptions();
 var
    i: Integer;
+   setting: TTelnetSetting;
 begin
-   EnableConnectButton((dmZlogGlobal.Settings._clusterport = 7) and (dmZlogGlobal.Settings._cluster_telnet.FHostName <> ''));
-
-   if dmZlogGlobal.Settings._clusterbaud <> 99 then begin
-      ClusterComm.BaudRate := TBaudRate(dmZlogGlobal.Settings._clusterbaud+1);
+   TabControl1.Tabs.Clear();
+   for i := 0 to dmZLogGlobal.PacketClusterList.Count - 1 do begin
+      setting := dmZLogGlobal.PacketClusterList[i];
+      TabControl1.Tabs.AddObject(setting.Name, setting);
    end;
 
-   if dmZlogGlobal.Settings._clusterport in [1..6] then begin
-      ClusterComm.Port := TPortNumber(dmZlogGlobal.Settings._clusterport);
-      ClusterComm.Connect;
+   if TabControl1.Tabs.Count > 0 then begin
+      TabControl1.TabIndex := 0;
+      SelectSite(TabControl1.TabIndex);
+      ConnectButton.Enabled := True;
    end
    else begin
-      ClusterComm.Disconnect;
-   end;
-
-   case dmZlogGlobal.Settings._clusterport of
-      1..6 : FLineBreak := LineBreakCode[dmZlogGlobal.Settings._cluster_com.FLineBreak];
-      7 :    FLineBreak := LineBreakCode[dmZlogGlobal.Settings._cluster_telnet.FLineBreak];
-   end;
-
-   i := Pos(':', dmZlogGlobal.Settings._cluster_telnet.FHostName);
-   if i = 0 then begin
-      Telnet.Host := dmZlogGlobal.Settings._cluster_telnet.FHostName;
-      Telnet.Port := IntToStr(dmZlogGlobal.Settings._cluster_telnet.FPortNumber);
-   end
-   else begin
-      Telnet.Host := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, 1, i - 1);
-      Telnet.Port := Copy(dmZlogGlobal.Settings._cluster_telnet.FHostName, i + 1);
+      ConnectButton.Enabled := False;
    end;
 
    checkAutoLogin.Checked     := dmZLogGlobal.Settings.FClusterAutoLogin;
@@ -363,6 +372,7 @@ begin
    checkRecordLogs.Checked    := dmZLogGlobal.Settings.FClusterRecordLogs;
    checkIgnoreBEL.Checked     := dmZLogGlobal.Settings.FClusterIgnoreBEL;
    checkUseAllowDenyLists.Checked := dmZLogGlobal.Settings.FClusterUseAllowDenyLists;
+   checkForceReconnect.Checked := dmZLogGlobal.Settings.FClusterForceReconnect;
 end;
 
 procedure TCommForm.RenewOptions();
@@ -373,6 +383,7 @@ begin
    dmZLogGlobal.Settings.FClusterRecordLogs     := checkRecordLogs.Checked;
    dmZLogGlobal.Settings.FClusterIgnoreBEL      := checkIgnoreBEL.Checked;
    dmZLogGlobal.Settings.FClusterUseAllowDenyLists := checkUseAllowDenyLists.Checked;
+   dmZLogGlobal.Settings.FClusterForceReconnect := checkForceReconnect.Checked;
 end;
 
 procedure TCommForm.FormCreate(Sender: TObject);
@@ -539,7 +550,7 @@ end;
 
 procedure TCommForm.TransmitSpot(S : string); // local or via network
 begin
-   if dmZlogGlobal.Settings._clusterport = 0 then begin
+   if TabControl1.Tabs.Count = 0 then begin
       MainForm.ZLinkForm.SendSpotViaNetwork(S);
    end
    else begin
@@ -551,9 +562,11 @@ procedure TCommForm.CommProcess;
 var
    strTemp: string;
    Sp : TSpot;
+   setting: TTelnetSetting;
 label
    nextnext;
 begin
+   setting := TTelnetSetting(TabControl1.Tabs.Objects[TabControl1.TabIndex]);
    while FCommBuffer.Count > 0 do begin
       strTemp := FCommBuffer.Strings[0];
 
@@ -565,7 +578,14 @@ begin
             (Pos('Please enter your call:', strTemp) > 0) or
             (Pos('Please enter your callsign:', strTemp) > 0) then begin
             Sleep(500);
-            WriteLine(dmZlogGlobal.MyCall);
+
+            if setting.LoginId = '' then begin
+               WriteLine(dmZlogGlobal.MyCall);
+            end
+            else begin
+               WriteLine(setting.LoginId);
+            end;
+
             FAutoLogined := True;
          end;
       end;
@@ -679,9 +699,6 @@ procedure TCommForm.FormDestroy(Sender: TObject);
 var
    i: Integer;
 begin
-   ClusterComm.Disconnect;
-   ClusterComm.Free;
-
    Telnet.Close;
 
    TerminateCommProcessThread();
@@ -722,7 +739,7 @@ begin
       WriteStatusLine('');
       FRetryIntervalCount := 0;
 
-      if dmZlogGlobal.Settings._clusterport = 0 then begin
+      if TabControl1.Tabs.Count = 0 then begin
          MainForm.ZLinkForm.PushRemoteConnect;
          exit;
       end;
@@ -752,7 +769,7 @@ end;
 
 procedure TCommForm.RemoteConnectButtonPush;
 begin
-   if (dmZlogGlobal.Settings._clusterport = 0) then begin
+   if TabControl1.Tabs.Count = 0 then begin
       //ZLinkForm.PushRemoteConnect;
       exit;
    end;
@@ -796,6 +813,7 @@ begin
       checkRecordLogs.Enabled := False;
       checkIgnoreBEL.Enabled := False;
       checkUseAllowDenyLists.Enabled := False;
+      checkForceReconnect.Enabled := False;
 
       ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
@@ -808,6 +826,9 @@ begin
       if Error = 0 then begin
          FReConnectCount := 0;
       end;
+
+      FConnectTime := Now;
+      timerForceReconnect.Enabled := True;
    except
       on E: Exception do begin
          AddConsole(E.Message);
@@ -833,6 +854,7 @@ begin
    checkRecordLogs.Enabled := True;
    checkIgnoreBEL.Enabled := True;
    checkUseAllowDenyLists.Enabled := True;
+   checkForceReconnect.Enabled := True;
    ConnectButton.Caption := UComm_Connect;
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
@@ -845,13 +867,14 @@ begin
       timerReConnect.Enabled := True;
    end;
    TerminateCommProcessThread();
+   timerForceReconnect.Enabled := False;
 end;
 
 procedure TCommForm.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
 
-   ConnectButton.Enabled := (dmZlogGlobal.Settings._clusterport = 7);
+   ConnectButton.Enabled := True;
 end;
 
 procedure TCommForm.ListBoxDblClick(Sender: TObject);
@@ -981,6 +1004,11 @@ begin
    CommBufferLock.Leave();
 end;
 
+procedure TCommForm.TabControl1Change(Sender: TObject);
+begin
+   SelectSite(TabControl1.TabIndex);
+end;
+
 procedure TCommForm.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
 var
    str: string;
@@ -1087,12 +1115,11 @@ begin
 end;
 
 function TCommForm.GetLocalEcho(): Boolean;
+var
+   obj: TTelnetSetting;
 begin
-   case dmZlogGlobal.Settings._clusterport of
-      1..6: Result := dmZlogGlobal.Settings._cluster_com.FLocalEcho;
-      7:    Result := dmZlogGlobal.Settings._cluster_telnet.FLocalEcho;
-      else  Result := False;
-   end;
+   obj := TTelnetSetting(TabControl1.Tabs.Objects[TabControl1.TabIndex]);
+   Result := obj.LocalEcho;
 end;
 
 procedure TCommForm.TerminateCommProcessThread();
@@ -1103,6 +1130,35 @@ begin
       FCommProcessThread.Free();
       FCommProcessThread := nil;
    end;
+end;
+
+procedure TCommForm.timerForceReconnectTimer(Sender: TObject);
+var
+   diff: TDateTime;
+   D, H, M, S, ms: Word;
+   min: Integer;
+begin
+   timerForceReconnect.Enabled := False;
+   diff := Now - FConnectTime;
+   DecodeTime(diff, H, M, S, ms);
+   D := Trunc(DaySpan(Now, FConnectTime));
+
+   min := (D * 24 * 60) + (H * 60) + M;
+   if min >= dmZLogGlobal.Settings.FClusterForceReconnectIntervalMin then begin
+      if Telnet.IsConnected = True then begin
+         ConnectButton.Click;
+
+         while (Telnet.State <> wsClosed) do begin
+            Application.ProcessMessages();
+            Sleep(10);
+         end;
+      end;
+
+      if Telnet.IsConnected = False then begin
+         ConnectButton.Click;
+      end;
+   end;
+   timerForceReconnect.Enabled := True;
 end;
 
 procedure TCommForm.LoadAllowDenyList();

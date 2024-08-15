@@ -14,7 +14,7 @@
 		</Source>
 		<Options>
 			<Options Name="BaseLang">1041</Options>
-			<Options Name="TargetName">..\Win32\Release\zlog.ENU</Options>
+			<Options Name="TargetName">..\Win64\Debug\zlog.ENU</Options>
 			<Options Name="BRCC_IncludePath"></Options>
 			<Options Name="Company"></Options>
 			<Options Name="Configuration"></Options>

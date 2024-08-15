@@ -7,7 +7,7 @@ uses
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
-  UQsoTarget;
+  UQsoTarget, UTelnetSetting;
 
 type
   TCWSettingsParam = record
@@ -144,7 +144,6 @@ type
     _bandscope_save_current_freq: Boolean;
 
     CW : TCWSettingsParam;
-    _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
 
     FRigControl: array[1..5] of TRigSetting;
     FRigSet: array[1..2] of TRigSet;
@@ -184,10 +183,6 @@ type
     _so2r_cqrestart: Boolean;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
-    _clusterbaud : integer; {}
-
-    _cluster_telnet: TCommParam;
-    _cluster_com: TCommParam;
     _zlink_telnet: TCommParam;
 
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
@@ -319,6 +314,8 @@ type
     FClusterIgnoreSHDX: Boolean;
     FClusterReConnectMax: Integer;
     FClusterRetryIntervalSec: Integer;
+    FClusterForceReconnect: Boolean;
+    FClusterForceReconnectIntervalMin: Integer;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -415,6 +412,9 @@ type
     FCtyDatLoaded: Boolean;
     FCountryList : TCountryList;
     FPrefixList : TPrefixList;
+
+    FPacketClusterList: TTelnetSettingList;
+
     function Load_CTYDAT(): Boolean;
     procedure AnalyzeMyCountry();
 
@@ -546,6 +546,7 @@ public
     property SpcPath: string read GetSpcPath write SetSpcPath;
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
+    property PacketClusterList: TTelnetSettingList read FPacketClusterList;
 
     procedure SelectBandPlan(preset_name: string);
 
@@ -655,6 +656,9 @@ begin
 
    ClearParamImportedFlag();
 
+   // PacketClusterリスト
+   FPacketClusterList := TTelnetSettingList.Create();
+
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
 
@@ -697,7 +701,7 @@ begin
    // エラーログファイル名
    FErrorLogFileName := ExtractFileName(Application.ExeName);
    FErrorLogFileName := StringReplace(FErrorLogFileName, ExtractFileExt(FErrorLogFileName), '', [rfReplaceAll]);
-   FErrorLogFileName := FErrorLogFileName + '_errorlog.txt'
+   FErrorLogFileName := FErrorLogFileName + '_errorlog.txt';
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -717,6 +721,7 @@ begin
    SaveCurrentSettings();
    FOpList.Free();
    FLog.Free();
+   FPacketClusterList.Free();
 end;
 
 procedure TdmZLogGlobal.ClearParamImportedFlag();
@@ -764,10 +769,14 @@ var
    s: string;
    ini: TMemIniFile;
    slParam: TStringList;
+   slSection: TStringList;
    b: TBand;
    strKey: string;
+   num: Integer;
+   setting: TTelnetSetting;
 begin
    slParam := TStringList.Create();
+   slSection := TStringList.Create();
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       //
@@ -986,18 +995,20 @@ begin
       // Ports
 
       // PacketCluster
-      Settings._clusterport := ini.ReadInteger('Hardware', 'PacketCluster', 0);
+      FPacketClusterList.Clear();
 
-      // COM
-      Settings._clusterbaud := ini.ReadInteger('Hardware', 'PacketClusterBaud', 6);
-      Settings._cluster_com.FLineBreak := ini.ReadInteger('PacketCluster', 'COMlinebreak', 0);
-      Settings._cluster_com.FLocalEcho := ini.ReadBool('PacketCluster', 'COMlocalecho', False);
-
-      // TELNET
-      Settings._cluster_telnet.FHostName := ini.ReadString('PacketCluster', 'TELNEThost', '');
-      Settings._cluster_telnet.FPortNumber := ini.ReadInteger('PacketCluster', 'TELNETport', 23);
-      Settings._cluster_telnet.FLineBreak := ini.ReadInteger('PacketCluster', 'TELNETlinebreak', 0);
-      Settings._cluster_telnet.FLocalEcho := ini.ReadBool('PacketCluster', 'TELNETlocalecho', False);
+      num := ini.ReadInteger('PacketCluster', 'num', 0);
+      for i := 1 to num do begin
+         strKey := '#' + IntToStr(i);
+         setting := TTelnetSetting.Create();
+         setting.Name := ini.ReadString('PacketCluster', strKey + '_Name', '');
+         setting.HostName := ini.ReadString('PacketCluster', strKey + '_HostName', '');
+         setting.LoginId := ini.ReadString('PacketCluster', strKey + '_LoginId', '');
+         setting.PortNumber := ini.ReadInteger('PacketCluster', strKey + '_PortNumber', 23);
+         setting.LineBreak := ini.ReadInteger('PacketCluster', strKey + '_LineBreak', 0);
+         setting.LocalEcho := ini.ReadBool('PacketCluster', strKey + '_LocalEcho', False);
+         FPacketClusterList.Add(setting);
+      end;
 
       // Z-Link (Z-Server)
       Settings._zlinkport := ini.ReadInteger('Hardware', 'Z-Link', 0);
@@ -1451,6 +1462,8 @@ begin
       Settings.FClusterIgnoreSHDX      := ini.ReadBool('ClusterWindow', 'IgnoreSHDX', True);
       Settings.FClusterReConnectMax    := ini.ReadInteger('ClusterWindow', 'ReConnectMax', 10);
       Settings.FClusterRetryIntervalSec := ini.ReadInteger('ClusterWindow', 'RetryIntervalSec', 180);
+      Settings.FClusterForceReconnect  := ini.ReadBool('ClusterWindow', 'ForceReconnect', False);
+      Settings.FClusterForceReconnectIntervalMin := ini.ReadInteger('ClusterWindow', 'ForceReconnectInterval', 6 * 60);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -1471,6 +1484,7 @@ begin
    finally
       ini.Free();
       slParam.Free();
+      slSection.Free();
    end;
 end;
 
@@ -1677,18 +1691,17 @@ begin
       // Ports
 
       // PacketCluster
-      ini.WriteInteger('Hardware', 'PacketCluster', Settings._clusterport);
-
-      // COM
-      ini.WriteInteger('Hardware', 'PacketClusterBaud', Settings._clusterbaud);
-      ini.WriteInteger('PacketCluster', 'COMlinebreak', Settings._cluster_com.FLineBreak);
-      ini.WriteBool('PacketCluster', 'COMlocalecho', Settings._cluster_com.FLocalEcho);
-
-      // TELNET
-      ini.WriteString('PacketCluster', 'TELNEThost', Settings._cluster_telnet.FHostName);
-      ini.WriteInteger('PacketCluster', 'TELNETport', Settings._cluster_telnet.FPortNumber);
-      ini.WriteInteger('PacketCluster', 'TELNETlinebreak', Settings._cluster_telnet.FLineBreak);
-      ini.WriteBool('PacketCluster', 'TELNETlocalecho', Settings._cluster_telnet.FLocalEcho);
+      ini.EraseSection('PacketCluster');
+      ini.WriteInteger('PacketCluster', 'num', FPacketClusterList.Count);
+      for i := 0 to FPacketClusterList.Count - 1 do begin
+         strKey := '#' + IntToStr(i + 1);
+         ini.WriteString('PacketCluster', strKey + '_Name', FPacketClusterList[i].Name);
+         ini.WriteString('PacketCluster', strKey + '_HostName', FPacketClusterList[i].HostName);
+         ini.WriteString('PacketCluster', strKey + '_LoginId', FPacketClusterList[i].LoginId);
+         ini.WriteInteger('PacketCluster', strKey + '_PortNumber', FPacketClusterList[i].PortNumber);
+         ini.WriteInteger('PacketCluster', strKey + '_LineBreak', FPacketClusterList[i].LineBreak);
+         ini.WriteBool('PacketCluster', strKey + '_LocalEcho', FPacketClusterList[i].LocalEcho);
+      end;
 
       // Z-Link (Z-Server)
       ini.WriteInteger('Hardware', 'Z-Link', Settings._zlinkport);
@@ -2061,6 +2074,8 @@ begin
       ini.WriteBool('ClusterWindow', 'IgnoreSHDX', Settings.FClusterIgnoreSHDX);
       ini.WriteInteger('ClusterWindow', 'ReConnectMax', Settings.FClusterReConnectMax);
       ini.WriteInteger('ClusterWindow', 'RetryIntervalSec', Settings.FClusterRetryIntervalSec);
+      ini.WriteBool('ClusterWindow', 'ForceReconnect', Settings.FClusterForceReconnect);
+      ini.WriteInteger('ClusterWindow', 'ForceReconnectInterval', Settings.FClusterForceReconnectIntervalMin);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);

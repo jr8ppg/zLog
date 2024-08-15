@@ -410,7 +410,6 @@ type
     procedure WeightBarChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure vButtonClick(Sender: TObject);
-    procedure buttonZLinkSettingsClick(Sender: TObject);
     procedure CQRepEditKeyPress(Sender: TObject; var Key: Char);
     procedure editMessage1Change(Sender: TObject);
     procedure CWBankClick(Sender: TObject);
@@ -446,10 +445,6 @@ type
     FTempAdditionalVoiceFiles : array[2..3] of string;
     TempCurrentBank : integer;
     TempCWStrBank : array[1..maxbank,1..maxmessage] of string; // used temporarily while options window is open
-
-    FTempClusterTelnet: TCommParam;
-    FTempClusterCom: TCommParam;
-    FTempZLinkTelnet: TCommParam;
 
     FQuickQSYCheck: array[1..8] of TCheckBox;
     FQuickQSYBand: array[1..8] of TComboBox;
@@ -716,10 +711,6 @@ begin
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
       Settings._displongdatetime := checkDispLongDateTime.Checked;
 
-      Settings._cluster_telnet := FTempClusterTelnet;
-      Settings._cluster_com := FTempClusterCom;
-      Settings._zlink_telnet := FTempZLinkTelnet;
-
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin
          Settings.FQuickQSY[i].FUse := FQuickQSYCheck[i].Checked;
@@ -903,10 +894,6 @@ var
    i, j: integer;
 begin
    with dmZlogGlobal do begin
-      FTempClusterTelnet := Settings._cluster_telnet;
-      FTempClusterCom := Settings._cluster_com;
-      FTempZLinkTelnet := Settings._zlink_telnet;
-
       cbSaveWhenNoCW.Checked := Settings._savewhennocw;
       cbJMode.Checked := Settings._jmode;
 
@@ -1489,28 +1476,6 @@ begin
    if OpenDialog.Execute then begin
       FTempAdditionalVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
-   end;
-end;
-
-procedure TformOptions2.buttonZLinkSettingsClick(Sender: TObject);
-var
-   F: TformZLinkTelnetSet;
-begin
-   F := TformZLinkTelnetSet.Create(Self);
-   try
-      F.HostName  := FTempZLinkTelnet.FHostName;
-      F.LineBreak := FTempZLinkTelnet.FLineBreak;
-      F.LocalEcho := FTempZLinkTelnet.FLocalEcho;
-
-      if F.ShowModal() <> mrOK then begin
-         exit;
-      end;
-
-      FTempZLinkTelnet.FHostName  := F.HostName;
-      FTempZLinkTelnet.FLineBreak := F.LineBreak;
-      FTempZLinkTelnet.FLocalEcho := F.LocalEcho;
-   finally
-      F.Release();
    end;
 end;
 

@@ -151,7 +151,8 @@ uses
   UOptions in 'UOptions.pas' {formOptions},
   UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo},
   UCountryChecker in 'UCountryChecker.pas' {formCountryChecker},
-  UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2};
+  UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2},
+  UTelnetSetting in 'UTelnetSetting.pas';
 
 {$R *.res}
 

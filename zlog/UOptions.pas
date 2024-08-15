@@ -7,7 +7,8 @@ uses
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults,
-  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
+  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit,
+  UzLogOperatorInfo, UTelnetSetting;
 
 type
   TformOptions = class(TForm)
@@ -62,12 +63,9 @@ type
     checkAntiZeroinXitOn2: TCheckBox;
     tabsheetNetwork: TTabSheet;
     groupNetwork: TGroupBox;
-    Label30: TLabel;
     Port: TLabel;
     Label32: TLabel;
     Label55: TLabel;
-    ClusterCombo: TComboBox;
-    buttonClusterSettings: TButton;
     ZLinkCombo: TComboBox;
     buttonZLinkSettings: TButton;
     editZLinkPcName: TEdit;
@@ -315,13 +313,26 @@ type
     checkRigSelectV28: TCheckBox;
     checkSyncRigWPM: TCheckBox;
     checkSo2rCqRestartAfterSetLast: TCheckBox;
+    groupPacketCluster: TGroupBox;
+    listviewPacketCluster: TListView;
+    buttonClusterAdd: TButton;
+    buttonClusterEdit: TButton;
+    buttonClusterDelete: TButton;
+    Label6: TLabel;
+    spForceReconnectIntervalHour: TSpinEdit;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    spMaxAutoReconnect: TSpinEdit;
+    Label10: TLabel;
+    spAutoReconnectIntervalSec: TSpinEdit;
+    Label11: TLabel;
+    Label12: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
-    procedure ClusterComboChange(Sender: TObject);
-    procedure buttonClusterSettingsClick(Sender: TObject);
     procedure ZLinkComboChange(Sender: TObject);
     procedure buttonZLinkSettingsClick(Sender: TObject);
     procedure BrowsePathClick(Sender: TObject);
@@ -347,14 +358,18 @@ type
     procedure radio1RadioClick(Sender: TObject);
     procedure radio2RadioClick(Sender: TObject);
     procedure PageControlChange(Sender: TObject);
+    procedure buttonClusterAddClick(Sender: TObject);
+    procedure buttonClusterEditClick(Sender: TObject);
+    procedure buttonClusterDeleteClick(Sender: TObject);
+    procedure listviewPacketClusterSelectItem(Sender: TObject; Item: TListItem;
+      Selected: Boolean);
+    procedure listviewPacketClusterDblClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
 //    FActiveTab: Integer;
     FHardware2Changed: Boolean;
 
-    FTempClusterTelnet: TCommParam;
-    FTempClusterCom: TCommParam;
     FTempZLinkTelnet: TCommParam;
 
     FNeedSuperCheckLoad: Boolean;
@@ -379,6 +394,10 @@ type
     procedure EnableRigConfig(Index: Integer; fEnable: Boolean);
     procedure Assign1Radio();
     procedure Assign2Radio();
+    procedure PacketClusterListToListView();
+    procedure PacketClusterListViewToList();
+    procedure AddPacketClusterList(setting: TTelnetSetting);
+    procedure ListViewClear();
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -605,7 +624,7 @@ end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
 begin
-//
+   ListViewClear();
 end;
 
 procedure TformOptions.buttonOKClick(Sender: TObject);
@@ -687,68 +706,72 @@ begin
    end;
 end;
 
-procedure TformOptions.ClusterComboChange(Sender: TObject);
+procedure TformOptions.buttonClusterAddClick(Sender: TObject);
+var
+   f: TformClusterTelnetSet;
+   setting: TTelnetSetting;
+   listitem: TListItem;
 begin
-   buttonClusterSettings.Enabled := True;
-   buttonSpotterList.Enabled := True;
-
-   case ClusterCombo.ItemIndex of
-      0: begin
-         buttonClusterSettings.Enabled := False;
-         buttonSpotterList.Enabled := False;
+   f := TformClusterTelnetSet.Create(Self);
+   try
+      if f.ShowModal() <> mrOK then begin
+         Exit;
       end;
 
-      1 .. 6: begin
-         buttonClusterSettings.Caption := COM_PORT_SETTING;
-      end;
+      setting := f.Setting;
 
-      7: begin
-         buttonClusterSettings.Caption := TELNET_SETTING;
-      end;
+      AddPacketClusterList(setting);
+   finally
+      f.Release();
    end;
 end;
 
-procedure TformOptions.buttonClusterSettingsClick(Sender: TObject);
+procedure TformOptions.buttonClusterEditClick(Sender: TObject);
 var
-   f: TForm;
+   f: TformClusterTelnetSet;
+   setting: TTelnetSetting;
+   listitem: TListItem;
 begin
-   if (ClusterCombo.ItemIndex >= 1) and (ClusterCombo.ItemIndex <= 6) then begin
-      f := TformClusterCOMSet.Create(Self);
-      try
-         TformClusterCOMSet(f).BaudRate  := FTempClusterCom.FBaudRate;
-         TformClusterCOMSet(f).LineBreak := FTempClusterCom.FLineBreak;
-         TformClusterCOMSet(f).LocalEcho := FTempClusterCom.FLocalEcho;
+   listitem := listviewPacketCluster.Selected;
+   setting := TTelnetSetting(listitem.Data);
+   f := TformClusterTelnetSet.Create(Self);
+   try
+      f.Setting := setting;
 
-         if f.ShowModal() <> mrOK then begin
-            Exit;
-         end;
-
-         FTempClusterCom.FBaudRate  := TformClusterCOMSet(f).BaudRate;
-         FTempClusterCom.FLineBreak := TformClusterCOMSet(f).LineBreak;
-         FTempClusterCom.FLocalEcho := TformClusterCOMSet(f).LocalEcho;
-      finally
-         f.Release();
+      if f.ShowModal() <> mrOK then begin
+         Exit;
       end;
-   end
-   else if ClusterCombo.ItemIndex = 7 then begin
-      f := TformClusterTelnetSet.Create(Self);
-      try
-         TformClusterTelnetSet(f).HostName   := FTempClusterTelnet.FHostName;
-         TformClusterTelnetSet(f).LineBreak  := FTempClusterTelnet.FLineBreak;
-         TformClusterTelnetSet(f).LocalEcho  := FTempClusterTelnet.FLocalEcho;
-         TformClusterTelnetSet(f).PortNumber := FTempClusterTelnet.FPortNumber;
 
-         if f.ShowModal() <> mrOK then begin
-            Exit;
-         end;
+      setting.Free();
+      setting := f.Setting;
 
-         FTempClusterTelnet.FHostName   := TformClusterTelnetSet(f).HostName;
-         FTempClusterTelnet.FLineBreak  := TformClusterTelnetSet(f).LineBreak;
-         FTempClusterTelnet.FLocalEcho  := TformClusterTelnetSet(f).LocalEcho;
-         FTempClusterTelnet.FPortNumber := TformClusterTelnetSet(f).PortNumber;
-      finally
-         f.Release();
+      if setting.Name = '' then begin
+         setting.Name := listitem.Caption;
       end;
+
+      listitem.SubItems[0] := setting.Name;
+      listitem.SubItems[1] := setting.HostName;
+      listitem.SubItems[2] := setting.LoginId;
+      listitem.Data := setting;
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TformOptions.buttonClusterDeleteClick(Sender: TObject);
+var
+   setting: TTelnetSetting;
+   listitem: TListItem;
+   i: Integer;
+begin
+   listitem := listviewPacketCluster.Selected;
+   setting := TTelnetSetting(listitem.Data);
+   setting.Free();
+   listitem.Delete();
+
+   for i := 0 to listviewPacketCluster.Items.Count - 1 do begin
+      listitem := listviewPacketCluster.Items[i];
+      listitem.Caption := '#' + IntToStr(i + 1);
    end;
 end;
 
@@ -1092,6 +1115,21 @@ begin
    comboRig4Name.Items.Assign(comboRig1Name.Items);
 end;
 
+procedure TformOptions.listviewPacketClusterDblClick(Sender: TObject);
+begin
+   if listviewPacketCluster.Selected = nil then begin
+      Exit;
+   end;
+
+   buttonClusterEdit.Click();
+end;
+
+procedure TformOptions.listviewPacketClusterSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+begin
+   buttonClusterEdit.Enabled := Selected;
+   buttonClusterDelete.Enabled := Selected;
+end;
+
 procedure TformOptions.buttonPortConfigCWClick(Sender: TObject);
 var
    f: TformPortConfig;
@@ -1372,9 +1410,10 @@ begin
       //
       // Network
       //
-      Settings._clusterport := ClusterCombo.ItemIndex;
-      Settings._cluster_telnet := FTempClusterTelnet;
-      Settings._cluster_com := FTempClusterCom;
+      Settings.FClusterReConnectMax := spMaxAutoReconnect.Value;
+      Settings.FClusterRetryIntervalSec := spAutoReconnectIntervalSec.Value;
+      Settings.FClusterForceReconnectIntervalMin := spForceReconnectIntervalHour.Value * 60;
+      PacketClusterListViewToList();
 
       Settings._zlinkport := ZLinkCombo.ItemIndex;
       Settings._pcname := editZLinkPcName.Text;
@@ -1641,18 +1680,15 @@ begin
       //
       // Network
       //
-      FTempClusterTelnet := Settings._cluster_telnet;
-      FTempClusterCom := Settings._cluster_com;
-      ClusterCombo.ItemIndex := Settings._clusterport;
+      spMaxAutoReconnect.Value := Settings.FClusterReConnectMax;
+      spAutoReconnectIntervalSec.Value := Settings.FClusterRetryIntervalSec;
+      spForceReconnectIntervalHour.Value := Settings.FClusterForceReconnectIntervalMin div 60;
+      PacketClusterListToListView();
 
       FTempZLinkTelnet := Settings._zlink_telnet;
       ZLinkCombo.ItemIndex := Settings._zlinkport;
       editZLinkPcName.Text := Settings._pcname;
       checkZLinkSyncSerial.Checked := Settings._syncserial;
-
-      // Packet Cluster通信設定ボタン
-      buttonClusterSettings.Enabled := True;
-      ClusterComboChange(nil);
 
       // ZLink通信設定ボタン
       buttonZLinkSettings.Enabled := True;
@@ -1839,6 +1875,60 @@ begin
       FRigSetA_rig[b].Enabled := True;
       FRigSetB_rig[b].Enabled := True;
    end;
+end;
+
+procedure TformOptions.PacketClusterListToListView();
+var
+   i: Integer;
+   obj: TTelnetSetting;
+begin
+   ListViewClear();
+
+   for i := 0 to dmZLogGlobal.PacketClusterList.Count - 1 do begin
+      obj := TTelnetSetting.Create();
+      obj.Assign(dmZLogGlobal.PacketClusterList[i]);
+      AddPacketClusterList(obj);
+   end;
+end;
+
+procedure TformOptions.PacketClusterListViewToList();
+var
+   i: Integer;
+   obj: TTelnetSetting;
+begin
+   dmZLogGlobal.PacketClusterList.Clear();
+   for i := 0 to listviewPacketCluster.Items.Count - 1 do begin
+      obj := TTelnetSetting.Create();
+      obj.Assign(TTelnetSetting(listviewPacketCluster.Items[i].Data));
+      dmZLogGlobal.PacketClusterList.Add(obj);
+   end;
+end;
+
+procedure TformOptions.AddPacketClusterList(setting: TTelnetSetting);
+var
+   listitem: TListItem;
+begin
+   listitem := listviewPacketCluster.Items.Add();
+   listitem.Caption := '#' + IntToStr(listviewPacketCluster.Items.Count);
+
+   if setting.Name = '' then begin
+      setting.Name := listitem.Caption;
+   end;
+
+   listitem.SubItems.Add(setting.Name);
+   listitem.SubItems.Add(setting.HostName);
+   listitem.SubItems.Add(setting.LoginId);
+   listitem.Data := setting;
+end;
+
+procedure TformOptions.ListViewClear();
+var
+   i: Integer;
+begin
+   for i := 0 to listviewPacketCluster.Items.Count - 1 do begin
+      TTelnetSetting(listviewPacketCluster.Items[i].Data).Free();
+   end;
+   listviewPacketCluster.Items.Clear();
 end;
 
 end.
