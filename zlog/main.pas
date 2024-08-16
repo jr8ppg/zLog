@@ -11305,6 +11305,12 @@ begin
    b := dmZLogGlobal.BandPlan.FreqToBand(nFreq);
    FBandScopeEx[b].AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
    FBandScope.AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
+
+   // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
+   if (BandMenu.Items[Ord(b)].Enabled = True) and
+      (dmZlogGlobal.Settings._activebands[b] = True) then begin
+      FBandScopeAllBands.AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
+   end;
 end;
 
 procedure TMainForm.BandScopeAddSelfSpotFromNetwork(BSText: string);
@@ -11315,6 +11321,7 @@ begin
       FBandScopeEx[b].AddSelfSpotFromNetwork(BSText);
    end;
    FBandScope.AddSelfSpotFromNetwork(BSText);
+   FBandScopeAllBands.AddSelfSpotFromNetwork(BSText);
 end;
 
 procedure TMainForm.BandScopeAddClusterSpot(Sp: TSpot);

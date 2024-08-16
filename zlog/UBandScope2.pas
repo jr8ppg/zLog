@@ -238,7 +238,8 @@ procedure TBandScope2.AddSelfSpot(strCallsign: string; strNrRcvd: string; b: TBa
 var
    D: TBSData;
 begin
-   if FCurrBand <> b then begin
+   // このウインドウのバンドでは無い場合
+   if (FAllBands = False) and (FCurrBand <> b) then begin
       Exit;
    end;
 
@@ -269,7 +270,8 @@ begin
    D.FromText(BSText);
    D.SpotSource := ssSelfFromZServer;
 
-   if D.Band <> FCurrBand then begin
+   // このウインドウのバンドでは無い場合
+   if (FAllBands = False) and (D.Band <> FCurrBand) then begin
       D.Free();
       Exit;
    end;
