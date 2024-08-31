@@ -574,6 +574,8 @@ type
     OptionsButton: TSpeedButton;
     buttonCancelOutOfPeriod: TSpeedButton;
     CreateJARLELog: TMenuItem;
+    actionToggleMemScan: TAction;
+    actionToggleF2A: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -876,6 +878,8 @@ type
     procedure menuDownloadSoundsClick(Sender: TObject);
     procedure buttonCancelOutOfPeriodClick(Sender: TObject);
     procedure CreateJARLELogClick(Sender: TObject);
+    procedure actionToggleMemScanExecute(Sender: TObject);
+    procedure actionToggleF2AExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -10633,6 +10637,18 @@ var
 begin
    wpm := dmZLogKeyer.WPM;
    SetRigWpm(wpm);
+end;
+
+// #165 Toggle Memory-Scan
+procedure TMainForm.actionToggleMemScanExecute(Sender: TObject);
+begin
+   RigControl.ToggleMemScan();
+end;
+
+// #166 Toggle F2A
+procedure TMainForm.actionToggleF2AExecute(Sender: TObject);
+begin
+//
 end;
 
 procedure TMainForm.RestoreWindowsPos();

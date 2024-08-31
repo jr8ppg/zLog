@@ -240,7 +240,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..164] of string = (
+  default_primary_shortcut: array[0..166] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -308,7 +308,7 @@ const
     'Alt+P',
     'Alt+Q',            // #65
     'Alt+R',
-    'Alt+S',
+    '',
     'Alt+T',
     'Alt+W',
     'Alt+Z',            // #70
@@ -405,10 +405,12 @@ const
     '',                 // #161 actionShowCWMonitor
     '',                 // #162 actionShowCurrentTxOnly
     '',                 // #163 actionLogging
-    ''                  // #164 actionSetRigWPM
+    '',                 // #164 actionSetRigWPM
+    'Alt+S',            // #165 actionToggleMemScan
+    'Alt+2'             // #166 actionToggleF2A
   );
 
-  default_secondary_shortcut: array[0..164] of string = (
+  default_secondary_shortcut: array[0..166] of string = (
     '',                 // #00
     '',
     '',
@@ -573,7 +575,9 @@ const
     '',                 // #161 actionShowCWMonitor
     '',                 // #162 actionShowCurrentTxOnly
     '',                 // #163 actionLogging
-    ''                  // #164 actionSetRigWPM
+    '',                 // #164 actionSetRigWPM
+    '',                 // #165 actionToggleMemScan
+    ''                  // #166 actionToggleF2A
   );
 
 const

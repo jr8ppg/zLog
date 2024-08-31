@@ -568,6 +568,7 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -707,6 +708,8 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
+          ExplicitLeft = 228
+          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -7581,6 +7584,14 @@ object MainForm: TMainForm
     object actionSetRigWPM: TAction
       Caption = 'Send WPM command to RIG'
       OnExecute = actionSetRigWPMExecute
+    end
+    object actionToggleMemScan: TAction
+      Caption = 'actionToggleMemScan'
+      OnExecute = actionToggleMemScanExecute
+    end
+    object actionToggleF2A: TAction
+      Caption = 'actionToggleF2A'
+      OnExecute = actionToggleF2AExecute
     end
   end
   object SPCMenu: TPopupMenu
