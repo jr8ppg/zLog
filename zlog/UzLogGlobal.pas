@@ -164,6 +164,13 @@ type
     _use_wk_ignore_speed_pot: Boolean;
     _use_wk_always9600: Boolean;
 
+    // F2A options
+    _use_f2a: Boolean;
+    _f2a_ptt: Boolean;
+    _f2a_before: Word;
+    _f2a_after: Word;
+    _f2a_device: Integer;
+
     // Operate Style
     _operate_style: TOperateStyle;
 
@@ -1087,6 +1094,13 @@ begin
       Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
       Settings._use_wk_always9600 := ini.ReadBool('Hardware', 'UseWkAlways9600', False);
 
+      // F2A options
+      Settings._use_f2a := ini.ReadBool('Hardware', 'UseF2A', False);
+      Settings._f2a_ptt := ini.ReadBool('Hardware', 'UseF2APtt', False);
+      Settings._f2a_before := ini.ReadInteger('Hardware', 'F2APttBefore', 500);
+      Settings._f2a_after := ini.ReadInteger('Hardware', 'F2APttAfter', 500);
+      Settings._f2a_device := ini.ReadInteger('Hardware', 'F2A_OutputDevice', 0);
+
       // Operate Style
       Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
 
@@ -1779,6 +1793,13 @@ begin
       ini.WriteBool('Hardware', 'UseWkOutpSelect', Settings._use_wk_outp_select);
       ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
       ini.WriteBool('Hardware', 'UseWkAlways9600', Settings._use_wk_always9600);
+
+      // F2A options
+      ini.WriteBool('Hardware', 'UseF2A', Settings._use_f2a);
+      ini.WriteBool('Hardware', 'UseF2APtt', Settings._f2a_ptt);
+      ini.WriteInteger('Hardware', 'F2APttBefore', Settings._f2a_before);
+      ini.WriteInteger('Hardware', 'F2APttAfter', Settings._f2a_after);
+      ini.WriteInteger('Hardware', 'F2A_OutputDevice', Settings._f2a_device);
 
       // Operate Style
       ini.WriteInteger('OPERATE_STYLE', 'style', Integer(Settings._operate_style));

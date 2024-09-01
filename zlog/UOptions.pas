@@ -328,6 +328,15 @@ type
     spAutoReconnectIntervalSec: TSpinEdit;
     Label11: TLabel;
     Label12: TLabel;
+    groupF2A: TGroupBox;
+    comboF2ADevice: TComboBox;
+    checkUseF2A: TCheckBox;
+    Label13: TLabel;
+    Label14: TLabel;
+    checkF2APttControl: TCheckBox;
+    editF2ABefore: TEdit;
+    editF2AAfter: TEdit;
+    Label15: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -364,6 +373,7 @@ type
     procedure listviewPacketClusterSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
     procedure listviewPacketClusterDblClick(Sender: TObject);
+    procedure checkUseF2AClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
@@ -450,6 +460,7 @@ var
    i: integer;
    CP: TCommPort;
    list: TList<TCommPort>;
+   L: TStringList;
 begin
    FHardware2Changed := False;
    FRigConfig[1] := groupRig1;
@@ -608,6 +619,14 @@ begin
          comboRig5Keying.Items.AddObject(CP.Name, CP);
       end;
    end;
+
+   // F2A 再生用デバイスリスト
+   L := TWaveSound.DeviceList();
+   try
+      comboF2ADevice.Items.Assign(L);
+   finally
+      L.Free();
+   end;
 end;
 
 procedure TformOptions.FormShow(Sender: TObject);
@@ -620,6 +639,8 @@ begin
    else begin
       radio2RadioClick(radio2Radio);
    end;
+
+   checkUseF2AClick(checkUseF2A);
 end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
@@ -1101,6 +1122,28 @@ begin
    end;
 end;
 
+procedure TformOptions.checkUseF2AClick(Sender: TObject);
+begin
+   if TCheckBox(Sender).Checked = True then begin
+      checkF2APttControl.Enabled := True;
+      if checkF2APttControl.Checked = True then begin
+         editF2ABefore.Enabled := True;
+         editF2AAfter.Enabled := True;
+      end
+      else begin
+         editF2ABefore.Enabled := False;
+         editF2AAfter.Enabled := False;
+      end;
+      comboF2ADevice.Enabled := True;
+   end
+   else begin
+      checkF2APttControl.Enabled := False;
+      editF2ABefore.Enabled := False;
+      editF2AAfter.Enabled := False;
+      comboF2ADevice.Enabled := False;
+   end;
+end;
+
 procedure TformOptions.InitRigNames();
 begin
    comboRig1Name.Items.Clear;
@@ -1377,6 +1420,13 @@ begin
       Settings._use_wk_ignore_speed_pot := checkWkIgnoreSpeedPot.Checked;
       Settings._use_wk_always9600 := checkWkAlways9600.Checked;
 
+      // F2A options
+      Settings._use_f2a := checkUseF2A.Checked;
+      Settings._f2a_ptt := checkF2APttControl.Checked;
+      Settings._f2a_before := StrToIntDef(editF2ABefore.Text, Settings._f2a_before);
+      Settings._f2a_after := StrToIntDef(editF2AAfter.Text, Settings._f2a_after);
+      Settings._f2a_device := comboF2ADevice.ItemIndex;
+
       //
       // Rig control
       //
@@ -1646,6 +1696,13 @@ begin
       checkWkOutportSelect.Checked := Settings._use_wk_outp_select;
       checkWkIgnoreSpeedPot.Checked := Settings._use_wk_ignore_speed_pot;
       checkWkAlways9600.Checked := Settings._use_wk_always9600;
+
+      // F2A options
+      checkUseF2A.Checked := Settings._use_f2a;
+      checkF2APttControl.Checked := Settings._f2a_ptt;
+      editF2ABefore.Text := IntToStr(Settings._f2a_before);
+      editF2AAfter.Text := IntToStr(Settings._f2a_after);
+      comboF2ADevice.ItemIndex := Settings._f2a_device;
 
       //
       // Rig control
