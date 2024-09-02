@@ -568,7 +568,7 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 228
+          ExplicitWidth = 296
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -708,8 +708,8 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 228
-          ExplicitWidth = 229
+          ExplicitLeft = 296
+          ExplicitWidth = 296
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -1000,7 +1000,6 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
-    ExplicitWidth = 524
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -1011,7 +1010,6 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 0
       Visible = False
-      ExplicitWidth = 524
       object CWStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -3113,6 +3111,24 @@ object MainForm: TMainForm
           933333333737F73373F333333300033339333333337773333733}
         NumGlyphs = 2
         OnClick = SideToneButtonClick
+      end
+      object buttonF2A: TSpeedButton
+        Left = 533
+        Top = 4
+        Width = 25
+        Height = 25
+        Hint = 'F2A'
+        AllowAllUp = True
+        GroupIndex = 2
+        Caption = 'F2'
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Times New Roman'
+        Font.Style = []
+        ParentFont = False
+        OnClick = buttonF2AClick
       end
       object SpeedBar: TTrackBar
         Left = 414

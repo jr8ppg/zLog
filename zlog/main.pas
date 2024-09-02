@@ -19,6 +19,7 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
+  Winapi.MMSystem,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -576,6 +577,7 @@ type
     CreateJARLELog: TMenuItem;
     actionToggleMemScan: TAction;
     actionToggleF2A: TAction;
+    buttonF2A: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -880,6 +882,7 @@ type
     procedure CreateJARLELogClick(Sender: TObject);
     procedure actionToggleMemScanExecute(Sender: TObject);
     procedure actionToggleF2AExecute(Sender: TObject);
+    procedure buttonF2AClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -987,6 +990,8 @@ type
     FFirstOutOfContestPeriod: Boolean;
     FOutOfContestPeriod: Boolean;
     FPrevOutOfContestPeriod: Boolean;
+
+    FIgnoreRigModeBackup: Boolean;
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1156,6 +1161,8 @@ type
     function CompressSoundFiles(): Boolean;
     procedure SaveLastFreq();
     procedure ShowCtyChk();
+    procedure SetF2AMode();
+    procedure ResetF2AMode();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -2388,6 +2395,8 @@ begin
          end;
       end;
    end;
+
+   FIgnoreRigModeBackup := dmZLogGlobal.Settings._ignore_rig_mode;
 
    // initialize keyer
    dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
@@ -5046,6 +5055,51 @@ begin
    FormShowAndRestore(FCWKeyBoard);
 end;
 
+procedure TMainForm.buttonF2AClick(Sender: TObject);
+begin
+   if dmZLogGlobal.Settings._use_f2a = False then begin
+      Exit;
+   end;
+
+   if buttonF2A.Down = True then begin
+      SetF2AMode();
+   end
+   else begin
+      ResetF2AMode();
+   end;
+end;
+
+procedure TMainForm.SetF2AMode();
+begin
+   // PTT delayをF2A用の値に変更する
+   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._f2a_before, dmZLogGlobal.Settings._f2a_after);
+   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._f2a_ptt);
+
+   // リグのモード無視(要値保存)
+   FIgnoreRigModeBackup := dmZLogGlobal.Settings._ignore_rig_mode;
+   dmZLogGlobal.Settings._ignore_rig_mode := True;
+
+   // サイドトーンの出力先を変更
+   dmZLogKeyer.SideTone.DeviceID := dmZLogGlobal.Settings._f2a_device;
+
+   // 本来のキーイングを止める
+end;
+
+procedure TMainForm.ResetF2AMode();
+begin
+   // PTT delayを元に戻す
+   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._pttbefore, dmZLogGlobal.Settings._pttafter);
+   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._pttenabled);
+
+   // リグのモード有効
+   dmZLogGlobal.Settings._ignore_rig_mode := FIgnoreRigModeBackup;
+
+   // サイドトーンの出力先を戻す
+   dmZLogKeyer.SideTone.DeviceID := WAVE_MAPPER;
+
+   // 本来のキーイングを再開
+end;
+
 procedure TMainForm.SideToneButtonClick(Sender: TObject);
 begin
    dmZlogGlobal.Settings.CW._sidetone := TSpeedButton(Sender).Down;
@@ -5101,6 +5155,10 @@ begin
    FCommForm.RenewOptions();
    FCommForm.Disconnect();
    FRateDialogEx.SaveSettings();
+
+   if buttonF2A.Down then begin
+      ResetF2AMode();
+   end;
 
    Timer1.Enabled := False;
    TerminateNPlusOne();
@@ -10648,7 +10706,8 @@ end;
 // #166 Toggle F2A
 procedure TMainForm.actionToggleF2AExecute(Sender: TObject);
 begin
-//
+   buttonF2A.Down := not buttonF2A.Down;
+   buttonF2AClick(buttonF2A);
 end;
 
 procedure TMainForm.RestoreWindowsPos();

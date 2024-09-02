@@ -299,6 +299,7 @@ type
     procedure USB_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
+    procedure SetSideDevice(nDeviceID: UINT);
 
     procedure m_set(b: Byte);
 
@@ -361,6 +362,7 @@ type
     property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
     property SideToneVolume: Integer read FSideToneVolume write SetSideToneVolume;
     property SideTonePitch: Integer read FSideTonePitch write SetSideTonePitch;
+    property SideTone: TSideTone read FTone;
     property SpaceFactor: Integer read FSpaceFactor write SetSpaceFactor;
     property EISpaceFactor: Integer read FEISpaceFactor write SetEISpaceFactor;
 
@@ -3207,6 +3209,11 @@ begin
       FTone.Volume := v;
    end;
    {$ENDIF}
+end;
+
+procedure TdmZLogKeyer.SetSideDevice(nDeviceID: UINT);
+begin
+
 end;
 
 { TKeyerMonitorThread }

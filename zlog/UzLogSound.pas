@@ -89,6 +89,7 @@ type
   TSideTone = class(TWaveSound)
     FFrequency: Integer;
     procedure SetFrequency(freq: Integer);
+    procedure SetDevice(uDeviceID: UINT);
   public
     constructor Create(freq: Integer);
     destructor Destroy(); override;
@@ -97,6 +98,7 @@ type
     procedure Stop(); override;
     procedure Close(); override;
     property Frequency: Integer read FFrequency write SetFrequency;
+    property DeviceID: UINT read m_uDeviceID write SetDevice;
   end;
 
   TWaveSoundList = class(TObjectList<TWaveSound>)
@@ -143,7 +145,7 @@ begin
    m_lpWaveData := nil;
    m_hwo := 0;
    ZeroMemory(@m_wh, SizeOf(m_wh));
-
+   m_uDeviceId := WAVE_MAPPER;
    ZWaveSoundList.Add(Self);
 end;
 
@@ -640,6 +642,8 @@ begin
 
       waveOutPrepareHeader(m_hwo, @m_wh, sizeof(m_wh));
 
+      m_uDeviceID := uDevceID;
+
       FLoaded := True;
    finally
       mem.Free();
@@ -666,7 +670,14 @@ procedure TSideTone.SetFrequency(freq: Integer);
 begin
    FFrequency := freq;
    Close();
-   Open();
+   Open(m_uDeviceID);
+end;
+
+procedure TSideTone.SetDevice(uDeviceID: UINT);
+begin
+   m_uDeviceID := uDeviceID;
+   Close();
+   Open(m_uDeviceID);
 end;
 
 { TWaveSoundList }
