@@ -337,6 +337,8 @@ type
     editF2ABefore: TEdit;
     editF2AAfter: TEdit;
     Label15: TLabel;
+    spinF2AVolume: TSpinEdit;
+    Label85: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -374,6 +376,7 @@ type
       Selected: Boolean);
     procedure listviewPacketClusterDblClick(Sender: TObject);
     procedure checkUseF2AClick(Sender: TObject);
+    procedure checkF2APttControlClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
@@ -1126,21 +1129,28 @@ procedure TformOptions.checkUseF2AClick(Sender: TObject);
 begin
    if TCheckBox(Sender).Checked = True then begin
       checkF2APttControl.Enabled := True;
-      if checkF2APttControl.Checked = True then begin
-         editF2ABefore.Enabled := True;
-         editF2AAfter.Enabled := True;
-      end
-      else begin
-         editF2ABefore.Enabled := False;
-         editF2AAfter.Enabled := False;
-      end;
+      checkF2APttControlClick(nil);
       comboF2ADevice.Enabled := True;
+      spinF2AVolume.Enabled := True;
    end
    else begin
       checkF2APttControl.Enabled := False;
       editF2ABefore.Enabled := False;
       editF2AAfter.Enabled := False;
       comboF2ADevice.Enabled := False;
+      spinF2AVolume.Enabled := False;
+   end;
+end;
+
+procedure TformOptions.checkF2APttControlClick(Sender: TObject);
+begin
+   if checkF2APttControl.Checked = True then begin
+      editF2ABefore.Enabled := True;
+      editF2AAfter.Enabled := True;
+   end
+   else begin
+      editF2ABefore.Enabled := False;
+      editF2AAfter.Enabled := False;
    end;
 end;
 
@@ -1426,6 +1436,7 @@ begin
       Settings._f2a_before := StrToIntDef(editF2ABefore.Text, Settings._f2a_before);
       Settings._f2a_after := StrToIntDef(editF2AAfter.Text, Settings._f2a_after);
       Settings._f2a_device := comboF2ADevice.ItemIndex;
+      Settings._f2a_volume := spinF2AVolume.Value;
 
       //
       // Rig control
@@ -1703,6 +1714,7 @@ begin
       editF2ABefore.Text := IntToStr(Settings._f2a_before);
       editF2AAfter.Text := IntToStr(Settings._f2a_after);
       comboF2ADevice.ItemIndex := Settings._f2a_device;
+      spinF2AVolume.Value := Settings._f2a_volume;
 
       //
       // Rig control

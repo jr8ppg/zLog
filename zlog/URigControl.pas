@@ -925,9 +925,11 @@ procedure TRigControl.OnUpdateStatusProc(Sender: TObject; rigno: Integer; curren
 var
    S: string;
 begin
-   dispVFO.Caption := VFOString[currentvfo];
-   if curmode <> CurrentQSO.Mode then begin
-      MainForm.UpdateMode(curmode);
+   if FRigs[rigno].IgnoreMode = False then begin
+      dispVFO.Caption := VFOString[currentvfo];
+      if curmode <> CurrentQSO.Mode then begin
+         MainForm.UpdateMode(curmode);
+      end;
    end;
 
    dispMode.Caption := ModeString[curmode];

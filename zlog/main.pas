@@ -991,7 +991,7 @@ type
     FOutOfContestPeriod: Boolean;
     FPrevOutOfContestPeriod: Boolean;
 
-    FIgnoreRigModeBackup: Boolean;
+    FRigModeBackup: TMode;
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1161,6 +1161,7 @@ type
     function CompressSoundFiles(): Boolean;
     procedure SaveLastFreq();
     procedure ShowCtyChk();
+    procedure SetEnableF2A();
     procedure SetF2AMode();
     procedure ResetF2AMode();
   public
@@ -1805,6 +1806,8 @@ begin
    FRateDialogEx.Band := CurrentQSO.Band;
 
    ShowSentNumber();
+
+   SetEnableF2A();
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -1849,6 +1852,8 @@ begin
    FFunctionKeyPanel.UpdateInfo();
 
    ShowSentNumber();
+
+   SetEnableF2A();
 end;
 
 procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
@@ -2395,8 +2400,6 @@ begin
          end;
       end;
    end;
-
-   FIgnoreRigModeBackup := dmZLogGlobal.Settings._ignore_rig_mode;
 
    // initialize keyer
    dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
@@ -5069,33 +5072,64 @@ begin
    end;
 end;
 
+procedure TMainForm.SetEnableF2A();
+begin
+   if (CurrentQSO.Mode = mCW) and (currentQSO.Band >= b28) then begin
+      buttonF2A.Enabled := True;
+      actionToggleF2A.Enabled := True;
+   end
+   else begin
+      buttonF2A.Enabled := False;
+      actionToggleF2A.Enabled := False;
+   end;
+end;
+
 procedure TMainForm.SetF2AMode();
+var
+   rig: TRig;
 begin
    // PTT delayをF2A用の値に変更する
    dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._f2a_before, dmZLogGlobal.Settings._f2a_after);
    dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._f2a_ptt);
 
-   // リグのモード無視(要値保存)
-   FIgnoreRigModeBackup := dmZLogGlobal.Settings._ignore_rig_mode;
-   dmZLogGlobal.Settings._ignore_rig_mode := True;
-
    // サイドトーンの出力先を変更
    dmZLogKeyer.SideTone.DeviceID := dmZLogGlobal.Settings._f2a_device;
+   dmZLogKeyer.SideTone.Volume := dmZLogGlobal.Settings._f2a_volume;
+
+   // リグをFMにする(要値保存)
+   FRigModeBackup := CurrentQSO.Mode;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.IgnoreMode := True;
+      rig.SetMode(mFM);
+      while rig.CurrentMode <> mFM do begin
+         Application.ProcessMessages();
+      end;
+      UpdateMode(mCW);
+   end;
 
    // 本来のキーイングを止める
 end;
 
 procedure TMainForm.ResetF2AMode();
+var
+   rig: TRig;
 begin
+   // リグのモードを戻す
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
+      rig.SetMode(FRigModeBackup);
+      UpdateMode(FRigModeBackup);
+   end;
+
    // PTT delayを元に戻す
    dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._pttbefore, dmZLogGlobal.Settings._pttafter);
    dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._pttenabled);
 
-   // リグのモード有効
-   dmZLogGlobal.Settings._ignore_rig_mode := FIgnoreRigModeBackup;
-
    // サイドトーンの出力先を戻す
    dmZLogKeyer.SideTone.DeviceID := WAVE_MAPPER;
+   dmZLogKeyer.SideTone.Volume := dmZLogGlobal.Settings.CW._sidetone_volume;
 
    // 本来のキーイングを再開
 end;
@@ -5784,6 +5818,12 @@ begin
    f := TformOptions.Create(Self);
    rig := RigControl.GetCurrentRig();
    try
+      // F2Aモード解除
+      if buttonF2A.Down then begin
+         buttonF2A.Down := False;
+         buttonF2AClick(buttonF2A);
+      end;
+
       // KeyingとRigControlを一旦終了
       FRigControl.ForcePowerOff();
       CancelCqRepeat();
