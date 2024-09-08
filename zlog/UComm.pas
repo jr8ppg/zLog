@@ -9,7 +9,8 @@ uses
   StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
   Vcl.ExtDlgs, System.SyncObjs, System.DateUtils,
   OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
-  USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, HelperLib, UTelnetSetting;
+  USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm,
+  UTelnetSetting, HelperLib;
 
 const
   SPOTMAX = 20000;
@@ -24,7 +25,7 @@ type
     constructor Create(formParent: TForm);
   end;
 
-  TCommForm = class(TForm)
+  TCommForm = class(TZLogForm)
     Timer1: TTimer;
     Panel1: TPanel;
     Edit: TEdit;
@@ -59,8 +60,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure TimerProcess(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure TelnetDisplay(Sender: TTnCnx; Str: String);
     procedure ConnectButtonClick(Sender: TObject);
     procedure TelnetSessionConnected(Sender: TTnCnx; Error: Word);
@@ -118,9 +117,6 @@ type
 
     procedure DeleteSpot(_from, _to : integer);
 
-    function GetFontSize(): Integer;
-    procedure SetFontSize(v: Integer);
-
     procedure CommProcess;
     procedure ProcessSpot(Sp: TSpot);
     procedure Cleanup();
@@ -134,6 +130,10 @@ type
     procedure LoadAllowDenyList();
     function DeleteControlChar(S: string): string;
     procedure SelectSite(Index: Integer);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
     procedure PreProcessSpotFromZLink(S : string; N: Integer);
@@ -428,9 +428,8 @@ end;
 
 procedure TCommForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+   Inherited;
    Disconnect();
-
-   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TCommForm.PreProcessSpotFromZLink(S : string; N: Integer);
@@ -716,14 +715,6 @@ begin
    FDenyList.Free();
 end;
 
-procedure TCommForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
-end;
-
 procedure TCommForm.TelnetDisplay(Sender: TTnCnx; Str: String);
 begin
    CommBufferLock.Enter();
@@ -872,8 +863,7 @@ end;
 
 procedure TCommForm.FormShow(Sender: TObject);
 begin
-   MainForm.AddTaskbar(Handle);
-
+   Inherited;
    ConnectButton.Enabled := True;
 end;
 
@@ -1047,10 +1037,18 @@ end;
 
 function TCommForm.GetFontSize(): Integer;
 begin
+   Inherited;
    Result := ListBox.Font.Size;
 end;
 
 procedure TCommForm.SetFontSize(v: Integer);
+begin
+   Inherited;
+   ListBox.Font.Size := v;
+   Console.Font.Size := v;
+end;
+
+procedure TCommForm.UpdateFontSize(v: Integer);
 begin
    ListBox.Font.Size := v;
    Console.Font.Size := v;

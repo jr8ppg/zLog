@@ -7,7 +7,7 @@ uses
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
-  UQsoTarget, UTelnetSetting;
+  UQsoTarget, UTelnetSetting, UzLogForm;
 
 type
   TCWSettingsParam = record
@@ -2567,6 +2567,10 @@ begin
          form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', -1);
       end;
    end;
+
+   if (form is TZLogForm) then begin
+      TZLogForm(form).FontSize := ini.ReadInteger('Windows', strWindowName + '_FontSize', 9);
+   end;
 end;
 
 procedure TdmZLogGlobal.WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string);
@@ -2580,6 +2584,10 @@ begin
    ini.WriteInteger('Windows', strWindowName + '_Y', form.Top);
    ini.WriteInteger('Windows', strWindowName + '_H', form.Height);
    ini.WriteInteger('Windows', strWindowName + '_W', form.Width);
+
+   if (form is TZLogForm) then begin
+      ini.WriteInteger('Windows', strWindowName + '_FontSize', TZLogForm(form).FontSize);
+   end;
 end;
 
 procedure TdmZLogGlobal.ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);

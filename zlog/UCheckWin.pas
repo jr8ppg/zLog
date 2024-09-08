@@ -4,10 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogQSO;
+  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm;
 
 type
-  TCheckWin = class(TForm)
+  TCheckWin = class(TZLogForm)
     Panel1: TPanel;
     Button3: TButton;
     ListBox: TListBox;
@@ -15,15 +15,13 @@ type
     procedure Button3Click(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-  protected
-    FFontSize: Integer;
-    function GetFontSize(): Integer; virtual;
-    procedure SetFontSize(v: Integer); virtual;
   private
     { Private declarations }
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
     ListCWandPh : boolean;
@@ -39,6 +37,20 @@ uses
   Main;
 
 {$R *.DFM}
+
+procedure TCheckWin.FormCreate(Sender: TObject);
+begin
+   Inherited;
+   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   ListCWandPh := False;
+end;
+
+procedure TCheckWin.FormShow(Sender: TObject);
+begin
+   Inherited;
+   ResetListBox;
+   Renew(Main.CurrentQSO);
+end;
 
 procedure TCheckWin.Button3Click(Sender: TObject);
 begin
@@ -98,41 +110,19 @@ procedure TCheckWin.Renew(aQSO: TQSO);
 begin
 end;
 
-procedure TCheckWin.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
-
-   ResetListBox;
-   Renew(Main.CurrentQSO);
-end;
-
-procedure TCheckWin.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
-end;
-
-procedure TCheckWin.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
-procedure TCheckWin.FormCreate(Sender: TObject);
-begin
-   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   ListCWandPh := False;
-end;
-
 function TCheckWin.GetFontSize(): Integer;
 begin
-   Result := FFontSize;
+   Result := Inherited;
 end;
 
 procedure TCheckWin.SetFontSize(v: Integer);
 begin
-   FFontSize := v;
+   Inherited;
+   UpdateFontSize(v);
+end;
+
+procedure TCheckWin.UpdateFontSize(v: Integer);
+begin
    ListBox.Font.Size := v;
    ResetListBox();
 end;

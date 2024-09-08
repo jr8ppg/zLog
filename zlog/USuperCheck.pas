@@ -5,10 +5,10 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Spin, Vcl.Grids,
-  UzLogConst, UzLogGlobal, Vcl.Menus;
+  UzLogConst, UzLogGlobal, UzLogForm;
 
 type
-  TSuperCheck = class(TForm)
+  TSuperCheck = class(TZLogForm)
     Panel1: TPanel;
     Button3: TButton;
     StayOnTop: TCheckBox;
@@ -17,12 +17,9 @@ type
     Grid: TStringGrid;
     procedure Button3Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure StayOnTopClick(Sender: TObject);
     procedure SpinEditChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormResize(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
       State: TGridDrawState);
@@ -31,10 +28,12 @@ type
     { Private declarations }
     FList: TStringList;
     function GetItems(): TStringList;
-    function GetFontSize(): Integer;
-    procedure SetFontSize(v: Integer);
     function GetColumns(): Integer;
     procedure SetColumns(v: Integer);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
     procedure DataLoad();
@@ -55,11 +54,6 @@ uses
 
 {$R *.DFM}
 
-procedure TSuperCheck.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
 procedure TSuperCheck.FormCreate(Sender: TObject);
 begin
    FList := TStringList.Create();
@@ -69,14 +63,6 @@ end;
 procedure TSuperCheck.FormDestroy(Sender: TObject);
 begin
    FList.Free();
-end;
-
-procedure TSuperCheck.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
 end;
 
 procedure TSuperCheck.FormResize(Sender: TObject);
@@ -108,11 +94,6 @@ begin
    for i := 0 to Grid.RowCount - 1 do begin
       Grid.RowHeights[i] := h;
    end;
-end;
-
-procedure TSuperCheck.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TSuperCheck.Button3Click(Sender: TObject);
@@ -193,10 +174,17 @@ end;
 
 function TSuperCheck.GetFontSize(): Integer;
 begin
+   Inherited;
    Result := Grid.Font.Size;
 end;
 
 procedure TSuperCheck.SetFontSize(v: Integer);
+begin
+   Inherited;
+   UpdateFontSize(v);
+end;
+
+procedure TSuperCheck.UpdateFontSize(v: Integer);
 begin
    Grid.Font.Size := v;
 end;

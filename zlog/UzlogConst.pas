@@ -32,6 +32,7 @@ type
 
 type
   TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean) of object;
+  TChangeFontSizeProc = procedure(Sender: TObject; font_size: Integer) of object;
 
 const
   // SerialContestType

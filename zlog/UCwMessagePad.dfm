@@ -14,10 +14,8 @@ object CwMessagePad: TCwMessagePad
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 12
   object CategoryButtons1: TCategoryButtons

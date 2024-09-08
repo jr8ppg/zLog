@@ -11,14 +11,10 @@ object CheckWin: TCheckWin
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poScreenCenter
   Scaled = False
-  OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
@@ -28,6 +24,8 @@ object CheckWin: TCheckWin
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 129
+    ExplicitWidth = 294
     object Button3: TButton
       Left = 6
       Top = 7
@@ -63,5 +61,7 @@ object CheckWin: TCheckWin
     ItemHeight = 13
     ParentFont = False
     TabOrder = 1
+    ExplicitWidth = 294
+    ExplicitHeight = 129
   end
 end

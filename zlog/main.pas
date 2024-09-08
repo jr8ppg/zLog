@@ -3333,24 +3333,25 @@ begin
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
 
-   FSuperCheck.FontSize := font_size;
-   FSuperCheck2.FontSize := font_size;
-   FPartialCheck.FontSize := font_size;
-   FCommForm.FontSize := font_size;
+   // 他のウインドウへフォントサイズ設定
+   FSuperCheck.FontSize := font_size;              // TZLogForm
+   FSuperCheck2.FontSize := font_size;             // TZLogForm
+   FPartialCheck.FontSize := font_size;            // TZLogForm
+   FCommForm.FontSize := font_size;                // TZLogForm
    if MyContest <> nil then begin
-      MyContest.ScoreForm.FontSize := font_size;
-      MyContest.MultiForm.FontSize := font_size;
+      MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
+      MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
    end;
 
-   FCWKeyboard.FontSize := font_size;
-   FCWMessagePad.FontSize := font_size;
+   FCWKeyboard.FontSize := font_size;              // TZLogForm
+   FCWMessagePad.FontSize := font_size;            // TZLogForm
 
-   FFreqList.FontSize := font_size;
-   FCheckCall2.FontSize := font_size;
-   FCheckMulti.FontSize := font_size;
-   FCheckCountry.FontSize := font_size;
-   FFunctionKeyPanel.FontSize := font_size;
-   FChatForm.FontSize := font_size;
+   FFreqList.FontSize := font_size;                // TCheckWin
+   FCheckCall2.FontSize := font_size;              // TCheckWin
+   FCheckMulti.FontSize := font_size;              // TCheckWin
+   FCheckCountry.FontSize := font_size;            // TCheckWin
+   FFunctionKeyPanel.FontSize := font_size;        // TZLogForm
+   FChatForm.FontSize := font_size;                // TZLogForm
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)

@@ -18,7 +18,6 @@ object CommForm: TCommForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 13
   object Panel1: TPanel
@@ -168,8 +167,6 @@ object CommForm: TCommForm
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitWidth = 350
-    ExplicitHeight = 96
     object Splitter1: TSplitter
       Left = 1
       Top = 54
@@ -201,8 +198,6 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 348
-      ExplicitHeight = 30
     end
     object Console: TListBox
       Left = 1
@@ -218,8 +213,6 @@ object CommForm: TCommForm
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 35
-      ExplicitWidth = 348
     end
   end
   object StatusLine: TStatusBar

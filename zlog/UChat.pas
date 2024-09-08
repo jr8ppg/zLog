@@ -4,10 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, HelperLib;
+  StdCtrls, ExtCtrls, UzLogConst, UzLogGlobal, UzLogForm, HelperLib;
 
 type
-  TChatForm = class(TForm)
+  TChatForm = class(TZLogForm)
     Panel1: TPanel;
     ListBox: TListBox;
     editMessage: TEdit;
@@ -21,7 +21,6 @@ type
     procedure editMessageKeyPress(Sender: TObject; var Key: Char);
     procedure buttonSendClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure checkStayOnTopClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -29,7 +28,6 @@ type
     procedure editMessageExit(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure comboPromptTypeChange(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     FFontSize: Integer;
@@ -38,8 +36,10 @@ type
     procedure Chat(S: string);
     procedure RecordChat(S: string);
     function GetPrompt(): string;
-    function GetFontSize(): Integer;
-    procedure SetFontSize(v: Integer);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
     procedure Add(S : string);
@@ -61,11 +61,6 @@ begin
    if editMessage.Enabled = True then begin
       editMessage.SetFocus();
    end;
-end;
-
-procedure TChatForm.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TChatForm.FormCreate(Sender: TObject);
@@ -159,17 +154,9 @@ begin
    ListBox.Clear;
 end;
 
-procedure TChatForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
-end;
-
 procedure TChatForm.FormShow(Sender: TObject);
 begin
-   MainForm.AddTaskbar(Handle);
+   Inherited;
 
    if FileExists(FChatFileName) = True then begin
       ListBox.Items.LoadFromFile(FChatFileName);
@@ -293,12 +280,18 @@ end;
 
 function TChatForm.GetFontSize(): Integer;
 begin
+   Inherited;
    Result := FFontSize;
 end;
 
 procedure TChatForm.SetFontSize(v: Integer);
 begin
-   FFontSize := v;
+   Inherited;
+   ListBox.Font.Size := v;
+end;
+
+procedure TChatForm.UpdateFontSize(v: Integer);
+begin
    ListBox.Font.Size := v;
 end;
 

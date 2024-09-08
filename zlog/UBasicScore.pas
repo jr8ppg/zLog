@@ -25,6 +25,10 @@ type
     procedure menuExtraInfoClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
   protected
     FFontSize: Integer;
     FExtraInfo: Integer;
@@ -36,6 +40,7 @@ type
     function GetScore(): Integer;
   private
     { Private declarations }
+    FOnChangeFontSize: TChangeFontSizeProc;
   public
     { Public declarations }
     QSO : array[b19..HiBand] of LongInt;
@@ -62,6 +67,7 @@ type
     function IntToStr3(v: Integer): string;
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Score: Integer read GetScore;
+    property OnChangeFontSize: TChangeFontSizeProc read FOnChangeFontSize write FOnChangeFontSize;
   end;
 
 const
@@ -256,6 +262,56 @@ begin
    end;
 end;
 
+procedure TBasicScore.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズDOWN
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := FontSize;
+      Dec(font_size);
+      if font_size < 6 then begin
+         font_size := 6;
+      end;
+      FontSize := font_size;
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         if Assigned(FOnChangeFontSize) then begin
+            FOnChangeFontSize(Self, font_size);
+         end;
+      end;
+
+      Handled := True;
+   end;
+end;
+
+procedure TBasicScore.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズUP
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := FontSize;
+      Inc(font_size);
+      if font_size > 28 then begin
+         font_size := 28;
+      end;
+      FontSize := font_size;
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         if Assigned(FOnChangeFontSize) then begin
+            FOnChangeFontSize(Self, font_size);
+         end;
+      end;
+
+      Handled := True;
+   end;
+end;
+
 procedure TBasicScore.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
@@ -275,6 +331,7 @@ procedure TBasicScore.FormCreate(Sender: TObject);
 begin
    FFontSize := 9;
    StayOnTop.Checked := False;
+   FOnChangeFontSize := nil;
 end;
 
 procedure TBasicScore.StayOnTopClick(Sender: TObject);

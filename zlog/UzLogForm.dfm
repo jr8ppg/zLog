@@ -1,22 +1,20 @@
-object BasicMulti: TBasicMulti
-  Left = 202
-  Top = 124
-  Caption = 'BasicMulti'
-  ClientHeight = 262
-  ClientWidth = 314
+object ZLogForm: TZLogForm
+  Left = 0
+  Top = 0
+  Caption = 'ZLogForm'
+  ClientHeight = 244
+  ClientWidth = 385
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
   Font.Style = []
-  KeyPreview = True
-  Scaled = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnMouseWheelDown = FormMouseWheelDown
   OnMouseWheelUp = FormMouseWheelUp
   OnShow = FormShow
-  TextHeight = 13
+  TextHeight = 15
 end
