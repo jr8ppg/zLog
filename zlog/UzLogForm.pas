@@ -19,12 +19,12 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private êÈåæ }
+  protected
     FFontSize: Integer;
     FOnChangeFontSize: TChangeFontSizeProc;
-  protected
     function GetFontSize(): Integer; virtual;
     procedure SetFontSize(v: Integer); virtual;
-    procedure UpdateFontSize(v: Integer); virtual; abstract;
+    procedure UpdateFontSize(v: Integer); virtual;
   public
     { Public êÈåæ }
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -127,6 +127,11 @@ begin
 end;
 
 procedure TZLogForm.SetFontSize(v: Integer);
+begin
+   UpdateFontSize(v);
+end;
+
+procedure TZLogForm.UpdateFontSize(v: Integer);
 begin
    FFontSize := v;
 end;

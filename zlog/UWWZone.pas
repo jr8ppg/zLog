@@ -4,10 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Grids, UzLogConst, UzLogGlobal, UzLogQSO;
+  StdCtrls, ExtCtrls, Grids, UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm;
 
 type
-  TWWZone = class(TForm)
+  TWWZone = class(TZLogForm)
     Panel1: TPanel;
     Button1: TButton;
     cbStayOnTop: TCheckBox;
@@ -16,10 +16,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbStayOnTopClick(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-    procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -87,16 +84,6 @@ begin
 //   end;
 end;
 
-procedure TWWZone.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
-end;
-
-procedure TWWZone.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
 procedure TWWZone.FormCreate(Sender: TObject);
 begin
 //  Width := MaxWidth;
@@ -109,14 +96,6 @@ begin
    end
    else begin
       FormStyle := fsNormal;
-   end;
-end;
-
-procedure TWWZone.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
    end;
 end;
 

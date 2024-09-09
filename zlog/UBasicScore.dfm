@@ -12,12 +12,7 @@ object BasicScore: TBasicScore
   Font.Style = []
   KeyPreview = True
   Scaled = False
-  OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
-  OnMouseWheelDown = FormMouseWheelDown
-  OnMouseWheelUp = FormMouseWheelUp
-  OnShow = FormShow
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
@@ -27,8 +22,6 @@ object BasicScore: TBasicScore
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 201
-    ExplicitWidth = 277
     DesignSize = (
       281
       33)

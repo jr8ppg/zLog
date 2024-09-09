@@ -5,29 +5,18 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Grids, Math, Menus,
-  UzLogGlobal, UzLogQSO, UComm, USpotClass, UzLogConst;
+  UzLogGlobal, UzLogQSO, UComm, USpotClass, UzLogConst, UzLogForm;
 
 type
-  TBasicMulti = class(TForm)
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  TBasicMulti = class(TZLogForm)
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: Boolean);
-    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
-      MousePos: TPoint; var Handled: Boolean);
   protected
-    FFontSize: Integer;
-    function GetFontSize(): Integer; virtual;
-    procedure SetFontSize(v: Integer); virtual;
     procedure AdjustGridSize(Grid: TStringGrid);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
     function GetIsIncrementalSearchPresent(): Boolean; virtual;
   private
     { Private declarations }
-    FOnChangeFontSize: TChangeFontSizeProc;
   public
     { Public declarations }
     procedure Renew; virtual;
@@ -53,9 +42,10 @@ type
     // function CheckMultiInfo(aQSO : TQSO) : string; virtual; abstract;
     // called from CheckMultiWindow for each band without QSO to the current stn
     // returns nothing when the multi is worked in that band.
-    property FontSize: Integer read GetFontSize write SetFontSize;
     property IsIncrementalSearchPresent: Boolean read GetIsIncrementalSearchPresent;
-    property OnChangeFontSize: TChangeFontSizeProc read FOnChangeFontSize write FOnChangeFontSize;
+  published
+    property FontSize;
+    property OnChangeFontSize;
   end;
 
 implementation
@@ -113,73 +103,6 @@ end;
 
 procedure TBasicMulti.Reset;
 begin
-end;
-
-procedure TBasicMulti.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
-end;
-
-procedure TBasicMulti.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: Boolean);
-var
-   font_size: Integer;
-begin
-   // CTRL+UPでフォントサイズDOWN
-   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
-      font_size := FontSize;
-      Dec(font_size);
-      if font_size < 6 then begin
-         font_size := 6;
-      end;
-      FontSize := font_size;
-
-      // さらにSHIFTキーを押していると他のWindowも変更する
-      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-         if Assigned(FOnChangeFontSize) then begin
-            FOnChangeFontSize(Self, font_size);
-         end;
-      end;
-
-      Refresh();
-
-      Handled := True;
-   end;
-end;
-
-procedure TBasicMulti.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: Boolean);
-var
-   font_size: Integer;
-begin
-   // CTRL+UPでフォントサイズUP
-   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
-      font_size := FontSize;
-      Inc(font_size);
-      if font_size > 28 then begin
-         font_size := 28;
-      end;
-      FontSize := font_size;
-
-      // さらにSHIFTキーを押していると他のWindowも変更する
-      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-         if Assigned(FOnChangeFontSize) then begin
-            FOnChangeFontSize(Self, font_size);
-         end;
-      end;
-
-      Refresh();
-
-      Handled := True;
-   end;
-end;
-
-procedure TBasicMulti.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TBasicMulti.ProcessCluster(var Sp: TBaseSpot);
@@ -244,16 +167,10 @@ begin
    RenewBandScope;
 end;
 
-procedure TBasicMulti.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
 procedure TBasicMulti.FormCreate(Sender: TObject);
 begin
    MainForm.mnGridAddNewPX.Visible := False;
    FFontSize := 9;
-   FOnChangeFontSize := nil;
 end;
 
 procedure TBasicMulti.SetNumberEditFocusJARL;
@@ -279,16 +196,6 @@ procedure TBasicMulti.SetNumberEditFocus;
 begin
    MainForm.NumberEdit.SetFocus;
    MainForm.NumberEdit.SelectAll;
-end;
-
-function TBasicMulti.GetFontSize(): Integer;
-begin
-   Result := FFontSize;
-end;
-
-procedure TBasicMulti.SetFontSize(v: Integer);
-begin
-   FFontSize := v;
 end;
 
 procedure TBasicMulti.AdjustGridSize(Grid: TStringGrid);

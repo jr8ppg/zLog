@@ -1164,6 +1164,7 @@ type
     procedure SetEnableF2A();
     procedure SetF2AMode();
     procedure ResetF2AMode();
+    procedure OnChangeFontSize(Sender: TObject; font_size: Integer);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -2302,6 +2303,25 @@ begin
    FCWMonitor     := TformCWMonitor.Create(Self);
    FProgress      := TformProgress.Create(Self);
 
+   FSuperCheck.OnChangeFontSize := OnChangeFontSize;
+   FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
+   FPartialCheck.OnChangeFontSize := OnChangeFontSize;
+   FCommForm.OnChangeFontSize := OnChangeFontSize;
+//   if MyContest <> nil then begin
+//      MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
+//      MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
+//   end;
+
+   FCWKeyboard.OnChangeFontSize := OnChangeFontSize;
+   FCWMessagePad.OnChangeFontSize := OnChangeFontSize;
+
+   FFreqList.OnChangeFontSize := OnChangeFontSize;
+   FCheckCall2.OnChangeFontSize := OnChangeFontSize;
+   FCheckMulti.OnChangeFontSize := OnChangeFontSize;
+   FCheckCountry.OnChangeFontSize := OnChangeFontSize;
+   FFunctionKeyPanel.OnChangeFontSize := OnChangeFontSize;
+   FChatForm.OnChangeFontSize := OnChangeFontSize;
+
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
    FCQLoopStartRig := 1;
@@ -3334,6 +3354,7 @@ begin
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
 
    // 他のウインドウへフォントサイズ設定
+{
    FSuperCheck.FontSize := font_size;              // TZLogForm
    FSuperCheck2.FontSize := font_size;             // TZLogForm
    FPartialCheck.FontSize := font_size;            // TZLogForm
@@ -3352,6 +3373,53 @@ begin
    FCheckCountry.FontSize := font_size;            // TCheckWin
    FFunctionKeyPanel.FontSize := font_size;        // TZLogForm
    FChatForm.FontSize := font_size;                // TZLogForm
+}
+end;
+
+procedure TMainForm.OnChangeFontSize(Sender: TObject; font_size: Integer);
+begin
+   if FSuperCheck <> Sender then
+      FSuperCheck.FontSize := font_size;              // TZLogForm
+
+   if FSuperCheck2 <> Sender then
+      FSuperCheck2.FontSize := font_size;             // TZLogForm
+
+   if FPartialCheck <> Sender then
+      FPartialCheck.FontSize := font_size;            // TZLogForm
+
+   if FCommForm <> Sender then
+      FCommForm.FontSize := font_size;                // TZLogForm
+
+   if MyContest <> nil then begin
+      if MyContest.ScoreForm <> Sender then
+         MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
+      if MyContest.MultiForm <> Sender then
+         MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
+   end;
+
+   if FCWKeyboard <> Sender then
+      FCWKeyboard.FontSize := font_size;              // TZLogForm
+
+   if FCWMessagePad <> Sender then
+      FCWMessagePad.FontSize := font_size;            // TZLogForm
+
+   if FFreqList <> Sender then
+      FFreqList.FontSize := font_size;                // TCheckWin
+
+   if FCheckCall2 <> Sender then
+      FCheckCall2.FontSize := font_size;              // TCheckWin
+
+   if FCheckMulti <> Sender then
+      FCheckMulti.FontSize := font_size;              // TCheckWin
+
+   if FCheckCountry <> Sender then
+      FCheckCountry.FontSize := font_size;            // TCheckWin
+
+   if FFunctionKeyPanel <> Sender then
+      FFunctionKeyPanel.FontSize := font_size;        // TZLogForm
+
+   if FChatForm <> Sender then
+      FChatForm.FontSize := font_size;                // TZLogForm
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -7445,6 +7513,9 @@ begin
             InitWAE();
          end;
       end;
+
+      MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
+      MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
 
       MultiButton.Enabled := True; // toolbar
       Multipliers1.Enabled := True; // menu

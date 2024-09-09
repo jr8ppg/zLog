@@ -12,11 +12,6 @@ object BasicMulti: TBasicMulti
   Font.Style = []
   KeyPreview = True
   Scaled = False
-  OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
-  OnMouseWheelDown = FormMouseWheelDown
-  OnMouseWheelUp = FormMouseWheelUp
-  OnShow = FormShow
   TextHeight = 13
 end
