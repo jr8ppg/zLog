@@ -19,7 +19,7 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
-  Winapi.MMSystem,
+  Winapi.MMSystem, JvExControls, JvLED,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -31,8 +31,8 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan, UCWMonitor,
-  JvExControls, JvLED;
+  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
+  UCWMonitor, UzLogForm;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -883,6 +883,10 @@ type
     procedure actionToggleMemScanExecute(Sender: TObject);
     procedure actionToggleF2AExecute(Sender: TObject);
     procedure buttonF2AClick(Sender: TObject);
+    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -3352,74 +3356,19 @@ begin
    dmZlogGlobal.Settings._mainfontsize := font_size;
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
-
-   // 他のウインドウへフォントサイズ設定
-{
-   FSuperCheck.FontSize := font_size;              // TZLogForm
-   FSuperCheck2.FontSize := font_size;             // TZLogForm
-   FPartialCheck.FontSize := font_size;            // TZLogForm
-   FCommForm.FontSize := font_size;                // TZLogForm
-   if MyContest <> nil then begin
-      MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
-      MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
-   end;
-
-   FCWKeyboard.FontSize := font_size;              // TZLogForm
-   FCWMessagePad.FontSize := font_size;            // TZLogForm
-
-   FFreqList.FontSize := font_size;                // TCheckWin
-   FCheckCall2.FontSize := font_size;              // TCheckWin
-   FCheckMulti.FontSize := font_size;              // TCheckWin
-   FCheckCountry.FontSize := font_size;            // TCheckWin
-   FFunctionKeyPanel.FontSize := font_size;        // TZLogForm
-   FChatForm.FontSize := font_size;                // TZLogForm
-}
 end;
 
 procedure TMainForm.OnChangeFontSize(Sender: TObject; font_size: Integer);
+var
+   i: Integer;
+   f: TForm;
 begin
-   if FSuperCheck <> Sender then
-      FSuperCheck.FontSize := font_size;              // TZLogForm
-
-   if FSuperCheck2 <> Sender then
-      FSuperCheck2.FontSize := font_size;             // TZLogForm
-
-   if FPartialCheck <> Sender then
-      FPartialCheck.FontSize := font_size;            // TZLogForm
-
-   if FCommForm <> Sender then
-      FCommForm.FontSize := font_size;                // TZLogForm
-
-   if MyContest <> nil then begin
-      if MyContest.ScoreForm <> Sender then
-         MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
-      if MyContest.MultiForm <> Sender then
-         MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
+   for i := 0 to Screen.FormCount - 1 do begin
+      f := Screen.Forms[i];
+      if (f <> Sender) and (f is TZLogForm) then begin
+         TZLogForm(f).FontSize := font_size;
+      end;
    end;
-
-   if FCWKeyboard <> Sender then
-      FCWKeyboard.FontSize := font_size;              // TZLogForm
-
-   if FCWMessagePad <> Sender then
-      FCWMessagePad.FontSize := font_size;            // TZLogForm
-
-   if FFreqList <> Sender then
-      FFreqList.FontSize := font_size;                // TCheckWin
-
-   if FCheckCall2 <> Sender then
-      FCheckCall2.FontSize := font_size;              // TCheckWin
-
-   if FCheckMulti <> Sender then
-      FCheckMulti.FontSize := font_size;              // TCheckWin
-
-   if FCheckCountry <> Sender then
-      FCheckCountry.FontSize := font_size;            // TCheckWin
-
-   if FFunctionKeyPanel <> Sender then
-      FFunctionKeyPanel.FontSize := font_size;        // TZLogForm
-
-   if FChatForm <> Sender then
-      FChatForm.FontSize := font_size;                // TZLogForm
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -4791,6 +4740,58 @@ begin
 
    zyloContestClosed;
    zyloRuntimeFinish;
+end;
+
+procedure TMainForm.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズDOWN
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := Grid.Font.Size;
+      Dec(font_size);
+      if font_size < 6 then begin
+         font_size := 6;
+      end;
+
+      SetFontSize(font_size);
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         OnChangeFontSize(Self, font_size);
+      end;
+
+      Refresh();
+
+      Handled := True;
+   end;
+end;
+
+procedure TMainForm.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズUP
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := Grid.Font.Size;
+      Inc(font_size);
+      if font_size > 28 then begin
+         font_size := 28;
+      end;
+
+      SetFontSize(font_size);
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         OnChangeFontSize(Self, font_size);
+      end;
+
+      Refresh();
+
+      Handled := True;
+   end;
 end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
