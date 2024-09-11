@@ -285,7 +285,7 @@ object RigControl: TRigControl
       object labelMScan: TLabel
         Left = 5
         Top = 3
-        Width = 75
+        Width = 54
         Height = 16
         Alignment = taCenter
         Caption = 'M-Scan'

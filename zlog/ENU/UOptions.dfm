@@ -2402,7 +2402,6 @@ object formOptions: TformOptions
           Width = 40
           Height = 21
           TabOrder = 1
-          Text = 'CWPortEdit'
           OnKeyPress = NumberEditKeyPress
         end
         object AfterEdit: TEdit
@@ -2411,7 +2410,6 @@ object formOptions: TformOptions
           Width = 40
           Height = 21
           TabOrder = 2
-          Text = 'CWPortEdit'
           OnKeyPress = NumberEditKeyPress
         end
       end
@@ -2494,6 +2492,95 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Always 9600bps'
           TabOrder = 4
+        end
+      end
+      object groupF2A: TGroupBox
+        Left = 6
+        Top = 308
+        Width = 423
+        Height = 93
+        Caption = 'F2A options'
+        TabOrder = 4
+        object Label13: TLabel
+          Left = 149
+          Top = 43
+          Width = 81
+          Height = 13
+          Caption = 'Before delay (ms)'
+        end
+        object Label14: TLabel
+          Left = 294
+          Top = 43
+          Width = 72
+          Height = 13
+          Caption = 'After delay (ms)'
+        end
+        object Label15: TLabel
+          Left = 9
+          Top = 69
+          Width = 34
+          Height = 13
+          Caption = 'Device'
+        end
+        object Label85: TLabel
+          Left = 290
+          Top = 69
+          Width = 76
+          Height = 13
+          AutoSize = False
+          Caption = 'Volume (1-100)'
+        end
+        object comboF2ADevice: TComboBox
+          Left = 50
+          Top = 66
+          Width = 227
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 4
+        end
+        object checkUseF2A: TCheckBox
+          Left = 8
+          Top = 18
+          Width = 70
+          Height = 17
+          Caption = 'Use F2A'
+          TabOrder = 0
+          OnClick = checkUseF2AClick
+        end
+        object checkF2APttControl: TCheckBox
+          Left = 8
+          Top = 42
+          Width = 129
+          Height = 17
+          Caption = 'Enable PTT control'
+          TabOrder = 1
+          OnClick = checkF2APttControlClick
+        end
+        object editF2ABefore: TEdit
+          Left = 237
+          Top = 40
+          Width = 40
+          Height = 21
+          TabOrder = 2
+          OnKeyPress = NumberEditKeyPress
+        end
+        object editF2AAfter: TEdit
+          Left = 373
+          Top = 40
+          Width = 40
+          Height = 21
+          TabOrder = 3
+          OnKeyPress = NumberEditKeyPress
+        end
+        object spinF2AVolume: TSpinEdit
+          Left = 367
+          Top = 66
+          Width = 46
+          Height = 22
+          MaxValue = 100
+          MinValue = 1
+          TabOrder = 5
+          Value = 100
         end
       end
     end
@@ -3227,13 +3314,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono PL'
+          FontName = 'JetBrains Mono NL SemiBold'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 49
+          ItemIndex = 93
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

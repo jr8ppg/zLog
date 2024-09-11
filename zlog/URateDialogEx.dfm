@@ -14,14 +14,12 @@ object RateDialogEx: TRateDialogEx
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Scaled = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
@@ -31,6 +29,7 @@ object RateDialogEx: TRateDialogEx
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 386
     object Label1: TLabel
       Left = 8
       Top = 8
@@ -82,6 +81,8 @@ object RateDialogEx: TRateDialogEx
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
+    ExplicitWidth = 386
+    ExplicitHeight = 224
     object TabSheet1: TTabSheet
       Caption = 'Graph'
       object Panel2: TPanel
@@ -92,11 +93,13 @@ object RateDialogEx: TRateDialogEx
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitTop = 166
+        ExplicitWidth = 378
         DesignSize = (
           382
           30)
         object Label4: TLabel
-          Left = 303
+          Left = 299
           Top = 8
           Width = 26
           Height = 13
@@ -105,7 +108,7 @@ object RateDialogEx: TRateDialogEx
           ExplicitLeft = 255
         end
         object Label3: TLabel
-          Left = 207
+          Left = 203
           Top = 8
           Width = 46
           Height = 13
@@ -114,7 +117,7 @@ object RateDialogEx: TRateDialogEx
           ExplicitLeft = 159
         end
         object ShowLastCombo: TComboBox
-          Left = 257
+          Left = 253
           Top = 5
           Width = 41
           Height = 21
@@ -134,9 +137,10 @@ object RateDialogEx: TRateDialogEx
             '24'
             '36'
             '48')
+          ExplicitLeft = 249
         end
         object check3D: TCheckBox
-          Left = 343
+          Left = 339
           Top = 6
           Width = 33
           Height = 17
@@ -144,6 +148,7 @@ object RateDialogEx: TRateDialogEx
           Caption = '3D'
           TabOrder = 1
           OnClick = check3DClick
+          ExplicitLeft = 335
         end
         object Panel3: TPanel
           Left = 0
@@ -202,9 +207,12 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 378
+        ExplicitHeight = 166
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 13
         object Series1: TBarSeries
+          HoverElement = []
           Marks.Font.Color = 14811135
           Marks.Transparent = True
           Marks.Style = smsValue
@@ -221,6 +229,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series2: TBarSeries
+          HoverElement = []
           Marks.Font.Color = clWhite
           Marks.Transparent = True
           Marks.Arrow.Visible = False
@@ -236,6 +245,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series3: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Style = smsValue
           Marks.Arrow.Visible = False
@@ -251,6 +261,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series4: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -263,6 +274,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series5: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -275,6 +287,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series6: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -287,6 +300,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series7: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -299,6 +313,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series8: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -311,6 +326,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series9: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -323,6 +339,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series10: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -335,6 +352,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series11: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -347,6 +365,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series12: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -359,6 +378,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series13: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -371,6 +391,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series14: TBarSeries
+          HoverElement = []
           Marks.Transparent = True
           Marks.Arrow.Visible = False
           Marks.Callout.Arrow.Visible = False
@@ -383,6 +404,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series15: TBarSeries
+          HoverElement = []
           Marks.Font.Color = clWhite
           Marks.Transparent = True
           Marks.Arrow.Visible = False
@@ -396,6 +418,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series16: TBarSeries
+          HoverElement = []
           BarBrush.Color = -1
           Marks.Font.Color = clRed
           Marks.Transparent = True
@@ -415,6 +438,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object Series17: TBarSeries
+          HoverElement = []
           Marks.Font.Color = clWhite
           Marks.Transparent = True
           Marks.Arrow.Visible = False
@@ -430,6 +454,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object SeriesActualTotals: TLineSeries
+          HoverElement = [heCurrent]
           SeriesColor = 33023
           Title = 'SeriesActualTotals'
           Brush.BackColor = clDefault
@@ -444,6 +469,7 @@ object RateDialogEx: TRateDialogEx
           YValues.Order = loNone
         end
         object SeriesTargetTotals: TLineSeries
+          HoverElement = [heCurrent]
           SeriesColor = 11627079
           Title = 'SeriesTargetTotals'
           Brush.BackColor = clDefault

@@ -268,6 +268,36 @@ object RigControl: TRigControl
       OnClick = buttonReconnectRigsClick
       ExplicitLeft = 240
     end
+    object panelMScan: TPanel
+      Left = 93
+      Top = 3
+      Width = 85
+      Height = 25
+      BevelOuter = bvNone
+      BorderWidth = 2
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 2588671
+      Font.Height = -12
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 3
+      object labelMScan: TLabel
+        Left = 5
+        Top = 3
+        Width = 54
+        Height = 16
+        Alignment = taCenter
+        Caption = 'M-Scan'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -13
+        Font.Name = 'Verdana'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Visible = False
+      end
+    end
   end
   object buttongrpFreqMemory: TButtonGroup
     Left = 0
@@ -386,8 +416,8 @@ object RigControl: TRigControl
     AutoHotkeys = maManual
     AutoLineReduction = maManual
     OnPopup = popupMemoryChPopup
-    Left = 104
-    Top = 65534
+    Left = 8
+    Top = 54
     object menuM1: TMenuItem
       Tag = 1
       Caption = 'M1'
@@ -413,5 +443,12 @@ object RigControl: TRigControl
       Caption = 'M5'
       OnClick = menuMnClick
     end
+  end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 350
+    OnTimer = Timer2Timer
+    Left = 274
+    Top = 120
   end
 end

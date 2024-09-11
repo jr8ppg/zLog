@@ -3,7 +3,7 @@ object BandScope2: TBandScope2
   Top = 125
   BorderStyle = bsSizeToolWin
   Caption = 'Band Scope'
-  ClientHeight = 416
+  ClientHeight = 404
   ClientWidth = 234
   Color = clBtnFace
   Constraints.MinHeight = 140
@@ -28,7 +28,7 @@ object BandScope2: TBandScope2
     Left = 0
     Top = 38
     Width = 234
-    Height = 378
+    Height = 366
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 4
@@ -36,6 +36,7 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
+    ExplicitHeight = 378
     object Grid: TStringGrid
       Left = 4
       Top = 4
@@ -74,7 +75,7 @@ object BandScope2: TBandScope2
       234
       19)
     object buttonShowWorked: TSpeedButton
-      Left = 174
+      Left = 166
       Top = 0
       Width = 60
       Height = 19
@@ -86,9 +87,10 @@ object BandScope2: TBandScope2
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonShowWorkedClick
+      ExplicitLeft = 174
     end
     object buttonShowAllBands: TSpeedButton
-      Left = 115
+      Left = 107
       Top = 0
       Width = 60
       Height = 19
@@ -100,9 +102,10 @@ object BandScope2: TBandScope2
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonShowWorkedClick
+      ExplicitLeft = 115
     end
     object buttonSyncVfo: TSpeedButton
-      Left = 4
+      Left = -4
       Top = 0
       Width = 53
       Height = 19
@@ -114,9 +117,10 @@ object BandScope2: TBandScope2
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonShowWorkedClick
+      ExplicitLeft = 4
     end
     object buttonFreqCenter: TSpeedButton
-      Left = 56
+      Left = 48
       Top = 0
       Width = 60
       Height = 19
@@ -128,6 +132,7 @@ object BandScope2: TBandScope2
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonShowWorkedClick
+      ExplicitLeft = 56
     end
   end
   object panelAllBandsOption: TPanel
@@ -144,7 +149,7 @@ object BandScope2: TBandScope2
       234
       19)
     object buttonShowWorked2: TSpeedButton
-      Left = 174
+      Left = 166
       Top = 0
       Width = 60
       Height = 19
@@ -156,9 +161,10 @@ object BandScope2: TBandScope2
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonShowWorkedClick
+      ExplicitLeft = 174
     end
     object buttonSortByFreq: TSpeedButton
-      Left = 4
+      Left = -4
       Top = 0
       Width = 60
       Height = 19
@@ -166,9 +172,10 @@ object BandScope2: TBandScope2
       Caption = 'freq.'
       Images = ImageList2
       OnClick = buttonSortByFreqClick
+      ExplicitLeft = 4
     end
     object buttonSortByTime: TSpeedButton
-      Left = 63
+      Left = 55
       Top = 0
       Width = 60
       Height = 19
@@ -176,6 +183,7 @@ object BandScope2: TBandScope2
       Caption = 'time'
       Images = ImageList2
       OnClick = buttonSortByTimeClick
+      ExplicitLeft = 63
     end
   end
   object BSMenu: TPopupMenu

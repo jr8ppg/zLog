@@ -3111,6 +3111,24 @@ object MainForm: TMainForm
         NumGlyphs = 2
         OnClick = SideToneButtonClick
       end
+      object buttonF2A: TSpeedButton
+        Left = 533
+        Top = 4
+        Width = 25
+        Height = 25
+        Hint = 'F2A'
+        AllowAllUp = True
+        GroupIndex = 2
+        Caption = 'F2'
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Times New Roman'
+        Font.Style = []
+        ParentFont = False
+        OnClick = buttonF2AClick
+      end
       object SpeedBar: TTrackBar
         Left = 414
         Top = 6
@@ -5819,7 +5837,6 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
-        ExplicitLeft = 420
       end
     end
   end
@@ -7581,6 +7598,14 @@ object MainForm: TMainForm
     object actionSetRigWPM: TAction
       Caption = 'Send WPM command to RIG'
       OnExecute = actionSetRigWPMExecute
+    end
+    object actionToggleMemScan: TAction
+      Caption = 'actionToggleMemScan'
+      OnExecute = actionToggleMemScanExecute
+    end
+    object actionToggleF2A: TAction
+      Caption = 'actionToggleF2A'
+      OnExecute = actionToggleF2AExecute
     end
   end
   object SPCMenu: TPopupMenu

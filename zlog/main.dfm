@@ -21,6 +21,8 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
+  OnMouseWheelDown = FormMouseWheelDown
+  OnMouseWheelUp = FormMouseWheelUp
   OnResize = FormResize
   OnShow = FormShow
   TextHeight = 13
@@ -568,7 +570,7 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 296
+          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -708,8 +710,8 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 296
-          ExplicitWidth = 296
+          ExplicitLeft = 228
+          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -1000,6 +1002,7 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
+    ExplicitWidth = 524
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -1010,6 +1013,7 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 0
       Visible = False
+      ExplicitWidth = 524
       object CWStopButton: TSpeedButton
         Left = 312
         Top = 4
