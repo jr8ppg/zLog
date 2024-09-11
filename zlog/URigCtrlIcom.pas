@@ -44,6 +44,7 @@ type
     procedure RitClear; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
+    procedure SetDataMode(fOn: Boolean); override;
     procedure SetVFO(i : integer); override;
     procedure StartPolling();
     procedure StopRequest(); override;
@@ -481,6 +482,24 @@ begin
       FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;
+end;
+
+procedure TICOM.SetDataMode(fOn:Boolean);
+var
+   cmd: AnsiString;
+begin
+   if fOn = True then begin
+      cmd := AnsiChar($1A) + AnsiChar($06) + AnsiChar($01);
+
+      if ModeWidth[_currentMode] in [1 .. 3] then begin
+         cmd := cmd + AnsiChar(ModeWidth[_currentMode]);
+      end;
+   end
+   else begin
+      cmd := AnsiChar($1A) + AnsiChar($06) + AnsiChar($00) + AnsiChar($00);
+   end;
+
+   ICOMWriteData(cmd);
 end;
 
 procedure TICOM.SetRit(flag: Boolean);

@@ -5176,6 +5176,7 @@ begin
       while rig.CurrentMode <> mFM do begin
          Application.ProcessMessages();
       end;
+      rig.SetDataMode(True);
       UpdateMode(mCW);
    end;
 
@@ -5190,6 +5191,7 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
+      rig.SetDataMode(False);
       rig.SetMode(FRigModeBackup);
       UpdateMode(FRigModeBackup);
    end;

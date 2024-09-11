@@ -101,6 +101,7 @@ type
     procedure MemScanProcess(); virtual;
     procedure SetMode(Q: TQSO); overload; virtual;
     procedure SetMode(M: TMode); overload; virtual;
+    procedure SetDataMode(fOn: Boolean); virtual;
     procedure SetBand(rigset: Integer; Q: TQSO); virtual; // abstract;
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
@@ -604,6 +605,11 @@ begin
    finally
       Q.Free();
    end;
+end;
+
+procedure TRig.SetDataMode(fOn: Boolean);
+begin
+//
 end;
 
 procedure TRig.SetBand(rigset: Integer; Q: TQSO);
