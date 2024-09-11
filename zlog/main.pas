@@ -3363,6 +3363,7 @@ var
    i: Integer;
    f: TForm;
 begin
+   SetFontSize(font_size);
    for i := 0 to Screen.FormCount - 1 do begin
       f := Screen.Forms[i];
       if (f <> Sender) and (f is TZLogForm) then begin
