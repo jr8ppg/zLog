@@ -1330,6 +1330,7 @@ resourcestring
   TMainForm_ConfirmRewindSerialNumber = 'Do you want to rewind the serial number?';
   TMainForm_ConfirmContestPeriod = 'Do you want to change the contest period to "not used"?';
   TMainForm_ConfirmOverwrite = '[%s] file already exists. overwrite?';
+  TMainForm_ConfirmModeConvert = 'Mode contains old Other, convert to new Other?';  // 'モードにOther(旧)が含まれています。Other(新)に変換しますか？'
 
 var
   MainForm: TMainForm;
@@ -3679,6 +3680,37 @@ var
    bak_acceptdiff: Boolean;
    bak_counthigher: Boolean;
    bak_coeff: Extended;
+   S: string;
+
+   function IsOldOtherExist(): Boolean;
+   var
+      i: Integer;
+      Q: TQSO;
+   begin
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+         if Q.Mode = TMode(5) then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+
+      Result := False;
+      Exit;
+   end;
+
+   procedure ConvertModeOther();
+   var
+      i: Integer;
+      Q: TQSO;
+   begin
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+         if Q.Mode = TMode(5) then begin
+            Q.Mode := mOther;
+         end;
+      end;
+   end;
 begin
    // 一度はCreateLogされてる前提
    Q := TQSO.Create();
@@ -3696,6 +3728,15 @@ begin
    Q.Free();
 
    Log.LoadFromFile(filename);
+
+   // ZLOで旧Otherがある場合
+   S := UpperCase(ExtractFileExt(filename));
+   if (S = '.ZLO') and (IsOldOtherExist() = True) then begin
+      if MessageBox(Handle, PChar(TMainForm_ConfirmModeConvert), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
+         ConvertModeOther();
+         dmZLogGlobal.SetLogFileName(ChangeFileExt(CurrentFileName, '.ZLOX'));
+      end;
+   end;
 
    // 最後のレコード取りだし
    if Log.TotalQSO > 0 then begin
