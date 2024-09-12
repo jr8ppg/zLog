@@ -22,7 +22,7 @@ type
     { Public declarations }
     JA0 : boolean;
     //PXList : TStringList;
-    PXListX : array[b35..b28] of TStringList;
+    PXListX : array[b19..b28] of TStringList;
     // function TotalPrefix : integer;
     function ValidMulti(aQSO : TQSO) : boolean; reintroduce;
     function GetPrefix(aQSO : TQSO) : string;
@@ -100,7 +100,7 @@ var
    b: TBand;
 begin
    ListBox.Items.Clear;
-   for b := b35 to b28 do begin
+   for b := b19 to b28 do begin
       PXListX[b].Clear;
    end;
 end;
@@ -147,7 +147,7 @@ begin
    inherited;
    // PXList := TStringList.Create;
    // PXList.Sorted := True;
-   for b := b35 to b28 do begin
+   for b := b19 to b28 do begin
       PXListX[b] := TStringList.Create;
       PXListX[b].Sorted := True;
    end;
@@ -159,7 +159,7 @@ var
 begin
    inherited;
 
-   for b := b35 to b28 do begin
+   for b := b19 to b28 do begin
       PXListX[b].Free();
    end;
 end;

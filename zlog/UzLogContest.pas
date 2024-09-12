@@ -1168,7 +1168,7 @@ begin
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
 
-   FBandLow := b35;
+   FBandLow := b19;
    FBandHigh := b28;
    FBandPlan := 'JA';
 

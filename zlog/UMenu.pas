@@ -401,10 +401,8 @@ var
 begin
    EnableEveryThing;
 
-   // ALL, 1.9M
-   for i := 0 to 1 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
+   // ALL
+   BandGroup.Controls[0].Enabled := False;
 
    // 14M
    BandGroup.Controls[4].Enabled := False;
