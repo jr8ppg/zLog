@@ -8130,20 +8130,6 @@ begin
 end;
 
 procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
-
-   procedure SetBand(B: TBand);
-   begin
-      TJA0Score(MyContest.ScoreForm).SetBand(B);
-      if (B = b21) or (B = b28) then begin
-         BandMenu.Items[Ord(b21)].Enabled := True;
-         BandMenu.Items[Ord(b28)].Enabled := True;
-         BandMenu.Items[Ord(b21)].Visible := True;
-         BandMenu.Items[Ord(b28)].Visible := True;
-      end
-      else begin
-         BandMenu.Items[Ord(B)].Visible := True;
-      end;
-   end;
 begin
    HideBandMenuHF();
    HideBandMenuWARC();
@@ -8154,21 +8140,27 @@ begin
    MyContest := TJA0ContestZero.Create(Self, 'ALL JA0 コンテスト (JA0)');
 
    case BandGroupIndex of
+      // 1.9M
+      1: begin
+         TJA0Score(MyContest.ScoreForm).SetBand(b19);
+         ShowBandMenu(b19);
+      end;
+
       // 3.5M
       2: begin
-         SetBand(b35);
+         TJA0Score(MyContest.ScoreForm).SetBand(b35);
          ShowBandMenu(b35);
       end;
 
       // 7M
       3: begin
-         SetBand(b7);
+         TJA0Score(MyContest.ScoreForm).SetBand(b7);
          ShowBandMenu(b7);
       end;
 
       // 21/28M
       7, 9: begin
-         SetBand(b21);
+         TJA0Score(MyContest.ScoreForm).SetBand(b7);
          dmZlogGlobal.Settings._band := 0;
          ShowBandMenu(b21);
          ShowBandMenu(b28);
@@ -8187,6 +8179,12 @@ begin
    MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)');
 
    case BandGroupIndex of
+      // 1.9M
+      1: begin
+         TJA0Score(MyContest.ScoreForm).SetBand(b19);
+         ShowBandMenu(b19);
+      end;
+
       // 3.5M
       2: begin
          TJA0Score(MyContest.ScoreForm).SetBand(b35);
