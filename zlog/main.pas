@@ -10854,8 +10854,19 @@ end;
 
 // #165 Toggle Memory-Scan
 procedure TMainForm.actionToggleMemScanExecute(Sender: TObject);
+var
+   scanrigset: Integer;
+   b: TBand;
 begin
-   RigControl.ToggleMemScan();
+   case FCurrentRigSet of
+      1: scanrigset := 2;
+      2: scanrigset := 1;
+      else Exit;
+   end;
+
+   b := TextToBand(FEditPanel[scanrigset - 1].BandEdit.Text);
+
+   RigControl.ToggleMemScan(scanrigset, b);
 end;
 
 // #166 Toggle F2A

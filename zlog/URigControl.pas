@@ -94,7 +94,8 @@ type
     // Freq Memory
     FMemEditMode: Integer;
     FMenuMn: array[1..5] of TMenuItem;
-    FScanRig: Integer;
+    FScanRigSet: Integer;
+    FScanRigBand: TBand;
     procedure VisibleChangeEvent(Sender: TObject);
     procedure RigTypeChangeEvent(Sender: TObject; RigNumber: Integer);
     procedure StatusChangeEvent(Sender: TObject; RigNumber: Integer);
@@ -148,7 +149,7 @@ type
     procedure ForcePowerOff();
     procedure ForcePowerOn();
 
-    procedure ToggleMemScan();
+    procedure ToggleMemScan(scan_rigset: Integer; b: TBand);
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
   end;
@@ -1151,7 +1152,7 @@ begin
    buttongrpFreqMemory.Enabled := False;
    Timer2.Enabled := False;
    labelMScan.Visible := False;
-   FScanRig := 1;
+   FScanRigSet := 1;
 end;
 
 procedure TRigControl.ForcePowerOff();
@@ -1226,24 +1227,27 @@ begin
 end;
 
 procedure TRigControl.buttonMemScanClick(Sender: TObject);
+var
+   rig: TRig;
 begin
    if FCurrentRig = nil then begin
       Exit;
    end;
 
    if buttonMemScan.Down = True then begin
-      case FCurrentRig.RigNumber of
-         1: FScanRig := 2;
-         2: FScanRig := 1;
-         else Exit;
+
+      rig := GetRig(FScanRigSet, FScanRigBand);
+      if rig = nil then begin
+         Exit;
       end;
 
-      LoadMemCh(FRigs[FScanRig]);
+      LoadMemCh(FRigs[rig.RigNumber]);
 
-      labelMScan.Caption := 'M-Scan ' + IntToStr(FScanRig);
+      labelMScan.Caption := 'M-Scan ' + IntToStr(rig.RigNumber);
+
+      FRigs[rig.RigNumber].MemScan := buttonMemScan.Down;
    end;
 
-   FRigs[FScanRig].MemScan := buttonMemScan.Down;
    Timer2.Enabled := buttonMemScan.Down;
    if Timer2.Enabled = False then begin
       labelMScan.Visible := False;
@@ -1402,8 +1406,10 @@ begin
    end;
 end;
 
-procedure TRigControl.ToggleMemScan();
+procedure TRigControl.ToggleMemScan(scan_rigset: Integer; b: TBand);
 begin
+   FScanRigSet := scan_rigset;
+   FScanRigBand := b;
    buttonMemScan.Down := not buttonMemScan.Down;
    buttonMemScanClick(nil);
 end;
