@@ -3310,7 +3310,7 @@ begin
       j := 9;
    end;
 
-   SetFontSize(j);
+   OnChangeFontSize(Self, j);
 end;
 
 procedure TMainForm.DecFontSize();
@@ -3325,7 +3325,7 @@ begin
       j := 21;
    end;
 
-   SetFontSize(j);
+   OnChangeFontSize(Self, j);
 end;
 
 procedure TMainForm.SetFontSize(font_size: Integer);
