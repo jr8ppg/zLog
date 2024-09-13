@@ -5235,10 +5235,10 @@ object MainForm: TMainForm
     end
     object MainToolBar: TPanel
       Left = 0
-      Top = 66
+      Top = 33
       Width = 528
       Height = 33
-      Align = alTop
+      Align = alBottom
       TabOrder = 2
       ExplicitWidth = 524
       DesignSize = (
