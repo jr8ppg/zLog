@@ -192,6 +192,7 @@ end;
 function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : string;
 var
    temp: string;
+   S: string;
 begin
    temp := UpperCase(sendtext);
 
@@ -226,6 +227,10 @@ begin
    temp := StringReplace(temp, '$G', dmZLogGlobal.GetGreetingsCode(), [rfReplaceAll]);
 
    temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
+
+   S := UpperCase(dmZLogGlobal.MyCall);
+   temp := StringReplace(temp, '$M', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$m', S, [rfReplaceAll]);
 
    Result := temp;
 end;

@@ -7188,6 +7188,7 @@ begin
 
          FTTYConsole.Close();
          FTTYConsole.Release();
+         FTTYConsole := nil;
 
          ExitMMTTY;
 
