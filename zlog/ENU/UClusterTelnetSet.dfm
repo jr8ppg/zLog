@@ -28,6 +28,7 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Default = True
     TabOrder = 1
     OnClick = buttonOKClick
+    ExplicitTop = 152
   end
   object buttonCancel: TButton
     Left = 157
@@ -39,6 +40,7 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 2
+    ExplicitTop = 152
   end
   object GroupBox1: TGroupBox
     Left = 8

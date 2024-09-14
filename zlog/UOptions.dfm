@@ -3078,6 +3078,7 @@ object formOptions: TformOptions
               Caption = 'Login'
             end>
           GridLines = True
+          Items.ItemData = {}
           ReadOnly = True
           RowSelect = True
           TabOrder = 3

@@ -15,10 +15,8 @@ object CwMessagePad: TCwMessagePad
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
-  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
@@ -38,6 +36,8 @@ object CwMessagePad: TCwMessagePad
     ShowHint = True
     TabOrder = 0
     OnButtonClicked = CategoryButtons1ButtonClicked
+    ExplicitWidth = 179
+    ExplicitHeight = 401
   end
   object PopupMenu1: TPopupMenu
     AutoHotkeys = maManual

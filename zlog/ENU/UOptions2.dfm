@@ -3,8 +3,8 @@ object formOptions2: TformOptions2
   Top = 236
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 469
-  ClientWidth = 436
+  ClientHeight = 471
+  ClientWidth = 444
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,13 +20,13 @@ object formOptions2: TformOptions2
   object PageControl: TPageControl
     Left = 0
     Top = 0
-    Width = 436
-    Height = 432
-    ActivePage = tabsheetCW
+    Width = 444
+    Height = 434
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 432
-    ExplicitHeight = 431
+    ExplicitWidth = 428
+    ExplicitHeight = 430
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
@@ -3553,16 +3553,16 @@ object formOptions2: TformOptions2
   end
   object Panel1: TPanel
     Left = 0
-    Top = 432
-    Width = 436
+    Top = 434
+    Width = 444
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 431
-    ExplicitWidth = 432
+    ExplicitTop = 430
+    ExplicitWidth = 428
     DesignSize = (
-      436
+      444
       37)
     object buttonOK: TButton
       Left = 149
