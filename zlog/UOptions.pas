@@ -339,6 +339,10 @@ type
     Label15: TLabel;
     spinF2AVolume: TSpinEdit;
     Label85: TLabel;
+    comboF2aDataMode: TComboBox;
+    comboF2aFilter: TComboBox;
+    Label16: TLabel;
+    Label17: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1132,6 +1136,8 @@ begin
       checkF2APttControlClick(nil);
       comboF2ADevice.Enabled := True;
       spinF2AVolume.Enabled := True;
+      comboF2aDataMode.enabled := True;
+      comboF2aFilter.Enabled := True;
    end
    else begin
       checkF2APttControl.Enabled := False;
@@ -1139,6 +1145,8 @@ begin
       editF2AAfter.Enabled := False;
       comboF2ADevice.Enabled := False;
       spinF2AVolume.Enabled := False;
+      comboF2aDataMode.enabled := False;
+      comboF2aFilter.Enabled := False;
    end;
 end;
 
@@ -1437,6 +1445,8 @@ begin
       Settings._f2a_after := StrToIntDef(editF2AAfter.Text, Settings._f2a_after);
       Settings._f2a_device := comboF2ADevice.ItemIndex;
       Settings._f2a_volume := spinF2AVolume.Value;
+      Settings._f2a_datamode := comboF2aDataMode.ItemIndex;
+      Settings._f2a_filter := comboF2aFilter.ItemIndex;
 
       //
       // Rig control
@@ -1715,6 +1725,8 @@ begin
       editF2AAfter.Text := IntToStr(Settings._f2a_after);
       comboF2ADevice.ItemIndex := Settings._f2a_device;
       spinF2AVolume.Value := Settings._f2a_volume;
+      comboF2aDataMode.ItemIndex := Settings._f2a_datamode;
+      comboF2aFilter.ItemIndex := Settings._f2a_filter;
 
       //
       // Rig control

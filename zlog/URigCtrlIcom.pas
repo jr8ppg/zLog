@@ -487,13 +487,25 @@ end;
 procedure TICOM.SetDataMode(fOn:Boolean);
 var
    cmd: AnsiString;
+   datamode: AnsiString;
+   filter: AnsiString;
 begin
    if fOn = True then begin
-      cmd := AnsiChar($1A) + AnsiChar($06) + AnsiChar($01);
-
-      if ModeWidth[_currentMode] in [1 .. 3] then begin
-         cmd := cmd + AnsiChar(ModeWidth[_currentMode]);
+      case dmZLogGlobal.Settings._f2a_datamode of
+         0: datamode := AnsiChar($01);
+         1: datamode := AnsiChar($02);
+         2: datamode := AnsiChar($03);
+         else datamode := AnsiChar($01);
       end;
+
+      case dmZLogGlobal.Settings._f2a_filter of
+         0: filter := AnsiChar($01);
+         1: filter := AnsiChar($02);
+         2: filter := AnsiChar($03);
+         else filter := AnsiChar($01);
+      end;
+
+      cmd := AnsiChar($1A) + AnsiChar($06) + datamode + filter;
    end
    else begin
       cmd := AnsiChar($1A) + AnsiChar($06) + AnsiChar($00) + AnsiChar($00);

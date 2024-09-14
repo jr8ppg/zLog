@@ -2413,7 +2413,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 152
         Width = 423
-        Height = 73
+        Height = 70
         Caption = 'USBIF4CW'#12458#12503#12471#12519#12531
         TabOrder = 2
         object checkUsbif4cwSyncWpm: TCheckBox
@@ -2443,9 +2443,9 @@ object formOptions: TformOptions
       end
       object groupWinKeyer: TGroupBox
         Left = 6
-        Top = 231
+        Top = 227
         Width = 423
-        Height = 73
+        Height = 70
         Caption = 'WinKeyer'#12458#12503#12471#12519#12531
         TabOrder = 3
         object checkUseWinKeyer: TCheckBox
@@ -2492,47 +2492,62 @@ object formOptions: TformOptions
       end
       object groupF2A: TGroupBox
         Left = 6
-        Top = 308
+        Top = 303
         Width = 423
-        Height = 93
+        Height = 98
         Caption = 'F2A'#12458#12503#12471#12519#12531
         TabOrder = 4
         object Label13: TLabel
           Left = 135
-          Top = 43
+          Top = 45
           Width = 81
           Height = 13
           Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object Label14: TLabel
           Left = 280
-          Top = 43
+          Top = 45
           Width = 72
           Height = 13
           Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
         end
         object Label15: TLabel
           Left = 9
-          Top = 69
+          Top = 71
           Width = 34
           Height = 13
           Caption = #12487#12496#12452#12473
         end
         object Label85: TLabel
           Left = 300
-          Top = 69
+          Top = 71
           Width = 76
           Height = 13
           AutoSize = False
           Caption = #38899#37327'(1-100)'
         end
+        object Label16: TLabel
+          Left = 339
+          Top = 19
+          Width = 19
+          Height = 13
+          Alignment = taRightJustify
+          Caption = #12501#12451#12523#12479#12540
+        end
+        object Label17: TLabel
+          Left = 185
+          Top = 19
+          Width = 64
+          Height = 13
+          Caption = #12487#12540#12479#12514#12540#12489
+        end
         object comboF2ADevice: TComboBox
           Left = 50
-          Top = 66
+          Top = 68
           Width = 227
           Height = 21
           Style = csDropDownList
-          TabOrder = 4
+          TabOrder = 6
         end
         object checkUseF2A: TCheckBox
           Left = 8
@@ -2545,38 +2560,66 @@ object formOptions: TformOptions
         end
         object checkF2APttControl: TCheckBox
           Left = 8
-          Top = 42
+          Top = 44
           Width = 129
           Height = 17
           Caption = 'PTT'#21046#24481#26377#21177
-          TabOrder = 1
+          TabOrder = 3
           OnClick = checkF2APttControlClick
         end
         object editF2ABefore: TEdit
           Left = 237
-          Top = 40
+          Top = 42
           Width = 40
           Height = 21
-          TabOrder = 2
+          TabOrder = 4
           OnKeyPress = NumberEditKeyPress
         end
         object editF2AAfter: TEdit
           Left = 373
-          Top = 40
+          Top = 42
           Width = 40
           Height = 21
-          TabOrder = 3
+          TabOrder = 5
           OnKeyPress = NumberEditKeyPress
         end
         object spinF2AVolume: TSpinEdit
           Left = 367
-          Top = 66
+          Top = 68
           Width = 46
           Height = 22
           MaxValue = 100
           MinValue = 1
-          TabOrder = 5
+          TabOrder = 7
           Value = 100
+        end
+        object comboF2aDataMode: TComboBox
+          Left = 254
+          Top = 16
+          Width = 45
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 1
+          Text = 'D1'
+          Items.Strings = (
+            'D1'
+            'D2'
+            'D3')
+        end
+        object comboF2aFilter: TComboBox
+          Left = 363
+          Top = 16
+          Width = 50
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 2
+          Text = 'FIL1'
+          Items.Strings = (
+            'FIL1'
+            'FIL2'
+            'FIL3')
         end
       end
     end
@@ -3310,13 +3353,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'JetBrains Mono NL SemiBold'
+          FontName = '@UD '#12487#12472#12479#12523' '#25945#31185#26360#20307' N-B'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 93
+          ItemIndex = 18
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
