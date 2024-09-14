@@ -230,7 +230,6 @@ begin
 
    S := UpperCase(dmZLogGlobal.MyCall);
    temp := StringReplace(temp, '$M', S, [rfReplaceAll]);
-   temp := StringReplace(temp, '$m', S, [rfReplaceAll]);
 
    Result := temp;
 end;
