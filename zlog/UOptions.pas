@@ -87,9 +87,9 @@ type
     groupOptCwPtt: TGroupBox;
     Label38: TLabel;
     Label39: TLabel;
-    PTTEnabledCheckBox: TCheckBox;
-    BeforeEdit: TEdit;
-    AfterEdit: TEdit;
+    checkEnablePttCw: TCheckBox;
+    editBeforeTxCw: TEdit;
+    editAfterTxCw: TEdit;
     groupWinKeyer: TGroupBox;
     checkUseWinKeyer: TCheckBox;
     checkWk9600: TCheckBox;
@@ -343,6 +343,11 @@ type
     comboF2aFilter: TComboBox;
     Label16: TLabel;
     Label17: TLabel;
+    checkEnablePttPh: TCheckBox;
+    Label18: TLabel;
+    editBeforeTxPh: TEdit;
+    editAfterTxPh: TEdit;
+    Label19: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -351,7 +356,7 @@ type
     procedure ZLinkComboChange(Sender: TObject);
     procedure buttonZLinkSettingsClick(Sender: TObject);
     procedure BrowsePathClick(Sender: TObject);
-    procedure PTTEnabledCheckBoxClick(Sender: TObject);
+    procedure checkEnablePttCwClick(Sender: TObject);
     procedure checkRig1AXvtClick(Sender: TObject);
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig3NameChange(Sender: TObject);
@@ -381,6 +386,7 @@ type
     procedure listviewPacketClusterDblClick(Sender: TObject);
     procedure checkUseF2AClick(Sender: TObject);
     procedure checkF2APttControlClick(Sender: TObject);
+    procedure checkEnablePttPhClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
@@ -900,15 +906,27 @@ begin
    end;
 end;
 
-procedure TformOptions.PTTEnabledCheckBoxClick(Sender: TObject);
+procedure TformOptions.checkEnablePttCwClick(Sender: TObject);
 begin
-   if PTTEnabledCheckBox.Checked then begin
-      BeforeEdit.Enabled := True;
-      AfterEdit.Enabled := True;
+   if checkEnablePttCw.Checked then begin
+      editBeforeTxCw.Enabled := True;
+      editAfterTxCw.Enabled := True;
    end
    else begin
-      BeforeEdit.Enabled := False;
-      AfterEdit.Enabled := False;
+      editBeforeTxCw.Enabled := False;
+      editAfterTxCw.Enabled := False;
+   end;
+end;
+
+procedure TformOptions.checkEnablePttPhClick(Sender: TObject);
+begin
+   if checkEnablePttPh.Checked then begin
+      editBeforeTxPh.Enabled := True;
+      editAfterTxPh.Enabled := True;
+   end
+   else begin
+      editBeforeTxPh.Enabled := False;
+      editAfterTxPh.Enabled := False;
    end;
 end;
 
@@ -1421,10 +1439,16 @@ begin
 
       Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
 
-      // CW/PTT Control
-      Settings._pttenabled := PTTEnabledCheckBox.Checked;
-      Settings._pttbefore := StrToIntDef(BeforeEdit.Text, Settings._pttbefore);
-      Settings._pttafter := StrToIntDef(AfterEdit.Text, Settings._pttafter);
+      // PTT Control
+      // CW
+      Settings._pttenabled_cw := checkEnablePttCw.Checked;
+      Settings._pttbefore_cw := StrToIntDef(editBeforeTxCw.Text, Settings._pttbefore_cw);
+      Settings._pttafter_cw := StrToIntDef(editAfterTxCw.Text, Settings._pttafter_cw);
+
+      // PH
+      Settings._pttenabled_ph := checkEnablePttPh.Checked;
+      Settings._pttbefore_ph := StrToIntDef(editBeforeTxPh.Text, Settings._pttbefore_ph);
+      Settings._pttafter_ph := StrToIntDef(editAfterTxPh.Text, Settings._pttafter_ph);
 
       // USBIF4CW
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
@@ -1693,18 +1717,33 @@ begin
 
       editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
-      // CW/PTT control
-      PTTEnabledCheckBox.Checked := Settings._pttenabled;
-      BeforeEdit.Text := IntToStr(Settings._pttbefore);
-      AfterEdit.Text := IntToStr(Settings._pttafter);
-      if PTTEnabledCheckBox.Checked then begin
-         BeforeEdit.Enabled := True;
-         AfterEdit.Enabled := True;
+      // PTT control
+      // CW
+      checkEnablePttCw.Checked := Settings._pttenabled_cw;
+      editBeforeTxCw.Text := IntToStr(Settings._pttbefore_cw);
+      editAfterTxCw.Text := IntToStr(Settings._pttafter_cw);
+      if checkEnablePttCw.Checked then begin
+         editBeforeTxCw.Enabled := True;
+         editAfterTxCw.Enabled := True;
       end
       else begin
-         BeforeEdit.Enabled := False;
-         AfterEdit.Enabled := False;
+         editBeforeTxCw.Enabled := False;
+         editAfterTxCw.Enabled := False;
       end;
+
+      // PH
+      checkEnablePttPh.Checked := Settings._pttenabled_ph;
+      editBeforeTxPh.Text := IntToStr(Settings._pttbefore_ph);
+      editAfterTxPh.Text := IntToStr(Settings._pttafter_ph);
+      if checkEnablePttPh.Checked then begin
+         editBeforeTxPh.Enabled := True;
+         editAfterTxPh.Enabled := True;
+      end
+      else begin
+         editBeforeTxPh.Enabled := False;
+         editAfterTxPh.Enabled := False;
+      end;
+
 
       // USBIF4CW
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;

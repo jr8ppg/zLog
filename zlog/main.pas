@@ -1827,7 +1827,7 @@ begin
 
       // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
-         dmZLogGlobal.Settings._pttenabled := True;
+         dmZLogGlobal.Settings._pttenabled_ph := True;
       end;
    end
    else begin
@@ -1837,7 +1837,7 @@ begin
 
       // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
-         dmZLogGlobal.Settings._pttenabled := False;
+         dmZLogGlobal.Settings._pttenabled_ph := False;
       end;
    end;
 
@@ -5238,8 +5238,8 @@ begin
    end;
 
    // PTT delayを元に戻す
-   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._pttbefore, dmZLogGlobal.Settings._pttafter);
-   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._pttenabled);
+   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._pttbefore_cw, dmZLogGlobal.Settings._pttafter_cw);
+   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._pttenabled_cw);
 
    // サイドトーンの出力先を戻す
    dmZLogKeyer.SideTone.DeviceID := WAVE_MAPPER;
@@ -12485,14 +12485,14 @@ begin
 
    if fOn = True then begin
       dmZLogKeyer.SetVoiceFlag(1);
-      if dmZLogGlobal.Settings._pttenabled then begin
+      if dmZLogGlobal.Settings._pttenabled_ph then begin
          dmZLogKeyer.ControlPTT(nID, True, fPhonePTT);
-         Sleep(dmZLogGlobal.Settings._pttbefore);
+         Sleep(dmZLogGlobal.Settings._pttbefore_ph);
       end;
    end
    else begin
-      if dmZLogGlobal.Settings._pttenabled then begin
-         Sleep(dmZLogGlobal.Settings._pttafter);
+      if dmZLogGlobal.Settings._pttenabled_ph then begin
+         Sleep(dmZLogGlobal.Settings._pttafter_ph);
          dmZLogKeyer.ControlPTT(nID, False, fPhonePTT);
       end;
       dmZLogKeyer.SetVoiceFlag(0);
@@ -12538,7 +12538,8 @@ begin
    {$ENDIF}
 
    // PTT制御無効なら何もしない
-   if dmZLogGlobal.Settings._pttenabled = False then begin
+   if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
+       (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
       Exit;
    end;
 
@@ -12720,8 +12721,8 @@ begin
    FCWMonitor.ClearSendingText();
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
-   if (dmZLogGlobal.Settings._pttenabled = False) and
-      (dmZLogKeyer.UseWinKeyer = False) then begin
+   if (((mode = mCW) and (dmZLogGlobal.Settings._pttenabled_cw = False) and (dmZLogKeyer.UseWinKeyer = False)) or
+       ((mode <> mCW) and (dmZLogGlobal.Settings._pttenabled_ph = False))) then begin
       dmZLogKeyer.ResetPTT();
    end;
 

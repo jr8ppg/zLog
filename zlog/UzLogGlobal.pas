@@ -206,9 +206,17 @@ type
     _pluginpath: string;
     _pluginlist: string;
 
-    _pttenabled : boolean;
-    _pttbefore : word;
-    _pttafter  : word;
+    // PTT Control
+    // CW
+    _pttenabled_cw :Boolean;
+    _pttbefore_cw: Word;
+    _pttafter_cw: Word;
+
+    // PH
+    _pttenabled_ph: Boolean;
+    _pttbefore_ph: Word;
+    _pttafter_ph: Word;
+
     _txnr : byte;
     _pcname : string;
     _saveevery : word;
@@ -1132,16 +1140,27 @@ begin
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
       Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
 
-      // CW PTT control
+      // PTT control
 
-      // Enable PTT control
-      Settings._pttenabled := ini.ReadBool('Hardware', 'PTTEnabled', False);
+      // CW
+      // Enable PTT
+      Settings._pttenabled_cw := ini.ReadBool('Hardware', 'PTTEnabled', False);
 
       // Before TX (ms)
-      Settings._pttbefore := ini.ReadInteger('Hardware', 'PTTBefore', 25);
+      Settings._pttbefore_cw := ini.ReadInteger('Hardware', 'PTTBefore', 25);
 
       // After TX paddle/keybd (ms)
-      Settings._pttafter := ini.ReadInteger('Hardware', 'PTTAfter', 0);
+      Settings._pttafter_cw := ini.ReadInteger('Hardware', 'PTTAfter', 0);
+
+      // PH
+      // Enable PTT
+      Settings._pttenabled_ph := ini.ReadBool('Hardware', 'PTTEnabledPH', False);
+
+      // Before TX (ms)
+      Settings._pttbefore_ph := ini.ReadInteger('Hardware', 'PTTBeforePH', 25);
+
+      // After TX paddle/keybd (ms)
+      Settings._pttafter_ph := ini.ReadInteger('Hardware', 'PTTAfterPH', 0);
 
       //
       // Rig control
@@ -1829,16 +1848,27 @@ begin
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
       ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
 
-      // CW PTT control
+      // PTT control
 
-      // Enable PTT control
-      ini.WriteBool('Hardware', 'PTTEnabled', Settings._pttenabled);
+      // CW
+      // Enable PTT
+      ini.WriteBool('Hardware', 'PTTEnabled', Settings._pttenabled_cw);
 
       // Before TX (ms)
-      ini.WriteInteger('Hardware', 'PTTBefore', Settings._pttbefore);
+      ini.WriteInteger('Hardware', 'PTTBefore', Settings._pttbefore_cw);
 
       // After TX paddle/keybd (ms)
-      ini.WriteInteger('Hardware', 'PTTAfter', Settings._pttafter);
+      ini.WriteInteger('Hardware', 'PTTAfter', Settings._pttafter_cw);
+
+      // PH
+      // Enable PTT
+      ini.WriteBool('Hardware', 'PTTEnabledPH', Settings._pttenabled_ph);
+
+      // Before TX (ms)
+      ini.WriteInteger('Hardware', 'PTTBeforePH', Settings._pttbefore_ph);
+
+      // After TX paddle/keybd (ms)
+      ini.WriteInteger('Hardware', 'PTTAfterPH', Settings._pttafter_ph);
 
       //
       // Rig control
@@ -2196,8 +2226,8 @@ begin
 
    dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 
-   dmZLogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
-   dmZLogKeyer.SetPTT(Settings._pttenabled);
+   dmZLogKeyer.SetPTTDelay(Settings._pttbefore_cw, Settings._pttafter_cw);
+   dmZLogKeyer.SetPTT(Settings._pttenabled_cw);
 
    dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.InitWPM := Settings.CW._speed;
@@ -2322,7 +2352,7 @@ end;
 
 function TdmZLogGlobal.GetPTTEnabled: Boolean;
 begin
-   Result := Settings._pttenabled;
+   Result := Settings._pttenabled_cw;
 end;
 
 function TdmZLogGlobal.GetRigNameStr(Index: Integer): string; // returns the selected rig name
