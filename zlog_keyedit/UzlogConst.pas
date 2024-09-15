@@ -32,6 +32,7 @@ type
 
 type
   TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean) of object;
+  TChangeFontSizeProc = procedure(Sender: TObject; font_size: Integer) of object;
 
 const
   // SerialContestType
@@ -57,7 +58,7 @@ type
   end;
 
 const
-  MAXICOM = 52;
+  MAXICOM = 53;
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
@@ -79,7 +80,7 @@ const
        (name: 'IC-746';       addr: $56; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
        (name: 'IC-746PRO(IC-7400)'; addr: $66; minband: b19; maxband: b144; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
        (name: 'IC-7000';      addr: $70; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
-       (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: False; PlayCW: False; PlayPh: False),
+       (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: False; PlayCW: True; PlayPh: False),
        (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
        (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False),
        (name: 'IC-7400';      addr: $66; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
@@ -90,8 +91,9 @@ const
        (name: 'IC-756PROII';  addr: $64; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
        (name: 'IC-756PRO3';   addr: $6E; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
        (name: 'IC-7600';      addr: $7A; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: False; PlayPh: False),
-       (name: 'IC-7610';      addr: $98; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: False; PlayPh: False),
+       (name: 'IC-7610';      addr: $98; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False),
        (name: 'IC-7700';      addr: $74; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: False; PlayPh: False),
+       (name: 'IC-7760';      addr: $B2; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False),
        (name: 'IC-78';        addr: $62; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False),
        (name: 'IC-7800';      addr: $6A; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: False; PlayPh: False),
        (name: 'IC-7851';      addr: $8E; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False),
@@ -159,6 +161,9 @@ const
   LineBreakCode : array [0..2] of string
     = (Chr($0d)+Chr($0a), Chr($0d), Chr($0a));
   _sep = '~'; {separator character}
+
+  ZLOG_OPLIST_INI = 'zlog_oplist.ini';
+  ZLOG_SOUND_FILES = 'zlog_sounds.zip';
 
 const
   NewPowerString : array[p001..p1000] of string =
@@ -236,7 +241,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..164] of string = (
+  default_primary_shortcut: array[0..166] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -304,7 +309,7 @@ const
     'Alt+P',
     'Alt+Q',            // #65
     'Alt+R',
-    'Alt+S',
+    '',
     'Alt+T',
     'Alt+W',
     'Alt+Z',            // #70
@@ -401,10 +406,12 @@ const
     '',                 // #161 actionShowCWMonitor
     '',                 // #162 actionShowCurrentTxOnly
     '',                 // #163 actionLogging
-    ''                  // #164 actionSetRigWPM
+    '',                 // #164 actionSetRigWPM
+    'Alt+S',            // #165 actionToggleMemScan
+    'Alt+2'             // #166 actionToggleF2A
   );
 
-  default_secondary_shortcut: array[0..164] of string = (
+  default_secondary_shortcut: array[0..166] of string = (
     '',                 // #00
     '',
     '',
@@ -569,7 +576,9 @@ const
     '',                 // #161 actionShowCWMonitor
     '',                 // #162 actionShowCurrentTxOnly
     '',                 // #163 actionLogging
-    ''                  // #164 actionSetRigWPM
+    '',                 // #164 actionSetRigWPM
+    '',                 // #165 actionToggleMemScan
+    ''                  // #166 actionToggleF2A
   );
 
 const
