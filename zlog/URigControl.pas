@@ -150,6 +150,7 @@ type
     procedure ForcePowerOn();
 
     procedure ToggleMemScan(scan_rigset: Integer; b: TBand);
+    procedure MemScanOff();
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
   end;
@@ -1412,6 +1413,14 @@ begin
    FScanRigBand := b;
    buttonMemScan.Down := not buttonMemScan.Down;
    buttonMemScanClick(nil);
+end;
+
+procedure TRigControl.MemScanOff();
+begin
+   if buttonMemScan.Down = True then begin
+      buttonMemScan.Down := False;
+      buttonMemScanClick(nil);
+   end;
 end;
 
 end.

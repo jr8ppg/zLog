@@ -9945,6 +9945,9 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
 
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
    // 1Rの場合
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       rig := FCurrentRigSet;
@@ -10681,6 +10684,9 @@ begin
    FCQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
 
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
    tx := GetNextRigID(FCurrentTx);
 
    FCurrentTx := tx;
@@ -10714,6 +10720,9 @@ begin
    OutputDebugString(PChar('--- #147 ToggleRx ---'));
    {$ENDIF}
 
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
    rx := GetNextRigID(FCurrentRx);
    SwitchRx(rx + 1);
 end;
@@ -10726,6 +10735,9 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #148 Match RX to TX ---'));
    {$ENDIF}
+
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
 
    tx := FCurrentTx;
    SwitchRx(tx + 1);
@@ -10742,6 +10754,9 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #149 Match TX to RX ---'));
    {$ENDIF}
+
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
 
    rx := FCurrentRx;
    SwitchTx(rx + 1);
