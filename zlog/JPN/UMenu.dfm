@@ -3,8 +3,8 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 305
-  ClientWidth = 520
+  ClientHeight = 312
+  ClientWidth = 525
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,17 +13,16 @@ object MenuForm: TMenuForm
   Font.Style = []
   KeyPreview = True
   Position = poOwnerFormCenter
-  Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
-    520
-    305)
+    525
+    312)
   TextHeight = 13
   object Label1: TLabel
-    Left = 405
-    Top = 280
+    Left = 388
+    Top = 287
     Width = 57
     Height = 13
     Alignment = taRightJustify
@@ -41,7 +40,7 @@ object MenuForm: TMenuForm
   end
   object OKButton: TButton
     Left = 12
-    Top = 274
+    Top = 281
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -49,10 +48,11 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
+    ExplicitTop = 273
   end
   object CancelButton: TButton
     Left = 92
-    Top = 274
+    Top = 281
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -60,16 +60,18 @@ object MenuForm: TMenuForm
     Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 1
+    ExplicitTop = 273
   end
   object Button3: TButton
     Left = 172
-    Top = 274
+    Top = 281
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Caption = #12504#12523#12503
     TabOrder = 2
     Visible = False
+    ExplicitTop = 273
   end
   object ContestGroup: TGroupBox
     Left = 8
@@ -347,23 +349,27 @@ object MenuForm: TMenuForm
     TabOrder = 5
   end
   object editCallsign: TEdit
-    Left = 447
-    Top = 277
+    Left = 448
+    Top = 284
     Width = 65
     Height = 18
     Anchors = [akRight, akBottom]
     AutoSize = False
     CharCase = ecUpperCase
     TabOrder = 6
+    ExplicitLeft = 439
+    ExplicitTop = 276
   end
   object CheckBox1: TCheckBox
-    Left = 268
-    Top = 279
+    Left = 269
+    Top = 286
     Width = 87
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = #24460#20837#21147#12514#12540#12489
     TabOrder = 7
+    ExplicitLeft = 260
+    ExplicitTop = 278
   end
   object ScoreCoeffEdit: TEdit
     Left = 240
