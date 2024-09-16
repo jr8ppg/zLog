@@ -8,71 +8,72 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsUnitVersioningIntro 64176
-#define UExceptionDialog_RsStackList 64192
-#define UExceptionDialog_RsModulesList 64193
-#define UExceptionDialog_RsOSVersion 64194
-#define UExceptionDialog_RsProcessor 64195
-#define UExceptionDialog_RsMemory 64196
-#define UExceptionDialog_RsScreenRes 64197
-#define UExceptionDialog_RsActiveControl 64198
-#define UExceptionDialog_RsThread 64199
-#define UExceptionDialog_RsMissingVersionInfo 64200
-#define UExceptionDialog_RsExceptionStack 64201
-#define UExceptionDialog_RsMainThreadID 64202
-#define UExceptionDialog_RsExceptionThreadID 64203
-#define UExceptionDialog_RsMainThreadCallStack 64204
-#define UExceptionDialog_RsThreadCallStack 64205
-#define UExceptionDialog_RsErrorMessage 64206
-#define UExceptionDialog_RsDetailsIntro 64207
-#define Main_TMainForm_DownloadFile 64208
-#define Main_TMainForm_UploadFile 64209
-#define Main_TMainForm_SoundFileFolderNotSet 64210
-#define Main_TMainForm_Compressing 64211
-#define Main_TMainForm_FailedToCompressSoundFiles 64212
-#define Main_TMainForm_FileNotFound 64213
-#define Main_TMainForm_ComfirmUploadSound 64214
-#define Main_TMainForm_ComfirmDownloadSound 64215
-#define Main_TMainForm_ConfirmRewindSerialNumber 64216
-#define Main_TMainForm_ConfirmContestPeriod 64217
-#define Main_TMainForm_ConfirmOverwrite 64218
-#define Main_TMainForm_ConfirmModeConvert 64219
-#define UExceptionDialog_RsAppError 64220
-#define UExceptionDialog_RsExceptionClass 64221
-#define UExceptionDialog_RsExceptionMessage 64222
-#define UExceptionDialog_RsExceptionAddr 64223
-#define Main_TMainForm_CtyDat_not_loaded 64224
-#define Main_TMainForm_RIT_XIT_Cleared 64225
-#define Main_TMainForm_Anti_zeroin 64226
-#define Main_TMainForm_Set_CQ_Repeat_Int 64227
-#define Main_TMainForm_Invalid_zone 64228
-#define Main_TMainForm_JudgePeriod 64229
-#define Main_TMainForm_EmptyOpList 64230
-#define Main_TMainForm_Setup_SentNR_first 64231
-#define Main_TMainForm_New_QSO_Arrived 64232
-#define Main_TMainForm_Select_Operator 64233
-#define Main_TMainForm_JARL_Member_Info 64234
-#define Main_TMainForm_Inquire_JARL_Member_Info 64235
-#define Main_TMainForm_UserDat_not_loaded 64236
-#define Main_TMainForm_ZserverNotConfigured 64237
-#define Main_TMainForm_ComfirmUploadOpList 64238
-#define Main_TMainForm_ComfirmDownloadOpList 64239
+#define UExceptionDialog_RsDetailsIntro 64176
+#define UExceptionDialog_RsUnitVersioningIntro 64177
+#define UExceptionDialog_RsExceptionAddr 64192
+#define UExceptionDialog_RsStackList 64193
+#define UExceptionDialog_RsModulesList 64194
+#define UExceptionDialog_RsOSVersion 64195
+#define UExceptionDialog_RsProcessor 64196
+#define UExceptionDialog_RsMemory 64197
+#define UExceptionDialog_RsScreenRes 64198
+#define UExceptionDialog_RsActiveControl 64199
+#define UExceptionDialog_RsThread 64200
+#define UExceptionDialog_RsMissingVersionInfo 64201
+#define UExceptionDialog_RsExceptionStack 64202
+#define UExceptionDialog_RsMainThreadID 64203
+#define UExceptionDialog_RsExceptionThreadID 64204
+#define UExceptionDialog_RsMainThreadCallStack 64205
+#define UExceptionDialog_RsThreadCallStack 64206
+#define UExceptionDialog_RsErrorMessage 64207
+#define Main_TMainForm_ComfirmDownloadOpList 64208
+#define Main_TMainForm_DownloadFile 64209
+#define Main_TMainForm_UploadFile 64210
+#define Main_TMainForm_SoundFileFolderNotSet 64211
+#define Main_TMainForm_Compressing 64212
+#define Main_TMainForm_FailedToCompressSoundFiles 64213
+#define Main_TMainForm_FileNotFound 64214
+#define Main_TMainForm_ComfirmUploadSound 64215
+#define Main_TMainForm_ComfirmDownloadSound 64216
+#define Main_TMainForm_ConfirmRewindSerialNumber 64217
+#define Main_TMainForm_ConfirmContestPeriod 64218
+#define Main_TMainForm_ConfirmOverwrite 64219
+#define Main_TMainForm_ConfirmModeConvert 64220
+#define UExceptionDialog_RsAppError 64221
+#define UExceptionDialog_RsExceptionClass 64222
+#define UExceptionDialog_RsExceptionMessage 64223
+#define Main_TMainForm_Some_qsos_merged 64224
+#define Main_TMainForm_CtyDat_not_loaded 64225
+#define Main_TMainForm_RIT_XIT_Cleared 64226
+#define Main_TMainForm_Anti_zeroin 64227
+#define Main_TMainForm_Set_CQ_Repeat_Int 64228
+#define Main_TMainForm_Invalid_zone 64229
+#define Main_TMainForm_JudgePeriod 64230
+#define Main_TMainForm_EmptyOpList 64231
+#define Main_TMainForm_Setup_SentNR_first 64232
+#define Main_TMainForm_New_QSO_Arrived 64233
+#define Main_TMainForm_Select_Operator 64234
+#define Main_TMainForm_JARL_Member_Info 64235
+#define Main_TMainForm_Inquire_JARL_Member_Info 64236
+#define Main_TMainForm_UserDat_not_loaded 64237
+#define Main_TMainForm_ZserverNotConfigured 64238
+#define Main_TMainForm_ComfirmUploadOpList 64239
 #define Main_TMainForm_QTC_Sent 64240
-#define Main_TMainForm_Less_Than_10min 64241
-#define Main_TMainForm_QSY_Count_Exceeded 64242
-#define Main_TMainForm_Loading_now 64243
-#define Main_TMainForm_Switch_CW_Bank_A 64244
-#define Main_TMainForm_Switch_CW_Bank_B 64245
-#define Main_TMainForm_This_QSO_is_locked 64246
-#define Main_TMainForm_Invalid_number 64247
-#define Main_TMainForm_Callsign_not_entered 64248
-#define Main_TMainForm_Dupe_qso 64249
-#define Main_TMainForm_Thankyou_for_your_qso 64250
-#define Main_TMainForm_CW_port_is_no_set 64251
-#define Main_TMainForm_Not_a_new_multi 64252
-#define Main_TMainForm_Cannot_merge_current_file 64253
-#define Main_TMainForm_Merging_now 64254
-#define Main_TMainForm_Some_qsos_merged 64255
+#define Main_TMainForm_QTC_no_shortcut_keys 64241
+#define Main_TMainForm_Less_Than_10min 64242
+#define Main_TMainForm_QSY_Count_Exceeded 64243
+#define Main_TMainForm_Loading_now 64244
+#define Main_TMainForm_Switch_CW_Bank_A 64245
+#define Main_TMainForm_Switch_CW_Bank_B 64246
+#define Main_TMainForm_This_QSO_is_locked 64247
+#define Main_TMainForm_Invalid_number 64248
+#define Main_TMainForm_Callsign_not_entered 64249
+#define Main_TMainForm_Dupe_qso 64250
+#define Main_TMainForm_Thankyou_for_your_qso 64251
+#define Main_TMainForm_CW_port_is_no_set 64252
+#define Main_TMainForm_Not_a_new_multi 64253
+#define Main_TMainForm_Cannot_merge_current_file 64254
+#define Main_TMainForm_Merging_now 64255
 #define IEConst_sNotSupportedByEdge 64256
 #define UBandPlanEditDialog_Input_Text 64257
 #define UBandPlanEditDialog_Delete_Preset 64258
@@ -1355,7 +1356,9 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
@@ -1371,7 +1374,7 @@ BEGIN
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
-	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
+	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
 	Main_TMainForm_DownloadFile,	L"Downloading..."
 	Main_TMainForm_UploadFile,	L"Uploading..."
 	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
@@ -1387,7 +1390,7 @@ BEGIN
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
-	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
+	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
 	Main_TMainForm_CtyDat_not_loaded,	L"CTY.DAT not loaded"
 	Main_TMainForm_RIT_XIT_Cleared,	L"RIT/XIT Offset Cleared"
 	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
@@ -1403,8 +1406,8 @@ BEGIN
 	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
 	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
 	Main_TMainForm_ComfirmUploadOpList,	L"Upload the operator list to Z-Server. Are you sure?"
-	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
-	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing Ctrl+Q"
+	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing %s"
+	Main_TMainForm_QTC_no_shortcut_keys,	L"No shortcut keys are assigned for QTC"
 	Main_TMainForm_Less_Than_10min,	L"Less than 10 min since last QSY!"
 	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
 	Main_TMainForm_Loading_now,	L"Loading..."
@@ -1419,7 +1422,6 @@ BEGIN
 	Main_TMainForm_Not_a_new_multi,	L"NOT a new multiplier. (This is a multi stn)"
 	Main_TMainForm_Cannot_merge_current_file,	L"Cannot merge current file"
 	Main_TMainForm_Merging_now,	L"Merging..."
-	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
 	IEConst_sNotSupportedByEdge,	L"\x64CD\x4F5C\x306F Edge WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3067\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	UBandPlanEditDialog_Input_Text,	L"Please enter preset name"
 	UBandPlanEditDialog_Delete_Preset,	L"Are you sure to delete the bandplan preset [%s]"

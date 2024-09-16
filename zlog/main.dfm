@@ -6100,6 +6100,9 @@ object MainForm: TMainForm
       object menuShowCWMonitor: TMenuItem
         Action = actionShowCWMonitor
       end
+      object menuQTC: TMenuItem
+        Action = actionQTC
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'

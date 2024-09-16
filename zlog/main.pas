@@ -578,6 +578,7 @@ type
     actionToggleMemScan: TAction;
     actionToggleF2A: TAction;
     buttonF2A: TSpeedButton;
+    menuQTC: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1287,7 +1288,8 @@ resourcestring
   TMainForm_Change_Power_QSOs = 'Are you sure to change the power for these QSO''s?';
   TMainForm_Change_TXNO_QSOs = 'Are you sure to change the TX# for these QSO''s?';
   TMainForm_Need_File_Name = 'Data will NOT be saved until you enter the file name';
-  TMainForm_QTC_Sent = 'QTC can be sent by pressing Ctrl+Q';
+  TMainForm_QTC_Sent = 'QTC can be sent by pressing %s';
+  TMainForm_QTC_no_shortcut_keys = 'No shortcut keys are assigned for QTC';
   TMainForm_Less_Than_10min = 'Less than 10 min since last QSY!';
   TMainForm_QSY_Count_Exceeded = 'QSY count exceeded limit!';
   TMainForm_Loading_now = 'Loading...';
@@ -7365,6 +7367,7 @@ var
    BB: TBand;
    rigno: Integer;
    Q: TQSO;
+   S: string;
 begin
    FInitialized := False;
 
@@ -7673,8 +7676,22 @@ begin
 
       RestoreWindowStates;
 
+      // Ctrl+Qを押すとQTCを送信できます
       if Pos('WAEDC', MyContest.Name) > 0 then begin
-         MessageBox(Handle, PChar(TMainForm_QTC_Sent), PChar(Application.Title), MB_ICONINFORMATION or MB_OK);
+         menuQTC.Visible := True;
+         actionQTC.Enabled := True;
+         if actionQTC.ShortCut = 0 then begin
+            S := TMainForm_QTC_no_shortcut_keys;
+         end
+         else begin
+            S := Format(TMainForm_QTC_Sent, [ShortCutToText(actionQTC.ShortCut)]);
+         end;
+
+         MessageBox(Handle, PChar(S), PChar(Application.Title), MB_ICONEXCLAMATION or MB_OK);
+      end
+      else begin
+         menuQTC.Visible := False;
+         actionQTC.Enabled := False;
       end;
 
       CurrentQSO.UpdateTime;
