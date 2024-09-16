@@ -1230,6 +1230,7 @@ end;
 procedure TRigControl.buttonMemScanClick(Sender: TObject);
 var
    rig: TRig;
+   i: Integer;
 begin
    if FCurrentRig = nil then begin
       Exit;
@@ -1247,6 +1248,13 @@ begin
       labelMScan.Caption := 'M-Scan ' + IntToStr(rig.RigNumber);
 
       FRigs[rig.RigNumber].MemScan := buttonMemScan.Down;
+   end
+   else begin
+      for i := Low(FRigs) to High(FRigs) do begin
+         if FRigs[i] <> nil then begin
+            FRigs[i].MemScan := False;
+         end;
+      end;
    end;
 
    Timer2.Enabled := buttonMemScan.Down;
