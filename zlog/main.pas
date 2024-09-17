@@ -1171,6 +1171,7 @@ type
     procedure ResetF2AMode();
     procedure F2AOff();
     procedure OnChangeFontSize(Sender: TObject; font_size: Integer);
+    procedure SetupQTC();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1334,6 +1335,8 @@ resourcestring
   TMainForm_ConfirmContestPeriod = 'Do you want to change the contest period to "not used"?';
   TMainForm_ConfirmOverwrite = '[%s] file already exists. overwrite?';
   TMainForm_ConfirmModeConvert = 'Mode contains old Other, convert to new Other?';  // 'モードにOther(旧)が含まれています。Other(新)に変換しますか？'
+  TMainForm_No_QTC_Message = 'No messages to send in QTC';  // 'QTCで送るメッセージはありません'
+  TMainForm_Assigned_Another_Function = 'CTRL+Q is assigned to another function. Do you want to take it?';  // 'CTRL+Qは他の機能にアサインされています。横取りしますか？'
 
 var
   MainForm: TMainForm;
@@ -4754,6 +4757,10 @@ begin
    FBandScopeAllBands.Close();
    FBandScopeAllBands.Release();
 
+   if MyContest is TWAEContest then begin
+      TWAEContest(MyContest).QTCForm.Release();
+   end;
+
    if MyContest <> nil then begin
       MyContest.Free;
    end;
@@ -7387,7 +7394,6 @@ var
    BB: TBand;
    rigno: Integer;
    Q: TQSO;
-   S: string;
 begin
    FInitialized := False;
 
@@ -7697,22 +7703,7 @@ begin
       RestoreWindowStates;
 
       // Ctrl+Qを押すとQTCを送信できます
-      if Pos('WAEDC', MyContest.Name) > 0 then begin
-         menuQTC.Visible := True;
-         actionQTC.Enabled := True;
-         if actionQTC.ShortCut = 0 then begin
-            S := TMainForm_QTC_no_shortcut_keys;
-         end
-         else begin
-            S := Format(TMainForm_QTC_Sent, [ShortCutToText(actionQTC.ShortCut)]);
-         end;
-
-         MessageBox(Handle, PChar(S), PChar(Application.Title), MB_ICONEXCLAMATION or MB_OK);
-      end
-      else begin
-         menuQTC.Visible := False;
-         actionQTC.Enabled := False;
-      end;
+      SetupQTC();
 
       CurrentQSO.UpdateTime;
       TimeEdit.Text := CurrentQSO.TimeStr;
@@ -9786,13 +9777,17 @@ begin
       Exit;
    end;
 
-   TWAEContest(MyContest).QTCForm.Show;
    if CurrentQSO.Callsign = '' then begin
       if Log.TotalQSO >= 2 then begin
+         TWAEContest(MyContest).QTCForm.Show;
          TWAEContest(MyContest).QTCForm.OpenQTC(Log.QsoList[Log.TotalQSO]);
+      end
+      else begin
+         MessageBox(Handle, PChar(TMainForm_No_QTC_Message), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       end;
    end
    else begin
+      TWAEContest(MyContest).QTCForm.Show;
       TWAEContest(MyContest).QTCForm.OpenQTC(Main.CurrentQSO);
    end;
 end;
@@ -13635,6 +13630,71 @@ begin
       f.ShowModal();
    finally
       f.Release();
+   end;
+end;
+
+procedure TMainForm.SetupQTC();
+var
+   S: string;
+
+   procedure ClearCtrlQ();
+   var
+      i: Integer;
+      shortcut: TShortCut;
+   begin
+      shortcut := TextToShortCut('CTRL+Q');
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         if ActionList1.Actions[i].ShortCut = shortcut then begin
+            ActionList1.Actions[i].ShortCut := 0;
+            Exit;
+         end;
+      end;
+   end;
+
+   function IsCtrlQAssignedQTC(): Boolean;
+   var
+      i: Integer;
+      shortcut: TShortCut;
+   begin
+      shortcut := TextToShortCut('CTRL+Q');
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         if (ActionList1.Actions[i] <> actionQTC) and (ActionList1.Actions[i].ShortCut = shortcut) then begin
+            Result := False;
+            Exit;
+         end;
+         if (ActionList1.Actions[i] = actionQTC) and (ActionList1.Actions[i].ShortCut = shortcut) then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+      Result := False;
+   end;
+begin
+   if Pos('WAEDC', MyContest.Name) > 0 then begin
+      menuQTC.Visible := True;
+      actionQTC.Enabled := True;
+
+      // CTRL+Qが他の機能に割り当てられている場合
+      if IsCtrlQAssignedQTC() = False then begin
+         if MessageBox(Handle, PChar(TMainForm_Assigned_Another_Function), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
+            ClearCtrlQ();
+            actionQTC.ShortCut := TextToShortCut('CTRL+Q');
+         end;
+      end;
+
+      // ショートカットの有無チェック
+      if actionQTC.ShortCut = 0 then begin
+         S := TMainForm_QTC_no_shortcut_keys;
+      end
+      else begin
+         S := Format(TMainForm_QTC_Sent, [ShortCutToText(actionQTC.ShortCut)]);
+      end;
+
+      MessageBox(Handle, PChar(S), PChar(Application.Title), MB_ICONEXCLAMATION or MB_OK);
+   end
+   else begin
+      menuQTC.Visible := False;
+      actionQTC.Enabled := False;
    end;
 end;
 
