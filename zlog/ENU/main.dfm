@@ -3113,24 +3113,6 @@ object MainForm: TMainForm
         NumGlyphs = 2
         OnClick = SideToneButtonClick
       end
-      object buttonF2A: TSpeedButton
-        Left = 533
-        Top = 4
-        Width = 25
-        Height = 25
-        Hint = 'F2A'
-        AllowAllUp = True
-        GroupIndex = 2
-        Caption = 'F2'
-        Flat = True
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = 'Times New Roman'
-        Font.Style = []
-        ParentFont = False
-        OnClick = buttonF2AClick
-      end
       object SpeedBar: TTrackBar
         Left = 414
         Top = 6
@@ -5613,7 +5595,7 @@ object MainForm: TMainForm
         OnClick = actionShowQsoRateExecute
       end
       object LogButton: TSpeedButton
-        Left = 250
+        Left = 240
         Top = 4
         Width = 25
         Height = 25
@@ -5635,7 +5617,7 @@ object MainForm: TMainForm
         OnClick = LogButtonClick
       end
       object Options2Button: TSpeedButton
-        Left = 308
+        Left = 296
         Top = 4
         Width = 25
         Height = 25
@@ -5680,7 +5662,7 @@ object MainForm: TMainForm
         OnClick = actionShowSuperCheckExecute
       end
       object PacketClusterButton: TSpeedButton
-        Left = 355
+        Left = 360
         Top = 4
         Width = 25
         Height = 25
@@ -5704,7 +5686,7 @@ object MainForm: TMainForm
         OnClick = actionShowPacketClusterExecute
       end
       object ZServerIcon: TImage
-        Left = 387
+        Left = 389
         Top = 4
         Width = 30
         Height = 25
@@ -5774,7 +5756,7 @@ object MainForm: TMainForm
         Visible = False
       end
       object OptionsButton: TSpeedButton
-        Left = 284
+        Left = 272
         Top = 4
         Width = 25
         Height = 25
@@ -5810,6 +5792,23 @@ object MainForm: TMainForm
         ShowHint = True
         OnClick = menuHardwareSettingsClick
       end
+      object buttonF2A: TSpeedButton
+        Left = 328
+        Top = 4
+        Width = 25
+        Height = 25
+        Hint = 'F2A'
+        AllowAllUp = True
+        GroupIndex = 2
+        Caption = 'F2'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Times New Roman'
+        Font.Style = []
+        ParentFont = False
+        OnClick = buttonF2AClick
+      end
       object panelCQMode: TPanel
         Left = 494
         Top = 1
@@ -5829,7 +5828,7 @@ object MainForm: TMainForm
         ExplicitLeft = 490
       end
       object comboBandPlan: TComboBox
-        Left = 424
+        Left = 426
         Top = 6
         Width = 65
         Height = 21
@@ -5839,7 +5838,7 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
-        ExplicitLeft = 420
+        ExplicitLeft = 422
       end
     end
   end

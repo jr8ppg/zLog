@@ -1169,6 +1169,7 @@ type
     procedure SetEnableF2A();
     procedure SetF2AMode();
     procedure ResetF2AMode();
+    procedure F2AOff();
     procedure OnChangeFontSize(Sender: TObject; font_size: Integer);
   public
     EditScreen : TBasicEdit;
@@ -5188,7 +5189,7 @@ end;
 
 procedure TMainForm.SetEnableF2A();
 begin
-   if (CurrentQSO.Mode = mCW) and (currentQSO.Band >= b28) then begin
+   if (currentQSO.Band >= b28) then begin
       buttonF2A.Enabled := True;
       actionToggleF2A.Enabled := True;
    end
@@ -5205,6 +5206,9 @@ begin
    // PTT delayをF2A用の値に変更する
    dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._f2a_before, dmZLogGlobal.Settings._f2a_after);
    dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._f2a_ptt);
+
+   // サイドトーン設定をON
+   dmZLogKeyer.UseSideTone := True;
 
    // サイドトーンの出力先を変更
    dmZLogKeyer.SideTone.DeviceID := dmZLogGlobal.Settings._f2a_device;
@@ -5243,11 +5247,22 @@ begin
    dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._pttbefore_cw, dmZLogGlobal.Settings._pttafter_cw);
    dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._pttenabled_cw);
 
+   // サイドトーン設定を戻す
+   dmZLogKeyer.UseSideTone := dmZLogGlobal.Settings.CW._sidetone;
+
    // サイドトーンの出力先を戻す
    dmZLogKeyer.SideTone.DeviceID := WAVE_MAPPER;
    dmZLogKeyer.SideTone.Volume := dmZLogGlobal.Settings.CW._sidetone_volume;
 
    // 本来のキーイングを再開
+end;
+
+procedure TMainForm.F2AOff();
+begin
+   if buttonF2A.Down then begin
+      buttonF2A.Down := False;
+      ResetF2AMode();
+   end;
 end;
 
 procedure TMainForm.SideToneButtonClick(Sender: TObject);
@@ -5306,9 +5321,8 @@ begin
    FCommForm.Disconnect();
    FRateDialogEx.SaveSettings();
 
-   if buttonF2A.Down then begin
-      ResetF2AMode();
-   end;
+   // F2Aモード解除
+   F2AOff();
 
    Timer1.Enabled := False;
    TerminateNPlusOne();
@@ -5934,11 +5948,11 @@ begin
    f := TformOptions.Create(Self);
    rig := RigControl.GetCurrentRig();
    try
+      // メモリースキャン解除
+      RigControl.MemScanOff();
+
       // F2Aモード解除
-      if buttonF2A.Down then begin
-         buttonF2A.Down := False;
-         buttonF2AClick(buttonF2A);
-      end;
+      F2AOff();
 
       // KeyingとRigControlを一旦終了
       FRigControl.ForcePowerOff();
@@ -5998,6 +6012,12 @@ begin
       f.EditNumber := nEditNumer;
       f.EditBank := nEditBank;
       f.ActiveTab := nActiveTab;
+
+      // メモリースキャン解除
+      RigControl.MemScanOff();
+
+      // F2Aモード解除
+      F2AOff();
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -9965,6 +9985,9 @@ begin
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
 
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
+
    // 1Rの場合
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       rig := FCurrentRigSet;
@@ -10704,6 +10727,9 @@ begin
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
 
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
+
    tx := GetNextRigID(FCurrentTx);
 
    FCurrentTx := tx;
@@ -10740,6 +10766,9 @@ begin
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
 
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
+
    rx := GetNextRigID(FCurrentRx);
    SwitchRx(rx + 1);
 end;
@@ -10755,6 +10784,9 @@ begin
 
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
+
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
 
    tx := FCurrentTx;
    SwitchRx(tx + 1);
@@ -10774,6 +10806,9 @@ begin
 
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
+
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
 
    rx := FCurrentRx;
    SwitchTx(rx + 1);

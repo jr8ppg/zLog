@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = radio1Radio
+  ActiveControl = comboIcomMode
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -23,7 +23,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetHardware3
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -2366,54 +2366,93 @@ object formOptions: TformOptions
         Left = 6
         Top = 84
         Width = 423
-        Height = 62
-        Caption = 'CW/PTT'#21046#24481
+        Height = 68
+        Caption = 'PTT'#21046#24481
         TabOrder = 1
         object Label38: TLabel
-          Left = 8
-          Top = 38
+          Left = 122
+          Top = 19
           Width = 90
           Height = 13
           Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object Label39: TLabel
-          Left = 180
-          Top = 38
-          Width = 130
+          Left = 270
+          Top = 19
+          Width = 61
           Height = 13
           Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
         end
-        object PTTEnabledCheckBox: TCheckBox
-          Left = 8
-          Top = 14
-          Width = 129
-          Height = 17
-          Caption = 'PTT'#21046#24481#26377#21177
-          TabOrder = 0
-          OnClick = PTTEnabledCheckBoxClick
+        object Label18: TLabel
+          Left = 270
+          Top = 43
+          Width = 61
+          Height = 13
+          Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
         end
-        object BeforeEdit: TEdit
-          Left = 120
-          Top = 35
+        object Label19: TLabel
+          Left = 122
+          Top = 43
+          Width = 70
+          Height = 13
+          Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
+        end
+        object checkEnablePttCw: TCheckBox
+          Left = 8
+          Top = 18
+          Width = 113
+          Height = 17
+          Caption = 'CW'#12391'PTT'#20351#12358
+          TabOrder = 0
+          OnClick = checkEnablePttCwClick
+        end
+        object editBeforeTxCw: TEdit
+          Left = 225
+          Top = 16
           Width = 40
           Height = 21
           TabOrder = 1
           OnKeyPress = NumberEditKeyPress
         end
-        object AfterEdit: TEdit
-          Left = 290
-          Top = 35
+        object editAfterTxCw: TEdit
+          Left = 373
+          Top = 16
           Width = 40
           Height = 21
           TabOrder = 2
           OnKeyPress = NumberEditKeyPress
         end
+        object checkEnablePttPh: TCheckBox
+          Left = 8
+          Top = 42
+          Width = 113
+          Height = 17
+          Caption = 'PH'#12391'PTT'#20351#12358
+          TabOrder = 3
+          OnClick = checkEnablePttPhClick
+        end
+        object editBeforeTxPh: TEdit
+          Left = 225
+          Top = 40
+          Width = 40
+          Height = 21
+          TabOrder = 4
+          OnKeyPress = NumberEditKeyPress
+        end
+        object editAfterTxPh: TEdit
+          Left = 373
+          Top = 40
+          Width = 40
+          Height = 21
+          TabOrder = 5
+          OnKeyPress = NumberEditKeyPress
+        end
       end
       object groupUsif4cw: TGroupBox
         Left = 6
-        Top = 152
+        Top = 156
         Width = 423
-        Height = 70
+        Height = 68
         Caption = 'USBIF4CW'#12458#12503#12471#12519#12531
         TabOrder = 2
         object checkUsbif4cwSyncWpm: TCheckBox
@@ -2443,9 +2482,9 @@ object formOptions: TformOptions
       end
       object groupWinKeyer: TGroupBox
         Left = 6
-        Top = 227
+        Top = 229
         Width = 423
-        Height = 70
+        Height = 68
         Caption = 'WinKeyer'#12458#12503#12471#12519#12531
         TabOrder = 3
         object checkUseWinKeyer: TCheckBox
@@ -2498,16 +2537,16 @@ object formOptions: TformOptions
         Caption = 'F2A'#12458#12503#12471#12519#12531
         TabOrder = 4
         object Label13: TLabel
-          Left = 135
+          Left = 122
           Top = 45
-          Width = 81
+          Width = 70
           Height = 13
           Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object Label14: TLabel
-          Left = 280
+          Left = 270
           Top = 45
-          Width = 72
+          Width = 61
           Height = 13
           Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
         end
@@ -2535,7 +2574,7 @@ object formOptions: TformOptions
           Caption = #12501#12451#12523#12479#12540
         end
         object Label17: TLabel
-          Left = 185
+          Left = 180
           Top = 19
           Width = 64
           Height = 13
@@ -2561,14 +2600,14 @@ object formOptions: TformOptions
         object checkF2APttControl: TCheckBox
           Left = 8
           Top = 44
-          Width = 129
+          Width = 89
           Height = 17
-          Caption = 'PTT'#21046#24481#26377#21177
+          Caption = 'F2A'#12391'PTT'#20351#12358
           TabOrder = 3
           OnClick = checkF2APttControlClick
         end
         object editF2ABefore: TEdit
-          Left = 237
+          Left = 225
           Top = 42
           Width = 40
           Height = 21
@@ -2594,7 +2633,7 @@ object formOptions: TformOptions
           Value = 100
         end
         object comboF2aDataMode: TComboBox
-          Left = 254
+          Left = 249
           Top = 16
           Width = 45
           Height = 21
@@ -2984,7 +3023,7 @@ object formOptions: TformOptions
           Height = 17
           Caption = #12471#12522#12450#12523#12490#12531#12496#12540#21516#26399
           TabOrder = 2
-          OnClick = PTTEnabledCheckBoxClick
+          OnClick = checkEnablePttCwClick
         end
       end
       object groupPacketCluster: TGroupBox
@@ -3353,13 +3392,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@UD '#12487#12472#12479#12523' '#25945#31185#26360#20307' N-B'
+          FontName = 'Cascadia Code ExtraLight Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 18
+          ItemIndex = 27
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
