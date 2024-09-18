@@ -226,7 +226,8 @@ begin
    // ‘—M‚·‚é‚à‚Ì‚ª‚ ‚éê‡
    if FQTCList.Count > 0 then begin
       inc(FQTCSeries);
-      Label1.Caption := Q.CallSign + ' QTC ' + IntToStr(FQTCSeries) + '/' + IntToStr(SpinEdit.Value);
+      Label1.Caption := Q.CallSign + ' ' + BuildQTCInitString();
+
    end;
 end;
 
