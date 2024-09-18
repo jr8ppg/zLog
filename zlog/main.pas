@@ -12767,12 +12767,6 @@ begin
    FMessageManager.ClearQue();
    FCWMonitor.ClearSendingText();
 
-   // メモリースキャン解除
-//   RigControl.MemScanOff();
-
-   // F2Aモード解除
-//   F2AOff();
-
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (((mode = mCW) and (dmZLogGlobal.Settings._pttenabled_cw = False) and (dmZLogKeyer.UseWinKeyer = False)) or
        ((mode <> mCW) and (dmZLogGlobal.Settings._pttenabled_ph = False))) then begin
@@ -12785,15 +12779,17 @@ begin
          if (Is2bsiq() = False) then begin
             // CQ開始時のリグに戻す
             if FCurrentRigSet <> FCQLoopStartRig then begin
-               SwitchRig(FCQLoopStartRig);
+               RigControl.MemScanOff();
                F2AOff();
+               SwitchRig(FCQLoopStartRig);
             end;
          end
          else begin
             // TXとRXが違う場合は、RXに合わせる
             if FCurrentRx <> FCurrentTx then begin
-               SwitchTx(FCurrentRx + 1);
+               RigControl.MemScanOff();
                F2AOff();
+               SwitchTx(FCurrentRx + 1);
             end;
          end;
       end;
