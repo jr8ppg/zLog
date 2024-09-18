@@ -1369,7 +1369,7 @@ BEGIN
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_No_QTC_Message,	L"QTC\x3067\x9001\x308B\x30E1\x30C3\x30BB\x30FC\x30B8\x306F\x3042\x308A\x307E\x305B\x3093"
-	Main_TMainForm_Assigned_Another_Function,	L"CTRL+Q\x306F\x4ED6\x306E\x6A5F\x80FD\x306B\x30A2\x30B5\x30A4\x30F3\x3055\x308C\x3066\x3044\x307E\x3059\x3002\x6A2A\x53D6\x308A\x3057\x307E\x3059\x304B\xFF1F"
+	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q\x306F\x4ED6\x306E\x6A5F\x80FD\x306B\x30A2\x30B5\x30A4\x30F3\x3055\x308C\x3066\x3044\x307E\x3059\x3002\x6A2A\x53D6\x308A\x3057\x307E\x3059\x304B\xFF1F"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"

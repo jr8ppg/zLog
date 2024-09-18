@@ -227,7 +227,6 @@ begin
    if FQTCList.Count > 0 then begin
       inc(FQTCSeries);
       Label1.Caption := Q.CallSign + ' ' + BuildQTCInitString();
-
    end;
 end;
 
@@ -319,12 +318,9 @@ begin
       SpinEdit.Value := maxQTC;
    end;
 
+   ListBox.Clear();
    for i := 0 to SpinEdit.Value - 1 do begin
-      ListBox.Items[i] := TQSO(FQTCList[i]).QTCStr;
-   end;
-
-   for i := SpinEdit.Value to FQTCList.Count - 1 do begin
-      ListBox.Items[i] := '';
+      ListBox.Items.Add(TQSO(FQTCList[i]).QTCStr);
    end;
 
    Label1.Caption := FQTCReqStn.CallSign + ' ' + BuildQTCInitString();

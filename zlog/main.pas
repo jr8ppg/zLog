@@ -1336,7 +1336,7 @@ resourcestring
   TMainForm_ConfirmOverwrite = '[%s] file already exists. overwrite?';
   TMainForm_ConfirmModeConvert = 'Mode contains old Other, convert to new Other?';  // 'モードにOther(旧)が含まれています。Other(新)に変換しますか？'
   TMainForm_No_QTC_Message = 'No messages to send in QTC';  // 'QTCで送るメッセージはありません'
-  TMainForm_Assigned_Another_Function = 'CTRL+Q is assigned to another function. Do you want to take it?';  // 'CTRL+Qは他の機能にアサインされています。横取りしますか？'
+  TMainForm_Assigned_Another_Function = 'Ctrl+Q is assigned to another function. Do you want to take it?';  // 'Ctrl+Qは他の機能にアサインされています。横取りしますか？'
 
 var
   MainForm: TMainForm;
