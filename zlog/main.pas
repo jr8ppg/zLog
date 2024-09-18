@@ -10762,7 +10762,7 @@ begin
    RigControl.MemScanOff();
 
    // F2Aモード解除(暫定) 2Radio対応時は削除
-   F2AOff();
+//   F2AOff();
 
    rx := GetNextRigID(FCurrentRx);
    SwitchRx(rx + 1);
@@ -10781,7 +10781,7 @@ begin
    RigControl.MemScanOff();
 
    // F2Aモード解除(暫定) 2Radio対応時は削除
-   F2AOff();
+//   F2AOff();
 
    tx := FCurrentTx;
    SwitchRx(tx + 1);
@@ -12768,10 +12768,10 @@ begin
    FCWMonitor.ClearSendingText();
 
    // メモリースキャン解除
-   RigControl.MemScanOff();
+//   RigControl.MemScanOff();
 
    // F2Aモード解除
-   F2AOff();
+//   F2AOff();
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (((mode = mCW) and (dmZLogGlobal.Settings._pttenabled_cw = False) and (dmZLogKeyer.UseWinKeyer = False)) or
@@ -12783,12 +12783,17 @@ begin
    if fReturnStartRig = True then begin
       if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          if (Is2bsiq() = False) then begin
-            // TXとRXが違う場合は、RXに合わせる
-            SwitchRig(FCQLoopStartRig);
+            // CQ開始時のリグに戻す
+            if FCurrentRigSet <> FCQLoopStartRig then begin
+               SwitchRig(FCQLoopStartRig);
+               F2AOff();
+            end;
          end
          else begin
+            // TXとRXが違う場合は、RXに合わせる
             if FCurrentRx <> FCurrentTx then begin
                SwitchTx(FCurrentRx + 1);
+               F2AOff();
             end;
          end;
       end;
