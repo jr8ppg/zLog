@@ -12767,6 +12767,12 @@ begin
    FMessageManager.ClearQue();
    FCWMonitor.ClearSendingText();
 
+   // メモリースキャン解除
+   RigControl.MemScanOff();
+
+   // F2Aモード解除
+   F2AOff();
+
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (((mode = mCW) and (dmZLogGlobal.Settings._pttenabled_cw = False) and (dmZLogKeyer.UseWinKeyer = False)) or
        ((mode <> mCW) and (dmZLogGlobal.Settings._pttenabled_ph = False))) then begin

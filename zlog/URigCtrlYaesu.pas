@@ -121,6 +121,7 @@ type
   TFT991 = class(TFT2000)
     procedure ExecuteCommand(S: AnsiString); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
+    procedure SetDataMode(fOn:Boolean); override;
   end;
 
   TFT710 = class(TFT991)
@@ -1442,8 +1443,8 @@ begin
       case StrToIntDef(strTemp, 99) of
          1, 2: M := mSSB;
          3, 7: M := mCW;
-         4:    M := mFM;
-         5:    M := mAM;
+         4, $A, $B: M := mFM;
+         5, $D: M := mAM;
          6, 9: M := mRTTY;
          else  M := mOther;
       end;
@@ -1494,6 +1495,22 @@ begin
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9Œ…
    WriteData(cmd[_currentvfo] + freq + ';');
+end;
+
+//
+// OPERATING MODE
+//        0  1  2  3  4
+// SET    M  D  P1 P2 ;
+// READ   M  D  P1 ;
+// ANSWER M  D  P1 P2 ;
+// P1: 0:MAIN
+// P2: 1:LSB,2:USB,3:CW-U,4:FM,5:AM,6:RTTY-LSB,
+//     7:CW-R,8:DATA-LSB,9:RTTY-USB,A:DATA-FM,
+//     B:FM-N,C-DATA:USB,D:AM-N,E:C4FM
+//
+procedure TFT991.SetDataMode(fOn:Boolean);
+begin
+   WriteData('MD0A;');
 end;
 
 { TFT710 }
