@@ -8,29 +8,31 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadID 64176
-#define UExceptionDialog_RsExceptionThreadID 64177
-#define UExceptionDialog_RsMainThreadCallStack 64178
-#define UExceptionDialog_RsThreadCallStack 64179
-#define UExceptionDialog_RsErrorMessage 64180
-#define UExceptionDialog_RsDetailsIntro 64181
-#define UExceptionDialog_RsUnitVersioningIntro 64182
+#define UExceptionDialog_RsMissingVersionInfo 64176
+#define UExceptionDialog_RsExceptionStack 64177
+#define UExceptionDialog_RsMainThreadID 64178
+#define UExceptionDialog_RsExceptionThreadID 64179
+#define UExceptionDialog_RsMainThreadCallStack 64180
+#define UExceptionDialog_RsThreadCallStack 64181
+#define UExceptionDialog_RsErrorMessage 64182
+#define UExceptionDialog_RsDetailsIntro 64183
+#define UExceptionDialog_RsUnitVersioningIntro 64184
 #define Main_TMainForm_No_QTC_Message 64192
 #define Main_TMainForm_Assigned_Another_Function 64193
-#define UExceptionDialog_RsAppError 64194
-#define UExceptionDialog_RsExceptionClass 64195
-#define UExceptionDialog_RsExceptionMessage 64196
-#define UExceptionDialog_RsExceptionAddr 64197
-#define UExceptionDialog_RsStackList 64198
-#define UExceptionDialog_RsModulesList 64199
-#define UExceptionDialog_RsOSVersion 64200
-#define UExceptionDialog_RsProcessor 64201
-#define UExceptionDialog_RsMemory 64202
-#define UExceptionDialog_RsScreenRes 64203
-#define UExceptionDialog_RsActiveControl 64204
-#define UExceptionDialog_RsThread 64205
-#define UExceptionDialog_RsMissingVersionInfo 64206
-#define UExceptionDialog_RsExceptionStack 64207
+#define Main_TMainForm_To_Change_the_mode 64194
+#define Main_TMainForm_To_Change_the_band 64195
+#define UExceptionDialog_RsAppError 64196
+#define UExceptionDialog_RsExceptionClass 64197
+#define UExceptionDialog_RsExceptionMessage 64198
+#define UExceptionDialog_RsExceptionAddr 64199
+#define UExceptionDialog_RsStackList 64200
+#define UExceptionDialog_RsModulesList 64201
+#define UExceptionDialog_RsOSVersion 64202
+#define UExceptionDialog_RsProcessor 64203
+#define UExceptionDialog_RsMemory 64204
+#define UExceptionDialog_RsScreenRes 64205
+#define UExceptionDialog_RsActiveControl 64206
+#define UExceptionDialog_RsThread 64207
 #define Main_TMainForm_UserDat_not_loaded 64208
 #define Main_TMainForm_ZserverNotConfigured 64209
 #define Main_TMainForm_ComfirmUploadOpList 64210
@@ -1361,6 +1363,8 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
@@ -1370,6 +1374,8 @@ BEGIN
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_No_QTC_Message,	L"QTC\x3067\x9001\x308B\x30E1\x30C3\x30BB\x30FC\x30B8\x306F\x3042\x308A\x307E\x305B\x3093"
 	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q\x306F\x4ED6\x306E\x6A5F\x80FD\x306B\x30A2\x30B5\x30A4\x30F3\x3055\x308C\x3066\x3044\x307E\x3059\x3002\x6A2A\x53D6\x308A\x3057\x307E\x3059\x304B\xFF1F"
+	Main_TMainForm_To_Change_the_mode,	L"\x904B\x7528\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
+	Main_TMainForm_To_Change_the_band,	L"\x904B\x7528\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1382,8 +1388,6 @@ BEGIN
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
-	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	Main_TMainForm_UserDat_not_loaded,	L" \x304C\x30ED\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093"
 	Main_TMainForm_ZserverNotConfigured,	L"Z-Server\x306E\x8A2D\x5B9A\x304C\x884C\x308F\x308C\x3066\x3044\x307E\x305B\x3093"
 	Main_TMainForm_ComfirmUploadOpList,	L"Z-Server\x306B\x30AA\x30DA\x30EC\x30FC\x30BF\x30EA\x30B9\x30C8\x3092\x30A2\x30C3\x30D7\x30ED\x30FC\x30C9\x3057\x307E\x3059.\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"

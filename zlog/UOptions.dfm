@@ -2577,20 +2577,13 @@ object formOptions: TformOptions
           Alignment = taRightJustify
           Caption = 'filter'
         end
-        object Label17: TLabel
-          Left = 180
-          Top = 19
-          Width = 64
-          Height = 13
-          Caption = 'DATA MODE'
-        end
         object comboF2ADevice: TComboBox
           Left = 50
           Top = 68
           Width = 227
           Height = 21
           Style = csDropDownList
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkUseF2A: TCheckBox
           Left = 8
@@ -2607,7 +2600,7 @@ object formOptions: TformOptions
           Width = 89
           Height = 17
           Caption = 'Enable PTT'
-          TabOrder = 3
+          TabOrder = 4
           OnClick = checkF2APttControlClick
         end
         object editF2ABefore: TEdit
@@ -2615,7 +2608,7 @@ object formOptions: TformOptions
           Top = 42
           Width = 40
           Height = 21
-          TabOrder = 4
+          TabOrder = 5
           OnKeyPress = NumberEditKeyPress
         end
         object editF2AAfter: TEdit
@@ -2623,7 +2616,7 @@ object formOptions: TformOptions
           Top = 42
           Width = 40
           Height = 21
-          TabOrder = 5
+          TabOrder = 6
           OnKeyPress = NumberEditKeyPress
         end
         object spinF2AVolume: TSpinEdit
@@ -2633,7 +2626,7 @@ object formOptions: TformOptions
           Height = 22
           MaxValue = 100
           MinValue = 1
-          TabOrder = 7
+          TabOrder = 8
           Value = 100
         end
         object comboF2aDataMode: TComboBox
@@ -2643,7 +2636,7 @@ object formOptions: TformOptions
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 1
+          TabOrder = 2
           Text = 'D1'
           Items.Strings = (
             'D1'
@@ -2657,12 +2650,21 @@ object formOptions: TformOptions
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 2
+          TabOrder = 3
           Text = 'FIL1'
           Items.Strings = (
             'FIL1'
             'FIL2'
             'FIL3')
+        end
+        object checkUseF2ADataMode: TCheckBox
+          Left = 136
+          Top = 18
+          Width = 107
+          Height = 17
+          Caption = 'Use DATAMODE'
+          TabOrder = 1
+          OnClick = checkUseF2ADataModeClick
         end
       end
     end
@@ -3396,13 +3398,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code ExtraLight Italic'
+          FontName = 'Cascadia Mono PL Light'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 27
+          ItemIndex = 51
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

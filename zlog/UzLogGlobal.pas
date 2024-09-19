@@ -171,6 +171,7 @@ type
     _f2a_after: Word;
     _f2a_device: Integer;
     _f2a_volume: Integer;
+    _f2a_use_datamode: Boolean;
     _f2a_datamode: Integer;
     _f2a_filter: Integer;
 
@@ -1112,6 +1113,7 @@ begin
       Settings._f2a_after := ini.ReadInteger('Hardware', 'F2APttAfter', 500);
       Settings._f2a_device := ini.ReadInteger('Hardware', 'F2A_OutputDevice', 0);
       Settings._f2a_volume := ini.ReadInteger('Hardware', 'F2A_OutputVolume', 100);
+      Settings._f2a_use_datamode := ini.ReadBool('Hardware', 'F2A_Use_DataMode', False);
       Settings._f2a_datamode := ini.ReadInteger('Hardware', 'F2A_DataMode', 0);
       Settings._f2a_filter := ini.ReadInteger('Hardware', 'F2A_Filter', 0);
 
@@ -1826,6 +1828,7 @@ begin
       ini.WriteInteger('Hardware', 'F2APttAfter', Settings._f2a_after);
       ini.WriteInteger('Hardware', 'F2A_OutputDevice', Settings._f2a_device);
       ini.WriteInteger('Hardware', 'F2A_OutputVolume', Settings._f2a_volume);
+      ini.WriteBool('Hardware', 'F2A_Use_DataMode', Settings._f2a_use_datamode);
       ini.WriteInteger('Hardware', 'F2A_DataMode', Settings._f2a_datamode);
       ini.WriteInteger('Hardware', 'F2A_Filter', Settings._f2a_filter);
 

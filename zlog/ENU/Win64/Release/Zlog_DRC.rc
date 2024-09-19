@@ -8,29 +8,31 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadID 64176
-#define UExceptionDialog_RsExceptionThreadID 64177
-#define UExceptionDialog_RsMainThreadCallStack 64178
-#define UExceptionDialog_RsThreadCallStack 64179
-#define UExceptionDialog_RsErrorMessage 64180
-#define UExceptionDialog_RsDetailsIntro 64181
-#define UExceptionDialog_RsUnitVersioningIntro 64182
+#define UExceptionDialog_RsMissingVersionInfo 64176
+#define UExceptionDialog_RsExceptionStack 64177
+#define UExceptionDialog_RsMainThreadID 64178
+#define UExceptionDialog_RsExceptionThreadID 64179
+#define UExceptionDialog_RsMainThreadCallStack 64180
+#define UExceptionDialog_RsThreadCallStack 64181
+#define UExceptionDialog_RsErrorMessage 64182
+#define UExceptionDialog_RsDetailsIntro 64183
+#define UExceptionDialog_RsUnitVersioningIntro 64184
 #define Main_TMainForm_No_QTC_Message 64192
 #define Main_TMainForm_Assigned_Another_Function 64193
-#define UExceptionDialog_RsAppError 64194
-#define UExceptionDialog_RsExceptionClass 64195
-#define UExceptionDialog_RsExceptionMessage 64196
-#define UExceptionDialog_RsExceptionAddr 64197
-#define UExceptionDialog_RsStackList 64198
-#define UExceptionDialog_RsModulesList 64199
-#define UExceptionDialog_RsOSVersion 64200
-#define UExceptionDialog_RsProcessor 64201
-#define UExceptionDialog_RsMemory 64202
-#define UExceptionDialog_RsScreenRes 64203
-#define UExceptionDialog_RsActiveControl 64204
-#define UExceptionDialog_RsThread 64205
-#define UExceptionDialog_RsMissingVersionInfo 64206
-#define UExceptionDialog_RsExceptionStack 64207
+#define Main_TMainForm_To_Change_the_mode 64194
+#define Main_TMainForm_To_Change_the_band 64195
+#define UExceptionDialog_RsAppError 64196
+#define UExceptionDialog_RsExceptionClass 64197
+#define UExceptionDialog_RsExceptionMessage 64198
+#define UExceptionDialog_RsExceptionAddr 64199
+#define UExceptionDialog_RsStackList 64200
+#define UExceptionDialog_RsModulesList 64201
+#define UExceptionDialog_RsOSVersion 64202
+#define UExceptionDialog_RsProcessor 64203
+#define UExceptionDialog_RsMemory 64204
+#define UExceptionDialog_RsScreenRes 64205
+#define UExceptionDialog_RsActiveControl 64206
+#define UExceptionDialog_RsThread 64207
 #define Main_TMainForm_UserDat_not_loaded 64208
 #define Main_TMainForm_ZserverNotConfigured 64209
 #define Main_TMainForm_ComfirmUploadOpList 64210
@@ -1361,6 +1363,8 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
@@ -1370,6 +1374,8 @@ BEGIN
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_No_QTC_Message,	L"No messages to send in QTC"
 	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q is assigned to another function. Do you want to take it?"
+	Main_TMainForm_To_Change_the_mode,	L"To change the operating mode, first turn off the F2A mode."
+	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1382,8 +1388,6 @@ BEGIN
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
-	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
 	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
 	Main_TMainForm_ComfirmUploadOpList,	L"Upload the operator list to Z-Server. Are you sure?"

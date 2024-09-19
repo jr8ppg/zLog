@@ -342,12 +342,12 @@ type
     comboF2aDataMode: TComboBox;
     comboF2aFilter: TComboBox;
     Label16: TLabel;
-    Label17: TLabel;
     checkEnablePttPh: TCheckBox;
     Label18: TLabel;
     editBeforeTxPh: TEdit;
     editAfterTxPh: TEdit;
     Label19: TLabel;
+    checkUseF2ADataMode: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -387,6 +387,7 @@ type
     procedure checkUseF2AClick(Sender: TObject);
     procedure checkF2APttControlClick(Sender: TObject);
     procedure checkEnablePttPhClick(Sender: TObject);
+    procedure checkUseF2ADataModeClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
@@ -1154,8 +1155,8 @@ begin
       checkF2APttControlClick(nil);
       comboF2ADevice.Enabled := True;
       spinF2AVolume.Enabled := True;
-      comboF2aDataMode.enabled := True;
-      comboF2aFilter.Enabled := True;
+      checkUseF2ADataMode.Enabled := True;
+      checkUseF2ADataModeClick(nil);
    end
    else begin
       checkF2APttControl.Enabled := False;
@@ -1163,9 +1164,15 @@ begin
       editF2AAfter.Enabled := False;
       comboF2ADevice.Enabled := False;
       spinF2AVolume.Enabled := False;
-      comboF2aDataMode.enabled := False;
-      comboF2aFilter.Enabled := False;
+      checkUseF2ADataMode.Enabled := False;
+      checkUseF2ADataModeClick(nil);
    end;
+end;
+
+procedure TformOptions.checkUseF2ADataModeClick(Sender: TObject);
+begin
+   comboF2aDataMode.Enabled := checkUseF2ADataMode.Checked;
+   comboF2aFilter.Enabled := checkUseF2ADataMode.Checked;
 end;
 
 procedure TformOptions.checkF2APttControlClick(Sender: TObject);
@@ -1469,6 +1476,7 @@ begin
       Settings._f2a_after := StrToIntDef(editF2AAfter.Text, Settings._f2a_after);
       Settings._f2a_device := comboF2ADevice.ItemIndex;
       Settings._f2a_volume := spinF2AVolume.Value;
+      Settings._f2a_use_datamode := checkUseF2ADataMode.Checked;
       Settings._f2a_datamode := comboF2aDataMode.ItemIndex;
       Settings._f2a_filter := comboF2aFilter.ItemIndex;
 
@@ -1764,6 +1772,7 @@ begin
       editF2AAfter.Text := IntToStr(Settings._f2a_after);
       comboF2ADevice.ItemIndex := Settings._f2a_device;
       spinF2AVolume.Value := Settings._f2a_volume;
+      checkUseF2ADataMode.Checked := Settings._f2a_use_datamode;
       comboF2aDataMode.ItemIndex := Settings._f2a_datamode;
       comboF2aFilter.ItemIndex := Settings._f2a_filter;
 

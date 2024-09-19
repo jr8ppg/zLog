@@ -1337,6 +1337,8 @@ resourcestring
   TMainForm_ConfirmModeConvert = 'Mode contains old Other, convert to new Other?';  // 'モードにOther(旧)が含まれています。Other(新)に変換しますか？'
   TMainForm_No_QTC_Message = 'No messages to send in QTC';  // 'QTCで送るメッセージはありません'
   TMainForm_Assigned_Another_Function = 'Ctrl+Q is assigned to another function. Do you want to take it?';  // 'Ctrl+Qは他の機能にアサインされています。横取りしますか？'
+  TMainForm_To_Change_the_mode = 'To change the operating mode, first turn off the F2A mode.';  // 'モードを変更するには、先にF2Aモードをoffにして下さい'
+  TMainForm_To_Change_the_band = 'To change the operating band, first turn off the F2A mode.';  // 'バンドを変更するには、先にF2Aモードをoffにして下さい'
 
 var
   MainForm: TMainForm;
@@ -5225,14 +5227,23 @@ begin
    FRigModeBackup := CurrentQSO.Mode;
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
+      // リグのモード無視
       rig.IgnoreMode := True;
+
+      // FMへ変更
       rig.SetMode(mFM);
       while rig.CurrentMode <> mFM do begin
          Application.ProcessMessages();
       end;
-      rig.SetDataMode(True);
-      UpdateMode(mCW);
+
+      // DATAMODE使用時
+      if dmZLogGlobal.Settings._f2a_use_datamode = True then begin
+         rig.SetDataMode(True);
+      end;
    end;
+
+   // zLogはCW
+   UpdateMode(mCW);
 
    // 本来のキーイングを止める
 end;
@@ -5247,8 +5258,9 @@ begin
       rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
       rig.SetDataMode(False);
       rig.SetMode(FRigModeBackup);
-      UpdateMode(FRigModeBackup);
    end;
+
+   UpdateMode(FRigModeBackup);
 
    // PTT delayを元に戻す
    dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._pttbefore_cw, dmZLogGlobal.Settings._pttafter_cw);
@@ -10206,6 +10218,11 @@ var
    rig: TRig;
    b: TBand;
 begin
+   if buttonF2A.Down = True then begin
+      WriteStatusLineRed(TMainForm_To_Change_the_band, False);
+      Exit;
+   end;
+
    if TAction(Sender).Tag = 0 then begin
       b := GetNextBand(CurrentQSO.Band, True);
    end
@@ -10237,6 +10254,11 @@ procedure TMainForm.actionChangeModeExecute(Sender: TObject);
 var
    rig: TRig;
 begin
+   if buttonF2A.Down = True then begin
+      WriteStatusLineRed(TMainForm_To_Change_the_mode, False);
+      Exit;
+   end;
+
    if TAction(Sender).Tag = 0 then begin
       SetQSOMode(CurrentQSO, True);
    end
