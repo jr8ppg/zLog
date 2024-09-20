@@ -18,7 +18,7 @@ object formMain: TformMain
     Top = 0
     Width = 575
     Height = 421
-    ActivePage = TabSheet4
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 571
@@ -69,8 +69,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitWidth = 563
-        ExplicitHeight = 392
         ColWidths = (
           448
           96)
@@ -226,6 +224,8 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitWidth = 563
+        ExplicitHeight = 392
         ColWidths = (
           448
           96)

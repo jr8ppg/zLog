@@ -138,18 +138,22 @@
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_MinorVer>9</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.0.0;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.1;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>zlog_keyedit_Icon.ico</Icon_MainIcon>
         <DCC_MapFile>3</DCC_MapFile>
+        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Build>1</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_MinorVer>9</VerInfo_MinorVer>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.0.0;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.1;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <Icon_MainIcon>zlog_keyedit_Icon.ico</Icon_MainIcon>
         <DCC_MapFile>3</DCC_MapFile>
+        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Build>1</VerInfo_Build>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
