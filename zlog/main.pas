@@ -4518,6 +4518,14 @@ begin
       end;
    end;
 
+   // F2A
+   if buttonF2A.Down = True then begin
+      if Length(Q.Memo) > 0 then begin
+         Q.Memo := Q.Memo + ' ';
+      end;
+      Q.Memo := Q.Memo + 'F2A';
+   end;
+
    // ログに記録
    Q.Band := band_bakup;
    MyContest.LogQSO(Q, True);
