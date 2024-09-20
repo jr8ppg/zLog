@@ -88,6 +88,7 @@ var
    slFile: TStringList;
    slLine: TStringList;
    obj: TFreqMemory;
+   S: string;
 begin
    slFile := TStringList.Create();
    slLine := TStringList.Create();
@@ -100,7 +101,12 @@ begin
       slFile.LoadFromFile(filename);
 
       for i := 0 to slFile.Count - 1 do begin
-         slLine.CommaText := slFile[i] + ',,,';
+         S := slFile[i];
+         if (Copy(S, 1, 1) = ';') or (Copy(S, 1, 1) = '#') then begin
+            Continue;
+         end;
+
+         slLine.CommaText := S + ',,,';
 
          obj := TFreqMemory.Create();
          obj.Command := slLine[0];
