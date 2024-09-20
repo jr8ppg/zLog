@@ -32,7 +32,7 @@ uses
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
-  UCWMonitor, UzLogForm;
+  UCWMonitor, UzLogForm, UzFreqMemory;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -982,6 +982,9 @@ type
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
     FWaitForQsoFinish: array[0..4] of Boolean;
 
+    // 周波数メモリー
+    FFreqMem: TFreqMemoryList;
+
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
     FLastFreq: array[1..3] of TFrequency;
@@ -1172,6 +1175,7 @@ type
     procedure F2AOff();
     procedure OnChangeFontSize(Sender: TObject; font_size: Integer);
     procedure SetupQTC();
+    procedure CallFreqMemory(rigset: Integer; strCommand: string);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -2479,6 +2483,9 @@ begin
 
    FTempQSOList := TQSOList.Create();
 
+   FFreqMem := TFreqMemoryList.Create();
+   FFreqMem.LoadFromFile('zlog_freqmem.txt');
+
    RestoreWindowsPos();
 
    dmZLogKeyer.ResetPTT();
@@ -3260,6 +3267,9 @@ begin
    if S = 'CTYCHK' then begin
       ShowCtyChk();
    end;
+
+   // ここまで来て該当が無ければ周波数メモリー呼び出し
+   CallFreqMemory(FCurrentRigSet, S);
 end;
 
 procedure TMainForm.ChangeTxNr(txnr: Integer);
@@ -4777,6 +4787,7 @@ begin
 
    EditScreen.Free();
    FTempQSOList.Free();
+   FFreqMem.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
    FCWMessagePad.Release();
@@ -13733,6 +13744,46 @@ begin
       menuQTC.Visible := False;
       actionQTC.Enabled := False;
    end;
+end;
+
+procedure TMainForm.CallFreqMemory(rigset: Integer; strCommand: string);
+var
+   i: Integer;
+   b: TBand;
+   m: TMode;
+   f: TFrequency;
+   rig: TRig;
+   obj: TFreqMemory;
+begin
+   obj := FFreqMem.ObjectOf(strCommand);
+   if obj = nil then begin
+      Exit;
+   end;
+
+   m := obj.Mode;
+   f := obj.Frequency;
+   b := dmZLogGlobal.BandPlan.FreqToBand(f);
+
+   if m = mOther then begin
+      m := dmZLogGlobal.BandPlan.GetEstimatedMode(f);
+   end;
+
+   rig := MainForm.RigControl.GetRig(rigset, b);
+   if rig = nil then begin
+      Exit;
+   end;
+
+   rig.SetFreq(f, False);
+
+   rig.SetMode(m);
+
+   // Antenna Select
+   if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
+      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
+   end;
+
+   RigControl.SetCurrentRig(rig.RigNumber);
+   dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
 end;
 
 { TBandScopeNotifyThread }

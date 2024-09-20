@@ -153,7 +153,8 @@ uses
   UCountryChecker in 'UCountryChecker.pas' {formCountryChecker},
   UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2},
   UTelnetSetting in 'UTelnetSetting.pas',
-  UzLogForm in 'UzLogForm.pas' {ZLogForm};
+  UzLogForm in 'UzLogForm.pas' {ZLogForm},
+  UzFreqMemory in 'UzFreqMemory.pas';
 
 {$R *.res}
 
