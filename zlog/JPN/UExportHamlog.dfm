@@ -3,36 +3,36 @@ object formExportHamlog: TformExportHamlog
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Export'
-  ClientHeight = 514
-  ClientWidth = 530
+  ClientHeight = 512
+  ClientWidth = 551
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = #65325#65331#12288#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 530
-    Height = 485
+    Width = 551
+    Height = 483
     Align = alClient
     Caption = 'HAMLOG'#29992#20986#21147#35373#23450
     TabOrder = 0
+    ExplicitWidth = 526
+    ExplicitHeight = 484
     object groupRemarks1: TGroupBox
       Left = 12
       Top = 24
-      Width = 501
+      Width = 528
       Height = 130
       Caption = 'Remarks1'#12398#20986#21147#20869#23481
       TabOrder = 0
       object buttonShowReplaceKeywords1: TSpeedButton
-        Left = 469
+        Left = 494
         Top = 45
         Width = 21
         Height = 21
@@ -113,7 +113,7 @@ object formExportHamlog: TformExportHamlog
       object editRemarks1Opt1: TEdit
         Left = 100
         Top = 45
-        Width = 366
+        Width = 390
         Height = 21
         TabOrder = 2
       end
@@ -121,13 +121,13 @@ object formExportHamlog: TformExportHamlog
     object groupRemarks2: TGroupBox
       Left = 12
       Top = 163
-      Width = 501
+      Width = 528
       Height = 130
       Caption = 'Remarks2'#12398#20986#21147#20869#23481
       TabOrder = 1
       object buttonShowReplaceKeywords2: TSpeedButton
         Tag = 1
-        Left = 469
+        Left = 494
         Top = 45
         Width = 21
         Height = 21
@@ -208,7 +208,7 @@ object formExportHamlog: TformExportHamlog
       object editRemarks2Opt1: TEdit
         Left = 100
         Top = 45
-        Width = 366
+        Width = 390
         Height = 21
         TabOrder = 2
       end
@@ -219,7 +219,7 @@ object formExportHamlog: TformExportHamlog
       Width = 170
       Height = 96
       Caption = 'QSL'#12510#12540#12463#12398#20986#21147#20869#23481
-      TabOrder = 4
+      TabOrder = 5
       object Label1: TLabel
         Left = 25
         Top = 46
@@ -330,7 +330,7 @@ object formExportHamlog: TformExportHamlog
       Width = 170
       Height = 96
       Caption = #20132#20449#26178#20998#12398#20986#21147#20869#23481
-      TabOrder = 5
+      TabOrder = 6
       object radioTimeOpt0: TRadioButton
         Left = 25
         Top = 23
@@ -367,22 +367,52 @@ object formExportHamlog: TformExportHamlog
       Width = 151
       Height = 17
       Caption = 'JARL'#20250#21729#24773#22577#12434#29031#20250#12377#12427
-      TabOrder = 6
+      TabOrder = 7
+    end
+    object groupFreq: TGroupBox
+      Left = 370
+      Top = 302
+      Width = 170
+      Height = 71
+      Caption = #21608#27874#25968#12398#20986#21147#20869#23481
+      TabOrder = 4
+      object radioOutputFreq1: TRadioButton
+        Left = 25
+        Top = 23
+        Width = 120
+        Height = 13
+        Caption = #21608#27874#25968#21448#12399#12496#12531#12489
+        Checked = True
+        TabOrder = 0
+        TabStop = True
+        OnClick = radioRemarks1Opt3Click
+      end
+      object radioOutputFreq2: TRadioButton
+        Left = 25
+        Top = 48
+        Width = 92
+        Height = 13
+        Caption = #12496#12531#12489
+        TabOrder = 1
+        OnClick = radioRemarks1Opt3Click
+      end
     end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 485
-    Width = 530
+    Top = 483
+    Width = 551
     Height = 29
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 484
+    ExplicitWidth = 526
     DesignSize = (
-      530
+      551
       29)
     object buttonCancel: TButton
-      Left = 268
+      Left = 284
       Top = 2
       Width = 90
       Height = 25
@@ -393,7 +423,7 @@ object formExportHamlog: TformExportHamlog
       TabOrder = 0
     end
     object buttonOK: TButton
-      Left = 172
+      Left = 188
       Top = 2
       Width = 90
       Height = 25
@@ -468,12 +498,12 @@ object formExportHamlog: TformExportHamlog
     end
     object menuReplaceKeyword11: TMenuItem
       Tag = 11
-      Caption = '$BANDF '#12496#12531#12489#12434#21608#27874#25968#24418#24335'(ex. 7M)'
+      Caption = '$BANDF  '#12496#12531#12489#12434#21608#27874#25968#24418#24335'(ex. 7)'
       OnClick = menuReplaceKeywordClick
     end
     object menuReplaceKeyword12: TMenuItem
       Tag = 12
-      Caption = '$BANDF '#12496#12531#12489#12434#27874#38263#24418#24335'(ex. 40m)'
+      Caption = '$BANDW '#12496#12531#12489#12434#27874#38263#24418#24335'(ex. 40m)'
       OnClick = menuReplaceKeywordClick
     end
     object menuReplaceKeyword13: TMenuItem

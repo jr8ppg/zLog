@@ -61,6 +61,9 @@ type
     menuReplaceKeyword13: TMenuItem;
     menuReplaceKeyword15: TMenuItem;
     checkInquireJarlMemberInfo: TCheckBox;
+    groupFreq: TGroupBox;
+    radioOutputFreq1: TRadioButton;
+    radioOutputFreq2: TRadioButton;
     procedure radioRemarks1Opt1Click(Sender: TObject);
     procedure radioRemarks1Opt2Click(Sender: TObject);
     procedure radioRemarks1Opt3Click(Sender: TObject);
@@ -91,6 +94,8 @@ type
     procedure SetQslStateText(v: string);
     function GetInquireJarlMemberInfo(): Boolean;
     procedure SetInquireJarlMemberInfo(v: Boolean);
+    function GetFreqOption(): Integer;
+    procedure SetFreqOption(v: Integer);
     procedure Save();
     procedure Load();
   public
@@ -104,6 +109,7 @@ type
     property TimeOption: Integer read GetTimeOption write SetTimeOption;
     property QslStateText: string read GetQslStateText write SetQslStateText;
     property InquireJarlMemberInfo: Boolean read GetInquireJarlMemberInfo write SetInquireJarlMemberInfo;
+    property FreqOption: Integer read GetFreqOption write SetFreqOption;
   end;
 
 implementation
@@ -398,6 +404,26 @@ begin
    checkInquireJarlMemberInfo.Checked := v;
 end;
 
+function TformExportHamlog.GetFreqOption(): Integer;
+begin
+   if radioOutputFreq1.Checked = True then begin
+      Result := 0;
+   end
+   else begin
+      Result := 1;
+   end;
+end;
+
+procedure TformExportHamlog.SetFreqOption(v: Integer);
+begin
+   if v = 0 then begin
+      radioOutputFreq1.Checked := True;
+   end
+   else begin
+      radioOutputFreq2.Checked := True;
+   end;
+end;
+
 procedure TformExportHamlog.Save();
 var
    ini: TMemIniFile;
@@ -412,6 +438,7 @@ begin
       ini.WriteInteger('OPTION', 'nameoption', NameOption);
       ini.WriteInteger('OPTION', 'timeoption', TimeOption);
       ini.WriteBool('OPTION', 'InquireJarlMemberInfo', InquireJarlMemberInfo);
+      ini.WriteInteger('OPTION', 'freqoption', FreqOption);
 
       ini.UpdateFile();
    finally
@@ -433,6 +460,7 @@ begin
       NameOption := ini.ReadInteger('OPTION', 'nameoption', 0);
       TimeOption := ini.ReadInteger('OPTION', 'timeoption', 0);
       InquireJarlMemberInfo := ini.ReadBool('OPTION', 'InquireJarlMemberInfo', False);
+      FreqOption := ini.ReadInteger('OPTION', 'freqoption', 0);
    finally
       ini.Free();
    end;
