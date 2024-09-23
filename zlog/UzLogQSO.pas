@@ -1155,6 +1155,9 @@ function TQSO.GetArea(): string;
 var
    area: string;
    Index: Integer;
+   S1: Char;
+   S2: Char;
+   S3: Char;
 begin
    if IsDomestic(Callsign) = False then begin
       Result := '';
@@ -1166,6 +1169,19 @@ begin
       area := Copy(Callsign, Index + 1);
    end
    else begin
+      S1 := Callsign[1];
+      S2 := Callsign[2];
+      S3 := Callsign[3];
+
+      if S1 = '7' then begin
+         if (S2 >= 'K') and (S2 <= 'N') then begin
+            if (S3 >= '1') and (S3 <= '4') then begin
+               Result := '1';
+               Exit;
+            end;
+         end;
+      end;
+
       area := Copy(Callsign, 3, 1);
    end;
 
