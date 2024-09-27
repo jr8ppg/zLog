@@ -971,6 +971,17 @@ begin
 
       RigLabel.Caption := 'Current rig : ' + IntToStr(MainForm.RigControl.CurrentRigNumber) + ' Omni-Rig: ' + S;
    end;
+
+   if currentvfo = 0 then begin
+      if TRig(Sender).Rit = True then begin
+         S := 'RIT ON ' + IntTostr(TRig(Sender).RitOffset);
+      end
+      else begin
+         S := 'RIT OFF';
+      end;
+
+      Caption := 'Rig Control ' + S;
+   end;
 end;
 
 procedure TRigControl.OnErrorProc(Sender: TObject; msg: string);

@@ -440,17 +440,20 @@ begin
          UpdateFreqMem(FVFO, i, M);
       end;
 
-      // RIT/XIT offset
-      strTemp := string(Copy(S, 14, 5));
-      FRitOffset := StrToIntDef(strTemp, 0);
+      // RIT‚ÍVFO A‚Ì‚Ý
+      if FVFO = 0 then begin
+         // RIT/XIT offset
+         strTemp := string(Copy(S, 14, 5));
+         FRitOffset := StrToIntDef(strTemp, 0);
 
-      // RIT Status
-      strTemp := string(Copy(S, 19, 1));
-      FRit := StrToBoolDef(strTemp, False);
+         // RIT Status
+         strTemp := string(Copy(S, 19, 1));
+         FRit := StrToBoolDef(strTemp, False);
 
-      // XIT Status
-      strTemp := string(Copy(S, 20, 1));
-      FXit := StrToBoolDef(strTemp, False);
+         // XIT Status
+         strTemp := string(Copy(S, 20, 1));
+         FXit := StrToBoolDef(strTemp, False);
+      end;
 
       if Selected then begin
          UpdateStatus;

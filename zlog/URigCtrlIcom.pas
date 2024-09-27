@@ -199,6 +199,7 @@ begin
       end;
 
       case Command of
+         // MODE
          $01, $04: begin
             temp := Ord(ss[2]);
             case temp of
@@ -237,6 +238,7 @@ begin
             end;
          end;
 
+         // FREQ
          $00, $03: begin
             if Length(ss) < 4 then begin
                Exit;
@@ -290,6 +292,33 @@ begin
             if Selected then begin
                UpdateStatus;
             end;
+         end;
+
+         // RIT
+         $21: begin
+            temp := Ord(ss[2]);
+            if temp = 0 then begin  // RITŽü”g”–â‡‚¹
+               i1 := Ord(ss[3]) and $0f;
+               i2 := (Ord(ss[3]) and $f0) shr 4;
+               i3 := Ord(ss[4]) and $0f;
+               i4 := (Ord(ss[4]) and $f0) shr 4;
+               FRitOffset := (i4 * 1000) + (i3 * 100) + (i2 * 10) + i1;
+               if Ord(ss[5]) = 1 then begin
+                  FRitOffset := FRitOffset * -1;
+               end;
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('RIT=' + IntToStr(FRitOffset)));
+               {$ENDIF}
+            end
+            else begin  // RIT ON/OFF–â‡‚¹
+               if Ord(ss[3]) = 1 then begin
+                  FRit := True;
+               end
+               else begin
+                  FRIt := False;
+               end;
+            end;
+
          end;
       end;
    finally
@@ -373,17 +402,35 @@ begin
       ICOMWriteData(AnsiChar($03));
    end
    else begin
-      if (FPollingCount and 1) = 0 then begin
-         ICOMWriteData(AnsiChar($03));
+      case FPollingCount of
+         0: ICOMWriteData(AnsiChar($03));
+         1: ICOMWriteData(AnsiChar($04));
+         2: ICOMWriteData(AnsiChar($21) + AnsiChar($01));
+         3: ICOMWriteData(AnsiChar($21) + AnsiChar($00));
+      end;
+      if FRitCtrlSupported = False then begin
+         if (FPollingCount and 1) = 0 then begin
+            ICOMWriteData(AnsiChar($03));
+         end
+         else begin
+            ICOMWriteData(AnsiChar($04));
+         end;
       end
       else begin
-         ICOMWriteData(AnsiChar($04));
+
       end;
    end;
 
    Inc(FPollingCount);
-   if FPollingCount < 0 then begin
-      FPollingCount := 1;
+   if FRitCtrlSupported = False then begin
+      if FPollingCount > 1 then begin
+         FPollingCount := 0;
+      end;
+   end
+   else begin
+      if FPollingCount > 3 then begin
+         FPollingCount := 0;
+      end;
    end;
 end;
 

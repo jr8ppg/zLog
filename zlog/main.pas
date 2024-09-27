@@ -989,6 +989,8 @@ type
     FPrev2bsiqMode: Boolean;
     FLastFreq: array[1..3] of TFrequency;
     FLastMode: array[1..3] of TMode;
+    FLastRitStatus: array[1..3] of Boolean;
+    FLastRitOffset: array[1..3] of Integer;
 
     FPastEditMode: Boolean;
     FFilterTx: Integer;
@@ -10484,9 +10486,12 @@ begin
 
       rig.MoveToLastFreq(FLastFreq[rigset], FLastMode[rigset]);
 
-      while RigControl.PrevVFO[0] <> FLastFreq[rigset] do begin
-         Application.ProcessMessages();
-      end;
+//      while RigControl.PrevVFO[0] <> FLastFreq[rigset] do begin
+//         Application.ProcessMessages();
+//      end;
+
+      rig.Rit := FLastRitStatus[rigset];
+      rig.RitOffset := FLastRitOffset[rigset];
    end;
 
    Restore2bsiqMode();
@@ -13659,10 +13664,14 @@ begin
    if (rig = nil) then begin
       FLastFreq[FCurrentRigSet] := 0;
       FLastMode[FCurrentRigSet] := mCW;
+      FLastRitStatus[FCurrentRigSet] := False;
+      FLastRitOffset[FCurrentRigSet] := 0;
    end
    else begin
       FLastFreq[FCurrentRigSet] := rig.CurrentFreqHz;
       FLastMode[FCurrentRigSet] := rig.CurrentMode;
+      FLastRitStatus[FCurrentRigSet] := rig.Rit;
+      FLastRitOffset[FCurrentRigSet] := rig.RitOffset;
    end;
 
    // リグコントロール画面に表示
