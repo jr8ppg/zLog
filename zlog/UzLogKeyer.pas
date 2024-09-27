@@ -3941,7 +3941,7 @@ begin
 
    FPTTFLAG := fOn;
 
-   if FPttEnabled = False then begin
+   if (FUseWkSo2rNeo = False) and (FPttEnabled = False) then begin
       Exit;
    end;
 
