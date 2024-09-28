@@ -953,6 +953,7 @@ type
     FCurrentCQMessageNo: Integer;
 
     FQsyFromBS: Boolean;
+    FFreqChangeProcessed: Boolean;
 
     // QSY Violation (10 min rule / per hour)
     FQsyViolation: Boolean;
@@ -10464,6 +10465,7 @@ var
    rig: TRig;
    b: TBand;
    rigset: Integer;
+   dwTick: DWORD;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
@@ -10484,11 +10486,16 @@ begin
    if rig <> nil then begin
       FRigControl.SetCurrentRig(rig.RigNumber);
 
+      FFreqChangeProcessed := False;
       rig.MoveToLastFreq(FLastFreq[rigset], FLastMode[rigset]);
 
-//      while RigControl.PrevVFO[0] <> FLastFreq[rigset] do begin
-//         Application.ProcessMessages();
-//      end;
+      dwTick := GetTickCount();
+      while FFreqChangeProcessed = False do begin
+         Application.ProcessMessages();
+         if (GetTickCount() - dwTick) > 5000 then begin
+            Break;
+         end;
+      end;
 
       rig.Rit := FLastRitStatus[rigset];
       rig.RitOffset := FLastRitOffset[rigset];
@@ -11763,6 +11770,8 @@ begin
    end;
 
    FQsyFromBS := False;
+
+   FFreqChangeProcessed := True;
 end;
 
 procedure TMainForm.ApplyCQRepeatInterval();
@@ -13757,7 +13766,6 @@ end;
 
 procedure TMainForm.CallFreqMemory(rigset: Integer; strCommand: string);
 var
-   i: Integer;
    b: TBand;
    m: TMode;
    f: TFrequency;

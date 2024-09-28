@@ -147,6 +147,7 @@ type
 
     FRigControl: array[1..5] of TRigSetting;
     FRigSet: array[1..2] of TRigSet;
+    FRigShowRitInfo: Boolean;
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
@@ -1298,6 +1299,8 @@ begin
       Settings._super_check2_columns := ini.ReadInteger('Windows', 'SuperCheck2Columns', 0);
 
       Settings.ReadOnlyParamImported := ini.ReadBool('Categories', 'ReadOnlyParamImported', True);
+
+      Settings.FRigShowRitInfo := ini.ReadBool('Rig', 'ShowRitInfo', False);
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
