@@ -13801,6 +13801,10 @@ begin
       rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
    end;
 
+   if obj.FixEdgeNo <> 0 then begin
+      rig.FixEdgeSelect(obj.FixEdgeNo);
+   end;
+
    RigControl.SetCurrentRig(rig.RigNumber);
    dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
 end;

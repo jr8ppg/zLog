@@ -13,11 +13,13 @@ type
     FCommand: string;
     FFrequency: TFrequency;
     FMode: TMode;
+    FFixEdgeNo: Integer;
   public
     constructor Create();
     property Command: string read FCommand write FCommand;
     property Frequency: TFrequency read FFrequency write FFrequency;
     property Mode: TMode read FMode write FMode;
+    property FixEdgeNo: Integer read FFixEdgeNo write FFixEdgeNo;
   end;
 
   TFreqMemoryList = class(TObjectList<TFreqMemory>)
@@ -106,12 +108,13 @@ begin
             Continue;
          end;
 
-         slLine.CommaText := S + ',,,';
+         slLine.CommaText := S + ',,,,';
 
          obj := TFreqMemory.Create();
          obj.Command := slLine[0];
          obj.Frequency := StrToIntDef(slLine[1], 0);
          obj.Mode := TextToMode(slLine[2]);
+         obj.FixEdgeNo := StrToIntDef(slLine[3], 0);
 
          if (obj.Command = '') or (obj.Frequency = 0) then begin
             obj.Free();

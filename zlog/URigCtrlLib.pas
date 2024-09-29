@@ -118,6 +118,7 @@ type
     procedure InquireStatus; virtual; abstract;
     procedure MoveToLastFreq(fFreq: TFrequency; lastmode: TMode);
     procedure AntSelect(no: Integer); virtual;
+    procedure FixEdgeSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
     procedure StopRequest(); virtual;
@@ -584,6 +585,11 @@ begin
 end;
 
 procedure TRig.AntSelect(no: Integer);
+begin
+   //
+end;
+
+procedure TRig.FixEdgeSelect(no: Integer);
 begin
    //
 end;
