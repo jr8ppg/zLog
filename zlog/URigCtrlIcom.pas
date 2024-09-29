@@ -296,8 +296,7 @@ begin
 
          // RIT
          $21: begin
-            temp := Ord(ss[2]);
-            if temp = 0 then begin  // RITé¸îgêîñ‚çáÇπ
+            if (Length(ss) >= 5) and (Ord(ss[2]) = 0) then begin  // RITé¸îgêîñ‚çáÇπ
                i1 := Ord(ss[3]) and $0f;
                i2 := (Ord(ss[3]) and $f0) shr 4;
                i3 := Ord(ss[4]) and $0f;
@@ -310,7 +309,7 @@ begin
                OutputDebugString(PChar('RIT=' + IntToStr(FRitOffset)));
                {$ENDIF}
             end
-            else begin  // RIT ON/OFFñ‚çáÇπ
+            else if Length(ss) >= 3 then begin  // RIT ON/OFFñ‚çáÇπ
                if Ord(ss[3]) = 1 then begin
                   FRit := True;
                end
@@ -318,7 +317,6 @@ begin
                   FRIt := False;
                end;
             end;
-
          end;
       end;
    finally
