@@ -13123,6 +13123,7 @@ function TMainForm.GetTxRigID(nTxRigSet: Integer): Integer;
 var
    rig: TRig;
    i: Integer;
+   b: TBand;
 begin
    if nTxRigSet = -1 then begin
       nTxRigSet := FCurrentTx + 1;
@@ -13147,7 +13148,8 @@ begin
       Exit;
    end;
 
-   rig := RigControl.GetRig(nTxRigSet, TextToBand(BandEdit.Text));
+   b := TextToBand(FEditPanel[FCurrentTx].BandEdit.Text);
+   rig := RigControl.GetRig(nTxRigSet, b);
    if rig = nil then begin
       Result := 0;
    end
