@@ -66,6 +66,7 @@ type
     FPlayMessageCwSupported: Boolean;
     FPlayMessagePhSupported: Boolean;
     FControlPTTSupported: Boolean;
+    FFixEdgeSelectSupported: Boolean;
 
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
@@ -154,6 +155,7 @@ type
     property PlayMessageCwSupported: Boolean read FPlayMessageCwSupported write FPlayMessageCwSupported;
     property PlayMessagePhSupported: Boolean read FPlayMessagePhSupported write FPlayMessagePhSupported;
     property ControlPTTSupported: Boolean read FControlPTTSupported write FControlPTTSupported;
+    property FixEdgeSelectSupported: Boolean read FFixEdgeSelectSupported write FFixEdgeSelectSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
 
@@ -315,6 +317,7 @@ begin
    FPlayMessageCwSupported := False;
    FPlayMessagePhSupported := False;
    FControlPTTSupported := False;
+   FFixEdgeSelectSupported := False;
 
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;

@@ -661,9 +661,6 @@ begin
             else if (rname = 'IC-7851') then begin
                rig := TIC7851.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end
-            else if (rname = 'IC-9700') then begin
-               rig := TIC9700.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
-            end
             else begin
                rig := TICOM.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end;
@@ -675,6 +672,7 @@ begin
             TICOM(rig).XitCtrlSupported := ICOMLIST[i].XitCtrl;
             TICOM(rig).PlayMessageCwSupported := ICOMLIST[i].PlayCW;
             TICOM(rig).PlayMessagePhSupported := ICOMLIST[i].PlayPh;
+            TICOM(rig).FixEdgeSelectSupported := ICOMLIST[i].FixEdgeSel;
 
             if Pos('IC-731', rname) > 0 then begin
                TICOM(rig).Freq4Bytes := True;

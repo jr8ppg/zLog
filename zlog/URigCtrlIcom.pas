@@ -34,6 +34,7 @@ type
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
     procedure AntSelect(no: Integer); override;
+    procedure FixEdgeSelect(no: Integer); override;
     procedure ExecuteCommand(S : AnsiString); override;
     procedure ICOMWriteData(S : AnsiString);
     procedure Initialize(); override;
@@ -83,11 +84,6 @@ type
     procedure AntSelect(no: Integer); override;
   end;
 
-  TIC9700 = class(TICOM)
-  public
-    procedure FixEdgeSelect(no: Integer); override;
-  end;
-
 var
   IcomLock: TCriticalSection;
 
@@ -135,6 +131,21 @@ begin
       0: Exit;
       1: ICOMWriteData(AnsiChar($12) + AnsiChar($00) + AnsiChar($00));
       2: ICOMWriteData(AnsiChar($12) + AnsiChar($01) + AnsiChar($00));
+   end;
+end;
+
+procedure TICOM.FixEdgeSelect(no: Integer);
+begin
+   if FFixEdgeSelectSupported = False then begin
+      Exit;
+   end;
+
+   case no of
+      0: Exit;
+      1: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($01));
+      2: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($02));
+      3: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($03));
+      4: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($04));
    end;
 end;
 
@@ -789,19 +800,6 @@ begin
       2: ICOMWriteData(AnsiChar($12) + AnsiChar($01) + AnsiChar($00));
       3: ICOMWriteData(AnsiChar($12) + AnsiChar($02) + AnsiChar($00));
       4: ICOMWriteData(AnsiChar($12) + AnsiChar($03) + AnsiChar($00));
-   end;
-end;
-
-{ TIC9700 }
-
-procedure TIC9700.FixEdgeSelect(no: Integer);
-begin
-   case no of
-      0: Exit;
-      1: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($01));
-      2: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($02));
-      3: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($03));
-      4: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($04));
    end;
 end;
 
