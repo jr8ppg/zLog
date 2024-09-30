@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = comboIcomMode
+  ActiveControl = radio1Radio
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -23,7 +23,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware3
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -3398,13 +3398,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono PL Light'
+          FontName = 'HG'#26126#26397'E'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 51
+          ItemIndex = 82
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
