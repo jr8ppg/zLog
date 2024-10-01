@@ -819,7 +819,10 @@ begin
       end;
 
       FConnectTime := Now;
-      timerForceReconnect.Enabled := True;
+
+      if dmZLogGlobal.Settings.FClusterForceReconnectIntervalMin > 0 then begin
+         timerForceReconnect.Enabled := True;
+      end;
    except
       on E: Exception do begin
          AddConsole(E.Message);
