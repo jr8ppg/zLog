@@ -193,6 +193,7 @@ type
     _so2r_ignore_mode_change: Boolean;
     _so2r_rigselect_v28: Boolean;
     _so2r_cqrestart: Boolean;
+    _so2r_otrsp_port: Integer;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _zlink_telnet: TCommParam;
@@ -1142,6 +1143,7 @@ begin
       Settings._so2r_ignore_mode_change := ini.ReadBool('SO2R', 'ignore_mode_change', True);
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
       Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
+      Settings._so2r_otrsp_port  := ini.ReadInteger('SO2R', 'otrsp_port', 0);
 
       // PTT control
 
@@ -1853,6 +1855,7 @@ begin
       ini.WriteBool('SO2R', 'ignore_mode_change', Settings._so2r_ignore_mode_change);
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
       ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
+      ini.WriteInteger('SO2R', 'otrsp_port', Settings._so2r_otrsp_port);
 
       // PTT control
 
@@ -2210,11 +2213,12 @@ begin
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
    dmZLogKeyer.UseWkIgnoreSpeedPot := Settings._use_wk_ignore_speed_pot;
    dmZLogKeyer.UseWkAlways9600 := Settings._use_wk_always9600;
-   dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
+   dmZLogKeyer.So2rType := Settings._so2r_type;
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
    dmZLogKeyer.So2rTxRigC := Settings._so2r_tx_rigc;
    dmZLogKeyer.So2rRigSelectV28 := Settings._so2r_rigselect_v28;
+   dmZLogKeyer.So2rOtrspPort := TKeyingPort(Settings._so2r_otrsp_port);
 
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;

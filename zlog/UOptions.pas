@@ -274,7 +274,7 @@ type
     Label115: TLabel;
     Label116: TLabel;
     GroupBox7: TGroupBox;
-    GroupBox6: TGroupBox;
+    groupSo2rCom: TGroupBox;
     Label31: TLabel;
     Label42: TLabel;
     comboSo2rRxSelectPort: TComboBox;
@@ -348,6 +348,10 @@ type
     editAfterTxPh: TEdit;
     Label19: TLabel;
     checkUseF2ADataMode: TCheckBox;
+    radioSo2rOtrsp: TRadioButton;
+    groupSo2rOtrsp: TGroupBox;
+    Label17: TLabel;
+    comboSo2rOtrspPort: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -613,6 +617,7 @@ begin
    comboRig5Keying.Items.Clear();
    comboSo2rTxSelectPort.Items.Clear();
    comboSo2rRxSelectPort.Items.Clear();
+   comboSo2rOtrspPort.Items.Clear();
 
    list := dmZLogGlobal.CommPortList;
    for i := 0 to list.Count - 1 do begin
@@ -624,6 +629,7 @@ begin
          comboRig4Control.Items.AddObject(CP.Name, CP);
          comboSo2rTxSelectPort.Items.AddObject(CP.Name, CP);
          comboSo2rRxSelectPort.Items.AddObject(CP.Name, CP);
+         comboSo2rOtrspPort.Items.AddObject(CP.Name, CP);
       end;
       if CP.Keying = True then begin
          comboRig1Keying.Items.AddObject(CP.Name, CP);
@@ -718,25 +724,49 @@ var
 begin
    n := TRadioButton(Sender).Tag;
    case n of
+      // None
       0: begin
+         groupSo2rCom.Visible := False;
+         groupSo2rOtrsp.Visible := False;
          comboSo2rTxSelectPort.Enabled := False;
          comboSo2rRxSelectPort.Enabled := False;
          comboSo2rTxRigC.Enabled := False;
          checkRigSelectV28.Enabled := False;
+         comboSo2rOtrspPort.Enabled := False;
       end;
 
+      // COM port
       1: begin
+         groupSo2rCom.Visible := True;
+         groupSo2rOtrsp.Visible := False;
          comboSo2rTxSelectPort.Enabled := True;
          comboSo2rRxSelectPort.Enabled := True;
          comboSo2rTxRigC.Enabled := True;
          checkRigSelectV28.Enabled := True;
+         comboSo2rOtrspPort.Enabled := False;
       end;
 
+      // SO2R Neo
       2: begin
+         groupSo2rCom.Visible := False;
+         groupSo2rOtrsp.Visible := False;
          comboSo2rTxSelectPort.Enabled := False;
          comboSo2rRxSelectPort.Enabled := False;
          comboSo2rTxRigC.Enabled := False;
          checkRigSelectV28.Enabled := False;
+         comboSo2rOtrspPort.Enabled := False;
+      end;
+
+      // OTRSP
+      3: begin
+         groupSo2rCom.Visible := False;
+         groupSo2rOtrsp.Visible := True;
+         comboSo2rTxSelectPort.Enabled := False;
+         comboSo2rRxSelectPort.Enabled := False;
+         comboSo2rTxRigC.Enabled := False;
+         checkRigSelectV28.Enabled := False;
+         comboSo2rOtrspPort.Enabled := False;
+         comboSo2rOtrspPort.Enabled := True;
       end;
    end;
 end;
@@ -1379,14 +1409,18 @@ begin
       else if radioSo2rCom.Checked = True then begin
          Settings._so2r_type := so2rCom;
       end
-      else begin
+      else if radioSo2rNeo.Checked = True then begin
          Settings._so2r_type := so2rNeo;
+      end
+      else begin
+         Settings._so2r_type := so2rOtrsp;
       end;
 
       Settings._so2r_tx_port := TCommPort(comboSo2rTxSelectPort.Items.Objects[comboSo2rTxSelectPort.ItemIndex]).Number;
       Settings._so2r_rx_port := TCommPort(comboSo2rRxSelectPort.Items.Objects[comboSo2rRxSelectPort.ItemIndex]).Number;
       Settings._so2r_tx_rigc := comboSo2rTxRigC.ItemIndex;
       Settings._so2r_rigselect_v28 := checkRigSelectV28.Checked;
+      Settings._so2r_otrsp_port := TCommPort(comboSo2rOtrspPort.Items.Objects[comboSo2rOtrspPort.ItemIndex]).Number;
 
       r := Settings._so2r_cq_rpt_interval_sec;
       Settings._so2r_cq_rpt_interval_sec := StrToFloatDef(editSo2rCqRptIntervalSec.Text, r);
@@ -1639,6 +1673,11 @@ begin
             radioSo2rNeo.Checked := True;
             radioSo2rClick(radioSo2rNeo);
          end;
+
+         so2rOtrsp: begin
+            radioSo2rOtrsp.Checked := True;
+            radioSo2rClick(radioSo2rOtrsp);
+         end;
       end;
 
       // TX Selector
@@ -1661,6 +1700,15 @@ begin
 
       comboSo2rTxRigC.ItemIndex := Settings._so2r_tx_rigc;
       checkRigSelectV28.Checked := Settings._so2r_rigselect_v28;
+
+      // OTRSP Port
+      comboSo2rOtrspPort.ItemIndex := 0;
+      for i := 0 to comboSo2rOtrspPort.Items.Count - 1 do begin
+         if TCommPort(comboSo2rOtrspPort.Items.Objects[i]).Number = Settings._so2r_otrsp_port then begin
+            comboSo2rOtrspPort.ItemIndex := i;
+            Break;
+         end;
+      end;
 
       editSo2rCqRptIntervalSec.Text := FloatToStrF(Settings._so2r_cq_rpt_interval_sec, ffFixed, 3, 1);
       editSo2rRigSwAfterDelay.Text := IntToStr(Settings._so2r_rigsw_after_delay);

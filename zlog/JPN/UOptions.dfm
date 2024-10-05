@@ -33,21 +33,21 @@ object formOptions: TformOptions
       ImageIndex = 7
       object groupSo2rSupport: TGroupBox
         Left = 6
-        Top = 119
+        Top = 103
         Width = 423
-        Height = 278
+        Height = 294
         Caption = 'SO2R'#12458#12503#12471#12519#12531
         TabOrder = 1
         object Label115: TLabel
-          Left = 8
-          Top = 229
+          Left = 13
+          Top = 245
           Width = 210
           Height = 13
           Caption = 'TAB'#12461#12540#25276#19979#24460#12289'CW'#36895#24230#12434#21152#36895#12377#12427
         end
         object Label116: TLabel
-          Left = 300
-          Top = 229
+          Left = 305
+          Top = 245
           Width = 27
           Height = 13
           Caption = 'WPM'
@@ -56,16 +56,16 @@ object formOptions: TformOptions
           Left = 8
           Top = 20
           Width = 405
-          Height = 109
+          Height = 128
           Caption = #12522#12464#36984#25246
           TabOrder = 0
-          object GroupBox6: TGroupBox
+          object groupSo2rCom: TGroupBox
             Left = 128
             Top = 13
             Width = 265
             Height = 84
-            Caption = #20986#21147#12509#12540#12488
-            TabOrder = 3
+            Caption = 'Output Port'
+            TabOrder = 4
             object Label31: TLabel
               Left = 12
               Top = 23
@@ -118,11 +118,11 @@ object formOptions: TformOptions
                 'RIG-B')
             end
             object checkRigSelectV28: TCheckBox
-              Left = 190
+              Left = 184
               Top = 51
               Width = 75
               Height = 24
-              Caption = 'V2.8'#20114#25563
+              Caption = 'V2.8 compatible'
               TabOrder = 3
               WordWrap = True
             end
@@ -158,10 +158,43 @@ object formOptions: TformOptions
             TabOrder = 1
             OnClick = radioSo2rClick
           end
+          object radioSo2rOtrsp: TRadioButton
+            Tag = 3
+            Left = 12
+            Top = 98
+            Width = 85
+            Height = 17
+            Caption = 'OTRSP'
+            TabOrder = 3
+            OnClick = radioSo2rClick
+          end
+          object groupSo2rOtrsp: TGroupBox
+            Left = 128
+            Top = 13
+            Width = 265
+            Height = 53
+            Caption = 'OTRSP'#12458#12503#12471#12519#12531
+            TabOrder = 5
+            object Label17: TLabel
+              Left = 12
+              Top = 23
+              Width = 68
+              Height = 13
+              Caption = #12467#12510#12531#12489#29992#12509#12540#12488
+            end
+            object comboSo2rOtrspPort: TComboBox
+              Left = 94
+              Top = 20
+              Width = 64
+              Height = 21
+              Style = csDropDownList
+              TabOrder = 0
+            end
+          end
         end
         object groupSo2rCqOption: TGroupBox
           Left = 8
-          Top = 135
+          Top = 154
           Width = 405
           Height = 82
           Caption = #33258#21205#12522#12464#20999#26367#12458#12503#12471#12519#12531
@@ -260,8 +293,8 @@ object formOptions: TformOptions
           end
         end
         object spinSo2rAccelerateCW: TSpinEdit
-          Left = 258
-          Top = 226
+          Left = 263
+          Top = 242
           Width = 34
           Height = 22
           MaxValue = 9
@@ -270,16 +303,16 @@ object formOptions: TformOptions
           Value = 3
         end
         object checkSo2rIgnoreModeChange: TCheckBox
-          Left = 8
-          Top = 252
+          Left = 13
+          Top = 268
           Width = 246
           Height = 17
           Caption = #12509#12483#12503#12450#12483#12503#12513#12491#12517#12540#12363#12425#12398#12514#12540#12489#22793#26356#12434#28961#35222
           TabOrder = 3
         end
         object checkSo2rCqRestartAfterSetLast: TCheckBox
-          Left = 258
-          Top = 252
+          Left = 263
+          Top = 268
           Width = 161
           Height = 17
           Caption = 'LastFreq.'#12395#12472#12515#12531#12503#24460'CQ'#20877#38283
@@ -290,7 +323,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 423
-        Height = 109
+        Height = 93
         Caption = #36939#29992#12473#12479#12452#12523
         TabOrder = 0
         object Label1: TLabel
@@ -304,7 +337,7 @@ object formOptions: TformOptions
         end
         object Label2: TLabel
           Left = 92
-          Top = 67
+          Top = 54
           Width = 313
           Height = 30
           AutoSize = False
@@ -324,7 +357,7 @@ object formOptions: TformOptions
         end
         object radio2Radio: TRadioButton
           Left = 13
-          Top = 71
+          Top = 58
           Width = 58
           Height = 17
           Caption = '2Radio'
@@ -3394,13 +3427,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#26126#26397'E'
+          FontName = 'Cascadia Code SemiLight Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 82
+          ItemIndex = 40
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
