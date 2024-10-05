@@ -12,12 +12,10 @@ object TTYConsole: TTTYConsole
   Font.Style = []
   KeyPreview = True
   Menu = MainMenu1
-  OldCreateOrder = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object TPanel
     Left = 161

@@ -3,7 +3,7 @@ object PartialCheck: TPartialCheck
   Top = 188
   Caption = 'Partial Check'
   ClientHeight = 249
-  ClientWidth = 304
+  ClientWidth = 308
   Color = clBtnFace
   Constraints.MinHeight = 160
   Constraints.MinWidth = 320
@@ -13,21 +13,19 @@ object PartialCheck: TPartialCheck
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
-  OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object panelExtend: TPanel
     Left = 0
     Top = 185
-    Width = 304
+    Width = 308
     Height = 64
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 184
+    ExplicitWidth = 304
     object Label1: TLabel
       Left = 199
       Top = 18
@@ -98,24 +96,28 @@ object PartialCheck: TPartialCheck
   object panelBody: TPanel
     Left = 0
     Top = 0
-    Width = 304
+    Width = 308
     Height = 185
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 304
+    ExplicitHeight = 184
     object Panel: TPanel
       Left = 0
       Top = 159
-      Width = 304
+      Width = 308
       Height = 26
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitTop = 158
+      ExplicitWidth = 304
       DesignSize = (
-        304
+        308
         26)
       object MoreButton: TSpeedButton
-        Left = 281
+        Left = 285
         Top = 2
         Width = 21
         Height = 21
@@ -149,7 +151,7 @@ object PartialCheck: TPartialCheck
     object ListBox: TListBox
       Left = 0
       Top = 0
-      Width = 304
+      Width = 308
       Height = 159
       Style = lbOwnerDrawVariable
       Align = alClient
@@ -165,6 +167,8 @@ object PartialCheck: TPartialCheck
       OnDblClick = ListBoxDblClick
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitWidth = 304
+      ExplicitHeight = 158
     end
   end
   object ImageList1: TImageList

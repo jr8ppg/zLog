@@ -34,6 +34,7 @@ type
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
     procedure AntSelect(no: Integer); override;
+    procedure FixEdgeSelect(no: Integer); override;
     procedure ExecuteCommand(S : AnsiString); override;
     procedure ICOMWriteData(S : AnsiString);
     procedure Initialize(); override;
@@ -44,6 +45,7 @@ type
     procedure RitClear; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
+    procedure SetDataMode(fOn: Boolean); override;
     procedure SetVFO(i : integer); override;
     procedure StartPolling();
     procedure StopRequest(); override;
@@ -132,6 +134,21 @@ begin
    end;
 end;
 
+procedure TICOM.FixEdgeSelect(no: Integer);
+begin
+   if FFixEdgeSelectSupported = False then begin
+      Exit;
+   end;
+
+   case no of
+      0: Exit;
+      1: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($01));
+      2: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($02));
+      3: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($03));
+      4: ICOMWriteData(AnsiChar($27) + AnsiChar($16) + AnsiChar($00) + AnsiChar($04));
+   end;
+end;
+
 procedure TICOM.ExecuteCommand(S: AnsiString);
 var
    Command: byte;
@@ -198,6 +215,7 @@ begin
       end;
 
       case Command of
+         // MODE
          $01, $04: begin
             temp := Ord(ss[2]);
             case temp of
@@ -236,6 +254,7 @@ begin
             end;
          end;
 
+         // FREQ
          $00, $03: begin
             if Length(ss) < 4 then begin
                Exit;
@@ -288,6 +307,31 @@ begin
 
             if Selected then begin
                UpdateStatus;
+            end;
+         end;
+
+         // RIT
+         $21: begin
+            if (Length(ss) >= 5) and (Ord(ss[2]) = 0) then begin  // RITé¸îgêîñ‚çáÇπ
+               i1 := Ord(ss[3]) and $0f;
+               i2 := (Ord(ss[3]) and $f0) shr 4;
+               i3 := Ord(ss[4]) and $0f;
+               i4 := (Ord(ss[4]) and $f0) shr 4;
+               FRitOffset := (i4 * 1000) + (i3 * 100) + (i2 * 10) + i1;
+               if Ord(ss[5]) = 1 then begin
+                  FRitOffset := FRitOffset * -1;
+               end;
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('RIT=' + IntToStr(FRitOffset)));
+               {$ENDIF}
+            end
+            else if Length(ss) >= 3 then begin  // RIT ON/OFFñ‚çáÇπ
+               if Ord(ss[3]) = 1 then begin
+                  FRit := True;
+               end
+               else begin
+                  FRIt := False;
+               end;
             end;
          end;
       end;
@@ -372,17 +416,35 @@ begin
       ICOMWriteData(AnsiChar($03));
    end
    else begin
-      if (FPollingCount and 1) = 0 then begin
-         ICOMWriteData(AnsiChar($03));
+      case FPollingCount of
+         0: ICOMWriteData(AnsiChar($03));
+         1: ICOMWriteData(AnsiChar($04));
+         2: ICOMWriteData(AnsiChar($21) + AnsiChar($01));
+         3: ICOMWriteData(AnsiChar($21) + AnsiChar($00));
+      end;
+      if FRitCtrlSupported = False then begin
+         if (FPollingCount and 1) = 0 then begin
+            ICOMWriteData(AnsiChar($03));
+         end
+         else begin
+            ICOMWriteData(AnsiChar($04));
+         end;
       end
       else begin
-         ICOMWriteData(AnsiChar($04));
+
       end;
    end;
 
    Inc(FPollingCount);
-   if FPollingCount < 0 then begin
-      FPollingCount := 1;
+   if FRitCtrlSupported = False then begin
+      if FPollingCount > 1 then begin
+         FPollingCount := 0;
+      end;
+   end
+   else begin
+      if FPollingCount > 3 then begin
+         FPollingCount := 0;
+      end;
    end;
 end;
 
@@ -481,6 +543,36 @@ begin
       FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;
+end;
+
+procedure TICOM.SetDataMode(fOn:Boolean);
+var
+   cmd: AnsiString;
+   datamode: AnsiString;
+   filter: AnsiString;
+begin
+   if fOn = True then begin
+      case dmZLogGlobal.Settings._f2a_datamode of
+         0: datamode := AnsiChar($01);
+         1: datamode := AnsiChar($02);
+         2: datamode := AnsiChar($03);
+         else datamode := AnsiChar($01);
+      end;
+
+      case dmZLogGlobal.Settings._f2a_filter of
+         0: filter := AnsiChar($01);
+         1: filter := AnsiChar($02);
+         2: filter := AnsiChar($03);
+         else filter := AnsiChar($01);
+      end;
+
+      cmd := AnsiChar($1A) + AnsiChar($06) + datamode + filter;
+   end
+   else begin
+      cmd := AnsiChar($1A) + AnsiChar($06) + AnsiChar($00) + AnsiChar($00);
+   end;
+
+   ICOMWriteData(cmd);
 end;
 
 procedure TICOM.SetRit(flag: Boolean);

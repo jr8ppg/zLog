@@ -3,8 +3,8 @@ object BandScope2: TBandScope2
   Top = 125
   BorderStyle = bsSizeToolWin
   Caption = 'Band Scope'
-  ClientHeight = 416
-  ClientWidth = 234
+  ClientHeight = 404
+  ClientWidth = 242
   Color = clBtnFace
   Constraints.MinHeight = 140
   Constraints.MinWidth = 250
@@ -27,8 +27,8 @@ object BandScope2: TBandScope2
   object Panel1: TPanel
     Left = 0
     Top = 38
-    Width = 234
-    Height = 378
+    Width = 242
+    Height = 366
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 4
@@ -36,11 +36,13 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 234
+    ExplicitHeight = 354
     object Grid: TStringGrid
       Left = 4
       Top = 4
-      Width = 222
-      Height = 366
+      Width = 230
+      Height = 354
       Align = alClient
       ColCount = 1
       DefaultColWidth = 188
@@ -60,18 +62,21 @@ object BandScope2: TBandScope2
       OnMouseMove = GridMouseMove
       OnMouseWheelDown = GridMouseWheelDown
       OnMouseWheelUp = GridMouseWheelUp
+      ExplicitWidth = 222
+      ExplicitHeight = 342
     end
   end
   object panelStandardOption: TPanel
     Left = 0
     Top = 0
-    Width = 234
+    Width = 242
     Height = 19
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 234
     DesignSize = (
-      234
+      242
       19)
     object buttonShowWorked: TSpeedButton
       Left = 174
@@ -133,15 +138,16 @@ object BandScope2: TBandScope2
   object panelAllBandsOption: TPanel
     Left = 0
     Top = 19
-    Width = 234
+    Width = 242
     Height = 19
     Align = alTop
     BevelOuter = bvNone
     ShowCaption = False
     TabOrder = 2
     Visible = False
+    ExplicitWidth = 234
     DesignSize = (
-      234
+      242
       19)
     object buttonShowWorked2: TSpeedButton
       Left = 174

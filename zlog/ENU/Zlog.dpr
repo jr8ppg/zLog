@@ -39,6 +39,7 @@ library Zlog;
 {ITE} {DFMFileType} {UELogCabrillo.dfm}
 {ITE} {DFMFileType} {UELogJarl1.dfm}
 {ITE} {DFMFileType} {UELogJarl2.dfm}
+{ITE} {DFMFileType} {UELogJarlEx.dfm}
 {ITE} {DFMFileType} {UExceptionDialog.dfm}
 {ITE} {DFMFileType} {UExportCabrillo.dfm}
 {ITE} {DFMFileType} {UExportHamlog.dfm}
@@ -113,11 +114,12 @@ library Zlog;
 {ITE} {DFMFileType} {UZAnalyze.dfm}
 {ITE} {DFMFileType} {UZLinkForm.dfm}
 {ITE} {DFMFileType} {UZlinkTelnetSet.dfm}
+{ITE} {DFMFileType} {UzLogForm.dfm}
 {ITE} {DFMFileType} {UzLogGlobal.dfm}
 {ITE} {DFMFileType} {UzLogKeyer.dfm}
 {ITE} {DFMFileType} {UZServerInquiry.dfm}
 {ITE} {RCFileType} {resource.rc}
-{ITE} {RCFileType} {Win32\Release\Zlog_DRC.rc}
+{ITE} {RCFileType} {Win64\Release\Zlog_DRC.rc}
 
 {$R 'main.dfm' 'MainForm:TForm'}
 {$R 'Progress.dfm' 'formProgress:TForm'}
@@ -135,34 +137,35 @@ library Zlog;
 {$R 'UARRLWMulti.dfm' 'ARRLWMulti:TForm(WWMulti)'}
 {$R 'UBandPlanEditDialog.dfm' 'BandPlanEditDialog:TForm'}
 {$R 'UBandScope2.dfm' 'BandScope2:TForm'}
-{$R 'UBasicMulti.dfm' 'BasicMulti:TForm'}
-{$R 'UBasicScore.dfm' 'BasicScore:TForm'}
+{$R 'UBasicMulti.dfm' 'BasicMulti:TForm(ZLogForm)'}
+{$R 'UBasicScore.dfm' 'BasicScore:TForm(ZLogForm)'}
 {$R 'UCFGEdit.dfm' 'CFGEdit:TForm'}
-{$R 'UChat.dfm' 'ChatForm:TForm'}
+{$R 'UChat.dfm' 'ChatForm:TForm(ZLogForm)'}
 {$R 'UCheckCall2.dfm' 'CheckCall2:TForm(CheckWin)'}
 {$R 'UCheckCountry.dfm' 'CheckCountry:TForm(CheckWin)'}
 {$R 'UCheckMulti.dfm' 'CheckMulti:TForm(CheckWin)'}
-{$R 'UCheckWin.dfm' 'CheckWin:TForm'}
+{$R 'UCheckWin.dfm' 'CheckWin:TForm(ZLogForm)'}
 {$R 'UClusterCOMSet.dfm' 'formClusterCOMSet:TForm'}
 {$R 'UClusterTelnetSet.dfm' 'formClusterTelnetSet:TForm'}
-{$R 'UComm.dfm' 'CommForm:TForm'}
+{$R 'UComm.dfm' 'CommForm:TForm(ZLogForm)'}
 {$R 'UConsolePad.dfm' 'ConsolePad:TForm'}
 {$R 'UCountryChecker.dfm' 'formCountryChecker:TForm'}
-{$R 'UCWKeyBoard.dfm' 'CWKeyBoard:TForm'}
-{$R 'UCwMessagePad.dfm' 'CwMessagePad:TForm'}
+{$R 'UCWKeyBoard.dfm' 'CWKeyBoard:TForm(ZLogForm)'}
+{$R 'UCwMessagePad.dfm' 'CwMessagePad:TForm(ZLogForm)'}
 {$R 'UCWMonitor.dfm' 'formCWMonitor:TForm'}
 {$R 'UDateDialog.dfm' 'DateDialog:TForm'}
 {$R 'UEditDialog.dfm' 'EditDialog:TForm'}
 {$R 'UELogCabrillo.dfm' 'formELogCabrillo:TForm'}
 {$R 'UELogJarl1.dfm' 'formELogJarl1:TForm'}
 {$R 'UELogJarl2.dfm' 'formELogJarl2:TForm'}
+{$R 'UELogJarlEx.dfm' 'formELogJarlEx:TForm'}
 {$R 'UExceptionDialog.dfm' 'ExceptionDialog:TForm'}
 {$R 'UExportCabrillo.dfm' 'formExportCabrillo:TForm'}
 {$R 'UExportHamlog.dfm' 'formExportHamlog:TForm'}
 {$R 'UFDMulti.dfm' 'FDMulti:TForm(ACAGMulti)'}
 {$R 'UFreqList.dfm' 'FreqList:TForm(CheckWin)'}
 {$R 'UFreqTest.dfm' 'formFreqTest:TForm'}
-{$R 'UFunctionKeyPanel.dfm' 'formFunctionKeyPanel:TForm'}
+{$R 'UFunctionKeyPanel.dfm' 'formFunctionKeyPanel:TForm(ZLogForm)'}
 {$R 'UGeneralMulti2.dfm' 'GeneralMulti2:TForm(ACAGMulti)'}
 {$R 'UGeneralScore.dfm' 'GeneralScore:TForm(BasicScore)'}
 {$R 'UGraphColorDialog.dfm' 'GraphColorDialog:TForm'}
@@ -193,7 +196,7 @@ library Zlog;
 {$R 'UOptions.dfm' 'formOptions:TForm'}
 {$R 'UOptions2.dfm' 'formOptions2:TForm'}
 {$R 'UPackageLoader.dfm' 'PackageLoader:TForm'}
-{$R 'UPartials.dfm' 'PartialCheck:TForm'}
+{$R 'UPartials.dfm' 'PartialCheck:TForm(ZLogForm)'}
 {$R 'UPediScore.dfm' 'PediScore:TForm(BasicScore)'}
 {$R 'UPluginManager.dfm' 'MarketForm:TForm'}
 {$R 'UPortConfigDialog.dfm' 'formPortConfig:TForm'}
@@ -212,8 +215,8 @@ library Zlog;
 {$R 'UStartTimeDialog.dfm' 'StartTimeDialog:TForm'}
 {$R 'UStatusEdit.dfm' 'formStatusEdit:TForm'}
 {$R 'USummaryInfo.dfm' 'SummaryInfo:TForm'}
-{$R 'USuperCheck.dfm' 'SuperCheck:TForm'}
-{$R 'USuperCheck2.dfm' 'SuperCheck2:TForm'}
+{$R 'USuperCheck.dfm' 'SuperCheck:TForm(ZLogForm)'}
+{$R 'USuperCheck2.dfm' 'SuperCheck2:TForm(ZLogForm)'}
 {$R 'UTargetEditor.dfm' 'TargetEditor:TForm'}
 {$R 'UTextEditor.dfm' 'TextEditor:TForm'}
 {$R 'UTTYConsole.dfm' 'TTYConsole:TForm'}
@@ -226,15 +229,16 @@ library Zlog;
 {$R 'UWPXScore.dfm' 'WPXScore:TForm(BasicScore)'}
 {$R 'UWWMulti.dfm' 'WWMulti:TForm(BasicMulti)'}
 {$R 'UWWScore.dfm' 'WWScore:TForm(BasicScore)'}
-{$R 'UWWZone.dfm' 'WWZone:TForm'}
+{$R 'UWWZone.dfm' 'WWZone:TForm(ZLogForm)'}
 {$R 'UZAnalyze.dfm' 'ZAnalyze:TForm'}
 {$R 'UZLinkForm.dfm' 'ZLinkForm:TForm'}
 {$R 'UZlinkTelnetSet.dfm' 'formZLinkTelnetSet:TForm'}
+{$R 'UzLogForm.dfm' 'ZLogForm:TForm'}
 {$R 'UzLogGlobal.dfm' 'dmZLogGlobal:TDataModule'}
 {$R 'UzLogKeyer.dfm' 'dmZLogKeyer:TDataModule'}
 {$R 'UZServerInquiry.dfm' 'ZServerInquiry:TForm'}
 {$R 'resource.res' 'resource.rc'}
-{$R 'Win32\Release\Zlog_DRC.res' 'Win32\Release\Zlog_DRC.rc'}
+{$R 'Win64\Release\Zlog_DRC.res' 'Win64\Release\Zlog_DRC.rc'}
 
 {$E ENU}
 

@@ -1,9 +1,10 @@
 object QTCForm: TQTCForm
   Left = 578
   Top = 204
+  BorderStyle = bsDialog
   Caption = 'QTC'
   ClientHeight = 316
-  ClientWidth = 249
+  ClientWidth = 279
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,7 +12,6 @@ object QTCForm: TQTCForm
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   Scaled = False
   OnClose = FormClose
@@ -19,13 +19,13 @@ object QTCForm: TQTCForm
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 96
   TextHeight = 12
   object Label1: TLabel
     Left = 24
-    Top = 56
-    Width = 43
+    Top = 57
+    Width = 233
     Height = 17
+    AutoSize = False
     Caption = 'Label1'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -36,9 +36,10 @@ object QTCForm: TQTCForm
   end
   object Label2: TLabel
     Left = 24
-    Top = 32
-    Width = 43
+    Top = 34
+    Width = 233
     Height = 17
+    AutoSize = False
     Caption = 'Label2'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -50,8 +51,9 @@ object QTCForm: TQTCForm
   object Label3: TLabel
     Left = 24
     Top = 11
-    Width = 136
+    Width = 186
     Height = 17
+    AutoSize = False
     Caption = '# of QTCs to be sent'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -61,8 +63,8 @@ object QTCForm: TQTCForm
     ParentFont = False
   end
   object btnSend: TButton
-    Left = 22
-    Top = 272
+    Left = 8
+    Top = 283
     Width = 75
     Height = 25
     Caption = 'Send'
@@ -71,8 +73,8 @@ object QTCForm: TQTCForm
     OnClick = btnSendClick
   end
   object btnBack: TButton
-    Left = 112
-    Top = 272
+    Left = 193
+    Top = 283
     Width = 75
     Height = 25
     Caption = 'Back (BS)'
@@ -80,8 +82,8 @@ object QTCForm: TQTCForm
     OnClick = btnBackClick
   end
   object SpinEdit: TSpinEdit
-    Left = 176
-    Top = 7
+    Left = 216
+    Top = 8
     Width = 41
     Height = 26
     Font.Charset = DEFAULT_CHARSET
@@ -97,10 +99,10 @@ object QTCForm: TQTCForm
     OnChange = SpinEditChange
   end
   object ListBox: TListBox
-    Left = 21
-    Top = 80
-    Width = 212
-    Height = 177
+    Left = 8
+    Top = 96
+    Width = 260
+    Height = 169
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13

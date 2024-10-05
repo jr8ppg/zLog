@@ -5,18 +5,12 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Grids, Math, Menus,
-  UzLogGlobal, UzLogQSO, UComm, USpotClass;
+  UzLogGlobal, UzLogQSO, UComm, USpotClass, UzLogConst, UzLogForm;
 
 type
-  TBasicMulti = class(TForm)
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  TBasicMulti = class(TZLogForm)
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   protected
-    FFontSize: Integer;
-    function GetFontSize(): Integer; virtual;
-    procedure SetFontSize(v: Integer); virtual;
     procedure AdjustGridSize(Grid: TStringGrid);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
@@ -48,8 +42,10 @@ type
     // function CheckMultiInfo(aQSO : TQSO) : string; virtual; abstract;
     // called from CheckMultiWindow for each band without QSO to the current stn
     // returns nothing when the multi is worked in that band.
-    property FontSize: Integer read GetFontSize write SetFontSize;
     property IsIncrementalSearchPresent: Boolean read GetIsIncrementalSearchPresent;
+  published
+    property FontSize;
+    property OnChangeFontSize;
   end;
 
 implementation
@@ -107,19 +103,6 @@ end;
 
 procedure TBasicMulti.Reset;
 begin
-end;
-
-procedure TBasicMulti.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
-end;
-
-procedure TBasicMulti.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
 end;
 
 procedure TBasicMulti.ProcessCluster(var Sp: TBaseSpot);
@@ -184,11 +167,6 @@ begin
    RenewBandScope;
 end;
 
-procedure TBasicMulti.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
 procedure TBasicMulti.FormCreate(Sender: TObject);
 begin
    MainForm.mnGridAddNewPX.Visible := False;
@@ -218,16 +196,6 @@ procedure TBasicMulti.SetNumberEditFocus;
 begin
    MainForm.NumberEdit.SetFocus;
    MainForm.NumberEdit.SelectAll;
-end;
-
-function TBasicMulti.GetFontSize(): Integer;
-begin
-   Result := FFontSize;
-end;
-
-procedure TBasicMulti.SetFontSize(v: Integer);
-begin
-   FFontSize := v;
 end;
 
 procedure TBasicMulti.AdjustGridSize(Grid: TStringGrid);

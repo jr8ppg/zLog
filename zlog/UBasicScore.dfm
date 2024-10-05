@@ -11,13 +11,8 @@ object BasicScore: TBasicScore
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Scaled = False
-  OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
-  OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
@@ -31,7 +26,7 @@ object BasicScore: TBasicScore
       281
       33)
     object CWButton: TSpeedButton
-      Left = 241
+      Left = 237
       Top = 4
       Width = 33
       Height = 25
@@ -41,6 +36,7 @@ object BasicScore: TBasicScore
       Caption = 'CW'
       Visible = False
       OnClick = CWButtonClick
+      ExplicitLeft = 241
     end
     object Button1: TButton
       Left = 8

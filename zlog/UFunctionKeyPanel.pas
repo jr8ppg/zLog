@@ -5,10 +5,11 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ButtonGroup, Vcl.ActnList, Vcl.Menus,
-  Vcl.ExtCtrls, UzLogConst, System.Actions;
+  Vcl.ExtCtrls, System.Actions,
+  UzLogConst, UzLogForm;
 
 type
-  TformFunctionKeyPanel = class(TForm)
+  TformFunctionKeyPanel = class(TZLogForm)
     ButtonGroup1: TButtonGroup;
     Timer1: TTimer;
     ActionList1: TActionList;
@@ -29,14 +30,13 @@ type
     procedure FormShow(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormHide(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
     procedure actionChangeCwBankExecute(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   protected
-    function GetFontSize(): Integer;
-    procedure SetFontSize(v: Integer);
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   private
     { Private êÈåæ }
     FPrevShift: Boolean;
@@ -57,12 +57,6 @@ implementation
 
 uses
   Main, UzLogGlobal;
-
-procedure TformFunctionKeyPanel.FormClose(Sender: TObject;
-  var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
 
 procedure TformFunctionKeyPanel.FormCreate(Sender: TObject);
 var
@@ -92,14 +86,6 @@ end;
 procedure TformFunctionKeyPanel.FormHide(Sender: TObject);
 begin
    Timer1.Enabled := False;
-end;
-
-procedure TformFunctionKeyPanel.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
 end;
 
 procedure TformFunctionKeyPanel.FormShow(Sender: TObject);
@@ -274,12 +260,18 @@ end;
 
 function TformFunctionKeyPanel.GetFontSize(): Integer;
 begin
+   Inherited;
    Result := ButtonGroup1.Font.Size;
 end;
 
 procedure TformFunctionKeyPanel.SetFontSize(v: Integer);
 begin
    Inherited;
+   UpdateFontSize(v);
+end;
+
+procedure TformFunctionKeyPanel.UpdateFontSize(v: Integer);
+begin
    ButtonGroup1.Font.Size := v;
    ButtonGroup1.Canvas.Font.Size := v;
    ButtonGroup1.ButtonHeight := ButtonGroup1.Canvas.TextHeight('X') + 8;

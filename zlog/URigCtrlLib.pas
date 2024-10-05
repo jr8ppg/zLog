@@ -66,6 +66,7 @@ type
     FPlayMessageCwSupported: Boolean;
     FPlayMessagePhSupported: Boolean;
     FControlPTTSupported: Boolean;
+    FFixEdgeSelectSupported: Boolean;
 
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
@@ -101,6 +102,7 @@ type
     procedure MemScanProcess(); virtual;
     procedure SetMode(Q: TQSO); overload; virtual;
     procedure SetMode(M: TMode); overload; virtual;
+    procedure SetDataMode(fOn: Boolean); virtual;
     procedure SetBand(rigset: Integer; Q: TQSO); virtual; // abstract;
     procedure ExecuteCommand(S : AnsiString); virtual; abstract;
     procedure PassOnRxData(S : AnsiString); virtual;
@@ -117,6 +119,7 @@ type
     procedure InquireStatus; virtual; abstract;
     procedure MoveToLastFreq(fFreq: TFrequency; lastmode: TMode);
     procedure AntSelect(no: Integer); virtual;
+    procedure FixEdgeSelect(no: Integer); virtual;
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
     procedure StopRequest(); virtual;
@@ -152,6 +155,7 @@ type
     property PlayMessageCwSupported: Boolean read FPlayMessageCwSupported write FPlayMessageCwSupported;
     property PlayMessagePhSupported: Boolean read FPlayMessagePhSupported write FPlayMessagePhSupported;
     property ControlPTTSupported: Boolean read FControlPTTSupported write FControlPTTSupported;
+    property FixEdgeSelectSupported: Boolean read FFixEdgeSelectSupported write FFixEdgeSelectSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
 
@@ -313,6 +317,7 @@ begin
    FPlayMessageCwSupported := False;
    FPlayMessagePhSupported := False;
    FControlPTTSupported := False;
+   FFixEdgeSelectSupported := False;
 
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;
@@ -587,6 +592,11 @@ begin
    //
 end;
 
+procedure TRig.FixEdgeSelect(no: Integer);
+begin
+   //
+end;
+
 procedure TRig.SetMode(Q: TQSO);
 begin
    _currentmode := Q.Mode;
@@ -604,6 +614,11 @@ begin
    finally
       Q.Free();
    end;
+end;
+
+procedure TRig.SetDataMode(fOn: Boolean);
+begin
+//
 end;
 
 procedure TRig.SetBand(rigset: Integer; Q: TQSO);

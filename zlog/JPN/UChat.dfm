@@ -2,8 +2,8 @@ object ChatForm: TChatForm
   Left = 199
   Top = 287
   Caption = 'Z-Server Messages'
-  ClientHeight = 151
-  ClientWidth = 374
+  ClientHeight = 152
+  ClientWidth = 378
   Color = clBtnFace
   Constraints.MinHeight = 190
   Constraints.MinWidth = 390
@@ -14,27 +14,26 @@ object ChatForm: TChatForm
   Font.Style = []
   KeyPreview = True
   OnActivate = FormActivate
-  OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 123
-    Width = 374
+    Top = 124
+    Width = 378
     Height = 28
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 124
+    ExplicitTop = 123
+    ExplicitWidth = 374
     DesignSize = (
-      374
+      378
       28)
     object editMessage: TEdit
       Left = 80
       Top = 4
-      Width = 234
+      Width = 238
       Height = 20
       Anchors = [akLeft, akTop, akRight]
       Font.Charset = DEFAULT_CHARSET
@@ -47,10 +46,10 @@ object ChatForm: TChatForm
       OnEnter = editMessageEnter
       OnExit = editMessageExit
       OnKeyPress = editMessageKeyPress
-      ExplicitWidth = 238
+      ExplicitWidth = 234
     end
     object buttonSend: TButton
-      Left = 316
+      Left = 320
       Top = 4
       Width = 51
       Height = 20
@@ -58,7 +57,7 @@ object ChatForm: TChatForm
       Caption = #36865#20449
       TabOrder = 1
       OnClick = buttonSendClick
-      ExplicitLeft = 320
+      ExplicitLeft = 316
     end
     object comboPromptType: TComboBox
       Left = 4
@@ -80,8 +79,8 @@ object ChatForm: TChatForm
   object ListBox: TListBox
     Left = 0
     Top = 25
-    Width = 374
-    Height = 98
+    Width = 378
+    Height = 99
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -91,17 +90,20 @@ object ChatForm: TChatForm
     ItemHeight = 12
     ParentFont = False
     TabOrder = 1
+    ExplicitWidth = 374
+    ExplicitHeight = 98
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 374
+    Width = 378
     Height = 25
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitWidth = 374
     DesignSize = (
-      374
+      378
       25)
     object checkPopup: TCheckBox
       Left = 4
@@ -113,7 +115,7 @@ object ChatForm: TChatForm
       OnClick = comboPromptTypeChange
     end
     object Button2: TButton
-      Left = 300
+      Left = 304
       Top = 4
       Width = 67
       Height = 18
@@ -121,7 +123,7 @@ object ChatForm: TChatForm
       Caption = 'Clear'
       TabOrder = 1
       OnClick = Button2Click
-      ExplicitLeft = 304
+      ExplicitLeft = 300
     end
     object checkStayOnTop: TCheckBox
       Left = 165

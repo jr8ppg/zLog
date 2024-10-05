@@ -4,11 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UzLogConst, UzLogGlobal, UzLogQSO, StdCtrls, ExtCtrls, Buttons, Math, Grids,
-  Vcl.Menus;
+  StdCtrls, ExtCtrls, Buttons, Math, Grids, Vcl.Menus,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm;
 
 type
-  TBasicScore = class(TForm)
+  TBasicScore = class(TZLogForm)
     Panel1: TPanel;
     Button1: TButton;
     StayOnTop: TCheckBox;
@@ -17,19 +17,13 @@ type
     menuMultiRate: TMenuItem;
     menuPtsPerMulti: TMenuItem;
     menuPtsPerQSO: TMenuItem;
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure CWButtonClick(Sender: TObject);
     procedure menuExtraInfoClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormShow(Sender: TObject);
   protected
-    FFontSize: Integer;
     FExtraInfo: Integer;
-    function GetFontSize(): Integer; virtual;
-    procedure SetFontSize(v: Integer); virtual;
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
     procedure AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
@@ -60,8 +54,10 @@ type
     function _TotalMulti : integer;
     function _TotalPoints : integer;
     function IntToStr3(v: Integer): string;
-    property FontSize: Integer read GetFontSize write SetFontSize;
     property Score: Integer read GetScore;
+  published
+    property FontSize;
+    property OnChangeFontSize;
   end;
 
 const
@@ -247,33 +243,13 @@ begin
    end;
 end;
 
-procedure TBasicScore.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-      // VK_ALT
-   end;
-end;
-
-procedure TBasicScore.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
-end;
-
 procedure TBasicScore.Button1Click(Sender: TObject);
 begin
    Close;
 end;
 
-procedure TBasicScore.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
 procedure TBasicScore.FormCreate(Sender: TObject);
 begin
-   FFontSize := 9;
    StayOnTop.Checked := False;
 end;
 
@@ -376,17 +352,6 @@ procedure TBasicScore.menuExtraInfoClick(Sender: TObject);
 begin
    UpdateData();
 end;
-
-function TBasicScore.GetFontSize(): Integer;
-begin
-   Result := FFontSize;
-end;
-
-procedure TBasicScore.SetFontSize(v: Integer);
-begin
-   FFontSize := v;
-end;
-
 
 procedure TBasicScore.Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
 var

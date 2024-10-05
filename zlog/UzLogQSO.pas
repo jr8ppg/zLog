@@ -393,7 +393,7 @@ type
     procedure SaveToFilezLogALL(Filename : string);
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList = nil);
-    procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string);
+    procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -1155,6 +1155,9 @@ function TQSO.GetArea(): string;
 var
    area: string;
    Index: Integer;
+   S1: Char;
+   S2: Char;
+   S3: Char;
 begin
    if IsDomestic(Callsign) = False then begin
       Result := '';
@@ -1166,6 +1169,19 @@ begin
       area := Copy(Callsign, Index + 1);
    end
    else begin
+      S1 := Callsign[1];
+      S2 := Callsign[2];
+      S3 := Callsign[3];
+
+      if S1 = '7' then begin
+         if (S2 >= 'K') and (S2 <= 'N') then begin
+            if (S3 >= '1') and (S3 <= '4') then begin
+               Result := '1';
+               Exit;
+            end;
+         end;
+      end;
+
       area := Copy(Callsign, 3, 1);
    end;
 
@@ -2674,7 +2690,8 @@ procedure TLog.SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nR
                                  strRemarks1: string; strRemarks2: string;
                                  nCodeOption: Integer; nNameOption: Integer;
                                  nTimeOption: Integer;
-                                 strQslStateText: string);
+                                 strQslStateText: string;
+                                 nFreqOption: Integer);
 var
    F: TextFile;
    i: Integer;
@@ -2820,9 +2837,14 @@ begin
          //5列目　相手局からもらったレポート
          slCsv.Add(Q.RSTRcvdStr);
 
-         //6列目　周波数
-         strText := Q.FreqStr2;
-         if strText = '' then begin
+         //6列目　周波数orバンド/バンド
+         if nFreqOption = 0 then begin
+            strText := Q.FreqStr2;
+            if strText = '' then begin
+               strText := Q.BandStr;
+            end;
+         end
+         else begin
             strText := Q.BandStr;
          end;
          slCsv.Add(strText);

@@ -11,13 +11,8 @@ object WWZone: TWWZone
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
-  OnClose = FormClose
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   OnResize = FormResize
-  OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0

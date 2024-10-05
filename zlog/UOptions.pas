@@ -7,7 +7,8 @@ uses
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults,
-  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
+  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit,
+  UzLogOperatorInfo, UTelnetSetting;
 
 type
   TformOptions = class(TForm)
@@ -62,12 +63,9 @@ type
     checkAntiZeroinXitOn2: TCheckBox;
     tabsheetNetwork: TTabSheet;
     groupNetwork: TGroupBox;
-    Label30: TLabel;
     Port: TLabel;
     Label32: TLabel;
     Label55: TLabel;
-    ClusterCombo: TComboBox;
-    buttonClusterSettings: TButton;
     ZLinkCombo: TComboBox;
     buttonZLinkSettings: TButton;
     editZLinkPcName: TEdit;
@@ -89,9 +87,9 @@ type
     groupOptCwPtt: TGroupBox;
     Label38: TLabel;
     Label39: TLabel;
-    PTTEnabledCheckBox: TCheckBox;
-    BeforeEdit: TEdit;
-    AfterEdit: TEdit;
+    checkEnablePttCw: TCheckBox;
+    editBeforeTxCw: TEdit;
+    editAfterTxCw: TEdit;
     groupWinKeyer: TGroupBox;
     checkUseWinKeyer: TCheckBox;
     checkWk9600: TCheckBox;
@@ -315,17 +313,50 @@ type
     checkRigSelectV28: TCheckBox;
     checkSyncRigWPM: TCheckBox;
     checkSo2rCqRestartAfterSetLast: TCheckBox;
+    groupPacketCluster: TGroupBox;
+    listviewPacketCluster: TListView;
+    buttonClusterAdd: TButton;
+    buttonClusterEdit: TButton;
+    buttonClusterDelete: TButton;
+    Label6: TLabel;
+    spForceReconnectIntervalHour: TSpinEdit;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    spMaxAutoReconnect: TSpinEdit;
+    Label10: TLabel;
+    spAutoReconnectIntervalSec: TSpinEdit;
+    Label11: TLabel;
+    Label12: TLabel;
+    groupF2A: TGroupBox;
+    comboF2ADevice: TComboBox;
+    checkUseF2A: TCheckBox;
+    Label13: TLabel;
+    Label14: TLabel;
+    checkF2APttControl: TCheckBox;
+    editF2ABefore: TEdit;
+    editF2AAfter: TEdit;
+    Label15: TLabel;
+    spinF2AVolume: TSpinEdit;
+    Label85: TLabel;
+    comboF2aDataMode: TComboBox;
+    comboF2aFilter: TComboBox;
+    Label16: TLabel;
+    checkEnablePttPh: TCheckBox;
+    Label18: TLabel;
+    editBeforeTxPh: TEdit;
+    editAfterTxPh: TEdit;
+    Label19: TLabel;
+    checkUseF2ADataMode: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
-    procedure ClusterComboChange(Sender: TObject);
-    procedure buttonClusterSettingsClick(Sender: TObject);
     procedure ZLinkComboChange(Sender: TObject);
     procedure buttonZLinkSettingsClick(Sender: TObject);
     procedure BrowsePathClick(Sender: TObject);
-    procedure PTTEnabledCheckBoxClick(Sender: TObject);
+    procedure checkEnablePttCwClick(Sender: TObject);
     procedure checkRig1AXvtClick(Sender: TObject);
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig3NameChange(Sender: TObject);
@@ -346,13 +377,23 @@ type
     procedure NumberEditKeyPress(Sender: TObject; var Key: Char);
     procedure radio1RadioClick(Sender: TObject);
     procedure radio2RadioClick(Sender: TObject);
+    procedure PageControlChange(Sender: TObject);
+    procedure buttonClusterAddClick(Sender: TObject);
+    procedure buttonClusterEditClick(Sender: TObject);
+    procedure buttonClusterDeleteClick(Sender: TObject);
+    procedure listviewPacketClusterSelectItem(Sender: TObject; Item: TListItem;
+      Selected: Boolean);
+    procedure listviewPacketClusterDblClick(Sender: TObject);
+    procedure checkUseF2AClick(Sender: TObject);
+    procedure checkF2APttControlClick(Sender: TObject);
+    procedure checkEnablePttPhClick(Sender: TObject);
+    procedure checkUseF2ADataModeClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
 //    FActiveTab: Integer;
+    FHardware2Changed: Boolean;
 
-    FTempClusterTelnet: TCommParam;
-    FTempClusterCom: TCommParam;
     FTempZLinkTelnet: TCommParam;
 
     FNeedSuperCheckLoad: Boolean;
@@ -377,6 +418,10 @@ type
     procedure EnableRigConfig(Index: Integer; fEnable: Boolean);
     procedure Assign1Radio();
     procedure Assign2Radio();
+    procedure PacketClusterListToListView();
+    procedure PacketClusterListViewToList();
+    procedure AddPacketClusterList(setting: TTelnetSetting);
+    procedure ListViewClear();
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -429,7 +474,9 @@ var
    i: integer;
    CP: TCommPort;
    list: TList<TCommPort>;
+   L: TStringList;
 begin
+   FHardware2Changed := False;
    FRigConfig[1] := groupRig1;
    FRigConfig[2] := groupRig2;
    FRigConfig[3] := groupRig3;
@@ -586,6 +633,14 @@ begin
          comboRig5Keying.Items.AddObject(CP.Name, CP);
       end;
    end;
+
+   // F2A 再生用デバイスリスト
+   L := TWaveSound.DeviceList();
+   try
+      comboF2ADevice.Items.Assign(L);
+   finally
+      L.Free();
+   end;
 end;
 
 procedure TformOptions.FormShow(Sender: TObject);
@@ -598,11 +653,13 @@ begin
    else begin
       radio2RadioClick(radio2Radio);
    end;
+
+   checkUseF2AClick(checkUseF2A);
 end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
 begin
-//
+   ListViewClear();
 end;
 
 procedure TformOptions.buttonOKClick(Sender: TObject);
@@ -684,68 +741,72 @@ begin
    end;
 end;
 
-procedure TformOptions.ClusterComboChange(Sender: TObject);
+procedure TformOptions.buttonClusterAddClick(Sender: TObject);
+var
+   f: TformClusterTelnetSet;
+   setting: TTelnetSetting;
+   listitem: TListItem;
 begin
-   buttonClusterSettings.Enabled := True;
-   buttonSpotterList.Enabled := True;
-
-   case ClusterCombo.ItemIndex of
-      0: begin
-         buttonClusterSettings.Enabled := False;
-         buttonSpotterList.Enabled := False;
+   f := TformClusterTelnetSet.Create(Self);
+   try
+      if f.ShowModal() <> mrOK then begin
+         Exit;
       end;
 
-      1 .. 6: begin
-         buttonClusterSettings.Caption := COM_PORT_SETTING;
-      end;
+      setting := f.Setting;
 
-      7: begin
-         buttonClusterSettings.Caption := TELNET_SETTING;
-      end;
+      AddPacketClusterList(setting);
+   finally
+      f.Release();
    end;
 end;
 
-procedure TformOptions.buttonClusterSettingsClick(Sender: TObject);
+procedure TformOptions.buttonClusterEditClick(Sender: TObject);
 var
-   f: TForm;
+   f: TformClusterTelnetSet;
+   setting: TTelnetSetting;
+   listitem: TListItem;
 begin
-   if (ClusterCombo.ItemIndex >= 1) and (ClusterCombo.ItemIndex <= 6) then begin
-      f := TformClusterCOMSet.Create(Self);
-      try
-         TformClusterCOMSet(f).BaudRate  := FTempClusterCom.FBaudRate;
-         TformClusterCOMSet(f).LineBreak := FTempClusterCom.FLineBreak;
-         TformClusterCOMSet(f).LocalEcho := FTempClusterCom.FLocalEcho;
+   listitem := listviewPacketCluster.Selected;
+   setting := TTelnetSetting(listitem.Data);
+   f := TformClusterTelnetSet.Create(Self);
+   try
+      f.Setting := setting;
 
-         if f.ShowModal() <> mrOK then begin
-            Exit;
-         end;
-
-         FTempClusterCom.FBaudRate  := TformClusterCOMSet(f).BaudRate;
-         FTempClusterCom.FLineBreak := TformClusterCOMSet(f).LineBreak;
-         FTempClusterCom.FLocalEcho := TformClusterCOMSet(f).LocalEcho;
-      finally
-         f.Release();
+      if f.ShowModal() <> mrOK then begin
+         Exit;
       end;
-   end
-   else if ClusterCombo.ItemIndex = 7 then begin
-      f := TformClusterTelnetSet.Create(Self);
-      try
-         TformClusterTelnetSet(f).HostName   := FTempClusterTelnet.FHostName;
-         TformClusterTelnetSet(f).LineBreak  := FTempClusterTelnet.FLineBreak;
-         TformClusterTelnetSet(f).LocalEcho  := FTempClusterTelnet.FLocalEcho;
-         TformClusterTelnetSet(f).PortNumber := FTempClusterTelnet.FPortNumber;
 
-         if f.ShowModal() <> mrOK then begin
-            Exit;
-         end;
+      setting.Free();
+      setting := f.Setting;
 
-         FTempClusterTelnet.FHostName   := TformClusterTelnetSet(f).HostName;
-         FTempClusterTelnet.FLineBreak  := TformClusterTelnetSet(f).LineBreak;
-         FTempClusterTelnet.FLocalEcho  := TformClusterTelnetSet(f).LocalEcho;
-         FTempClusterTelnet.FPortNumber := TformClusterTelnetSet(f).PortNumber;
-      finally
-         f.Release();
+      if setting.Name = '' then begin
+         setting.Name := listitem.Caption;
       end;
+
+      listitem.SubItems[0] := setting.Name;
+      listitem.SubItems[1] := setting.HostName;
+      listitem.SubItems[2] := setting.LoginId;
+      listitem.Data := setting;
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TformOptions.buttonClusterDeleteClick(Sender: TObject);
+var
+   setting: TTelnetSetting;
+   listitem: TListItem;
+   i: Integer;
+begin
+   listitem := listviewPacketCluster.Selected;
+   setting := TTelnetSetting(listitem.Data);
+   setting.Free();
+   listitem.Delete();
+
+   for i := 0 to listviewPacketCluster.Items.Count - 1 do begin
+      listitem := listviewPacketCluster.Items[i];
+      listitem.Caption := '#' + IntToStr(i + 1);
    end;
 end;
 
@@ -839,15 +900,34 @@ begin
    end;
 end;
 
-procedure TformOptions.PTTEnabledCheckBoxClick(Sender: TObject);
+procedure TformOptions.PageControlChange(Sender: TObject);
 begin
-   if PTTEnabledCheckBox.Checked then begin
-      BeforeEdit.Enabled := True;
-      AfterEdit.Enabled := True;
+   if PageControl.ActivePageIndex = 2 then begin
+      FHardware2Changed := True;
+   end;
+end;
+
+procedure TformOptions.checkEnablePttCwClick(Sender: TObject);
+begin
+   if checkEnablePttCw.Checked then begin
+      editBeforeTxCw.Enabled := True;
+      editAfterTxCw.Enabled := True;
    end
    else begin
-      BeforeEdit.Enabled := False;
-      AfterEdit.Enabled := False;
+      editBeforeTxCw.Enabled := False;
+      editAfterTxCw.Enabled := False;
+   end;
+end;
+
+procedure TformOptions.checkEnablePttPhClick(Sender: TObject);
+begin
+   if checkEnablePttPh.Checked then begin
+      editBeforeTxPh.Enabled := True;
+      editAfterTxPh.Enabled := True;
+   end
+   else begin
+      editBeforeTxPh.Enabled := False;
+      editAfterTxPh.Enabled := False;
    end;
 end;
 
@@ -1068,6 +1148,45 @@ begin
    end;
 end;
 
+procedure TformOptions.checkUseF2AClick(Sender: TObject);
+begin
+   if TCheckBox(Sender).Checked = True then begin
+      checkF2APttControl.Enabled := True;
+      checkF2APttControlClick(nil);
+      comboF2ADevice.Enabled := True;
+      spinF2AVolume.Enabled := True;
+      checkUseF2ADataMode.Enabled := True;
+      checkUseF2ADataModeClick(nil);
+   end
+   else begin
+      checkF2APttControl.Enabled := False;
+      editF2ABefore.Enabled := False;
+      editF2AAfter.Enabled := False;
+      comboF2ADevice.Enabled := False;
+      spinF2AVolume.Enabled := False;
+      checkUseF2ADataMode.Enabled := False;
+      checkUseF2ADataModeClick(nil);
+   end;
+end;
+
+procedure TformOptions.checkUseF2ADataModeClick(Sender: TObject);
+begin
+   comboF2aDataMode.Enabled := checkUseF2ADataMode.Checked;
+   comboF2aFilter.Enabled := checkUseF2ADataMode.Checked;
+end;
+
+procedure TformOptions.checkF2APttControlClick(Sender: TObject);
+begin
+   if checkF2APttControl.Checked = True then begin
+      editF2ABefore.Enabled := True;
+      editF2AAfter.Enabled := True;
+   end
+   else begin
+      editF2ABefore.Enabled := False;
+      editF2AAfter.Enabled := False;
+   end;
+end;
+
 procedure TformOptions.InitRigNames();
 begin
    comboRig1Name.Items.Clear;
@@ -1080,6 +1199,21 @@ begin
    comboRig2Name.Items.Assign(comboRig1Name.Items);
    comboRig3Name.Items.Assign(comboRig1Name.Items);
    comboRig4Name.Items.Assign(comboRig1Name.Items);
+end;
+
+procedure TformOptions.listviewPacketClusterDblClick(Sender: TObject);
+begin
+   if listviewPacketCluster.Selected = nil then begin
+      Exit;
+   end;
+
+   buttonClusterEdit.Click();
+end;
+
+procedure TformOptions.listviewPacketClusterSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+begin
+   buttonClusterEdit.Enabled := Selected;
+   buttonClusterDelete.Enabled := Selected;
 end;
 
 procedure TformOptions.buttonPortConfigCWClick(Sender: TObject);
@@ -1312,10 +1446,16 @@ begin
 
       Settings._icom_response_timeout := StrToIntDef(editIcomResponseTimout.Text, 1000);
 
-      // CW/PTT Control
-      Settings._pttenabled := PTTEnabledCheckBox.Checked;
-      Settings._pttbefore := StrToIntDef(BeforeEdit.Text, Settings._pttbefore);
-      Settings._pttafter := StrToIntDef(AfterEdit.Text, Settings._pttafter);
+      // PTT Control
+      // CW
+      Settings._pttenabled_cw := checkEnablePttCw.Checked;
+      Settings._pttbefore_cw := StrToIntDef(editBeforeTxCw.Text, Settings._pttbefore_cw);
+      Settings._pttafter_cw := StrToIntDef(editAfterTxCw.Text, Settings._pttafter_cw);
+
+      // PH
+      Settings._pttenabled_ph := checkEnablePttPh.Checked;
+      Settings._pttbefore_ph := StrToIntDef(editBeforeTxPh.Text, Settings._pttbefore_ph);
+      Settings._pttafter_ph := StrToIntDef(editAfterTxPh.Text, Settings._pttafter_ph);
 
       // USBIF4CW
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
@@ -1328,6 +1468,17 @@ begin
       Settings._use_wk_outp_select := checkWkOutportSelect.Checked;
       Settings._use_wk_ignore_speed_pot := checkWkIgnoreSpeedPot.Checked;
       Settings._use_wk_always9600 := checkWkAlways9600.Checked;
+
+      // F2A options
+      Settings._use_f2a := checkUseF2A.Checked;
+      Settings._f2a_ptt := checkF2APttControl.Checked;
+      Settings._f2a_before := StrToIntDef(editF2ABefore.Text, Settings._f2a_before);
+      Settings._f2a_after := StrToIntDef(editF2AAfter.Text, Settings._f2a_after);
+      Settings._f2a_device := comboF2ADevice.ItemIndex;
+      Settings._f2a_volume := spinF2AVolume.Value;
+      Settings._f2a_use_datamode := checkUseF2ADataMode.Checked;
+      Settings._f2a_datamode := comboF2aDataMode.ItemIndex;
+      Settings._f2a_filter := comboF2aFilter.ItemIndex;
 
       //
       // Rig control
@@ -1362,9 +1513,10 @@ begin
       //
       // Network
       //
-      Settings._clusterport := ClusterCombo.ItemIndex;
-      Settings._cluster_telnet := FTempClusterTelnet;
-      Settings._cluster_com := FTempClusterCom;
+      Settings.FClusterReConnectMax := spMaxAutoReconnect.Value;
+      Settings.FClusterRetryIntervalSec := spAutoReconnectIntervalSec.Value;
+      Settings.FClusterForceReconnectIntervalMin := spForceReconnectIntervalHour.Value * 60;
+      PacketClusterListViewToList();
 
       Settings._zlinkport := ZLinkCombo.ItemIndex;
       Settings._pcname := editZLinkPcName.Text;
@@ -1573,18 +1725,33 @@ begin
 
       editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
-      // CW/PTT control
-      PTTEnabledCheckBox.Checked := Settings._pttenabled;
-      BeforeEdit.Text := IntToStr(Settings._pttbefore);
-      AfterEdit.Text := IntToStr(Settings._pttafter);
-      if PTTEnabledCheckBox.Checked then begin
-         BeforeEdit.Enabled := True;
-         AfterEdit.Enabled := True;
+      // PTT control
+      // CW
+      checkEnablePttCw.Checked := Settings._pttenabled_cw;
+      editBeforeTxCw.Text := IntToStr(Settings._pttbefore_cw);
+      editAfterTxCw.Text := IntToStr(Settings._pttafter_cw);
+      if checkEnablePttCw.Checked then begin
+         editBeforeTxCw.Enabled := True;
+         editAfterTxCw.Enabled := True;
       end
       else begin
-         BeforeEdit.Enabled := False;
-         AfterEdit.Enabled := False;
+         editBeforeTxCw.Enabled := False;
+         editAfterTxCw.Enabled := False;
       end;
+
+      // PH
+      checkEnablePttPh.Checked := Settings._pttenabled_ph;
+      editBeforeTxPh.Text := IntToStr(Settings._pttbefore_ph);
+      editAfterTxPh.Text := IntToStr(Settings._pttafter_ph);
+      if checkEnablePttPh.Checked then begin
+         editBeforeTxPh.Enabled := True;
+         editAfterTxPh.Enabled := True;
+      end
+      else begin
+         editBeforeTxPh.Enabled := False;
+         editAfterTxPh.Enabled := False;
+      end;
+
 
       // USBIF4CW
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
@@ -1597,6 +1764,17 @@ begin
       checkWkOutportSelect.Checked := Settings._use_wk_outp_select;
       checkWkIgnoreSpeedPot.Checked := Settings._use_wk_ignore_speed_pot;
       checkWkAlways9600.Checked := Settings._use_wk_always9600;
+
+      // F2A options
+      checkUseF2A.Checked := Settings._use_f2a;
+      checkF2APttControl.Checked := Settings._f2a_ptt;
+      editF2ABefore.Text := IntToStr(Settings._f2a_before);
+      editF2AAfter.Text := IntToStr(Settings._f2a_after);
+      comboF2ADevice.ItemIndex := Settings._f2a_device;
+      spinF2AVolume.Value := Settings._f2a_volume;
+      checkUseF2ADataMode.Checked := Settings._f2a_use_datamode;
+      comboF2aDataMode.ItemIndex := Settings._f2a_datamode;
+      comboF2aFilter.ItemIndex := Settings._f2a_filter;
 
       //
       // Rig control
@@ -1631,18 +1809,15 @@ begin
       //
       // Network
       //
-      FTempClusterTelnet := Settings._cluster_telnet;
-      FTempClusterCom := Settings._cluster_com;
-      ClusterCombo.ItemIndex := Settings._clusterport;
+      spMaxAutoReconnect.Value := Settings.FClusterReConnectMax;
+      spAutoReconnectIntervalSec.Value := Settings.FClusterRetryIntervalSec;
+      spForceReconnectIntervalHour.Value := Settings.FClusterForceReconnectIntervalMin div 60;
+      PacketClusterListToListView();
 
       FTempZLinkTelnet := Settings._zlink_telnet;
       ZLinkCombo.ItemIndex := Settings._zlinkport;
       editZLinkPcName.Text := Settings._pcname;
       checkZLinkSyncSerial.Checked := Settings._syncserial;
-
-      // Packet Cluster通信設定ボタン
-      buttonClusterSettings.Enabled := True;
-      ClusterComboChange(nil);
 
       // ZLink通信設定ボタン
       buttonZLinkSettings.Enabled := True;
@@ -1752,7 +1927,8 @@ begin
       end;
    end;
 
-   if (rig_a_noassign > 0) or (rig_b_noassign > 0) then begin
+   // 未割当確認(
+   if (FHardware2Changed = True) and ((rig_a_noassign > 0) or (rig_b_noassign > 0)) then begin
       if Application.MessageBox(PChar(BandsHaveNoRigsAssigned), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION) = IDYES then begin
          PageControl.ActivePage := tabsheetHardware2;
          Result := False;
@@ -1828,6 +2004,60 @@ begin
       FRigSetA_rig[b].Enabled := True;
       FRigSetB_rig[b].Enabled := True;
    end;
+end;
+
+procedure TformOptions.PacketClusterListToListView();
+var
+   i: Integer;
+   obj: TTelnetSetting;
+begin
+   ListViewClear();
+
+   for i := 0 to dmZLogGlobal.PacketClusterList.Count - 1 do begin
+      obj := TTelnetSetting.Create();
+      obj.Assign(dmZLogGlobal.PacketClusterList[i]);
+      AddPacketClusterList(obj);
+   end;
+end;
+
+procedure TformOptions.PacketClusterListViewToList();
+var
+   i: Integer;
+   obj: TTelnetSetting;
+begin
+   dmZLogGlobal.PacketClusterList.Clear();
+   for i := 0 to listviewPacketCluster.Items.Count - 1 do begin
+      obj := TTelnetSetting.Create();
+      obj.Assign(TTelnetSetting(listviewPacketCluster.Items[i].Data));
+      dmZLogGlobal.PacketClusterList.Add(obj);
+   end;
+end;
+
+procedure TformOptions.AddPacketClusterList(setting: TTelnetSetting);
+var
+   listitem: TListItem;
+begin
+   listitem := listviewPacketCluster.Items.Add();
+   listitem.Caption := '#' + IntToStr(listviewPacketCluster.Items.Count);
+
+   if setting.Name = '' then begin
+      setting.Name := listitem.Caption;
+   end;
+
+   listitem.SubItems.Add(setting.Name);
+   listitem.SubItems.Add(setting.HostName);
+   listitem.SubItems.Add(setting.LoginId);
+   listitem.Data := setting;
+end;
+
+procedure TformOptions.ListViewClear();
+var
+   i: Integer;
+begin
+   for i := 0 to listviewPacketCluster.Items.Count - 1 do begin
+      TTelnetSetting(listviewPacketCluster.Items[i].Data).Free();
+   end;
+   listviewPacketCluster.Items.Clear();
 end;
 
 end.

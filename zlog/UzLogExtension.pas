@@ -589,6 +589,11 @@ begin
 	var text := init.ReadString(KEY_ZYLO, KEY_DLLS, '');
 	Result := TList<string>.Create;
 	Result.AddRange(text.Split([',']));
+
+   for var i := 0 to Result.Count - 1 do begin
+      Result[i] := ExtractFileName(Result[i]);
+   end;
+
 	init.Free;
 end;
 
@@ -619,9 +624,10 @@ end;
 procedure InstallDLL(path: string);
 begin
 	MainForm.actionBackupExecute(MainForm);
+   var filename := ExtractFileName(path);
 	var list := GetDLLsINI;
-	if not list.Contains(path) then begin
-		list.Add(path);
+	if not list.Contains(filename) then begin
+		list.Add(filename);
 		SetDLLsINI(list);
 	end;
 	if not Rules.ContainsKey(path) then TDLL.Create(path).ContestOpened;
@@ -638,7 +644,8 @@ end;
 procedure DisableDLL(path: string);
 begin
 	var list := GetDLLsINI;
-	list.Remove(path);
+   var filename := ExtractFileName(path);
+	list.Remove(filename);
 	SetDLLsINI(list);
 	list.Free;
 end;
@@ -665,7 +672,8 @@ end;
 function CanDisableDLL(path: string): boolean;
 begin
 	var list := GetDLLsINI;
-	Result := list.Contains(path);
+   var filename := ExtractFileName(path);
+	Result := list.Contains(filename);
 	list.Free;
 end;
 
@@ -676,12 +684,16 @@ procedure zyloRuntimeLaunch;
 var
 	list: TList<string>;
 	path: string;
+   filename: string;
 begin
 	ImportDialog := MainForm.FileImportDialog;
 	ExportDialog := MainForm.FileExportDialog;
 	Toasts := TNotificationCenter.Create(MainForm);
 	list := GetDLLsINI;
-	for path in list do TDLL.Create(path);
+ 	for filename in list do begin
+      path := TPath.Combine(dmZLogGlobal.PluginPath, filename);
+      TDLL.Create(path);
+   end;
 	list.Free;
 end;
 

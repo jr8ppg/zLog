@@ -5,10 +5,11 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ClipBrd, System.Actions, Vcl.ActnList,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
+  UzLogForm;
 
 type
-  TCWKeyBoard = class(TForm)
+  TCWKeyBoard = class(TZLogForm)
     Console: TMemo;
     Panel1: TPanel;
     buttonOK: TButton;
@@ -65,20 +66,21 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actionDecreaseCwSpeedExecute(Sender: TObject);
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure actionPlayMessageBTExecute(Sender: TObject);
     procedure actionPlayMessageVAExecute(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
     FFontSize: Integer;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
     procedure ApplyShortcut();
-    function GetFontSize(): Integer;
-    procedure SetFontSize(v: Integer);
     procedure SendChar(C: Char);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -91,11 +93,6 @@ uses
 
 {$R *.DFM}
 
-procedure TCWKeyBoard.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
 procedure TCWKeyBoard.FormCreate(Sender: TObject);
 begin
    Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -103,8 +100,7 @@ end;
 
 procedure TCWKeyBoard.FormShow(Sender: TObject);
 begin
-   MainForm.AddTaskbar(Handle);
-
+   Inherited;
    ApplyShortcut();
    Console.SetFocus;
 end;
@@ -373,12 +369,18 @@ end;
 
 function TCWKeyBoard.GetFontSize(): Integer;
 begin
+   Inherited;
    Result := FFontSize;
 end;
 
 procedure TCWKeyBoard.SetFontSize(v: Integer);
 begin
-   FFontSize := v;
+   Inherited;
+   UpdateFontSize(v);
+end;
+
+procedure TCWKeyBoard.UpdateFontSize(v: Integer);
+begin
    Console.Font.Size := v;
 end;
 

@@ -52,6 +52,9 @@ type
     menuM4: TMenuItem;
     menuM5: TMenuItem;
     buttonMemScan: TSpeedButton;
+    panelMScan: TPanel;
+    labelMScan: TLabel;
+    Timer2: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -73,6 +76,7 @@ type
     procedure menuMnClick(Sender: TObject);
     procedure popupMemoryChPopup(Sender: TObject);
     procedure buttonMemScanClick(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -90,6 +94,8 @@ type
     // Freq Memory
     FMemEditMode: Integer;
     FMenuMn: array[1..5] of TMenuItem;
+    FScanRigSet: Integer;
+    FScanRigBand: TBand;
     procedure VisibleChangeEvent(Sender: TObject);
     procedure RigTypeChangeEvent(Sender: TObject; RigNumber: Integer);
     procedure StatusChangeEvent(Sender: TObject; RigNumber: Integer);
@@ -107,8 +113,8 @@ type
     procedure SetLastFreq(v: TFrequency);
     function GetLastFreq(): TFrequency;
     procedure ShowMemCh();
-    procedure SaveMemCh();
-    procedure LoadMemCh();
+    procedure SaveMemCh(rig: TRig);
+    procedure LoadMemCh(rig: TRig);
 
     procedure SetPrevVFO(Index: Integer; fFreq: TFrequency);
     function GetPrevVFO(Index: Integer): TFrequency;
@@ -142,6 +148,9 @@ type
 
     procedure ForcePowerOff();
     procedure ForcePowerOn();
+
+    procedure ToggleMemScan(scan_rigset: Integer; b: TBand);
+    procedure MemScanOff();
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
   end;
@@ -240,6 +249,16 @@ begin
       MainForm.ZLinkForm.SendRigStatus;
    finally
       Timer1.Enabled := True;
+   end;
+end;
+
+procedure TRigControl.Timer2Timer(Sender: TObject);
+begin
+   if labelMScan.Visible = True then begin
+      labelMScan.Visible := False;
+   end
+   else begin
+      labelMScan.Visible := True;
    end;
 end;
 
@@ -453,13 +472,11 @@ begin
 
       SetRigName(FCurrentRigNumber, FCurrentRig.Name);
       FCurrentRig.UpdateStatus;
-      buttonMemScan.Down := FCurrentRig.MemScan;
-      LoadMemCh();
+      LoadMemCh(FCurrentRig);
    end
    else begin
       FCurrentRig := nil;
       SetRigName(FCurrentRigNumber, '(none)');
-      buttonMemScan.Down := False;
    end;
 
    ShowMemCh();
@@ -655,6 +672,7 @@ begin
             TICOM(rig).XitCtrlSupported := ICOMLIST[i].XitCtrl;
             TICOM(rig).PlayMessageCwSupported := ICOMLIST[i].PlayCW;
             TICOM(rig).PlayMessagePhSupported := ICOMLIST[i].PlayPh;
+            TICOM(rig).FixEdgeSelectSupported := ICOMLIST[i].FixEdgeSel;
 
             if Pos('IC-731', rname) > 0 then begin
                TICOM(rig).Freq4Bytes := True;
@@ -910,9 +928,11 @@ procedure TRigControl.OnUpdateStatusProc(Sender: TObject; rigno: Integer; curren
 var
    S: string;
 begin
-   dispVFO.Caption := VFOString[currentvfo];
-   if curmode <> CurrentQSO.Mode then begin
-      MainForm.UpdateMode(curmode);
+   if FRigs[rigno].IgnoreMode = False then begin
+      dispVFO.Caption := VFOString[currentvfo];
+      if curmode <> CurrentQSO.Mode then begin
+         MainForm.UpdateMode(curmode);
+      end;
    end;
 
    dispMode.Caption := ModeString[curmode];
@@ -951,6 +971,20 @@ begin
       end;
 
       RigLabel.Caption := 'Current rig : ' + IntToStr(MainForm.RigControl.CurrentRigNumber) + ' Omni-Rig: ' + S;
+   end;
+
+   // DEBUG:RITèÓïÒï\é¶
+   if dmZLogGlobal.Settings.FRigShowRitInfo = True then begin
+      if currentvfo = 0 then begin
+         if TRig(Sender).Rit = True then begin
+            S := 'RIT ON ' + IntTostr(TRig(Sender).RitOffset);
+         end
+         else begin
+            S := 'RIT OFF';
+         end;
+
+         Caption := 'Rig Control ' + S;
+      end;
    end;
 end;
 
@@ -1132,6 +1166,9 @@ begin
    buttonMemScan.Enabled := False;
    buttonMemScan.Down := False;
    buttongrpFreqMemory.Enabled := False;
+   Timer2.Enabled := False;
+   labelMScan.Visible := False;
+   FScanRigSet := 1;
 end;
 
 procedure TRigControl.ForcePowerOff();
@@ -1206,11 +1243,39 @@ begin
 end;
 
 procedure TRigControl.buttonMemScanClick(Sender: TObject);
+var
+   rig: TRig;
+   i: Integer;
 begin
    if FCurrentRig = nil then begin
       Exit;
    end;
-   FCurrentRig.MemScan := buttonMemScan.Down;
+
+   if buttonMemScan.Down = True then begin
+
+      rig := GetRig(FScanRigSet, FScanRigBand);
+      if rig = nil then begin
+         Exit;
+      end;
+
+      LoadMemCh(FRigs[rig.RigNumber]);
+
+      labelMScan.Caption := 'M-Scan ' + IntToStr(rig.RigNumber);
+
+      FRigs[rig.RigNumber].MemScan := buttonMemScan.Down;
+   end
+   else begin
+      for i := Low(FRigs) to High(FRigs) do begin
+         if FRigs[i] <> nil then begin
+            FRigs[i].MemScan := False;
+         end;
+      end;
+   end;
+
+   Timer2.Enabled := buttonMemScan.Down;
+   if Timer2.Enabled = False then begin
+      labelMScan.Visible := False;
+   end;
 end;
 
 procedure TRigControl.popupMemoryChPopup(Sender: TObject);
@@ -1257,7 +1322,7 @@ begin
 
    ShowMemCh();
 
-   SaveMemCh();
+   SaveMemCh(FCurrentRig);
 end;
 
 procedure TRigControl.ShowMemCh();
@@ -1301,7 +1366,7 @@ begin
    end;
 end;
 
-procedure TRigControl.SaveMemCh();
+procedure TRigControl.SaveMemCh(rig: TRig);
 var
    i: Integer;
    f: TFrequency;
@@ -1310,11 +1375,11 @@ var
    strKey: string;
    fname: string;
 begin
-   if FCurrentRig = nil then begin
+   if rig = nil then begin
       Exit;
    end;
 
-   if FCurrentRig.UseMemChScan = False then begin
+   if rig.UseMemChScan = False then begin
       Exit;
    end;
 
@@ -1322,12 +1387,12 @@ begin
    ini := TMemIniFile.Create(fname);
    try
       for i := 1 to 5 do begin
-         f := FCurrentRig.MemCh[i].FFreq;
-         m := FCurrentRig.MemCh[i].FMode;
+         f := rig.MemCh[i].FFreq;
+         m := rig.MemCh[i].FMode;
          strKey := 'M' + IntToStr(i);
 
-         ini.WriteInt64(FCurrentRig.Name, strKey + '_freq', f);
-         ini.WriteInteger(FCurrentRig.Name, strKey + '_mode', Integer(m));
+         ini.WriteInt64(rig.Name, strKey + '_freq', f);
+         ini.WriteInteger(rig.Name, strKey + '_mode', Integer(m));
       end;
 
       ini.UpdateFile();
@@ -1336,18 +1401,18 @@ begin
    end;
 end;
 
-procedure TRigControl.LoadMemCh();
+procedure TRigControl.LoadMemCh(rig: TRig);
 var
    i: Integer;
    ini: TMemIniFile;
    strKey: string;
    fname: string;
 begin
-   if FCurrentRig = nil then begin
+   if rig = nil then begin
       Exit;
    end;
 
-   if FCurrentRig.UseMemChScan = False then begin
+   if rig.UseMemChScan = False then begin
       Exit;
    end;
 
@@ -1357,11 +1422,27 @@ begin
       for i := 1 to 5 do begin
          strKey := 'M' + IntToStr(i);
 
-         FCurrentRig.MemCh[i].FFreq := ini.ReadInt64(FCurrentRig.Name, strKey + '_freq', 0);
-         FCurrentRig.MemCh[i].FMode := TMode(ini.ReadInteger(FCurrentRig.Name, strKey + '_mode', Integer(mCW)));
+         rig.MemCh[i].FFreq := ini.ReadInt64(rig.Name, strKey + '_freq', 0);
+         rig.MemCh[i].FMode := TMode(ini.ReadInteger(rig.Name, strKey + '_mode', Integer(mCW)));
       end;
    finally
       ini.Free();
+   end;
+end;
+
+procedure TRigControl.ToggleMemScan(scan_rigset: Integer; b: TBand);
+begin
+   FScanRigSet := scan_rigset;
+   FScanRigBand := b;
+   buttonMemScan.Down := not buttonMemScan.Down;
+   buttonMemScanClick(nil);
+end;
+
+procedure TRigControl.MemScanOff();
+begin
+   if buttonMemScan.Down = True then begin
+      buttonMemScan.Down := False;
+      buttonMemScanClick(nil);
    end;
 end;
 

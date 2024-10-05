@@ -19,19 +19,20 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
+  Winapi.MMSystem, JvExControls, JvLED,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, URigCtrlLib, UConsolePad, USpotClass,
-  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogCabrillo, UQuickRef, UZAnalyze,
+  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogJarlEx, UELogCabrillo, UQuickRef, UZAnalyze,
   UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan, UCWMonitor,
-  JvExControls, JvLED;
+  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
+  UCWMonitor, UzLogForm, UzFreqMemory;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -573,6 +574,11 @@ type
     menuUploadSounds: TMenuItem;
     OptionsButton: TSpeedButton;
     buttonCancelOutOfPeriod: TSpeedButton;
+    CreateJARLELog: TMenuItem;
+    actionToggleMemScan: TAction;
+    actionToggleF2A: TAction;
+    buttonF2A: TSpeedButton;
+    menuQTC: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -874,6 +880,14 @@ type
     procedure menuUploadSoundsClick(Sender: TObject);
     procedure menuDownloadSoundsClick(Sender: TObject);
     procedure buttonCancelOutOfPeriodClick(Sender: TObject);
+    procedure CreateJARLELogClick(Sender: TObject);
+    procedure actionToggleMemScanExecute(Sender: TObject);
+    procedure actionToggleF2AExecute(Sender: TObject);
+    procedure buttonF2AClick(Sender: TObject);
+    procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -939,6 +953,7 @@ type
     FCurrentCQMessageNo: Integer;
 
     FQsyFromBS: Boolean;
+    FFreqChangeProcessed: Boolean;
 
     // QSY Violation (10 min rule / per hour)
     FQsyViolation: Boolean;
@@ -968,10 +983,15 @@ type
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
     FWaitForQsoFinish: array[0..4] of Boolean;
 
+    // 周波数メモリー
+    FFreqMem: TFreqMemoryList;
+
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
     FLastFreq: array[1..3] of TFrequency;
     FLastMode: array[1..3] of TMode;
+    FLastRitStatus: array[1..3] of Boolean;
+    FLastRitOffset: array[1..3] of Integer;
 
     FPastEditMode: Boolean;
     FFilterTx: Integer;
@@ -981,6 +1001,8 @@ type
     FFirstOutOfContestPeriod: Boolean;
     FOutOfContestPeriod: Boolean;
     FPrevOutOfContestPeriod: Boolean;
+
+    FRigModeBackup: TMode;
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1150,6 +1172,13 @@ type
     function CompressSoundFiles(): Boolean;
     procedure SaveLastFreq();
     procedure ShowCtyChk();
+    procedure SetEnableF2A();
+    procedure SetF2AMode();
+    procedure ResetF2AMode();
+    procedure F2AOff();
+    procedure OnChangeFontSize(Sender: TObject; font_size: Integer);
+    procedure SetupQTC();
+    procedure CallFreqMemory(rigset: Integer; strCommand: string);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1268,7 +1297,8 @@ resourcestring
   TMainForm_Change_Power_QSOs = 'Are you sure to change the power for these QSO''s?';
   TMainForm_Change_TXNO_QSOs = 'Are you sure to change the TX# for these QSO''s?';
   TMainForm_Need_File_Name = 'Data will NOT be saved until you enter the file name';
-  TMainForm_QTC_Sent = 'QTC can be sent by pressing Ctrl+Q';
+  TMainForm_QTC_Sent = 'QTC can be sent by pressing %s';
+  TMainForm_QTC_no_shortcut_keys = 'No shortcut keys are assigned for QTC';
   TMainForm_Less_Than_10min = 'Less than 10 min since last QSY!';
   TMainForm_QSY_Count_Exceeded = 'QSY count exceeded limit!';
   TMainForm_Loading_now = 'Loading...';
@@ -1311,6 +1341,11 @@ resourcestring
   TMainForm_ConfirmRewindSerialNumber = 'Do you want to rewind the serial number?';
   TMainForm_ConfirmContestPeriod = 'Do you want to change the contest period to "not used"?';
   TMainForm_ConfirmOverwrite = '[%s] file already exists. overwrite?';
+  TMainForm_ConfirmModeConvert = 'Mode contains old Other, convert to new Other?';  // 'モードにOther(旧)が含まれています。Other(新)に変換しますか？'
+  TMainForm_No_QTC_Message = 'No messages to send in QTC';  // 'QTCで送るメッセージはありません'
+  TMainForm_Assigned_Another_Function = 'Ctrl+Q is assigned to another function. Do you want to take it?';  // 'Ctrl+Qは他の機能にアサインされています。横取りしますか？'
+  TMainForm_To_Change_the_mode = 'To change the operating mode, first turn off the F2A mode.';  // 'モードを変更するには、先にF2Aモードをoffにして下さい'
+  TMainForm_To_Change_the_band = 'To change the operating band, first turn off the F2A mode.';  // 'バンドを変更するには、先にF2Aモードをoffにして下さい'
 
 var
   MainForm: TMainForm;
@@ -1578,57 +1613,115 @@ end;
 function TMainForm.ScanNextBand(B0: TBand): TBand;
 var
    B: TBand;
+   nextband: TBand;
+   rig: TRig;
+   maxband, minband: TBand;
+   original: TBand;
 begin
-   Result := B0;
+   original := B0;
 
-   if B0 >= HiBand then begin
-      B0 := b19;
+   // 次のバンド候補
+   nextband := B0;
+   if nextband >= HiBand then begin
+      nextband := b19;
    end
    else begin
-      inc(B0);
+      Inc(nextband);
    end;
 
-   for B := B0 to HiBand do begin
+   // 次のバンドに対応したリグはあるか
+   rig := RigControl.GetRig(FCurrentRigSet, nextband);
+   if rig = nil then begin // ない
+      rig := RigControl.GetRig(FCurrentRigSet, B0);
+      if rig = nil then begin
+         B0 := nextband;
+         minband := b19;
+         maxband := HiBand;
+      end
+      else begin
+         minband := rig.MinBand;
+         maxband := rig.MaxBand;
+      end;
+   end
+   else begin  // あった
+      B0 := nextband;
+      minband := rig.MinBand;
+      maxband := rig.MaxBand;
+   end;
+
+   // minband～maxband内をスキャン
+   for B := B0 to maxband do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
 
-   for B := b19 to B0 do begin
+   for B := minband to B0 do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
+
+   Result := original;
 end;
 
 function TMainForm.ScanPrevBand(B0: TBand): TBand;
 var
    B: TBand;
+   prevband: TBand;
+   rig: TRig;
+   maxband, minband: TBand;
+   original: TBand;
 begin
-   Result := B0;
+   original := B0;
 
-   if B0 <= b19 then begin
-      B0 := HiBand;
+   // 次のバンド候補
+   prevband := B0;
+   if prevband <= b19 then begin
+      prevband := HiBand;
    end
    else begin
-      dec(B0);
+      Dec(prevband);
    end;
 
-   for B := B0 downto b19 do begin
+   // 前のバンドに対応したリグはあるか
+   rig := RigControl.GetRig(FCurrentRigSet, prevband);
+   if rig = nil then begin // ない
+      rig := RigControl.GetRig(FCurrentRigSet, B0);
+      if rig = nil then begin
+         B0 := prevband;
+         minband := b19;
+         maxband := HiBand;
+      end
+      else begin
+         minband := rig.MinBand;
+         maxband := rig.MaxBand;
+      end;
+   end
+   else begin  // あった
+      B0 := prevband;
+      minband := rig.MinBand;
+      maxband := rig.MaxBand;
+   end;
+
+   // minband～maxband内をスキャン
+   for B := B0 downto minband do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
 
-   for B := HiBand downto B0 do begin
+   for B := maxband downto B0 do begin
       if IsAvailableBand(B) = True then begin
          Result := B;
          Exit;
       end;
    end;
+
+   Result := original;
 end;
 
 function TMainForm.IsAvailableBand(B: TBand): Boolean;
@@ -1734,6 +1827,8 @@ begin
    FRateDialogEx.Band := CurrentQSO.Band;
 
    ShowSentNumber();
+
+   SetEnableF2A();
 end;
 
 procedure TMainForm.UpdateMode(M: TMode);
@@ -1747,7 +1842,7 @@ begin
 
       // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
-         dmZLogGlobal.Settings._pttenabled := True;
+         dmZLogGlobal.Settings._pttenabled_ph := True;
       end;
    end
    else begin
@@ -1757,7 +1852,7 @@ begin
 
       // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
-         dmZLogGlobal.Settings._pttenabled := False;
+         dmZLogGlobal.Settings._pttenabled_ph := False;
       end;
    end;
 
@@ -1778,6 +1873,8 @@ begin
    FFunctionKeyPanel.UpdateInfo();
 
    ShowSentNumber();
+
+   SetEnableF2A();
 end;
 
 procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
@@ -2226,6 +2323,25 @@ begin
    FCWMonitor     := TformCWMonitor.Create(Self);
    FProgress      := TformProgress.Create(Self);
 
+   FSuperCheck.OnChangeFontSize := OnChangeFontSize;
+   FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
+   FPartialCheck.OnChangeFontSize := OnChangeFontSize;
+   FCommForm.OnChangeFontSize := OnChangeFontSize;
+//   if MyContest <> nil then begin
+//      MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
+//      MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
+//   end;
+
+   FCWKeyboard.OnChangeFontSize := OnChangeFontSize;
+   FCWMessagePad.OnChangeFontSize := OnChangeFontSize;
+
+   FFreqList.OnChangeFontSize := OnChangeFontSize;
+   FCheckCall2.OnChangeFontSize := OnChangeFontSize;
+   FCheckMulti.OnChangeFontSize := OnChangeFontSize;
+   FCheckCountry.OnChangeFontSize := OnChangeFontSize;
+   FFunctionKeyPanel.OnChangeFontSize := OnChangeFontSize;
+   FChatForm.OnChangeFontSize := OnChangeFontSize;
+
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
    FCQLoopStartRig := 1;
@@ -2369,6 +2485,9 @@ begin
    BuildOpListMenu2(OpMenu.Items, OpMenuClick);
 
    FTempQSOList := TQSOList.Create();
+
+   FFreqMem := TFreqMemoryList.Create();
+   FFreqMem.LoadFromFile('zlog_freqmem.txt');
 
    RestoreWindowsPos();
 
@@ -2722,7 +2841,7 @@ begin
       end;
 
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
    Q.Free;
@@ -3151,6 +3270,9 @@ begin
    if S = 'CTYCHK' then begin
       ShowCtyChk();
    end;
+
+   // ここまで来て該当が無ければ周波数メモリー呼び出し
+   CallFreqMemory(FCurrentRigSet, S);
 end;
 
 procedure TMainForm.ChangeTxNr(txnr: Integer);
@@ -3209,7 +3331,7 @@ begin
       j := 9;
    end;
 
-   SetFontSize(j);
+   OnChangeFontSize(Self, j);
 end;
 
 procedure TMainForm.DecFontSize();
@@ -3224,7 +3346,7 @@ begin
       j := 21;
    end;
 
-   SetFontSize(j);
+   OnChangeFontSize(Self, j);
 end;
 
 procedure TMainForm.SetFontSize(font_size: Integer);
@@ -3256,25 +3378,20 @@ begin
    dmZlogGlobal.Settings._mainfontsize := font_size;
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
+end;
 
-   FSuperCheck.FontSize := font_size;
-   FSuperCheck2.FontSize := font_size;
-   FPartialCheck.FontSize := font_size;
-   FCommForm.FontSize := font_size;
-   if MyContest <> nil then begin
-      MyContest.ScoreForm.FontSize := font_size;
-      MyContest.MultiForm.FontSize := font_size;
+procedure TMainForm.OnChangeFontSize(Sender: TObject; font_size: Integer);
+var
+   i: Integer;
+   f: TForm;
+begin
+   SetFontSize(font_size);
+   for i := 0 to Screen.FormCount - 1 do begin
+      f := Screen.Forms[i];
+      if (f <> Sender) and (f is TZLogForm) then begin
+         TZLogForm(f).FontSize := font_size;
+      end;
    end;
-
-   FCWKeyboard.FontSize := font_size;
-   FCWMessagePad.FontSize := font_size;
-
-   FFreqList.FontSize := font_size;
-   FCheckCall2.FontSize := font_size;
-   FCheckMulti.FontSize := font_size;
-   FCheckCountry.FontSize := font_size;
-   FFunctionKeyPanel.FontSize := font_size;
-   FChatForm.FontSize := font_size;
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -3361,6 +3478,15 @@ begin
       end;
 
       ' ': begin
+         // memo欄は入力可
+         if TEdit(Sender).Tag = 1000 then begin
+            if dmZlogGlobal.Settings._movetomemo then begin
+               Key := #0;
+               CallsignEdit.SetFocus;
+            end;
+            Exit;
+         end;
+
          if Sender = CallsignEdit then begin { if space is pressed when Callsign edit is in focus }
             Key := #0;
 
@@ -3575,6 +3701,37 @@ var
    bak_acceptdiff: Boolean;
    bak_counthigher: Boolean;
    bak_coeff: Extended;
+   S: string;
+
+   function IsOldOtherExist(): Boolean;
+   var
+      i: Integer;
+      Q: TQSO;
+   begin
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+         if Q.Mode = TMode(5) then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+
+      Result := False;
+      Exit;
+   end;
+
+   procedure ConvertModeOther();
+   var
+      i: Integer;
+      Q: TQSO;
+   begin
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+         if Q.Mode = TMode(5) then begin
+            Q.Mode := mOther;
+         end;
+      end;
+   end;
 begin
    // 一度はCreateLogされてる前提
    Q := TQSO.Create();
@@ -3592,6 +3749,15 @@ begin
    Q.Free();
 
    Log.LoadFromFile(filename);
+
+   // ZLOで旧Otherがある場合
+   S := UpperCase(ExtractFileExt(filename));
+   if (S = '.ZLO') and (IsOldOtherExist() = True) then begin
+      if MessageBox(Handle, PChar(TMainForm_ConfirmModeConvert), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
+         ConvertModeOther();
+         dmZLogGlobal.SetLogFileName(ChangeFileExt(CurrentFileName, '.ZLOX'));
+      end;
+   end;
 
    // 最後のレコード取りだし
    if Log.TotalQSO > 0 then begin
@@ -3710,6 +3876,9 @@ begin
    Log.SetDupeFlags;
 
    GridRefreshScreen();
+
+   // BandScopeの更新
+   BandScopeNotifyWorked(nil);
 end;
 
 procedure TMainForm.GridKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
@@ -4362,6 +4531,14 @@ begin
       end;
    end;
 
+   // F2A
+   if buttonF2A.Down = True then begin
+      if Length(Q.Memo) > 0 then begin
+         Q.Memo := Q.Memo + ' ';
+      end;
+      Q.Memo := Q.Memo + 'F2A';
+   end;
+
    // ログに記録
    Q.Band := band_bakup;
    MyContest.LogQSO(Q, True);
@@ -4603,12 +4780,17 @@ begin
    FBandScopeAllBands.Close();
    FBandScopeAllBands.Release();
 
+   if MyContest is TWAEContest then begin
+      TWAEContest(MyContest).QTCForm.Release();
+   end;
+
    if MyContest <> nil then begin
       MyContest.Free;
    end;
 
    EditScreen.Free();
    FTempQSOList.Free();
+   FFreqMem.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
    FCWMessagePad.Release();
@@ -4634,6 +4816,58 @@ begin
 
    zyloContestClosed;
    zyloRuntimeFinish;
+end;
+
+procedure TMainForm.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズDOWN
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := Grid.Font.Size;
+      Dec(font_size);
+      if font_size < 6 then begin
+         font_size := 6;
+      end;
+
+      SetFontSize(font_size);
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         OnChangeFontSize(Self, font_size);
+      end;
+
+      Refresh();
+
+      Handled := True;
+   end;
+end;
+
+procedure TMainForm.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズUP
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := Grid.Font.Size;
+      Inc(font_size);
+      if font_size > 28 then begin
+         font_size := 28;
+      end;
+
+      SetFontSize(font_size);
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         OnChangeFontSize(Self, font_size);
+      end;
+
+      Refresh();
+
+      Handled := True;
+   end;
 end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
@@ -4970,6 +5204,108 @@ begin
    FormShowAndRestore(FCWKeyBoard);
 end;
 
+procedure TMainForm.buttonF2AClick(Sender: TObject);
+begin
+   if dmZLogGlobal.Settings._use_f2a = False then begin
+      Exit;
+   end;
+
+   if buttonF2A.Down = True then begin
+      SetF2AMode();
+   end
+   else begin
+      ResetF2AMode();
+   end;
+end;
+
+procedure TMainForm.SetEnableF2A();
+begin
+   if (currentQSO.Band >= b28) then begin
+      buttonF2A.Enabled := True;
+      actionToggleF2A.Enabled := True;
+   end
+   else begin
+      buttonF2A.Enabled := False;
+      actionToggleF2A.Enabled := False;
+   end;
+end;
+
+procedure TMainForm.SetF2AMode();
+var
+   rig: TRig;
+begin
+   // PTT delayをF2A用の値に変更する
+   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._f2a_before, dmZLogGlobal.Settings._f2a_after);
+   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._f2a_ptt);
+
+   // サイドトーン設定をON
+   dmZLogKeyer.UseSideTone := True;
+
+   // サイドトーンの出力先を変更
+   dmZLogKeyer.SideTone.DeviceID := dmZLogGlobal.Settings._f2a_device;
+   dmZLogKeyer.SideTone.Volume := dmZLogGlobal.Settings._f2a_volume;
+
+   // リグをFMにする(要値保存)
+   FRigModeBackup := CurrentQSO.Mode;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      // リグのモード無視
+      rig.IgnoreMode := True;
+
+      // FMへ変更
+      rig.SetMode(mFM);
+      while rig.CurrentMode <> mFM do begin
+         Application.ProcessMessages();
+      end;
+
+      // DATAMODE使用時
+      if dmZLogGlobal.Settings._f2a_use_datamode = True then begin
+         rig.SetDataMode(True);
+      end;
+   end;
+
+   // zLogはCW
+   UpdateMode(mCW);
+
+   // 本来のキーイングを止める
+end;
+
+procedure TMainForm.ResetF2AMode();
+var
+   rig: TRig;
+begin
+   // リグのモードを戻す
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
+      rig.SetDataMode(False);
+      rig.SetMode(FRigModeBackup);
+   end;
+
+   UpdateMode(FRigModeBackup);
+
+   // PTT delayを元に戻す
+   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._pttbefore_cw, dmZLogGlobal.Settings._pttafter_cw);
+   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._pttenabled_cw);
+
+   // サイドトーン設定を戻す
+   dmZLogKeyer.UseSideTone := dmZLogGlobal.Settings.CW._sidetone;
+
+   // サイドトーンの出力先を戻す
+   dmZLogKeyer.SideTone.DeviceID := WAVE_MAPPER;
+   dmZLogKeyer.SideTone.Volume := dmZLogGlobal.Settings.CW._sidetone_volume;
+
+   // 本来のキーイングを再開
+end;
+
+procedure TMainForm.F2AOff();
+begin
+   if buttonF2A.Down then begin
+      buttonF2A.Down := False;
+      ResetF2AMode();
+   end;
+end;
+
 procedure TMainForm.SideToneButtonClick(Sender: TObject);
 begin
    dmZlogGlobal.Settings.CW._sidetone := TSpeedButton(Sender).Down;
@@ -5025,6 +5361,9 @@ begin
    FCommForm.RenewOptions();
    FCommForm.Disconnect();
    FRateDialogEx.SaveSettings();
+
+   // F2Aモード解除
+   F2AOff();
 
    Timer1.Enabled := False;
    TerminateNPlusOne();
@@ -5650,6 +5989,12 @@ begin
    f := TformOptions.Create(Self);
    rig := RigControl.GetCurrentRig();
    try
+      // メモリースキャン解除
+      RigControl.MemScanOff();
+
+      // F2Aモード解除
+      F2AOff();
+
       // KeyingとRigControlを一旦終了
       FRigControl.ForcePowerOff();
       CancelCqRepeat();
@@ -5708,6 +6053,12 @@ begin
       f.EditNumber := nEditNumer;
       f.EditBank := nEditBank;
       f.ActiveTab := nActiveTab;
+
+      // メモリースキャン解除
+      RigControl.MemScanOff();
+
+      // F2Aモード解除
+      F2AOff();
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -6900,6 +7251,7 @@ begin
 
          FTTYConsole.Close();
          FTTYConsole.Release();
+         FTTYConsole := nil;
 
          ExitMMTTY;
 
@@ -6958,6 +7310,18 @@ var
    f: TformELogJarl2;
 begin
    f := TformELogJarl2.Create(Self);
+   try
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TMainForm.CreateJARLELogClick(Sender: TObject);
+var
+   f: TformELogJarlEx;
+begin
+   f := TformELogJarlEx.Create(Self);
    try
       f.ShowModal();
    finally
@@ -7259,6 +7623,9 @@ begin
          end;
       end;
 
+      MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
+      MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
+
       MultiButton.Enabled := True; // toolbar
       Multipliers1.Enabled := True; // menu
       mnCheckCountry.Visible := False; // checkcountry window
@@ -7369,9 +7736,8 @@ begin
 
       RestoreWindowStates;
 
-      if Pos('WAEDC', MyContest.Name) > 0 then begin
-         MessageBox(Handle, PChar(TMainForm_QTC_Sent), PChar(Application.Title), MB_ICONINFORMATION or MB_OK);
-      end;
+      // Ctrl+Qを押すとQTCを送信できます
+      SetupQTC();
 
       CurrentQSO.UpdateTime;
       TimeEdit.Text := CurrentQSO.TimeStr;
@@ -8121,20 +8487,6 @@ begin
 end;
 
 procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
-
-   procedure SetBand(B: TBand);
-   begin
-      TJA0Score(MyContest.ScoreForm).SetBand(B);
-      if (B = b21) or (B = b28) then begin
-         BandMenu.Items[Ord(b21)].Enabled := True;
-         BandMenu.Items[Ord(b28)].Enabled := True;
-         BandMenu.Items[Ord(b21)].Visible := True;
-         BandMenu.Items[Ord(b28)].Visible := True;
-      end
-      else begin
-         BandMenu.Items[Ord(B)].Visible := True;
-      end;
-   end;
 begin
    HideBandMenuHF();
    HideBandMenuWARC();
@@ -8145,21 +8497,27 @@ begin
    MyContest := TJA0ContestZero.Create(Self, 'ALL JA0 コンテスト (JA0)');
 
    case BandGroupIndex of
+      // 1.9M
+      1: begin
+         TJA0Score(MyContest.ScoreForm).SetBand(b19);
+         ShowBandMenu(b19);
+      end;
+
       // 3.5M
       2: begin
-         SetBand(b35);
+         TJA0Score(MyContest.ScoreForm).SetBand(b35);
          ShowBandMenu(b35);
       end;
 
       // 7M
       3: begin
-         SetBand(b7);
+         TJA0Score(MyContest.ScoreForm).SetBand(b7);
          ShowBandMenu(b7);
       end;
 
       // 21/28M
       7, 9: begin
-         SetBand(b21);
+         TJA0Score(MyContest.ScoreForm).SetBand(b7);
          dmZlogGlobal.Settings._band := 0;
          ShowBandMenu(b21);
          ShowBandMenu(b28);
@@ -8178,6 +8536,12 @@ begin
    MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)');
 
    case BandGroupIndex of
+      // 1.9M
+      1: begin
+         TJA0Score(MyContest.ScoreForm).SetBand(b19);
+         ShowBandMenu(b19);
+      end;
+
       // 3.5M
       2: begin
          TJA0Score(MyContest.ScoreForm).SetBand(b35);
@@ -9447,13 +9811,17 @@ begin
       Exit;
    end;
 
-   TWAEContest(MyContest).QTCForm.Show;
    if CurrentQSO.Callsign = '' then begin
       if Log.TotalQSO >= 2 then begin
+         TWAEContest(MyContest).QTCForm.Show;
          TWAEContest(MyContest).QTCForm.OpenQTC(Log.QsoList[Log.TotalQSO]);
+      end
+      else begin
+         MessageBox(Handle, PChar(TMainForm_No_QTC_Message), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       end;
    end
    else begin
+      TWAEContest(MyContest).QTCForm.Show;
       TWAEContest(MyContest).QTCForm.OpenQTC(Main.CurrentQSO);
    end;
 end;
@@ -9500,6 +9868,10 @@ procedure TMainForm.actionCQRepeatExecute(Sender: TObject);
 begin
    if FCQRepeatPlaying = True then begin
       Exit;
+   end;
+
+   if FInformation.Is2bsiq = True then begin
+      F2bsiqStart := True;
    end;
 
    FCtrlZCQLoop := True;
@@ -9638,6 +10010,12 @@ begin
    nID := FCurrentTx;
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
+
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
 
    // 1Rの場合
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
@@ -9862,6 +10240,11 @@ var
    rig: TRig;
    b: TBand;
 begin
+   if buttonF2A.Down = True then begin
+      WriteStatusLineRed(TMainForm_To_Change_the_band, False);
+      Exit;
+   end;
+
    if TAction(Sender).Tag = 0 then begin
       b := GetNextBand(CurrentQSO.Band, True);
    end
@@ -9893,6 +10276,11 @@ procedure TMainForm.actionChangeModeExecute(Sender: TObject);
 var
    rig: TRig;
 begin
+   if buttonF2A.Down = True then begin
+      WriteStatusLineRed(TMainForm_To_Change_the_mode, False);
+      Exit;
+   end;
+
    if TAction(Sender).Tag = 0 then begin
       SetQSOMode(CurrentQSO, True);
    end
@@ -10077,6 +10465,7 @@ var
    rig: TRig;
    b: TBand;
    rigset: Integer;
+   dwTick: DWORD;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
@@ -10097,11 +10486,19 @@ begin
    if rig <> nil then begin
       FRigControl.SetCurrentRig(rig.RigNumber);
 
+      FFreqChangeProcessed := False;
       rig.MoveToLastFreq(FLastFreq[rigset], FLastMode[rigset]);
 
-      while RigControl.PrevVFO[0] <> FLastFreq[rigset] do begin
+      dwTick := GetTickCount();
+      while FFreqChangeProcessed = False do begin
          Application.ProcessMessages();
+         if (GetTickCount() - dwTick) > 5000 then begin
+            Break;
+         end;
       end;
+
+      rig.Rit := FLastRitStatus[rigset];
+      rig.RitOffset := FLastRitOffset[rigset];
    end;
 
    Restore2bsiqMode();
@@ -10375,6 +10772,12 @@ begin
    FCQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
 
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
+
    tx := GetNextRigID(FCurrentTx);
 
    FCurrentTx := tx;
@@ -10408,6 +10811,12 @@ begin
    OutputDebugString(PChar('--- #147 ToggleRx ---'));
    {$ENDIF}
 
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+//   F2AOff();
+
    rx := GetNextRigID(FCurrentRx);
    SwitchRx(rx + 1);
 end;
@@ -10420,6 +10829,12 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #148 Match RX to TX ---'));
    {$ENDIF}
+
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+//   F2AOff();
 
    tx := FCurrentTx;
    SwitchRx(tx + 1);
@@ -10436,6 +10851,12 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #149 Match TX to RX ---'));
    {$ENDIF}
+
+   // メモリースキャン中なら中止する
+   RigControl.MemScanOff();
+
+   // F2Aモード解除(暫定) 2Radio対応時は削除
+   F2AOff();
 
    rx := FCurrentRx;
    SwitchTx(rx + 1);
@@ -10545,6 +10966,30 @@ var
 begin
    wpm := dmZLogKeyer.WPM;
    SetRigWpm(wpm);
+end;
+
+// #165 Toggle Memory-Scan
+procedure TMainForm.actionToggleMemScanExecute(Sender: TObject);
+var
+   scanrigset: Integer;
+   b: TBand;
+begin
+   case FCurrentRigSet of
+      1: scanrigset := 2;
+      2: scanrigset := 1;
+      else Exit;
+   end;
+
+   b := TextToBand(FEditPanel[scanrigset - 1].BandEdit.Text);
+
+   RigControl.ToggleMemScan(scanrigset, b);
+end;
+
+// #166 Toggle F2A
+procedure TMainForm.actionToggleF2AExecute(Sender: TObject);
+begin
+   buttonF2A.Down := not buttonF2A.Down;
+   buttonF2AClick(buttonF2A);
 end;
 
 procedure TMainForm.RestoreWindowsPos();
@@ -11217,6 +11662,12 @@ begin
    b := dmZLogGlobal.BandPlan.FreqToBand(nFreq);
    FBandScopeEx[b].AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
    FBandScope.AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
+
+   // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
+   if (BandMenu.Items[Ord(b)].Enabled = True) and
+      (dmZlogGlobal.Settings._activebands[b] = True) then begin
+      FBandScopeAllBands.AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
+   end;
 end;
 
 procedure TMainForm.BandScopeAddSelfSpotFromNetwork(BSText: string);
@@ -11227,6 +11678,7 @@ begin
       FBandScopeEx[b].AddSelfSpotFromNetwork(BSText);
    end;
    FBandScope.AddSelfSpotFromNetwork(BSText);
+   FBandScopeAllBands.AddSelfSpotFromNetwork(BSText);
 end;
 
 procedure TMainForm.BandScopeAddClusterSpot(Sp: TSpot);
@@ -11318,6 +11770,8 @@ begin
    end;
 
    FQsyFromBS := False;
+
+   FFreqChangeProcessed := True;
 end;
 
 procedure TMainForm.ApplyCQRepeatInterval();
@@ -12133,14 +12587,14 @@ begin
 
    if fOn = True then begin
       dmZLogKeyer.SetVoiceFlag(1);
-      if dmZLogGlobal.Settings._pttenabled then begin
+      if dmZLogGlobal.Settings._pttenabled_ph then begin
          dmZLogKeyer.ControlPTT(nID, True, fPhonePTT);
-         Sleep(dmZLogGlobal.Settings._pttbefore);
+         Sleep(dmZLogGlobal.Settings._pttbefore_ph);
       end;
    end
    else begin
-      if dmZLogGlobal.Settings._pttenabled then begin
-         Sleep(dmZLogGlobal.Settings._pttafter);
+      if dmZLogGlobal.Settings._pttenabled_ph then begin
+         Sleep(dmZLogGlobal.Settings._pttafter_ph);
          dmZLogKeyer.ControlPTT(nID, False, fPhonePTT);
       end;
       dmZLogKeyer.SetVoiceFlag(0);
@@ -12186,7 +12640,8 @@ begin
    {$ENDIF}
 
    // PTT制御無効なら何もしない
-   if dmZLogGlobal.Settings._pttenabled = False then begin
+   if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
+       (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
       Exit;
    end;
 
@@ -12368,8 +12823,8 @@ begin
    FCWMonitor.ClearSendingText();
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
-   if (dmZLogGlobal.Settings._pttenabled = False) and
-      (dmZLogKeyer.UseWinKeyer = False) then begin
+   if (((mode = mCW) and (dmZLogGlobal.Settings._pttenabled_cw = False) and (dmZLogKeyer.UseWinKeyer = False)) or
+       ((mode <> mCW) and (dmZLogGlobal.Settings._pttenabled_ph = False))) then begin
       dmZLogKeyer.ResetPTT();
    end;
 
@@ -12377,11 +12832,18 @@ begin
    if fReturnStartRig = True then begin
       if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
          if (Is2bsiq() = False) then begin
-            // TXとRXが違う場合は、RXに合わせる
-            SwitchRig(FCQLoopStartRig);
+            // CQ開始時のリグに戻す
+            if FCurrentRigSet <> FCQLoopStartRig then begin
+               RigControl.MemScanOff();
+               F2AOff();
+               SwitchRig(FCQLoopStartRig);
+            end;
          end
          else begin
+            // TXとRXが違う場合は、RXに合わせる
             if FCurrentRx <> FCurrentTx then begin
+               RigControl.MemScanOff();
+               F2AOff();
                SwitchTx(FCurrentRx + 1);
             end;
          end;
@@ -12403,22 +12865,18 @@ var
  v: Boolean;
  h: Integer;
 begin
+   // CW/PH ToolBar
    if (mnHideCWPhToolBar.Checked = False) then begin
       if M in [mCW, mRTTY] then begin
-         v := True; // CW
+         if CWToolBar.Visible = False then begin
+            CWToolBar.Visible := True;
+            SSBToolBar.Visible := False;
+         end;
       end
       else begin
-         v := False;
-      end;
-
-      if CWToolBar.Visible <> v then begin
-         if v = True then begin
-            CWToolBar.Visible := v;
-            SSBToolBar.Visible := not v;
-         end
-         else begin
-            SSBToolBar.Visible := not v;
-            CWToolBar.Visible := v;
+         if SSBToolBar.Visible = False then begin
+            SSBToolBar.Visible := True;
+            CWToolBar.Visible := False;
          end;
       end;
    end
@@ -12426,6 +12884,9 @@ begin
       CWToolBar.Visible := False;
       SSBToolBar.Visible := False;
    end;
+
+   // Main ToolBar
+   MainToolBar.Visible := not mnHideMenuToolbar.Checked;
 
    if (mnHideMenuToolbar.Checked = True) and (mnHideCWPhToolBar.Checked = True) then begin
       v := False;
@@ -12662,6 +13123,7 @@ function TMainForm.GetTxRigID(nTxRigSet: Integer): Integer;
 var
    rig: TRig;
    i: Integer;
+   b: TBand;
 begin
    if nTxRigSet = -1 then begin
       nTxRigSet := FCurrentTx + 1;
@@ -12686,7 +13148,8 @@ begin
       Exit;
    end;
 
-   rig := RigControl.GetRig(nTxRigSet, TextToBand(BandEdit.Text));
+   b := TextToBand(FEditPanel[FCurrentTx].BandEdit.Text);
+   rig := RigControl.GetRig(nTxRigSet, b);
    if rig = nil then begin
       Result := 0;
    end
@@ -13072,7 +13535,7 @@ begin
          JarlMemberCheck();
       end;
 
-      Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText);
+      Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText, dlg.FreqOption);
    finally
       dlg.Release();
    end;
@@ -13212,10 +13675,14 @@ begin
    if (rig = nil) then begin
       FLastFreq[FCurrentRigSet] := 0;
       FLastMode[FCurrentRigSet] := mCW;
+      FLastRitStatus[FCurrentRigSet] := False;
+      FLastRitOffset[FCurrentRigSet] := 0;
    end
    else begin
       FLastFreq[FCurrentRigSet] := rig.CurrentFreqHz;
       FLastMode[FCurrentRigSet] := rig.CurrentMode;
+      FLastRitStatus[FCurrentRigSet] := rig.Rit;
+      FLastRitOffset[FCurrentRigSet] := rig.RitOffset;
    end;
 
    // リグコントロール画面に表示
@@ -13232,6 +13699,114 @@ begin
    finally
       f.Release();
    end;
+end;
+
+procedure TMainForm.SetupQTC();
+var
+   S: string;
+
+   procedure ClearCtrlQ();
+   var
+      i: Integer;
+      shortcut: TShortCut;
+   begin
+      shortcut := TextToShortCut('CTRL+Q');
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         if ActionList1.Actions[i].ShortCut = shortcut then begin
+            ActionList1.Actions[i].ShortCut := 0;
+            Exit;
+         end;
+      end;
+   end;
+
+   function IsCtrlQAssignedQTC(): Boolean;
+   var
+      i: Integer;
+      shortcut: TShortCut;
+   begin
+      shortcut := TextToShortCut('CTRL+Q');
+      for i := 0 to ActionList1.ActionCount - 1 do begin
+         if (ActionList1.Actions[i] <> actionQTC) and (ActionList1.Actions[i].ShortCut = shortcut) then begin
+            Result := False;
+            Exit;
+         end;
+         if (ActionList1.Actions[i] = actionQTC) and (ActionList1.Actions[i].ShortCut = shortcut) then begin
+            Result := True;
+            Exit;
+         end;
+      end;
+      Result := False;
+   end;
+begin
+   if Pos('WAEDC', MyContest.Name) > 0 then begin
+      menuQTC.Visible := True;
+      actionQTC.Enabled := True;
+
+      // CTRL+Qが他の機能に割り当てられている場合
+      if IsCtrlQAssignedQTC() = False then begin
+         if MessageBox(Handle, PChar(TMainForm_Assigned_Another_Function), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
+            ClearCtrlQ();
+            actionQTC.ShortCut := TextToShortCut('CTRL+Q');
+         end;
+      end;
+
+      // ショートカットの有無チェック
+      if actionQTC.ShortCut = 0 then begin
+         S := TMainForm_QTC_no_shortcut_keys;
+      end
+      else begin
+         S := Format(TMainForm_QTC_Sent, [ShortCutToText(actionQTC.ShortCut)]);
+      end;
+
+      MessageBox(Handle, PChar(S), PChar(Application.Title), MB_ICONEXCLAMATION or MB_OK);
+   end
+   else begin
+      menuQTC.Visible := False;
+      actionQTC.Enabled := False;
+   end;
+end;
+
+procedure TMainForm.CallFreqMemory(rigset: Integer; strCommand: string);
+var
+   b: TBand;
+   m: TMode;
+   f: TFrequency;
+   rig: TRig;
+   obj: TFreqMemory;
+begin
+   obj := FFreqMem.ObjectOf(strCommand);
+   if obj = nil then begin
+      Exit;
+   end;
+
+   m := obj.Mode;
+   f := obj.Frequency;
+   b := dmZLogGlobal.BandPlan.FreqToBand(f);
+
+   if m = mOther then begin
+      m := dmZLogGlobal.BandPlan.GetEstimatedMode(f);
+   end;
+
+   rig := MainForm.RigControl.GetRig(rigset, b);
+   if rig = nil then begin
+      Exit;
+   end;
+
+   rig.SetFreq(f, False);
+
+   rig.SetMode(m);
+
+   // Antenna Select
+   if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
+      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
+   end;
+
+   if obj.FixEdgeNo <> 0 then begin
+      rig.FixEdgeSelect(obj.FixEdgeNo);
+   end;
+
+   RigControl.SetCurrentRig(rig.RigNumber);
+   dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
 end;
 
 { TBandScopeNotifyThread }

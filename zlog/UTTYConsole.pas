@@ -78,35 +78,87 @@ procedure TTTYConsole.RXChar(C: AnsiChar);
 var
    i, j: integer;
    S: string;
+   L: TStringList;
+   len: Integer;
+   ch: Char;
+   nAlph, nNG: Integer;
+   nNum: Integer;
 label
    xxxx;
 begin
-   if C in [AnsiChar(0) .. AnsiChar($09), AnsiChar($0B) .. AnsiChar($0C), AnsiChar($0E) .. AnsiChar($1F), AnsiChar($80) .. AnsiChar($FF)] then
-      exit;
+   if C in [AnsiChar(0) .. AnsiChar($09), AnsiChar($0B) .. AnsiChar($0C), AnsiChar($0E) .. AnsiChar($1F), AnsiChar($80) .. AnsiChar($FF)] then begin
+      Exit;
+   end;
 
    RXLog.WriteChar(C);
 
+   L := TStringList.Create();
+   L.Delimiter := ' ';
+   L.StrictDelimiter := True;
+
    if (C = ' ') or (C = _CR) then begin
-      i := pos('DE ', TTYLineBuffer);
-      if i > 0 then begin
-         S := TTYLineBuffer;
-         Delete(S, 1, i - 1); // S = DE XX1XXX
-         if length(S) > 5 then begin
-            Delete(S, 1, 3);
-            S := TrimLeft(S);
-            i := pos(' ', S);
-            if i > 0 then
-               S := copy(S, 1, i - 1);
-            if (length(S) >= 3) and (length(S) <= 15) then begin
-               for j := 0 to CallsignList.Items.Count - 1 do begin
-                  if CallsignList.Items[j] = S then
-                     goto xxxx;
-               end;
-               CallsignList.Items.Add(S);
-               // TTYLineBuffer := '';
+
+      L.DelimitedText := TTYLineBuffer;
+
+      for i := 0 to L.Count - 1 do begin
+         S := L.Strings[i];
+
+         // 長さチェック
+         len := Length(S);
+         if (len < 3) or (len > 15) then begin
+            Continue;
+         end;
+
+         // 文字チェック
+         nAlph := 0;
+         nNG := 0;
+         nNum := 0;
+         for j := 1 to len do begin
+            ch := S[j];
+
+            if ((ch >= '0') and (ch <= '9')) then begin
+               Inc(nNum);
+            end
+            else if (((ch >= 'A') and (ch <= 'Z')) or (ch = '/')) then begin
+               Inc(nAlph);
+            end
+            else begin
+               Inc(nNG);
             end;
          end;
+
+         if (nNG > 0) or (nNum = 0) or (nAlph = 0) then begin
+            Continue;
+         end;
+
+         if CallsignList.Items.IndexOf(S) = -1 then begin
+            CallsignList.Items.Add(S);
+         end
+         else begin
+            Break;
+         end;
       end;
+
+//      i := pos('DE ', TTYLineBuffer);
+//      if i > 0 then begin
+//         S := TTYLineBuffer;
+//         Delete(S, 1, i - 1); // S = DE XX1XXX
+//         if length(S) > 5 then begin
+//            Delete(S, 1, 3);
+//            S := TrimLeft(S);
+//            i := pos(' ', S);
+//            if i > 0 then
+//               S := copy(S, 1, i - 1);
+//            if (length(S) >= 3) and (length(S) <= 15) then begin
+//               for j := 0 to CallsignList.Items.Count - 1 do begin
+//                  if CallsignList.Items[j] = S then
+//                     goto xxxx;
+//               end;
+//               CallsignList.Items.Add(S);
+//               // TTYLineBuffer := '';
+//            end;
+//         end;
+//      end;
 
    xxxx:
       i := pos('599', TTYLineBuffer);
@@ -143,6 +195,8 @@ begin
    else begin
       TTYLineBuffer := TTYLineBuffer + Char(C);
    end;
+
+   L.Free();
 end;
 
 procedure TTTYConsole.TXChar(C: AnsiChar);

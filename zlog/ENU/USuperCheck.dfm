@@ -4,7 +4,7 @@ object SuperCheck: TSuperCheck
   ActiveControl = SpinEdit
   Caption = 'Super Check'
   ClientHeight = 112
-  ClientWidth = 234
+  ClientWidth = 238
   Color = clBtnFace
   Constraints.MinHeight = 150
   Constraints.MinWidth = 250
@@ -14,26 +14,23 @@ object SuperCheck: TSuperCheck
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Scaled = False
-  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnKeyDown = FormKeyDown
   OnResize = FormResize
-  OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 77
-    Width = 234
+    Width = 238
     Height = 35
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 76
+    ExplicitWidth = 234
     DesignSize = (
-      234
+      238
       35)
     object Label1: TLabel
       Left = 153
@@ -73,12 +70,13 @@ object SuperCheck: TSuperCheck
       TabOrder = 2
       Value = 1
       OnChange = SpinEditChange
+      ExplicitLeft = 193
     end
   end
   object Grid: TStringGrid
     Left = 0
     Top = 0
-    Width = 234
+    Width = 238
     Height = 77
     Align = alClient
     DefaultDrawing = False
@@ -89,5 +87,7 @@ object SuperCheck: TSuperCheck
     TabOrder = 1
     OnDblClick = GridDblClick
     OnDrawCell = GridDrawCell
+    ExplicitWidth = 234
+    ExplicitHeight = 76
   end
 end

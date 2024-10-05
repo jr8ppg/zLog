@@ -4,11 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Buttons, Spin,
-  UzLogConst, UzLogGlobal, UzLogQSO, System.ImageList, Vcl.ImgList;
+  StdCtrls, ExtCtrls, Buttons, Spin, System.ImageList, Vcl.ImgList,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm;
 
 type
-  TPartialCheck = class(TForm)
+  TPartialCheck = class(TZLogForm)
     ListBox: TListBox;
     Panel: TPanel;
     CheckBox1: TCheckBox;
@@ -25,7 +25,7 @@ type
     checkShowCurrentBandFirst: TCheckBox;
     ImageList1: TImageList;
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);
     procedure MoreButtonClick(Sender: TObject);
     procedure ShowMaxEditChange(Sender: TObject);
@@ -36,17 +36,16 @@ type
     procedure StayOnTopClick(Sender: TObject);
     procedure ListBoxMeasureItem(Control: TWinControl; Index: Integer;
       var Height: Integer);
-    procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-
   private
     { Private declarations }
-    TempQSO : TQSO;
-    DispMax : word;
+    FTempQSO : TQSO;
+    FDispMax : word;
     procedure RenewListBox(QSOList : TQSOList);
     function SortBy: TSortMethod;
-    function GetFontSize(): Integer;
-    procedure SetFontSize(v: Integer);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
     _CheckCall : boolean;
@@ -66,6 +65,23 @@ uses
   Main;
 
 {$R *.DFM}
+
+procedure TPartialCheck.FormCreate(Sender: TObject);
+begin
+   Inherited;
+   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   AllBand := True;
+   _CheckCall := True;
+   FDispMax := 200;
+   ShowMaxEdit.Value := FDispMax;
+end;
+
+procedure TPartialCheck.FormShow(Sender: TObject);
+begin
+   Inherited;
+   MoreButton.ImageIndex := 0;
+   panelExtend.Visible := False;
+end;
 
 function TPartialCheck.SortBy(): TSortMethod;
 begin
@@ -93,7 +109,7 @@ begin
    try
       _CheckCall := False;
       _count := 0;
-      TempQSO := aQSO;
+      FTempQSO := aQSO;
 
       PartialStr := aQSO.NrRcvd;
 
@@ -102,7 +118,7 @@ begin
             if Pos(PartialStr, Log.QsoList[i].NrRcvd) > 0 then begin
                if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
                   TempList.Add(Log.QsoList[i]);
-                  if _count >= DispMax then
+                  if _count >= FDispMax then
                      goto disp
                      // exit
                   else
@@ -172,7 +188,7 @@ begin
    HitCall := '';
    _CheckCall := True;
    _count := 0;
-   TempQSO := aQSO;
+   FTempQSO := aQSO;
    // ListBox.Items.Clear;
    PartialStr := aQSO.Callsign;
    if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then begin
@@ -192,7 +208,7 @@ begin
                if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
                   // ListBox.Items.Add(TQSO(Log.List[i]).PartialSummary);
                   TempList.Add(Log.QsoList[i]);
-                  if _count >= DispMax then
+                  if _count >= FDispMax then
                      goto disp
                      // exit
                   else
@@ -223,43 +239,13 @@ begin
    end;
 end;
 
-procedure TPartialCheck.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
-procedure TPartialCheck.FormCreate(Sender: TObject);
-begin
-   ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   AllBand := True;
-   _CheckCall := True;
-   DispMax := 200;
-   ShowMaxEdit.Value := DispMax;
-end;
-
-procedure TPartialCheck.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
-end;
-
-procedure TPartialCheck.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
-
-   MoreButton.ImageIndex := 0;
-   panelExtend.Visible := False;
-end;
-
 procedure TPartialCheck.CheckBox1Click(Sender: TObject);
 begin
    AllBand := CheckBox1.Checked;
    if _CheckCall then
-      CheckPartial(TempQSO)
+      CheckPartial(FTempQSO)
    else
-      CheckPartialNumber(TempQSO);
+      CheckPartialNumber(FTempQSO);
 end;
 
 procedure TPartialCheck.MoreButtonClick(Sender: TObject);
@@ -276,7 +262,7 @@ end;
 
 procedure TPartialCheck.ShowMaxEditChange(Sender: TObject);
 begin
-   DispMax := ShowMaxEdit.Value;
+   FDispMax := ShowMaxEdit.Value;
 end;
 
 procedure TPartialCheck.UpdateData(aQSO: TQSO);
@@ -362,10 +348,17 @@ end;
 
 function TPartialCheck.GetFontSize(): Integer;
 begin
+   Inherited;
    Result := ListBox.Font.Size;
 end;
 
 procedure TPartialCheck.SetFontSize(v: Integer);
+begin
+   Inherited;
+   UpdateFontSize(v);
+end;
+
+procedure TPartialCheck.UpdateFontSize(v: Integer);
 begin
    ListBox.Font.Size := v;
 end;

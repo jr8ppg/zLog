@@ -5,10 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.CategoryButtons,
-  Vcl.ExtDlgs, HelperLib;
+  Vcl.ExtDlgs, UzLogForm, HelperLib;
 
 type
-  TCwMessagePad = class(TForm)
+  TCwMessagePad = class(TZLogForm)
     CategoryButtons1: TCategoryButtons;
     PopupMenu1: TPopupMenu;
     menuLoadFromFile: TMenuItem;
@@ -22,14 +22,14 @@ type
     procedure CategoryButtons1ButtonClicked(Sender: TObject; const Button: TButtonItem);
     procedure menuEditClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
-    function GetFontSize(): Integer;
-    procedure SetFontSize(v: Integer);
+  protected
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+    procedure UpdateFontSize(v: Integer); override;
   public
     { Public êÈåæ }
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -72,25 +72,9 @@ begin
    CategoryButtons1.SaveToFile(filename, TEncoding.ANSI);
 end;
 
-procedure TCwMessagePad.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE: begin
-         MainForm.SetLastFocus();
-      end;
-   end;
-end;
-
 procedure TCwMessagePad.FormShow(Sender: TObject);
 begin
-   MainForm.AddTaskbar(Handle);
-
    CategoryButtons1.UpdateAllButtons();
-end;
-
-procedure TCwMessagePad.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TCwMessagePad.menuLoadFromFileClick(Sender: TObject);
@@ -176,10 +160,17 @@ end;
 
 function TCwMessagePad.GetFontSize(): Integer;
 begin
+   Inherited;
    Result := CategoryButtons1.Font.Size;
 end;
 
 procedure TCwMessagePad.SetFontSize(v: Integer);
+begin
+   Inherited;
+   CategoryButtons1.Font.Size := v;
+end;
+
+procedure TCwMessagePad.UpdateFontSize(v: Integer);
 begin
    CategoryButtons1.Font.Size := v;
 end;

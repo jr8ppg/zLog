@@ -299,6 +299,7 @@ type
     procedure USB_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
+    procedure SetSideDevice(nDeviceID: UINT);
 
     procedure m_set(b: Byte);
 
@@ -361,6 +362,7 @@ type
     property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
     property SideToneVolume: Integer read FSideToneVolume write SetSideToneVolume;
     property SideTonePitch: Integer read FSideTonePitch write SetSideTonePitch;
+    property SideTone: TSideTone read FTone;
     property SpaceFactor: Integer read FSpaceFactor write SetSpaceFactor;
     property EISpaceFactor: Integer read FEISpaceFactor write SetEISpaceFactor;
 
@@ -3209,6 +3211,11 @@ begin
    {$ENDIF}
 end;
 
+procedure TdmZLogKeyer.SetSideDevice(nDeviceID: UINT);
+begin
+
+end;
+
 { TKeyerMonitorThread }
 
 constructor TKeyerMonitorThread.Create(AKeyer: TdmZLogKeyer);
@@ -3884,12 +3891,12 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   if FUseWkSo2rNeo = True then begin
-      if fUsePttPort = True then begin
-         Buff[1] := Buff[1] or $1;
-      end;
+   // PTT制御有無
+   if fUsePttPort = True then begin
+      Buff[1] := Buff[1] or $1;
    end;
 
+   // サイドトーン有無
    if FUseSideTone = True then begin
       Buff[1] := Buff[1] or $2;
    end;

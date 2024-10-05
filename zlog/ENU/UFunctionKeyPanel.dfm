@@ -11,15 +11,11 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   OnActivate = FormActivate
-  OnClose = FormClose
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
   OnHide = FormHide
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object ButtonGroup1: TButtonGroup
     Left = 0
@@ -79,6 +75,8 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
         OnClick = ButtonGroup1Items11Click
       end>
     TabOrder = 0
+    ExplicitWidth = 726
+    ExplicitHeight = 54
   end
   object Timer1: TTimer
     Interval = 100

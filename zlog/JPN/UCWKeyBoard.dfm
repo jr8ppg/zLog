@@ -2,8 +2,8 @@ object CWKeyBoard: TCWKeyBoard
   Left = 503
   Top = 417
   Caption = 'CW Keyboard'
-  ClientHeight = 105
-  ClientWidth = 379
+  ClientHeight = 104
+  ClientWidth = 375
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,34 +12,28 @@ object CWKeyBoard: TCWKeyBoard
   Font.Style = []
   KeyPreview = True
   OnActivate = FormActivate
-  OnClose = FormClose
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 12
   object Console: TMemo
     Left = 0
     Top = 0
-    Width = 379
-    Height = 71
+    Width = 375
+    Height = 70
     Align = alClient
     ImeMode = imDisable
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
-    ExplicitWidth = 375
-    ExplicitHeight = 70
   end
   object Panel1: TPanel
     Left = 0
-    Top = 71
-    Width = 379
+    Top = 70
+    Width = 375
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 70
-    ExplicitWidth = 375
     object buttonOK: TButton
       Left = 6
       Top = 8

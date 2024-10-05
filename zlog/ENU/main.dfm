@@ -21,6 +21,8 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
+  OnMouseWheelDown = FormMouseWheelDown
+  OnMouseWheelUp = FormMouseWheelUp
   OnResize = FormResize
   OnShow = FormShow
   TextHeight = 13
@@ -568,7 +570,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -708,8 +709,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 228
-          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -5235,10 +5234,10 @@ object MainForm: TMainForm
     end
     object MainToolBar: TPanel
       Left = 0
-      Top = 66
+      Top = 33
       Width = 528
       Height = 33
-      Align = alTop
+      Align = alBottom
       TabOrder = 2
       ExplicitWidth = 524
       DesignSize = (
@@ -5596,7 +5595,7 @@ object MainForm: TMainForm
         OnClick = actionShowQsoRateExecute
       end
       object LogButton: TSpeedButton
-        Left = 250
+        Left = 240
         Top = 4
         Width = 25
         Height = 25
@@ -5618,7 +5617,7 @@ object MainForm: TMainForm
         OnClick = LogButtonClick
       end
       object Options2Button: TSpeedButton
-        Left = 308
+        Left = 296
         Top = 4
         Width = 25
         Height = 25
@@ -5663,7 +5662,7 @@ object MainForm: TMainForm
         OnClick = actionShowSuperCheckExecute
       end
       object PacketClusterButton: TSpeedButton
-        Left = 355
+        Left = 360
         Top = 4
         Width = 25
         Height = 25
@@ -5687,7 +5686,7 @@ object MainForm: TMainForm
         OnClick = actionShowPacketClusterExecute
       end
       object ZServerIcon: TImage
-        Left = 387
+        Left = 389
         Top = 4
         Width = 30
         Height = 25
@@ -5757,7 +5756,7 @@ object MainForm: TMainForm
         Visible = False
       end
       object OptionsButton: TSpeedButton
-        Left = 284
+        Left = 272
         Top = 4
         Width = 25
         Height = 25
@@ -5793,6 +5792,23 @@ object MainForm: TMainForm
         ShowHint = True
         OnClick = menuHardwareSettingsClick
       end
+      object buttonF2A: TSpeedButton
+        Left = 328
+        Top = 4
+        Width = 25
+        Height = 25
+        Hint = 'F2A'
+        AllowAllUp = True
+        GroupIndex = 2
+        Caption = 'F2'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Times New Roman'
+        Font.Style = []
+        ParentFont = False
+        OnClick = buttonF2AClick
+      end
       object panelCQMode: TPanel
         Left = 494
         Top = 1
@@ -5812,7 +5828,7 @@ object MainForm: TMainForm
         ExplicitLeft = 490
       end
       object comboBandPlan: TComboBox
-        Left = 424
+        Left = 426
         Top = 6
         Width = 65
         Height = 21
@@ -5822,7 +5838,7 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
-        ExplicitLeft = 420
+        ExplicitLeft = 422
       end
     end
   end
@@ -5961,11 +5977,17 @@ object MainForm: TMainForm
       end
       object CreateELogJARL1: TMenuItem
         Caption = 'Create E-Log (JARL 1.0)'
+        Visible = False
         OnClick = CreateELogJARL1Click
       end
       object CreateELogJARL2: TMenuItem
         Caption = 'Create E-Log (&JARL 2.1)'
+        Visible = False
         OnClick = CreateELogJARL2Click
+      end
+      object CreateJARLELog: TMenuItem
+        Caption = 'Create JARL E-Log'
+        OnClick = CreateJARLELogClick
       end
       object CreateCabrillo: TMenuItem
         Caption = 'Create Cabrillo'
@@ -6076,6 +6098,9 @@ object MainForm: TMainForm
       end
       object menuShowCWMonitor: TMenuItem
         Action = actionShowCWMonitor
+      end
+      object menuQTC: TMenuItem
+        Action = actionQTC
       end
     end
     object menuSettings: TMenuItem
@@ -7578,6 +7603,14 @@ object MainForm: TMainForm
     object actionSetRigWPM: TAction
       Caption = 'Send WPM command to RIG'
       OnExecute = actionSetRigWPMExecute
+    end
+    object actionToggleMemScan: TAction
+      Caption = 'actionToggleMemScan'
+      OnExecute = actionToggleMemScanExecute
+    end
+    object actionToggleF2A: TAction
+      Caption = 'actionToggleF2A'
+      OnExecute = actionToggleF2AExecute
     end
   end
   object SPCMenu: TPopupMenu

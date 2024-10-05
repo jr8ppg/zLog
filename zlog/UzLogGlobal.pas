@@ -7,7 +7,7 @@ uses
   System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
-  UQsoTarget;
+  UQsoTarget, UTelnetSetting, UzLogForm;
 
 type
   TCWSettingsParam = record
@@ -144,10 +144,10 @@ type
     _bandscope_save_current_freq: Boolean;
 
     CW : TCWSettingsParam;
-    _clusterport : integer; {0 : none 1-4 : com# 5 : telnet}
 
     FRigControl: array[1..5] of TRigSetting;
     FRigSet: array[1..2] of TRigSet;
+    FRigShowRitInfo: Boolean;
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
@@ -164,6 +164,17 @@ type
     _use_wk_outp_select: Boolean;
     _use_wk_ignore_speed_pot: Boolean;
     _use_wk_always9600: Boolean;
+
+    // F2A options
+    _use_f2a: Boolean;
+    _f2a_ptt: Boolean;
+    _f2a_before: Word;
+    _f2a_after: Word;
+    _f2a_device: Integer;
+    _f2a_volume: Integer;
+    _f2a_use_datamode: Boolean;
+    _f2a_datamode: Integer;
+    _f2a_filter: Integer;
 
     // Operate Style
     _operate_style: TOperateStyle;
@@ -184,10 +195,6 @@ type
     _so2r_cqrestart: Boolean;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
-    _clusterbaud : integer; {}
-
-    _cluster_telnet: TCommParam;
-    _cluster_com: TCommParam;
     _zlink_telnet: TCommParam;
 
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
@@ -201,9 +208,17 @@ type
     _pluginpath: string;
     _pluginlist: string;
 
-    _pttenabled : boolean;
-    _pttbefore : word;
-    _pttafter  : word;
+    // PTT Control
+    // CW
+    _pttenabled_cw :Boolean;
+    _pttbefore_cw: Word;
+    _pttafter_cw: Word;
+
+    // PH
+    _pttenabled_ph: Boolean;
+    _pttbefore_ph: Word;
+    _pttafter_ph: Word;
+
     _txnr : byte;
     _pcname : string;
     _saveevery : word;
@@ -319,6 +334,8 @@ type
     FClusterIgnoreSHDX: Boolean;
     FClusterReConnectMax: Integer;
     FClusterRetryIntervalSec: Integer;
+    FClusterForceReconnect: Boolean;
+    FClusterForceReconnectIntervalMin: Integer;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -415,6 +432,9 @@ type
     FCtyDatLoaded: Boolean;
     FCountryList : TCountryList;
     FPrefixList : TPrefixList;
+
+    FPacketClusterList: TTelnetSettingList;
+
     function Load_CTYDAT(): Boolean;
     procedure AnalyzeMyCountry();
 
@@ -546,6 +566,7 @@ public
     property SpcPath: string read GetSpcPath write SetSpcPath;
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
+    property PacketClusterList: TTelnetSettingList read FPacketClusterList;
 
     procedure SelectBandPlan(preset_name: string);
 
@@ -655,6 +676,9 @@ begin
 
    ClearParamImportedFlag();
 
+   // PacketClusterリスト
+   FPacketClusterList := TTelnetSettingList.Create();
+
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
 
@@ -697,7 +721,7 @@ begin
    // エラーログファイル名
    FErrorLogFileName := ExtractFileName(Application.ExeName);
    FErrorLogFileName := StringReplace(FErrorLogFileName, ExtractFileExt(FErrorLogFileName), '', [rfReplaceAll]);
-   FErrorLogFileName := FErrorLogFileName + '_errorlog.txt'
+   FErrorLogFileName := FErrorLogFileName + '_errorlog.txt';
 end;
 
 procedure TdmZLogGlobal.DataModuleDestroy(Sender: TObject);
@@ -717,6 +741,7 @@ begin
    SaveCurrentSettings();
    FOpList.Free();
    FLog.Free();
+   FPacketClusterList.Free();
 end;
 
 procedure TdmZLogGlobal.ClearParamImportedFlag();
@@ -764,10 +789,14 @@ var
    s: string;
    ini: TMemIniFile;
    slParam: TStringList;
+   slSection: TStringList;
    b: TBand;
    strKey: string;
+   num: Integer;
+   setting: TTelnetSetting;
 begin
    slParam := TStringList.Create();
+   slSection := TStringList.Create();
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       //
@@ -986,18 +1015,20 @@ begin
       // Ports
 
       // PacketCluster
-      Settings._clusterport := ini.ReadInteger('Hardware', 'PacketCluster', 0);
+      FPacketClusterList.Clear();
 
-      // COM
-      Settings._clusterbaud := ini.ReadInteger('Hardware', 'PacketClusterBaud', 6);
-      Settings._cluster_com.FLineBreak := ini.ReadInteger('PacketCluster', 'COMlinebreak', 0);
-      Settings._cluster_com.FLocalEcho := ini.ReadBool('PacketCluster', 'COMlocalecho', False);
-
-      // TELNET
-      Settings._cluster_telnet.FHostName := ini.ReadString('PacketCluster', 'TELNEThost', '');
-      Settings._cluster_telnet.FPortNumber := ini.ReadInteger('PacketCluster', 'TELNETport', 23);
-      Settings._cluster_telnet.FLineBreak := ini.ReadInteger('PacketCluster', 'TELNETlinebreak', 0);
-      Settings._cluster_telnet.FLocalEcho := ini.ReadBool('PacketCluster', 'TELNETlocalecho', False);
+      num := ini.ReadInteger('PacketCluster', 'num', 0);
+      for i := 1 to num do begin
+         strKey := '#' + IntToStr(i);
+         setting := TTelnetSetting.Create();
+         setting.Name := ini.ReadString('PacketCluster', strKey + '_Name', '');
+         setting.HostName := ini.ReadString('PacketCluster', strKey + '_HostName', '');
+         setting.LoginId := ini.ReadString('PacketCluster', strKey + '_LoginId', '');
+         setting.PortNumber := ini.ReadInteger('PacketCluster', strKey + '_PortNumber', 23);
+         setting.LineBreak := ini.ReadInteger('PacketCluster', strKey + '_LineBreak', 0);
+         setting.LocalEcho := ini.ReadBool('PacketCluster', strKey + '_LocalEcho', False);
+         FPacketClusterList.Add(setting);
+      end;
 
       // Z-Link (Z-Server)
       Settings._zlinkport := ini.ReadInteger('Hardware', 'Z-Link', 0);
@@ -1076,6 +1107,17 @@ begin
       Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
       Settings._use_wk_always9600 := ini.ReadBool('Hardware', 'UseWkAlways9600', False);
 
+      // F2A options
+      Settings._use_f2a := ini.ReadBool('Hardware', 'UseF2A', False);
+      Settings._f2a_ptt := ini.ReadBool('Hardware', 'UseF2APtt', False);
+      Settings._f2a_before := ini.ReadInteger('Hardware', 'F2APttBefore', 500);
+      Settings._f2a_after := ini.ReadInteger('Hardware', 'F2APttAfter', 500);
+      Settings._f2a_device := ini.ReadInteger('Hardware', 'F2A_OutputDevice', 0);
+      Settings._f2a_volume := ini.ReadInteger('Hardware', 'F2A_OutputVolume', 100);
+      Settings._f2a_use_datamode := ini.ReadBool('Hardware', 'F2A_Use_DataMode', False);
+      Settings._f2a_datamode := ini.ReadInteger('Hardware', 'F2A_DataMode', 0);
+      Settings._f2a_filter := ini.ReadInteger('Hardware', 'F2A_Filter', 0);
+
       // Operate Style
       Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
 
@@ -1101,16 +1143,27 @@ begin
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
       Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
 
-      // CW PTT control
+      // PTT control
 
-      // Enable PTT control
-      Settings._pttenabled := ini.ReadBool('Hardware', 'PTTEnabled', False);
+      // CW
+      // Enable PTT
+      Settings._pttenabled_cw := ini.ReadBool('Hardware', 'PTTEnabled', False);
 
       // Before TX (ms)
-      Settings._pttbefore := ini.ReadInteger('Hardware', 'PTTBefore', 25);
+      Settings._pttbefore_cw := ini.ReadInteger('Hardware', 'PTTBefore', 25);
 
       // After TX paddle/keybd (ms)
-      Settings._pttafter := ini.ReadInteger('Hardware', 'PTTAfter', 0);
+      Settings._pttafter_cw := ini.ReadInteger('Hardware', 'PTTAfter', 0);
+
+      // PH
+      // Enable PTT
+      Settings._pttenabled_ph := ini.ReadBool('Hardware', 'PTTEnabledPH', False);
+
+      // Before TX (ms)
+      Settings._pttbefore_ph := ini.ReadInteger('Hardware', 'PTTBeforePH', 25);
+
+      // After TX paddle/keybd (ms)
+      Settings._pttafter_ph := ini.ReadInteger('Hardware', 'PTTAfterPH', 0);
 
       //
       // Rig control
@@ -1246,6 +1299,8 @@ begin
       Settings._super_check2_columns := ini.ReadInteger('Windows', 'SuperCheck2Columns', 0);
 
       Settings.ReadOnlyParamImported := ini.ReadBool('Categories', 'ReadOnlyParamImported', True);
+
+      Settings.FRigShowRitInfo := ini.ReadBool('Rig', 'ShowRitInfo', False);
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
@@ -1451,6 +1506,8 @@ begin
       Settings.FClusterIgnoreSHDX      := ini.ReadBool('ClusterWindow', 'IgnoreSHDX', True);
       Settings.FClusterReConnectMax    := ini.ReadInteger('ClusterWindow', 'ReConnectMax', 10);
       Settings.FClusterRetryIntervalSec := ini.ReadInteger('ClusterWindow', 'RetryIntervalSec', 180);
+      Settings.FClusterForceReconnect  := ini.ReadBool('ClusterWindow', 'ForceReconnect', False);
+      Settings.FClusterForceReconnectIntervalMin := ini.ReadInteger('ClusterWindow', 'ForceReconnectInterval', 6 * 60);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -1471,6 +1528,7 @@ begin
    finally
       ini.Free();
       slParam.Free();
+      slSection.Free();
    end;
 end;
 
@@ -1677,18 +1735,17 @@ begin
       // Ports
 
       // PacketCluster
-      ini.WriteInteger('Hardware', 'PacketCluster', Settings._clusterport);
-
-      // COM
-      ini.WriteInteger('Hardware', 'PacketClusterBaud', Settings._clusterbaud);
-      ini.WriteInteger('PacketCluster', 'COMlinebreak', Settings._cluster_com.FLineBreak);
-      ini.WriteBool('PacketCluster', 'COMlocalecho', Settings._cluster_com.FLocalEcho);
-
-      // TELNET
-      ini.WriteString('PacketCluster', 'TELNEThost', Settings._cluster_telnet.FHostName);
-      ini.WriteInteger('PacketCluster', 'TELNETport', Settings._cluster_telnet.FPortNumber);
-      ini.WriteInteger('PacketCluster', 'TELNETlinebreak', Settings._cluster_telnet.FLineBreak);
-      ini.WriteBool('PacketCluster', 'TELNETlocalecho', Settings._cluster_telnet.FLocalEcho);
+      ini.EraseSection('PacketCluster');
+      ini.WriteInteger('PacketCluster', 'num', FPacketClusterList.Count);
+      for i := 0 to FPacketClusterList.Count - 1 do begin
+         strKey := '#' + IntToStr(i + 1);
+         ini.WriteString('PacketCluster', strKey + '_Name', FPacketClusterList[i].Name);
+         ini.WriteString('PacketCluster', strKey + '_HostName', FPacketClusterList[i].HostName);
+         ini.WriteString('PacketCluster', strKey + '_LoginId', FPacketClusterList[i].LoginId);
+         ini.WriteInteger('PacketCluster', strKey + '_PortNumber', FPacketClusterList[i].PortNumber);
+         ini.WriteInteger('PacketCluster', strKey + '_LineBreak', FPacketClusterList[i].LineBreak);
+         ini.WriteBool('PacketCluster', strKey + '_LocalEcho', FPacketClusterList[i].LocalEcho);
+      end;
 
       // Z-Link (Z-Server)
       ini.WriteInteger('Hardware', 'Z-Link', Settings._zlinkport);
@@ -1767,6 +1824,17 @@ begin
       ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
       ini.WriteBool('Hardware', 'UseWkAlways9600', Settings._use_wk_always9600);
 
+      // F2A options
+      ini.WriteBool('Hardware', 'UseF2A', Settings._use_f2a);
+      ini.WriteBool('Hardware', 'UseF2APtt', Settings._f2a_ptt);
+      ini.WriteInteger('Hardware', 'F2APttBefore', Settings._f2a_before);
+      ini.WriteInteger('Hardware', 'F2APttAfter', Settings._f2a_after);
+      ini.WriteInteger('Hardware', 'F2A_OutputDevice', Settings._f2a_device);
+      ini.WriteInteger('Hardware', 'F2A_OutputVolume', Settings._f2a_volume);
+      ini.WriteBool('Hardware', 'F2A_Use_DataMode', Settings._f2a_use_datamode);
+      ini.WriteInteger('Hardware', 'F2A_DataMode', Settings._f2a_datamode);
+      ini.WriteInteger('Hardware', 'F2A_Filter', Settings._f2a_filter);
+
       // Operate Style
       ini.WriteInteger('OPERATE_STYLE', 'style', Integer(Settings._operate_style));
 
@@ -1786,16 +1854,27 @@ begin
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
       ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
 
-      // CW PTT control
+      // PTT control
 
-      // Enable PTT control
-      ini.WriteBool('Hardware', 'PTTEnabled', Settings._pttenabled);
+      // CW
+      // Enable PTT
+      ini.WriteBool('Hardware', 'PTTEnabled', Settings._pttenabled_cw);
 
       // Before TX (ms)
-      ini.WriteInteger('Hardware', 'PTTBefore', Settings._pttbefore);
+      ini.WriteInteger('Hardware', 'PTTBefore', Settings._pttbefore_cw);
 
       // After TX paddle/keybd (ms)
-      ini.WriteInteger('Hardware', 'PTTAfter', Settings._pttafter);
+      ini.WriteInteger('Hardware', 'PTTAfter', Settings._pttafter_cw);
+
+      // PH
+      // Enable PTT
+      ini.WriteBool('Hardware', 'PTTEnabledPH', Settings._pttenabled_ph);
+
+      // Before TX (ms)
+      ini.WriteInteger('Hardware', 'PTTBeforePH', Settings._pttbefore_ph);
+
+      // After TX paddle/keybd (ms)
+      ini.WriteInteger('Hardware', 'PTTAfterPH', Settings._pttafter_ph);
 
       //
       // Rig control
@@ -2061,6 +2140,8 @@ begin
       ini.WriteBool('ClusterWindow', 'IgnoreSHDX', Settings.FClusterIgnoreSHDX);
       ini.WriteInteger('ClusterWindow', 'ReConnectMax', Settings.FClusterReConnectMax);
       ini.WriteInteger('ClusterWindow', 'RetryIntervalSec', Settings.FClusterRetryIntervalSec);
+      ini.WriteBool('ClusterWindow', 'ForceReconnect', Settings.FClusterForceReconnect);
+      ini.WriteInteger('ClusterWindow', 'ForceReconnectInterval', Settings.FClusterForceReconnectIntervalMin);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
@@ -2151,8 +2232,8 @@ begin
 
    dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 
-   dmZLogKeyer.SetPTTDelay(Settings._pttbefore, Settings._pttafter);
-   dmZLogKeyer.SetPTT(Settings._pttenabled);
+   dmZLogKeyer.SetPTTDelay(Settings._pttbefore_cw, Settings._pttafter_cw);
+   dmZLogKeyer.SetPTT(Settings._pttenabled_cw);
 
    dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.InitWPM := Settings.CW._speed;
@@ -2277,7 +2358,7 @@ end;
 
 function TdmZLogGlobal.GetPTTEnabled: Boolean;
 begin
-   Result := Settings._pttenabled;
+   Result := Settings._pttenabled_cw;
 end;
 
 function TdmZLogGlobal.GetRigNameStr(Index: Integer): string; // returns the selected rig name
@@ -2528,6 +2609,10 @@ begin
          form.Width   := ini.ReadInteger('Windows', strWindowName + '_W', -1);
       end;
    end;
+
+   if (form is TZLogForm) then begin
+      TZLogForm(form).FontSize := ini.ReadInteger('Windows', strWindowName + '_FontSize', 9);
+   end;
 end;
 
 procedure TdmZLogGlobal.WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string);
@@ -2541,6 +2626,10 @@ begin
    ini.WriteInteger('Windows', strWindowName + '_Y', form.Top);
    ini.WriteInteger('Windows', strWindowName + '_H', form.Height);
    ini.WriteInteger('Windows', strWindowName + '_W', form.Width);
+
+   if (form is TZLogForm) then begin
+      ini.WriteInteger('Windows', strWindowName + '_FontSize', TZLogForm(form).FontSize);
+   end;
 end;
 
 procedure TdmZLogGlobal.ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);
