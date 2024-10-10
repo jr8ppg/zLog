@@ -61,7 +61,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure PollingTimerTimer(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+    procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
     procedure buttonOmniRigClick(Sender: TObject);
     procedure buttonJumpLastFreqClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -290,7 +290,7 @@ begin
    MainForm.AddTaskbar(Handle);
 end;
 
-procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
 var
    i: Integer;
    ptr: PAnsiChar;

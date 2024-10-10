@@ -123,9 +123,8 @@ type
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
-    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
-    procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController;
-      PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
+    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+    procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
     FDefautCom: array[0..MAXPORT] of TCommPortDriver;
@@ -159,6 +158,7 @@ type
 
     FKeyingPort: array[0..MAXPORT] of TKeyingPort;
     FKeyingPortConfig: array[0..MAXPORT] of TPortConfig;
+    FSameOtrsp: Boolean;
 
     FSpaceFactor: Integer; {space length factor in %}
     FEISpaceFactor: Integer; {space length factor after E and I}
@@ -323,6 +323,7 @@ type
     function GetKeyingPortConfig(Index: Integer): TPortConfig;
     procedure SetKeyingPortConfig(Index: Integer; v: TPortConfig);
     procedure DumpSendBuf();
+    procedure SetOtrspPortParam(CP: TCommPortDriver);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -514,6 +515,7 @@ begin
    FSo2rTxRigC := 0;
    FRigSelectV28 := False;
    FSo2rOtrspPort := tkpNone;
+   FSameOtrsp := False;
    FTune := False;
 
    FWnd := AllocateHWnd(WndMethod);
@@ -3050,6 +3052,18 @@ begin
       end;
    end;
 
+   // RIG-1/2のKeyingポートとOTRSPポートが同じ場合
+   if ((FSo2rType = so2rOtrsp) and
+       (FKeyingPort[0] = FKeyingPort[1]) and
+       (FKeyingPort[0] = FSo2rTxSelectPort)) then begin
+      FSameOtrsp := True;
+      FComKeying[0] := ZComTxRigSelect;
+      FComKeying[1] := ZComTxRigSelect;
+   end
+   else begin
+      FSameOtrsp := False;
+   end;
+
    if fUseUSB = True then begin
       USB_ON();
    end;
@@ -3086,12 +3100,9 @@ begin
       end;
 
       so2rOtrsp: begin
-         if FSo2rOtrspPort <> tkpNone then begin
+         if (FSo2rOtrspPort <> tkpNone) and (FSameOtrsp = False) then begin
             ZComTxRigSelect.Port := TPortNumber(FSo2rOtrspPort);
-            ZComTxRigSelect.BaudRate := br9600;
-            ZComTxRigSelect.StopBits := sb1Bits;
-            ZComTxRigSelect.Parity := ptNone;
-            ZComTxRigSelect.DataBits := db8Bits;
+            SetOtrspPortParam(ZComTxRigSelect);
             ZComTxRigSelect.Connect();
             ZComTxRigSelect.ToggleDTR(False);
             ZComTxRigSelect.ToggleRTS(False);
@@ -3192,6 +3203,9 @@ begin
 
       if FComKeying[i].Connected = False then begin
          FComKeying[i].Port := TPortNumber(FKeyingPort[i]);
+         if FSameOtrsp = True then begin
+            SetOtrspPortParam(FComKeying[i]);
+         end;
          FComKeying[i].Connect;
       end;
 
@@ -4330,7 +4344,7 @@ begin
    WinKeyerSendCommand(WK_KEY_IMMEDIATE_CMD, WK_KEY_IMMEDIATE_KEYUP);
 end;
 
-procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
 var
    i: Integer;
    b: Byte;
@@ -4832,6 +4846,14 @@ end;
 procedure TdmZLogKeyer.SetKeyingPortConfig(Index: Integer; v: TPortConfig);
 begin
    FKeyingPortConfig[Index] := v;
+end;
+
+procedure TdmZLogKeyer.SetOtrspPortParam(CP: TCommPortDriver);
+begin
+   CP.BaudRate := br9600;
+   CP.StopBits := sb1Bits;
+   CP.Parity := ptNone;
+   CP.DataBits := db8Bits;
 end;
 
 { TUSBPortInfo }
