@@ -370,7 +370,7 @@ end;
 function TCWKeyBoard.GetFontSize(): Integer;
 begin
    Inherited;
-   Result := FFontSize;
+   Result := Console.Font.Size;
 end;
 
 procedure TCWKeyBoard.SetFontSize(v: Integer);

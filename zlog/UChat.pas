@@ -281,13 +281,13 @@ end;
 function TChatForm.GetFontSize(): Integer;
 begin
    Inherited;
-   Result := FFontSize;
+   Result := ListBox.Font.Size;
 end;
 
 procedure TChatForm.SetFontSize(v: Integer);
 begin
    Inherited;
-   ListBox.Font.Size := v;
+   UpdateFontSize(v);
 end;
 
 procedure TChatForm.UpdateFontSize(v: Integer);
