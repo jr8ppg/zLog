@@ -79,7 +79,7 @@ object BandScope2: TBandScope2
       242
       19)
     object buttonShowWorked: TSpeedButton
-      Left = 174
+      Left = 180
       Top = 0
       Width = 60
       Height = 19
@@ -93,7 +93,7 @@ object BandScope2: TBandScope2
       OnClick = buttonShowWorkedClick
     end
     object buttonShowAllBands: TSpeedButton
-      Left = 115
+      Left = 121
       Top = 0
       Width = 60
       Height = 19
@@ -107,7 +107,7 @@ object BandScope2: TBandScope2
       OnClick = buttonShowWorkedClick
     end
     object buttonSyncVfo: TSpeedButton
-      Left = 4
+      Left = 10
       Top = 0
       Width = 53
       Height = 19
@@ -121,7 +121,7 @@ object BandScope2: TBandScope2
       OnClick = buttonShowWorkedClick
     end
     object buttonFreqCenter: TSpeedButton
-      Left = 56
+      Left = 62
       Top = 0
       Width = 60
       Height = 19
@@ -150,7 +150,7 @@ object BandScope2: TBandScope2
       242
       19)
     object buttonShowWorked2: TSpeedButton
-      Left = 174
+      Left = 180
       Top = 0
       Width = 60
       Height = 19
@@ -164,7 +164,7 @@ object BandScope2: TBandScope2
       OnClick = buttonShowWorkedClick
     end
     object buttonSortByFreq: TSpeedButton
-      Left = 4
+      Left = 10
       Top = 0
       Width = 60
       Height = 19
@@ -174,7 +174,7 @@ object BandScope2: TBandScope2
       OnClick = buttonSortByFreqClick
     end
     object buttonSortByTime: TSpeedButton
-      Left = 63
+      Left = 69
       Top = 0
       Width = 60
       Height = 19
