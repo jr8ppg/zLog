@@ -10482,7 +10482,7 @@ begin
    b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq[rigset]);
 
    // last freqに適したリグを探す
-   rig := RigControl.GetRig(FCurrentRigSet, b);
+   rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
       FRigControl.SetCurrentRig(rig.RigNumber);
 
@@ -10499,6 +10499,11 @@ begin
 
       rig.Rit := FLastRitStatus[rigset];
       rig.RitOffset := FLastRitOffset[rigset];
+
+      // Antenna Select
+      if (rigset = 1) or (rigset = 2) then begin
+         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b]);
+      end;
    end;
 
    Restore2bsiqMode();

@@ -174,7 +174,8 @@ type
     procedure WriteLogSheetR1(var f: TextFile);
     procedure WriteSummarySheetR2(var f: TextFile);
     procedure WriteLogSheetR2(var f: TextFile; fExtend: Boolean);
-    function FormatQSO(q: TQSO; fExtend: Boolean): string;
+    function FormatQSO_v1(q: TQSO; fValid: Boolean): string;
+    function FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
     function IsNewcomer(cate: string): Boolean;
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
@@ -775,7 +776,7 @@ begin
          Continue;
       end;
 
-      s := FormatQSO(Q, FScoreBand[Q.Band].Checked);
+      s := FormatQSO_v1(Q, FScoreBand[Q.Band].Checked);
 
       WriteLn(f, s);
    end;
@@ -916,14 +917,62 @@ begin
          Continue;
       end;
 
-      s := FormatQSO(Q, fExtend);
+      s := FormatQSO_v2(Q, fExtend);
       WriteLn(f, s);
    end;
 
    WriteLn(f, '</LOGSHEET>');
 end;
 
-function TformELogJarlEx.FormatQSO(q: TQSO; fExtend: Boolean): string;
+function TformELogJarlEx.FormatQSO_v1(q: TQSO; fValid: Boolean): string;
+var
+   S: string;
+begin
+   S := '';
+   S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+   S := S + FillRight(q.CallSign, 13);
+   S := S + FillRight(IntToStr(q.RSTSent), 4);
+   S := S + FillRight(q.NrSent, 8);
+   S := S + FillRight(IntToStr(q.RSTRcvd), 4);
+   S := S + FillRight(q.NrRcvd, 8);
+
+   if q.NewMulti1 then begin
+      S := S + FillRight(q.Multi1, 6);
+   end
+   else begin
+      S := S + '-     ';
+   end;
+
+   if q.NewMulti2 then begin
+      S := S + FillRight(q.Multi2, 6);
+   end
+   else begin
+      S := S + '-     ';
+   end;
+
+   S := S + FillRight(MHzString[q.Band], 5);
+   S := S + FillRight(ModeString[q.Mode], 5);
+   if fValid = True then begin
+      S := S + FillRight(IntToStr(q.Points), 3);
+   end
+   else begin
+      S := S + FillRight(IntToStr(0), 3);
+   end;
+
+   if q.Operator <> '' then begin
+      S := S + FillRight('%%' + q.Operator + '%%', 19);
+   end;
+
+   if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+      S := S + FillRight('TX#' + IntToStr(q.TX), 6);
+   end;
+
+//   S := S + q.Memo;
+
+   Result := S;
+end;
+
+function TformELogJarlEx.FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
 var
    slLine: TStringList;
 begin

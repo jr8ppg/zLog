@@ -112,7 +112,7 @@ end;
 
 function TCheckWin.GetFontSize(): Integer;
 begin
-   Result := Inherited;
+   Result := ListBox.Font.Size;
 end;
 
 procedure TCheckWin.SetFontSize(v: Integer);
