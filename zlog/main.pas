@@ -1179,6 +1179,7 @@ type
     procedure OnChangeFontSize(Sender: TObject; font_size: Integer);
     procedure SetupQTC();
     procedure CallFreqMemory(rigset: Integer; strCommand: string);
+    procedure AntennaSelect(rig: TRig; rigset: Integer; b: TBand);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -2836,9 +2837,7 @@ begin
       end;
 
       // Antenna Select
-      if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
-         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[Q.Band]);
-      end;
+      AntennaSelect(rig, FCurrentRigSet, Q.Band);
 
       RigControl.SetCurrentRig(rig.RigNumber);
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
@@ -7203,9 +7202,7 @@ begin
             end;
 
             // Antenna Select
-            if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
-               rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
-            end;
+            AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
          end;
 
          UpdateMode(Log.QsoList[i].mode);
@@ -8965,9 +8962,7 @@ begin
          FRigControl.SetCurrentRig(rig.RigNumber);
 
          // Antenna Select
-         if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
-            rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
-         end;
+         AntennaSelect(rig, FCurrentRigSet, b);
 
          // RIG Select
          dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
@@ -10262,12 +10257,10 @@ begin
       end;
 
       // Antenna Select
-      if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
-         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[CurrentQSO.Band]);
-      end;
+      AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
 
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+      dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1);
    end;
 end;
 
@@ -11521,9 +11514,7 @@ begin
       end;
 
       // Antenna Select
-      if (rigset = 1) or (rigset = 2) then begin
-         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b]);
-      end;
+      AntennaSelect(rig, rigset, b);
 
       rig.UpdateStatus();
 
@@ -13802,9 +13793,7 @@ begin
    rig.SetMode(m);
 
    // Antenna Select
-   if (FCurrentRigSet = 1) or (FCurrentRigSet = 2) then begin
-      rig.AntSelect(dmZLogGlobal.Settings.FRigSet[FCurrentRigSet].FAnt[b]);
-   end;
+   AntennaSelect(rig, FCurrentRigSet, b);
 
    if obj.FixEdgeNo <> 0 then begin
       rig.FixEdgeSelect(obj.FixEdgeNo);
@@ -13812,6 +13801,21 @@ begin
 
    RigControl.SetCurrentRig(rig.RigNumber);
    dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+end;
+
+procedure TMainForm.AntennaSelect(rig: TRig; rigset: Integer; b: TBand);
+var
+   ant: Integer;
+begin
+   if (rigset = 1) or (rigset = 2) then begin
+      ant := dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b];
+      if dmZLogGlobal.Settings._so2r_type = so2rOtrsp then begin
+         dmZLogKeyer.AntSelect(rigset, ant);
+      end
+      else begin
+         rig.AntSelect(ant);
+      end;
+   end;
 end;
 
 { TBandScopeNotifyThread }
