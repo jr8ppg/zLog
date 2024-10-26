@@ -123,7 +123,7 @@ type
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
-    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
@@ -148,6 +148,9 @@ type
     // 現在送信中のRIGSET
     FWkRxRigSet: Integer;
     FWkTxRigSet: Integer;
+
+    FPrevRxRigSet: Integer;
+    FPrevTxRigSet: Integer;
 
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
@@ -552,6 +555,9 @@ begin
    FWkTxRigSet := 0;
    FWkRxRigSet := 0;
 
+   FPrevRxRigSet := 0;
+   FPrevTxRigSet := 0;
+
    FSpaceFactor := 100; {space length factor in %}
    FEISpaceFactor := 100; {space length factor after E and I}
 
@@ -754,6 +760,11 @@ end;
 
 procedure TdmZLogKeyer.SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
 begin
+   // 前回と同じrigsetなら出力しない
+   if FPrevTxRigSet = rigset then begin
+      Exit;
+   end;
+
    if (rigset = 0) or (rigset = 1) then begin
       FWkTxRigSet := 0;
    end
@@ -801,6 +812,8 @@ begin
          end;
       end;
    end;
+
+   FPrevTxRigSet := rigset;
 end;
 
 procedure TdmZLogKeyer.SetTxRigFlag_com(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
@@ -929,6 +942,11 @@ end;
 //
 procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer);
 begin
+   // 前回と同じrigsetなら出力しない
+   if FPrevRxRigSet = rigset then begin
+      Exit;
+   end;
+
    if (rigset = 0) or (rigset = 1) then begin
       FWkRxRigSet := 0;
    end
@@ -969,6 +987,8 @@ begin
          end;
       end;
    end;
+
+   FPrevRxRigSet := rigset;
 end;
 
 procedure TdmZLogKeyer.SetRxRigFlag_com(rigset, rigno: Integer);
@@ -3055,7 +3075,7 @@ begin
    // RIG-1/2のKeyingポートとOTRSPポートが同じ場合
    if ((FSo2rType = so2rOtrsp) and
        (FKeyingPort[0] = FKeyingPort[1]) and
-       (FKeyingPort[0] = FSo2rTxSelectPort)) then begin
+       (FKeyingPort[0] = FSo2rOtrspPort)) then begin
       FSameOtrsp := True;
       FComKeying[0] := ZComTxRigSelect;
       FComKeying[1] := ZComTxRigSelect;
@@ -4344,7 +4364,7 @@ begin
    WinKeyerSendCommand(WK_KEY_IMMEDIATE_CMD, WK_KEY_IMMEDIATE_KEYUP);
 end;
 
-procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var
    i: Integer;
    b: Byte;
@@ -4854,6 +4874,7 @@ begin
    CP.StopBits := sb1Bits;
    CP.Parity := ptNone;
    CP.DataBits := db8Bits;
+   CP.HwFlow := hfNONE;
 end;
 
 { TUSBPortInfo }
