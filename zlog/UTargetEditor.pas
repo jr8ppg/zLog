@@ -3,9 +3,10 @@ unit UTargetEditor;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.ExtCtrls, System.DateUtils,
-  UzLogConst, UzLogQSO, UQsoTarget, Vcl.Menus, Vcl.Clipbrd;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls,
+  Vcl.ExtCtrls, System.DateUtils, System.Math, Vcl.Menus, Vcl.Clipbrd,
+  UzLogConst, UzLogQSO, UQsoTarget;
 
 type
   TTargetEditor = class(TForm)
@@ -54,7 +55,7 @@ type
 implementation
 
 uses
-  UzLogGlobal;
+  UzLogGlobal, Main;
 
 {$R *.dfm}
 
@@ -140,7 +141,7 @@ begin
          Exit;
       end;
 
-      origin := Log.QsoList[1].Time;
+      origin := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
       DecodeTime(origin, h, m, s, ms);
       origin := Int(origin) + EncodeTime(h, 0, 0, 0);
 
