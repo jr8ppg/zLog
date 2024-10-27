@@ -173,6 +173,15 @@
             <Form>ExceptionDialog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UClusterTelnetSet.pas">
+            <Form>formClusterTelnetSet</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UTelnetSetting.pas"/>
+        <DCCReference Include="USpotterListDlg.pas">
+            <Form>formSpotterListDlg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -201,6 +210,12 @@
             <Deployment Version="4">
                 <DeployFile LocalName="Win32\Debug\zlog_telnet.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="Win32\Release\zlog_telnet.exe" Configuration="Release" Class="ProjectOutput"/>
+                <DeployFile LocalName="Win64\Release\zlog_telnet.exe" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>zlog_telnet.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>

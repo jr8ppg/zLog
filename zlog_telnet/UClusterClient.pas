@@ -4,9 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, IniFiles,
+  StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, IniFiles, System.DateUtils,
   OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
-  UOptions, USpotClass, UzLogConst, HelperLib;
+  UOptions, USpotClass, UzLogConst, HelperLib, UTelnetSetting;
 
 const
   SPOTMAX = 2000;
@@ -15,12 +15,10 @@ type
   TClusterClient = class(TForm)
     Timer1: TTimer;
     Panel1: TPanel;
-    Edit: TEdit;
     Panel2: TPanel;
     ListBox: TListBox;
     Splitter1: TSplitter;
     Telnet: TTnCnx;
-    buttonConnect: TButton;
     PopupMenu: TPopupMenu;
     Deleteselectedspots1: TMenuItem;
     MainMenu1: TMainMenu;
@@ -32,6 +30,15 @@ type
     panelShowInfo: TPanel;
     timerShowInfo: TTimer;
     Console: TListBox;
+    TabControl1: TTabControl;
+    Label1: TLabel;
+    labelHostName: TLabel;
+    Label2: TLabel;
+    labelLoginID: TLabel;
+    Edit1: TEdit;
+    buttonConnect: TButton;
+    timerForceReconnect: TTimer;
+    timerReConnect: TTimer;
     procedure buttonCloseClick(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -49,21 +56,43 @@ type
     procedure timerShowInfoTimer(Sender: TObject);
     procedure ZServerSessionClosed(Sender: TObject; ErrCode: Word);
     procedure FormShow(Sender: TObject);
+    procedure TabControl1Change(Sender: TObject);
+    procedure timerForceReconnectTimer(Sender: TObject);
+    procedure timerReConnectTimer(Sender: TObject);
   private
     { Private declarations }
-    FSpotExpireMin: Integer; // spot expiration time in minutes
-    FSpotGroup: Integer;
-    FClusterHostname: string;
-    FClusterPortNumber: string;
-    FClusterLineBreak: Integer;
-    FClusterLoginID: string;
-    FClusterAutoLogin: Boolean;
-    FClusterAutoReconnect: Boolean;
-    FClusterRecordLogs: Boolean;
-    FClusterUseAllowDenyLists: Boolean;
-    FZServerClientName: string;
-    FZServerHostname: string;
-    FZServerPortNumber: string;
+    FSpotExpireMin: Integer;                       // スポットの生存時間
+    FSpotGroup: Integer;                           // スポットの情報グループ
+
+    // Z-Server options
+    FZServerClientName: string;                    // この端末名
+    FZServerHostname: string;                      // Z-Serverのホスト名
+    FZServerPortNumber: string;                    // Z-Serverのポート番号
+
+    // Packet Cluster options
+    FClusterAutoLogin: Boolean;                    // 自動ログイン
+    FClusterAutoReconnect: Boolean;                // 自動再接続
+    FClusterRecordLogs: Boolean;                   // 受信ログを保存
+    FClusterUseAllowDenyLists: Boolean;            // 許可/拒否リストを使用
+
+    // Auto Reconnect
+    FReConnectMax: Integer;                        // 自動再接続の最大回数
+    FReConnectCount: Integer;
+    FRetryIntervalSec: Integer;                    // 自動再接続の再試行間隔
+    FRetryIntervalCount: Integer;
+
+    // Force reconnect
+    FUseForceReconnect: Boolean;                   // 強制再接続有無
+    FForceReconnectIntervalMin: Integer;           // 強制再接続時間
+    FConnectTime: TDateTime;
+
+    FPacketClusterList: TTelnetSettingList;        // PacketCluster接続先リスト
+
+    FSpotterList: TStringList;                     // スポッターリスト
+    FAllowList1: TStringList;                      // 許可１リスト
+    FAllowList2: TStringList;                      // 許可２リスト
+    FDenyList: TStringList;                        // 拒否リスト
+
     FCommBuffer: TStringList;
 
     FUseClusterLog: Boolean;
@@ -71,10 +100,6 @@ type
     FClusterLogFileName: string;
     FDisconnectClicked: Boolean;
     FAutoLogined: Boolean;
-
-    FSpotterList: TStringList;
-    FAllowList: TStringList;
-    FDenyList: TStringList;
 
     FLineBreak: string;
     procedure LoadSettings();
@@ -90,12 +115,21 @@ type
     procedure LoadAllowDenyList();
     procedure ShowInfo(fShow: Boolean);
     procedure AddConsole(str: string);
+    procedure SelectSite(Index: Integer);
   public
     { Public declarations }
   end;
 
 const
   SPOT_COMMAND: array[1..3] of string = ( 'SPOT', 'SPOT2', 'SPOT3' );
+
+resourcestring
+  UComm_Connect = '接続';
+  UComm_Disconnect = '切断';
+  UComm_Connecting = '接続中...';
+  UComm_Disconnecting = '切断中...';
+  UComm_SecondsLeft = '再接続まであと %s 秒';
+  UComm_ExceededLimit = '再接続試行回数の上限を超えました';
 
 var
    ClusterClient: TClusterClient;
@@ -109,6 +143,11 @@ uses
 
 procedure TClusterClient.FormCreate(Sender: TObject);
 begin
+   FPacketClusterList := TTelnetSettingList.Create();
+   FReConnectCount := 0;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := False;
+
    FCommBuffer := TStringList.Create;
    Timer1.Enabled := False;
    FAutoLogined := False;
@@ -123,10 +162,14 @@ begin
    FSpotterList.Sorted := True;
    FSpotterList.CaseSensitive := False;
    FSpotterList.Duplicates := dupIgnore;
-   FAllowList := TStringList.Create();
-   FAllowList.Sorted := True;
-   FAllowList.CaseSensitive := False;
-   FAllowList.Duplicates := dupIgnore;
+   FAllowList1 := TStringList.Create();
+   FAllowList1.Sorted := True;
+   FAllowList1.CaseSensitive := False;
+   FAllowList1.Duplicates := dupIgnore;
+   FAllowList2 := TStringList.Create();
+   FAllowList2.Sorted := True;
+   FAllowList2.CaseSensitive := False;
+   FAllowList2.Duplicates := dupIgnore;
    FDenyList := TStringList.Create();
    FDenyList.Sorted := True;
    FDenyList.CaseSensitive := False;
@@ -141,8 +184,10 @@ begin
    FCommBuffer.Free();
 
    FSpotterList.Free();
-   FAllowList.Free();
+   FAllowList1.Free();
+   FAllowList2.Free();
    FDenyList.Free();
+   FPacketClusterList.Free();
 end;
 
 procedure TClusterClient.FormShow(Sender: TObject);
@@ -179,20 +224,24 @@ begin
    s := '';
    if Key = Chr($0D) then begin
 
-      WriteData(Edit.Text + FLineBreak);
+      WriteData(Edit1.Text + FLineBreak);
 
       if boo then begin
-         WriteConsole(Edit.Text + FLineBreak);
+         WriteConsole(Edit1.Text + FLineBreak);
       end;
 
       Key := Chr($0);
-      Edit.Text := '';
+      Edit1.Text := '';
    end;
 end;
 
 procedure TClusterClient.LoadSettings();
 var
    ini: TIniFile;
+   num: Integer;
+   i: Integer;
+   strKey: string;
+   setting: TTelnetSetting;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -203,17 +252,36 @@ begin
 
       FSpotExpireMin := ini.ReadInteger('general', 'spotexpire', 10);
       FSpotGroup := ini.ReadInteger('general', 'spotgroup', 1);
-      FClusterHostName := ini.ReadString('cluster', 'hostname', '');
-      FClusterPortNumber := ini.ReadString('cluster', 'port', '7000');
-      FClusterLineBreak := ini.ReadInteger('cluster', 'linebreak', 0);
-      FClusterLoginID := ini.ReadString('cluster', 'loginid', '');
       FClusterAutoLogin := ini.ReadBool('cluster', 'autologin', False);
       FClusterAutoReconnect := ini.ReadBool('cluster', 'autoreconnect', True);
       FClusterRecordLogs := ini.ReadBool('cluster', 'recordlogs', False);
       FClusterUseAllowDenyLists := ini.ReadBool('cluster', 'use_allow_deny_list', False);
+
+      FReConnectMax    := ini.ReadInteger('cluster', 'ReConnectMax', 10);
+      FRetryIntervalSec := ini.ReadInteger('cluster', 'RetryIntervalSec', 180);
+      FUseForceReconnect  := ini.ReadBool('cluster', 'ForceReconnect', False);
+      FForceReconnectIntervalMin := ini.ReadInteger('cluster', 'ForceReconnectInterval', 6 * 60);
+
+      // Z-Server
       FZServerClientName := ini.ReadString('zserver', 'clientname', '');
       FZServerHostName := ini.ReadString('zserver', 'hostname', '');
       FZServerPortNumber := ini.ReadString('zserver', 'port', '23');
+
+      // PacketCluster
+      FPacketClusterList.Clear();
+
+      num := ini.ReadInteger('PacketCluster', 'num', 0);
+      for i := 1 to num do begin
+         strKey := '#' + IntToStr(i);
+         setting := TTelnetSetting.Create();
+         setting.Name := ini.ReadString('PacketCluster', strKey + '_Name', '');
+         setting.HostName := ini.ReadString('PacketCluster', strKey + '_HostName', '');
+         setting.LoginId := ini.ReadString('PacketCluster', strKey + '_LoginId', '');
+         setting.PortNumber := ini.ReadInteger('PacketCluster', strKey + '_PortNumber', 23);
+         setting.LineBreak := ini.ReadInteger('PacketCluster', strKey + '_LineBreak', 0);
+         setting.LocalEcho := ini.ReadBool('PacketCluster', strKey + '_LocalEcho', False);
+         FPacketClusterList.Add(setting);
+      end;
    finally
       ini.Free();
    end;
@@ -222,6 +290,8 @@ end;
 procedure TClusterClient.SaveSettings();
 var
    ini: TIniFile;
+   i: Integer;
+   strKey: string;
 begin
    ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -232,18 +302,33 @@ begin
 
       ini.WriteInteger('general', 'spotexpire', FSpotExpireMin);
       ini.WriteInteger('general', 'spotgroup', FSpotGroup);
-      ini.WriteString('cluster', 'hostname', FClusterHostName);
-      ini.WriteString('cluster', 'port', FClusterPortNumber);
-      ini.WriteInteger('cluster', 'linebreak', FClusterLineBreak);
-      ini.WriteString('cluster', 'loginid', FClusterLoginID);
       ini.WriteBool('cluster', 'autologin', FClusterAutoLogin);
       ini.WriteBool('cluster', 'autoreconnect', FClusterAutoReconnect);
       ini.WriteBool('cluster', 'recordlogs', FClusterRecordLogs);
       ini.WriteBool('cluster', 'use_allow_deny_list', FClusterUseAllowDenyLists);
 
+      ini.WriteInteger('cluster', 'ReConnectMax', FReConnectMax);
+      ini.WriteInteger('cluster', 'RetryIntervalSec', FRetryIntervalSec);
+      ini.WriteBool('cluster', 'ForceReconnect', FUseForceReconnect);
+      ini.WriteInteger('cluster', 'ForceReconnectInterval', FForceReconnectIntervalMin);
+
+      // Z-Server
       ini.WriteString('zserver', 'clientname', FZServerClientName);
       ini.WriteString('zserver', 'hostname', FZServerHostName);
       ini.WriteString('zserver', 'port', FZServerPortNumber);
+
+      // PacketCluster
+      ini.EraseSection('PacketCluster');
+      ini.WriteInteger('PacketCluster', 'num', FPacketClusterList.Count);
+      for i := 0 to FPacketClusterList.Count - 1 do begin
+         strKey := '#' + IntToStr(i + 1);
+         ini.WriteString('PacketCluster', strKey + '_Name', FPacketClusterList[i].Name);
+         ini.WriteString('PacketCluster', strKey + '_HostName', FPacketClusterList[i].HostName);
+         ini.WriteString('PacketCluster', strKey + '_LoginId', FPacketClusterList[i].LoginId);
+         ini.WriteInteger('PacketCluster', strKey + '_PortNumber', FPacketClusterList[i].PortNumber);
+         ini.WriteInteger('PacketCluster', strKey + '_LineBreak', FPacketClusterList[i].LineBreak);
+         ini.WriteBool('PacketCluster', strKey + '_LocalEcho', FPacketClusterList[i].LocalEcho);
+      end;
    finally
       ini.Free();
    end;
@@ -252,19 +337,25 @@ end;
 procedure TClusterClient.ImplementOptions();
 var
    i: Integer;
+   setting: TTelnetSetting;
 begin
-   FLineBreak := LineBreakCode[FClusterLineBreak];
-
-   i := Pos(':', FClusterHostName);
-   if i = 0 then begin
-      Telnet.Host := FClusterHostName;
-      Telnet.Port := FClusterPortNumber;
-   end
-   else begin
-      Telnet.Host := Copy(FClusterHostName, 1, i - 1);
-      Telnet.Port := Copy(FCLusterHostName, i + 1);
+   // Packet Cluster
+   TabControl1.Tabs.Clear();
+   for i := 0 to FPacketClusterList.Count - 1 do begin
+      setting := FPacketClusterList[i];
+      TabControl1.Tabs.AddObject(setting.Name, setting);
    end;
 
+   if TabControl1.Tabs.Count > 0 then begin
+      TabControl1.TabIndex := 0;
+      SelectSite(TabControl1.TabIndex);
+      buttonConnect.Enabled := True;
+   end
+   else begin
+      buttonConnect.Enabled := False;
+   end;
+
+   // Z-Server
    i := Pos(':', FZServerHostName);
    if i > 0 then begin
       FZServerHostName := Copy(FZServerHostName, 1, i - 1);
@@ -339,12 +430,12 @@ begin
       strTemp := FCommBuffer.Strings[0];
 
       // Auto Login
-      if (FClusterAutoLogin = True) and (FClusterLoginID <> '') and (FAutoLogined = False) then begin
+      if (FClusterAutoLogin = True) and (labelLoginID.Caption <> '') and (FAutoLogined = False) then begin
          if (Pos('login:', strTemp) > 0) or
             (Pos('Please enter your call:', strTemp) > 0) or
             (Pos('Please enter your callsign:', strTemp) > 0) then begin
             Sleep(500);
-            WriteLine(FClusterLoginID);
+            WriteLine(labelLoginID.Caption);
             FAutoLogined := True;
          end;
       end;
@@ -356,10 +447,26 @@ begin
          // Spotterのチェック
          if FClusterUseAllowDenyLists = True then begin
             if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been rejected by the deny list'));
+               {$ENDIF}
                Sp.Free();
                goto nextnext;
             end;
-            if (FAllowList.Count > 0) and (FAllowList.IndexOf(Sp.ReportedBy) = -1) then begin
+
+            if (FAllowList1.Count > 0) and (FAllowList1.IndexOf(Sp.ReportedBy) >= 0) then begin
+               Sp.ReliableSpotter := True;
+            end
+            else if (FAllowList2.Count > 0) and (FAllowList2.IndexOf(Sp.ReportedBy) >= 0) then begin
+               Sp.ReliableSpotter := False;
+            end
+            else if (FAllowList1.Count = 0) and (FAllowList2.Count = 0) then begin
+               Sp.ReliableSpotter := True;
+            end
+            else begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
+               {$ENDIF}
                Sp.Free();
                goto nextnext;
             end;
@@ -394,14 +501,45 @@ begin
    try
       // Auto Reconnect
       if (FClusterAutoReconnect = True) and (Telnet.IsConnected() = False) and
-         (FDisconnectClicked = False) and (buttonConnect.Caption = 'Connect') then begin
+         (FDisconnectClicked = False) and (buttonConnect.Caption = UComm_Connect) then begin
+
+         if (FReConnectCount >= FReConnectMax) then begin
+            WriteLineConsole(UComm_ExceededLimit);
+//            WriteStatusLine('');
+            timerReconnect.Enabled := False;
+            FReConnectCount := 0;
+            FRetryIntervalCount := 0;
+            Exit;
+         end;
+
+         if (FRetryIntervalCount <= FRetryIntervalSec) then begin
+            Exit;
+         end;
+
          buttonConnect.Click();
+         Inc(FReConnectCount);
       end;
 
       CommProcess;
    finally
       Timer1.Enabled := True;
    end;
+end;
+
+procedure TClusterClient.timerReConnectTimer(Sender: TObject);
+var
+   S: string;
+   C: Integer;
+begin
+   C := FRetryIntervalSec - FRetryIntervalCount;
+   if C < 0 then begin
+      C := 0;
+   end;
+
+   S := Format(UComm_SecondsLeft, [IntToStr(C)]);
+   WriteLineConsole(S);
+
+   Inc(FRetryIntervalCount);
 end;
 
 procedure TClusterClient.timerShowInfoTimer(Sender: TObject);
@@ -430,24 +568,34 @@ end;
 
 procedure TClusterClient.buttonConnectClick(Sender: TObject);
 begin
-   if Telnet.IsConnected then begin
-      buttonConnect.Caption := 'Disconnecting...';
-      FDisconnectClicked := True;
-      Telnet.Close;
-      ZServer.Close();
-   end
-   else begin
-      LoadAllowDenyList();
-      Telnet.Connect;
+   try
+      Edit1.SetFocus;
+      FRetryIntervalCount := 0;
 
-      ZServer.Addr := FZServerHostName;
-      ZServer.Port := FZServerPortNumber;
-      ZServer.Connect();
+      if Telnet.IsConnected then begin
+         buttonConnect.Caption := UComm_Disconnecting;
+         FDisconnectClicked := True;
+         Telnet.Close;
+         ZServer.Close();
+      end
+      else begin
+         LoadAllowDenyList();
+         Telnet.Connect;
 
-      buttonConnect.Caption := 'Connecting...';
-      FDisconnectClicked := False;
-      Timer1.Enabled := True;
-      Edit.SetFocus;
+         ZServer.Addr := FZServerHostName;
+         ZServer.Port := FZServerPortNumber;
+         ZServer.Connect();
+
+         buttonConnect.Caption := UComm_Connecting;
+         FDisconnectClicked := False;
+         Timer1.Enabled := True;
+      end;
+   except
+      on E: Exception do begin
+         WriteConsole(E.Message);
+         Timer1.Enabled := False;
+         FClusterAutoReconnect := False;
+      end;
    end;
 end;
 
@@ -474,10 +622,21 @@ begin
          end;
       end;
 
-      buttonConnect.Caption := 'Disconnect';
+      buttonConnect.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
-      Caption := Application.Title + ' - ' + FClusterHostname + ' [' + FZServerClientName + ']';
+      Caption := Application.Title + ' - ' + Telnet.Host + ' [' + FZServerClientName + ']';
       FAutoLogined := False;
+
+      FRetryIntervalCount := 0;
+      if Error = 0 then begin
+         FReConnectCount := 0;
+      end;
+
+      FConnectTime := Now;
+
+      if FForceReconnectIntervalMin > 0 then begin
+         timerForceReconnect.Enabled := True;
+      end;
    except
       on E: Exception do begin
          AddConsole(E.Message);
@@ -497,11 +656,40 @@ begin
    end;
    FUseClusterLog := False;
 
-   buttonConnect.Caption := 'Connect';
+   buttonConnect.Caption := UComm_Connect;
    Caption := Application.Title;
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
    FSpotterList.SaveToFile(fname);
+end;
+
+procedure TClusterClient.timerForceReconnectTimer(Sender: TObject);
+var
+   diff: TDateTime;
+   D, H, M, S, ms: Word;
+   min: Integer;
+begin
+   timerForceReconnect.Enabled := False;
+   diff := Now - FConnectTime;
+   DecodeTime(diff, H, M, S, ms);
+   D := Trunc(DaySpan(Now, FConnectTime));
+
+   min := (D * 24 * 60) + (H * 60) + M;
+   if min >= FForceReconnectIntervalMin then begin
+      if Telnet.IsConnected = True then begin
+         buttonConnect.Click;
+
+         while (Telnet.State <> wsClosed) do begin
+            Application.ProcessMessages();
+            Sleep(10);
+         end;
+      end;
+
+      if Telnet.IsConnected = False then begin
+         buttonConnect.Click;
+      end;
+   end;
+   timerForceReconnect.Enabled := True;
 end;
 
 procedure TClusterClient.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
@@ -559,6 +747,11 @@ begin
    end;
 end;
 
+procedure TClusterClient.TabControl1Change(Sender: TObject);
+begin
+   SelectSite(TabControl1.TabIndex);
+end;
+
 procedure TClusterClient.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
 var
    str : string;
@@ -607,17 +800,21 @@ begin
    try
       dlg.SportExpireMin := FSpotExpireMin;
       dlg.SpotGroup := FSpotGroup;
-      dlg.ClusterHost := FClusterHostname;
-      dlg.ClusterPort := FClusterPortNumber;
-      dlg.ClusterLineBreak := FClusterLineBreak;
-      dlg.ClusterLoginID := FClusterLoginID;
+
+      dlg.ZServerClientName := FZServerClientName;
+      dlg.ZServerHost := FZServerHostname;
+      dlg.ZServerPort := FZServerPortNumber;
+
       dlg.ClusterAutoLogin := FClusterAutoLogin;
       dlg.ClusterAutoReconnect := FClusterAutoReconnect;
       dlg.ClusterRecordLogs := FClusterRecordLogs;
       dlg.ClusterUseAllowDenyLists := FClusterUseAllowDenyLists;
-      dlg.ZServerClientName := FZServerClientName;
-      dlg.ZServerHost := FZServerHostname;
-      dlg.ZServerPort := FZServerPortNumber;
+
+      dlg.ReConnectMax := FReConnectMax;
+      dlg.RetryIntervalSec := FRetryIntervalSec;
+      dlg.ForceReconnectIntervalMin := FForceReconnectIntervalMin;
+
+      dlg.PacketClusterList := FPacketClusterList;
 
       if dlg.ShowModal() = mrCancel then begin
          Exit;
@@ -625,14 +822,15 @@ begin
 
       FSpotExpireMin := dlg.SportExpireMin;
       FSpotGroup := dlg.SpotGroup;
-      FClusterHostname := dlg.ClusterHost;
-      FClusterPortNumber := dlg.ClusterPort;
-      FClusterLineBreak := dlg.ClusterLineBreak;
-      FClusterLoginID := dlg.ClusterLoginID;
       FClusterAutoLogin := dlg.ClusterAutoLogin;
       FClusterAutoReconnect := dlg.ClusterAutoReconnect;
       FClusterRecordLogs := dlg.ClusterRecordLogs;
       FClusterUseAllowDenyLists := dlg.ClusterUseAllowDenyLists;
+
+      FReConnectMax := dlg.ReConnectMax;
+      FRetryIntervalSec := dlg.RetryIntervalSec;
+      FForceReconnectIntervalMin := dlg.ForceReconnectIntervalMin;
+
       FZServerClientName := dlg.ZServerClientName;
       FZServerHostname := dlg.ZServerHost;
       FZServerPortNumber := dlg.ZServerPort;
@@ -692,7 +890,8 @@ var
    fname: string;
 begin
    FSpotterList.Clear();
-   FAllowList.Clear();
+   FAllowList1.Clear();
+   FAllowList2.Clear();
    FDenyList.Clear();
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
@@ -702,7 +901,12 @@ begin
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_allow.txt';
    if FileExists(fname) then begin
-      FAllowList.LoadFromFile(fname);
+      FAllowList1.LoadFromFile(fname);
+   end;
+
+   fname := ExtractFilePath(Application.ExeName) + 'spotter_allow2.txt';
+   if FileExists(fname) then begin
+      FAllowList2.LoadFromFile(fname);
    end;
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_deny.txt';
@@ -732,6 +936,35 @@ begin
    end;
    Console.Items.EndUpdate();
    Console.ShowLast();
+end;
+
+procedure TClusterClient.SelectSite(Index: Integer);
+var
+   i: Integer;
+   setting: TTelnetSetting;
+begin
+   setting := TTelnetSetting(TabControl1.Tabs.Objects[Index]);
+
+   labelHostName.Caption := setting.HostName;
+
+   FLineBreak := LineBreakCode[setting.LineBreak];
+
+   i := Pos(':', setting.HostName);
+   if i = 0 then begin
+      Telnet.Host := setting.HostName;
+      Telnet.Port := IntToStr(setting.PortNumber);
+   end
+   else begin
+      Telnet.Host := Copy(setting.HostName, 1, i - 1);
+      Telnet.Port := Copy(setting.HostName, i + 1);
+   end;
+
+   if setting.LoginId = '' then begin
+      labelLoginID.Caption := '<Your callsign>';
+   end
+   else begin
+      labelLoginId.Caption := setting.LoginId;
+   end;
 end;
 
 end.

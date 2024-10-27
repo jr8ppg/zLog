@@ -15,7 +15,7 @@ type
     FTime : TDateTime; // moved from TBSdata 2.6e
     FCall : string;
     FNumber : string;
-    FFreqHz : Int64;
+    FFreqHz : TFrequency;
     FCtyIndex : integer;
     FZone : integer;
     FNewCty : boolean;
@@ -29,6 +29,8 @@ type
     FNewJaMulti: Boolean;
     FReportedBy: string;
     FIsDomestic: Boolean;
+    FLookupFailed: Boolean;
+    FReliableSpotter: Boolean;
     procedure SetCall(v: string);
     function GetIsNewMulti(): Boolean; // newcty or newzone
     function GetIsPortable(): Boolean;
@@ -46,7 +48,7 @@ type
     property Time: TDateTime read FTime write FTime;
     property Call: string read FCall write SetCall;
     property Number: string read FNumber write FNumber;
-    property FreqHz: Int64 read FFreqHz write FFreqHz;
+    property FreqHz: TFrequency read FFreqHz write FFreqHz;
     property CtyIndex: Integer read FCtyIndex write FCtyIndex;
     property Zone: Integer read FZone write FZone;
     property NewCty: Boolean read FNewCty write FNewCty;
@@ -59,6 +61,8 @@ type
     property CQ: Boolean read FCQ write FCQ;
     property NewJaMulti: Boolean read FNewJaMulti write FNewJaMulti;
     property ReportedBy: string read FReportedBy write FReportedBy;
+    property LookupFailed: Boolean read FLookupFailed write FLookupFailed;
+    property ReliableSpotter: Boolean read FReliableSpotter write FReliableSpotter;
   end;
 
   TSpot = class(TBaseSpot)
@@ -69,7 +73,7 @@ type
     constructor Create; override;
     function Analyze(S : string) : boolean; // true if successful
     function ClusterSummary : string;
-    function InText : string; override;
+    function InText(): string; override;
     procedure FromText(S : string); override;
     procedure Assign(O: TBaseSpot); override;
 
@@ -138,6 +142,8 @@ begin
    FNewJaMulti := False;
    FReportedBy := '';
    FIsDomestic := True;
+   FLookupFailed := False;
+   FReliableSpotter := True;
 end;
 
 constructor TSpot.Create;
@@ -393,6 +399,9 @@ begin
    FCQ := O.FCQ;
    FNewJaMulti := O.FNewJaMulti;
    FReportedBy := O.ReportedBy;
+   FIsDomestic := O.IsDomestic;
+   FLookupFailed := O.LookupFailed;
+   FReliableSpotter := O.ReliableSpotter;
 end;
 
 function TBSData.InText : string;

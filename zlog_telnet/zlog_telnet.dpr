@@ -8,7 +8,10 @@ uses
   UzLogGlobal in 'UzLogGlobal.pas' {dmZLogGlobal: TDataModule},
   UOptions in 'UOptions.pas' {Options},
   HelperLib in 'HelperLib.pas',
-  UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog};
+  UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog},
+  UClusterTelnetSet in 'UClusterTelnetSet.pas' {formClusterTelnetSet},
+  UTelnetSetting in 'UTelnetSetting.pas',
+  USpotterListDlg in 'USpotterListDlg.pas' {formSpotterListDlg};
 
 {$R *.res}
 
