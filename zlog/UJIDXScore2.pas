@@ -19,7 +19,6 @@ type
     { Private declarations }
   public
     { Public declarations }
-    Multi2 : array[b19..HiBand] of LongInt;
     constructor Create(AOwner: TComponent); override;
     procedure Renew; override;
     procedure Reset; override;
