@@ -3884,12 +3884,12 @@ begin
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   if FUseWkSo2rNeo = True then begin
-      if fUsePttPort = True then begin
-         Buff[1] := Buff[1] or $1;
-      end;
+   // PTT制御有無
+   if fUsePttPort = True then begin
+      Buff[1] := Buff[1] or $1;
    end;
 
+   // サイドトーン有無
    if FUseSideTone = True then begin
       Buff[1] := Buff[1] or $2;
    end;
