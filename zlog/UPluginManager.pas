@@ -282,7 +282,13 @@ end;
 function TMarketItem.CheckSum: string;
 begin
 	try
-		MarketForm.LoadText(Self.url + '.md5', Result);
+      if Length(Self.sum) = 32 then begin
+         Result := Self.sum;
+         sumfile := False;
+         Exit;
+      end;
+
+		MarketForm.LoadText(Self.sum, Result);
       sumfile := True;
 	except
 		Result := '';
