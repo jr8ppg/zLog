@@ -111,10 +111,6 @@ begin
       Exit;
    end;
 
-   if aQSO.NewMulti2 then begin
-      Inc(Multi2[aQSO.Band]);
-   end;
-
    CalcPoints(aQSO);
 
    Inc(Points[aQSO.Band], aQSO.Points);
