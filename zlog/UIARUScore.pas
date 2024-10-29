@@ -39,16 +39,14 @@ procedure TIARUScore.AddNoUpdate(var aQSO: TQSO);
 var
    band: TBand;
 begin
-   { BasicScore.AddNoUpdate(aQSO); }
    inherited;
-   if aQSO.Dupe then
+
+   if aQSO.Dupe then begin
       exit;
+   end;
 
    band := aQSO.band;
-   { if aQSO.QSO.NewMulti2 then
-     inc(Multi2[band]); }
-
-   inc(Points[band], aQSO.Points); { Points calculated in WWMulti.AddNoUpdate }
+   Inc(Points[band], aQSO.Points);
 end;
 
 procedure TIARUScore.InitGrid(B0, B1: TBand);

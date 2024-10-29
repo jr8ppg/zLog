@@ -125,10 +125,6 @@ begin
    end;
 
    band := aQSO.band;
-   if aQSO.NewMulti2 then begin
-      Inc(Multi2[band]);
-   end;
-
    Inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
 end;
 
