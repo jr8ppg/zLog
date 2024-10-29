@@ -939,6 +939,7 @@ type
     FCurrentCQMessageNo: Integer;
 
     FQsyFromBS: Boolean;
+    FFreqChangeProcessed: Boolean;
 
     // QSY Violation (10 min rule / per hour)
     FQsyViolation: Boolean;
@@ -2780,7 +2781,7 @@ begin
       end;
 
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
+      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
    Q.Free;
@@ -10143,6 +10144,7 @@ var
    rig: TRig;
    b: TBand;
    rigset: Integer;
+   dwTick: DWORD;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
@@ -10159,14 +10161,24 @@ begin
    b := dmZLogGlobal.BandPlan.FreqToBand(FLastFreq[rigset]);
 
    // last freqに適したリグを探す
-   rig := RigControl.GetRig(FCurrentRigSet, b);
+   rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
       FRigControl.SetCurrentRig(rig.RigNumber);
 
+      FFreqChangeProcessed := False;
       rig.MoveToLastFreq(FLastFreq[rigset], FLastMode[rigset]);
 
-      while RigControl.PrevVFO[0] <> FLastFreq[rigset] do begin
+      dwTick := GetTickCount();
+      while FFreqChangeProcessed = False do begin
          Application.ProcessMessages();
+         if (GetTickCount() - dwTick) > 5000 then begin
+            Break;
+         end;
+      end;
+
+      // Antenna Select
+      if (rigset = 1) or (rigset = 2) then begin
+         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b]);
       end;
    end;
 
@@ -11384,6 +11396,8 @@ begin
    end;
 
    FQsyFromBS := False;
+
+   FFreqChangeProcessed := True;
 end;
 
 procedure TMainForm.ApplyCQRepeatInterval();
