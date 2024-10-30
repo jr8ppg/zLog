@@ -19,7 +19,6 @@ type
     { Private declarations }
   public
     { Public declarations }
-    Multi2 : array[b19..HiBand] of LongInt;
     constructor Create(AOwner: TComponent); override;
     procedure Renew; override;
     procedure Reset; override;
@@ -109,10 +108,6 @@ begin
 
    if aQSO.Dupe then begin
       Exit;
-   end;
-
-   if aQSO.NewMulti2 then begin
-      Inc(Multi2[aQSO.Band]);
    end;
 
    CalcPoints(aQSO);
