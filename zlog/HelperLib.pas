@@ -30,6 +30,11 @@ type
     procedure SaveToText(TXT: TStringList);
   end;
 
+  TStringListHelper = class helper for TStringList
+  public
+    procedure Add2(S: string);
+  end;
+
 implementation
 
 { TListBoxHelper }
@@ -219,6 +224,18 @@ begin
          B := C.Items[j];
          TXT.Add(Chr($09) + B.Caption);
       end;
+   end;
+end;
+
+{ TStringListHelper }
+
+procedure TStringListHelper.Add2(S: string);
+begin
+   if S = '' then begin
+      Add(S);
+   end
+   else begin
+      Add('"' + S + '"');
    end;
 end;
 
