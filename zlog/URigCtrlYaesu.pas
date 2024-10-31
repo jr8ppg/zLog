@@ -145,6 +145,11 @@ type
     procedure AntSelect(no: Integer); override;
   end;
 
+  TFTDX101 = class(TFT991)
+  public
+    procedure AntSelect(no: Integer); override;
+  end;
+
 implementation
 
 { TFT1000MP }
@@ -1625,6 +1630,18 @@ begin
       2: WriteData('AN02;');
       3: WriteData('AN03;');
       4: WriteData('AN04;');
+   end;
+end;
+
+{ TFTDX101 }
+
+procedure TFTDX101.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN01;');
+      2: WriteData('AN02;');
+      3: WriteData('AN03;');
    end;
 end;
 

@@ -632,6 +632,10 @@ begin
             rig:= TFTDX5000.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
+         if rname = 'FTDX-101' then begin
+            rig:= TFTDX101.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
          if rname = 'FT-710' then begin
             rig:= TFT710.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
