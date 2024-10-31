@@ -125,7 +125,6 @@ begin
    end;
 
    band := aQSO.band;
-
    Inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
 end;
 
