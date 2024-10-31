@@ -5836,6 +5836,9 @@ begin
       if FileExportDialog.FilterIndex = 7 then begin
          ExportHamlog(f);
       end
+      else if FileExportDialog.FilterIndex = 8 then begin
+         Log.SaveToFileByHamSupport(f);
+      end
       else begin
          Log.SaveToFilezLogCsv(f);
       end;
