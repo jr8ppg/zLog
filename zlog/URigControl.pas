@@ -61,7 +61,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure PollingTimerTimer(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+    procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
     procedure buttonOmniRigClick(Sender: TObject);
     procedure buttonJumpLastFreqClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -290,7 +290,7 @@ begin
    MainForm.AddTaskbar(Handle);
 end;
 
-procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
 var
    i: Integer;
    ptr: PAnsiChar;
@@ -630,6 +630,10 @@ begin
 
          if rname = 'FTDX-5000/9000' then begin
             rig:= TFTDX5000.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
+         if rname = 'FTDX-101' then begin
+            rig:= TFTDX101.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
          if rname = 'FT-710' then begin
