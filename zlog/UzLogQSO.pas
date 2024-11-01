@@ -2303,7 +2303,10 @@ begin
 
       offsetmin := FQsoList[0].RSTsent;
 
-      WriteLn(F, csvheader);
+      // BOM
+      Write(F, #$EF + #$BB + #$BF);
+
+      WriteLn(F, UTF8String(csvheader));
 
       for i := 1 to FQSOList.Count - 1 do begin
          Q := FQSOList[i];
@@ -2326,37 +2329,37 @@ begin
          slCsv.Add(strText);
 
          // 4列目 コールサイン
-         slCsv.Add('"' + Q.Callsign + '"');
+         slCsv.Add2(Q.Callsign);
 
          // 5列目 相手局へ送ったRST
-         slCsv.Add('"' + Q.RSTSentStr + '"');
+         slCsv.Add2(Q.RSTSentStr);
 
          // 6列目 相手局へ送ったNumber
-         slCsv.Add('"' + Q.NrSent + '"');
+         slCsv.Add2(Q.NrSent);
 
          // 7列目 相手局からもらったレポート
-         slCsv.Add('"' + Q.RSTRcvdStr + '"');
+         slCsv.Add2(Q.RSTRcvdStr);
 
          // 8列目 相手局へ送ったNumber
-         slCsv.Add('"' + Q.NrRcvd + '"');
+         slCsv.Add2(Q.NrRcvd);
 
          // 9列目 シリアルNO
          slCsv.Add(Q.SerialStr);
 
          // 10列目 Mode
-         slCsv.Add('"' + Q.ModeStr + '"');
+         slCsv.Add2(Q.ModeStr);
 
          // 11列目 Band
-         slCsv.Add('"' + Q.BandStr + '"');
+         slCsv.Add2(Q.BandStr);
 
          // 1列目 Power
-         slCsv.Add('"' + Q.NewPowerStr + '"');
+         slCsv.Add2(Q.NewPowerStr);
 
          // 13列目 マルチ１
-         slCsv.Add('"' + Q.Multi1 + '"');
+         slCsv.Add2(Q.Multi1);
 
          // 14列目 マルチ１
-         slCsv.Add('"' + Q.Multi2 + '"');
+         slCsv.Add2(Q.Multi2);
 
          // 15列目 Newマルチ１
          slCsv.Add(BoolToStr(Q.NewMulti1, True));
@@ -2368,10 +2371,10 @@ begin
          slCsv.Add(IntToStr(Q.Points));
 
          // 18列目 Operator
-         slCsv.Add('"' + Q.Operator + '"');
+         slCsv.Add2(Q.Operator);
 
          // 19列目 memo
-         slCsv.Add('"' + Q.Memo + '"');
+         slCsv.Add2(Q.Memo);
 
          // 20列目 CQ
          slCsv.Add(BoolToStr(Q.CQ, True));
@@ -2395,13 +2398,13 @@ begin
          slCsv.Add(IntToStr(Q.Reserve3));
 
          // 27列目 Freq
-         slCsv.Add('"' + Q.Freq + '"');
+         slCsv.Add2(Q.Freq);
 
          // 28列目 QsyViolation
          slCsv.Add(BoolToStr(Q.QsyViolation, True));
 
          // 29列目 PCName
-         slCsv.Add('"' + Q.PCName + '"');
+         slCsv.Add2(Q.PCName);
 
          // 30列目 Forced
          slCsv.Add(BoolToStr(Q.Forced, True));
@@ -2415,7 +2418,7 @@ begin
          // 33列目 Area
          slCsv.Add(Q.Area);
 
-         WriteLn(F, slCsv.DelimitedText);
+         WriteLn(F, UTF8String(slCsv.DelimitedText));
       end;
 
       CloseFile(F);
@@ -3725,6 +3728,7 @@ var
    offsetmin: Integer;
    slFile: TStringList;
    slLine: TStringList;
+   slText: TStringList;
    strMsg: string;
    qsoid: Integer;
    b: TBand;
@@ -3733,6 +3737,8 @@ begin
    slFile.StrictDelimiter := True;
    slLine := TStringList.Create();
    slLine.StrictDelimiter := True;
+   slText := TStringList.Create();
+   slText.StrictDelimiter := True;
    try
       if FileExists(Filename) = False then begin
          Result := 0;
@@ -3819,7 +3825,8 @@ begin
             Q.Operator := slLine[17];
 
             // 19列目 memo
-            Q.Memo := slLine[18];
+            slText.Text := StringReplace(slLine[18], '\n', #13#10, [rfReplaceAll]);
+            Q.Memo := slText[0];
 
             // 20列目 CQ
             Q.CQ := StrToBoolDef(slLine[19], False);
@@ -3899,6 +3906,7 @@ begin
    finally
       slFile.Free();
       slLine.Free();
+      slText.Free();
    end;
 end;
 
