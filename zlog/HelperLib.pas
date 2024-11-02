@@ -235,6 +235,7 @@ begin
       Add(S);
    end
    else begin
+      S := StringReplace(S, '"', '""', [rfReplaceAll]);
       Add('"' + S + '"');
    end;
 end;
