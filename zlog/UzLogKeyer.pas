@@ -266,6 +266,8 @@ type
 
     FWnd: HWND;
 
+    FUseCanSend: Boolean;
+
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
     procedure SetTxRigFlag_com_v28(rigset: Integer);
@@ -287,6 +289,7 @@ type
     function DecodeCommands(S: string): string;
     procedure CW_ON(nID: Integer);
     procedure CW_OFF(nID: Integer);
+    function CanSend(nID: Integer): Boolean;
     procedure TimerProcess(uTimerID, uMessage: Word; dwUser, dw1, dw2: Longint); stdcall;
     procedure IncWPM; {Increases CW speed by 1WPM}
     procedure DecWPM; {Decreases CW speed by 1WPM}
@@ -396,6 +399,7 @@ type
     property UsePaddleKeyer: Boolean read FUsePaddleKeyer write FUsePaddleKeyer;
     property PaddleReverse: Boolean read FPaddleReverse write FPaddleReverse;
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
+    property UseCanSend: Boolean read FUseCanSend write FUseCanSend;
 
     // paddle support
     procedure PaddleProc(PaddleStatus: Byte);
@@ -520,6 +524,7 @@ begin
    FSo2rOtrspPort := tkpNone;
    FSameOtrsp := False;
    FTune := False;
+   FUseCanSend := False;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -1619,6 +1624,14 @@ begin
    end;
 end;
 
+function TdmZLogKeyer.CanSend(nID: Integer): Boolean;
+var
+   status: TLineStatusSet;
+begin
+   status := FComKeying[nID].GetLineStatus();
+   Result := lsDSR in status;
+end;
+
 procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: Longint); stdcall;
 var
    nCommand: Integer;
@@ -1663,6 +1676,15 @@ begin
    end;
 
    if cwstrptr = 0 then begin
+      Exit;
+   end;
+
+   if (FUseCanSend = True) and (CanSend(FWkTx) = False) then begin
+      Finish();
+      if Assigned(FOnSendFinishProc) then begin
+         FOnSendFinishProc(Self, mCW, False);
+      end;
+      FSendOK := False;
       Exit;
    end;
 

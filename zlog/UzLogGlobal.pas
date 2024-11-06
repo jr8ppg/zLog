@@ -15,6 +15,7 @@ type
     _weight : integer;
     _fixwpm : integer;
     _paddlereverse : boolean;
+    _use_cansend: Boolean;
     _sidetone: Boolean;
     _sidetone_volume: Integer;
     _tonepitch : integer;
@@ -972,6 +973,9 @@ begin
       // Paddle reverse
       Settings.CW._paddlereverse := ini.ReadBool('CW', 'PaddleReverse', False);
 
+      // Paddle reverse
+      Settings.CW._use_cansend := ini.ReadBool('CW', 'UseCanSend', False);
+
       // Que messages
       Settings.CW._FIFO := ini.ReadBool('CW', 'FIFO', True);
 
@@ -1698,6 +1702,9 @@ begin
       // Paddle reverse
       ini.WriteBool('CW', 'PaddleReverse', Settings.CW._paddlereverse);
 
+      // Paddle reverse
+      ini.WriteBool('CW', 'UseCanSend', Settings.CW._use_cansend);
+
       // Que messages
       ini.WriteBool('CW', 'FIFO', Settings.CW._FIFO);
 
@@ -2233,6 +2240,7 @@ begin
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
    dmZLogKeyer.Gen3MicSelect := Settings._usbif4cw_gen3_micsel;
    dmZLogKeyer.UsePaddleKeyer := Settings._usbif4cw_use_paddle_keyer;
+   dmZLogKeyer.UseCanSend := Settings.CW._use_cansend;
 
    dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 

@@ -22,11 +22,11 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetCW
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 428
-    ExplicitHeight = 430
+    ExplicitWidth = 440
+    ExplicitHeight = 433
     object tabsheetPreferences: TTabSheet
       Caption = #21508#31278#35373#23450
       object Label40: TLabel
@@ -1308,7 +1308,7 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 18
+        TabOrder = 19
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1319,7 +1319,7 @@ object formOptions2: TformOptions2
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 16
+        TabOrder = 17
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1330,7 +1330,7 @@ object formOptions2: TformOptions2
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 17
+        TabOrder = 18
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1436,6 +1436,14 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = #12497#12489#12523#24038#21491#21453#36578
         TabOrder = 15
+      end
+      object checkUseCanSend: TCheckBox
+        Left = 228
+        Top = 372
+        Width = 204
+        Height = 17
+        Caption = 'DSR'#12364'OFF'#12391#36865#20449#20572#27490' (COM'#12509#12540#12488')'
+        TabOrder = 16
       end
     end
     object tabsheetVoice: TTabSheet
@@ -3559,8 +3567,8 @@ object formOptions2: TformOptions2
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 430
-    ExplicitWidth = 428
+    ExplicitTop = 433
+    ExplicitWidth = 440
     DesignSize = (
       444
       37)
