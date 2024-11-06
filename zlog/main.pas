@@ -1084,6 +1084,7 @@ type
     procedure DoWkStatusProc(Sender: TObject; tx: Integer; rx: Integer; ptt: Boolean);
     procedure DoCwSpeedChange(Sender: TObject);
     procedure DoVFOChange(Sender: TObject);
+    procedure DoBandChange(Sender: TObject);
     procedure ApplyCQRepeatInterval();
     procedure ShowToggleStatus(text: string; fON: Boolean);
     procedure SetListWidth();
@@ -2292,6 +2293,7 @@ begin
 
    FRigControl    := TRigControl.Create(Self);
    FRigControl.OnVFOChanged := DoVFOChange;
+   FRigControl.OnBandChanged := DoBandChange;
    FPartialCheck  := TPartialCheck.Create(Self);
    FRateDialog    := TRateDialog.Create(Self);
    FRateDialogEx  := TRateDialogEx.Create(Self);
@@ -11773,6 +11775,18 @@ begin
    FFreqChangeProcessed := True;
 end;
 
+procedure TMainForm.DoBandChange(Sender: TObject);
+var
+   rig: TRig;
+   b: TBand;
+begin
+   b := TextToBand(BandEdit.Text);
+   rig := RigControl.GetRig(FCurrentRigSet, b);
+   if rig <> nil then begin
+      AntennaSelect(rig, FCurrentRigSet, b);
+   end;
+end;
+
 procedure TMainForm.ApplyCQRepeatInterval();
 var
    msg: string;
@@ -12507,6 +12521,8 @@ begin
       dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
       UpdateBand(rig.CurrentBand);
       UpdateMode(rig.CurrentMode);
+
+      AntennaSelect(rig, FCurrentRigSet, rig.CurrentBand);
    end
    else begin
       UpdateBand(TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));

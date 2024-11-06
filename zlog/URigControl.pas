@@ -83,6 +83,7 @@ type
     FCurrentRig : TRig;
     FPrevVfo: array[0..1] of TFrequency;
     FOnVFOChanged: TNotifyEvent;
+    FOnBandChanged: TNotifyEvent;
     FFreqLabel: array[0..1] of TLabel;
     FPollingTimer: array[1..4] of TTimer;
 
@@ -145,6 +146,7 @@ type
     function GetRig(setno: Integer; b: TBand): TRig;
 
     property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
+    property OnBandChanged: TNotifyEvent read FOnBandChanged write FOnBandChanged;
 
     procedure ForcePowerOff();
     procedure ForcePowerOn();
@@ -1004,10 +1006,17 @@ begin
    vfo[0] := VfoA;
    vfo[1] := VfoB;
 
-   if (FPrevVfo[currentvfo] > 0) and
-      (Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20) then begin
-      if Assigned(FOnVFOChanged) then begin
-         FOnVFOChanged(TObject(currentvfo));
+   if (FPrevVfo[currentvfo] > 0) then begin
+      if (Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20) then begin
+         if Assigned(FOnVFOChanged) then begin
+            FOnVFOChanged(TObject(currentvfo));
+         end;
+      end;
+
+      if (dmZLogGlobal.BandPlan.FreqToBand(FPrevVfo[currentvfo]) <> b) then begin
+         if Assigned(FOnBandChanged) then begin
+            FOnBandChanged(TObject(currentvfo));
+         end;
       end;
    end;
 
