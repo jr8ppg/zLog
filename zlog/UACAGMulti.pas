@@ -50,9 +50,9 @@ type
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
     function GetIsIncrementalSearchPresent(): Boolean; override;
+    procedure GoForwardMatch(strCode: string);
   private
     { Private declarations }
-    procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
     procedure UpdateData; override;
@@ -210,6 +210,7 @@ begin
    end;
 
    Grid.TopRow := j;
+   LatestMultiAddition := 0;
 end;
 
 function TACAGMulti.ValidMulti(aQSO: TQSO): Boolean;
@@ -279,9 +280,15 @@ var
    l: Integer;
 begin
    l := Length(strCode);
+   if l = 0 then begin
+      Grid.TopRow := LatestMultiAddition;
+      Exit;
+   end;
+
    for i := 0 to CityList.List.Count - 1 do begin
       if (strCode = Copy(TCity(CityList.List[i]).CityNumber, 1, l)) then begin
          Grid.TopRow := i;
+         LatestMultiAddition := i;
          Break;
       end;
    end;
