@@ -35,11 +35,14 @@ var
    i: Integer;
    C: TCity;
 begin
-   // inherited;
-   str := aQSO.NrRcvd;
+   Edit1.Text := aQSO.NrRcvd;
 
-   if str = '' then
-      exit;
+   if aQSO.NrRcvd = '' then begin
+      MainForm.WriteStatusLine('', False);
+      Exit;
+   end;
+
+   str := aQSO.NrRcvd;
 
    if CharInSet(str[length(str)], ['H', 'P', 'L', 'M']) then begin
       System.Delete(str, length(str), 1);
@@ -162,6 +165,7 @@ begin
    end;
 
    Grid.TopRow := j;
+   LatestMultiAddition := 0;
 end;
 
 procedure TFDMulti.FormCreate(Sender: TObject);
@@ -182,7 +186,6 @@ var
    B: TBand;
    i: Integer;
    C: TCity;
-   _top: Integer;
 const
    kenmax = 62;
 begin
@@ -205,14 +208,17 @@ begin
       end;
    end;
 
-   _top := LatestMultiAddition;
-   if (B in [b19 .. b1200]) and (_top > kenmax) then
-      _top := 0;
+   if (B in [b19 .. b1200]) and (LatestMultiAddition > kenmax) then begin
+      LatestMultiAddition := 0;
+   end;
 
-   if (B in [b2400 .. b10G]) and (_top <= kenmax) then
-      _top := kenmax + 1;
+   if (B in [b2400 .. b10G]) and (LatestMultiAddition <= kenmax) then begin
+      LatestMultiAddition := kenmax + 1;
+   end;
 
-   Grid.TopRow := _top;
+   if checkJumpLatestMulti.Checked = True then begin
+      Grid.TopRow := LatestMultiAddition;
+   end;
 
    Grid.Refresh();
 end;
