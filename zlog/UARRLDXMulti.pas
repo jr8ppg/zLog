@@ -106,6 +106,7 @@ begin
    end;
 
    Grid.TopRow := j;
+   LatestMultiAddition := 0;
 end;
 
 procedure TARRLDXMulti.CheckMulti(aQSO: TQSO);
@@ -213,9 +214,15 @@ var
    l: Integer;
 begin
    l := Length(strCode);
+   if l = 0 then begin
+      Grid.TopRow := LatestMultiAddition;
+      Exit;
+   end;
+
    for i := 0 to StateList.List.Count - 1 do begin
       if (strCode = Copy(TState(StateList.List[i]).StateAbbrev, 1, l)) then begin
          Grid.TopRow := i;
+         LatestMultiAddition := i;
          Break;
       end;
    end;
