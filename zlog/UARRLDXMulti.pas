@@ -150,6 +150,7 @@ begin
       if S.Worked[aQSO.Band] = False then begin
          S.Worked[aQSO.Band] := True;
          aQSO.NewMulti1 := True;
+         LatestMultiAddition := S.Index;
       end;
    end
    else begin
@@ -192,6 +193,10 @@ begin
       else begin
          Grid.Cells[0, i] := str;
       end;
+   end;
+
+   if checkJumpLatestMulti.Checked = True then begin
+      Grid.TopRow := LatestMultiAddition;
    end;
 
    Grid.Refresh();
