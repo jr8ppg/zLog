@@ -10,6 +10,7 @@ uses
 type
   TARRLWMulti = class(TWWMulti)
     procedure FormCreate(Sender: TObject);
+  protected
   private
     { Private declarations }
   public
@@ -18,22 +19,20 @@ type
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
-    function GetInfoAA(aQSO : TQSO) : string; // called from spacebarproc in TAllAsianContest
+    function GetInfo(aQSO: TQSO): string; override;
     procedure ProcessCluster(var Sp : TBaseSpot); override;
   end;
 
 implementation
 
-uses UOptions, Main;
+uses
+  Main;
 
 {$R *.DFM}
 
-function TARRLWMulti.GetInfoAA(aQSO: TQSO): string;
-var
-   P: TPrefix;
+function TARRLWMulti.GetInfo(aQSO: TQSO): string;
 begin
-   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
-   Result := P.Country.JustInfo;
+   Result := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country.JustInfo;
 end;
 
 procedure TARRLWMulti.CheckMulti(aQSO: TQSO);
@@ -61,6 +60,7 @@ begin
    P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
    aQSO.Multi1 := C.Country;
+   Grid.TopRow := C.Index;
 
    if aQSO.Dupe then begin
       exit;
