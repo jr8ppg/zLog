@@ -53,6 +53,7 @@ type
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
+    procedure SetWPM(wpm: Integer); override;
     procedure ControlPTT(fOn: Boolean); override;
   end;
 
@@ -658,6 +659,14 @@ begin
    end;
 
    WriteData(AnsiString('VS') + AnsiChar(Ord('0') + i) + AnsiString(';'));
+end;
+
+procedure TFT2000.SetWPM(wpm: Integer);
+var
+   CMD: AnsiString;
+begin
+   CMD := AnsiString('KS' + RightStr('000' + IntToStr(wpm), 3) + ';');
+   WriteData(CMD);
 end;
 
 procedure TFT2000.SetXit(flag: Boolean);
