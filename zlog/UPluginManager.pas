@@ -380,23 +380,14 @@ var
 	buf: TMemoryStream;
 	res: IHTTPResponse;
 begin
+   buf := TMemoryStream.Create;
 	try
-		buf := TMemoryStream.Create;
 		res := NetHttpRequest.Get(url, buf);
       if res.StatusCode = 200 then begin
    		txt := res.ContentAsString(TEncoding.UTF8);
       end
       else begin
-//         raise Exception.Create(res.StatusText);
-         var Toast := Toasts.CreateNotification;
-         Toast.Name := 'zLog';
-         Toast.Title := res.StatusText;
-         Toast.AlertBody := url;
-         try
-            Toasts.PresentNotification(Toast);
-         finally
-            Toast.Free;
-         end;
+         raise Exception.Create(res.StatusText);
       end;
 	finally
 		FreeAndNil(buf);
@@ -410,17 +401,31 @@ var
 	map: TJsonObject;
 	cls, obj: TJsonPair;
 begin
-	try
+   try
 		MarketListClear;
 		LoadText(url, txt);
 		all := TJsonObject.ParseJSONValue(txt);
-		for cls in (all as TJsonObject) do begin
-			map := cls.JsonValue as TJsonObject;
-			for obj in map do AddItem(cls, obj);
-		end;
-	finally
-		FreeAndNil(all);
-	end;
+      try
+         for cls in (all as TJsonObject) do begin
+            map := cls.JsonValue as TJsonObject;
+            for obj in map do AddItem(cls, obj);
+         end;
+      finally
+         FreeAndNil(all);
+      end;
+   except
+      on E: Exception do begin
+         var Toast := Toasts.CreateNotification;
+         Toast.Name := 'zLog';
+         Toast.Title := E.Message;
+         Toast.AlertBody := url;
+         try
+            Toasts.PresentNotification(Toast);
+         finally
+            Toast.Free;
+         end;
+      end;
+   end;
 end;
 
 procedure TMarketForm.AddItem(cls, obj: TJsonPair);
