@@ -207,6 +207,7 @@ type
     _logspath : string;
     _pluginpath: string;
     _pluginlist: string;
+    _pluginDLLs: string;
 
     // PTT Control
     // CW
@@ -1251,6 +1252,7 @@ begin
       Settings._pluginpath := ini.ReadString('zylo', 'path', '');
       Settings._pluginpath := AdjustPath(Settings._pluginpath);
       Settings._pluginlist := ini.ReadString('zylo', 'items', '');
+      Settings._pluginDLLs := ini.ReadString('zylo', 'DLLs', '');
 
       //
       // Misc
@@ -1957,6 +1959,7 @@ begin
       // Plugin path
       ini.WriteString('zylo', 'path', Settings._pluginpath);
       ini.WriteString('zylo', 'items', Settings._pluginlist);
+      ini.WriteString('zylo', 'DLLs', Settings._pluginDLLs);
 
       //
       // Misc
