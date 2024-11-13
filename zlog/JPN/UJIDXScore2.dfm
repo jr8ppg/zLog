@@ -2,9 +2,13 @@ inherited JIDXScore2: TJIDXScore2
   Left = 99
   Top = 209
   Caption = 'Score'
-  OnShow = FormShow
-  PixelsPerInch = 96
+  ExplicitWidth = 293
+  ExplicitHeight = 273
   TextHeight = 12
+  inherited Panel1: TPanel
+    ExplicitTop = 201
+    ExplicitWidth = 277
+  end
   object Grid: TStringGrid [1]
     Left = 0
     Top = 0
@@ -25,5 +29,7 @@ inherited JIDXScore2: TJIDXScore2
     ScrollBars = ssNone
     TabOrder = 1
     OnDrawCell = GridDrawCell
+    ExplicitWidth = 277
+    ExplicitHeight = 201
   end
 end
