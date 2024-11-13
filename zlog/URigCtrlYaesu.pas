@@ -144,6 +144,11 @@ type
     procedure AntSelect(no: Integer); override;
   end;
 
+  TFTDX101 = class(TFT991)
+  public
+    procedure AntSelect(no: Integer); override;
+  end;
+
 implementation
 
 { TFT1000MP }
@@ -440,17 +445,20 @@ begin
          UpdateFreqMem(FVFO, i, M);
       end;
 
-      // RIT/XIT offset
-      strTemp := string(Copy(S, 14, 5));
-      FRitOffset := StrToIntDef(strTemp, 0);
+      // RIT‚ÍVFO A‚Ì‚Ý
+      if FVFO = 0 then begin
+         // RIT/XIT offset
+         strTemp := string(Copy(S, 14, 5));
+         FRitOffset := StrToIntDef(strTemp, 0);
 
-      // RIT Status
-      strTemp := string(Copy(S, 19, 1));
-      FRit := StrToBoolDef(strTemp, False);
+         // RIT Status
+         strTemp := string(Copy(S, 19, 1));
+         FRit := StrToBoolDef(strTemp, False);
 
-      // XIT Status
-      strTemp := string(Copy(S, 20, 1));
-      FXit := StrToBoolDef(strTemp, False);
+         // XIT Status
+         strTemp := string(Copy(S, 20, 1));
+         FXit := StrToBoolDef(strTemp, False);
+      end;
 
       if Selected then begin
          UpdateStatus;
@@ -1605,6 +1613,18 @@ begin
       2: WriteData('AN02;');
       3: WriteData('AN03;');
       4: WriteData('AN04;');
+   end;
+end;
+
+{ TFTDX101 }
+
+procedure TFTDX101.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN01;');
+      2: WriteData('AN02;');
+      3: WriteData('AN03;');
    end;
 end;
 
