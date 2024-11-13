@@ -43,6 +43,8 @@ type
     FCw: Integer;
     FMulti: Integer;
     FMultiCw: Integer;
+    FMulti2: Integer;
+    FMulti2Cw: Integer;
     FPts: Integer;
   end;
 
@@ -103,6 +105,7 @@ type
     procedure ShowZAF_Time(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
     procedure ShowZAF_Accumulation(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
     procedure ShowZAF_Multi(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+    procedure ShowZAF_Multi2(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
     procedure ShowZAA(sl: TStrings; fShowCW: Boolean);
     procedure ShowZAA2(sl: TStrings; b: TBand; fShowCW: Boolean);
     procedure ShowZAA_band(sl: TStrings; b: TBand; nLastHour: Integer; fShowCW: Boolean);
@@ -334,6 +337,8 @@ begin
          FCountData[t][b].FCw := 0;
          FCountData[t][b].FMulti := 0;
          FCountData[t][b].FMultiCw := 0;
+         FCountData[t][b].FMulti2 := 0;
+         FCountData[t][b].FMulti2Cw := 0;
          FCountData[t][b].FPts := 0;
       end;
    end;
@@ -474,6 +479,21 @@ begin
             Inc(FCountData[HTOTAL][b].FMultiCw);              // 横計
             Inc(FCountData[t][VTOTAL].FMultiCw);              // 縦計
             Inc(FCountData[HTOTAL][VTOTAL].FMultiCw);         // 縦横計
+         end;
+      end;
+
+      // マルチ
+      if qso.NewMulti2 = True then begin
+         Inc(FCountData[t][b].FMulti2);
+         Inc(FCountData[HTOTAL][b].FMulti2);              // 横計
+         Inc(FCountData[t][VTOTAL].FMulti2);              // 縦計
+         Inc(FCountData[HTOTAL][VTOTAL].FMulti2);         // 縦横計
+
+         if qso.Mode = mCW then begin
+            Inc(FCountData[t][b].FMulti2Cw);
+            Inc(FCountData[HTOTAL][b].FMulti2Cw);              // 横計
+            Inc(FCountData[t][VTOTAL].FMulti2Cw);              // 縦計
+            Inc(FCountData[HTOTAL][VTOTAL].FMulti2Cw);         // 縦横計
          end;
       end;
 
@@ -709,6 +729,11 @@ begin
 
    // ＜マルチプライヤーの獲得状況＞　（括弧内は電信の内数）
    ShowZAF_Multi(nLastHour, sl, fShowCW);
+
+   // ＜マルチプライヤー２の獲得状況＞　（括弧内は電信の内数）
+   if FCountData[HTOTAL][VTOTAL].FMulti2 > 0 then begin
+      ShowZAF_Multi2(nLastHour, sl, fShowCW);
+   end;
 end;
 
 //＜結果＞
@@ -720,7 +745,12 @@ begin
    sl.Add('＜結果＞');
    sl.Add('');
 
-   sl.Add('　バンド　　交信局数　　得点　　マルチ');
+   if FCountData[HTOTAL][VTOTAL].FMulti2 = 0 then begin
+      sl.Add('　バンド　　交信局数　　得点　　マルチ');
+   end
+   else begin
+      sl.Add('　バンド　　交信局数　　得点　　マルチ  マルチ2');
+   end;
 
    for b := b19 to HiBand do begin
       if FCountData[HTOTAL][b].FQso = 0 then begin
@@ -731,14 +761,30 @@ begin
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FQso), 5) + '     ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FPts), 5) + '   ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FMulti), 5);
+
+      if FCountData[HTOTAL][VTOTAL].FMulti2 > 0 then begin
+         strText := strText + '   ' + RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FMulti2), 5);
+      end;
+
       sl.Add(strText);
    end;
 
-   strText := '  合　計    ' +
-              RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 6) + '    ' +
-              RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 6) + ' ×' +
-              RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 5) + '  ＝  ' +
-              IntToStr(FCountData[HTOTAL][VTOTAL].FPts * FCountData[HTOTAL][VTOTAL].FMulti);
+   strText := '  合　計    ';
+   if FCountData[HTOTAL][VTOTAL].FMulti2 = 0 then begin
+      strText := strText +
+                 RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 6) + '    ' +
+                 RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 6) + ' ×' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 5) + '  ＝  ' +
+                 IntToStr(FCountData[HTOTAL][VTOTAL].FPts * FCountData[HTOTAL][VTOTAL].FMulti);
+   end
+   else  begin
+      strText := strText +
+                 RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 6) + '    ' +
+                 RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FPts), 6) + ' ×' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti), 5) + '   ' +
+                 RightStr('     ' + IntToStr(FCountData[HTOTAL][VTOTAL].FMulti2), 5) + '  ＝  ' +
+                 IntToStr(FCountData[HTOTAL][VTOTAL].FPts * (FCountData[HTOTAL][VTOTAL].FMulti + FCountData[HTOTAL][VTOTAL].FMulti2));
+   end;
    sl.Add(strText);
    sl.Add('');
 end;
@@ -1093,6 +1139,138 @@ begin
       end
       else begin
          strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FMulti, 5);
+      end;
+   end;
+   strText := 'Total ' + strText;
+
+   sl.Add(strText);
+   sl.Add('');
+   sl.Add('');
+end;
+
+// ＜マルチプライヤーの獲得状況＞　（括弧内は電信の内数）
+//
+//       3.5        7       14       21       50      430       ALL
+//
+// [21]    -       43        -        -        2        -        45
+// [22]   19        9        -        -        -        1        29
+// [23]   31(4)     -        -        -        -        -        31(4)
+// [00]   12        1(1)     -        -        -        -        13(1)
+// [20]    3        6        -        -        2        -        11
+//
+//Total  111(13)  303(1)    44        5        4        1       468(14)
+procedure TZAnalyze.ShowZAF_Multi2(nLastHour: Integer; sl: TStrings; fShowCW: Boolean);
+var
+   strText: string;
+   b: TBand;
+   i: Integer;
+begin
+   if fShowCW = True then begin
+      sl.Add('＜マルチプライヤー２の獲得状況＞　（括弧内は電信の内数）');
+   end
+   else begin
+      sl.Add('＜マルチプライヤー２の獲得状況＞');
+   end;
+   sl.Add('');
+
+   strText := '';
+   for b := b19 to HiBand do begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
+         Continue;
+      end;
+
+      strText := strText + '     ' + RightStr('    ' + MHzString[b], 4);
+   end;
+
+   strText := strText + '       ALL';
+
+   sl.Add('       ' + Trim(strText));
+   sl.Add('');
+
+   for i := 1 to nLastHour do begin
+      // ０局の時間帯は除く
+      if checkExcludeZeroHour.Checked = True then begin
+         if FCountData[i][VTOTAL].FQso = 0 then begin
+            Continue;
+         end;
+      end;
+
+      strText := '';
+
+      for b := b19 to HiBand do begin
+         if FCountData[HTOTAL][b].FQso = 0 then begin
+            Continue;
+         end;
+
+         if FCountData[i][b].FMulti2 = 0 then begin
+            strText := strText + '   -' + '     ';
+         end
+         else begin
+            if fShowCW = True then begin
+               strText := strText + QsoToStr(FCountData[i][b].FMulti2, 4) +
+                                    CwToStr(FCountData[i][b].FMulti2Cw, 5);
+            end
+            else begin
+               strText := strText + QsoToStr(FCountData[i][b].FMulti2, 4) + '     ';
+            end;
+         end;
+      end;
+
+      // ALL
+      if FCountData[i][VTOTAL].FMulti2 = 0 then begin
+         strText := strText + '    -';
+      end
+      else begin
+         if fShowCW = True then begin
+            strText := strText + QsoToStr(FCountData[i][VTOTAL].FMulti2, 5) +
+                                 Trim(CwToStr(FCountData[i][VTOTAL].FMulti2Cw, 5));
+         end
+         else begin
+            strText := strText + QsoToStr(FCountData[i][VTOTAL].FMulti2, 5);
+         end;
+      end;
+
+      // 見出し
+      strText := ' [' + HourText(i) + '] ' + strText;
+
+      sl.Add(strText);
+   end;
+
+   // 合計
+   //Total   24      267        8        3        3        1        2       308
+   sl.Add('');
+   strText := '';
+
+   for b := b19 to HiBand do begin
+      if FCountData[HTOTAL][b].FQso = 0 then begin
+         Continue;
+      end;
+
+      if FCountData[HTOTAL][b].FMulti2 = 0 then begin
+         strText := strText + '   -' + '     ';
+      end
+      else begin
+         if fShowCW = True then begin
+            strText := strText + QsoToStr(FCountData[HTOTAL][b].FMulti2, 4) +
+                                 CwToStr(FCountData[HTOTAL][b].FMulti2Cw, 5);
+         end
+         else begin
+            strText := strText + QsoToStr(FCountData[HTOTAL][b].FMulti2, 4) + '     ';
+         end;
+      end;
+   end;
+
+   // ALL
+   if FCountData[HTOTAL][VTOTAL].FMulti2 = 0 then begin
+      strText := strText + '    -';
+   end
+   else begin
+      if fShowCW = True then begin
+         strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FMulti2, 5) +
+                              Trim(CwToStr(FCountData[HTOTAL][VTOTAL].FMulti2Cw, 5));
+      end
+      else begin
+         strText := strText + QsoToStr(FCountData[HTOTAL][VTOTAL].FMulti2, 5);
       end;
    end;
    strText := 'Total ' + strText;
