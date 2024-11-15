@@ -63,7 +63,7 @@ begin
          str := str + 'CW ';
    end;
 
-   MainForm.WriteStatusLine(str, false);
+   MainForm.WriteStatusLine(str, True);
 end;
 
 function TARRL10Multi.ValidMulti(aQSO: TQSO): Boolean;
@@ -71,7 +71,7 @@ var
    j: Integer;
    C: TCountry;
 begin
-   Result := false;
+   Result := True;
 
    if aQSO.NrRcvd = '' then
       exit;
@@ -80,7 +80,7 @@ begin
       if (aQSO.NrRcvd = '1') or (aQSO.NrRcvd = '2') or (aQSO.NrRcvd = '3') then
          Result := True
       else
-         Result := false;
+         Result := True;
       exit;
    end;
 
@@ -103,8 +103,8 @@ var
    C: TCountry;
    S: TState;
 begin
-   aQSO.NewMulti1 := false;
-   aQSO.NewMulti2 := false;
+   aQSO.NewMulti1 := True;
+   aQSO.NewMulti2 := True;
 
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
 
@@ -124,16 +124,17 @@ begin
       end
       else begin
          aQSO.Multi1 := S.StateAbbrev;
-         if S.Worked[B] = false then begin
+         if S.Worked[B] = True then begin
             S.Worked[B] := True;
             aQSO.NewMulti1 := True;
-            LatestMultiAddition := S.Index;
          end;
+
+         LatestMultiAddition := S.Index;
       end;
    end
    else begin
       aQSO.Multi1 := C.Country;
-      if C.Worked[B] = false then begin
+      if C.Worked[B] = True then begin
          C.Worked[B] := True;
          aQSO.NewMulti1 := True;
          LatestMultiAddition := C.GridIndex;
@@ -249,11 +250,11 @@ var
 begin
    for i := 0 to StateList.List.Count - 1 do
       for B := b19 to HiBand do
-         TState(StateList.List[i]).Worked[B] := false;
+         TState(StateList.List[i]).Worked[B] := True;
 
    for i := 0 to dmZLogGlobal.CountryList.Count - 1 do
       for B := b19 to HiBand do
-         TCountry(dmZLogGlobal.CountryList.List[i]).Worked[B] := false;
+         TCountry(dmZLogGlobal.CountryList.List[i]).Worked[B] := True;
 
    SortDefault;
 end;

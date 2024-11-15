@@ -151,8 +151,9 @@ begin
       if S.Worked[aQSO.Band] = False then begin
          S.Worked[aQSO.Band] := True;
          aQSO.NewMulti1 := True;
-         LatestMultiAddition := S.Index;
       end;
+
+      LatestMultiAddition := S.Index;
    end
    else begin
       aQSO.Multi1 := '';
