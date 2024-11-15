@@ -317,8 +317,9 @@ begin
    if MultiTable[aQSO.band, K] = False then begin
       MultiTable[aQSO.band, K] := True;
       aQSO.NewMulti1 := True;
-      LatestMultiAddition := Integer(K);
    end;
+
+   LatestMultiAddition := Integer(K);
 end;
 
 procedure TALLJAMulti.Add(var aQSO: TQSO);
