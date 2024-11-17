@@ -2762,11 +2762,12 @@ var
    fullpath: string;
 begin
    if IsFullPath(filename) = True then begin
-      Result := filename;
-      Exit;
+      fullpath := filename;
+   end
+   else begin
+      fullpath := CfgDatPath + filename;
    end;
 
-   fullpath := CfgDatPath + filename;
    if FileExists(fullpath) = False then begin
       fullpath := ExtractFilePath(Application.ExeName) + filename;
       if FileExists(fullpath) = False then begin
@@ -4435,11 +4436,18 @@ var
 begin
    resname := 'IDF_' + StringReplace(filename, '.', '_', [rfReplaceAll]);
 
-   RS := TResourceStream.Create(hinst, resname, RT_RCDATA);
+   RS := nil;
    SL := TStringList.Create();
    SL.StrictDelimiter := True;
    try
+   try
+      RS := TResourceStream.Create(hinst, resname, RT_RCDATA);
       SL.LoadFromStream(RS);
+   except
+      on E: Exception do begin
+         dmZLogGlobal.WriteErrorLog(E.Message);
+      end;
+   end;
    finally
       RS.Free();
       Result := SL;
