@@ -571,8 +571,6 @@ begin
                strTmp := strTmp + '.DAT';
             end;
 
-            strTmp := ExtractFilePath(strPath) + strTmp;
-
             D.FDatFileName := strTmp;
          end;
 
