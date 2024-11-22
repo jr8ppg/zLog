@@ -28,7 +28,6 @@ type
   TCommForm = class(TZLogForm)
     Timer1: TTimer;
     Panel1: TPanel;
-    Edit: TEdit;
     Panel2: TPanel;
     ListBox: TListBox;
     StatusLine: TStatusBar;
@@ -55,6 +54,7 @@ type
     labelLoginID: TLabel;
     checkForceReconnect: TCheckBox;
     timerForceReconnect: TTimer;
+    Edit: TComboBox;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -84,6 +84,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure TabControl1Change(Sender: TObject);
     procedure timerForceReconnectTimer(Sender: TObject);
+    procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -164,6 +165,7 @@ resourcestring
   UComm_Disconnecting = 'Disconnecting...';
   UComm_SecondsLeft = '%s seconds left to reconnect';
   UComm_ExceededLimit = 'reconnection attempts exceeded limit';
+  UComm_SiteChanging = 'You are already connected to the %s. Do you want to disconnect?';
 
 var
   CommBufferLock: TCriticalSection;
@@ -344,6 +346,8 @@ begin
    else begin
       labelLoginId.Caption := setting.LoginId;
    end;
+
+   Edit.Items.CommaText := setting.CommandList;
 end;
 
 procedure TCommForm.ImplementOptions();
@@ -1000,6 +1004,27 @@ end;
 procedure TCommForm.TabControl1Change(Sender: TObject);
 begin
    SelectSite(TabControl1.TabIndex);
+end;
+
+procedure TCommForm.TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+var
+   S: string;
+begin
+   inherited;
+
+   // ê⁄ë±íÜÇÃèÍçáÇÕêÿÇÈÇ©ämîFÇ∑ÇÈ
+   if Telnet.IsConnected then begin
+      S := Format(UComm_SiteChanging, [labelHostName.Caption]);
+      if MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2) = IDYES then begin
+         ConnectButton.Caption := UComm_Disconnecting;
+         FDisconnectClicked := True;
+         Telnet.Close();
+         AllowChange := True;
+      end
+      else begin
+         AllowChange := False;
+      end;
+   end;
 end;
 
 procedure TCommForm.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);

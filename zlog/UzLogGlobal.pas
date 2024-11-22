@@ -3,9 +3,10 @@
 interface
 
 uses
-  System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
-  Vcl.Dialogs, System.UITypes, System.Win.Registry,
+  System.SysUtils, System.Classes, System.StrUtils, System.IniFiles, Vcl.Forms,
+  Winapi.Windows, Vcl.Menus, System.Math, Vcl.Graphics, Vcl.StdCtrls,
+  System.DateUtils, Generics.Collections, Generics.Defaults,
+  Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget, UTelnetSetting, UzLogForm;
 
@@ -653,6 +654,10 @@ procedure FormShowAndRestore(F: TForm);
 function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
 function GetCommPortsForOldVersion(lpPortNumbers: PULONG; uPortNumbersCount: ULONG; var puPortNumbersFound: ULONG): ULONG;
 function TrimCRLF(SS : string) : string;
+function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
+
+resourcestring
+  MSG_INVALID_CHARACTER = 'Invalid character [%s]';
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -1033,6 +1038,7 @@ begin
          setting.PortNumber := ini.ReadInteger('PacketCluster', strKey + '_PortNumber', 23);
          setting.LineBreak := ini.ReadInteger('PacketCluster', strKey + '_LineBreak', 0);
          setting.LocalEcho := ini.ReadBool('PacketCluster', strKey + '_LocalEcho', False);
+         setting.CommandList := ini.ReadString('PacketCluster', strKey + '_CommandList', '');
          FPacketClusterList.Add(setting);
       end;
 
@@ -1756,6 +1762,7 @@ begin
          ini.WriteInteger('PacketCluster', strKey + '_PortNumber', FPacketClusterList[i].PortNumber);
          ini.WriteInteger('PacketCluster', strKey + '_LineBreak', FPacketClusterList[i].LineBreak);
          ini.WriteBool('PacketCluster', strKey + '_LocalEcho', FPacketClusterList[i].LocalEcho);
+         ini.WriteString('PacketCluster', strKey + '_CommandList', FPacketClusterList[i].CommandList);
       end;
 
       // Z-Link (Z-Server)
@@ -4514,6 +4521,30 @@ begin
    end;
 
    Result := S;
+end;
+
+function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
+var
+   text: string;
+   i: Integer;
+   ch: Char;
+   S: string;
+begin
+   text := Edit.Text;
+   for i := 1 to Length(text) do begin
+      ch := text[i];
+      if TPath.IsValidFileNameChar(ch) = False then begin
+         S := Format(MSG_INVALID_CHARACTER, [Copy(text, i, 1)]);
+         MessageBox(AOwner.Handle, PChar(S), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Edit.SetFocus();
+         Edit.SelStart := i - 1;
+         Edit.SelLength := 1;
+         Result := False;
+         Exit;
+      end;
+   end;
+
+   Result := True;
 end;
 
 end.

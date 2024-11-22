@@ -27,8 +27,8 @@ object CommForm: TCommForm
     Height = 120
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 96
-    ExplicitWidth = 350
+    ExplicitTop = 118
+    ExplicitWidth = 467
     object checkAutoLogin: TCheckBox
       Left = 291
       Top = 6
@@ -92,6 +92,7 @@ object CommForm: TCommForm
         'Site2')
       TabIndex = 0
       OnChange = TabControl1Change
+      OnChanging = TabControl1Changing
       object Label1: TLabel
         Left = 7
         Top = 24
@@ -124,30 +125,22 @@ object CommForm: TCommForm
         AutoSize = False
         Layout = tlCenter
       end
-      object Edit: TEdit
-        Left = 7
-        Top = 78
-        Width = 161
-        Height = 20
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = #65325#65331' '#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        PopupMenu = popupCommand
-        TabOrder = 1
-        OnKeyPress = EditKeyPress
-      end
       object ConnectButton: TButton
         Left = 178
         Top = 78
         Width = 89
         Height = 20
         Caption = 'Connect'
-        TabOrder = 0
+        TabOrder = 1
         OnClick = ConnectButtonClick
+      end
+      object Edit: TComboBox
+        Left = 7
+        Top = 78
+        Width = 165
+        Height = 21
+        TabOrder = 0
+        OnKeyPress = EditKeyPress
       end
     end
     object checkForceReconnect: TCheckBox
@@ -167,6 +160,8 @@ object CommForm: TCommForm
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
+    ExplicitWidth = 467
+    ExplicitHeight = 118
     object Splitter1: TSplitter
       Left = 1
       Top = 54
@@ -198,6 +193,8 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitWidth = 465
+      ExplicitHeight = 52
     end
     object Console: TListBox
       Left = 1
@@ -213,6 +210,8 @@ object CommForm: TCommForm
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
+      ExplicitTop = 57
+      ExplicitWidth = 465
     end
   end
   object StatusLine: TStatusBar
@@ -225,8 +224,8 @@ object CommForm: TCommForm
         Width = 500
       end>
     SimplePanel = True
-    ExplicitTop = 216
-    ExplicitWidth = 350
+    ExplicitTop = 238
+    ExplicitWidth = 467
   end
   object Timer1: TTimer
     Enabled = False
