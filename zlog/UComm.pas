@@ -85,6 +85,7 @@ type
     procedure TabControl1Change(Sender: TObject);
     procedure timerForceReconnectTimer(Sender: TObject);
     procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure EditSelect(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -317,6 +318,26 @@ begin
          end;
       end;
    end;
+end;
+
+procedure TCommForm.EditSelect(Sender: TObject);
+var
+   inputs: array[0..1] of TInput;
+   uSent: UINT;
+begin
+   inherited;
+
+   // コマンド選択後はEnterキーを押したことにする
+   ZeroMemory(@inputs, SizeOf(inputs));
+
+   inputs[0].Itype := INPUT_KEYBOARD;
+   inputs[0].ki.wVk := VK_RETURN;
+
+   inputs[1].Itype := INPUT_KEYBOARD;
+   inputs[1].ki.wVk := VK_RETURN;
+   inputs[1].ki.dwFlags := KEYEVENTF_KEYUP;
+
+   uSent := SendInput(Length(inputs), inputs[0], sizeof(TInput));
 end;
 
 procedure TCommForm.SelectSite(Index: Integer);
@@ -1015,7 +1036,7 @@ begin
    // 接続中の場合は切るか確認する
    if Telnet.IsConnected then begin
       S := Format(UComm_SiteChanging, [labelHostName.Caption]);
-      if MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2) = IDYES then begin
+      if MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
          ConnectButton.Caption := UComm_Disconnecting;
          FDisconnectClicked := True;
          Telnet.Close();

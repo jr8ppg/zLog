@@ -3,7 +3,7 @@ object CommForm: TCommForm
   Top = 174
   Caption = 'Cluster'
   ClientHeight = 262
-  ClientWidth = 471
+  ClientWidth = 388
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 400
@@ -23,75 +23,96 @@ object CommForm: TCommForm
   object Panel1: TPanel
     Left = 0
     Top = 119
-    Width = 471
+    Width = 388
     Height = 120
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 96
-    ExplicitWidth = 350
+    ExplicitTop = 118
+    ExplicitWidth = 467
+    DesignSize = (
+      388
+      120)
     object checkAutoLogin: TCheckBox
-      Left = 291
+      Left = 213
       Top = 6
-      Width = 167
+      Width = 170
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Auto Login'
       Checked = True
       State = cbChecked
       TabOrder = 1
+      ExplicitLeft = 292
     end
     object checkRelaySpot: TCheckBox
-      Left = 291
+      Left = 213
       Top = 44
-      Width = 167
+      Width = 170
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Relay spot to other bands'
       TabOrder = 3
+      ExplicitLeft = 292
     end
     object checkAutoReconnect: TCheckBox
-      Left = 291
+      Left = 213
       Top = 25
-      Width = 167
+      Width = 170
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Auto Reconnect'
       Checked = True
       State = cbChecked
       TabOrder = 2
+      ExplicitLeft = 292
     end
     object checkRecordLogs: TCheckBox
-      Left = 291
+      Left = 213
       Top = 62
-      Width = 81
+      Width = 84
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Record logs'
       TabOrder = 4
+      ExplicitLeft = 292
     end
     object checkUseAllowDenyLists: TCheckBox
-      Left = 291
+      Left = 213
       Top = 80
-      Width = 167
+      Width = 170
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Use Allow/Deny Lists'
       TabOrder = 6
+      ExplicitLeft = 292
     end
     object checkIgnoreBEL: TCheckBox
-      Left = 384
+      Left = 306
       Top = 62
-      Width = 74
+      Width = 77
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Ignore BEL'
       TabOrder = 5
+      ExplicitLeft = 385
     end
     object TabControl1: TTabControl
       Left = 6
       Top = 6
-      Width = 275
+      Width = 202
       Height = 108
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
       Tabs.Strings = (
         'Site1'
         'Site2')
       TabIndex = 0
       OnChange = TabControl1Change
+      OnChanging = TabControl1Changing
+      ExplicitWidth = 281
+      DesignSize = (
+        202
+        108)
       object Label1: TLabel
         Left = 7
         Top = 24
@@ -124,53 +145,54 @@ object CommForm: TCommForm
         AutoSize = False
         Layout = tlCenter
       end
-      object Edit: TEdit
-        Left = 7
-        Top = 78
-        Width = 161
-        Height = 20
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = #65325#65331' '#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        PopupMenu = popupCommand
-        TabOrder = 1
-        OnKeyPress = EditKeyPress
-      end
       object ConnectButton: TButton
-        Left = 178
-        Top = 78
-        Width = 89
-        Height = 20
+        Left = 119
+        Top = 77
+        Width = 75
+        Height = 21
+        Anchors = [akTop, akRight]
         Caption = 'Connect'
-        TabOrder = 0
+        TabOrder = 1
         OnClick = ConnectButtonClick
+        ExplicitLeft = 198
+      end
+      object Edit: TComboBox
+        Left = 7
+        Top = 77
+        Width = 106
+        Height = 21
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 0
+        OnKeyPress = EditKeyPress
+        OnSelect = EditSelect
+        ExplicitWidth = 185
       end
     end
     object checkForceReconnect: TCheckBox
-      Left = 291
+      Left = 213
       Top = 99
-      Width = 167
+      Width = 170
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Force reconnect'
       TabOrder = 7
+      ExplicitLeft = 292
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 471
+    Width = 388
     Height = 119
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
+    ExplicitWidth = 467
+    ExplicitHeight = 118
     object Splitter1: TSplitter
       Left = 1
       Top = 54
-      Width = 469
+      Width = 386
       Height = 4
       Cursor = crVSplit
       Align = alBottom
@@ -181,7 +203,7 @@ object CommForm: TCommForm
     object ListBox: TListBox
       Left = 1
       Top = 1
-      Width = 469
+      Width = 386
       Height = 53
       Style = lbOwnerDrawVariable
       Align = alClient
@@ -198,11 +220,13 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitWidth = 465
+      ExplicitHeight = 52
     end
     object Console: TListBox
       Left = 1
       Top = 58
-      Width = 469
+      Width = 386
       Height = 60
       Align = alBottom
       Font.Charset = DEFAULT_CHARSET
@@ -213,20 +237,22 @@ object CommForm: TCommForm
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
+      ExplicitTop = 57
+      ExplicitWidth = 465
     end
   end
   object StatusLine: TStatusBar
     Left = 0
     Top = 239
-    Width = 471
+    Width = 388
     Height = 23
     Panels = <
       item
         Width = 500
       end>
     SimplePanel = True
-    ExplicitTop = 216
-    ExplicitWidth = 350
+    ExplicitTop = 238
+    ExplicitWidth = 467
   end
   object Timer1: TTimer
     Enabled = False
