@@ -45,6 +45,7 @@ library Zlog;
 {ITE} {DFMFileType} {UExportHamlog.dfm}
 {ITE} {DFMFileType} {UFDMulti.dfm}
 {ITE} {DFMFileType} {UFreqList.dfm}
+{ITE} {DFMFileType} {UFreqPanel.dfm}
 {ITE} {DFMFileType} {UFreqTest.dfm}
 {ITE} {DFMFileType} {UFunctionKeyPanel.dfm}
 {ITE} {DFMFileType} {UGeneralMulti2.dfm}
@@ -164,6 +165,7 @@ library Zlog;
 {$R 'UExportHamlog.dfm' 'formExportHamlog:TForm'}
 {$R 'UFDMulti.dfm' 'FDMulti:TForm(ACAGMulti)'}
 {$R 'UFreqList.dfm' 'FreqList:TForm(CheckWin)'}
+{$R 'UFreqPanel.dfm' 'formFreqPanel:TForm'}
 {$R 'UFreqTest.dfm' 'formFreqTest:TForm'}
 {$R 'UFunctionKeyPanel.dfm' 'formFunctionKeyPanel:TForm(ZLogForm)'}
 {$R 'UGeneralMulti2.dfm' 'GeneralMulti2:TForm(ACAGMulti)'}

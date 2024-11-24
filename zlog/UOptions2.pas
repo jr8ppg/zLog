@@ -7,7 +7,8 @@ uses
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults,
-  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit, UzLogOperatorInfo;
+  UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit,
+  UzLogOperatorInfo, UFreqPanel;
 
 type
   TformOptions2 = class(TForm)
@@ -312,7 +313,6 @@ type
     radioPseQsl: TRadioButton;
     radioNoQsl: TRadioButton;
     checkBsNewMulti: TCheckBox;
-
     checkUseLookupServer: TCheckBox;
     checkSetFreqAfterModeChange: TCheckBox;
     checkAlwaysChangeMode: TCheckBox;
@@ -401,6 +401,24 @@ type
     checkUseResume: TCheckBox;
     checkUseNumberLookup: TCheckBox;
     checkUseCanSend: TCheckBox;
+    editQuickQsyCommand01: TEdit;
+    editQuickQsyFixEdge01: TEdit;
+    editQuickQsyCommand02: TEdit;
+    editQuickQsyFixEdge02: TEdit;
+    editQuickQsyCommand03: TEdit;
+    editQuickQsyFixEdge03: TEdit;
+    editQuickQsyCommand04: TEdit;
+    editQuickQsyFixEdge04: TEdit;
+    editQuickQsyCommand05: TEdit;
+    editQuickQsyFixEdge05: TEdit;
+    editQuickQsyCommand06: TEdit;
+    editQuickQsyFixEdge06: TEdit;
+    editQuickQsyCommand07: TEdit;
+    editQuickQsyFixEdge07: TEdit;
+    editQuickQsyCommand08: TEdit;
+    editQuickQsyFixEdge08: TEdit;
+    Label31: TLabel;
+    Label32: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -438,6 +456,7 @@ type
     procedure buttonSpotterListClick(Sender: TObject);
     procedure buttonOpEditClick(Sender: TObject);
     procedure checkUseNumberLookupClick(Sender: TObject);
+    procedure comboQuickQsyBandDropDown(Sender: TObject);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -451,6 +470,8 @@ type
     FQuickQSYBand: array[1..8] of TComboBox;
     FQuickQSYMode: array[1..8] of TComboBox;
     FQuickQSYRig: array[1..8] of TComboBox;
+    FQuickQSYCommand: array[1..8] of TEdit;
+    FQuickQSYFixEdge: array[1..8] of TEdit;
 
     FBSColor: array[1..12] of TEdit;
     FBSBold: array[1..12] of TCheckBox;
@@ -718,12 +739,7 @@ begin
       // Quick QSY
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin
          Settings.FQuickQSY[i].FUse := FQuickQSYCheck[i].Checked;
-         if FQuickQSYBand[i].ItemIndex = -1 then begin
-            Settings.FQuickQSY[i].FBand := b35;
-         end
-         else begin
-            Settings.FQuickQSY[i].FBand := TBand(FQuickQSYBand[i].ItemIndex);
-         end;
+         Settings.FQuickQSY[i].FFreq := StrToInt64Def(FQuickQSYBand[i].Text, 0);
 
          if FQuickQSYMode[i].ItemIndex = -1 then begin
             Settings.FQuickQSY[i].FMode := mCW;
@@ -733,6 +749,8 @@ begin
          end;
 
          Settings.FQuickQSY[i].FRig := FQuickQSYRig[i].ItemIndex;
+         Settings.FQuickQSY[i].FCommand := FQuickQSYCommand[i].Text;
+         Settings.FQuickQSY[i].FFixEdge := StrToIntDef(FQuickQSYFixEdge[i].Text, 0);
       end;
 
       // SuperCheck
@@ -1073,18 +1091,27 @@ begin
       for i := Low(FQuickQSYCheck) to High(FQuickQSYCheck) do begin
          FQuickQSYCheck[i].Checked := dmZLogGlobal.Settings.FQuickQSY[i].FUse;
          if FQuickQSYCheck[i].Checked = True then begin
-            FQuickQSYBand[i].ItemIndex := Integer(Settings.FQuickQSY[i].FBand);
+            FQuickQSYBand[i].Text := IntToStr(Settings.FQuickQSY[i].FFreq);
             FQuickQSYMode[i].ItemIndex := Integer(Settings.FQuickQSY[i].FMode);
          end
          else begin
-            FQuickQSYBand[i].ItemIndex := -1;
+            FQuickQSYBand[i].Text := '';
             FQuickQSYMode[i].ItemIndex := -1;
          end;
          FQuickQSYRig[i].ItemIndex := Settings.FQuickQSY[i].FRig;
+         FQuickQSYCommand[i].Text := Settings.FQuickQSY[i].FCommand;
+         if Settings.FQuickQSY[i].FFixEdge = 0 then begin
+            FQuickQSYFixEdge[i].Text := '';
+         end
+         else begin
+            FQuickQSYFixEdge[i].Text := IntToStr(Settings.FQuickQSY[i].FFixEdge);
+         end;
 
          FQuickQSYBand[i].Enabled := FQuickQSYCheck[i].Checked;
          FQuickQSYMode[i].Enabled := FQuickQSYCheck[i].Checked;
          FQuickQSYRig[i].Enabled  := FQuickQSYCheck[i].Checked;
+         FQuickQSYCommand[i].Enabled  := FQuickQSYCheck[i].Checked;
+         FQuickQSYFixEdge[i].Enabled  := FQuickQSYCheck[i].Checked;
       end;
 
       // SuperCheck
@@ -1341,42 +1368,58 @@ begin
    FQuickQSYBand[1]     := comboQuickQsyBand01;
    FQuickQSYMode[1]     := comboQuickQsyMode01;
    FQuickQSYRig[1]      := comboQuickQsyRig01;
+   FQuickQSYCommand[1]  := editQuickQsyCommand01;
+   FQuickQSYFixEdge[1]  := editQuickQsyFixEdge01;
    FQuickQSYCheck[2]    := checkUseQuickQSY02;
    FQuickQSYBand[2]     := comboQuickQsyBand02;
    FQuickQSYMode[2]     := comboQuickQsyMode02;
    FQuickQSYRig[2]      := comboQuickQsyRig02;
+   FQuickQSYCommand[2]  := editQuickQsyCommand02;
+   FQuickQSYFixEdge[2]  := editQuickQsyFixEdge02;
    FQuickQSYCheck[3]    := checkUseQuickQSY03;
    FQuickQSYBand[3]     := comboQuickQsyBand03;
    FQuickQSYMode[3]     := comboQuickQsyMode03;
    FQuickQSYRig[3]      := comboQuickQsyRig03;
+   FQuickQSYCommand[3]  := editQuickQsyCommand03;
+   FQuickQSYFixEdge[3]  := editQuickQsyFixEdge03;
    FQuickQSYCheck[4]    := checkUseQuickQSY04;
    FQuickQSYBand[4]     := comboQuickQsyBand04;
    FQuickQSYMode[4]     := comboQuickQsyMode04;
    FQuickQSYRig[4]      := comboQuickQsyRig04;
+   FQuickQSYCommand[4]  := editQuickQsyCommand04;
+   FQuickQSYFixEdge[4]  := editQuickQsyFixEdge04;
    FQuickQSYCheck[5]    := checkUseQuickQSY05;
    FQuickQSYBand[5]     := comboQuickQsyBand05;
    FQuickQSYMode[5]     := comboQuickQsyMode05;
    FQuickQSYRig[5]      := comboQuickQsyRig05;
+   FQuickQSYCommand[5]  := editQuickQsyCommand05;
+   FQuickQSYFixEdge[5]  := editQuickQsyFixEdge05;
    FQuickQSYCheck[6]    := checkUseQuickQSY06;
    FQuickQSYBand[6]     := comboQuickQsyBand06;
    FQuickQSYMode[6]     := comboQuickQsyMode06;
    FQuickQSYRig[6]      := comboQuickQsyRig06;
+   FQuickQSYCommand[6]  := editQuickQsyCommand06;
+   FQuickQSYFixEdge[6]  := editQuickQsyFixEdge06;
    FQuickQSYCheck[7]    := checkUseQuickQSY07;
    FQuickQSYBand[7]     := comboQuickQsyBand07;
    FQuickQSYMode[7]     := comboQuickQsyMode07;
    FQuickQSYRig[7]      := comboQuickQsyRig07;
+   FQuickQSYCommand[7]  := editQuickQsyCommand07;
+   FQuickQSYFixEdge[7]  := editQuickQsyFixEdge07;
    FQuickQSYCheck[8]    := checkUseQuickQSY08;
    FQuickQSYBand[8]     := comboQuickQsyBand08;
    FQuickQSYMode[8]     := comboQuickQsyMode08;
    FQuickQSYRig[8]      := comboQuickQsyRig08;
-   for b := Low(MHzString) to High(MHzString) do begin
-      FQuickQsyBand[1].Items.Add(MHZString[b]);
-   end;
+   FQuickQSYCommand[8]  := editQuickQsyCommand08;
+   FQuickQSYFixEdge[8]  := editQuickQsyFixEdge08;
+//   for b := Low(MHzString) to High(MHzString) do begin
+//      FQuickQsyBand[1].Items.Add(MHZString[b]);
+//   end;
    for m := Low(ModeString) to High(ModeString) do begin
       FQuickQsyMode[1].Items.Add(MODEString[m]);
    end;
    for i := 2 to High(FQuickQsyBand) do begin
-      FQuickQsyBand[i].Items.Assign(FQuickQsyBand[1].Items);
+//      FQuickQsyBand[i].Items.Assign(FQuickQsyBand[1].Items);
       FQuickQsyMode[i].Items.Assign(FQuickQsyMode[1].Items);
    end;
 
@@ -1569,6 +1612,39 @@ begin
    FQuickQSYBand[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYMode[no].Enabled := FQuickQSYCheck[no].Checked;
    FQuickQSYRig[no].Enabled  := FQuickQSYCheck[no].Checked;
+   FQuickQSYCommand[no].Enabled  := FQuickQSYCheck[no].Checked;
+   FQuickQSYFixEdge[no].Enabled  := FQuickQSYCheck[no].Checked;
+end;
+
+procedure TformOptions2.comboQuickQsyBandDropDown(Sender: TObject);
+var
+   dlg: TformFreqPanel;
+   pt: TPoint;
+   no: Integer;
+begin
+   dlg := TformFreqPanel.Create(Self);
+   try
+      pt.X := TComboBox(Sender).Left;
+      pt.Y := TComboBox(Sender).Top + TComboBox(Sender).Height;
+      pt := groupQuickQSY.ClientToScreen(pt);
+      AdjustWindowPosInsideMonitor(dlg, pt.X, pt.Y);
+
+      no := TComboBox(Sender).Tag;
+
+      if (dlg.Left + dlg.Width) > (Self.Left + Self.Width) then dlg.Left := (Self.Left + Self.Width) - dlg.Width;
+      if (dlg.Top + dlg.Height) > (Self.Top + Self.Height) then dlg.Top := (Self.Top + Self.Height) - dlg.Height;
+
+      dlg.Freq := StrToIntDef(TComboBox(Sender).Text, 0);
+
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      FQuickQSYBand[no].Text := IntToStr(dlg.Freq);  // dlg.Freq;
+
+   finally
+      dlg.Release();
+   end;
 end;
 
 procedure TformOptions2.SetEditNumber(no: Integer);

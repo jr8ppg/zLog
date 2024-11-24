@@ -548,6 +548,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzFreqMemory.pas"/>
+        <DCCReference Include="UFreqPanel.pas">
+            <Form>formFreqPanel</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -735,8 +739,8 @@
                     <Resource_DLL_Projects Name="Item1">英語 (米国)*$00000409*ENU*ENU</Resource_DLL_Projects>
                 </Resource_DLL_Projects>
                 <RDP_Source_Files>
-                    <RDP_Source_Files Name="Item0">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item1">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item0">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item1">Win32\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item2">Win32\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">main.dfm</RDP_Source_Files>
@@ -856,7 +860,8 @@
                     <RDP_Source_Files Name="Item118">UCountryChecker.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item119">UELogJarl2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item120">UzLogForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item121">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item121">UFreqPanel.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item122">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

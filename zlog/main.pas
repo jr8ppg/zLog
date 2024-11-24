@@ -1052,7 +1052,7 @@ type
     procedure IncFontSize();
     procedure DecFontSize();
     procedure SetFontSize(font_size: Integer);
-    procedure QSY(b: TBand; m: TMode; r: Integer);
+    procedure QSY(b: TBand; m: TMode; r: Integer; f: TFrequency; e: Integer);
     procedure OnPlayMessageA(no: Integer);
     procedure OnPlayMessageB(no: Integer);
     procedure PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
@@ -1741,7 +1741,7 @@ end;
 
 procedure TMainForm.BandMenuClick(Sender: TObject);
 begin
-   QSY(TBand(TMenuItem(Sender).Tag), CurrentQSO.Mode, 0);
+   QSY(TBand(TMenuItem(Sender).Tag), CurrentQSO.Mode, 0, 0, 0);
    LastFocus.SetFocus;
 end;
 
@@ -3628,7 +3628,7 @@ end;
 
 procedure TMainForm.ModeMenuClick(Sender: TObject);
 begin
-   QSY(CurrentQSO.Band, TMode(TMenuItem(Sender).Tag), 0);
+   QSY(CurrentQSO.Band, TMode(TMenuItem(Sender).Tag), 0, 0, 0);
    LastFocus.SetFocus;
 end;
 
@@ -8947,7 +8947,7 @@ begin
    Caption := strCap;
 end;
 
-procedure TMainForm.QSY(b: TBand; m: TMode; r: Integer);
+procedure TMainForm.QSY(b: TBand; m: TMode; r: Integer; f: TFrequency; e: Integer);
 var
    rig: TRig;
 begin
@@ -8955,23 +8955,37 @@ begin
       SwitchRig(r);
    end;
 
+   if b = bUnknown then begin
+      b := dmZLogGlobal.BandPlan.FreqToBand(f);
+   end;
+
    rig := RigControl.GetRig(FCurrentRigSet, b);
    if CurrentQSO.band <> b then begin
       UpdateBand(b);
+   end;
 
-      if rig <> nil then begin
-         // バンド変更
+   if rig <> nil then begin
+      // バンド変更
+      if f = 0 then begin
          rig.SetBand(FCurrentRigSet, CurrentQSO);
-
-         // RIG変更
-         FRigControl.SetCurrentRig(rig.RigNumber);
-
-         // Antenna Select
-         AntennaSelect(rig, FCurrentRigSet, b);
-
-         // RIG Select
-         dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+      end
+      else begin
+         rig.SetFreq(f, False);
       end;
+
+      // RIG変更
+      FRigControl.SetCurrentRig(rig.RigNumber);
+
+      // Antenna Select
+      AntennaSelect(rig, FCurrentRigSet, b);
+
+      // FixEdge Select
+      if e <> 0 then begin
+         rig.FixEdgeSelect(e);
+      end;
+
+      // RIG Select
+      dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
    // SO2Rではモード変更不要
@@ -9462,9 +9476,10 @@ end;
 procedure TMainForm.actionQuickQSYExecute(Sender: TObject);
 var
    no: Integer;
-   b: TBand;
+   f: TFrequency;
    m: TMode;
    r: Integer;
+   e: Integer;
 begin
    no := TAction(Sender).Tag;
 
@@ -9472,11 +9487,12 @@ begin
       Exit;
    end;
 
-   b := dmZLogGlobal.Settings.FQuickQSY[no].FBand;
+   f := dmZLogGlobal.Settings.FQuickQSY[no].FFreq;
    m := dmZLogGlobal.Settings.FQuickQSY[no].FMode;
    r := dmZLogGlobal.Settings.FQuickQSY[no].FRig;
+   e := dmZLogGlobal.Settings.FQuickQSY[no].FFixEdge;
 
-   QSY(b, m, r);
+   QSY(bUnknown, m, r, f, e);
 
    LastFocus.SetFocus;
 end;
@@ -13796,43 +13812,48 @@ end;
 
 procedure TMainForm.CallFreqMemory(rigset: Integer; strCommand: string);
 var
-   b: TBand;
    m: TMode;
    f: TFrequency;
-   rig: TRig;
+   r: Integer;
+   e: Integer;
    obj: TFreqMemory;
+   i: Integer;
+   fFound: Boolean;
 begin
-   obj := FFreqMem.ObjectOf(strCommand);
-   if obj = nil then begin
-      Exit;
+   m := mCW;
+   f := 0;
+   r := 0;
+   e := 0;
+
+   fFound := False;
+   for i := Low(dmZLogGlobal.Settings.FQuickQSY) to High(dmZLogGlobal.Settings.FQuickQSY) do begin
+      if dmZLogGlobal.Settings.FQuickQSY[i].FCommand = strCommand then begin
+         m := dmZLogGlobal.Settings.FQuickQSY[i].FMode;
+         r := dmZLogGlobal.Settings.FQuickQSY[i].FRig;
+         f := dmZLogGlobal.Settings.FQuickQSY[i].FFreq;
+         e := dmZLogGlobal.Settings.FQuickQSY[i].FFixEdge;
+         fFound := True;
+         Break;
+      end;
    end;
 
-   m := obj.Mode;
-   f := obj.Frequency;
-   b := dmZLogGlobal.BandPlan.FreqToBand(f);
+   if fFound = False then begin
+      obj := FFreqMem.ObjectOf(strCommand);
+      if obj = nil then begin
+         Exit;
+      end;
+      m := obj.Mode;
+      f := obj.Frequency;
+      r := 0;
+      e := obj.FixEdgeNo;
+   end;
 
+   // Mode不明ならバンドプランより求める
    if m = mOther then begin
       m := dmZLogGlobal.BandPlan.GetEstimatedMode(f);
    end;
 
-   rig := MainForm.RigControl.GetRig(rigset, b);
-   if rig = nil then begin
-      Exit;
-   end;
-
-   rig.SetFreq(f, False);
-
-   rig.SetMode(m);
-
-   // Antenna Select
-   AntennaSelect(rig, FCurrentRigSet, b);
-
-   if obj.FixEdgeNo <> 0 then begin
-      rig.FixEdgeSelect(obj.FixEdgeNo);
-   end;
-
-   RigControl.SetCurrentRig(rig.RigNumber);
-   dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+   QSY(bUnknown, m, r, f, e);
 end;
 
 procedure TMainForm.AntennaSelect(rig: TRig; rigset: Integer; b: TBand);

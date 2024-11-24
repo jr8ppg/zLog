@@ -154,7 +154,8 @@ uses
   UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2},
   UTelnetSetting in 'UTelnetSetting.pas',
   UzLogForm in 'UzLogForm.pas' {ZLogForm},
-  UzFreqMemory in 'UzFreqMemory.pas';
+  UzFreqMemory in 'UzFreqMemory.pas',
+  UFreqPanel in 'UFreqPanel.pas' {formFreqPanel};
 
 {$R *.res}
 

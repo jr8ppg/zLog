@@ -51,9 +51,11 @@ type
 
   TQuickQSY = record
     FUse: Boolean;
-    FBand: TBand;
+    FFreq: TFrequency;
     FMode: TMode;
     FRig: Integer;
+    FCommand: string;
+    FFixEdge: Integer;
   end;
 
   TSuperCheckParam = record
@@ -655,6 +657,7 @@ function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
 function GetCommPortsForOldVersion(lpPortNumbers: PULONG; uPortNumbersCount: ULONG; var puPortNumbersFound: ULONG): ULONG;
 function TrimCRLF(SS : string) : string;
 function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
+procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
 
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
@@ -1318,11 +1321,13 @@ begin
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
-         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,';
+         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,,,';
          Settings.FQuickQSY[i].FUse := StrToBoolDef(slParam[0], False);
-         Settings.FQuickQSY[i].FBand := StrToBandDef(slParam[1], b35);
+         Settings.FQuickQSY[i].FFreq := StrToInt64Def(slParam[1], 0);
          Settings.FQuickQSY[i].FMode := StrToModeDef(slParam[2], mSSB);
          Settings.FQuickQSY[i].FRig  := StrToIntDef(slParam[3], 0);
+         Settings.FQuickQSY[i].FCommand  := slParam[4];
+         Settings.FQuickQSY[i].FFixEdge  := StrToIntDef(slParam[5], 0);
       end;
 
       // SuperCheck
@@ -2022,9 +2027,11 @@ begin
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
          slParam.Clear();
          slParam.Add( BoolToStr(Settings.FQuickQSY[i].FUse, False) );
-         slParam.Add( MHzString[ Settings.FQuickQSY[i].FBand ]);
-         slParam.Add( MODEString[ Settings.FQuickQSY[i].FMode ]);
+         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFreq) );
+         slParam.Add( ModeString[ Settings.FQuickQSY[i].FMode ]);
          slParam.Add( IntToStr(Settings.FQuickQSY[i].FRig) );
+         slParam.Add( Settings.FQuickQSY[i].FCommand );
+         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFixEdge) );
          ini.WriteString('QuickQSY', '#' + IntToStr(i), slParam.CommaText);
       end;
 
@@ -4545,6 +4552,44 @@ begin
    end;
 
    Result := True;
+end;
+
+procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
+var
+   mon: TMonitor;
+   pt: TPoint;
+begin
+   pt.X := x;
+   pt.Y := y;
+
+   mon := Screen.MonitorFromPoint(pt, mdNearest);
+   if mon = nil then begin
+      Exit;
+   end;
+
+   // 上
+   if (y < mon.Top) then begin
+      y := mon.Top;
+   end;
+
+   // 下
+   if (((y + f.Height) ) > (mon.Top + mon.Height)) then begin
+      y := mon.Top + mon.Height - f.Height;
+   end;
+
+   // 左
+   if (x < mon.Left) then begin
+      x := mon.Left;
+   end;
+
+   // 右
+   if (((x + f.Width) ) > (mon.Left + mon.Width)) then begin
+      x := mon.Left + mon.Width - f.Width;
+   end;
+
+   f.DefaultMonitor := dmDesktop;
+   f.Left := x;
+   f.Top := y;
 end;
 
 end.
