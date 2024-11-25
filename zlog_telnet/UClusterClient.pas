@@ -3,8 +3,10 @@ unit UClusterClient;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, IniFiles, System.DateUtils,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
+  System.AnsiStrings, Vcl.ComCtrls, System.IniFiles, System.DateUtils,
+  System.IOUtils,
   OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
   UOptions, USpotClass, UzLogConst, HelperLib, UTelnetSetting;
 
@@ -35,10 +37,10 @@ type
     labelHostName: TLabel;
     Label2: TLabel;
     labelLoginID: TLabel;
-    Edit1: TEdit;
     buttonConnect: TButton;
     timerForceReconnect: TTimer;
     timerReConnect: TTimer;
+    Edit: TComboBox;
     procedure buttonCloseClick(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -59,6 +61,8 @@ type
     procedure TabControl1Change(Sender: TObject);
     procedure timerForceReconnectTimer(Sender: TObject);
     procedure timerReConnectTimer(Sender: TObject);
+    procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure EditSelect(Sender: TObject);
   private
     { Private declarations }
     FSpotExpireMin: Integer;                       // スポットの生存時間
@@ -130,6 +134,7 @@ resourcestring
   UComm_Disconnecting = '切断中...';
   UComm_SecondsLeft = '再接続まであと %s 秒';
   UComm_ExceededLimit = '再接続試行回数の上限を超えました';
+  UComm_SiteChanging = '既に %s へ接続しています。 切断してもよろしいですか？';
 
 var
    ClusterClient: TClusterClient;
@@ -224,26 +229,44 @@ begin
    s := '';
    if Key = Chr($0D) then begin
 
-      WriteData(Edit1.Text + FLineBreak);
+      WriteData(Edit.Text + FLineBreak);
 
       if boo then begin
-         WriteConsole(Edit1.Text + FLineBreak);
+         WriteConsole(Edit.Text + FLineBreak);
       end;
 
       Key := Chr($0);
-      Edit1.Text := '';
+      Edit.Text := '';
    end;
+end;
+
+procedure TClusterClient.EditSelect(Sender: TObject);
+var
+   inputs: array[0..1] of TInput;
+   uSent: UINT;
+begin
+   // コマンド選択後はEnterキーを押したことにする
+   ZeroMemory(@inputs, SizeOf(inputs));
+
+   inputs[0].Itype := INPUT_KEYBOARD;
+   inputs[0].ki.wVk := VK_RETURN;
+
+   inputs[1].Itype := INPUT_KEYBOARD;
+   inputs[1].ki.wVk := VK_RETURN;
+   inputs[1].ki.dwFlags := KEYEVENTF_KEYUP;
+
+   uSent := SendInput(Length(inputs), inputs[0], sizeof(TInput));
 end;
 
 procedure TClusterClient.LoadSettings();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    num: Integer;
    i: Integer;
    strKey: string;
    setting: TTelnetSetting;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       Self.Top := ini.ReadInteger('window', 'top', Self.Top);
       Self.Left := ini.ReadInteger('window', 'left', Self.Left);
@@ -280,6 +303,7 @@ begin
          setting.PortNumber := ini.ReadInteger('PacketCluster', strKey + '_PortNumber', 23);
          setting.LineBreak := ini.ReadInteger('PacketCluster', strKey + '_LineBreak', 0);
          setting.LocalEcho := ini.ReadBool('PacketCluster', strKey + '_LocalEcho', False);
+         setting.CommandList := ini.ReadString('PacketCluster', strKey + '_CommandList', '');
          FPacketClusterList.Add(setting);
       end;
    finally
@@ -289,11 +313,11 @@ end;
 
 procedure TClusterClient.SaveSettings();
 var
-   ini: TIniFile;
+   ini: TMemIniFile;
    i: Integer;
    strKey: string;
 begin
-   ini := TIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       ini.WriteInteger('window', 'top', Self.Top);
       ini.WriteInteger('window', 'left', Self.Left);
@@ -328,7 +352,10 @@ begin
          ini.WriteInteger('PacketCluster', strKey + '_PortNumber', FPacketClusterList[i].PortNumber);
          ini.WriteInteger('PacketCluster', strKey + '_LineBreak', FPacketClusterList[i].LineBreak);
          ini.WriteBool('PacketCluster', strKey + '_LocalEcho', FPacketClusterList[i].LocalEcho);
+         ini.WriteString('PacketCluster', strKey + '_CommandList', FPacketClusterList[i].CommandList);
       end;
+
+      ini.UpdateFile();
    finally
       ini.Free();
    end;
@@ -569,7 +596,7 @@ end;
 procedure TClusterClient.buttonConnectClick(Sender: TObject);
 begin
    try
-      Edit1.SetFocus;
+      Edit.SetFocus;
       FRetryIntervalCount := 0;
 
       if Telnet.IsConnected then begin
@@ -752,6 +779,25 @@ begin
    SelectSite(TabControl1.TabIndex);
 end;
 
+procedure TClusterClient.TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+var
+   S: string;
+begin
+   // 接続中の場合は切るか確認する
+   if Telnet.IsConnected then begin
+      S := Format(UComm_SiteChanging, [labelHostName.Caption]);
+      if MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
+         buttonConnect.Caption := UComm_Disconnecting;
+         FDisconnectClicked := True;
+         Telnet.Close();
+         AllowChange := True;
+      end
+      else begin
+         AllowChange := False;
+      end;
+   end;
+end;
+
 procedure TClusterClient.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);
 var
    str : string;
@@ -759,7 +805,7 @@ var
    st: Integer;
    line: string;
 begin
-   str := string(AnsiStrings.StrPas(PAnsiChar(Buffer)));
+   str := string(System.AnsiStrings.StrPas(PAnsiChar(Buffer)));
 
    st := 1;
    for i := 1 to Length(str) do begin
@@ -965,6 +1011,8 @@ begin
    else begin
       labelLoginId.Caption := setting.LoginId;
    end;
+
+   Edit.Items.CommaText := setting.CommandList;
 end;
 
 end.

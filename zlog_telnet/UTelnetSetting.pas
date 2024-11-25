@@ -14,6 +14,7 @@ type
     FLineBreak: Integer;      // 0:CRLF 1:CR 2:LF
     FLocalEcho: Boolean;
     FLoginId: string;
+    FCommandList: string;
   public
     constructor Create();
     destructor Destroy();
@@ -24,6 +25,7 @@ type
     property LineBreak: Integer read FLineBreak write FLineBreak;
     property LocalEcho: Boolean read FLocalEcho write FLocalEcho;
     property LoginId: string read FLoginId write FLoginId;
+    property CommandList: string read FCommandList write FCommandList;
   end;
 
   TTelnetSettingList = class(TObjectList<TTelnetSetting>)
@@ -45,6 +47,7 @@ begin
    FLineBreak := 0;
    FLocalEcho := False;
    FLoginId := '';
+   FCommandList := '';
 end;
 
 destructor TTelnetSetting.Destroy();
@@ -60,6 +63,7 @@ begin
    Self.FLineBreak := src.LineBreak;
    Self.FLocalEcho := src.LocalEcho;
    Self.FLoginId := src.LoginId;
+   Self.CommandList := src.CommandList;
 end;
 
 { TTelnetSettingList }

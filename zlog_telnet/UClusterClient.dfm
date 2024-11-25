@@ -27,18 +27,27 @@ object ClusterClient: TClusterClient
     Height = 117
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 244
+    ExplicitTop = 124
+    ExplicitWidth = 284
+    DesignSize = (
+      288
+      117)
     object TabControl1: TTabControl
       Left = 4
       Top = 4
       Width = 279
       Height = 108
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
       Tabs.Strings = (
         'Site1'
         'Site2')
       TabIndex = 0
       OnChange = TabControl1Change
+      OnChanging = TabControl1Changing
+      DesignSize = (
+        279
+        108)
       object Label1: TLabel
         Left = 7
         Top = 24
@@ -71,29 +80,25 @@ object ClusterClient: TClusterClient
         AutoSize = False
         Layout = tlCenter
       end
-      object Edit1: TEdit
+      object buttonConnect: TButton
+        Left = 197
+        Top = 78
+        Width = 75
+        Height = 20
+        Anchors = [akTop, akRight]
+        Caption = #25509#32154
+        TabOrder = 1
+        OnClick = buttonConnectClick
+      end
+      object Edit: TComboBox
         Left = 7
         Top = 78
-        Width = 161
+        Width = 183
         Height = 20
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -12
-        Font.Name = #65325#65331' '#12468#12471#12483#12463
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-        OnKeyPress = EditKeyPress
-      end
-      object buttonConnect: TButton
-        Left = 178
-        Top = 78
-        Width = 89
-        Height = 20
-        Caption = #25509#32154
+        Anchors = [akLeft, akTop, akRight]
         TabOrder = 0
-        OnClick = buttonConnectClick
+        OnKeyPress = EditKeyPress
+        OnSelect = EditSelect
       end
     end
   end
@@ -106,7 +111,7 @@ object ClusterClient: TClusterClient
     Caption = 'Panel2'
     TabOrder = 1
     ExplicitWidth = 284
-    ExplicitHeight = 180
+    ExplicitHeight = 96
     object Splitter1: TSplitter
       Left = 1
       Top = 44
@@ -136,7 +141,7 @@ object ClusterClient: TClusterClient
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
       ExplicitWidth = 282
-      ExplicitHeight = 88
+      ExplicitHeight = 42
     end
     object Console: TListBox
       Left = 1
@@ -152,6 +157,8 @@ object ClusterClient: TClusterClient
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
+      ExplicitTop = 47
+      ExplicitWidth = 282
     end
   end
   object panelShowInfo: TPanel

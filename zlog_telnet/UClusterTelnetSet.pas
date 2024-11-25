@@ -3,8 +3,9 @@ unit UClusterTelnetSet;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Spin, UTelnetSetting;
+  WinApi.Windows, System.SysUtils, System.Classes, Vcl.Graphics, Vcl.Forms,
+  Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Vcl.Samples.Spin,
+  UTelnetSetting, UzLogGlobal;
 
 type
   TformClusterTelnetSet = class(TForm)
@@ -22,8 +23,11 @@ type
     Label4: TLabel;
     Label5: TLabel;
     editLoginId: TEdit;
+    Label6: TLabel;
+    memoCommands: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
+    procedure editSettingNameExit(Sender: TObject);
   private
     { Private declarations }
     function GetHostName(): string;
@@ -77,6 +81,11 @@ begin
    ModalResult := mrOK;
 end;
 
+procedure TformClusterTelnetSet.editSettingNameExit(Sender: TObject);
+begin
+   JudgeFileNameCharactor(Self, editSettingName);
+end;
+
 function TformClusterTelnetSet.GetHostName(): string;
 begin
    Result := comboHostName.Text;
@@ -120,6 +129,7 @@ end;
 function TformClusterTelnetSet.GetSetting(): TTelnetSetting;
 var
    obj: TTelnetSetting;
+   i: Integer;
 begin
    obj := TTelnetSetting.Create();
    obj.Name := editSettingName.Text;
@@ -128,6 +138,12 @@ begin
    obj.LineBreak := comboLineBreak.ItemIndex;
    obj.LocalEcho := checkLocalEcho.Checked;
    obj.LoginId := editLoginId.Text;
+   for i := memoCommands.Lines.Count - 1 downto 0 do begin
+      if Trim(memoCommands.Lines[i]) = '' then begin
+         memoCommands.Lines.Delete(i);
+      end;
+   end;
+   obj.CommandList := memoCommands.Lines.CommaText;
    Result := obj;
 end;
 
@@ -139,6 +155,7 @@ begin
    comboLineBreak.ItemIndex := v.LineBreak;
    checkLocalEcho.Checked := v.LocalEcho;
    editLoginId.Text := v.LoginId;
+   memoCommands.Lines.CommaText := v.CommandList;
 end;
 
 end.
