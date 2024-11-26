@@ -13834,8 +13834,13 @@ begin
    Inherited Create(True);
    FreeOnTerminate := True;
    FParent := formParent;
-   FQso := TQSO.Create();
-   FQso.Assign(aQSO);
+   if aQSO <> nil then begin
+      FQso := TQSO.Create();
+      FQso.Assign(aQSO);
+   end
+   else begin
+      FQso := nil;
+   end;
 end;
 
 procedure TBandScopeNotifyThread.Execute();
