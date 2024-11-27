@@ -1501,6 +1501,11 @@ var
 begin
    merged := 0;
 
+   if UpperCase(ExtractFileExt(filename)) = '.ZLOX' then begin
+      Result := MergeFileEx(filename, fFullMatch);
+      Exit;
+   end;
+
    AssignFile(f, filename);
    Reset(f);
    Read(f, dat); // first qso comment
