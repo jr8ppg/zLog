@@ -188,6 +188,7 @@ begin
    end;
 
    Grid.TopRow := j;
+   LatestMultiAddition := 0;
 end;
 
 procedure TIOTAMulti.UpdateData;
@@ -215,7 +216,9 @@ begin
       end;
    end;
 
-   Grid.TopRow := LatestMultiAddition;
+   if checkJumpLatestMulti.Checked = True then begin
+      Grid.TopRow := LatestMultiAddition;
+   end;
 
    Grid.Refresh();
 end;
@@ -261,9 +264,15 @@ var
    l: Integer;
 begin
    l := Length(strCode);
+   if l = 0 then begin
+      Grid.TopRow := LatestMultiAddition;
+      Exit;
+   end;
+
    for i := 0 to IslandList.List.Count - 1 do begin
       if (strCode = Copy(TIsland(IslandList.List[i]).RefNumber, 1, l)) then begin
          Grid.TopRow := i;
+         LatestMultiAddition := i;
          Break;
       end;
    end;
@@ -296,7 +305,6 @@ begin
    for i := 0 to IslandList.List.Count - 1 do begin
       C := TIsland(IslandList.List[i]);
       if str = C.RefNumber then begin
-         // ListBox.TopIndex := i;
          Grid.TopRow := i;
          str := C.Summary;
 

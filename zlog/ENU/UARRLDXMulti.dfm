@@ -2,9 +2,10 @@ inherited ARRLDXMulti: TARRLDXMulti
   Left = 163
   Top = 222
   Caption = 'Multipliers'
-  PixelsPerInch = 96
   TextHeight = 13
   inherited Panel1: TPanel
+    ExplicitTop = 263
+    ExplicitWidth = 361
     inherited StayOnTop: TCheckBox
       Width = 73
       ExplicitWidth = 73

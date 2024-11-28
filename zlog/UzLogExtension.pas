@@ -585,16 +585,13 @@ end;
 /// </returns>
 function GetDLLsINI: TList<string>;
 begin
-	var init := LoadIniFile;
-	var text := init.ReadString(KEY_ZYLO, KEY_DLLS, '');
+	var text := dmZLogGlobal.Settings._pluginDLLs;
 	Result := TList<string>.Create;
 	Result.AddRange(text.Split([',']));
 
    for var i := 0 to Result.Count - 1 do begin
       Result[i] := ExtractFileName(Result[i]);
    end;
-
-	init.Free;
 end;
 
 /// <summary>
@@ -606,12 +603,12 @@ end;
 /// </param>
 procedure SetDLLsINI(list: TList<string>);
 begin
-	var init := LoadIniFile;
 	var text := TStringList.Create;
 	for var item in list do text.Append(item);
-	init.WriteString(KEY_ZYLO, KEY_DLLS, text.DelimitedText);
+
+   dmZLogGlobal.Settings._pluginDLLs := text.DelimitedText;
+
 	text.Free;
-	init.Free;
 end;
 
 /// <summary>

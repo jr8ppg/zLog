@@ -53,6 +53,7 @@ type
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
+    procedure SetWPM(wpm: Integer); override;
     procedure ControlPTT(fOn: Boolean); override;
   end;
 
@@ -140,6 +141,11 @@ type
   end;
 
   TFTDX5000 = class(TFT2000)
+  public
+    procedure AntSelect(no: Integer); override;
+  end;
+
+  TFTDX101 = class(TFT991)
   public
     procedure AntSelect(no: Integer); override;
   end;
@@ -653,6 +659,14 @@ begin
    end;
 
    WriteData(AnsiString('VS') + AnsiChar(Ord('0') + i) + AnsiString(';'));
+end;
+
+procedure TFT2000.SetWPM(wpm: Integer);
+var
+   CMD: AnsiString;
+begin
+   CMD := AnsiString('KS' + RightStr('000' + IntToStr(wpm), 3) + ';');
+   WriteData(CMD);
 end;
 
 procedure TFT2000.SetXit(flag: Boolean);
@@ -1616,6 +1630,18 @@ begin
       2: WriteData('AN02;');
       3: WriteData('AN03;');
       4: WriteData('AN04;');
+   end;
+end;
+
+{ TFTDX101 }
+
+procedure TFTDX101.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN01;');
+      2: WriteData('AN02;');
+      3: WriteData('AN03;');
    end;
 end;
 

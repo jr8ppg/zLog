@@ -12718,14 +12718,27 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, band);
    if (rig <> nil) and (rig.ControlPTTSupported = True) and
       (dmZLogGlobal.Settings._use_ptt_command = True) then begin
-      rig.ControlPTT(fPTT);
+      if mode = mCW then begin
+         if dmZLogGlobal.Settings._pttenabled_cw = True then begin
+            rig.ControlPTT(fPTT);
+         end;
+      end
+      else begin
+         if dmZLogGlobal.Settings._pttenabled_ph = True then begin
+            rig.ControlPTT(fPTT);
+         end;
+      end;
    end;
 
    if mode = mCW then begin
-      ControlPTT(fPTT);
+      if dmZLogGlobal.Settings._pttenabled_cw = True then begin
+         ControlPTT(fPTT);
+      end;
    end
    else begin
-      VoiceControl(fPTT);
+      if dmZLogGlobal.Settings._pttenabled_ph = True then begin
+         VoiceControl(fPTT);
+      end;
    end;
 end;
 
@@ -13821,8 +13834,13 @@ begin
    Inherited Create(True);
    FreeOnTerminate := True;
    FParent := formParent;
-   FQso := TQSO.Create();
-   FQso.Assign(aQSO);
+   if aQSO <> nil then begin
+      FQso := TQSO.Create();
+      FQso.Assign(aQSO);
+   end
+   else begin
+      FQso := nil;
+   end;
 end;
 
 procedure TBandScopeNotifyThread.Execute();

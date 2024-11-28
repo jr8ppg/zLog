@@ -31,11 +31,8 @@ begin
    Inherited AddNoUpdate(aQSO);
 
    band := aQSO.band;
-   if aQSO.NewMulti2 then begin
-      Inc(Multi2[band]);
-   end;
 
-   case aQSO.Band of
+   case band of
       b19 : aQSO.Points := 4;
       b35 : aQSO.Points := 2;
       b7..b21 : aQSO.Points := 1;

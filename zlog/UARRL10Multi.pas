@@ -15,13 +15,13 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   protected
+    LatestMultiAddition : integer; // grid top
     procedure UpdateLabelPos(); override;
   private
     { Private declarations }
     StateList : TStateList;
   public
     { Public declarations }
-    LastMulti : integer; // grid top
     procedure UpdateData; override;
     procedure Add(var aQSO : TQSO); override;
     procedure SortDefault; override;
@@ -31,17 +31,18 @@ type
     procedure AddNoUpdate(var aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
-    function GetInfoAA(aQSO : TQSO) : string; // called from spacebarproc in TAllAsianContest
+    function GetInfo(aQSO: TQSO): string; override;
     function ExtractMulti(aQSO : TQSO) : string; override;
   end;
 
 implementation
 
-uses Main;
+uses
+  Main;
 
 {$R *.DFM}
 
-function TARRL10Multi.GetInfoAA(aQSO: TQSO): string;
+function TARRL10Multi.GetInfo(aQSO: TQSO): string;
 begin
    Result := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country.JustInfo;
 end;
@@ -62,7 +63,7 @@ begin
          str := str + 'CW ';
    end;
 
-   MainForm.WriteStatusLine(str, false);
+   MainForm.WriteStatusLine(str, False);
 end;
 
 function TARRL10Multi.ValidMulti(aQSO: TQSO): Boolean;
@@ -70,7 +71,7 @@ var
    j: Integer;
    C: TCountry;
 begin
-   Result := false;
+   Result := False;
 
    if aQSO.NrRcvd = '' then
       exit;
@@ -79,7 +80,7 @@ begin
       if (aQSO.NrRcvd = '1') or (aQSO.NrRcvd = '2') or (aQSO.NrRcvd = '3') then
          Result := True
       else
-         Result := false;
+         Result := False;
       exit;
    end;
 
@@ -102,8 +103,8 @@ var
    C: TCountry;
    S: TState;
 begin
-   aQSO.NewMulti1 := false;
-   aQSO.NewMulti2 := false;
+   aQSO.NewMulti1 := False;
+   aQSO.NewMulti2 := False;
 
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
 
@@ -123,21 +124,20 @@ begin
       end
       else begin
          aQSO.Multi1 := S.StateAbbrev;
-         if S.Worked[B] = false then begin
+         if S.Worked[B] = False then begin
             S.Worked[B] := True;
             aQSO.NewMulti1 := True;
-            LastMulti := S.Index;
          end;
+         LatestMultiAddition := S.Index;
       end;
    end
    else begin
       aQSO.Multi1 := C.Country;
-      if C.Worked[B] = false then begin
+      if C.Worked[B] = False then begin
          C.Worked[B] := True;
          aQSO.NewMulti1 := True;
-         LastMulti := C.GridIndex;
-         // Grid.Cells[0,C.GridIndex] := C.SummaryARRL10;
       end;
+      LatestMultiAddition := C.GridIndex;
    end;
 end;
 
@@ -146,7 +146,7 @@ var
    S: TState;
 begin
    { inherited; }
-   LastMulti := 0;
+   LatestMultiAddition := 0;
    StateList := TStateList.Create;
    StateList.LoadFromFile('ARRL10.DAT');
 
@@ -156,12 +156,14 @@ begin
    S.StateName := 'ITU Reg. 1';
    S.Index := StateList.List.Count;
    StateList.List.Add(S);
+
    S := TState.Create;
    S.StateAbbrev := '2';
    S.AltAbbrev := '2';
    S.StateName := 'ITU Reg. 2';
    S.Index := StateList.List.Count;
    StateList.List.Add(S);
+
    S := TState.Create;
    S.StateAbbrev := '3';
    S.AltAbbrev := '3';
@@ -219,7 +221,9 @@ procedure TARRL10Multi.UpdateData;
 begin
    SortDefault;
    RefreshGrid;
-   // RefreshZone;
+
+   Grid.TopRow := LatestMultiAddition;
+
    RenewCluster;
    RenewBandScope;
 end;
@@ -227,7 +231,7 @@ end;
 procedure TARRL10Multi.Add(var aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
-   Grid.TopRow := LastMulti;
+   Grid.TopRow := LatestMultiAddition;
    {
      if (aQSO.Reserve2 <> $AA) and (MostRecentCty <> nil) then
      Grid.TopRow := MostRecentCty.GridIndex;
@@ -244,19 +248,19 @@ var
 begin
    for i := 0 to StateList.List.Count - 1 do
       for B := b19 to HiBand do
-         TState(StateList.List[i]).Worked[B] := false;
+         TState(StateList.List[i]).Worked[B] := False;
 
    for i := 0 to dmZLogGlobal.CountryList.Count - 1 do
       for B := b19 to HiBand do
-         TCountry(dmZLogGlobal.CountryList.List[i]).Worked[B] := false;
+         TCountry(dmZLogGlobal.CountryList.List[i]).Worked[B] := False;
 
    SortDefault;
 end;
 
 procedure TARRL10Multi.FormShow(Sender: TObject);
 begin
-   // inherited;
    AdjustGridSize(Grid);
+   LatestMultiAddition := 0;
    UpdateData();
    PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
    RefreshGrid;
