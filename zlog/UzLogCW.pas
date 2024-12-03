@@ -60,14 +60,7 @@ var
    temp: string;
    S: string;
 begin
-   temp := UpperCase(sendtext);
-
-   temp := StringReplace(temp, '[AR]', 'a', [rfReplaceAll]);
-   temp := StringReplace(temp, '[SK]', 's', [rfReplaceAll]);
-   temp := StringReplace(temp, '[VA]', 's', [rfReplaceAll]);
-   temp := StringReplace(temp, '[KN]', 'k', [rfReplaceAll]);
-   temp := StringReplace(temp, '[BK]', 'b', [rfReplaceAll]);
-   temp := StringReplace(temp, '[BT]', 't', [rfReplaceAll]);
+   temp := sendtext;
 
    temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
    temp := StringReplace(temp, '$x', LowerCase(dmZLogGlobal.Settings._sentstr), [rfReplaceAll]);
@@ -185,6 +178,15 @@ begin
    S := UpperCase(dmZLogGlobal.MyCall);
    temp := StringReplace(temp, '$M', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$m', S, [rfReplaceAll]);
+
+   temp := UpperCase(temp);
+
+   temp := StringReplace(temp, '[AR]', 'a', [rfReplaceAll]);
+   temp := StringReplace(temp, '[SK]', 's', [rfReplaceAll]);
+   temp := StringReplace(temp, '[VA]', 's', [rfReplaceAll]);
+   temp := StringReplace(temp, '[KN]', 'k', [rfReplaceAll]);
+   temp := StringReplace(temp, '[BK]', 'b', [rfReplaceAll]);
+   temp := StringReplace(temp, '[BT]', 't', [rfReplaceAll]);
 
    Result := temp;
 end;
