@@ -3009,6 +3009,8 @@ end;
 // 26 Weather
 // 27 Other Information
 // 28 QSL Comment
+// 29 NR Sent
+// 30 NR Received
 
 procedure TLog.SaveToFileByHamSupport(Filename: string);
 var
@@ -3110,6 +3112,8 @@ begin
    slLine.Add2('Weather');
    slLine.Add2('Other Information');
    slLine.Add2('QSL Comment');
+   slLine.Add2('NR Sent');
+   slLine.Add2('NR Received');
    slFile.Add(slLine.DelimitedText);
 
    try
@@ -3231,6 +3235,12 @@ begin
 
          // 28 QSL Comment
          slLine.Add2('');
+
+         // 29 NR Sent
+         slLine.Add2(Q.NrSent);
+
+         // 30 NR Received
+         slLine.Add2(Q.NrRcvd);
 
          slFile.Add(slLine.DelimitedText);
       end;
