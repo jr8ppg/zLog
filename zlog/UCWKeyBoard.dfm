@@ -16,16 +16,6 @@ object CWKeyBoard: TCWKeyBoard
   OnDeactivate = FormDeactivate
   OnShow = FormShow
   TextHeight = 12
-  object Console: TMemo
-    Left = 0
-    Top = 0
-    Width = 375
-    Height = 70
-    Align = alClient
-    ImeMode = imDisable
-    TabOrder = 0
-    OnKeyPress = ConsoleKeyPress
-  end
   object Panel1: TPanel
     Left = 0
     Top = 70
@@ -34,6 +24,8 @@ object CWKeyBoard: TCWKeyBoard
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 69
+    ExplicitWidth = 371
     object buttonOK: TButton
       Left = 6
       Top = 8
@@ -52,6 +44,27 @@ object CWKeyBoard: TCWKeyBoard
       TabOrder = 1
       OnClick = buttonClearClick
     end
+  end
+  object Console: TRichEdit
+    Left = 0
+    Top = 0
+    Width = 375
+    Height = 70
+    Align = alClient
+    Font.Charset = SHIFTJIS_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #65325#65331' '#12468#12471#12483#12463
+    Font.Style = []
+    Lines.Strings = (
+      'Console')
+    ParentFont = False
+    PlainText = True
+    TabOrder = 0
+    OnKeyPress = ConsoleKeyPress
+    OnProtectChange = ConsoleProtectChange
+    ExplicitWidth = 371
+    ExplicitHeight = 69
   end
   object ActionList1: TActionList
     State = asSuspended
@@ -271,5 +284,12 @@ object CWKeyBoard: TCWKeyBoard
       ShortCut = 8278
       OnExecute = actionPlayMessageVAExecute
     end
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = Timer1Timer
+    Left = 296
+    Top = 24
   end
 end

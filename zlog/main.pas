@@ -1007,6 +1007,9 @@ type
     // space or TAB キー押下時のコールサインを記憶する
     FPrevCallsign: string;
 
+    // CWKeyboardからのキーイング開始
+    FStartCWKeyboard: Boolean;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1277,6 +1280,7 @@ type
     procedure MsgMgrAddQue(nID: Integer; S: string; aQSO: TQSO);
     procedure MsgMgrContinueQue();
     function GetTxRigID(nTxRigSet: Integer = -1): Integer;
+    property StartCWKeyboard: Boolean read FStartCWKeyboard write FStartCWKeyboard;
   end;
 
   TBandScopeNotifyThread = class(TThread)
@@ -2285,6 +2289,8 @@ begin
    FWaitForQsoFinish[0] := False;
    FWaitForQsoFinish[1] := False;
    FWaitForQsoFinish[2] := False;
+
+   FStartCWKeyboard := False;
 
    // フォント設定
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -9125,6 +9131,8 @@ procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean)
 var
    S: string;
 begin
+   FStartCWKeyboard := False;
+
    if no >= 101 then begin
       bank := dmZlogGlobal.Settings.CW.CurrentBank;
       S := dmZLogGlobal.CWMessage(bank, FCurrentCQMessageNo);
@@ -9280,7 +9288,12 @@ begin
       //FCWMonitor.ClearSendingText();
    end
    else begin
-      FCWMonitor.OneCharSentProc();
+      if ((FCWKeyboard.Active) or (FStartCWKeyboard = True)) then begin
+         FCWKeyboard.OneCharSentProc();
+      end
+      else begin
+         FCWMonitor.OneCharSentProc();
+      end;
    end;
 end;
 

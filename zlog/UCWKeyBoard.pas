@@ -6,11 +6,10 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ClipBrd, System.Actions, Vcl.ActnList,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
-  UzLogForm;
+  UzLogForm, Vcl.ComCtrls;
 
 type
   TCWKeyBoard = class(TZLogForm)
-    Console: TMemo;
     Panel1: TPanel;
     buttonOK: TButton;
     buttonClear: TButton;
@@ -53,6 +52,8 @@ type
     actionPlayCQB1: TAction;
     actionPlayMessageBT: TAction;
     actionPlayMessageVA: TAction;
+    Console: TRichEdit;
+    Timer1: TTimer;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -71,19 +72,28 @@ type
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure actionPlayMessageBTExecute(Sender: TObject);
     procedure actionPlayMessageVAExecute(Sender: TObject);
+    procedure ConsoleProtectChange(Sender: TObject; StartPos, EndPos: Integer;
+      var AllowChange: Boolean);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
+    FSentPos: Integer;
     FFontSize: Integer;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
     procedure ApplyShortcut();
     procedure SendChar(C: Char);
+    function GetUnsentChars(): Integer;
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
     procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
+    procedure OneCharSentProc();
+    procedure Reset();
+    procedure Finish();
     property FontSize: Integer read GetFontSize write SetFontSize;
+    property UnsentChars: Integer read GetUnsentChars;
   end;
 
 implementation
@@ -95,7 +105,12 @@ uses
 
 procedure TCWKeyBoard.FormCreate(Sender: TObject);
 begin
+   FSentPos := 0;
+   Console.Clear();
    Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+
+   Console.DefAttributes.Name := Console.Font.Name;
+   Console.DefAttributes.Size := Console.Font.Size;
 end;
 
 procedure TCWKeyBoard.FormShow(Sender: TObject);
@@ -135,11 +150,6 @@ begin
       Exit;
    end;
 
-   if Key = Chr($08) then begin
-      dmZLogKeyer.CancelLastChar;
-      Exit;
-   end;
-
    if GetAsyncKeyState(VK_CONTROL) < 0 then begin
       Exit;
    end;
@@ -161,9 +171,18 @@ begin
    SendMessage(MainForm.Handle, WM_ZLOG_CQABORT, 1, 0);
 
    // ‚P•¶Žš‘—M
-   SendChar(K);
+   if MainForm.StartCWKeyboard = False then begin
+      SendChar(K);
+   end;
 
    Key := K;
+end;
+
+procedure TCWKeyBoard.ConsoleProtectChange(Sender: TObject; StartPos,
+  EndPos: Integer; var AllowChange: Boolean);
+begin
+   inherited;
+   AllowChange := True;
 end;
 
 procedure TCWKeyBoard.buttonOKClick(Sender: TObject);
@@ -174,8 +193,10 @@ end;
 
 procedure TCWKeyBoard.buttonClearClick(Sender: TObject);
 begin
+   Reset();
    Console.Clear;
    dmZLogKeyer.ClrBuffer();
+   MainForm.StartCWKeyboard := False;
 end;
 
 procedure TCWKeyBoard.actionPlayMessageAExecute(Sender: TObject);
@@ -220,42 +241,48 @@ end;
 procedure TCWKeyBoard.actionPlayMessageARExecute(Sender: TObject);
 begin
    SendChar('a');
-   Console.Text := Console.Text + '[AR]';
+   ClipBoard.AsText := '[AR]';
+   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBKExecute(Sender: TObject);
 begin
    SendChar('b');
-   Console.Text := Console.Text + '[BK]';
+   ClipBoard.AsText := '[BK]';
+   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBTExecute(Sender: TObject);
 begin
    SendChar('t');
-   Console.Text := Console.Text + '[BT]';
+   ClipBoard.AsText := '[BT]';
+   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageKNExecute(Sender: TObject);
 begin
    SendChar('k');
-   Console.Text := Console.Text + '[KN]';
+   ClipBoard.AsText := '[KN]';
+   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageSKExecute(Sender: TObject);
 begin
    SendChar('s');
-   Console.Text := Console.Text + '[SK]';
+   ClipBoard.AsText := '[SK]';
+   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.actionPlayMessageVAExecute(Sender: TObject);
 begin
    SendChar('s');
-   Console.Text := Console.Text + '[VA]';
+   ClipBoard.AsText := '[VA]';
+   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
 end;
 
@@ -281,8 +308,7 @@ begin
       Exit;
    end;
 
-   MainForm.MsgMgrAddQue(nID, S, CurrentQSO);
-   MainForm.MsgMgrContinueQue();
+   S := SetStr(S, CurrentQSO);
 
    while Pos(':***********', S) > 0 do begin
       i := Pos(':***********', S);
@@ -292,6 +318,9 @@ begin
 
    ClipBoard.AsText := S;
    Console.PasteFromClipBoard;
+   Console.SelStart := Length(Console.Text);
+
+   SendChar(Console.Text[FSentPos + 1]);
 end;
 
 procedure TCWKeyBoard.ApplyShortcut();
@@ -379,9 +408,17 @@ begin
    UpdateFontSize(v);
 end;
 
+procedure TCWKeyBoard.Timer1Timer(Sender: TObject);
+begin
+   inherited;
+   Timer1.Enabled := False;
+   buttonClear.Click();
+end;
+
 procedure TCWKeyBoard.UpdateFontSize(v: Integer);
 begin
    Console.Font.Size := v;
+   Console.DefAttributes.Size := v;
 end;
 
 procedure TCWKeyBoard.SendChar(C: Char);
@@ -389,6 +426,8 @@ var
    nID: Integer;
    rig: TRig;
 begin
+   MainForm.StartCWKeyboard := True;
+
    nID := MainForm.GetTxRigID();
 
    if dmZLogKeyer.KeyingPort[nID] = tkpRIG then begin
@@ -401,6 +440,80 @@ begin
    else begin
       dmZLogKeyer.SetCWSendBufCharPTT(nID, C);
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('C=[' + C + ']'));
+   {$ENDIF}
+end;
+
+procedure TCWKeyBoard.OneCharSentProc();
+var
+   fEnd: Boolean;
+begin
+   fEnd := False;
+   Timer1.Enabled := False;
+
+   if UnsentChars = 0 then begin
+      fEnd := True;
+   end;
+
+   Console.SelStart := FSentPos;
+   if Copy(Console.Text, FSentPos + 1, 1) = '[' then begin
+      Console.SelLength := 4;
+      Inc(FSentPos, 4);
+   end
+   else begin
+      Console.SelLength := 1;
+      Inc(FSentPos);
+   end;
+
+   Console.SelAttributes.BackColor := clBlue;
+   Console.SelAttributes.Color := clWhite;
+   Console.SelAttributes.Protected := True;
+
+   Console.SelStart := Length(Console.Text);
+
+   if fEnd = True then begin
+      MainForm.StartCWKeyboard := False;
+      Timer1.Enabled := True;
+      Exit;
+   end;
+
+   SendChar(Console.Text[FSentPos + 1]);
+end;
+
+procedure TCWKeyBoard.Reset();
+begin
+   FSentPos := 0;
+   Console.SelStart := 0;
+   Console.SelLength := Length(Console.Text);
+   Console.SelAttributes.Protected := False;
+   Console.SelAttributes.BackColor := clWIndow;
+   Console.SelAttributes.Color := clBlack;
+   Console.SelStart := 0;
+   Console.SelLength := 0;
+   Console.Refresh();
+end;
+
+procedure TCWKeyBoard.Finish();
+begin
+   buttonClear.Click();
+end;
+
+function TCWKeyBoard.GetUnsentChars(): Integer;
+var
+   n: Integer;
+   i: Integer;
+begin
+   n := 0;
+   for i := 0 to Console.Lines.Count - 1 do begin
+      n := n + Length(Console.Lines[i]);
+   end;
+   Result := n - (FSentPos + 1);
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('Unsent = [' + IntToStr(Result) + ']'));
+   {$ENDIF}
 end;
 
 end.
