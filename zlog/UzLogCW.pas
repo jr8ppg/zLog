@@ -60,7 +60,7 @@ var
    temp: string;
    S: string;
 begin
-   temp := sendtext;
+   temp := UpperCase(sendtext);
 
    temp := StringReplace(temp, '[AR]', 'a', [rfReplaceAll]);
    temp := StringReplace(temp, '[SK]', 's', [rfReplaceAll]);
@@ -186,7 +186,7 @@ begin
    temp := StringReplace(temp, '$M', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$m', S, [rfReplaceAll]);
 
-   Result := UpperCase(temp);
+   Result := temp;
 end;
 
 function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : string;
