@@ -4,9 +4,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, ClipBrd, System.Actions, Vcl.ActnList,
+  StdCtrls, ExtCtrls, ClipBrd, System.Actions, Vcl.ActnList, Winapi.RichEdit,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
   UzLogForm, Vcl.ComCtrls;
+
+const
+  WM_ZLOG_UPDATE_PROGRESS = (WM_USER + 1);
 
 type
   TCWKeyBoard = class(TZLogForm)
@@ -75,6 +78,7 @@ type
     procedure ConsoleProtectChange(Sender: TObject; StartPos, EndPos: Integer;
       var AllowChange: Boolean);
     procedure Timer1Timer(Sender: TObject);
+    procedure OnZLogUpdateProgress( var Message: TMessage ); message WM_ZLOG_UPDATE_PROGRESS;
   private
     { Private declarations }
     FSentPos: Integer;
@@ -104,13 +108,24 @@ uses
 {$R *.DFM}
 
 procedure TCWKeyBoard.FormCreate(Sender: TObject);
+var
+   dwLangOption: DWORD;
 begin
    FSentPos := 0;
    Console.Clear();
+   Console.Font.Charset := DEFAULT_CHARSET;
    Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
 
+   dwLangOption := SendMessage(Console.Handle, EM_GETLANGOPTIONS, 0, 0);
+   dwLangOption := dwLangOption and (not (IMF_DUALFONT or IMF_AUTOFONT));
+   SendMessage(Console.Handle, EM_SETLANGOPTIONS, 0, dwLangOption);
+
+   Console.DefAttributes.Charset := DEFAULT_CHARSET;
    Console.DefAttributes.Name := Console.Font.Name;
    Console.DefAttributes.Size := Console.Font.Size;
+   Console.SelAttributes.Charset := DEFAULT_CHARSET;
+   Console.SelAttributes.Name := Console.Font.Name;
+   Console.SelAttributes.Size := Console.Font.Size;
 end;
 
 procedure TCWKeyBoard.FormShow(Sender: TObject);
@@ -174,6 +189,14 @@ begin
    if MainForm.StartCWKeyboard = False then begin
       SendChar(K);
    end;
+
+   // キャレットを末尾に移動して普通の色にする
+//   Console.SelStart := Length(Console.Text);
+//   Console.SelLength := 1;
+//   Console.SelAttributes.Protected := False;
+//   Console.SelAttributes.BackColor := clWindow;
+//   Console.SelAttributes.Color := clBlack;
+//   Console.Refresh();
 
    Key := K;
 end;
@@ -316,9 +339,13 @@ begin
       Insert(CurrentQSO.Callsign, S, i);
    end;
 
-   ClipBoard.AsText := S;
-   Console.PasteFromClipBoard;
+//   ClipBoard.AsText := S;
+//   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
+   Console.SelAttributes.Name := Console.Font.Name;
+   Console.SelAttributes.Size := Console.Font.Size;
+
+   Console.SelText := S;
 
    SendChar(Console.Text[FSentPos + 1]);
 end;
@@ -444,6 +471,9 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('C=[' + C + ']'));
    {$ENDIF}
+
+   // 送信位置より色を付ける
+   PostMessage(Handle, WM_ZLOG_UPDATE_PROGRESS, 0, 0);
 end;
 
 procedure TCWKeyBoard.OneCharSentProc();
@@ -453,25 +483,18 @@ begin
    fEnd := False;
    Timer1.Enabled := False;
 
+   // 未送信が０文字なら終了
    if UnsentChars = 0 then begin
       fEnd := True;
    end;
 
-   Console.SelStart := FSentPos;
+   // 送信位置を進める
    if Copy(Console.Text, FSentPos + 1, 1) = '[' then begin
-      Console.SelLength := 4;
       Inc(FSentPos, 4);
    end
    else begin
-      Console.SelLength := 1;
       Inc(FSentPos);
    end;
-
-   Console.SelAttributes.BackColor := clBlue;
-   Console.SelAttributes.Color := clWhite;
-   Console.SelAttributes.Protected := True;
-
-   Console.SelStart := Length(Console.Text);
 
    if fEnd = True then begin
       MainForm.StartCWKeyboard := False;
@@ -479,7 +502,17 @@ begin
       Exit;
    end;
 
+   // 送信位置が末尾を超えたら終了
+   if (FSentPos + 1) > Length(Console.Text) then begin
+      MainForm.StartCWKeyboard := False;
+      Timer1.Enabled := True;
+      Exit;
+   end;
+
+   // １文字送信
    SendChar(Console.Text[FSentPos + 1]);
+
+   Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.Reset();
@@ -514,6 +547,31 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('Unsent = [' + IntToStr(Result) + ']'));
    {$ENDIF}
+end;
+
+procedure TCWKeyBoard.OnZLogUpdateProgress( var Message: TMessage );
+begin
+   // 送信位置から１文字分色を付ける
+   Console.SelStart := FSentPos;
+   if Copy(Console.Text, FSentPos + 1, 1) = '[' then begin
+      Console.SelLength := 4;
+   end
+   else begin
+      Console.SelLength := 1;
+   end;
+
+   Console.SelAttributes.BackColor := clBlue;
+   Console.SelAttributes.Color := clWhite;
+   Console.SelAttributes.Protected := True;
+
+   // 色を元に戻す
+   Console.SelStart := Length(Console.Text);
+   Console.SelLength := 0;
+   Console.SelAttributes.Protected := False;
+   Console.SelAttributes.BackColor := clWindow;
+   Console.SelAttributes.Color := clBlack;
+
+   Console.Refresh();
 end;
 
 end.

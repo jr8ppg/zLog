@@ -24,8 +24,6 @@ object CWKeyBoard: TCWKeyBoard
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 69
-    ExplicitWidth = 371
     object buttonOK: TButton
       Left = 6
       Top = 8
@@ -63,8 +61,6 @@ object CWKeyBoard: TCWKeyBoard
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
     OnProtectChange = ConsoleProtectChange
-    ExplicitWidth = 371
-    ExplicitHeight = 69
   end
   object ActionList1: TActionList
     State = asSuspended
