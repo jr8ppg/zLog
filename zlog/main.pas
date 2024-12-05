@@ -7048,6 +7048,8 @@ begin
 
    if i > 0 then begin
       Log.SortByTime;
+      Log.JudgeOutOfPeriod();
+      Log.SetDupeFlags;
       RenewScore();
       FileSave(Self);
    end;

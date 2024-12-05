@@ -2290,7 +2290,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","Forced","PCName","QslState","Invalid","Area"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","Forced","QslState","Invalid","Area"';
 var
    F: TextFile;
    i: Integer;
@@ -3841,7 +3841,9 @@ begin
 
             // 19—ñ–Ú memo
             slText.Text := StringReplace(slLine[18], '\n', #13#10, [rfReplaceAll]);
-            Q.Memo := slText[0];
+            if slText.Count > 0 then begin
+               Q.Memo := slText[0];
+            end;
 
             // 20—ñ–Ú CQ
             Q.CQ := StrToBoolDef(slLine[19], False);
