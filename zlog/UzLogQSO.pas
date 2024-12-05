@@ -3114,6 +3114,8 @@ begin
    slLine.Add2('QSL Comment');
    slLine.Add2('NR Sent');
    slLine.Add2('NR Received');
+   slLine.Add2('Contest Name');
+   slLine.Add2('Contest Points');
    slFile.Add(slLine.DelimitedText);
 
    try
@@ -3241,6 +3243,12 @@ begin
 
          // 30 NR Received
          slLine.Add2(Q.NrRcvd);
+
+         // 31 Contest Name
+         slLine.Add2(FQsoList[0].Memo);
+
+         // 32 Contest Points
+         slLine.Add2(IntToStr(Q.Points));
 
          slFile.Add(slLine.DelimitedText);
       end;
