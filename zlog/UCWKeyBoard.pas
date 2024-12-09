@@ -3,10 +3,11 @@ unit UCWKeyBoard;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, ClipBrd, System.Actions, Vcl.ActnList, Winapi.RichEdit,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Winapi.RichEdit, Vcl.ComCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
-  UzLogForm, Vcl.ComCtrls;
+  UzLogForm;
 
 const
   WM_ZLOG_UPDATE_PROGRESS = (WM_USER + 1);
@@ -81,7 +82,8 @@ type
     procedure OnZLogUpdateProgress( var Message: TMessage ); message WM_ZLOG_UPDATE_PROGRESS;
   private
     { Private declarations }
-    FSentPos: Integer;
+    FSendPos: Integer;
+    FDonePos: Integer;
     FFontSize: Integer;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
     procedure ApplyShortcut();
@@ -111,7 +113,8 @@ procedure TCWKeyBoard.FormCreate(Sender: TObject);
 var
    dwLangOption: DWORD;
 begin
-   FSentPos := 0;
+   FSendPos := 0;
+   FDonePos := 0;
    Console.Clear();
    Console.Font.Charset := DEFAULT_CHARSET;
    Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -158,8 +161,6 @@ end;
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
-   nID: Integer;
-   rig: TRig;
 begin
    if Key = Chr($1B) then begin
       Exit;
@@ -177,7 +178,7 @@ begin
    end;
 
    // 送信可能文字以外ならパス
-   if (Not CharInSet(K, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')',' '])) then begin
+   if (Not CharInSet(K, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
       Key := #00;
       Exit;
    end;
@@ -189,14 +190,6 @@ begin
    if MainForm.StartCWKeyboard = False then begin
       SendChar(K);
    end;
-
-   // キャレットを末尾に移動して普通の色にする
-//   Console.SelStart := Length(Console.Text);
-//   Console.SelLength := 1;
-//   Console.SelAttributes.Protected := False;
-//   Console.SelAttributes.BackColor := clWindow;
-//   Console.SelAttributes.Color := clBlack;
-//   Console.Refresh();
 
    Key := K;
 end;
@@ -264,49 +257,43 @@ end;
 procedure TCWKeyBoard.actionPlayMessageARExecute(Sender: TObject);
 begin
    SendChar('a');
-   ClipBoard.AsText := '[AR]';
-   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
+   Console.SelText := '[AR]';
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBKExecute(Sender: TObject);
 begin
    SendChar('b');
-   ClipBoard.AsText := '[BK]';
-   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
+   Console.SelText := '[BK]';
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBTExecute(Sender: TObject);
 begin
    SendChar('t');
-   ClipBoard.AsText := '[BT]';
-   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
+   Console.SelText := '[BT]';
 end;
 
 procedure TCWKeyBoard.actionPlayMessageKNExecute(Sender: TObject);
 begin
    SendChar('k');
-   ClipBoard.AsText := '[KN]';
-   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
+   Console.SelText := '[KN]';
 end;
 
 procedure TCWKeyBoard.actionPlayMessageSKExecute(Sender: TObject);
 begin
    SendChar('s');
-   ClipBoard.AsText := '[SK]';
-   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
+   Console.SelText := '[SK]';
 end;
 
 procedure TCWKeyBoard.actionPlayMessageVAExecute(Sender: TObject);
 begin
    SendChar('s');
-   ClipBoard.AsText := '[VA]';
-   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
+   Console.SelText := '[VA]';
 end;
 
 procedure TCWKeyBoard.actionIncreaseCwSpeedExecute(Sender: TObject);
@@ -347,7 +334,7 @@ begin
 
    Console.SelText := S;
 
-   SendChar(Console.Text[FSentPos + 1]);
+   SendChar(Console.Text[FSendPos + 1]);
 end;
 
 procedure TCWKeyBoard.ApplyShortcut();
@@ -453,6 +440,12 @@ var
    nID: Integer;
    rig: TRig;
 begin
+   if (C = #13) or (C = #10) then begin
+      SendMessage(Handle, WM_ZLOG_UPDATE_PROGRESS, 0, 0);
+      OneCharSentProc();
+      Exit;
+   end;
+
    MainForm.StartCWKeyboard := True;
 
    nID := MainForm.GetTxRigID();
@@ -479,6 +472,7 @@ end;
 procedure TCWKeyBoard.OneCharSentProc();
 var
    fEnd: Boolean;
+   ch: Char;
 begin
    fEnd := False;
    Timer1.Enabled := False;
@@ -489,11 +483,18 @@ begin
    end;
 
    // 送信位置を進める
-   if Copy(Console.Text, FSentPos + 1, 1) = '[' then begin
-      Inc(FSentPos, 4);
+   ch := Console.Text[FSendPos + 1];
+   if ch = '[' then begin
+      Inc(FSendPos, 4);
+      Inc(FDonePos, 4);
+   end
+   else if ch = #13 then begin
+      Inc(FSendPos, 2);
+      Inc(FDonePos);
    end
    else begin
-      Inc(FSentPos);
+      Inc(FSendPos);
+      Inc(FDonePos);
    end;
 
    if fEnd = True then begin
@@ -503,21 +504,22 @@ begin
    end;
 
    // 送信位置が末尾を超えたら終了
-   if (FSentPos + 1) > Length(Console.Text) then begin
+   if (FSendPos + 1) > Length(Console.Text) then begin
       MainForm.StartCWKeyboard := False;
       Timer1.Enabled := True;
       Exit;
    end;
 
    // １文字送信
-   SendChar(Console.Text[FSentPos + 1]);
+   SendChar(Console.Text[FSendPos + 1]);
 
    Console.SelStart := Length(Console.Text);
 end;
 
 procedure TCWKeyBoard.Reset();
 begin
-   FSentPos := 0;
+   FSendPos := 0;
+   FDonePos := 0;
    Console.SelStart := 0;
    Console.SelLength := Length(Console.Text);
    Console.SelAttributes.Protected := False;
@@ -536,30 +538,35 @@ end;
 function TCWKeyBoard.GetUnsentChars(): Integer;
 var
    n: Integer;
-   i: Integer;
 begin
-   n := 0;
-   for i := 0 to Console.Lines.Count - 1 do begin
-      n := n + Length(Console.Lines[i]);
-   end;
-   Result := n - (FSentPos + 1);
+   n := Length(Console.Text);
+   Result := n - (FSendPos + 1);
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('Unsent = [' + IntToStr(Result) + ']'));
    {$ENDIF}
 end;
 
+// RichEditでの改行は、Textの中はCR LFの２文字だけど、表示上は１文字となっているため
+// 送信位置と送信済みの表示位置を別に管理する必要がある
+
 procedure TCWKeyBoard.OnZLogUpdateProgress( var Message: TMessage );
+var
+   ch: Char;
 begin
+   // 送信済み位置
+   Console.SelStart := FDonePos;
+
    // 送信位置から１文字分色を付ける
-   Console.SelStart := FSentPos;
-   if Copy(Console.Text, FSentPos + 1, 1) = '[' then begin
+   ch := Console.Text[FSendPos + 1];
+   if ch = '[' then begin
       Console.SelLength := 4;
    end
    else begin
       Console.SelLength := 1;
    end;
 
+   // 送信済みは青
    Console.SelAttributes.BackColor := clBlue;
    Console.SelAttributes.Color := clWhite;
    Console.SelAttributes.Protected := True;
