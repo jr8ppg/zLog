@@ -6,8 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Winapi.RichEdit, Vcl.ComCtrls,
+  System.Math,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
-  UzLogForm;
+  UzLogForm, Vcl.Samples.Spin;
 
 const
   WM_ZLOG_UPDATE_PROGRESS = (WM_USER + 1);
@@ -58,6 +59,10 @@ type
     actionPlayMessageVA: TAction;
     Console: TRichEdit;
     Timer1: TTimer;
+    ProgressBar1: TProgressBar;
+    SpinEdit1: TSpinEdit;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -89,6 +94,7 @@ type
     procedure ApplyShortcut();
     procedure SendChar(C: Char);
     function GetUnsentChars(): Integer;
+    procedure StartCountdown();
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
@@ -154,6 +160,7 @@ begin
    case Key of
       VK_ESCAPE: begin
          PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 2);
+         buttonClear.Click();
       end;
    end;
 end;
@@ -425,8 +432,11 @@ end;
 procedure TCWKeyBoard.Timer1Timer(Sender: TObject);
 begin
    inherited;
-   Timer1.Enabled := False;
-   buttonClear.Click();
+   ProgressBar1.StepBy(-1);
+   if ProgressBar1.Position <= 0 then begin
+      Timer1.Enabled := False;
+      buttonClear.Click();
+   end;
 end;
 
 procedure TCWKeyBoard.UpdateFontSize(v: Integer);
@@ -499,14 +509,14 @@ begin
 
    if fEnd = True then begin
       MainForm.StartCWKeyboard := False;
-      Timer1.Enabled := True;
+      StartCountdown();
       Exit;
    end;
 
    // ‘—MˆÊ’u‚ª––”ö‚ð’´‚¦‚½‚çI—¹
    if (FSendPos + 1) > Length(Console.Text) then begin
       MainForm.StartCWKeyboard := False;
-      Timer1.Enabled := True;
+      StartCountdown();
       Exit;
    end;
 
@@ -579,6 +589,19 @@ begin
    Console.SelAttributes.Color := clBlack;
 
    Console.Refresh();
+end;
+
+procedure TCWKeyBoard.StartCountdown();
+var
+   sec: Integer;
+begin
+   sec := SpinEdit1.Value;
+
+   ProgressBar1.Position := 100;
+
+   Timer1.Interval := Ceil((sec * 1000) / 100);
+
+   Timer1.Enabled := True;
 end;
 
 end.

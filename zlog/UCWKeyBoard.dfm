@@ -8,25 +8,47 @@ object CWKeyBoard: TCWKeyBoard
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#12468#12471#12483#12463
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
-  TextHeight = 12
+  TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 70
+    Top = 75
     Width = 375
-    Height = 34
+    Height = 29
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 74
+    ExplicitWidth = 371
+    DesignSize = (
+      375
+      29)
+    object Label1: TLabel
+      Left = 192
+      Top = 8
+      Width = 109
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'Time remaining to clear'
+    end
+    object Label2: TLabel
+      Left = 348
+      Top = 8
+      Width = 20
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'sec.'
+    end
     object buttonOK: TButton
       Left = 6
-      Top = 8
+      Top = 4
       Width = 65
       Height = 21
       Caption = 'OK'
@@ -34,20 +56,33 @@ object CWKeyBoard: TCWKeyBoard
       OnClick = buttonOKClick
     end
     object buttonClear: TButton
-      Left = 80
-      Top = 8
+      Left = 75
+      Top = 4
       Width = 65
       Height = 21
       Caption = 'Clear'
       TabOrder = 1
       OnClick = buttonClearClick
     end
+    object SpinEdit1: TSpinEdit
+      Left = 307
+      Top = 4
+      Width = 33
+      Height = 22
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      MaxValue = 9
+      MinValue = 1
+      TabOrder = 2
+      Value = 2
+      ExplicitLeft = 303
+    end
   end
   object Console: TRichEdit
     Left = 0
     Top = 0
     Width = 375
-    Height = 70
+    Height = 71
     Align = alClient
     Font.Charset = SHIFTJIS_CHARSET
     Font.Color = clWindowText
@@ -61,11 +96,24 @@ object CWKeyBoard: TCWKeyBoard
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
     OnProtectChange = ConsoleProtectChange
+    ExplicitWidth = 371
+    ExplicitHeight = 70
+  end
+  object ProgressBar1: TProgressBar
+    Left = 0
+    Top = 71
+    Width = 375
+    Height = 4
+    Align = alBottom
+    Step = 1
+    TabOrder = 2
+    ExplicitTop = 70
+    ExplicitWidth = 371
   end
   object ActionList1: TActionList
     State = asSuspended
-    Left = 240
-    Top = 40
+    Left = 192
+    Top = 8
     object actionPlayMessageA01: TAction
       Tag = 1
       Caption = 'actionPlayMessageA01'
@@ -283,9 +331,9 @@ object CWKeyBoard: TCWKeyBoard
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 5000
+    Interval = 10
     OnTimer = Timer1Timer
-    Left = 296
-    Top = 24
+    Left = 240
+    Top = 8
   end
 end
