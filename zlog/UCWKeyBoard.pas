@@ -59,10 +59,10 @@ type
     actionPlayMessageVA: TAction;
     Console: TRichEdit;
     Timer1: TTimer;
-    ProgressBar1: TProgressBar;
     SpinEdit1: TSpinEdit;
     Label1: TLabel;
     Label2: TLabel;
+    Image1: TImage;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -81,20 +81,25 @@ type
     procedure actionIncreaseCwSpeedExecute(Sender: TObject);
     procedure actionPlayMessageBTExecute(Sender: TObject);
     procedure actionPlayMessageVAExecute(Sender: TObject);
-    procedure ConsoleProtectChange(Sender: TObject; StartPos, EndPos: Integer;
-      var AllowChange: Boolean);
+    procedure ConsoleProtectChange(Sender: TObject; StartPos, EndPos: Integer; var AllowChange: Boolean);
     procedure Timer1Timer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure SpinEdit1Change(Sender: TObject);
     procedure OnZLogUpdateProgress( var Message: TMessage ); message WM_ZLOG_UPDATE_PROGRESS;
   private
     { Private declarations }
+    FCounter: Integer;
+    FCountMax: Integer;
     FSendPos: Integer;
     FDonePos: Integer;
-    FFontSize: Integer;
+    FBitmap: TBitmap;
+    FTickCount: DWORD;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
     procedure ApplyShortcut();
     procedure SendChar(C: Char);
     function GetUnsentChars(): Integer;
     procedure StartCountdown();
+    procedure ShowProgress();
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
@@ -119,6 +124,7 @@ procedure TCWKeyBoard.FormCreate(Sender: TObject);
 var
    dwLangOption: DWORD;
 begin
+   FBitmap := TBitmap.Create();
    FSendPos := 0;
    FDonePos := 0;
    Console.Clear();
@@ -141,6 +147,10 @@ procedure TCWKeyBoard.FormShow(Sender: TObject);
 begin
    Inherited;
    ApplyShortcut();
+   FBitmap.Width := Image1.Width;
+   FBitmap.Height := Image1.Height;
+   FBitmap.PixelFormat := pf24bit;
+   Image1.Picture.Bitmap.Assign(FBitmap);
    Console.SetFocus;
 end;
 
@@ -153,6 +163,12 @@ end;
 procedure TCWKeyBoard.FormDeactivate(Sender: TObject);
 begin
    ActionList1.State := asSuspended;
+end;
+
+procedure TCWKeyBoard.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   FBitmap.Free();
 end;
 
 procedure TCWKeyBoard.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -220,6 +236,12 @@ begin
    Console.Clear;
    dmZLogKeyer.ClrBuffer();
    MainForm.StartCWKeyboard := False;
+end;
+
+procedure TCWKeyBoard.SpinEdit1Change(Sender: TObject);
+begin
+   inherited;
+   Console.SetFocus();
 end;
 
 procedure TCWKeyBoard.actionPlayMessageAExecute(Sender: TObject);
@@ -431,10 +453,14 @@ end;
 
 procedure TCWKeyBoard.Timer1Timer(Sender: TObject);
 begin
-   inherited;
-   ProgressBar1.StepBy(-1);
-   if ProgressBar1.Position <= 0 then begin
+   Dec(FCounter);
+   ShowProgress();
+   if FCounter <= 0 then begin
       Timer1.Enabled := False;
+      ShowProgress();
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('tick=' + IntToStr(GetTickCount() - FTickCount) + ' milisec.'));
+      {$ENDIF}
       buttonClear.Click();
    end;
 end;
@@ -528,8 +554,11 @@ end;
 
 procedure TCWKeyBoard.Reset();
 begin
+   Timer1.Enabled := False;
    FSendPos := 0;
    FDonePos := 0;
+   FCounter := 0;
+   ShowProgress();
    Console.SelStart := 0;
    Console.SelLength := Length(Console.Text);
    Console.SelAttributes.Protected := False;
@@ -597,11 +626,60 @@ var
 begin
    sec := SpinEdit1.Value;
 
-   ProgressBar1.Position := 100;
+   // 60 milisecが安定している
+   Timer1.Interval := 60;
 
-   Timer1.Interval := Ceil((sec * 1000) / 100);
+   // 60 milisecで指定秒数でのカウント数
+   FCountMax := Trunc(sec * 1000 / Timer1.Interval);
+   FCounter := FCountMax;
 
+   ShowProgress();
+
+   FTickCount := GetTickCount();
    Timer1.Enabled := True;
+end;
+
+procedure TCWKeyBoard.ShowProgress();
+var
+   h, w: Integer;
+   white_w, blue_w: Integer;
+   rect: TRect;
+begin
+   h := FBitmap.Height;
+   w := FBitmap.Width;
+
+   blue_w := Trunc(w * (FCounter / FCountMax));
+   white_w := w - blue_w;
+
+   with FBitmap.Canvas do begin
+      if white_w > 0 then begin
+         rect.Top := 0;
+         rect.Left := w - white_w;
+         rect.Bottom := h - 1;
+         rect.Right := w - 1;
+
+         Brush.Color := clWhite;
+         Brush.Style := bsSolid;
+         Pen.Color := clWhite;
+         Pen.Style := psSolid;
+         FillRect(rect);
+      end;
+
+      if blue_w > 0 then begin
+         rect.Top := 0;
+         rect.Left := 0;
+         rect.Bottom := h - 1;
+         rect.Right := blue_w - 1;
+
+         Brush.Color := clBlue;
+         Brush.Style := bsSolid;
+         Pen.Color := clBlue;
+         Pen.Style := psSolid;
+         FillRect(rect);
+      end;
+   end;
+
+   Image1.Picture.Bitmap.Assign(FBitmap);
 end;
 
 end.

@@ -1,6 +1,7 @@
 object CWKeyBoard: TCWKeyBoard
   Left = 503
   Top = 417
+  ActiveControl = SpinEdit1
   Caption = 'CW Keyboard'
   ClientHeight = 104
   ClientWidth = 375
@@ -13,10 +14,19 @@ object CWKeyBoard: TCWKeyBoard
   KeyPreview = True
   OnActivate = FormActivate
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 13
+  object Image1: TImage
+    Left = 0
+    Top = 71
+    Width = 375
+    Height = 4
+    Align = alBottom
+    ExplicitTop = -30
+  end
   object Panel1: TPanel
     Left = 0
     Top = 75
@@ -75,6 +85,7 @@ object CWKeyBoard: TCWKeyBoard
       MinValue = 1
       TabOrder = 2
       Value = 2
+      OnChange = SpinEdit1Change
       ExplicitLeft = 303
     end
   end
@@ -98,17 +109,6 @@ object CWKeyBoard: TCWKeyBoard
     OnProtectChange = ConsoleProtectChange
     ExplicitWidth = 371
     ExplicitHeight = 70
-  end
-  object ProgressBar1: TProgressBar
-    Left = 0
-    Top = 71
-    Width = 375
-    Height = 4
-    Align = alBottom
-    Step = 1
-    TabOrder = 2
-    ExplicitTop = 70
-    ExplicitWidth = 371
   end
   object ActionList1: TActionList
     State = asSuspended

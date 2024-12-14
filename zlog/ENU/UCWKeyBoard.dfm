@@ -1,6 +1,7 @@
 object CWKeyBoard: TCWKeyBoard
   Left = 503
   Top = 417
+  ActiveControl = SpinEdit1
   Caption = 'CW Keyboard'
   ClientHeight = 104
   ClientWidth = 375
@@ -13,9 +14,19 @@ object CWKeyBoard: TCWKeyBoard
   KeyPreview = True
   OnActivate = FormActivate
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 12
+  object Image1: TImage
+    Left = 0
+    Top = 71
+    Width = 375
+    Height = 4
+    Align = alBottom
+    ExplicitTop = -30
+  end
   object Panel1: TPanel
     Left = 0
     Top = 70
@@ -26,6 +37,25 @@ object CWKeyBoard: TCWKeyBoard
     TabOrder = 1
     ExplicitTop = 69
     ExplicitWidth = 371
+    DesignSize = (
+      375
+      29)
+    object Label1: TLabel
+      Left = 192
+      Top = 8
+      Width = 109
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'Time remaining to clear'
+    end
+    object Label2: TLabel
+      Left = 348
+      Top = 8
+      Width = 20
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'sec.'
+    end
     object buttonOK: TButton
       Left = 6
       Top = 8
@@ -43,6 +73,20 @@ object CWKeyBoard: TCWKeyBoard
       Caption = 'Clear'
       TabOrder = 1
       OnClick = buttonClearClick
+    end
+    object SpinEdit1: TSpinEdit
+      Left = 307
+      Top = 4
+      Width = 33
+      Height = 22
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      MaxValue = 9
+      MinValue = 1
+      TabOrder = 2
+      Value = 2
+      OnChange = SpinEdit1Change
+      ExplicitLeft = 303
     end
   end
   object Console: TRichEdit
