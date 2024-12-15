@@ -41,12 +41,12 @@ object CWKeyBoard: TCWKeyBoard
       375
       29)
     object Label1: TLabel
-      Left = 220
+      Left = 240
       Top = 12
       Width = 109
       Height = 13
       Anchors = [akTop, akRight]
-      Caption = #12463#12522#12450#12414#12391#12354#12392
+      Caption = #12463#12522#12450#12414#12391
     end
     object Label2: TLabel
       Left = 348
