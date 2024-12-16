@@ -7398,7 +7398,7 @@ begin
 
    // MOPでOPが未選択の場合
    if FPastEditMode = False then begin
-      if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+      if (FInitialized = True) and (dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) then begin
          if dmZLogGlobal.CurrentOperator = nil then begin
             ShowInfoPanel(TMainForm_Select_Operator, nil, True);
          end
