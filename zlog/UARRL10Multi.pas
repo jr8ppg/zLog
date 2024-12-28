@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Grids, JLLabel,
-  UzLogConst, UzLogGlobal, UzLogQSO, UARRLDXMulti, UWWMulti, UMultipliers;
+  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UARRLDXMulti, UWWMulti, UMultipliers;
 
 type
   TARRL10Multi = class(TWWMulti)
@@ -33,6 +33,8 @@ type
     procedure CheckMulti(aQSO : TQSO); override;
     function GetInfo(aQSO: TQSO): string; override;
     function ExtractMulti(aQSO : TQSO) : string; override;
+    procedure ProcessCluster(var Sp : TBaseSpot); override;
+    procedure ProcessSpotData(var S : TBaseSpot); override;
   end;
 
 implementation
@@ -341,6 +343,63 @@ begin
    l := (w * 40) - 2;
    Label1.Left := l;
    Label2.Left := Label1.Left + (w * 3);
+end;
+
+procedure TARRL10Multi.ProcessCluster(var Sp : TBaseSpot);
+var
+   Z: integer;
+   C: TCountry;
+   temp : string;
+   aQSO : TQSO;
+   S: TState;
+   B: TBand;
+begin
+   aQSO := TQSO.Create;
+   try
+      aQSO.Callsign := Sp.Call;
+      aQSO.Band := Sp.Band;
+      aQSO.NrRcvd := Sp.Number;
+
+      if aQSO.Mode = mCW then
+         B := b35
+      else
+         B := b19;
+
+      Sp.NewCty := False;
+      Sp.NewZone := False;
+
+      // Countryを求める
+      C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+
+      // NEWマルチチェック
+      // W/VE局の場合はSTATEのマルチチェック
+      temp := aQSO.CallSign;
+      if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
+         S := GetState(aQSO, StateList);
+         if (S <> nil) and (S.Worked[B] = True) then begin
+            temp := temp + '  new state : ' + (S.StateName);
+            Sp.NewCty := True;
+         end;
+      end
+      else begin
+         if (C.Worked[B] = false) then begin
+            temp := temp + '  new country : ' + (C.Country);
+            Sp.NewCty := True;
+         end;
+      end;
+
+      if Sp.IsNewMulti = True then begin
+         temp := temp + ' at ' + MHzString[aQSO.band]+ 'MHz';
+         MainForm.WriteStatusText(temp, True, True);
+      end;
+   finally
+      aQSO.Free;
+   end;
+end;
+
+procedure TARRL10Multi.ProcessSpotData(var S : TBaseSpot);
+begin
+   ProcessCluster(S);
 end;
 
 end.

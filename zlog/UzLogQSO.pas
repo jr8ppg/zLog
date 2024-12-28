@@ -3949,7 +3949,8 @@ begin
       Q.Callsign := strCallsign;
       Q.Band := band;
 
-      if FDupeCheckList[band].DupeCheck(Q, FAcceptDifferentMode, FAllPhone) <> nil then begin
+      // BandScopeでは正しいモードがわからないためモード無しでのDupeCheckを行う
+      if FDupeCheckList[band].DupeCheck(Q, False {FAcceptDifferentMode}, FAllPhone) <> nil then begin
          Result := True;
       end
       else begin
@@ -3985,7 +3986,7 @@ begin
          Q.Callsign := strCallsign;
          Q.Band := b;
 
-         R := FDupeCheckList[b].DupeCheck(Q, FAcceptDifferentMode, FAllPhone);
+         R := FDupeCheckList[b].DupeCheck(Q, False {FAcceptDifferentMode}, FAllPhone);
          if R <> nil then begin
             workdmulti := R.NrRcvd;
             Result := True;
