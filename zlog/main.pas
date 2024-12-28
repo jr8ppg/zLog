@@ -2385,25 +2385,26 @@ begin
    // バンド別用
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
+      FBandScopeEx[b].Style := bssByBand;
       FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
       FBandScopeEx[b].Resume();
    end;
 
    // 現在バンド用
    FBandScope := TBandScope2.Create(Self, b19);
-   FBandScope.CurrentBandOnly := True;
+   FBandScope.Style := bssCurrentBand;
    FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
    FBandScope.Resume();
 
    // ニューマルチ用
    FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
-   FBandScopeNewMulti.NewMultiOnly := True;
+   FBandScopeNewMulti.Style := bssNewMulti;
    FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
    FBandScopeNewMulti.Resume();
 
    // 全バンド用
    FBandScopeAllBands := TBandScope2.Create(Self, bUnknown);
-   FBandScopeAllBands.AllBands := True;
+   FBandScopeAllBands.Style := bssAllBands;
    FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
    FBandScopeAllBands.Resume();
 
@@ -6117,16 +6118,20 @@ begin
          FBandScopeEx[b].FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
          FBandScopeEx[b].IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
          FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+         FBandScopeEx[b].RenewTab();
       end;
       FBandScope.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScope.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+      FBandScope.RenewTab();
       FBandScopeNewMulti.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScopeNewMulti.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+      FBandScopeNewMulti.RenewTab();
       FBandScopeAllBands.FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
       FBandScopeAllBands.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+      FBandScopeAllBands.RenewTab();
       actionShowBandScope.Execute();
 
       // OpList再ロード

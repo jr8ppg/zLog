@@ -1,13 +1,14 @@
 object BandScope2: TBandScope2
   Left = 48
   Top = 125
+  Anchors = [akTop, akRight]
   BorderStyle = bsSizeToolWin
   Caption = 'Band Scope'
   ClientHeight = 404
-  ClientWidth = 242
+  ClientWidth = 247
   Color = clBtnFace
   Constraints.MinHeight = 140
-  Constraints.MinWidth = 250
+  Constraints.MinWidth = 255
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -27,7 +28,7 @@ object BandScope2: TBandScope2
   object Panel1: TPanel
     Left = 0
     Top = 38
-    Width = 242
+    Width = 247
     Height = 366
     Align = alClient
     BevelOuter = bvNone
@@ -36,12 +37,12 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 234
+    ExplicitWidth = 239
     ExplicitHeight = 354
     object Grid: TStringGrid
       Left = 4
       Top = 4
-      Width = 230
+      Width = 235
       Height = 354
       Align = alClient
       ColCount = 1
@@ -62,24 +63,24 @@ object BandScope2: TBandScope2
       OnMouseMove = GridMouseMove
       OnMouseWheelDown = GridMouseWheelDown
       OnMouseWheelUp = GridMouseWheelUp
-      ExplicitWidth = 222
+      ExplicitWidth = 227
       ExplicitHeight = 342
     end
   end
   object panelStandardOption: TPanel
     Left = 0
     Top = 0
-    Width = 242
+    Width = 247
     Height = 19
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 234
+    ExplicitWidth = 239
     DesignSize = (
-      242
+      247
       19)
     object buttonShowWorked: TSpeedButton
-      Left = 180
+      Left = 186
       Top = 0
       Width = 60
       Height = 19
@@ -91,29 +92,14 @@ object BandScope2: TBandScope2
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonShowWorkedClick
+      ExplicitLeft = 181
     end
-    object buttonShowAllBands: TSpeedButton
-      Left = 121
+    object buttonSyncVfo: TSpeedButton
+      Left = 60
       Top = 0
       Width = 60
       Height = 19
-      Hint = #20840#12496#12531#12489#12434#34920#31034#12375#12414#12377
-      AllowAllUp = True
-      Anchors = [akTop, akRight]
-      GroupIndex = 2
-      Caption = #20840#12496#12531#12489
-      ParentShowHint = False
-      ShowHint = True
-      OnClick = buttonShowWorkedClick
-    end
-    object buttonSyncVfo: TSpeedButton
-      Left = 10
-      Top = 0
-      Width = 53
-      Height = 19
       Hint = 'VFO'#12395#21516#26399#12375#12390#34920#31034#12375#12414#12377
-      AllowAllUp = True
-      Anchors = [akTop, akRight]
       GroupIndex = 4
       Caption = 'VFO'#21516#26399
       ParentShowHint = False
@@ -121,15 +107,26 @@ object BandScope2: TBandScope2
       OnClick = buttonShowWorkedClick
     end
     object buttonFreqCenter: TSpeedButton
-      Left = 62
+      Left = 119
       Top = 0
       Width = 60
       Height = 19
       Hint = #20013#22830#12395#21608#27874#25968#12434#22266#23450#12375#12414#12377
-      AllowAllUp = True
-      Anchors = [akTop, akRight]
-      GroupIndex = 5
+      GroupIndex = 4
       Caption = #20013#22830#22266#23450
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonShowWorkedClick
+    end
+    object buttonNormalMode: TSpeedButton
+      Left = 1
+      Top = 0
+      Width = 60
+      Height = 19
+      Hint = #21608#27874#25968#12399'VFO'#12392#21516#26399#12375#12414#12379#12435
+      GroupIndex = 4
+      Down = True
+      Caption = #12494#12540#12510#12523
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonShowWorkedClick
@@ -138,51 +135,45 @@ object BandScope2: TBandScope2
   object panelAllBandsOption: TPanel
     Left = 0
     Top = 19
-    Width = 242
+    Width = 247
     Height = 19
     Align = alTop
     BevelOuter = bvNone
     ShowCaption = False
     TabOrder = 2
     Visible = False
-    ExplicitWidth = 234
-    DesignSize = (
-      242
-      19)
-    object buttonShowWorked2: TSpeedButton
-      Left = 180
-      Top = 0
-      Width = 60
-      Height = 19
-      Hint = #20132#20449#28168#12415#12434#34920#31034#12375#12414#12377
-      AllowAllUp = True
-      Anchors = [akTop, akRight]
-      GroupIndex = 3
-      Caption = #20132#20449#28168#12415
-      ParentShowHint = False
-      ShowHint = True
-      OnClick = buttonShowWorkedClick
-    end
+    ExplicitWidth = 239
     object buttonSortByFreq: TSpeedButton
-      Left = 10
+      Left = 1
       Top = 0
       Width = 60
       Height = 19
-      Anchors = [akTop, akRight]
       Caption = #21608#27874#25968
       Images = ImageList2
       OnClick = buttonSortByFreqClick
     end
     object buttonSortByTime: TSpeedButton
-      Left = 69
+      Left = 60
       Top = 0
       Width = 60
       Height = 19
-      Anchors = [akTop, akRight]
       Caption = #26178#38291
       Images = ImageList2
       OnClick = buttonSortByTimeClick
     end
+  end
+  object tabctrlBandSelector: TTabControl
+    Left = 0
+    Top = 38
+    Width = 247
+    Height = 366
+    Align = alClient
+    TabOrder = 3
+    Visible = False
+    OnChange = tabctrlBandSelectorChange
+    OnChanging = tabctrlBandSelectorChanging
+    ExplicitWidth = 239
+    ExplicitHeight = 354
   end
   object BSMenu: TPopupMenu
     AutoHotkeys = maManual
