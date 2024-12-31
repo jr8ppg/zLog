@@ -368,6 +368,8 @@ type
     function GetActualFreq(b: TBand; strFreq: string): string;
     function GetEndTime(): TDateTime;
     procedure SetPeriod(v: Integer);
+    function GetLastCallsign(): string;
+    function GetLastNumber(): string;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -439,6 +441,8 @@ type
     function EvaluateQSYCount(nStartIndex: Integer): Integer;
     {$ENDIF}
 
+    function GetLastSerial(aQSO: TQSO): Integer;
+
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
@@ -455,6 +459,9 @@ type
     property StartTime: TDateTime read FStartTime write FStartTime;
     property EndTime: TDateTime read GetEndTime;
     property Period: Integer read FPeriod write SetPeriod;
+
+    property LastCallsign: string read GetLastCallsign;
+    property LastNumber: string read GetLastNumber;
   end;
 
 implementation
@@ -2532,6 +2539,85 @@ procedure TLog.SetPeriod(v: Integer);
 begin
    FPeriod := v;
    FEndTime := IncHour(FStartTime, FPeriod);
+end;
+
+function TLog.GetLastCallsign(): string;
+var
+   txnr, i: Integer;
+begin
+   txnr := dmZLogGlobal.Settings._txnr;
+
+   for i := Log.TotalQSO downto 1 do begin
+      if Log.QsoList[i].TX = txnr then begin
+         Result := Log.QsoList[i].Callsign;
+         Exit;
+      end;
+   end;
+
+   Result := '';
+end;
+
+function TLog.GetLastNumber(): string;
+var
+   txnr, i: Integer;
+begin
+   txnr := dmZLogGlobal.Settings._txnr;
+
+   for i := Log.TotalQSO downto 1 do begin
+      if Log.QsoList[i].TX = txnr then begin
+         Result := Log.QsoList[i].NrSent;
+         Exit;
+      end;
+   end;
+
+   Result := '';
+end;
+
+function TLog.GetLastSerial(aQSO: TQSO): Integer;
+var
+   txnr, i: Integer;
+   Q: TQSO;
+   band: TBand;
+begin
+   txnr := dmZLogGlobal.Settings._txnr;
+
+   case SerialContestType of
+      0: begin
+         //
+      end;
+
+      SER_ALL: begin
+         for i := Log.TotalQSO downto 1 do begin
+            Q := Log.QsoList[i];
+            if Q.TX = txnr then begin
+               Result := Q.Serial;
+               Exit;
+            end;
+         end;
+      end;
+
+      SER_BAND: begin
+         for i := Log.TotalQSO downto 1 do begin
+            Q := Log.QsoList[i];
+            if (Q.band = aQSO.Band) and (Q.TX = txnr) then begin
+               Result := Q.Serial;
+               Exit;
+            end;
+         end;
+      end;
+
+      SER_MS: begin
+         for i := Log.TotalQSO downto 1 do begin
+            Q := Log.QsoList[i];
+            if (Q.TX = aQSO.TX) then begin
+               Result := Q.Serial;
+               Exit;
+            end;
+         end;
+      end;
+   end;
+
+   Result := 0;
 end;
 
 // https://wwrof.org/cabrillo/
