@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Menus, System.Actions, Vcl.ActnList,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, Vcl.ComCtrls;
+  Buttons, ExtCtrls, Menus, System.Actions, Vcl.ActnList, Vcl.ComCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
 
 const _ActInsert = 0;
       _ActChange = 1;
@@ -326,7 +326,7 @@ begin
    i := StrToIntDef(SerialEdit.Text, 0);
    if i > 0 then begin
       workQSO.Serial := i;
-      if SerialContestType <> 0 then begin
+      if MyContest.SerialType <> stNone then begin
          workQSO.NrSent := Format('%3.3d', [i]);
       end;
    end;

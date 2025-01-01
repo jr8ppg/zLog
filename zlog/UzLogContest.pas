@@ -21,6 +21,7 @@ type
     FUseCoeff: Boolean;
   private
     FContestName : string;
+    FSerialType: TSerialType;
     FMultiFound : Boolean; // used in spacebarproc
     FBandLow: TBand;
     FBandHigh: TBand;
@@ -88,7 +89,7 @@ type
     property Period: Integer read FPeriod write FPeriod;
     property UseUTC: Boolean read GetUseUTC write SetUseUTC;
     property AdifContestId: string read FAdifContestId write FAdifContestId;
-
+    property SerialType: TSerialType read FSerialType write FSerialType;
     procedure RenewScoreAndMulti();
   end;
 
@@ -742,7 +743,7 @@ begin
 
       S := S + AdifField('rst_sent', IntToStr(aQSO.RSTsent));
 
-      if SerialContestType = 0 then begin
+      if FSerialType = stNone then begin
          S := S + AdifField('stx_string', aQSO.NrSent);
       end
       else begin
@@ -751,7 +752,7 @@ begin
 
       S := S + AdifField('rst_rcvd', IntToStr(aQSO.RSTRcvd));
 
-      if SerialContestType = 0 then begin
+      if FSerialType = stNone then begin
          S := S + AdifField('srx_string', aQSO.NrRcvd);
       end
       else begin
@@ -1034,7 +1035,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
+   FSerialType := stAll;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
@@ -1068,7 +1069,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
+   FSerialType := stAll;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
@@ -1112,7 +1113,7 @@ begin
    Log.AcceptDifferentMode := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
+   FSerialType := stAll;
    SentStr := '$S$Q';
    FNeedCtyDat := True;
 
@@ -1140,7 +1141,7 @@ begin
    Log.AcceptDifferentMode := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
+   FSerialType := stAll;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    FNeedCtyDat := True;
@@ -1163,7 +1164,7 @@ begin
    PastEditForm := TEditDialog.Create(AOwner);
 
    Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
+   FSerialType := stAll;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
@@ -1186,7 +1187,7 @@ begin
    TJA0Multi(MultiForm).JA0 := True;
 
    Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
+   FSerialType := stAll;
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
    SentStr := '$S';
@@ -1212,7 +1213,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    Log.QsoList[0].Serial := $01; // uses serial number
-   SerialContestType := SER_ALL;
+   FSerialType := stAll;
 
    SameExchange := False;
    dmZlogGlobal.Settings._sameexchange := SameExchange;
@@ -1485,11 +1486,7 @@ begin
       Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
    end;
 
-   SerialContestType := FConfig.SerialContestType;
-
-   for B := b19 to High(FConfig.SerialArray) do begin
-      SerialArrayBand[B] := FConfig.SerialArray[B];
-   end;
+   FSerialType := FConfig.SerialContestType;
 
    SentStr := dmZlogGlobal.Settings._sentstr;
 

@@ -3045,7 +3045,7 @@ object formOptions: TformOptions
           Width = 102
           Height = 21
           Caption = 'TELNET settings'
-          TabOrder = 3
+          TabOrder = 2
           OnClick = buttonZLinkSettingsClick
         end
         object editZLinkPcName: TEdit
@@ -3054,15 +3054,6 @@ object formOptions: TformOptions
           Width = 101
           Height = 21
           TabOrder = 1
-        end
-        object checkZLinkSyncSerial: TCheckBox
-          Left = 232
-          Top = 62
-          Width = 91
-          Height = 17
-          Caption = 'SyncSerial'
-          TabOrder = 2
-          OnClick = checkEnablePttCwClick
         end
       end
       object groupPacketCluster: TGroupBox
@@ -3431,13 +3422,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code SemiLight Italic'
+          FontName = 'Cascadia Mono Light'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 40
+          ItemIndex = 55
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -442,6 +442,7 @@ type
     {$ENDIF}
 
     function GetLastSerial(aQSO: TQSO): Integer;
+    function GetCurrentSerial(aQSO: TQSO): Integer;
 
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
@@ -467,7 +468,7 @@ type
 implementation
 
 uses
-  UzLogGlobal, UzLogExtension
+  UzLogGlobal, UzLogContest, UzLogExtension
   {$IFNDEF ZSERVER}
   , Main
   {$ENDIF};
@@ -2577,16 +2578,16 @@ function TLog.GetLastSerial(aQSO: TQSO): Integer;
 var
    txnr, i: Integer;
    Q: TQSO;
-   band: TBand;
 begin
    txnr := dmZLogGlobal.Settings._txnr;
 
-   case SerialContestType of
-      0: begin
-         //
+   case MyContest.SerialType of
+      stNone: begin
+         Result := 0;
+         Exit;
       end;
 
-      SER_ALL: begin
+      stAll: begin
          for i := Log.TotalQSO downto 1 do begin
             Q := Log.QsoList[i];
             if Q.TX = txnr then begin
@@ -2596,7 +2597,7 @@ begin
          end;
       end;
 
-      SER_BAND: begin
+      stBand: begin
          for i := Log.TotalQSO downto 1 do begin
             Q := Log.QsoList[i];
             if (Q.band = aQSO.Band) and (Q.TX = txnr) then begin
@@ -2606,7 +2607,7 @@ begin
          end;
       end;
 
-      SER_MS: begin
+      stMultiSingle: begin
          for i := Log.TotalQSO downto 1 do begin
             Q := Log.QsoList[i];
             if (Q.TX = aQSO.TX) then begin
@@ -2618,6 +2619,24 @@ begin
    end;
 
    Result := 0;
+end;
+
+function TLog.GetCurrentSerial(aQSO: TQSO): Integer;
+var
+   initno: Integer;
+begin
+   if Log.TotalQSO = 0 then begin
+      if MyContest is TGeneralContest then begin
+         initno := TGeneralContest(MyContest).Config.SerialArray[aQSO.Band];
+      end
+      else begin
+         initno := 1;
+      end;
+      Result := initno;
+      Exit;
+   end;
+
+   Result := GetLastSerial(aQSO) + 1;
 end;
 
 // https://wwrof.org/cabrillo/

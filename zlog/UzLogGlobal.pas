@@ -265,7 +265,6 @@ type
     _renewbythread : boolean;
     _movetomemo : boolean; // move to memo w/ spacebar when editing past qsos
 
-    _syncserial : boolean; // synchronize serial # over network
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
     _displaydatepartialcheck : boolean;
 
@@ -402,12 +401,6 @@ type
 var
   CountDownStartTime : TDateTime = 0.0;
   QSYCount : integer = 0;
-
-var
-  SerialContestType : integer;  // 0 if no serial # or SER_ALL, SER_BAND
-  SerialNumber: Integer;
-  SerialArrayBand : array[b19..HiBand] of Integer;  // initialized in TContest.Create;
-  SerialArrayTX : array[0..64] of Integer;
 
 var
   GLOBALSERIAL : integer = 0;
@@ -1050,9 +1043,6 @@ begin
 
       // PC Name
       Settings._pcname := ini.ReadString('Z-Link', 'PCName', '');
-
-      // Sync. SerialNumber
-      Settings._syncserial := ini.ReadBool('Z-Link', 'SyncSerial', False);
 
       // COM(unuse)
 //      Settings._zlinklinebreakCOM := ini.ReadInteger('Z-Link', 'COMlinebreak', 0);
@@ -1775,9 +1765,6 @@ begin
 
       // PC Name
       ini.WriteString('Z-Link', 'PCName', Settings._pcname);
-
-      // Sync. SerialNumber
-      ini.WriteBool('Z-Link', 'SyncSerial', Settings._syncserial);
 
       // COM(unuse)
 //      ini.WriteInteger('Z-Link', 'COMlinebreak', Settings._zlinklinebreakCOM);

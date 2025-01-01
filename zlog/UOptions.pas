@@ -69,7 +69,6 @@ type
     ZLinkCombo: TComboBox;
     buttonZLinkSettings: TButton;
     editZLinkPcName: TEdit;
-    checkZLinkSyncSerial: TCheckBox;
     groupRig5: TGroupBox;
     Label99: TLabel;
     comboRig5Keying: TComboBox;
@@ -1554,7 +1553,6 @@ begin
 
       Settings._zlinkport := ZLinkCombo.ItemIndex;
       Settings._pcname := editZLinkPcName.Text;
-      Settings._syncserial := checkZLinkSyncSerial.Checked;
       Settings._zlink_telnet := FTempZLinkTelnet;
 
 
@@ -1865,7 +1863,6 @@ begin
       FTempZLinkTelnet := Settings._zlink_telnet;
       ZLinkCombo.ItemIndex := Settings._zlinkport;
       editZLinkPcName.Text := Settings._pcname;
-      checkZLinkSyncSerial.Checked := Settings._syncserial;
 
       // ZLink通信設定ボタン
       buttonZLinkSettings.Enabled := True;

@@ -15,6 +15,7 @@ type
   TOperateStyle = (os1Radio = 0, os2Radio);
   TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp );
   TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
+  TSerialType = (stNone = 0, stAll, stBand, stMultiSingle );
 
   TFrequency = Int64;
 
