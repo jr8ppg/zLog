@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 138
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
-  ClientHeight = 423
+  ClientHeight = 422
   ClientWidth = 528
   Color = clBtnFace
   Constraints.MinWidth = 540
@@ -34,7 +34,7 @@ object MainForm: TMainForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 403
+    Top = 402
     Width = 528
     Height = 20
     Font.Charset = DEFAULT_CHARSET
@@ -63,22 +63,22 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
-    ExplicitTop = 402
+    ExplicitTop = 401
     ExplicitWidth = 524
   end
   object MainPanel: TPanel
     Left = 0
     Top = 122
     Width = 528
-    Height = 281
+    Height = 280
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
     ExplicitWidth = 524
-    ExplicitHeight = 280
+    ExplicitHeight = 279
     object EditPanel1R: TPanel
       Left = 0
-      Top = 171
+      Top = 170
       Width = 528
       Height = 27
       Align = alBottom
@@ -89,7 +89,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 170
+      ExplicitTop = 169
       ExplicitWidth = 524
       object RcvdRSTEdit1: TEdit
         Left = 117
@@ -280,7 +280,7 @@ object MainForm: TMainForm
     end
     object EditPanel2R: TPanel
       Left = 0
-      Top = 198
+      Top = 197
       Width = 528
       Height = 83
       Align = alBottom
@@ -291,7 +291,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 197
+      ExplicitTop = 196
       ExplicitWidth = 524
       object RigPanelC: TPanel
         Left = 1
@@ -452,7 +452,7 @@ object MainForm: TMainForm
           OnClick = checkUseRig3Click
         end
         object checkWithRig1: TCheckBox
-          Left = 451
+          Left = 443
           Top = 6
           Width = 34
           Height = 15
@@ -467,11 +467,11 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 6
           OnClick = checkWithRigClick
-          ExplicitLeft = 447
+          ExplicitLeft = 439
         end
         object checkWithRig2: TCheckBox
           Tag = 1
-          Left = 488
+          Left = 480
           Top = 6
           Width = 34
           Height = 15
@@ -486,7 +486,7 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
-          ExplicitLeft = 484
+          ExplicitLeft = 476
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -849,7 +849,7 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 528
-      Height = 171
+      Height = 170
       TabStop = False
       Align = alClient
       ColCount = 10
@@ -876,7 +876,7 @@ object MainForm: TMainForm
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
       ExplicitWidth = 524
-      ExplicitHeight = 170
+      ExplicitHeight = 169
       ColWidths = (
         38
         65
@@ -5831,7 +5831,7 @@ object MainForm: TMainForm
         ExplicitLeft = 490
       end
       object comboBandPlan: TComboBox
-        Left = 426
+        Left = 418
         Top = 6
         Width = 65
         Height = 21
@@ -5841,7 +5841,7 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
-        ExplicitLeft = 422
+        ExplicitLeft = 414
       end
     end
   end
@@ -6072,8 +6072,130 @@ object MainForm: TMainForm
       object Scratchsheet1: TMenuItem
         Action = actionShowScratchSheet
       end
-      object Bandscope1: TMenuItem
-        Action = actionShowBandScope
+      object menuBandscope: TMenuItem
+        AutoLineReduction = maAutomatic
+        Caption = '&Band Scope'
+        OnClick = menuBandscopeClick
+        object menuBSAll: TMenuItem
+          Action = actionShowBandScope
+          Caption = 'Show all windows'
+        end
+        object N16: TMenuItem
+          Caption = '-'
+        end
+        object menuBSCurrent: TMenuItem
+          AutoCheck = True
+          Caption = 'Current'
+          OnClick = menuBSCurrentClick
+        end
+        object menuBSAllBands: TMenuItem
+          AutoCheck = True
+          Caption = 'All bands'
+          OnClick = menuBSAllBandsClick
+        end
+        object menuBSNewMulti: TMenuItem
+          AutoCheck = True
+          Caption = 'New multi'
+          OnClick = menuBSNewMultiClick
+        end
+        object N15: TMenuItem
+          Caption = '-'
+        end
+        object menuBS00: TMenuItem
+          AutoCheck = True
+          Caption = '1.9'
+          OnClick = menuBS00Click
+        end
+        object menuBS01: TMenuItem
+          Tag = 1
+          AutoCheck = True
+          Caption = '3.5'
+          OnClick = menuBS00Click
+        end
+        object menuBS02: TMenuItem
+          Tag = 2
+          AutoCheck = True
+          Caption = '7'
+          OnClick = menuBS00Click
+        end
+        object menuBS03: TMenuItem
+          Tag = 3
+          AutoCheck = True
+          Caption = '10'
+          OnClick = menuBS00Click
+        end
+        object menuBS04: TMenuItem
+          Tag = 4
+          AutoCheck = True
+          Caption = '14'
+          OnClick = menuBS00Click
+        end
+        object menuBS05: TMenuItem
+          Tag = 5
+          AutoCheck = True
+          Caption = '18'
+          OnClick = menuBS00Click
+        end
+        object menuBS06: TMenuItem
+          Tag = 6
+          AutoCheck = True
+          Caption = '21'
+          OnClick = menuBS00Click
+        end
+        object menuBS07: TMenuItem
+          Tag = 7
+          AutoCheck = True
+          Caption = '24.5'
+          OnClick = menuBS00Click
+        end
+        object menuBS08: TMenuItem
+          Tag = 8
+          AutoCheck = True
+          Caption = '28'
+          OnClick = menuBS00Click
+        end
+        object menuBS09: TMenuItem
+          Tag = 9
+          AutoCheck = True
+          Caption = '50'
+          OnClick = menuBS00Click
+        end
+        object menuBS10: TMenuItem
+          Tag = 10
+          AutoCheck = True
+          Caption = '144'
+          OnClick = menuBS00Click
+        end
+        object menuBS11: TMenuItem
+          Tag = 11
+          AutoCheck = True
+          Caption = '430'
+          OnClick = menuBS00Click
+        end
+        object menuBS12: TMenuItem
+          Tag = 12
+          AutoCheck = True
+          Caption = '1200'
+          OnClick = menuBS00Click
+        end
+        object menuBS13: TMenuItem
+          Tag = 13
+          AutoCheck = True
+          Caption = '2400'
+          OnClick = menuBS00Click
+        end
+        object menuBS14: TMenuItem
+          Tag = 14
+          AutoCheck = True
+          Caption = '5600'
+          OnClick = menuBS00Click
+        end
+        object menuBS15: TMenuItem
+          Tag = 15
+          AutoCheck = True
+          Caption = '10G'
+          OnClick = menuBS00Click
+        end
       end
       object RunningFrequencies1: TMenuItem
         Action = actionShowFreqList
