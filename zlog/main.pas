@@ -3335,7 +3335,7 @@ begin
    case dmZLogGlobal.ContestCategory of
       ccSingleOp: Exit;
       ccMultiOpMultiTx: begin
-         if {(txnr < 0) or} (txnr > 9) then begin
+         if (txnr >= MAX_TX) then begin
             Exit;
          end;
 
@@ -11047,9 +11047,25 @@ var
 begin
    txnr := dmZlogGlobal.TXNr;
    Inc(txnr);
-   if txnr > 1 then begin
-      txnr := 0;
+
+   case dmZLogGlobal.ContestCategory of
+      ccSingleOp: begin
+         txnr := 0;
+      end;
+
+      ccMultiOpMultiTx: begin
+         if (txnr >= MAX_TX) then begin
+            txnr := 0;
+         end;
+      end;
+
+      ccMultiOpSingleTx, ccMultiOpTwoTx: begin
+         if (txnr > 1) then begin
+            txnr := 0;
+         end;
+      end;
    end;
+
    ChangeTxNr(txnr);
 end;
 

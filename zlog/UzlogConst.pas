@@ -40,11 +40,9 @@ const
   _USEUTC = 32767;
   _CR = Chr($0d); // carriage return
   _LF = Chr($0a);
-  SER_ALL = 1;
-  SER_BAND = 2;
-  SER_MS = 3;    // separate serial for run/multi stns
 
-  TXLIST_MM = '0,1,2,3,4,5,6,7,8,9';
+  MAX_TX = 16;
+  TXLIST_MM = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15';
   TXLIST_MS = '0,1';
 
 type

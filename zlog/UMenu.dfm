@@ -21,7 +21,7 @@ object MenuForm: TMenuForm
     312)
   TextHeight = 13
   object Label1: TLabel
-    Left = 406
+    Left = 402
     Top = 287
     Width = 36
     Height = 13
@@ -48,7 +48,7 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
-    ExplicitTop = 273
+    ExplicitTop = 280
   end
   object CancelButton: TButton
     Left = 92
@@ -60,7 +60,7 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 273
+    ExplicitTop = 280
   end
   object Button3: TButton
     Left = 172
@@ -71,7 +71,7 @@ object MenuForm: TMenuForm
     Caption = '&Help'
     TabOrder = 2
     Visible = False
-    ExplicitTop = 273
+    ExplicitTop = 280
   end
   object ContestGroup: TGroupBox
     Left = 8
@@ -349,7 +349,7 @@ object MenuForm: TMenuForm
     TabOrder = 5
   end
   object editCallsign: TEdit
-    Left = 448
+    Left = 444
     Top = 284
     Width = 65
     Height = 18
@@ -357,19 +357,19 @@ object MenuForm: TMenuForm
     AutoSize = False
     CharCase = ecUpperCase
     TabOrder = 6
-    ExplicitLeft = 439
-    ExplicitTop = 276
+    ExplicitLeft = 440
+    ExplicitTop = 283
   end
   object CheckBox1: TCheckBox
-    Left = 269
+    Left = 265
     Top = 286
     Width = 87
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = 'Post-contest'
     TabOrder = 7
-    ExplicitLeft = 260
-    ExplicitTop = 278
+    ExplicitLeft = 261
+    ExplicitTop = 285
   end
   object ScoreCoeffEdit: TEdit
     Left = 240
@@ -389,7 +389,7 @@ object MenuForm: TMenuForm
     Caption = 'Category'
     TabOrder = 9
     object Label2: TLabel
-      Left = 67
+      Left = 66
       Top = 100
       Width = 21
       Height = 13
@@ -435,9 +435,9 @@ object MenuForm: TMenuForm
       OnClick = OpGroupClick
     end
     object comboTxNo: TComboBox
-      Left = 97
+      Left = 92
       Top = 97
-      Width = 41
+      Width = 45
       Height = 21
       Style = csDropDownList
       TabOrder = 4

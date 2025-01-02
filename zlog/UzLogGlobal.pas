@@ -2726,8 +2726,8 @@ var
    tt, ss, rr: integer;
 begin
    tt := Settings._txnr;
-   if tt > 21 then
-      tt := 21;
+   if tt >= MAX_TX then
+      tt := (MAX_TX - 1);
 
    ss := GLOBALSERIAL;
    inc(GLOBALSERIAL);

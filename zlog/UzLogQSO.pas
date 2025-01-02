@@ -338,7 +338,7 @@ type
   end;
 
   TQSOListArray = array[b19..HiBand] of TQSOList;
-  TQSOListArrayByTx = array[0..9] of TQSOList;
+  TQSOListArrayByTx = array[0..(MAX_TX - 1)] of TQSOList;
 
   TLog = class(TObject)
   private
@@ -1699,7 +1699,7 @@ begin
       FBandList[B] := TQSOList.Create(False);
    end;
 
-   for i := 0 to 9 do begin
+   for i := Low(FTxList) to High(FTxList) do begin
       FTxList[i] := TQSOList.Create(False);
    end;
 
@@ -1715,7 +1715,7 @@ begin
       FBandList[B].Add(Q);
    end;
 
-   for i := 0 to 9 do begin
+   for i := Low(FTxList) to High(FTxList) do begin
       FTxList[i].Add(Q);
    end;
 
@@ -1739,7 +1739,7 @@ begin
       FBandList[B].Free();
    end;
 
-   for i := 0 to 9 do begin
+   for i := Low(FTxList) to High(FTxList) do begin
       FTxList[i].Free();
    end;
 
