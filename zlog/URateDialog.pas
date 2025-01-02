@@ -24,7 +24,7 @@ type
     SeriesTotalQSOs: TLineSeries;
     Label4: TLabel;
     ShowLastCombo: TComboBox;
-    Label3: TLabel;
+    labelHourCaption: TLabel;
     check3D: TCheckBox;
     Series3: TBarSeries;
     Series2: TBarSeries;
@@ -79,6 +79,11 @@ type
     procedure LoadSettings();
     procedure SaveSettings();
   end;
+
+resourcestring
+  HOURCAPTION_SHOWFIRST = 'Show first';
+  HOURCAPTION_SHOWCURRENT = 'Show current';
+  HOURCAPTION_SHOWLAST = 'Show last';
 
 implementation
 
@@ -173,7 +178,8 @@ procedure TRateDialog.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
 
-   UpdateGraph;
+   radioOriginClick(nil);
+
    Timer.Enabled := True;
 end;
 
@@ -272,12 +278,15 @@ procedure TRateDialog.radioOriginClick(Sender: TObject);
 begin
    if radioOriginFirstQSO.Checked = True then begin
       FGraphStartPosition := spFirstQSO;
+      labelHourCaption.Caption := HOURCAPTION_SHOWFIRST;
    end;
    if radioOriginCurrentTime.Checked = True then begin
       FGraphStartPosition := spCurrentTime;
+      labelHourCaption.Caption := HOURCAPTION_SHOWCURRENT;
    end;
    if radioOriginLastQSO.Checked = True then begin
       FGraphStartPosition := spLastQSO;
+      labelHourCaption.Caption := HOURCAPTION_SHOWLAST;
    end;
    UpdateGraph();
 end;

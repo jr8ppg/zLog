@@ -8,99 +8,105 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMemory 64176
-#define UExceptionDialog_RsScreenRes 64177
-#define UExceptionDialog_RsActiveControl 64178
-#define UExceptionDialog_RsThread 64179
-#define UExceptionDialog_RsMissingVersionInfo 64180
-#define UExceptionDialog_RsExceptionStack 64181
-#define UExceptionDialog_RsMainThreadID 64182
-#define UExceptionDialog_RsExceptionThreadID 64183
-#define UExceptionDialog_RsMainThreadCallStack 64184
-#define UExceptionDialog_RsThreadCallStack 64185
-#define UExceptionDialog_RsErrorMessage 64186
-#define UExceptionDialog_RsDetailsIntro 64187
-#define UExceptionDialog_RsUnitVersioningIntro 64188
-#define Main_TMainForm_ConfirmRewindSerialNumber 64192
-#define Main_TMainForm_ConfirmContestPeriod 64193
-#define Main_TMainForm_ConfirmOverwrite 64194
-#define Main_TMainForm_ConfirmModeConvert 64195
-#define Main_TMainForm_No_QTC_Message 64196
-#define Main_TMainForm_Assigned_Another_Function 64197
-#define Main_TMainForm_To_Change_the_mode 64198
-#define Main_TMainForm_To_Change_the_band 64199
-#define UExceptionDialog_RsAppError 64200
-#define UExceptionDialog_RsExceptionClass 64201
-#define UExceptionDialog_RsExceptionMessage 64202
-#define UExceptionDialog_RsExceptionAddr 64203
-#define UExceptionDialog_RsStackList 64204
-#define UExceptionDialog_RsModulesList 64205
-#define UExceptionDialog_RsOSVersion 64206
-#define UExceptionDialog_RsProcessor 64207
-#define Main_TMainForm_New_QSO_Arrived 64208
-#define Main_TMainForm_Select_Operator 64209
-#define Main_TMainForm_JARL_Member_Info 64210
-#define Main_TMainForm_Inquire_JARL_Member_Info 64211
-#define Main_TMainForm_UserDat_not_loaded 64212
-#define Main_TMainForm_ZserverNotConfigured 64213
-#define Main_TMainForm_ComfirmUploadOpList 64214
-#define Main_TMainForm_ComfirmDownloadOpList 64215
-#define Main_TMainForm_DownloadFile 64216
-#define Main_TMainForm_UploadFile 64217
-#define Main_TMainForm_SoundFileFolderNotSet 64218
-#define Main_TMainForm_Compressing 64219
-#define Main_TMainForm_FailedToCompressSoundFiles 64220
-#define Main_TMainForm_FileNotFound 64221
-#define Main_TMainForm_ComfirmUploadSound 64222
-#define Main_TMainForm_ComfirmDownloadSound 64223
-#define Main_TMainForm_Callsign_not_entered 64224
-#define Main_TMainForm_Dupe_qso 64225
-#define Main_TMainForm_Thankyou_for_your_qso 64226
-#define Main_TMainForm_CW_port_is_no_set 64227
-#define Main_TMainForm_Not_a_new_multi 64228
-#define Main_TMainForm_Cannot_merge_current_file 64229
-#define Main_TMainForm_Merging_now 64230
-#define Main_TMainForm_Some_qsos_merged 64231
-#define Main_TMainForm_CtyDat_not_loaded 64232
-#define Main_TMainForm_RIT_XIT_Cleared 64233
-#define Main_TMainForm_Anti_zeroin 64234
-#define Main_TMainForm_Set_CQ_Repeat_Int 64235
-#define Main_TMainForm_Invalid_zone 64236
-#define Main_TMainForm_JudgePeriod 64237
-#define Main_TMainForm_EmptyOpList 64238
-#define Main_TMainForm_Setup_SentNR_first 64239
-#define Main_TMainForm_Active_Band_Adjusted 64240
-#define Main_TMainForm_Change_Band_QSOs 64241
-#define Main_TMainForm_Change_Mode_QSOs 64242
-#define Main_TMainForm_Change_Operator_QSOs 64243
-#define Main_TMainForm_Change_Power_QSOs 64244
-#define Main_TMainForm_Change_TXNO_QSOs 64245
-#define Main_TMainForm_Need_File_Name 64246
-#define Main_TMainForm_QTC_Sent 64247
-#define Main_TMainForm_QTC_no_shortcut_keys 64248
-#define Main_TMainForm_Less_Than_10min 64249
-#define Main_TMainForm_QSY_Count_Exceeded 64250
-#define Main_TMainForm_Loading_now 64251
-#define Main_TMainForm_Switch_CW_Bank_A 64252
-#define Main_TMainForm_Switch_CW_Bank_B 64253
-#define Main_TMainForm_This_QSO_is_locked 64254
-#define Main_TMainForm_Invalid_number 64255
-#define UCFGEdit_Please_enter_the_prov_code 64256
-#define UCFGEdit_Please_enter_the_city_code 64257
-#define USelectUserDefinedContest_Setup_prov_first 64258
-#define USelectUserDefinedContest_Setup_city_first 64259
-#define UMenu_UMenu_PleaseEnterYourCallsign 64260
-#define Vcl_EdgeConst_SWebViewFailure 64261
-#define Vcl_EdgeConst_SNoWebView 64262
-#define IEConst_sNotSupportedByEdge 64263
-#define UBandPlanEditDialog_Input_Text 64264
-#define UBandPlanEditDialog_Delete_Preset 64265
-#define Main_TMainForm_Enter_Frequency 64266
-#define Main_TMainForm_Comfirm_Delete_Qso 64267
-#define Main_TMainForm_Comfirm_Delete_Qsos 64268
-#define Main_TMainForm_New_Multi_Only 64269
-#define Main_TMainForm_Change_Date 64270
-#define Main_TMainForm_Confirm_Save_Changes 64271
+#define UExceptionDialog_RsErrorMessage 64160
+#define UExceptionDialog_RsDetailsIntro 64161
+#define UExceptionDialog_RsUnitVersioningIntro 64162
+#define UExceptionDialog_RsExceptionMessage 64176
+#define UExceptionDialog_RsExceptionAddr 64177
+#define UExceptionDialog_RsStackList 64178
+#define UExceptionDialog_RsModulesList 64179
+#define UExceptionDialog_RsOSVersion 64180
+#define UExceptionDialog_RsProcessor 64181
+#define UExceptionDialog_RsMemory 64182
+#define UExceptionDialog_RsScreenRes 64183
+#define UExceptionDialog_RsActiveControl 64184
+#define UExceptionDialog_RsThread 64185
+#define UExceptionDialog_RsMissingVersionInfo 64186
+#define UExceptionDialog_RsExceptionStack 64187
+#define UExceptionDialog_RsMainThreadID 64188
+#define UExceptionDialog_RsExceptionThreadID 64189
+#define UExceptionDialog_RsMainThreadCallStack 64190
+#define UExceptionDialog_RsThreadCallStack 64191
+#define Main_TMainForm_SoundFileFolderNotSet 64192
+#define Main_TMainForm_Compressing 64193
+#define Main_TMainForm_FailedToCompressSoundFiles 64194
+#define Main_TMainForm_FileNotFound 64195
+#define Main_TMainForm_ComfirmUploadSound 64196
+#define Main_TMainForm_ComfirmDownloadSound 64197
+#define Main_TMainForm_ConfirmRewindSerialNumber 64198
+#define Main_TMainForm_ConfirmContestPeriod 64199
+#define Main_TMainForm_ConfirmOverwrite 64200
+#define Main_TMainForm_ConfirmModeConvert 64201
+#define Main_TMainForm_No_QTC_Message 64202
+#define Main_TMainForm_Assigned_Another_Function 64203
+#define Main_TMainForm_To_Change_the_mode 64204
+#define Main_TMainForm_To_Change_the_band 64205
+#define UExceptionDialog_RsAppError 64206
+#define UExceptionDialog_RsExceptionClass 64207
+#define Main_TMainForm_Anti_zeroin 64208
+#define Main_TMainForm_Set_CQ_Repeat_Int 64209
+#define Main_TMainForm_Invalid_zone 64210
+#define Main_TMainForm_JudgePeriod 64211
+#define Main_TMainForm_EmptyOpList 64212
+#define Main_TMainForm_Setup_SentNR_first 64213
+#define Main_TMainForm_New_QSO_Arrived 64214
+#define Main_TMainForm_Select_Operator 64215
+#define Main_TMainForm_JARL_Member_Info 64216
+#define Main_TMainForm_Inquire_JARL_Member_Info 64217
+#define Main_TMainForm_UserDat_not_loaded 64218
+#define Main_TMainForm_ZserverNotConfigured 64219
+#define Main_TMainForm_ComfirmUploadOpList 64220
+#define Main_TMainForm_ComfirmDownloadOpList 64221
+#define Main_TMainForm_DownloadFile 64222
+#define Main_TMainForm_UploadFile 64223
+#define Main_TMainForm_QSY_Count_Exceeded 64224
+#define Main_TMainForm_Loading_now 64225
+#define Main_TMainForm_Switch_CW_Bank_A 64226
+#define Main_TMainForm_Switch_CW_Bank_B 64227
+#define Main_TMainForm_This_QSO_is_locked 64228
+#define Main_TMainForm_Invalid_number 64229
+#define Main_TMainForm_Callsign_not_entered 64230
+#define Main_TMainForm_Dupe_qso 64231
+#define Main_TMainForm_Thankyou_for_your_qso 64232
+#define Main_TMainForm_CW_port_is_no_set 64233
+#define Main_TMainForm_Not_a_new_multi 64234
+#define Main_TMainForm_Cannot_merge_current_file 64235
+#define Main_TMainForm_Merging_now 64236
+#define Main_TMainForm_Some_qsos_merged 64237
+#define Main_TMainForm_CtyDat_not_loaded 64238
+#define Main_TMainForm_RIT_XIT_Cleared 64239
+#define Main_TMainForm_Enter_Frequency 64240
+#define Main_TMainForm_Comfirm_Delete_Qso 64241
+#define Main_TMainForm_Comfirm_Delete_Qsos 64242
+#define Main_TMainForm_New_Multi_Only 64243
+#define Main_TMainForm_Change_Date 64244
+#define Main_TMainForm_Confirm_Save_Changes 64245
+#define Main_TMainForm_Active_Band_Adjusted 64246
+#define Main_TMainForm_Change_Band_QSOs 64247
+#define Main_TMainForm_Change_Mode_QSOs 64248
+#define Main_TMainForm_Change_Operator_QSOs 64249
+#define Main_TMainForm_Change_Power_QSOs 64250
+#define Main_TMainForm_Change_TXNO_QSOs 64251
+#define Main_TMainForm_Need_File_Name 64252
+#define Main_TMainForm_QTC_Sent 64253
+#define Main_TMainForm_QTC_no_shortcut_keys 64254
+#define Main_TMainForm_Less_Than_10min 64255
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64256
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64257
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64258
+#define URateDialogEx_HOURCAPTION_SHOWFIRST 64259
+#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64260
+#define URateDialogEx_HOURCAPTION_SHOWLAST 64261
+#define UCFGEdit_Please_enter_the_prov_code 64262
+#define UCFGEdit_Please_enter_the_city_code 64263
+#define USelectUserDefinedContest_Setup_prov_first 64264
+#define USelectUserDefinedContest_Setup_city_first 64265
+#define UMenu_UMenu_PleaseEnterYourCallsign 64266
+#define Vcl_EdgeConst_SWebViewFailure 64267
+#define Vcl_EdgeConst_SNoWebView 64268
+#define IEConst_sNotSupportedByEdge 64269
+#define UBandPlanEditDialog_Input_Text 64270
+#define UBandPlanEditDialog_Delete_Preset 64271
 #define System_NetConsts_SNetHttpRequestReadDataError 64272
 #define System_NetConsts_SNetHttpRequestSetTimeoutError 64273
 #define System_NetConsts_SNetHttpCertFileOpenError 64274
@@ -110,13 +116,13 @@
 #define System_NetConsts_SMimeValueEmpty 64278
 #define System_NetConsts_SMimeWeightOutOfRange 64279
 #define UzLogGlobal_MSG_INVALID_CHARACTER 64280
-#define URateDialogEx_SCOREGRID_TOTAL 64281
-#define URateDialogEx_SCOREGRID_TARGET 64282
-#define URateDialogEx_SCOREGRID_DIFF 64283
-#define URateDialogEx_SCOREGRID_DIFF2 64284
-#define URateDialogEx_SCOREGRID_CUMULATIVE 64285
-#define URateDialogEx_SCOREGRID_WINLOSS_L 64286
-#define URateDialogEx_SCOREGRID_WINLOSS_S 64287
+#define URateDialog_HOURCAPTION_SHOWFIRST 64281
+#define URateDialog_HOURCAPTION_SHOWCURRENT 64282
+#define URateDialog_HOURCAPTION_SHOWLAST 64283
+#define URateDialogEx_SCOREGRID_TOTAL 64284
+#define URateDialogEx_SCOREGRID_TARGET 64285
+#define URateDialogEx_SCOREGRID_DIFF 64286
+#define URateDialogEx_SCOREGRID_DIFF2 64287
 #define System_NetConsts_SNetHttpGetServerCertificate 64288
 #define System_NetConsts_SNetHttpInvalidServerCertificate 64289
 #define System_NetConsts_SNetHttpServerCertificateNotAccepted 64290
@@ -325,15 +331,15 @@
 #define System_Bindings_Consts_sMismatchArgCount 64493
 #define System_Bindings_Consts_sAddOpFail 64494
 #define System_Bindings_Consts_sSubtractOpFail 64495
-#define UComm_UComm_SiteChanging 64496
-#define UOptions_SELECT_FOLDER 64497
-#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64498
-#define UOptions_Installed_Plugins_Disabled 64499
-#define UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64500
-#define UOptions_EnterTheFullPathOfRootFolder 64501
-#define UOptions_zLogRootFolderNotExist 64502
-#define UOptions_RigIsNotAssignedToAntBand 64503
-#define UOptions_BandsHaveNoRigsAssigned 64504
+#define UComm_UComm_Disconnect 64496
+#define UComm_UComm_Connecting 64497
+#define UComm_UComm_Disconnecting 64498
+#define UComm_UComm_SecondsLeft 64499
+#define UComm_UComm_ExceededLimit 64500
+#define UComm_UComm_SiteChanging 64501
+#define UQTCForm_QTC_DONE 64502
+#define UQTCForm_QTC_SEND 64503
+#define UQTCForm_QTC_SENT 64504
 #define System_RegularExpressionsConsts_SRegExMissingExpression 64505
 #define System_RegularExpressionsConsts_SRegExExpressionError 64506
 #define System_RegularExpressionsConsts_SRegExStudyError 64507
@@ -348,95 +354,95 @@
 #define UZLinkForm_FileDownloadSuccessfully 64516
 #define UZLinkForm_NoFilesFoundToUpload 64517
 #define UZLinkForm_FileUploadSuccessfully 64518
-#define UQTCForm_QTC_DONE 64519
-#define UQTCForm_QTC_SEND 64520
-#define UQTCForm_QTC_SENT 64521
-#define UComm_UComm_Connect 64522
-#define UComm_UComm_Disconnect 64523
-#define UComm_UComm_Connecting 64524
-#define UComm_UComm_Disconnecting 64525
-#define UComm_UComm_SecondsLeft 64526
-#define UComm_UComm_ExceededLimit 64527
-#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64528
-#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64529
-#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64530
-#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64531
-#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64532
-#define Vcl_Imaging_pnglang_EInvalidNewSize 64533
-#define Vcl_Imaging_pnglang_EInvalidSpec 64534
-#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64535
-#define Vcl_OleConst_SBadPropValue 64536
-#define Vcl_OleConst_SCannotActivate 64537
-#define Vcl_OleConst_SNoWindowHandle 64538
-#define Vcl_OleConst_SInvalidLicense 64539
-#define Vcl_OleConst_SNotLicensed 64540
-#define Vcl_OleConst_sNoRunningObject 64541
+#define UOptions_SELECT_FOLDER 64519
+#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64520
+#define UOptions_Installed_Plugins_Disabled 64521
+#define UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64522
+#define UOptions_EnterTheFullPathOfRootFolder 64523
+#define UOptions_zLogRootFolderNotExist 64524
+#define UOptions_RigIsNotAssignedToAntBand 64525
+#define UOptions_BandsHaveNoRigsAssigned 64526
+#define UComm_UComm_Connect 64527
+#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64528
+#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64529
+#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64530
+#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64531
+#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64532
+#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64533
+#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64534
+#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64535
+#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64536
+#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64537
+#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64538
+#define Vcl_Imaging_pnglang_EInvalidNewSize 64539
+#define Vcl_Imaging_pnglang_EInvalidSpec 64540
+#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64541
 #define URigControl_RECONNECT_ALL_RIGS 64542
 #define UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink 64543
-#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64544
-#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64545
-#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64546
-#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64547
-#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64548
-#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64549
-#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64550
-#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64551
-#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64552
-#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64553
-#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64554
-#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64555
-#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64556
-#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64557
-#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64558
-#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64559
-#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64560
-#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64561
-#define OverbyteIcsCharsetUtils_sHebrewWindows 64562
-#define OverbyteIcsCharsetUtils_sJapaneseJIS 64563
-#define OverbyteIcsCharsetUtils_sKorean 64564
-#define OverbyteIcsCharsetUtils_sKoreanEUC 64565
-#define OverbyteIcsCharsetUtils_sLatin9 64566
-#define OverbyteIcsCharsetUtils_sThaiWindows 64567
-#define OverbyteIcsCharsetUtils_sTurkishISO 64568
-#define OverbyteIcsCharsetUtils_sTurkishWindows 64569
-#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64570
-#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64571
-#define OverbyteIcsCharsetUtils_sVietnameseWindows 64572
-#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64573
-#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64574
-#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64575
-#define OverbyteIcsCharsetUtils_sArabicWindows 64576
-#define OverbyteIcsCharsetUtils_sBalticISO 64577
-#define OverbyteIcsCharsetUtils_sBalticWindows 64578
-#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64579
-#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64580
-#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64581
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64582
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64583
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64584
-#define OverbyteIcsCharsetUtils_sCyrillicISO 64585
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64586
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64587
-#define OverbyteIcsCharsetUtils_sCyrillicWindows 64588
-#define OverbyteIcsCharsetUtils_sEstonianISO 64589
-#define OverbyteIcsCharsetUtils_sGreekISO 64590
-#define OverbyteIcsCharsetUtils_sGreekWindows 64591
+#define Vcl_OleConst_SCannotActivate 64544
+#define Vcl_OleConst_SNoWindowHandle 64545
+#define Vcl_OleConst_SInvalidLicense 64546
+#define Vcl_OleConst_SNotLicensed 64547
+#define Vcl_OleConst_sNoRunningObject 64548
+#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64549
+#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64550
+#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64551
+#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64552
+#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64553
+#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64554
+#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64555
+#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64556
+#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64557
+#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64558
+#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64559
+#define OverbyteIcsCharsetUtils_sTurkishWindows 64560
+#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64561
+#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64562
+#define OverbyteIcsCharsetUtils_sVietnameseWindows 64563
+#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64564
+#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64565
+#define Data_DBConsts_SBcdOverflow 64566
+#define Data_DBConsts_SInvalidBcdValue 64567
+#define Data_DBConsts_SCouldNotParseTimeStamp 64568
+#define Data_DBConsts_SInvalidSqlTimeStamp 64569
+#define Vcl_Imaging_JConsts_sChangeJPGSize 64570
+#define Vcl_Imaging_JConsts_sJPEGError 64571
+#define Vcl_Imaging_JConsts_sJPEGImageFile 64572
+#define UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins 64573
+#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64574
+#define Vcl_OleConst_SBadPropValue 64575
+#define OverbyteIcsCharsetUtils_sCyrillicISO 64576
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64577
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64578
+#define OverbyteIcsCharsetUtils_sCyrillicWindows 64579
+#define OverbyteIcsCharsetUtils_sEstonianISO 64580
+#define OverbyteIcsCharsetUtils_sGreekISO 64581
+#define OverbyteIcsCharsetUtils_sGreekWindows 64582
+#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64583
+#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64584
+#define OverbyteIcsCharsetUtils_sHebrewWindows 64585
+#define OverbyteIcsCharsetUtils_sJapaneseJIS 64586
+#define OverbyteIcsCharsetUtils_sKorean 64587
+#define OverbyteIcsCharsetUtils_sKoreanEUC 64588
+#define OverbyteIcsCharsetUtils_sLatin9 64589
+#define OverbyteIcsCharsetUtils_sThaiWindows 64590
+#define OverbyteIcsCharsetUtils_sTurkishISO 64591
 #define JclResources_RsHasNotTD32Info 64592
 #define JclResources_RsEUnexpectedEOSeq 64593
 #define JclResources_RsWin32Error 64594
 #define JclResources_RsELibraryNotFound 64595
 #define JclResources_RsEFunctionNotFound 64596
 #define UzLogConst_PortActionList 64597
-#define Data_DBConsts_SBcdOverflow 64598
-#define Data_DBConsts_SInvalidBcdValue 64599
-#define Data_DBConsts_SCouldNotParseTimeStamp 64600
-#define Data_DBConsts_SInvalidSqlTimeStamp 64601
-#define Vcl_Imaging_JConsts_sChangeJPGSize 64602
-#define Vcl_Imaging_JConsts_sJPEGError 64603
-#define Vcl_Imaging_JConsts_sJPEGImageFile 64604
-#define UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins 64605
-#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64606
-#define OverbyteIcsCharsetUtils_sArabicISO 64607
+#define OverbyteIcsCharsetUtils_sArabicISO 64598
+#define OverbyteIcsCharsetUtils_sArabicWindows 64599
+#define OverbyteIcsCharsetUtils_sBalticISO 64600
+#define OverbyteIcsCharsetUtils_sBalticWindows 64601
+#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64602
+#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64603
+#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64604
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64605
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64606
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64607
 #define JclResources_RsOSVersionWinServer2016 64608
 #define JclResources_RsOSVersionWinServer2019 64609
 #define JclResources_RsOSVersionWinServer2022 64610
@@ -1367,6 +1373,15 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
+	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
+	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
+	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
+	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
+	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
+	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
+	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
@@ -1377,9 +1392,12 @@ BEGIN
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
-	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
-	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
-	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
+	Main_TMainForm_Compressing,	L"Compressing..."
+	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
+	Main_TMainForm_FileNotFound,	L"file not found."
+	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
+	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
 	Main_TMainForm_ConfirmRewindSerialNumber,	L"Do you want to rewind the serial number?"
 	Main_TMainForm_ConfirmContestPeriod,	L"Do you want to change the contest period to ""not used""?"
 	Main_TMainForm_ConfirmOverwrite,	L"[%s] file already exists. overwrite?"
@@ -1390,12 +1408,12 @@ BEGIN
 	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
-	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
-	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
-	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
-	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
-	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
-	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
+	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
+	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
+	Main_TMainForm_Invalid_zone,	L"Invalid zone"
+	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
+	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
+	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State and City code first"
 	Main_TMainForm_New_QSO_Arrived,	L"New QSO data has arrived. click here to view."
 	Main_TMainForm_Select_Operator,	L"Please select an operator"
 	Main_TMainForm_JARL_Member_Info,	L"JARL Member information."
@@ -1406,12 +1424,12 @@ BEGIN
 	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
 	Main_TMainForm_DownloadFile,	L"Downloading..."
 	Main_TMainForm_UploadFile,	L"Uploading..."
-	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
-	Main_TMainForm_Compressing,	L"Compressing..."
-	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
-	Main_TMainForm_FileNotFound,	L"file not found."
-	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
-	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
+	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
+	Main_TMainForm_Loading_now,	L"Loading..."
+	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
+	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
+	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
+	Main_TMainForm_Invalid_number,	L"Invalid number"
 	Main_TMainForm_Callsign_not_entered,	L"Callsign not entered"
 	Main_TMainForm_Dupe_qso,	L"Dupe"
 	Main_TMainForm_Thankyou_for_your_qso,	L"Thank you for the QSO with JA1ZLO"
@@ -1422,12 +1440,12 @@ BEGIN
 	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
 	Main_TMainForm_CtyDat_not_loaded,	L"CTY.DAT not loaded"
 	Main_TMainForm_RIT_XIT_Cleared,	L"RIT/XIT Offset Cleared"
-	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
-	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
-	Main_TMainForm_Invalid_zone,	L"Invalid zone"
-	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
-	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
-	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State and City code first"
+	Main_TMainForm_Enter_Frequency,	L"Enter frequency in kHz"
+	Main_TMainForm_Comfirm_Delete_Qso,	L"Are you sure to delete this QSO?"
+	Main_TMainForm_Comfirm_Delete_Qsos,	L"Are you sure to delete these QSO's?"
+	Main_TMainForm_New_Multi_Only,	L"This station is not a new multiplier, but will be logged anyway."
+	Main_TMainForm_Change_Date,	L"To change the date, double click the time field."
+	Main_TMainForm_Confirm_Save_Changes,	L"Save changes to %s ?"
 	Main_TMainForm_Active_Band_Adjusted,	L"Active Bands adjusted to the required bands"
 	Main_TMainForm_Change_Band_QSOs,	L"Are you sure to change the band for these QSO's?"
 	Main_TMainForm_Change_Mode_QSOs,	L"Are you sure to change the mode for these QSO's?"
@@ -1438,12 +1456,12 @@ BEGIN
 	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing %s"
 	Main_TMainForm_QTC_no_shortcut_keys,	L"No shortcut keys are assigned for QTC"
 	Main_TMainForm_Less_Than_10min,	L"Less than 10 min since last QSY!"
-	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
-	Main_TMainForm_Loading_now,	L"Loading..."
-	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
-	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
-	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
-	Main_TMainForm_Invalid_number,	L"Invalid number"
+	URateDialogEx_SCOREGRID_CUMULATIVE,	L"Cumulative"
+	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
+	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
+	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"Show first"
+	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"Show current"
+	URateDialogEx_HOURCAPTION_SHOWLAST,	L"Show last"
 	UCFGEdit_Please_enter_the_prov_code,	L"Please enter the Prov/State code"
 	UCFGEdit_Please_enter_the_city_code,	L"Please enter the City code"
 	USelectUserDefinedContest_Setup_prov_first,	L"Setup Prov/State code first"
@@ -1454,12 +1472,6 @@ BEGIN
 	IEConst_sNotSupportedByEdge,	L"\x64CD\x4F5C\x306F Edge WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3067\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	UBandPlanEditDialog_Input_Text,	L"Please enter preset name"
 	UBandPlanEditDialog_Delete_Preset,	L"Are you sure to delete the bandplan preset [%s]"
-	Main_TMainForm_Enter_Frequency,	L"Enter frequency in kHz"
-	Main_TMainForm_Comfirm_Delete_Qso,	L"Are you sure to delete this QSO?"
-	Main_TMainForm_Comfirm_Delete_Qsos,	L"Are you sure to delete these QSO's?"
-	Main_TMainForm_New_Multi_Only,	L"This station is not a new multiplier, but will be logged anyway."
-	Main_TMainForm_Change_Date,	L"To change the date, double click the time field."
-	Main_TMainForm_Confirm_Save_Changes,	L"Save changes to %s ?"
 	System_NetConsts_SNetHttpRequestReadDataError,	L"\x30C7\x30FC\x30BF\x306E\x8AAD\x307F\x53D6\x308A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpRequestSetTimeoutError,	L"\x8981\x6C42\x306E\x30BF\x30A4\x30E0\x30A2\x30A6\x30C8\x306E\x8A2D\x5B9A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpCertFileOpenError,	L"\x8A8D\x8A3C\x30D5\x30A1\x30A4\x30EB\x306E\x30AA\x30FC\x30D7\x30F3\x6642\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
@@ -1469,13 +1481,13 @@ BEGIN
 	System_NetConsts_SMimeValueEmpty,	L"\x5024\x306E\x540D\x524D\x304C\x5165\x529B\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeWeightOutOfRange,	L"\x54C1\x8CEA\x306E\x91CD\x307F\x304C\x7BC4\x56F2\x5916\x3067\x3059"
 	UzLogGlobal_MSG_INVALID_CHARACTER,	L"Invalid character [%s]"
+	URateDialog_HOURCAPTION_SHOWFIRST,	L"Show first"
+	URateDialog_HOURCAPTION_SHOWCURRENT,	L"Show current"
+	URateDialog_HOURCAPTION_SHOWLAST,	L"Show last"
 	URateDialogEx_SCOREGRID_TOTAL,	L"Total"
 	URateDialogEx_SCOREGRID_TARGET,	L"Target"
 	URateDialogEx_SCOREGRID_DIFF,	L"Diff"
 	URateDialogEx_SCOREGRID_DIFF2,	L"+/-"
-	URateDialogEx_SCOREGRID_CUMULATIVE,	L"Cumulative"
-	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
-	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
 	System_NetConsts_SNetHttpGetServerCertificate,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x306E\x53D6\x5F97\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F"
 	System_NetConsts_SNetHttpInvalidServerCertificate,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x304C\x7121\x52B9\x3067\x3042\x308B\x304B\x5B58\x5728\x3057\x307E\x305B\x3093"
 	System_NetConsts_SNetHttpServerCertificateNotAccepted,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x304C\x53D7\x7406\x3055\x308C\x307E\x305B\x3093\x3067\x3057\x305F"
@@ -1684,15 +1696,15 @@ BEGIN
 	System_Bindings_Consts_sMismatchArgCount,	L"\x5F15\x6570\x306E\x6570\x304C\x6B63\x3057\x304F\x3042\x308A\x307E\x305B\x3093\x3002%d \x500B\x5FC5\x8981\x3067\x3059\x304C\x3001\x53D7\x3051\x53D6\x3063\x305F\x306E\x306F %d \x500B\x3067\x3059"
 	System_Bindings_Consts_sAddOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x52A0\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sSubtractOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x6E1B\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
+	UComm_UComm_Disconnect,	L"Disconnect"
+	UComm_UComm_Connecting,	L"Connecting..."
+	UComm_UComm_Disconnecting,	L"Disconnecting..."
+	UComm_UComm_SecondsLeft,	L"%s seconds left to reconnect"
+	UComm_UComm_ExceededLimit,	L"reconnection attempts exceeded limit"
 	UComm_UComm_SiteChanging,	L"You are already connected to the %s. Do you want to disconnect?"
-	UOptions_SELECT_FOLDER,	L"Select folder"
-	UOptions_PLEASE_INPUT_OFFSET_FREQ,	L"Please input the offset frequency in kHz"
-	UOptions_Installed_Plugins_Disabled,	L"Plugins folder changed. Installed plugins will be disabled. Are you sure?"
-	UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins,	L"Do you want the following bands to have the same settings?"
-	UOptions_EnterTheFullPathOfRootFolder,	L"Enter the full path of the zLog root folder"
-	UOptions_zLogRootFolderNotExist,	L"zLog root folder does not exist"
-	UOptions_RigIsNotAssignedToAntBand,	L"RIG-%d %s is not assigned to any band. Do you want to assign it now?"
-	UOptions_BandsHaveNoRigsAssigned,	L"There are bands that have no rigs assigned. Do you want to assign them now?"
+	UQTCForm_QTC_DONE,	L"Done"
+	UQTCForm_QTC_SEND,	L"Send"
+	UQTCForm_QTC_SENT,	L" Sent"
 	System_RegularExpressionsConsts_SRegExMissingExpression,	L"RegEx \x306B\x6B63\x898F\x8868\x73FE\x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059"
 	System_RegularExpressionsConsts_SRegExExpressionError,	L"\x30AA\x30D5\x30BB\x30C3\x30C8 %d \x3067\x6B63\x898F\x8868\x73FE\x306B\x30A8\x30E9\x30FC\x304C\x3042\x308A\x307E\x3059: %s"
 	System_RegularExpressionsConsts_SRegExStudyError,	L"\x6B63\x898F\x8868\x73FE\x306E\x89E3\x6790\x3067\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: %s"
@@ -1707,15 +1719,21 @@ BEGIN
 	UZLinkForm_FileDownloadSuccessfully,	L"File download completed successfully."
 	UZLinkForm_NoFilesFoundToUpload,	L"No files found to upload."
 	UZLinkForm_FileUploadSuccessfully,	L"File upload completed successfully."
-	UQTCForm_QTC_DONE,	L"Done"
-	UQTCForm_QTC_SEND,	L"Send"
-	UQTCForm_QTC_SENT,	L" Sent"
+	UOptions_SELECT_FOLDER,	L"Select folder"
+	UOptions_PLEASE_INPUT_OFFSET_FREQ,	L"Please input the offset frequency in kHz"
+	UOptions_Installed_Plugins_Disabled,	L"Plugins folder changed. Installed plugins will be disabled. Are you sure?"
+	UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins,	L"Do you want the following bands to have the same settings?"
+	UOptions_EnterTheFullPathOfRootFolder,	L"Enter the full path of the zLog root folder"
+	UOptions_zLogRootFolderNotExist,	L"zLog root folder does not exist"
+	UOptions_RigIsNotAssignedToAntBand,	L"RIG-%d %s is not assigned to any band. Do you want to assign it now?"
+	UOptions_BandsHaveNoRigsAssigned,	L"There are bands that have no rigs assigned. Do you want to assign them now?"
 	UComm_UComm_Connect,	L"Connect"
-	UComm_UComm_Disconnect,	L"Disconnect"
-	UComm_UComm_Connecting,	L"Connecting..."
-	UComm_UComm_Disconnecting,	L"Disconnecting..."
-	UComm_UComm_SecondsLeft,	L"%s seconds left to reconnect"
-	UComm_UComm_ExceededLimit,	L"reconnection attempts exceeded limit"
+	Vcl_Imaging_pnglang_EPNGUnknownInterlaceText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x4E0D\x660E\x306A\x30A4\x30F3\x30BF\x30EC\x30FC\x30B9\x65B9\x5F0F\x3092\x4F7F\x7528\x3057\x3066\x3044\x3066\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_Imaging_pnglang_EPNGUnknownColorTypeText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x672A\x77E5\x306E\x30AB\x30E9\x30FC\x578B\x3092\x4F7F\x7528\x3057\x3066\x304A\x308A\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_Imaging_pnglang_EPNGCannotAssignChunkText,	L"\x30C1\x30E3\x30F3\x30AF\x306F\x5272\x308A\x5F53\x3066\x5BFE\x8C61\x3068\x4E92\x63DB\x6027\x304C\x5FC5\x8981\x3067\x3059\x3002"
+	Vcl_Imaging_pnglang_EPNGUnexpectedEndText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x30C7\x30B3\x30FC\x30C0\x304C\x4E88\x671F\x3057\x306A\x3044\x30D5\x30A1\x30A4\x30EB\x306E\x7D42\x7AEF\x3092\x691C\x51FA\x3057\x305F\x305F\x3081\x3067\x3059\x3002"
+	Vcl_Imaging_pnglang_EPNGNoImageDataText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
+	Vcl_Imaging_pnglang_EPNGCannotAddChunkText,	L"\x30D7\x30ED\x30B0\x30E9\x30E0\x304C\x73FE\x5728\x306E\x753B\x50CF\x306B\x65E2\x5B58\x306E\x5FC5\x9808\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x3092\x8A66\x884C\x3057\x307E\x3057\x305F\x3002\x3053\x308C\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
 	Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText,	L"\x65B0\x3057\x3044\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002\x73FE\x5728\x306E\x753B\x50CF\x304C\x6709\x52B9\x3067\x306F\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText,	L"PNG \x753B\x50CF\x306F\x30EA\x30BD\x30FC\x30B9 ID \x304B\x3089\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	Vcl_Imaging_pnglang_EPNGOutMemoryText,	L"\x4E00\x90E8\x306E\x64CD\x4F5C\x304C\x5B9F\x884C\x3055\x308C\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30B7\x30B9\x30C6\x30E0\x306E\x30EA\x30BD\x30FC\x30B9\x304C\x4E0D\x8DB3\x3057\x3066\x3044\x308B\x305F\x3081\x3067\x3059\x3002\x4E00\x90E8\x306E\x30A6\x30A3\x30F3\x30C9\x30A6\x3092\x9589\x3058\x3066\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
@@ -1724,14 +1742,14 @@ BEGIN
 	Vcl_Imaging_pnglang_EInvalidNewSize,	L"\x30B5\x30A4\x30BA\x5909\x66F4\x3059\x308B\x753B\x50CF\x306E\x65B0\x3057\x3044\x30B5\x30A4\x30BA\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
 	Vcl_Imaging_pnglang_EInvalidSpec,	L"""Portable Network Graphics"" \x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x753B\x50CF\x30BF\x30A4\x30D7 \x30D1\x30E9\x30E1\x30FC\x30BF\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
+	URigControl_RECONNECT_ALL_RIGS,	L"Reconnect all RIGs?"
+	UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink,	L"This will delete all data and loads data using Z-Link"
 	Vcl_OleConst_SCannotActivate,	L"OLE control activation failed"
 	Vcl_OleConst_SNoWindowHandle,	L"Could not obtain OLE control window handle"
 	Vcl_OleConst_SInvalidLicense,	L"License information for %s is invalid"
 	Vcl_OleConst_SNotLicensed,	L"License information for %s not found. You cannot use this control in design mode"
 	Vcl_OleConst_sNoRunningObject,	L"%s/%s \x3068\x3057\x3066\x767B\x9332\x3055\x308C\x3066\x3044\x308B\x5B9F\x884C\x4E2D\x306E\x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x304B\x3089\x30DD\x30A4\x30F3\x30BF\x3092\x53D6\x5F97\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	URigControl_RECONNECT_ALL_RIGS,	L"Reconnect all RIGs?"
-	UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink,	L"This will delete all data and loads data using Z-Link"
+	Vcl_Imaging_pnglang_EPngInvalidCRCText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x4E0D\x6B63\x306A\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059 (CRC \x30A8\x30E9\x30FC)"
 	Vcl_Imaging_pnglang_EPNGInvalidIHDRText,	L"""Portable Network Graphics"" \x753B\x50CF\x3092\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30C7\x30FC\x30BF\x306E\x30E1\x30A4\x30F3\x90E8\x5206\x306E 1 \x3064 (IHDR) \x304C\x7834\x640D\x3057\x3066\x3044\x308B\x53EF\x80FD\x6027\x304C\x3042\x308B\x304B\x3089\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x753B\x50CF\x90E8\x5206\x304C\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGZLIBErrorText,	L"\x753B\x50CF\x3092\x89E3\x51CD\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x5727\x7E2E\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x308B\x305F\x3081\x3067\x3059\x3002\r\n \x8AAC\x660E: "
@@ -1742,50 +1760,12 @@ BEGIN
 	Vcl_Imaging_pnglang_EPNGUnknownPalEntryText,	L"\x5BFE\x5FDC\x3059\x308B\x30D1\x30EC\x30C3\x30C8 \x30A8\x30F3\x30C8\x30EA\x304C\x3042\x308A\x307E\x305B\x3093\x3002"
 	Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x4E0D\x660E\x306A\x5FC5\x9808\x90E8\x5206\x304C\x542B\x307E\x308C\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	Vcl_Imaging_pnglang_EPNGUnknownCompressionText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x4E0D\x660E\x306A\x5727\x7E2E\x65B9\x5F0F\x3067\x30A8\x30F3\x30B3\x30FC\x30C9\x3055\x308C\x3066\x3044\x3066\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_Imaging_pnglang_EPNGUnknownInterlaceText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x4E0D\x660E\x306A\x30A4\x30F3\x30BF\x30EC\x30FC\x30B9\x65B9\x5F0F\x3092\x4F7F\x7528\x3057\x3066\x3044\x3066\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_Imaging_pnglang_EPNGUnknownColorTypeText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x672A\x77E5\x306E\x30AB\x30E9\x30FC\x578B\x3092\x4F7F\x7528\x3057\x3066\x304A\x308A\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_Imaging_pnglang_EPNGCannotAssignChunkText,	L"\x30C1\x30E3\x30F3\x30AF\x306F\x5272\x308A\x5F53\x3066\x5BFE\x8C61\x3068\x4E92\x63DB\x6027\x304C\x5FC5\x8981\x3067\x3059\x3002"
-	Vcl_Imaging_pnglang_EPNGUnexpectedEndText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x30C7\x30B3\x30FC\x30C0\x304C\x4E88\x671F\x3057\x306A\x3044\x30D5\x30A1\x30A4\x30EB\x306E\x7D42\x7AEF\x3092\x691C\x51FA\x3057\x305F\x305F\x3081\x3067\x3059\x3002"
-	Vcl_Imaging_pnglang_EPNGNoImageDataText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
-	Vcl_Imaging_pnglang_EPNGCannotAddChunkText,	L"\x30D7\x30ED\x30B0\x30E9\x30E0\x304C\x73FE\x5728\x306E\x753B\x50CF\x306B\x65E2\x5B58\x306E\x5FC5\x9808\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x3092\x8A66\x884C\x3057\x307E\x3057\x305F\x3002\x3053\x308C\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
-	OverbyteIcsCharsetUtils_sHebrewISOLogical,	L"Hebrew (ISO-Logical)"
-	OverbyteIcsCharsetUtils_sHebrewISOVisual,	L"Hebrew (ISO-Visual)"
-	OverbyteIcsCharsetUtils_sHebrewWindows,	L"Hebrew (Windows)"
-	OverbyteIcsCharsetUtils_sJapaneseJIS,	L"Japanese (JIS)"
-	OverbyteIcsCharsetUtils_sKorean,	L"Korean"
-	OverbyteIcsCharsetUtils_sKoreanEUC,	L"Korean (EUC)"
-	OverbyteIcsCharsetUtils_sLatin9,	L"Latin 9 (ISO)"
-	OverbyteIcsCharsetUtils_sThaiWindows,	L"Thai (Windows)"
-	OverbyteIcsCharsetUtils_sTurkishISO,	L"Turkish (ISO)"
 	OverbyteIcsCharsetUtils_sTurkishWindows,	L"Turkish (Windows)"
 	OverbyteIcsCharsetUtils_sUnicodeUTF7,	L"Unicode (UTF-7)"
 	OverbyteIcsCharsetUtils_sUnicodeUTF8,	L"Unicode (UTF-8)"
 	OverbyteIcsCharsetUtils_sVietnameseWindows,	L"Vietnamese (Windows)"
 	OverbyteIcsCharsetUtils_sWesternEuropeanISO,	L"Western European (ISO)"
 	OverbyteIcsCharsetUtils_sWesternEuropeanWindows,	L"Western European (Windows)"
-	Vcl_Imaging_pnglang_EPngInvalidCRCText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x4E0D\x6B63\x306A\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059 (CRC \x30A8\x30E9\x30FC)"
-	OverbyteIcsCharsetUtils_sArabicWindows,	L"Arabic (Windows)"
-	OverbyteIcsCharsetUtils_sBalticISO,	L"Baltic (ISO)"
-	OverbyteIcsCharsetUtils_sBalticWindows,	L"Baltic (Windows)"
-	OverbyteIcsCharsetUtils_sCentralEuropeanISO,	L"Central European (ISO)"
-	OverbyteIcsCharsetUtils_sCentralEuropeanWindows,	L"Central European (Windows)"
-	OverbyteIcsCharsetUtils_sChineseTraditionalBig5,	L"Chinese Traditional (Big5)"
-	OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030,	L"Chinese Simplified (GB18030)"
-	OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312,	L"Chinese Simplified (GB2312)"
-	OverbyteIcsCharsetUtils_sChineseSimplifiedHZ,	L"Chinese Simplified (HZ)"
-	OverbyteIcsCharsetUtils_sCyrillicISO,	L"Cyrillic (ISO)"
-	OverbyteIcsCharsetUtils_sCyrillicKOI8R,	L"Cyrillic (KOI8-R)"
-	OverbyteIcsCharsetUtils_sCyrillicKOI8U,	L"Cyrillic (KOI8-U)"
-	OverbyteIcsCharsetUtils_sCyrillicWindows,	L"Cyrillic (Windows)"
-	OverbyteIcsCharsetUtils_sEstonianISO,	L"Estonian (ISO)"
-	OverbyteIcsCharsetUtils_sGreekISO,	L"Greek (ISO)"
-	OverbyteIcsCharsetUtils_sGreekWindows,	L"Greek (Windows)"
-	JclResources_RsHasNotTD32Info,	L"File [%s] has not TD32 debug information!"
-	JclResources_RsEUnexpectedEOSeq,	L"Unexpected end of sequence"
-	JclResources_RsWin32Error,	L"Win32 error: %s (%u)%s%s"
-	JclResources_RsELibraryNotFound,	L"Library not found: %s"
-	JclResources_RsEFunctionNotFound,	L"Function not found: %s.%s"
-	UzLogConst_PortActionList,	L"None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake"
 	Data_DBConsts_SBcdOverflow,	L"BCD \x30AA\x30FC\x30D0\x30FC\x30D5\x30ED\x30FC"
 	Data_DBConsts_SInvalidBcdValue,	L"%s \x306F BCD \x5024\x3068\x3057\x3066\x306F\x9069\x5207\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
 	Data_DBConsts_SCouldNotParseTimeStamp,	L"SQL \x30BF\x30A4\x30E0\x30B9\x30BF\x30F3\x30D7\x6587\x5B57\x5217\x304C\x89E3\x6790\x3067\x304D\x307E\x305B\x3093"
@@ -1795,7 +1775,39 @@ BEGIN
 	Vcl_Imaging_JConsts_sJPEGImageFile,	L"JPEG \x30A4\x30E1\x30FC\x30B8\x30D5\x30A1\x30A4\x30EB"
 	UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins,	L"Do you want the higher bands to have the same settings?"
 	UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN,	L"Please enter the operator's callsign"
+	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
+	OverbyteIcsCharsetUtils_sCyrillicISO,	L"Cyrillic (ISO)"
+	OverbyteIcsCharsetUtils_sCyrillicKOI8R,	L"Cyrillic (KOI8-R)"
+	OverbyteIcsCharsetUtils_sCyrillicKOI8U,	L"Cyrillic (KOI8-U)"
+	OverbyteIcsCharsetUtils_sCyrillicWindows,	L"Cyrillic (Windows)"
+	OverbyteIcsCharsetUtils_sEstonianISO,	L"Estonian (ISO)"
+	OverbyteIcsCharsetUtils_sGreekISO,	L"Greek (ISO)"
+	OverbyteIcsCharsetUtils_sGreekWindows,	L"Greek (Windows)"
+	OverbyteIcsCharsetUtils_sHebrewISOLogical,	L"Hebrew (ISO-Logical)"
+	OverbyteIcsCharsetUtils_sHebrewISOVisual,	L"Hebrew (ISO-Visual)"
+	OverbyteIcsCharsetUtils_sHebrewWindows,	L"Hebrew (Windows)"
+	OverbyteIcsCharsetUtils_sJapaneseJIS,	L"Japanese (JIS)"
+	OverbyteIcsCharsetUtils_sKorean,	L"Korean"
+	OverbyteIcsCharsetUtils_sKoreanEUC,	L"Korean (EUC)"
+	OverbyteIcsCharsetUtils_sLatin9,	L"Latin 9 (ISO)"
+	OverbyteIcsCharsetUtils_sThaiWindows,	L"Thai (Windows)"
+	OverbyteIcsCharsetUtils_sTurkishISO,	L"Turkish (ISO)"
+	JclResources_RsHasNotTD32Info,	L"File [%s] has not TD32 debug information!"
+	JclResources_RsEUnexpectedEOSeq,	L"Unexpected end of sequence"
+	JclResources_RsWin32Error,	L"Win32 error: %s (%u)%s%s"
+	JclResources_RsELibraryNotFound,	L"Library not found: %s"
+	JclResources_RsEFunctionNotFound,	L"Function not found: %s.%s"
+	UzLogConst_PortActionList,	L"None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake"
 	OverbyteIcsCharsetUtils_sArabicISO,	L"Arabic (ISO)"
+	OverbyteIcsCharsetUtils_sArabicWindows,	L"Arabic (Windows)"
+	OverbyteIcsCharsetUtils_sBalticISO,	L"Baltic (ISO)"
+	OverbyteIcsCharsetUtils_sBalticWindows,	L"Baltic (Windows)"
+	OverbyteIcsCharsetUtils_sCentralEuropeanISO,	L"Central European (ISO)"
+	OverbyteIcsCharsetUtils_sCentralEuropeanWindows,	L"Central European (Windows)"
+	OverbyteIcsCharsetUtils_sChineseTraditionalBig5,	L"Chinese Traditional (Big5)"
+	OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030,	L"Chinese Simplified (GB18030)"
+	OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312,	L"Chinese Simplified (GB2312)"
+	OverbyteIcsCharsetUtils_sChineseSimplifiedHZ,	L"Chinese Simplified (HZ)"
 	JclResources_RsOSVersionWinServer2016,	L"Windows Server 2016"
 	JclResources_RsOSVersionWinServer2019,	L"Windows Server 2019"
 	JclResources_RsOSVersionWinServer2022,	L"Windows Server 2022"
@@ -2732,21 +2744,23 @@ END
 /* D:\JEDI\jcl\source\common\JclUnicode.res */
 /* D:\JEDI\jvcl\resources\JvLED.res */
 /* c:\program files (x86)\embarcadero\studio\22.0\lib\Win64\release\CategoryButtons.res */
-/* D:\github\zLog_v2930\zlog\UzLogKeyer.dfm */
-/* c:\program files (x86)\embarcadero\studio\22.0\lib\Win64\release\SPIN.RES */
-/* c:\program files (x86)\embarcadero\studio\22.0\lib\Win64\release\FileCtrl.res */
 /* c:\program files (x86)\embarcadero\studio\22.0\lib\Win64\release\ExtDlgs.res */
+/* c:\program files (x86)\embarcadero\studio\22.0\lib\Win64\release\SPIN.RES */
+/* D:\github\zLog_v2930\zlog\UzLogForm.dfm */
+/* D:\github\zLog_v2930\zlog\USuperCheck2.DFM */
+/* c:\program files (x86)\embarcadero\studio\22.0\lib\Win64\release\FileCtrl.res */
 /* D:\JEDI\jvcl\resources\JvConsts.res */
 /* D:\JEDI\jvcl\resources\JvToolEdit.res */
 /* D:\JEDI\jvcl\resources\JvColorCombo.res */
 /* D:\github\zLog_v2930\zlog\UIntegerDialog.DFM */
 /* D:\github\zLog_v2930\zlog\UOperatorPowerDialog.dfm */
 /* D:\github\zLog_v2930\zlog\UOperatorEdit.dfm */
-/* D:\github\zLog_v2930\zlog\UzLogForm.dfm */
-/* D:\github\zLog_v2930\zlog\USuperCheck2.DFM */
-/* D:\github\zLog_v2930\zlog\UBasicMulti.DFM */
-/* D:\github\zLog_v2930\zlog\USummaryInfo.DFM */
-/* D:\github\zLog_v2930\zlog\UBasicScore.DFM */
+/* D:\github\zLog_v2930\zlog\UzLogKeyer.dfm */
+/* D:\github\zLog_v2930\zlog\UCWMonitor.dfm */
+/* D:\github\zLog_v2930\zlog\UClusterTelnetSet.DFM */
+/* D:\github\zLog_v2930\zlog\UClusterCOMSet.DFM */
+/* D:\github\zLog_v2930\zlog\UPortConfigDialog.dfm */
+/* D:\github\zLog_v2930\zlog\UZlinkTelnetSet.DFM */
 /* D:\github\zLog_v2930\zlog\UConsolePad.DFM */
 /* D:\github\zLog_v2930\zlog\UScratchSheet.DFM */
 /* D:\github\zLog_v2930\zlog\UChat.DFM */
@@ -2757,6 +2771,12 @@ END
 /* D:\github\zLog_v2930\zlog\UBandScope2.dfm */
 /* D:\github\zLog_v2930\zlog\URigControl.DFM */
 /* D:\github\zLog_v2930\zlog\UZLinkForm.DFM */
+/* D:\github\zLog_v2930\zlog\USpotterListDlg.dfm */
+/* D:\github\zLog_v2930\zlog\UOptions.DFM */
+/* D:\github\zLog_v2930\zlog\UComm.DFM */
+/* D:\github\zLog_v2930\zlog\UBasicMulti.DFM */
+/* D:\github\zLog_v2930\zlog\USummaryInfo.DFM */
+/* D:\github\zLog_v2930\zlog\UBasicScore.DFM */
 /* D:\github\zLog_v2930\zlog\UQTCForm.DFM */
 /* D:\github\zLog_v2930\zlog\UPartials.DFM */
 /* D:\github\zLog_v2930\zlog\UEditDialog.DFM */
@@ -2792,18 +2812,10 @@ END
 /* D:\github\zLog_v2930\zlog\UALLJAScore.DFM */
 /* D:\github\zLog_v2930\zlog\UFDMulti.DFM */
 /* D:\github\zLog_v2930\zlog\USixDownMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UGeneralScore.DFM */
-/* D:\github\zLog_v2930\zlog\UGeneralMulti2.DFM */
-/* D:\github\zLog_v2930\zlog\UComm.DFM */
-/* D:\github\zLog_v2930\zlog\UClusterTelnetSet.DFM */
-/* D:\github\zLog_v2930\zlog\UClusterCOMSet.DFM */
-/* D:\github\zLog_v2930\zlog\UPortConfigDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UZlinkTelnetSet.DFM */
-/* D:\github\zLog_v2930\zlog\USpotterListDlg.dfm */
-/* D:\github\zLog_v2930\zlog\UOptions.DFM */
-/* D:\github\zLog_v2930\zlog\UCWMonitor.dfm */
 /* D:\github\zLog_v2930\zlog\UPackageLoader.dfm */
 /* D:\github\zLog_v2930\zlog\UPluginManager.dfm */
+/* D:\github\zLog_v2930\zlog\UGeneralScore.DFM */
+/* D:\github\zLog_v2930\zlog\UGeneralMulti2.DFM */
 /* D:\github\zLog_v2930\zlog\UzLogGlobal.dfm */
 /* D:\github\zLog_v2930\zlog\UFreqPanel.dfm */
 /* D:\github\zLog_v2930\zlog\UOptions2.DFM */
