@@ -21,15 +21,14 @@ object MenuForm: TMenuForm
     312)
   TextHeight = 13
   object Label1: TLabel
-    Left = 374
+    Left = 358
     Top = 287
-    Width = 57
+    Width = 80
     Height = 13
     Alignment = taRightJustify
     Anchors = [akRight, akBottom]
+    AutoSize = False
     Caption = #12467#12540#12523#12469#12452#12531
-    ExplicitLeft = 409
-    ExplicitTop = 281
   end
   object Label3: TLabel
     Left = 177
