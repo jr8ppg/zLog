@@ -68,6 +68,27 @@ type
     buttonFreqCenter: TSpeedButton;
     buttonNormalMode: TSpeedButton;
     tabctrlBandSelector: TTabControl;
+    N2: TMenuItem;
+    menuBSCurrent: TMenuItem;
+    menuBSAllBands: TMenuItem;
+    menuBSNewMulti: TMenuItem;
+    menuBS00: TMenuItem;
+    menuBS01: TMenuItem;
+    menuBS02: TMenuItem;
+    menuBS03: TMenuItem;
+    menuBS04: TMenuItem;
+    menuBS05: TMenuItem;
+    menuBS06: TMenuItem;
+    menuBS07: TMenuItem;
+    menuBS08: TMenuItem;
+    menuBS09: TMenuItem;
+    menuBS10: TMenuItem;
+    menuBS11: TMenuItem;
+    menuBS12: TMenuItem;
+    menuBS13: TMenuItem;
+    menuBS14: TMenuItem;
+    menuBS15: TMenuItem;
+    N3: TMenuItem;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -101,8 +122,15 @@ type
     procedure tabctrlBandSelectorChange(Sender: TObject);
     procedure tabctrlBandSelectorChanging(Sender: TObject;
       var AllowChange: Boolean);
+    procedure BSMenuPopup(Sender: TObject);
+    procedure menuBSCurrentClick(Sender: TObject);
+    procedure menuBSAllBandsClick(Sender: TObject);
+    procedure menuBSNewMultiClick(Sender: TObject);
+    procedure menuBS00Click(Sender: TObject);
   private
     { Private êÈåæ }
+    FBandScopeMenu: array[b19..b10g] of TMenuItem;
+
     FProcessing: Boolean;
 
     FBandScopeStyle: TBandScopeStyle;
@@ -769,6 +797,29 @@ begin
    end;
 end;
 
+procedure TBandScope2.menuBS00Click(Sender: TObject);
+var
+   b: TBand;
+begin
+   b := TBand(TMenuItem(Sender).Tag);
+   MainForm.BandScopeEx[b].Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TBandScope2.menuBSAllBandsClick(Sender: TObject);
+begin
+   MainForm.BandScopeAllBands.Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TBandScope2.menuBSCurrentClick(Sender: TObject);
+begin
+   MainForm.BandScope.Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TBandScope2.menuBSNewMultiClick(Sender: TObject);
+begin
+   MainForm.BandScopeNewMulti.Visible := TMenuItem(Sender).Checked;
+end;
+
 procedure TBandScope2.menuDeleteSpotClick(Sender: TObject);
 var
    i, j: Integer;
@@ -853,12 +904,35 @@ begin
 end;
 
 procedure TBandScope2.FormCreate(Sender: TObject);
+var
+   b: TBand;
 begin
    InitializeCriticalSection(FBSLock);
    FBSList := TBSList.Create();
    FProcessing := False;
    timerCleanup.Interval := 1 * 60 * 1000; // 1min.
    timerCleanup.Enabled := True;
+
+   FBandScopeMenu[b19] := menuBS00;
+   FBandScopeMenu[b35] := menuBS01;
+   FBandScopeMenu[b7] := menuBS02;
+   FBandScopeMenu[b10] := menuBS03;
+   FBandScopeMenu[b14] := menuBS04;
+   FBandScopeMenu[b18] := menuBS05;
+   FBandScopeMenu[b21] := menuBS06;
+   FBandScopeMenu[b24] := menuBS07;
+   FBandScopeMenu[b28] := menuBS08;
+   FBandScopeMenu[b50] := menuBS09;
+   FBandScopeMenu[b144] := menuBS10;
+   FBandScopeMenu[b430] := menuBS11;
+   FBandScopeMenu[b1200] := menuBS12;
+   FBandScopeMenu[b2400] := menuBS13;
+   FBandScopeMenu[b5600] := menuBS14;
+   FBandScopeMenu[b10g] := menuBS15;
+
+   for b := b19 to b10g do begin
+      FBandScopeMenu[b].Caption := BandString[b];
+   end;
 end;
 
 procedure TBandScope2.FormDestroy(Sender: TObject);
@@ -1235,8 +1309,6 @@ end;
 procedure TBandScope2.tabctrlBandSelectorChange(Sender: TObject);
 var
    b: TBand;
-   i: Integer;
-   D: TBSData;
 begin
    b := TabIndexToBand(tabctrlBandSelector.TabIndex);
 
@@ -1859,6 +1931,37 @@ var
 begin
    S := MHzString[b];
    Result := tabctrlBandSelector.Tabs.IndexOf(S);
+end;
+
+procedure TBandScope2.BSMenuPopup(Sender: TObject);
+var
+   b: TBand;
+   C, R: Integer;
+   fEnable: Boolean;
+begin
+   C := Grid.Col;
+   R := Grid.Row;
+   if (C < 0) or (R < 0) or (Grid.Objects[C, R] = nil) then begin
+      fEnable := False;
+   end
+   else begin
+      fEnable := True;
+   end;
+   menuDeleteSpot.Enabled := fEnable;
+   menuDeleteAllWorkedStations.Enabled := fEnable;
+   menuAddToDenyList.Enabled := fEnable;
+
+   menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
+   menuBSCurrent.Checked := MainForm.BandScope.Visible;
+   menuBSAllBands.Visible := dmZLogGlobal.Settings._usebandscope_allbands;
+   menuBSAllBands.Checked := MainForm.BandScopeAllBands.Visible;
+   menuBSNewMulti.Visible := dmZLogGlobal.Settings._usebandscope_newmulti;
+   menuBSNewMulti.Checked := MainForm.BandScopeNewMulti.Visible;
+
+   for b := b19 to b10g do begin
+      FBandScopeMenu[b].Visible := dmZLogGlobal.Settings._usebandscope[b];
+      FBandScopeMenu[b].Checked := MainForm.BandScopeEx[b].Visible;
+   end;
 end;
 
 function TBandScope2.TabIndexToBand(TabIndex: Integer): TBand;

@@ -272,7 +272,7 @@ type
     VoiceCQ1: THemisphereButton;
     VoiceCQ2: THemisphereButton;
     VoiceCQ3: THemisphereButton;
-    Bandscope1: TMenuItem;
+    menuBandscope: TMenuItem;
     menuChangeTXNr: TMenuItem;
     mnGridAddNewPX: TMenuItem;
     mnHideCWPhToolBar: TMenuItem;
@@ -579,6 +579,28 @@ type
     actionToggleF2A: TAction;
     buttonF2A: TSpeedButton;
     menuQTC: TMenuItem;
+    menuBSAll: TMenuItem;
+    menuBS00: TMenuItem;
+    menuBS01: TMenuItem;
+    menuBS02: TMenuItem;
+    menuBS03: TMenuItem;
+    menuBS04: TMenuItem;
+    menuBS05: TMenuItem;
+    menuBS06: TMenuItem;
+    menuBS07: TMenuItem;
+    menuBS08: TMenuItem;
+    menuBS09: TMenuItem;
+    menuBS10: TMenuItem;
+    menuBS11: TMenuItem;
+    menuBS12: TMenuItem;
+    menuBS13: TMenuItem;
+    menuBS14: TMenuItem;
+    menuBS15: TMenuItem;
+    menuBSCurrent: TMenuItem;
+    menuBSAllBands: TMenuItem;
+    menuBSNewMulti: TMenuItem;
+    N15: TMenuItem;
+    N16: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -888,6 +910,11 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
+    procedure menuBandscopeClick(Sender: TObject);
+    procedure menuBS00Click(Sender: TObject);
+    procedure menuBSCurrentClick(Sender: TObject);
+    procedure menuBSAllBandsClick(Sender: TObject);
+    procedure menuBSNewMultiClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -992,6 +1019,8 @@ type
     FLastMode: array[1..3] of TMode;
     FLastRitStatus: array[1..3] of Boolean;
     FLastRitOffset: array[1..3] of Integer;
+
+    FBandScopeMenu: array[b19..b10g] of TMenuItem;
 
     FPastEditMode: Boolean;
     FFilterTx: Integer;
@@ -1228,6 +1257,10 @@ type
     procedure BandScopeMarkCurrentFreq(B: TBand; Hz: TFrequency);
     procedure BandScopeUpdateSpot(aQSO: TQSO);
     procedure BandScopeApplyBandPlan();
+    property BandScopeEx: TBandScopeArray read FBandScopeEx;
+    property BandScope: TBandScope2 read FBandScope;
+    property BandScopeAllBands: TBandScope2 read FBandScopeAllBands;
+    property BandScopeNewMulti: TBandScope2 read FBandScopeNewMulti;
 
     procedure InitBandMenu();
 
@@ -2402,6 +2435,27 @@ begin
    FBandScopeAllBands.Style := bssAllBands;
    FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
    FBandScopeAllBands.Resume();
+
+   FBandScopeMenu[b19] := menuBS00;
+   FBandScopeMenu[b35] := menuBS01;
+   FBandScopeMenu[b7] := menuBS02;
+   FBandScopeMenu[b10] := menuBS03;
+   FBandScopeMenu[b14] := menuBS04;
+   FBandScopeMenu[b18] := menuBS05;
+   FBandScopeMenu[b21] := menuBS06;
+   FBandScopeMenu[b24] := menuBS07;
+   FBandScopeMenu[b28] := menuBS08;
+   FBandScopeMenu[b50] := menuBS09;
+   FBandScopeMenu[b144] := menuBS10;
+   FBandScopeMenu[b430] := menuBS11;
+   FBandScopeMenu[b1200] := menuBS12;
+   FBandScopeMenu[b2400] := menuBS13;
+   FBandScopeMenu[b5600] := menuBS14;
+   FBandScopeMenu[b10g] := menuBS15;
+
+   for b := b19 to b10g do begin
+      FBandScopeMenu[b].Caption := BandString[b];
+   end;
 
    // Super Check
    FNPlusOneThread := nil;
@@ -6194,6 +6248,46 @@ begin
    finally
       f.Release();
    end;
+end;
+
+procedure TMainForm.menuBandscopeClick(Sender: TObject);
+var
+   b: TBand;
+begin
+   menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
+   menuBSCurrent.Checked := FBandScope.Visible;
+   menuBSAllBands.Visible := dmZLogGlobal.Settings._usebandscope_allbands;
+   menuBSAllBands.Checked := FBandScopeAllBands.Visible;
+   menuBSNewMulti.Visible := dmZLogGlobal.Settings._usebandscope_newmulti;
+   menuBSNewMulti.Checked := FBandScopeNewMulti.Visible;
+
+   for b := b19 to b10g do begin
+      FBandScopeMenu[b].Visible := dmZLogGlobal.Settings._usebandscope[b];
+      FBandScopeMenu[b].Checked := FBandScopeEx[b].Visible;
+   end;
+end;
+
+procedure TMainForm.menuBS00Click(Sender: TObject);
+var
+   b: TBand;
+begin
+   b := TBand(TMenuItem(Sender).Tag);
+   FBandScopeEx[b].Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TMainForm.menuBSAllBandsClick(Sender: TObject);
+begin
+   FBandScopeAllBands.Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TMainForm.menuBSCurrentClick(Sender: TObject);
+begin
+   FBandScope.Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TMainForm.menuBSNewMultiClick(Sender: TObject);
+begin
+   FBandScopeNewMulti.Visible := TMenuItem(Sender).Checked;
 end;
 
 procedure TMainForm.menuQSORateSettingsClick(Sender: TObject);

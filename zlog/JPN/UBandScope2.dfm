@@ -172,13 +172,14 @@ object BandScope2: TBandScope2
     Visible = False
     OnChange = tabctrlBandSelectorChange
     OnChanging = tabctrlBandSelectorChanging
-    ExplicitWidth = 239
-    ExplicitHeight = 354
+    ExplicitLeft = 1
+    ExplicitTop = 44
   end
   object BSMenu: TPopupMenu
+    Tag = 15
     AutoHotkeys = maManual
-    AutoLineReduction = maManual
     AutoPopup = False
+    OnPopup = BSMenuPopup
     Left = 48
     Top = 48
     object menuDeleteSpot: TMenuItem
@@ -195,6 +196,122 @@ object BandScope2: TBandScope2
     object menuAddToDenyList: TMenuItem
       Caption = #12371#12398#22577#21578#32773#12434#25298#21542#12522#12473#12488#12395#36861#21152
       OnClick = menuAddToDenyListClick
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object menuBSCurrent: TMenuItem
+      AutoCheck = True
+      Caption = #29694#22312#12496#12531#12489
+      OnClick = menuBSCurrentClick
+    end
+    object menuBSAllBands: TMenuItem
+      AutoCheck = True
+      Caption = #20840#12496#12531#12489
+      OnClick = menuBSAllBandsClick
+    end
+    object menuBSNewMulti: TMenuItem
+      AutoCheck = True
+      Caption = #12491#12517#12540#12510#12523#12481
+      OnClick = menuBSNewMultiClick
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object menuBS00: TMenuItem
+      AutoCheck = True
+      Caption = '1.9'
+      OnClick = menuBS00Click
+    end
+    object menuBS01: TMenuItem
+      Tag = 1
+      AutoCheck = True
+      Caption = '3.5'
+      OnClick = menuBS00Click
+    end
+    object menuBS02: TMenuItem
+      Tag = 2
+      AutoCheck = True
+      Caption = '7'
+      OnClick = menuBS00Click
+    end
+    object menuBS03: TMenuItem
+      Tag = 3
+      AutoCheck = True
+      Caption = '10'
+      OnClick = menuBS00Click
+    end
+    object menuBS04: TMenuItem
+      Tag = 4
+      AutoCheck = True
+      Caption = '14'
+      OnClick = menuBS00Click
+    end
+    object menuBS05: TMenuItem
+      Tag = 5
+      AutoCheck = True
+      Caption = '18'
+      OnClick = menuBS00Click
+    end
+    object menuBS06: TMenuItem
+      Tag = 6
+      AutoCheck = True
+      Caption = '21'
+      OnClick = menuBS00Click
+    end
+    object menuBS07: TMenuItem
+      Tag = 7
+      AutoCheck = True
+      Caption = '24'
+      OnClick = menuBS00Click
+    end
+    object menuBS08: TMenuItem
+      Tag = 8
+      AutoCheck = True
+      Caption = '28'
+      OnClick = menuBS00Click
+    end
+    object menuBS09: TMenuItem
+      Tag = 9
+      AutoCheck = True
+      Caption = '50'
+      OnClick = menuBS00Click
+    end
+    object menuBS10: TMenuItem
+      Tag = 10
+      AutoCheck = True
+      Caption = '144'
+      OnClick = menuBS00Click
+    end
+    object menuBS11: TMenuItem
+      Tag = 11
+      AutoCheck = True
+      Caption = '430'
+      OnClick = menuBS00Click
+    end
+    object menuBS12: TMenuItem
+      Tag = 12
+      AutoCheck = True
+      Caption = '1200'
+      OnClick = menuBS00Click
+    end
+    object menuBS13: TMenuItem
+      Tag = 13
+      AutoCheck = True
+      Caption = '2400'
+      OnClick = menuBS00Click
+    end
+    object menuBS14: TMenuItem
+      Tag = 14
+      AutoCheck = True
+      Caption = '5600'
+      OnClick = menuBS00Click
+    end
+    object menuBS15: TMenuItem
+      Tag = 15
+      AutoCheck = True
+      Caption = '10G'
+      OnClick = menuBS00Click
     end
   end
   object Timer1: TTimer
