@@ -601,6 +601,12 @@ type
     menuBSNewMulti: TMenuItem;
     N15: TMenuItem;
     N16: TMenuItem;
+    menuShowTx10: TMenuItem;
+    menuShowTx11: TMenuItem;
+    menuShowTx12: TMenuItem;
+    menuShowTx13: TMenuItem;
+    menuShowTx14: TMenuItem;
+    menuShowTx15: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -7171,7 +7177,7 @@ var
    M: TMenuItem;
 begin
    M := TMenuItem(Sender);
-   NewTx := StrToIntDef(M.Caption, 0);
+   NewTx := M.Tag;
    if (NewTX > 255) or (NewTX < 0) then begin
       Exit;
    end;
@@ -11777,8 +11783,9 @@ begin
 
       for i := 0 to L.Count - 1 do begin
          M := TMenuItem.Create(Self);
-         M.Caption := Trim(L[i]);
+         M.Caption := '#' + Trim(L[i]);
          M.OnClick := OnClickHandler;
+         M.Tag := StrToIntDef(L[i], 0);
          P.Add(m);
       end;
    finally

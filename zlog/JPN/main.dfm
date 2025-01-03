@@ -570,7 +570,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -710,8 +709,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 228
-          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -6395,6 +6392,54 @@ object MainForm: TMainForm
           Tag = 9
           AutoCheck = True
           Caption = '#9'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx10: TMenuItem
+          Tag = 10
+          AutoCheck = True
+          Caption = '#10'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx11: TMenuItem
+          Tag = 11
+          AutoCheck = True
+          Caption = '#11'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx12: TMenuItem
+          Tag = 12
+          AutoCheck = True
+          Caption = '#12'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx13: TMenuItem
+          Tag = 13
+          AutoCheck = True
+          Caption = '#13'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx14: TMenuItem
+          Tag = 14
+          AutoCheck = True
+          Caption = '#14'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx15: TMenuItem
+          Tag = 15
+          AutoCheck = True
+          Caption = '#15'
           GroupIndex = 2
           RadioItem = True
           OnClick = menuShowOnlyTxClick
