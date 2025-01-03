@@ -10619,9 +10619,7 @@ begin
       rig.RitOffset := FLastRitOffset[rigset];
 
       // Antenna Select
-      if (rigset = 1) or (rigset = 2) then begin
-         rig.AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b]);
-      end;
+      AntennaSelect(rig, rigset, b);
    end;
 
    Restore2bsiqMode();

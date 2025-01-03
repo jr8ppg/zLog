@@ -705,8 +705,8 @@ end;
 
 procedure TformOptions.radio1RadioClick(Sender: TObject);
 begin
-   EnableRigConfig(3, False);
-   EnableRigConfig(4, False);
+   EnableRigConfig(3, True);
+   EnableRigConfig(4, True);
    Assign1Radio();
 end;
 
@@ -1898,8 +1898,6 @@ var
 begin
    // 1Radio時はRIG-1/2のみ使用可
    if radio1Radio.Checked = True then begin
-      FRigControlPort[3].ItemIndex := 0;
-      FRigControlPort[4].ItemIndex := 0;
       Result := True;
       Exit;
    end;
