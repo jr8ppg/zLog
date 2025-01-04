@@ -351,6 +351,9 @@ type
     groupSo2rOtrsp: TGroupBox;
     Label17: TLabel;
     comboSo2rOtrspPort: TComboBox;
+    groupOperateMode: TGroupBox;
+    radioOriginalMode: TRadioButton;
+    radioEnterMode: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1401,6 +1404,16 @@ begin
          Settings._operate_style := os2Radio;
       end;
 
+      //
+      // Operate mode
+      //
+      if radioOriginalMode.Checked = True then begin
+         Settings._operate_mode := omOriginal;
+      end
+      else begin
+         Settings._operate_mode := omEnter;
+      end;
+
       // SO2R Support
       if radioSo2rNone.Checked = True then begin
          Settings._so2r_type := so2rNone;
@@ -1652,6 +1665,23 @@ begin
 
          else begin
             radio1Radio.Checked := True;
+         end;
+      end;
+
+      //
+      // Operate mode
+      //
+      case Settings._operate_mode of
+         omOriginal: begin
+            radioOriginalMode.Checked := True;
+         end;
+
+         omEnter: begin
+            radioEnterMode.Checked := True;
+         end;
+
+         else begin
+            radioOriginalMode.Checked := True;
          end;
       end;
 

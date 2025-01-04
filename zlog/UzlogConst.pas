@@ -13,9 +13,10 @@ type
   TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
   TOperateStyle = (os1Radio = 0, os2Radio);
-  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp );
+  TOperateMode = (omOriginal = 0, omEnter);
+  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp);
   TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
-  TSerialType = (stNone = 0, stAll, stBand, stMultiSingle );
+  TSerialType = (stNone = 0, stAll, stBand, stMultiSingle);
 
   TFrequency = Int64;
 

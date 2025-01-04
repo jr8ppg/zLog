@@ -1180,6 +1180,8 @@ type
     procedure OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
     procedure UpdateCurrentQSO();
     procedure CQAbort(fReturnStartRig: Boolean);
+    procedure OriginalModeProc(S: string);
+    procedure EnterKeyModeProc(S: string);
     procedure SpaceBarProc(nID: Integer);
     procedure ShowToolBar(M: TMode);
     procedure InitSerialPanel();
@@ -3575,17 +3577,23 @@ begin
       // Enter / SHIFT+Enter
       Char($0D): begin
          S := CallsignEdit.Text;
+
+         // Console command?
          if CallsignEdit.Focused and (Pos(',', S) = 1) then begin
             CallsignEdit.Text := '';
             ProcessConsoleCommand(S);
-         end
-         else begin
-            if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-               CurrentQSO.Reserve2 := $FF;
-            end;
-
-            LogButtonClick(Self);
+            Key := #0;
+            Exit;
          end;
+
+         // Original mode
+         if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+            OriginalModeProc(S);
+         end
+         else begin  // Enter mode
+            EnterKeyModeProc(S);
+         end;
+
          Key := #0;
       end;
    end;
@@ -3594,6 +3602,57 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('END - TMainForm.EditKeyPress() - '));
    {$ENDIF}
+end;
+
+procedure TMainForm.OriginalModeProc(S: string);
+begin
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      CurrentQSO.Reserve2 := $FF;
+   end;
+
+   LogButtonClick(Self);
+end;
+
+procedure TMainForm.EnterKeyModeProc(S: string);
+begin
+   // CQ mode
+   if IsCQ() then begin
+      if CallsignEdit.Focused then begin
+         if S = '' then begin
+            // CQ
+            actionPlayMessageA01.Execute();
+         end
+         else begin
+            actionQsoStart.Execute();
+         end;
+      end
+      else begin
+         actionQsoComplete.Execute();
+      end;
+   end
+   else begin  // S&P mode
+      if CallsignEdit.Focused then begin
+         // F7:my call
+         actionPlayMessageA07.Execute();
+      end
+      else begin
+         S := NumberEdit.Text;
+         if S = '' then begin
+            // F5:NR?
+            actionPlayMessageA05.Execute();
+         end
+         else begin
+            // F8 5NN$X and Log
+            actionPlayMessageA08.Execute();
+
+            if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+               CurrentQSO.Reserve2 := $FF;
+            end;
+
+            LogButtonClick(Self);
+         end;
+      end;
+   end;
 end;
 
 procedure TMainForm.SpaceBarProc(nID: Integer);

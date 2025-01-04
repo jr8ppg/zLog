@@ -37,7 +37,7 @@ object formOptions: TformOptions
         Width = 423
         Height = 294
         Caption = 'SO2R options'
-        TabOrder = 1
+        TabOrder = 2
         object Label115: TLabel
           Left = 13
           Top = 245
@@ -322,13 +322,13 @@ object formOptions: TformOptions
       object GroupBox1: TGroupBox
         Left = 6
         Top = 4
-        Width = 423
+        Width = 329
         Height = 93
-        Caption = 'Operate Style'
+        Caption = 'Operate style'
         TabOrder = 0
         object Label1: TLabel
           Left = 92
-          Top = 20
+          Top = 18
           Width = 222
           Height = 30
           AutoSize = False
@@ -340,7 +340,7 @@ object formOptions: TformOptions
         object Label2: TLabel
           Left = 92
           Top = 54
-          Width = 313
+          Width = 222
           Height = 30
           AutoSize = False
           Caption = 
@@ -367,6 +367,32 @@ object formOptions: TformOptions
           Caption = '2Radio'
           TabOrder = 1
           OnClick = radio2RadioClick
+        end
+      end
+      object groupOperateMode: TGroupBox
+        Left = 344
+        Top = 4
+        Width = 85
+        Height = 93
+        Caption = 'Operate mode'
+        TabOrder = 1
+        object radioOriginalMode: TRadioButton
+          Left = 10
+          Top = 24
+          Width = 66
+          Height = 17
+          Caption = 'Original'
+          Checked = True
+          TabOrder = 0
+          TabStop = True
+        end
+        object radioEnterMode: TRadioButton
+          Left = 10
+          Top = 58
+          Width = 66
+          Height = 17
+          Caption = 'Enter key'
+          TabOrder = 1
         end
       end
     end
@@ -3422,13 +3448,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono Light'
+          FontName = '@HG'#21109#33521#35282#65402#65438#65404#65391#65400'UB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 55
+          ItemIndex = 8
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

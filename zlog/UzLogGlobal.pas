@@ -182,6 +182,7 @@ type
 
     // Operate Style
     _operate_style: TOperateStyle;
+    _operate_mode: TOperateMode;
 
     // SO2R Support
     _so2r_type: TSo2rType;       // 0:none 1:COM port 2:SO2R Neo
@@ -1125,6 +1126,7 @@ begin
 
       // Operate Style
       Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
+      Settings._operate_mode := TOperateMode(ini.ReadInteger('OPERATE_STYLE', 'mode', 0));
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
@@ -1847,6 +1849,7 @@ begin
 
       // Operate Style
       ini.WriteInteger('OPERATE_STYLE', 'style', Integer(Settings._operate_style));
+      ini.WriteInteger('OPERATE_STYLE', 'mode', Integer(Settings._operate_mode));
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
