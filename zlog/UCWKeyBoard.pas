@@ -648,7 +648,12 @@ begin
    h := FBitmap.Height;
    w := FBitmap.Width;
 
-   blue_w := Trunc(w * (FCounter / FCountMax));
+   if FCountMax = 0 then begin
+      blue_w := 0;
+   end
+   else begin
+      blue_w := Trunc(w * (FCounter / FCountMax));
+   end;
    white_w := w - blue_w;
 
    with FBitmap.Canvas do begin
