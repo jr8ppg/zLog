@@ -32,7 +32,7 @@ uses
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
-  UCWMonitor, UzLogForm, UzFreqMemory;
+  UCWMonitor, UzLogForm, UzFreqMemory, USearch;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -607,6 +607,9 @@ type
     menuShowTx13: TMenuItem;
     menuShowTx14: TMenuItem;
     menuShowTx15: TMenuItem;
+    N17: TMenuItem;
+    menuQsoSearch: TMenuItem;
+    actionQsoSearch: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -921,6 +924,7 @@ type
     procedure menuBSCurrentClick(Sender: TObject);
     procedure menuBSAllBandsClick(Sender: TObject);
     procedure menuBSNewMultiClick(Sender: TObject);
+    procedure actionQsoSearchExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -956,6 +960,7 @@ type
     FFreqTest: TformFreqTest;
     FCWMonitor: TformCWMonitor;
     FProgress: TformProgress;
+    FQsoSearch: TformSearch;
 
     FInitialized: Boolean;
 
@@ -1044,6 +1049,9 @@ type
 
     // CWKeyboardからのキーイング開始
     FStartCWKeyboard: Boolean;
+
+    // QSO Search
+    FSearchPosition: Integer;
 
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
@@ -1316,6 +1324,11 @@ type
     procedure MsgMgrContinueQue();
     function GetTxRigID(nTxRigSet: Integer = -1): Integer;
     property StartCWKeyboard: Boolean read FStartCWKeyboard write FStartCWKeyboard;
+
+    procedure QsoFindInit();
+    procedure QsoFindNext(S: string);
+    procedure QsoFindPrev(S: string);
+    procedure QsoFindEnd();
   end;
 
   TBandScopeNotifyThread = class(TThread)
@@ -2371,6 +2384,7 @@ begin
    FFreqTest      := TformFreqTest.Create(Self);
    FCWMonitor     := TformCWMonitor.Create(Self);
    FProgress      := TformProgress.Create(Self);
+   FQsoSearch     := TformSearch.Create(Self);
 
    FSuperCheck.OnChangeFontSize := OnChangeFontSize;
    FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
@@ -4916,6 +4930,7 @@ begin
    FFreqTest.Release();
    FCWMonitor.Release();
    FProgress.Release();
+   FQsoSearch.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -11188,6 +11203,29 @@ begin
    buttonF2AClick(buttonF2A);
 end;
 
+// #167 QSO Search
+procedure TMainForm.actionQsoSearchExecute(Sender: TObject);
+var
+   pt: TPoint;
+begin
+   // 検索位置
+   FSearchPosition := 0;
+
+   // フォントサイズ設定
+   FQsoSearch.FontName := dmZLogGlobal.Settings.FBaseFontName;
+   FQsoSearch.FontSize := dmZlogGlobal.Settings._mainfontsize;
+
+   // ウインドウ表示
+   FQsoSearch.Show();
+
+   // QSOリスト右上に配置
+   pt.Y := 0;
+   pt.X := Grid.Width - FQsoSearch.Width;
+   pt := Grid.ClientToScreen(pt);
+   FQsoSearch.Left := pt.X;
+   FQsoSearch.Top := pt.Y;
+end;
+
 procedure TMainForm.RestoreWindowsPos();
 var
    X, Y, W, H: Integer;
@@ -13907,6 +13945,62 @@ begin
          rig.AntSelect(ant);
       end;
    end;
+end;
+
+procedure TMainForm.QsoFindInit();
+begin
+   FSearchPosition := 0;
+end;
+
+procedure TMainForm.QsoFindNext(S: string);
+var
+   i: Integer;
+   aQSO: TQSO;
+begin
+   for i := FSearchPosition + 1 to Grid.RowCount do begin
+      aQSO := TQSO(Grid.Objects[0, i]);
+      if (aQSO = nil) then begin
+         Continue;
+      end;
+
+      if Pos(S, aQSO.Callsign) > 0 then begin
+         Grid.Row := i;
+         FSearchPosition := i;
+         Exit;
+      end;
+   end;
+
+   MessageBeep(MB_ICONEXCLAMATION);
+
+   FSearchPosition := 0;
+end;
+
+procedure TMainForm.QsoFindPrev(S: string);
+var
+   i: Integer;
+   aQSO: TQSO;
+begin
+   for i := FSearchPosition - 1 downto 1 do begin
+      aQSO := TQSO(Grid.Objects[0, i]);
+      if (aQSO = nil) then begin
+         Continue;
+      end;
+
+      if Pos(S, aQSO.Callsign) > 0 then begin
+         Grid.Row := i;
+         FSearchPosition := i;
+         Exit;
+      end;
+   end;
+
+   MessageBeep(MB_ICONEXCLAMATION);
+
+   FSearchPosition := 0;
+end;
+
+procedure TMainForm.QsoFindEnd();
+begin
+   Grid.ShowLast(Log.TotalQSO);
 end;
 
 { TBandScopeNotifyThread }

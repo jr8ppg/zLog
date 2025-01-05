@@ -155,7 +155,8 @@ uses
   UTelnetSetting in 'UTelnetSetting.pas',
   UzLogForm in 'UzLogForm.pas' {ZLogForm},
   UzFreqMemory in 'UzFreqMemory.pas',
-  UFreqPanel in 'UFreqPanel.pas' {formFreqPanel};
+  UFreqPanel in 'UFreqPanel.pas' {formFreqPanel},
+  USearch in 'USearch.pas' {formSearch};
 
 {$R *.res}
 

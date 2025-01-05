@@ -552,6 +552,10 @@
             <Form>formFreqPanel</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="USearch.pas">
+            <Form>formSearch</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -861,7 +865,8 @@
                     <RDP_Source_Files Name="Item119">UELogJarl2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item120">UzLogForm.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item121">UFreqPanel.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item122">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item122">USearch.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item123">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

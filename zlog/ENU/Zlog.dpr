@@ -89,6 +89,7 @@ library Zlog;
 {ITE} {DFMFileType} {URateDialogEx.dfm}
 {ITE} {DFMFileType} {URigControl.dfm}
 {ITE} {DFMFileType} {UScratchSheet.dfm}
+{ITE} {DFMFileType} {USearch.dfm}
 {ITE} {DFMFileType} {USelectUserDefinedContest.dfm}
 {ITE} {DFMFileType} {USixDownMulti.dfm}
 {ITE} {DFMFileType} {USo2rNeoCp.dfm}
@@ -209,6 +210,7 @@ library Zlog;
 {$R 'URateDialogEx.dfm' 'RateDialogEx:TForm'}
 {$R 'URigControl.dfm' 'RigControl:TForm'}
 {$R 'UScratchSheet.dfm' 'ScratchSheet:TForm(ConsolePad)'}
+{$R 'USearch.dfm' 'formSearch:TForm'}
 {$R 'USelectUserDefinedContest.dfm' 'SelectUserDefinedContest:TForm'}
 {$R 'USixDownMulti.dfm' 'SixDownMulti:TForm(FDMulti)'}
 {$R 'USo2rNeoCp.dfm' 'formSo2rNeoCp:TForm'}

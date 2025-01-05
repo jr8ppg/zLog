@@ -570,6 +570,7 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -709,6 +710,8 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
+          ExplicitLeft = 228
+          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -5957,6 +5960,12 @@ object MainForm: TMainForm
         Visible = False
         OnClick = mPXListWPXClick
       end
+      object N17: TMenuItem
+        Caption = '-'
+      end
+      object menuQsoSearch: TMenuItem
+        Action = actionQsoSearch
+      end
       object N1: TMenuItem
         Caption = '-'
       end
@@ -7782,6 +7791,10 @@ object MainForm: TMainForm
     object actionToggleF2A: TAction
       Caption = 'actionToggleF2A'
       OnExecute = actionToggleF2AExecute
+    end
+    object actionQsoSearch: TAction
+      Caption = 'QSO Search'
+      OnExecute = actionQsoSearchExecute
     end
   end
   object SPCMenu: TPopupMenu
