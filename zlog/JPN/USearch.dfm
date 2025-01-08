@@ -4,7 +4,7 @@ object formSearch: TformSearch
   BorderStyle = bsToolWindow
   Caption = 'QSO Search'
   ClientHeight = 36
-  ClientWidth = 317
+  ClientWidth = 339
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,15 +18,15 @@ object formSearch: TformSearch
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   TextHeight = 13
-  object labelCallsign: TLabel
+  object labelSearchString: TLabel
     Left = 4
     Top = 7
-    Width = 36
+    Width = 62
     Height = 13
-    Caption = #12467#12540#12523#12469#12452#12531
+    Caption = #26908#32034#25991#23383#21015
   end
   object editCallsign: TEdit
-    Left = 54
+    Left = 74
     Top = 4
     Width = 124
     Height = 21
@@ -36,7 +36,7 @@ object formSearch: TformSearch
     OnChange = editCallsignChange
   end
   object buttonFindNext: TButton
-    Left = 187
+    Left = 207
     Top = 4
     Width = 60
     Height = 21
@@ -46,7 +46,7 @@ object formSearch: TformSearch
     OnClick = buttonFindNextClick
   end
   object buttonFindPrev: TButton
-    Left = 251
+    Left = 271
     Top = 4
     Width = 60
     Height = 21

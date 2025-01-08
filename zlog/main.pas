@@ -13963,7 +13963,22 @@ begin
          Continue;
       end;
 
+      // コールサイン
       if Pos(S, aQSO.Callsign) > 0 then begin
+         Grid.Row := i;
+         FSearchPosition := i;
+         Exit;
+      end;
+
+      // 受信NR
+      if Pos(S, aQSO.NrRcvd) > 0 then begin
+         Grid.Row := i;
+         FSearchPosition := i;
+         Exit;
+      end;
+
+      // Memo
+      if Pos(S, aQSO.Memo) > 0 then begin
          Grid.Row := i;
          FSearchPosition := i;
          Exit;

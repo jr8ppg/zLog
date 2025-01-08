@@ -9,7 +9,7 @@ uses
 type
   TformSearch = class(TForm)
     editCallsign: TEdit;
-    labelCallsign: TLabel;
+    labelSearchString: TLabel;
     buttonFindNext: TButton;
     buttonFindPrev: TButton;
     procedure buttonFindNextClick(Sender: TObject);
@@ -56,11 +56,11 @@ begin
    buttonFindNext.Top := editCallsign.Top;
    buttonFindPrev.Height := h;
    buttonFindPrev.Top := editCallsign.Top;
-   labelCallsign.Top := (ClientHeight - labelCallsign.Height) div 2;
+   labelSearchString.Top := (ClientHeight - labelSearchString.Height) div 2;
 
    x := 6;
-   labelCallsign.Left := x;
-   x := x + labelCallsign.Width + 8;
+   labelSearchString.Left := x;
+   x := x + labelSearchString.Width + 8;
    editCallsign.Left := x;
    x := x + editCallsign.Width + 8;
    buttonFindNext.Left := x;
