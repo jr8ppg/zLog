@@ -361,7 +361,7 @@ type
     procedure SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     // RX select
-    procedure SetRxRigFlag(rigset, rigno: Integer);
+    procedure SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean = False);
 
     // Voice select
     procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
@@ -945,10 +945,10 @@ end;
 //        3: HF
 //        4: VU
 //
-procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer);
+procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean);
 begin
    // 前回と同じrigsetなら出力しない
-   if FPrevRxRigSet = rigset then begin
+   if (FPrevRxRigSet = rigset) and (fForce = False) then begin
       Exit;
    end;
 

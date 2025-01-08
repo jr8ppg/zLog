@@ -10909,9 +10909,19 @@ var
    tx: Integer;
    rx: Integer;
 begin
-   rx := TAction(Sender).Tag;
-   tx := FCurrentTx;
-   dmZLogKeyer.So2rNeoSwitchRig(tx, rx);
+   // COMポート
+   if dmZLogGlobal.Settings._so2r_type = so2rCom then begin
+      // #728 RX=RIG-A+RIG-Bを行いたい
+      rx := TAction(Sender).Tag;
+      dmZLogKeyer.SetRxRigFlag(rx + 1, 0, True);
+   end;
+
+   // SO2R Neo
+   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      rx := TAction(Sender).Tag;
+      tx := FCurrentTx;
+      dmZLogKeyer.So2rNeoSwitchRig(tx, rx);
+   end;
 end;
 
 // #138-140 Select Rig N
