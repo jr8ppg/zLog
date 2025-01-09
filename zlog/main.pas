@@ -3628,6 +3628,8 @@ begin
 end;
 
 procedure TMainForm.EnterKeyModeProc(S: string);
+var
+   Q: TQSO;
 begin
    // CQ mode
    if IsCQ() then begin
@@ -3647,7 +3649,15 @@ begin
    else begin  // S&P mode
       if CallsignEdit.Focused then begin
          // F7:my call
-         actionPlayMessageA07.Execute();
+
+         // DUPEチェック
+         Q := Log.QuickDupe(CurrentQSO);
+         if Q = nil then begin
+            actionPlayMessageA07.Execute();
+         end
+         else begin
+            WriteStatusLineRed(TMainForm_Dupe_qso, False);
+         end;
       end
       else begin
          S := NumberEdit.Text;
