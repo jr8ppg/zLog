@@ -3630,6 +3630,7 @@ end;
 procedure TMainForm.EnterKeyModeProc(S: string);
 var
    Q: TQSO;
+   msg: string;
 begin
    // CQ mode
    if IsCQ() then begin
@@ -3656,7 +3657,8 @@ begin
             actionPlayMessageA07.Execute();
          end
          else begin
-            WriteStatusLineRed(TMainForm_Dupe_qso, False);
+            msg := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
+            WriteStatusLineRed(msg, True);
          end;
       end
       else begin
