@@ -311,7 +311,6 @@ function TSuperList.ObjectOf(SD: TSuperData): TSuperData;
 var
    Index: Integer;
    SI: TSuperIndex;
-   L: Integer;
 begin
    SI := TSuperIndex.Create();
    SI.Callsign := SD.Callsign;

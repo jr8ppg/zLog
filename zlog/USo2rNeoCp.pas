@@ -138,7 +138,6 @@ end;
 procedure TformSo2rNeoCp.buttonAfBlendClick(Sender: TObject);
 var
    fOn: Boolean;
-   ratio: Byte;
 begin
    fOn := buttonAfBlend.Down;
 

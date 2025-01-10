@@ -1452,8 +1452,6 @@ begin
 end;
 
 constructor TGeneralContest.Create(AOwner: TComponent; N, CFGFileName: string);
-var
-   B: TBand;
 begin
    inherited Create(AOwner, N);
    FUserDatLoaded := False;

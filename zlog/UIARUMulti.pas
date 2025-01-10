@@ -167,7 +167,7 @@ end;
 procedure TIARUMulti.CheckMulti(aQSO: TQSO);
 var
    str, str2: string;
-   j, z: Integer;
+   z: Integer;
    B: TBand;
    Index: Integer;
    ZoneObj: TIARUZone;

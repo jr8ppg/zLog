@@ -30,7 +30,6 @@ type
     procedure comboPromptTypeChange(Sender: TObject);
   private
     { Private declarations }
-    FFontSize: Integer;
     FChatFileName: string;
     procedure SendMessage(S: string);
     procedure Chat(S: string);

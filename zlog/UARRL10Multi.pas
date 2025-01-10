@@ -347,7 +347,6 @@ end;
 
 procedure TARRL10Multi.ProcessCluster(var Sp : TBaseSpot);
 var
-   Z: integer;
    C: TCountry;
    temp : string;
    aQSO : TQSO;
