@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetQuickFunctions
+    ActivePage = tabsheetVoice
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -1784,27 +1784,35 @@ object formOptions2: TformOptions2
         Caption = 'Device'
         TabOrder = 2
         object buttonPlayVoice: TSpeedButton
-          Left = 287
+          Left = 310
           Top = 16
-          Width = 60
+          Width = 50
           Height = 26
           Caption = 'Play'
           OnClick = buttonPlayVoiceClick
         end
         object buttonStopVoice: TSpeedButton
-          Left = 352
+          Left = 362
           Top = 16
-          Width = 60
+          Width = 50
           Height = 26
           Caption = 'Stop'
           OnClick = buttonStopVoiceClick
         end
         object comboVoiceDevice: TComboBox
-          Left = 17
+          Left = 99
           Top = 19
-          Width = 260
+          Width = 205
           Height = 21
           Style = csDropDownList
+          TabOrder = 1
+        end
+        object checkUseRigDevice: TCheckBox
+          Left = 3
+          Top = 18
+          Width = 91
+          Height = 23
+          Caption = 'Use rig device'
           TabOrder = 0
         end
       end

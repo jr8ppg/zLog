@@ -169,16 +169,16 @@ type
     _use_wk_ignore_speed_pot: Boolean;
     _use_wk_always9600: Boolean;
 
-    // F2A options
-    _use_f2a: Boolean;
-    _f2a_ptt: Boolean;
-    _f2a_before: Word;
-    _f2a_after: Word;
-    _f2a_device: Integer;
-    _f2a_volume: Integer;
-    _f2a_use_datamode: Boolean;
-    _f2a_datamode: Integer;
-    _f2a_filter: Integer;
+    // F2A/Voice options
+    _sound_device: array[1..4] of Integer;
+    _use_f2a: array[1..4] of Boolean;
+    _f2a_ptt: array[1..4] of Boolean;
+    _f2a_before: array[1..4] of Word;
+    _f2a_after: array[1..4] of Word;
+    _f2a_volume: array[1..4] of Integer;
+    _f2a_use_datamode: array[1..4] of Boolean;
+    _f2a_datamode: array[1..4] of Integer;
+    _f2a_filter: array[1..4] of Integer;
 
     // Operate Style
     _operate_style: TOperateStyle;
@@ -298,6 +298,7 @@ type
     FSoundComments: array[1..maxmessage] of string;
     FAdditionalSoundFiles: array[2..3] of string;
     FAdditionalSoundComments: array[2..3] of string;
+    FUseRigSoundDevice: Boolean;
     FSoundDevice: Integer;
 
     // Select User Defined Contest
@@ -1113,16 +1114,19 @@ begin
       Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
       Settings._use_wk_always9600 := ini.ReadBool('Hardware', 'UseWkAlways9600', False);
 
-      // F2A options
-      Settings._use_f2a := ini.ReadBool('Hardware', 'UseF2A', False);
-      Settings._f2a_ptt := ini.ReadBool('Hardware', 'UseF2APtt', False);
-      Settings._f2a_before := ini.ReadInteger('Hardware', 'F2APttBefore', 500);
-      Settings._f2a_after := ini.ReadInteger('Hardware', 'F2APttAfter', 500);
-      Settings._f2a_device := ini.ReadInteger('Hardware', 'F2A_OutputDevice', 0);
-      Settings._f2a_volume := ini.ReadInteger('Hardware', 'F2A_OutputVolume', 100);
-      Settings._f2a_use_datamode := ini.ReadBool('Hardware', 'F2A_Use_DataMode', False);
-      Settings._f2a_datamode := ini.ReadInteger('Hardware', 'F2A_DataMode', 0);
-      Settings._f2a_filter := ini.ReadInteger('Hardware', 'F2A_Filter', 0);
+      // F2A/Voice options
+      for i := 1 to 4 do begin
+         S := '_' + IntToStr(i);
+         Settings._sound_device[i] := ini.ReadInteger('Hardware', 'SoundDevice' + S, 0);
+         Settings._use_f2a[i] := ini.ReadBool('Hardware', 'UseF2A' + S, False);
+         Settings._f2a_ptt[i] := ini.ReadBool('Hardware', 'UseF2APtt' + S, False);
+         Settings._f2a_before[i] := ini.ReadInteger('Hardware', 'F2APttBefore' + S, 500);
+         Settings._f2a_after[i] := ini.ReadInteger('Hardware', 'F2APttAfter' + S, 500);
+         Settings._f2a_volume[i] := ini.ReadInteger('Hardware', 'F2A_OutputVolume' + S, 100);
+         Settings._f2a_use_datamode[i] := ini.ReadBool('Hardware', 'F2A_Use_DataMode' + S, False);
+         Settings._f2a_datamode[i] := ini.ReadInteger('Hardware', 'F2A_DataMode' + S, 0);
+         Settings._f2a_filter[i] := ini.ReadInteger('Hardware', 'F2A_Filter' + S, 0);
+      end;
 
       // Operate Style
       Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
@@ -1453,6 +1457,7 @@ begin
       end;
 
       // output device
+      Settings.FUseRigSoundDevice := ini.ReadBool('Voice', 'use_rigdevice', False);
       Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
 
       // Select User Defined Contest
@@ -1836,16 +1841,19 @@ begin
       ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
       ini.WriteBool('Hardware', 'UseWkAlways9600', Settings._use_wk_always9600);
 
-      // F2A options
-      ini.WriteBool('Hardware', 'UseF2A', Settings._use_f2a);
-      ini.WriteBool('Hardware', 'UseF2APtt', Settings._f2a_ptt);
-      ini.WriteInteger('Hardware', 'F2APttBefore', Settings._f2a_before);
-      ini.WriteInteger('Hardware', 'F2APttAfter', Settings._f2a_after);
-      ini.WriteInteger('Hardware', 'F2A_OutputDevice', Settings._f2a_device);
-      ini.WriteInteger('Hardware', 'F2A_OutputVolume', Settings._f2a_volume);
-      ini.WriteBool('Hardware', 'F2A_Use_DataMode', Settings._f2a_use_datamode);
-      ini.WriteInteger('Hardware', 'F2A_DataMode', Settings._f2a_datamode);
-      ini.WriteInteger('Hardware', 'F2A_Filter', Settings._f2a_filter);
+      // F2A/Voice options
+      for i := 1 to 4 do begin
+         S := '_' + IntToStr(i);
+         ini.WriteInteger('Hardware', 'SoundDevice' + S, Settings._sound_device[i]);
+         ini.WriteBool('Hardware', 'UseF2A' + S, Settings._use_f2a[i]);
+         ini.WriteBool('Hardware', 'UseF2APtt' + S, Settings._f2a_ptt[i]);
+         ini.WriteInteger('Hardware', 'F2APttBefore' + S, Settings._f2a_before[i]);
+         ini.WriteInteger('Hardware', 'F2APttAfter' + S, Settings._f2a_after[i]);
+         ini.WriteInteger('Hardware', 'F2A_OutputVolume' + S, Settings._f2a_volume[i]);
+         ini.WriteBool('Hardware', 'F2A_Use_DataMode' + S, Settings._f2a_use_datamode[i]);
+         ini.WriteInteger('Hardware', 'F2A_DataMode' + S, Settings._f2a_datamode[i]);
+         ini.WriteInteger('Hardware', 'F2A_Filter' + S, Settings._f2a_filter[i]);
+      end;
 
       // Operate Style
       ini.WriteInteger('OPERATE_STYLE', 'style', Integer(Settings._operate_style));
@@ -2098,6 +2106,7 @@ begin
       end;
 
       // output device
+      ini.WriteBool('Voice', 'use_rigdevice', Settings.FUseRigSoundDevice);
       ini.WriteInteger('Voice', 'device', Settings.FSoundDevice);
 
       // Select User Defined Contest

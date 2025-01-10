@@ -550,16 +550,19 @@ var
    cmd: AnsiString;
    datamode: AnsiString;
    filter: AnsiString;
+   n: Integer;
 begin
    if fOn = True then begin
-      case dmZLogGlobal.Settings._f2a_datamode of
+      n := RigNumber;
+
+      case dmZLogGlobal.Settings._f2a_datamode[n] of
          0: datamode := AnsiChar($01);
          1: datamode := AnsiChar($02);
          2: datamode := AnsiChar($03);
          else datamode := AnsiChar($01);
       end;
 
-      case dmZLogGlobal.Settings._f2a_filter of
+      case dmZLogGlobal.Settings._f2a_filter[n] of
          0: filter := AnsiChar($01);
          1: filter := AnsiChar($02);
          2: filter := AnsiChar($03);

@@ -327,26 +327,11 @@ type
     spAutoReconnectIntervalSec: TSpinEdit;
     Label11: TLabel;
     Label12: TLabel;
-    groupF2A: TGroupBox;
-    comboF2ADevice: TComboBox;
-    checkUseF2A: TCheckBox;
-    Label13: TLabel;
-    Label14: TLabel;
-    checkF2APttControl: TCheckBox;
-    editF2ABefore: TEdit;
-    editF2AAfter: TEdit;
-    Label15: TLabel;
-    spinF2AVolume: TSpinEdit;
-    Label85: TLabel;
-    comboF2aDataMode: TComboBox;
-    comboF2aFilter: TComboBox;
-    Label16: TLabel;
     checkEnablePttPh: TCheckBox;
     Label18: TLabel;
     editBeforeTxPh: TEdit;
     editAfterTxPh: TEdit;
     Label19: TLabel;
-    checkUseF2ADataMode: TCheckBox;
     radioSo2rOtrsp: TRadioButton;
     groupSo2rOtrsp: TGroupBox;
     Label17: TLabel;
@@ -354,6 +339,67 @@ type
     groupOperateMode: TGroupBox;
     radioOriginalMode: TRadioButton;
     radioEnterMode: TRadioButton;
+    tabsheetHardware4: TTabSheet;
+    gtoupRig1F2A: TGroupBox;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label85: TLabel;
+    Label16: TLabel;
+    comboRig1SoundDevice: TComboBox;
+    checkUseRig1F2A: TCheckBox;
+    checkUseRig1F2APtt: TCheckBox;
+    editRig1F2ABefore: TEdit;
+    editRig1F2AAfter: TEdit;
+    spinRig1F2AVolume: TSpinEdit;
+    comboRig1F2aDataMode: TComboBox;
+    comboRig1F2aFilter: TComboBox;
+    checkUseRig1F2ADataMode: TCheckBox;
+    gtoupRig2F2A: TGroupBox;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    comboRig2SoundDevice: TComboBox;
+    checkUseRig2F2A: TCheckBox;
+    checkUseRig2F2APtt: TCheckBox;
+    editRig2F2ABefore: TEdit;
+    editRig2F2AAfter: TEdit;
+    spinRig2F2AVolume: TSpinEdit;
+    comboRig2F2aDataMode: TComboBox;
+    comboRig2F2aFilter: TComboBox;
+    checkUseRig2F2ADataMode: TCheckBox;
+    gtoupRig3F2A: TGroupBox;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    Label30: TLabel;
+    Label33: TLabel;
+    comboRig3SoundDevice: TComboBox;
+    checkUseRig3F2A: TCheckBox;
+    checkUseRig3F2APtt: TCheckBox;
+    editRig3F2ABefore: TEdit;
+    editRig3F2AAfter: TEdit;
+    spinRig3F2AVolume: TSpinEdit;
+    comboRig3F2aDataMode: TComboBox;
+    comboRig3F2aFilter: TComboBox;
+    checkUseRig3F2ADataMode: TCheckBox;
+    gtoupRig4F2A: TGroupBox;
+    Label34: TLabel;
+    Label35: TLabel;
+    Label36: TLabel;
+    Label37: TLabel;
+    Label40: TLabel;
+    comboRig4SoundDevice: TComboBox;
+    checkUseRig4F2A: TCheckBox;
+    checkUseRig4F2APtt: TCheckBox;
+    editRig4F2ABefore: TEdit;
+    editRig4F2AAfter: TEdit;
+    spinRig4F2AVolume: TSpinEdit;
+    comboRig4F2aDataMode: TComboBox;
+    comboRig4F2aFilter: TComboBox;
+    checkUseRig4F2ADataMode: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -391,7 +437,7 @@ type
       Selected: Boolean);
     procedure listviewPacketClusterDblClick(Sender: TObject);
     procedure checkUseF2AClick(Sender: TObject);
-    procedure checkF2APttControlClick(Sender: TObject);
+    procedure checkUseF2APttClick(Sender: TObject);
     procedure checkEnablePttPhClick(Sender: TObject);
     procedure checkUseF2ADataModeClick(Sender: TObject);
   private
@@ -419,6 +465,17 @@ type
     FRigXvt: array[1..5] of TCheckBox;
     FRigXvtConfig: array[1..5] of TButton;
     FRigPhoneChgPTT: array[1..5] of TCheckBox;
+
+    FSoundDevice: array[1..4] of TComboBox;
+    FF2AVolume: array[1..4] of TSpinEdit;
+    FUseF2A: array[1..4] of TCheckBox;
+    FUseF2ADataMode: array[1..4] of TCheckBox;
+    FF2ADataMode: array[1..4] of TComboBox;
+    FF2AFilter: array[1..4] of TComboBox;
+    FUseF2APtt: array[1..4] of TCheckBox;
+    FF2ABefore: array[1..4] of TEdit;
+    FF2AAfter: array[1..4] of TEdit;
+
     procedure InitRigNames();
     function CheckRigSetting(): Boolean;
     procedure EnableRigConfig(Index: Integer; fEnable: Boolean);
@@ -642,10 +699,51 @@ begin
       end;
    end;
 
+   // Hardware4タブ
+   FSoundDevice[1] := comboRig1SoundDevice;
+   FSoundDevice[2] := comboRig2SoundDevice;
+   FSoundDevice[3] := comboRig3SoundDevice;
+   FSoundDevice[4] := comboRig4SoundDevice;
+   FF2AVolume[1] := spinRig1F2AVolume;
+   FF2AVolume[2] := spinRig2F2AVolume;
+   FF2AVolume[3] := spinRig3F2AVolume;
+   FF2AVolume[4] := spinRig4F2AVolume;
+   FUseF2A[1] := checkUseRig1F2A;
+   FUseF2A[2] := checkUseRig2F2A;
+   FUseF2A[3] := checkUseRig3F2A;
+   FUseF2A[4] := checkUseRig4F2A;
+   FUseF2ADataMode[1] := checkUseRig1F2ADataMode;
+   FUseF2ADataMode[2] := checkUseRig2F2ADataMode;
+   FUseF2ADataMode[3] := checkUseRig3F2ADataMode;
+   FUseF2ADataMode[4] := checkUseRig4F2ADataMode;
+   FF2ADataMode[1] := comboRig1F2ADataMode;
+   FF2ADataMode[2] := comboRig2F2ADataMode;
+   FF2ADataMode[3] := comboRig3F2ADataMode;
+   FF2ADataMode[4] := comboRig4F2ADataMode;
+   FF2AFilter[1] := comboRig1F2AFilter;
+   FF2AFilter[2] := comboRig2F2AFilter;
+   FF2AFilter[3] := comboRig3F2AFilter;
+   FF2AFilter[4] := comboRig4F2AFilter;
+   FUseF2APtt[1] := checkUseRig1F2APtt;
+   FUseF2APtt[2] := checkUseRig2F2APtt;
+   FUseF2APtt[3] := checkUseRig3F2APtt;
+   FUseF2APtt[4] := checkUseRig4F2APtt;
+   FF2ABefore[1] := editRig1F2ABefore;
+   FF2ABefore[2] := editRig2F2ABefore;
+   FF2ABefore[3] := editRig3F2ABefore;
+   FF2ABefore[4] := editRig4F2ABefore;
+   FF2AAfter[1] := editRig1F2AAfter;
+   FF2AAfter[2] := editRig2F2AAfter;
+   FF2AAfter[3] := editRig3F2AAfter;
+   FF2AAfter[4] := editRig4F2AAfter;
+
    // F2A 再生用デバイスリスト
    L := TWaveSound.DeviceList();
    try
-      comboF2ADevice.Items.Assign(L);
+      FSoundDevice[1].Items.Assign(L);
+      FSoundDevice[2].Items.Assign(L);
+      FSoundDevice[3].Items.Assign(L);
+      FSoundDevice[4].Items.Assign(L);
    finally
       L.Free();
    end;
@@ -662,7 +760,10 @@ begin
       radio2RadioClick(radio2Radio);
    end;
 
-   checkUseF2AClick(checkUseF2A);
+   checkUseF2AClick(FUseF2A[1]);
+   checkUseF2AClick(FUseF2A[2]);
+   checkUseF2AClick(FUseF2A[3]);
+   checkUseF2AClick(FUseF2A[4]);
 end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
@@ -777,7 +878,6 @@ procedure TformOptions.buttonClusterAddClick(Sender: TObject);
 var
    f: TformClusterTelnetSet;
    setting: TTelnetSetting;
-   listitem: TListItem;
 begin
    f := TformClusterTelnetSet.Create(Self);
    try
@@ -1181,41 +1281,47 @@ begin
 end;
 
 procedure TformOptions.checkUseF2AClick(Sender: TObject);
+var
+   n: Integer;
 begin
+   n := TCheckBox(Sender).Tag;
    if TCheckBox(Sender).Checked = True then begin
-      checkF2APttControl.Enabled := True;
-      checkF2APttControlClick(nil);
-      comboF2ADevice.Enabled := True;
-      spinF2AVolume.Enabled := True;
-      checkUseF2ADataMode.Enabled := True;
-      checkUseF2ADataModeClick(nil);
+      FUseF2APtt[n].Enabled := True;
+      FUseF2APtt[n].OnClick(FUseF2APtt[n]);
+      FF2AVolume[n].Enabled := True;
+      FUseF2ADataMode[n].Enabled := True;
+      FUseF2ADataMode[n].OnClick(FUseF2ADataMode[n]);
    end
    else begin
-      checkF2APttControl.Enabled := False;
-      editF2ABefore.Enabled := False;
-      editF2AAfter.Enabled := False;
-      comboF2ADevice.Enabled := False;
-      spinF2AVolume.Enabled := False;
-      checkUseF2ADataMode.Enabled := False;
-      checkUseF2ADataModeClick(nil);
+      FUseF2APtt[n].Enabled := False;
+      FUseF2APtt[n].OnClick(FUseF2APtt[n]);
+      FF2AVolume[n].Enabled := False;
+      FUseF2ADataMode[n].Enabled := False;
+      FUseF2ADataMode[n].OnClick(FUseF2ADataMode[n]);
    end;
 end;
 
 procedure TformOptions.checkUseF2ADataModeClick(Sender: TObject);
+var
+   n: Integer;
 begin
-   comboF2aDataMode.Enabled := checkUseF2ADataMode.Checked;
-   comboF2aFilter.Enabled := checkUseF2ADataMode.Checked;
+   n := TCheckBox(Sender).Tag;
+   FF2ADataMode[n].Enabled := FUseF2ADataMode[n].Checked;
+   FF2AFilter[n].Enabled := FUseF2ADataMode[n].Checked;
 end;
 
-procedure TformOptions.checkF2APttControlClick(Sender: TObject);
+procedure TformOptions.checkUseF2APttClick(Sender: TObject);
+var
+   n: Integer;
 begin
-   if checkF2APttControl.Checked = True then begin
-      editF2ABefore.Enabled := True;
-      editF2AAfter.Enabled := True;
+   n := TCheckBox(Sender).Tag;
+   if FUseF2APtt[n].Checked = True then begin
+      FF2ABefore[n].Enabled := True;
+      FF2AAfter[n].Enabled := True;
    end
    else begin
-      editF2ABefore.Enabled := False;
-      editF2AAfter.Enabled := False;
+      FF2ABefore[n].Enabled := False;
+      FF2AAfter[n].Enabled := False;
    end;
 end;
 
@@ -1350,6 +1456,7 @@ procedure TformOptions.RenewSettings();
 var
    r: double;
    b: TBand;
+   i: Integer;
 
    procedure SetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
    var
@@ -1516,15 +1623,17 @@ begin
       Settings._use_wk_always9600 := checkWkAlways9600.Checked;
 
       // F2A options
-      Settings._use_f2a := checkUseF2A.Checked;
-      Settings._f2a_ptt := checkF2APttControl.Checked;
-      Settings._f2a_before := StrToIntDef(editF2ABefore.Text, Settings._f2a_before);
-      Settings._f2a_after := StrToIntDef(editF2AAfter.Text, Settings._f2a_after);
-      Settings._f2a_device := comboF2ADevice.ItemIndex;
-      Settings._f2a_volume := spinF2AVolume.Value;
-      Settings._f2a_use_datamode := checkUseF2ADataMode.Checked;
-      Settings._f2a_datamode := comboF2aDataMode.ItemIndex;
-      Settings._f2a_filter := comboF2aFilter.ItemIndex;
+      for i := 1 to 4 do begin
+         Settings._sound_device[i] := FSoundDevice[i].ItemIndex;
+         Settings._use_f2a[i] := FUseF2A[i].Checked;
+         Settings._f2a_ptt[i] := FUseF2APtt[i].Checked;
+         Settings._f2a_before[i] := StrToIntDef(FF2ABefore[i].Text, Settings._f2a_before[i]);
+         Settings._f2a_after[i] := StrToIntDef(FF2AAfter[i].Text, Settings._f2a_after[i]);
+         Settings._f2a_volume[i] := FF2AVolume[i].Value;
+         Settings._f2a_use_datamode[i] := FUseF2ADataMode[i].Checked;
+         Settings._f2a_datamode[i] := FF2aDataMode[i].ItemIndex;
+         Settings._f2a_filter[i] := FF2aFilter[i].ItemIndex;
+      end;
 
       //
       // Rig control
@@ -1842,15 +1951,17 @@ begin
       checkWkAlways9600.Checked := Settings._use_wk_always9600;
 
       // F2A options
-      checkUseF2A.Checked := Settings._use_f2a;
-      checkF2APttControl.Checked := Settings._f2a_ptt;
-      editF2ABefore.Text := IntToStr(Settings._f2a_before);
-      editF2AAfter.Text := IntToStr(Settings._f2a_after);
-      comboF2ADevice.ItemIndex := Settings._f2a_device;
-      spinF2AVolume.Value := Settings._f2a_volume;
-      checkUseF2ADataMode.Checked := Settings._f2a_use_datamode;
-      comboF2aDataMode.ItemIndex := Settings._f2a_datamode;
-      comboF2aFilter.ItemIndex := Settings._f2a_filter;
+      for i := 1 to 4 do begin
+         FSoundDevice[i].ItemIndex := Settings._sound_device[i];
+         FUseF2A[i].Checked := Settings._use_f2a[i];
+         FUseF2APtt[i].Checked := Settings._f2a_ptt[i];
+         FF2ABefore[i].Text := IntToStr(Settings._f2a_before[i]);
+         FF2AAfter[i].Text := IntToStr(Settings._f2a_after[i]);
+         FF2AVolume[i].Value := Settings._f2a_volume[i];
+         FUseF2ADataMode[i].Checked := Settings._f2a_use_datamode[i];
+         FF2aDataMode[i].ItemIndex := Settings._f2a_datamode[i];
+         FF2aFilter[i].ItemIndex := Settings._f2a_filter[i];
+      end;
 
       //
       // Rig control

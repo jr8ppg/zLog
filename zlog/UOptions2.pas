@@ -419,6 +419,7 @@ type
     editQuickQsyFixEdge08: TEdit;
     Label31: TLabel;
     Label32: TLabel;
+    checkUseRigDevice: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -858,6 +859,7 @@ begin
          Settings.FAdditionalSoundFiles[i] := FTempAdditionalVoiceFiles[i];
          Settings.FAdditionalSoundComments[i] := FAdditionalVoiceEdit[i].Text;
       end;
+      Settings.FUseRigSoundDevice := checkUseRigDevice.Checked;
       Settings.FSoundDevice := comboVoiceDevice.ItemIndex;
    end;
 end;
@@ -1222,6 +1224,7 @@ begin
          end;
          FAdditionalVoiceEdit[i].Text := Settings.FAdditionalSoundComments[i];
       end;
+      checkUseRigDevice.Checked := Settings.FUseRigSoundDevice;
       comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
    end;
 
@@ -1361,7 +1364,6 @@ end;
 procedure TformOptions2.FormCreate(Sender: TObject);
 var
    i: integer;
-   b: TBand;
    m: TMode;
 begin
    FQuickQSYCheck[1]    := checkUseQuickQSY01;

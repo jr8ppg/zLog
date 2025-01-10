@@ -5346,10 +5346,6 @@ end;
 
 procedure TMainForm.buttonF2AClick(Sender: TObject);
 begin
-   if dmZLogGlobal.Settings._use_f2a = False then begin
-      Exit;
-   end;
-
    if buttonF2A.Down = True then begin
       SetF2AMode();
    end
@@ -5359,10 +5355,25 @@ begin
 end;
 
 procedure TMainForm.SetEnableF2A();
+var
+   rig: TRig;
+   n: Integer;
+   flag: Boolean;
 begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
+      buttonF2A.Enabled := False;
+      actionToggleF2A.Enabled := False;
+      Exit;
+   end;
+
+   // RIG毎のF2A設定を確認する
+   n := rig.RigNumber;
+   flag := dmZLogGlobal.Settings._use_f2a[n];
+
    if (currentQSO.Band >= b28) then begin
-      buttonF2A.Enabled := True;
-      actionToggleF2A.Enabled := True;
+      buttonF2A.Enabled := flag;
+      actionToggleF2A.Enabled := flag;
    end
    else begin
       buttonF2A.Enabled := False;
@@ -5373,35 +5384,40 @@ end;
 procedure TMainForm.SetF2AMode();
 var
    rig: TRig;
+   n: Integer;
 begin
+   // リグをFMにする(要値保存)
+   FRigModeBackup := CurrentQSO.Mode;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
+      Exit;
+   end;
+
+   n := rig.RigNumber;
+
    // PTT delayをF2A用の値に変更する
-   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._f2a_before, dmZLogGlobal.Settings._f2a_after);
-   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._f2a_ptt);
+   dmZLogKeyer.SetPTTDelay(dmZLogGlobal.Settings._f2a_before[n], dmZLogGlobal.Settings._f2a_after[n]);
+   dmZLogKeyer.SetPTT(dmZLogGlobal.Settings._f2a_ptt[n]);
 
    // サイドトーン設定をON
    dmZLogKeyer.UseSideTone := True;
 
    // サイドトーンの出力先を変更
-   dmZLogKeyer.SideTone.DeviceID := dmZLogGlobal.Settings._f2a_device;
-   dmZLogKeyer.SideTone.Volume := dmZLogGlobal.Settings._f2a_volume;
+   dmZLogKeyer.SideTone.DeviceID := dmZLogGlobal.Settings._sound_device[n];
+   dmZLogKeyer.SideTone.Volume := dmZLogGlobal.Settings._f2a_volume[n];
 
-   // リグをFMにする(要値保存)
-   FRigModeBackup := CurrentQSO.Mode;
-   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-   if rig <> nil then begin
-      // リグのモード無視
-      rig.IgnoreMode := True;
+   // リグのモード無視
+   rig.IgnoreMode := True;
 
-      // FMへ変更
-      rig.SetMode(mFM);
-      while rig.CurrentMode <> mFM do begin
-         Application.ProcessMessages();
-      end;
+   // FMへ変更
+   rig.SetMode(mFM);
+   while rig.CurrentMode <> mFM do begin
+      Application.ProcessMessages();
+   end;
 
-      // DATAMODE使用時
-      if dmZLogGlobal.Settings._f2a_use_datamode = True then begin
-         rig.SetDataMode(True);
-      end;
+   // DATAMODE使用時
+   if dmZLogGlobal.Settings._f2a_use_datamode[n] = True then begin
+      rig.SetDataMode(True);
    end;
 
    // zLogはCW

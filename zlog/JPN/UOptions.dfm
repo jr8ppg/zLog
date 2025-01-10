@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = radio1Radio
+  ActiveControl = checkUseRig1F2A
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -23,11 +23,9 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetHardware4
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 440
-    ExplicitHeight = 433
     object tabsheetOperateStyle: TTabSheet
       Caption = #36939#29992#12473#12479#12452#12523
       ImageIndex = 7
@@ -2588,137 +2586,555 @@ object formOptions: TformOptions
           TabOrder = 4
         end
       end
-      object groupF2A: TGroupBox
+    end
+    object tabsheetHardware4: TTabSheet
+      Caption = 'Hardware4'
+      ImageIndex = 8
+      object gtoupRig1F2A: TGroupBox
         Left = 6
-        Top = 303
+        Top = 4
         Width = 423
-        Height = 98
-        Caption = 'F2A'#12458#12503#12471#12519#12531
-        TabOrder = 4
+        Height = 96
+        Caption = 'RIG-1'
+        TabOrder = 0
         object Label13: TLabel
-          Left = 122
-          Top = 45
+          Left = 151
+          Top = 72
           Width = 70
           Height = 13
-          Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
+          Caption = 'Before TX (ms)'
         end
         object Label14: TLabel
-          Left = 270
-          Top = 45
+          Left = 307
+          Top = 72
           Width = 61
           Height = 13
-          Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
+          Caption = 'After TX (ms)'
         end
         object Label15: TLabel
           Left = 9
-          Top = 71
-          Width = 34
+          Top = 19
+          Width = 66
           Height = 13
-          Caption = #12487#12496#12452#12473
+          Caption = 'Sound device'
         end
         object Label85: TLabel
-          Left = 300
-          Top = 71
-          Width = 76
+          Left = 323
+          Top = 19
+          Width = 39
           Height = 13
           AutoSize = False
-          Caption = #38899#37327'(1-100)'
+          Caption = 'Volume'
         end
         object Label16: TLabel
           Left = 339
-          Top = 19
+          Top = 46
           Width = 19
           Height = 13
           Alignment = taRightJustify
-          Caption = #12501#12451#12523#12479#12540
+          Caption = 'filter'
         end
-        object comboF2ADevice: TComboBox
-          Left = 60
-          Top = 68
+        object comboRig1SoundDevice: TComboBox
+          Left = 83
+          Top = 16
           Width = 227
           Height = 21
           Style = csDropDownList
-          TabOrder = 7
-        end
-        object checkUseF2A: TCheckBox
-          Left = 8
-          Top = 18
-          Width = 140
-          Height = 17
-          Caption = 'F2A'#12514#12540#12489#12434#20351#12358
           TabOrder = 0
+        end
+        object checkUseRig1F2A: TCheckBox
+          Tag = 1
+          Left = 8
+          Top = 45
+          Width = 70
+          Height = 17
+          Caption = 'Use F2A'
+          TabOrder = 2
           OnClick = checkUseF2AClick
         end
-        object checkF2APttControl: TCheckBox
+        object checkUseRig1F2APtt: TCheckBox
+          Tag = 1
           Left = 8
-          Top = 44
-          Width = 100
+          Top = 71
+          Width = 89
           Height = 17
-          Caption = 'F2A'#12391'PTT'#20351#12358
-          TabOrder = 4
-          OnClick = checkF2APttControlClick
-        end
-        object editF2ABefore: TEdit
-          Left = 225
-          Top = 42
-          Width = 40
-          Height = 21
-          TabOrder = 5
-          OnKeyPress = NumberEditKeyPress
-        end
-        object editF2AAfter: TEdit
-          Left = 373
-          Top = 42
-          Width = 40
-          Height = 21
+          Caption = 'Enable PTT'
           TabOrder = 6
+          OnClick = checkUseF2APttClick
+        end
+        object editRig1F2ABefore: TEdit
+          Left = 225
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 7
           OnKeyPress = NumberEditKeyPress
         end
-        object spinF2AVolume: TSpinEdit
+        object editRig1F2AAfter: TEdit
+          Left = 373
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 8
+          OnKeyPress = NumberEditKeyPress
+        end
+        object spinRig1F2AVolume: TSpinEdit
           Left = 367
-          Top = 68
+          Top = 16
           Width = 46
           Height = 22
           MaxValue = 100
           MinValue = 1
-          TabOrder = 8
+          TabOrder = 1
           Value = 100
         end
-        object comboF2aDataMode: TComboBox
+        object comboRig1F2aDataMode: TComboBox
           Left = 249
-          Top = 16
+          Top = 43
           Width = 45
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 2
+          TabOrder = 4
           Text = 'D1'
           Items.Strings = (
             'D1'
             'D2'
             'D3')
         end
-        object comboF2aFilter: TComboBox
+        object comboRig1F2aFilter: TComboBox
           Left = 363
-          Top = 16
+          Top = 43
           Width = 50
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 3
+          TabOrder = 5
           Text = 'FIL1'
           Items.Strings = (
             'FIL1'
             'FIL2'
             'FIL3')
         end
-        object checkUseF2ADataMode: TCheckBox
-          Left = 130
-          Top = 18
-          Width = 115
+        object checkUseRig1F2ADataMode: TCheckBox
+          Tag = 1
+          Left = 136
+          Top = 45
+          Width = 107
           Height = 17
-          Caption = #12487#12540#12479#12514#12540#12489#12434#20351#12358
+          Caption = 'Use DATAMODE'
+          TabOrder = 3
+          OnClick = checkUseF2ADataModeClick
+        end
+      end
+      object gtoupRig2F2A: TGroupBox
+        Left = 6
+        Top = 103
+        Width = 423
+        Height = 96
+        Caption = 'RIG-2'
+        TabOrder = 1
+        object Label20: TLabel
+          Left = 151
+          Top = 72
+          Width = 70
+          Height = 13
+          Caption = 'Before TX (ms)'
+        end
+        object Label21: TLabel
+          Left = 307
+          Top = 72
+          Width = 61
+          Height = 13
+          Caption = 'After TX (ms)'
+        end
+        object Label22: TLabel
+          Left = 9
+          Top = 19
+          Width = 66
+          Height = 13
+          Caption = 'Sound device'
+        end
+        object Label23: TLabel
+          Left = 323
+          Top = 19
+          Width = 39
+          Height = 13
+          AutoSize = False
+          Caption = 'Volume'
+        end
+        object Label24: TLabel
+          Left = 339
+          Top = 46
+          Width = 19
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'filter'
+        end
+        object comboRig2SoundDevice: TComboBox
+          Left = 83
+          Top = 16
+          Width = 227
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object checkUseRig2F2A: TCheckBox
+          Tag = 2
+          Left = 8
+          Top = 45
+          Width = 70
+          Height = 17
+          Caption = 'Use F2A'
+          TabOrder = 2
+          OnClick = checkUseF2AClick
+        end
+        object checkUseRig2F2APtt: TCheckBox
+          Tag = 2
+          Left = 8
+          Top = 71
+          Width = 89
+          Height = 17
+          Caption = 'Enable PTT'
+          TabOrder = 6
+          OnClick = checkUseF2APttClick
+        end
+        object editRig2F2ABefore: TEdit
+          Left = 225
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 7
+          OnKeyPress = NumberEditKeyPress
+        end
+        object editRig2F2AAfter: TEdit
+          Left = 373
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 8
+          OnKeyPress = NumberEditKeyPress
+        end
+        object spinRig2F2AVolume: TSpinEdit
+          Left = 367
+          Top = 16
+          Width = 46
+          Height = 22
+          MaxValue = 100
+          MinValue = 1
           TabOrder = 1
+          Value = 100
+        end
+        object comboRig2F2aDataMode: TComboBox
+          Left = 249
+          Top = 43
+          Width = 45
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 4
+          Text = 'D1'
+          Items.Strings = (
+            'D1'
+            'D2'
+            'D3')
+        end
+        object comboRig2F2aFilter: TComboBox
+          Left = 363
+          Top = 43
+          Width = 50
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 5
+          Text = 'FIL1'
+          Items.Strings = (
+            'FIL1'
+            'FIL2'
+            'FIL3')
+        end
+        object checkUseRig2F2ADataMode: TCheckBox
+          Tag = 2
+          Left = 136
+          Top = 45
+          Width = 107
+          Height = 17
+          Caption = 'Use DATAMODE'
+          TabOrder = 3
+          OnClick = checkUseF2ADataModeClick
+        end
+      end
+      object gtoupRig3F2A: TGroupBox
+        Left = 6
+        Top = 202
+        Width = 423
+        Height = 96
+        Caption = 'RIG-3'
+        TabOrder = 2
+        object Label25: TLabel
+          Left = 151
+          Top = 72
+          Width = 70
+          Height = 13
+          Caption = 'Before TX (ms)'
+        end
+        object Label26: TLabel
+          Left = 307
+          Top = 72
+          Width = 61
+          Height = 13
+          Caption = 'After TX (ms)'
+        end
+        object Label27: TLabel
+          Left = 9
+          Top = 19
+          Width = 66
+          Height = 13
+          Caption = 'Sound device'
+        end
+        object Label30: TLabel
+          Left = 323
+          Top = 19
+          Width = 39
+          Height = 13
+          AutoSize = False
+          Caption = 'Volume'
+        end
+        object Label33: TLabel
+          Left = 339
+          Top = 46
+          Width = 19
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'filter'
+        end
+        object comboRig3SoundDevice: TComboBox
+          Left = 83
+          Top = 16
+          Width = 227
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object checkUseRig3F2A: TCheckBox
+          Tag = 3
+          Left = 8
+          Top = 45
+          Width = 70
+          Height = 17
+          Caption = 'Use F2A'
+          TabOrder = 2
+          OnClick = checkUseF2AClick
+        end
+        object checkUseRig3F2APtt: TCheckBox
+          Tag = 3
+          Left = 8
+          Top = 71
+          Width = 89
+          Height = 17
+          Caption = 'Enable PTT'
+          TabOrder = 6
+          OnClick = checkUseF2APttClick
+        end
+        object editRig3F2ABefore: TEdit
+          Left = 225
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 7
+          OnKeyPress = NumberEditKeyPress
+        end
+        object editRig3F2AAfter: TEdit
+          Left = 373
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 8
+          OnKeyPress = NumberEditKeyPress
+        end
+        object spinRig3F2AVolume: TSpinEdit
+          Left = 367
+          Top = 16
+          Width = 46
+          Height = 22
+          MaxValue = 100
+          MinValue = 1
+          TabOrder = 1
+          Value = 100
+        end
+        object comboRig3F2aDataMode: TComboBox
+          Left = 249
+          Top = 43
+          Width = 45
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 4
+          Text = 'D1'
+          Items.Strings = (
+            'D1'
+            'D2'
+            'D3')
+        end
+        object comboRig3F2aFilter: TComboBox
+          Left = 363
+          Top = 43
+          Width = 50
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 5
+          Text = 'FIL1'
+          Items.Strings = (
+            'FIL1'
+            'FIL2'
+            'FIL3')
+        end
+        object checkUseRig3F2ADataMode: TCheckBox
+          Tag = 3
+          Left = 136
+          Top = 45
+          Width = 107
+          Height = 17
+          Caption = 'Use DATAMODE'
+          TabOrder = 3
+          OnClick = checkUseF2ADataModeClick
+        end
+      end
+      object gtoupRig4F2A: TGroupBox
+        Left = 6
+        Top = 301
+        Width = 423
+        Height = 96
+        Caption = 'RIG-4'
+        TabOrder = 3
+        object Label34: TLabel
+          Left = 151
+          Top = 72
+          Width = 70
+          Height = 13
+          Caption = 'Before TX (ms)'
+        end
+        object Label35: TLabel
+          Left = 307
+          Top = 72
+          Width = 61
+          Height = 13
+          Caption = 'After TX (ms)'
+        end
+        object Label36: TLabel
+          Left = 9
+          Top = 19
+          Width = 66
+          Height = 13
+          Caption = 'Sound device'
+        end
+        object Label37: TLabel
+          Left = 323
+          Top = 19
+          Width = 39
+          Height = 13
+          AutoSize = False
+          Caption = 'Volume'
+        end
+        object Label40: TLabel
+          Left = 339
+          Top = 46
+          Width = 19
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'filter'
+        end
+        object comboRig4SoundDevice: TComboBox
+          Left = 83
+          Top = 16
+          Width = 227
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object checkUseRig4F2A: TCheckBox
+          Tag = 4
+          Left = 8
+          Top = 45
+          Width = 70
+          Height = 17
+          Caption = 'Use F2A'
+          TabOrder = 2
+          OnClick = checkUseF2AClick
+        end
+        object checkUseRig4F2APtt: TCheckBox
+          Tag = 4
+          Left = 8
+          Top = 71
+          Width = 89
+          Height = 17
+          Caption = 'Enable PTT'
+          TabOrder = 6
+          OnClick = checkUseF2APttClick
+        end
+        object editRig4F2ABefore: TEdit
+          Left = 225
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 7
+          OnKeyPress = NumberEditKeyPress
+        end
+        object editRig4F2AAfter: TEdit
+          Left = 373
+          Top = 69
+          Width = 40
+          Height = 21
+          TabOrder = 8
+          OnKeyPress = NumberEditKeyPress
+        end
+        object spinRig4F2AVolume: TSpinEdit
+          Left = 367
+          Top = 16
+          Width = 46
+          Height = 22
+          MaxValue = 100
+          MinValue = 1
+          TabOrder = 1
+          Value = 100
+        end
+        object comboRig4F2aDataMode: TComboBox
+          Left = 249
+          Top = 43
+          Width = 45
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 4
+          Text = 'D1'
+          Items.Strings = (
+            'D1'
+            'D2'
+            'D3')
+        end
+        object comboRig4F2aFilter: TComboBox
+          Left = 363
+          Top = 43
+          Width = 50
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 5
+          Text = 'FIL1'
+          Items.Strings = (
+            'FIL1'
+            'FIL2'
+            'FIL3')
+        end
+        object checkUseRig4F2ADataMode: TCheckBox
+          Tag = 4
+          Left = 136
+          Top = 45
+          Width = 107
+          Height = 17
+          Caption = 'Use DATAMODE'
+          TabOrder = 3
           OnClick = checkUseF2ADataModeClick
         end
       end
@@ -3444,13 +3860,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#21109#33521#35282#65402#65438#65404#65391#65400'UB'
+          FontName = 'Cascadia Mono Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 8
+          ItemIndex = 54
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

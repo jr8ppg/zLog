@@ -5,8 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  System.Generics.Collections,
-  UzLogQSO, UzLogConst, UzLogCW, UzLogSound, UzLogOperatorInfo, Vcl.Grids;
+  System.Generics.Collections, Vcl.Grids,
+  UzLogQSO, UzLogConst, UzLogCW, UzLogSound, UzLogOperatorInfo, URigCtrlLib;
 
 const
   WM_MSGMAN_PLAYQUEUE = (WM_USER + 10);
@@ -61,7 +61,7 @@ type
     FSendIndex: Integer;
 
     procedure WMPlayQueue( var Message: TMessage ); message WM_MSGMAN_PLAYQUEUE;
-    procedure SendVoice(i: integer);
+    procedure SendVoice(i: integer; rigno: Integer);
   public
     { Public êÈåæ }
     property InProgress: Boolean read FInProgress write FInProgress;
@@ -285,6 +285,8 @@ var
    msg: TPlayMessage;
    msg2: TPlayMessage;
    nID: Integer;
+   rig: TRig;
+
    function GetCallsign(): string;
    var
       callsign_atom: ATOM;
@@ -344,7 +346,9 @@ begin
             end;
 
             mSSB, mFM, mAM: begin
-               SendVoice(msg2.FVoiceNo);
+               nID := MainForm.GetTxRigID();
+               rig := MainForm.RigControl.Rigs[nID + 1];
+               SendVoice(msg2.FVoiceNo, rig.RigNumber);
             end;
 
             mRTTY: begin
@@ -512,7 +516,7 @@ begin
    FCurrentVoice := 0;
 end;
 
-procedure TformMessageManager.SendVoice(i: integer);
+procedure TformMessageManager.SendVoice(i: integer; rigno: Integer);
 var
    filename: string;
 begin
@@ -578,7 +582,12 @@ begin
    end;
 
    if FWaveSound[i].IsLoaded = False then begin
-      FWaveSound[i].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
+      if dmZLogGlobal.Settings.FUseRigSoundDevice = True then begin
+         FWaveSound[i].Open(filename, dmZLogGlobal.Settings._sound_device[rigno]);
+      end
+      else begin
+         FWaveSound[i].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
+      end;
    end;
    FWaveSound[i].Stop();
 
