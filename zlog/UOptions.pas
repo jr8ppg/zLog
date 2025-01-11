@@ -400,6 +400,9 @@ type
     comboRig4F2aDataMode: TComboBox;
     comboRig4F2aFilter: TComboBox;
     checkUseRig4F2ADataMode: TCheckBox;
+    groupSoundDevice: TGroupBox;
+    comboVoiceDevice: TComboBox;
+    checkUseRigDevice: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -440,6 +443,7 @@ type
     procedure checkUseF2APttClick(Sender: TObject);
     procedure checkEnablePttPhClick(Sender: TObject);
     procedure checkUseF2ADataModeClick(Sender: TObject);
+    procedure checkUseRigDeviceClick(Sender: TObject);
   private
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
@@ -740,6 +744,7 @@ begin
    // F2A 再生用デバイスリスト
    L := TWaveSound.DeviceList();
    try
+      comboVoiceDevice.Items.Assign(L);
       FSoundDevice[1].Items.Assign(L);
       FSoundDevice[2].Items.Assign(L);
       FSoundDevice[3].Items.Assign(L);
@@ -760,6 +765,7 @@ begin
       radio2RadioClick(radio2Radio);
    end;
 
+   checkUseRigDeviceClick(nil);
    checkUseF2AClick(FUseF2A[1]);
    checkUseF2AClick(FUseF2A[2]);
    checkUseF2AClick(FUseF2A[3]);
@@ -1297,7 +1303,8 @@ begin
       FUseF2APtt[n].OnClick(FUseF2APtt[n]);
       FF2AVolume[n].Enabled := False;
       FUseF2ADataMode[n].Enabled := False;
-      FUseF2ADataMode[n].OnClick(FUseF2ADataMode[n]);
+      FF2ABefore[n].Enabled := False;
+      FF2AAfter[n].Enabled := False;
    end;
 end;
 
@@ -1323,6 +1330,11 @@ begin
       FF2ABefore[n].Enabled := False;
       FF2AAfter[n].Enabled := False;
    end;
+end;
+
+procedure TformOptions.checkUseRigDeviceClick(Sender: TObject);
+begin
+   comboVoiceDevice.Enabled := not checkUseRigDevice.Checked;
 end;
 
 procedure TformOptions.InitRigNames();
@@ -1622,7 +1634,15 @@ begin
       Settings._use_wk_ignore_speed_pot := checkWkIgnoreSpeedPot.Checked;
       Settings._use_wk_always9600 := checkWkAlways9600.Checked;
 
-      // F2A options
+      // Sound playback device
+      Settings.FUseRigSoundDevice := checkUseRigDevice.Checked;
+      Settings.FSoundDevice := comboVoiceDevice.ItemIndex;
+
+      //
+      // Hardware4
+      //
+
+      // F2A/Voice options
       for i := 1 to 4 do begin
          Settings._sound_device[i] := FSoundDevice[i].ItemIndex;
          Settings._use_f2a[i] := FUseF2A[i].Checked;
@@ -1950,7 +1970,15 @@ begin
       checkWkIgnoreSpeedPot.Checked := Settings._use_wk_ignore_speed_pot;
       checkWkAlways9600.Checked := Settings._use_wk_always9600;
 
-      // F2A options
+      // Sound playback device
+      checkUseRigDevice.Checked := Settings.FUseRigSoundDevice;
+      comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
+
+      //
+      // Hardware4
+      //
+
+      // F2A/Voice options
       for i := 1 to 4 do begin
          FSoundDevice[i].ItemIndex := Settings._sound_device[i];
          FUseF2A[i].Checked := Settings._use_f2a[i];

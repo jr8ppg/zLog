@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = checkUseRig1F2A
+  ActiveControl = radio1Radio
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -23,9 +23,11 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetHardware4
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 440
+    ExplicitHeight = 433
     object tabsheetOperateStyle: TTabSheet
       Caption = 'Operate Style'
       ImageIndex = 7
@@ -2511,7 +2513,7 @@ object formOptions: TformOptions
       end
       object groupUsif4cw: TGroupBox
         Left = 6
-        Top = 156
+        Top = 159
         Width = 423
         Height = 68
         Caption = 'USBIF4CW options'
@@ -2543,7 +2545,7 @@ object formOptions: TformOptions
       end
       object groupWinKeyer: TGroupBox
         Left = 6
-        Top = 229
+        Top = 234
         Width = 423
         Height = 68
         Caption = 'WinKeyer Option'
@@ -2588,6 +2590,31 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'Always 9600bps'
           TabOrder = 4
+        end
+      end
+      object groupSoundDevice: TGroupBox
+        Left = 6
+        Top = 309
+        Width = 423
+        Height = 52
+        Caption = 'Voice playback device'
+        TabOrder = 4
+        object comboVoiceDevice: TComboBox
+          Left = 140
+          Top = 20
+          Width = 273
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+        end
+        object checkUseRigDevice: TCheckBox
+          Left = 8
+          Top = 22
+          Width = 91
+          Height = 17
+          Caption = 'Use rig device'
+          TabOrder = 0
+          OnClick = checkUseRigDeviceClick
         end
       end
     end
@@ -3585,6 +3612,7 @@ object formOptions: TformOptions
               Caption = 'Login'
             end>
           GridLines = True
+          Items.ItemData = {}
           ReadOnly = True
           RowSelect = True
           TabOrder = 3
@@ -3864,13 +3892,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono Italic'
+          FontName = 'Fira Code Medium'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 54
+          ItemIndex = 77
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

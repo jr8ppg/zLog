@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetVoice
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -1781,7 +1781,7 @@ object formOptions2: TformOptions2
         Top = 352
         Width = 423
         Height = 50
-        Caption = 'Device'
+        Caption = #20877#29983#12486#12473#12488
         TabOrder = 2
         object buttonPlayVoice: TSpeedButton
           Left = 310
@@ -1799,20 +1799,19 @@ object formOptions2: TformOptions2
           Caption = #20572#27490
           OnClick = buttonStopVoiceClick
         end
+        object Label38: TLabel
+          Left = 8
+          Top = 22
+          Width = 34
+          Height = 13
+          Caption = #20986#21147#20808
+        end
         object comboVoiceDevice: TComboBox
-          Left = 99
+          Left = 48
           Top = 19
-          Width = 205
+          Width = 256
           Height = 21
           Style = csDropDownList
-          TabOrder = 1
-        end
-        object checkUseRigDevice: TCheckBox
-          Left = 3
-          Top = 18
-          Width = 91
-          Height = 23
-          Caption = 'Use rig device'
           TabOrder = 0
         end
       end

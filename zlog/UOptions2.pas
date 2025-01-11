@@ -259,7 +259,6 @@ type
     editCQMessage3: TEdit;
     SideToneCheck: TCheckBox;
     GroupBox16: TGroupBox;
-    comboVoiceDevice: TComboBox;
     buttonPlayVoice: TSpeedButton;
     buttonStopVoice: TSpeedButton;
     checkUseCQRamdomRepeat: TCheckBox;
@@ -419,7 +418,8 @@ type
     editQuickQsyFixEdge08: TEdit;
     Label31: TLabel;
     Label32: TLabel;
-    checkUseRigDevice: TCheckBox;
+    comboVoiceDevice: TComboBox;
+    Label38: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -859,8 +859,6 @@ begin
          Settings.FAdditionalSoundFiles[i] := FTempAdditionalVoiceFiles[i];
          Settings.FAdditionalSoundComments[i] := FAdditionalVoiceEdit[i].Text;
       end;
-      Settings.FUseRigSoundDevice := checkUseRigDevice.Checked;
-      Settings.FSoundDevice := comboVoiceDevice.ItemIndex;
    end;
 end;
 
@@ -1224,8 +1222,10 @@ begin
          end;
          FAdditionalVoiceEdit[i].Text := Settings.FAdditionalSoundComments[i];
       end;
-      checkUseRigDevice.Checked := Settings.FUseRigSoundDevice;
-      comboVoiceDevice.ItemIndex := Settings.FSoundDevice;
+   end;
+
+   if comboVoiceDevice.Items.Count > 0 then begin
+      comboVoiceDevice.ItemIndex := 0;
    end;
 
    if FEditMode = 0 then begin   // 通常モード
