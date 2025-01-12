@@ -3,9 +3,11 @@ object CWKeyBoard: TCWKeyBoard
   Top = 417
   ActiveControl = SpinEdit1
   Caption = 'CW Keyboard'
-  ClientHeight = 104
-  ClientWidth = 375
+  ClientHeight = 102
+  ClientWidth = 338
   Color = clBtnFace
+  Constraints.MinHeight = 100
+  Constraints.MinWidth = 350
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -21,40 +23,44 @@ object CWKeyBoard: TCWKeyBoard
   TextHeight = 12
   object Image1: TImage
     Left = 0
-    Top = 71
-    Width = 375
+    Top = 69
+    Width = 338
     Height = 4
     Align = alBottom
     ExplicitTop = -30
+    ExplicitWidth = 375
   end
   object Panel1: TPanel
     Left = 0
-    Top = 70
-    Width = 375
+    Top = 73
+    Width = 338
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 69
-    ExplicitWidth = 371
+    ExplicitWidth = 367
     DesignSize = (
-      375
+      338
       29)
     object Label1: TLabel
-      Left = 240
+      Left = 151
       Top = 12
       Width = 109
       Height = 13
+      Alignment = taRightJustify
       Anchors = [akTop, akRight]
+      AutoSize = False
       Caption = #12463#12522#12450#12414#12391
+      ExplicitLeft = 192
     end
     object Label2: TLabel
-      Left = 348
+      Left = 307
       Top = 12
       Width = 20
       Height = 13
       Anchors = [akTop, akRight]
       Caption = #31186
+      ExplicitLeft = 348
     end
     object buttonOK: TButton
       Left = 6
@@ -70,12 +76,12 @@ object CWKeyBoard: TCWKeyBoard
       Top = 8
       Width = 65
       Height = 21
-      Caption = 'Clear'
+      Caption = #12463#12522#12450
       TabOrder = 1
       OnClick = buttonClearClick
     end
     object SpinEdit1: TSpinEdit
-      Left = 307
+      Left = 266
       Top = 8
       Width = 33
       Height = 22
@@ -86,16 +92,16 @@ object CWKeyBoard: TCWKeyBoard
       TabOrder = 2
       Value = 2
       OnChange = SpinEdit1Change
-      ExplicitLeft = 303
+      ExplicitLeft = 295
     end
   end
   object Console: TRichEdit
     Left = 0
     Top = 0
-    Width = 375
-    Height = 70
+    Width = 338
+    Height = 69
     Align = alClient
-    Font.Charset = SHIFTJIS_CHARSET
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
@@ -107,8 +113,7 @@ object CWKeyBoard: TCWKeyBoard
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
     OnProtectChange = ConsoleProtectChange
-    ExplicitWidth = 371
-    ExplicitHeight = 69
+    ExplicitWidth = 367
   end
   object ActionList1: TActionList
     State = asSuspended
