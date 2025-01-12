@@ -10,7 +10,7 @@ object formFreqPanel: TformFreqPanel
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'Arial'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   TextHeight = 15
   object Panel1: TPanel
@@ -21,25 +21,25 @@ object formFreqPanel: TformFreqPanel
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 80
-    ExplicitWidth = 260
+    ExplicitTop = 74
+    ExplicitWidth = 232
     DesignSize = (
       240
       24)
     object buttonCancel: TButton
-      Left = 171
+      Left = 163
       Top = 2
       Width = 65
       Height = 20
       Anchors = [akTop, akRight]
       Cancel = True
-      Caption = 'Cancel'
+      Caption = #12461#12515#12531#12475#12523
       ModalResult = 2
       TabOrder = 0
-      ExplicitLeft = 191
+      ExplicitLeft = 155
     end
     object buttonOK: TButton
-      Left = 102
+      Left = 94
       Top = 2
       Width = 65
       Height = 20
@@ -48,6 +48,7 @@ object formFreqPanel: TformFreqPanel
       Default = True
       ModalResult = 1
       TabOrder = 1
+      ExplicitLeft = 86
     end
   end
   object Panel2: TPanel

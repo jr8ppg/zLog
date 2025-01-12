@@ -53,7 +53,7 @@ implementation
 
 procedure TformFreqPanel.buttonBandClick(Sender: TObject);
 var
-   m, k: Integer;
+   m, k: TFrequency;
 begin
    m := TSpeedButton(Sender).Tag div 1000;
    k := TSpeedButton(Sender).Tag mod 1000;
@@ -89,7 +89,7 @@ end;
 
 procedure TformFreqPanel.SetFreq(freq: TFrequency);
 var
-   m, k, h: Integer;
+   m, k, h: TFrequency;
 begin
    m := freq div 1000000;
    k := (freq mod 1000000) div 1000;
@@ -102,7 +102,7 @@ end;
 
 function TformFreqPanel.GetFreq(): TFrequency;
 var
-   m, k, h: Integer;
+   m, k, h: TFrequency;
 begin
    m := StrToIntDef(editMHz.Text, 7);
    k := StrToIntDef(editKHz.Text, 0);
