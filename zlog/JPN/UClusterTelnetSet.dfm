@@ -3,24 +3,24 @@ object formClusterTelnetSet: TformClusterTelnetSet
   Top = 157
   BorderStyle = bsDialog
   Caption = 'TELNET settings'
-  ClientHeight = 185
+  ClientHeight = 304
   ClientWidth = 297
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #65325#65331' '#12468#12471#12483#12463
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
   DesignSize = (
     297
-    185)
+    304)
   TextHeight = 13
   object buttonOK: TButton
     Left = 75
-    Top = 153
+    Top = 272
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -32,7 +32,7 @@ object formClusterTelnetSet: TformClusterTelnetSet
   end
   object buttonCancel: TButton
     Left = 157
-    Top = 153
+    Top = 272
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -46,7 +46,7 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Left = 8
     Top = 8
     Width = 282
-    Height = 137
+    Height = 257
     TabOrder = 0
     object Label1: TLabel
       Left = 8
@@ -63,11 +63,11 @@ object formClusterTelnetSet: TformClusterTelnetSet
       Caption = #25913#34892#12467#12540#12489
     end
     object Label3: TLabel
-      Left = 175
+      Left = 177
       Top = 77
       Width = 29
       Height = 13
-      Caption = 'Port#'
+      Caption = 'Port #'
     end
     object Label4: TLabel
       Left = 8
@@ -83,10 +83,17 @@ object formClusterTelnetSet: TformClusterTelnetSet
       Height = 13
       Caption = #12525#12464#12452#12531'ID'
     end
+    object Label6: TLabel
+      Left = 9
+      Top = 138
+      Width = 52
+      Height = 13
+      Caption = #12467#12510#12531#12489
+    end
     object checkLocalEcho: TCheckBox
-      Left = 168
+      Left = 176
       Top = 106
-      Width = 105
+      Width = 97
       Height = 17
       Caption = #12525#12540#12459#12523#12456#12467#12540
       TabOrder = 5
@@ -128,6 +135,7 @@ object formClusterTelnetSet: TformClusterTelnetSet
       Width = 137
       Height = 21
       TabOrder = 0
+      OnExit = editSettingNameExit
     end
     object editLoginId: TEdit
       Left = 80
@@ -135,6 +143,15 @@ object formClusterTelnetSet: TformClusterTelnetSet
       Width = 81
       Height = 21
       TabOrder = 2
+    end
+    object memoCommands: TMemo
+      Left = 80
+      Top = 138
+      Width = 193
+      Height = 108
+      ScrollBars = ssVertical
+      TabOrder = 6
+      WordWrap = False
     end
   end
 end
