@@ -286,6 +286,7 @@ var
    msg2: TPlayMessage;
    nID: Integer;
    rig: TRig;
+   rigno: Integer;
 
    function GetCallsign(): string;
    var
@@ -348,7 +349,13 @@ begin
             mSSB, mFM, mAM: begin
                nID := MainForm.GetTxRigID();
                rig := MainForm.RigControl.Rigs[nID + 1];
-               SendVoice(msg2.FVoiceNo, rig.RigNumber);
+               if rig <> nil then begin
+                  rigno := rig.RigNumber;
+               end
+               else begin
+                  rigno := 0;
+               end;
+               SendVoice(msg2.FVoiceNo, rigno);
             end;
 
             mRTTY: begin
@@ -582,7 +589,7 @@ begin
    end;
 
    if FWaveSound[i].IsLoaded = False then begin
-      if dmZLogGlobal.Settings.FUseRigSoundDevice = True then begin
+      if (dmZLogGlobal.Settings.FUseRigSoundDevice = True) and (rigno >= 1) then begin
          FWaveSound[i].Open(filename, dmZLogGlobal.Settings._sound_device[rigno]);
       end
       else begin
