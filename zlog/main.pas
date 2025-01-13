@@ -9312,7 +9312,9 @@ end;
 procedure TMainForm.PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
 var
    S: string;
+   Q: TQSO;
 begin
+   Q := TQSO.Create();
    FStartCWKeyboard := False;
 
    if no >= 101 then begin
@@ -9327,8 +9329,7 @@ begin
       Exit;
    end;
 
-//   SetCurrentQSO(FCurrentRigSet - 1);
-   SetCurrentQSO(FCurrentTx);
+   Q.Assign(CurrentQSO);
 
    // リピート停止
    timerCqRepeat.Enabled := False;
@@ -9340,11 +9341,12 @@ begin
 
    // Fキー操作ではTXをRXと同じにする
    if (fResetTx = True) then begin
+      // TXをRXに合わせる
       FMessageManager.AddQue(WM_ZLOG_SWITCH_TX, 1, 0);
 
       // 2BSIQ=OFF
       if (Is2bsiq() = False) then begin
-         // ↓キーを押した方にTXを合わせる
+         // SPモードに変更
          if FCurrentTx <> FCurrentRx then begin
             FMessageManager.AddQue(WM_ZLOG_SETCQ, 0, 0);
          end;
@@ -9358,13 +9360,13 @@ begin
    end;
 
    // 電文送信
-   FMessageManager.AddQue(0, S, CurrentQSO);
+   FMessageManager.AddQue(0, S, Q);
 
    // SO2Rモードの場合
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       // 2BSIQ=OFF
       if (Is2bsiq() = False) then begin
-         // 送受が異なる場合はpickupなので、TXを戻す
+         // 送受が異なる場合はpickupなので、TXを戻してCQモードにする
          if FCurrentTx <> FCurrentRx then begin
             FMessageManager.AddQue(WM_ZLOG_RESET_TX, 1, FCurrentTx);
             FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
@@ -9373,6 +9375,7 @@ begin
    end;
 
    FMessageManager.ContinueQue();
+   Q.Free();
 end;
 
 procedure TMainForm.PlayMessagePH(no: Integer; fResetTx: Boolean);
@@ -11020,8 +11023,6 @@ begin
    if rig <> nil then begin
       dmZLogKeyer.SetTxRigFlag(tx + 1);
    end;
-
-   UpdateMode(TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text));
 
    ShowTxIndicator();
 end;

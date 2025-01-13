@@ -171,7 +171,7 @@ type
 
     // F2A/Voice options
     _sound_device: array[1..4] of Integer;
-    _use_f2a: array[1..4] of Boolean;
+    _use_f2a: array[1..5] of Boolean;
     _f2a_ptt: array[1..4] of Boolean;
     _f2a_before: array[1..4] of Word;
     _f2a_after: array[1..4] of Word;
@@ -1127,6 +1127,7 @@ begin
          Settings._f2a_datamode[i] := ini.ReadInteger('Hardware', 'F2A_DataMode' + S, 0);
          Settings._f2a_filter[i] := ini.ReadInteger('Hardware', 'F2A_Filter' + S, 0);
       end;
+      Settings._use_f2a[5] := False;
 
       // Operate Style
       Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
