@@ -69,6 +69,8 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitWidth = 563
+        ExplicitHeight = 392
         ColWidths = (
           448
           96)
@@ -224,8 +226,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitWidth = 563
-        ExplicitHeight = 392
         ColWidths = (
           448
           96)
@@ -268,7 +268,8 @@ object formMain: TformMain
           '#107 Quick Memo4='
           '#108 Quick Memo5='
           '#154 PSE QSL='
-          '#155 NO QSL=')
+          '#155 NO QSL='
+          '#167 QSO'#26908#32034'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
