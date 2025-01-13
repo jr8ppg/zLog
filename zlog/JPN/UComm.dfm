@@ -151,7 +151,7 @@ object CommForm: TCommForm
         Width = 75
         Height = 21
         Anchors = [akTop, akRight]
-        Caption = 'Connect'
+        Caption = #25509#32154
         TabOrder = 1
         OnClick = ConnectButtonClick
         ExplicitLeft = 198
