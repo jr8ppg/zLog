@@ -267,6 +267,7 @@ type
     FWnd: HWND;
 
     FUseCanSend: Boolean;
+    FPrevDSR: Boolean;
 
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
@@ -525,6 +526,7 @@ begin
    FSameOtrsp := False;
    FTune := False;
    FUseCanSend := False;
+   FPrevDSR := True;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -1324,6 +1326,7 @@ begin
    for m := 1 to codemax do begin
       FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := $FF;
    end;
+   FPrevDSR := True;
 end;
 
 procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
@@ -1627,9 +1630,22 @@ end;
 function TdmZLogKeyer.CanSend(nID: Integer): Boolean;
 var
    status: TLineStatusSet;
+   fCurDSR: Boolean;
 begin
+   // 現在のDSR状態取得
    status := FComKeying[nID].GetLineStatus();
-   Result := lsDSR in status;
+   fCurDSR := lsDSR in status;
+
+   // DSRがOFF→ONの変化でSend不可とする
+   if (FPrevDSR = False) and (fCurDSR = True) then begin
+      Result := False;
+   end
+   else begin
+      Result := True;
+   end;
+
+   // 今回値を保存
+   FPrevDSR := fCurDSR;
 end;
 
 procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: Longint); stdcall;
