@@ -150,6 +150,7 @@ type
     FWkTxRigSet: Integer;
 
     FPrevRxRigSet: Integer;
+    FPrevRxRigNo: Integer;
     FPrevTxRigSet: Integer;
 
     {$IFDEF USESIDETONE}
@@ -563,6 +564,7 @@ begin
    FWkRxRigSet := 0;
 
    FPrevRxRigSet := 0;
+   FPrevRxRigNo := 0;
    FPrevTxRigSet := 0;
 
    FSpaceFactor := 100; {space length factor in %}
@@ -950,7 +952,7 @@ end;
 procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean);
 begin
    // 前回と同じrigsetなら出力しない
-   if (FPrevRxRigSet = rigset) and (fForce = False) then begin
+   if (FPrevRxRigSet = rigset) and (FPrevRxRigNo = rigno) and (fForce = False) then begin
       Exit;
    end;
 
@@ -996,6 +998,7 @@ begin
    end;
 
    FPrevRxRigSet := rigset;
+   FPrevRxRigNo := rigno;
 end;
 
 procedure TdmZLogKeyer.SetRxRigFlag_com(rigset, rigno: Integer);
