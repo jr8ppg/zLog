@@ -325,7 +325,6 @@ type
     procedure USB_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
-    procedure SetSideDevice(nDeviceID: UINT);
 
     procedure m_set(b: Byte);
 
@@ -1750,6 +1749,14 @@ var
    status: TLineStatusSet;
    fCurDSR: Boolean;
 begin
+   if FSo2rType <> so2rOtrsp then begin
+      Result := True;
+      Exit;
+   end;
+   if FUseCanSend = False then begin
+      Result := True;
+      Exit;
+   end;
    if FComKeying[nID] = nil then begin
       Result := True;
       Exit;
@@ -1818,7 +1825,7 @@ begin
       Exit;
    end;
 
-   if (FUseCanSend = True) and (CanSend(FWkTx) = False) then begin
+   if (CanSend(FWkTx) = False) then begin
       Finish();
       if Assigned(FOnSendFinishProc) then begin
          FOnSendFinishProc(Self, mCW, False);
@@ -3184,6 +3191,7 @@ begin
 
    fUseUSB := False;
    fUseCOM := False;
+   fUseParallel := False;
    UsbInfoClearAll();
 
    // RIG1/RIG2/RIG3全て無し
@@ -3516,11 +3524,6 @@ begin
       FTone.Volume := v;
    end;
    {$ENDIF}
-end;
-
-procedure TdmZLogKeyer.SetSideDevice(nDeviceID: UINT);
-begin
-
 end;
 
 { TKeyerMonitorThread }

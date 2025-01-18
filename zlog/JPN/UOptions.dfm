@@ -172,7 +172,7 @@ object formOptions: TformOptions
             Left = 128
             Top = 13
             Width = 265
-            Height = 53
+            Height = 76
             Caption = 'OTRSP'#12458#12503#12471#12519#12531
             TabOrder = 6
             object Label17: TLabel
@@ -189,6 +189,14 @@ object formOptions: TformOptions
               Height = 21
               Style = csDropDownList
               TabOrder = 0
+            end
+            object checkUseCanSend: TCheckBox
+              Left = 12
+              Top = 47
+              Width = 204
+              Height = 17
+              Caption = 'DSR'#12398'OFF'#26908#20986#12391#36865#20449#20013#27490
+              TabOrder = 1
             end
           end
           object radioSo2rParallel: TRadioButton
@@ -3897,13 +3905,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#34892#26360#20307
+          FontName = 'Cascadia Code ExtraLight Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 6
+          ItemIndex = 35
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

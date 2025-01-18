@@ -399,7 +399,6 @@ type
     groupBandscopeOptions2: TGroupBox;
     checkUseResume: TCheckBox;
     checkUseNumberLookup: TCheckBox;
-    checkUseCanSend: TCheckBox;
     editQuickQsyCommand01: TEdit;
     editQuickQsyFixEdge01: TEdit;
     editQuickQsyCommand02: TEdit;
@@ -707,9 +706,6 @@ begin
 
       // Paddle reverse
       Settings.CW._paddlereverse := checkPaddleReverse.Checked;
-
-      // Use CanSend
-      Settings.CW._use_cansend := checkUseCanSend.Checked;
 
       Settings._saveevery        := SaveEvery.Value;
 
@@ -1061,9 +1057,6 @@ begin
 
       // Paddle reverse
       checkPaddleReverse.Checked := Settings.CW._paddlereverse;
-
-      // Use CanSend
-      checkUseCanSend.Checked := Settings.CW._use_cansend;
 
       // QSL Default
       if Settings._qsl_default = qsNone then begin

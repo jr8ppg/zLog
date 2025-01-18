@@ -404,6 +404,7 @@ type
     comboVoiceDevice: TComboBox;
     checkUseRigDevice: TCheckBox;
     radioSo2rParallel: TRadioButton;
+    checkUseCanSend: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1563,6 +1564,7 @@ begin
       end
       else if radioSo2rOtrsp.Checked = True then begin
          Settings._so2r_type := so2rOtrsp;
+         Settings.CW._use_cansend := checkUseCanSend.Checked;
       end
       else if radioSo2rParallel.Checked = True then begin
          Settings._so2r_type := so2rParallel;
@@ -1858,6 +1860,7 @@ begin
          so2rOtrsp: begin
             radioSo2rOtrsp.Checked := True;
             radioSo2rClick(radioSo2rOtrsp);
+            checkUseCanSend.Checked := Settings.CW._use_cansend;
          end;
 
          so2rParallel: begin

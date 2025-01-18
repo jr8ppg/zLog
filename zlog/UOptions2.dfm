@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetCW
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440
@@ -1308,7 +1308,7 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = 'CW A'
         Checked = True
-        TabOrder = 19
+        TabOrder = 18
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1319,7 +1319,7 @@ object formOptions2: TformOptions2
         Width = 49
         Height = 17
         Caption = 'CW B'
-        TabOrder = 17
+        TabOrder = 16
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1330,7 +1330,7 @@ object formOptions2: TformOptions2
         Width = 49
         Height = 17
         Caption = 'RTTY'
-        TabOrder = 18
+        TabOrder = 17
         TabStop = True
         OnClick = CWBankClick
       end
@@ -1436,14 +1436,6 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = 'Paddle Reverse'
         TabOrder = 15
-      end
-      object checkUseCanSend: TCheckBox
-        Left = 228
-        Top = 372
-        Width = 204
-        Height = 17
-        Caption = 'Stop when DSR is off (COM only)'
-        TabOrder = 16
       end
     end
     object tabsheetVoice: TTabSheet
