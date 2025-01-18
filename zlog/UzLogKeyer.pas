@@ -163,6 +163,7 @@ type
     FPrevRxRigSet: Integer;
     FPrevRxRigNo: Integer;
     FPrevTxRigSet: Integer;
+    FPrevTxRigNo: Integer;
 
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
@@ -287,7 +288,7 @@ type
     procedure SetTxRigFlag_so2rneo(rigset: Integer);
     procedure SetTxRigFlag_usbif4cw(rigset: Integer);
     procedure SetTxRigFlag_otrsp(rigset: Integer);
-    procedure SetTxRigFlag_parallel(rigset: Integer);
+    procedure SetTxRigFlag_parallel(rigset, rigno: Integer);
 
     // RX select sub
     procedure SetRxRigFlag_com(rigset, rigno: Integer);
@@ -372,7 +373,7 @@ type
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
     // TX select
-    procedure SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetTxRigFlag(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     // RX select
     procedure SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean = False);
@@ -785,10 +786,10 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetTxRigFlag(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
 begin
    // 前回と同じrigsetなら出力しない
-   if FPrevTxRigSet = rigset then begin
+   if (FPrevTxRigSet = rigset) and (FPrevTxRigNo = rigno) then begin
       Exit;
    end;
 
@@ -841,11 +842,12 @@ begin
 
       // パラレルポートの場合
       so2rParallel: begin
-         SetTxRigFlag_parallel(rigset);
+         SetTxRigFlag_parallel(rigset, rigno);
       end;
    end;
 
    FPrevTxRigSet := rigset;
+   FPrevTxRigNo := rigno;
 end;
 
 procedure TdmZLogKeyer.SetTxRigFlag_com(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
@@ -964,9 +966,9 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetTxRigFlag_parallel(rigset: Integer);
+procedure TdmZLogKeyer.SetTxRigFlag_parallel(rigset, rigno: Integer);
 begin
-   case rigset of
+   case rigno of
       1: begin
          FParallelPort.ResetBit(PARALLEL_TX0);
          FParallelPort.ResetBit(PARALLEL_TX1);
