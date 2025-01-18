@@ -14,7 +14,7 @@ uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
   System.SyncObjs, System.StrUtils,
-  UzLogConst, UzLogGlobal, WinKeyer
+  UzLogConst, UzLogGlobal, WinKeyer, UParallelPort
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -45,13 +45,22 @@ const
   USBIF4CW_RIG_MASK = (not USBIF4CW_RIG);
   USBIF4CW_MIC_MASK = (not USBIF4CW_MIC);
 
+const
+  PARALLEL_KEY = 0;
+  PARALLEL_PTT = 1;
+  PARALLEL_TX0 = 2;
+  PARALLEL_TX1 = 3;
+  PARALLEL_RX0 = 4;
+  PARALLEL_RX1 = 5;
+  PARALLEL_RX2 = 6;
+
 type
   TKeyingPort = (tkpNone,
                  tkpSerial1, tkpSerial2, tkpSerial3, tkpSerial4, tkpSerial5,
                  tkpSerial6, tkpSerial7, tkpSerial8, tkpSerial9, tkpSerial10,
                  tkpSerial11, tkpSerial12, tkpSerial13, tkpSerial14, tkpSerial15,
                  tkpSerial16, tkpSerial17, tkpSerial18, tkpSerial19, tkpSerial20,
-                 tkpUSB, tkpRIG);
+                 tkpUSB, tkpRIG, tkpParallel);
 
 type
   CodeData = array[1..codemax] of byte;
@@ -140,6 +149,8 @@ type
     FGen3MicSelect: Boolean;
 
     FUsbInfo: array[0..MAXPORT] of TUsbInfo;
+
+    FParallelPort: TParallelPort;
 
     // 現在送信中のポートID
     FWkRx: Integer;
@@ -276,12 +287,14 @@ type
     procedure SetTxRigFlag_so2rneo(rigset: Integer);
     procedure SetTxRigFlag_usbif4cw(rigset: Integer);
     procedure SetTxRigFlag_otrsp(rigset: Integer);
+    procedure SetTxRigFlag_parallel(rigset: Integer);
 
     // RX select sub
     procedure SetRxRigFlag_com(rigset, rigno: Integer);
     procedure SetRxRigFlag_com_v28(rigset, rigno: Integer);
     procedure SetRxRigFlag_so2rneo(rigset, rigno: Integer);
     procedure SetRxRigFlag_otrsp(rigset, rigno: Integer);
+    procedure SetRxRigFlag_parallel(rigset, rigno: Integer);
 
     procedure Sound();
     procedure NoSound();
@@ -463,6 +476,8 @@ type
     procedure ResetSpeed();
     property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
 
+    property ParallelPort: TParallelPort read FParallelPort;
+
     procedure Open();
     procedure Close();
   end;
@@ -555,6 +570,8 @@ begin
       FUsbInfo[i].FPORTDATA := nil;
    end;
 
+   FParallelPort := TParallelPort.Create();
+
    FUserFlag := False;
    FVoiceFlag := 0;
 
@@ -600,6 +617,7 @@ begin
    FPaddleThread.Free();
    COM_OFF();
    USB_OFF();
+   FParallelPort.Close();
    DeallocateHWnd(FWnd);
    usbdevlist.Free();
 
@@ -609,6 +627,7 @@ begin
    usbinflist.Free();
 
    HidController.Free();
+   FParallelPort.Free();
 end;
 
 // Device抜去時、Unplug->Removal->Changeの順でfire eventする
@@ -820,6 +839,11 @@ begin
             SetTxRigFlag_otrsp(rigset);
          end;
       end;
+
+      // パラレルポートの場合
+      so2rParallel: begin
+         SetTxRigFlag_parallel(rigset);
+      end;
    end;
 
    FPrevTxRigSet := rigset;
@@ -941,6 +965,33 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.SetTxRigFlag_parallel(rigset: Integer);
+begin
+   case rigset of
+      1: begin
+         FParallelPort.ResetBit(PARALLEL_TX0);
+         FParallelPort.ResetBit(PARALLEL_TX1);
+      end;
+
+      2: begin
+         FParallelPort.ResetBit(PARALLEL_TX0);
+         FParallelPort.SetBit(PARALLEL_TX1);
+      end;
+
+      3: begin
+         FParallelPort.SetBit(PARALLEL_TX0);
+         FParallelPort.ResetBit(PARALLEL_TX1);
+      end;
+
+      4: begin
+         FParallelPort.SetBit(PARALLEL_TX0);
+         FParallelPort.SetBit(PARALLEL_TX1);
+      end;
+   end;
+
+   FParallelPort.Write();
+end;
+
 //
 // rigset 1: 左
 //        2: 右
@@ -990,10 +1041,16 @@ begin
          end;
       end;
 
+      // OTRSPの場合
       so2rOtrsp: begin
          if (FSo2rOtrspPort in [tkpSerial1..tkpSerial20]) then begin
             SetRxRigFlag_otrsp(rigset, rigno);
          end;
+      end;
+
+      // パラレルポートの場合
+      so2rParallel: begin
+         SetRxRigFlag_parallel(rigset, rigno);
       end;
    end;
 
@@ -1101,6 +1158,44 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.SetRxRigFlag_parallel(rigset, rigno: Integer);
+begin
+   case rigset of
+      1: begin
+         case rigno of
+            1: begin
+               FParallelPort.ResetBit(PARALLEL_RX0);
+               FParallelPort.ResetBit(PARALLEL_RX1);
+               FParallelPort.ResetBit(PARALLEL_RX2);
+            end;
+
+            2: begin
+               FParallelPort.ResetBit(PARALLEL_RX0);
+               FParallelPort.ResetBit(PARALLEL_RX1);
+               FParallelPort.SetBit(PARALLEL_RX2);
+            end;
+         end;
+      end;
+
+      2: begin
+         case rigno of
+            3: begin
+               FParallelPort.ResetBit(PARALLEL_RX0);
+               FParallelPort.SetBit(PARALLEL_RX1);
+               FParallelPort.ResetBit(PARALLEL_RX2);
+            end;
+
+            4: begin
+               FParallelPort.ResetBit(PARALLEL_RX0);
+               FParallelPort.SetBit(PARALLEL_RX1);
+               FParallelPort.SetBit(PARALLEL_RX2);
+            end;
+         end;
+      end;
+   end;
+   FParallelPort.Write();
+end;
+
 procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 var
    i: Integer;
@@ -1192,6 +1287,16 @@ begin
       // WinKeyer
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
          WinkeyerControlPTT(PTTON);
+      end;
+
+      if (FKeyingPort[nID] in [tkpParallel]) then begin
+         if PTTON then begin
+            FParallelPort.SetBit(PARALLEL_PTT);
+         end
+         else begin
+            FParallelPort.ResetBit(PARALLEL_PTT);
+         end;
+         FParallelPort.Write();
       end;
    finally
       {$IFDEF DEBUG}
@@ -1602,6 +1707,11 @@ begin
          end;
          UsbPortDataLock.Leave();
       end;
+
+      tkpParallel: begin
+         FParallelPort.SetBit(PARALLEL_KEY);
+         FParallelPort.Write();
+      end;
    end;
 end;
 
@@ -1627,6 +1737,11 @@ begin
          end;
          UsbPortDataLock.Leave();
       end;
+
+      tkpParallel: begin
+         FParallelPort.ResetBit(PARALLEL_KEY);
+         FParallelPort.Write();
+      end;
    end;
 end;
 
@@ -1635,6 +1750,11 @@ var
    status: TLineStatusSet;
    fCurDSR: Boolean;
 begin
+   if FComKeying[nID] = nil then begin
+      Result := True;
+      Exit;
+   end;
+
    // 現在のDSR状態取得
    status := FComKeying[nID].GetLineStatus();
    fCurDSR := lsDSR in status;
@@ -3002,6 +3122,7 @@ var
    usb_no: Integer;
    fUseUSB: Boolean;
    fUseCOM: Boolean;
+   fUseParallel: Boolean;
 
    procedure UsbInfoClear(n: Integer);
    begin
@@ -3090,6 +3211,10 @@ begin
          FKeyingPort[i] := tkpNone;
          FComKeying[i] := nil;
       end
+      else if (FKeyingPort[i] = tkpParallel) then begin
+         fUseParallel := True;
+         FComKeying[i] := nil;
+      end
       else begin
          fUseCom := True;
       end;
@@ -3169,6 +3294,14 @@ begin
             ZComTxRigSelect.ToggleRTS(False);
          end;
       end;
+
+      so2rParallel: begin
+         fUseParallel := True;
+      end;
+   end;
+
+   if fUseParallel = True then begin
+      FParallelPort.Open();
    end;
 end;
 
@@ -3196,6 +3329,9 @@ begin
    if FSo2rOtrspPort <> tkpNone then begin
       ZComTxRigSelect.Disconnect();
    end;
+
+   // パラレルポート
+   FParallelPort.Close();
 end;
 
 procedure TdmZLogKeyer.TuneOn(nID: Integer);

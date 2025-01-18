@@ -8,7 +8,7 @@ uses
   System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
-  UQsoTarget, UTelnetSetting, UzLogForm;
+  UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort;
 
 type
   TCWSettingsParam = record
@@ -3412,6 +3412,14 @@ begin
    O.Name := 'RIG';
    O.Keying := True;
    list.Add(O);
+
+   if TParallelPort.IsParallelPortPresent() = True then begin
+      O := TCommPort.Create();
+      O.Number := 23;
+      O.Name := 'Prallel';
+      O.Keying := True;
+      list.Add(O);
+   end;
 
    Comparer := TCommPortComparer.Create();
    list.Sort(Comparer);

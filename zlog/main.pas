@@ -32,7 +32,7 @@ uses
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
-  UCWMonitor, UzLogForm, UzFreqMemory, USearch;
+  UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -4836,7 +4836,19 @@ var
    ini: TMemIniFile;
    X, Y, W, H: Integer;
    B, BB: Boolean;
+   i: Integer;
 begin
+   // パラレルポート初期化
+   dmZLogKeyer.ParallelPort.Initialize();
+
+   if (TParallelPort.IsParallelPortPresent() = False) then begin
+      for i := 1 to 5 do begin
+         if dmZLogGlobal.Settings.FRigControl[i].FKeyingPort = Integer(tkpParallel) then begin
+            dmZLogGlobal.Settings.FRigControl[i].FKeyingPort := Integer(tkpNone);
+         end;
+      end;
+   end;
+
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       dmZlogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);

@@ -65,7 +65,7 @@ object formOptions: TformOptions
             Width = 265
             Height = 84
             Caption = #20986#21147#12509#12540#12488
-            TabOrder = 4
+            TabOrder = 5
             object Label31: TLabel
               Left = 12
               Top = 23
@@ -130,8 +130,8 @@ object formOptions: TformOptions
           object radioSo2rNeo: TRadioButton
             Tag = 2
             Left = 12
-            Top = 73
-            Width = 85
+            Top = 60
+            Width = 100
             Height = 17
             Caption = 'SO2R Neo'
             TabOrder = 2
@@ -139,8 +139,8 @@ object formOptions: TformOptions
           end
           object radioSo2rNone: TRadioButton
             Left = 12
-            Top = 23
-            Width = 46
+            Top = 20
+            Width = 100
             Height = 17
             Caption = 'None'
             Checked = True
@@ -151,8 +151,8 @@ object formOptions: TformOptions
           object radioSo2rCom: TRadioButton
             Tag = 1
             Left = 12
-            Top = 48
-            Width = 69
+            Top = 40
+            Width = 100
             Height = 17
             Caption = 'COM'#12509#12540#12488
             TabOrder = 1
@@ -161,8 +161,8 @@ object formOptions: TformOptions
           object radioSo2rOtrsp: TRadioButton
             Tag = 3
             Left = 12
-            Top = 98
-            Width = 85
+            Top = 80
+            Width = 100
             Height = 17
             Caption = 'OTRSP'
             TabOrder = 3
@@ -174,7 +174,7 @@ object formOptions: TformOptions
             Width = 265
             Height = 53
             Caption = 'OTRSP'#12458#12503#12471#12519#12531
-            TabOrder = 5
+            TabOrder = 6
             object Label17: TLabel
               Left = 12
               Top = 23
@@ -190,6 +190,16 @@ object formOptions: TformOptions
               Style = csDropDownList
               TabOrder = 0
             end
+          end
+          object radioSo2rParallel: TRadioButton
+            Tag = 4
+            Left = 12
+            Top = 100
+            Width = 100
+            Height = 17
+            Caption = #12497#12521#12524#12523#12509#12540#12488
+            TabOrder = 4
+            OnClick = radioSo2rClick
           end
         end
         object groupSo2rCqOption: TGroupBox
@@ -3887,13 +3897,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Fira Code Medium'
+          FontName = '@HG'#34892#26360#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 77
+          ItemIndex = 6
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
