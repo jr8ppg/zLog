@@ -8629,7 +8629,8 @@ begin
    case Message.WParam of
       // DBT_DEVICEARRIVAL
       $8000: begin
-         //
+         // パラレルポート初期化
+         dmZLogKeyer.ParallelPort.Initialize();
       end;
 
       // DBT_DEVICEREMOVECOMPLETE

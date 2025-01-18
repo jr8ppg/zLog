@@ -3,7 +3,7 @@ unit UParallelPort;
 interface
 
 uses
-  Winapi.Windows, System.SysUtils, System.Classes, FTD2XX;
+  Vcl.Forms, Winapi.Windows, System.SysUtils, System.Classes, FTD2XX;
 
 type
   TParallelPort = class
@@ -65,7 +65,9 @@ var
    i: Integer;
    szBuffer: array[0..63] of AnsiChar;
    S: string;
+   c: Integer;
 begin
+   ParallelPortInitialized := False;
    FDeviceList.Clear();
 
    // デバイス数を数える
@@ -84,16 +86,31 @@ begin
 
    // デバイス名を取得する
    for i := 0 to numDeviceCount - 1 do begin
-      ZeroMemory(@szBuffer, SizeOf(szBuffer));
-      nResult := FT_ListDevices(i, @szBuffer, (FT_OPEN_BY_DESCRIPTION or FT_LIST_BY_INDEX));
-      if nResult <> FT_OK then begin
-         FLastError := nResult;
-         Break;
-      end;
-
-      S := AnsiString(szBuffer);
-      FDeviceList.Add(S);
+      c := 0;
+      repeat
+         ZeroMemory(@szBuffer, SizeOf(szBuffer));
+         nResult := FT_ListDevices(i, @szBuffer, (FT_OPEN_BY_DESCRIPTION or FT_LIST_BY_INDEX));
+         if nResult = FT_OK then begin
+            S := AnsiString(szBuffer);
+            FDeviceList.Add(S);
+            {$IFDEF DEBUG}
+            // USB抜き差し後最初の検出に37回リトライ
+            OutputDebugString(PChar('device found [' + S + '] retry=' + IntToStr(c)));
+            {$ENDIF}
+            Break;
+         end;
+         Inc(c);
+         Application.ProcessMessages();
+         Sleep(100);
+      until (nResult = FT_OK) or (c > 50);
    end;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('--- FT245RL DeviceList --- (' + IntToStr(FDeviceList.Count) + ') ---'));
+   for i := 0 to FDeviceList.Count - 1 do begin
+      OutputDebugString(PChar('[' + FDeviceList[i] + ']'));
+   end;
+   {$ENDIF}
 
    // デバイス名が取得できていなかったら終わり
    if FDeviceList.Count = 0 then begin
