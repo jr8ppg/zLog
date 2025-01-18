@@ -151,6 +151,7 @@
       <File FileName="UELogJarlEx.dfm" ContainerId="W32Form" ModuleName="UELogJarlEx.dfm"/>
       <File FileName="UzLogForm.dfm" ContainerId="W32Form" ModuleName="UzLogForm.dfm"/>
       <File FileName="UFreqPanel.dfm" ContainerId="W32Form" ModuleName="UFreqPanel.dfm"/>
+      <File FileName="USearch.dfm" ContainerId="W32Form" ModuleName="USearch.dfm"/>
     </FileList>
   </W32ResourceDLL.Personality>
 </BorlandProject>

@@ -8,7 +8,7 @@ uses
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults,
   UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit,
-  UzLogOperatorInfo, UTelnetSetting;
+  UzLogOperatorInfo, UTelnetSetting, UParallelPort;
 
 type
   TformOptions = class(TForm)
@@ -403,6 +403,7 @@ type
     groupSoundDevice: TGroupBox;
     comboVoiceDevice: TComboBox;
     checkUseRigDevice: TCheckBox;
+    radioSo2rParallel: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -755,7 +756,12 @@ begin
 end;
 
 procedure TformOptions.FormShow(Sender: TObject);
+var
+   fParallelPort: Boolean;
 begin
+   fParallelPort := TParallelPort.IsParallelPortPresent();
+   radioSo2rParallel.Enabled := fParallelPort;
+
    ImplementSettings();
 
    if radio1Radio.Checked = True then begin
@@ -876,6 +882,18 @@ begin
          checkRigSelectV28.Enabled := False;
          comboSo2rOtrspPort.Enabled := False;
          comboSo2rOtrspPort.Enabled := True;
+      end;
+
+      // Parallel
+      4: begin
+         groupSo2rCom.Visible := False;
+         groupSo2rOtrsp.Visible := False;
+         comboSo2rTxSelectPort.Enabled := False;
+         comboSo2rRxSelectPort.Enabled := False;
+         comboSo2rTxRigC.Enabled := False;
+         checkRigSelectV28.Enabled := False;
+         comboSo2rOtrspPort.Enabled := False;
+         comboSo2rOtrspPort.Enabled := False;
       end;
    end;
 end;
@@ -1494,7 +1512,7 @@ var
 
          if Assigned(K) then begin
             KeyPort := TCommPort(K.Items.Objects[K.ItemIndex]).Number;
-            if (KeyPort >= 1) and (KeyPort <= 22) then begin
+            if (KeyPort >= 1) and (KeyPort <= 23) then begin
                Settings.FRigControl[no].FKeyingPort := KeyPort;
             end
             else begin
@@ -1543,8 +1561,14 @@ begin
       else if radioSo2rNeo.Checked = True then begin
          Settings._so2r_type := so2rNeo;
       end
-      else begin
+      else if radioSo2rOtrsp.Checked = True then begin
          Settings._so2r_type := so2rOtrsp;
+      end
+      else if radioSo2rParallel.Checked = True then begin
+         Settings._so2r_type := so2rParallel;
+      end
+      else begin
+         Settings._so2r_type := so2rNone;
       end;
 
       Settings._so2r_tx_port := TCommPort(comboSo2rTxSelectPort.Items.Objects[comboSo2rTxSelectPort.ItemIndex]).Number;
@@ -1834,6 +1858,18 @@ begin
          so2rOtrsp: begin
             radioSo2rOtrsp.Checked := True;
             radioSo2rClick(radioSo2rOtrsp);
+         end;
+
+         so2rParallel: begin
+            if TParallelPort.IsParallelPortPresent() = True then begin
+               radioSo2rParallel.Checked := True;
+               radioSo2rClick(radioSo2rParallel);
+            end
+            else begin
+               Settings._so2r_type := so2rNone;
+               radioSo2rNone.Checked := True;
+               radioSo2rClick(radioSo2rNone);
+            end;
          end;
       end;
 

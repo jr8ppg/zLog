@@ -156,7 +156,9 @@ uses
   UzLogForm in 'UzLogForm.pas' {ZLogForm},
   UzFreqMemory in 'UzFreqMemory.pas',
   UFreqPanel in 'UFreqPanel.pas' {formFreqPanel},
-  USearch in 'USearch.pas' {formSearch};
+  USearch in 'USearch.pas' {formSearch},
+  UParallelPort in 'UParallelPort.pas',
+  FTD2XX in 'FTD2XX.pas';
 
 {$R *.res}
 
