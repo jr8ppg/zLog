@@ -3222,7 +3222,10 @@ begin
          FComKeying[i] := nil;
       end
       else if (FKeyingPort[i] = tkpParallel) then begin
-         fUseParallel := True;
+         fUseParallel := TParallelPort.IsParallelPortPresent();
+         if fUseParallel = False then begin
+            FKeyingPort[i] := tkpNone;
+         end;
          FComKeying[i] := nil;
       end
       else begin
@@ -3306,7 +3309,10 @@ begin
       end;
 
       so2rParallel: begin
-         fUseParallel := True;
+         fUseParallel := TParallelPort.IsParallelPortPresent();
+         if fUseParallel = False then begin
+            FSo2rType := so2rNone;
+         end;
       end;
    end;
 

@@ -68,6 +68,11 @@ var
    c: Integer;
 begin
    ParallelPortInitialized := False;
+
+   if IsFTD2XXLoaded() = False then begin
+      Exit;
+   end;
+
    FDeviceList.Clear();
 
    // デバイス数を数える
