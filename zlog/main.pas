@@ -60,6 +60,9 @@ const
   WM_ZLOG_SHOWMESSAGE = (WM_USER + 122);
   WM_ZLOG_FILEDOWNLOAD_COMPLETE = (WM_USER + 123);
   WM_ZLOG_SETFOCUS = (WM_USER + 124);
+  WM_ZLOG_SO2R_SELRX = (WM_USER + 125);
+  WM_ZLOG_SO2R_BLEND = (WM_USER + 126);
+  WM_ZLOG_SO2R_SET_RXAUTOSEL = (WM_USER + 127);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -735,6 +738,9 @@ type
     procedure OnZLogShowMessage( var Message: TMessage ); message WM_ZLOG_SHOWMESSAGE;
     procedure OnZLogFileDownloadComplete( var Message: TMessage ); message WM_ZLOG_FILEDOWNLOAD_COMPLETE;
     procedure OnZLogSetFocus( var Message: TMessage ); message WM_ZLOG_SETFOCUS;
+    procedure OnZLogSo2rSelRx( var Message: TMessage ); message WM_ZLOG_SO2R_SELRX;
+    procedure OnZLogSo2rBlend( var Message: TMessage ); message WM_ZLOG_SO2R_BLEND;
+    procedure OnZLogSo2rSetRxAutoSelect( var Message: TMessage ); message WM_ZLOG_SO2R_SET_RXAUTOSEL;
     procedure OnZLogResetTx( var Message: TMessage ); message WM_ZLOG_RESET_TX;
     procedure OnZLogInvertTx( var Message: TMessage ); message WM_ZLOG_INVERT_TX;
     procedure OnZLogSwitchRx( var Message: TMessage ); message WM_ZLOG_SWITCH_RX;
@@ -8333,6 +8339,63 @@ begin
    end;
 end;
 
+procedure TMainForm.OnZLogSo2rSelRx( var Message: TMessage );
+begin
+   case Message.WParam of
+      0: begin
+         RigControl.MemScanOff();
+         SwitchRx(1);
+      end;
+
+      1: begin
+         RigControl.MemScanOff();
+         SwitchRx(2);
+      end;
+
+      2: begin
+         actionSo2rNeoSelRxExecute(actionSo2rNeoSelRxBoth);
+      end;
+   end;
+end;
+
+procedure TMainForm.OnZLogSo2rBlend( var Message: TMessage );
+var
+   fOn: Boolean;
+   ratio: Byte;
+begin
+   if Message.WParamHi = 0 then begin
+      fOn := False;
+   end
+   else begin
+      fOn := True;
+   end;
+
+   ratio := Message.WParamLo;
+
+   case dmZLogGlobal.Settings._so2r_type of
+      so2rNeo: begin
+         dmZLogKeyer.So2rNeoSetAudioBlendMode(fOn);
+         if fOn then begin
+            dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
+         end;
+      end;
+
+      so2rParallel: begin
+         dmZLogKeyer.ParallelSetAudioBlendMode(fOn);
+      end;
+   end;
+end;
+
+procedure TMainForm.OnZLogSo2rSetRxAutoSelect( var Message: TMessage );
+begin
+   if Message.WParam = 0 then begin
+      dmZLogKeyer.So2rNeoUseRxSelect := False;
+   end
+   else begin
+      dmZLogKeyer.So2rNeoUseRxSelect := True;
+   end;
+end;
+
 procedure TMainForm.OnZLogResetTx( var Message: TMessage );
 begin
    {$IFDEF DEBUG}
@@ -9197,6 +9260,7 @@ begin
       end;
 
       // RIG Select
+      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet, rig.RigNumber);
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
@@ -10952,19 +11016,50 @@ procedure TMainForm.actionSo2rNeoSelRxExecute(Sender: TObject);
 var
    tx: Integer;
    rx: Integer;
+   rig: TRig;
 begin
-   // COMポート
-   if dmZLogGlobal.Settings._so2r_type = so2rCom then begin
-      // #728 RX=RIG-A+RIG-Bを行いたい
-      rx := TAction(Sender).Tag;
-      dmZLogKeyer.SetRxRigFlag(rx + 1, 0, True);
+   tx := FCurrentTx;             // 0:LEFT 1:RIGHT
+   rx := TAction(Sender).Tag;    // 0:LEFT 1:RIGHT 2:BOTH
+
+   case dmZLogGlobal.Settings._so2r_type of
+      // COMポート
+      so2rCom: begin
+         if rx <> 2 then begin
+            // #728 RX=RIG-A+RIG-Bを行いたい
+            dmZLogKeyer.SetRxRigFlag(rx + 1, 0, True);
+         end;
+      end;
+
+      // SO2R Neo
+      so2rNeo: begin
+         dmZLogKeyer.So2rNeoSwitchRig(tx, rx);
+      end;
+
+      // Parallel
+      so2rParallel: begin
+         // TX
+         rig := RigControl.GetRig(FCurrentTx + 1, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
+         if rig <> nil then begin
+            dmZLogKeyer.SetTxRigFlag(tx + 1, rig.RigNumber);
+         end;
+
+         // RX
+         rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+         if rig <> nil then begin
+            if rx = 2 then begin
+               dmZLogKeyer.ParallelSetAudioBothMode(True);
+            end
+            else begin
+               dmZLogKeyer.ParallelSetAudioBothMode(False);
+               dmZLogKeyer.SetRxRigFlag(rx + 1, rig.RigNumber);
+            end;
+         end;
+      end;
    end;
 
-   // SO2R Neo
-   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
-      rx := TAction(Sender).Tag;
-      tx := FCurrentTx;
-      dmZLogKeyer.So2rNeoSwitchRig(tx, rx);
+   // Parallel
+   if dmZLogGlobal.Settings._so2r_type = so2rParallel then begin
+
    end;
 end;
 
@@ -11032,7 +11127,7 @@ begin
    FCurrentTx := tx;
    FInformation.Tx := tx;
 
-   rig := RigControl.GetRig(tx + 1, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(tx + 1, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
    if rig <> nil then begin
       dmZLogKeyer.SetTxRigFlag(tx + 1, rig.RigNumber);
    end;
@@ -12482,7 +12577,7 @@ begin
          SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigset - 1, 0);
       end;
 
-      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
          PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigset - 1, 0);
       end;
    end;
@@ -12500,22 +12595,28 @@ begin
    // CQ Repeat 中止
    SetCqRepeatMode(False, False);
 
+   // TX
    FCurrentTx := tx_rig - 1;
    FInformation.Tx := tx_rig - 1;
    ShowTxIndicator();
 
-   rig := RigControl.GetRig(tx_rig, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(tx_rig, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
    if rig <> nil then begin
       dmZLogKeyer.SetTxRigFlag(tx_rig, rig.RigNumber);
-      dmZLogKeyer.SetRxRigFlag(rx_rig, rig.RigNumber);
    end;
 
+   // RX
    FCurrentRx := rx_rig - 1;
    FInformation.Rx := rx_rig - 1;
 
+   rig := RigControl.GetRig(rx_rig, TextToBand(FEditPanel[FCurrentRx].BandEdit.Text));
+   if rig <> nil then begin
+      dmZLogKeyer.SetRxRigFlag(rx_rig, rig.RigNumber);
+   end;
+
    FEditPanel[rx_rig - 1].CallsignEdit.SetFocus();
 
-   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx_rig - 1, 0);
    end;
 
@@ -12533,7 +12634,7 @@ begin
    FInformation.Tx := rigset - 1;
    ShowTxIndicator();
 
-   rig := RigControl.GetRig(rigset, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(rigset, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
    if rig <> nil then begin
       dmZLogKeyer.SetTxRigFlag(rigset, rig.RigNumber);
    end;
@@ -12560,10 +12661,16 @@ begin
    FCurrentRigSet := rigset;
 
    if focusonly = False then begin
-      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+      // TX
+      rig := RigControl.GetRig(FCurrentTx + 1, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
+      if rig <> nil then begin
+         dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber);
+      end;
+
+      // RX
+      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(FEditPanel[FCurrentRx].BandEdit.Text));
       if Assigned(rig) then begin
          RigControl.SetCurrentRig(rig.RigNumber);
-//         dmZLogKeyer.SetTxRigFlag(FCurrentRigSet);
          dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
          UpdateBand(rig.CurrentBand);
          UpdateMode(rig.CurrentMode);
@@ -12581,7 +12688,7 @@ begin
       end;
 //      FSo2rNeoCp.Rx := rig - 1;
 
-      if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+      if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
          PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rigset - 1, 0);
       end;
 
@@ -12615,7 +12722,7 @@ begin
    FCurrentTx := tx;
    FInformation.Tx := tx;
 
-   rig := RigControl.GetRig(tx + 1, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(tx + 1, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
    if rig <> nil then begin
       dmZLogKeyer.SetTxRigFlag(tx + 1, rig.RigNumber);
    end;
@@ -12647,7 +12754,7 @@ begin
    OutputDebugString(PChar('*** DoWkStatusProc(' + IntToStr(tx) + ', ' + IntToStr(rx) + ', ' + BoolToStr(ptt) + ') ***'));
    {$ENDIF}
 //   FSo2rNeoCp.Rx := rx;
-   if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
+   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx, 0);
    end;
 
@@ -12829,7 +12936,7 @@ begin
    FCurrentTx := rigno;
    FInformation.Tx := rigno;
 
-   rig := RigControl.GetRig(rigset, TextToBand(BandEdit.Text));
+   rig := RigControl.GetRig(rigset, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
    if rig <> nil then begin
       dmZLogKeyer.SetTxRigFlag(rigset, rig.RigNumber);
    end;

@@ -53,6 +53,7 @@ const
   PARALLEL_RX0 = 4;
   PARALLEL_RX1 = 5;
   PARALLEL_RX2 = 6;
+  PARALLEL_BLEND = 7;
 
 type
   TKeyingPort = (tkpNone,
@@ -295,7 +296,7 @@ type
     procedure SetRxRigFlag_com_v28(rigset, rigno: Integer);
     procedure SetRxRigFlag_so2rneo(rigset, rigno: Integer);
     procedure SetRxRigFlag_otrsp(rigset, rigno: Integer);
-    procedure SetRxRigFlag_parallel(rigset, rigno: Integer);
+    procedure SetRxRigFlag_parallel(rigset, rigno: Integer; both: Boolean);
 
     procedure Sound();
     procedure NoSound();
@@ -469,6 +470,10 @@ type
     procedure So2rNeoReverseRx(tx: Integer);
     procedure So2rNeoNormalRx(tx: Integer);
     property So2rNeoCanRxSel: Boolean read FSo2rNeoCanRxSel write FSo2rNeoCanRxSel;
+
+    // Parallel port support
+    procedure ParallelSetAudioBothMode(fOn: Boolean);
+    procedure ParallelSetAudioBlendMode(fOn: Boolean);
 
     procedure IncCWSpeed();
     procedure DecCWSpeed();
@@ -788,11 +793,6 @@ end;
 
 procedure TdmZLogKeyer.SetTxRigFlag(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
 begin
-   // 前回と同じrigsetなら出力しない
-   if (FPrevTxRigSet = rigset) and (FPrevTxRigNo = rigno) then begin
-      Exit;
-   end;
-
    if (rigset = 0) or (rigset = 1) then begin
       FWkTxRigSet := 0;
    end
@@ -835,6 +835,10 @@ begin
 
       // OTRSPの場合
       so2rOtrsp: begin
+         // 前回と同じrigsetなら出力しない
+         if (FPrevTxRigSet = rigset) and (FPrevTxRigNo = rigno) then begin
+            Exit;
+         end;
          if (FSo2rOtrspPort in [tkpSerial1..tkpSerial20]) then begin
             SetTxRigFlag_otrsp(rigset);
          end;
@@ -1003,11 +1007,6 @@ end;
 //
 procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean);
 begin
-   // 前回と同じrigsetなら出力しない
-   if (FPrevRxRigSet = rigset) and (FPrevRxRigNo = rigno) and (fForce = False) then begin
-      Exit;
-   end;
-
    if (rigset = 0) or (rigset = 1) then begin
       FWkRxRigSet := 0;
    end
@@ -1044,6 +1043,11 @@ begin
 
       // OTRSPの場合
       so2rOtrsp: begin
+         // 前回と同じrigsetなら出力しない
+         if (FPrevRxRigSet = rigset) and (FPrevRxRigNo = rigno) and (fForce = False) then begin
+            Exit;
+         end;
+
          if (FSo2rOtrspPort in [tkpSerial1..tkpSerial20]) then begin
             SetRxRigFlag_otrsp(rigset, rigno);
          end;
@@ -1051,7 +1055,7 @@ begin
 
       // パラレルポートの場合
       so2rParallel: begin
-         SetRxRigFlag_parallel(rigset, rigno);
+         SetRxRigFlag_parallel(rigset, rigno, False);
       end;
    end;
 
@@ -1159,19 +1163,24 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetRxRigFlag_parallel(rigset, rigno: Integer);
+procedure TdmZLogKeyer.SetRxRigFlag_parallel(rigset, rigno: Integer; both: Boolean);
 begin
+   if both = True then begin
+      FParallelPort.SetBit(PARALLEL_RX0);
+   end
+   else begin
+      FParallelPort.ResetBit(PARALLEL_RX0);
+   end;
+
    case rigset of
       1: begin
          case rigno of
             1: begin
-               FParallelPort.ResetBit(PARALLEL_RX0);
                FParallelPort.ResetBit(PARALLEL_RX1);
                FParallelPort.ResetBit(PARALLEL_RX2);
             end;
 
-            2: begin
-               FParallelPort.ResetBit(PARALLEL_RX0);
+            3: begin
                FParallelPort.ResetBit(PARALLEL_RX1);
                FParallelPort.SetBit(PARALLEL_RX2);
             end;
@@ -1180,14 +1189,12 @@ begin
 
       2: begin
          case rigno of
-            3: begin
-               FParallelPort.ResetBit(PARALLEL_RX0);
+            2: begin
                FParallelPort.SetBit(PARALLEL_RX1);
                FParallelPort.ResetBit(PARALLEL_RX2);
             end;
 
             4: begin
-               FParallelPort.ResetBit(PARALLEL_RX0);
                FParallelPort.SetBit(PARALLEL_RX1);
                FParallelPort.SetBit(PARALLEL_RX2);
             end;
@@ -5063,6 +5070,36 @@ begin
    CP.Parity := ptNone;
    CP.DataBits := db8Bits;
    CP.HwFlow := hfNONE;
+end;
+
+procedure TdmZLogKeyer.ParallelSetAudioBothMode(fOn: Boolean);
+begin
+   if FSo2rType <> so2rParallel then begin
+      Exit;
+   end;
+
+   if fOn = True then begin
+      FParallelPort.SetBit(PARALLEL_RX0);
+   end
+   else begin
+      FParallelPort.ResetBit(PARALLEL_RX0);
+   end;
+   FParallelPort.Write();
+end;
+
+procedure TdmZLogKeyer.ParallelSetAudioBlendMode(fOn: Boolean);
+begin
+   if FSo2rType <> so2rParallel then begin
+      Exit;
+   end;
+
+   if fOn = True then begin
+      FParallelPort.SetBit(PARALLEL_BLEND);
+   end
+   else begin
+      FParallelPort.ResetBit(PARALLEL_BLEND);
+   end;
+   FParallelPort.Write();
 end;
 
 { TUSBPortInfo }

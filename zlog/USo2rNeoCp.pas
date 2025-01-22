@@ -79,7 +79,7 @@ type
 implementation
 
 uses
-  Main, UzLogKeyer;
+  Main;
 
 {$R *.dfm}
 
@@ -158,8 +158,7 @@ var
    ratio: Byte;
 begin
    ratio := trackBlendRatio.Position;
-   dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
-
+   SendMessage(MainForm.Handle, WM_ZLOG_SO2R_BLEND, MAKEWPARAM(ratio, 1), 0);
    MainForm.SetLastFocus();
 end;
 
@@ -182,39 +181,26 @@ begin
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRx1Execute(Sender: TObject);
-var
-   tx: Integer;
 begin
-   tx := MainForm.CurrentRigID;
-   dmZLogKeyer.So2rNeoSwitchRig(tx, 0);
-
+   SendMessage(MainForm.Handle, WM_ZLOG_SO2R_SELRX, 0, 0);
    MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRx2Execute(Sender: TObject);
-var
-   tx: Integer;
 begin
-   tx := MainForm.CurrentRigID;
-   dmZLogKeyer.So2rNeoSwitchRig(tx, 1);
-
+   SendMessage(MainForm.Handle, WM_ZLOG_SO2R_SELRX, 1, 0);
    MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoSelRxBothExecute(Sender: TObject);
-var
-   tx: Integer;
 begin
-   tx := MainForm.CurrentRigID;
-   dmZLogKeyer.So2rNeoSwitchRig(tx, 2);
-
+   SendMessage(MainForm.Handle, WM_ZLOG_SO2R_SELRX, 2, 0);
    MainForm.SetLastFocus();
 end;
 
 procedure TformSo2rNeoCp.actionSo2rNeoToggleAutoRxSelectExecute(Sender: TObject);
 begin
    ToggleRxSelect();
-
    MainForm.SetLastFocus();
 end;
 
@@ -241,14 +227,16 @@ begin
 end;
 
 procedure TformSo2rNeoCp.ToggleSwitch1Click(Sender: TObject);
+var
+   flag: Integer;
 begin
    if ToggleSwitch1.State = tssOff then begin
-      dmZLogKeyer.So2rNeoUseRxSelect := False;
+      flag := 0;
    end
    else begin
-      dmZLogKeyer.So2rNeoUseRxSelect := True;
+      flag := 1;
    end;
-
+   SendMessage(MainForm.Handle, WM_ZLOG_SO2R_SET_RXAUTOSEL, flag, 0);
    MainForm.SetLastFocus();
 end;
 
@@ -334,11 +322,16 @@ begin
 end;
 
 procedure TformSo2rNeoCp.SetAfBlend(fOn: Boolean; ratio: Byte);
+var
+   flag: Word;
 begin
-   dmZLogKeyer.So2rNeoSetAudioBlendMode(fOn);
-   if fOn then begin
-      dmZLogKeyer.So2rNeoSetAudioBlendRatio(ratio);
+   if fOn = True then begin
+      flag := 1;
+   end
+   else begin
+      flag := 0;
    end;
+   SendMessage(MainForm.Handle, WM_ZLOG_SO2R_BLEND, MAKEWPARAM(ratio, flag), 0);
 end;
 
 end.
