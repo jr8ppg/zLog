@@ -7794,6 +7794,10 @@ object MainForm: TMainForm
       Caption = 'QSO'#26908#32034
       OnExecute = actionQsoSearchExecute
     end
+    object actionSo2rToggleAfBlend: TAction
+      Caption = 'actionSo2rToggleAfBlend'
+      OnExecute = actionSo2rToggleAfBlendExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

@@ -37,6 +37,7 @@ type
     ledRig3: TJvLED;
     ToggleSwitch1: TToggleSwitch;
     actionSo2rNeoToggleAutoRxSelect: TAction;
+    actionSo2rToggleAfBlend: TAction;
     procedure OnZLogSo2rNeoSetRx( var Message: TMessage ); message WM_ZLOG_SO2RNEO_SETRX;
     procedure OnZLogSo2rNeoSetPtt( var Message: TMessage ); message WM_ZLOG_SO2RNEO_SETPTT;
     procedure OnZLogSo2rNeoCanRxSel( var Message: TMessage ); message WM_ZLOG_SO2RNEO_CANRXSEL;
@@ -74,6 +75,7 @@ type
     property CanRxSel: Boolean read GetCanRxSel write SetCanRxSel;
     property UseRxSelect: Boolean read GetUseRxSelect write SetUseRxSelect;
     procedure ToggleRxSelect();
+    procedure ToggleAfBlend();
   end;
 
 implementation
@@ -82,11 +84,6 @@ uses
   Main;
 
 {$R *.dfm}
-
-procedure TformSo2rNeoCp.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
 
 procedure TformSo2rNeoCp.FormCreate(Sender: TObject);
 begin
@@ -99,10 +96,13 @@ begin
    actionSo2rNeoSelRx2.ShortCut := MainForm.actionSo2rNeoSelRx2.ShortCut;
    actionSo2rNeoSelRxBoth.ShortCut := MainForm.actionSo2rNeoSelRxBoth.ShortCut;
    actionSo2rNeoToggleAutoRxSelect.ShortCut := MainForm.actionSo2rNeoToggleAutoRxSelect.ShortCut;
+   actionSo2rToggleAfBlend.ShortCut := MainForm.actionSo2rToggleAfBlend.ShortCut;
+
    actionSo2rNeoSelRx1.SecondaryShortCuts.Assign(MainForm.actionSo2rNeoSelRx1.SecondaryShortCuts);
    actionSo2rNeoSelRx2.SecondaryShortCuts.Assign(MainForm.actionSo2rNeoSelRx2.SecondaryShortCuts);
    actionSo2rNeoSelRxBoth.SecondaryShortCuts.Assign(MainForm.actionSo2rNeoSelRxBoth.SecondaryShortCuts);
    actionSo2rNeoToggleAutoRxSelect.SecondaryShortCuts.Assign(MainForm.actionSo2rNeoToggleAutoRxSelect.SecondaryShortCuts);
+   actionSo2rToggleAfBlend.SecondaryShortCuts.Assign(MainForm.actionSo2rToggleAfBlend.SecondaryShortCuts);
 end;
 
 procedure TformSo2rNeoCp.FormKeyDown(Sender: TObject; var Key: Word;
@@ -118,6 +118,11 @@ end;
 procedure TformSo2rNeoCp.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
+end;
+
+procedure TformSo2rNeoCp.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
 end;
 
 procedure TformSo2rNeoCp.OnZLogSo2rNeoSetRx( var Message: TMessage );
@@ -288,6 +293,21 @@ begin
    else begin
       ToggleSwitch1.State := tssOff;
    end;
+end;
+
+procedure TformSo2rNeoCp.ToggleAfBlend();
+begin
+   if groupAfControl.Enabled = False then begin
+      Exit;
+   end;
+
+   if buttonAfBlend.Down = True then begin
+      buttonAfBlend.Down := False;
+   end
+   else begin
+      buttonAfBlend.Down := True;
+   end;
+   buttonAfBlend.Click();
 end;
 
 procedure TformSo2rNeoCp.DispRig1State();

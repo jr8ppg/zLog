@@ -613,6 +613,7 @@ type
     N17: TMenuItem;
     menuQsoSearch: TMenuItem;
     actionQsoSearch: TAction;
+    actionSo2rToggleAfBlend: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -931,6 +932,7 @@ type
     procedure menuBSAllBandsClick(Sender: TObject);
     procedure menuBSNewMultiClick(Sender: TObject);
     procedure actionQsoSearchExecute(Sender: TObject);
+    procedure actionSo2rToggleAfBlendExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -11366,6 +11368,12 @@ begin
    pt := Grid.ClientToScreen(pt);
    FQsoSearch.Left := pt.X;
    FQsoSearch.Top := pt.Y;
+end;
+
+// #168 SO2R Toggle blend mode
+procedure TMainForm.actionSo2rToggleAfBlendExecute(Sender: TObject);
+begin
+   FSo2rNeoCp.ToggleAfBlend();
 end;
 
 procedure TMainForm.RestoreWindowsPos();

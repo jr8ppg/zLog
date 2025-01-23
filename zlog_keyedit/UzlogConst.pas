@@ -14,7 +14,7 @@ type
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
   TOperateStyle = (os1Radio = 0, os2Radio);
   TOperateMode = (omOriginal = 0, omEnter);
-  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp);
+  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp, so2rParallel);
   TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
   TSerialType = (stNone = 0, stAll, stBand, stMultiSingle);
 
@@ -243,7 +243,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..167] of string = (
+  default_primary_shortcut: array[0..168] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -411,10 +411,11 @@ const
     '',                 // #164 actionSetRigWPM
     'Alt+S',            // #165 actionToggleMemScan
     'Alt+2',            // #166 actionToggleF2A
-    ''                  // #167 actionQsoSearch
+    '',                 // #167 actionQsoSearch
+    ''                  // #168 actionSo2rToggleAfBlend
   );
 
-  default_secondary_shortcut: array[0..167] of string = (
+  default_secondary_shortcut: array[0..168] of string = (
     '',                 // #00
     '',
     '',
@@ -582,7 +583,8 @@ const
     '',                 // #164 actionSetRigWPM
     '',                 // #165 actionToggleMemScan
     '',                 // #166 actionToggleF2A
-    ''                  // #167 actionQsoSearch
+    '',                 // #167 actionQsoSearch
+    ''                  // #168 actionSo2rToggleAfBlend
   );
 
 const

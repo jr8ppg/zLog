@@ -69,8 +69,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitWidth = 563
-        ExplicitHeight = 392
         ColWidths = (
           448
           96)
@@ -348,12 +346,15 @@ object formMain: TformMain
           '#143 2BSIQ'#21205#20316#12398#12488#12464#12523'(ON/OFF)='
           '#144 SO2R Neo '#33258#21205'RX'#36984#25246#12434#12488#12464#12523'(ON/OFF)='
           '#146 2BSIQ'#21205#20316#26178#12289#20808#34892#12377#12427#38651#25991#12398#36865#20449#32066#20102'Wait'#12398#12488#12464#12523'(ON/OFF)='
-          '#150 RIG'#12506#12450#12398#12488#12464#12523'=')
+          '#150 RIG'#12506#12450#12398#12488#12464#12523'='
+          '#168 AF'#12502#12524#12531#12489#12398#12488#12464#12523'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitWidth = 563
+        ExplicitHeight = 392
         ColWidths = (
           448
           113)
@@ -374,7 +375,7 @@ object formMain: TformMain
       575
       44)
     object buttonOK: TButton
-      Left = 348
+      Left = 344
       Top = 5
       Width = 106
       Height = 33
@@ -382,10 +383,10 @@ object formMain: TformMain
       Caption = 'OK'
       TabOrder = 0
       OnClick = buttonOKClick
-      ExplicitLeft = 344
+      ExplicitLeft = 340
     end
     object buttonCancel: TButton
-      Left = 460
+      Left = 456
       Top = 5
       Width = 106
       Height = 33
@@ -395,7 +396,7 @@ object formMain: TformMain
       ModalResult = 2
       TabOrder = 1
       OnClick = buttonCancelClick
-      ExplicitLeft = 456
+      ExplicitLeft = 452
     end
     object buttonAllReset: TButton
       Left = 8
