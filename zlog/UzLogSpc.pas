@@ -19,6 +19,7 @@ type
     FNumber : string;
     FDisplay: string;
     FSerial: Integer;
+    FRbnCount: Integer;
     procedure SetNumber(v: string);
     function GetText(): string;
   public
@@ -29,6 +30,7 @@ type
     property Number: string read FNumber write SetNumber;
     property Text: string read GetText;
     property Serial: Integer read FSerial write FSerial;
+    property RbnCount: Integer read FRbnCount write FRbnCount;
   end;
 
   TSuperDataComparer = class(TComparer<TSuperData>)
@@ -86,7 +88,7 @@ type
     function IndexOf(SD: TSuperData): Integer;        // unused
     function ObjectOf(SD: TSuperData): TSuperData;    // referenced from USpotClass.pas
     procedure SortByCallsign();                       // unused
-    procedure AddData(D: TDateTime; C, N: string);
+    procedure AddData(D: TDateTime; C, N: string; from_rbn: Boolean = False);
     procedure SaveToFile(filename: string);
     property AcceptDuplicates: Boolean read FAcceptDuplicates write FAcceptDuplicates;
   end;
@@ -128,12 +130,14 @@ type
      FPartialStr: string;
      FEditDistance: Integer;
      FScore: Extended;
+     FRbnCount: Integer;
   public
     constructor Create(); overload;
-    constructor Create(str: string; editdistance: Integer; score: Extended); overload;
+    constructor Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer); overload;
     property PartialStr: string read FPartialStr write FPartialStr;
     property EditDistance: Integer read FEditDistance write FEditDistance;
     property Score: Extended read FScore write FScore;
+    property RbnCount: Integer read FRbnCount write FRbnCount;
   end;
 
   TSuperResultComparer1 = class(TComparer<TSuperResult>)
@@ -167,6 +171,7 @@ begin
    FCallsign := '';
    FNumber := '';
    FSerial := 0;
+   FRbnCount := 0;
 end;
 
 constructor TSuperData.Create(D: TDateTime; C, N: string);
@@ -176,6 +181,7 @@ begin
    FCallsign := C;
    FDisplay := N;
    Number := N;
+   FRbnCount := 1;
 end;
 
 procedure TSuperData.SetNumber(v: string);
@@ -192,8 +198,17 @@ begin
 end;
 
 function TSuperData.GetText(): string;
+var
+   rbn: string;
 begin
-   Result := FillRight(callsign, 11) + FDisplay;
+   if FRbnCount > 2 then begin
+      rbn := '*';
+   end
+   else begin
+      rbn := ' ';
+   end;
+
+   Result := rbn + FillRight(callsign, 11) + FDisplay;
 end;
 
 { TSuperDataList }
@@ -332,7 +347,7 @@ begin
    Sort(FIndexComparer);
 end;
 
-procedure TSuperList.AddData(D: TDateTime; C, N: string);
+procedure TSuperList.AddData(D: TDateTime; C, N: string; from_rbn: Boolean);
 var
    O: TSuperData;
    SD: TSuperData;
@@ -355,6 +370,11 @@ begin
             O.Number := SD.Number;
          end;
          SD.Free();
+      end;
+
+      if from_rbn = True then begin
+         O := Items[Index].List[0];
+         O.RbnCount := O.RbnCount + 1;
       end;
       SI.Free();
    end
@@ -428,6 +448,9 @@ var
    L: TSuperResultList;
    R: TSuperResult;
    SI: TSuperIndex;
+   rbncount: Integer;
+   rbn: string;
+   np1: string;
 begin
    L := TSuperResultList.Create();
    try
@@ -445,12 +468,15 @@ begin
          // ƒŒ[ƒxƒ“ƒVƒ…ƒ^ƒCƒ“‹——£‚©‚ç—Ş—“x‚ğZo
          score := n / Max(Length(SI.Callsign), Length(FPartialStr));
 
+         // RBNQÆ‰ñ”
+         rbncount := SI.List[0].RbnCount;
+
          // 0‚È‚çˆê’v
          // 0.1667 ‚P•¶š•sˆê’v
          // 0.3333 ‚Q•¶š•sˆê’v
          // 0.5000 ‚R•¶š•sˆê’v
          if score < 0.3 then begin
-            R := TSuperResult.Create(SI.Callsign, n, score);
+            R := TSuperResult.Create(SI.Callsign, n, score, rbncount);
             L.Add(R);
          end;
       end;
@@ -461,11 +487,18 @@ begin
       FForm.BeginUpdate();
       for i := 0 to Min(l.Count - 1, maxhit) do begin
          if L[i].EditDistance = 0 then begin
-            FForm.Add('*' + L[i].PartialStr);
+            np1 := '*';
          end
          else begin
-            FForm.Add(L[i].PartialStr);
+            np1 := ' ';
          end;
+         if L[i].RbnCount > 2 then begin
+            rbn := '*';
+         end
+         else begin
+            rbn := ' ';
+         end;
+         FForm.Add(np1 + rbn + L[i].PartialStr);
       end;
       FForm.EndUpdate();
    finally
@@ -775,14 +808,16 @@ begin
    FPartialStr := '';
    FEditDistance := 0;
    FScore := 0;
+   FRbnCount := 0;
 end;
 
-constructor TSuperResult.Create(str: string; editdistance: Integer; score: Extended);
+constructor TSuperResult.Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer);
 begin
    Inherited Create();
    FPartialStr := str;
    FEditDistance := editdistance;
    FScore := score;
+   FRbnCount := rbncount;
 end;
 
 function TSuperResultComparer1.Compare(const Left, Right: TSuperResult): Integer;

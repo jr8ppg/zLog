@@ -161,6 +161,19 @@ begin
       Brush.Style := bsSolid;
       FillRect(Rect);
 
+      if txt <> '' then begin
+         if txt[1] = '*' then begin
+            Font.Style := Font.Style + [fsBold];
+         end
+         else begin
+            Font.Style := Font.Style - [fsBold];
+         end;
+         Delete(txt, 1, 1);
+      end
+      else begin
+         Font.Style := Font.Style - [fsBold];
+      end;
+
       Font.Color := fg;
       Font.Size := Grid.Font.Size;
       Font.Name := Grid.Font.Name;

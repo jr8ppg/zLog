@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Spin, Vcl.Grids,
+  StdCtrls, ExtCtrls, Spin, Vcl.Grids, System.UITypes,
   UzLogConst, UzLogGlobal, UzLogForm;
 
 type
@@ -140,18 +140,32 @@ begin
       Pen.Color := bg;
       Pen.Style := psSolid;
 
-      if (txt <> '') and (txt[1] = '*') then begin
-         Delete(txt, 1, 1);
-         if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) then begin
-            Brush.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
-            MainForm.HighlightCallsign(True);
+      if (txt <> '') then begin
+         if txt[1] = '*' then begin
+            if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) then begin
+               Brush.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
+               MainForm.HighlightCallsign(True);
+            end
+            else begin
+               Brush.Color := bg;
+            end;
          end
          else begin
             Brush.Color := bg;
          end;
+
+         if txt[2] = '*' then begin
+            Font.Style := Font.Style + [fsBold];
+         end
+         else begin
+            Font.Style := Font.Style - [fsBold];
+         end;
+
+         Delete(txt, 1, 2);
       end
       else begin
          Brush.Color := bg;
+         Font.Style := Font.Style - [fsBold];
       end;
 
       Brush.Style := bsSolid;

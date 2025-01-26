@@ -12065,6 +12065,12 @@ begin
 end;
 
 procedure TMainForm.BandScopeAddClusterSpot(Sp: TSpot);
+var
+   SD: TSuperData;
+   D: TDateTime;
+   C: string;
+   N: string;
+   i, x, y: Integer;
 begin
    FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
    FBandScope.AddClusterSpot(Sp);
@@ -12077,6 +12083,21 @@ begin
    if (BandMenu.Items[Ord(Sp.Band)].Enabled = True) and
       (dmZlogGlobal.Settings._activebands[Sp.Band] = True) then begin
       FBandScopeAllBands.AddClusterSpot(Sp);
+   end;
+
+   // スポット情報をスーパーチェックに登録
+   D := Now;
+   C := Sp.Call;
+   N := Sp.Number;
+
+   // メインリスト
+   FSuperCheckList.AddData(D, C, N, True);
+
+   // TwoLetterリストに追加
+   for i := 1 to Length(C) - 1 do begin
+      x := Ord(C[i]);
+      y := Ord(C[i + 1]);
+      FTwoLetterMatrix[x, y].AddData(D, C, N, True);
    end;
 end;
 
