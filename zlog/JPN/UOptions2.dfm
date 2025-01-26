@@ -3041,7 +3041,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 1
           OnClick = buttonBSForeClick
         end
@@ -3051,7 +3051,7 @@ object formOptions2: TformOptions2
           Top = 20
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 4
           OnClick = buttonBSResetClick
         end
@@ -3061,7 +3061,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 2
           Visible = False
           OnClick = buttonBSBackClick
@@ -3082,7 +3082,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 6
           OnClick = buttonBSForeClick
         end
@@ -3092,7 +3092,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 9
           OnClick = buttonBSResetClick
         end
@@ -3102,7 +3102,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 7
           Visible = False
           OnClick = buttonBSBackClick
@@ -3123,7 +3123,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 11
           OnClick = buttonBSForeClick
         end
@@ -3133,7 +3133,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
@@ -3143,7 +3143,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 12
           Visible = False
           OnClick = buttonBSBackClick
@@ -3164,7 +3164,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 16
           OnClick = buttonBSForeClick
         end
@@ -3174,7 +3174,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 19
           OnClick = buttonBSResetClick
         end
@@ -3184,7 +3184,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 17
           Visible = False
           OnClick = buttonBSBackClick
@@ -3195,7 +3195,7 @@ object formOptions2: TformOptions2
           Top = 22
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 3
           OnClick = checkBSBoldClick
         end
@@ -3205,7 +3205,7 @@ object formOptions2: TformOptions2
           Top = 47
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 8
           OnClick = checkBSBoldClick
         end
@@ -3215,7 +3215,7 @@ object formOptions2: TformOptions2
           Top = 72
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 13
           OnClick = checkBSBoldClick
         end
@@ -3225,7 +3225,7 @@ object formOptions2: TformOptions2
           Top = 97
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 18
           OnClick = checkBSBoldClick
         end
