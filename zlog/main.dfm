@@ -5976,6 +5976,10 @@ object MainForm: TMainForm
       object menuCorrectNR: TMenuItem
         Action = actionCorrectSentNr
       end
+      object menuRbnVerify: TMenuItem
+        Caption = 'RBN Verify'
+        OnClick = menuRbnVerifyClick
+      end
       object N2: TMenuItem
         Caption = '-'
       end

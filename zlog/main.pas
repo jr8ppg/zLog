@@ -4,7 +4,7 @@
   zLog for Windows 令和Edition
 
   Copyright 1997-2005 by Yohei Yokobayashi.
-  Portions created by JR8PPG are Copyright (C) 2019-2023 JR8PPG.
+  Portions created by JR8PPG are Copyright (C) 2019-2025 JR8PPG.
 
   This software is released under the MIT License.
 }
@@ -614,6 +614,7 @@ type
     menuQsoSearch: TMenuItem;
     actionQsoSearch: TAction;
     actionSo2rToggleAfBlend: TAction;
+    menuRbnVerify: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -933,6 +934,7 @@ type
     procedure menuBSNewMultiClick(Sender: TObject);
     procedure actionQsoSearchExecute(Sender: TObject);
     procedure actionSo2rToggleAfBlendExecute(Sender: TObject);
+    procedure menuRbnVerifyClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -4563,6 +4565,7 @@ begin
    Q.Forced := False;
    Q.Dupe := False;
    Q.Freq := '';
+   Q.RbnVerified := False;
 
    // DUPEチェック
    _dupe := Log.IsDupe(Q);
@@ -4689,6 +4692,9 @@ begin
       end;
       Q.Memo := Q.Memo + 'F2A';
    end;
+
+   // RBN照合
+   Q.RbnVerified := FSuperCheckList.RbnVerify(Q);
 
    // ログに記録
    Q.Band := band_bakup;
@@ -7077,6 +7083,18 @@ begin
 
    // 期間外再表示
    FFirstOutOfContestPeriod := True;
+end;
+
+// RBN Verify
+procedure TMainForm.menuRbnVerifyClick(Sender: TObject);
+var
+   i: Integer;
+   Q: TQSO;
+begin
+   for i := 1 to Log.TotalQSO do begin
+      Q := Log.QsoList[i];
+      Q.RbnVerified := FSuperCheckList.RbnVerify(Q);
+   end;
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);

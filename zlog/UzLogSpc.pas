@@ -11,6 +11,9 @@ uses
   System.Character, System.DateUtils,
   UzLogConst, UzLogGlobal, UzLogQSO, USuperCheck2;
 
+const
+  RBN_VIRIFY_THRESHOLD = 2;
+
 type
   TSuperData = class(TObject)
   private
@@ -85,8 +88,11 @@ type
   public
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
-    function IndexOf(SD: TSuperData): Integer;        // unused
-    function ObjectOf(SD: TSuperData): TSuperData;    // referenced from USpotClass.pas
+    function IndexOf(SD: TSuperData): Integer; overload;       // unused
+    function IndexOf(Q: TQSO): Integer; overload;
+    function ObjectOf(SD: TSuperData): TSuperData; overload;   // referenced from USpotClass.pas
+    function ObjectOf(Q: TQSO): TSuperData; overload;
+    function RbnVerify(Q: TQSO): Boolean;
     procedure SortByCallsign();                       // unused
     procedure AddData(D: TDateTime; C, N: string; from_rbn: Boolean = False);
     procedure SaveToFile(filename: string);
@@ -201,7 +207,7 @@ function TSuperData.GetText(): string;
 var
    rbn: string;
 begin
-   if FRbnCount > 2 then begin
+   if FRbnCount > RBN_VIRIFY_THRESHOLD then begin
       rbn := '*';
    end
    else begin
@@ -322,6 +328,25 @@ begin
    end;
 end;
 
+function TSuperList.IndexOf(Q: TQSO): Integer;
+var
+   Index: Integer;
+   SI: TSuperIndex;
+begin
+   SI := TSuperIndex.Create();
+   SI.Callsign := Q.Callsign;
+   try
+      if BinarySearch(SI, Index, FIndexComparer) = True then begin
+         Result := Index;
+      end
+      else begin
+         Result := -1;
+      end;
+   finally
+      SI.Free();
+   end;
+end;
+
 function TSuperList.ObjectOf(SD: TSuperData): TSuperData;
 var
    Index: Integer;
@@ -331,7 +356,6 @@ begin
    SI.Callsign := SD.Callsign;
    try
       if BinarySearch(SI, Index, FIndexComparer) = True then begin
-//         L := Items[Index].List.Count - 1;
          Result := Items[Index].List[0];
       end
       else begin
@@ -339,6 +363,38 @@ begin
       end;
    finally
       SI.Free();
+   end;
+end;
+
+function TSuperList.ObjectOf(Q: TQSO): TSuperData;
+var
+   Index: Integer;
+   SI: TSuperIndex;
+begin
+   SI := TSuperIndex.Create();
+   SI.Callsign := Q.Callsign;
+   try
+      if BinarySearch(SI, Index, FIndexComparer) = True then begin
+         Result := Items[Index].List[0];
+      end
+      else begin
+         Result := nil;
+      end;
+   finally
+      SI.Free();
+   end;
+end;
+
+function TSuperList.RbnVerify(Q: TQSO): Boolean;
+var
+   SD: TSuperData;
+begin
+   SD := Self.ObjectOf(Q);
+   if Q = nil then begin
+      Result := False;
+   end
+   else begin
+      Result := (SD.RbnCount > RBN_VIRIFY_THRESHOLD);
    end;
 end;
 
@@ -492,7 +548,7 @@ begin
          else begin
             np1 := ' ';
          end;
-         if L[i].RbnCount > 2 then begin
+         if L[i].RbnCount > RBN_VIRIFY_THRESHOLD then begin
             rbn := '*';
          end
          else begin

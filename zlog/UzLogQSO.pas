@@ -87,7 +87,8 @@ type
     Forced: Boolean;       { 1 byte }
     QslState: Byte;        { 1 byte 0:None 1:Pse QSL 2:No QSL }
     Invalid: Boolean;      { 1 byte false:valid true:invalid }
-    Reserve4: string[101]; { 102 bytes }
+    RbnVerified: Boolean;  { 1 byte false:not verified true:verified }
+    Reserve4: string[100]; { 100 bytes }
     // 384bytes
   end;
 
@@ -127,6 +128,7 @@ type
     FForced: Boolean;
     FQslState: TQslState;
     FInvalid: Boolean;
+    FRbnVerified: Boolean;
 
     function GetMode2(): TMode;
     function GetPoints(): Integer;
@@ -215,6 +217,7 @@ type
     property Invalid: Boolean read FInvalid write SetInvalid;
     property QsoId: Integer read GetQsoId;
     property Area: string read GetArea;
+    property RbnVerified: Boolean read FRbnVerified write FRbnVerified;
 
     property SerialStr: string read GetSerialStr;
     property DateTimeStr: string read GetDateTimeStr;
@@ -515,6 +518,7 @@ begin
    FForced := False;
    FQslState := qsNone;
    FInvalid := False;
+   FRbnVerified := False;
 end;
 
 procedure TQSO.IncTime;
@@ -1390,6 +1394,7 @@ begin
    Result.Forced     := FForced;
    Result.QslState   := Byte(FQslState);
    Result.Invalid    := FInvalid;
+   Result.RbnVerified := FRbnVerified;
 end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
@@ -1433,6 +1438,7 @@ begin
    FForced     := src.Forced;
    FQslState   := TQslState(src.QslState);
    FInvalid    := src.Invalid;
+   FRbnVerified := src.RbnVerified;
 end;
 
 { TQSOList }
