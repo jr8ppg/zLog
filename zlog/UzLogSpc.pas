@@ -390,7 +390,7 @@ var
    SD: TSuperData;
 begin
    SD := Self.ObjectOf(Q);
-   if Q = nil then begin
+   if SD = nil then begin
       Result := False;
    end
    else begin
