@@ -422,14 +422,17 @@ begin
 end;
 
 function TContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
+var
+   strNewNumber: string;
 begin
    FMultiFound := False;
 
-   if (strNumber = '') and (SameExchange = True) then begin
-      strNumber := DispExchangeOnOtherBands(strCallsign, b);
+   if {(strNumber = '') and} (SameExchange = True) then begin
+      strNewNumber := DispExchangeOnOtherBands(strCallsign, b);
 
-      if strNumber <> '' then begin
+      if strNewNumber <> '' then begin
          FMultiFound := True;
+         strNumber := strNewNumber;
       end;
    end;
 

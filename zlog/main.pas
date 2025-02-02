@@ -1054,9 +1054,6 @@ type
 
     FRigModeBackup: TMode;
 
-    // space or TAB キー押下時のコールサインを記憶する
-    FPrevCallsign: string;
-
     // CWKeyboardからのキーイング開始
     FStartCWKeyboard: Boolean;
 
@@ -2422,7 +2419,6 @@ begin
    FCQLoopStartRig := 1;
    FCtrlZCQLoop := False;
    FCQRepeatPlaying := False;
-   FPrevCallsign := '';
 
    for i := 0 to 4 do begin
       FTabKeyPressed[i] := False;
@@ -3701,10 +3697,6 @@ var
 begin
    AssignControls(nID, C, N, B, M, SE, OP);
 
-   if FPrevCallsign <> C.Text then begin
-      N.Text := '';
-   end;
-
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
       MessageBeep(0);
@@ -3725,8 +3717,6 @@ begin
       N.SetFocus();
       WriteStatusLine('', False);
    end;
-
-   FPrevCallsign := C.Text;
 end;
 
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
