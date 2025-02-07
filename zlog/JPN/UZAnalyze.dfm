@@ -13,13 +13,11 @@ object ZAnalyze: TZAnalyze
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
@@ -102,7 +100,8 @@ object ZAnalyze: TZAnalyze
       'ZAA'
       'ZAA(ALL)'
       'ZAD'
-      'ZOP')
+      'ZOP'
+      'RBN')
     TabIndex = 0
     OnChange = TabControl1Change
     object Memo1: TMemo

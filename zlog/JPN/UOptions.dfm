@@ -3695,6 +3695,14 @@ object formOptions: TformOptions
           TabOrder = 1
           Value = 180
         end
+        object checkUseSpcData: TCheckBox
+          Left = 280
+          Top = 22
+          Width = 140
+          Height = 17
+          Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12395#20351#12358
+          TabOrder = 8
+        end
       end
     end
     object tabsheetPath: TTabSheet
@@ -3905,13 +3913,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code ExtraLight Italic'
+          FontName = 'Cascadia Mono ExtraLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 35
+          ItemIndex = 51
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

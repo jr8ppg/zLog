@@ -158,7 +158,9 @@ uses
   UFreqPanel in 'UFreqPanel.pas' {formFreqPanel},
   USearch in 'USearch.pas' {formSearch},
   UParallelPort in 'UParallelPort.pas',
-  FTD2XX in 'FTD2XX.pas';
+  FTD2XX in 'FTD2XX.pas',
+  USelectClusterLog in 'USelectClusterLog.pas' {formSelectClusterLog},
+  USpcViewer in 'USpcViewer.pas' {formSpcViewer};
 
 {$R *.res}
 

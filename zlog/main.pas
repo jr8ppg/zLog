@@ -615,6 +615,8 @@ type
     actionQsoSearch: TAction;
     actionSo2rToggleAfBlend: TAction;
     menuRbnVerify: TMenuItem;
+    menuLoadClusterLog: TMenuItem;
+    menuShowSpcData: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -935,6 +937,8 @@ type
     procedure actionQsoSearchExecute(Sender: TObject);
     procedure actionSo2rToggleAfBlendExecute(Sender: TObject);
     procedure menuRbnVerifyClick(Sender: TObject);
+    procedure menuLoadClusterLogClick(Sender: TObject);
+    procedure menuShowSpcDataClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1053,6 +1057,9 @@ type
     FPrevOutOfContestPeriod: Boolean;
 
     FRigModeBackup: TMode;
+
+    // space or TAB キー押下時のコールサインを記憶する
+    FPrevCallsign: string;
 
     // CWKeyboardからのキーイング開始
     FStartCWKeyboard: Boolean;
@@ -1236,6 +1243,8 @@ type
     procedure AntennaSelect(rig: TRig; rigset: Integer; b: TBand);
     procedure SetCurrentTxRigFlag();
     procedure SetCurrentRxRigFlag();
+    procedure LoadSpotData(slFileList: TStrings);
+    procedure AddSuperData(Sp: TSpot);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1437,7 +1446,7 @@ uses
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
-  UCountryChecker;
+  UCountryChecker, USelectClusterLog, USpcViewer;
 
 {$R *.DFM}
 
@@ -2419,6 +2428,7 @@ begin
    FCQLoopStartRig := 1;
    FCtrlZCQLoop := False;
    FCQRepeatPlaying := False;
+   FPrevCallsign := '';
 
    for i := 0 to 4 do begin
       FTabKeyPressed[i] := False;
@@ -3697,6 +3707,10 @@ var
 begin
    AssignControls(nID, C, N, B, M, SE, OP);
 
+   if FPrevCallsign <> C.Text then begin
+      N.Text := '';
+   end;
+
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
       MessageBeep(0);
@@ -3717,6 +3731,8 @@ begin
       N.SetFocus();
       WriteStatusLine('', False);
    end;
+
+   FPrevCallsign := C.Text;
 end;
 
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
@@ -7084,6 +7100,36 @@ begin
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
       Q.RbnVerified := FSuperCheckList.RbnVerify(Q);
+   end;
+end;
+
+// Load RBN data
+procedure TMainForm.menuLoadClusterLogClick(Sender: TObject);
+var
+   f: TformSelectClusterLog;
+begin
+   f := TformSelectClusterLog.Create(Self);
+   try
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      LoadSpotData(f.FileList);
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TMainForm.menuShowSpcDataClick(Sender: TObject);
+var
+   f: TformSpcViewer;
+begin
+   f := TformSpcViewer.Create(Self);
+   try
+      f.SetList(SuperCheckList);
+      f.ShowModal();
+   finally
+      f.Release();
    end;
 end;
 
@@ -12073,12 +12119,6 @@ begin
 end;
 
 procedure TMainForm.BandScopeAddClusterSpot(Sp: TSpot);
-var
-   SD: TSuperData;
-   D: TDateTime;
-   C: string;
-   N: string;
-   i, x, y: Integer;
 begin
    FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
    FBandScope.AddClusterSpot(Sp);
@@ -12094,18 +12134,8 @@ begin
    end;
 
    // スポット情報をスーパーチェックに登録
-   D := Now;
-   C := Sp.Call;
-   N := Sp.Number;
-
-   // メインリスト
-   FSuperCheckList.AddData(D, C, N, True);
-
-   // TwoLetterリストに追加
-   for i := 1 to Length(C) - 1 do begin
-      x := Ord(C[i]);
-      y := Ord(C[i + 1]);
-      FTwoLetterMatrix[x, y].AddData(D, C, N, True);
+   if dmZLogGlobal.Settings.FClusterUseForSuperCheck = True then begin
+      AddSuperData(Sp);
    end;
 end;
 
@@ -14198,6 +14228,111 @@ begin
    rig := RigControl.GetRig(FCurrentRx + 1, TextToBand(FEditPanel[FCurrentRx].BandEdit.Text));
    if rig <> nil then begin
       dmZLogKeyer.SetRxRigFlag(FCurrentRx + 1, rig.RigNumber);
+   end;
+end;
+
+procedure TMainForm.LoadSpotData(slFileList: TStrings);
+var
+   slFiles: TStringList;
+   slText: TStringList;
+   i: Integer;
+   j: Integer;
+   strTemp: string;
+   fname: string;
+   Sp: TSpot;
+   strSpotDate: string;
+   dtSpot: TDateTime;
+   yy, mm, dd, hh, nn: Integer;
+   dlg: TformProgress;
+begin
+   slFiles := TStringList.Create();
+   slText := TStringList.Create();
+   dlg := TformProgress.Create(Self);
+   Enabled := False;
+   try
+      slFiles.Assign(slFileList);
+
+      dlg.Title := '';
+      dlg.Text := '';
+
+      dlg.Show();
+
+      for i := 0 to slFiles.Count - 1 do begin
+         // 0000000001111111111222222
+         // 1234567890123456789012345
+         // zlog_telnet_log_20230624.txt
+         fname := slFiles[i];
+         slText.LoadFromFile(fname);
+
+         strSpotDate := Copy(fname, 17, 8);
+
+         dlg.Title := fname;
+         Application.ProcessMessages();
+
+         for j := 0 to slText.Count - 1 do begin
+            strTemp := slText[j];
+
+            dlg.Text := strTemp;
+            Application.ProcessMessages();
+
+            Sp := TSpot.Create;
+            if Sp.Analyze(strTemp) = True then begin
+
+               yy := StrToInt(Copy(strSpotDate, 1, 4));
+               mm := StrToInt(Copy(strSpotDate, 5, 2));
+               dd := StrToInt(Copy(strSpotDate, 7, 2));
+
+               hh := StrToInt(Copy(Sp.TimeStr, 1, 2));
+               nn := StrToInt(Copy(Sp.TimeStr, 3, 2));
+
+               dtSpot := EncodeDateTime(yy, mm, dd, hh, nn, 0, 0);
+               dtSpot := IncHour(dtSpot, 9);
+               Sp.Time := dtSpot;
+
+               AddSuperData(Sp);
+            end;
+            Sp.Free();
+         end;
+      end;
+
+   finally
+      slFiles.Free();
+      slText.Free();
+      dlg.Release();
+      Enabled := True;
+   end;
+end;
+
+procedure TMainForm.AddSuperData(Sp: TSpot);
+var
+   D: TDateTime;
+   C: string;
+   N: string;
+   i: Integer;
+   x, y: Integer;
+   fDomestic: Boolean;
+begin
+   D := Sp.Time;
+   C := Sp.Call;
+   N := Sp.Number;
+
+   fDomestic := IsDomestic(C);
+   if ((dmZLogGlobal.Settings._bandscope_show_ja_spots = True) and (fDomestic = False)) or
+      ((dmZLogGlobal.Settings._bandscope_show_dx_spots = True) and (fDomestic = True)) then begin
+      Exit;
+   end;
+
+   if (MyContest.UseContestPeriod = False) or
+      ((MyContest.UseContestPeriod = True) and (D >= Log.StartTime) and (D <= Log.EndTime)) then begin
+      // メインリスト
+      FSuperCheckList.AddData(D, C, N, True);
+
+      // TwoLetterリストに追加
+      for i := 1 to Length(C) - 1 do begin
+         x := Ord(C[i]);
+         y := Ord(C[i + 1]);
+         FTwoLetterMatrix[x, y].AddData(D, C, N, True);
+      end;
    end;
 end;
 

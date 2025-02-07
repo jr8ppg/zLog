@@ -90,9 +90,11 @@ library Zlog;
 {ITE} {DFMFileType} {URigControl.dfm}
 {ITE} {DFMFileType} {UScratchSheet.dfm}
 {ITE} {DFMFileType} {USearch.dfm}
+{ITE} {DFMFileType} {USelectClusterLog.dfm}
 {ITE} {DFMFileType} {USelectUserDefinedContest.dfm}
 {ITE} {DFMFileType} {USixDownMulti.dfm}
 {ITE} {DFMFileType} {USo2rNeoCp.dfm}
+{ITE} {DFMFileType} {USpcViewer.dfm}
 {ITE} {DFMFileType} {USpotForm.dfm}
 {ITE} {DFMFileType} {USpotterListDlg.dfm}
 {ITE} {DFMFileType} {UStartTimeDialog.dfm}
@@ -211,9 +213,11 @@ library Zlog;
 {$R 'URigControl.dfm' 'RigControl:TForm'}
 {$R 'UScratchSheet.dfm' 'ScratchSheet:TForm(ConsolePad)'}
 {$R 'USearch.dfm' 'formSearch:TForm'}
+{$R 'USelectClusterLog.dfm' 'formSelectClusterLog:TForm'}
 {$R 'USelectUserDefinedContest.dfm' 'SelectUserDefinedContest:TForm'}
 {$R 'USixDownMulti.dfm' 'SixDownMulti:TForm(FDMulti)'}
 {$R 'USo2rNeoCp.dfm' 'formSo2rNeoCp:TForm'}
+{$R 'USpcViewer.dfm' 'formSpcViewer:TForm'}
 {$R 'USpotForm.dfm' 'SpotForm:TForm'}
 {$R 'USpotterListDlg.dfm' 'formSpotterListDlg:TForm'}
 {$R 'UStartTimeDialog.dfm' 'StartTimeDialog:TForm'}

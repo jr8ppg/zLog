@@ -557,6 +557,14 @@
         </DCCReference>
         <DCCReference Include="UParallelPort.pas"/>
         <DCCReference Include="FTD2XX.pas"/>
+        <DCCReference Include="USelectClusterLog.pas">
+            <Form>formSelectClusterLog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="USpcViewer.pas">
+            <Form>formSpcViewer</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -867,7 +875,9 @@
                     <RDP_Source_Files Name="Item120">UzLogForm.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item121">UFreqPanel.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item122">USearch.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item123">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item123">USelectClusterLog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item124">USpcViewer.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item125">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

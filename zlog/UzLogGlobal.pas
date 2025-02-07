@@ -343,6 +343,7 @@ type
     FClusterRetryIntervalSec: Integer;
     FClusterForceReconnect: Boolean;
     FClusterForceReconnectIntervalMin: Integer;
+    FClusterUseForSuperCheck: Boolean;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -1525,6 +1526,7 @@ begin
       Settings.FClusterRetryIntervalSec := ini.ReadInteger('ClusterWindow', 'RetryIntervalSec', 180);
       Settings.FClusterForceReconnect  := ini.ReadBool('ClusterWindow', 'ForceReconnect', False);
       Settings.FClusterForceReconnectIntervalMin := ini.ReadInteger('ClusterWindow', 'ForceReconnectInterval', 6 * 60);
+      Settings.FClusterUseForSuperCheck := ini.ReadBool('ClusterWindow', 'UseForSuperCheck', False);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -2169,6 +2171,7 @@ begin
       ini.WriteInteger('ClusterWindow', 'RetryIntervalSec', Settings.FClusterRetryIntervalSec);
       ini.WriteBool('ClusterWindow', 'ForceReconnect', Settings.FClusterForceReconnect);
       ini.WriteInteger('ClusterWindow', 'ForceReconnectInterval', Settings.FClusterForceReconnectIntervalMin);
+      ini.WriteBool('ClusterWindow', 'UseForSuperCheck', Settings.FClusterUseForSuperCheck);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);

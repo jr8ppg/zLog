@@ -416,8 +416,13 @@ begin
    if BinarySearch(SI, Index, FIndexComparer) = True then begin
       // 重複有りならリストに追加する
       if FAcceptDuplicates = True then begin
-         SD.Serial := Items[Index].List.Count + 1;
-         Items[Index].List.Add(SD);
+         if Items[Index].List.IndexOf(SD) = -1 then begin
+            SD.Serial := Items[Index].List.Count + 1;
+            Items[Index].List.Add(SD);
+         end
+         else begin
+            SD.Free();
+         end;
       end
       else begin  // 重複無しは日付をUPDATEする
          O := Items[Index].List[0];
