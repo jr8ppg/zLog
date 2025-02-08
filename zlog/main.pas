@@ -11720,7 +11720,7 @@ begin
                FSpcHitCall := sd.callsign;
             end;
 
-            FSuperCheck.Add(sd.Text);
+            FSuperCheck.Add(SI.Text + sd.Text);
 
             inc(hit);
          end;

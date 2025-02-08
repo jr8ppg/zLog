@@ -2030,7 +2030,7 @@ begin
             score := n / Max(Length(SI.Callsign), Length(strCall));
 
             // RBNQÆ‰ñ”
-            rbncount := SI.List[0].RbnCount;
+            rbncount := SI.RbnCount;
 
             // 0‚È‚çˆê’v
             // 0.1667 ‚P•¶š•sˆê’v

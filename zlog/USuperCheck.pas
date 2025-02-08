@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Spin, Vcl.Grids,
+  StdCtrls, ExtCtrls, Spin, Vcl.Grids, System.UITypes,
   UzLogConst, UzLogGlobal, UzLogForm;
 
 type

@@ -2,10 +2,10 @@ object formSpcViewer: TformSpcViewer
   Left = 0
   Top = 0
   Caption = 'SPC Viewer'
-  ClientHeight = 442
-  ClientWidth = 388
+  ClientHeight = 441
+  ClientWidth = 468
   Color = clBtnFace
-  Constraints.MaxWidth = 400
+  Constraints.MaxWidth = 480
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -13,19 +13,20 @@ object formSpcViewer: TformSpcViewer
   Font.Style = []
   Position = poOwnerFormCenter
   OnCreate = FormCreate
+  OnResize = FormResize
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 409
-    Width = 388
+    Top = 408
+    Width = 468
     Height = 33
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 408
-    ExplicitWidth = 384
+    ExplicitTop = 407
+    ExplicitWidth = 380
     object buttonOK: TButton
-      Left = 149
+      Left = 189
       Top = 3
       Width = 92
       Height = 25
@@ -38,39 +39,47 @@ object formSpcViewer: TformSpcViewer
   object ListView1: TListView
     Left = 0
     Top = 0
-    Width = 388
-    Height = 409
+    Width = 468
+    Height = 408
     Align = alClient
     Columns = <
       item
         Caption = 'No.'
       end
       item
-        Caption = 'Main callsign'
+        Caption = 'Callsign'
         Width = 80
-      end
-      item
-        Alignment = taCenter
-        Caption = 'Serial'
-        Width = 40
-      end
-      item
-        Caption = 'Sub callsign'
-        Width = 80
-      end
-      item
-        Caption = 'NR'
       end
       item
         Alignment = taRightJustify
         Caption = 'RBN count'
+      end
+      item
+        Alignment = taCenter
+        Caption = 'NR#1'
+      end
+      item
+        Alignment = taCenter
+        Caption = 'NR#2'
+      end
+      item
+        Alignment = taCenter
+        Caption = 'NR#3'
+      end
+      item
+        Alignment = taCenter
+        Caption = 'NR#4'
+      end
+      item
+        Alignment = taCenter
+        Caption = 'NR#5'
       end>
     GridLines = True
     ReadOnly = True
     RowSelect = True
     TabOrder = 1
     ViewStyle = vsReport
-    ExplicitWidth = 338
-    ExplicitHeight = 408
+    ExplicitWidth = 380
+    ExplicitHeight = 407
   end
 end

@@ -13,6 +13,7 @@ type
     buttonOK: TButton;
     ListView1: TListView;
     procedure FormCreate(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     { Private éŒ¾ }
   public
@@ -29,6 +30,11 @@ begin
 //
 end;
 
+procedure TformSpcViewer.FormResize(Sender: TObject);
+begin
+   buttonOK.Left := (panel1.Width - buttonOK.Width) div 2;
+end;
+
 procedure TformSpcViewer.SetList(list: TSuperList);
 var
    i: Integer;
@@ -42,17 +48,25 @@ begin
    c := 1;
    for i := 0 to list.Count - 1 do begin
       SI := list[i];
+
+      listitem := ListView1.Items.Add();
+      listitem.Caption := IntToStr(c);
+      listitem.SubItems.Add(SI.Callsign);
+      listitem.SubItems.Add(IntTostr(SI.RbnCount));
+
       for j := 0 to SI.List.Count - 1 do begin
+         if j > 4 then begin
+            Break;
+         end;
          SD := SI.List[j];
-         listitem := ListView1.Items.Add();
-         listitem.Caption := IntToStr(c);
-         listitem.SubItems.Add(SI.Callsign);
-         listitem.SubItems.Add(IntToStr(SD.Serial));
-         listitem.SubItems.Add(SD.Callsign);
          listitem.SubItems.Add(SD.Number);
-         listitem.SubItems.Add(IntTostr(SD.RbnCount));
-         Inc(c);
       end;
+
+      for j := listitem.SubItems.Count + 1 to 7 do begin
+         listitem.SubItems.Add('-');
+      end;
+
+      Inc(c);
    end;
    ListView1.Items.EndUpdate();
 end;

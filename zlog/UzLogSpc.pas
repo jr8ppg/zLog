@@ -22,7 +22,6 @@ type
     FNumber : string;
     FDisplay: string;
     FSerial: Integer;
-    FRbnCount: Integer;
     procedure SetNumber(v: string);
     function GetText(): string;
   public
@@ -33,7 +32,6 @@ type
     property Number: string read FNumber write SetNumber;
     property Text: string read GetText;
     property Serial: Integer read FSerial write FSerial;
-    property RbnCount: Integer read FRbnCount write FRbnCount;
   end;
 
   TSuperDataComparer = class(TComparer<TSuperData>)
@@ -63,11 +61,15 @@ type
   private
     FCallsign : string;
     FList: TSuperDataList;
+    FRbnCount: Integer;
+    function GetText(): string;
   public
     constructor Create();
     destructor Destroy(); override;
     property Callsign: string read FCallsign write FCallsign;
     property List: TSuperDataList read FList;
+    property RbnCount: Integer read FRbnCount write FRbnCount;
+    property Text: string read GetText;
   end;
 
   TSuperListComparer1 = class(TComparer<TSuperData>)
@@ -91,7 +93,6 @@ type
     function IndexOf(SD: TSuperData): Integer; overload;       // unused
     function IndexOf(Q: TQSO): Integer; overload;
     function ObjectOf(SD: TSuperData): TSuperData; overload;   // referenced from USpotClass.pas
-    function ObjectOf(Q: TQSO): TSuperData; overload;
     function RbnVerify(Q: TQSO): Boolean;
     procedure SortByCallsign();                       // unused
     procedure AddData(D: TDateTime; C, N: string; from_rbn: Boolean = False);
@@ -177,7 +178,6 @@ begin
    FCallsign := '';
    FNumber := '';
    FSerial := 0;
-   FRbnCount := 0;
 end;
 
 constructor TSuperData.Create(D: TDateTime; C, N: string);
@@ -187,7 +187,6 @@ begin
    FCallsign := C;
    FDisplay := N;
    Number := N;
-   FRbnCount := 1;
 end;
 
 procedure TSuperData.SetNumber(v: string);
@@ -204,17 +203,8 @@ begin
 end;
 
 function TSuperData.GetText(): string;
-var
-   rbn: string;
 begin
-   if FRbnCount > RBN_VIRIFY_THRESHOLD then begin
-      rbn := '*';
-   end
-   else begin
-      rbn := ' ';
-   end;
-
-   Result := rbn + FillRight(callsign, 11) + FDisplay;
+   Result := FDisplay;
 end;
 
 { TSuperDataList }
@@ -285,11 +275,26 @@ end;
 constructor TSuperIndex.Create();
 begin
    FList := TSuperDataList.Create(True);
+   FRbnCount := 1;
 end;
 
 destructor TSuperIndex.Destroy();
 begin
    FList.Free();
+end;
+
+function TSuperIndex.GetText(): string;
+var
+   rbn: string;
+begin
+   if FRbnCount > RBN_VIRIFY_THRESHOLD then begin
+      rbn := '*';
+   end
+   else begin
+      rbn := ' ';
+   end;
+
+   Result := rbn + FillRight(callsign, 11);
 end;
 
 { TSuperList }
@@ -366,35 +371,17 @@ begin
    end;
 end;
 
-function TSuperList.ObjectOf(Q: TQSO): TSuperData;
-var
-   Index: Integer;
-   SI: TSuperIndex;
-begin
-   SI := TSuperIndex.Create();
-   SI.Callsign := Q.Callsign;
-   try
-      if BinarySearch(SI, Index, FIndexComparer) = True then begin
-         Result := Items[Index].List[0];
-      end
-      else begin
-         Result := nil;
-      end;
-   finally
-      SI.Free();
-   end;
-end;
-
 function TSuperList.RbnVerify(Q: TQSO): Boolean;
 var
-   SD: TSuperData;
+   SI: TSuperIndex;
+   Index: Integer;
 begin
-   SD := Self.ObjectOf(Q);
-   if SD = nil then begin
+   Index := Self.IndexOf(Q);
+   if Index = -1 then begin
       Result := False;
    end
    else begin
-      Result := (SD.RbnCount > RBN_VIRIFY_THRESHOLD);
+      Result := (Items[Index].RbnCount > RBN_VIRIFY_THRESHOLD);
    end;
 end;
 
@@ -416,26 +403,29 @@ begin
    if BinarySearch(SI, Index, FIndexComparer) = True then begin
       // 重複有りならリストに追加する
       if FAcceptDuplicates = True then begin
-         if Items[Index].List.IndexOf(SD) = -1 then begin
-            SD.Serial := Items[Index].List.Count + 1;
-            Items[Index].List.Add(SD);
-         end
-         else begin
-            SD.Free();
+         if N <> '' then begin
+            if Items[Index].List.IndexOf(SD) = -1 then begin
+               SD.Serial := Items[Index].List.Count + 1;
+               Items[Index].List.Add(SD);
+            end
+            else begin
+               SD.Free();
+            end;
          end;
       end
       else begin  // 重複無しは日付をUPDATEする
          O := Items[Index].List[0];
          if O.Date < SD.Date then begin
             O.Date := SD.Date;
-            O.Number := SD.Number;
+            if SD.Number <> '' then begin
+               O.Number := SD.Number;
+            end;
          end;
          SD.Free();
       end;
 
       if from_rbn = True then begin
-         O := Items[Index].List[0];
-         O.RbnCount := O.RbnCount + 1;
+         Items[Index].RbnCount := Items[Index].RbnCount + 1;
       end;
       SI.Free();
    end
@@ -530,7 +520,7 @@ begin
          score := n / Max(Length(SI.Callsign), Length(FPartialStr));
 
          // RBN参照回数
-         rbncount := SI.List[0].RbnCount;
+         rbncount := SI.RbnCount;
 
          // 0なら一致
          // 0.1667 １文字不一致
