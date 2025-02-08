@@ -411,6 +411,9 @@ begin
             else begin
                SD.Free();
             end;
+         end
+         else begin
+            SD.Free();
          end;
       end
       else begin  // d•¡–³‚µ‚Í“ú•t‚ğUPDATE‚·‚é
