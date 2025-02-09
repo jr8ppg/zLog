@@ -397,8 +397,8 @@
             <Form>SuperCheck</Form>
         </DCCReference>
         <DCCReference Include="UzLogSpc.pas"/>
-        <DCCReference Include="Progress.pas">
-            <Form>formProgress</Form>
+        <DCCReference Include="Progress2.pas">
+            <Form>formProgress2</Form>
         </DCCReference>
         <DCCReference Include="HelperLib.pas"/>
         <DCCReference Include="UCwMessageEditor.pas"/>
@@ -563,6 +563,10 @@
         </DCCReference>
         <DCCReference Include="USpcViewer.pas">
             <Form>formSpcViewer</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Progress.pas">
+            <Form>formProgress</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
@@ -835,7 +839,7 @@
                     <RDP_Source_Files Name="Item80">UzLogKeyer.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item81">UZAnalyze.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item82">USuperCheck.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item83">Progress.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item83">Progress2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item84">UCwMessageEditor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item85">UCwMessagePad.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item86">UTextEditor.dfm</RDP_Source_Files>
@@ -877,7 +881,8 @@
                     <RDP_Source_Files Name="Item122">USearch.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item123">USelectClusterLog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item124">USpcViewer.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item125">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item125">Progress.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item126">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

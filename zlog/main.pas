@@ -29,7 +29,7 @@ uses
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
-  UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress,
+  UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
   UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort;
@@ -617,6 +617,8 @@ type
     menuRbnVerify: TMenuItem;
     menuLoadClusterLog: TMenuItem;
     menuShowSpcData: TMenuItem;
+    Labo1: TMenuItem;
+    menuCountryChecker: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -939,6 +941,7 @@ type
     procedure menuRbnVerifyClick(Sender: TObject);
     procedure menuLoadClusterLogClick(Sender: TObject);
     procedure menuShowSpcDataClick(Sender: TObject);
+    procedure menuCountryCheckerClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -7120,6 +7123,7 @@ begin
    end;
 end;
 
+// SPC Viewer
 procedure TMainForm.menuShowSpcDataClick(Sender: TObject);
 var
    f: TformSpcViewer;
@@ -7131,6 +7135,12 @@ begin
    finally
       f.Release();
    end;
+end;
+
+// Country checker
+procedure TMainForm.menuCountryCheckerClick(Sender: TObject);
+begin
+   ShowCtyChk();
 end;
 
 procedure TMainForm.GridPowerChangeClick(Sender: TObject);
@@ -14243,11 +14253,11 @@ var
    strSpotDate: string;
    dtSpot: TDateTime;
    yy, mm, dd, hh, nn: Integer;
-   dlg: TformProgress;
+   dlg: TformProgress2;
 begin
    slFiles := TStringList.Create();
    slText := TStringList.Create();
-   dlg := TformProgress.Create(Self);
+   dlg := TformProgress2.Create(Self);
    Enabled := False;
    try
       slFiles.Assign(slFileList);
@@ -14258,6 +14268,10 @@ begin
       dlg.Show();
 
       for i := 0 to slFiles.Count - 1 do begin
+         if dlg.IsAbort = True then begin
+            Break;
+         end;
+
          // 0000000001111111111222222
          // 1234567890123456789012345
          // zlog_telnet_log_20230624.txt
@@ -14266,14 +14280,24 @@ begin
 
          strSpotDate := Copy(fname, 17, 8);
 
+         dlg.SetRange(0, slText.Count);
          dlg.Title := fname;
          Application.ProcessMessages();
+
+         if dlg.IsAbort = True then begin
+            Break;
+         end;
 
          for j := 0 to slText.Count - 1 do begin
             strTemp := slText[j];
 
+            dlg.StepIt();
             dlg.Text := strTemp;
             Application.ProcessMessages();
+
+            if dlg.IsAbort = True then begin
+               Break;
+            end;
 
             Sp := TSpot.Create;
             if Sp.Analyze(strTemp) = True then begin

@@ -5973,18 +5973,6 @@ object MainForm: TMainForm
       object menuCorrectNR: TMenuItem
         Action = actionCorrectSentNr
       end
-      object menuRbnVerify: TMenuItem
-        Caption = 'RBN Verify'
-        OnClick = menuRbnVerifyClick
-      end
-      object menuLoadClusterLog: TMenuItem
-        Caption = 'Load cluster log'
-        OnClick = menuLoadClusterLogClick
-      end
-      object menuShowSpcData: TMenuItem
-        Caption = 'Show SuperCheck data'
-        OnClick = menuShowSpcDataClick
-      end
       object N2: TMenuItem
         Caption = '-'
       end
@@ -6540,6 +6528,25 @@ object MainForm: TMainForm
       object DecreaseFontSize1: TMenuItem
         Action = actionDecreaseFontSize
         GroupIndex = 1
+      end
+    end
+    object Labo1: TMenuItem
+      Caption = '&Labs'
+      object menuRbnVerify: TMenuItem
+        Caption = 'RBN Verify'
+        OnClick = menuRbnVerifyClick
+      end
+      object menuLoadClusterLog: TMenuItem
+        Caption = 'Load cluster log'
+        OnClick = menuLoadClusterLogClick
+      end
+      object menuShowSpcData: TMenuItem
+        Caption = 'SPC Viewer'
+        OnClick = menuShowSpcDataClick
+      end
+      object menuCountryChecker: TMenuItem
+        Caption = 'Country checker'
+        OnClick = menuCountryCheckerClick
       end
     end
     object Help1: TMenuItem

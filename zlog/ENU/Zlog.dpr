@@ -4,6 +4,7 @@ library Zlog;
 
 {ITE} {DFMFileType} {main.dfm}
 {ITE} {DFMFileType} {Progress.dfm}
+{ITE} {DFMFileType} {Progress2.dfm}
 {ITE} {DFMFileType} {UAbout.dfm}
 {ITE} {DFMFileType} {UACAGMulti.dfm}
 {ITE} {DFMFileType} {UAgeDialog.dfm}
@@ -127,6 +128,7 @@ library Zlog;
 
 {$R 'main.dfm' 'MainForm:TForm'}
 {$R 'Progress.dfm' 'formProgress:TForm'}
+{$R 'Progress2.dfm' 'formProgress2:TForm'}
 {$R 'UAbout.dfm' 'AboutBox:TForm'}
 {$R 'UACAGMulti.dfm' 'ACAGMulti:TForm(BasicMulti)'}
 {$R 'UAgeDialog.dfm' 'AgeDialog:TForm'}

@@ -97,7 +97,7 @@ uses
   UzLogQSO in 'UzLogQSO.pas',
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',
-  Progress in 'Progress.pas' {formProgress},
+  Progress2 in 'Progress2.pas' {formProgress2},
   HelperLib in 'HelperLib.pas',
   UCwMessageEditor in 'UCwMessageEditor.pas',
   UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
@@ -160,7 +160,8 @@ uses
   UParallelPort in 'UParallelPort.pas',
   FTD2XX in 'FTD2XX.pas',
   USelectClusterLog in 'USelectClusterLog.pas' {formSelectClusterLog},
-  USpcViewer in 'USpcViewer.pas' {formSpcViewer};
+  USpcViewer in 'USpcViewer.pas' {formSpcViewer},
+  Progress in 'Progress.pas' {formProgress};
 
 {$R *.res}
 
