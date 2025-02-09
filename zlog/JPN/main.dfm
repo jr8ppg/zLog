@@ -5973,18 +5973,6 @@ object MainForm: TMainForm
       object menuCorrectNR: TMenuItem
         Action = actionCorrectSentNr
       end
-      object menuRbnVerify: TMenuItem
-        Caption = 'RBN '#29031#21512
-        OnClick = menuRbnVerifyClick
-      end
-      object menuLoadClusterLog: TMenuItem
-        Caption = 'Load cluster log'
-        OnClick = menuLoadClusterLogClick
-      end
-      object menuShowSpcData: TMenuItem
-        Caption = 'Show SuperCheck data'
-        OnClick = menuShowSpcDataClick
-      end
       object N2: TMenuItem
         Caption = '-'
       end
@@ -6542,6 +6530,25 @@ object MainForm: TMainForm
         GroupIndex = 1
       end
     end
+    object Labo1: TMenuItem
+      Caption = '&Labs'
+      object menuRbnVerify: TMenuItem
+        Caption = 'RBN Verify'
+        OnClick = menuRbnVerifyClick
+      end
+      object menuLoadClusterLog: TMenuItem
+        Caption = 'Load cluster log'
+        OnClick = menuLoadClusterLogClick
+      end
+      object menuShowSpcData: TMenuItem
+        Caption = 'SPC Viewer'
+        OnClick = menuShowSpcDataClick
+      end
+      object menuCountryChecker: TMenuItem
+        Caption = 'Country checker'
+        OnClick = menuCountryCheckerClick
+      end
+    end
     object Help1: TMenuItem
       Caption = #12504#12523#12503'(&H)'
       object menuAbout: TMenuItem
@@ -6569,6 +6576,13 @@ object MainForm: TMainForm
         Caption = 'ZyLO'#12503#12521#12464#12452#12531#38283#30330#12510#12491#12517#12450#12523'(&Z)'
         Hint = 'How to make ZyLO plugin'
         OnClick = HelpZyLOClick
+      end
+      object N18: TMenuItem
+        Caption = '-'
+      end
+      object menuCfgDatFiles: TMenuItem
+        Caption = 'CFG/DAT files for zLog by JI6DUE'
+        OnClick = menuCfgDatFilesClick
       end
     end
   end

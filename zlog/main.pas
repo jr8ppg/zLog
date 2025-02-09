@@ -619,6 +619,8 @@ type
     menuShowSpcData: TMenuItem;
     Labo1: TMenuItem;
     menuCountryChecker: TMenuItem;
+    N18: TMenuItem;
+    menuCfgDatFiles: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -942,6 +944,7 @@ type
     procedure menuLoadClusterLogClick(Sender: TObject);
     procedure menuShowSpcDataClick(Sender: TObject);
     procedure menuCountryCheckerClick(Sender: TObject);
+    procedure menuCfgDatFilesClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -7575,6 +7578,11 @@ end;
 procedure TMainForm.menuUsersGuideClick(Sender: TObject);
 begin
    ShellExecute(Handle, 'open', PChar('https://use.zlog.org/'), nil, nil, SW_SHOW);
+end;
+
+procedure TMainForm.menuCfgDatFilesClick(Sender: TObject);
+begin
+   ShellExecute(Handle, 'open', PChar('http://ja6ycu.in.coocan.jp/ZLOG/index.html'), nil, nil, SW_SHOW);
 end;
 
 procedure TMainForm.Timer2Timer(Sender: TObject);

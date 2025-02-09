@@ -6577,6 +6577,13 @@ object MainForm: TMainForm
         Hint = 'How to make ZyLO plugin'
         OnClick = HelpZyLOClick
       end
+      object N18: TMenuItem
+        Caption = '-'
+      end
+      object menuCfgDatFiles: TMenuItem
+        Caption = 'CFG/DAT files for zLog by JI6DUE'
+        OnClick = menuCfgDatFilesClick
+      end
     end
   end
   object OpenDialog: TOpenDialog
