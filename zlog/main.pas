@@ -621,6 +621,7 @@ type
     menuCountryChecker: TMenuItem;
     N18: TMenuItem;
     menuCfgDatFiles: TMenuItem;
+    N19: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -945,6 +946,8 @@ type
     procedure menuShowSpcDataClick(Sender: TObject);
     procedure menuCountryCheckerClick(Sender: TObject);
     procedure menuCfgDatFilesClick(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
+      State: TGridDrawState);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1428,6 +1431,7 @@ resourcestring
   TMainForm_Assigned_Another_Function = 'Ctrl+Q is assigned to another function. Do you want to take it?';  // 'Ctrl+Qは他の機能にアサインされています。横取りしますか？'
   TMainForm_To_Change_the_mode = 'To change the operating mode, first turn off the F2A mode.';  // 'モードを変更するには、先にF2Aモードをoffにして下さい'
   TMainForm_To_Change_the_band = 'To change the operating band, first turn off the F2A mode.';  // 'バンドを変更するには、先にF2Aモードをoffにして下さい'
+  TMainform_rbn_verified = 'Verification results' + #13#10 + '%1 of %2 stations were verified with RBN';
 
 var
   MainForm: TMainForm;
@@ -4507,6 +4511,73 @@ begin
    EditCurrentRow;
 end;
 
+procedure TMainForm.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+var
+   fg: TColor;
+   bg: TColor;
+   txt: string;
+   rc: TRect;
+   i: Integer;
+   w: Integer;
+   Q: TQSO;
+begin
+   Q := TQSO(Grid.Objects[0, ARow]);
+   txt := Grid.Cells[ACol, ARow];
+   with Grid.Canvas do begin
+      fg := clBlack;
+      bg := clWhite;
+
+      if ARow = 0 then begin
+         Pen.Color := Grid.FixedColor;
+         Pen.Style := psSolid;
+         Brush.Color := Grid.FixedColor;
+         Brush.Style := bsSolid;
+      end
+      else begin
+         if (ARow = Grid.Row) and (Grid.Focused = True) then begin
+            bg := RGB($E5, $F3, $FF);
+         end
+         else begin
+            if (Q <> nil) and (Q.RbnVerified = True) then begin
+               bg := RGB($CD, $FF, $FF);
+            end
+            else begin
+               bg := clWhite;
+            end;
+         end;
+         Pen.Color := bg;
+         Pen.Style := psSolid;
+         Brush.Color := bg;
+         Brush.Style := bsSolid;
+      end;
+      FillRect(Rect);
+
+      Font.Color := fg;
+      Font.Size := Grid.Font.Size;
+      Font.Name := Grid.Font.Name;
+
+      rc.Top := Rect.Top + 1;
+      rc.Left := Rect.Left + 1;
+      rc.Bottom := rect.Bottom;
+      rc.Right := rect.Right;
+      TextRect(rc, txt, [tfLeft, tfVerticalCenter]);
+
+      if (ACol = Grid.VisibleColCount) and (gdSelected in State) and (Grid.Focused = True) then begin
+         w := 0;
+         for i := 0 to Grid.VisibleColCount do begin
+            w := w + Grid.ColWidths[i];
+         end;
+
+         rc.Top := Rect.Top;
+         rc.Left := 0;
+         rc.Bottom := rect.Bottom;
+         rc.Right := w;
+
+         DrawFocusRect(rc);
+      end;
+   end;
+end;
+
 procedure TMainForm.GridEnter(Sender: TObject);
 begin
    FPastEditMode := True;
@@ -7102,11 +7173,24 @@ procedure TMainForm.menuRbnVerifyClick(Sender: TObject);
 var
    i: Integer;
    Q: TQSO;
+   c: Integer;
+   txt: string;
 begin
+   c := 0;
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
       Q.RbnVerified := FSuperCheckList.RbnVerify(Q);
+
+      if Q.RbnVerified = True then begin
+         Inc(c);
+      end;
    end;
+
+   txt := StringReplace(TMainform_rbn_verified, '%1', IntToStr(c), [rfReplaceAll]);
+   txt := StringReplace(txt, '%2', IntToStr(Log.TotalQSO), [rfReplaceAll]);
+   MessageBox(Handle, PChar(txt), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
+
+   GridRefreshScreen();
 end;
 
 // Load RBN data

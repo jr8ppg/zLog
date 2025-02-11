@@ -9,7 +9,7 @@ object formSpcViewer: TformSpcViewer
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poOwnerFormCenter
   OnCreate = FormCreate
@@ -30,7 +30,7 @@ object formSpcViewer: TformSpcViewer
       Top = 3
       Width = 92
       Height = 25
-      Caption = 'Close'
+      Caption = #38281#12376#12427
       Default = True
       ModalResult = 1
       TabOrder = 0

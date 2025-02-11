@@ -15,8 +15,10 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure listLogFilesClickCheck(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private êÈåæ }
+    FCheckedList: TStringList;
     function GetFileList(): TStrings;
   public
     { Public êÈåæ }
@@ -29,6 +31,7 @@ implementation
 
 procedure TformSelectClusterLog.FormCreate(Sender: TObject);
 begin
+   FCheckedList := TStringList.Create();
    listLogFiles.Items.Clear();
 end;
 
@@ -64,6 +67,11 @@ begin
    end;
 end;
 
+procedure TformSelectClusterLog.FormDestroy(Sender: TObject);
+begin
+   FCheckedList.Free();
+end;
+
 procedure TformSelectClusterLog.listLogFilesClickCheck(Sender: TObject);
 var
    i: Integer;
@@ -85,8 +93,18 @@ begin
 end;
 
 function TformSelectClusterLog.GetFileList(): TStrings;
+var
+   i: Integer;
 begin
-   Result := listLogFiles.Items;
+   FCheckedList.Clear();
+
+   for i := 0 to listLogFiles.Count - 1 do begin
+      if listLogFiles.Checked[i] = True then begin
+         FCheckedList.Add(listLogFiles.Items[i]);
+      end;
+   end;
+
+   Result := FCheckedList;
 end;
 
 end.

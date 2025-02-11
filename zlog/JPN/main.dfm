@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 138
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
-  ClientHeight = 422
+  ClientHeight = 421
   ClientWidth = 528
   Color = clBtnFace
   Constraints.MinWidth = 540
@@ -851,6 +851,7 @@ object MainForm: TMainForm
       Align = alClient
       ColCount = 10
       DefaultRowHeight = 16
+      DefaultDrawing = False
       FixedCols = 0
       RowCount = 101
       Font.Charset = DEFAULT_CHARSET
@@ -865,6 +866,7 @@ object MainForm: TMainForm
       TabOrder = 2
       OnClick = GridClick
       OnDblClick = GridDblClick
+      OnDrawCell = GridDrawCell
       OnEnter = GridEnter
       OnExit = GridExit
       OnKeyDown = GridKeyDown
@@ -6531,21 +6533,24 @@ object MainForm: TMainForm
       end
     end
     object Labo1: TMenuItem
-      Caption = '&Labs'
-      object menuRbnVerify: TMenuItem
-        Caption = 'RBN Verify'
-        OnClick = menuRbnVerifyClick
-      end
+      Caption = #12521#12508'(&L)'
       object menuLoadClusterLog: TMenuItem
-        Caption = 'Load cluster log'
+        Caption = 'PacketCluster'#12525#12464#12434#12525#12540#12489
         OnClick = menuLoadClusterLogClick
       end
+      object menuRbnVerify: TMenuItem
+        Caption = 'RBN'#29031#21512
+        OnClick = menuRbnVerifyClick
+      end
+      object N19: TMenuItem
+        Caption = '-'
+      end
       object menuShowSpcData: TMenuItem
-        Caption = 'SPC Viewer'
+        Caption = 'SPC'#12499#12517#12540#12450
         OnClick = menuShowSpcDataClick
       end
       object menuCountryChecker: TMenuItem
-        Caption = 'Country checker'
+        Caption = 'CTY'#12481#12455#12483#12459#12540
         OnClick = menuCountryCheckerClick
       end
     end

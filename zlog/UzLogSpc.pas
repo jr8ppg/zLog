@@ -8,7 +8,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, System.Math, Generics.Collections, Generics.Defaults,
-  System.Character, System.DateUtils,
+  System.Character, System.DateUtils, System.StrUtils,
   UzLogConst, UzLogGlobal, UzLogQSO, USuperCheck2;
 
 const
@@ -138,13 +138,15 @@ type
      FEditDistance: Integer;
      FScore: Extended;
      FRbnCount: Integer;
+     FPosition: Integer;
   public
     constructor Create(); overload;
-    constructor Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer); overload;
+    constructor Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer; diffpos: Integer); overload;
     property PartialStr: string read FPartialStr write FPartialStr;
     property EditDistance: Integer read FEditDistance write FEditDistance;
     property Score: Extended read FScore write FScore;
     property RbnCount: Integer read FRbnCount write FRbnCount;
+    property Position: Integer read FPosition write FPosition;
   end;
 
   TSuperResultComparer1 = class(TComparer<TSuperResult>)
@@ -373,7 +375,6 @@ end;
 
 function TSuperList.RbnVerify(Q: TQSO): Boolean;
 var
-   SI: TSuperIndex;
    Index: Integer;
 begin
    Index := Self.IndexOf(Q);
@@ -503,8 +504,12 @@ var
    R: TSuperResult;
    SI: TSuperIndex;
    rbncount: Integer;
+   diffpos: Integer;
    rbn: string;
    np1: string;
+   j: Integer;
+   len1, len2: Integer;
+   C: string;
 begin
    L := TSuperResultList.Create();
    try
@@ -517,10 +522,13 @@ begin
          end;
 
          // レーベンシュタイン距離を求める
-         n := LD_dp(SI.Callsign, FPartialStr);
+         C := SI.Callsign;
+         n := LD_dp(C, FPartialStr);
 
          // レーベンシュタイン距離から類似度を算出
-         score := n / Max(Length(SI.Callsign), Length(FPartialStr));
+         len1 := Length(C);
+         len2 := Length(FPartialStr);
+         score := n / Max(len1, len2);
 
          // RBN参照回数
          rbncount := SI.RbnCount;
@@ -530,7 +538,25 @@ begin
          // 0.3333 ２文字不一致
          // 0.5000 ３文字不一致
          if score < 0.3 then begin
-            R := TSuperResult.Create(SI.Callsign, n, score, rbncount);
+            // 違う場所を調べる
+            diffpos := 0;
+
+            if len1 > len2 then begin
+               FPartialStr := FPartialStr + DupeString(' ', len1 - len2);
+            end
+            else if len1 < len2 then begin
+               C := C + DupeString(' ', len2 - len1);
+               len1 := len2;
+            end;
+
+            for j := 1 to len1 do begin
+               if C[j] <> FPartialStr[j] then begin
+                  diffpos := j;
+                  Break;
+               end;
+            end;
+
+            R := TSuperResult.Create(SI.Callsign, n, score, rbncount, diffpos);
             L.Add(R);
          end;
       end;
@@ -544,7 +570,12 @@ begin
             np1 := '*';
          end
          else begin
-            np1 := ' ';
+            if L[i].Position <= 9 then begin
+               np1 := IntToStr(L[i].Position);
+            end
+            else begin
+               np1 := 'F';
+            end;
          end;
          if L[i].RbnCount > RBN_VIRIFY_THRESHOLD then begin
             rbn := '*';
@@ -863,15 +894,17 @@ begin
    FEditDistance := 0;
    FScore := 0;
    FRbnCount := 0;
+   FPosition := 0;
 end;
 
-constructor TSuperResult.Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer);
+constructor TSuperResult.Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer; diffpos: Integer);
 begin
    Inherited Create();
    FPartialStr := str;
    FEditDistance := editdistance;
    FScore := score;
    FRbnCount := rbncount;
+   FPosition := diffpos;
 end;
 
 function TSuperResultComparer1.Compare(const Left, Right: TSuperResult): Integer;

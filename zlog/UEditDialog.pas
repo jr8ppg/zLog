@@ -112,6 +112,7 @@ type
     actionChangeMode2: TAction;
     actionChangePower2: TAction;
     actionPlayCQA1: TAction;
+    checkRbnVerified: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -377,6 +378,7 @@ begin
    workQSO.QsyViolation := checkQsyViolation.Checked;
    workQSO.Forced := checkForced.Checked;
    workQSO.Invalid := checkInvalid.Checked;
+   workQSO.RbnVerified := checkRbnVerified.Checked;
 
    // QSL Status
    if radioQslNone.Checked then workQSO.QslState := qsNone;
@@ -610,6 +612,7 @@ begin
    checkForced.Checked := workQSO.Forced;
    checkInvalid.Checked := workQSO.Invalid;
    checkInvalidClick(checkInvalid);
+   checkRbnVerified.Checked := workQSO.RbnVerified;
 
    // QSL Status
    radioQslNone.Checked := (workQSO.QslState = qsNone);

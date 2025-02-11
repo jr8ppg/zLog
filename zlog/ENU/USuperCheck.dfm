@@ -33,13 +33,14 @@ object SuperCheck: TSuperCheck
       238
       35)
     object Label1: TLabel
-      Left = 153
+      Left = 149
       Top = 11
       Width = 40
       Height = 13
       Anchors = [akTop, akRight]
       Caption = 'Columns'
       Layout = tlCenter
+      ExplicitLeft = 153
     end
     object Button3: TButton
       Left = 4
@@ -60,7 +61,7 @@ object SuperCheck: TSuperCheck
       OnClick = StayOnTopClick
     end
     object SpinEdit: TSpinEdit
-      Left = 197
+      Left = 193
       Top = 8
       Width = 33
       Height = 22
@@ -70,7 +71,7 @@ object SuperCheck: TSuperCheck
       TabOrder = 2
       Value = 1
       OnChange = SpinEditChange
-      ExplicitLeft = 193
+      ExplicitLeft = 189
     end
   end
   object Grid: TStringGrid

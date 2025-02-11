@@ -8,25 +8,26 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsErrorMessage 64160
-#define UExceptionDialog_RsDetailsIntro 64161
-#define UExceptionDialog_RsUnitVersioningIntro 64162
-#define UExceptionDialog_RsExceptionMessage 64176
-#define UExceptionDialog_RsExceptionAddr 64177
-#define UExceptionDialog_RsStackList 64178
-#define UExceptionDialog_RsModulesList 64179
-#define UExceptionDialog_RsOSVersion 64180
-#define UExceptionDialog_RsProcessor 64181
-#define UExceptionDialog_RsMemory 64182
-#define UExceptionDialog_RsScreenRes 64183
-#define UExceptionDialog_RsActiveControl 64184
-#define UExceptionDialog_RsThread 64185
-#define UExceptionDialog_RsMissingVersionInfo 64186
-#define UExceptionDialog_RsExceptionStack 64187
-#define UExceptionDialog_RsMainThreadID 64188
-#define UExceptionDialog_RsExceptionThreadID 64189
-#define UExceptionDialog_RsMainThreadCallStack 64190
-#define UExceptionDialog_RsThreadCallStack 64191
+#define UExceptionDialog_RsThreadCallStack 64160
+#define UExceptionDialog_RsErrorMessage 64161
+#define UExceptionDialog_RsDetailsIntro 64162
+#define UExceptionDialog_RsUnitVersioningIntro 64163
+#define UExceptionDialog_RsExceptionClass 64176
+#define UExceptionDialog_RsExceptionMessage 64177
+#define UExceptionDialog_RsExceptionAddr 64178
+#define UExceptionDialog_RsStackList 64179
+#define UExceptionDialog_RsModulesList 64180
+#define UExceptionDialog_RsOSVersion 64181
+#define UExceptionDialog_RsProcessor 64182
+#define UExceptionDialog_RsMemory 64183
+#define UExceptionDialog_RsScreenRes 64184
+#define UExceptionDialog_RsActiveControl 64185
+#define UExceptionDialog_RsThread 64186
+#define UExceptionDialog_RsMissingVersionInfo 64187
+#define UExceptionDialog_RsExceptionStack 64188
+#define UExceptionDialog_RsMainThreadID 64189
+#define UExceptionDialog_RsExceptionThreadID 64190
+#define UExceptionDialog_RsMainThreadCallStack 64191
 #define Main_TMainForm_SoundFileFolderNotSet 64192
 #define Main_TMainForm_Compressing 64193
 #define Main_TMainForm_FailedToCompressSoundFiles 64194
@@ -41,8 +42,8 @@
 #define Main_TMainForm_Assigned_Another_Function 64203
 #define Main_TMainForm_To_Change_the_mode 64204
 #define Main_TMainForm_To_Change_the_band 64205
-#define UExceptionDialog_RsAppError 64206
-#define UExceptionDialog_RsExceptionClass 64207
+#define Main_TMainform_rbn_verified 64206
+#define UExceptionDialog_RsAppError 64207
 #define Main_TMainForm_Anti_zeroin 64208
 #define Main_TMainForm_Set_CQ_Repeat_Int 64209
 #define Main_TMainForm_Invalid_zone 64210
@@ -1373,9 +1374,11 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
@@ -1391,7 +1394,6 @@ BEGIN
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
-	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	Main_TMainForm_SoundFileFolderNotSet,	L"\x30B5\x30A6\x30F3\x30C9\x30D5\x30A1\x30A4\x30EB\x30D5\x30A9\x30EB\x30C0\x304C\x8A2D\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	Main_TMainForm_Compressing,	L"\x30D5\x30A1\x30A4\x30EB\x3092\x5727\x7E2E\x3057\x3066\x3044\x307E\x3059\x30FB\x30FB\x30FB"
 	Main_TMainForm_FailedToCompressSoundFiles,	L"\x30B5\x30A6\x30F3\x30C9\x30D5\x30A1\x30A4\x30EB\x306E\x5727\x7E2E\x306B\x5931\x6557\x3057\x307E\x3057\x305F"
@@ -1406,8 +1408,8 @@ BEGIN
 	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q\x306F\x4ED6\x306E\x6A5F\x80FD\x306B\x30A2\x30B5\x30A4\x30F3\x3055\x308C\x3066\x3044\x307E\x3059\x3002\x6A2A\x53D6\x308A\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_To_Change_the_mode,	L"\x904B\x7528\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
 	Main_TMainForm_To_Change_the_band,	L"\x904B\x7528\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
+	Main_TMainform_rbn_verified,	L"RBN\x7167\x5408\x7D50\x679C\r\n%2 \x5C40\x4E2D %1 \x5C40\x304CRBN\x3068\x7167\x5408\x3067\x304D\x307E\x3057\x305F"
 	UExceptionDialog_RsAppError,	L"%s - application error"
-	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
 	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
 	Main_TMainForm_Invalid_zone,	L"\x7121\x52B9\x306AZone\x3067\x3059"

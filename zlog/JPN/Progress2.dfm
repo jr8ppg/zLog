@@ -44,7 +44,7 @@ object formProgress2: TformProgress2
     Top = 72
     Width = 73
     Height = 25
-    Caption = 'Abort'
+    Caption = #20013#27490
     TabOrder = 1
     OnClick = buttonAbortClick
   end

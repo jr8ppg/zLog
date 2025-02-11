@@ -2008,6 +2008,9 @@ var
    score: Extended;
    rbncount: Integer;
    slNplusOne: TStringList;
+   diffpos: Integer;
+   C: string;
+   len1, len2: Integer;
 begin
    L := TSuperResultList.Create();
    slNplusOne := TStringList.Create();
@@ -2024,10 +2027,13 @@ begin
             SI := MainForm.SuperCheckList[j];
 
             // レーベンシュタイン距離を求める
+            C := SI.Callsign;
             n := LD_dp(SI.Callsign, strCall);
 
             // レーベンシュタイン距離から類似度を算出
-            score := n / Max(Length(SI.Callsign), Length(strCall));
+            len1 := Length(C);
+            len2 := Length(strCall);
+            score := n / Max(len1, len2);
 
             // RBN参照回数
             rbncount := SI.RbnCount;
@@ -2036,8 +2042,9 @@ begin
             // 0.1667 １文字不一致
             // 0.3333 ２文字不一致
             // 0.5000 ３文字不一致
-            if score < 0.2 then begin
-               R := TSuperResult.Create(SI.Callsign, n, score, rbncount);
+            if score < 0.3 then begin
+               diffpos := 0;
+               R := TSuperResult.Create(SI.Callsign, n, score, rbncount, diffpos);
                L.Add(R);
             end;
          end;

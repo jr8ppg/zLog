@@ -3,8 +3,8 @@ object formSelectClusterLog: TformSelectClusterLog
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Select cluster log'
-  ClientHeight = 190
-  ClientWidth = 307
+  ClientHeight = 189
+  ClientWidth = 303
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,6 +13,7 @@ object formSelectClusterLog: TformSelectClusterLog
   Font.Style = []
   Position = poOwnerFormCenter
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   TextHeight = 13
   object listLogFiles: TCheckListBox
@@ -37,13 +38,14 @@ object formSelectClusterLog: TformSelectClusterLog
   end
   object Panel1: TPanel
     Left = 0
-    Top = 157
-    Width = 307
+    Top = 156
+    Width = 303
     Height = 33
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 216
+    ExplicitTop = 158
+    ExplicitWidth = 311
     object buttonOK: TButton
       Left = 90
       Top = 3

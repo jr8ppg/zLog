@@ -1264,6 +1264,7 @@ begin
    FForced := src.FForced;
    FQslState := src.FQslState;
    FInvalid := src.Invalid;
+   FRbnVerified := src.RbnVerified;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;
@@ -2304,7 +2305,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","Forced","QslState","Invalid","Area"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","Forced","QslState","Invalid","Area","RBN Verified"';
 var
    F: TextFile;
    i: Integer;
@@ -2436,6 +2437,9 @@ begin
 
          // 33—ñ–Ú Area
          slCsv.Add(Q.Area);
+
+         // 34—ñ–Ú RBN Verified
+         slCsv.Add(BoolToStr(Q.RbnVerified, True));
 
          WriteLn(F, UTF8String(slCsv.DelimitedText));
       end;
@@ -3890,7 +3894,7 @@ begin
       try
          for i := 1 to slFile.Count - 1 do begin
             slLine.Clear();
-            slLine.CommaText := slFile.Strings[i] + DupeString(',', 32);
+            slLine.CommaText := slFile.Strings[i] + DupeString(',', 34);
 
             Q := TQSO.Create();
 
@@ -4002,6 +4006,11 @@ begin
 
             // 32—ñ–Ú Invalid
             Q.Invalid := StrToBoolDef(slLine[31], False);
+
+            // 33—ñ–Ú Area
+
+            // 34—ñ–Ú RBN Verified
+            Q.RbnVerified := StrToBoolDef(slLine[33], False);
 
             // QSOID‚ª–³‚¯‚ê‚Î”­”Ô‚·‚é
             if Q.Reserve3 = 0 then begin

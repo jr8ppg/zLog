@@ -851,6 +851,7 @@ object MainForm: TMainForm
       Align = alClient
       ColCount = 10
       DefaultRowHeight = 16
+      DefaultDrawing = False
       FixedCols = 0
       RowCount = 101
       Font.Charset = DEFAULT_CHARSET
@@ -865,6 +866,7 @@ object MainForm: TMainForm
       TabOrder = 2
       OnClick = GridClick
       OnDblClick = GridDblClick
+      OnDrawCell = GridDrawCell
       OnEnter = GridEnter
       OnExit = GridExit
       OnKeyDown = GridKeyDown
@@ -6532,13 +6534,16 @@ object MainForm: TMainForm
     end
     object Labo1: TMenuItem
       Caption = '&Labs'
+      object menuLoadClusterLog: TMenuItem
+        Caption = 'Load cluster log'
+        OnClick = menuLoadClusterLogClick
+      end
       object menuRbnVerify: TMenuItem
         Caption = 'RBN Verify'
         OnClick = menuRbnVerifyClick
       end
-      object menuLoadClusterLog: TMenuItem
-        Caption = 'Load cluster log'
-        OnClick = menuLoadClusterLogClick
+      object N19: TMenuItem
+        Caption = '-'
       end
       object menuShowSpcData: TMenuItem
         Caption = 'SPC Viewer'
