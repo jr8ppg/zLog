@@ -622,6 +622,7 @@ type
     N18: TMenuItem;
     menuCfgDatFiles: TMenuItem;
     N19: TMenuItem;
+    menuRbnOptions: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -948,6 +949,7 @@ type
     procedure menuCfgDatFilesClick(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
       State: TGridDrawState);
+    procedure menuRbnOptionsClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1456,7 +1458,7 @@ uses
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
-  UCountryChecker, USelectClusterLog, USpcViewer;
+  UCountryChecker, USelectClusterLog, USpcViewer, UOptions3;
 
 {$R *.DFM}
 
@@ -4525,7 +4527,6 @@ begin
    txt := Grid.Cells[ACol, ARow];
    with Grid.Canvas do begin
       fg := clBlack;
-      bg := clWhite;
 
       if ARow = 0 then begin
          Pen.Color := Grid.FixedColor;
@@ -4539,10 +4540,24 @@ begin
          end
          else begin
             if (Q <> nil) and (Q.RbnVerified = True) then begin
-               bg := RGB($CD, $FF, $FF);
+               bg := dmZLogGlobal.Settings.FQsoListColors[2].FBackColor;
+               fg := dmZLogGlobal.Settings.FQsoListColors[2].FForeColor;
+               if dmZLogGlobal.Settings.FQsoListColors[2].FBold = True then begin
+                  Font.Style := Font.Style + [fsBold];
+               end
+               else begin
+                  Font.Style := Font.Style - [fsBold];
+               end;
             end
             else begin
-               bg := clWhite;
+               bg := dmZLogGlobal.Settings.FQsoListColors[1].FBackColor;
+               fg := dmZLogGlobal.Settings.FQsoListColors[1].FForeColor;
+               if dmZLogGlobal.Settings.FQsoListColors[1].FBold = True then begin
+                  Font.Style := Font.Style + [fsBold];
+               end
+               else begin
+                  Font.Style := Font.Style - [fsBold];
+               end;
             end;
          end;
          Pen.Color := bg;
@@ -7191,6 +7206,19 @@ begin
    MessageBox(Handle, PChar(txt), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
 
    GridRefreshScreen();
+end;
+
+// RBN Options
+procedure TMainForm.menuRbnOptionsClick(Sender: TObject);
+var
+   dlg: TformOptions3;
+begin
+   dlg := TformOptions3.Create(Self);
+   try
+      dlg.ShowModal();
+   finally
+      dlg.Release();
+   end;
 end;
 
 // Load RBN data

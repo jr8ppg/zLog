@@ -11,9 +11,6 @@ uses
   System.Character, System.DateUtils, System.StrUtils,
   UzLogConst, UzLogGlobal, UzLogQSO, USuperCheck2;
 
-const
-  RBN_VIRIFY_THRESHOLD = 2;
-
 type
   TSuperData = class(TObject)
   private
@@ -289,7 +286,7 @@ function TSuperIndex.GetText(): string;
 var
    rbn: string;
 begin
-   if FRbnCount > RBN_VIRIFY_THRESHOLD then begin
+   if FRbnCount > dmZLogGlobal.Settings.FRbnCountForRbnVerified then begin
       rbn := '*';
    end
    else begin
@@ -382,7 +379,7 @@ begin
       Result := False;
    end
    else begin
-      Result := (Items[Index].RbnCount > RBN_VIRIFY_THRESHOLD);
+      Result := (Items[Index].RbnCount > dmZLogGlobal.Settings.FRbnCountForRbnVerified);
    end;
 end;
 
@@ -577,7 +574,7 @@ begin
                np1 := 'F';
             end;
          end;
-         if L[i].RbnCount > RBN_VIRIFY_THRESHOLD then begin
+         if L[i].RbnCount > dmZLogGlobal.Settings.FRbnCountForRbnVerified then begin
             rbn := '*';
          end
          else begin

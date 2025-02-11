@@ -78,6 +78,7 @@ library Zlog;
 {ITE} {DFMFileType} {UOperatorPowerDialog.dfm}
 {ITE} {DFMFileType} {UOptions.dfm}
 {ITE} {DFMFileType} {UOptions2.dfm}
+{ITE} {DFMFileType} {UOptions3.dfm}
 {ITE} {DFMFileType} {UPackageLoader.dfm}
 {ITE} {DFMFileType} {UPartials.dfm}
 {ITE} {DFMFileType} {UPediScore.dfm}
@@ -202,6 +203,7 @@ library Zlog;
 {$R 'UOperatorPowerDialog.dfm' 'OperatorPowerDialog:TForm'}
 {$R 'UOptions.dfm' 'formOptions:TForm'}
 {$R 'UOptions2.dfm' 'formOptions2:TForm'}
+{$R 'UOptions3.dfm' 'formOptions3:TForm'}
 {$R 'UPackageLoader.dfm' 'PackageLoader:TForm'}
 {$R 'UPartials.dfm' 'PartialCheck:TForm(ZLogForm)'}
 {$R 'UPediScore.dfm' 'PediScore:TForm(BasicScore)'}

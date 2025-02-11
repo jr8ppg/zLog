@@ -172,8 +172,8 @@
         <DCCReference Include="URateDialog.pas">
             <Form>RateDialog</Form>
         </DCCReference>
-        <DCCReference Include="UOptions2.pas">
-            <Form>formOptions2</Form>
+        <DCCReference Include="UOptions3.pas">
+            <Form>formOptions3</Form>
         </DCCReference>
         <DCCReference Include="UMenu.pas">
             <Form>MenuForm</Form>
@@ -569,6 +569,10 @@
             <Form>formProgress</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UOptions2.pas">
+            <Form>formOptions2</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -768,7 +772,7 @@
                     <RDP_Source_Files Name="Item9">UEditDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item10">UAbout.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item11">URateDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item12">UOptions2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item12">UOptions3.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">UMenu.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">UACAGMulti.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">USuperCheck2.dfm</RDP_Source_Files>
@@ -882,7 +886,8 @@
                     <RDP_Source_Files Name="Item123">USelectClusterLog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item124">USpcViewer.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item125">Progress.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item126">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item126">UOptions2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item127">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

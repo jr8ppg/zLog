@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetCW
+    ActivePage = tabsheetMisc
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 440

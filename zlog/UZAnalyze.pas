@@ -2055,7 +2055,7 @@ begin
          slNplusOne.Clear();
          for j := 0 to Min(L.Count - 1, maxhit) do begin
             if L[j].EditDistance > 0 then begin
-               if L[j].RbnCount > RBN_VIRIFY_THRESHOLD then begin
+               if L[j].RbnCount > dmZLogGlobal.Settings.FRbnCountForRbnVerified then begin
                   {$IFDEF DEBUG}
                   slNplusOne.Add(L[j].PartialStr + '(' + Format('%.3f', [L[j].Score]) + ')');
                   {$ELSE}

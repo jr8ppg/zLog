@@ -16,7 +16,7 @@ uses
   UEditDialog in 'UEditDialog.pas' {EditDialog},
   UAbout in 'UAbout.pas' {AboutBox},
   URateDialog in 'URateDialog.pas' {RateDialog},
-  UOptions2 in 'UOptions2.pas' {formOptions2},
+  UOptions3 in 'UOptions3.pas' {formOptions3},
   UMenu in 'UMenu.pas' {MenuForm},
   UACAGMulti in 'UACAGMulti.pas' {ACAGMulti},
   USuperCheck2 in 'USuperCheck2.pas' {SuperCheck2},
@@ -161,7 +161,8 @@ uses
   FTD2XX in 'FTD2XX.pas',
   USelectClusterLog in 'USelectClusterLog.pas' {formSelectClusterLog},
   USpcViewer in 'USpcViewer.pas' {formSpcViewer},
-  Progress in 'Progress.pas' {formProgress};
+  Progress in 'Progress.pas' {formProgress},
+  UOptions2 in 'UOptions2.pas' {formOptions2};
 
 {$R *.res}
 

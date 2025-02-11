@@ -343,7 +343,10 @@ type
     FClusterRetryIntervalSec: Integer;
     FClusterForceReconnect: Boolean;
     FClusterForceReconnectIntervalMin: Integer;
+
     FClusterUseForSuperCheck: Boolean;
+    FRbnCountForRbnVerified: Integer;
+    FQsoListColors: array[1..2] of TColorSetting;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -1526,7 +1529,18 @@ begin
       Settings.FClusterRetryIntervalSec := ini.ReadInteger('ClusterWindow', 'RetryIntervalSec', 180);
       Settings.FClusterForceReconnect  := ini.ReadBool('ClusterWindow', 'ForceReconnect', False);
       Settings.FClusterForceReconnectIntervalMin := ini.ReadInteger('ClusterWindow', 'ForceReconnectInterval', 6 * 60);
-      Settings.FClusterUseForSuperCheck := ini.ReadBool('ClusterWindow', 'UseForSuperCheck', False);
+
+      // RBN Options
+      Settings.FClusterUseForSuperCheck := ini.ReadBool('RBN', 'UseForSuperCheck', False);
+      Settings.FRbnCountForRbnVerified := ini.ReadInteger('RBN', 'RbnCountForRbnVerified', 2);
+
+      Settings.FQsoListColors[1].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor1', '$000000'), clBlack);
+      Settings.FQsoListColors[1].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor1', '$ffffff'), clWhite);
+      Settings.FQsoListColors[1].FBold      := ini.ReadBool('MainQsoList', 'Bold1', True);
+
+      Settings.FQsoListColors[2].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor2', '$000000'), clRed);
+      Settings.FQsoListColors[2].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor2', '$ffffff'), clRed);
+      Settings.FQsoListColors[2].FBold      := ini.ReadBool('MainQsoList', 'Bold2', True);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -2171,7 +2185,14 @@ begin
       ini.WriteInteger('ClusterWindow', 'RetryIntervalSec', Settings.FClusterRetryIntervalSec);
       ini.WriteBool('ClusterWindow', 'ForceReconnect', Settings.FClusterForceReconnect);
       ini.WriteInteger('ClusterWindow', 'ForceReconnectInterval', Settings.FClusterForceReconnectIntervalMin);
-      ini.WriteBool('ClusterWindow', 'UseForSuperCheck', Settings.FClusterUseForSuperCheck);
+
+      ini.WriteBool('RBN', 'UseForSuperCheck', Settings.FClusterUseForSuperCheck);
+      ini.WriteInteger('RBN', 'RbnCountForRbnVerified', Settings.FRbnCountForRbnVerified);
+      for i := 1 to 2 do begin
+         ini.WriteString('MainQsoList', 'ForeColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FForeColor));
+         ini.WriteString('MainQsoList', 'BackColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FBackColor));
+         ini.WriteBool('MainQsoList', 'Bold' + IntToStr(i), Settings.FQsoListColors[i].FBold);
+      end;
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);

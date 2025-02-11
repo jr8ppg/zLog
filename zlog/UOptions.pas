@@ -405,7 +405,6 @@ type
     checkUseRigDevice: TCheckBox;
     radioSo2rParallel: TRadioButton;
     checkUseCanSend: TCheckBox;
-    checkUseSpcData: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1718,7 +1717,6 @@ begin
       Settings.FClusterReConnectMax := spMaxAutoReconnect.Value;
       Settings.FClusterRetryIntervalSec := spAutoReconnectIntervalSec.Value;
       Settings.FClusterForceReconnectIntervalMin := spForceReconnectIntervalHour.Value * 60;
-      Settings.FClusterUseForSuperCheck := checkUseSpcData.Checked;
       PacketClusterListViewToList();
 
       Settings._zlinkport := ZLinkCombo.ItemIndex;
@@ -2068,7 +2066,6 @@ begin
       spMaxAutoReconnect.Value := Settings.FClusterReConnectMax;
       spAutoReconnectIntervalSec.Value := Settings.FClusterRetryIntervalSec;
       spForceReconnectIntervalHour.Value := Settings.FClusterForceReconnectIntervalMin div 60;
-      checkUseSpcData.Checked := Settings.FClusterUseForSuperCheck;
       PacketClusterListToListView();
 
       FTempZLinkTelnet := Settings._zlink_telnet;
