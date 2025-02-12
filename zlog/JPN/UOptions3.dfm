@@ -9,7 +9,7 @@ object formOptions3: TformOptions3
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poOwnerFormCenter
   Scaled = False
@@ -35,21 +35,21 @@ object formOptions3: TformOptions3
         Top = 91
         Width = 423
         Height = 86
-        Caption = 'QSO list'
+        Caption = #20132#20449#12522#12473#12488
         TabOrder = 1
         object Label61: TLabel
           Left = 8
           Top = 23
           Width = 33
           Height = 13
-          Caption = 'Normal'
+          Caption = #36890#24120#34920#31034
         end
         object Label68: TLabel
           Left = 8
           Top = 50
           Width = 61
           Height = 13
-          Caption = 'RBN Verified'
+          Caption = 'RBN Verified'#34920#31034
         end
         object editListColor1: TEdit
           Left = 118
@@ -67,7 +67,7 @@ object formOptions3: TformOptions3
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 2
           OnClick = buttonListBackClick
         end
@@ -77,7 +77,7 @@ object formOptions3: TformOptions3
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 4
           OnClick = buttonListResetClick
         end
@@ -97,7 +97,7 @@ object formOptions3: TformOptions3
           Top = 48
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 7
           OnClick = buttonListBackClick
         end
@@ -107,7 +107,7 @@ object formOptions3: TformOptions3
           Top = 48
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 9
           OnClick = buttonListResetClick
         end
@@ -117,7 +117,7 @@ object formOptions3: TformOptions3
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 1
           OnClick = buttonListForeClick
         end
@@ -127,7 +127,7 @@ object formOptions3: TformOptions3
           Top = 22
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 3
           OnClick = checkListBoldClick
         end
@@ -137,7 +137,7 @@ object formOptions3: TformOptions3
           Top = 48
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 6
           OnClick = buttonListForeClick
         end
@@ -147,7 +147,7 @@ object formOptions3: TformOptions3
           Top = 49
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 8
           OnClick = checkListBoldClick
         end
@@ -157,28 +157,28 @@ object formOptions3: TformOptions3
         Top = 4
         Width = 423
         Height = 81
-        Caption = 'General'
+        Caption = #20840#33324
         TabOrder = 0
         object Label1: TLabel
           Left = 11
           Top = 52
           Width = 217
           Height = 13
-          Caption = 'RBN spot count threshold for RBN verification'
+          Caption = 'RBN Verified'#12392#12377#12427'RBN'#22577#21578#22238#25968
         end
         object Label2: TLabel
           Left = 287
           Top = 52
           Width = 24
           Height = 13
-          Caption = 'times'
+          Caption = #22238#20197#19978
         end
         object checkUseSpcData: TCheckBox
           Left = 11
           Top = 22
-          Width = 217
+          Width = 250
           Height = 17
-          Caption = 'Use Spot to SuperCheck'
+          Caption = #12473#12509#12483#12488#24773#22577#12434#12473#12540#12497#12540#12481#12455#12483#12463#12395#20351#29992#12377#12427
           TabOrder = 0
         end
         object spNumOfRbnCount: TSpinEdit
@@ -225,7 +225,7 @@ object formOptions3: TformOptions3
       Height = 25
       Anchors = [akLeft, akBottom]
       Cancel = True
-      Caption = 'Cancel'
+      Caption = #12461#12515#12531#12475#12523
       ModalResult = 2
       TabOrder = 1
       OnClick = buttonCancelClick

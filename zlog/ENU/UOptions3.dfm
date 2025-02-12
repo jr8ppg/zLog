@@ -25,6 +25,8 @@ object formOptions3: TformOptions3
     ActivePage = tabsheetRbnOptions
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 440
+    ExplicitHeight = 433
     object tabsheetRbnOptions: TTabSheet
       Caption = 'RBN'
       ImageIndex = 11
@@ -174,9 +176,9 @@ object formOptions3: TformOptions3
         object checkUseSpcData: TCheckBox
           Left = 11
           Top = 22
-          Width = 118
+          Width = 217
           Height = 17
-          Caption = 'Use for SuperCheck'
+          Caption = 'Use Spot to SuperCheck'
           TabOrder = 0
         end
         object spNumOfRbnCount: TSpinEdit

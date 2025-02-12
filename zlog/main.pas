@@ -4521,6 +4521,7 @@ var
    rc: TRect;
    i: Integer;
    w: Integer;
+   h: Integer;
    Q: TQSO;
 begin
    Q := TQSO(Grid.Objects[0, ARow]);
@@ -4571,8 +4572,9 @@ begin
       Font.Size := Grid.Font.Size;
       Font.Name := Grid.Font.Name;
 
-      rc.Top := Rect.Top + 1;
-      rc.Left := Rect.Left + 1;
+      h := TextHeight('X');
+      rc.Top := Rect.Top + (((Rect.Bottom - Rect.Top) - h) div 2);
+      rc.Left := Rect.Left + 2;
       rc.Bottom := rect.Bottom;
       rc.Right := rect.Right;
       TextRect(rc, txt, [tfLeft, tfVerticalCenter]);
@@ -7215,7 +7217,11 @@ var
 begin
    dlg := TformOptions3.Create(Self);
    try
-      dlg.ShowModal();
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      GridRefreshScreen();
    finally
       dlg.Release();
    end;
