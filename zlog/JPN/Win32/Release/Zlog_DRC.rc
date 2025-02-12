@@ -8,18 +8,19 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsScreenRes 64176
-#define UExceptionDialog_RsActiveControl 64177
-#define UExceptionDialog_RsThread 64178
-#define UExceptionDialog_RsMissingVersionInfo 64179
-#define UExceptionDialog_RsExceptionStack 64180
-#define UExceptionDialog_RsMainThreadID 64181
-#define UExceptionDialog_RsExceptionThreadID 64182
-#define UExceptionDialog_RsMainThreadCallStack 64183
-#define UExceptionDialog_RsThreadCallStack 64184
-#define UExceptionDialog_RsErrorMessage 64185
-#define UExceptionDialog_RsDetailsIntro 64186
-#define UExceptionDialog_RsUnitVersioningIntro 64187
+#define UExceptionDialog_RsMemory 64176
+#define UExceptionDialog_RsScreenRes 64177
+#define UExceptionDialog_RsActiveControl 64178
+#define UExceptionDialog_RsThread 64179
+#define UExceptionDialog_RsMissingVersionInfo 64180
+#define UExceptionDialog_RsExceptionStack 64181
+#define UExceptionDialog_RsMainThreadID 64182
+#define UExceptionDialog_RsExceptionThreadID 64183
+#define UExceptionDialog_RsMainThreadCallStack 64184
+#define UExceptionDialog_RsThreadCallStack 64185
+#define UExceptionDialog_RsErrorMessage 64186
+#define UExceptionDialog_RsDetailsIntro 64187
+#define UExceptionDialog_RsUnitVersioningIntro 64188
 #define Main_TMainForm_ConfirmContestPeriod 64192
 #define Main_TMainForm_ConfirmOverwrite 64193
 #define Main_TMainForm_ConfirmModeConvert 64194
@@ -27,15 +28,15 @@
 #define Main_TMainForm_Assigned_Another_Function 64196
 #define Main_TMainForm_To_Change_the_mode 64197
 #define Main_TMainForm_To_Change_the_band 64198
-#define UExceptionDialog_RsAppError 64199
-#define UExceptionDialog_RsExceptionClass 64200
-#define UExceptionDialog_RsExceptionMessage 64201
-#define UExceptionDialog_RsExceptionAddr 64202
-#define UExceptionDialog_RsStackList 64203
-#define UExceptionDialog_RsModulesList 64204
-#define UExceptionDialog_RsOSVersion 64205
-#define UExceptionDialog_RsProcessor 64206
-#define UExceptionDialog_RsMemory 64207
+#define Main_TMainform_rbn_verified 64199
+#define UExceptionDialog_RsAppError 64200
+#define UExceptionDialog_RsExceptionClass 64201
+#define UExceptionDialog_RsExceptionMessage 64202
+#define UExceptionDialog_RsExceptionAddr 64203
+#define UExceptionDialog_RsStackList 64204
+#define UExceptionDialog_RsModulesList 64205
+#define UExceptionDialog_RsOSVersion 64206
+#define UExceptionDialog_RsProcessor 64207
 #define Main_TMainForm_Select_Operator 64208
 #define Main_TMainForm_JARL_Member_Info 64209
 #define Main_TMainForm_Inquire_JARL_Member_Info 64210
@@ -1366,6 +1367,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
 	UExceptionDialog_RsThread,	L"Thread: %s"
@@ -1385,6 +1387,7 @@ BEGIN
 	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q is assigned to another function. Do you want to take it?"
 	Main_TMainForm_To_Change_the_mode,	L"To change the operating mode, first turn off the F2A mode."
 	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
+	Main_TMainform_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1393,7 +1396,6 @@ BEGIN
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
-	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	Main_TMainForm_Select_Operator,	L"Please select an operator"
 	Main_TMainForm_JARL_Member_Info,	L"JARL Member information."
 	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
@@ -2828,6 +2830,7 @@ END
 /* D:\github\zLog_v2930\zlog\UNRDialog.dfm */
 /* D:\github\zLog_v2930\zlog\UFunctionKeyPanel.dfm */
 /* D:\github\zLog_v2930\zlog\Progress.dfm */
+/* D:\github\zLog_v2930\zlog\Progress2.dfm */
 /* D:\github\zLog_v2930\zlog\UQsyInfo.dfm */
 /* D:\github\zLog_v2930\zlog\USo2rNeoCp.dfm */
 /* D:\github\zLog_v2930\zlog\UInformation.dfm */
@@ -2855,6 +2858,9 @@ END
 /* D:\github\zLog_v2930\zlog\UStartTimeDialog.dfm */
 /* D:\github\zLog_v2930\zlog\UDateDialog.dfm */
 /* D:\github\zLog_v2930\zlog\UCountryChecker.dfm */
+/* D:\github\zLog_v2930\zlog\USelectClusterLog.dfm */
+/* D:\github\zLog_v2930\zlog\USpcViewer.dfm */
+/* D:\github\zLog_v2930\zlog\UOptions3.DFM */
 /* D:\github\zLog_v2930\zlog\Main.DFM */
 /* c:\program files (x86)\embarcadero\studio\22.0\lib\Win32\release\MPlayer.res */
 /* D:\github\zLog_v2930\zlog\UVoiceForm.dfm */
