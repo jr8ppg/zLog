@@ -11978,6 +11978,8 @@ begin
    end;
 end;
 
+// 相手コールサインの設定
+// バンドスコープから呼ばれる
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
 var
    nID: Integer;
@@ -12010,7 +12012,13 @@ begin
       end;
    end;
 
-   MyContest.MultiForm.SetNumberEditFocus;
+   // OriginalモードではNumber欄へ、ESMモードではEnterで相手を呼ぶためにCall欄へ
+   if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+      MyContest.MultiForm.SetNumberEditFocus;
+   end
+   else begin
+      CallsignEdit.SetFocus();
+   end;
 end;
 
 // Cluster or BandScopeから呼ばれる
@@ -14467,8 +14475,8 @@ begin
    N := Sp.Number;
 
    fDomestic := IsDomestic(C);
-   if ((dmZLogGlobal.Settings._bandscope_show_ja_spots = True) and (fDomestic = False)) or
-      ((dmZLogGlobal.Settings._bandscope_show_dx_spots = True) and (fDomestic = True)) then begin
+   if (((dmZLogGlobal.Settings._bandscope_show_ja_spots = True) and (fDomestic = True)) = False) and
+      (((dmZLogGlobal.Settings._bandscope_show_dx_spots = True) and (fDomestic = False)) = False) then begin
       Exit;
    end;
 
