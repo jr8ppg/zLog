@@ -1255,7 +1255,7 @@ type
     procedure SetCurrentTxRigFlag();
     procedure SetCurrentRxRigFlag();
     procedure LoadSpotData(slFileList: TStrings);
-    procedure AddSuperData(Sp: TSpot);
+    procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -12279,7 +12279,7 @@ begin
 
    // スポット情報をスーパーチェックに登録
    if dmZLogGlobal.Settings.FClusterUseForSuperCheck = True then begin
-      AddSuperData(Sp);
+      AddSuperData(Sp, True);
    end;
 end;
 
@@ -14447,7 +14447,7 @@ begin
                dtSpot := IncHour(dtSpot, 9);
                Sp.Time := dtSpot;
 
-               AddSuperData(Sp);
+               AddSuperData(Sp, False);
             end;
             Sp.Free();
          end;
@@ -14461,7 +14461,7 @@ begin
    end;
 end;
 
-procedure TMainForm.AddSuperData(Sp: TSpot);
+procedure TMainForm.AddSuperData(Sp: TSpot; fOnline: Boolean);
 var
    D: TDateTime;
    C: string;
@@ -14481,7 +14481,7 @@ begin
    end;
 
    if (MyContest.UseContestPeriod = False) or
-      ((MyContest.UseContestPeriod = True) and (D >= Log.StartTime) and (D <= Log.EndTime)) then begin
+      ((fOnline = True) and (MyContest.UseContestPeriod = True) and (FOutOfContestPeriod = False)) then begin
       // メインリスト
       FSuperCheckList.AddData(D, C, N, True);
 
