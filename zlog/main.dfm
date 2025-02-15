@@ -63,8 +63,6 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
-    ExplicitTop = 401
-    ExplicitWidth = 524
   end
   object MainPanel: TPanel
     Left = 0
@@ -74,8 +72,6 @@ object MainForm: TMainForm
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 524
-    ExplicitHeight = 279
     object EditPanel1R: TPanel
       Left = 0
       Top = 170
@@ -89,8 +85,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 169
-      ExplicitWidth = 524
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -291,8 +285,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 196
-      ExplicitWidth = 524
       object RigPanelC: TPanel
         Left = 1
         Top = 54
@@ -301,7 +293,6 @@ object MainForm: TMainForm
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 522
         DesignSize = (
           526
           28)
@@ -467,7 +458,6 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 6
           OnClick = checkWithRigClick
-          ExplicitLeft = 439
         end
         object checkWithRig2: TCheckBox
           Tag = 1
@@ -486,7 +476,6 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
-          ExplicitLeft = 476
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -561,7 +550,6 @@ object MainForm: TMainForm
             Value = 100.000000000000000000
           end>
         TabOrder = 2
-        ExplicitWidth = 457
         object RigPanelA: TPanel
           Left = 0
           Top = 0
@@ -570,7 +558,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 228
           object RigPanelShape2A: TShape
             Tag = 1
             Left = 0
@@ -710,8 +697,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 228
-          ExplicitWidth = 229
           object RigPanelShape2B: TShape
             Tag = 2
             Left = 0
@@ -877,8 +862,6 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
-      ExplicitWidth = 524
-      ExplicitHeight = 169
       ColWidths = (
         38
         65
@@ -1004,7 +987,6 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
-    ExplicitWidth = 524
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -1015,7 +997,6 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 0
       Visible = False
-      ExplicitWidth = 524
       object CWStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -3141,7 +3122,6 @@ object MainForm: TMainForm
       Height = 33
       Align = alTop
       TabOrder = 1
-      ExplicitWidth = 524
       object VoiceStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -5244,7 +5224,6 @@ object MainForm: TMainForm
       Height = 33
       Align = alBottom
       TabOrder = 2
-      ExplicitWidth = 524
       DesignSize = (
         528
         33)
@@ -5830,7 +5809,6 @@ object MainForm: TMainForm
         ParentFont = False
         TabOrder = 0
         OnClick = panelCQModeClick
-        ExplicitLeft = 490
       end
       object comboBandPlan: TComboBox
         Left = 418
@@ -5864,7 +5842,6 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 3
     Visible = False
-    ExplicitWidth = 524
     DesignSize = (
       528
       28)
@@ -5903,7 +5880,6 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 4
     Visible = False
-    ExplicitWidth = 524
     object linklabelInfo: TLinkLabel
       Left = 117
       Top = 5

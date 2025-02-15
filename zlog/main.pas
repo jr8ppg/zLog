@@ -4536,11 +4536,11 @@ begin
          Brush.Style := bsSolid;
       end
       else begin
-         if (ARow = Grid.Row) and (Grid.Focused = True) then begin
-            bg := RGB($E5, $F3, $FF);
+         if (gdSelected in State) and (Grid.Focused = True) then begin
+            bg := RGB($E5, $F3, $FF);   // 選択色
          end
          else begin
-            if (Q <> nil) and (Q.RbnVerified = True) then begin
+            if (Q <> nil) and (Q.RbnVerified = True) then begin   // RBN照合済み
                bg := dmZLogGlobal.Settings.FQsoListColors[2].FBackColor;
                fg := dmZLogGlobal.Settings.FQsoListColors[2].FForeColor;
                if dmZLogGlobal.Settings.FQsoListColors[2].FBold = True then begin
@@ -4550,7 +4550,7 @@ begin
                   Font.Style := Font.Style - [fsBold];
                end;
             end
-            else begin
+            else begin  // 通常
                bg := dmZLogGlobal.Settings.FQsoListColors[1].FBackColor;
                fg := dmZLogGlobal.Settings.FQsoListColors[1].FForeColor;
                if dmZLogGlobal.Settings.FQsoListColors[1].FBold = True then begin
