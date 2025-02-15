@@ -1150,7 +1150,7 @@ procedure TConsole2.AssignCrt(var F: Text);
 begin
   with TTextRec(F) do
   begin
-    Handle := -1;
+    Handle := 0;
     Mode := fmClosed;
     BufSize := SizeOf(Buffer);
     BufPtr := @Buffer;

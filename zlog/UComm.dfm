@@ -165,7 +165,6 @@ object CommForm: TCommForm
         TabOrder = 0
         OnKeyPress = EditKeyPress
         OnSelect = EditSelect
-        ExplicitWidth = 185
       end
     end
     object checkForceReconnect: TCheckBox
@@ -220,8 +219,6 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 465
-      ExplicitHeight = 52
     end
     object Console: TListBox
       Left = 1
@@ -237,8 +234,6 @@ object CommForm: TCommForm
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 57
-      ExplicitWidth = 465
     end
   end
   object StatusLine: TStatusBar

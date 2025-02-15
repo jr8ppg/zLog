@@ -8,7 +8,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
   Vcl.ExtDlgs, System.SyncObjs, System.DateUtils,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket, OverbyteIcsTypes,
   USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm,
   UTelnetSetting, HelperLib;
 

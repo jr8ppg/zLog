@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtCtrls, StdCtrls, ComCtrls, UITypes, System.NetEncoding,
-  OverbyteIcsWndControl, OverbyteIcsWSocket, Generics.Collections,
+  ExtCtrls, StdCtrls, ComCtrls, UITypes, System.NetEncoding, Generics.Collections,
+  OverbyteIcsWndControl, OverbyteIcsWSocket, OverbyteIcsTypes,
   UzLogConst, UzLogGlobal, UzLogQSO, UScratchSheet, HelperLib;
 
 type
