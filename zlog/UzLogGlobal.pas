@@ -1536,11 +1536,11 @@ begin
 
       Settings.FQsoListColors[1].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor1', '$000000'), clBlack);
       Settings.FQsoListColors[1].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor1', '$ffffff'), clWhite);
-      Settings.FQsoListColors[1].FBold      := ini.ReadBool('MainQsoList', 'Bold1', True);
+      Settings.FQsoListColors[1].FBold      := ini.ReadBool('MainQsoList', 'Bold1', False);
 
       Settings.FQsoListColors[2].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor2', '$000000'), clRed);
       Settings.FQsoListColors[2].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor2', '$ffffff'), clRed);
-      Settings.FQsoListColors[2].FBold      := ini.ReadBool('MainQsoList', 'Bold2', True);
+      Settings.FQsoListColors[2].FBold      := ini.ReadBool('MainQsoList', 'Bold2', False);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
