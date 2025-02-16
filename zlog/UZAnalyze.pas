@@ -2011,6 +2011,7 @@ var
    diffpos: Integer;
    C: string;
    len1, len2: Integer;
+   Q: TQSO;
 begin
    L := TSuperResultList.Create();
    slNplusOne := TStringList.Create();
@@ -2018,8 +2019,9 @@ begin
       sl.Clear();
 
       for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
          L.Clear();
-         strCall := Log.QsoList[i].Callsign;
+         strCall := Q.Callsign;
 
          maxhit := dmZlogGlobal.Settings._maxsuperhit;
 
@@ -2036,7 +2038,7 @@ begin
             score := n / Max(len1, len2);
 
             // RBNQÆ‰ñ”
-            rbncount := SI.RbnCount;
+            rbncount := SI.RbnCount[Q.Band];
 
             // 0‚È‚çˆê’v
             // 0.1667 ‚P•¶š•sˆê’v

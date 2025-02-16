@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  UzLogSpc;
+  UzLogSpc, UzLogConst;
 
 type
   TformSpcViewer = class(TForm)
@@ -52,7 +52,7 @@ begin
       listitem := ListView1.Items.Add();
       listitem.Caption := IntToStr(c);
       listitem.SubItems.Add(SI.Callsign);
-      listitem.SubItems.Add(IntTostr(SI.RbnCount));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[bUnknown]));
 
       for j := 0 to SI.List.Count - 1 do begin
          if j > 4 then begin
@@ -65,6 +65,20 @@ begin
       for j := listitem.SubItems.Count + 1 to 7 do begin
          listitem.SubItems.Add('-');
       end;
+
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b19]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b35]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b7]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b14]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b21]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b28]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b50]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b144]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b430]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b1200]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b2400]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b5600]));
+      listitem.SubItems.Add(IntTostr(SI.RbnCount[b10g]));
 
       Inc(c);
    end;

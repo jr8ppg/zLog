@@ -3,9 +3,10 @@ object formSpcViewer: TformSpcViewer
   Top = 0
   Caption = 'SPC Viewer'
   ClientHeight = 441
-  ClientWidth = 468
+  ClientWidth = 464
   Color = clBtnFace
-  Constraints.MaxWidth = 480
+  Constraints.MinHeight = 100
+  Constraints.MinWidth = 480
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -18,13 +19,11 @@ object formSpcViewer: TformSpcViewer
   object Panel1: TPanel
     Left = 0
     Top = 408
-    Width = 468
+    Width = 464
     Height = 33
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 407
-    ExplicitWidth = 380
     object buttonOK: TButton
       Left = 189
       Top = 3
@@ -39,7 +38,7 @@ object formSpcViewer: TformSpcViewer
   object ListView1: TListView
     Left = 0
     Top = 0
-    Width = 468
+    Width = 464
     Height = 408
     Align = alClient
     Columns = <
@@ -71,15 +70,51 @@ object formSpcViewer: TformSpcViewer
         Caption = 'NR#4'
       end
       item
-        Alignment = taCenter
         Caption = 'NR#5'
+      end
+      item
+        Caption = '1.9'
+      end
+      item
+        Caption = '3.5'
+      end
+      item
+        Caption = '7'
+      end
+      item
+        Caption = '14'
+      end
+      item
+        Caption = '21'
+      end
+      item
+        Caption = '28'
+      end
+      item
+        Caption = '50'
+      end
+      item
+        Caption = '144'
+      end
+      item
+        Caption = '430'
+      end
+      item
+        Caption = '1200'
+      end
+      item
+        Caption = '2400'
+      end
+      item
+        Caption = '5600'
+      end
+      item
+        Caption = '10G'
       end>
     GridLines = True
     ReadOnly = True
     RowSelect = True
     TabOrder = 1
     ViewStyle = vsReport
-    ExplicitWidth = 380
-    ExplicitHeight = 407
   end
 end

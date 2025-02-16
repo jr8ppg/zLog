@@ -11856,7 +11856,7 @@ begin
                FSpcHitCall := sd.callsign;
             end;
 
-            FSuperCheck.Add(SI.Text + sd.Text);
+            FSuperCheck.Add(SI.Text[aQSO.Band] + sd.Text);
 
             inc(hit);
          end;
@@ -11922,7 +11922,7 @@ begin
 
    // N+1の実行
    if (Length(PartialStr) >= 3) then begin
-      FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, FSuperCheck2, PartialStr);
+      FNPlusOneThread := TSuperCheckNPlusOneThread.Create(FSuperCheckList, FSuperCheck2, PartialStr, aQSO.Band);
    end;
 end;
 
@@ -14466,6 +14466,7 @@ var
    D: TDateTime;
    C: string;
    N: string;
+   B: TBand;
    i: Integer;
    x, y: Integer;
    fDomestic: Boolean;
@@ -14473,6 +14474,7 @@ begin
    D := Sp.Time;
    C := Sp.Call;
    N := Sp.Number;
+   B := Sp.Band;
 
    fDomestic := IsDomestic(C);
    if (((dmZLogGlobal.Settings._bandscope_show_ja_spots = True) and (fDomestic = True)) = False) and
@@ -14483,13 +14485,13 @@ begin
    if (MyContest.UseContestPeriod = False) or
       ((fOnline = True) and (MyContest.UseContestPeriod = True) and (FOutOfContestPeriod = False)) then begin
       // メインリスト
-      FSuperCheckList.AddData(D, C, N, True);
+      FSuperCheckList.AddData(D, C, N, B, True);
 
       // TwoLetterリストに追加
       for i := 1 to Length(C) - 1 do begin
          x := Ord(C[i]);
          y := Ord(C[i + 1]);
-         FTwoLetterMatrix[x, y].AddData(D, C, N, True);
+         FTwoLetterMatrix[x, y].AddData(D, C, N, B, True);
       end;
    end;
 end;

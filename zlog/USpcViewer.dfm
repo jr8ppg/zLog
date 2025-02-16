@@ -5,7 +5,8 @@ object formSpcViewer: TformSpcViewer
   ClientHeight = 441
   ClientWidth = 468
   Color = clBtnFace
-  Constraints.MaxWidth = 480
+  Constraints.MinHeight = 100
+  Constraints.MinWidth = 480
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -23,8 +24,6 @@ object formSpcViewer: TformSpcViewer
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 407
-    ExplicitWidth = 380
     object buttonOK: TButton
       Left = 189
       Top = 3
@@ -53,6 +52,7 @@ object formSpcViewer: TformSpcViewer
       item
         Alignment = taRightJustify
         Caption = 'RBN count'
+        Width = 40
       end
       item
         Alignment = taCenter
@@ -71,15 +71,77 @@ object formSpcViewer: TformSpcViewer
         Caption = 'NR#4'
       end
       item
-        Alignment = taCenter
         Caption = 'NR#5'
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '1.9'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '3.5'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '7'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '14'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '21'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '28'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '50'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '144'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '430'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '1200'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '2400'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '5600'
+        Width = 40
+      end
+      item
+        Alignment = taRightJustify
+        Caption = '10G'
+        Width = 40
       end>
     GridLines = True
     ReadOnly = True
     RowSelect = True
     TabOrder = 1
     ViewStyle = vsReport
-    ExplicitWidth = 380
-    ExplicitHeight = 407
   end
 end
