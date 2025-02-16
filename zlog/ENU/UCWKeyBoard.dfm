@@ -4,7 +4,7 @@ object CWKeyBoard: TCWKeyBoard
   ActiveControl = SpinEdit1
   Caption = 'CW Keyboard'
   ClientHeight = 102
-  ClientWidth = 338
+  ClientWidth = 334
   Color = clBtnFace
   Constraints.MinHeight = 100
   Constraints.MinWidth = 350
@@ -19,12 +19,13 @@ object CWKeyBoard: TCWKeyBoard
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
+  OnResize = FormResize
   OnShow = FormShow
   TextHeight = 13
   object Image1: TImage
     Left = 0
     Top = 69
-    Width = 338
+    Width = 334
     Height = 4
     Align = alBottom
     ExplicitTop = -30
@@ -33,17 +34,17 @@ object CWKeyBoard: TCWKeyBoard
   object Panel1: TPanel
     Left = 0
     Top = 73
-    Width = 338
+    Width = 334
     Height = 29
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 367
+    ExplicitWidth = 371
     DesignSize = (
-      338
+      334
       29)
     object Label1: TLabel
-      Left = 151
+      Left = 147
       Top = 8
       Width = 109
       Height = 13
@@ -54,7 +55,7 @@ object CWKeyBoard: TCWKeyBoard
       ExplicitLeft = 192
     end
     object Label2: TLabel
-      Left = 307
+      Left = 303
       Top = 8
       Width = 20
       Height = 13
@@ -81,7 +82,7 @@ object CWKeyBoard: TCWKeyBoard
       OnClick = buttonClearClick
     end
     object SpinEdit1: TSpinEdit
-      Left = 266
+      Left = 262
       Top = 4
       Width = 33
       Height = 22
@@ -92,13 +93,13 @@ object CWKeyBoard: TCWKeyBoard
       TabOrder = 2
       Value = 2
       OnChange = SpinEdit1Change
-      ExplicitLeft = 295
+      ExplicitLeft = 299
     end
   end
   object Console: TRichEdit
     Left = 0
     Top = 0
-    Width = 338
+    Width = 334
     Height = 69
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -113,7 +114,7 @@ object CWKeyBoard: TCWKeyBoard
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
     OnProtectChange = ConsoleProtectChange
-    ExplicitWidth = 367
+    ExplicitWidth = 371
   end
   object ActionList1: TActionList
     State = asSuspended

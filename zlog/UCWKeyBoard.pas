@@ -86,6 +86,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure SpinEdit1Change(Sender: TObject);
     procedure OnZLogUpdateProgress( var Message: TMessage ); message WM_ZLOG_UPDATE_PROGRESS;
+    procedure FormResize(Sender: TObject);
   private
     { Private declarations }
     FCounter: Integer;
@@ -100,6 +101,7 @@ type
     function GetUnsentChars(): Integer;
     procedure StartCountdown();
     procedure ShowProgress();
+    procedure InitProgress();
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
@@ -147,10 +149,7 @@ procedure TCWKeyBoard.FormShow(Sender: TObject);
 begin
    Inherited;
    ApplyShortcut();
-   FBitmap.Width := Image1.Width;
-   FBitmap.Height := Image1.Height;
-   FBitmap.PixelFormat := pf24bit;
-   Image1.Picture.Bitmap.Assign(FBitmap);
+   InitProgress();
    Console.SetFocus;
 end;
 
@@ -179,6 +178,12 @@ begin
          buttonClear.Click();
       end;
    end;
+end;
+
+procedure TCWKeyBoard.FormResize(Sender: TObject);
+begin
+   inherited;
+   InitProgress();
 end;
 
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
@@ -684,6 +689,14 @@ begin
       end;
    end;
 
+   Image1.Picture.Bitmap.Assign(FBitmap);
+end;
+
+procedure TCWKeyBoard.InitProgress();
+begin
+   FBitmap.Width := Image1.Width;
+   FBitmap.Height := Image1.Height;
+   FBitmap.PixelFormat := pf24bit;
    Image1.Picture.Bitmap.Assign(FBitmap);
 end;
 
