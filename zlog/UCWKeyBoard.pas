@@ -109,6 +109,7 @@ type
   public
     { Public declarations }
     procedure OneCharSentProc();
+    procedure Clear();
     procedure Reset();
     procedure Finish();
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -237,10 +238,7 @@ end;
 
 procedure TCWKeyBoard.buttonClearClick(Sender: TObject);
 begin
-   Reset();
-   Console.Clear;
-   dmZLogKeyer.ClrBuffer();
-   MainForm.StartCWKeyboard := False;
+   Clear();
 end;
 
 procedure TCWKeyBoard.SpinEdit1Change(Sender: TObject);
@@ -555,6 +553,14 @@ begin
    SendChar(Console.Text[FSendPos + 1]);
 
    Console.SelStart := Length(Console.Text);
+end;
+
+procedure TCWKeyBoard.Clear();
+begin
+   Reset();
+   Console.Clear;
+   dmZLogKeyer.ClrBuffer();
+   MainForm.StartCWKeyboard := False;
 end;
 
 procedure TCWKeyBoard.Reset();

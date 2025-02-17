@@ -9744,7 +9744,7 @@ begin
       //FCWMonitor.ClearSendingText();
    end
    else begin
-      if ((FCWKeyboard.Active) or (FStartCWKeyboard = True)) then begin
+      if ({(FCWKeyboard.Active) and} (FStartCWKeyboard = True)) then begin
          FCWKeyboard.OneCharSentProc();
       end
       else begin
@@ -13418,6 +13418,7 @@ begin
    StopMessage(mode);
    FMessageManager.ClearQue();
    FCWMonitor.ClearSendingText();
+   FCWKeyboard.Clear();
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (((mode = mCW) and (dmZLogGlobal.Settings._pttenabled_cw = False) and (dmZLogKeyer.UseWinKeyer = False)) or
