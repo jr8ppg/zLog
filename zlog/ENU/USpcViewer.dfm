@@ -3,7 +3,7 @@ object formSpcViewer: TformSpcViewer
   Top = 0
   Caption = 'SPC Viewer'
   ClientHeight = 441
-  ClientWidth = 464
+  ClientWidth = 468
   Color = clBtnFace
   Constraints.MinHeight = 100
   Constraints.MinWidth = 480
@@ -19,7 +19,7 @@ object formSpcViewer: TformSpcViewer
   object Panel1: TPanel
     Left = 0
     Top = 408
-    Width = 464
+    Width = 468
     Height = 33
     Align = alBottom
     BevelOuter = bvNone
@@ -38,7 +38,7 @@ object formSpcViewer: TformSpcViewer
   object ListView1: TListView
     Left = 0
     Top = 0
-    Width = 464
+    Width = 468
     Height = 408
     Align = alClient
     Columns = <
@@ -52,6 +52,7 @@ object formSpcViewer: TformSpcViewer
       item
         Alignment = taRightJustify
         Caption = 'RBN count'
+        Width = 40
       end
       item
         Alignment = taCenter
@@ -73,43 +74,69 @@ object formSpcViewer: TformSpcViewer
         Caption = 'NR#5'
       end
       item
+        Alignment = taRightJustify
         Caption = '1.9'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '3.5'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '7'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '14'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '21'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '28'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '50'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '144'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '430'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '1200'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '2400'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '5600'
+        Width = 40
       end
       item
+        Alignment = taRightJustify
         Caption = '10G'
+        Width = 40
       end>
     GridLines = True
     ReadOnly = True
