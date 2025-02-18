@@ -2967,6 +2967,7 @@ var
    temp, temp2: string;
    rig: TRig;
    khz: TFrequency;
+   freq: TFrequency;
 begin
    Delete(S, 1, 1);
    temp := S;
@@ -3248,19 +3249,40 @@ begin
       dmZLogGlobal.InitializeCW();
    end;
 
-   khz := StrToIntDef(S, 0);
-
-   if (khz > 1799) and (khz < 1000000) then begin
+   // 999KCはkHzのみ指定QSY
+   if Pos('KC', S) > 0 then begin
+      S := StringReplace(S, 'KC', '', [rfReplaceAll]);
+      khz := StrToIntDef(S, 0);
+      khz := ((rig.CurrentFreqHz div 1000000) * 1000) + khz;
+      freq := khz * 1000;
       if rig <> nil then begin
-         rig.SetFreq(khz * 1000, IsCQ());
+         rig.SetFreq(freq, IsCQ());
          if CurrentQSO.Mode = mSSB then begin
             rig.SetMode(CurrentQSO);
          end;
-         FZLinkForm.SendFreqInfo(khz * 1000);
+         FZLinkForm.SendFreqInfo(freq);
+      end
+      else begin
+         RigControl.TempFreq[CurrentQSO.Band] := freq;
+         FZLinkForm.SendFreqInfo(freq);
+      end;
+   end;
+
+   // ここまできた数字のみはkHz
+   khz := StrToIntDef(S, 0);
+
+   if (khz > 1799) and (khz < 1000000) then begin
+      freq := khz * 1000;
+      if rig <> nil then begin
+         rig.SetFreq(freq, IsCQ());
+         if CurrentQSO.Mode = mSSB then begin
+            rig.SetMode(CurrentQSO);
+         end;
+         FZLinkForm.SendFreqInfo(freq);
       end
       else begin
          RigControl.TempFreq[CurrentQSO.Band] := khz;
-         FZLinkForm.SendFreqInfo(khz * 1000);
+         FZLinkForm.SendFreqInfo(freq);
       end;
    end;
 
