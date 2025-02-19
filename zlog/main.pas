@@ -19,7 +19,7 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
-  Winapi.MMSystem, JvExControls, JvLED,
+  Winapi.MMSystem, JvExControls, JvLED, System.Character,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -1123,6 +1123,8 @@ type
     procedure CallsignSentProc(Sender: TObject); // called when callsign is sent;
     procedure Update10MinTimer; //10 min countdown
     procedure SaveFileAndBackUp;
+    function  IsFreqStr(S: string): Boolean;
+    procedure SetRigFreq(rig: TRig; hz: TFrequency);
     procedure ChangeTxNr(txnr: Integer);
     procedure IncFontSize();
     procedure DecFontSize();
@@ -2967,7 +2969,28 @@ var
    temp, temp2: string;
    rig: TRig;
    khz: TFrequency;
-   freq: TFrequency;
+   freq: string;
+   hz: TFrequency;
+
+   function IsDirectQsy(S: string; var freq: string): Boolean;
+   var
+      l: Integer;
+   begin
+      l := Length(S);
+      if S[L] = 'F' then begin
+         freq := Copy(S, 1, l - 1);
+         Result := True;
+         Exit;
+      end;
+      if RightStr(S, 2) = 'KC' then begin
+         freq := Copy(S, 1, l - 2);
+         Result := True;
+         Exit;
+      end;
+
+      freq := '';
+      Result := False;
+   end;
 begin
    Delete(S, 1, 1);
    temp := S;
@@ -3249,22 +3272,19 @@ begin
       dmZLogGlobal.InitializeCW();
    end;
 
-   // 999KCはkHzのみ指定QSY
-   if Pos('KC', S) > 0 then begin
-      S := StringReplace(S, 'KC', '', [rfReplaceAll]);
-      khz := StrToIntDef(S, 0);
-      khz := ((rig.CurrentFreqHz div 1000000) * 1000) + khz;
-      freq := khz * 1000;
-      if rig <> nil then begin
-         rig.SetFreq(freq, IsCQ());
-         if CurrentQSO.Mode = mSSB then begin
-            rig.SetMode(CurrentQSO);
-         end;
-         FZLinkForm.SendFreqInfo(freq);
-      end
-      else begin
-         RigControl.TempFreq[CurrentQSO.Band] := freq;
-         FZLinkForm.SendFreqInfo(freq);
+   // Direct QSY
+   //,100.1F/KC → xx.100.1 へ
+   //,1001F/KC → xx.100.1 へ
+   //,100F/KC → xx.100.0 へ
+   //,10F/KC → xx.010.0 へ
+   if IsDirectQsy(S, freq) then begin
+      if (Length(freq) = 4) and (Pos('.', freq) = 0) then begin
+         Insert('.', freq, 4);
+      end;
+      if IsFreqStr(freq) = True then begin
+         kHz := ((rig.CurrentFreqHz div 1000000) * 1000) * 1000;
+         hz := khz + Trunc(StrToFloatDef(freq, 0) * 1000);
+         SetRigFreq(rig, hz);
       end;
    end;
 
@@ -3272,18 +3292,8 @@ begin
    khz := StrToIntDef(S, 0);
 
    if (khz > 1799) and (khz < 1000000) then begin
-      freq := khz * 1000;
-      if rig <> nil then begin
-         rig.SetFreq(freq, IsCQ());
-         if CurrentQSO.Mode = mSSB then begin
-            rig.SetMode(CurrentQSO);
-         end;
-         FZLinkForm.SendFreqInfo(freq);
-      end
-      else begin
-         RigControl.TempFreq[CurrentQSO.Band] := khz;
-         FZLinkForm.SendFreqInfo(freq);
-      end;
+      hz := khz * 1000;
+      SetRigFreq(rig, hz);
    end;
 
    if Pos('QSYCOUNT', S) = 1 then begin
@@ -3402,6 +3412,35 @@ begin
 
    // ここまで来て該当が無ければ周波数メモリー呼び出し
    CallFreqMemory(FCurrentRigSet, S);
+end;
+
+function TMainForm.IsFreqStr(S: string): Boolean;
+var
+   i: Integer;
+   C: Char;
+begin
+   for i := 1 to Length(S) do begin
+      C := S[i];
+      if Not (((C >= '0') and (C <= '9')) or (C = '.')) then begin
+         Result := False;
+         Exit;
+      end;
+   end;
+   Result := True;
+end;
+
+procedure TMainForm.SetRigFreq(rig: TRig; hz: TFrequency);
+begin
+   if rig <> nil then begin
+      rig.SetFreq(hz, IsCQ());
+      if CurrentQSO.Mode = mSSB then begin
+         rig.SetMode(CurrentQSO);
+      end;
+   end
+   else begin
+      RigControl.TempFreq[CurrentQSO.Band] := hz div 1000;
+   end;
+   FZLinkForm.SendFreqInfo(hz);
 end;
 
 procedure TMainForm.ChangeTxNr(txnr: Integer);
