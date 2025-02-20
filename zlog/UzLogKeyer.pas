@@ -133,7 +133,7 @@ type
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
-    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
     procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
@@ -4559,7 +4559,7 @@ begin
    WinKeyerSendCommand(WK_KEY_IMMEDIATE_CMD, WK_KEY_IMMEDIATE_KEYUP);
 end;
 
-procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
 var
    i: Integer;
    b: Byte;
