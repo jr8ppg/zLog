@@ -3278,7 +3278,7 @@ begin
    //,100F/KC → xx.100.0 へ
    //,10F/KC → xx.010.0 へ
    if IsDirectQsy(S, freq) then begin
-      if (Length(freq) = 4) and (Pos('.', freq) = 0) then begin
+      if (Length(freq) >= 4) and (Pos('.', freq) = 0) then begin
          Insert('.', freq, 4);
       end;
       if IsFreqStr(freq) = True then begin
