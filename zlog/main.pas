@@ -63,6 +63,7 @@ const
   WM_ZLOG_SO2R_SELRX = (WM_USER + 125);
   WM_ZLOG_SO2R_BLEND = (WM_USER + 126);
   WM_ZLOG_SO2R_SET_RXAUTOSEL = (WM_USER + 127);
+  WM_ZLOG_NONCONVERTKEYPRESS = (WM_USER + 128);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -774,6 +775,7 @@ type
     procedure OnZLogCqAbortProc( var Message: TMessage ); message WM_ZLOG_CQABORT;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure OnPowerBroadcast( var Message: TMessage ); message WM_POWERBROADCAST;
+    procedure OnZLogNonconvertKeyPress( var Message: TMessage ); message WM_ZLOG_NONCONVERTKEYPRESS;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -1210,7 +1212,8 @@ type
     procedure ControlPTT(fOn: Boolean);
     procedure VoiceControl(fOn: Boolean);
     procedure TogglePTTfor2bsiq();
-    procedure OnNonconvertKeyProc();
+    procedure OnNonconvertKeyPress();
+    procedure OnNonconvertKeyProc(nRxID: Integer; nTxID: Integer);
     procedure OnUpKeyProc(Sender: TObject);
     procedure OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
     procedure UpdateCurrentQSO();
@@ -4543,7 +4546,7 @@ begin
    case Key of
       { MUHENKAN KEY }
       VK_NONCONVERT: begin
-         OnNonconvertKeyProc();
+         OnNonconvertKeyPress();
          Key := 0;
       end;
 
@@ -8981,6 +8984,16 @@ begin
    end;
 end;
 
+procedure TMainForm.OnZLogNonconvertKeyPress( var Message: TMessage );
+var
+   nRxID: Integer;
+   nTxID: Integer;
+begin
+   nRxID := Message.WParam;
+   nTxID := Message.LParam;
+   OnNonconvertKeyProc(nRxID, nTxID);
+end;
+
 procedure TMainForm.InitALLJA();
 begin
 //   BandMenu.Items[Ord(b19)].Visible := False;
@@ -10743,7 +10756,7 @@ end;
 // #86 PTT制御出力の手動トグル
 procedure TMainForm.actionControlPTTExecute(Sender: TObject);
 begin
-   OnNonconvertKeyProc();
+   OnNonconvertKeyProc(FCurrentRx, FCurrentTx);
 end;
 
 // #87 N+1ウインドウの表示
@@ -13286,7 +13299,23 @@ begin
    end;
 end;
 
-procedure TMainForm.OnNonconvertKeyProc();
+procedure TMainForm.OnNonconvertKeyPress();
+begin
+   // RIG Switch後のガードタイム
+   if MilliSecondsBetween(Now(), FRigSwitchTime) <= dmZLogGlobal.Settings.FRigSwitchGuardTime then begin
+      Exit;
+   end;
+
+   // WAIT=OFFの場合はキューをクリア
+   if FInformation.IsWait = False then begin
+      FMessageManager.ClearQue();
+   end;
+
+   FMessageManager.AddQue(WM_ZLOG_NONCONVERTKEYPRESS, FCurrentRx, FCurrentTx);
+   FMessageManager.ContinueQue();
+end;
+
+procedure TMainForm.OnNonconvertKeyProc(nRxID: Integer; nTxID: Integer);
 var
    fBeforePTT: Boolean;
    fPTT: Boolean;
@@ -13309,7 +13338,7 @@ begin
    fBeforePTT := dmZLogKeyer.PTTIsOn;
 
    // 現在のモード
-   nID := FCurrentTx;
+   nID := nTxID;
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    band := TextToBand(FEditPanel[nID].BandEdit.Text);
 
@@ -13324,7 +13353,7 @@ begin
          StopMessage(mode);
 
          // TXをRXに合わせる
-         if FCurrentTx <> FCurrentRx then begin
+         if nTxID <> nRxID then begin
             ResetTx(FCurrentRigSet);
          end;
 
@@ -13337,7 +13366,7 @@ begin
          end
          else begin
             // TXをRXに合わせる
-            if FCurrentTx <> FCurrentRx then begin
+            if nTxID <> nRxID then begin
                ResetTx(FCurrentRigSet);
             end;
 
