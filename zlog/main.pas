@@ -3283,9 +3283,11 @@ begin
          Insert('.', freq, 4);
       end;
       if IsFreqStr(freq) = True then begin
-         kHz := ((rig.CurrentFreqHz div 1000000) * 1000) * 1000;
-         hz := khz + Trunc(StrToFloatDef(freq, 0) * 1000);
-         SetRigFreq(rig, hz);
+         if rig <> nil then begin
+            kHz := ((rig.CurrentFreqHz div 1000000) * 1000) * 1000;
+            hz := khz + Trunc(StrToFloatDef(freq, 0) * 1000);
+            SetRigFreq(rig, hz);
+         end;
       end;
    end;
 
