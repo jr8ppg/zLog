@@ -2288,8 +2288,8 @@ begin
    dmZLogKeyer.SetPTTDelay(Settings._pttbefore_cw, Settings._pttafter_cw);
    dmZLogKeyer.SetPTT(Settings._pttenabled_cw);
 
-   dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.InitWPM := Settings.CW._speed;
+   dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.SetWeight(Settings.CW._weight);
    dmZLogKeyer.SideTonePitch := Settings.CW._tonepitch;
 
