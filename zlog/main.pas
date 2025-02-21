@@ -1602,6 +1602,7 @@ var
 begin
    SpeedBar.Position := dmZLogKeyer.WPM;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
+   FInformation.InitWPM := dmZLogKeyer.InitWPM;
    FInformation.WPM := dmZLogKeyer.WPM;
    FInformation.So2rMode := (dmZLogGlobal.Settings._operate_style = os2Radio);
    i := dmZlogGlobal.Settings.CW.CurrentBank;
@@ -5206,6 +5207,7 @@ begin
    dmZLogGlobal.Settings.CW._speed := SpeedBar.Position;
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
 
+   FInformation.InitWPM := SpeedBar.Position;
    FInformation.WPM := SpeedBar.Position;
 
    if Active = True then begin
@@ -12385,14 +12387,25 @@ end;
 
 procedure TMainForm.DoCwSpeedChange(Sender: TObject);
 var
-   wpm: Integer;
+   init_wpm: Integer;
+   curr_wpm: Integer;
+   handler: TNotifyEvent;
 begin
-   wpm := dmZLogKeyer.WPM;
-   dmZLogGlobal.Settings.CW._speed := wpm;
-   SpeedBar.Position := wpm;
-   SpeedLabel.Caption := IntToStr(wpm) + ' wpm';
-   FInformation.WPM := wpm;
-   SetRigWpm(wpm);
+   init_wpm := dmZLogKeyer.InitWPM;
+   curr_wpm := dmZLogKeyer.WPM;
+
+   dmZLogGlobal.Settings.CW._speed := init_wpm;
+
+   handler := SpeedBar.OnChange;
+   SpeedBar.OnChange := nil;
+   SpeedBar.Position := curr_wpm;
+   SpeedBar.OnChange := handler;
+
+   FInformation.InitWPM := init_wpm;
+   FInformation.WPM := curr_wpm;
+   SpeedLabel.Caption := IntToStr(curr_wpm) + ' wpm';
+
+   SetRigWpm(init_wpm);
 end;
 
 procedure TMainForm.DoVFOChange(Sender: TObject);

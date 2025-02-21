@@ -243,7 +243,7 @@ type
     FOnSendFinishProc: TPlayMessageFinishedProc;
     FOnWkStatusProc: TWkStatusEvent;
     FOnSpeedChanged: TNotifyEvent;
-    FCancelSpeedChangedEvent: Boolean;
+    FTemporarySpeedChange: Boolean;
     FOnCommand: TCommandEvent;
 
     FUsbDetecting: Boolean;
@@ -531,7 +531,7 @@ begin
    FUseWkIgnoreSpeedPot := False;
    FUseWkAlways9600 := False;
    FOnSpeedChanged := nil;
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
    FOnCommand := nil;
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
@@ -1229,7 +1229,7 @@ procedure TdmZLogKeyer.AntSelect(rigset, ant_no: Integer);
 begin
    case FSo2rType of
       so2rOtrsp: begin
-         ZComTxRigSelect.SendString('AUX' + IntToStr(rigset) + RightStr('00' + IntToStr(ant_no), 2) + CR);
+         ZComTxRigSelect.SendString(AnsiString('AUX' + IntToStr(rigset) + RightStr('00' + IntToStr(ant_no), 2) + CR));
       end;
    end;
 end;
@@ -2147,7 +2147,7 @@ begin
 
       FKeyerWPM := wpm;
 
-      if (FCancelSpeedChangedEvent = False) then begin
+      if (FTemporarySpeedChange = False) then begin
          for i := 0 to MAXPORT do begin
             if FKeyingPort[i] <> tkpNone then begin
                if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
@@ -2159,10 +2159,10 @@ begin
                end;
             end;
          end;
+      end;
 
-         if Assigned(FOnSpeedChanged) then begin
-            FOnSpeedChanged(Self);
-         end;
+      if Assigned(FOnSpeedChanged) then begin
+         FOnSpeedChanged(Self);
       end;
    end;
 end;
@@ -2203,6 +2203,7 @@ begin
    FPaddleReverse := False;
    FPaddleSqueeze := False;
    FKeyerWPM := 1;
+   FKeyerInitWPM := 1;
 
    timeBeginPeriod(1);
 
@@ -2860,27 +2861,27 @@ end;
 
 procedure TdmZLogKeyer.IncWPM;
 begin
-   FCancelSpeedChangedEvent := True;
+   FTemporarySpeedChange := True;
    if FKeyerWPM < MAXWPM then begin
       WPM := FKeyerWPM + 1;
    end;
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
 end;
 
 procedure TdmZLogKeyer.DecWPM;
 begin
-   FCancelSpeedChangedEvent := True;
+   FTemporarySpeedChange := True;
    if FKeyerWPM > MINWPM then begin
       WPM := FKeyerWPM - 1;
    end;
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
 end;
 
 procedure TdmZLogKeyer.ChangeWPM(sign: Integer; change: Integer);
 var
    new_wpm: Integer;
 begin
-   FCancelSpeedChangedEvent := True;
+   FTemporarySpeedChange := True;
 
    if sign = 0 then begin
       new_wpm := FKeyerWPM + change;
@@ -2893,7 +2894,7 @@ begin
       WPM := new_wpm;
    end;
 
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
 end;
 
 procedure TdmZLogKeyer.SetWeight(W: word);
@@ -4715,7 +4716,8 @@ end;
 procedure TdmZLogKeyer.IncCWSpeed();
 begin
    WPM := WPM + 1;
-   InitWPM := WPM;
+
+   FKeyerInitWPM := FKeyerInitWPM + 1;
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
@@ -4725,7 +4727,8 @@ end;
 procedure TdmZLogKeyer.DecCWSpeed();
 begin
    WPM := WPM - 1;
-   InitWPM := WPM;
+
+   FKeyerInitWPM := FKeyerInitWPM - 1;
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
