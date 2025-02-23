@@ -22,11 +22,9 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetMisc
+    ActivePage = tabsheetQuickFunctions
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 440
-    ExplicitHeight = 433
     object tabsheetPreferences: TTabSheet
       Caption = #21508#31278#35373#23450
       object Label40: TLabel
@@ -2189,9 +2187,9 @@ object formOptions2: TformOptions2
       ImageIndex = 8
       object groupQuickMemo: TGroupBox
         Left = 6
-        Top = 260
+        Top = 284
         Width = 423
-        Height = 140
+        Height = 109
         Caption = #12463#12452#12483#12463'Memo'
         TabOrder = 1
         object Label63: TLabel
@@ -2269,7 +2267,7 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 4
         Width = 423
-        Height = 252
+        Height = 274
         Caption = #12463#12452#12483#12463'QSY'
         TabOrder = 0
         object Label54: TLabel
@@ -2786,6 +2784,14 @@ object formOptions2: TformOptions2
           MaxLength = 1
           NumbersOnly = True
           TabOrder = 47
+        end
+        object checkUseKhzQsyCommand: TCheckBox
+          Left = 200
+          Top = 247
+          Width = 220
+          Height = 17
+          Caption = 'kHz QSY '#12467#12510#12531#12489#12434#20351#29992#12377#12427' (F/KC)'
+          TabOrder = 48
         end
       end
     end
@@ -3708,8 +3714,6 @@ object formOptions2: TformOptions2
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 433
-    ExplicitWidth = 440
     DesignSize = (
       444
       37)

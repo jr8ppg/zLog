@@ -419,6 +419,7 @@ type
     Label32: TLabel;
     comboVoiceDevice: TComboBox;
     Label38: TLabel;
+    checkUseKhzQsyCommand: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -749,6 +750,8 @@ begin
          Settings.FQuickQSY[i].FCommand := FQuickQSYCommand[i].Text;
          Settings.FQuickQSY[i].FFixEdge := StrToIntDef(FQuickQSYFixEdge[i].Text, 0);
       end;
+
+      Settings.FUseKhzQsyCommand := checkUseKhzQsyCommand.Checked;
 
       // SuperCheck
       if radioSuperCheck0.Checked = True then begin
@@ -1106,6 +1109,8 @@ begin
          FQuickQSYCommand[i].Enabled  := FQuickQSYCheck[i].Checked;
          FQuickQSYFixEdge[i].Enabled  := FQuickQSYCheck[i].Checked;
       end;
+
+      checkUseKhzQsyCommand.Checked := Settings.FUseKhzQsyCommand;
 
       // SuperCheck
       case Settings.FSuperCheck.FSuperCheckMethod of

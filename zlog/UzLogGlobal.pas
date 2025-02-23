@@ -287,6 +287,7 @@ type
     FAntiZeroinStopCq: Boolean;     // Stop CQ in SP mode
 
     FQuickQSY: array[1..8] of TQuickQSY;
+    FUseKhzQsyCommand: Boolean;
     FSuperCheck: TSuperCheckParam;
     FPartialCheck: TPartialCheckParam;
     FAccessibility: TAccessibilityParam;
@@ -1331,6 +1332,8 @@ begin
          Settings.FQuickQSY[i].FFixEdge  := StrToIntDef(slParam[5], 0);
       end;
 
+      Settings.FUseKhzQsyCommand := ini.ReadBool('QuickQSY', 'UseKhzQsyCommand', False);
+
       // SuperCheck
       Settings.FSuperCheck.FSuperCheckMethod := ini.ReadInteger('SuperCheck', 'Method', 0);
       Settings.FSuperCheck.FSuperCheckFolder := ini.ReadString('SuperCheck', 'Folder', '');
@@ -2049,6 +2052,8 @@ begin
          slParam.Add( IntToStr(Settings.FQuickQSY[i].FFixEdge) );
          ini.WriteString('QuickQSY', '#' + IntToStr(i), slParam.CommaText);
       end;
+
+      ini.WriteBool('QuickQSY', 'UseKhzQsyCommand', Settings.FUseKhzQsyCommand);
 
       // SuperCheck
       ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);

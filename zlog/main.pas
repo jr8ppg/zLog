@@ -3281,15 +3281,17 @@ begin
    //,1001F/KC → xx.100.1 へ
    //,100F/KC → xx.100.0 へ
    //,10F/KC → xx.010.0 へ
-   if IsDirectQsy(S, freq) then begin
-      if (Length(freq) >= 4) and (Pos('.', freq) = 0) then begin
-         Insert('.', freq, 4);
-      end;
-      if IsFreqStr(freq) = True then begin
-         if rig <> nil then begin
-            kHz := ((rig.CurrentFreqHz div 1000000) * 1000) * 1000;
-            hz := khz + Trunc(StrToFloatDef(freq, 0) * 1000);
-            SetRigFreq(rig, hz);
+   if dmZLogGlobal.Settings.FUseKhzQsyCommand = True then begin
+      if IsDirectQsy(S, freq) then begin
+         if (Length(freq) >= 4) and (Pos('.', freq) = 0) then begin
+            Insert('.', freq, 4);
+         end;
+         if IsFreqStr(freq) = True then begin
+            if rig <> nil then begin
+               kHz := ((rig.CurrentFreqHz div 1000000) * 1000) * 1000;
+               hz := khz + Trunc(StrToFloatDef(freq, 0) * 1000);
+               SetRigFreq(rig, hz);
+            end;
          end;
       end;
    end;
