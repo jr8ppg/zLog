@@ -13306,9 +13306,17 @@ begin
       Exit;
    end;
 
+   // PTT制御無効なら何もしない
+   if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
+       (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
+      Exit;
+   end;
+
    // WAIT=OFFの場合はキューをクリア
    if FInformation.IsWait = False then begin
-      FMessageManager.ClearQue();
+      if (dmZLogKeyer.IsPlaying = True) or (FMessageManager.IsPlaying = True) then begin
+         CQAbort(False);
+      end;
    end;
 
    FMessageManager.AddQue(WM_ZLOG_NONCONVERTKEYPRESS, FCurrentRx, FCurrentTx);
@@ -13328,12 +13336,6 @@ begin
    OutputDebugString(PChar('[無変換]'));
    {$ENDIF}
 
-   // PTT制御無効なら何もしない
-   if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
-       (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
-      Exit;
-   end;
-
    // 現在のPTT状態
    fBeforePTT := dmZLogKeyer.PTTIsOn;
 
@@ -13343,60 +13345,21 @@ begin
    band := TextToBand(FEditPanel[nID].BandEdit.Text);
 
    // 2BSIQ時は受信中の方でPTT制御する
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (Is2bsiq() = True) then begin
-      // 再生中なら
-      if FMessageManager.IsPlaying = True then begin
-         // CQを中止して
-//         CQAbort(False);
+   if FInformation.IsWait = True then begin
+      CQAbort(False);
+   end;
 
-         StopMessage(mode);
+   // TXをRXに合わせる
+   if nTxID <> nRxID then begin
+      ResetTx(FCurrentRigSet);
+   end;
 
-         // TXをRXに合わせる
-         if nTxID <> nRxID then begin
-            ResetTx(FCurrentRigSet);
-         end;
-
-         // PTT ON
-         fPTT := True;
-      end
-      else begin
-         if fBeforePTT = True then begin
-            fPTT := False;
-         end
-         else begin
-            // TXをRXに合わせる
-            if nTxID <> nRxID then begin
-               ResetTx(FCurrentRigSet);
-            end;
-
-            if FCQLoopRunning = True then begin
-               timerCqRepeat.Enabled := False;
-               FMessageManager.ClearQue2();
-            end;
-
-            fPTT := True;
-         end;
-      end;
+   // PTTをトグル
+   if fBeforePTT = True then begin
+      fPTT := False;
    end
    else begin
-      // 再生中なら
-      if FMessageManager.IsPlaying = True then begin
-         // CQを中止して
-         CQAbort(False);
-
-         // PTT ON
-         fPTT := True;
-      end
-      else begin
-         // PTTをトグル
-         if fBeforePTT = True then begin
-            fPTT := False;
-         end
-         else begin
-            fPTT := True;
-         end;
-      end;
+      fPTT := True;
    end;
 
    rig := RigControl.GetRig(FCurrentRigSet, band);

@@ -220,6 +220,7 @@ begin
          (m.FWParam = msg.FWParam) and
          (m.FLParam = msg.FLParam) and
          (m.FRigID = msg.FRigID) then begin
+         msg.Free();
          Exit;
       end;
    end;
