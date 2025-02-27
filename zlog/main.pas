@@ -4529,7 +4529,21 @@ begin
             end;
 
             PlayMessage(mode, 1, 3, False);
+
             LogButtonProc(nTxID, curQSO);
+
+            // SO2Rモードの場合
+            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+               // 2BSIQ=OFF
+               if (Is2bsiq() = False) then begin
+                  // 送受が異なる場合はpickupなので、TXを戻す
+                  if FCurrentTx <> FCurrentRx then begin
+                     nTxID := nRxID;
+                     ResetTx(nTxID + 1);
+                     SetCQ(True);
+                  end;
+               end;
+            end;
          end;
       end;
 
@@ -13302,6 +13316,8 @@ begin
 end;
 
 procedure TMainForm.OnNonconvertKeyPress();
+var
+   mode: TMode;
 begin
    // RIG Switch後のガードタイム
    if MilliSecondsBetween(Now(), FRigSwitchTime) <= dmZLogGlobal.Settings.FRigSwitchGuardTime then begin
@@ -13317,7 +13333,11 @@ begin
    // WAIT=OFFの場合はキューをクリア
    if FInformation.IsWait = False then begin
       if (dmZLogKeyer.IsPlaying = True) or (FMessageManager.IsPlaying = True) then begin
-         CQAbort(False);
+         mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+         StopMessage(mode);
+         FMessageManager.ClearQue();
+         FCWMonitor.ClearSendingText();
+         FCWKeyboard.Clear();
       end;
    end;
 
@@ -13348,7 +13368,10 @@ begin
 
    // 2BSIQ時は受信中の方でPTT制御する
    if FInformation.IsWait = True then begin
-      CQAbort(False);
+      StopMessage(mode);
+      FMessageManager.ClearQue();
+      FCWMonitor.ClearSendingText();
+      FCWKeyboard.Clear();
    end;
 
    // TXをRXに合わせる
