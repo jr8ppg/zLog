@@ -4156,6 +4156,8 @@ begin
 end;
 
 procedure TMainForm.OnTabPress();
+var
+   mode: TMode;
 begin
    // TABキー連打対策か？ 100ミリ秒ではあまり対策になっていない
    if MilliSecondsBetween(Now(), FLastTabPress) <= 100 then begin
@@ -4188,6 +4190,8 @@ begin
 
    // WAIT=OFFの場合はキューをクリア
    if FInformation.IsWait = False then begin
+      mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+      StopMessage(mode);
       FMessageManager.ClearQue();
    end;
 
@@ -4359,6 +4363,8 @@ begin
 end;
 
 procedure TMainForm.OnDownKeyPress();
+var
+   mode: TMode;
 begin
    // RIG Switch後のガードタイム
    if MilliSecondsBetween(Now(), FRigSwitchTime) <= dmZLogGlobal.Settings.FRigSwitchGuardTime then begin
@@ -4379,6 +4385,8 @@ begin
 
    // WAIT=OFFの場合はキューをクリア
    if FInformation.IsWait = False then begin
+      mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+      StopMessage(mode);
       FMessageManager.ClearQue();
    end;
 
@@ -9642,10 +9650,9 @@ begin
    end;
 
    if FInformation.IsWait = False then begin
-      FMessageManager.ClearQue();
-      nID := FCurrentTx;
-      m := TextToMode(FEditPanel[nID].ModeEdit.Text);
+      m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
       StopMessage(m);
+      FMessageManager.ClearQue();
    end;
 
    case mode of
@@ -13232,6 +13239,8 @@ procedure TMainForm.StopMessage(mode: TMode);
 begin
    if mode = mCW then begin
       CWStopButtonClick(Self);
+      FCWMonitor.ClearSendingText();
+      FCWKeyboard.Clear();
    end
    else if (mode = mSSB) or (mode = mFM) or (mode = mAM) then begin
       VoiceStopButtonClick(Self);
@@ -13336,8 +13345,6 @@ begin
          mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
          StopMessage(mode);
          FMessageManager.ClearQue();
-         FCWMonitor.ClearSendingText();
-         FCWKeyboard.Clear();
       end;
    end;
 
@@ -13370,8 +13377,6 @@ begin
    if FInformation.IsWait = True then begin
       StopMessage(mode);
       FMessageManager.ClearQue();
-      FCWMonitor.ClearSendingText();
-      FCWKeyboard.Clear();
    end;
 
    // TXをRXに合わせる
@@ -13510,8 +13515,6 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
    FMessageManager.ClearQue();
-   FCWMonitor.ClearSendingText();
-   FCWKeyboard.Clear();
 
    // ２回やらないようにPTT ControlがOFFの場合にPTT OFFする
    if (((mode = mCW) and (dmZLogGlobal.Settings._pttenabled_cw = False) and (dmZLogKeyer.UseWinKeyer = False)) or
