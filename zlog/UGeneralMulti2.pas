@@ -34,6 +34,7 @@ type
     procedure UpdateData; override;
     property Config: TUserDefinedContest read FConfig write FConfig;
     property MultiList: TCityList read CityList;
+    function IsMultiNeed(): Boolean;
   end;
 
 implementation
@@ -187,9 +188,9 @@ var
    C : TCity;
    boo : Boolean;
 begin
-   if FConfig.UndefMulti or FConfig.AllowUnlistedMulti or (FConfig.PXMulti <> 0) or FConfig.UseCtyDat or FConfig.NoMulti then begin
+   if IsMultiNeed() = False then begin
       Result := True;
-      exit;
+      Exit;
    end;
 
    if zyloRequestValid(aQSO, boo) = True then begin
@@ -539,6 +540,16 @@ begin
          Inc(i);
       end;
    end;
+end;
+
+function TGeneralMulti2.IsMultiNeed(): Boolean;
+begin
+   if FConfig.UndefMulti or FConfig.AllowUnlistedMulti or (FConfig.PXMulti <> 0) or FConfig.UseCtyDat or FConfig.NoMulti then begin
+      Result := False;
+      Exit;
+   end;
+
+   Result := True;
 end;
 
 end.

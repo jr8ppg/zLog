@@ -3730,6 +3730,7 @@ procedure TMainForm.EnterKeyModeProc(S: string);
 var
    Q: TQSO;
    msg: string;
+   fNoMulti: Boolean;
 begin
    // CQ mode
    if IsCQ() then begin
@@ -3762,17 +3763,31 @@ begin
       end
       else begin
          S := NumberEdit.Text;
-         if S = '' then begin
+
+         fNoMulti := False;
+
+         if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+            CurrentQSO.Reserve2 := $FF;
+            fNoMulti := True;
+         end;
+
+         if MyContest is TPedi then begin
+            fNoMulti := True;
+         end;
+
+         if MyContest is TGeneralContest then begin
+            if TGeneralMulti2(MyContest.MultiForm).IsMultiNeed() = False then begin
+               fNoMulti := True;
+            end;
+         end;
+
+         if (S = '') and (fNoMulti = False) then begin
             // F5:NR?
             actionPlayMessageA05.Execute();
          end
          else begin
             // F8 5NN$X and Log
             actionPlayMessageA08.Execute();
-
-            if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-               CurrentQSO.Reserve2 := $FF;
-            end;
 
             LogButtonClick(Self);
          end;
