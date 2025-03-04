@@ -32,7 +32,7 @@ uses
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
-  UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort;
+  UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -624,6 +624,8 @@ type
     menuCfgDatFiles: TMenuItem;
     N19: TMenuItem;
     menuRbnOptions: TMenuItem;
+    actionShowEntityInfo: TAction;
+    actionShowEntityInfo1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -952,6 +954,7 @@ type
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
       State: TGridDrawState);
     procedure menuRbnOptionsClick(Sender: TObject);
+    procedure actionShowEntityInfoExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -988,6 +991,7 @@ type
     FCWMonitor: TformCWMonitor;
     FProgress: TformProgress;
     FQsoSearch: TformSearch;
+    FEntityInfo: TformEntityInfo;
 
     FInitialized: Boolean;
 
@@ -2421,6 +2425,7 @@ begin
    FCWMonitor     := TformCWMonitor.Create(Self);
    FProgress      := TformProgress.Create(Self);
    FQsoSearch     := TformSearch.Create(Self);
+   FEntityInfo    := TformEntityInfo.Create(Self);
 
    FSuperCheck.OnChangeFontSize := OnChangeFontSize;
    FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
@@ -2796,6 +2801,7 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FFreqTest);
       dmZlogGlobal.ReadWindowState(ini, FMessageManager);
       dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
+      dmZlogGlobal.ReadWindowState(ini, FEntityInfo);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].LoadSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -2850,6 +2856,7 @@ begin
       dmZlogGlobal.WriteWindowState(ini, FFreqTest);
       dmZlogGlobal.WriteWindowState(ini, FMessageManager);
       dmZlogGlobal.WriteWindowState(ini, FCWMonitor);
+      dmZlogGlobal.WriteWindowState(ini, FEntityInfo);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].SaveSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -5177,6 +5184,7 @@ begin
    FCWMonitor.Release();
    FProgress.Release();
    FQsoSearch.Release();
+   FEntityInfo.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -6083,6 +6091,12 @@ begin
    str := MyContest.MultiForm.GetInfo(Q);
    if str <> '' then begin
       WriteStatusLine(str, False);
+   end;
+
+   if (MyContest is TCQWWContest) then begin
+      if FEntityInfo.Visible then begin
+         FEntityInfo.SetData(TWWMulti(MyContest.MultiForm).LastCountry);
+      end;
    end;
 
    Q.Free();
@@ -11731,6 +11745,12 @@ begin
    finally
       ini.Free();
    end;
+end;
+
+// #169 Entity information
+procedure TMainForm.actionShowEntityInfoExecute(Sender: TObject);
+begin
+   FEntityInfo.Show();
 end;
 
 procedure TMainForm.WriteKeymap();

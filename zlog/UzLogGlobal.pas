@@ -111,6 +111,8 @@ type
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
+    _mylatitude: string;
+    _mylongitude: string;
 
     _selectlastoperator: Boolean;
     _applypoweronbandchg: Boolean;
@@ -1303,6 +1305,8 @@ begin
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
       Settings._contestmenuno := ini.ReadInteger('Categories', 'Contest', 1);
       Settings._mycall := ini.ReadString('Categories', 'MyCall', '');
+      Settings._mylatitude := ini.ReadString('Categories', 'MyLatitude', '36.4');
+      Settings._mylongitude := ini.ReadString('Categories', 'MyLongitude', '-138.38');
 
       Settings.CW._interval := ini.ReadInteger('CW', 'Interval', 1);
 
@@ -2032,6 +2036,8 @@ begin
       ini.WriteInteger('Categories', 'Contest', Settings._contestmenuno);
       ini.WriteInteger('Categories', 'TXNumber', Settings._txnr);
       ini.WriteString('Categories', 'MyCall', Settings._mycall);
+      ini.WriteString('Categories', 'MyLatitude', Settings._mylatitude);
+      ini.WriteString('Categories', 'MyLongitude', Settings._mylongitude);
 
       ini.WriteInteger('CW', 'Interval', Settings.CW._interval);
 

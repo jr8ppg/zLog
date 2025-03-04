@@ -575,6 +575,10 @@
             <Form>formOptions2</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UEntityInfo.pas">
+            <Form>formEntityInfo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -889,7 +893,8 @@
                     <RDP_Source_Files Name="Item124">USpcViewer.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item125">Progress.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item126">UOptions2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item127">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item127">UEntityInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item128">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

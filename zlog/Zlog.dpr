@@ -162,7 +162,8 @@ uses
   USelectClusterLog in 'USelectClusterLog.pas' {formSelectClusterLog},
   USpcViewer in 'USpcViewer.pas' {formSpcViewer},
   Progress in 'Progress.pas' {formProgress},
-  UOptions2 in 'UOptions2.pas' {formOptions2};
+  UOptions2 in 'UOptions2.pas' {formOptions2},
+  UEntityInfo in 'UEntityInfo.pas' {formEntityInfo};
 
 {$R *.res}
 

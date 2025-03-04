@@ -6211,6 +6211,9 @@ object MainForm: TMainForm
       object menuQTC: TMenuItem
         Action = actionQTC
       end
+      object actionShowEntityInfo1: TMenuItem
+        Action = actionShowEntityInfo
+      end
     end
     object menuSettings: TMenuItem
       Caption = #21508#31278#35373#23450'(&S)'
@@ -7807,6 +7810,10 @@ object MainForm: TMainForm
     object actionSo2rToggleAfBlend: TAction
       Caption = 'actionSo2rToggleAfBlend'
       OnExecute = actionSo2rToggleAfBlendExecute
+    end
+    object actionShowEntityInfo: TAction
+      Caption = 'Entity infomation'
+      OnExecute = actionShowEntityInfoExecute
     end
   end
   object SPCMenu: TPopupMenu
