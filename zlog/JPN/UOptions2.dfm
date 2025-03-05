@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetQuickFunctions
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -434,12 +434,12 @@ object formOptions2: TformOptions2
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 273
-        Top = 89
+        Left = 276
+        Top = 108
         Width = 113
         Height = 17
         Caption = #12487#12517#12540#12503#12434#35377#21487
-        TabOrder = 2
+        TabOrder = 3
         Visible = False
       end
       object SaveEvery: TSpinEdit
@@ -450,7 +450,7 @@ object formOptions2: TformOptions2
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 6
+        TabOrder = 7
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -459,15 +459,15 @@ object formOptions2: TformOptions2
         Width = 240
         Height = 17
         Caption = #20182#12398#12496#12531#12489#12391#20132#25563#12375#12383#12490#12531#12496#12540#12434#33258#21205#20837#21147
-        TabOrder = 8
+        TabOrder = 9
       end
       object cbJMode: TCheckBox
-        Left = 273
-        Top = 68
+        Left = 276
+        Top = 87
         Width = 97
         Height = 17
         Caption = 'J'#12514#12540#12489
-        TabOrder = 1
+        TabOrder = 2
       end
       object cbSaveWhenNoCW: TCheckBox
         Left = 17
@@ -475,7 +475,7 @@ object formOptions2: TformOptions2
         Width = 161
         Height = 17
         Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-        TabOrder = 5
+        TabOrder = 6
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -483,7 +483,7 @@ object formOptions2: TformOptions2
         Width = 260
         Height = 17
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
-        TabOrder = 7
+        TabOrder = 8
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -491,7 +491,7 @@ object formOptions2: TformOptions2
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 11
+        TabOrder = 12
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -564,7 +564,7 @@ object formOptions2: TformOptions2
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 10
+        TabOrder = 11
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -598,23 +598,59 @@ object formOptions2: TformOptions2
         Width = 193
         Height = 17
         Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-        TabOrder = 9
+        TabOrder = 10
       end
       object checkOutputOutofPeriod: TCheckBox
-        Left = 273
-        Top = 131
+        Left = 276
+        Top = 150
         Width = 160
         Height = 17
         Caption = #26399#38291#22806#12398#20132#20449#12418#12525#12464#20986#21147
-        TabOrder = 4
+        TabOrder = 5
       end
       object checkUseContestPeriod: TCheckBox
-        Left = 273
-        Top = 110
+        Left = 276
+        Top = 129
         Width = 160
         Height = 17
         Caption = #12467#12531#12486#12473#12488#26399#38291#12434#20351#12358
-        TabOrder = 3
+        TabOrder = 4
+      end
+      object GroupBox6: TGroupBox
+        Left = 268
+        Top = 3
+        Width = 153
+        Height = 74
+        Caption = 'My position'
+        TabOrder = 1
+        object Label39: TLabel
+          Left = 8
+          Top = 21
+          Width = 38
+          Height = 13
+          Caption = 'Latitude'
+        end
+        object Label42: TLabel
+          Left = 8
+          Top = 48
+          Width = 47
+          Height = 13
+          Caption = 'Longitude'
+        end
+        object editMyLatitude: TEdit
+          Left = 64
+          Top = 18
+          Width = 81
+          Height = 21
+          TabOrder = 0
+        end
+        object editMyLongitude: TEdit
+          Left = 64
+          Top = 45
+          Width = 81
+          Height = 21
+          TabOrder = 1
+        end
       end
     end
     object tabsheetCategories: TTabSheet

@@ -3,31 +3,40 @@ unit UEntityInfo;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Math, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Math, Vcl.StdCtrls,
+  Vcl.ExtCtrls, System.StrUtils,
   UzLogForm, UzLogGlobal, UMultipliers;
 
 type
   TformEntityInfo = class(TZLogForm)
     Panel1: TPanel;
-    Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
-    editCountryName: TEdit;
-    editCqZone: TEdit;
-    editItuZone: TEdit;
-    editContinent: TEdit;
     Image1: TImage;
-    labelAzimuth: TLabel;
-    labelLongitude: TLabel;
-    labelLatitude: TLabel;
+    Panel2: TPanel;
+    panelLatitude: TPanel;
+    panelLongitude: TPanel;
+    panelDistance: TPanel;
+    panelAzimuth: TPanel;
+    panelCQZone: TPanel;
+    panelITUZone: TPanel;
+    panelContinent: TPanel;
+    Panel3: TPanel;
+    panelCountryName: TPanel;
+    panelCountry: TPanel;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
     { Private 宣言 }
     FBitmap: TBitmap;
-    procedure DrawCompass(angle: Double);
+    procedure DrawCompass(angle: Double; latitude: string; longitude: string; distance: string);
+    function DegToDms(angle: Single): string;
+    function LatitudeDegToDms(angle: Single): string;
+    function LongitudeDegToDms(angle: Single): string;
+    function IntToStr3(v: integer): string;
   public
     { Public 宣言 }
     procedure SetData(ctydat: TCountry);
@@ -70,13 +79,15 @@ begin
    FBitmap.Canvas.Brush.Color := clWhite;
    FBitmap.Canvas.Brush.Style := bsSolid;
    FBitmap.Canvas.FillRect(rect);
-   editCountryName.Text := '';
-   editCqZone.Text := '';
-   editItuZone.Text := '';
-   editContinent.Text := '';
-   labelLatitude.Caption := '';
-   labelLongitude.Caption := '';
-   labelAzimuth.Caption := '';
+   panelCountryName.Caption := '';
+   panelCountry.Caption := '';
+   panelCqZone.Caption := '';
+   panelItuZone.Caption := '';
+   panelContinent.Caption := '';
+   panelLatitude.Caption := '';
+   panelLongitude.Caption := '';
+   panelDistance.Caption := '';
+   panelAzimuth.Caption := '';
 
    if ctydat = nil then begin
       Image1.Picture.Assign(FBitmap);
@@ -107,19 +118,21 @@ begin
    angle := RadToDeg(angle);
    azimuth := FMod(360 + 90 - angle, 360);
 
-   editCountryName.Text := ctydat.CountryName;
-   editCqZone.Text := ctydat.CQZone;
-   editItuZone.Text := ctydat.ITUZone;
-   editContinent.Text := ctydat.Continent;
-   labelLatitude.Caption := ctydat.Latitude;
-   labelLongitude.Caption := ctydat.Longitude;
-//   editDistance.Text := FloatToStr(distance);
-   labelAzimuth.Caption := IntToStr(Trunc(azimuth));
+   panelCountryName.Caption := ctydat.CountryName;
+   panelCountry.Caption := ctydat.Country;
+   panelCqZone.Caption := ctydat.CQZone;
+   panelItuZone.Caption := ctydat.ITUZone;
+   panelContinent.Caption := ctydat.Continent;
 
-   DrawCompass(azimuth);
+   panelLatitude.Caption := LatitudeDegToDms(StrToFloatDef(ctydat.Latitude, 0));
+   panelLongitude.Caption := LongitudeDegToDms(StrToFloatDef(ctydat.Longitude, 0) * -1);
+   panelDistance.Caption := IntToStr3(Trunc(distance)) + 'Km';
+   panelAzimuth.Caption := IntToStr(Trunc(azimuth));
+
+   DrawCompass(azimuth, panelLatitude.Caption, panelLongitude.Caption, panelDistance.Caption);
 end;
 
-procedure TformEntityInfo.DrawCompass(angle: Double);
+procedure TformEntityInfo.DrawCompass(angle: Double; latitude: string; longitude: string; distance: string);
 var
    cx, cy, cl: Integer;
    ex, ey: Integer;
@@ -128,6 +141,7 @@ var
    x, y: Integer;
    rr: Integer;
    points: array[0..2] of TPoint;
+   S: string;
 begin
    cl := 80;
    rr := 200;
@@ -163,6 +177,23 @@ begin
    x := (rr - x) + ((x - w) div 2) + 1;
    FBitmap.Canvas.TextOut(x, y, 'E');
 
+   // 緯度・経度
+   FBitmap.Canvas.Font.Size := 9;
+   h := FBitmap.Canvas.TextHeight('X');
+   x := 2;
+   y := rr - ((h + 0) * 2);
+   FBitmap.Canvas.TextOut(x, y, latitude);
+   y := rr - ((h + 0) * 1);
+   FBitmap.Canvas.TextOut(x, y, longitude);
+
+   x := rr - FBitmap.Canvas.TextWidth(distance) - 2;
+   FBitmap.Canvas.TextOut(x, y, distance);
+
+   // 真ん中の丸
+   FBitmap.Canvas.Pen.Width := 1;
+   FBitmap.Canvas.Brush.Color := clBlack;
+   FBitmap.Canvas.Ellipse(cx - 4, cy - 4, cx + 4, cy + 4);
+
    // 方向
    FBitmap.Canvas.Pen.Width := 2;
    FBitmap.Canvas.MoveTo(cx, cy);
@@ -170,7 +201,6 @@ begin
 
    // 矢印
    FBitmap.Canvas.Pen.Width := 1;
-   FBitmap.Canvas.Brush.Color := clBlack;
    points[0].X := ex;
    points[0].Y := ey;
    points[1].X := ex + Round(20 * Sin(DegToRad(360 - angle - 45)));
@@ -179,8 +209,81 @@ begin
    points[2].Y := ey + Round(20 * Cos(DegToRad(360 - angle + 45)));
    FBitmap.Canvas.Polygon(points);
 
+   // 角度表示
+   S := IntToStr(Trunc(angle));
+   FBitmap.Canvas.Font.Size := 18;
+   FBitmap.Canvas.Brush.Style := bsClear;
+   w := FBitmap.Canvas.TextWidth(S);
+   h := FBitmap.Canvas.TextHeight('X');
+   x := (rr - w) div 2;
+   if (angle < 90) or (angle > 270) then begin
+      y := cy + 4;
+   end
+   else begin
+      y := cy - h - 4;
+   end;
+   FBitmap.Canvas.TextOut(x, y, S);
+
    // 描画
    Image1.Picture.Assign(FBitmap);
+end;
+
+function TformEntityInfo.DegToDms(angle: Single): string;
+var
+   d: Integer;
+   m: Integer;
+   s: Integer;
+   x: Single;
+begin
+   d := Trunc(angle);
+   x := Frac(angle);
+   m := Trunc(SimpleRoundTo(x * 60, -2));
+   s := Trunc((SimpleRoundTo(x * 60, -2) - Single(m)) * 60);
+
+   Result := IntToStr(d) + ':' + RightStr('00' + IntToStr(m), 2) + ':' + RightStr('00' + IntToStr(s), 2);
+end;
+
+function TformEntityInfo.LatitudeDegToDms(angle: Single): string;
+begin
+   if angle < 0 then begin
+      Result := 'S' + DegToDms(Abs(angle));
+   end
+   else begin
+      Result := 'N' + DegToDms(angle);
+   end;
+end;
+
+function TformEntityInfo.LongitudeDegToDms(angle: Single): string;
+begin
+   if angle < 0 then begin
+      Result := 'W' + DegToDms(Abs(angle));
+   end
+   else begin
+      Result := 'E' + DegToDms(angle);
+   end;
+end;
+
+function TformEntityInfo.IntToStr3(v: integer): string;
+var
+   i: integer;
+   c: integer;
+   strText: string;
+   strFormatedText: string;
+begin
+   strText := IntToStr(v);
+   strFormatedText := '';
+
+   c := 0;
+   for i := Length(strText) downto 1 do begin
+      if c >= 3 then begin
+         strFormatedText := ',' + strFormatedText;
+         c := 0;
+      end;
+      strFormatedText := Copy(strText, i, 1) + strFormatedText;
+      inc(c);
+   end;
+
+   Result := strFormatedText;
 end;
 
 end.

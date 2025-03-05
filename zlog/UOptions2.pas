@@ -420,6 +420,11 @@ type
     comboVoiceDevice: TComboBox;
     Label38: TLabel;
     checkUseKhzQsyCommand: TCheckBox;
+    GroupBox6: TGroupBox;
+    editMyLatitude: TEdit;
+    editMyLongitude: TEdit;
+    Label39: TLabel;
+    Label42: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -622,6 +627,10 @@ begin
       Settings._power[b2400] := comboPower2400.Text;
       Settings._power[b5600] := comboPower5600.Text;
       Settings._power[b10g] := comboPower10g.Text;
+
+      // My position
+      Settings._mylatitude := editMyLatitude.Text;
+      Settings._mylongitude := editMyLongitude.Text;
 
       Settings._mode := TContestMode(ModeGroup.ItemIndex);
 
@@ -958,6 +967,10 @@ begin
       comboPower2400.Text := Settings._power[b2400];
       comboPower5600.Text := Settings._power[b5600];
       comboPower10g.Text := Settings._power[b10g];
+
+      // My position
+      editMyLatitude.Text := Settings._mylatitude;
+      editMyLongitude.Text := Settings._mylongitude;
 
       // Category
       if ContestCategory = ccSingleOp then begin

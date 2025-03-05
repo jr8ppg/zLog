@@ -2801,7 +2801,7 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FFreqTest);
       dmZlogGlobal.ReadWindowState(ini, FMessageManager);
       dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
-      dmZlogGlobal.ReadWindowState(ini, FEntityInfo);
+      dmZlogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].LoadSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -3845,6 +3845,10 @@ begin
    AssignControls(FCurrentRigSet - 1, C, N, B, M, SE, OP);
 
    CurrentQSO.Callsign := C.Text;
+
+   if C.Text = '' then begin
+      FEntityInfo.SetData(nil);
+   end;
 
    // SO2Rなので送受が同じ場合のみコールセットする
    if (FCurrentRigSet - 1) = FCurrentTx then begin
