@@ -1,4 +1,4 @@
-![Image](https://img.shields.io/badge/Delphi-11.3-brightgreen)
+![Image](https://img.shields.io/badge/Delphi-12.1-brightgreen)
 ![image](https://img.shields.io/github/v/release/jr8ppg/zLog?include_prereleases)
 ![image](https://img.shields.io/github/license/jr8ppg/zLog)
 # zLog 令和 Edition
