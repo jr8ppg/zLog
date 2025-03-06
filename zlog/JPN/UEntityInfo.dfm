@@ -21,8 +21,6 @@ object formEntityInfo: TformEntityInfo
     Height = 221
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 0
-    ExplicitHeight = 216
     object Image1: TImage
       Left = 8
       Top = 8
@@ -125,14 +123,39 @@ object formEntityInfo: TformEntityInfo
     Height = 66
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 222
-    object panelLatitude: TPanel
+    object Label5: TLabel
       Left = 8
       Top = 8
+      Width = 54
+      Height = 20
+      Caption = 'Sunrise'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 8
+      Top = 35
+      Width = 51
+      Height = 20
+      Caption = 'Sunset'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object panelSunrise: TPanel
+      Left = 68
+      Top = 6
       Width = 121
       Height = 25
       BevelOuter = bvLowered
-      Caption = 'N45:00:00'
+      Caption = '00:00:00'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -19
@@ -141,9 +164,9 @@ object formEntityInfo: TformEntityInfo
       ParentFont = False
       TabOrder = 0
     end
-    object panelLongitude: TPanel
-      Left = 8
-      Top = 35
+    object panelSunset: TPanel
+      Left = 68
+      Top = 33
       Width = 121
       Height = 25
       BevelOuter = bvLowered
@@ -155,21 +178,6 @@ object formEntityInfo: TformEntityInfo
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-    end
-    object panelDistance: TPanel
-      Left = 135
-      Top = 8
-      Width = 113
-      Height = 25
-      BevelOuter = bvLowered
-      Caption = '12,000Km'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Consolas'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 2
     end
     object panelAzimuth: TPanel
       Left = 255
@@ -184,7 +192,7 @@ object formEntityInfo: TformEntityInfo
       Font.Name = 'Consolas'
       Font.Style = []
       ParentFont = False
-      TabOrder = 3
+      TabOrder = 2
     end
   end
   object Panel3: TPanel
@@ -209,5 +217,20 @@ object formEntityInfo: TformEntityInfo
       ParentFont = False
       TabOrder = 0
     end
+  end
+  object SunTime1: TSunTime
+    UseSysTimeZone = False
+    TimeZone = 9
+    Latitude.Degrees = 0
+    Latitude.Minutes = 0
+    Latitude.Seconds = 0
+    Longitude.Degrees = 0
+    Longitude.Minutes = 0
+    Longitude.Seconds = 0
+    ZenithDistance.Degrees = 90
+    ZenithDistance.Minutes = 50
+    ZenithDistance.Seconds = 0
+    Left = 136
+    Top = 157
   end
 end

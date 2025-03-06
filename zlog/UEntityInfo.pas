@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Math, Vcl.StdCtrls,
   Vcl.ExtCtrls, System.StrUtils,
-  UzLogForm, UzLogGlobal, UMultipliers;
+  UzLogForm, UzLogGlobal, UMultipliers, SunTime;
 
 type
   TformEntityInfo = class(TZLogForm)
@@ -16,9 +16,8 @@ type
     Label4: TLabel;
     Image1: TImage;
     Panel2: TPanel;
-    panelLatitude: TPanel;
-    panelLongitude: TPanel;
-    panelDistance: TPanel;
+    panelSunrise: TPanel;
+    panelSunset: TPanel;
     panelAzimuth: TPanel;
     panelCQZone: TPanel;
     panelITUZone: TPanel;
@@ -27,6 +26,9 @@ type
     panelCountryName: TPanel;
     panelCountry: TPanel;
     Label1: TLabel;
+    SunTime1: TSunTime;
+    Label5: TLabel;
+    Label6: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -69,6 +71,7 @@ var
    azimuth: Double;
    angle: Double;
    rect: TRect;
+   strLatitude, strLongitude, strDistance: string;
 begin
    rect.Top := 0;
    rect.Left := 0;
@@ -84,10 +87,12 @@ begin
    panelCqZone.Caption := '';
    panelItuZone.Caption := '';
    panelContinent.Caption := '';
-   panelLatitude.Caption := '';
-   panelLongitude.Caption := '';
-   panelDistance.Caption := '';
+   strLatitude := '';
+   strLongitude := '';
+   strDistance := '';
    panelAzimuth.Caption := '';
+   panelSunrise.Caption := '';
+   panelSunset.Caption := '';
 
    if ctydat = nil then begin
       Image1.Picture.Assign(FBitmap);
@@ -118,18 +123,27 @@ begin
    angle := RadToDeg(angle);
    azimuth := FMod(360 + 90 - angle, 360);
 
+   // EntityèÓïÒ
    panelCountryName.Caption := ctydat.CountryName;
    panelCountry.Caption := ctydat.Country;
    panelCqZone.Caption := ctydat.CQZone;
    panelItuZone.Caption := ctydat.ITUZone;
    panelContinent.Caption := ctydat.Continent;
 
-   panelLatitude.Caption := LatitudeDegToDms(StrToFloatDef(ctydat.Latitude, 0));
-   panelLongitude.Caption := LongitudeDegToDms(StrToFloatDef(ctydat.Longitude, 0) * -1);
-   panelDistance.Caption := IntToStr3(Trunc(distance)) + 'Km';
+   strLatitude := LatitudeDegToDms(StrToFloatDef(ctydat.Latitude, 0));
+   strLongitude := LongitudeDegToDms(StrToFloatDef(ctydat.Longitude, 0) * -1);
+   strDistance := IntToStr3(Trunc(distance)) + 'Km';
    panelAzimuth.Caption := IntToStr(Trunc(azimuth));
 
-   DrawCompass(azimuth, panelLatitude.Caption, panelLongitude.Caption, panelDistance.Caption);
+   // Sunrise/Sunset
+   suntime1.Date := Now();
+   suntime1.Latitude.Value := StrToFloatDef(ctydat.Latitude, 0);
+   suntime1.Longitude.Value := StrToFloatDef(ctydat.Longitude, 0) * 1;
+   panelSunrise.Caption := FormatDateTime('mm/dd hh:nn', suntime1.sunrise);
+   panelSunset.Caption := FormatDateTime('mm/dd hh:nn', suntime1.sunset);
+
+   // Compass
+   DrawCompass(azimuth, strLatitude, strLongitude, strDistance);
 end;
 
 procedure TformEntityInfo.DrawCompass(angle: Double; latitude: string; longitude: string; distance: string);
