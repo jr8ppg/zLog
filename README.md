@@ -171,3 +171,9 @@ Copyright (c) Marco Cocco
 This product includes software developed by Project JEDI
 https://www.delphi-jedi.org/
 ```
+
+* TSunTime v1.11 -- Calculates times of sunrise, sunset, and solar noon.
+```
+This product includes software developed by Kambiz R. Khojasteh
+http://www.delphiarea.com
+```

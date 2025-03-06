@@ -129,6 +129,7 @@
         <DCCReference Include="cologrid\Cologrid.pas"/>
         <DCCReference Include="OEDIT.PAS"/>
         <DCCReference Include="CONSOLE2.PAS"/>
+        <DCCReference Include="SunTime.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -192,6 +193,12 @@
             <Deployment Version="4">
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\zlog_requires.bpl" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\zlog_requires.bpl" Configuration="Release" Class="ProjectOutput"/>
+                <DeployFile LocalName="Win64\Release\zlog_requires.bpl" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>zlog_requires.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">
                         <Operation>1</Operation>
