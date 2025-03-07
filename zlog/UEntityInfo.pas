@@ -139,8 +139,18 @@ begin
    suntime1.Date := Now();
    suntime1.Latitude.Value := StrToFloatDef(ctydat.Latitude, 0);
    suntime1.Longitude.Value := StrToFloatDef(ctydat.Longitude, 0) * 1;
-   panelSunrise.Caption := FormatDateTime('mm/dd hh:nn', suntime1.sunrise);
-   panelSunset.Caption := FormatDateTime('mm/dd hh:nn', suntime1.sunset);
+   if IsNan(suntime1.sunrise) then begin
+      panelSunrise.Caption := '-';
+   end
+   else begin
+      panelSunrise.Caption := FormatDateTime('mm/dd hh:nn', suntime1.sunrise);
+   end;
+   if IsNan(suntime1.sunset) then begin
+      panelSunset.Caption := '-';
+   end
+   else begin
+      panelSunset.Caption := FormatDateTime('mm/dd hh:nn', suntime1.sunset);
+   end;
 
    // Compass
    DrawCompass(azimuth, strLatitude, strLongitude, strDistance);

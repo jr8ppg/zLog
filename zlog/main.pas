@@ -6032,6 +6032,7 @@ var
    strNumber: string;
    str: string;
    Q: TQSO;
+   CTY: TCountry;
 begin
    Q := TQSO.Create();
    Q.Callsign := C.Text;
@@ -6097,10 +6098,20 @@ begin
       WriteStatusLine(str, False);
    end;
 
-   if (MyContest is TCQWWContest) then begin
+   // Entity情報
+   if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = True) then begin
       if FEntityInfo.Visible then begin
-         FEntityInfo.SetData(TWWMulti(MyContest.MultiForm).LastCountry);
+         CTY := dmZLogGlobal.GetPrefix(Q.Callsign).Country;
+         if CTY.CountryName = 'Unknown' then begin
+            FEntityInfo.SetData(nil);
+         end
+         else begin
+            FEntityInfo.SetData(CTY);
+         end;
       end;
+   end
+   else begin
+      FEntityInfo.SetData(nil);
    end;
 
    Q.Free();

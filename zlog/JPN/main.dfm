@@ -7812,7 +7812,7 @@ object MainForm: TMainForm
       OnExecute = actionSo2rToggleAfBlendExecute
     end
     object actionShowEntityInfo: TAction
-      Caption = 'Entity infomation'
+      Caption = #12456#12531#12486#12451#12486#12451#24773#22577
       OnExecute = actionShowEntityInfoExecute
     end
   end

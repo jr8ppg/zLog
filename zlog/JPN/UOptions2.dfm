@@ -621,21 +621,21 @@ object formOptions2: TformOptions2
         Top = 3
         Width = 153
         Height = 74
-        Caption = 'My position'
+        Caption = #33258#23616#12398#20301#32622
         TabOrder = 1
         object Label39: TLabel
           Left = 8
           Top = 21
           Width = 38
           Height = 13
-          Caption = 'Latitude'
+          Caption = #32239#24230
         end
         object Label42: TLabel
           Left = 8
           Top = 48
           Width = 47
           Height = 13
-          Caption = 'Longitude'
+          Caption = #32076#24230
         end
         object editMyLatitude: TEdit
           Left = 64
