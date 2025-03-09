@@ -7,7 +7,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.DateUtils, Generics.Collections, Generics.Defaults,
-  UzLogConst;
+  UzLogConst, HelperLib;
 
 type
   TQSODataExHeader = packed record
@@ -87,7 +87,8 @@ type
     Forced: Boolean;       { 1 byte }
     QslState: Byte;        { 1 byte 0:None 1:Pse QSL 2:No QSL }
     Invalid: Boolean;      { 1 byte false:valid true:invalid }
-    Reserve4: string[101]; { 102 bytes }
+    RbnVerified: Boolean;  { 1 byte false:not verified true:verified }
+    Reserve4: string[100]; { 100 bytes }
     // 384bytes
   end;
 
@@ -127,6 +128,7 @@ type
     FForced: Boolean;
     FQslState: TQslState;
     FInvalid: Boolean;
+    FRbnVerified: Boolean;
 
     function GetMode2(): TMode;
     function GetPoints(): Integer;
@@ -154,6 +156,7 @@ type
     function GetRSTRcvdStr(): string;
     function GetFreqStr(): string;
     function GetFreqStr2(): string;
+    function GetFreqStr3(): string;
     function GetMemoStr(): string;
     procedure SetInvalid(v: Boolean);
   public
@@ -214,6 +217,7 @@ type
     property Invalid: Boolean read FInvalid write SetInvalid;
     property QsoId: Integer read GetQsoId;
     property Area: string read GetArea;
+    property RbnVerified: Boolean read FRbnVerified write FRbnVerified;
 
     property SerialStr: string read GetSerialStr;
     property DateTimeStr: string read GetDateTimeStr;
@@ -231,6 +235,7 @@ type
     property RSTRcvdStr: string read GetRSTRcvdStr;
     property FreqStr: string read GetFreqStr;
     property FreqStr2: string read GetFreqStr2;
+    property FreqStr3: string read GetFreqStr3;
     property MemoStr: string read GetMemoStr;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
@@ -336,7 +341,7 @@ type
   end;
 
   TQSOListArray = array[b19..HiBand] of TQSOList;
-  TQSOListArrayByTx = array[0..9] of TQSOList;
+  TQSOListArrayByTx = array[0..(MAX_TX - 1)] of TQSOList;
 
   TLog = class(TObject)
   private
@@ -366,6 +371,8 @@ type
     function GetActualFreq(b: TBand; strFreq: string): string;
     function GetEndTime(): TDateTime;
     procedure SetPeriod(v: Integer);
+    function GetLastCallsign(): string;
+    function GetLastNumber(): string;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -394,6 +401,7 @@ type
     procedure SaveToFileByTX(Filename : string);
     procedure SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList = nil);
     procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
+    procedure SaveToFileByHamSupport(Filename: string);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -436,6 +444,9 @@ type
     function EvaluateQSYCount(nStartIndex: Integer): Integer;
     {$ENDIF}
 
+    function GetLastSerial(aQSO: TQSO): Integer;
+    function GetCurrentSerial(aQSO: TQSO): Integer;
+
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
@@ -452,12 +463,15 @@ type
     property StartTime: TDateTime read FStartTime write FStartTime;
     property EndTime: TDateTime read GetEndTime;
     property Period: Integer read FPeriod write SetPeriod;
+
+    property LastCallsign: string read GetLastCallsign;
+    property LastNumber: string read GetLastNumber;
   end;
 
 implementation
 
 uses
-  UzLogGlobal, UzLogExtension
+  UzLogGlobal, UzLogContest, UzLogExtension
   {$IFNDEF ZSERVER}
   , Main
   {$ENDIF};
@@ -504,6 +518,7 @@ begin
    FForced := False;
    FQslState := qsNone;
    FInvalid := False;
+   FRbnVerified := False;
 end;
 
 procedure TQSO.IncTime;
@@ -800,6 +815,35 @@ begin
    strFreq := Format('%.4f', [fFreq / 1000]);
 
    Result := strFreq;
+end;
+
+// 7117.6
+// 7.1176
+
+function TQSO.GetFreqStr3(): string;
+var
+   strFreq: string;
+   fFreq: Extended;
+   Index: Integer;
+   strMHz: string;
+   strkHz: string;
+begin
+   strFreq := Self.Freq;
+
+   fFreq := StrToFloatDef(strFreq, 0);
+   if fFreq = 0 then begin
+      Result := '';
+      Exit;
+   end;
+
+   strFreq := Format('%.4f', [fFreq / 1000]);
+
+   Index := Pos('.', strFreq);
+   strMHz := Copy(strFreq, 1, Index - 1);
+
+   strkHz := RightStr(Self.Freq, 5);
+
+   Result := strMHz + '.' + strkHz;
 end;
 
 function TQSO.GetMemoStr(): string;
@@ -1220,6 +1264,7 @@ begin
    FForced := src.FForced;
    FQslState := src.FQslState;
    FInvalid := src.Invalid;
+   FRbnVerified := src.RbnVerified;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;
@@ -1350,6 +1395,7 @@ begin
    Result.Forced     := FForced;
    Result.QslState   := Byte(FQslState);
    Result.Invalid    := FInvalid;
+   Result.RbnVerified := FRbnVerified;
 end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
@@ -1393,6 +1439,7 @@ begin
    FForced     := src.Forced;
    FQslState   := TQslState(src.QslState);
    FInvalid    := src.Invalid;
+   FRbnVerified := src.RbnVerified;
 end;
 
 { TQSOList }
@@ -1659,7 +1706,7 @@ begin
       FBandList[B] := TQSOList.Create(False);
    end;
 
-   for i := 0 to 9 do begin
+   for i := Low(FTxList) to High(FTxList) do begin
       FTxList[i] := TQSOList.Create(False);
    end;
 
@@ -1675,7 +1722,7 @@ begin
       FBandList[B].Add(Q);
    end;
 
-   for i := 0 to 9 do begin
+   for i := Low(FTxList) to High(FTxList) do begin
       FTxList[i].Add(Q);
    end;
 
@@ -1699,7 +1746,7 @@ begin
       FBandList[B].Free();
    end;
 
-   for i := 0 to 9 do begin
+   for i := Low(FTxList) to High(FTxList) do begin
       FTxList[i].Free();
    end;
 
@@ -2258,7 +2305,7 @@ procedure TLog.SaveToFilezLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
-               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","Forced","PCName","QslState","Invalid","Area"';
+               '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","Forced","QslState","Invalid","Area","RBN Verified"';
 var
    F: TextFile;
    i: Integer;
@@ -2276,7 +2323,10 @@ begin
 
       offsetmin := FQsoList[0].RSTsent;
 
-      WriteLn(F, csvheader);
+      // BOM
+      Write(F, #$EF + #$BB + #$BF);
+
+      WriteLn(F, UTF8String(csvheader));
 
       for i := 1 to FQSOList.Count - 1 do begin
          Q := FQSOList[i];
@@ -2299,37 +2349,37 @@ begin
          slCsv.Add(strText);
 
          // 4列目 コールサイン
-         slCsv.Add('"' + Q.Callsign + '"');
+         slCsv.Add2(Q.Callsign);
 
          // 5列目 相手局へ送ったRST
-         slCsv.Add('"' + Q.RSTSentStr + '"');
+         slCsv.Add2(Q.RSTSentStr);
 
          // 6列目 相手局へ送ったNumber
-         slCsv.Add('"' + Q.NrSent + '"');
+         slCsv.Add2(Q.NrSent);
 
          // 7列目 相手局からもらったレポート
-         slCsv.Add('"' + Q.RSTRcvdStr + '"');
+         slCsv.Add2(Q.RSTRcvdStr);
 
          // 8列目 相手局へ送ったNumber
-         slCsv.Add('"' + Q.NrRcvd + '"');
+         slCsv.Add2(Q.NrRcvd);
 
          // 9列目 シリアルNO
          slCsv.Add(Q.SerialStr);
 
          // 10列目 Mode
-         slCsv.Add('"' + Q.ModeStr + '"');
+         slCsv.Add2(Q.ModeStr);
 
          // 11列目 Band
-         slCsv.Add('"' + Q.BandStr + '"');
+         slCsv.Add2(Q.BandStr);
 
          // 1列目 Power
-         slCsv.Add('"' + Q.NewPowerStr + '"');
+         slCsv.Add2(Q.NewPowerStr);
 
          // 13列目 マルチ１
-         slCsv.Add('"' + Q.Multi1 + '"');
+         slCsv.Add2(Q.Multi1);
 
          // 14列目 マルチ１
-         slCsv.Add('"' + Q.Multi2 + '"');
+         slCsv.Add2(Q.Multi2);
 
          // 15列目 Newマルチ１
          slCsv.Add(BoolToStr(Q.NewMulti1, True));
@@ -2341,10 +2391,10 @@ begin
          slCsv.Add(IntToStr(Q.Points));
 
          // 18列目 Operator
-         slCsv.Add('"' + Q.Operator + '"');
+         slCsv.Add2(Q.Operator);
 
          // 19列目 memo
-         slCsv.Add('"' + Q.Memo + '"');
+         slCsv.Add2(Q.Memo);
 
          // 20列目 CQ
          slCsv.Add(BoolToStr(Q.CQ, True));
@@ -2368,13 +2418,13 @@ begin
          slCsv.Add(IntToStr(Q.Reserve3));
 
          // 27列目 Freq
-         slCsv.Add('"' + Q.Freq + '"');
+         slCsv.Add2(Q.Freq);
 
          // 28列目 QsyViolation
          slCsv.Add(BoolToStr(Q.QsyViolation, True));
 
          // 29列目 PCName
-         slCsv.Add('"' + Q.PCName + '"');
+         slCsv.Add2(Q.PCName);
 
          // 30列目 Forced
          slCsv.Add(BoolToStr(Q.Forced, True));
@@ -2388,7 +2438,10 @@ begin
          // 33列目 Area
          slCsv.Add(Q.Area);
 
-         WriteLn(F, slCsv.DelimitedText);
+         // 34列目 RBN Verified
+         slCsv.Add(BoolToStr(Q.RbnVerified, True));
+
+         WriteLn(F, UTF8String(slCsv.DelimitedText));
       end;
 
       CloseFile(F);
@@ -2497,6 +2550,103 @@ procedure TLog.SetPeriod(v: Integer);
 begin
    FPeriod := v;
    FEndTime := IncHour(FStartTime, FPeriod);
+end;
+
+function TLog.GetLastCallsign(): string;
+var
+   txnr, i: Integer;
+begin
+   txnr := dmZLogGlobal.Settings._txnr;
+
+   for i := Log.TotalQSO downto 1 do begin
+      if Log.QsoList[i].TX = txnr then begin
+         Result := Log.QsoList[i].Callsign;
+         Exit;
+      end;
+   end;
+
+   Result := '';
+end;
+
+function TLog.GetLastNumber(): string;
+var
+   txnr, i: Integer;
+begin
+   txnr := dmZLogGlobal.Settings._txnr;
+
+   for i := Log.TotalQSO downto 1 do begin
+      if Log.QsoList[i].TX = txnr then begin
+         Result := Log.QsoList[i].NrSent;
+         Exit;
+      end;
+   end;
+
+   Result := '';
+end;
+
+function TLog.GetLastSerial(aQSO: TQSO): Integer;
+var
+   txnr, i: Integer;
+   Q: TQSO;
+begin
+   txnr := dmZLogGlobal.Settings._txnr;
+
+   case MyContest.SerialType of
+      stNone: begin
+         Result := 0;
+         Exit;
+      end;
+
+      stAll: begin
+         for i := Log.TotalQSO downto 1 do begin
+            Q := Log.QsoList[i];
+            if Q.TX = txnr then begin
+               Result := Q.Serial;
+               Exit;
+            end;
+         end;
+      end;
+
+      stBand: begin
+         for i := Log.TotalQSO downto 1 do begin
+            Q := Log.QsoList[i];
+            if (Q.band = aQSO.Band) and (Q.TX = txnr) then begin
+               Result := Q.Serial;
+               Exit;
+            end;
+         end;
+      end;
+
+      stMultiSingle: begin
+         for i := Log.TotalQSO downto 1 do begin
+            Q := Log.QsoList[i];
+            if (Q.TX = aQSO.TX) then begin
+               Result := Q.Serial;
+               Exit;
+            end;
+         end;
+      end;
+   end;
+
+   Result := 0;
+end;
+
+function TLog.GetCurrentSerial(aQSO: TQSO): Integer;
+var
+   initno: Integer;
+begin
+   if Log.TotalQSO = 0 then begin
+      if MyContest is TGeneralContest then begin
+         initno := TGeneralContest(MyContest).Config.SerialArray[aQSO.Band];
+      end
+      else begin
+         initno := 1;
+      end;
+      Result := initno;
+      Exit;
+   end;
+
+   Result := GetLastSerial(aQSO) + 1;
 end;
 
 // https://wwrof.org/cabrillo/
@@ -2707,6 +2857,7 @@ var
    strQslState: array[qsNone..qsNoQsl] of string;
    strMulti: string;
    newoffsetmin: Integer;
+   qsotime: TDateTime;
    offsethour: Integer;
    S: string;
 
@@ -2755,8 +2906,8 @@ var
       S := StringReplace(S, '$NRRECV',  Q.NrRcvd, [rfReplaceALL]);
       S := StringReplace(S, '$MEMO',    Q.Memo, [rfReplaceALL]);
       S := StringReplace(S, '$CTNAME',  MyContest.Name, [rfReplaceALL]);
-      S := StringReplace(S, '$DATE',    FormatDateTime('yyyy/mm/dd', Q.Time), [rfReplaceALL]);
-      S := StringReplace(S, '$TIME',    FormatDateTime('HH:MM', Q.Time), [rfReplaceALL]);
+      S := StringReplace(S, '$DATE',    FormatDateTime('yyyy/mm/dd', qsotime), [rfReplaceALL]);
+      S := StringReplace(S, '$TIME',    FormatDateTime('HH:MM', qsotime), [rfReplaceALL]);
       S := StringReplace(S, '$FREQ',    Q.FreqStr, [rfReplaceALL]);
       S := StringReplace(S, '$BANDF',   Q.BandStr, [rfReplaceALL]);
       S := StringReplace(S, '$BANDW',   Q.BandStr2, [rfReplaceALL]);
@@ -2791,6 +2942,7 @@ begin
 
          strMulti := MyContest.MultiForm.ExtractMulti(Q);
 
+         qsotime := Q.Time;
          case nTimeOption of
             // そのまま出力
             0: begin
@@ -2800,7 +2952,7 @@ begin
             // JST統一
             1: begin
                if offsetmin = _USEUTC then begin
-                  Q.Time := IncHour(Q.Time, offsethour);
+                  qsotime := IncHour(qsotime, offsethour);
                end;
                newoffsetmin := offsetmin;
             end;
@@ -2808,7 +2960,7 @@ begin
             // UTC統一
             2: begin
                if offsetmin <> _USEUTC then begin
-                  Q.Time := IncHour(Q.Time, offsethour);
+                  qsotime := IncHour(qsotime, offsethour);
                end;
                newoffsetmin := _USEUTC;
             end;
@@ -2824,10 +2976,10 @@ begin
          slCsv.Add(Q.Callsign);
 
          //2列目　交信年月日（YY/MM/DD）　※「YYYY/MM/DD」でもOKだった記憶
-         slCsv.Add(FormatDateTime('yyyy/mm/dd', Q.Time));
+         slCsv.Add(FormatDateTime('yyyy/mm/dd', qsotime));
 
          //3列目　交信時分（HH:MM*）　※「*」にはJST…J・UTC…U
-         strText := FormatDateTime('HH:MM', Q.Time);
+         strText := FormatDateTime('HH:MM', qsotime);
          if newoffsetmin = _USEUTC then begin
             strText := strText + 'U';
          end
@@ -2938,6 +3090,288 @@ begin
       CloseFile(F);
    finally
       slCsv.Free();
+   end;
+end;
+{$ENDIF}
+
+{$IFNDEF ZSERVER}
+
+// 1 Callsign
+// 2 Portable
+// 3 Time
+// 4 Time End
+// 5 RST Sent
+// 6 RST Received
+// 7 Who Called
+// 8 Grid Zone
+// 9 My Callsign
+// 10 My QTH
+// 11 Other QTH
+// 12 Other Name
+// 13 Band
+// 14 Frequency
+// 15 Mode
+// 16 QSL Card
+// 17 QSL Way
+// 18 QSL Flag
+// 19 Rig Model
+// 20 Antenna
+// 21 TXPower
+// 22 Latitude
+// 23 Longitude
+// 24 JCC/JGC
+// 25 Altitude above sea level
+// 26 Weather
+// 27 Other Information
+// 28 QSL Comment
+// 29 NR Sent
+// 30 NR Received
+
+procedure TLog.SaveToFileByHamSupport(Filename: string);
+var
+   slLine: TStringList;
+   slFile: TStringList;
+   offsetmin: Integer;
+   offsethour: Integer;
+   i: Integer;
+   Q: TQSO;
+   strMulti: string;
+   strTime: string;
+   qsotime: TDateTime;
+   strPortable: string;
+   strCallsign: string;
+const
+   strQslState: array[qsNone..qsNoQsl] of string = ( 'なし', 'BURO', 'なし' );
+   strQslFlag: array[qsNone..qsNoQsl] of string = ( '', 'FALSE', '' );
+
+   procedure SplitCallsign(strOriginal: string; var strCallsign: string; var strPortable: string);
+   var
+      strRight, strLeft: string;
+      Index: Integer;
+   begin
+      Index := Pos('/', strOriginal);
+      if Index = -1 then begin
+         strCallsign := strOriginal;
+         strPortable := '';
+         Exit;
+      end;
+
+      strLeft := Copy(strOriginal, 1, Index - 1);
+      strRight := Copy(strOriginal, Index + 1);
+
+      if Length(strLeft) >= Length(strRight) then begin
+         strCallsign := strLeft;
+         strPortable := strRight;
+      end
+      else begin
+         strCallsign := strRight;
+         strPortable := strLeft;
+      end;
+
+      if (strPortable = '1') or
+         (strPortable = '2') or
+         (strPortable = '3') or
+         (strPortable = '4') or
+         (strPortable = '5') or
+         (strPortable = '6') or
+         (strPortable = '7') or
+         (strPortable = '8') or
+         (strPortable = '9') or
+         (strPortable = '0') or
+         (strPortable = 'P') or
+         (strPortable = 'MM') or
+         (strPortable = 'AM') or
+         (strPortable = 'SAT') then begin
+         // OK
+         Exit;
+      end
+      else begin
+         strCallsign := strOriginal;
+         strPortable := '';
+      end;
+   end;
+begin
+   slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
+   slLine.QuoteChar := #0;
+   slFile := TStringList.Create();
+   slFile.StrictDelimiter := True;
+
+   // CSVヘッダー
+   slLine.Clear();
+   slLine.Add2('Callsign');
+   slLine.Add2('Portable');
+   slLine.Add2('Time');
+   slLine.Add2('Time End');
+   slLine.Add2('RST Sent');
+   slLine.Add2('RST Received');
+   slLine.Add2('Who Called');
+   slLine.Add2('Grid Zone');
+   slLine.Add2('My Callsign');
+   slLine.Add2('My QTH');
+   slLine.Add2('Other QTH');
+   slLine.Add2('Other Name');
+   slLine.Add2('Band');
+   slLine.Add2('Frequency');
+   slLine.Add2('Mode');
+   slLine.Add2('QSL Card');
+   slLine.Add2('QSL Way');
+   slLine.Add2('QSL Flag');
+   slLine.Add2('Rig Model');
+   slLine.Add2('Antenna');
+   slLine.Add2('TXPower');
+   slLine.Add2('Latitude');
+   slLine.Add2('Longitude');
+   slLine.Add2('JCC/JGC');
+   slLine.Add2('Altitude above sea level');
+   slLine.Add2('Weather');
+   slLine.Add2('Other Information');
+   slLine.Add2('QSL Comment');
+   slLine.Add2('NR Sent');
+   slLine.Add2('NR Received');
+   slLine.Add2('Contest Name');
+   slLine.Add2('Contest Points');
+   slFile.Add(slLine.DelimitedText);
+
+   try
+
+      offsetmin := FQsoList[0].RSTsent;
+      if offsetmin = _USEUTC then begin
+         offsethour := 0;
+      end
+      else begin
+         offsethour := offsetmin div 60;
+      end;
+
+      for i := 1 to FQSOList.Count - 1 do begin
+         Q := FQSOList[i];
+
+         slLine.Clear();
+
+         SplitCallsign(Q.Callsign, strCallsign, strPortable);
+
+         // 1 Callsign
+         slLine.Add2(strCallsign);
+
+         // 2 Portable
+         slLine.Add2(strPortable);
+
+         // 3 Time YYYY-MM-DD HH:MI:SS +0000(UTC)
+         if offsetmin <> _USEUTC then begin
+            qsotime := IncHour(Q.Time, offsethour);
+         end
+         else begin
+            qsotime := Q.Time;
+         end;
+         strTime := FormatDateTime('yyyy-mm-dd hh:nn:ss +0000', qsotime);
+         slLine.Add2(strTime);
+
+         // 4 Time End
+         slLine.Add2(strTime);
+
+         // 5 RST Sent
+         slLine.Add2(Q.RSTSentStr);
+
+         // 6 RST Received
+         slLine.Add2(Q.RSTRcvdStr);
+
+         // 7 Who Called
+         if Q.CQ = True then begin
+            slLine.Add2('you_called_me');
+         end
+         else begin
+            slLine.Add2('me_called_you');
+         end;
+
+         // 8 Grid Zone
+         slLine.Add2('');
+
+         // 9 My Callsign
+         slLine.Add2(dmZLogGlobal.MyCall);
+
+         // 10 My QTH
+         slLine.Add2('');
+
+         // 11 Other QTH
+         slLine.Add2('');
+
+         // 12 Other Name
+         slLine.Add2('');
+
+         // 13 Band
+         slLine.Add2('');
+
+         // 14 Frequency
+         slLine.Add2(Q.FreqStr3);
+
+         // 15 Mode
+         slLine.Add2(Q.ModeStr);
+
+         // 16 QSL Card
+         slLine.Add2(strQslState[Q.QslState]);
+
+         // 17 QSL Way
+         slLine.Add2('');
+
+         // 18 QSL Flag
+         slLine.Add2(strQslFlag[Q.QslState]);
+
+         // 19 Rig Model
+         slLine.Add2('');
+
+         // 20 Antenna
+         slLine.Add2('');
+
+         // 21 TXPower
+         slLine.Add2('');
+
+         // 22 Latitude
+         slLine.Add2('');
+
+         // 23 Longitude
+         slLine.Add2('');
+
+         // 24 JCC/JGC
+         if (Pos('$Q', MyContest.SentStr) > 0) or
+            (Pos('$V', MyContest.SentStr) > 0) then begin
+            strMulti := MyContest.MultiForm.ExtractMulti(Q);
+         end
+         else begin
+            strMulti := '';
+         end;
+         slLine.Add2(strMulti);
+
+         // 25 Altitude above sea level
+         slLine.Add2('');
+
+         // 26 Weather
+         slLine.Add2('');
+
+         // 27 Other Information
+         slLine.Add2(Q.Memo);
+
+         // 28 QSL Comment
+         slLine.Add2('');
+
+         // 29 NR Sent
+         slLine.Add2(Q.NrSent);
+
+         // 30 NR Received
+         slLine.Add2(Q.NrRcvd);
+
+         // 31 Contest Name
+         slLine.Add2(FQsoList[0].Memo);
+
+         // 32 Contest Points
+         slLine.Add2(IntToStr(Q.Points));
+
+         slFile.Add(slLine.DelimitedText);
+      end;
+
+      slFile.SaveToFile(Filename, TEncoding.UTF8);
+   finally
+      slLine.Free();
+      slFile.Free();
    end;
 end;
 {$ENDIF}
@@ -3432,6 +3866,7 @@ var
    offsetmin: Integer;
    slFile: TStringList;
    slLine: TStringList;
+   slText: TStringList;
    strMsg: string;
    qsoid: Integer;
    b: TBand;
@@ -3440,6 +3875,8 @@ begin
    slFile.StrictDelimiter := True;
    slLine := TStringList.Create();
    slLine.StrictDelimiter := True;
+   slText := TStringList.Create();
+   slText.StrictDelimiter := True;
    try
       if FileExists(Filename) = False then begin
          Result := 0;
@@ -3457,7 +3894,7 @@ begin
       try
          for i := 1 to slFile.Count - 1 do begin
             slLine.Clear();
-            slLine.CommaText := slFile.Strings[i] + DupeString(',', 32);
+            slLine.CommaText := slFile.Strings[i] + DupeString(',', 34);
 
             Q := TQSO.Create();
 
@@ -3526,7 +3963,10 @@ begin
             Q.Operator := slLine[17];
 
             // 19列目 memo
-            Q.Memo := slLine[18];
+            slText.Text := StringReplace(slLine[18], '\n', #13#10, [rfReplaceAll]);
+            if slText.Count > 0 then begin
+               Q.Memo := slText[0];
+            end;
 
             // 20列目 CQ
             Q.CQ := StrToBoolDef(slLine[19], False);
@@ -3567,6 +4007,11 @@ begin
             // 32列目 Invalid
             Q.Invalid := StrToBoolDef(slLine[31], False);
 
+            // 33列目 Area
+
+            // 34列目 RBN Verified
+            Q.RbnVerified := StrToBoolDef(slLine[33], False);
+
             // QSOIDが無ければ発番する
             if Q.Reserve3 = 0 then begin
                repeat
@@ -3606,6 +4051,7 @@ begin
    finally
       slFile.Free();
       slLine.Free();
+      slText.Free();
    end;
 end;
 
@@ -3623,7 +4069,8 @@ begin
       Q.Callsign := strCallsign;
       Q.Band := band;
 
-      if FDupeCheckList[band].DupeCheck(Q, FAcceptDifferentMode, FAllPhone) <> nil then begin
+      // BandScopeでは正しいモードがわからないためモード無しでのDupeCheckを行う
+      if FDupeCheckList[band].DupeCheck(Q, False {FAcceptDifferentMode}, FAllPhone) <> nil then begin
          Result := True;
       end
       else begin
@@ -3659,7 +4106,7 @@ begin
          Q.Callsign := strCallsign;
          Q.Band := b;
 
-         R := FDupeCheckList[b].DupeCheck(Q, FAcceptDifferentMode, FAllPhone);
+         R := FDupeCheckList[b].DupeCheck(Q, False {FAcceptDifferentMode}, FAllPhone);
          if R <> nil then begin
             workdmulti := R.NrRcvd;
             Result := True;

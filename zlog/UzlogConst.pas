@@ -13,8 +13,10 @@ type
   TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
   TOperateStyle = (os1Radio = 0, os2Radio);
-  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo);
+  TOperateMode = (omOriginal = 0, omEnter);
+  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp, so2rParallel);
   TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
+  TSerialType = (stNone = 0, stAll, stBand, stMultiSingle);
 
   TFrequency = Int64;
 
@@ -39,11 +41,9 @@ const
   _USEUTC = 32767;
   _CR = Chr($0d); // carriage return
   _LF = Chr($0a);
-  SER_ALL = 1;
-  SER_BAND = 2;
-  SER_MS = 3;    // separate serial for run/multi stns
 
-  TXLIST_MM = '0,1,2,3,4,5,6,7,8,9';
+  MAX_TX = 16;
+  TXLIST_MM = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15';
   TXLIST_MS = '0,1';
 
 type
@@ -243,7 +243,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..166] of string = (
+  default_primary_shortcut: array[0..169] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -410,10 +410,13 @@ const
     '',                 // #163 actionLogging
     '',                 // #164 actionSetRigWPM
     'Alt+S',            // #165 actionToggleMemScan
-    'Alt+2'             // #166 actionToggleF2A
+    'Alt+2',            // #166 actionToggleF2A
+    '',                 // #167 actionQsoSearch
+    '',                 // #168 actionSo2rToggleAfBlend
+    ''                  // #169 actionShowEntityInfo
   );
 
-  default_secondary_shortcut: array[0..166] of string = (
+  default_secondary_shortcut: array[0..169] of string = (
     '',                 // #00
     '',
     '',
@@ -580,7 +583,10 @@ const
     '',                 // #163 actionLogging
     '',                 // #164 actionSetRigWPM
     '',                 // #165 actionToggleMemScan
-    ''                  // #166 actionToggleF2A
+    '',                 // #166 actionToggleF2A
+    '',                 // #167 actionQsoSearch
+    '',                 // #168 actionSo2rToggleAfBlend
+    ''                  // #169 actionShowEntityInfo
   );
 
 const

@@ -1,12 +1,10 @@
 inherited GeneralMulti2: TGeneralMulti2
   Left = 89
   Top = 205
-  ClientHeight = 305
-  ClientWidth = 365
+  StyleElements = [seFont, seClient, seBorder]
   TextHeight = 13
   inherited Panel1: TPanel
-    Top = 264
-    Width = 365
+    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 263
     ExplicitWidth = 361
     inherited buttonGo: TButton
@@ -15,12 +13,12 @@ inherited GeneralMulti2: TGeneralMulti2
     end
     inherited Edit1: TEdit
       Left = 222
+      StyleElements = [seFont, seClient, seBorder]
       ExplicitLeft = 218
     end
   end
   inherited Panel: TPanel
-    Width = 365
-    ExplicitWidth = 361
+    StyleElements = [seFont, seClient, seBorder]
     inherited Label1R9: TRotateLabel
       Left = 197
       ExplicitLeft = 197
@@ -73,11 +71,5 @@ inherited GeneralMulti2: TGeneralMulti2
       Left = 342
       ExplicitLeft = 342
     end
-  end
-  inherited Grid: TStringGrid
-    Width = 365
-    Height = 223
-    ExplicitWidth = 361
-    ExplicitHeight = 222
   end
 end

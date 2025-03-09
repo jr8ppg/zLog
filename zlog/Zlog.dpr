@@ -16,7 +16,7 @@ uses
   UEditDialog in 'UEditDialog.pas' {EditDialog},
   UAbout in 'UAbout.pas' {AboutBox},
   URateDialog in 'URateDialog.pas' {RateDialog},
-  UOptions2 in 'UOptions2.pas' {formOptions2},
+  UOptions3 in 'UOptions3.pas' {formOptions3},
   UMenu in 'UMenu.pas' {MenuForm},
   UACAGMulti in 'UACAGMulti.pas' {ACAGMulti},
   USuperCheck2 in 'USuperCheck2.pas' {SuperCheck2},
@@ -97,7 +97,7 @@ uses
   UzLogQSO in 'UzLogQSO.pas',
   USuperCheck in 'USuperCheck.pas' {SuperCheck},
   UzLogSpc in 'UzLogSpc.pas',
-  Progress in 'Progress.pas' {formProgress},
+  Progress2 in 'Progress2.pas' {formProgress2},
   HelperLib in 'HelperLib.pas',
   UCwMessageEditor in 'UCwMessageEditor.pas',
   UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
@@ -154,7 +154,16 @@ uses
   UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2},
   UTelnetSetting in 'UTelnetSetting.pas',
   UzLogForm in 'UzLogForm.pas' {ZLogForm},
-  UzFreqMemory in 'UzFreqMemory.pas';
+  UzFreqMemory in 'UzFreqMemory.pas',
+  UFreqPanel in 'UFreqPanel.pas' {formFreqPanel},
+  USearch in 'USearch.pas' {formSearch},
+  UParallelPort in 'UParallelPort.pas',
+  FTD2XX in 'FTD2XX.pas',
+  USelectClusterLog in 'USelectClusterLog.pas' {formSelectClusterLog},
+  USpcViewer in 'USpcViewer.pas' {formSpcViewer},
+  Progress in 'Progress.pas' {formProgress},
+  UOptions2 in 'UOptions2.pas' {formOptions2},
+  UEntityInfo in 'UEntityInfo.pas' {formEntityInfo};
 
 {$R *.res}
 

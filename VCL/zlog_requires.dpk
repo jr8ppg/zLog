@@ -43,6 +43,7 @@ contains
   CONSOLE in 'CONSOLE.PAS',
   Cologrid in 'cologrid\Cologrid.pas',
   OEDIT in 'OEDIT.PAS',
-  CONSOLE2 in 'CONSOLE2.PAS';
+  CONSOLE2 in 'CONSOLE2.PAS',
+  SunTime in 'SunTime.pas';
 
 end.

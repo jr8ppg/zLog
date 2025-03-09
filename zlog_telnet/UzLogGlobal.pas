@@ -3,8 +3,11 @@
 interface
 
 uses
-  System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.Math, Vcl.Graphics, UzLogConst;
+  System.SysUtils, System.Classes, System.StrUtils, System.IniFiles, Vcl.Forms,
+  Winapi.Windows, Vcl.Menus, System.Math, Vcl.Graphics, Vcl.StdCtrls,
+  System.DateUtils, Generics.Collections, Generics.Defaults,
+  Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
+  UzLogConst;
 
 type
   TdmZLogGlobal = class(TDataModule)
@@ -31,6 +34,10 @@ function ZStringToColorDef(str: string; defcolor: TColor): TColor;
 
 function IsDomestic(strCallsign: string): Boolean;
 function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
+function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
+
+resourcestring
+  MSG_INVALID_CHARACTER = 'この文字は使用できません。 [%s]';
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -251,6 +258,30 @@ begin
    if (nTotalFreeBytes < nNeedBytes) then begin
       Result := False;
       Exit;
+   end;
+
+   Result := True;
+end;
+
+function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
+var
+   text: string;
+   i: Integer;
+   ch: Char;
+   S: string;
+begin
+   text := Edit.Text;
+   for i := 1 to Length(text) do begin
+      ch := text[i];
+      if TPath.IsValidFileNameChar(ch) = False then begin
+         S := Format(MSG_INVALID_CHARACTER, [Copy(text, i, 1)]);
+         MessageBox(AOwner.Handle, PChar(S), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Edit.SetFocus();
+         Edit.SelStart := i - 1;
+         Edit.SelLength := 1;
+         Result := False;
+         Exit;
+      end;
    end;
 
    Result := True;

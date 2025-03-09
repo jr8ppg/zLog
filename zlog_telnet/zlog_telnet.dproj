@@ -114,18 +114,16 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.1.4;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.0;InternalName=;LegalCopyright=COPYRIGHT 2020-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>4</VerInfo_Build>
+        <VerInfo_Release>3</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.1.4;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.0;InternalName=;LegalCopyright=COPYRIGHT 2020-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>4</VerInfo_Build>
+        <VerInfo_Release>3</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -136,18 +134,16 @@
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.1.4;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.0;InternalName=;LegalCopyright=COPYRIGHT 2020-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>4</VerInfo_Build>
+        <VerInfo_Release>3</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.1.4;InternalName=;LegalCopyright=COPYRIGHT 2020-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.0;InternalName=;LegalCopyright=COPYRIGHT 2020-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <DCC_MapFile>3</DCC_MapFile>
-        <VerInfo_Release>1</VerInfo_Release>
-        <VerInfo_Build>4</VerInfo_Build>
+        <VerInfo_Release>3</VerInfo_Release>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -171,6 +167,15 @@
         <DCCReference Include="HelperLib.pas"/>
         <DCCReference Include="UExceptionDialog.pas">
             <Form>ExceptionDialog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UClusterTelnetSet.pas">
+            <Form>formClusterTelnetSet</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UTelnetSetting.pas"/>
+        <DCCReference Include="USpotterListDlg.pas">
+            <Form>formSpotterListDlg</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">
@@ -201,6 +206,12 @@
             <Deployment Version="4">
                 <DeployFile LocalName="Win32\Debug\zlog_telnet.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="Win32\Release\zlog_telnet.exe" Configuration="Release" Class="ProjectOutput"/>
+                <DeployFile LocalName="Win64\Release\zlog_telnet.exe" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>zlog_telnet.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>

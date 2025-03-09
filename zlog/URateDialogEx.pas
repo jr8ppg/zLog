@@ -26,7 +26,7 @@ type
     SeriesTargetTotals: TLineSeries;
     Label4: TLabel;
     ShowLastCombo: TComboBox;
-    Label3: TLabel;
+    labelHourCaption: TLabel;
     check3D: TCheckBox;
     Series3: TBarSeries;
     Series2: TBarSeries;
@@ -153,6 +153,9 @@ resourcestring
   SCOREGRID_CUMULATIVE = 'Cumulative';
   SCOREGRID_WINLOSS_L  = 'Win/Loss';
   SCOREGRID_WINLOSS_S  = 'W/L';
+  HOURCAPTION_SHOWFIRST = 'Show first';
+  HOURCAPTION_SHOWCURRENT = 'Show current';
+  HOURCAPTION_SHOWLAST = 'Show last';
 
 implementation
 
@@ -259,7 +262,8 @@ procedure TRateDialogEx.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
 
-   UpdateGraph;
+   radioOriginClick(nil);
+
    TimerTimer(nil);
    Timer.Enabled := True;
 end;
@@ -324,12 +328,15 @@ procedure TRateDialogEx.radioOriginClick(Sender: TObject);
 begin
    if radioOriginFirstQSO.Checked = True then begin
       FGraphStartPosition := spFirstQSO;
+      labelHourCaption.Caption := HOURCAPTION_SHOWFIRST;
    end;
    if radioOriginCurrentTime.Checked = True then begin
       FGraphStartPosition := spCurrentTime;
+      labelHourCaption.Caption := HOURCAPTION_SHOWCURRENT;
    end;
    if radioOriginLastQSO.Checked = True then begin
       FGraphStartPosition := spLastQSO;
+      labelHourCaption.Caption := HOURCAPTION_SHOWLAST;
    end;
    UpdateGraph();
 end;

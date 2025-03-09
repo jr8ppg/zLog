@@ -13,7 +13,6 @@ const tabstate_normal = 0;
 var
    EditedSinceTABPressed : integer = 0;
 
-function LastCallsign : string;
 function SetStr(sendtext: string; aQSO : TQSO) : String;
 function SetStrNoAbbrev(sendtext: string; aQSO : TQSO) : String; {for QSO.NrSent}
 procedure zLogSendStr(nID: Integer; S: string; C: string = '');
@@ -22,20 +21,8 @@ procedure zLogSetSendText(nID: Integer; S, C: string);
 
 implementation
 
-uses Main;
-
-function LastCallsign : string;
-var txnr, i : integer;
-begin
-  Result := '';
-  txnr := dmZLogGlobal.Settings._txnr;
-  for i := Log.TotalQSO downto 1 do
-    begin
-      if Log.QsoList[i].TX = txnr then
-        Result := Log.QsoList[i].Callsign;
-      exit;
-    end;
-end;
+uses
+  Main;
 
 function Abbreviate(S: string): string;
 var
@@ -120,9 +107,13 @@ begin
    temp := StringReplace(temp, '$N', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$n', S, [rfReplaceAll]);
 
-   S := LastCallSign;
+   S := Log.LastCallSign;
    temp := StringReplace(temp, '$L', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$l', S, [rfReplaceAll]);
+
+   S := Log.LastNumber;
+   temp := StringReplace(temp, '$U', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$u', S, [rfReplaceAll]);
 
    S := dmZLogGlobal.GetGreetingsCode();
    temp := StringReplace(temp, '$G', S, [rfReplaceAll]);
@@ -153,7 +144,7 @@ begin
 //    end;
 
    if aQSO.Callsign = '' then begin
-      S := LastCallsign;
+      S := Log.LastCallsign;
    end
    else if EditedSinceTABPressed = tabstate_tabpressedandedited then begin
       S := aQSO.Callsign;
@@ -225,7 +216,8 @@ begin
    temp := StringReplace(temp, '$P', aQSO.NewPowerStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$A', UpperCase(dmZLogGlobal.GetAge(aQSO)), [rfReplaceAll]);
    temp := StringReplace(temp, '$N', aQSO.PowerStr, [rfReplaceAll]);
-   temp := StringReplace(temp, '$L', LastCallSign, [rfReplaceAll]);
+   temp := StringReplace(temp, '$L', Log.LastCallSign, [rfReplaceAll]);
+   temp := StringReplace(temp, '$U', Log.LastNumber, [rfReplaceAll]);
    temp := StringReplace(temp, '$G', dmZLogGlobal.GetGreetingsCode(), [rfReplaceAll]);
 
    temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);

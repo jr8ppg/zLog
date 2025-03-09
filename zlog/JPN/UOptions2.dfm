@@ -25,8 +25,6 @@ object formOptions2: TformOptions2
     ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 428
-    ExplicitHeight = 430
     object tabsheetPreferences: TTabSheet
       Caption = #21508#31278#35373#23450
       object Label40: TLabel
@@ -436,12 +434,12 @@ object formOptions2: TformOptions2
         end
       end
       object AllowDupeCheckBox: TCheckBox
-        Left = 273
-        Top = 89
+        Left = 276
+        Top = 108
         Width = 113
         Height = 17
         Caption = #12487#12517#12540#12503#12434#35377#21487
-        TabOrder = 2
+        TabOrder = 3
         Visible = False
       end
       object SaveEvery: TSpinEdit
@@ -452,7 +450,7 @@ object formOptions2: TformOptions2
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 6
+        TabOrder = 7
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -461,15 +459,15 @@ object formOptions2: TformOptions2
         Width = 240
         Height = 17
         Caption = #20182#12398#12496#12531#12489#12391#20132#25563#12375#12383#12490#12531#12496#12540#12434#33258#21205#20837#21147
-        TabOrder = 8
+        TabOrder = 9
       end
       object cbJMode: TCheckBox
-        Left = 273
-        Top = 68
+        Left = 276
+        Top = 87
         Width = 97
         Height = 17
         Caption = 'J'#12514#12540#12489
-        TabOrder = 1
+        TabOrder = 2
       end
       object cbSaveWhenNoCW: TCheckBox
         Left = 17
@@ -477,7 +475,7 @@ object formOptions2: TformOptions2
         Width = 161
         Height = 17
         Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-        TabOrder = 5
+        TabOrder = 6
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -485,7 +483,7 @@ object formOptions2: TformOptions2
         Width = 260
         Height = 17
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
-        TabOrder = 7
+        TabOrder = 8
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -493,7 +491,7 @@ object formOptions2: TformOptions2
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 11
+        TabOrder = 12
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -566,7 +564,7 @@ object formOptions2: TformOptions2
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 10
+        TabOrder = 11
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -600,23 +598,59 @@ object formOptions2: TformOptions2
         Width = 193
         Height = 17
         Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-        TabOrder = 9
+        TabOrder = 10
       end
       object checkOutputOutofPeriod: TCheckBox
-        Left = 273
-        Top = 131
+        Left = 276
+        Top = 150
         Width = 160
         Height = 17
         Caption = #26399#38291#22806#12398#20132#20449#12418#12525#12464#20986#21147
-        TabOrder = 4
+        TabOrder = 5
       end
       object checkUseContestPeriod: TCheckBox
-        Left = 273
-        Top = 110
+        Left = 276
+        Top = 129
         Width = 160
         Height = 17
         Caption = #12467#12531#12486#12473#12488#26399#38291#12434#20351#12358
-        TabOrder = 3
+        TabOrder = 4
+      end
+      object GroupBox6: TGroupBox
+        Left = 268
+        Top = 3
+        Width = 153
+        Height = 74
+        Caption = #33258#23616#12398#20301#32622
+        TabOrder = 1
+        object Label39: TLabel
+          Left = 8
+          Top = 21
+          Width = 38
+          Height = 13
+          Caption = #32239#24230
+        end
+        object Label42: TLabel
+          Left = 8
+          Top = 48
+          Width = 47
+          Height = 13
+          Caption = #32076#24230
+        end
+        object editMyLatitude: TEdit
+          Left = 64
+          Top = 18
+          Width = 81
+          Height = 21
+          TabOrder = 0
+        end
+        object editMyLongitude: TEdit
+          Left = 64
+          Top = 45
+          Width = 81
+          Height = 21
+          TabOrder = 1
+        end
       end
     end
     object tabsheetCategories: TTabSheet
@@ -1773,28 +1807,35 @@ object formOptions2: TformOptions2
         Top = 352
         Width = 423
         Height = 50
-        Caption = 'Device'
+        Caption = #20877#29983#12486#12473#12488
         TabOrder = 2
         object buttonPlayVoice: TSpeedButton
-          Left = 287
+          Left = 310
           Top = 16
-          Width = 60
+          Width = 50
           Height = 26
           Caption = #20877#29983
           OnClick = buttonPlayVoiceClick
         end
         object buttonStopVoice: TSpeedButton
-          Left = 352
+          Left = 362
           Top = 16
-          Width = 60
+          Width = 50
           Height = 26
           Caption = #20572#27490
           OnClick = buttonStopVoiceClick
         end
+        object Label38: TLabel
+          Left = 8
+          Top = 22
+          Width = 34
+          Height = 13
+          Caption = #20986#21147#20808
+        end
         object comboVoiceDevice: TComboBox
-          Left = 17
+          Left = 48
           Top = 19
-          Width = 260
+          Width = 256
           Height = 21
           Style = csDropDownList
           TabOrder = 0
@@ -2182,9 +2223,9 @@ object formOptions2: TformOptions2
       ImageIndex = 8
       object groupQuickMemo: TGroupBox
         Left = 6
-        Top = 260
+        Top = 284
         Width = 423
-        Height = 140
+        Height = 109
         Caption = #12463#12452#12483#12463'Memo'
         TabOrder = 1
         object Label63: TLabel
@@ -2262,33 +2303,47 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 4
         Width = 423
-        Height = 252
+        Height = 274
         Caption = #12463#12452#12483#12463'QSY'
         TabOrder = 0
         object Label54: TLabel
-          Left = 89
+          Left = 75
           Top = 14
-          Width = 25
+          Width = 54
           Height = 13
-          Caption = #12496#12531#12489
+          Caption = 'Band/Freq.'
         end
         object Label33: TLabel
-          Left = 177
+          Left = 174
           Top = 14
           Width = 27
           Height = 13
           Caption = #12514#12540#12489
         end
         object Label62: TLabel
-          Left = 257
+          Left = 241
           Top = 14
           Width = 19
           Height = 13
           Caption = #12522#12464
         end
+        object Label31: TLabel
+          Left = 308
+          Top = 14
+          Width = 47
+          Height = 13
+          Caption = 'Command'
+        end
+        object Label32: TLabel
+          Left = 391
+          Top = 14
+          Width = 25
+          Height = 13
+          Caption = 'Edge'
+        end
         object checkUseQuickQSY01: TCheckBox
           Tag = 1
-          Left = 16
+          Left = 6
           Top = 27
           Width = 36
           Height = 25
@@ -2298,345 +2353,481 @@ object formOptions2: TformOptions2
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand01: TComboBox
-          Left = 63
+          Tag = 1
+          Left = 53
           Top = 29
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
           TabOrder = 1
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode01: TComboBox
-          Left = 150
+          Left = 162
           Top = 29
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
           TabOrder = 2
         end
         object checkUseQuickQSY02: TCheckBox
           Tag = 2
-          Left = 16
+          Left = 6
           Top = 54
           Width = 36
           Height = 25
           Alignment = taLeftJustify
           Caption = '#2'
-          TabOrder = 3
+          TabOrder = 6
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand02: TComboBox
-          Left = 63
+          Tag = 2
+          Left = 53
           Top = 56
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
-          TabOrder = 4
+          TabOrder = 7
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode02: TComboBox
-          Left = 150
+          Left = 162
           Top = 56
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
-          TabOrder = 5
+          TabOrder = 8
         end
         object checkUseQuickQSY03: TCheckBox
           Tag = 3
-          Left = 16
+          Left = 6
           Top = 81
           Width = 36
           Height = 25
           Alignment = taLeftJustify
           Caption = '#3'
-          TabOrder = 6
+          TabOrder = 12
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand03: TComboBox
-          Left = 63
+          Tag = 3
+          Left = 53
           Top = 83
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
-          TabOrder = 7
+          TabOrder = 13
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode03: TComboBox
-          Left = 150
+          Left = 162
           Top = 83
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
-          TabOrder = 8
+          TabOrder = 14
         end
         object checkUseQuickQSY04: TCheckBox
           Tag = 4
-          Left = 16
+          Left = 6
           Top = 108
           Width = 36
           Height = 25
           Alignment = taLeftJustify
           Caption = '#4'
-          TabOrder = 9
+          TabOrder = 18
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand04: TComboBox
-          Left = 63
+          Tag = 4
+          Left = 53
           Top = 110
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
-          TabOrder = 10
+          TabOrder = 19
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode04: TComboBox
-          Left = 150
+          Left = 162
           Top = 110
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
-          TabOrder = 11
+          TabOrder = 20
         end
         object checkUseQuickQSY05: TCheckBox
           Tag = 5
-          Left = 16
+          Left = 6
           Top = 135
           Width = 36
           Height = 25
           Alignment = taLeftJustify
           Caption = '#5'
-          TabOrder = 12
+          TabOrder = 24
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand05: TComboBox
-          Left = 63
+          Tag = 5
+          Left = 53
           Top = 137
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
-          TabOrder = 13
+          TabOrder = 25
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode05: TComboBox
-          Left = 150
+          Left = 162
           Top = 137
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
-          TabOrder = 14
+          TabOrder = 26
         end
         object checkUseQuickQSY06: TCheckBox
           Tag = 6
-          Left = 16
+          Left = 6
           Top = 162
           Width = 36
           Height = 25
           Alignment = taLeftJustify
           Caption = '#6'
-          TabOrder = 15
+          TabOrder = 30
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand06: TComboBox
-          Left = 63
+          Tag = 6
+          Left = 53
           Top = 164
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
-          TabOrder = 16
+          TabOrder = 31
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode06: TComboBox
-          Left = 150
+          Left = 162
           Top = 164
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
-          TabOrder = 17
+          TabOrder = 32
         end
         object checkUseQuickQSY07: TCheckBox
           Tag = 7
-          Left = 16
+          Left = 6
           Top = 189
           Width = 36
           Height = 25
           Alignment = taLeftJustify
           Caption = '#7'
-          TabOrder = 18
+          TabOrder = 36
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand07: TComboBox
-          Left = 63
+          Tag = 7
+          Left = 53
           Top = 191
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
-          TabOrder = 19
+          TabOrder = 37
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode07: TComboBox
-          Left = 150
+          Left = 162
           Top = 191
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
-          TabOrder = 20
+          TabOrder = 38
         end
         object checkUseQuickQSY08: TCheckBox
           Tag = 8
-          Left = 16
+          Left = 6
           Top = 216
           Width = 36
           Height = 25
           Alignment = taLeftJustify
           Caption = '#8'
-          TabOrder = 21
+          TabOrder = 42
           OnClick = checkUseQuickQSYClick
         end
         object comboQuickQsyBand08: TComboBox
-          Left = 63
+          Tag = 8
+          Left = 53
           Top = 218
-          Width = 81
+          Width = 102
           Height = 21
-          Style = csDropDownList
-          TabOrder = 22
+          TabOrder = 43
+          OnDropDown = comboQuickQsyBandDropDown
         end
         object comboQuickQsyMode08: TComboBox
-          Left = 150
+          Left = 162
           Top = 218
-          Width = 81
+          Width = 55
           Height = 21
           Style = csDropDownList
-          TabOrder = 23
+          TabOrder = 44
         end
         object comboQuickQsyRig01: TComboBox
-          Left = 237
+          Left = 224
           Top = 29
-          Width = 67
+          Width = 55
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 24
-          Text = 'NONE'
+          TabOrder = 3
+          Text = 'None'
           Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
         end
         object comboQuickQsyRig02: TComboBox
-          Left = 237
+          Left = 224
           Top = 56
-          Width = 67
+          Width = 55
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 25
-          Text = 'NONE'
+          TabOrder = 9
+          Text = 'None'
           Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
         end
         object comboQuickQsyRig03: TComboBox
-          Left = 237
+          Left = 224
           Top = 83
-          Width = 67
+          Width = 55
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 26
-          Text = 'NONE'
+          TabOrder = 15
+          Text = 'None'
           Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
         end
         object comboQuickQsyRig04: TComboBox
-          Left = 237
+          Left = 224
           Top = 110
-          Width = 67
+          Width = 55
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 21
+          Text = 'None'
+          Items.Strings = (
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
+        end
+        object comboQuickQsyRig05: TComboBox
+          Left = 224
+          Top = 137
+          Width = 55
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
           TabOrder = 27
-          Text = 'NONE'
+          Text = 'None'
           Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
-        end
-        object comboQuickQsyRig05: TComboBox
-          Left = 237
-          Top = 137
-          Width = 67
-          Height = 21
-          Style = csDropDownList
-          ItemIndex = 0
-          TabOrder = 28
-          Text = 'NONE'
-          Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
         end
         object comboQuickQsyRig06: TComboBox
-          Left = 237
+          Left = 224
           Top = 164
-          Width = 67
+          Width = 55
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 29
-          Text = 'NONE'
+          TabOrder = 33
+          Text = 'None'
           Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
         end
         object comboQuickQsyRig07: TComboBox
-          Left = 237
+          Left = 224
           Top = 191
-          Width = 67
+          Width = 55
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 30
-          Text = 'NONE'
+          TabOrder = 39
+          Text = 'None'
           Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
         end
         object comboQuickQsyRig08: TComboBox
-          Left = 237
+          Left = 224
           Top = 218
-          Width = 67
+          Width = 55
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 31
-          Text = 'NONE'
+          TabOrder = 45
+          Text = 'None'
           Items.Strings = (
-            'NONE'
-            'RIG1'
-            'RIG2'
-            'RIG3'
-            'RIG4'
-            'RIG5')
+            'None'
+            'RIG-A'
+            'RIG-B'
+            'RIG-C')
+        end
+        object editQuickQsyCommand01: TEdit
+          Left = 285
+          Top = 29
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 4
+        end
+        object editQuickQsyFixEdge01: TEdit
+          Left = 391
+          Top = 29
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 5
+        end
+        object editQuickQsyCommand02: TEdit
+          Left = 285
+          Top = 56
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 10
+        end
+        object editQuickQsyFixEdge02: TEdit
+          Left = 391
+          Top = 56
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 11
+        end
+        object editQuickQsyCommand03: TEdit
+          Left = 285
+          Top = 83
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 16
+        end
+        object editQuickQsyFixEdge03: TEdit
+          Left = 391
+          Top = 83
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 17
+        end
+        object editQuickQsyCommand04: TEdit
+          Left = 285
+          Top = 110
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 22
+        end
+        object editQuickQsyFixEdge04: TEdit
+          Left = 391
+          Top = 110
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 23
+        end
+        object editQuickQsyCommand05: TEdit
+          Left = 285
+          Top = 137
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 28
+        end
+        object editQuickQsyFixEdge05: TEdit
+          Left = 391
+          Top = 137
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 29
+        end
+        object editQuickQsyCommand06: TEdit
+          Left = 285
+          Top = 164
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 34
+        end
+        object editQuickQsyFixEdge06: TEdit
+          Left = 391
+          Top = 164
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 35
+        end
+        object editQuickQsyCommand07: TEdit
+          Left = 285
+          Top = 191
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 40
+        end
+        object editQuickQsyFixEdge07: TEdit
+          Left = 391
+          Top = 191
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 41
+        end
+        object editQuickQsyCommand08: TEdit
+          Left = 285
+          Top = 218
+          Width = 100
+          Height = 21
+          MaxLength = 20
+          TabOrder = 46
+        end
+        object editQuickQsyFixEdge08: TEdit
+          Left = 391
+          Top = 218
+          Width = 23
+          Height = 21
+          MaxLength = 1
+          NumbersOnly = True
+          TabOrder = 47
+        end
+        object checkUseKhzQsyCommand: TCheckBox
+          Left = 200
+          Top = 247
+          Width = 220
+          Height = 17
+          Caption = 'kHz QSY '#12467#12510#12531#12489#12434#20351#29992#12377#12427' (F/KC)'
+          TabOrder = 48
         end
       end
     end
@@ -2892,7 +3083,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 1
           OnClick = buttonBSForeClick
         end
@@ -2902,7 +3093,7 @@ object formOptions2: TformOptions2
           Top = 20
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 4
           OnClick = buttonBSResetClick
         end
@@ -2912,7 +3103,7 @@ object formOptions2: TformOptions2
           Top = 21
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 2
           Visible = False
           OnClick = buttonBSBackClick
@@ -2933,7 +3124,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 6
           OnClick = buttonBSForeClick
         end
@@ -2943,7 +3134,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 9
           OnClick = buttonBSResetClick
         end
@@ -2953,7 +3144,7 @@ object formOptions2: TformOptions2
           Top = 46
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 7
           Visible = False
           OnClick = buttonBSBackClick
@@ -2974,7 +3165,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 11
           OnClick = buttonBSForeClick
         end
@@ -2984,7 +3175,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
@@ -2994,7 +3185,7 @@ object formOptions2: TformOptions2
           Top = 71
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 12
           Visible = False
           OnClick = buttonBSBackClick
@@ -3015,7 +3206,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = 'Fore...'
+          Caption = #25991#23383#33394
           TabOrder = 16
           OnClick = buttonBSForeClick
         end
@@ -3025,7 +3216,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = 'Reset'
+          Caption = #12522#12475#12483#12488
           TabOrder = 19
           OnClick = buttonBSResetClick
         end
@@ -3035,7 +3226,7 @@ object formOptions2: TformOptions2
           Top = 96
           Width = 45
           Height = 20
-          Caption = 'Back...'
+          Caption = #32972#26223#33394
           TabOrder = 17
           Visible = False
           OnClick = buttonBSBackClick
@@ -3046,7 +3237,7 @@ object formOptions2: TformOptions2
           Top = 22
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 3
           OnClick = checkBSBoldClick
         end
@@ -3056,7 +3247,7 @@ object formOptions2: TformOptions2
           Top = 47
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 8
           OnClick = checkBSBoldClick
         end
@@ -3066,7 +3257,7 @@ object formOptions2: TformOptions2
           Top = 72
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 13
           OnClick = checkBSBoldClick
         end
@@ -3076,7 +3267,7 @@ object formOptions2: TformOptions2
           Top = 97
           Width = 41
           Height = 17
-          Caption = 'Bold'
+          Caption = #22826#23383
           TabOrder = 18
           OnClick = checkBSBoldClick
         end
@@ -3559,8 +3750,6 @@ object formOptions2: TformOptions2
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 430
-    ExplicitWidth = 428
     DesignSize = (
       444
       37)

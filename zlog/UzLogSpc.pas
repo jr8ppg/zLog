@@ -8,7 +8,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, System.Math, Generics.Collections, Generics.Defaults,
-  System.Character, System.DateUtils,
+  System.Character, System.DateUtils, System.StrUtils,
   UzLogConst, UzLogGlobal, UzLogQSO, USuperCheck2;
 
 type
@@ -58,11 +58,18 @@ type
   private
     FCallsign : string;
     FList: TSuperDataList;
+    FRbnCount: array[b19..bUnknown] of Integer;
+    function GetText(b: TBand): string;
+    function GetRbnCount(b: TBand): Integer;
+    procedure SetRbnCount(b: TBand; v: Integer);
   public
     constructor Create();
     destructor Destroy(); override;
+    procedure IncRbnCount(b: TBand);
     property Callsign: string read FCallsign write FCallsign;
     property List: TSuperDataList read FList;
+    property RbnCount[b: TBand]: Integer read GetRbnCount write SetRbnCount;
+    property Text[b: TBand]: string read GetText;
   end;
 
   TSuperListComparer1 = class(TComparer<TSuperData>)
@@ -83,10 +90,12 @@ type
   public
     constructor Create(OwnsObjects: Boolean = True);
     destructor Destroy(); override;
-    function IndexOf(SD: TSuperData): Integer;        // unused
-    function ObjectOf(SD: TSuperData): TSuperData;    // referenced from USpotClass.pas
+    function IndexOf(SD: TSuperData): Integer; overload;       // unused
+    function IndexOf(Q: TQSO): Integer; overload;
+    function ObjectOf(SD: TSuperData): TSuperData; overload;   // referenced from USpotClass.pas
+    function RbnVerify(Q: TQSO): Boolean;
     procedure SortByCallsign();                       // unused
-    procedure AddData(D: TDateTime; C, N: string);
+    procedure AddData(D: TDateTime; C, N: string; B: TBand; from_rbn: Boolean = False);
     procedure SaveToFile(filename: string);
     property AcceptDuplicates: Boolean read FAcceptDuplicates write FAcceptDuplicates;
   end;
@@ -101,10 +110,10 @@ type
     FSuperList: TSuperList;
     FForm: TSuperCheck2;
     FPartialStr: string;
+    FBand: TBand;
   public
-    constructor Create(ASuperList: TSuperList; form: TSuperCheck2; APartialStr: string);
+    constructor Create(ASuperList: TSuperList; form: TSuperCheck2; APartialStr: string; B: TBand);
     property SuperList: TSuperList read FSuperList write FSuperList;
-//    property ListBox: TListBox read FListBox write FListBox;
     property PartialStr: string read FPartialStr write FPartialStr;
   end;
 
@@ -117,7 +126,7 @@ type
     procedure LoadSpcFile(strStartFoler: string; strFileName: string);
     procedure LoadLogFiles(strStartFoler: string);
     procedure ListToTwoMatrix(L: TQSOList);
-    procedure SetTwoMatrix(D: TDateTime; C, N: string);
+    procedure SetTwoMatrix(D: TDateTime; C, N: string; B: TBand);
     function IsAsciiStr(str: string): Boolean;
   public
     constructor Create(ASuperList: TSuperList; APSuperListTwoLetterMatrix: PTSuperListTwoLetterMatrix);
@@ -128,12 +137,16 @@ type
      FPartialStr: string;
      FEditDistance: Integer;
      FScore: Extended;
+     FRbnCount: Integer;
+     FPosition: Integer;
   public
     constructor Create(); overload;
-    constructor Create(str: string; editdistance: Integer; score: Extended); overload;
+    constructor Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer; diffpos: Integer); overload;
     property PartialStr: string read FPartialStr write FPartialStr;
     property EditDistance: Integer read FEditDistance write FEditDistance;
     property Score: Extended read FScore write FScore;
+    property RbnCount: Integer read FRbnCount write FRbnCount;
+    property Position: Integer read FPosition write FPosition;
   end;
 
   TSuperResultComparer1 = class(TComparer<TSuperResult>)
@@ -193,7 +206,7 @@ end;
 
 function TSuperData.GetText(): string;
 begin
-   Result := FillRight(callsign, 11) + FDisplay;
+   Result := FDisplay;
 end;
 
 { TSuperDataList }
@@ -262,13 +275,53 @@ end;
 { TSuperIndex }
 
 constructor TSuperIndex.Create();
+var
+   b: TBand;
 begin
    FList := TSuperDataList.Create(True);
+
+   for b := b19 to bUnknown do begin
+      FRbnCount[b] := 0;
+   end;
 end;
 
 destructor TSuperIndex.Destroy();
 begin
    FList.Free();
+end;
+
+function TSuperIndex.GetText(b: TBand): string;
+var
+   rbn: string;
+begin
+   if FRbnCount[b] > dmZLogGlobal.Settings.FRbnCountForRbnVerified then begin
+      rbn := '*';
+   end
+   else begin
+      rbn := ' ';
+   end;
+
+   Result := rbn + FillRight(callsign, 11);
+end;
+
+procedure TSuperIndex.IncRbnCount(b: TBand);
+begin
+   if b = bUnknown then begin
+      Exit;
+   end;
+
+   Inc(FRbnCount[b]);
+   Inc(FRbnCount[bUnknown]);
+end;
+
+function TSuperIndex.GetRbnCount(b: TBand): Integer;
+begin
+   Result := FRbnCount[b];
+end;
+
+procedure TSuperIndex.SetRbnCount(b: TBand; v: Integer);
+begin
+   FRbnCount[b] := v;
 end;
 
 { TSuperList }
@@ -307,17 +360,34 @@ begin
    end;
 end;
 
+function TSuperList.IndexOf(Q: TQSO): Integer;
+var
+   Index: Integer;
+   SI: TSuperIndex;
+begin
+   SI := TSuperIndex.Create();
+   SI.Callsign := Q.Callsign;
+   try
+      if BinarySearch(SI, Index, FIndexComparer) = True then begin
+         Result := Index;
+      end
+      else begin
+         Result := -1;
+      end;
+   finally
+      SI.Free();
+   end;
+end;
+
 function TSuperList.ObjectOf(SD: TSuperData): TSuperData;
 var
    Index: Integer;
    SI: TSuperIndex;
-   L: Integer;
 begin
    SI := TSuperIndex.Create();
    SI.Callsign := SD.Callsign;
    try
       if BinarySearch(SI, Index, FIndexComparer) = True then begin
-//         L := Items[Index].List.Count - 1;
          Result := Items[Index].List[0];
       end
       else begin
@@ -328,12 +398,25 @@ begin
    end;
 end;
 
+function TSuperList.RbnVerify(Q: TQSO): Boolean;
+var
+   Index: Integer;
+begin
+   Index := Self.IndexOf(Q);
+   if Index = -1 then begin
+      Result := False;
+   end
+   else begin
+      Result := (Items[Index].RbnCount[Q.Band] > dmZLogGlobal.Settings.FRbnCountForRbnVerified);
+   end;
+end;
+
 procedure TSuperList.SortByCallsign();
 begin
    Sort(FIndexComparer);
 end;
 
-procedure TSuperList.AddData(D: TDateTime; C, N: string);
+procedure TSuperList.AddData(D: TDateTime; C, N: string; B: TBand; from_rbn: Boolean);
 var
    O: TSuperData;
    SD: TSuperData;
@@ -346,22 +429,39 @@ begin
    if BinarySearch(SI, Index, FIndexComparer) = True then begin
       // 重複有りならリストに追加する
       if FAcceptDuplicates = True then begin
-         SD.Serial := Items[Index].List.Count + 1;
-         Items[Index].List.Add(SD);
+         if N <> '' then begin
+            if Items[Index].List.IndexOf(SD) = -1 then begin
+               SD.Serial := Items[Index].List.Count + 1;
+               Items[Index].List.Add(SD);
+            end
+            else begin
+               SD.Free();
+            end;
+         end
+         else begin
+            SD.Free();
+         end;
       end
       else begin  // 重複無しは日付をUPDATEする
          O := Items[Index].List[0];
          if O.Date < SD.Date then begin
             O.Date := SD.Date;
-            O.Number := SD.Number;
+            if SD.Number <> '' then begin
+               O.Number := SD.Number;
+            end;
          end;
          SD.Free();
+      end;
+
+      if from_rbn = True then begin
+         Items[Index].IncRbnCount(B);
       end;
       SI.Free();
    end
    else begin  // 無ければIndexリストに追加
       SD.Serial := 1;
       SI.List.Add(SD);
+      SI.IncRbnCount(B);
       Insert(Index, SI);
    end;
 end;
@@ -412,11 +512,12 @@ end;
 
 { TSuperCheckNPlusOneThread }
 
-constructor TSuperCheckNPlusOneThread.Create(ASuperList: TSuperList; form: TSuperCheck2; APartialStr: string);
+constructor TSuperCheckNPlusOneThread.Create(ASuperList: TSuperList; form: TSuperCheck2; APartialStr: string; B: TBand);
 begin
    FSuperList := ASuperList;
    FForm := form;
    FPartialStr := APartialStr;
+   FBand := B;
    Inherited Create();
 end;
 
@@ -429,6 +530,13 @@ var
    L: TSuperResultList;
    R: TSuperResult;
    SI: TSuperIndex;
+   rbncount: Integer;
+   diffpos: Integer;
+   rbn: string;
+   np1: string;
+   j: Integer;
+   len1, len2: Integer;
+   C: string;
 begin
    L := TSuperResultList.Create();
    try
@@ -441,17 +549,41 @@ begin
          end;
 
          // レーベンシュタイン距離を求める
-         n := LD_dp(SI.Callsign, FPartialStr);
+         C := SI.Callsign;
+         n := LD_dp(C, FPartialStr);
 
          // レーベンシュタイン距離から類似度を算出
-         score := n / Max(Length(SI.Callsign), Length(FPartialStr));
+         len1 := Length(C);
+         len2 := Length(FPartialStr);
+         score := n / Max(len1, len2);
+
+         // RBN参照回数
+         rbncount := SI.RbnCount[FBand];
 
          // 0なら一致
          // 0.1667 １文字不一致
          // 0.3333 ２文字不一致
          // 0.5000 ３文字不一致
          if score < 0.3 then begin
-            R := TSuperResult.Create(SI.Callsign, n, score);
+            // 違う場所を調べる
+            diffpos := 0;
+
+            if len1 > len2 then begin
+               FPartialStr := FPartialStr + DupeString(' ', len1 - len2);
+            end
+            else if len1 < len2 then begin
+               C := C + DupeString(' ', len2 - len1);
+               len1 := len2;
+            end;
+
+            for j := 1 to len1 do begin
+               if C[j] <> FPartialStr[j] then begin
+                  diffpos := j;
+                  Break;
+               end;
+            end;
+
+            R := TSuperResult.Create(SI.Callsign, n, score, rbncount, diffpos);
             L.Add(R);
          end;
       end;
@@ -462,11 +594,23 @@ begin
       FForm.BeginUpdate();
       for i := 0 to Min(l.Count - 1, maxhit) do begin
          if L[i].EditDistance = 0 then begin
-            FForm.Add('*' + L[i].PartialStr);
+            np1 := '*';
          end
          else begin
-            FForm.Add(L[i].PartialStr);
+            if L[i].Position <= 9 then begin
+               np1 := IntToStr(L[i].Position);
+            end
+            else begin
+               np1 := 'F';
+            end;
          end;
+         if L[i].RbnCount > dmZLogGlobal.Settings.FRbnCountForRbnVerified then begin
+            rbn := '*';
+         end
+         else begin
+            rbn := ' ';
+         end;
+         FForm.Add(np1 + rbn + L[i].PartialStr);
       end;
       FForm.EndUpdate();
    finally
@@ -655,7 +799,7 @@ begin
          Continue;
       end;
 
-      SetTwoMatrix(dtNow, C, N);
+      SetTwoMatrix(dtNow, C, N, bUnknown);
    end;
 
    {$IFDEF DEBUG}
@@ -728,18 +872,18 @@ begin
       end;
 
       Q := L[i];
-      SetTwoMatrix(Q.Time, Q.Callsign, Q.NrRcvd);
+      SetTwoMatrix(Q.Time, Q.Callsign, Q.NrRcvd, bUnknown);
    end;
 end;
 
-procedure TSuperCheckDataLoadThread.SetTwoMatrix(D: TDateTime; C, N: string);
+procedure TSuperCheckDataLoadThread.SetTwoMatrix(D: TDateTime; C, N: string; B: TBand);
 var
    i: Integer;
    x: Integer;
    y: Integer;
 begin
    // リストに追加
-   FSuperList.AddData(D, C, N);
+   FSuperList.AddData(D, C, N, B);
 
    // TwoLetterリストに追加
    for i := 1 to Length(C) - 1 do begin
@@ -750,7 +894,7 @@ begin
       x := Ord(C[i]);
       y := Ord(C[i + 1]);
 
-      FPSuperListTwoLetterMatrix^[x, y].AddData(D, C, N);
+      FPSuperListTwoLetterMatrix^[x, y].AddData(D, C, N, B);
    end;
 end;
 
@@ -776,14 +920,18 @@ begin
    FPartialStr := '';
    FEditDistance := 0;
    FScore := 0;
+   FRbnCount := 0;
+   FPosition := 0;
 end;
 
-constructor TSuperResult.Create(str: string; editdistance: Integer; score: Extended);
+constructor TSuperResult.Create(str: string; editdistance: Integer; score: Extended; rbncount: Integer; diffpos: Integer);
 begin
    Inherited Create();
    FPartialStr := str;
    FEditDistance := editdistance;
    FScore := score;
+   FRbnCount := rbncount;
+   FPosition := diffpos;
 end;
 
 function TSuperResultComparer1.Compare(const Left, Right: TSuperResult): Integer;

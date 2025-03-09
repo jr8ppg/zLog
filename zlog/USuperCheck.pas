@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Spin, Vcl.Grids,
+  StdCtrls, ExtCtrls, Spin, Vcl.Grids, System.UITypes,
   UzLogConst, UzLogGlobal, UzLogForm;
 
 type
@@ -160,6 +160,19 @@ begin
       Brush.Color := bg;
       Brush.Style := bsSolid;
       FillRect(Rect);
+
+      if txt <> '' then begin
+         if txt[1] = '*' then begin
+            Font.Style := Font.Style + [fsBold];
+         end
+         else begin
+            Font.Style := Font.Style - [fsBold];
+         end;
+         Delete(txt, 1, 1);
+      end
+      else begin
+         Font.Style := Font.Style - [fsBold];
+      end;
 
       Font.Color := fg;
       Font.Size := Grid.Font.Size;

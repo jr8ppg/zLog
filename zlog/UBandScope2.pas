@@ -7,7 +7,11 @@ uses
   Dialogs, ExtCtrls, StdCtrls, Grids, Menus, DateUtils,
   USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, UBandPlan,
   System.ImageList, Vcl.ImgList, System.IniFiles,
-  System.UITypes, Vcl.Buttons, System.Actions, Vcl.ActnList;
+  System.UITypes, Vcl.Buttons, System.Actions, Vcl.ActnList, Vcl.ComCtrls;
+
+type
+  TBSDisplayMode = (bsNormal = 0, bsSyncVFO, bsFreqCenter );
+  TBandScopeStyle = (bssCurrentBand = 0, bssAllBands, bssNewMulti, bssByBand );
 
 type
   TBandScope2 = class(TForm)
@@ -56,14 +60,35 @@ type
     actionIncreaseCwSpeed: TAction;
     N1: TMenuItem;
     menuAddToDenyList: TMenuItem;
-    buttonShowAllBands: TSpeedButton;
     panelAllBandsOption: TPanel;
-    buttonShowWorked2: TSpeedButton;
     buttonSortByFreq: TSpeedButton;
     buttonSortByTime: TSpeedButton;
     ImageList2: TImageList;
     buttonSyncVfo: TSpeedButton;
     buttonFreqCenter: TSpeedButton;
+    buttonNormalMode: TSpeedButton;
+    tabctrlBandSelector: TTabControl;
+    N2: TMenuItem;
+    menuBSCurrent: TMenuItem;
+    menuBSAllBands: TMenuItem;
+    menuBSNewMulti: TMenuItem;
+    menuBS00: TMenuItem;
+    menuBS01: TMenuItem;
+    menuBS02: TMenuItem;
+    menuBS03: TMenuItem;
+    menuBS04: TMenuItem;
+    menuBS05: TMenuItem;
+    menuBS06: TMenuItem;
+    menuBS07: TMenuItem;
+    menuBS08: TMenuItem;
+    menuBS09: TMenuItem;
+    menuBS10: TMenuItem;
+    menuBS11: TMenuItem;
+    menuBS12: TMenuItem;
+    menuBS13: TMenuItem;
+    menuBS14: TMenuItem;
+    menuBS15: TMenuItem;
+    N3: TMenuItem;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -94,16 +119,26 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure GridContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure tabctrlBandSelectorChange(Sender: TObject);
+    procedure tabctrlBandSelectorChanging(Sender: TObject;
+      var AllowChange: Boolean);
+    procedure BSMenuPopup(Sender: TObject);
+    procedure menuBSCurrentClick(Sender: TObject);
+    procedure menuBSAllBandsClick(Sender: TObject);
+    procedure menuBSNewMultiClick(Sender: TObject);
+    procedure menuBS00Click(Sender: TObject);
   private
     { Private 宣言 }
+    FBandScopeMenu: array[b19..b10g] of TMenuItem;
+
     FProcessing: Boolean;
 
-    FCurrentBandOnly: Boolean;
-    FNewMultiOnly: Boolean;
-    FAllBands: Boolean;
+    FBandScopeStyle: TBandScopeStyle;
+    FDisplayMode: TBSDisplayMode;
 
     FCurrBand : TBand;
     FSelectFlag: Boolean;
+    FShowAllBands: Boolean;
 
     FSortOrder: Integer;
     FBSList: TBSList;
@@ -120,6 +155,8 @@ type
     procedure DeleteFromBSList(i : integer);
     function GetFontSize(): Integer;
     procedure SetFontSize(v: Integer);
+    function GetDisplayMode(): TBSDisplayMode;
+    procedure SetDisplayMode(v: TBSDisplayMode);
     function IsShowData(D: TBSData): Boolean;
     function FormatSpotInfo(D: TBSData): string;
     function EstimateNumRows(): Integer;
@@ -130,16 +167,16 @@ type
     function CalcRemainTime(T1, T2: TDateTime): Integer;
     function CalcElapsedTime(T1, T2: TDateTime): Integer;
     procedure SetCurrentBand(b: TBand);
-    procedure SetCurrentBandOnly(v: Boolean);
-    procedure SetNewMultiOnly(v: Boolean);
-    procedure SetAllBands(v: Boolean);
+    procedure SetBandScopeStyle(style: TBandScopeStyle);
     procedure SetCaption();
     procedure SetColor();
     procedure Lock();
     procedure Unlock();
     procedure ApplyShortcut();
-    procedure SetButtonEnabled();
     procedure ApplyFontSize(font_size: Integer);
+    function BandToTabIndex(b: TBand): Integer;
+    function TabIndexToBand(TabIndex: Integer): TBand;
+    procedure SetDisplayModeState(fEnable: Boolean);
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -158,16 +195,16 @@ type
     procedure LoadSettings(ini: TMemIniFile; section: string);
     procedure Suspend();
     procedure Resume();
+    procedure RenewTab();
 
     property FontSize: Integer read GetFontSize write SetFontSize;
+    property DisplayMode: TBSDisplayMode read GetDisplayMode write SetDisplayMode;
     property Select: Boolean write SetSelect;
     property FreshnessType: Integer read FFreshnessType write SetFreshnessType;
     property IconType: Integer read FIconType write SetIconType;
     property CurrentBand: TBand read FCurrBand write SetCurrentBand;
-    property CurrentBandOnly: Boolean read FCurrentBandOnly write SetCurrentBandOnly;
-    property NewMultiOnly: Boolean read FNewMultiOnly write SetNewMultiOnly;
-    property AllBands: Boolean read FAllBands write SetAllBands;
     property UseResume: Boolean read FUseResume write FUseResume;
+    property Style: TBandScopeStyle read FBandScopeStyle write SetBandScopeStyle;
   end;
 
   TBandScopeArray = array[b19..b10g] of TBandScope2;
@@ -186,8 +223,7 @@ constructor TBandScope2.Create(AOwner: TComponent; b: TBand);
 begin
    Inherited Create(AOwner);
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   FCurrentBandOnly := False;
-   FNewMultiOnly := False;
+   FBandScopeStyle := bssByBand;
    FSelectFlag := False;
    FCurrBand := b;
    FSortOrder := 0;
@@ -195,10 +231,10 @@ begin
    FreshnessType := dmZLogGlobal.Settings._bandscope_freshness_mode;
    IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
    buttonShowWorked.Down := True;
-   buttonShowWorked2.Down := True;
-   buttonShowAllBands.Down := False;
    FUseResume := False;
    FResumeFile := '';
+
+   RenewTab();
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -239,7 +275,7 @@ var
    D: TBSData;
 begin
    // このウインドウのバンドでは無い場合
-   if (FAllBands = False) and (FCurrBand <> b) then begin
+   if (FBandScopeStyle = bssByBand) and (FCurrBand <> b) then begin
       Exit;
    end;
 
@@ -271,7 +307,7 @@ begin
    D.SpotSource := ssSelfFromZServer;
 
    // このウインドウのバンドでは無い場合
-   if (FAllBands = False) and (D.Band <> FCurrBand) then begin
+   if (FBandScopeStyle = bssByBand) and (D.Band <> FCurrBand) then begin
       D.Free();
       Exit;
    end;
@@ -287,7 +323,7 @@ procedure TBandScope2.AddClusterSpot(Sp: TSpot);
 var
    D: TBSData;
 begin
-   if (FAllBands = False) and (FNewMultiOnly = False) and (FCurrBand <> Sp.Band) and (FCurrentBandOnly = False) then begin
+   if (FBandScopeStyle = bssByBand) and (FCurrBand <> Sp.Band) then begin
       Exit;
    end;
 
@@ -349,7 +385,7 @@ begin
                Continue;
             end;
 
-            if (FNewMultiOnly = True) and (BS.IsNewMulti = False) then begin
+            if (FBandScopeStyle = bssNewMulti) and (BS.IsNewMulti = False) then begin
                FBSList[i] := nil;
                Continue;
             end;
@@ -369,10 +405,10 @@ end;
 
 procedure TBandScope2.RewriteBandScope();
 begin
-   if (FNewMultiOnly = False) and
-      (FAllBands = False) and
+   if (FBandScopeStyle in [bssCurrentBand, bssAllBands, bssByBand]) and
+      (FSortOrder <= 1) and
       (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) and
-      (buttonFreqCenter.Down = True) then begin
+      (FDisplayMode = bsFreqCenter) then begin
       RewriteBandScope2();
    end
    else begin
@@ -406,8 +442,9 @@ begin
       currow := Grid.Row;
       markrow := -1;
 
-      if (FNewMultiOnly = False) and
-         (FAllBands = False) and
+      // 周波数マーカーの有無判定
+      if (FBandScopeStyle in [bssCurrentBand, bssAllBands, bssByBand]) and
+         (FSortOrder <= 1) and
          (dmZLogGlobal.BandPlan.FreqToBand(CurrentRigFrequency) = FCurrBand) then begin
          MarkCurrent := True;
       end
@@ -470,7 +507,7 @@ begin
             str := FormatSpotInfo(D);
 
             if (fOnFreq = True) or
-               ((FAllBands = True) and (D.Band = CurrentQSO.Band)) then begin
+               ((FShowAllBands = True) and (D.Band = CurrentQSO.Band)) then begin
                str := '>>' + str + '<<';
             end;
 
@@ -499,7 +536,7 @@ begin
          Grid.RowCount := R;
       end;
 
-      if buttonSyncVfo.Down = True then begin
+      if FDisplayMode = bsSyncVFO then begin
          if markrow = -1 then begin
             if toprow <= Grid.RowCount - 1 then begin
                Grid.TopRow := toprow;
@@ -674,17 +711,15 @@ end;
 
 function TBandScope2.IsShowData(D: TBSData): Boolean;
 begin
-   if (FAllBands = False) and (buttonShowWorked.Down = False) and (D.Worked = True) then begin
+   // Workedの有無で判定
+   if (FBandScopeStyle in [bssCurrentBand, bssAllBands, bssByBand]) and
+      (buttonShowWorked.Down = False) and (D.Worked = True) then begin
       Result := False;
       Exit;
    end;
 
-   if (FAllBands = True) and (buttonShowWorked2.Down = False) and (D.Worked = True) then begin
-      Result := False;
-      Exit;
-   end;
-
-   if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
+   // 全バンド表示中か
+   if {(FNewMultiOnly = False) and} (FCurrBand <> D.Band) and (FShowAllBands = False) then begin
       Result := False;
       Exit;
    end;
@@ -726,7 +761,7 @@ begin
       j := 0;
       for i := 0 to FBSList.Count - 1 do begin
          D := FBSList[i];
-         if (FNewMultiOnly = False) and (FCurrBand <> D.Band) and (buttonShowAllBands.Down = False) then begin
+         if (FCurrBand <> D.Band) and (FShowAllBands = False) then begin
             Continue;
          end;
 
@@ -760,6 +795,29 @@ begin
       D := TBSData(Grid.Objects[0, i]);
       MainForm.CommForm.DenyList.Add(D.ReportedBy);
    end;
+end;
+
+procedure TBandScope2.menuBS00Click(Sender: TObject);
+var
+   b: TBand;
+begin
+   b := TBand(TMenuItem(Sender).Tag);
+   MainForm.BandScopeEx[b].Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TBandScope2.menuBSAllBandsClick(Sender: TObject);
+begin
+   MainForm.BandScopeAllBands.Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TBandScope2.menuBSCurrentClick(Sender: TObject);
+begin
+   MainForm.BandScope.Visible := TMenuItem(Sender).Checked;
+end;
+
+procedure TBandScope2.menuBSNewMultiClick(Sender: TObject);
+begin
+   MainForm.BandScopeNewMulti.Visible := TMenuItem(Sender).Checked;
 end;
 
 procedure TBandScope2.menuDeleteSpotClick(Sender: TObject);
@@ -846,12 +904,35 @@ begin
 end;
 
 procedure TBandScope2.FormCreate(Sender: TObject);
+var
+   b: TBand;
 begin
    InitializeCriticalSection(FBSLock);
    FBSList := TBSList.Create();
    FProcessing := False;
    timerCleanup.Interval := 1 * 60 * 1000; // 1min.
    timerCleanup.Enabled := True;
+
+   FBandScopeMenu[b19] := menuBS00;
+   FBandScopeMenu[b35] := menuBS01;
+   FBandScopeMenu[b7] := menuBS02;
+   FBandScopeMenu[b10] := menuBS03;
+   FBandScopeMenu[b14] := menuBS04;
+   FBandScopeMenu[b18] := menuBS05;
+   FBandScopeMenu[b21] := menuBS06;
+   FBandScopeMenu[b24] := menuBS07;
+   FBandScopeMenu[b28] := menuBS08;
+   FBandScopeMenu[b50] := menuBS09;
+   FBandScopeMenu[b144] := menuBS10;
+   FBandScopeMenu[b430] := menuBS11;
+   FBandScopeMenu[b1200] := menuBS12;
+   FBandScopeMenu[b2400] := menuBS13;
+   FBandScopeMenu[b5600] := menuBS14;
+   FBandScopeMenu[b10g] := menuBS15;
+
+   for b := b19 to b10g do begin
+      FBandScopeMenu[b].Caption := BandString[b];
+   end;
 end;
 
 procedure TBandScope2.FormDestroy(Sender: TObject);
@@ -1041,7 +1122,7 @@ begin
             end;
 
             ssCluster: begin
-               if FAllBands = True then begin
+               if FBandScopeStyle = bssAllBands then begin
                   if D.Band = CurrentQSO.Band then begin
                      Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[11].FBackColor;
                   end
@@ -1225,6 +1306,34 @@ begin
    end;
 end;
 
+procedure TBandScope2.tabctrlBandSelectorChange(Sender: TObject);
+var
+   b: TBand;
+begin
+   b := TabIndexToBand(tabctrlBandSelector.TabIndex);
+
+   if tabctrlBandSelector.TabIndex = 0 then begin
+      FShowAllBands := True;
+      RewriteBandScope();
+   end
+   else begin
+      FShowAllBands := False;
+      CurrentBand := b;
+   end;
+end;
+
+procedure TBandScope2.tabctrlBandSelectorChanging(Sender: TObject; var AllowChange: Boolean);
+begin
+   if FSortOrder <= 1 then begin
+      SetDisplayModeState(True);
+   end
+   else begin
+      SetDisplayModeState(False);
+   end;
+
+   AllowChange := True;
+end;
+
 function TBandScope2.GetFontSize(): Integer;
 begin
    Result := Grid.Font.Size;
@@ -1247,6 +1356,30 @@ begin
    end;
 end;
 
+function TBandScope2.GetDisplayMode(): TBSDisplayMode;
+begin
+   if (buttonNormalMode.Down = True) then begin
+      Result := bsNormal;
+   end
+   else if (buttonSyncVfo.Down = True) then begin
+      Result := bsSyncVFO;
+   end
+   else begin
+      Result := bsFreqCenter;
+   end;
+end;
+
+procedure TBandScope2.SetDisplayMode(v: TBSDisplayMode);
+begin
+   FDisplayMode := v;
+   case v of
+      bsNormal: buttonNormalMode.Down := True;
+      bsSyncVFO: buttonSyncVfo.Down := True;
+      bsFreqCenter: buttonFreqCenter.Down := True;
+      else buttonNormalMode.Down := True;
+   end;
+end;
+
 procedure TBandScope2.SetSelect(fSelect: Boolean);
 begin
    FSelectFlag := fSelect;
@@ -1264,7 +1397,7 @@ begin
          D := FBSList[i];
          SpotCheckWorked(D, True);
 
-         if (FNewMultiOnly = True) then begin
+         if (FBandScopeStyle = bssNewMulti) then begin
             if (D.IsNewMulti = False) then begin
                FBSList[i] := nil;
             end;
@@ -1374,101 +1507,90 @@ begin
 
    FCurrBand := b;
    SetCaption();
+
+   tabctrlBandSelector.TabIndex := BandToTabIndex(b);
+   FShowAllBands := False;
+
    RewriteBandScope();
 end;
 
-procedure TBandScope2.SetCurrentBandOnly(v: Boolean);
+procedure TBandScope2.SetBandScopeStyle(style: TBandScopeStyle);
 begin
-   FCurrentBandOnly := v;
-   SetCaption();
-end;
-
-procedure TBandScope2.SetNewMultiOnly(v: Boolean);
-begin
-   FNewMultiOnly := v;
+   FBandScopeStyle := style;
    SetCaption();
    SetColor();
-   if v = True then begin
-      buttonSyncVfo.Down := False;
-      buttonShowWorked.Down := False;
-      buttonFreqCenter.Down := False;
-      buttonSyncVfo.Visible := False;
-      buttonFreqCenter.Visible := False;
-      buttonShowWorked.Visible := False;
-      buttonShowAllBands.Down := True;
+
+   // 標準オプション
+   if style in [bssCurrentBand, bssAllBands, bssByBand] then begin
+      panelStandardOption.Visible := True;
    end
    else begin
-      buttonSyncVfo.Visible := True;
-      buttonFreqCenter.Visible := True;
-      buttonShowWorked.Visible := True;
-   end;
-end;
-
-procedure TBandScope2.SetAllBands(v: Boolean);
-begin
-   FAllBands := v;
-   SetCaption();
-   SetColor();
-   if v = True then begin
-      buttonSyncVfo.Down := False;
-      buttonSyncVfo.Visible := False;
-      buttonFreqCenter.Down := False;
-      buttonFreqCenter.Visible := False;
-      buttonShowWorked2.Down := False;
-      buttonShowWorked2.Visible := True;
       panelStandardOption.Visible := False;
-      panelAllBandsOption.Visible := True;
-      buttonSortByFreq.ImageIndex := 0;
-      FSortOrder := 0;
+   end;
+
+   // タブを有効化
+   if style in [bssCurrentBand, bssAllBands, bssNewMulti] then begin
+      Panel1.Parent := tabctrlBandSelector;
+      tabctrlBandSelector.Visible := True;
+      tabctrlBandSelector.TabIndex := 0;
+      FShowAllBands := True;
    end
    else begin
-      buttonSyncVfo.Visible := True;
-      buttonFreqCenter.Visible := True;
-      buttonShowWorked2.Visible := True;
+      Panel1.Parent := Self;
+      tabctrlBandSelector.Visible := False;
+      tabctrlBandSelector.TabIndex := 0;
+      FShowAllBands := False;
    end;
+
+   // 全バンド用オプション
+   panelAllBandsOption.Visible := True;
+   buttonSortByFreq.ImageIndex := 0;
+   FSortOrder := 0;
 end;
 
 procedure TBandScope2.SetCaption();
 begin
-   if FCurrentBandOnly = True then begin
-      Caption := '[Current] ' + BandString[FCurrBand];
-      buttonShowAllBands.Visible := True;
-   end
-   else if FNewMultiOnly = True then begin
-      Caption := '[New multi]';
-      buttonShowAllBands.Visible := True;
-      buttonShowAllBands.Down := True;
-   end
-   else if FAllBands = True then begin
-      Caption := '[All bands]';
-      buttonShowAllBands.Visible := False;
-      buttonShowAllBands.Down := True;
-   end
-   else begin
-      if FCurrBand <> bUnknown then begin
-         Caption := BandString[FCurrBand];
-         buttonShowAllBands.Visible := False;
-         buttonShowAllBands.Down := False;
+   case FBandScopeStyle of
+      bssCurrentBand: begin
+         Caption := '[Current] ' + BandString[FCurrBand];
       end;
-   end;
+
+      bssAllBands: begin
+         Caption := '[All bands]';
+      end;
+
+      bssNewMulti: begin
+         Caption := '[New multi]';
+      end;
+
+      else begin
+         if FCurrBand <> bUnknown then begin
+            Caption := BandString[FCurrBand];
+         end;
+      end;
+   end
 end;
 
 procedure TBandScope2.SetColor();
 begin
-   if FNewMultiOnly = True then begin
-      Panel1.Color := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
-   end
-   else if FAllBands = True then begin
-      Panel1.Color := clAqua;
-   end
-   else begin
-      if FSelectFlag = True then begin
-         Panel1.Color := clBlue;
-      end
-      else begin
-         Panel1.Color := clGray;
+   case FBandScopeStyle of
+      bssAllBands: begin
+         Panel1.Color := clAqua;
       end;
-   end;
+
+      bssNewMulti: begin
+         Panel1.Color := dmZLogGlobal.Settings._bandscopecolor[2].FForeColor;
+      end;
+
+      else begin
+         if FSelectFlag = True then begin
+            Panel1.Color := clBlue;
+         end
+         else begin
+            Panel1.Color := clGray;
+         end;
+      end;
+   end
 end;
 
 procedure TBandScope2.CopyList(F: TBandScope2);
@@ -1505,7 +1627,7 @@ begin
             S.NewJaMulti := False;
             S.Worked := True;
 
-            if FNewMultiOnly = True then begin
+            if FBandScopeStyle = bssNewMulti then begin
                FBSList[i] := nil;
             end;
          end;
@@ -1550,8 +1672,7 @@ end;
 
 procedure TBandScope2.buttonShowWorkedClick(Sender: TObject);
 begin
-   SetButtonEnabled();
-
+   FDisplayMode := GetDisplayMode();
    RewriteBandScope();
 end;
 
@@ -1574,6 +1695,8 @@ begin
    Lock();
    FBSList.Sort(TBSSortMethod(FSortOrder));
    Unlock();
+
+   SetDisplayModeState(True);
    RewriteBandScope();
 end;
 
@@ -1596,6 +1719,8 @@ begin
    Lock();
    FBSList.Sort(TBSSortMethod(FSortOrder));
    Unlock();
+
+   SetDisplayModeState(False);
    RewriteBandScope();
 end;
 
@@ -1702,58 +1827,53 @@ procedure TBandScope2.SaveSettings(ini: TMemIniFile; section: string);
 begin
    dmZLogGlobal.WriteWindowState(ini, Self, section);
    ini.WriteInteger(section, 'FontSize', FontSize);
-   ini.WriteBool(section, 'SyncVFO', buttonSyncVFO.Down);
-   ini.WriteBool(section, 'FreqCenter', buttonFreqCenter.Down);
 
-   if FCurrentBandOnly = True then begin
-      ini.WriteBool(section, 'ShowAllBands', buttonShowAllBands.Down);
-      ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
-   end
-   else if FNewMultiOnly = True then begin
-   end
-   else if FAllBands = True then begin
-      ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
-      ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
-      ini.WriteBool(section, 'ShowWorked2', buttonShowWorked2.Down);
-   end
-   else begin
-      ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
+   case FDisplayMode of
+      bsNormal: begin
+         ini.WriteBool(section, 'SyncVFO', False);
+         ini.WriteBool(section, 'FreqCenter', False);
+      end;
+
+      bsSyncVFO: begin
+         ini.WriteBool(section, 'SyncVFO', True);
+         ini.WriteBool(section, 'FreqCenter', False);
+      end;
+
+      bsFreqCenter: begin
+         ini.WriteBool(section, 'SyncVFO', False);
+         ini.WriteBool(section, 'FreqCenter', True);
+      end;
    end;
+
+   ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
+   ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
+   ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
 end;
 
 procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
+var
+   fSyncVfo: Boolean;
+   fFreqCenter: Boolean;
 begin
    dmZLogGlobal.ReadWindowState(ini, Self, section);
    FontSize := ini.ReadInteger(section, 'FontSize', 9);
-   buttonSyncVFO.Down := ini.ReadBool(section, 'SyncVFO', True);
-   buttonFreqCenter.Down := ini.ReadBool(section, 'FreqCenter', False);
 
-   if FCurrentBandOnly = True then begin
-      buttonShowAllBands.Down := ini.ReadBool(section, 'ShowAllBands', False);
-      buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   fSyncVfo := ini.ReadBool(section, 'SyncVFO', True);
+   fFreqCenter := ini.ReadBool(section, 'FreqCenter', False);
+
+   if (fSyncVfo = False) and (fFreqCenter = False) then begin
+      DisplayMode := bsNormal;
    end
-   else if FNewMultiOnly = True then begin
-   end
-   else if FAllBands = True then begin
-      buttonSortByFreq.ImageIndex := ini.ReadInteger(section, 'FreqSortOrder', 0);
-      buttonSortByTime.ImageIndex := ini.ReadInteger(section, 'TimeSortOrder', -1);
-      buttonShowWorked2.Down := ini.ReadBool(section, 'ShowWorked2', True);
+   else if (fSyncVfo = True) and (fFreqCenter = False) then begin
+      DisplayMode := bsSyncVFO;
    end
    else begin
-      buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+      DisplayMode := bsFreqCenter;
    end;
 
-   SetButtonEnabled();
-end;
-
-procedure TBandScope2.SetButtonEnabled();
-begin
-   if buttonFreqCenter.Down = True then begin
-      buttonSyncVfo.Enabled := False;
-   end
-   else begin
-      buttonSyncVfo.Enabled := True;
-   end;
+   buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   buttonSortByFreq.ImageIndex := ini.ReadInteger(section, 'FreqSortOrder', 0);
+   buttonSortByTime.ImageIndex := ini.ReadInteger(section, 'TimeSortOrder', -1);
 end;
 
 procedure TBandScope2.ApplyFontSize(font_size: Integer);
@@ -1779,22 +1899,93 @@ end;
 procedure TBandScope2.Resume();
 begin
    if FUseResume = True then begin
-      if FAllBands = True then begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
-      end
-      else if FNewMultiOnly = True then begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
-      end
-      else if FCurrentBandOnly = True then begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
-      end
-      else begin
-         FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+      case FBandScopeStyle of
+         bssAllBands:      FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
+         bssNewMulti:      FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
+         bssCurrentBand:   FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
+         else              FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
       end;
+
       if FileExists(FResumeFile) then begin
          FBSList.LoadFromFile(FResumeFile);
       end;
    end;
+end;
+
+procedure TBandScope2.RenewTab();
+var
+   b: TBand;
+begin
+   tabctrlBandSelector.Tabs.Clear();
+   tabctrlBandSelector.Tabs.Add('ALL');
+   for b := b19 to b10g do begin
+      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
+         tabctrlBandSelector.Tabs.Add(MHzString[b]);
+      end;
+   end;
+end;
+
+function TBandScope2.BandToTabIndex(b: TBand): Integer;
+var
+   S: string;
+begin
+   S := MHzString[b];
+   Result := tabctrlBandSelector.Tabs.IndexOf(S);
+end;
+
+procedure TBandScope2.BSMenuPopup(Sender: TObject);
+var
+   b: TBand;
+   C, R: Integer;
+   fEnable: Boolean;
+begin
+   C := Grid.Col;
+   R := Grid.Row;
+   if (C < 0) or (R < 0) or (Grid.Objects[C, R] = nil) then begin
+      fEnable := False;
+   end
+   else begin
+      fEnable := True;
+   end;
+   menuDeleteSpot.Enabled := fEnable;
+   menuDeleteAllWorkedStations.Enabled := fEnable;
+   menuAddToDenyList.Enabled := fEnable;
+
+   menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
+   menuBSCurrent.Checked := MainForm.BandScope.Visible;
+   menuBSAllBands.Visible := dmZLogGlobal.Settings._usebandscope_allbands;
+   menuBSAllBands.Checked := MainForm.BandScopeAllBands.Visible;
+   menuBSNewMulti.Visible := dmZLogGlobal.Settings._usebandscope_newmulti;
+   menuBSNewMulti.Checked := MainForm.BandScopeNewMulti.Visible;
+
+   for b := b19 to b10g do begin
+      FBandScopeMenu[b].Visible := dmZLogGlobal.Settings._usebandscope[b];
+      FBandScopeMenu[b].Checked := MainForm.BandScopeEx[b].Visible;
+   end;
+end;
+
+function TBandScope2.TabIndexToBand(TabIndex: Integer): TBand;
+var
+   S: string;
+   b: TBand;
+begin
+   S := tabctrlBandSelector.Tabs[TabIndex];
+
+   for b := b19 to b10g do begin
+      if MHzString[b] = S then begin
+         Result := b;
+         Exit;
+      end;
+   end;
+
+   Result := bUnknown;
+end;
+
+procedure TBandScope2.SetDisplayModeState(fEnable: Boolean);
+begin
+   buttonNormalMode.Enabled := fEnable;
+   buttonSyncVfo.Enabled := fEnable;
+   buttonFreqCenter.Enabled := fEnable;
 end;
 
 initialization

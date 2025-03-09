@@ -61,7 +61,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure PollingTimerTimer(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+    procedure ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
     procedure buttonOmniRigClick(Sender: TObject);
     procedure buttonJumpLastFreqClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -83,6 +83,7 @@ type
     FCurrentRig : TRig;
     FPrevVfo: array[0..1] of TFrequency;
     FOnVFOChanged: TNotifyEvent;
+    FOnBandChanged: TNotifyEvent;
     FFreqLabel: array[0..1] of TLabel;
     FPollingTimer: array[1..4] of TTimer;
 
@@ -145,6 +146,7 @@ type
     function GetRig(setno: Integer; b: TBand): TRig;
 
     property OnVFOChanged: TNotifyEvent read FOnVFOChanged write FOnVFOChanged;
+    property OnBandChanged: TNotifyEvent read FOnBandChanged write FOnBandChanged;
 
     procedure ForcePowerOff();
     procedure ForcePowerOn();
@@ -290,7 +292,7 @@ begin
    MainForm.AddTaskbar(Handle);
 end;
 
-procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+procedure TRigControl.ZCom1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
 var
    i: Integer;
    ptr: PAnsiChar;
@@ -701,22 +703,36 @@ var
 begin
    Stop();
 
-   if (dmZLogGlobal.Settings._operate_style = os1Radio) or (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
-      FMaxRig := 2;
-   end
-   else begin
-      FMaxRig := 3;
-   end;
-
    // OmniRigは最初にOFFにしておく
    // その後、OmniRigがあればBuildRigObject()でONになる
    buttonOmniRig.Enabled := False;
 
+   // RIGの準備
    FRigs[1] := BuildRigObject(1);
    FRigs[2] := BuildRigObject(2);
    FRigs[3] := BuildRigObject(3);
    FRigs[4] := BuildRigObject(4);
    FRigs[5] := TVirtualRig.Create(5);
+
+   // 最大RIG数の設定
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+      FMaxRig := 2;
+
+      for i := 4 downto 1 do begin
+         if FRigs[i] <> nil then begin
+            FMaxRig := i;
+            Break;
+         end;
+      end;
+   end
+   else begin
+      if (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
+         FMaxRig := 2;
+      end
+      else begin
+         FMaxRig := 3;
+      end;
+   end;
 
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
@@ -1004,10 +1020,17 @@ begin
    vfo[0] := VfoA;
    vfo[1] := VfoB;
 
-   if (FPrevVfo[currentvfo] > 0) and
-      (Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20) then begin
-      if Assigned(FOnVFOChanged) then begin
-         FOnVFOChanged(TObject(currentvfo));
+   if (FPrevVfo[currentvfo] > 0) then begin
+      if (Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20) then begin
+         if Assigned(FOnVFOChanged) then begin
+            FOnVFOChanged(TObject(currentvfo));
+         end;
+      end;
+
+      if (dmZLogGlobal.BandPlan.FreqToBand(FPrevVfo[currentvfo]) <> b) then begin
+         if Assigned(FOnBandChanged) then begin
+            FOnBandChanged(TObject(currentvfo));
+         end;
       end;
    end;
 
@@ -1076,21 +1099,26 @@ function TRigControl.GetRig(setno: Integer; b: TBand): TRig;
 var
    rigno: Integer;
 begin
-   if setno = 3 then begin
-      Result := FRigs[5];
+   if dmZLogGlobal.Settings._operate_style = os1Radio then begin
+      Result := FRigs[setno];
    end
    else begin
-      if b = bUnknown then begin
-         Result := nil;
-         Exit;
-      end;
-
-      rigno := dmZLogGlobal.Settings.FRigSet[setno].FRig[b];
-      if rigno = 0 then begin
-         Result := FRigs[5];  // nil
+      if setno = 3 then begin
+         Result := FRigs[5];
       end
       else begin
-         Result := FRigs[rigno];
+         if b = bUnknown then begin
+            Result := nil;
+            Exit;
+         end;
+
+         rigno := dmZLogGlobal.Settings.FRigSet[setno].FRig[b];
+         if rigno = 0 then begin
+            Result := FRigs[5];  // nil
+         end
+         else begin
+            Result := FRigs[rigno];
+         end;
       end;
    end;
 end;

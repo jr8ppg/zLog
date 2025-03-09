@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, Menus, System.Actions, Vcl.ActnList,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, Vcl.ComCtrls;
+  Buttons, ExtCtrls, Menus, System.Actions, Vcl.ActnList, Vcl.ComCtrls,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
 
 const _ActInsert = 0;
       _ActChange = 1;
@@ -112,6 +112,7 @@ type
     actionChangeMode2: TAction;
     actionChangePower2: TAction;
     actionPlayCQA1: TAction;
+    checkRbnVerified: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -326,7 +327,7 @@ begin
    i := StrToIntDef(SerialEdit.Text, 0);
    if i > 0 then begin
       workQSO.Serial := i;
-      if SerialContestType <> 0 then begin
+      if MyContest.SerialType <> stNone then begin
          workQSO.NrSent := Format('%3.3d', [i]);
       end;
    end;
@@ -377,6 +378,7 @@ begin
    workQSO.QsyViolation := checkQsyViolation.Checked;
    workQSO.Forced := checkForced.Checked;
    workQSO.Invalid := checkInvalid.Checked;
+   workQSO.RbnVerified := checkRbnVerified.Checked;
 
    // QSL Status
    if radioQslNone.Checked then workQSO.QslState := qsNone;
@@ -610,6 +612,7 @@ begin
    checkForced.Checked := workQSO.Forced;
    checkInvalid.Checked := workQSO.Invalid;
    checkInvalidClick(checkInvalid);
+   checkRbnVerified.Checked := workQSO.RbnVerified;
 
    // QSL Status
    radioQslNone.Checked := (workQSO.QslState = qsNone);

@@ -7,7 +7,7 @@ uses
   System.SysUtils, System.Classes, System.DateUtils, System.StrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.ClipBrd, Vcl.ComCtrls, Generics.Collections, Generics.Defaults,
-  UzLogConst, UzLogQSO, UzLogGlobal, UzLogContest;
+  UzLogConst, UzLogQSO, UzLogGlobal, UzLogContest, UzLogSpc;
 
 {
 タイムチャート
@@ -115,6 +115,7 @@ type
     function CwToStrR(cnt: Integer; len: Integer): string;
     procedure ShowZAD(sl: TStrings);
     procedure ShowZOP(sl: TStrings; fShowCW: Boolean);
+    procedure ShowRBN(sl: TStrings; fShowCW: Boolean);
     function GetExcludeZeroPoint(): Boolean;
     procedure SetExcludeZeroPoint(v: Boolean);
     function GetExcludeZeroHour(): Boolean;
@@ -230,6 +231,12 @@ begin
    TabControl1Change(nil);
    fname := ChangeFileExt(fname, '.ZOP');
    Memo1.Lines.SaveToFile(fname);
+
+   // RBN
+   TabControl1.TabIndex := 6;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.RBN');
+   Memo1.Lines.SaveToFile(fname);
 end;
 
 procedure TZAnalyze.buttonUpdateClick(Sender: TObject);
@@ -317,6 +324,11 @@ begin
          // ZOP
          5: begin
             ShowZOP(sl, fShowCW);
+         end;
+
+         // RBN
+         6: begin
+            ShowRBN(sl, fShowCW);
          end;
       end;
    finally
@@ -1773,7 +1785,6 @@ var
    strText2: string;
    strTitle: string;
    i: Integer;
-   l: Integer;
    O: TOpCount;
    TT1: TOpCount;
    TT2: TOpCount;
@@ -1982,6 +1993,88 @@ begin
 
    TT1.Free();
    TT2.Free();
+end;
+
+procedure TZAnalyze.ShowRBN(sl: TStrings; fShowCW: Boolean);
+var
+   i: Integer;
+   j: Integer;
+   L: TSuperResultList;
+   R: TSuperResult;
+   maxhit: Integer;
+   SI: TSuperIndex;
+   n: Integer;
+   strCall: string;
+   score: Extended;
+   rbncount: Integer;
+   slNplusOne: TStringList;
+   diffpos: Integer;
+   C: string;
+   len1, len2: Integer;
+   Q: TQSO;
+begin
+   L := TSuperResultList.Create();
+   slNplusOne := TStringList.Create();
+   try
+      sl.Clear();
+
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+         L.Clear();
+         strCall := Q.Callsign;
+
+         maxhit := dmZlogGlobal.Settings._maxsuperhit;
+
+         for j := 0 to MainForm.SuperCheckList.Count - 1 do begin
+            SI := MainForm.SuperCheckList[j];
+
+            // レーベンシュタイン距離を求める
+            C := SI.Callsign;
+            n := LD_dp(SI.Callsign, strCall);
+
+            // レーベンシュタイン距離から類似度を算出
+            len1 := Length(C);
+            len2 := Length(strCall);
+            score := n / Max(len1, len2);
+
+            // RBN参照回数
+            rbncount := SI.RbnCount[Q.Band];
+
+            // 0なら一致
+            // 0.1667 １文字不一致
+            // 0.3333 ２文字不一致
+            // 0.5000 ３文字不一致
+            if score < 0.3 then begin
+               diffpos := 0;
+               R := TSuperResult.Create(SI.Callsign, n, score, rbncount, diffpos);
+               L.Add(R);
+            end;
+         end;
+
+         // スコア順に並び替え
+         L.SortByScore();
+
+         slNplusOne.Clear();
+         for j := 0 to Min(L.Count - 1, maxhit) do begin
+            if L[j].EditDistance > 0 then begin
+               if L[j].RbnCount > dmZLogGlobal.Settings.FRbnCountForRbnVerified then begin
+                  {$IFDEF DEBUG}
+                  slNplusOne.Add(L[j].PartialStr + '(' + Format('%.3f', [L[j].Score]) + ')');
+                  {$ELSE}
+                  slNplusOne.Add(L[j].PartialStr);
+                  {$ENDIF}
+               end;
+            end;
+         end;
+
+         if slNplusOne.Count > 0 then begin
+            sl.Add(strCall + ': ' + slNplusOne.CommaText);
+         end;
+      end;
+   finally
+      L.Free();
+      slNplusOne.Free();
+   end;
 end;
 
 { TOpCount }

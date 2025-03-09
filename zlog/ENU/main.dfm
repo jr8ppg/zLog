@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 138
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
-  ClientHeight = 423
+  ClientHeight = 422
   ClientWidth = 528
   Color = clBtnFace
   Constraints.MinWidth = 540
@@ -34,7 +34,7 @@ object MainForm: TMainForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 403
+    Top = 402
     Width = 528
     Height = 20
     Font.Charset = DEFAULT_CHARSET
@@ -63,22 +63,18 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
-    ExplicitTop = 402
-    ExplicitWidth = 524
   end
   object MainPanel: TPanel
     Left = 0
     Top = 122
     Width = 528
-    Height = 281
+    Height = 280
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 524
-    ExplicitHeight = 280
     object EditPanel1R: TPanel
       Left = 0
-      Top = 171
+      Top = 170
       Width = 528
       Height = 27
       Align = alBottom
@@ -89,8 +85,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 170
-      ExplicitWidth = 524
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -280,7 +274,7 @@ object MainForm: TMainForm
     end
     object EditPanel2R: TPanel
       Left = 0
-      Top = 198
+      Top = 197
       Width = 528
       Height = 83
       Align = alBottom
@@ -291,8 +285,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 197
-      ExplicitWidth = 524
       object RigPanelC: TPanel
         Left = 1
         Top = 54
@@ -301,7 +293,6 @@ object MainForm: TMainForm
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 522
         DesignSize = (
           526
           28)
@@ -452,7 +443,7 @@ object MainForm: TMainForm
           OnClick = checkUseRig3Click
         end
         object checkWithRig1: TCheckBox
-          Left = 451
+          Left = 443
           Top = 6
           Width = 34
           Height = 15
@@ -467,11 +458,10 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 6
           OnClick = checkWithRigClick
-          ExplicitLeft = 447
         end
         object checkWithRig2: TCheckBox
           Tag = 1
-          Left = 488
+          Left = 480
           Top = 6
           Width = 34
           Height = 15
@@ -486,7 +476,6 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
-          ExplicitLeft = 484
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -561,7 +550,6 @@ object MainForm: TMainForm
             Value = 100
           end>
         TabOrder = 2
-        ExplicitWidth = 457
         object RigPanelA: TPanel
           Left = 0
           Top = 0
@@ -846,11 +834,12 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 528
-      Height = 171
+      Height = 170
       TabStop = False
       Align = alClient
       ColCount = 10
       DefaultRowHeight = 16
+      DefaultDrawing = False
       FixedCols = 0
       RowCount = 101
       Font.Charset = DEFAULT_CHARSET
@@ -865,6 +854,7 @@ object MainForm: TMainForm
       TabOrder = 2
       OnClick = GridClick
       OnDblClick = GridDblClick
+      OnDrawCell = GridDrawCell
       OnEnter = GridEnter
       OnExit = GridExit
       OnKeyDown = GridKeyDown
@@ -872,8 +862,6 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
-      ExplicitWidth = 524
-      ExplicitHeight = 170
       ColWidths = (
         38
         65
@@ -999,7 +987,6 @@ object MainForm: TMainForm
     DoubleBuffered = False
     ParentDoubleBuffered = False
     TabOrder = 2
-    ExplicitWidth = 524
     object CWToolBar: TPanel
       Left = 0
       Top = 0
@@ -1010,7 +997,6 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 0
       Visible = False
-      ExplicitWidth = 524
       object CWStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -3136,7 +3122,6 @@ object MainForm: TMainForm
       Height = 33
       Align = alTop
       TabOrder = 1
-      ExplicitWidth = 524
       object VoiceStopButton: TSpeedButton
         Left = 312
         Top = 4
@@ -5239,7 +5224,6 @@ object MainForm: TMainForm
       Height = 33
       Align = alBottom
       TabOrder = 2
-      ExplicitWidth = 524
       DesignSize = (
         528
         33)
@@ -5825,10 +5809,9 @@ object MainForm: TMainForm
         ParentFont = False
         TabOrder = 0
         OnClick = panelCQModeClick
-        ExplicitLeft = 490
       end
       object comboBandPlan: TComboBox
-        Left = 426
+        Left = 418
         Top = 6
         Width = 65
         Height = 21
@@ -5838,7 +5821,6 @@ object MainForm: TMainForm
         TabOrder = 1
         TabStop = False
         OnChange = comboBandPlanChange
-        ExplicitLeft = 422
       end
     end
   end
@@ -5860,12 +5842,11 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 3
     Visible = False
-    ExplicitWidth = 524
     DesignSize = (
       528
       28)
     object buttonCancelOutOfPeriod: TSpeedButton
-      Left = 502
+      Left = 498
       Top = 5
       Width = 20
       Height = 20
@@ -5879,6 +5860,7 @@ object MainForm: TMainForm
       Font.Style = [fsBold]
       ParentFont = False
       OnClick = buttonCancelOutOfPeriodClick
+      ExplicitLeft = 502
     end
   end
   object panelShowInfo: TPanel
@@ -5898,7 +5880,6 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 4
     Visible = False
-    ExplicitWidth = 524
     object linklabelInfo: TLinkLabel
       Left = 117
       Top = 5
@@ -5955,6 +5936,12 @@ object MainForm: TMainForm
         Caption = 'Prefix List (WPX)'
         Visible = False
         OnClick = mPXListWPXClick
+      end
+      object N17: TMenuItem
+        Caption = '-'
+      end
+      object menuQsoSearch: TMenuItem
+        Action = actionQsoSearch
       end
       object N1: TMenuItem
         Caption = '-'
@@ -6068,8 +6055,130 @@ object MainForm: TMainForm
       object Scratchsheet1: TMenuItem
         Action = actionShowScratchSheet
       end
-      object Bandscope1: TMenuItem
-        Action = actionShowBandScope
+      object menuBandscope: TMenuItem
+        AutoLineReduction = maAutomatic
+        Caption = '&Band Scope'
+        OnClick = menuBandscopeClick
+        object menuBSAll: TMenuItem
+          Action = actionShowBandScope
+          Caption = 'Show all windows'
+        end
+        object N16: TMenuItem
+          Caption = '-'
+        end
+        object menuBSCurrent: TMenuItem
+          AutoCheck = True
+          Caption = 'Current'
+          OnClick = menuBSCurrentClick
+        end
+        object menuBSAllBands: TMenuItem
+          AutoCheck = True
+          Caption = 'All bands'
+          OnClick = menuBSAllBandsClick
+        end
+        object menuBSNewMulti: TMenuItem
+          AutoCheck = True
+          Caption = 'New multi'
+          OnClick = menuBSNewMultiClick
+        end
+        object N15: TMenuItem
+          Caption = '-'
+        end
+        object menuBS00: TMenuItem
+          AutoCheck = True
+          Caption = '1.9'
+          OnClick = menuBS00Click
+        end
+        object menuBS01: TMenuItem
+          Tag = 1
+          AutoCheck = True
+          Caption = '3.5'
+          OnClick = menuBS00Click
+        end
+        object menuBS02: TMenuItem
+          Tag = 2
+          AutoCheck = True
+          Caption = '7'
+          OnClick = menuBS00Click
+        end
+        object menuBS03: TMenuItem
+          Tag = 3
+          AutoCheck = True
+          Caption = '10'
+          OnClick = menuBS00Click
+        end
+        object menuBS04: TMenuItem
+          Tag = 4
+          AutoCheck = True
+          Caption = '14'
+          OnClick = menuBS00Click
+        end
+        object menuBS05: TMenuItem
+          Tag = 5
+          AutoCheck = True
+          Caption = '18'
+          OnClick = menuBS00Click
+        end
+        object menuBS06: TMenuItem
+          Tag = 6
+          AutoCheck = True
+          Caption = '21'
+          OnClick = menuBS00Click
+        end
+        object menuBS07: TMenuItem
+          Tag = 7
+          AutoCheck = True
+          Caption = '24.5'
+          OnClick = menuBS00Click
+        end
+        object menuBS08: TMenuItem
+          Tag = 8
+          AutoCheck = True
+          Caption = '28'
+          OnClick = menuBS00Click
+        end
+        object menuBS09: TMenuItem
+          Tag = 9
+          AutoCheck = True
+          Caption = '50'
+          OnClick = menuBS00Click
+        end
+        object menuBS10: TMenuItem
+          Tag = 10
+          AutoCheck = True
+          Caption = '144'
+          OnClick = menuBS00Click
+        end
+        object menuBS11: TMenuItem
+          Tag = 11
+          AutoCheck = True
+          Caption = '430'
+          OnClick = menuBS00Click
+        end
+        object menuBS12: TMenuItem
+          Tag = 12
+          AutoCheck = True
+          Caption = '1200'
+          OnClick = menuBS00Click
+        end
+        object menuBS13: TMenuItem
+          Tag = 13
+          AutoCheck = True
+          Caption = '2400'
+          OnClick = menuBS00Click
+        end
+        object menuBS14: TMenuItem
+          Tag = 14
+          AutoCheck = True
+          Caption = '5600'
+          OnClick = menuBS00Click
+        end
+        object menuBS15: TMenuItem
+          Tag = 15
+          AutoCheck = True
+          Caption = '10G'
+          OnClick = menuBS00Click
+        end
       end
       object RunningFrequencies1: TMenuItem
         Action = actionShowFreqList
@@ -6101,6 +6210,9 @@ object MainForm: TMainForm
       end
       object menuQTC: TMenuItem
         Action = actionQTC
+      end
+      object actionShowEntityInfo1: TMenuItem
+        Action = actionShowEntityInfo
       end
     end
     object menuSettings: TMenuItem
@@ -6273,6 +6385,54 @@ object MainForm: TMainForm
           RadioItem = True
           OnClick = menuShowOnlyTxClick
         end
+        object menuShowTx10: TMenuItem
+          Tag = 10
+          AutoCheck = True
+          Caption = '#10'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx11: TMenuItem
+          Tag = 11
+          AutoCheck = True
+          Caption = '#11'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx12: TMenuItem
+          Tag = 12
+          AutoCheck = True
+          Caption = '#12'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx13: TMenuItem
+          Tag = 13
+          AutoCheck = True
+          Caption = '#13'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx14: TMenuItem
+          Tag = 14
+          AutoCheck = True
+          Caption = '#14'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
+        object menuShowTx15: TMenuItem
+          Tag = 15
+          AutoCheck = True
+          Caption = '#15'
+          GroupIndex = 2
+          RadioItem = True
+          OnClick = menuShowOnlyTxClick
+        end
       end
       object N10: TMenuItem
         Caption = '-'
@@ -6353,6 +6513,32 @@ object MainForm: TMainForm
         GroupIndex = 1
       end
     end
+    object Labo1: TMenuItem
+      Caption = '&Labs'
+      object menuLoadClusterLog: TMenuItem
+        Caption = 'Load cluster log'
+        OnClick = menuLoadClusterLogClick
+      end
+      object menuRbnVerify: TMenuItem
+        Caption = 'RBN Verify'
+        OnClick = menuRbnVerifyClick
+      end
+      object menuRbnOptions: TMenuItem
+        Caption = 'RBN Options'
+        OnClick = menuRbnOptionsClick
+      end
+      object N19: TMenuItem
+        Caption = '-'
+      end
+      object menuShowSpcData: TMenuItem
+        Caption = 'SPC Viewer'
+        OnClick = menuShowSpcDataClick
+      end
+      object menuCountryChecker: TMenuItem
+        Caption = 'Country checker'
+        OnClick = menuCountryCheckerClick
+      end
+    end
     object Help1: TMenuItem
       Caption = '&Help'
       object menuAbout: TMenuItem
@@ -6380,6 +6566,13 @@ object MainForm: TMainForm
         Caption = '&ZyLO Reference Manual'
         Hint = 'How to make ZyLO plugin'
         OnClick = HelpZyLOClick
+      end
+      object N18: TMenuItem
+        Caption = '-'
+      end
+      object menuCfgDatFiles: TMenuItem
+        Caption = 'CFG/DAT files for zLog by JI6DUE'
+        OnClick = menuCfgDatFilesClick
       end
     end
   end
@@ -6740,7 +6933,7 @@ object MainForm: TMainForm
   object FileExportDialog: TSaveDialog
     Filter = 
       'ALL bands|*.all|zLog DOS compatible text|*.txt|TX#|*.tx|ADIF|*.a' +
-      'di|Cabrillo|*.CBR|zLog CSV|*.csv|HAMLOG|*.csv'
+      'di|Cabrillo|*.CBR|zLog CSV|*.csv|HAMLOG|*.csv|HAM Support|*.csv'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Export'
     OnTypeChange = FileExportDialogTypeChange
@@ -7611,6 +7804,18 @@ object MainForm: TMainForm
     object actionToggleF2A: TAction
       Caption = 'actionToggleF2A'
       OnExecute = actionToggleF2AExecute
+    end
+    object actionQsoSearch: TAction
+      Caption = 'QSO Search'
+      OnExecute = actionQsoSearchExecute
+    end
+    object actionSo2rToggleAfBlend: TAction
+      Caption = 'actionSo2rToggleAfBlend'
+      OnExecute = actionSo2rToggleAfBlendExecute
+    end
+    object actionShowEntityInfo: TAction
+      Caption = 'Entity infomation'
+      OnExecute = actionShowEntityInfoExecute
     end
   end
   object SPCMenu: TPopupMenu

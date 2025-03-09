@@ -7,9 +7,10 @@
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-        <ProjectVersion>19.5</ProjectVersion>
+        <ProjectVersion>20.1</ProjectVersion>
         <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
+        <ProjectName Condition="'$(ProjectName)'==''">Zlog</ProjectName>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -68,7 +69,7 @@
         <SanitizedProjectName>zlog</SanitizedProjectName>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1041</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.9.2.8;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.9.3.3;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -78,13 +79,13 @@
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
         <DCC_OutputDRCFile>true</DCC_OutputDRCFile>
         <DCC_Define>EUREKALOG_VER7;EUREKALOG;$(DCC_Define)</DCC_Define>
-        <VerInfo_Release>2</VerInfo_Release>
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Release>3</VerInfo_Release>
+        <VerInfo_Build>3</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.8;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.3;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <Icon_MainIcon>zlog.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
@@ -100,7 +101,7 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.8;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.3;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_MapFile>3</DCC_MapFile>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
@@ -115,22 +116,22 @@
         <BT_BuildType>Debug</BT_BuildType>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.8;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.3;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <DCC_PEOSVersion>5.0</DCC_PEOSVersion>
         <DCC_PESubSysVersion>5.0</DCC_PESubSysVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.8;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.3;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.9.2.8;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=2.6.0.1;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.9.3.3;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=2.6.0.1;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.8;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.3;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <VerInfo_Debug>true</VerInfo_Debug>
@@ -138,7 +139,7 @@
         <DCC_PESubSysVersion>5.0</DCC_PESubSysVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.2.8;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2024 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.3.3;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
         <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
         <DCC_RangeChecking>true</DCC_RangeChecking>
     </PropertyGroup>
@@ -173,8 +174,8 @@
         <DCCReference Include="URateDialog.pas">
             <Form>RateDialog</Form>
         </DCCReference>
-        <DCCReference Include="UOptions2.pas">
-            <Form>formOptions2</Form>
+        <DCCReference Include="UOptions3.pas">
+            <Form>formOptions3</Form>
         </DCCReference>
         <DCCReference Include="UMenu.pas">
             <Form>MenuForm</Form>
@@ -398,8 +399,8 @@
             <Form>SuperCheck</Form>
         </DCCReference>
         <DCCReference Include="UzLogSpc.pas"/>
-        <DCCReference Include="Progress.pas">
-            <Form>formProgress</Form>
+        <DCCReference Include="Progress2.pas">
+            <Form>formProgress2</Form>
         </DCCReference>
         <DCCReference Include="HelperLib.pas"/>
         <DCCReference Include="UCwMessageEditor.pas"/>
@@ -548,6 +549,36 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzFreqMemory.pas"/>
+        <DCCReference Include="UFreqPanel.pas">
+            <Form>formFreqPanel</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="USearch.pas">
+            <Form>formSearch</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UParallelPort.pas"/>
+        <DCCReference Include="FTD2XX.pas"/>
+        <DCCReference Include="USelectClusterLog.pas">
+            <Form>formSelectClusterLog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="USpcViewer.pas">
+            <Form>formSpcViewer</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Progress.pas">
+            <Form>formProgress</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UOptions2.pas">
+            <Form>formOptions2</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UEntityInfo.pas">
+            <Form>formEntityInfo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -723,8 +754,8 @@
                     <VersionInfoKeys Name="Comments"/>
                 </VersionInfoKeys>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
                 </Excluded_Packages>
                 <Language>
                     <Language Name="ProjectLang">$00000411</Language>
@@ -737,7 +768,7 @@
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win32\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item1">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item2">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item2">Win64\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item5">UBasicScore.dfm</RDP_Source_Files>
@@ -747,7 +778,7 @@
                     <RDP_Source_Files Name="Item9">UEditDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item10">UAbout.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item11">URateDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item12">UOptions2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item12">UOptions3.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">UMenu.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">UACAGMulti.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">USuperCheck2.dfm</RDP_Source_Files>
@@ -818,7 +849,7 @@
                     <RDP_Source_Files Name="Item80">UzLogKeyer.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item81">UZAnalyze.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item82">USuperCheck.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item83">Progress.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item83">Progress2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item84">UCwMessageEditor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item85">UCwMessagePad.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item86">UTextEditor.dfm</RDP_Source_Files>
@@ -856,7 +887,14 @@
                     <RDP_Source_Files Name="Item118">UCountryChecker.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item119">UELogJarl2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item120">UzLogForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item121">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item121">UFreqPanel.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item122">USearch.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item123">USelectClusterLog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item124">USpcViewer.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item125">Progress.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item126">UOptions2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item127">UEntityInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item128">Win32\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
@@ -1456,6 +1494,16 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="AndroidSplashImageDefV21">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-anydpi-v21</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-anydpi-v21</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="AndroidSplashStyles">
                     <Platform Name="Android">
                         <RemoteDir>res\values</RemoteDir>
@@ -1476,6 +1524,66 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
+                <DeployClass Name="AndroidSplashStylesV31">
+                    <Platform Name="Android">
+                        <RemoteDir>res\values-v31</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\values-v31</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_AdaptiveIcon">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-anydpi-v26</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-anydpi-v26</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_AdaptiveIconBackground">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_AdaptiveIconForeground">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_AdaptiveIconMonochrome">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_AdaptiveIconV33">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-anydpi-v33</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-anydpi-v33</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
                 <DeployClass Name="Android_Colors">
                     <Platform Name="Android">
                         <RemoteDir>res\values</RemoteDir>
@@ -1483,6 +1591,16 @@
                     </Platform>
                     <Platform Name="Android64">
                         <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_ColorsDark">
+                    <Platform Name="Android">
+                        <RemoteDir>res\values-night-v21</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\values-night-v21</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -1653,6 +1771,56 @@
                     </Platform>
                     <Platform Name="Android64">
                         <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_VectorizedNotificationIcon">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-anydpi-v24</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-anydpi-v24</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_VectorizedSplash">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_VectorizedSplashDark">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-night-anydpi-v21</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-night-anydpi-v21</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_VectorizedSplashV31">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-anydpi-v31</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-anydpi-v31</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_VectorizedSplashV31Dark">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-night-anydpi-v31</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android64">
+                        <RemoteDir>res\drawable-night-anydpi-v31</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -1831,6 +1999,9 @@
                         <Operation>1</Operation>
                     </Platform>
                     <Platform Name="Win64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64x">
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -2094,6 +2265,7 @@
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Win64x" Name="$(PROJECTNAME)"/>
             </Deployment>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>

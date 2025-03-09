@@ -1,4 +1,4 @@
-![Image](https://img.shields.io/badge/Delphi-11.3-brightgreen)
+![Image](https://img.shields.io/badge/Delphi-12.1-brightgreen)
 ![image](https://img.shields.io/github/v/release/jr8ppg/zLog?include_prereleases)
 ![image](https://img.shields.io/github/license/jr8ppg/zLog)
 # zLog 令和 Edition
@@ -6,7 +6,7 @@
 Amateur Radio Contest Logging Program
 
 # Dependency
-Delphi 11.3
+Delphi 12.1
 
 # Requirement
 Windows 11(64bit)
@@ -30,36 +30,46 @@ zLog for Windowsは元東京大学アマチュア無線部JA1ZLOの横林洋平�
 https://zlog.org/
 
 ------
-# Delphi 11.3 Community Editionでのビルド方法
+# Delphi 12.1 Community Editionでのビルド方法
 
 1. TeeChart Standard（Delphi付属）のインストール
    - Delphiインストール時に指定するか、インストール後にウェルカムページ内の「機能拡張」－「プラットフォーム＆拡張マネージャ」よりインストール。（「RAD Studio 追加オプション」ウインドウの「追加オプション」タブ内にある「TeeChart Standard」をチェックON）
 
-2. ICS for VCL 8.7 のインストール
+2. Delphi CE 12.1 Patch 1 1.0 のインストール
    - ウェルカムページの「GetItからアドオンを取得する」をクリック。
-   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL 8.7」を選択し、「インストール」ボタンをクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「Delphi CE 12.1 Patch 1 1.0」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
+     
+3. ICS for VCL for Delphi 9.3 のインストール
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「ICS for VCL for Delphi 9.3」を選択し、「インストール」ボタンをクリック。
    - 後は画面の指示に従ってインストールする。
 
-3. JEDI Code Library 3.x とJEDI Visual Component Library 3.x のインストール
+4. VCL Translation Support のインストール
+   - ウェルカムページの「GetItからアドオンを取得する」をクリック。
+   - 「GetItパッケージマネージャ」ウインドウで「VCL Translation Support 23.0.51961.7529」を選択し、「インストール」ボタンをクリック。
+   - 後は画面の指示に従ってインストールする。
+
+5. JEDI Code Library とJEDI Visual Component Library のインストール
 
    - Community Editionからdcc32.exeが除かれたためGetItからはインストールできません。
    - 次のページの手順で手作業でインストールする必要があります。かなり面倒です。  
-   https://github.com/jr8ppg/zLog/wiki/Delphi11-Community-Ed.%E3%81%A7%E3%81%AEJEDI-JCL-JVCL%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%96%B9%E6%B3%95
+   https://github.com/jr8ppg/zLog/wiki/Delphi12-Community-Ed.%E3%81%A7%E3%81%AEJEDI-JCL-JVCL%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%96%B9%E6%B3%95
    
-4. zlog_requires のインストール
+6. zlog_requires のインストール
 
-   - 今回Delphi11向けに変更があります。
+   - 今回Delphi12向けに変更があります。また、新たにTSunTimeコンポーネントを追加しました。
    - VCLフォルダのzlog_requires.dpkを開き、32ビットを選択しビルド→インストール。
    - 次に64ビットを選択しビルド。
    - ツール－オプション－言語－Delphiでライブラリのライブラリパスに VCLフォルダ\\$(Platform)\\Release を追加。32ビットと64ビットの両方に設定する。
       - ライブラリパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Release」
       - デバッグ用DCUパス 例「C:\\github\\zLog\VCL\\$(Platform)\\Debug」
-5. zlogフォルダのzlog_project.groupprojを開く
-6. 「プロジェクト」－「言語」－「ローカライズ済みプロジェクトの更新」をクリック
-7. プロジェクトウインドウのzlog.exeを右クリックし「ビルド」をクリック
-8. プロジェクトウインドウのzlog.JPNを右クリックし「ビルド」をクリック
-9. 完成
-10. Release/Debug又はWin64/Win32を切り替えた際は、6.から順に再度行う。
+7. zlogフォルダのzlog_project.groupprojを開く
+8. 「プロジェクト」－「Languages」－「Update Localized Projects」をクリック
+9. プロジェクトウインドウのzlog.exeを右クリックし「ビルド」をクリック
+10. プロジェクトウインドウのzlog.JPNを右クリックし「ビルド」をクリック
+11. 完成
+12. Release/Debug又はWin64/Win32を切り替えた際は、8.から順に再度行う。
 
 ## オリジナルからの変更点
 
@@ -107,7 +117,7 @@ https://zlog.org/
 * TS-690/TS-570
 * TS-2000,TS-590,TS-890,TS-990
 ### YAESU
-* FT-2000/FT-950/FT-450/FTDX-3000,FTDX-5000,FTDX-9000
+* FT-2000/FT-950/FT-450/FTDX-3000,FTDX-5000,FTDX-9000,FTDX-101,FTDX-10
 * FT-920
 * FT-1000MP
 * FT-991,FT-710
@@ -120,13 +130,16 @@ https://use.zlog.org/manual/%E3%83%AA%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%88%E3%83%
 
 ## 第三者著作権情報
 
-* ICS - Internet Component Suite - V8 - Delphi 7 to RAD Studio 10.4 Sydney
+* ICS - Internet Component Suite - V9.3 - Delphi 7 to RAD Studio 12
 ```
 This product includes software developed by François PIETTE
-Copyright (C) 1997-2020 by François PIETTE
+Copyright (C) 1997-2024 by François PIETTE
 Rue de Grady 24, 4053 Embourg, Belgium
 <francois.piette@overbyte.be>
-http://www.overbyte.eu/frame_index.html?redirTo=/products/ics.html
+http://www.overbyte.be/
+
+SSL implementation includes code written by Arno Garrels,
+Berlin, Germany, contact: <arno.garrels@gmx.de>
 ```
 
 * HemisphereButton
@@ -170,4 +183,10 @@ Copyright (c) Marco Cocco
 ```
 This product includes software developed by Project JEDI
 https://www.delphi-jedi.org/
+```
+
+* TSunTime v1.11 -- Calculates times of sunrise, sunset, and solar noon.
+```
+This product includes software developed by Kambiz R. Khojasteh
+http://www.delphiarea.com
 ```

@@ -12,12 +12,10 @@ object formSo2rNeoCp: TformSo2rNeoCp
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object ledPtt: TJvLED
     Left = 176
@@ -178,8 +176,8 @@ object formSo2rNeoCp: TformSo2rNeoCp
     end
   end
   object ActionList1: TActionList
-    Left = 276
-    Top = 65524
+    Left = 364
+    Top = 76
     object actionSo2rNeoSelRx1: TAction
       Caption = 'actionSo2rNeoSelRx1'
       OnExecute = actionSo2rNeoSelRx1Execute
@@ -195,6 +193,9 @@ object formSo2rNeoCp: TformSo2rNeoCp
     object actionSo2rNeoToggleAutoRxSelect: TAction
       Caption = 'actionSo2rNeoToggleAutoRxSelect'
       OnExecute = actionSo2rNeoToggleAutoRxSelectExecute
+    end
+    object actionSo2rToggleAfBlend: TAction
+      Caption = 'actionSo2rToggleAfBlend'
     end
   end
 end

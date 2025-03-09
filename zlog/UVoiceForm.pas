@@ -22,7 +22,7 @@ type
   public
     { Public êÈåæ }
     procedure Init();
-    procedure SendVoice(i: integer);
+    procedure SendVoice(i: integer; rigno: Integer);
     procedure StopVoice();
     procedure SetOperator(op: TOperatorInfo);
 
@@ -72,7 +72,7 @@ begin
    FCurrentVoice := 0;
 end;
 
-procedure TVoiceForm.SendVoice(i: integer);
+procedure TVoiceForm.SendVoice(i: integer; rigno: Integer);
 var
    filename: string;
 begin
@@ -138,7 +138,12 @@ begin
    end;
 
    if FWaveSound[i].IsLoaded = False then begin
-      FWaveSound[i].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
+      if dmZLogGlobal.Settings.FUseRigSoundDevice = True then begin
+         FWaveSound[i].Open(filename, dmZLogGlobal.Settings._sound_device[rigno]);
+      end
+      else begin
+         FWaveSound[i].Open(filename, dmZLogGlobal.Settings.FSoundDevice);
+      end;
    end;
    FWaveSound[i].Stop();
 

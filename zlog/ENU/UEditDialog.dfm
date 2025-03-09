@@ -11,14 +11,12 @@ object EditDialog: TEditDialog
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox
     Left = 2
@@ -56,7 +54,7 @@ object EditDialog: TEditDialog
     Left = 336
     Top = 66
     Width = 351
-    Height = 42
+    Height = 63
     Caption = 'QSO Flags'
     TabOrder = 3
     object checkCQ: TCheckBox
@@ -101,6 +99,15 @@ object EditDialog: TEditDialog
       Height = 17
       Caption = 'Invalid'
       TabOrder = 4
+      OnClick = checkInvalidClick
+    end
+    object checkRbnVerified: TCheckBox
+      Left = 16
+      Top = 39
+      Width = 93
+      Height = 17
+      Caption = 'RBN Verified'
+      TabOrder = 5
       OnClick = checkInvalidClick
     end
   end
@@ -172,11 +179,13 @@ object EditDialog: TEditDialog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
+    ExplicitTop = 160
+    ExplicitWidth = 688
     DesignSize = (
       692
       33)
     object OKBtn: TButton
-      Left = 531
+      Left = 527
       Top = 4
       Width = 75
       Height = 25
@@ -185,9 +194,10 @@ object EditDialog: TEditDialog
       Default = True
       TabOrder = 0
       OnClick = OKBtnClick
+      ExplicitLeft = 523
     end
     object CancelBtn: TButton
-      Left = 612
+      Left = 608
       Top = 4
       Width = 75
       Height = 25
@@ -196,6 +206,7 @@ object EditDialog: TEditDialog
       Caption = 'Cancel'
       TabOrder = 1
       OnClick = CancelBtnClick
+      ExplicitLeft = 604
     end
   end
   object groupQsoData: TGroupBox
@@ -431,31 +442,31 @@ object EditDialog: TEditDialog
   object BandMenu: TPopupMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
-    Left = 312
-    Top = 120
+    Left = 272
+    Top = 152
   end
   object ModeMenu: TPopupMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
-    Left = 344
-    Top = 120
+    Left = 304
+    Top = 152
   end
   object OpMenu: TPopupMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
-    Left = 376
-    Top = 120
+    Left = 336
+    Top = 152
   end
   object NewPowerMenu: TPopupMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
-    Left = 240
-    Top = 120
+    Left = 224
+    Top = 152
   end
   object ActionList1: TActionList
     State = asSuspended
-    Left = 432
-    Top = 120
+    Left = 392
+    Top = 152
     object actionPlayMessageA01: TAction
       Tag = 1
       Caption = 'actionPlayMessageA01'

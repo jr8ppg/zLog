@@ -9,8 +9,8 @@ object ClusterClient: TClusterClient
   Constraints.MinWidth = 300
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Height = -12
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   Menu = MainMenu1
@@ -19,59 +19,102 @@ object ClusterClient: TClusterClient
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  TextHeight = 13
+  TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 209
+    Top = 125
     Width = 288
-    Height = 33
+    Height = 117
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 208
+    ExplicitTop = 124
     ExplicitWidth = 284
     DesignSize = (
       288
-      33)
-    object Edit: TEdit
-      Left = 6
-      Top = 6
-      Width = 161
-      Height = 20
-      AutoSize = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -12
-      Font.Name = #65325#65331' '#12468#12471#12483#12463
-      Font.Style = []
-      ParentFont = False
+      117)
+    object TabControl1: TTabControl
+      Left = 4
+      Top = 4
+      Width = 279
+      Height = 108
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
-      OnKeyPress = EditKeyPress
-    end
-    object buttonConnect: TButton
-      Left = 200
-      Top = 5
-      Width = 80
-      Height = 20
-      Anchors = [akRight, akBottom]
-      Caption = 'Connect'
-      TabOrder = 1
-      OnClick = buttonConnectClick
-      ExplicitLeft = 196
+      Tabs.Strings = (
+        'Site1'
+        'Site2')
+      TabIndex = 0
+      OnChange = TabControl1Change
+      OnChanging = TabControl1Changing
+      DesignSize = (
+        279
+        108)
+      object Label1: TLabel
+        Left = 7
+        Top = 24
+        Width = 38
+        Height = 12
+        Caption = #25509#32154#20808':'
+        Layout = tlCenter
+      end
+      object labelHostName: TLabel
+        Left = 7
+        Top = 43
+        Width = 260
+        Height = 13
+        AutoSize = False
+        Layout = tlCenter
+      end
+      object Label2: TLabel
+        Left = 7
+        Top = 59
+        Width = 54
+        Height = 12
+        Caption = #12525#12464#12452#12531'ID:'
+        Layout = tlCenter
+      end
+      object labelLoginID: TLabel
+        Left = 67
+        Top = 59
+        Width = 200
+        Height = 13
+        AutoSize = False
+        Layout = tlCenter
+      end
+      object buttonConnect: TButton
+        Left = 197
+        Top = 78
+        Width = 75
+        Height = 20
+        Anchors = [akTop, akRight]
+        Caption = #25509#32154
+        TabOrder = 1
+        OnClick = buttonConnectClick
+      end
+      object Edit: TComboBox
+        Left = 7
+        Top = 78
+        Width = 183
+        Height = 20
+        Anchors = [akLeft, akTop, akRight]
+        TabOrder = 0
+        OnKeyPress = EditKeyPress
+        OnSelect = EditSelect
+      end
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 28
     Width = 288
-    Height = 181
+    Height = 97
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
     ExplicitWidth = 284
-    ExplicitHeight = 180
+    ExplicitHeight = 96
     object Splitter1: TSplitter
       Left = 1
-      Top = 90
+      Top = 44
       Width = 286
       Height = 4
       Cursor = crVSplit
@@ -84,7 +127,7 @@ object ClusterClient: TClusterClient
       Left = 1
       Top = 1
       Width = 286
-      Height = 89
+      Height = 43
       Style = lbOwnerDrawVariable
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -98,13 +141,13 @@ object ClusterClient: TClusterClient
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
       ExplicitWidth = 282
-      ExplicitHeight = 88
+      ExplicitHeight = 42
     end
     object Console: TListBox
       Left = 1
-      Top = 94
+      Top = 48
       Width = 286
-      Height = 86
+      Height = 48
       Align = alBottom
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -114,7 +157,7 @@ object ClusterClient: TClusterClient
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 93
+      ExplicitTop = 47
       ExplicitWidth = 282
     end
   end
@@ -196,14 +239,27 @@ object ClusterClient: TClusterClient
     OnSessionClosed = ZServerSessionClosed
     OnSessionConnected = ZServerSessionConnected
     SocketErrs = wsErrTech
-    Left = 88
-    Top = 112
+    Left = 16
+    Top = 24
   end
   object timerShowInfo: TTimer
     Enabled = False
     Interval = 20
     OnTimer = timerShowInfoTimer
-    Left = 152
-    Top = 147
+    Left = 88
+    Top = 107
+  end
+  object timerForceReconnect: TTimer
+    Enabled = False
+    Interval = 60000
+    OnTimer = timerForceReconnectTimer
+    Left = 220
+    Top = 112
+  end
+  object timerReConnect: TTimer
+    Enabled = False
+    OnTimer = timerReConnectTimer
+    Left = 148
+    Top = 104
   end
 end

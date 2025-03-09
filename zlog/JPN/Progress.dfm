@@ -1,9 +1,9 @@
 object formProgress: TformProgress
   Left = 0
   Top = 0
-  BorderStyle = bsSizeToolWin
+  BorderStyle = bsToolWindow
   Caption = 'Progress'
-  ClientHeight = 47
+  ClientHeight = 45
   ClientWidth = 336
   Color = clBtnFace
   DoubleBuffered = True
@@ -12,9 +12,7 @@ object formProgress: TformProgress
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
-  PixelsPerInch = 96
   TextHeight = 12
   object labelProgress: TLabel
     Left = 8

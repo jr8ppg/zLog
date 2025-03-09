@@ -78,7 +78,7 @@ type
     FUseMulti2: Boolean;
 
     FPXMulti: Integer;
-    FSerialContestType: Integer;
+    FSerialContestType: TSerialType;
 
     FPowerTable: TPowerTable;
     FSerialArray: TSerialTable;
@@ -182,7 +182,7 @@ type
     property UseMulti2: Boolean read FUseMulti2 write FUseMulti2;
 
     property PXMulti: Integer read FPXMulti;
-    property SerialContestType: Integer read FSerialContestType;
+    property SerialContestType: TSerialType read FSerialContestType;
 
     property PowerTable: TPowerTable read FPowerTable;
     property SerialArray: TSerialTable read FSerialArray;
@@ -281,7 +281,7 @@ begin
    FNoMulti := False;
    FUseMulti2 := False;
    FPXMulti := 0;
-   FSerialContestType := 0;
+   FSerialContestType := stNone;
    FCountHigherPoints := False;
    FUseWarcBand := False;
 
@@ -664,10 +664,10 @@ begin
          if strCmd = 'SERIAL' then begin
             strParam := UpperCase(strParam);
             if strParam = 'ALL' then begin
-               D.FSerialContestType := SER_ALL;
+               D.FSerialContestType := stAll;
             end;
             if strParam = 'BAND' then begin
-               D.FSerialContestType := SER_BAND;
+               D.FSerialContestType := stBand;
             end;
          end;
 

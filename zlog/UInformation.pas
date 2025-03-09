@@ -35,6 +35,7 @@ type
   private
     { Private éŒ¾ }
     FSo2rMode: Boolean;
+    FInitWPM: Integer;
     function GetCQMode(): Boolean;
     procedure SetCQMode(fCQ: Boolean);
     function GetWPM(): Integer;
@@ -55,6 +56,7 @@ type
     { Public éŒ¾ }
     procedure DispUpdate();
     property CQMode: Boolean read GetCQMode write SetCQMode;
+    property InitWPM: Integer read FInitWPM write FInitWPM;
     property WPM: Integer read GetWPM write SetWPM;
     property Time: string write SetTime;
     property Ptt: Boolean write SetPtt;
@@ -154,7 +156,15 @@ end;
 
 procedure TformInformation.SetWPM(nWpm: Integer);
 begin
-   panelWpmInfo.Caption := IntToStr(nWpm) + ' wpm';
+   if FInitWPM = nWpm then begin
+      panelWpmInfo.Caption := IntToStr(FInitWPM) + ' wpm';
+   end
+   else if FInitWpm > nWpm then begin
+      panelWpmInfo.Caption := IntToStr(FInitWPM) + '- wpm';
+   end
+   else begin
+      panelWpmInfo.Caption := IntToStr(FInitWPM) + '+ wpm';
+   end;
 end;
 
 procedure TformInformation.SetTime(T: string);

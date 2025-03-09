@@ -8,7 +8,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, Menus, AnsiStrings, ComCtrls, Vcl.ClipBrd,
   Vcl.ExtDlgs, System.SyncObjs, System.DateUtils,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket, OverbyteIcsTypes,
   USpotClass, CPDrv, UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm,
   UTelnetSetting, HelperLib;
 
@@ -28,7 +28,6 @@ type
   TCommForm = class(TZLogForm)
     Timer1: TTimer;
     Panel1: TPanel;
-    Edit: TEdit;
     Panel2: TPanel;
     ListBox: TListBox;
     StatusLine: TStatusBar;
@@ -55,6 +54,7 @@ type
     labelLoginID: TLabel;
     checkForceReconnect: TCheckBox;
     timerForceReconnect: TTimer;
+    Edit: TComboBox;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -84,6 +84,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure TabControl1Change(Sender: TObject);
     procedure timerForceReconnectTimer(Sender: TObject);
+    procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure EditSelect(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -164,6 +166,7 @@ resourcestring
   UComm_Disconnecting = 'Disconnecting...';
   UComm_SecondsLeft = '%s seconds left to reconnect';
   UComm_ExceededLimit = 'reconnection attempts exceeded limit';
+  UComm_SiteChanging = 'You are already connected to the %s. Do you want to disconnect?';
 
 var
   CommBufferLock: TCriticalSection;
@@ -317,6 +320,26 @@ begin
    end;
 end;
 
+procedure TCommForm.EditSelect(Sender: TObject);
+var
+   inputs: array[0..1] of TInput;
+   uSent: UINT;
+begin
+   inherited;
+
+   // コマンド選択後はEnterキーを押したことにする
+   ZeroMemory(@inputs, SizeOf(inputs));
+
+   inputs[0].Itype := INPUT_KEYBOARD;
+   inputs[0].ki.wVk := VK_RETURN;
+
+   inputs[1].Itype := INPUT_KEYBOARD;
+   inputs[1].ki.wVk := VK_RETURN;
+   inputs[1].ki.dwFlags := KEYEVENTF_KEYUP;
+
+   uSent := SendInput(Length(inputs), inputs[0], sizeof(TInput));
+end;
+
 procedure TCommForm.SelectSite(Index: Integer);
 var
    i: Integer;
@@ -344,6 +367,8 @@ begin
    else begin
       labelLoginId.Caption := setting.LoginId;
    end;
+
+   Edit.Items.CommaText := setting.CommandList;
 end;
 
 procedure TCommForm.ImplementOptions();
@@ -1000,6 +1025,27 @@ end;
 procedure TCommForm.TabControl1Change(Sender: TObject);
 begin
    SelectSite(TabControl1.TabIndex);
+end;
+
+procedure TCommForm.TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
+var
+   S: string;
+begin
+   inherited;
+
+   // 接続中の場合は切るか確認する
+   if Telnet.IsConnected then begin
+      S := Format(UComm_SiteChanging, [labelHostName.Caption]);
+      if MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDYES then begin
+         ConnectButton.Caption := UComm_Disconnecting;
+         FDisconnectClicked := True;
+         Telnet.Close();
+         AllowChange := True;
+      end
+      else begin
+         AllowChange := False;
+      end;
+   end;
 end;
 
 procedure TCommForm.TelnetDataAvailable(Sender: TTnCnx; Buffer: Pointer; Len: Integer);

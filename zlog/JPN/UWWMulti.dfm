@@ -4,11 +4,11 @@ inherited WWMulti: TWWMulti
   Caption = 'CQ WW Country Multipliers'
   ClientHeight = 282
   ClientWidth = 360
+  StyleElements = [seFont, seClient, seBorder]
   OnResize = FormResize
   OnShow = FormShow
   ExplicitWidth = 376
-  ExplicitHeight = 320
-  PixelsPerInch = 96
+  ExplicitHeight = 321
   TextHeight = 13
   object Panel: TPanel
     Left = 0

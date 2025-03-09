@@ -14,7 +14,7 @@ uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
   System.SyncObjs, System.StrUtils,
-  UzLogConst, UzLogGlobal, WinKeyer
+  UzLogConst, UzLogGlobal, WinKeyer, UParallelPort
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -25,6 +25,8 @@ const
   _inccw = $80;
   _deccw = $81;
   MAXPORT = 4;
+  CR = #$0d;
+  LF = #$0a;
 
 const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
@@ -43,13 +45,23 @@ const
   USBIF4CW_RIG_MASK = (not USBIF4CW_RIG);
   USBIF4CW_MIC_MASK = (not USBIF4CW_MIC);
 
+const
+  PARALLEL_KEY = 0;
+  PARALLEL_PTT = 1;
+  PARALLEL_TX0 = 2;
+  PARALLEL_TX1 = 3;
+  PARALLEL_RX0 = 4;
+  PARALLEL_RX1 = 5;
+  PARALLEL_RX2 = 6;
+  PARALLEL_BLEND = 7;
+
 type
   TKeyingPort = (tkpNone,
                  tkpSerial1, tkpSerial2, tkpSerial3, tkpSerial4, tkpSerial5,
                  tkpSerial6, tkpSerial7, tkpSerial8, tkpSerial9, tkpSerial10,
                  tkpSerial11, tkpSerial12, tkpSerial13, tkpSerial14, tkpSerial15,
                  tkpSerial16, tkpSerial17, tkpSerial18, tkpSerial19, tkpSerial20,
-                 tkpUSB, tkpRIG);
+                 tkpUSB, tkpRIG, tkpParallel);
 
 type
   CodeData = array[1..codemax] of byte;
@@ -121,9 +133,8 @@ type
     procedure HidControllerDeviceData(HidDev: TJvHidDevice; ReportID: Byte; const Data: Pointer; Size: Word);
     procedure HidControllerDeviceUnplug(HidDev: TJvHidDevice);
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
-    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
-    procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController;
-      PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
+    procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+    procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
   private
     { Private 宣言 }
     FDefautCom: array[0..MAXPORT] of TCommPortDriver;
@@ -140,6 +151,8 @@ type
 
     FUsbInfo: array[0..MAXPORT] of TUsbInfo;
 
+    FParallelPort: TParallelPort;
+
     // 現在送信中のポートID
     FWkRx: Integer;
     FWkTx: Integer;
@@ -147,6 +160,11 @@ type
     // 現在送信中のRIGSET
     FWkRxRigSet: Integer;
     FWkTxRigSet: Integer;
+
+    FPrevRxRigSet: Integer;
+    FPrevRxRigNo: Integer;
+    FPrevTxRigSet: Integer;
+    FPrevTxRigNo: Integer;
 
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
@@ -157,6 +175,7 @@ type
 
     FKeyingPort: array[0..MAXPORT] of TKeyingPort;
     FKeyingPortConfig: array[0..MAXPORT] of TPortConfig;
+    FSameOtrsp: Boolean;
 
     FSpaceFactor: Integer; {space length factor in %}
     FEISpaceFactor: Integer; {space length factor after E and I}
@@ -224,7 +243,7 @@ type
     FOnSendFinishProc: TPlayMessageFinishedProc;
     FOnWkStatusProc: TWkStatusEvent;
     FOnSpeedChanged: TNotifyEvent;
-    FCancelSpeedChangedEvent: Boolean;
+    FTemporarySpeedChange: Boolean;
     FOnCommand: TCommandEvent;
 
     FUsbDetecting: Boolean;
@@ -245,7 +264,6 @@ type
     FWkCallsignStr: string;
     FWkAbort: Boolean;
     FWkLastSendChar: Char;
-    FUseWkSo2rNeo: Boolean;
     FSo2rNeoCanRxSel: Boolean;
     FSo2rNeoUseRxSelect: Boolean;
     FWkMessageIndex: Integer;
@@ -253,23 +271,32 @@ type
     FWkSendStatus: TWinKeyerSendStatus;
 
     // SO2R support
+    FSo2rType: TSo2rType;
     FSo2rRxSelectPort: TKeyingPort;
     FSo2rTxSelectPort: TKeyingPort;
     FSo2rTxRigC: Integer;
     FRigSelectV28: Boolean;
+    FSo2rOtrspPort: TKeyingPort;
 
     FWnd: HWND;
+
+    FUseCanSend: Boolean;
+    FPrevDSR: Boolean;
 
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
     procedure SetTxRigFlag_com_v28(rigset: Integer);
     procedure SetTxRigFlag_so2rneo(rigset: Integer);
     procedure SetTxRigFlag_usbif4cw(rigset: Integer);
+    procedure SetTxRigFlag_otrsp(rigset: Integer);
+    procedure SetTxRigFlag_parallel(rigset, rigno: Integer);
 
     // RX select sub
     procedure SetRxRigFlag_com(rigset, rigno: Integer);
     procedure SetRxRigFlag_com_v28(rigset, rigno: Integer);
     procedure SetRxRigFlag_so2rneo(rigset, rigno: Integer);
+    procedure SetRxRigFlag_otrsp(rigset, rigno: Integer);
+    procedure SetRxRigFlag_parallel(rigset, rigno: Integer; both: Boolean);
 
     procedure Sound();
     procedure NoSound();
@@ -279,6 +306,7 @@ type
     function DecodeCommands(S: string): string;
     procedure CW_ON(nID: Integer);
     procedure CW_OFF(nID: Integer);
+    function CanSend(nID: Integer): Boolean;
     procedure TimerProcess(uTimerID, uMessage: Word; dwUser, dw1, dw2: Longint); stdcall;
     procedure IncWPM; {Increases CW speed by 1WPM}
     procedure DecWPM; {Decreases CW speed by 1WPM}
@@ -299,7 +327,6 @@ type
     procedure USB_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
-    procedure SetSideDevice(nDeviceID: UINT);
 
     procedure m_set(b: Byte);
 
@@ -313,10 +340,12 @@ type
 
     procedure SetSo2rRxSelectPort(port: TKeyingPort);
     procedure SetSo2rTxSelectPort(port: TKeyingPort);
+    procedure SetSo2rOtrspPort(port: TKeyingPort);
 
     function GetKeyingPortConfig(Index: Integer): TPortConfig;
     procedure SetKeyingPortConfig(Index: Integer; v: TPortConfig);
     procedure DumpSendBuf();
+    procedure SetOtrspPortParam(CP: TCommPortDriver);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -345,13 +374,16 @@ type
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
     // TX select
-    procedure SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetTxRigFlag(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
 
     // RX select
-    procedure SetRxRigFlag(rigset, rigno: Integer);
+    procedure SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean = False);
 
     // Voice select
     procedure SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
+
+    // Antenna select
+    procedure AntSelect(rigset, ant_no: Integer);
 
     procedure SetPTT(_on : Boolean);
     procedure SetPTTDelay(before, after : word);
@@ -383,6 +415,7 @@ type
     property UsePaddleKeyer: Boolean read FUsePaddleKeyer write FUsePaddleKeyer;
     property PaddleReverse: Boolean read FPaddleReverse write FPaddleReverse;
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
+    property UseCanSend: Boolean read FUseCanSend write FUseCanSend;
 
     // paddle support
     procedure PaddleProc(PaddleStatus: Byte);
@@ -422,13 +455,14 @@ type
     procedure WinKeyerTuneOff();
 
     // SO2R support
+    property So2rType: TSo2rType read FSo2rType write FSo2rType;
     property So2rRigSelectV28: Boolean read FRigSelectV28 write FRigSelectV28;
     property So2rRxSelectPort: TKeyingPort read FSo2rRxSelectPort write SetSo2rRxSelectPort;
     property So2rTxSelectPort: TKeyingPort read FSo2rTxSelectPort write SetSo2rTxSelectPort;
     property So2rTxRigC: Integer read FSo2rTxRigC write FSo2rTxRigC;
+    property So2rOtrspPort: TKeyingPort read FSo2rOtrspPort write SetSo2rOtrspPort;
 
     // SO2R Neo support
-    property UseWkSo2rNeo: Boolean read FUseWkSo2rNeo write FUseWkSo2rNeo;
     property So2rNeoUseRxSelect: Boolean read FSo2rNeoUseRxSelect write FSo2rNeoUseRxSelect;
     procedure So2rNeoSetAudioBlendMode(fOn: Boolean);
     procedure So2rNeoSetAudioBlendRatio(ratio: Integer);
@@ -437,11 +471,17 @@ type
     procedure So2rNeoNormalRx(tx: Integer);
     property So2rNeoCanRxSel: Boolean read FSo2rNeoCanRxSel write FSo2rNeoCanRxSel;
 
+    // Parallel port support
+    procedure ParallelSetAudioBothMode(fOn: Boolean);
+    procedure ParallelSetAudioBlendMode(fOn: Boolean);
+
     procedure IncCWSpeed();
     procedure DecCWSpeed();
     procedure ToggleFixedSpeed();
     procedure ResetSpeed();
     property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
+
+    property ParallelPort: TParallelPort read FParallelPort;
 
     procedure Open();
     procedure Close();
@@ -491,19 +531,23 @@ begin
    FUseWkIgnoreSpeedPot := False;
    FUseWkAlways9600 := False;
    FOnSpeedChanged := nil;
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
    FOnCommand := nil;
    FUseFixedSpeed := False;
    FBeforeSpeed := 0;
    FFixedSpeed := 0;
-   FUseWkSo2rNeo := False;
+   FSo2rType := so2rNone;
    FSo2rNeoCanRxSel := False;
    FSo2rNeoUseRxSelect := False;
    FSo2rRxSelectPort := tkpNone;
    FSo2rTxSelectPort := tkpNone;
    FSo2rTxRigC := 0;
    FRigSelectV28 := False;
+   FSo2rOtrspPort := tkpNone;
+   FSameOtrsp := False;
    FTune := False;
+   FUseCanSend := False;
+   FPrevDSR := True;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -531,6 +575,8 @@ begin
       FUsbInfo[i].FPORTDATA := nil;
    end;
 
+   FParallelPort := TParallelPort.Create();
+
    FUserFlag := False;
    FVoiceFlag := 0;
 
@@ -538,6 +584,10 @@ begin
    FWkRx := 0;
    FWkTxRigSet := 0;
    FWkRxRigSet := 0;
+
+   FPrevRxRigSet := 0;
+   FPrevRxRigNo := 0;
+   FPrevTxRigSet := 0;
 
    FSpaceFactor := 100; {space length factor in %}
    FEISpaceFactor := 100; {space length factor after E and I}
@@ -572,6 +622,7 @@ begin
    FPaddleThread.Free();
    COM_OFF();
    USB_OFF();
+   FParallelPort.Close();
    DeallocateHWnd(FWnd);
    usbdevlist.Free();
 
@@ -581,6 +632,7 @@ begin
    usbinflist.Free();
 
    HidController.Free();
+   FParallelPort.Free();
 end;
 
 // Device抜去時、Unplug->Removal->Changeの順でfire eventする
@@ -739,7 +791,7 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.SetTxRigFlag(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetTxRigFlag(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
 begin
    if (rigset = 0) or (rigset = 1) then begin
       FWkTxRigSet := 0;
@@ -751,31 +803,55 @@ begin
       FWkTxRigSet := 2;
    end;
 
-   // COMポートでのRIG SELECT
-   if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      if FRigSelectV28 = True then begin
-         SetTxRigFlag_com_v28(rigset);
-      end
-      else begin
-         SetTxRigFlag_com(rigset);
+   case FSo2rType of
+      so2rNone: begin
+         // USBIF4CWでのRIG SELECT
+         SetTxRigFlag_usbif4cw(rigset);
+
+         // WinKeyerの場合
+         if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+            WinKeyerSetPinCfg(FPTTEnabled);
+         end;
       end;
-      Exit;
+
+      // COMポートでのRIG SELECT
+      so2rCom: begin
+         if (FSo2rTxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+            if FRigSelectV28 = True then begin
+               SetTxRigFlag_com_v28(rigset);
+            end
+            else begin
+               SetTxRigFlag_com(rigset);
+            end;
+         end;
+      end;
+
+      // SO2R Neoの場合
+      so2rNeo: begin
+         if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+            SetTxRigFlag_so2rneo(rigset);
+         end;
+      end;
+
+      // OTRSPの場合
+      so2rOtrsp: begin
+         // 前回と同じrigsetなら出力しない
+         if (FPrevTxRigSet = rigset) and (FPrevTxRigNo = rigno) then begin
+            Exit;
+         end;
+         if (FSo2rOtrspPort in [tkpSerial1..tkpSerial20]) then begin
+            SetTxRigFlag_otrsp(rigset);
+         end;
+      end;
+
+      // パラレルポートの場合
+      so2rParallel: begin
+         SetTxRigFlag_parallel(rigset, rigno);
+      end;
    end;
 
-   // WinKeyerの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = False) then begin
-      WinKeyerSetPinCfg(FPTTEnabled);
-      Exit;
-   end;
-
-   // SO2R Neoの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      SetTxRigFlag_so2rneo(rigset);
-      Exit;
-   end;
-
-   // USBIF4CWでのRIG SELECT
-   SetTxRigFlag_usbif4cw(rigset);
+   FPrevTxRigSet := rigset;
+   FPrevTxRigNo := rigno;
 end;
 
 procedure TdmZLogKeyer.SetTxRigFlag_com(rigset: Integer); // 0 : no rigs, 1 : rig 1, etc
@@ -884,6 +960,43 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.SetTxRigFlag_otrsp(rigset: Integer);
+begin
+   if rigset = 1 then begin
+      ZComTxRigSelect.SendString('TX1' + CR);
+   end;
+   if rigset = 2 then begin
+      ZComTxRigSelect.SendString('TX2' + CR);
+   end;
+end;
+
+procedure TdmZLogKeyer.SetTxRigFlag_parallel(rigset, rigno: Integer);
+begin
+   case rigno of
+      1: begin
+         FParallelPort.ResetBit(PARALLEL_TX0);
+         FParallelPort.ResetBit(PARALLEL_TX1);
+      end;
+
+      2: begin
+         FParallelPort.ResetBit(PARALLEL_TX0);
+         FParallelPort.SetBit(PARALLEL_TX1);
+      end;
+
+      3: begin
+         FParallelPort.SetBit(PARALLEL_TX0);
+         FParallelPort.ResetBit(PARALLEL_TX1);
+      end;
+
+      4: begin
+         FParallelPort.SetBit(PARALLEL_TX0);
+         FParallelPort.SetBit(PARALLEL_TX1);
+      end;
+   end;
+
+   FParallelPort.Write();
+end;
+
 //
 // rigset 1: 左
 //        2: 右
@@ -892,7 +1005,7 @@ end;
 //        3: HF
 //        4: VU
 //
-procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer);
+procedure TdmZLogKeyer.SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean);
 begin
    if (rigset = 0) or (rigset = 1) then begin
       FWkRxRigSet := 0;
@@ -904,22 +1017,50 @@ begin
       FWkRxRigSet := 2;
    end;
 
-   // COMポートでのRIG SELECT
-   if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-      if FRigSelectV28 = True then begin
-         SetRxRigFlag_com_v28(rigset, rigno);
-      end
-      else begin
-         SetRxRigFlag_com(rigset, rigno);
+   case FSo2rType of
+      so2rNone: begin
+
       end;
-      Exit;
+
+      // COMポートでのRIG SELECT
+      so2rCom: begin
+         if (FSo2rRxSelectPort in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+            if FRigSelectV28 = True then begin
+               SetRxRigFlag_com_v28(rigset, rigno);
+            end
+            else begin
+               SetRxRigFlag_com(rigset, rigno);
+            end;
+         end;
+      end;
+
+      // SO2R Neoの場合
+      so2rNeo: begin
+         if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
+            SetRxRigFlag_so2rneo(rigset, rigno);
+         end;
+      end;
+
+      // OTRSPの場合
+      so2rOtrsp: begin
+         // 前回と同じrigsetなら出力しない
+         if (FPrevRxRigSet = rigset) and (FPrevRxRigNo = rigno) and (fForce = False) then begin
+            Exit;
+         end;
+
+         if (FSo2rOtrspPort in [tkpSerial1..tkpSerial20]) then begin
+            SetRxRigFlag_otrsp(rigset, rigno);
+         end;
+      end;
+
+      // パラレルポートの場合
+      so2rParallel: begin
+         SetRxRigFlag_parallel(rigset, rigno, False);
+      end;
    end;
 
-   // SO2R Neoの場合
-   if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) and (FUseWkSo2rNeo = True) then begin
-      SetRxRigFlag_so2rneo(rigset, rigno);
-      Exit;
-   end;
+   FPrevRxRigSet := rigset;
+   FPrevRxRigNo := rigno;
 end;
 
 procedure TdmZLogKeyer.SetRxRigFlag_com(rigset, rigno: Integer);
@@ -1012,6 +1153,57 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.SetRxRigFlag_otrsp(rigset, rigno: Integer);
+begin
+   if rigset = 1 then begin
+      ZComTxRigSelect.SendString('RX1' + CR);
+   end;
+   if rigset = 2 then begin
+      ZComTxRigSelect.SendString('RX2' + CR);
+   end;
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag_parallel(rigset, rigno: Integer; both: Boolean);
+begin
+   if both = True then begin
+      FParallelPort.SetBit(PARALLEL_RX0);
+   end
+   else begin
+      FParallelPort.ResetBit(PARALLEL_RX0);
+   end;
+
+   case rigset of
+      1: begin
+         case rigno of
+            1: begin
+               FParallelPort.ResetBit(PARALLEL_RX1);
+               FParallelPort.ResetBit(PARALLEL_RX2);
+            end;
+
+            3: begin
+               FParallelPort.ResetBit(PARALLEL_RX1);
+               FParallelPort.SetBit(PARALLEL_RX2);
+            end;
+         end;
+      end;
+
+      2: begin
+         case rigno of
+            2: begin
+               FParallelPort.SetBit(PARALLEL_RX1);
+               FParallelPort.ResetBit(PARALLEL_RX2);
+            end;
+
+            4: begin
+               FParallelPort.SetBit(PARALLEL_RX1);
+               FParallelPort.SetBit(PARALLEL_RX2);
+            end;
+         end;
+      end;
+   end;
+   FParallelPort.Write();
+end;
+
 procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
 var
    i: Integer;
@@ -1029,6 +1221,15 @@ begin
             SendUsbPortData(i);
          end;
          UsbPortDataLock.Leave();
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.AntSelect(rigset, ant_no: Integer);
+begin
+   case FSo2rType of
+      so2rOtrsp: begin
+         ZComTxRigSelect.SendString(AnsiString('AUX' + IntToStr(rigset) + RightStr('00' + IntToStr(ant_no), 2) + CR));
       end;
    end;
 end;
@@ -1094,6 +1295,16 @@ begin
       // WinKeyer
       if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
          WinkeyerControlPTT(PTTON);
+      end;
+
+      if (FKeyingPort[nID] in [tkpParallel]) then begin
+         if PTTON then begin
+            FParallelPort.SetBit(PARALLEL_PTT);
+         end
+         else begin
+            FParallelPort.ResetBit(PARALLEL_PTT);
+         end;
+         FParallelPort.Write();
       end;
    finally
       {$IFDEF DEBUG}
@@ -1231,6 +1442,7 @@ begin
    for m := 1 to codemax do begin
       FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := $FF;
    end;
+   FPrevDSR := True;
 end;
 
 procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
@@ -1250,7 +1462,7 @@ begin
          ControlPTT(nID, True);
 
          // SO2R Neo利用時はRIG切り替え・・・TX=RXで
-         if FUseWkSo2rNeo = True then begin
+         if FSo2rType = so2rNeo then begin
             So2rNeoSwitchRig(nID, nID)
          end;
 
@@ -1503,6 +1715,11 @@ begin
          end;
          UsbPortDataLock.Leave();
       end;
+
+      tkpParallel: begin
+         FParallelPort.SetBit(PARALLEL_KEY);
+         FParallelPort.Write();
+      end;
    end;
 end;
 
@@ -1528,7 +1745,46 @@ begin
          end;
          UsbPortDataLock.Leave();
       end;
+
+      tkpParallel: begin
+         FParallelPort.ResetBit(PARALLEL_KEY);
+         FParallelPort.Write();
+      end;
    end;
+end;
+
+function TdmZLogKeyer.CanSend(nID: Integer): Boolean;
+var
+   status: TLineStatusSet;
+   fCurDSR: Boolean;
+begin
+   if FSo2rType <> so2rOtrsp then begin
+      Result := True;
+      Exit;
+   end;
+   if FUseCanSend = False then begin
+      Result := True;
+      Exit;
+   end;
+   if FComKeying[nID] = nil then begin
+      Result := True;
+      Exit;
+   end;
+
+   // 現在のDSR状態取得
+   status := FComKeying[nID].GetLineStatus();
+   fCurDSR := lsDSR in status;
+
+   // DSRがOFF→ONの変化でSend不可とする
+   if (FPrevDSR = False) and (fCurDSR = True) then begin
+      Result := False;
+   end
+   else begin
+      Result := True;
+   end;
+
+   // 今回値を保存
+   FPrevDSR := fCurDSR;
 end;
 
 procedure TdmZLogKeyer.TimerProcess(uTimerID, uMessage: word; dwUser, dw1, dw2: Longint); stdcall;
@@ -1575,6 +1831,15 @@ begin
    end;
 
    if cwstrptr = 0 then begin
+      Exit;
+   end;
+
+   if (CanSend(FWkTx) = False) then begin
+      Finish();
+      if Assigned(FOnSendFinishProc) then begin
+         FOnSendFinishProc(Self, mCW, False);
+      end;
+      FSendOK := False;
       Exit;
    end;
 
@@ -1882,7 +2147,7 @@ begin
 
       FKeyerWPM := wpm;
 
-      if (FCancelSpeedChangedEvent = False) then begin
+      if (FTemporarySpeedChange = False) then begin
          for i := 0 to MAXPORT do begin
             if FKeyingPort[i] <> tkpNone then begin
                if (FKeyingPort[i] = tkpUSB) and (FUsbif4cwSyncWpm = True) then begin
@@ -1894,10 +2159,10 @@ begin
                end;
             end;
          end;
+      end;
 
-         if Assigned(FOnSpeedChanged) then begin
-            FOnSpeedChanged(Self);
-         end;
+      if Assigned(FOnSpeedChanged) then begin
+         FOnSpeedChanged(Self);
       end;
    end;
 end;
@@ -1938,6 +2203,7 @@ begin
    FPaddleReverse := False;
    FPaddleSqueeze := False;
    FKeyerWPM := 1;
+   FKeyerInitWPM := 1;
 
    timeBeginPeriod(1);
 
@@ -2595,27 +2861,27 @@ end;
 
 procedure TdmZLogKeyer.IncWPM;
 begin
-   FCancelSpeedChangedEvent := True;
+   FTemporarySpeedChange := True;
    if FKeyerWPM < MAXWPM then begin
       WPM := FKeyerWPM + 1;
    end;
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
 end;
 
 procedure TdmZLogKeyer.DecWPM;
 begin
-   FCancelSpeedChangedEvent := True;
+   FTemporarySpeedChange := True;
    if FKeyerWPM > MINWPM then begin
       WPM := FKeyerWPM - 1;
    end;
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
 end;
 
 procedure TdmZLogKeyer.ChangeWPM(sign: Integer; change: Integer);
 var
    new_wpm: Integer;
 begin
-   FCancelSpeedChangedEvent := True;
+   FTemporarySpeedChange := True;
 
    if sign = 0 then begin
       new_wpm := FKeyerWPM + change;
@@ -2628,7 +2894,7 @@ begin
       WPM := new_wpm;
    end;
 
-   FCancelSpeedChangedEvent := False;
+   FTemporarySpeedChange := False;
 end;
 
 procedure TdmZLogKeyer.SetWeight(W: word);
@@ -2873,6 +3139,7 @@ var
    usb_no: Integer;
    fUseUSB: Boolean;
    fUseCOM: Boolean;
+   fUseParallel: Boolean;
 
    procedure UsbInfoClear(n: Integer);
    begin
@@ -2934,6 +3201,7 @@ begin
 
    fUseUSB := False;
    fUseCOM := False;
+   fUseParallel := False;
    UsbInfoClearAll();
 
    // RIG1/RIG2/RIG3全て無し
@@ -2961,6 +3229,13 @@ begin
          FKeyingPort[i] := tkpNone;
          FComKeying[i] := nil;
       end
+      else if (FKeyingPort[i] = tkpParallel) then begin
+         fUseParallel := TParallelPort.IsParallelPortPresent();
+         if fUseParallel = False then begin
+            FKeyingPort[i] := tkpNone;
+         end;
+         FComKeying[i] := nil;
+      end
       else begin
          fUseCom := True;
       end;
@@ -2984,6 +3259,18 @@ begin
       end;
    end;
 
+   // RIG-1/2のKeyingポートとOTRSPポートが同じ場合
+   if ((FSo2rType = so2rOtrsp) and
+       (FKeyingPort[0] = FKeyingPort[1]) and
+       (FKeyingPort[0] = FSo2rOtrspPort)) then begin
+      FSameOtrsp := True;
+      FComKeying[0] := ZComTxRigSelect;
+      FComKeying[1] := ZComTxRigSelect;
+   end
+   else begin
+      FSameOtrsp := False;
+   end;
+
    if fUseUSB = True then begin
       USB_ON();
    end;
@@ -2992,20 +3279,53 @@ begin
    end;
 
    // RIG選択用ポート
-   // RX
-   if FSo2rRxSelectPort <> tkpNone then begin
-      ZComRxRigSelect.Port := TPortNumber(FSo2rRxSelectPort);
-      ZComRxRigSelect.Connect();
-      ZComRxRigSelect.ToggleDTR(False);
-      ZComRxRigSelect.ToggleRTS(False);
+   case FSo2rType of
+      so2rNone: begin
+
+      end;
+
+      so2rCom: begin
+         // RX
+         if FSo2rRxSelectPort <> tkpNone then begin
+            ZComRxRigSelect.Port := TPortNumber(FSo2rRxSelectPort);
+            ZComRxRigSelect.Connect();
+            ZComRxRigSelect.ToggleDTR(False);
+            ZComRxRigSelect.ToggleRTS(False);
+         end;
+
+         // TX
+         if FSo2rTxSelectPort <> tkpNone then begin
+            ZComTxRigSelect.Port := TPortNumber(FSo2rTxSelectPort);
+            ZComTxRigSelect.Connect();
+            ZComTxRigSelect.ToggleDTR(False);
+            ZComTxRigSelect.ToggleRTS(False);
+         end;
+      end;
+
+      so2rNeo: begin
+
+      end;
+
+      so2rOtrsp: begin
+         if (FSo2rOtrspPort <> tkpNone) and (FSameOtrsp = False) then begin
+            ZComTxRigSelect.Port := TPortNumber(FSo2rOtrspPort);
+            SetOtrspPortParam(ZComTxRigSelect);
+            ZComTxRigSelect.Connect();
+            ZComTxRigSelect.ToggleDTR(False);
+            ZComTxRigSelect.ToggleRTS(False);
+         end;
+      end;
+
+      so2rParallel: begin
+         fUseParallel := TParallelPort.IsParallelPortPresent();
+         if fUseParallel = False then begin
+            FSo2rType := so2rNone;
+         end;
+      end;
    end;
 
-   // TX
-   if FSo2rTxSelectPort <> tkpNone then begin
-      ZComTxRigSelect.Port := TPortNumber(FSo2rTxSelectPort);
-      ZComTxRigSelect.Connect();
-      ZComTxRigSelect.ToggleDTR(False);
-      ZComTxRigSelect.ToggleRTS(False);
+   if fUseParallel = True then begin
+      FParallelPort.Open();
    end;
 end;
 
@@ -3028,6 +3348,14 @@ begin
       ZComTxRigSelect.ToggleRTS(False);
       ZComTxRigSelect.Disconnect();
    end;
+
+   // OTRSP
+   if FSo2rOtrspPort <> tkpNone then begin
+      ZComTxRigSelect.Disconnect();
+   end;
+
+   // パラレルポート
+   FParallelPort.Close();
 end;
 
 procedure TdmZLogKeyer.TuneOn(nID: Integer);
@@ -3096,6 +3424,9 @@ begin
 
       if FComKeying[i].Connected = False then begin
          FComKeying[i].Port := TPortNumber(FKeyingPort[i]);
+         if FSameOtrsp = True then begin
+            SetOtrspPortParam(FComKeying[i]);
+         end;
          FComKeying[i].Connect;
       end;
 
@@ -3209,11 +3540,6 @@ begin
       FTone.Volume := v;
    end;
    {$ENDIF}
-end;
-
-procedure TdmZLogKeyer.SetSideDevice(nDeviceID: UINT);
-begin
-
 end;
 
 { TKeyerMonitorThread }
@@ -3658,7 +3984,7 @@ begin
 
    //1) Open serial communications port. Use 1200 baud, 8 data bits, no parity
    FComKeying[0].Port := TPortNumber(nPort);
-   if (FUseWkSo2rNeo = True) or (FUseWkAlways9600 = True) then begin
+   if (FSo2rType = so2rNeo) or (FUseWkAlways9600 = True) then begin
       FComKeying[0].BaudRate := br9600;
    end
    else begin
@@ -3693,7 +4019,7 @@ begin
    // application wants to run at 9600 baud, it must start out at 1200 baud mode and then issue the Set
    // High Baud command. When the application closes it should issue a WK close command which will
    // reset the baud rate to 1200.
-   if (FUseWkSo2rNeo = False) and (FUseWk9600 = True) and (FUseWkAlways9600 = False) then begin
+   if (FSo2rType <> so2rNeo) and (FUseWk9600 = True) and (FUseWkAlways9600 = False) then begin
       FillChar(Buff, SizeOf(Buff), 0);
       Buff[0] := WK_ADMIN_CMD;
       Buff[1] := WK_ADMIN_SET_HIGH_BAUD;
@@ -3773,7 +4099,7 @@ begin
 //   Sleep(200);
 
    // 現在のSPEED POT位置を取得
-   if FUseWkSo2rNeo = False then begin
+   if FSo2rType <> so2rNeo then begin
       FillChar(Buff, SizeOf(Buff), 0);
       Buff[0] := WK_GET_SPEEDPOT_CMD;
       FComKeying[0].SendData(@Buff, 1);
@@ -3941,7 +4267,7 @@ begin
 
    FPTTFLAG := fOn;
 
-   if (FUseWkSo2rNeo = False) and (FPttEnabled = False) then begin
+   if (FSo2rType <> so2rNeo) and (FPttEnabled = False) then begin
       Exit;
    end;
 
@@ -3964,7 +4290,7 @@ end;
 
 procedure TdmZLogKeyer.WinKeyerControlPTT2(fOn: Boolean);
 begin
-   if FUseWkSo2rNeo = True then begin
+   if FSo2rType = so2rNeo then begin
 //      WinKeyerSetPinCfg(True);
       WinKeyerControlPTT(fOn);
 //      WinKeyerSetPinCfg(FPTTEnabled);
@@ -4048,7 +4374,7 @@ begin
 
    ControlPTT(nID, True);
 
-   if FUseWkSo2rNeo = True then begin
+   if FSo2rType = so2rNeo then begin
       So2rNeoReverseRx(nID);
    end;
 
@@ -4234,7 +4560,7 @@ begin
    WinKeyerSendCommand(WK_KEY_IMMEDIATE_CMD, WK_KEY_IMMEDIATE_KEYUP);
 end;
 
-procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: Cardinal);
+procedure TdmZLogKeyer.ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
 var
    i: Integer;
    b: Byte;
@@ -4390,7 +4716,8 @@ end;
 procedure TdmZLogKeyer.IncCWSpeed();
 begin
    WPM := WPM + 1;
-   InitWPM := WPM;
+
+   FKeyerInitWPM := FKeyerInitWPM + 1;
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
@@ -4400,7 +4727,8 @@ end;
 procedure TdmZLogKeyer.DecCWSpeed();
 begin
    WPM := WPM - 1;
-   InitWPM := WPM;
+
+   FKeyerInitWPM := FKeyerInitWPM - 1;
 
    if Assigned(FOnSpeedChanged) then begin
       FOnSpeedChanged(Self);
@@ -4572,7 +4900,7 @@ begin
    OutputDebugString(PChar('*** So2rNeoSetAudioBlendMode ***'));
    {$ENDIF}
 
-   if FUseWkSo2rNeo = False then begin
+   if FSo2rType <> so2rNeo then begin
       Exit;
    end;
 
@@ -4604,7 +4932,7 @@ begin
    OutputDebugString(PChar('*** So2rNeoSetAudioBlendRatio ***'));
    {$ENDIF}
 
-   if FUseWkSo2rNeo = False then begin
+   if FSo2rType <> so2rNeo then begin
       Exit;
    end;
 
@@ -4636,7 +4964,7 @@ begin
    OutputDebugString(PChar('*** So2rNeoSwitchRig ***'));
    {$ENDIF}
 
-   if FUseWkSo2rNeo = False then begin
+   if FSo2rType <> so2rNeo then begin
       Exit;
    end;
 
@@ -4684,7 +5012,7 @@ var
 const
    reverse_rig: array[0..2] of Integer = ( 1, 0, 2 );
 begin
-   if FUseWkSo2rNeo = False then begin
+   if FSo2rType <> so2rNeo then begin
       Exit;
    end;
 
@@ -4699,7 +5027,7 @@ end;
 procedure TdmZLogKeyer.So2rNeoNormalRx(tx: Integer);
 begin
    try
-      if FUseWkSo2rNeo = False then begin
+      if FSo2rType <> so2rNeo then begin
          Exit;
       end;
 
@@ -4723,6 +5051,11 @@ begin
    FSo2rTxSelectPort := port;
 end;
 
+procedure TdmZLogKeyer.SetSo2rOtrspPort(port: TKeyingPort);
+begin
+   FSo2rOtrspPort := port;
+end;
+
 function TdmZLogKeyer.GetKeyingPortConfig(Index: Integer): TPortConfig;
 begin
    Result := FKeyingPortConfig[Index];
@@ -4731,6 +5064,45 @@ end;
 procedure TdmZLogKeyer.SetKeyingPortConfig(Index: Integer; v: TPortConfig);
 begin
    FKeyingPortConfig[Index] := v;
+end;
+
+procedure TdmZLogKeyer.SetOtrspPortParam(CP: TCommPortDriver);
+begin
+   CP.BaudRate := br9600;
+   CP.StopBits := sb1Bits;
+   CP.Parity := ptNone;
+   CP.DataBits := db8Bits;
+   CP.HwFlow := hfNONE;
+end;
+
+procedure TdmZLogKeyer.ParallelSetAudioBothMode(fOn: Boolean);
+begin
+   if FSo2rType <> so2rParallel then begin
+      Exit;
+   end;
+
+   if fOn = True then begin
+      FParallelPort.SetBit(PARALLEL_RX0);
+   end
+   else begin
+      FParallelPort.ResetBit(PARALLEL_RX0);
+   end;
+   FParallelPort.Write();
+end;
+
+procedure TdmZLogKeyer.ParallelSetAudioBlendMode(fOn: Boolean);
+begin
+   if FSo2rType <> so2rParallel then begin
+      Exit;
+   end;
+
+   if fOn = True then begin
+      FParallelPort.SetBit(PARALLEL_BLEND);
+   end
+   else begin
+      FParallelPort.ResetBit(PARALLEL_BLEND);
+   end;
+   FParallelPort.Write();
 end;
 
 { TUSBPortInfo }

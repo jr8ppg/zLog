@@ -224,7 +224,7 @@ begin
       exit;
 
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('[' + S + ']'));
+//   OutputDebugString(PChar('[' + S + ']'));
    {$ENDIF}
 
    temp := TrimRight(TrimLeft(S));

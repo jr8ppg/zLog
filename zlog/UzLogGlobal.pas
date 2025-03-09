@@ -3,11 +3,12 @@
 interface
 
 uses
-  System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.Math, Vcl.Graphics, System.DateUtils, Generics.Collections, Generics.Defaults,
-  Vcl.Dialogs, System.UITypes, System.Win.Registry,
+  System.SysUtils, System.Classes, System.StrUtils, System.IniFiles, Vcl.Forms,
+  Winapi.Windows, Vcl.Menus, System.Math, Vcl.Graphics, Vcl.StdCtrls,
+  System.DateUtils, Generics.Collections, Generics.Defaults,
+  Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
-  UQsoTarget, UTelnetSetting, UzLogForm;
+  UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort;
 
 type
   TCWSettingsParam = record
@@ -15,6 +16,7 @@ type
     _weight : integer;
     _fixwpm : integer;
     _paddlereverse : boolean;
+    _use_cansend: Boolean;
     _sidetone: Boolean;
     _sidetone_volume: Integer;
     _tonepitch : integer;
@@ -49,9 +51,11 @@ type
 
   TQuickQSY = record
     FUse: Boolean;
-    FBand: TBand;
+    FFreq: TFrequency;
     FMode: TMode;
     FRig: Integer;
+    FCommand: string;
+    FFixEdge: Integer;
   end;
 
   TSuperCheckParam = record
@@ -107,6 +111,8 @@ type
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
+    _mylatitude: string;
+    _mylongitude: string;
 
     _selectlastoperator: Boolean;
     _applypoweronbandchg: Boolean;
@@ -165,19 +171,20 @@ type
     _use_wk_ignore_speed_pot: Boolean;
     _use_wk_always9600: Boolean;
 
-    // F2A options
-    _use_f2a: Boolean;
-    _f2a_ptt: Boolean;
-    _f2a_before: Word;
-    _f2a_after: Word;
-    _f2a_device: Integer;
-    _f2a_volume: Integer;
-    _f2a_use_datamode: Boolean;
-    _f2a_datamode: Integer;
-    _f2a_filter: Integer;
+    // F2A/Voice options
+    _sound_device: array[1..4] of Integer;
+    _use_f2a: array[1..5] of Boolean;
+    _f2a_ptt: array[1..4] of Boolean;
+    _f2a_before: array[1..4] of Word;
+    _f2a_after: array[1..4] of Word;
+    _f2a_volume: array[1..4] of Integer;
+    _f2a_use_datamode: array[1..4] of Boolean;
+    _f2a_datamode: array[1..4] of Integer;
+    _f2a_filter: array[1..4] of Integer;
 
     // Operate Style
     _operate_style: TOperateStyle;
+    _operate_mode: TOperateMode;
 
     // SO2R Support
     _so2r_type: TSo2rType;       // 0:none 1:COM port 2:SO2R Neo
@@ -193,6 +200,7 @@ type
     _so2r_ignore_mode_change: Boolean;
     _so2r_rigselect_v28: Boolean;
     _so2r_cqrestart: Boolean;
+    _so2r_otrsp_port: Integer;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _zlink_telnet: TCommParam;
@@ -260,7 +268,6 @@ type
     _renewbythread : boolean;
     _movetomemo : boolean; // move to memo w/ spacebar when editing past qsos
 
-    _syncserial : boolean; // synchronize serial # over network
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
     _displaydatepartialcheck : boolean;
 
@@ -282,6 +289,7 @@ type
     FAntiZeroinStopCq: Boolean;     // Stop CQ in SP mode
 
     FQuickQSY: array[1..8] of TQuickQSY;
+    FUseKhzQsyCommand: Boolean;
     FSuperCheck: TSuperCheckParam;
     FPartialCheck: TPartialCheckParam;
     FAccessibility: TAccessibilityParam;
@@ -293,6 +301,7 @@ type
     FSoundComments: array[1..maxmessage] of string;
     FAdditionalSoundFiles: array[2..3] of string;
     FAdditionalSoundComments: array[2..3] of string;
+    FUseRigSoundDevice: Boolean;
     FSoundDevice: Integer;
 
     // Select User Defined Contest
@@ -337,6 +346,10 @@ type
     FClusterRetryIntervalSec: Integer;
     FClusterForceReconnect: Boolean;
     FClusterForceReconnectIntervalMin: Integer;
+
+    FClusterUseForSuperCheck: Boolean;
+    FRbnCountForRbnVerified: Integer;
+    FQsoListColors: array[1..2] of TColorSetting;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -397,12 +410,6 @@ type
 var
   CountDownStartTime : TDateTime = 0.0;
   QSYCount : integer = 0;
-
-var
-  SerialContestType : integer;  // 0 if no serial # or SER_ALL, SER_BAND
-  SerialNumber: Integer;
-  SerialArrayBand : array[b19..HiBand] of Integer;  // initialized in TContest.Create;
-  SerialArrayTX : array[0..64] of Integer;
 
 var
   GLOBALSERIAL : integer = 0;
@@ -651,6 +658,11 @@ procedure FormShowAndRestore(F: TForm);
 function LoadFromResourceName(hinst: THandle; filename: string): TStringList;
 function GetCommPortsForOldVersion(lpPortNumbers: PULONG; uPortNumbersCount: ULONG; var puPortNumbersFound: ULONG): ULONG;
 function TrimCRLF(SS : string) : string;
+function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
+procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
+
+resourcestring
+  MSG_INVALID_CHARACTER = 'Invalid character [%s]';
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -972,6 +984,9 @@ begin
       // Paddle reverse
       Settings.CW._paddlereverse := ini.ReadBool('CW', 'PaddleReverse', False);
 
+      // Paddle reverse
+      Settings.CW._use_cansend := ini.ReadBool('CW', 'UseCanSend', False);
+
       // Que messages
       Settings.CW._FIFO := ini.ReadBool('CW', 'FIFO', True);
 
@@ -1028,6 +1043,7 @@ begin
          setting.PortNumber := ini.ReadInteger('PacketCluster', strKey + '_PortNumber', 23);
          setting.LineBreak := ini.ReadInteger('PacketCluster', strKey + '_LineBreak', 0);
          setting.LocalEcho := ini.ReadBool('PacketCluster', strKey + '_LocalEcho', False);
+         setting.CommandList := ini.ReadString('PacketCluster', strKey + '_CommandList', '');
          FPacketClusterList.Add(setting);
       end;
 
@@ -1036,9 +1052,6 @@ begin
 
       // PC Name
       Settings._pcname := ini.ReadString('Z-Link', 'PCName', '');
-
-      // Sync. SerialNumber
-      Settings._syncserial := ini.ReadBool('Z-Link', 'SyncSerial', False);
 
       // COM(unuse)
 //      Settings._zlinklinebreakCOM := ini.ReadInteger('Z-Link', 'COMlinebreak', 0);
@@ -1108,19 +1121,24 @@ begin
       Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
       Settings._use_wk_always9600 := ini.ReadBool('Hardware', 'UseWkAlways9600', False);
 
-      // F2A options
-      Settings._use_f2a := ini.ReadBool('Hardware', 'UseF2A', False);
-      Settings._f2a_ptt := ini.ReadBool('Hardware', 'UseF2APtt', False);
-      Settings._f2a_before := ini.ReadInteger('Hardware', 'F2APttBefore', 500);
-      Settings._f2a_after := ini.ReadInteger('Hardware', 'F2APttAfter', 500);
-      Settings._f2a_device := ini.ReadInteger('Hardware', 'F2A_OutputDevice', 0);
-      Settings._f2a_volume := ini.ReadInteger('Hardware', 'F2A_OutputVolume', 100);
-      Settings._f2a_use_datamode := ini.ReadBool('Hardware', 'F2A_Use_DataMode', False);
-      Settings._f2a_datamode := ini.ReadInteger('Hardware', 'F2A_DataMode', 0);
-      Settings._f2a_filter := ini.ReadInteger('Hardware', 'F2A_Filter', 0);
+      // F2A/Voice options
+      for i := 1 to 4 do begin
+         S := '_' + IntToStr(i);
+         Settings._sound_device[i] := ini.ReadInteger('Hardware', 'SoundDevice' + S, 0);
+         Settings._use_f2a[i] := ini.ReadBool('Hardware', 'UseF2A' + S, False);
+         Settings._f2a_ptt[i] := ini.ReadBool('Hardware', 'UseF2APtt' + S, False);
+         Settings._f2a_before[i] := ini.ReadInteger('Hardware', 'F2APttBefore' + S, 500);
+         Settings._f2a_after[i] := ini.ReadInteger('Hardware', 'F2APttAfter' + S, 500);
+         Settings._f2a_volume[i] := ini.ReadInteger('Hardware', 'F2A_OutputVolume' + S, 100);
+         Settings._f2a_use_datamode[i] := ini.ReadBool('Hardware', 'F2A_Use_DataMode' + S, False);
+         Settings._f2a_datamode[i] := ini.ReadInteger('Hardware', 'F2A_DataMode' + S, 0);
+         Settings._f2a_filter[i] := ini.ReadInteger('Hardware', 'F2A_Filter' + S, 0);
+      end;
+      Settings._use_f2a[5] := False;
 
       // Operate Style
       Settings._operate_style := TOperateStyle(ini.ReadInteger('OPERATE_STYLE', 'style', 0));
+      Settings._operate_mode := TOperateMode(ini.ReadInteger('OPERATE_STYLE', 'mode', 0));
 
       // SO2R Support
       Settings._so2r_type  := TSo2rType(ini.ReadInteger('SO2R', 'type', 0));
@@ -1143,6 +1161,7 @@ begin
       Settings._so2r_ignore_mode_change := ini.ReadBool('SO2R', 'ignore_mode_change', True);
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
       Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
+      Settings._so2r_otrsp_port  := ini.ReadInteger('SO2R', 'otrsp_port', 0);
 
       // PTT control
 
@@ -1286,6 +1305,8 @@ begin
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
       Settings._contestmenuno := ini.ReadInteger('Categories', 'Contest', 1);
       Settings._mycall := ini.ReadString('Categories', 'MyCall', '');
+      Settings._mylatitude := ini.ReadString('Categories', 'MyLatitude', '36.4');
+      Settings._mylongitude := ini.ReadString('Categories', 'MyLongitude', '-138.38');
 
       Settings.CW._interval := ini.ReadInteger('CW', 'Interval', 1);
 
@@ -1306,12 +1327,16 @@ begin
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
-         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,';
+         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,,,';
          Settings.FQuickQSY[i].FUse := StrToBoolDef(slParam[0], False);
-         Settings.FQuickQSY[i].FBand := StrToBandDef(slParam[1], b35);
+         Settings.FQuickQSY[i].FFreq := StrToInt64Def(slParam[1], 0);
          Settings.FQuickQSY[i].FMode := StrToModeDef(slParam[2], mSSB);
          Settings.FQuickQSY[i].FRig  := StrToIntDef(slParam[3], 0);
+         Settings.FQuickQSY[i].FCommand  := slParam[4];
+         Settings.FQuickQSY[i].FFixEdge  := StrToIntDef(slParam[5], 0);
       end;
+
+      Settings.FUseKhzQsyCommand := ini.ReadBool('QuickQSY', 'UseKhzQsyCommand', False);
 
       // SuperCheck
       Settings.FSuperCheck.FSuperCheckMethod := ini.ReadInteger('SuperCheck', 'Method', 0);
@@ -1444,6 +1469,7 @@ begin
       end;
 
       // output device
+      Settings.FUseRigSoundDevice := ini.ReadBool('Voice', 'use_rigdevice', False);
       Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
 
       // Select User Defined Contest
@@ -1510,6 +1536,18 @@ begin
       Settings.FClusterRetryIntervalSec := ini.ReadInteger('ClusterWindow', 'RetryIntervalSec', 180);
       Settings.FClusterForceReconnect  := ini.ReadBool('ClusterWindow', 'ForceReconnect', False);
       Settings.FClusterForceReconnectIntervalMin := ini.ReadInteger('ClusterWindow', 'ForceReconnectInterval', 6 * 60);
+
+      // RBN Options
+      Settings.FClusterUseForSuperCheck := ini.ReadBool('RBN', 'UseForSuperCheck', False);
+      Settings.FRbnCountForRbnVerified := ini.ReadInteger('RBN', 'RbnCountForRbnVerified', 2);
+
+      Settings.FQsoListColors[1].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor1', '$000000'), clBlack);
+      Settings.FQsoListColors[1].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor1', '$ffffff'), clWhite);
+      Settings.FQsoListColors[1].FBold      := ini.ReadBool('MainQsoList', 'Bold1', False);
+
+      Settings.FQsoListColors[2].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor2', '$000000'), clRed);
+      Settings.FQsoListColors[2].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor2', '$ffffff'), clRed);
+      Settings.FQsoListColors[2].FBold      := ini.ReadBool('MainQsoList', 'Bold2', False);
 
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
@@ -1698,6 +1736,9 @@ begin
       // Paddle reverse
       ini.WriteBool('CW', 'PaddleReverse', Settings.CW._paddlereverse);
 
+      // Paddle reverse
+      ini.WriteBool('CW', 'UseCanSend', Settings.CW._use_cansend);
+
       // Que messages
       ini.WriteBool('CW', 'FIFO', Settings.CW._FIFO);
 
@@ -1747,6 +1788,7 @@ begin
          ini.WriteInteger('PacketCluster', strKey + '_PortNumber', FPacketClusterList[i].PortNumber);
          ini.WriteInteger('PacketCluster', strKey + '_LineBreak', FPacketClusterList[i].LineBreak);
          ini.WriteBool('PacketCluster', strKey + '_LocalEcho', FPacketClusterList[i].LocalEcho);
+         ini.WriteString('PacketCluster', strKey + '_CommandList', FPacketClusterList[i].CommandList);
       end;
 
       // Z-Link (Z-Server)
@@ -1754,9 +1796,6 @@ begin
 
       // PC Name
       ini.WriteString('Z-Link', 'PCName', Settings._pcname);
-
-      // Sync. SerialNumber
-      ini.WriteBool('Z-Link', 'SyncSerial', Settings._syncserial);
 
       // COM(unuse)
 //      ini.WriteInteger('Z-Link', 'COMlinebreak', Settings._zlinklinebreakCOM);
@@ -1826,19 +1865,23 @@ begin
       ini.WriteBool('Hardware', 'UseWkIgnoreSpeedPot', Settings._use_wk_ignore_speed_pot);
       ini.WriteBool('Hardware', 'UseWkAlways9600', Settings._use_wk_always9600);
 
-      // F2A options
-      ini.WriteBool('Hardware', 'UseF2A', Settings._use_f2a);
-      ini.WriteBool('Hardware', 'UseF2APtt', Settings._f2a_ptt);
-      ini.WriteInteger('Hardware', 'F2APttBefore', Settings._f2a_before);
-      ini.WriteInteger('Hardware', 'F2APttAfter', Settings._f2a_after);
-      ini.WriteInteger('Hardware', 'F2A_OutputDevice', Settings._f2a_device);
-      ini.WriteInteger('Hardware', 'F2A_OutputVolume', Settings._f2a_volume);
-      ini.WriteBool('Hardware', 'F2A_Use_DataMode', Settings._f2a_use_datamode);
-      ini.WriteInteger('Hardware', 'F2A_DataMode', Settings._f2a_datamode);
-      ini.WriteInteger('Hardware', 'F2A_Filter', Settings._f2a_filter);
+      // F2A/Voice options
+      for i := 1 to 4 do begin
+         S := '_' + IntToStr(i);
+         ini.WriteInteger('Hardware', 'SoundDevice' + S, Settings._sound_device[i]);
+         ini.WriteBool('Hardware', 'UseF2A' + S, Settings._use_f2a[i]);
+         ini.WriteBool('Hardware', 'UseF2APtt' + S, Settings._f2a_ptt[i]);
+         ini.WriteInteger('Hardware', 'F2APttBefore' + S, Settings._f2a_before[i]);
+         ini.WriteInteger('Hardware', 'F2APttAfter' + S, Settings._f2a_after[i]);
+         ini.WriteInteger('Hardware', 'F2A_OutputVolume' + S, Settings._f2a_volume[i]);
+         ini.WriteBool('Hardware', 'F2A_Use_DataMode' + S, Settings._f2a_use_datamode[i]);
+         ini.WriteInteger('Hardware', 'F2A_DataMode' + S, Settings._f2a_datamode[i]);
+         ini.WriteInteger('Hardware', 'F2A_Filter' + S, Settings._f2a_filter[i]);
+      end;
 
       // Operate Style
       ini.WriteInteger('OPERATE_STYLE', 'style', Integer(Settings._operate_style));
+      ini.WriteInteger('OPERATE_STYLE', 'mode', Integer(Settings._operate_mode));
 
       // SO2R Support
       ini.WriteInteger('SO2R', 'type', Integer(Settings._so2r_type));
@@ -1855,6 +1898,7 @@ begin
       ini.WriteBool('SO2R', 'ignore_mode_change', Settings._so2r_ignore_mode_change);
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
       ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
+      ini.WriteInteger('SO2R', 'otrsp_port', Settings._so2r_otrsp_port);
 
       // PTT control
 
@@ -1992,6 +2036,8 @@ begin
       ini.WriteInteger('Categories', 'Contest', Settings._contestmenuno);
       ini.WriteInteger('Categories', 'TXNumber', Settings._txnr);
       ini.WriteString('Categories', 'MyCall', Settings._mycall);
+      ini.WriteString('Categories', 'MyLatitude', Settings._mylatitude);
+      ini.WriteString('Categories', 'MyLongitude', Settings._mylongitude);
 
       ini.WriteInteger('CW', 'Interval', Settings.CW._interval);
 
@@ -2005,11 +2051,15 @@ begin
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
          slParam.Clear();
          slParam.Add( BoolToStr(Settings.FQuickQSY[i].FUse, False) );
-         slParam.Add( MHzString[ Settings.FQuickQSY[i].FBand ]);
-         slParam.Add( MODEString[ Settings.FQuickQSY[i].FMode ]);
+         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFreq) );
+         slParam.Add( ModeString[ Settings.FQuickQSY[i].FMode ]);
          slParam.Add( IntToStr(Settings.FQuickQSY[i].FRig) );
+         slParam.Add( Settings.FQuickQSY[i].FCommand );
+         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFixEdge) );
          ini.WriteString('QuickQSY', '#' + IntToStr(i), slParam.CommaText);
       end;
+
+      ini.WriteBool('QuickQSY', 'UseKhzQsyCommand', Settings.FUseKhzQsyCommand);
 
       // SuperCheck
       ini.WriteInteger('SuperCheck', 'Method', Settings.FSuperCheck.FSuperCheckMethod);
@@ -2084,6 +2134,7 @@ begin
       end;
 
       // output device
+      ini.WriteBool('Voice', 'use_rigdevice', Settings.FUseRigSoundDevice);
       ini.WriteInteger('Voice', 'device', Settings.FSoundDevice);
 
       // Select User Defined Contest
@@ -2145,6 +2196,14 @@ begin
       ini.WriteInteger('ClusterWindow', 'RetryIntervalSec', Settings.FClusterRetryIntervalSec);
       ini.WriteBool('ClusterWindow', 'ForceReconnect', Settings.FClusterForceReconnect);
       ini.WriteInteger('ClusterWindow', 'ForceReconnectInterval', Settings.FClusterForceReconnectIntervalMin);
+
+      ini.WriteBool('RBN', 'UseForSuperCheck', Settings.FClusterUseForSuperCheck);
+      ini.WriteInteger('RBN', 'RbnCountForRbnVerified', Settings.FRbnCountForRbnVerified);
+      for i := 1 to 2 do begin
+         ini.WriteString('MainQsoList', 'ForeColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FForeColor));
+         ini.WriteString('MainQsoList', 'BackColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FBackColor));
+         ini.WriteBool('MainQsoList', 'Bold' + IntToStr(i), Settings.FQsoListColors[i].FBold);
+      end;
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
@@ -2213,11 +2272,12 @@ begin
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
    dmZLogKeyer.UseWkIgnoreSpeedPot := Settings._use_wk_ignore_speed_pot;
    dmZLogKeyer.UseWkAlways9600 := Settings._use_wk_always9600;
-   dmZLogKeyer.UseWkSo2rNeo := (Settings._so2r_type = so2rNeo);
+   dmZLogKeyer.So2rType := Settings._so2r_type;
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
    dmZLogKeyer.So2rTxRigC := Settings._so2r_tx_rigc;
    dmZLogKeyer.So2rRigSelectV28 := Settings._so2r_rigselect_v28;
+   dmZLogKeyer.So2rOtrspPort := TKeyingPort(Settings._so2r_otrsp_port);
 
    dmZLogKeyer.UseSideTone := Settings.CW._sidetone;
    dmZLogKeyer.SideToneVolume := Settings.CW._sidetone_volume;
@@ -2232,14 +2292,15 @@ begin
    dmZLogKeyer.PaddleReverse := Settings.CW._paddlereverse;
    dmZLogKeyer.Gen3MicSelect := Settings._usbif4cw_gen3_micsel;
    dmZLogKeyer.UsePaddleKeyer := Settings._usbif4cw_use_paddle_keyer;
+   dmZLogKeyer.UseCanSend := Settings.CW._use_cansend;
 
    dmZLogKeyer.FixedSpeed := Settings.CW._fixwpm;
 
    dmZLogKeyer.SetPTTDelay(Settings._pttbefore_cw, Settings._pttafter_cw);
    dmZLogKeyer.SetPTT(Settings._pttenabled_cw);
 
-   dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.InitWPM := Settings.CW._speed;
+   dmZLogKeyer.WPM := Settings.CW._speed;
    dmZLogKeyer.SetWeight(Settings.CW._weight);
    dmZLogKeyer.SideTonePitch := Settings.CW._tonepitch;
 
@@ -2713,8 +2774,8 @@ var
    tt, ss, rr: integer;
 begin
    tt := Settings._txnr;
-   if tt > 21 then
-      tt := 21;
+   if tt >= MAX_TX then
+      tt := (MAX_TX - 1);
 
    ss := GLOBALSERIAL;
    inc(GLOBALSERIAL);
@@ -3386,6 +3447,14 @@ begin
    O.Name := 'RIG';
    O.Keying := True;
    list.Add(O);
+
+   if TParallelPort.IsParallelPortPresent() = True then begin
+      O := TCommPort.Create();
+      O.Number := 23;
+      O.Name := 'Prallel';
+      O.Keying := True;
+      list.Add(O);
+   end;
 
    Comparer := TCommPortComparer.Create();
    list.Sort(Comparer);
@@ -4502,6 +4571,68 @@ begin
    end;
 
    Result := S;
+end;
+
+function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
+var
+   text: string;
+   i: Integer;
+   ch: Char;
+   S: string;
+begin
+   text := Edit.Text;
+   for i := 1 to Length(text) do begin
+      ch := text[i];
+      if TPath.IsValidFileNameChar(ch) = False then begin
+         S := Format(MSG_INVALID_CHARACTER, [Copy(text, i, 1)]);
+         MessageBox(AOwner.Handle, PChar(S), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Edit.SetFocus();
+         Edit.SelStart := i - 1;
+         Edit.SelLength := 1;
+         Result := False;
+         Exit;
+      end;
+   end;
+
+   Result := True;
+end;
+
+procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
+var
+   mon: TMonitor;
+   pt: TPoint;
+begin
+   pt.X := x;
+   pt.Y := y;
+
+   mon := Screen.MonitorFromPoint(pt, mdNearest);
+   if mon = nil then begin
+      Exit;
+   end;
+
+   // 上
+   if (y < mon.Top) then begin
+      y := mon.Top;
+   end;
+
+   // 下
+   if (((y + f.Height) ) > (mon.Top + mon.Height)) then begin
+      y := mon.Top + mon.Height - f.Height;
+   end;
+
+   // 左
+   if (x < mon.Left) then begin
+      x := mon.Left;
+   end;
+
+   // 右
+   if (((x + f.Width) ) > (mon.Left + mon.Width)) then begin
+      x := mon.Left + mon.Width - f.Width;
+   end;
+
+   f.DefaultMonitor := dmDesktop;
+   f.Left := x;
+   f.Top := y;
 end;
 
 end.

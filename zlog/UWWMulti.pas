@@ -44,6 +44,7 @@ type
     FZoneForm: TWWZone;
     FZoneFlag: TZoneArray;
     FMostRecentCty: TCountry;
+    FLastCountry: TCountry;
     FGridReverse: array[0..500] of integer; {pointer from grid row to countrylist index}
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
@@ -71,6 +72,7 @@ type
     procedure ProcessSpotData(var S : TBaseSpot); override;
     property ZoneForm: TWWZone read FZoneForm write FZoneForm;
     property Zone: TZoneArray read FZoneFlag write FZoneFlag;
+    property LastCountry: TCountry read FLastCountry;
   end;
 
 implementation
@@ -401,6 +403,7 @@ begin
    Inherited;
    FZoneForm := nil;
    FMostRecentCty := nil;
+   FLastCountry := nil;
    MainForm.mnGridAddNewPX.Visible := True;
 end;
 
@@ -522,7 +525,8 @@ begin
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    if C.CountryName = 'Unknown' then begin
       Result := 'Unknown CTY';
-      exit;
+      FLastCountry := nil;
+      Exit;
    end;
 
    GoForwardMatch(C.Country);
@@ -552,6 +556,7 @@ begin
          if C.Worked[B]=False then
             temp := temp + MHzString[B] + ' ';
 
+   FLastCountry := C;
    Result := temp;
 end;
 

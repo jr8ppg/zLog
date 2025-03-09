@@ -21,8 +21,6 @@ object formMain: TformMain
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 571
-    ExplicitHeight = 420
     object TabSheet1: TTabSheet
       Caption = #12525#12462#12531#12464
       object vleLogging: TValueListEditor
@@ -114,7 +112,8 @@ object formMain: TformMain
           '#132 QSO'#12524#12540#12488'('#25313#24373#29256')'#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#133 QSY Indicator'#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#142 Information'#12454#12452#12531#12489#12454#12398#34920#31034'='
-          '#161 CW'#12514#12491#12479#12540#12398#34920#31034'=')
+          '#161 CW'#12514#12491#12479#12540#12398#34920#31034'='
+          '#169 '#12456#12531#12486#12451#12486#12451#24773#22577#12398#34920#31034'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -224,8 +223,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitWidth = 563
-        ExplicitHeight = 392
         ColWidths = (
           448
           96)
@@ -268,7 +265,8 @@ object formMain: TformMain
           '#107 Quick Memo4='
           '#108 Quick Memo5='
           '#154 PSE QSL='
-          '#155 NO QSL=')
+          '#155 NO QSL='
+          '#167 QSO'#26908#32034'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -347,12 +345,15 @@ object formMain: TformMain
           '#143 2BSIQ'#21205#20316#12398#12488#12464#12523'(ON/OFF)='
           '#144 SO2R Neo '#33258#21205'RX'#36984#25246#12434#12488#12464#12523'(ON/OFF)='
           '#146 2BSIQ'#21205#20316#26178#12289#20808#34892#12377#12427#38651#25991#12398#36865#20449#32066#20102'Wait'#12398#12488#12464#12523'(ON/OFF)='
-          '#150 RIG'#12506#12450#12398#12488#12464#12523'=')
+          '#150 RIG'#12506#12450#12398#12488#12464#12523'='
+          '#168 AF'#12502#12524#12531#12489#12398#12488#12464#12523'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
+        ExplicitWidth = 563
+        ExplicitHeight = 392
         ColWidths = (
           448
           113)
@@ -367,13 +368,11 @@ object formMain: TformMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 420
-    ExplicitWidth = 571
     DesignSize = (
       575
       44)
     object buttonOK: TButton
-      Left = 348
+      Left = 344
       Top = 5
       Width = 106
       Height = 33
@@ -381,10 +380,9 @@ object formMain: TformMain
       Caption = 'OK'
       TabOrder = 0
       OnClick = buttonOKClick
-      ExplicitLeft = 344
     end
     object buttonCancel: TButton
-      Left = 460
+      Left = 456
       Top = 5
       Width = 106
       Height = 33
@@ -394,7 +392,6 @@ object formMain: TformMain
       ModalResult = 2
       TabOrder = 1
       OnClick = buttonCancelClick
-      ExplicitLeft = 456
     end
     object buttonAllReset: TButton
       Left = 8

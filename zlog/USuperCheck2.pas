@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Spin, Vcl.Grids,
+  StdCtrls, ExtCtrls, Spin, Vcl.Grids, System.UITypes,
   UzLogConst, UzLogGlobal, UzLogForm;
 
 type
@@ -131,7 +131,11 @@ var
    fg: TColor;
    bg: TColor;
    txt: string;
+   diffpos: Integer;
+   w: Integer;
+   x, y: Integer;
 begin
+   diffpos := 0;
    txt := Grid.Cells[ACol, ARow];
    with Grid.Canvas do begin
       fg := clBlack;
@@ -140,18 +144,36 @@ begin
       Pen.Color := bg;
       Pen.Style := psSolid;
 
-      if (txt <> '') and (txt[1] = '*') then begin
-         Delete(txt, 1, 1);
-         if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) then begin
-            Brush.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
-            MainForm.HighlightCallsign(True);
+      if (txt <> '') then begin
+         if txt[1] = '*' then begin
+            if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) then begin
+               Brush.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
+               MainForm.HighlightCallsign(True);
+            end
+            else begin
+               Brush.Color := bg;
+            end;
+         end
+         else if (txt[1] >= '0') and (txt[1] <= '9') then begin
+            diffpos := StrToIntDef(txt[1], 0);
+            Brush.Color := bg;
          end
          else begin
             Brush.Color := bg;
          end;
+
+         if txt[2] = '*' then begin
+            Font.Style := Font.Style + [fsBold];
+         end
+         else begin
+            Font.Style := Font.Style - [fsBold];
+         end;
+
+         Delete(txt, 1, 2);
       end
       else begin
          Brush.Color := bg;
+         Font.Style := Font.Style - [fsBold];
       end;
 
       Brush.Style := bsSolid;
@@ -161,6 +183,18 @@ begin
       Font.Size := Grid.Font.Size;
       Font.Name := Grid.Font.Name;
       TextRect(Rect, txt, [tfLeft, tfVerticalCenter]);
+
+      // ‘Šˆá“_‚É‰ºü‚ð•t‚¯‚é
+      if diffpos > 0 then begin
+         w := TextWidth('X');
+         Pen.Color := clRed;
+         Pen.Width := 2;
+         Pen.Style := psSolid;
+         x := w * (diffpos - 1);
+         y := Rect.Bottom;
+         MoveTo(x, y);
+         LineTo(x + w - 1, y);
+      end;
 
       if (gdSelected in State) and (gdFocused in State) and (FList.Count > 0) then begin
          DrawFocusRect(Rect);

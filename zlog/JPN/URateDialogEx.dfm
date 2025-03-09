@@ -4,7 +4,7 @@ object RateDialogEx: TRateDialogEx
   ActiveControl = ShowLastCombo
   Caption = 'QSO Rate Ex'
   ClientHeight = 262
-  ClientWidth = 390
+  ClientWidth = 388
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 350
@@ -24,7 +24,7 @@ object RateDialogEx: TRateDialogEx
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 390
+    Width = 388
     Height = 37
     Align = alTop
     BevelOuter = bvNone
@@ -76,7 +76,7 @@ object RateDialogEx: TRateDialogEx
   object PageControl1: TPageControl
     Left = 0
     Top = 37
-    Width = 390
+    Width = 388
     Height = 225
     ActivePage = TabSheet1
     Align = alClient
@@ -88,7 +88,7 @@ object RateDialogEx: TRateDialogEx
       object Panel2: TPanel
         Left = 0
         Top = 167
-        Width = 382
+        Width = 380
         Height = 30
         Align = alBottom
         BevelOuter = bvNone
@@ -96,10 +96,10 @@ object RateDialogEx: TRateDialogEx
         ExplicitTop = 166
         ExplicitWidth = 378
         DesignSize = (
-          382
+          380
           30)
         object Label4: TLabel
-          Left = 299
+          Left = 293
           Top = 9
           Width = 26
           Height = 13
@@ -107,17 +107,18 @@ object RateDialogEx: TRateDialogEx
           Caption = #26178#38291
           ExplicitLeft = 255
         end
-        object Label3: TLabel
-          Left = 203
+        object labelHourCaption: TLabel
+          Left = 172
           Top = 9
-          Width = 46
+          Width = 71
           Height = 13
+          Alignment = taRightJustify
           Anchors = [akRight]
-          Caption = #26368#24460#12363#12425
-          ExplicitLeft = 159
+          Caption = 'Show current'
+          ExplicitLeft = 174
         end
         object ShowLastCombo: TComboBox
-          Left = 253
+          Left = 247
           Top = 5
           Width = 41
           Height = 21
@@ -137,10 +138,10 @@ object RateDialogEx: TRateDialogEx
             '24'
             '36'
             '48')
-          ExplicitLeft = 249
+          ExplicitLeft = 245
         end
         object check3D: TCheckBox
-          Left = 339
+          Left = 333
           Top = 6
           Width = 33
           Height = 17
@@ -148,7 +149,7 @@ object RateDialogEx: TRateDialogEx
           Caption = '3D'
           TabOrder = 1
           OnClick = check3DClick
-          ExplicitLeft = 335
+          ExplicitLeft = 331
         end
         object Panel3: TPanel
           Left = 0
@@ -191,7 +192,7 @@ object RateDialogEx: TRateDialogEx
       object Chart1: TChart
         Left = 0
         Top = 0
-        Width = 382
+        Width = 380
         Height = 167
         LeftWall.Color = clWhite
         Legend.Visible = False
@@ -491,7 +492,7 @@ object RateDialogEx: TRateDialogEx
       object ScoreGrid: TStringGrid
         Left = 0
         Top = 0
-        Width = 382
+        Width = 380
         Height = 197
         Align = alClient
         ColCount = 27
@@ -509,6 +510,7 @@ object RateDialogEx: TRateDialogEx
         OnDrawCell = ScoreGridDrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
+        ExplicitWidth = 382
       end
     end
     object TabSheet3: TTabSheet
@@ -517,7 +519,7 @@ object RateDialogEx: TRateDialogEx
       object ScoreGrid2: TStringGrid
         Left = 0
         Top = 0
-        Width = 382
+        Width = 380
         Height = 197
         Align = alClient
         ColCount = 28
@@ -535,6 +537,7 @@ object RateDialogEx: TRateDialogEx
         OnDrawCell = ScoreGrid2DrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
+        ExplicitWidth = 382
       end
     end
   end
