@@ -11643,10 +11643,30 @@ end;
 
 // #163 QSO Complete (logging only)
 procedure TMainForm.actionLoggingExecute(Sender: TObject);
+var
+   fNoMulti: Boolean;
 begin
-   if (CurrentQSO.Callsign <> '') and (CurrentQSO.NrRcvd <> '') then begin
-      LogButtonProc(FCurrentRx, CurrentQSO);
+   if (CurrentQSO.Callsign = '') then begin
+      Exit;
    end;
+
+   fNoMulti := False;
+
+   if MyContest is TPedi then begin
+      fNoMulti := True;
+   end;
+
+   if MyContest is TGeneralContest then begin
+      if TGeneralMulti2(MyContest.MultiForm).IsMultiNeed() = False then begin
+         fNoMulti := True;
+      end;
+   end;
+
+   if (fNoMulti = False) and (CurrentQSO.NrRcvd = '') then begin
+      Exit;
+   end;
+
+   LogButtonProc(FCurrentRx, CurrentQSO);
 end;
 
 // #164 Send WPM command to RIG
