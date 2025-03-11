@@ -486,13 +486,6 @@ begin
          FSpotListLastCleanup := Now;
       end;
 
-      // このコンテストで使用しないバンドは除く
-      if (MainForm.BandMenu.Items[ord(Sp.Band)].Visible = False) or
-         (MainForm.BandMenu.Items[ord(Sp.Band)].Enabled = False) then begin
-         Sp.Free();
-         Exit;
-      end;
-
       // JAかDXか判定
       isJA := IsDomestic(Sp.Call);
 
