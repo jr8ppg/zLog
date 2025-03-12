@@ -163,7 +163,8 @@ uses
   USpcViewer in 'USpcViewer.pas' {formSpcViewer},
   Progress in 'Progress.pas' {formProgress},
   UOptions2 in 'UOptions2.pas' {formOptions2},
-  UEntityInfo in 'UEntityInfo.pas' {formEntityInfo};
+  UEntityInfo in 'UEntityInfo.pas' {formEntityInfo},
+  UzLogAdif in 'UzLogAdif.pas';
 
 {$R *.res}
 

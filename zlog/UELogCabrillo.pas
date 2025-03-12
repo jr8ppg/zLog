@@ -169,7 +169,7 @@ begin
       end;
 
       // CabrilloèoóÕ
-      Log.SaveToFileByCabrillo(fname, nTimeZoneOffset, slSummaryInfo);
+      Log.SaveToFileAsCabrillo(fname, nTimeZoneOffset, slSummaryInfo);
    finally
       slSummaryInfo.Free();
    end;
