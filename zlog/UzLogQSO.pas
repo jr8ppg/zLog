@@ -4217,7 +4217,12 @@ begin
 
       // このコンテストのTimezone
       offsetmin := Log.QsoList[0].RSTsent;
-      h := Trunc(Abs(offsetmin / 60));
+      if offsetmin = _USEUTC then begin
+         h := 0;
+      end
+      else begin
+         h := Trunc(Abs(offsetmin / 60));
+      end;
 
       for i := 0 to adif.Items.Count - 1 do begin
 
@@ -4237,7 +4242,7 @@ begin
          Q.Time := EncodeDateTime(yy, mm, dd, hh, nn, 0, 0);
 
          // JSTの場合は変換する
-         if offsetmin <> 0 then begin
+         if h <> 0 then begin
             Q.Time := IncHour(Q.Time, h);
          end;
 
