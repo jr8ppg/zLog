@@ -78,8 +78,13 @@ begin
 end;
 
 destructor TAdifQso.Destroy();
+var
+   O: TAdifField;
 begin
    Inherited;
+   for O in FFields do begin
+      O.Free();
+   end;
    FFields.Free();
 end;
 
@@ -129,12 +134,12 @@ begin
    end;
 
    if I2 = 0 then begin
-      fieldname := UpperCase(Copy(SRC, I1 + 1, I3 - 2));
+      fieldname := UpperCase(Copy(SRC, I1 + 1, I3 - I1 - 1));
       fieldlen := 0;
       fieldvalue := '';
    end
    else begin
-      fieldname := UpperCase(Copy(SRC, I1 + 1, I2 - 2));
+      fieldname := UpperCase(Copy(SRC, I1 + 1, I2 - I1 - 1));
 
       S := Copy(SRC, I2 + 1, I3 - I2 - 1);
       fieldlen := StrToIntDef(S, 0);
@@ -147,13 +152,32 @@ begin
 end;
 
 function TAdifQso.GetValue(const Name: string): string;
+var
+   i: Integer;
 begin
-
+   for i := 0 to FFields.Count - 1 do begin
+      if FFields[i].Name = Name then begin
+         Result := FFields[i].Value;
+         Exit;
+      end;
+   end;
+   Result := '';
 end;
 
 procedure TAdifQso.SetValue(const Name: string; Value: string);
+var
+   i: Integer;
+   O: TAdifField;
 begin
+   for i := 0 to FFields.Count - 1 do begin
+      if FFields[i].Name = Name then begin
+         FFields[i].Value := Value;
+         Exit;
+      end;
+   end;
 
+   O := TAdifField.Create(Name, Length(Value), Value);
+   FFields.Add(O);
 end;
 
 { TAdifFile }
@@ -166,8 +190,13 @@ begin
 end;
 
 destructor TAdifFile.Destroy();
+var
+   O: TAdifQso;
 begin
    Inherited;
+   for O in FItems do begin
+      O.Free();
+   end;
    FItems.Free();
    FFile.Free();
 end;

@@ -4174,6 +4174,7 @@ var
    yy, mm, dd, hh, nn: Word;
    m: TMode;
    defrst: Integer;
+   h: Integer;
 
    //
    function GetMode(adifMode: string): TMode;
@@ -4216,6 +4217,7 @@ begin
 
       // このコンテストのTimezone
       offsetmin := Log.QsoList[0].RSTsent;
+      h := Trunc(Abs(offsetmin / 60));
 
       for i := 0 to adif.Items.Count - 1 do begin
 
@@ -4224,7 +4226,7 @@ begin
          // 1列目　交信年月日（yyyymmdd）
          // 2列目　交信時分（hhnn）
          dt := adif.Items[i].Values['QSO_DATE'];
-         tm := adif.Items[i].Values['QSO_TIME'];
+         tm := adif.Items[i].Values['TIME_ON'];
 
          yy := StrToIntDef(Copy(dt, 1, 4), 0);
          mm := StrToIntDef(Copy(dt, 5, 2), 0);
@@ -4235,8 +4237,8 @@ begin
          Q.Time := EncodeDateTime(yy, mm, dd, hh, nn, 0, 0);
 
          // JSTの場合は変換する
-         if offsetmin = 0 then begin
-            Q.Time := IncHour(Q.Time, 9);
+         if offsetmin <> 0 then begin
+            Q.Time := IncHour(Q.Time, h);
          end;
 
          // モード
@@ -4374,6 +4376,7 @@ begin
 
       Result := TotalQSO;
    finally
+      adif.Free();
    end;
 end;
 
