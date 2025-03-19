@@ -4165,9 +4165,6 @@ var
    i: Integer;
    Q: TQSO;
    offsetmin: Integer;
-   slFile: TStringList;
-   slLine: TStringList;
-   slText: TStringList;
    qsoid: Integer;
    b: TBand;
    S: string;
@@ -4177,75 +4174,49 @@ var
    yy, mm, dd, hh, nn: Word;
    m: TMode;
    defrst: Integer;
+
+   //
+   function GetMode(adifMode: string): TMode;
+   var
+      m: TMode;
+   begin
+      for m := mCW to mOther do begin
+         if ModeString[m] = adifMode then begin
+            Result := m;
+            Exit;
+         end;
+      end;
+      Result := mOther;
+   end;
+
+   //
+   function GetBand(adifBand: string): TBand;
+   var
+      b: TBand;
+   begin
+      for b := b19 to b10g do begin
+         if ADIFBandString[b] = adifBand then begin
+            Result := b;
+            Exit;
+         end;
+      end;
+      Result := bUnknown;
+   end;
 begin
    adif := TAdifFile.Create();
-   slFile := TStringList.Create();
-   slFile.StrictDelimiter := True;
-   slLine := TStringList.Create();
-   slLine.StrictDelimiter := True;
-   slText := TStringList.Create();
-   slText.StrictDelimiter := True;
    try
       if FileExists(Filename) = False then begin
          Result := 0;
          Exit;
       end;
 
+      // ADIFのロード＆パース
       adif.LoadFromFile(Filename);
       adif.Parse();
-{
-      S := AdifField('qso_date', FormatDateTime('yyyymmdd', Q.Time + dbl));
-      S := S + AdifField('time_on', FormatDateTime('hhnn', Q.Time + dbl));
-      S := S + AdifField('time_off', FormatDateTime('hhnn', Q.Time + dbl));
 
-      S := S + AdifField('call', Q.Callsign);
+      // このコンテストのTimezone
+      offsetmin := Log.QsoList[0].RSTsent;
 
-      S := S + AdifField('rst_sent', IntToStr(Q.RSTsent));
-
-      if FSerialType = stNone then begin
-         S := S + AdifField('stx_string', Q.NrSent);
-      end
-      else begin
-         S := S + AdifField('stx', IntToStr(Q.Serial));
-      end;
-
-      S := S + AdifField('rst_rcvd', IntToStr(Q.RSTRcvd));
-
-      if FSerialType = stNone then begin
-         S := S + AdifField('srx_string', Q.NrRcvd);
-      end
-      else begin
-         S := S + AdifField('srx', Q.NrRcvd);
-      end;
-
-      S := S + AdifField(MyContest.ADIF_ExchangeRX_FieldName, MyContest.ADIF_ExchangeRX(Q));
-
-      temp := MyContest.ADIF_ExtraField(Q);
-      if temp <> '' then begin
-         S := S + AdifField(MyContest.ADIF_ExtraFieldName, temp);
-      end;
-
-      S := S + AdifField('band', ADIFBandString[Q.Band]);
-      S := S + AdifField('mode', ModeString[Q.mode]);
-
-      if Q.Operator <> '' then begin
-         S := S + AdifField('operator', Q.Operator);
-      end;
-
-      if Q.Memo <> '' then begin
-         S := S + AdifField('comment', Q.Memo);
-      end;
-
-      temp := Q.FreqStr2;
-      if temp <> '' then begin
-         S := S + AdifField('freq', temp);
-      end;
-
-      temp := MyContest.AdifContestId;
-      if temp <> '' then begin
-         S := S + AdifField('contest_id', temp);
-      end;
-}
       for i := 0 to adif.Items.Count - 1 do begin
 
          Q := TQSO.Create();
@@ -4263,24 +4234,13 @@ begin
 
          Q.Time := EncodeDateTime(yy, mm, dd, hh, nn, 0, 0);
 
-         // 3列目 TimeZone
-         if i = 1 then begin
-            if slLine[2] = 'UTC' then begin
-               offsetmin := _USEUTC;
-            end
-            else begin
-               offsetmin := 0;
-            end;
-            FQsoList[0].RSTsent := offsetmin;
+         // JSTの場合は変換する
+         if offsetmin = 0 then begin
+            Q.Time := IncHour(Q.Time, 9);
          end;
 
          // モード
-         S := adif.Items[i].Values['MODE'];
-         for m := mCW to mOther do begin
-            if ModeString[m] = S then begin
-               Break;
-            end;
-         end;
+         m := GetMode(adif.Items[i].Values['MODE']);
 
          if (m = mSSB) or (m = mAM) or (m = mFM) then begin
             defrst := 59;
@@ -4306,92 +4266,91 @@ begin
          // 相手局からもらったレポート
          Q.RSTRcvd := StrToIntDef(adif.Items[i].Values['RST_RCVD'], defrst);
 
-         // 8列目 相手局からもらったNumber
-         Q.NrRcvd := slLine[7];
-
-         // 9列目 シリアルNO
-         Q.Serial := StrToIntDef(slLine[8], 0);
-
-         // 10列目 Mode
-         Q.Mode := StrToModeDef(slLine[9], mCW);
-
-         // 11列目 Band
-         Q.Band := StrToBandDef(slLine[10], b7);
-
-         // 12列目 Power 0:P 1:L 2:M 3:H
-         if slLine[11] = 'P' then Q.Power := TPower(0)
-         else if slLine[11] = 'L' then Q.Power := TPower(1)
-         else if slLine[11] = 'M' then Q.Power := TPower(2)
-         else if slLine[11] = 'H' then Q.Power := TPower(3)
-         else Q.Power := TPower(2);
-
-         // 13列目 マルチ１
-         Q.Multi1 := slLine[12];
-
-         // 14列目 マルチ２
-         Q.Multi2 := slLine[13];
-
-         // 15列目 Newマルチ１
-         Q.NewMulti1 := StrToBoolDef(slLine[14], False);
-
-         // 16列目 Newマルチ２
-         Q.NewMulti2 := StrToBoolDef(slLine[15], False);
-
-         // 17列目 Points
-         Q.Points := StrToIntDef(slLine[16], 0);
-
-         // 18列目 Operator
-         Q.Operator := slLine[17];
-
-         // 19列目 memo
-         slText.Text := StringReplace(slLine[18], '\n', #13#10, [rfReplaceAll]);
-         if slText.Count > 0 then begin
-            Q.Memo := slText[0];
+         // 相手局からもらったNumber
+         S := MyContest.ADIF_ExchangeRX_FieldName;
+         if S = '' then begin
+            if MyContest.SerialType = stNone then begin
+               Q.NrRcvd := adif.Items[i].Values['SRX_STRING'];
+            end
+            else begin
+               Q.NrRcvd := adif.Items[i].Values['SRX'];
+            end;
+         end
+         else begin
+            Q.NrRcvd := adif.Items[i].Values[S];
          end;
 
-         // 20列目 CQ
-         Q.CQ := StrToBoolDef(slLine[19], False);
+         // Mode
+         Q.Mode := m;
 
-         // 21列目 Dupe
-         Q.Dupe := StrToBoolDef(slLine[20], False);
+         // Band
+         Q.Band := GetBand(adif.Items[i].Values['BAND']);
 
-         // 22列目 Reserve
-         Q.Reserve := StrToIntDef(slLine[21], 0);
+         // 12列目 Power 0:P 1:L 2:M 3:H
+         Q.Power := dmZLogGlobal.PowerOfBand[Q.Band];
 
-         // 23列目 TX
-         Q.TX := StrtoIntDef(slLine[22], 0);
+         // マルチ１
+         Q.Multi1 := '';
 
-         // 24列目 Power2
-         Q.Power2 := StrToIntDef(slLine[23], 0);
+         // マルチ２
+         Q.Multi2 := '';
 
-         // 25列目 Reserve2
-         Q.Reserve2 := StrToIntDef(slLine[24], 0);
+         // Newマルチ１
+         Q.NewMulti1 := False;
 
-         // 26列目 Reserve3
-         Q.Reserve3 := StrToIntDef(slLine[25], 0);
+         // Newマルチ２
+         Q.NewMulti2 := False;
+
+         // Points
+         Q.Points := 0;
+
+         // Operator
+         Q.Operator := adif.Items[i].Values['OPERATOR'];
+
+         // memo
+         Q.Memo := adif.Items[i].Values['COMMENT'];
+
+         // CQ
+         Q.CQ := False;
+
+         // Dupe
+         Q.Dupe := False;
+
+         // Reserve
+         Q.Reserve := 0;
+
+         // TX
+         Q.TX := dmZlogGlobal.TXNr;
+
+         // Power2
+         Q.Power2 := 0;
+
+         // Reserve2
+         Q.Reserve2 := 0;
+
+         // Reserve3
+         Q.Reserve3 := 0;
 
          // 27列目 Freq
-         Q.Freq := slLine[26];
+         Q.Freq := adif.Items[i].Values['FREQ'];
 
-         // 28列目 QsyViolation
-         Q.QsyViolation := StrToBoolDef(slLine[27], False);
+         // QsyViolation
+         Q.QsyViolation := False;
 
-         // 29列目 PCName
-         Q.PCName := slLine[28];
+         // PCName
+         Q.PCName := dmZLogGlobal.Settings._pcname;
 
-         // 30列目 Forced
-         Q.Forced := StrToBoolDef(slLine[29], False);
+         // Forced
+         Q.Forced := False;
 
-         // 31列目 QslState
-         Q.QslState := TQslState(StrToIntDef(slLine[30], 0));
+         // QslState
+         Q.QslState := qsNone;
 
-         // 32列目 Invalid
-         Q.Invalid := StrToBoolDef(slLine[31], False);
+         // Invalid
+         Q.Invalid := False;
 
-         // 33列目 Area
-
-         // 34列目 RBN Verified
-         Q.RbnVerified := StrToBoolDef(slLine[33], False);
+         // RBN Verified
+         Q.RbnVerified := False;
 
          // QSOIDが無ければ発番する
          if Q.Reserve3 = 0 then begin
@@ -4401,16 +4360,7 @@ begin
             Q.Reserve3 := qsoid;
          end;
 
-         // 同一QSOが２重に入ってしまった場合の暫定対策
-         if IsContainsSameQSO(Q) = True then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**** Duplicate QSO detected! [' + Q.Callsign + '] ****'));
-            {$ENDIF}
-            FreeAndNil(Q);
-         end
-         else begin
-            Add(Q, True);
-         end;
+         Add(Q, True);
       end;
 
       // DUPEチェック用Indexをソート
@@ -4424,9 +4374,6 @@ begin
 
       Result := TotalQSO;
    finally
-      slFile.Free();
-      slLine.Free();
-      slText.Free();
    end;
 end;
 

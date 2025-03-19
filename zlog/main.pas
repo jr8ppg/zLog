@@ -7566,6 +7566,10 @@ begin
       i := Log.LoadFromFileAszLogCsv(ff);
    end;
 
+   if ext = '.ADI' then begin
+      i := Log.LoadFromFileAsAdif(ff);
+   end;
+
    if i = 0 then begin
       (* if none of the avobe formats succeeed *)
       i := zyloImportFile(ff);
