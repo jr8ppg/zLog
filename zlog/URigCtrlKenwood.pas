@@ -57,6 +57,11 @@ type
     procedure Initialize(); override;
   end;
 
+  TTS890 = class(TTS2000)
+  public
+    procedure FixEdgeSelect(no: Integer); override;
+  end;
+
   TTS990 = class(TTS2000)
   public
     procedure AntSelect(no: Integer); override;
@@ -577,6 +582,18 @@ begin
    WriteData('TC 1;');
    WriteData('AI2;');
    WriteData('IF;');
+end;
+
+{ TTS890 }
+
+procedure TTS890.FixEdgeSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('BS51;');
+      2: WriteData('BS52;');
+      3: WriteData('BS53;');
+   end;
 end;
 
 { TTS990 }

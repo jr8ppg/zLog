@@ -566,8 +566,12 @@ begin
             rig := TTS570.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
-         if rname = 'TS-590/890' then begin
+         if rname = 'TS-590' then begin
             rig := TTS2000.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
+         if rname = 'TS-890' then begin
+            rig := TTS890.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
          if rname = 'TS-990' then begin
