@@ -6226,15 +6226,15 @@ begin
    if zyloExportFile(f) then Exit;
 
    if ext = '.ALL' then begin
-      Log.SaveToFilezLogALL(f);
+      Log.SaveToFileAszLogALL(f);
    end;
 
    if ext = '.TXT' then begin
-      Log.SaveToFilezLogDOSTXT(f);
+      Log.SaveToFileAszLogDOSTXT(f);
    end;
 
    if ext = '.TX' then begin
-      Log.SaveToFileByTX(f);
+      Log.SaveToFileAsTxtByTX(f);
    end;
 
    if ext = '.ADI' then begin
@@ -6247,7 +6247,7 @@ begin
          if dlg2.ShowModal() = mrCancel then begin
             Exit;
          end;
-         Log.SaveToFileByCabrillo(f, dlg2.TimeZoneOffset);
+         Log.SaveToFileAsCabrillo(f, dlg2.TimeZoneOffset);
       finally
          dlg2.Release();
       end;
@@ -6258,10 +6258,10 @@ begin
          ExportHamlog(f);
       end
       else if FileExportDialog.FilterIndex = 8 then begin
-         Log.SaveToFileByHamSupport(f);
+         Log.SaveToFileAsHamSupport(f);
       end
       else begin
-         Log.SaveToFilezLogCsv(f);
+         Log.SaveToFileAszLogCsv(f);
       end;
    end
 
@@ -7563,7 +7563,11 @@ begin
    end;
 
    if ext = '.CSV' then begin
-      i := Log.LoadFromFilezLogCsv(ff);
+      i := Log.LoadFromFileAszLogCsv(ff);
+   end;
+
+   if ext = '.ADI' then begin
+      i := Log.LoadFromFileAsAdif(ff);
    end;
 
    if i = 0 then begin
@@ -11643,10 +11647,30 @@ end;
 
 // #163 QSO Complete (logging only)
 procedure TMainForm.actionLoggingExecute(Sender: TObject);
+var
+   fNoMulti: Boolean;
 begin
-   if (CurrentQSO.Callsign <> '') and (CurrentQSO.NrRcvd <> '') then begin
-      LogButtonProc(FCurrentRx, CurrentQSO);
+   if (CurrentQSO.Callsign = '') then begin
+      Exit;
    end;
+
+   fNoMulti := False;
+
+   if MyContest is TPedi then begin
+      fNoMulti := True;
+   end;
+
+   if MyContest is TGeneralContest then begin
+      if TGeneralMulti2(MyContest.MultiForm).IsMultiNeed() = False then begin
+         fNoMulti := True;
+      end;
+   end;
+
+   if (fNoMulti = False) and (CurrentQSO.NrRcvd = '') then begin
+      Exit;
+   end;
+
+   LogButtonProc(FCurrentRx, CurrentQSO);
 end;
 
 // #164 Send WPM command to RIG
@@ -14139,7 +14163,7 @@ begin
          JarlMemberCheck();
       end;
 
-      Log.SaveToFileByHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText, dlg.FreqOption);
+      Log.SaveToFileAsHamlog(f, dlg.Remarks1Option, dlg.Remarks2Option, dlg.Remarks1, dlg.Remarks2, dlg.CodeOption, dlg.NameOption, dlg.TimeOption, dlg.QslStateText, dlg.FreqOption);
    finally
       dlg.Release();
    end;
@@ -14419,6 +14443,7 @@ end;
 procedure TMainForm.AntennaSelect(rig: TRig; rigset: Integer; b: TBand);
 var
    ant: Integer;
+   wnd: HWND;
 begin
    if (rigset = 1) or (rigset = 2) then begin
       ant := dmZLogGlobal.Settings.FRigSet[rigset].FAnt[b];
@@ -14427,6 +14452,14 @@ begin
       end
       else begin
          rig.AntSelect(ant);
+      end;
+
+      // 外部アンテナセレクターへ切替指示
+      if dmZLogGlobal.Settings.FExtAntSelWndClass <> '' then begin
+         wnd := FindWindow(PChar(dmZLogGlobal.Settings.FExtAntSelWndClass), nil);
+         if wnd <> 0 then begin
+            SendMessage(wnd, WM_USER + 100, rigset, ant);
+         end;
       end;
    end;
 end;

@@ -7,7 +7,7 @@ interface
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
   System.DateUtils, Generics.Collections, Generics.Defaults,
-  UzLogConst, HelperLib;
+  UzLogConst, HelperLib, UzLogAdif;
 
 type
   TQSODataExHeader = packed record
@@ -394,14 +394,15 @@ type
 
     procedure SaveToFile(Filename : string);
     procedure SaveToFileEx(Filename: string);
-    procedure SaveToFilezLogDOSTXT(Filename : string);
-    procedure SaveToFilezLogCsv(Filename: string);
+    procedure SaveToFileAszLogDOSTXT(Filename : string);
+    procedure SaveToFileAszLogCsv(Filename: string);
     {$IFNDEF ZSERVER}
-    procedure SaveToFilezLogALL(Filename : string);
-    procedure SaveToFileByTX(Filename : string);
-    procedure SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList = nil);
-    procedure SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
-    procedure SaveToFileByHamSupport(Filename: string);
+    procedure SaveToFileAszLogALL(Filename : string);
+    procedure SaveToFileAsTxtByTX(Filename : string);
+    procedure SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList = nil);
+    procedure SaveToFileAsHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
+    procedure SaveToFileAsHamSupport(Filename: string);
+    procedure SaveToFileAsAdif(Filename: string);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -429,7 +430,8 @@ type
 
     function LoadFromFile(filename: string): Integer;
     function LoadFromFileEx(filename: string): Integer;
-    function LoadFromFilezLogCsv(Filename: string): Integer;
+    function LoadFromFileAszLogCsv(Filename: string): Integer;
+    function LoadFromFileAsAdif(Filename: string): Integer;
 //    function MergeFile(filename: string): Integer;
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
@@ -2237,7 +2239,7 @@ begin
    FSaved := True;
 end;
 
-procedure TLog.SaveToFilezLogDOSTXT(Filename: string);
+procedure TLog.SaveToFileAszLogDOSTXT(Filename: string);
 var
    f: textfile;
    i, j, max: Integer;
@@ -2280,7 +2282,7 @@ begin
 end;
 
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFilezLogALL(Filename: string);
+procedure TLog.SaveToFileAszLogALL(Filename: string);
 var
    f: textfile;
    Header: string;
@@ -2301,7 +2303,7 @@ begin
 end;
 {$ENDIF}
 
-procedure TLog.SaveToFilezLogCsv(Filename: string);
+procedure TLog.SaveToFileAszLogCsv(Filename: string);
 const
    csvheader = '"Date","Time","TimeZone","CallSign","RSTSent","NrSent","RSTRcvd","NrRcvd","Serial","Mode",' +
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
@@ -2451,7 +2453,7 @@ begin
 end;
 
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileByTX(Filename: string);
+procedure TLog.SaveToFileAsTxtByTX(Filename: string);
 var
    f: textfile;
    Header: string;
@@ -2658,7 +2660,7 @@ end;
 //QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
 
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileByCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList);
+procedure TLog.SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList);
 var
    F: TextFile;
    i: Integer;
@@ -2841,7 +2843,7 @@ HAMLOG CSV仕様
 　でもそれ以外の場合もある
 }
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileByHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer;
+procedure TLog.SaveToFileAsHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer;
                                  strRemarks1: string; strRemarks2: string;
                                  nCodeOption: Integer; nNameOption: Integer;
                                  nTimeOption: Integer;
@@ -3127,7 +3129,7 @@ end;
 // 29 NR Sent
 // 30 NR Received
 
-procedure TLog.SaveToFileByHamSupport(Filename: string);
+procedure TLog.SaveToFileAsHamSupport(Filename: string);
 var
    slLine: TStringList;
    slFile: TStringList;
@@ -3374,6 +3376,106 @@ begin
       slFile.Free();
    end;
 end;
+
+procedure TLog.SaveToFileAsAdif(Filename: string);
+var
+   f: textfile;
+   Header, S, temp: string;
+   i: Integer;
+   Q: TQSO;
+   offsetmin: Integer;
+   dbl: double;
+
+   function AdifField(F, V: string): string;
+   begin
+      if F = '' then begin
+         Result := '';
+      end
+      else begin
+         Result := '<' + F + ':' + IntToStr(Length(V)) + '>' + V;
+      end;
+   end;
+begin
+   Header := 'ADIF export from zLog for Windows'; // +dmZlogGlobal.Settings._mycall;
+
+   AssignFile(f, filename);
+   Rewrite(f);
+
+   { str := 'zLog for Windows Text File'; }
+   WriteLn(f, Header);
+   WriteLn(f, 'All times in UTC');
+   WriteLn(f, '<eoh>');
+
+   offsetmin := Log.QsoList[0].RSTsent;
+   { if offsetmin = 0 then // default JST for older versions
+     offsetmin := -1*9*60; }
+   if offsetmin = _USEUTC then // already recorded in utc
+      offsetmin := 0;
+   dbl := offsetmin / (24 * 60);
+
+   for i := 1 to Log.TotalQSO do begin
+      Q := Log.QsoList[i];
+
+      S := AdifField('qso_date', FormatDateTime('yyyymmdd', Q.Time + dbl));
+      S := S + AdifField('time_on', FormatDateTime('hhnn', Q.Time + dbl));
+      S := S + AdifField('time_off', FormatDateTime('hhnn', Q.Time + dbl));
+
+      S := S + AdifField('call', Q.Callsign);
+
+      S := S + AdifField('rst_sent', IntToStr(Q.RSTsent));
+
+      if MyContest.SerialType = stNone then begin
+         S := S + AdifField('stx_string', Q.NrSent);
+      end
+      else begin
+         S := S + AdifField('stx', IntToStr(Q.Serial));
+      end;
+
+      S := S + AdifField('rst_rcvd', IntToStr(Q.RSTRcvd));
+
+      if MyContest.SerialType = stNone then begin
+         S := S + AdifField('srx_string', Q.NrRcvd);
+      end
+      else begin
+         S := S + AdifField('srx', Q.NrRcvd);
+      end;
+
+      S := S + AdifField(MyContest.ADIF_ExchangeRX_FieldName, MyContest.ADIF_ExchangeRX(Q));
+
+      temp := MyContest.ADIF_ExtraField(Q);
+      if temp <> '' then begin
+         S := S + AdifField(MyContest.ADIF_ExtraFieldName, temp);
+      end;
+
+      S := S + AdifField('band', ADIFBandString[Q.Band]);
+      S := S + AdifField('mode', ModeString[Q.mode]);
+
+      if Q.Operator <> '' then begin
+         S := S + AdifField('operator', Q.Operator);
+      end;
+
+      if Q.Memo <> '' then begin
+         S := S + AdifField('comment', Q.Memo);
+      end;
+
+      temp := Q.FreqStr2;
+      if temp <> '' then begin
+         S := S + AdifField('freq', temp);
+      end;
+
+      temp := MyContest.AdifContestId;
+      if temp <> '' then begin
+         S := S + AdifField('contest_id', temp);
+      end;
+
+      S := S + '<eor>';
+
+      WriteLn(f, S);
+   end;
+
+   CloseFile(f);
+end;
+
 {$ENDIF}
 
 procedure TLog.RebuildDupeCheckList;
@@ -3859,7 +3961,7 @@ begin
    Result := TotalQSO;
 end;
 
-function TLog.LoadFromFilezLogCsv(Filename: string): Integer;
+function TLog.LoadFromFileAszLogCsv(Filename: string): Integer;
 var
    i: Integer;
    Q: TQSO;
@@ -4052,6 +4154,234 @@ begin
       slFile.Free();
       slLine.Free();
       slText.Free();
+   end;
+end;
+
+//
+// <qso_date:8>20250312<time_on:4>0253<time_off:4>0253<call:6>JR8PPG<rst_sent:3>599<stx_string:4>106H<rst_rcvd:3>599<srx_string:4>106M<band:3>40m<mode:2>CW<contest_id:11>JA_DOMESTIC<eor>
+//
+function TLog.LoadFromFileAsAdif(Filename: string): Integer;
+var
+   i: Integer;
+   Q: TQSO;
+   offsetmin: Integer;
+   qsoid: Integer;
+   b: TBand;
+   S: string;
+   dt: string;
+   tm: string;
+   adif: TAdifFile;
+   yy, mm, dd, hh, nn: Word;
+   m: TMode;
+   defrst: Integer;
+   h: Integer;
+
+   //
+   function GetMode(adifMode: string): TMode;
+   var
+      m: TMode;
+   begin
+      for m := mCW to mOther do begin
+         if ModeString[m] = adifMode then begin
+            Result := m;
+            Exit;
+         end;
+      end;
+      Result := mOther;
+   end;
+
+   //
+   function GetBand(adifBand: string): TBand;
+   var
+      b: TBand;
+   begin
+      for b := b19 to b10g do begin
+         if ADIFBandString[b] = adifBand then begin
+            Result := b;
+            Exit;
+         end;
+      end;
+      Result := bUnknown;
+   end;
+begin
+   adif := TAdifFile.Create();
+   try
+      if FileExists(Filename) = False then begin
+         Result := 0;
+         Exit;
+      end;
+
+      // ADIFのロード＆パース
+      adif.LoadFromFile(Filename);
+      adif.Parse();
+
+      // このコンテストのTimezone
+      offsetmin := Log.QsoList[0].RSTsent;
+      if offsetmin = _USEUTC then begin
+         h := 0;
+      end
+      else begin
+         h := Trunc(Abs(offsetmin / 60));
+      end;
+
+      for i := 0 to adif.Items.Count - 1 do begin
+
+         Q := TQSO.Create();
+
+         // 1列目　交信年月日（yyyymmdd）
+         // 2列目　交信時分（hhnn）
+         dt := adif.Items[i].Values['QSO_DATE'];
+         tm := adif.Items[i].Values['TIME_ON'];
+
+         yy := StrToIntDef(Copy(dt, 1, 4), 0);
+         mm := StrToIntDef(Copy(dt, 5, 2), 0);
+         dd := StrToIntDef(Copy(dt, 7, 8), 0);
+         hh := StrToIntDef(Copy(tm, 1, 2), 0);
+         nn := StrToIntDef(Copy(tm, 3, 2), 0);
+
+         Q.Time := EncodeDateTime(yy, mm, dd, hh, nn, 0, 0);
+
+         // JSTの場合は変換する
+         if h <> 0 then begin
+            Q.Time := IncHour(Q.Time, h);
+         end;
+
+         // モード
+         m := GetMode(adif.Items[i].Values['MODE']);
+
+         if (m = mSSB) or (m = mAM) or (m = mFM) then begin
+            defrst := 59;
+         end
+         else begin
+            defrst := 599;
+         end;
+
+         // コールサイン
+         Q.Callsign := adif.Items[i].Values['CALL'];
+
+         // 相手局へ送ったRST
+         Q.RSTSent := StrToIntDef(adif.Items[i].Values['RST_SENT'], defrst);
+
+         // 相手局へ送ったNumber
+         if MyContest.SerialType = stNone then begin
+            Q.NrSent := adif.Items[i].Values['STX_STRING'];
+         end
+         else begin
+            Q.Serial := StrToIntDef(adif.Items[i].Values['STX'], 0);
+         end;
+
+         // 相手局からもらったレポート
+         Q.RSTRcvd := StrToIntDef(adif.Items[i].Values['RST_RCVD'], defrst);
+
+         // 相手局からもらったNumber
+         S := MyContest.ADIF_ExchangeRX_FieldName;
+         if S = '' then begin
+            if MyContest.SerialType = stNone then begin
+               Q.NrRcvd := adif.Items[i].Values['SRX_STRING'];
+            end
+            else begin
+               Q.NrRcvd := adif.Items[i].Values['SRX'];
+            end;
+         end
+         else begin
+            Q.NrRcvd := adif.Items[i].Values[S];
+         end;
+
+         // Mode
+         Q.Mode := m;
+
+         // Band
+         Q.Band := GetBand(adif.Items[i].Values['BAND']);
+
+         // 12列目 Power 0:P 1:L 2:M 3:H
+         Q.Power := dmZLogGlobal.PowerOfBand[Q.Band];
+
+         // マルチ１
+         Q.Multi1 := '';
+
+         // マルチ２
+         Q.Multi2 := '';
+
+         // Newマルチ１
+         Q.NewMulti1 := False;
+
+         // Newマルチ２
+         Q.NewMulti2 := False;
+
+         // Points
+         Q.Points := 0;
+
+         // Operator
+         Q.Operator := adif.Items[i].Values['OPERATOR'];
+
+         // memo
+         Q.Memo := adif.Items[i].Values['COMMENT'];
+
+         // CQ
+         Q.CQ := False;
+
+         // Dupe
+         Q.Dupe := False;
+
+         // Reserve
+         Q.Reserve := 0;
+
+         // TX
+         Q.TX := dmZlogGlobal.TXNr;
+
+         // Power2
+         Q.Power2 := 0;
+
+         // Reserve2
+         Q.Reserve2 := 0;
+
+         // Reserve3
+         Q.Reserve3 := 0;
+
+         // 27列目 Freq
+         Q.Freq := adif.Items[i].Values['FREQ'];
+
+         // QsyViolation
+         Q.QsyViolation := False;
+
+         // PCName
+         Q.PCName := dmZLogGlobal.Settings._pcname;
+
+         // Forced
+         Q.Forced := False;
+
+         // QslState
+         Q.QslState := qsNone;
+
+         // Invalid
+         Q.Invalid := False;
+
+         // RBN Verified
+         Q.RbnVerified := False;
+
+         // QSOIDが無ければ発番する
+         if Q.Reserve3 = 0 then begin
+            repeat
+               qsoid := dmZLogGlobal.NewQSOID;
+            until CheckQSOID(qsoid) = False;
+            Q.Reserve3 := qsoid;
+         end;
+
+         Add(Q, True);
+      end;
+
+      // DUPEチェック用Indexをソート
+      for b := Low(FDupeCheckList) to High(FDupeCheckList) do begin
+         FDupeCheckList[b].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
+      end;
+
+      if Q <> nil then begin
+         GLOBALSERIAL := (Q.Reserve3 div 10000) mod 10000;
+      end;
+
+      Result := TotalQSO;
+   finally
+      adif.Free();
    end;
 end;
 

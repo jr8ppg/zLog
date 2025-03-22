@@ -154,6 +154,7 @@ type
     FRigControl: array[1..5] of TRigSetting;
     FRigSet: array[1..2] of TRigSet;
     FRigShowRitInfo: Boolean;
+    FExtAntSelWndClass: string;
 
     _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
@@ -1325,6 +1326,8 @@ begin
 
       Settings.FRigShowRitInfo := ini.ReadBool('Rig', 'ShowRitInfo', False);
 
+      Settings.FExtAntSelWndClass := ini.ReadString('ExtAntSel', 'WndClass', '');
+
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
          slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,,,';
@@ -2046,6 +2049,8 @@ begin
 
       ini.WriteInteger('Windows', 'SuperCheckColumns', Settings._super_check_columns);
       ini.WriteInteger('Windows', 'SuperCheck2Columns', Settings._super_check2_columns);
+
+      ini.WriteString('ExtAntSel', 'WndClass', Settings.FExtAntSelWndClass);
 
       // QuickQSY
       for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin

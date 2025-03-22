@@ -1358,6 +1358,7 @@ begin
    FUseContestPeriod := False;
    FStartTime := -1;
    FPeriod := 0;
+   FNeedCtyDat := True;
 
    AdifContestId := '';
 end;
