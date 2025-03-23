@@ -5072,7 +5072,9 @@ var
    i: Integer;
 begin
    // パラレルポート初期化
-   dmZLogKeyer.ParallelPort.Initialize();
+   if dmZLogGlobal.Settings.FExtAntSelWndClass = '' then begin
+      dmZLogKeyer.ParallelPort.Initialize();
+   end;
 
    if (TParallelPort.IsParallelPortPresent() = False) then begin
       for i := 1 to 5 do begin
@@ -14451,14 +14453,14 @@ begin
          dmZLogKeyer.AntSelect(rigset, ant);
       end
       else begin
-         rig.AntSelect(ant);
-      end;
-
-      // 外部アンテナセレクターへ切替指示
-      if dmZLogGlobal.Settings.FExtAntSelWndClass <> '' then begin
-         wnd := FindWindow(PChar(dmZLogGlobal.Settings.FExtAntSelWndClass), nil);
-         if wnd <> 0 then begin
-            SendMessage(wnd, WM_USER + 100, rigset, ant);
+         if dmZLogGlobal.Settings.FExtAntSelWndClass = '' then begin
+            rig.AntSelect(ant);
+         end
+         else begin
+            wnd := FindWindow(PChar(dmZLogGlobal.Settings.FExtAntSelWndClass), nil);
+            if wnd <> 0 then begin
+               SendMessage(wnd, WM_USER + 100, rigset, ant);
+            end;
          end;
       end;
    end;
