@@ -7575,6 +7575,7 @@ begin
    if i = 0 then begin
       (* if none of the avobe formats succeeed *)
       i := zyloImportFile(ff);
+      Log.Renumber();
    end;
 
    if i > 0 then begin

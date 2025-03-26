@@ -449,6 +449,8 @@ type
     function GetLastSerial(aQSO: TQSO): Integer;
     function GetCurrentSerial(aQSO: TQSO): Integer;
 
+    procedure Renumber();
+
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
@@ -4668,6 +4670,21 @@ begin
    end;
 end;
 
+procedure TLog.Renumber();
+var
+   i: Integer;
+   Q: TQSO;
+   qsoid: Integer;
+begin
+   for i := 1 to FQsoList.Count - 1 do begin
+      Q := FQsoList[i];
+
+      repeat
+         qsoid := dmZLogGlobal.NewQSOID;
+      until CheckQSOID(qsoid) = False;
+      Q.Reserve3 := qsoid;
+   end;
+end;
 
 { TQSOCallsignComparer }
 
