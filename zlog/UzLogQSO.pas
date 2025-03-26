@@ -3226,7 +3226,7 @@ begin
    slLine.Add2('TXPower');
    slLine.Add2('Latitude');
    slLine.Add2('Longitude');
-   slLine.Add2('JCC/JGC');
+   slLine.Add2('JCC/JCG');
    slLine.Add2('Altitude above sea level');
    slLine.Add2('Weather');
    slLine.Add2('Other Information');
@@ -3330,10 +3330,10 @@ begin
          slLine.Add2('');
 
          // 22 Latitude
-         slLine.Add2('');
+         slLine.Add2(dmZLogGlobal.Settings._mylatitude);
 
          // 23 Longitude
-         slLine.Add2('');
+         slLine.Add2(dmZLogGlobal.Settings._mylongitude);
 
          // 24 JCC/JGC
          if (Pos('$Q', MyContest.SentStr) > 0) or
