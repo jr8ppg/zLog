@@ -3144,6 +3144,7 @@ var
    qsotime: TDateTime;
    strPortable: string;
    strCallsign: string;
+   deg: Extended;
 const
    strQslState: array[qsNone..qsNoQsl] of string = ( '‚È‚µ', 'BURO', '‚È‚µ' );
    strQslFlag: array[qsNone..qsNoQsl] of string = ( '', 'FALSE', '' );
@@ -3333,7 +3334,13 @@ begin
          slLine.Add2(dmZLogGlobal.Settings._mylatitude);
 
          // 23 Longitude
-         slLine.Add2(dmZLogGlobal.Settings._mylongitude);
+         if dmZLogGlobal.Settings._mylongitude <> '' then begin
+            deg := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0) * -1;
+            slLine.Add2(FloatToStr(deg));
+         end
+         else begin
+            slLine.Add2('');
+         end;
 
          // 24 JCC/JGC
          if (Pos('$Q', MyContest.SentStr) > 0) or
