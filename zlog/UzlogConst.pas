@@ -244,7 +244,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..169] of string = (
+  default_primary_shortcut: array[0..170] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -414,10 +414,11 @@ const
     'Alt+2',            // #166 actionToggleF2A
     '',                 // #167 actionQsoSearch
     '',                 // #168 actionSo2rToggleAfBlend
-    ''                  // #169 actionShowEntityInfo
+    '',                 // #169 actionShowEntityInfo
+    ''                  // #170 actionShowGrayline
   );
 
-  default_secondary_shortcut: array[0..169] of string = (
+  default_secondary_shortcut: array[0..170] of string = (
     '',                 // #00
     '',
     '',
@@ -587,7 +588,8 @@ const
     '',                 // #166 actionToggleF2A
     '',                 // #167 actionQsoSearch
     '',                 // #168 actionSo2rToggleAfBlend
-    ''                  // #169 actionShowEntityInfo
+    '',                 // #169 actionShowEntityInfo
+    ''                  // #170 actionShowGrayline
   );
 
 const
