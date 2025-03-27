@@ -18,7 +18,7 @@ object formMain: TformMain
     Top = 0
     Width = 575
     Height = 421
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -113,7 +113,8 @@ object formMain: TformMain
           '#133 QSY Indicator'#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#142 Information'#12454#12452#12531#12489#12454#12398#34920#31034'='
           '#161 CW'#12514#12491#12479#12540#12398#34920#31034'='
-          '#169 '#12456#12531#12486#12451#12486#12451#24773#22577#12398#34920#31034'=')
+          '#169 '#12456#12531#12486#12451#12486#12451#24773#22577#12398#34920#31034'='
+          '#170 Grayline'#12510#12483#12503#12398#34920#31034'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021
@@ -352,8 +353,6 @@ object formMain: TformMain
           #27231#33021
           #12471#12519#12540#12488#12459#12483#12488#12461#12540)
         OnDblClick = vleDblClick
-        ExplicitWidth = 563
-        ExplicitHeight = 392
         ColWidths = (
           448
           113)
