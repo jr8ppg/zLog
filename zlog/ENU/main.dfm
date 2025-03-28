@@ -6214,6 +6214,9 @@ object MainForm: TMainForm
       object actionShowEntityInfo1: TMenuItem
         Action = actionShowEntityInfo
       end
+      object Grayline1: TMenuItem
+        Action = actionShowGrayline
+      end
     end
     object menuSettings: TMenuItem
       Caption = '&Settings'
@@ -7816,6 +7819,10 @@ object MainForm: TMainForm
     object actionShowEntityInfo: TAction
       Caption = 'Entity infomation'
       OnExecute = actionShowEntityInfoExecute
+    end
+    object actionShowGrayline: TAction
+      Caption = 'Grayline'
+      OnExecute = actionShowGraylineExecute
     end
   end
   object SPCMenu: TPopupMenu

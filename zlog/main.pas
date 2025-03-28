@@ -32,7 +32,7 @@ uses
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
   UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
-  UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo;
+  UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo, UGrayline;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -626,6 +626,8 @@ type
     menuRbnOptions: TMenuItem;
     actionShowEntityInfo: TAction;
     actionShowEntityInfo1: TMenuItem;
+    actionShowGrayline: TAction;
+    Grayline1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -955,6 +957,7 @@ type
       State: TGridDrawState);
     procedure menuRbnOptionsClick(Sender: TObject);
     procedure actionShowEntityInfoExecute(Sender: TObject);
+    procedure actionShowGraylineExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -992,6 +995,7 @@ type
     FProgress: TformProgress;
     FQsoSearch: TformSearch;
     FEntityInfo: TformEntityInfo;
+    FGrayline: TformGrayline;
 
     FInitialized: Boolean;
 
@@ -2426,6 +2430,7 @@ begin
    FProgress      := TformProgress.Create(Self);
    FQsoSearch     := TformSearch.Create(Self);
    FEntityInfo    := TformEntityInfo.Create(Self);
+   FGrayline      := TformGrayline.Create(Self);
 
    FSuperCheck.OnChangeFontSize := OnChangeFontSize;
    FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
@@ -2802,6 +2807,7 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FMessageManager);
       dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
       dmZlogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
+      dmZlogGlobal.ReadWindowState(ini, FGrayline);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].LoadSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -2857,6 +2863,7 @@ begin
       dmZlogGlobal.WriteWindowState(ini, FMessageManager);
       dmZlogGlobal.WriteWindowState(ini, FCWMonitor);
       dmZlogGlobal.WriteWindowState(ini, FEntityInfo);
+      dmZlogGlobal.WriteWindowState(ini, FGrayline);
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].SaveSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -5072,7 +5079,9 @@ var
    i: Integer;
 begin
    // パラレルポート初期化
-   dmZLogKeyer.ParallelPort.Initialize();
+   if dmZLogGlobal.Settings.FExtAntSelWndClass = '' then begin
+      dmZLogKeyer.ParallelPort.Initialize();
+   end;
 
    if (TParallelPort.IsParallelPortPresent() = False) then begin
       for i := 1 to 5 do begin
@@ -5189,6 +5198,7 @@ begin
    FProgress.Release();
    FQsoSearch.Release();
    FEntityInfo.Release();
+   FGrayline.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -7573,6 +7583,7 @@ begin
    if i = 0 then begin
       (* if none of the avobe formats succeeed *)
       i := zyloImportFile(ff);
+      Log.Renumber();
    end;
 
    if i > 0 then begin
@@ -11792,6 +11803,12 @@ begin
    FEntityInfo.Show();
 end;
 
+// #170 Grayline
+procedure TMainForm.actionShowGraylineExecute(Sender: TObject);
+begin
+   FGrayline.Show();
+end;
+
 procedure TMainForm.WriteKeymap();
 var
    i: Integer;
@@ -14451,14 +14468,14 @@ begin
          dmZLogKeyer.AntSelect(rigset, ant);
       end
       else begin
-         rig.AntSelect(ant);
-      end;
-
-      // 外部アンテナセレクターへ切替指示
-      if dmZLogGlobal.Settings.FExtAntSelWndClass <> '' then begin
-         wnd := FindWindow(PChar(dmZLogGlobal.Settings.FExtAntSelWndClass), nil);
-         if wnd <> 0 then begin
-            SendMessage(wnd, WM_USER + 100, rigset, ant);
+         if dmZLogGlobal.Settings.FExtAntSelWndClass = '' then begin
+            rig.AntSelect(ant);
+         end
+         else begin
+            wnd := FindWindow(PChar(dmZLogGlobal.Settings.FExtAntSelWndClass), nil);
+            if wnd <> 0 then begin
+               SendMessage(wnd, WM_USER + 100, rigset, ant);
+            end;
          end;
       end;
    end;

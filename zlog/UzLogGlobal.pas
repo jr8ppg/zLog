@@ -388,6 +388,12 @@ type
 
     // Update interval
     FInfoUpdateInterval: Integer;
+
+    // Grayline
+    FShowGrayline: Boolean;
+    FShowMeridians: Boolean;
+    FShowEquator: Boolean;
+    FShowMyLocation: Boolean;
   end;
 
   TCommPort = class(TObject)
@@ -1296,6 +1302,12 @@ begin
       // Update using a thread
       Settings._renewbythread := ini.ReadBool('Misc', 'UpdateUsingThread', False);
 
+      // grayline
+      Settings.FShowGrayline := ini.ReadBool('Grayline', 'ShowGrayline', True);
+      Settings.FShowMeridians := ini.ReadBool('Grayline', 'ShowMeridians', False);
+      Settings.FShowEquator := ini.ReadBool('Grayline', 'ShowEquator', False);
+      Settings.FShowMyLocation := ini.ReadBool('Grayline', 'ShowMyLocation', False);
+
       //
       // ここから隠し設定
       //
@@ -2029,6 +2041,12 @@ begin
 
       // Update using a thread
       ini.WriteBool('Misc', 'UpdateUsingThread', Settings._renewbythread);
+
+      // grayline
+      ini.WriteBool('Grayline', 'ShowGrayline', Settings.FShowGrayline);
+      ini.WriteBool('Grayline', 'ShowMeridians', Settings.FShowMeridians);
+      ini.WriteBool('Grayline', 'ShowEquator', Settings.FShowEquator);
+      ini.WriteBool('Grayline', 'ShowMyLocation', Settings.FShowMyLocation);
 
       //
       // ここから隠し設定

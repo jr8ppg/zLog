@@ -449,6 +449,8 @@ type
     function GetLastSerial(aQSO: TQSO): Integer;
     function GetCurrentSerial(aQSO: TQSO): Integer;
 
+    procedure Renumber();
+
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
@@ -3142,6 +3144,7 @@ var
    qsotime: TDateTime;
    strPortable: string;
    strCallsign: string;
+   deg: Extended;
 const
    strQslState: array[qsNone..qsNoQsl] of string = ( '‚È‚µ', 'BURO', '‚È‚µ' );
    strQslFlag: array[qsNone..qsNoQsl] of string = ( '', 'FALSE', '' );
@@ -3224,7 +3227,7 @@ begin
    slLine.Add2('TXPower');
    slLine.Add2('Latitude');
    slLine.Add2('Longitude');
-   slLine.Add2('JCC/JGC');
+   slLine.Add2('JCC/JCG');
    slLine.Add2('Altitude above sea level');
    slLine.Add2('Weather');
    slLine.Add2('Other Information');
@@ -3328,10 +3331,16 @@ begin
          slLine.Add2('');
 
          // 22 Latitude
-         slLine.Add2('');
+         slLine.Add2(dmZLogGlobal.Settings._mylatitude);
 
          // 23 Longitude
-         slLine.Add2('');
+         if dmZLogGlobal.Settings._mylongitude <> '' then begin
+            deg := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0) * -1;
+            slLine.Add2(FloatToStr(deg));
+         end
+         else begin
+            slLine.Add2('');
+         end;
 
          // 24 JCC/JGC
          if (Pos('$Q', MyContest.SentStr) > 0) or
@@ -4668,6 +4677,21 @@ begin
    end;
 end;
 
+procedure TLog.Renumber();
+var
+   i: Integer;
+   Q: TQSO;
+   qsoid: Integer;
+begin
+   for i := 1 to FQsoList.Count - 1 do begin
+      Q := FQsoList[i];
+
+      repeat
+         qsoid := dmZLogGlobal.NewQSOID;
+      until CheckQSOID(qsoid) = False;
+      Q.Reserve3 := qsoid;
+   end;
+end;
 
 { TQSOCallsignComparer }
 

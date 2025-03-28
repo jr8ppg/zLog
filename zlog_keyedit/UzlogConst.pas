@@ -119,7 +119,7 @@ const
      );
 
 const
-  RIGNAMES : array[0..23] of string =
+  RIGNAMES : array[0..24] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -127,7 +127,8 @@ const
  'TS-2000',
  'TS-2000/P',
  'TS-570',
- 'TS-590/890',
+ 'TS-590',
+ 'TS-890',
  'TS-990',
  'FT-710',
  'FT-817',
@@ -243,7 +244,7 @@ const
   );
 
 const
-  default_primary_shortcut: array[0..169] of string = (
+  default_primary_shortcut: array[0..170] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -413,10 +414,11 @@ const
     'Alt+2',            // #166 actionToggleF2A
     '',                 // #167 actionQsoSearch
     '',                 // #168 actionSo2rToggleAfBlend
-    ''                  // #169 actionShowEntityInfo
+    '',                 // #169 actionShowEntityInfo
+    ''                  // #170 actionShowGrayline
   );
 
-  default_secondary_shortcut: array[0..169] of string = (
+  default_secondary_shortcut: array[0..170] of string = (
     '',                 // #00
     '',
     '',
@@ -586,7 +588,8 @@ const
     '',                 // #166 actionToggleF2A
     '',                 // #167 actionQsoSearch
     '',                 // #168 actionSo2rToggleAfBlend
-    ''                  // #169 actionShowEntityInfo
+    '',                 // #169 actionShowEntityInfo
+    ''                  // #170 actionShowGrayline
   );
 
 const

@@ -164,7 +164,9 @@ uses
   Progress in 'Progress.pas' {formProgress},
   UOptions2 in 'UOptions2.pas' {formOptions2},
   UEntityInfo in 'UEntityInfo.pas' {formEntityInfo},
-  UzLogAdif in 'UzLogAdif.pas';
+  UzLogAdif in 'UzLogAdif.pas',
+  UGrayline in 'UGrayline.pas' {formGrayline},
+  UzGraylineMap in 'UzGraylineMap.pas';
 
 {$R *.res}
 
