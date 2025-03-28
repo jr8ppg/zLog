@@ -165,7 +165,8 @@ uses
   UOptions2 in 'UOptions2.pas' {formOptions2},
   UEntityInfo in 'UEntityInfo.pas' {formEntityInfo},
   UzLogAdif in 'UzLogAdif.pas',
-  UGrayline in 'UGrayline.pas' {formGrayline};
+  UGrayline in 'UGrayline.pas' {formGrayline},
+  UzGraylineMap in 'UzGraylineMap.pas';
 
 {$R *.res}
 

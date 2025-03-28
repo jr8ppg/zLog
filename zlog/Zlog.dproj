@@ -584,6 +584,7 @@
             <Form>formGrayline</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UzGraylineMap.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -1419,6 +1420,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="resource\worldmap.png" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="resource\worldmap.png" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

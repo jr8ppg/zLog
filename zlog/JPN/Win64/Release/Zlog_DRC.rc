@@ -1406,7 +1406,7 @@ BEGIN
 	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q\x306F\x4ED6\x306E\x6A5F\x80FD\x306B\x30A2\x30B5\x30A4\x30F3\x3055\x308C\x3066\x3044\x307E\x3059\x3002\x6A2A\x53D6\x308A\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_To_Change_the_mode,	L"\x904B\x7528\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
 	Main_TMainForm_To_Change_the_band,	L"\x904B\x7528\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
-	Main_TMainform_rbn_verified,	L"RBN\x7167\x5408\x7D50\x679C\r\n%2 \x5C40\x4E2D %1 \x5C40\x304CRBN\x3068\x7167\x5408\x3067\x304D\x307E\x3057\x305F"
+	Main_TMainform_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1481,9 +1481,9 @@ BEGIN
 	System_NetConsts_SMimeValueEmpty,	L"\x5024\x306E\x540D\x524D\x304C\x5165\x529B\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeWeightOutOfRange,	L"\x54C1\x8CEA\x306E\x91CD\x307F\x304C\x7BC4\x56F2\x5916\x3067\x3059"
 	UzLogGlobal_MSG_INVALID_CHARACTER,	L"\x3053\x306E\x6587\x5B57\x306F\x4F7F\x7528\x3067\x304D\x307E\x305B\x3093\x3002 [%s]"
-	URateDialog_HOURCAPTION_SHOWFIRST,	L"\x6700\x521D\x304B\x3089"
-	URateDialog_HOURCAPTION_SHOWCURRENT,	L"\x73FE\x5728\x306E"
-	URateDialog_HOURCAPTION_SHOWLAST,	L"\x6700\x5F8C\x304B\x3089"
+	URateDialog_HOURCAPTION_SHOWFIRST,	L"Show first"
+	URateDialog_HOURCAPTION_SHOWCURRENT,	L"Show current"
+	URateDialog_HOURCAPTION_SHOWLAST,	L"Show last"
 	URateDialogEx_SCOREGRID_TOTAL,	L"\x5408\x8A08"
 	URateDialogEx_SCOREGRID_TARGET,	L"\x76EE\x6A19"
 	URateDialogEx_SCOREGRID_DIFF,	L"\x5DEE"
@@ -1491,9 +1491,9 @@ BEGIN
 	URateDialogEx_SCOREGRID_CUMULATIVE,	L"\x7D2F\x8A08"
 	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
 	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
-	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"\x6700\x521D\x304B\x3089"
-	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"\x73FE\x5728\x306E"
-	URateDialogEx_HOURCAPTION_SHOWLAST,	L"\x6700\x5F8C\x304B\x3089"
+	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"Show first"
+	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"Show current"
+	URateDialogEx_HOURCAPTION_SHOWLAST,	L"Show last"
 	System_NetConsts_SNetHttpClientUnknownError,	L"\x4E0D\x660E\x306A\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x305F\x305F\x3081\x8981\x6C42\x306E\x5B9F\x884C\x304C\x7D42\x4E86\x3057\x307E\x3057\x305F"
 	System_NetConsts_SNetHttpComponentRequestClient,	L"\x8981\x6C42\x30B3\x30F3\x30DD\x30FC\x30CD\x30F3\x30C8\x306B\x30AF\x30E9\x30A4\x30A2\x30F3\x30C8\x304C\x5272\x308A\x5F53\x3066\x3089\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SNetHttpHeadersError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x554F\x3044\x5408\x308F\x305B\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
@@ -2767,9 +2767,9 @@ END
 /* D:\JEDI\jvcl\resources\JvLED.res */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\CategoryButtons.res */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\ExtDlgs.res */
-/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\LibV33OpenSSL64.RES */
-/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\ICSCerts.RES */
-/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\RootCaCertsBundle.RES */
+/* C:\Users\mutou\OneDrive\ドキュメント\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\LibV34OpenSSL64.RES */
+/* C:\Users\mutou\OneDrive\ドキュメント\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\ICSCerts.RES */
+/* C:\Users\mutou\OneDrive\ドキュメント\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\RootCaCertsBundle.RES */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\SPIN.RES */
 /* D:\github\zLog_v2930\zlog\UzLogForm.dfm */
 /* D:\github\zLog_v2930\zlog\USuperCheck2.DFM */
