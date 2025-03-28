@@ -35,4 +35,27 @@ object formGrayline: TformGrayline
     Left = 184
     Top = 104
   end
+  object PopupMenu1: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 320
+    Top = 184
+    object menuShowGrayline: TMenuItem
+      Caption = 'Show grayline'
+      Checked = True
+      OnClick = menuShowGraylineClick
+    end
+    object menuShowMeridians: TMenuItem
+      Caption = 'Show meridians'
+      OnClick = menuShowMeridiansClick
+    end
+    object menuShowEquator: TMenuItem
+      Caption = 'Show equator'
+      OnClick = menuShowEquatorClick
+    end
+    object menuShowMyLocation: TMenuItem
+      Caption = 'Show my location'
+      OnClick = menuShowMyLocationClick
+    end
+  end
 end

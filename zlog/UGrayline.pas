@@ -20,10 +20,10 @@ type
     Image1: TImage;
     Timer1: TTimer;
     PopupMenu1: TPopupMenu;
+    menuShowGrayline: TMenuItem;
     menuShowMeridians: TMenuItem;
     menuShowEquator: TMenuItem;
     menuShowMyLocation: TMenuItem;
-    menuShowGrayline: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -51,6 +51,7 @@ procedure TformGrayline.FormCreate(Sender: TObject);
 var
    png: TPngImage;
 begin
+   Inherited;
    FGrayline := TGraylineMap.Create();
 
    png := TPngImage.Create();
@@ -92,6 +93,7 @@ procedure TformGrayline.FormShow(Sender: TObject);
 var
    utc: TDateTime;
 begin
+   Inherited;
    utc := Now;
    utc := IncHour(utc, -9);
    FGrayline.Calc(utc);
