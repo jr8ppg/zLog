@@ -1269,6 +1269,7 @@ type
     procedure SetCurrentRxRigFlag();
     procedure LoadSpotData(slFileList: TStrings);
     procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
+    function GetFixEdge(b: TBand; m: TMode): Integer;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -11120,6 +11121,7 @@ var
    b: TBand;
    rigset: Integer;
    dwTick: DWORD;
+   edge: Integer;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
@@ -11156,6 +11158,12 @@ begin
 
       // Antenna Select
       AntennaSelect(rig, rigset, b);
+
+      // Fix edge選択
+      edge := GetFixEdge(b, FLastMode[rigset]);
+      if edge <> 0 then begin
+         rig.FixEdgeSelect(edge);
+      end;
    end;
 
    Restore2bsiqMode();
@@ -12223,6 +12231,7 @@ var
    rigset: Integer;
    nID: Integer;
    mode: TMode;
+   edge: Integer;
 begin
    if freq = 0 then begin
       Exit;
@@ -12293,6 +12302,12 @@ begin
       AntennaSelect(rig, rigset, b);
 
       rig.UpdateStatus();
+
+      // Fix edge選択
+      edge := GetFixEdge(b, m);
+      if edge <> 0 then begin
+         rig.FixEdgeSelect(edge);
+      end;
 
       // Zeroin避け
       if dmZLogGlobal.Settings.FAntiZeroinXitOn1 = True then begin
@@ -14691,6 +14706,34 @@ begin
          FTwoLetterMatrix[x, y].AddData(D, C, N, B, True);
       end;
    end;
+end;
+
+function TMainForm.GetFixEdge(b: TBand; m: TMode): Integer;
+var
+   i: Integer;
+   f: TFrequency;
+begin
+   // QiuckQSY
+   for i := Low(dmZLogGlobal.Settings.FQuickQSY) to High(dmZLogGlobal.Settings.FQuickQSY) do begin
+      f := dmZLogGlobal.Settings.FQuickQSY[i].FFreq;
+      if (dmZLogGlobal.BandPlan.FreqToBand(f) = b) and
+         (dmZLogGlobal.Settings.FQuickQSY[i].FMode = m) then begin
+         Result := dmZLogGlobal.Settings.FQuickQSY[i].FFixEdge;
+         Exit;
+      end;
+   end;
+
+   // FreqMemory
+   for i := 0 to FFreqMem.Count - 1 do begin
+      f := FFreqMem[i].Frequency;
+      if (dmZLogGlobal.BandPlan.FreqToBand(f) = b) and
+         (FFreqMem[i].Mode = m) then begin
+         Result := FFreqMem[i].FixEdgeNo;
+         Exit;
+      end;
+   end;
+
+   Result := 0;
 end;
 
 { TBandScopeNotifyThread }
