@@ -12264,6 +12264,7 @@ begin
    rigset := CurrentRx + 1;
 
    b := dmZLogGlobal.BandPlan.FreqToBand(freq);
+   m := TextToMode(FEditPanel[rigset - 1].ModeEdit.Text);
 
    rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
@@ -12280,7 +12281,6 @@ begin
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
 
          // 現在のモードと異なる or 常にモードセットなら
-         m := TextToMode(FEditPanel[rigset - 1].ModeEdit.Text);
          if (m <> Q.Mode) or (dmZLogGlobal.Settings._bandscope_always_change_mode = True) then begin
             // 推定モードセット
 	        rig.SetMode(Q);
@@ -12290,6 +12290,9 @@ begin
                rig.SetFreq(freq, False);
             end;
          end;
+
+         // GetFixEdge()用
+         m := Q.Mode;
 
          Q.Free();
       end;
@@ -14429,13 +14432,7 @@ var
    r: Integer;
    e: Integer;
    obj: TFreqMemory;
-   i: Integer;
 begin
-   m := mCW;
-   f := 0;
-   r := 0;
-   e := 0;
-
    obj := dmZLogGlobal.FreqMemList.ObjectOf(strCommand);
    if obj = nil then begin
       Exit;
