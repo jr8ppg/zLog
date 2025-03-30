@@ -1056,9 +1056,6 @@ type
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
     FWaitForQsoFinish: array[0..4] of Boolean;
 
-    // 周波数メモリー
-    FFreqMem: TFreqMemoryList;
-
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
     FLastFreq: array[1..3] of TFrequency;
@@ -2618,9 +2615,6 @@ begin
    BuildOpListMenu2(OpMenu.Items, OpMenuClick);
 
    FTempQSOList := TQSOList.Create();
-
-   FFreqMem := TFreqMemoryList.Create();
-   FFreqMem.LoadFromFile('zlog_freqmem.txt');
 
    RestoreWindowsPos();
 
@@ -5184,7 +5178,6 @@ begin
 
    EditScreen.Free();
    FTempQSOList.Free();
-   FFreqMem.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
    FCWMessagePad.Release();
@@ -10121,17 +10114,20 @@ var
    m: TMode;
    r: Integer;
    e: Integer;
+   D: TFreqMemory;
 begin
    no := TAction(Sender).Tag;
 
-   if dmZLogGlobal.Settings.FQuickQSY[no].FUse = False then begin
+   if dmZLogGlobal.FreqMemList.Count < no then begin
       Exit;
    end;
 
-   f := dmZLogGlobal.Settings.FQuickQSY[no].FFreq;
-   m := dmZLogGlobal.Settings.FQuickQSY[no].FMode;
-   r := dmZLogGlobal.Settings.FQuickQSY[no].FRig;
-   e := dmZLogGlobal.Settings.FQuickQSY[no].FFixEdge;
+   D := dmZLogGlobal.FreqMemList[no - 1];
+
+   f := D.Frequency;
+   m := D.Mode;
+   r := D.RigNo;
+   e := D.FixEdgeNo;
 
    QSY(bUnknown, m, r, f, e);
 
@@ -14434,35 +14430,21 @@ var
    e: Integer;
    obj: TFreqMemory;
    i: Integer;
-   fFound: Boolean;
 begin
    m := mCW;
    f := 0;
    r := 0;
    e := 0;
 
-   fFound := False;
-   for i := Low(dmZLogGlobal.Settings.FQuickQSY) to High(dmZLogGlobal.Settings.FQuickQSY) do begin
-      if dmZLogGlobal.Settings.FQuickQSY[i].FCommand = strCommand then begin
-         m := dmZLogGlobal.Settings.FQuickQSY[i].FMode;
-         r := dmZLogGlobal.Settings.FQuickQSY[i].FRig;
-         f := dmZLogGlobal.Settings.FQuickQSY[i].FFreq;
-         e := dmZLogGlobal.Settings.FQuickQSY[i].FFixEdge;
-         fFound := True;
-         Break;
-      end;
+   obj := dmZLogGlobal.FreqMemList.ObjectOf(strCommand);
+   if obj = nil then begin
+      Exit;
    end;
 
-   if fFound = False then begin
-      obj := FFreqMem.ObjectOf(strCommand);
-      if obj = nil then begin
-         Exit;
-      end;
-      m := obj.Mode;
-      f := obj.Frequency;
-      r := 0;
-      e := obj.FixEdgeNo;
-   end;
+   m := obj.Mode;
+   f := obj.Frequency;
+   r := obj.RigNo;
+   e := obj.FixEdgeNo;
 
    // Mode不明ならバンドプランより求める
    if m = mOther then begin
@@ -14711,24 +14693,14 @@ end;
 function TMainForm.GetFixEdge(b: TBand; m: TMode): Integer;
 var
    i: Integer;
-   f: TFrequency;
+   D: TFreqMemory;
 begin
-   // QiuckQSY
-   for i := Low(dmZLogGlobal.Settings.FQuickQSY) to High(dmZLogGlobal.Settings.FQuickQSY) do begin
-      f := dmZLogGlobal.Settings.FQuickQSY[i].FFreq;
-      if (dmZLogGlobal.BandPlan.FreqToBand(f) = b) and
-         (dmZLogGlobal.Settings.FQuickQSY[i].FMode = m) then begin
-         Result := dmZLogGlobal.Settings.FQuickQSY[i].FFixEdge;
-         Exit;
-      end;
-   end;
-
    // FreqMemory
-   for i := 0 to FFreqMem.Count - 1 do begin
-      f := FFreqMem[i].Frequency;
-      if (dmZLogGlobal.BandPlan.FreqToBand(f) = b) and
-         (FFreqMem[i].Mode = m) then begin
-         Result := FFreqMem[i].FixEdgeNo;
+   for i := 0 to dmZLogGlobal.FreqMemList.Count - 1 do begin
+      D := dmZLogGlobal.FreqMemList[i];
+      if (dmZLogGlobal.BandPlan.FreqToBand(D.Frequency) = b) and
+         (D.Mode = m) then begin
+         Result := D.FixEdgeNo;
          Exit;
       end;
    end;

@@ -8,116 +8,117 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsProcessor 64160
-#define UExceptionDialog_RsMemory 64161
-#define UExceptionDialog_RsScreenRes 64162
-#define UExceptionDialog_RsActiveControl 64163
-#define UExceptionDialog_RsThread 64164
-#define UExceptionDialog_RsMissingVersionInfo 64165
-#define UExceptionDialog_RsExceptionStack 64166
-#define UExceptionDialog_RsMainThreadID 64167
-#define UExceptionDialog_RsExceptionThreadID 64168
-#define UExceptionDialog_RsMainThreadCallStack 64169
-#define UExceptionDialog_RsThreadCallStack 64170
-#define UExceptionDialog_RsErrorMessage 64171
-#define UExceptionDialog_RsDetailsIntro 64172
-#define UExceptionDialog_RsUnitVersioningIntro 64173
-#define Main_TMainForm_ConfirmRewindSerialNumber 64176
-#define Main_TMainForm_ConfirmContestPeriod 64177
-#define Main_TMainForm_ConfirmOverwrite 64178
-#define Main_TMainForm_ConfirmModeConvert 64179
-#define Main_TMainForm_No_QTC_Message 64180
-#define Main_TMainForm_Assigned_Another_Function 64181
-#define Main_TMainForm_To_Change_the_mode 64182
-#define Main_TMainForm_To_Change_the_band 64183
-#define Main_TMainform_rbn_verified 64184
-#define UExceptionDialog_RsAppError 64185
-#define UExceptionDialog_RsExceptionClass 64186
-#define UExceptionDialog_RsExceptionMessage 64187
-#define UExceptionDialog_RsExceptionAddr 64188
-#define UExceptionDialog_RsStackList 64189
-#define UExceptionDialog_RsModulesList 64190
-#define UExceptionDialog_RsOSVersion 64191
-#define Main_TMainForm_New_QSO_Arrived 64192
-#define Main_TMainForm_Select_Operator 64193
-#define Main_TMainForm_JARL_Member_Info 64194
-#define Main_TMainForm_Inquire_JARL_Member_Info 64195
-#define Main_TMainForm_UserDat_not_loaded 64196
-#define Main_TMainForm_ZserverNotConfigured 64197
-#define Main_TMainForm_ComfirmUploadOpList 64198
-#define Main_TMainForm_ComfirmDownloadOpList 64199
-#define Main_TMainForm_DownloadFile 64200
-#define Main_TMainForm_UploadFile 64201
-#define Main_TMainForm_SoundFileFolderNotSet 64202
-#define Main_TMainForm_Compressing 64203
-#define Main_TMainForm_FailedToCompressSoundFiles 64204
-#define Main_TMainForm_FileNotFound 64205
-#define Main_TMainForm_ComfirmUploadSound 64206
-#define Main_TMainForm_ComfirmDownloadSound 64207
-#define Main_TMainForm_Callsign_not_entered 64208
-#define Main_TMainForm_Dupe_qso 64209
-#define Main_TMainForm_Thankyou_for_your_qso 64210
-#define Main_TMainForm_CW_port_is_no_set 64211
-#define Main_TMainForm_Not_a_new_multi 64212
-#define Main_TMainForm_Cannot_merge_current_file 64213
-#define Main_TMainForm_Merging_now 64214
-#define Main_TMainForm_Some_qsos_merged 64215
-#define Main_TMainForm_CtyDat_not_loaded 64216
-#define Main_TMainForm_RIT_XIT_Cleared 64217
-#define Main_TMainForm_Anti_zeroin 64218
-#define Main_TMainForm_Set_CQ_Repeat_Int 64219
-#define Main_TMainForm_Invalid_zone 64220
-#define Main_TMainForm_JudgePeriod 64221
-#define Main_TMainForm_EmptyOpList 64222
-#define Main_TMainForm_Setup_SentNR_first 64223
-#define Main_TMainForm_Active_Band_Adjusted 64224
-#define Main_TMainForm_Change_Band_QSOs 64225
-#define Main_TMainForm_Change_Mode_QSOs 64226
-#define Main_TMainForm_Change_Operator_QSOs 64227
-#define Main_TMainForm_Change_Power_QSOs 64228
-#define Main_TMainForm_Change_TXNO_QSOs 64229
-#define Main_TMainForm_Need_File_Name 64230
-#define Main_TMainForm_QTC_Sent 64231
-#define Main_TMainForm_QTC_no_shortcut_keys 64232
-#define Main_TMainForm_Less_Than_10min 64233
-#define Main_TMainForm_QSY_Count_Exceeded 64234
-#define Main_TMainForm_Loading_now 64235
-#define Main_TMainForm_Switch_CW_Bank_A 64236
-#define Main_TMainForm_Switch_CW_Bank_B 64237
-#define Main_TMainForm_This_QSO_is_locked 64238
-#define Main_TMainForm_Invalid_number 64239
-#define UCFGEdit_Please_enter_the_prov_code 64240
-#define UCFGEdit_Please_enter_the_city_code 64241
-#define USelectUserDefinedContest_Setup_prov_first 64242
-#define USelectUserDefinedContest_Setup_city_first 64243
-#define UMenu_UMenu_PleaseEnterYourCallsign 64244
-#define Vcl_EdgeConst_SWebViewFailure 64245
-#define Vcl_EdgeConst_SNoWebView 64246
-#define IEConst_sNotSupportedByEdge 64247
-#define UBandPlanEditDialog_Input_Text 64248
-#define UBandPlanEditDialog_Delete_Preset 64249
-#define Main_TMainForm_Enter_Frequency 64250
-#define Main_TMainForm_Comfirm_Delete_Qso 64251
-#define Main_TMainForm_Comfirm_Delete_Qsos 64252
-#define Main_TMainForm_New_Multi_Only 64253
-#define Main_TMainForm_Change_Date 64254
-#define Main_TMainForm_Confirm_Save_Changes 64255
+#define UExceptionDialog_RsOSVersion 64160
+#define UExceptionDialog_RsProcessor 64161
+#define UExceptionDialog_RsMemory 64162
+#define UExceptionDialog_RsScreenRes 64163
+#define UExceptionDialog_RsActiveControl 64164
+#define UExceptionDialog_RsThread 64165
+#define UExceptionDialog_RsMissingVersionInfo 64166
+#define UExceptionDialog_RsExceptionStack 64167
+#define UExceptionDialog_RsMainThreadID 64168
+#define UExceptionDialog_RsExceptionThreadID 64169
+#define UExceptionDialog_RsMainThreadCallStack 64170
+#define UExceptionDialog_RsThreadCallStack 64171
+#define UExceptionDialog_RsErrorMessage 64172
+#define UExceptionDialog_RsDetailsIntro 64173
+#define UExceptionDialog_RsUnitVersioningIntro 64174
+#define Main_TMainForm_ComfirmDownloadSound 64176
+#define Main_TMainForm_ConfirmRewindSerialNumber 64177
+#define Main_TMainForm_ConfirmContestPeriod 64178
+#define Main_TMainForm_ConfirmOverwrite 64179
+#define Main_TMainForm_ConfirmModeConvert 64180
+#define Main_TMainForm_No_QTC_Message 64181
+#define Main_TMainForm_Assigned_Another_Function 64182
+#define Main_TMainForm_To_Change_the_mode 64183
+#define Main_TMainForm_To_Change_the_band 64184
+#define Main_TMainform_rbn_verified 64185
+#define UExceptionDialog_RsAppError 64186
+#define UExceptionDialog_RsExceptionClass 64187
+#define UExceptionDialog_RsExceptionMessage 64188
+#define UExceptionDialog_RsExceptionAddr 64189
+#define UExceptionDialog_RsStackList 64190
+#define UExceptionDialog_RsModulesList 64191
+#define Main_TMainForm_Setup_SentNR_first 64192
+#define Main_TMainForm_New_QSO_Arrived 64193
+#define Main_TMainForm_Select_Operator 64194
+#define Main_TMainForm_JARL_Member_Info 64195
+#define Main_TMainForm_Inquire_JARL_Member_Info 64196
+#define Main_TMainForm_UserDat_not_loaded 64197
+#define Main_TMainForm_ZserverNotConfigured 64198
+#define Main_TMainForm_ComfirmUploadOpList 64199
+#define Main_TMainForm_ComfirmDownloadOpList 64200
+#define Main_TMainForm_DownloadFile 64201
+#define Main_TMainForm_UploadFile 64202
+#define Main_TMainForm_SoundFileFolderNotSet 64203
+#define Main_TMainForm_Compressing 64204
+#define Main_TMainForm_FailedToCompressSoundFiles 64205
+#define Main_TMainForm_FileNotFound 64206
+#define Main_TMainForm_ComfirmUploadSound 64207
+#define Main_TMainForm_Invalid_number 64208
+#define Main_TMainForm_Callsign_not_entered 64209
+#define Main_TMainForm_Dupe_qso 64210
+#define Main_TMainForm_Thankyou_for_your_qso 64211
+#define Main_TMainForm_CW_port_is_no_set 64212
+#define Main_TMainForm_Not_a_new_multi 64213
+#define Main_TMainForm_Cannot_merge_current_file 64214
+#define Main_TMainForm_Merging_now 64215
+#define Main_TMainForm_Some_qsos_merged 64216
+#define Main_TMainForm_CtyDat_not_loaded 64217
+#define Main_TMainForm_RIT_XIT_Cleared 64218
+#define Main_TMainForm_Anti_zeroin 64219
+#define Main_TMainForm_Set_CQ_Repeat_Int 64220
+#define Main_TMainForm_Invalid_zone 64221
+#define Main_TMainForm_JudgePeriod 64222
+#define Main_TMainForm_EmptyOpList 64223
+#define Main_TMainForm_Confirm_Save_Changes 64224
+#define Main_TMainForm_Active_Band_Adjusted 64225
+#define Main_TMainForm_Change_Band_QSOs 64226
+#define Main_TMainForm_Change_Mode_QSOs 64227
+#define Main_TMainForm_Change_Operator_QSOs 64228
+#define Main_TMainForm_Change_Power_QSOs 64229
+#define Main_TMainForm_Change_TXNO_QSOs 64230
+#define Main_TMainForm_Need_File_Name 64231
+#define Main_TMainForm_QTC_Sent 64232
+#define Main_TMainForm_QTC_no_shortcut_keys 64233
+#define Main_TMainForm_Less_Than_10min 64234
+#define Main_TMainForm_QSY_Count_Exceeded 64235
+#define Main_TMainForm_Loading_now 64236
+#define Main_TMainForm_Switch_CW_Bank_A 64237
+#define Main_TMainForm_Switch_CW_Bank_B 64238
+#define Main_TMainForm_This_QSO_is_locked 64239
+#define URateDialogEx_HOURCAPTION_SHOWLAST 64240
+#define UCFGEdit_Please_enter_the_prov_code 64241
+#define UCFGEdit_Please_enter_the_city_code 64242
+#define USelectUserDefinedContest_Setup_prov_first 64243
+#define USelectUserDefinedContest_Setup_city_first 64244
+#define UMenu_UMenu_PleaseEnterYourCallsign 64245
+#define Vcl_EdgeConst_SWebViewFailure 64246
+#define Vcl_EdgeConst_SNoWebView 64247
+#define IEConst_sNotSupportedByEdge 64248
+#define UBandPlanEditDialog_Input_Text 64249
+#define UBandPlanEditDialog_Delete_Preset 64250
+#define Main_TMainForm_Enter_Frequency 64251
+#define Main_TMainForm_Comfirm_Delete_Qso 64252
+#define Main_TMainForm_Comfirm_Delete_Qsos 64253
+#define Main_TMainForm_New_Multi_Only 64254
+#define Main_TMainForm_Change_Date 64255
 #define System_NetConsts_SMimeValueEmpty 64256
 #define System_NetConsts_SMimeWeightOutOfRange 64257
 #define UzLogGlobal_MSG_INVALID_CHARACTER 64258
-#define URateDialog_HOURCAPTION_SHOWFIRST 64259
-#define URateDialog_HOURCAPTION_SHOWCURRENT 64260
-#define URateDialog_HOURCAPTION_SHOWLAST 64261
-#define URateDialogEx_SCOREGRID_TOTAL 64262
-#define URateDialogEx_SCOREGRID_TARGET 64263
-#define URateDialogEx_SCOREGRID_DIFF 64264
-#define URateDialogEx_SCOREGRID_DIFF2 64265
-#define URateDialogEx_SCOREGRID_CUMULATIVE 64266
-#define URateDialogEx_SCOREGRID_WINLOSS_L 64267
-#define URateDialogEx_SCOREGRID_WINLOSS_S 64268
-#define URateDialogEx_HOURCAPTION_SHOWFIRST 64269
-#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64270
-#define URateDialogEx_HOURCAPTION_SHOWLAST 64271
+#define UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE 64259
+#define URateDialog_HOURCAPTION_SHOWFIRST 64260
+#define URateDialog_HOURCAPTION_SHOWCURRENT 64261
+#define URateDialog_HOURCAPTION_SHOWLAST 64262
+#define URateDialogEx_SCOREGRID_TOTAL 64263
+#define URateDialogEx_SCOREGRID_TARGET 64264
+#define URateDialogEx_SCOREGRID_DIFF 64265
+#define URateDialogEx_SCOREGRID_DIFF2 64266
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64267
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64268
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64269
+#define URateDialogEx_HOURCAPTION_SHOWFIRST 64270
+#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64271
 #define System_NetConsts_SNetHttpClientUnknownError 64272
 #define System_NetConsts_SNetHttpComponentRequestClient 64273
 #define System_NetConsts_SNetHttpHeadersError 64274
@@ -1384,6 +1385,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
@@ -1398,6 +1400,7 @@ BEGIN
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_ComfirmDownloadSound,	L"Z-Server\x3088\x308A\x97F3\x58F0\x30D5\x30A1\x30A4\x30EB\x3092\x30C0\x30A6\x30F3\x30ED\x30FC\x30C9\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F\r\n\x65E2\x5B58\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x4E0A\x66F8\x304D\x3057\x307E\x3059."
 	Main_TMainForm_ConfirmRewindSerialNumber,	L"\x30B7\x30EA\x30A2\x30EB\x30CA\x30F3\x30D0\x30FC\x3092\x5DFB\x304D\x623B\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_ConfirmContestPeriod,	L"\x30B3\x30F3\x30C6\x30B9\x30C8\x671F\x9593\x3092""\x4F7F\x7528\x3057\x306A\x3044""\x306B\x5909\x66F4\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_ConfirmOverwrite,	L"[%s] \x30D5\x30A1\x30A4\x30EB\x306F\x65E2\x306B\x5B58\x5728\x3057\x307E\x3059 \x4E0A\x66F8\x304D\x3057\x307E\x3059\x304B\xFF1F"
@@ -1406,14 +1409,14 @@ BEGIN
 	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q\x306F\x4ED6\x306E\x6A5F\x80FD\x306B\x30A2\x30B5\x30A4\x30F3\x3055\x308C\x3066\x3044\x307E\x3059\x3002\x6A2A\x53D6\x308A\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_To_Change_the_mode,	L"\x904B\x7528\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
 	Main_TMainForm_To_Change_the_band,	L"\x904B\x7528\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x5148\x306BF2A\x30E2\x30FC\x30C9\x3092\x89E3\x9664\x3057\x3066\x4E0B\x3055\x3044"
-	Main_TMainform_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
+	Main_TMainform_rbn_verified,	L"RBN\x7167\x5408\x7D50\x679C\r\n\x5168 %2 \x5C40\x4E2D\x3001%1 \x5C40\x304CRBN\x3068\x7167\x5408\x3067\x304D\x307E\x3057\x305F"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
-	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
+	Main_TMainForm_Setup_SentNR_first,	L"\x6700\x521D\x306B\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3068\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
 	Main_TMainForm_New_QSO_Arrived,	L"\x65B0\x3057\x3044QSO\x304C\x5C4A\x3044\x3066\x3044\x307E\x3059\x3002\x8868\x793A\x3059\x308B\x306B\x306F\x3053\x3053\x3092\x30AF\x30EA\x30C3\x30AF\xFF01"
 	Main_TMainForm_Select_Operator,	L"\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x3092\x9078\x629E\x3057\x3066\x304F\x3060\x3055\x3044"
 	Main_TMainForm_JARL_Member_Info,	L"JARL\x4F1A\x54E1\x60C5\x5831"
@@ -1429,7 +1432,7 @@ BEGIN
 	Main_TMainForm_FailedToCompressSoundFiles,	L"\x30B5\x30A6\x30F3\x30C9\x30D5\x30A1\x30A4\x30EB\x306E\x5727\x7E2E\x306B\x5931\x6557\x3057\x307E\x3057\x305F"
 	Main_TMainForm_FileNotFound,	L"\x30D5\x30A1\x30A4\x30EB\x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093"
 	Main_TMainForm_ComfirmUploadSound,	L"Z-Server\x306B\x97F3\x58F0\x30D5\x30A1\x30A4\x30EB\x3092\x30A2\x30C3\x30D7\x30ED\x30FC\x30C9\x3057\x307E\x3059.\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
-	Main_TMainForm_ComfirmDownloadSound,	L"Z-Server\x3088\x308A\x97F3\x58F0\x30D5\x30A1\x30A4\x30EB\x3092\x30C0\x30A6\x30F3\x30ED\x30FC\x30C9\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F\r\n\x65E2\x5B58\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x4E0A\x66F8\x304D\x3057\x307E\x3059."
+	Main_TMainForm_Invalid_number,	L"\x7121\x52B9\x306A\x30CA\x30F3\x30D0\x30FC\x3067\x3059"
 	Main_TMainForm_Callsign_not_entered,	L"\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
 	Main_TMainForm_Dupe_qso,	L"Dupe"
 	Main_TMainForm_Thankyou_for_your_qso,	L"QSO\x3042\x308A\x304C\x3068\x3046\x3054\x3056\x3044\x307E\x3059"
@@ -1445,7 +1448,7 @@ BEGIN
 	Main_TMainForm_Invalid_zone,	L"\x7121\x52B9\x306AZone\x3067\x3059"
 	Main_TMainForm_JudgePeriod,	L"\x5168\x3066\x306EQSO\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x671F\x9593\x5185\x3067\x3042\x308B\x304B\x5224\x5B9A\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_EmptyOpList,	L"\x30AA\x30DA\x30EC\x30FC\x30BF\x30FC\x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
-	Main_TMainForm_Setup_SentNR_first,	L"\x6700\x521D\x306B\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3068\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
+	Main_TMainForm_Confirm_Save_Changes,	L"\x5909\x66F4\x3092 %s \x306B\x4FDD\x5B58\x3057\x307E\x3059\x304B\xFF1F"
 	Main_TMainForm_Active_Band_Adjusted,	L"\x30A2\x30AF\x30C6\x30A3\x30D6\x306A\x30D0\x30F3\x30C9\x3092\x30B3\x30F3\x30C6\x30B9\x30C8\x306B\x5FC5\x8981\x306A\x30D0\x30F3\x30C9\x306B\x5408\x308F\x305B\x307E\x3057\x305F"
 	Main_TMainForm_Change_Band_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30D0\x30F3\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Change_Mode_QSOs,	L"\x3053\x308C\x3089\x306E QSO \x306E\x30E2\x30FC\x30C9\x3092\x5909\x66F4\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
@@ -1461,7 +1464,7 @@ BEGIN
 	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
 	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
 	Main_TMainForm_This_QSO_is_locked,	L"\x3053\x306EQSO\x306F\x30ED\x30C3\x30AF\x3055\x308C\x3066\x3044\x307E\x3059"
-	Main_TMainForm_Invalid_number,	L"\x7121\x52B9\x306A\x30CA\x30F3\x30D0\x30FC\x3067\x3059"
+	URateDialogEx_HOURCAPTION_SHOWLAST,	L"\x6700\x5F8C\x304B\x3089"
 	UCFGEdit_Please_enter_the_prov_code,	L"\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3092\x5165\x529B\x3057\x3066\x304F\x3060\x3055\x3044"
 	UCFGEdit_Please_enter_the_city_code,	L"\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x5165\x529B\x3057\x3066\x304F\x3060\x3055\x3044"
 	USelectUserDefinedContest_Setup_prov_first,	L"\x6700\x521D\x306B\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
@@ -1477,13 +1480,13 @@ BEGIN
 	Main_TMainForm_Comfirm_Delete_Qsos,	L"\x3053\x308C\x3089\x306E QSO \x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_New_Multi_Only,	L"\x3053\x306E\x5C40\x306F\x30CB\x30E5\x30FC\x30DE\x30EB\x30C1\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x304C\x3001\x3068\x308A\x3042\x3048\x305A\x8A18\x9332\x3057\x307E\x3059"
 	Main_TMainForm_Change_Date,	L"\x65E5\x4ED8\x3092\x5909\x66F4\x3059\x308B\x306B\x306F\x3001\x6642\x523B\x30D5\x30A3\x30FC\x30EB\x30C9\x3092\x30C0\x30D6\x30EB\x30AF\x30EA\x30C3\x30AF\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
-	Main_TMainForm_Confirm_Save_Changes,	L"\x5909\x66F4\x3092 %s \x306B\x4FDD\x5B58\x3057\x307E\x3059\x304B\xFF1F"
 	System_NetConsts_SMimeValueEmpty,	L"\x5024\x306E\x540D\x524D\x304C\x5165\x529B\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeWeightOutOfRange,	L"\x54C1\x8CEA\x306E\x91CD\x307F\x304C\x7BC4\x56F2\x5916\x3067\x3059"
 	UzLogGlobal_MSG_INVALID_CHARACTER,	L"\x3053\x306E\x6587\x5B57\x306F\x4F7F\x7528\x3067\x304D\x307E\x305B\x3093\x3002 [%s]"
-	URateDialog_HOURCAPTION_SHOWFIRST,	L"Show first"
-	URateDialog_HOURCAPTION_SHOWCURRENT,	L"Show current"
-	URateDialog_HOURCAPTION_SHOWLAST,	L"Show last"
+	UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE,	L"\x30B3\x30DE\x30F3\x30C9\x306F\x65E2\x306B\x4F7F\x7528\x3055\x308C\x3066\x3044\x307E\x3059"
+	URateDialog_HOURCAPTION_SHOWFIRST,	L"\x6700\x521D\x304B\x3089"
+	URateDialog_HOURCAPTION_SHOWCURRENT,	L"\x73FE\x5728\x306E"
+	URateDialog_HOURCAPTION_SHOWLAST,	L"\x6700\x5F8C\x304B\x3089"
 	URateDialogEx_SCOREGRID_TOTAL,	L"\x5408\x8A08"
 	URateDialogEx_SCOREGRID_TARGET,	L"\x76EE\x6A19"
 	URateDialogEx_SCOREGRID_DIFF,	L"\x5DEE"
@@ -1491,9 +1494,8 @@ BEGIN
 	URateDialogEx_SCOREGRID_CUMULATIVE,	L"\x7D2F\x8A08"
 	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
 	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
-	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"Show first"
-	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"Show current"
-	URateDialogEx_HOURCAPTION_SHOWLAST,	L"Show last"
+	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"\x6700\x521D\x304B\x3089"
+	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"\x73FE\x5728\x306E"
 	System_NetConsts_SNetHttpClientUnknownError,	L"\x4E0D\x660E\x306A\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x305F\x305F\x3081\x8981\x6C42\x306E\x5B9F\x884C\x304C\x7D42\x4E86\x3057\x307E\x3057\x305F"
 	System_NetConsts_SNetHttpComponentRequestClient,	L"\x8981\x6C42\x30B3\x30F3\x30DD\x30FC\x30CD\x30F3\x30C8\x306B\x30AF\x30E9\x30A4\x30A2\x30F3\x30C8\x304C\x5272\x308A\x5F53\x3066\x3089\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SNetHttpHeadersError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x554F\x3044\x5408\x308F\x305B\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
@@ -2843,6 +2845,7 @@ END
 /* D:\github\zLog_v2930\zlog\UGeneralMulti2.DFM */
 /* D:\github\zLog_v2930\zlog\UzLogGlobal.dfm */
 /* D:\github\zLog_v2930\zlog\UFreqPanel.dfm */
+/* D:\github\zLog_v2930\zlog\UFreqMemDialog.dfm */
 /* D:\github\zLog_v2930\zlog\UOptions2.DFM */
 /* D:\github\zLog_v2930\zlog\UTTYConsole.DFM */
 /* D:\github\zLog_v2930\zlog\UELogJarl1.dfm */

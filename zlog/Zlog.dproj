@@ -585,6 +585,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzGraylineMap.pas"/>
+        <DCCReference Include="UFreqMemDialog.pas">
+            <Form>formFreqMemDialog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -905,7 +909,8 @@
                     <RDP_Source_Files Name="Item126">UOptions2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item127">UEntityInfo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item128">UGrayline.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item129">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item129">UFreqMemDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item130">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

@@ -8,7 +8,7 @@ uses
   System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
-  UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort;
+  UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort, UzFreqMemory;
 
 type
   TCWSettingsParam = record
@@ -47,15 +47,6 @@ type
     FBaudRate: Integer;
     FLineBreak: Integer;
     FLocalEcho: Boolean;
-  end;
-
-  TQuickQSY = record
-    FUse: Boolean;
-    FFreq: TFrequency;
-    FMode: TMode;
-    FRig: Integer;
-    FCommand: string;
-    FFixEdge: Integer;
   end;
 
   TSuperCheckParam = record
@@ -289,7 +280,6 @@ type
     FAntiZeroinAutoCancel: Boolean;
     FAntiZeroinStopCq: Boolean;     // Stop CQ in SP mode
 
-    FQuickQSY: array[1..8] of TQuickQSY;
     FUseKhzQsyCommand: Boolean;
     FSuperCheck: TSuperCheckParam;
     FPartialCheck: TPartialCheckParam;
@@ -449,6 +439,7 @@ type
     FPrefixList : TPrefixList;
 
     FPacketClusterList: TTelnetSettingList;
+    FFreqMemList: TFreqMemoryList;
 
     function Load_CTYDAT(): Boolean;
     procedure AnalyzeMyCountry();
@@ -582,6 +573,7 @@ public
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
     property PacketClusterList: TTelnetSettingList read FPacketClusterList;
+    property FreqMemList: TFreqMemoryList read FFreqMemList;
 
     procedure SelectBandPlan(preset_name: string);
 
@@ -699,6 +691,9 @@ begin
    // PacketClusterリスト
    FPacketClusterList := TTelnetSettingList.Create();
 
+   // FreqMemory(Quick QSY)
+   FFreqMemList := TFreqMemoryList.Create();
+
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
 
@@ -762,6 +757,7 @@ begin
    FOpList.Free();
    FLog.Free();
    FPacketClusterList.Free();
+   FFreqMemList.Free();
 end;
 
 procedure TdmZLogGlobal.ClearParamImportedFlag();
@@ -814,6 +810,7 @@ var
    strKey: string;
    num: Integer;
    setting: TTelnetSetting;
+   D: TFreqMemory;
 begin
    slParam := TStringList.Create();
    slSection := TStringList.Create();
@@ -1341,16 +1338,25 @@ begin
       Settings.FExtAntSelWndClass := ini.ReadString('ExtAntSel', 'WndClass', '');
 
       // QuickQSY
-      for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
-         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,,,';
-         Settings.FQuickQSY[i].FUse := StrToBoolDef(slParam[0], False);
-         Settings.FQuickQSY[i].FFreq := StrToInt64Def(slParam[1], 0);
-         Settings.FQuickQSY[i].FMode := StrToModeDef(slParam[2], mSSB);
-         Settings.FQuickQSY[i].FRig  := StrToIntDef(slParam[3], 0);
-         Settings.FQuickQSY[i].FCommand  := slParam[4];
-         Settings.FQuickQSY[i].FFixEdge  := StrToIntDef(slParam[5], 0);
-      end;
+      for i := 1 to 8 do begin
+         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,';
+         if StrToBoolDef(slParam[0], False) = False then begin
+            Continue;
+         end;
 
+         if FFreqMemList.IndexOf(slParam[4]) >= 0 then begin
+            Continue;
+         end;
+
+         D := TFreqMemory.Create();
+         D.Frequency := StrToInt64Def(slParam[1], 0);
+         D.Mode := StrToModeDef(slParam[2], mSSB);
+         D.RigNo  := StrToIntDef(slParam[3], 0);
+         D.Command  := slParam[4];
+         D.FixEdgeNo  := StrToIntDef(slParam[5], 0);
+         FFreqMemList.Add(D);
+      end;
+      FFreqMemList.LoadFromFile('zlog_freqmem.txt');
       Settings.FUseKhzQsyCommand := ini.ReadBool('QuickQSY', 'UseKhzQsyCommand', False);
 
       // SuperCheck
@@ -2071,17 +2077,10 @@ begin
       ini.WriteString('ExtAntSel', 'WndClass', Settings.FExtAntSelWndClass);
 
       // QuickQSY
-      for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
-         slParam.Clear();
-         slParam.Add( BoolToStr(Settings.FQuickQSY[i].FUse, False) );
-         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFreq) );
-         slParam.Add( ModeString[ Settings.FQuickQSY[i].FMode ]);
-         slParam.Add( IntToStr(Settings.FQuickQSY[i].FRig) );
-         slParam.Add( Settings.FQuickQSY[i].FCommand );
-         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFixEdge) );
-         ini.WriteString('QuickQSY', '#' + IntToStr(i), slParam.CommaText);
+      for i := 1 to 8 do begin
+         ini.WriteString('QuickQSY', '#' + IntToStr(i), '');
       end;
-
+      FFreqMemList.SaveToFile('zlog_freqmem.txt');
       ini.WriteBool('QuickQSY', 'UseKhzQsyCommand', Settings.FUseKhzQsyCommand);
 
       // SuperCheck
