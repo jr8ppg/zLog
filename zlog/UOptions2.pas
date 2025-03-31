@@ -1222,6 +1222,7 @@ begin
    end;
    listviewFreqMemory.Selected := nil;
    buttonFreqMemAdd.Enabled := True;
+   buttonFreqMemEdit.Enabled := False;
    buttonFreqMemDelete.Enabled := False;
 end;
 
