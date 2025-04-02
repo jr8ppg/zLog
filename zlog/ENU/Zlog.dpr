@@ -103,6 +103,7 @@ library Zlog;
 {ITE} {DFMFileType} {USpotForm.dfm}
 {ITE} {DFMFileType} {USpotterListDlg.dfm}
 {ITE} {DFMFileType} {UStartTimeDialog.dfm}
+{ITE} {DFMFileType} {UStartup.dfm}
 {ITE} {DFMFileType} {UStatusEdit.dfm}
 {ITE} {DFMFileType} {USummaryInfo.dfm}
 {ITE} {DFMFileType} {USuperCheck.dfm}
@@ -231,6 +232,7 @@ library Zlog;
 {$R 'USpotForm.dfm' 'SpotForm:TForm'}
 {$R 'USpotterListDlg.dfm' 'formSpotterListDlg:TForm'}
 {$R 'UStartTimeDialog.dfm' 'StartTimeDialog:TForm'}
+{$R 'UStartup.dfm' 'formStartup:TForm'}
 {$R 'UStatusEdit.dfm' 'formStatusEdit:TForm'}
 {$R 'USummaryInfo.dfm' 'SummaryInfo:TForm'}
 {$R 'USuperCheck.dfm' 'SuperCheck:TForm(ZLogForm)'}

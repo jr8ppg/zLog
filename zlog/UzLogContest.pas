@@ -258,10 +258,10 @@ begin
       S := S + 'Multi Operator  ';
    end;
 
-   if dmZlogGlobal.Band = 0 then
+   if dmZlogGlobal.ContestBand = 0 then
       S := S + 'All band'
    else
-      S := S + MHzString[TBand(Ord(dmZlogGlobal.Band) - 1)];
+      S := S + MHzString[TBand(Ord(dmZlogGlobal.ContestBand) - 1)];
 
    S := S + '  ';
    case dmZlogGlobal.ContestMode of

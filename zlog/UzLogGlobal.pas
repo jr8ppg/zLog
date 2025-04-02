@@ -386,6 +386,20 @@ type
     FShowMyLocation: Boolean;
   end;
 
+  TLastContest = record
+    FContestCategory: TContestCategory;
+    FContestBand: Integer;
+    FContestMode: TContestMode;
+    FMyCall: string;
+    FContestMenuNo: Integer;
+    FTxNr: Integer;
+    FPostContest: Boolean;
+    FContestName: string;
+    FCfgFileName: string;
+    FScoreCoeff: Extended;
+    FFileName: string;
+  end;
+
   TCommPort = class(TObject)
     FPortName: string;
     FPortNumber: Integer;
@@ -496,6 +510,7 @@ public
     FLog : TLog;
 
     Settings : TSettingsParam;
+    LastContest: TLastContest;
 
     procedure ClearParamImportedFlag();
 
@@ -505,7 +520,7 @@ public
 
     property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
-    property Band: Integer read GetBand write SetBand;
+    property ContestBand: Integer read GetBand write SetBand;
     property ContestMode: TContestMode read GetMode write SetMode;
     property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
@@ -1586,6 +1601,19 @@ begin
 
       // Band Plan
       Settings.FBandPlanPresetList := ini.ReadString('BandPlan', 'PresetNameList', 'JA,DX');
+
+      // Last contest
+      LastContest.FContestCategory := TContestCategory(ini.ReadInteger('LastContest', 'ContestCategory', 0));
+      LastContest.FContestBand := ini.ReadInteger('LastContest', 'Band', 0);
+      LastContest.FContestMode := TContestMode(ini.ReadInteger('LastContest', 'Mode', 0));
+      LastContest.FMyCall := ini.ReadString('LastContest', 'MyCall', '');
+      LastContest.FContestMenuNo := ini.ReadInteger('LastContest', 'ContestMenuNo', 0);
+      LastContest.FTxNr := ini.ReadInteger('LastContest', 'TxNr', 0);
+      LastContest.FPostContest := ini.ReadBool('LastContest', 'PostContest', False);
+      LastContest.FContestName := ini.ReadString('LastContest', 'ContestName', '');
+      LastContest.FCfgFileName := ini.ReadString('LastContest', 'CfgFileName', '');
+      LastContest.FScoreCoeff := ini.ReadFloat('LastContest', 'ScoreCoeff', 0);
+      LastContest.FFileName := ini.ReadString('LastContest', 'FileName', '');
    finally
       ini.Free();
       slParam.Free();
@@ -2240,6 +2268,19 @@ begin
       // Band Plan
       ini.WriteString('BandPlan', 'PresetNameList', Settings.FBandPlanPresetList);
 
+      // Last contest
+      ini.WriteInteger('LastContest', 'ContestCategory', Integer(LastContest.FContestCategory));
+      ini.WriteInteger('LastContest', 'Band', LastContest.FContestBand);
+      ini.WriteInteger('LastContest', 'Mode', Integer(LastContest.FContestMode));
+      ini.WriteString('LastContest', 'MyCall', LastContest.FMyCall);
+      ini.WriteInteger('LastContest', 'ContestMenuNo', LastContest.FContestMenuNo);
+      ini.WriteInteger('LastContest', 'TxNr', LastContest.FTxNr);
+      ini.WriteBool('LastContest', 'PostContest', LastContest.FPostContest);
+      ini.WriteString('LastContest', 'ContestName', LastContest.FContestName);
+      ini.WriteString('LastContest', 'CfgFileName', LastContest.FCfgFileName);
+      ini.WriteFloat('LastContest', 'ScoreCoeff', LastContest.FScoreCoeff);
+      ini.WriteString('LastContest', 'FileName', LastContest.FFileName);
+
       ini.UpdateFile();
    finally
       ini.Free();
@@ -2255,7 +2296,7 @@ procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
 begin
    if _OnCreate = False then begin
       if Settings._band > 0 then begin // single band
-         Band := Settings._band; // resets the bandmenu.items.enabled for the single band entry
+         ContestBand := Settings._band; // resets the bandmenu.items.enabled for the single band entry
       end;
    end;
 

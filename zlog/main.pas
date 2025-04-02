@@ -1469,7 +1469,7 @@ uses
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
-  UCountryChecker, USelectClusterLog, USpcViewer, UOptions3;
+  UCountryChecker, USelectClusterLog, USpcViewer, UOptions3, UStartup;
 
 {$R *.DFM}
 
@@ -7988,23 +7988,70 @@ var
    BB: TBand;
    rigno: Integer;
    Q: TQSO;
+   startup: TformStartup;
+   mr: TModalResult;
+   strContestName: string;
+   strCfgFileName: string;
+   fScoreCoeff: Extended;
+   fNewContest: Boolean;
 begin
    FInitialized := False;
 
    SuperCheckDataLoad();
 
+   startup := TformStartup.Create(Self);
    menu := TMenuForm.Create(Self);
    try
-      if menu.ShowModal() = mrCancel then begin
-         Close();
-         Exit;
-      end;
-
       dmZlogGlobal.SetLogFileName('');
 
-      mPXListWPX.Visible := False;
+      if (dmZLogGlobal.LastContest.FFileName = '') or
+         (dmZLogGlobal.LastContest.FMyCall = '') or
+         ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) then begin
+         fNewContest := True;
+      end
+      else begin
+         fNewContest := False;
+      end;
 
-      dmZlogGlobal.ContestCategory := menu.ContestCategory;
+      if fNewContest = False then begin
+         mr := startup.ShowModal();
+         if mr = mrNo then begin // Last contest
+            dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
+            dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
+            dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
+            dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
+            dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
+            dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
+            FPostContest := dmZLogGlobal.LastContest.FPostContest;
+            strContestName := dmZLogGlobal.LastContest.FContestName;
+            strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
+            fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
+            dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
+         end
+         else begin
+            fNewContest := True;
+         end;
+      end;
+
+      if fNewContest = True then begin // new contest
+         if menu.ShowModal() = mrCancel then begin
+            Close();
+            Exit;
+         end;
+
+         dmZLogGlobal.ContestCategory := menu.ContestCategory;
+         dmZLogGlobal.ContestBand := menu.BandGroupIndex;
+         dmZLogGlobal.ContestMode := menu.ContestMode;
+         dmZLogGlobal.MyCall := menu.Callsign;
+         dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
+         dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
+         FPostContest := menu.PostContest;
+         strContestName := menu.GeneralName;
+         strCfgFileName := menu.CFGFileName;
+         fScoreCoeff := menu.ScoreCoeff;
+      end;
+
+      mPXListWPX.Visible := False;
 
       // SO2RはSingleOpのみが設定可能
       if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
@@ -8016,22 +8063,11 @@ begin
          end;
       end;
 
-      dmZlogGlobal.Band := menu.BandGroupIndex;
-
-      dmZlogGlobal.ContestMode := menu.ContestMode;
-
-      dmZlogGlobal.MyCall := menu.Callsign;
-
-      dmZlogGlobal.ContestMenuNo := menu.ContestNumber;
-
-      if menu.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
-         dmZlogGlobal.TXNr := menu.TxNumber;    // TX#
-         if dmZlogGlobal.Settings._pcname = '' then begin
-            dmZlogGlobal.Settings._pcname := 'PC' + IntToStr(menu.TxNumber);
+      if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+         if dmZLogGlobal.Settings._pcname = '' then begin
+            dmZLogGlobal.Settings._pcname := 'PC' + IntToStr(dmZLogGlobal.TXNr);
          end;
       end;
-
-      FPostContest := menu.PostContest;
 
       { Open New Contest from main menu }
       if MyContest <> nil then begin
@@ -8041,7 +8077,7 @@ begin
       dmZLogGlobal.CreateLog();
 
       // 0:ALL BAND 1～:SINGLE BAND
-      b := menu.BandGroupIndex;
+      b := dmZLogGlobal.ContestBand;
       if b > 0 then begin
          CurrentQSO.Band := TBand(b - 1);
 
@@ -8107,12 +8143,12 @@ begin
 
          // ALL JA0(JA0)
          4: begin
-            InitALLJA0_JA0(menu.BandGroupIndex);
+            InitALLJA0_JA0(dmZLogGlobal.ContestBand);
          end;
 
          // ALL JA0(other)
          5: begin
-            InitALLJA0_Other(menu.BandGroupIndex);
+            InitALLJA0_Other(dmZLogGlobal.ContestBand);
          end;
 
          // DX pedi
@@ -8122,7 +8158,7 @@ begin
 
          // User Defined
          9: begin
-            InitUserDefined(menu.GeneralName, menu.CFGFileName);
+            InitUserDefined(strContestName, strCfgFileName);
          end;
 
          // CQWW
@@ -8132,7 +8168,7 @@ begin
 
          // WPX
          11: begin
-            InitWPX(menu.ContestCategory);
+            InitWPX(dmZLogGlobal.ContestCategory);
          end;
 
          // JIDX
@@ -8194,7 +8230,7 @@ begin
       InitSerialPanel();
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)
-      case menu.ContestMode of
+      case dmZLogGlobal.ContestMode of
          // PH/CW
          cmMix: begin
             CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
@@ -8237,7 +8273,7 @@ begin
 
       // 局種係数
       if MyContest.UseCoeff = True then begin
-         Log.ScoreCoeff := menu.ScoreCoeff;
+         Log.ScoreCoeff := fScoreCoeff;
       end;
 
       // ファイル名の指定が無い場合は選択ダイアログを出す
@@ -8260,6 +8296,14 @@ begin
          end
          else begin // user hit cancel
             MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
+         end;
+      end
+      else begin
+         if FileExists(CurrentFileName) then begin
+            LoadNewContestFromFile(CurrentFileName);
+         end
+         else begin
+            Log.SaveToFile(CurrentFileName);
          end;
       end;
 
@@ -8454,7 +8498,7 @@ begin
       FInitialized := True;
       Timer1.Interval := dmZLogGlobal.Settings.FInfoUpdateInterval;
       Timer1.Enabled := True;
-      zyloContestOpened(MyContest.Name, menu.CFGFileName);
+      zyloContestOpened(MyContest.Name, strCfgFileName);
 
       // Sent NRチェック
       if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '')) or
@@ -8466,8 +8510,22 @@ begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
       end;
+
+      // save last contest
+      dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
+      dmZLogGlobal.LastContest.FContestBand := dmZLogGlobal.ContestBand;
+      dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
+      dmZLogGlobal.LastContest.FMyCall := dmZLogGlobal.MyCall;
+      dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
+      dmZLogGlobal.LastContest.FTxNr := dmZLogGlobal.TXNr;
+      dmZLogGlobal.LastContest.FPostContest := FPostContest;
+      dmZLogGlobal.LastContest.FContestName := strContestName;
+      dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
+      dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
+      dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
    finally
       menu.Release();
+      startup.Release();
    end;
 end;
 
