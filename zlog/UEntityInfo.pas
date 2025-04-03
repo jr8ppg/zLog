@@ -18,7 +18,6 @@ type
     Panel2: TPanel;
     panelSunrise: TPanel;
     panelSunset: TPanel;
-    panelAzimuth: TPanel;
     panelCQZone: TPanel;
     panelITUZone: TPanel;
     panelContinent: TPanel;
@@ -29,8 +28,10 @@ type
     SunTime1: TSunTime;
     Label5: TLabel;
     Label6: TLabel;
+    checkStayOnTop: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure checkStayOnTopClick(Sender: TObject);
   private
     { Private êÈåæ }
     FBitmap: TBitmap;
@@ -58,6 +59,17 @@ end;
 procedure TformEntityInfo.FormDestroy(Sender: TObject);
 begin
    FBitmap.Free();
+end;
+
+procedure TformEntityInfo.checkStayOnTopClick(Sender: TObject);
+begin
+   inherited;
+   if checkStayOnTop.Checked = True then begin
+      FormStyle := fsStayOnTop;
+   end
+   else begin
+      FormStyle := fsNormal;
+   end;
 end;
 
 // https://keisan.casio.jp/exec/system/1257670779
@@ -90,7 +102,6 @@ begin
    strLatitude := '';
    strLongitude := '';
    strDistance := '';
-   panelAzimuth.Caption := '';
    panelSunrise.Caption := '';
    panelSunset.Caption := '';
 
@@ -133,7 +144,6 @@ begin
    strLatitude := LatitudeDegToDms(StrToFloatDef(ctydat.Latitude, 0));
    strLongitude := LongitudeDegToDms(StrToFloatDef(ctydat.Longitude, 0) * -1);
    strDistance := IntToStr3(Trunc(distance)) + 'Km';
-   panelAzimuth.Caption := IntToStr(Trunc(azimuth));
 
    // Sunrise/Sunset
    suntime1.Date := Now();
@@ -235,16 +245,17 @@ begin
 
    // äpìxï\é¶
    S := IntToStr(Trunc(angle));
-   FBitmap.Canvas.Font.Size := 18;
+   FBitmap.Canvas.Font.Size := 24;
    FBitmap.Canvas.Brush.Style := bsClear;
    w := FBitmap.Canvas.TextWidth(S);
    h := FBitmap.Canvas.TextHeight('X');
    x := (rr - w) div 2;
+
    if (angle < 90) or (angle > 270) then begin
-      y := cy + 4;
+      y := cy + ((cl - h) div 2) - 4;
    end
    else begin
-      y := cy - h - 4;
+      y := (cy - (cl + 2)) + ((cl - h) div 2) + 4;
    end;
    FBitmap.Canvas.TextOut(x, y, S);
 

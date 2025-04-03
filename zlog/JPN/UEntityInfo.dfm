@@ -9,7 +9,7 @@ object formEntityInfo: TformEntityInfo
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -179,20 +179,14 @@ object formEntityInfo: TformEntityInfo
       ParentFont = False
       TabOrder = 1
     end
-    object panelAzimuth: TPanel
-      Left = 255
-      Top = 8
-      Width = 58
-      Height = 52
-      BevelOuter = bvLowered
-      Caption = '360'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -27
-      Font.Name = 'Consolas'
-      Font.Style = []
-      ParentFont = False
+    object checkStayOnTop: TCheckBox
+      Left = 230
+      Top = 40
+      Width = 83
+      Height = 17
+      Caption = #25163#21069#12395#34920#31034
       TabOrder = 2
+      OnClick = checkStayOnTopClick
     end
   end
   object Panel3: TPanel
