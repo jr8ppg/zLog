@@ -3976,6 +3976,7 @@ procedure TMainForm.LoadNewContestFromFile(filename: string);
 var
    Q: TQSO;
    bak_acceptdiff: Boolean;
+   bak_allphone: Boolean;
    bak_counthigher: Boolean;
    bak_coeff: Extended;
    S: string;
@@ -4014,6 +4015,7 @@ begin
    Q := TQSO.Create();
    Q.Assign(Log.QsoList[0]);
    bak_acceptdiff := Log.AcceptDifferentMode;
+   bak_allphone := Log.AllPhone;
    bak_counthigher := Log.CountHigherPoints;
    bak_coeff := Log.ScoreCoeff;
 
@@ -4021,6 +4023,7 @@ begin
 
    Log.ScoreCoeff := bak_coeff;
    Log.AcceptDifferentMode := bak_acceptdiff;
+   Log.AllPhone := bak_allphone;
    Log.CountHigherPoints := bak_counthigher;
    Log.QsoList[0].Assign(Q); // contest info is set to current contest.
    Q.Free();

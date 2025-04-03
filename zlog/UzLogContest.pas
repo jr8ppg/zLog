@@ -1481,6 +1481,7 @@ begin
    dmZlogGlobal.Settings._sentstr         := FConfig.Sent;
 
    Log.AcceptDifferentMode                := FConfig.AcceptDifferentMode;
+   Log.AllPhone                           := FConfig.AllPhone;
    Log.CountHigherPoints                  := FConfig.CountHigherPoints;
 
    if FConfig.UseUTC = True then begin
