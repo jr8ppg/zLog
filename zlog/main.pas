@@ -1267,6 +1267,9 @@ type
     procedure LoadSpotData(slFileList: TStrings);
     procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
     function GetFixEdge(b: TBand; m: TMode): Integer;
+    function GetContestName(contestno: Integer): string;
+    procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
+    procedure InitGrid();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -7982,11 +7985,196 @@ begin
    end;
 end;
 
+function TMainForm.GetContestName(contestno: Integer): string;
+begin
+   case contestno of
+      // ALL JA
+      0: Result := 'ALL JAコンテスト';
+
+      // 6m & DOWN
+      1: Result := '6m & DOWNコンテスト';
+
+      // FIELD DAY
+      2: Result := 'フィールドデイコンテスト';
+
+      // ACAG
+      3: Result := '全市全郡コンテスト';
+
+      // ALL JA0(JA0)
+      4: Result := 'ALL JA0コンテスト(JA0)';
+
+      // ALL JA0(other)
+      5: Result := 'ALL JA0コンテスト(JA0以外)';
+
+      // DX pedi
+      8: Result := 'DX Pedition';
+
+      // User Defined
+      9: Result := 'ユーザー定義コンテスト';
+
+      // CQWW
+      10: Result := 'CQ World Wide Contest';
+
+      // WPX
+      11: Result := 'CQ WPX Contest';
+
+      // JIDX
+      7, 12: Result := 'Japan International DX Contest';
+
+      // AP Sprint
+      13: Result := 'AP Sprint';
+
+      // ARRL DX(W/VE)
+      14: Result := 'ARRL 10 DX Contest(W/VE)';
+
+      // ARRL(DX)
+      15: Result := 'ARRL DX Contest(DX)';
+
+      // ARRL 10m
+      16: Result := 'ARRL 10m DX Contest';
+
+      // IARU HF
+      17: Result := 'IARU HF Championship';
+
+      // All Asian DX(Asia)
+      18: Result := 'All Asian DX Contest';
+
+      // IOTA
+      19: Result := 'IOTA Contest';
+
+      // WAEDC(DX)
+      20: Result := 'WAEDC Contest';
+
+      else Result := 'Unknown contest';
+   end;
+end;
+
+procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
+begin
+   case contestno of
+      // ALL JA
+      0: begin
+         InitALLJA();
+      end;
+
+      // 6m & DOWN
+      1: begin
+         Init6D();
+      end;
+
+      // FIELD DAY
+      2: begin
+         InitFD();
+      end;
+
+      // ACAG
+      3: begin
+         InitACAG();
+      end;
+
+      // ALL JA0(JA0)
+      4: begin
+         InitALLJA0_JA0(contestband);
+      end;
+
+      // ALL JA0(other)
+      5: begin
+         InitALLJA0_Other(contestband);
+      end;
+
+      // DX pedi
+      8: begin
+         InitDxPedi();
+      end;
+
+      // User Defined
+      9: begin
+         InitUserDefined(strContestName, strCfgFileName);
+      end;
+
+      // CQWW
+      10: begin
+         InitCQWW();
+      end;
+
+      // WPX
+      11: begin
+         InitWPX(category);
+      end;
+
+      // JIDX
+      // now determines JA/DX from callsign
+      7, 12: begin
+         InitJIDX();
+      end;
+
+      // AP Sprint
+      13: begin
+         InitAPSprint();
+      end;
+
+      // ARRL DX(W/VE)
+      14: begin
+         InitARRL_W();
+      end;
+
+      // ARRL(DX)
+      15: begin
+         InitARRL_DX();
+      end;
+
+      // ARRL 10m
+      16: begin
+         InitARRL10m();
+      end;
+
+      // IARU HF
+      17: begin
+         InitIARU();
+      end;
+
+      // All Asian DX(Asia)
+      18: begin
+         InitAllAsianDX();
+      end;
+
+      // IOTA
+      19: begin
+         InitIOTA();
+      end;
+
+      // WAEDC(DX)
+      20: begin
+         InitWAE();
+      end;
+   end;
+end;
+
+procedure TMainForm.InitGrid();
+var
+   i, j: Integer;
+begin
+   with Grid do begin
+      ColCount := 10;
+      FixedCols := 0;
+      FixedRows := 1;
+      ColCount := 10;
+      Height := 291;
+      DefaultRowHeight := 17;
+   end;
+
+   for i := 1 to Grid.RowCount - 1 do begin
+      for j := 0 to Grid.ColCount - 1 do begin
+         Grid.Cells[j, i] := '';
+      end;
+   end;
+end;
+
 procedure TMainForm.OnZLogInit( var Message: TMessage );
 var
    menu: TMenuForm;
-   c, r: Integer;
-   i, j: Integer;
+   c: Integer;
+   i: Integer;
    b: Integer;
    BB: TBand;
    rigno: Integer;
@@ -8006,10 +8194,12 @@ begin
    menu := TMenuForm.Create(Self);
    try
       dmZlogGlobal.SetLogFileName('');
+      fScoreCoeff := 1;
 
       if (dmZLogGlobal.LastContest.FFileName = '') or
          (dmZLogGlobal.LastContest.FMyCall = '') or
-         ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) then begin
+         ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) or
+         (dmZLogGlobal.ContestCategory = TContestCategory(-1)) then begin
          fNewContest := True;
       end
       else begin
@@ -8017,6 +8207,8 @@ begin
       end;
 
       if fNewContest = False then begin
+         startup.LastContestName := GetContestName(dmZLogGlobal.LastContest.FContestMenuNo);
+         startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
          mr := startup.ShowModal();
          if mr = mrNo then begin // Last contest
             dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
@@ -8098,128 +8290,15 @@ begin
          end;
       end;
 
-      for r := 0 to Grid.RowCount - 1 do begin
-         for c := 0 to Grid.ColCount - 1 do begin
-            Grid.Cells[c, r] := '';
-         end;
-      end;
-
       if EditScreen <> nil then begin
          EditScreen.Free;
       end;
 
       RenewBandMenu();
 
-      with Grid do begin
-         ColCount := 10;
-         FixedCols := 0;
-         FixedRows := 1;
-         ColCount := 10;
-         Height := 291;
-         DefaultRowHeight := 17;
-      end;
+      InitGrid();
 
-      for i := 1 to Grid.RowCount - 1 do
-         for j := 0 to Grid.ColCount - 1 do
-            Grid.Cells[j, i] := '';
-
-      case dmZlogGlobal.ContestMenuNo of
-         // ALL JA
-         0: begin
-            InitALLJA();
-         end;
-
-         // 6m & DOWN
-         1: begin
-            Init6D();
-         end;
-
-         // FIELD DAY
-         2: begin
-            InitFD();
-         end;
-
-         // ACAG
-         3: begin
-            InitACAG();
-         end;
-
-         // ALL JA0(JA0)
-         4: begin
-            InitALLJA0_JA0(dmZLogGlobal.ContestBand);
-         end;
-
-         // ALL JA0(other)
-         5: begin
-            InitALLJA0_Other(dmZLogGlobal.ContestBand);
-         end;
-
-         // DX pedi
-         8: begin
-            InitDxPedi();
-         end;
-
-         // User Defined
-         9: begin
-            InitUserDefined(strContestName, strCfgFileName);
-         end;
-
-         // CQWW
-         10: begin
-            InitCQWW();
-         end;
-
-         // WPX
-         11: begin
-            InitWPX(dmZLogGlobal.ContestCategory);
-         end;
-
-         // JIDX
-         // now determines JA/DX from callsign
-         7, 12: begin
-            InitJIDX();
-         end;
-
-         // AP Sprint
-         13: begin
-            InitAPSprint();
-         end;
-
-         // ARRL DX(W/VE)
-         14: begin
-            InitARRL_W();
-         end;
-
-         // ARRL(DX)
-         15: begin
-            InitARRL_DX();
-         end;
-
-         // ARRL 10m
-         16: begin
-            InitARRL10m();
-         end;
-
-         // IARU HF
-         17: begin
-            InitIARU();
-         end;
-
-         // All Asian DX(Asia)
-         18: begin
-            InitAllAsianDX();
-         end;
-
-         // IOTA
-         19: begin
-            InitIOTA();
-         end;
-
-         // WAEDC(DX)
-         20: begin
-            InitWAE();
-         end;
-      end;
+      InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestBand, strContestName, strCfgFileName);
 
       MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
       MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;

@@ -1605,7 +1605,7 @@ begin
       Settings.FBandPlanPresetList := ini.ReadString('BandPlan', 'PresetNameList', 'JA,DX');
 
       // Last contest
-      LastContest.FContestCategory := TContestCategory(ini.ReadInteger('LastContest', 'ContestCategory', 0));
+      LastContest.FContestCategory := TContestCategory(ini.ReadInteger('LastContest', 'ContestCategory', -1));
       LastContest.FContestBand := ini.ReadInteger('LastContest', 'Band', 0);
       LastContest.FContestMode := TContestMode(ini.ReadInteger('LastContest', 'Mode', 0));
       LastContest.FMyCall := ini.ReadString('LastContest', 'MyCall', '');
