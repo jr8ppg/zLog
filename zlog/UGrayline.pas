@@ -42,6 +42,7 @@ type
     FGrayline: TGrayLineMap;
     FWorldmap: TBitmap;
     procedure GraylineProc();
+    procedure SetStayOnTop();
   public
     { Public êÈåæ }
   end;
@@ -74,6 +75,7 @@ begin
    menuShowEquator.Checked := dmZLogGlobal.Settings.FShowEquator;
    menuShowMyLocation.Checked := dmZLogGlobal.Settings.FShowMyLocation;
    menuStayOnTop.Checked := dmZLogGlobal.Settings.FGrayLineStayOnTop;
+   SetStayOnTop();
 end;
 
 procedure TformGrayline.FormDestroy(Sender: TObject);
@@ -177,12 +179,7 @@ procedure TformGrayline.menuStayOnTopClick(Sender: TObject);
 begin
    inherited;
    dmZLogGlobal.Settings.FGrayLineStayOnTop := menuStayOnTop.Checked;
-   if menuStayOnTop.Checked = True then begin
-      FormStyle := fsStayOnTop;
-   end
-   else begin
-      FormStyle := fsNormal;
-   end;
+   SetStayOnTop();
 end;
 
 procedure TformGrayline.Timer1Timer(Sender: TObject);
@@ -197,6 +194,16 @@ begin
 
    // ï`âÊÉÅÉCÉì
    GraylineProc();
+end;
+
+procedure TformGrayline.SetStayOnTop();
+begin
+   if menuStayOnTop.Checked = True then begin
+      FormStyle := fsStayOnTop;
+   end
+   else begin
+      FormStyle := fsNormal;
+   end;
 end;
 
 end.
