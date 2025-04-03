@@ -12,6 +12,7 @@ object formGrayline: TformGrayline
   Font.Height = -13
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
+  PopupMenu = PopupMenu1
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnHide = FormHide
@@ -20,7 +21,7 @@ object formGrayline: TformGrayline
   DesignSize = (
     497
     275)
-  TextHeight = 16
+  TextHeight = 13
   object Image1: TImage
     Left = 8
     Top = 7
@@ -42,25 +43,33 @@ object formGrayline: TformGrayline
     Left = 320
     Top = 184
     object menuShowGrayline: TMenuItem
+      AutoCheck = True
       Caption = #12464#12524#12452#12521#12452#12531#12434#34920#31034
       Checked = True
       OnClick = menuShowGraylineClick
-      AutoCheck = True
     end
     object menuShowMeridians: TMenuItem
+      AutoCheck = True
       Caption = #23376#21320#32218#12434#34920#31034
       OnClick = menuShowMeridiansClick
-      AutoCheck = True
     end
     object menuShowEquator: TMenuItem
+      AutoCheck = True
       Caption = #36196#36947#12434#34920#31034
       OnClick = menuShowEquatorClick
-      AutoCheck = True
     end
     object menuShowMyLocation: TMenuItem
+      AutoCheck = True
       Caption = #33258#23616#20301#32622#12434#34920#31034
       OnClick = menuShowMyLocationClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object menuStayOnTop: TMenuItem
       AutoCheck = True
+      Caption = #25163#21069#12395#34920#31034
+      OnClick = menuStayOnTopClick
     end
   end
 end

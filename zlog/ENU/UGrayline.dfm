@@ -7,11 +7,12 @@ object formGrayline: TformGrayline
   Color = clBtnFace
   Constraints.MinHeight = 314
   Constraints.MinWidth = 513
-  Font.Charset = ANSI_CHARSET
+  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
+  PopupMenu = PopupMenu1
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnHide = FormHide
@@ -20,7 +21,7 @@ object formGrayline: TformGrayline
   DesignSize = (
     497
     275)
-  TextHeight = 16
+  TextHeight = 13
   object Image1: TImage
     Left = 8
     Top = 7
@@ -42,25 +43,33 @@ object formGrayline: TformGrayline
     Left = 320
     Top = 184
     object menuShowGrayline: TMenuItem
+      AutoCheck = True
       Caption = 'Show grayline'
       Checked = True
       OnClick = menuShowGraylineClick
-      AutoCheck = True
     end
     object menuShowMeridians: TMenuItem
+      AutoCheck = True
       Caption = 'Show meridians'
       OnClick = menuShowMeridiansClick
-      AutoCheck = True
     end
     object menuShowEquator: TMenuItem
+      AutoCheck = True
       Caption = 'Show equator'
       OnClick = menuShowEquatorClick
-      AutoCheck = True
     end
     object menuShowMyLocation: TMenuItem
+      AutoCheck = True
       Caption = 'Show my location'
       OnClick = menuShowMyLocationClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object menuStayOnTop: TMenuItem
       AutoCheck = True
+      Caption = 'Stay on top'
+      OnClick = menuStayOnTopClick
     end
   end
 end

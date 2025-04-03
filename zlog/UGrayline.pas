@@ -24,6 +24,8 @@ type
     menuShowMeridians: TMenuItem;
     menuShowEquator: TMenuItem;
     menuShowMyLocation: TMenuItem;
+    N1: TMenuItem;
+    menuStayOnTop: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -34,6 +36,7 @@ type
     procedure menuShowMeridiansClick(Sender: TObject);
     procedure menuShowEquatorClick(Sender: TObject);
     procedure menuShowMyLocationClick(Sender: TObject);
+    procedure menuStayOnTopClick(Sender: TObject);
   private
     { Private êÈåæ }
     FGrayline: TGrayLineMap;
@@ -70,6 +73,7 @@ begin
    menuShowMeridians.Checked := dmZLogGlobal.Settings.FShowMeridians;
    menuShowEquator.Checked := dmZLogGlobal.Settings.FShowEquator;
    menuShowMyLocation.Checked := dmZLogGlobal.Settings.FShowMyLocation;
+   menuStayOnTop.Checked := dmZLogGlobal.Settings.FGrayLineStayOnTop;
 end;
 
 procedure TformGrayline.FormDestroy(Sender: TObject);
@@ -166,6 +170,19 @@ begin
    inherited;
    dmZLogGlobal.Settings.FShowMyLocation := menuShowMyLocation.Checked;
    GraylineProc();
+end;
+
+// ç≈ëOñ Ç…ï\é¶
+procedure TformGrayline.menuStayOnTopClick(Sender: TObject);
+begin
+   inherited;
+   dmZLogGlobal.Settings.FGrayLineStayOnTop := menuStayOnTop.Checked;
+   if menuStayOnTop.Checked = True then begin
+      FormStyle := fsStayOnTop;
+   end
+   else begin
+      FormStyle := fsNormal;
+   end;
 end;
 
 procedure TformGrayline.Timer1Timer(Sender: TObject);

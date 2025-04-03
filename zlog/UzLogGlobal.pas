@@ -384,6 +384,7 @@ type
     FShowMeridians: Boolean;
     FShowEquator: Boolean;
     FShowMyLocation: Boolean;
+    FGrayLineStayOnTop: Boolean;
   end;
 
   TLastContest = record
@@ -1319,6 +1320,7 @@ begin
       Settings.FShowMeridians := ini.ReadBool('Grayline', 'ShowMeridians', False);
       Settings.FShowEquator := ini.ReadBool('Grayline', 'ShowEquator', False);
       Settings.FShowMyLocation := ini.ReadBool('Grayline', 'ShowMyLocation', False);
+      Settings.FGrayLineStayOnTop := ini.ReadBool('Grayline', 'GrayLineStayOnTop', False);
 
       //
       // ここから隠し設定
@@ -2081,6 +2083,7 @@ begin
       ini.WriteBool('Grayline', 'ShowMeridians', Settings.FShowMeridians);
       ini.WriteBool('Grayline', 'ShowEquator', Settings.FShowEquator);
       ini.WriteBool('Grayline', 'ShowMyLocation', Settings.FShowMyLocation);
+      ini.WriteBool('Grayline', 'GrayLineStayOnTop', Settings.FGrayLineStayOnTop);
 
       //
       // ここから隠し設定
