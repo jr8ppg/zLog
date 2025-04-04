@@ -48,7 +48,7 @@ object formStartup: TformStartup
     Top = 143
     Width = 345
     Height = 90
-    Caption = #21069#22238#12467#12531#12486#12473#12488
+    Caption = #21069#22238#12398#12467#12531#12486#12473#12488
     TabOrder = 2
     object panelLastContestName: TPanel
       Left = 10
