@@ -172,6 +172,8 @@ begin
 
    for y := 90 downto -90 do begin
       for x := 180 downto -180 do begin
+         FTime[x, y].Judge(Nowtime);
+
          sunset := FTime[x, y].Sunset;
 
          // Šù‚Ésunset‚ð‰ß‚¬‚Ä‚¢‚½‚çsunrise‚Í—‚“ú‚É‚Â‚¢‚ÄŒvŽZ‚·‚é
@@ -204,8 +206,6 @@ begin
                FTime[x, y].Sunset := FSuntime.sunset;
             end;
          end;
-
-         FTime[x, y].Judge(Nowtime);
       end;
    end;
 end;
