@@ -450,7 +450,7 @@ object formOptions2: TformOptions2
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 7
+        TabOrder = 8
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -459,7 +459,7 @@ object formOptions2: TformOptions2
         Width = 193
         Height = 17
         Caption = 'Display exchange on other bands'
-        TabOrder = 9
+        TabOrder = 10
       end
       object cbJMode: TCheckBox
         Left = 276
@@ -475,7 +475,7 @@ object formOptions2: TformOptions2
         Width = 161
         Height = 17
         Caption = 'Save when not sending CW'
-        TabOrder = 6
+        TabOrder = 7
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -483,7 +483,7 @@ object formOptions2: TformOptions2
         Width = 260
         Height = 17
         Caption = 'Automatically enter exchange from SuperCheck'
-        TabOrder = 8
+        TabOrder = 9
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -491,7 +491,7 @@ object formOptions2: TformOptions2
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 12
+        TabOrder = 13
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -564,7 +564,7 @@ object formOptions2: TformOptions2
         Width = 101
         Height = 89
         Caption = 'QSL Default'
-        TabOrder = 11
+        TabOrder = 12
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -598,7 +598,7 @@ object formOptions2: TformOptions2
         Width = 193
         Height = 17
         Caption = 'Display long date time'
-        TabOrder = 10
+        TabOrder = 11
       end
       object checkOutputOutofPeriod: TCheckBox
         Left = 276
@@ -651,6 +651,14 @@ object formOptions2: TformOptions2
           Height = 21
           TabOrder = 1
         end
+      end
+      object checkShowStartupWindow: TCheckBox
+        Left = 276
+        Top = 182
+        Width = 160
+        Height = 17
+        Caption = 'Show startup window'
+        TabOrder = 6
       end
     end
     object tabsheetCategories: TTabSheet

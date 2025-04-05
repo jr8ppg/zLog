@@ -385,6 +385,9 @@ type
     FShowEquator: Boolean;
     FShowMyLocation: Boolean;
     FGrayLineStayOnTop: Boolean;
+
+    // Startup window
+    FDontShowStartupWindow: Boolean;
   end;
 
   TLastContest = record
@@ -1322,6 +1325,9 @@ begin
       Settings.FShowMyLocation := ini.ReadBool('Grayline', 'ShowMyLocation', False);
       Settings.FGrayLineStayOnTop := ini.ReadBool('Grayline', 'GrayLineStayOnTop', False);
 
+      // Startup window
+      Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
+
       //
       // ここから隠し設定
       //
@@ -2084,6 +2090,9 @@ begin
       ini.WriteBool('Grayline', 'ShowEquator', Settings.FShowEquator);
       ini.WriteBool('Grayline', 'ShowMyLocation', Settings.FShowMyLocation);
       ini.WriteBool('Grayline', 'GrayLineStayOnTop', Settings.FGrayLineStayOnTop);
+
+      // Startup window
+      ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
 
       //
       // ここから隠し設定

@@ -3,7 +3,7 @@ object formStartup: TformStartup
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Welcome to zLog'
-  ClientHeight = 242
+  ClientHeight = 263
   ClientWidth = 362
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,6 +12,9 @@ object formStartup: TformStartup
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poOwnerFormCenter
+  DesignSize = (
+    362
+    263)
   TextHeight = 13
   object buttonNewContest: TButton
     Left = 8
@@ -78,5 +81,14 @@ object formStartup: TformStartup
       ParentFont = False
       TabOrder = 1
     end
+  end
+  object checkDontShowThisWindow: TCheckBox
+    Left = 150
+    Top = 240
+    Width = 200
+    Height = 19
+    Anchors = [akTop, akRight]
+    Caption = #27425#22238#12424#12426#12371#12398#12454#12452#12531#12489#12454#12434#34920#31034#12375#12394#12356
+    TabOrder = 3
   end
 end

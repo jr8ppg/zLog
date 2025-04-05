@@ -450,7 +450,7 @@ object formOptions2: TformOptions2
         AutoSize = False
         MaxValue = 99
         MinValue = 1
-        TabOrder = 7
+        TabOrder = 8
         Value = 3
       end
       object cbDispExchange: TCheckBox
@@ -459,7 +459,7 @@ object formOptions2: TformOptions2
         Width = 240
         Height = 17
         Caption = #20182#12398#12496#12531#12489#12391#20132#25563#12375#12383#12490#12531#12496#12540#12434#33258#21205#20837#21147
-        TabOrder = 9
+        TabOrder = 10
       end
       object cbJMode: TCheckBox
         Left = 276
@@ -475,7 +475,7 @@ object formOptions2: TformOptions2
         Width = 161
         Height = 17
         Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-        TabOrder = 6
+        TabOrder = 7
       end
       object cbAutoEnterSuper: TCheckBox
         Left = 17
@@ -483,7 +483,7 @@ object formOptions2: TformOptions2
         Width = 260
         Height = 17
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
-        TabOrder = 8
+        TabOrder = 9
       end
       object groupQsyAssist: TGroupBox
         Left = 222
@@ -491,7 +491,7 @@ object formOptions2: TformOptions2
         Width = 204
         Height = 89
         Caption = 'QSY'#12450#12471#12473#12488
-        TabOrder = 12
+        TabOrder = 13
         object Label86: TLabel
           Left = 148
           Top = 40
@@ -564,7 +564,7 @@ object formOptions2: TformOptions2
         Width = 101
         Height = 89
         Caption = 'QSL'#21021#26399#20516
-        TabOrder = 11
+        TabOrder = 12
         object radioQslNone: TRadioButton
           Left = 15
           Top = 16
@@ -598,7 +598,7 @@ object formOptions2: TformOptions2
         Width = 193
         Height = 17
         Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-        TabOrder = 10
+        TabOrder = 11
       end
       object checkOutputOutofPeriod: TCheckBox
         Left = 276
@@ -651,6 +651,14 @@ object formOptions2: TformOptions2
           Height = 21
           TabOrder = 1
         end
+      end
+      object checkShowStartupWindow: TCheckBox
+        Left = 276
+        Top = 182
+        Width = 160
+        Height = 17
+        Caption = #38283#22987#12454#12452#12531#12489#12454#12434#20351#29992#12377#12427
+        TabOrder = 6
       end
     end
     object tabsheetCategories: TTabSheet

@@ -8193,38 +8193,42 @@ begin
    startup := TformStartup.Create(Self);
    menu := TMenuForm.Create(Self);
    try
-      dmZlogGlobal.SetLogFileName('');
+      dmZLogGlobal.SetLogFileName('');
       fScoreCoeff := 1;
+      fNewContest := True;
 
-      if (dmZLogGlobal.LastContest.FFileName = '') or
-         (dmZLogGlobal.LastContest.FMyCall = '') or
-         ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) or
-         (dmZLogGlobal.ContestCategory = TContestCategory(-1)) then begin
-         fNewContest := True;
-      end
-      else begin
-         fNewContest := False;
-      end;
-
-      if fNewContest = False then begin
-         startup.LastContestName := GetContestName(dmZLogGlobal.LastContest.FContestMenuNo);
-         startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
-         mr := startup.ShowModal();
-         if mr = mrNo then begin // Last contest
-            dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
-            dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
-            dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
-            dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
-            dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
-            dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
-            FPostContest := dmZLogGlobal.LastContest.FPostContest;
-            strContestName := dmZLogGlobal.LastContest.FContestName;
-            strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
-            fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
-            dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
+      if dmZLogGlobal.Settings.FDontShowStartupWindow = False then begin
+         if (dmZLogGlobal.LastContest.FFileName = '') or
+            (dmZLogGlobal.LastContest.FMyCall = '') or
+            ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) or
+            (dmZLogGlobal.ContestCategory = TContestCategory(-1)) then begin
+            fNewContest := True;
          end
          else begin
-            fNewContest := True;
+            fNewContest := False;
+         end;
+
+         if fNewContest = False then begin
+            startup.LastContestName := GetContestName(dmZLogGlobal.LastContest.FContestMenuNo);
+            startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
+            mr := startup.ShowModal();
+            if mr = mrNo then begin // Last contest
+               dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
+               dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
+               dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
+               dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
+               dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
+               dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
+               FPostContest := dmZLogGlobal.LastContest.FPostContest;
+               strContestName := dmZLogGlobal.LastContest.FContestName;
+               strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
+               fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
+               dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
+               dmZLogGlobal.Settings.FDontShowStartupWindow := startup.DontShowThisWindow;
+            end
+            else begin
+               fNewContest := True;
+            end;
          end;
       end;
 
