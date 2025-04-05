@@ -1267,7 +1267,6 @@ type
     procedure LoadSpotData(slFileList: TStrings);
     procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
     function GetFixEdge(b: TBand; m: TMode): Integer;
-    function GetContestName(contestno: Integer): string;
     procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
   public
@@ -7985,70 +7984,6 @@ begin
    end;
 end;
 
-function TMainForm.GetContestName(contestno: Integer): string;
-begin
-   case contestno of
-      // ALL JA
-      0: Result := 'ALL JAコンテスト';
-
-      // 6m & DOWN
-      1: Result := '6m & DOWNコンテスト';
-
-      // FIELD DAY
-      2: Result := 'フィールドデイコンテスト';
-
-      // ACAG
-      3: Result := '全市全郡コンテスト';
-
-      // ALL JA0(JA0)
-      4: Result := 'ALL JA0コンテスト(JA0)';
-
-      // ALL JA0(other)
-      5: Result := 'ALL JA0コンテスト(JA0以外)';
-
-      // DX pedi
-      8: Result := 'DX Pedition';
-
-      // User Defined
-      9: Result := 'ユーザー定義コンテスト';
-
-      // CQWW
-      10: Result := 'CQ World Wide Contest';
-
-      // WPX
-      11: Result := 'CQ WPX Contest';
-
-      // JIDX
-      7, 12: Result := 'Japan International DX Contest';
-
-      // AP Sprint
-      13: Result := 'AP Sprint';
-
-      // ARRL DX(W/VE)
-      14: Result := 'ARRL 10 DX Contest(W/VE)';
-
-      // ARRL(DX)
-      15: Result := 'ARRL DX Contest(DX)';
-
-      // ARRL 10m
-      16: Result := 'ARRL 10m DX Contest';
-
-      // IARU HF
-      17: Result := 'IARU HF Championship';
-
-      // All Asian DX(Asia)
-      18: Result := 'All Asian DX Contest';
-
-      // IOTA
-      19: Result := 'IOTA Contest';
-
-      // WAEDC(DX)
-      20: Result := 'WAEDC Contest';
-
-      else Result := 'Unknown contest';
-   end;
-end;
-
 procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
 begin
    case contestno of
@@ -8209,7 +8144,7 @@ begin
          end;
 
          if fNewContest = False then begin
-            startup.LastContestName := GetContestName(dmZLogGlobal.LastContest.FContestMenuNo);
+            startup.LastContestName := dmZLogGlobal.LastContest.FContestName;
             startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
             mr := startup.ShowModal();
             if mr = mrNo then begin // Last contest
@@ -8605,7 +8540,7 @@ begin
       dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
       dmZLogGlobal.LastContest.FTxNr := dmZLogGlobal.TXNr;
       dmZLogGlobal.LastContest.FPostContest := FPostContest;
-      dmZLogGlobal.LastContest.FContestName := strContestName;
+      dmZLogGlobal.LastContest.FContestName := MyContest.Name;
       dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
       dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
       dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
