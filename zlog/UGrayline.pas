@@ -103,6 +103,7 @@ begin
    utc := Now;
    utc := IncHour(utc, -9);
    FGrayline.Calc(utc);
+   FGrayline.Judge(utc);
 
    Timer1Timer(nil);
    Timer1.Interval := 60 * 1000 * 5;   // 5min.
