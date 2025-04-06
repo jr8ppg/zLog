@@ -102,8 +102,8 @@ begin
    Inherited;
    utc := Now;
    utc := IncHour(utc, -9);
-   FGrayline.Calc(utc);
-   FGrayline.Judge(utc);
+   FGrayline.Calc(utc, menuShowGrayline.Checked);
+   GraylineProc();
 
    Timer1Timer(nil);
    Timer1.Interval := 60 * 1000 * 5;   // 5min.
@@ -148,7 +148,7 @@ procedure TformGrayline.menuShowGraylineClick(Sender: TObject);
 begin
    inherited;
    dmZLogGlobal.Settings.FShowGrayline := menuShowGrayline.Checked;
-   GraylineProc();
+   Timer1Timer(nil);
 end;
 
 // qŒßü‚ğ•\¦
@@ -191,7 +191,7 @@ begin
    utc := IncHour(utc, -9);
 
    // grayline”»’è
-   FGrayline.Judge(utc);
+   FGrayline.Judge(utc, menuShowGrayline.Checked);
 
    // •`‰æƒƒCƒ“
    GraylineProc();

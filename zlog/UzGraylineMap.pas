@@ -6,20 +6,36 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   System.Math, Vcl.StdCtrls, System.DateUtils, System.StrUtils, SunTime;
 
+const
+  GRAYOFFSET = 30;
+  GRAYOFFSET_TIMEVALUE = (1 / 1440 * GRAYOFFSET);
+
 type
+  TGrayState = ( gsDaytime, gsNight, gsGrayline1, gsGrayline2 );
+
   TGraylineTime = class
     FSunrise: TDateTime;
     FSunset: TDateTime;
-    FDaytime: Boolean;
-    FGrayline: Boolean;
+    FGrayState: TGrayState;
+
+    FSunriseMin: TDateTime;
+    FSunriseMax: TDateTime;
+    FSunsetMin: TDateTime;
+    FSunsetMax: TDateTime;
+  private
+    procedure SetSunrise(v: TDateTime);
+    procedure SetSunset(v: TDateTime);
   public
     constructor Create(); overload;
     constructor Create(ASunrise, ASunset: TDateTime); overload;
-    procedure Judge(Nowtime: TDateTime);
-    property Sunrise: TDateTime read FSunrise write FSunrise;
-    property Sunset: TDateTime read FSunset write FSunset;
-    property Daytime: Boolean read FDaytime;
-    property Grayline: Boolean read FGrayline;
+    procedure Judge(Nowtime: TDateTime; fShowGrayline: Boolean);
+    property Sunrise: TDateTime read FSunrise write SetSunrise;
+    property Sunset: TDateTime read FSunset write SetSunset;
+    property GrayState: TGrayState read FGrayState;
+    property SunriseMin: TDateTime read FSunriseMin;
+    property SunsetMin: TDateTime read FSunsetMin;
+    property SunriseMax: TDateTime read FSunriseMax;
+    property SunsetMax: TDateTime read FSunsetMax;
   end;
 
   TGrayLineMap = class
@@ -30,8 +46,8 @@ type
   public
     constructor Create();
     destructor Destroy(); override;
-    procedure Calc(Nowtime: TDateTime);
-    procedure Judge(Nowtime: TDateTime);
+    procedure Calc(Nowtime: TDateTime; fShowGrayline: Boolean);
+    procedure Judge(Nowtime: TDateTime; fShowGrayline: Boolean);
     procedure Draw(bmp: TBitmap; fShowGrayline: Boolean);
     procedure DrawLongitude(bmp: TBitmap; longitude: Extended; penstyle: TPenStyle = psSolid);
     procedure DrawLatitude(bmp: TBitmap; latitude: Extended; penstyle: TPenStyle = psSolid);
@@ -44,7 +60,7 @@ constructor TGraylineTime.Create();
 begin
    FSunrise := 0;
    FSunset := 0;
-   FDaytime := True;
+   FGrayState := gsDaytime;
 end;
 
 constructor TGraylineTime.Create(ASunrise, ASunset: TDateTime);
@@ -54,37 +70,68 @@ begin
    FSunset := ASunset;
 end;
 
-procedure TGraylineTime.Judge(Nowtime: TDateTime);
+procedure TGraylineTime.Judge(Nowtime: TDateTime; fShowGrayline: Boolean);
 begin
-   FDaytime := False;
-   FGrayline := False;
-
    // grayline判定
-   if (Nowtime >= IncMinute(FSunrise, -30)) and
-      (Nowtime <= IncMinute(FSunrise, 30)) then begin
-      FGrayline := True;
-   end;
-   if (Nowtime >= IncMinute(FSunset, -30)) and
-      (Nowtime <= IncMinute(FSunset, 30)) then begin
-      FGrayline := True;
-   end;
+   if fShowGrayline = True then begin
+      if (Nowtime >= FSunriseMin) and (Nowtime <= FSunriseMax) then begin
+         FGrayState := gsGrayline1;
+         Exit;
+      end;
+      if (Nowtime >= FSunsetMin) and (Nowtime <= FSunsetMax) then begin
+         FGrayState := gsGrayline2;
+         Exit;
+      end;
 
-   if FSunrise <= FSunset then begin
-      if (Nowtime >= FSunrise) and (Nowtime <= FSunset) then begin
-         FDaytime := True;
+      if FSunrise <= FSunset then begin
+         if (Nowtime > FSunriseMax) and (Nowtime < FSunsetMin) then begin
+            FGrayState := gsDaytime;
+         end
+         else begin
+            FGrayState := gsNight;
+         end;
       end
       else begin
-         FDaytime := False;
+         if (Nowtime > FSunsetMax) and (Nowtime < FSunriseMin) then begin
+            FGrayState := gsNight;
+         end
+         else begin
+            FGrayState := gsDaytime;
+         end;
       end;
    end
    else begin
-//      if (Nowtime >= FSunset) and (Nowtime <= FSunrise) then begin
-//         FDaytime := False;
-//      end
-//      else begin
-//         FDaytime := True;
-//      end;
+      if FSunrise <= FSunset then begin
+         if (Nowtime >= FSunrise) and (Nowtime <= FSunset) then begin
+            FGrayState := gsDaytime;
+         end
+         else begin
+            FGrayState := gsNight;
+         end;
+      end
+      else begin
+         if (Nowtime >= FSunset) and (Nowtime <= FSunrise) then begin
+            FGrayState := gsNight;
+         end
+         else begin
+            FGrayState := gsDaytime;
+         end;
+      end;
    end;
+end;
+
+procedure TGraylineTime.SetSunrise(v: TDateTime);
+begin
+   FSunrise := v;
+   FSunriseMin := FSunrise - GRAYOFFSET_TIMEVALUE;
+   FSunriseMax := FSunrise + GRAYOFFSET_TIMEVALUE;
+end;
+
+procedure TGraylineTime.SetSunset(v: TDateTime);
+begin
+   FSunset := v;
+   FSunsetMin := FSunset - GRAYOFFSET_TIMEVALUE;
+   FSunsetMax := FSunset + GRAYOFFSET_TIMEVALUE;
 end;
 
 { TGraylineMap }
@@ -117,19 +164,22 @@ begin
    FSuntime.Free();
 end;
 
-procedure TGraylineMap.Calc(Nowtime: TDateTime);
+procedure TGraylineMap.Calc(Nowtime: TDateTime; fShowGrayline: Boolean);
 var
    x, y: Integer;
    PrevDay: TDateTime;
+   NextDay: TDateTime;
+   sunset: TDateTime;
 begin
    // setrise/sunset
+   NextDay := IncDay(Nowtime, 1);
    PrevDay := IncDay(Nowtime, -1);
 
-   // west->east
+   // north->south
    for y := 90 downto -90 do begin
-
+      // west->east
       for x := 180 downto -180 do begin
-
+         // 地点セット
          FSuntime.Latitude.Value := y;
          FSuntime.Longitude.Value := x;
 
@@ -149,6 +199,18 @@ begin
             FTime[x, y].Sunset := FSuntime.sunset;
          end;
 
+         // 既にsunsetを過ぎていたらsunriseは翌日について計算する
+         sunset := FTime[x, y].SunsetMax;
+         if ((sunset > 0) and (Nowtime > sunset)) then begin
+            // 東経部は１日進める
+            if x < 0 then begin
+               FSuntime.Date := NextDay;
+            end
+            else begin
+               FSuntime.Date := Nowtime;
+            end;
+         end;
+
          // 日の出
          if IsNan(FSuntime.sunrise) then begin
             FTime[x, y].Sunrise := 0;
@@ -157,12 +219,13 @@ begin
             FTime[x, y].Sunrise := FSuntime.sunrise;
          end;
 
-//         FTime[x, y].Judge(Nowtime);
+         // 昼夜判定
+         FTime[x, y].Judge(Nowtime, fShowGrayline);
       end;
    end;
 end;
 
-procedure TGraylineMap.Judge(Nowtime: TDateTime);
+procedure TGraylineMap.Judge(Nowtime: TDateTime; fShowGrayline: Boolean);
 var
    x, y: Integer;
    NextDay: TDateTime;
@@ -170,13 +233,15 @@ var
 begin
    NextDay := IncDay(Nowtime, 1);
 
+   // north->south
    for y := 90 downto -90 do begin
+      // west->east
       for x := 180 downto -180 do begin
-         FTime[x, y].Judge(Nowtime);
-
-         sunset := FTime[x, y].Sunset;
+         // 各地点について昼夜判定
+         FTime[x, y].Judge(Nowtime, fShowGrayline);
 
          // 既にsunsetを過ぎていたらsunriseは翌日について計算する
+         sunset := FTime[x, y].SunsetMax;
          if (sunset > 0) and (Nowtime > sunset) then begin
 
             FSuntime.Latitude.Value := y;
@@ -241,7 +306,7 @@ begin
          C := FTime[xx, yy];
 
          if fShowGrayline = True then begin
-            if C.Grayline = True then begin
+            if C.GrayState = gsGrayline1 then begin
                PX := P^[x];
 
                PX.rgbtRed := Max(PX.rgbtRed - 64, 0);
@@ -250,7 +315,16 @@ begin
 
                P^[x] := PX;
             end
-            else if C.DayTime = False then begin
+            else if C.GrayState = gsGrayline2 then begin
+               PX := P^[x];
+
+               PX.rgbtRed := Max(PX.rgbtRed - 64, 0);
+               PX.rgbtGreen := Max(PX.rgbtGreen - 64, 0);
+               PX.rgbtBlue := Max(PX.rgbtBlue - 64, 0);
+
+               P^[x] := PX;
+            end
+            else if C.GrayState = gsNight then begin
                PX := P^[x];
 
                PX.rgbtRed := Max(PX.rgbtRed - 110, 0);
@@ -261,7 +335,7 @@ begin
             end;
          end
          else begin
-            if C.DayTime = False then begin
+            if C.GrayState = gsNight then begin
                PX := P^[x];
 
                PX.rgbtRed := Max(PX.rgbtRed - 110, 0);
