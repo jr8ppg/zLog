@@ -31,6 +31,12 @@ object formGrayline: TformGrayline
     PopupMenu = PopupMenu1
     Stretch = True
   end
+  object ActivityIndicator1: TActivityIndicator
+    Left = 264
+    Top = 128
+    IndicatorSize = aisLarge
+    IndicatorType = aitRotatingLines
+  end
   object Timer1: TTimer
     Enabled = False
     OnTimer = Timer1Timer

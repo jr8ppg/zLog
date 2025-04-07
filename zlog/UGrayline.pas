@@ -13,7 +13,20 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   System.Math, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   System.DateUtils, System.StrUtils, Vcl.Imaging.pngimage, Vcl.Menus,
-  SunTime, UzLogForm, UzLogGlobal, UzGraylineMap;
+  SunTime, UzLogForm, UzLogGlobal, UzGraylineMap, Vcl.WinXCtrls;
+
+const
+  WM_GRAYLINE_COMPLETE = (WM_USER + 100);
+
+type
+  TGraylineCalcThread = class(TThread)
+    FOwnerWnd: HWND;
+    FGrayline: TGrayLineMap;
+    FUtc: TDateTime;
+  protected
+    constructor Create(AOwnerWnd: HWND; AGrayline: TGrayLineMap; AUtc: TDateTime);
+    procedure Execute; override;
+  end;
 
 type
   TformGrayline = class(TZLogForm)
@@ -26,6 +39,7 @@ type
     menuShowMyLocation: TMenuItem;
     N1: TMenuItem;
     menuStayOnTop: TMenuItem;
+    ActivityIndicator1: TActivityIndicator;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -37,6 +51,7 @@ type
     procedure menuShowEquatorClick(Sender: TObject);
     procedure menuShowMyLocationClick(Sender: TObject);
     procedure menuStayOnTopClick(Sender: TObject);
+    procedure WMGraylineComplete(var msg: TMessage); message WM_GRAYLINE_COMPLETE;
   private
     { Private êÈåæ }
     FGrayline: TGrayLineMap;
@@ -76,6 +91,8 @@ begin
    menuShowMyLocation.Checked := dmZLogGlobal.Settings.FShowMyLocation;
    menuStayOnTop.Checked := dmZLogGlobal.Settings.FGrayLineStayOnTop;
    SetStayOnTop();
+
+   FGrayline.ShowGrayline := menuShowGrayline.Checked;
 end;
 
 procedure TformGrayline.FormDestroy(Sender: TObject);
@@ -98,16 +115,18 @@ end;
 procedure TformGrayline.FormShow(Sender: TObject);
 var
    utc: TDateTime;
+   calc: TGraylineCalcThread;
 begin
    Inherited;
    utc := Now;
    utc := IncHour(utc, -9);
-   FGrayline.Calc(utc, menuShowGrayline.Checked);
-   GraylineProc();
 
-   Timer1Timer(nil);
+   ActivityIndicator1.Left := Image1.Left + ((Image1.Width - ActivityIndicator1.Width) div 2);
+   ActivityIndicator1.Top := Image1.Top + ((Image1.Height - ActivityIndicator1.Height) div 2);
+   ActivityIndicator1.Animate := True;
+   calc := TGraylineCalcThread.Create(Handle, FGrayline, utc);
+
    Timer1.Interval := 60 * 1000 * 5;   // 5min.
-   Timer1.Enabled := True;
 end;
 
 procedure TformGrayline.GraylineProc();
@@ -119,7 +138,7 @@ begin
    bmp.Assign(FWorldmap);
 
    // grayline
-   FGrayline.Draw(bmp, menuShowGrayline.Checked);
+   FGrayline.Draw(bmp);
 
    // ê‘ìπ
    if menuShowEquator.Checked = True then begin
@@ -148,6 +167,7 @@ procedure TformGrayline.menuShowGraylineClick(Sender: TObject);
 begin
    inherited;
    dmZLogGlobal.Settings.FShowGrayline := menuShowGrayline.Checked;
+   FGrayline.ShowGrayline := menuShowGrayline.Checked;
    Timer1Timer(nil);
 end;
 
@@ -191,7 +211,7 @@ begin
    utc := IncHour(utc, -9);
 
    // graylineîªíË
-   FGrayline.Judge(utc, menuShowGrayline.Checked);
+   FGrayline.Judge(utc);
 
    // ï`âÊÉÅÉCÉì
    GraylineProc();
@@ -205,6 +225,36 @@ begin
    else begin
       FormStyle := fsNormal;
    end;
+end;
+
+procedure TformGrayline.WMGraylineComplete(var msg: TMessage);
+begin
+   GraylineProc();
+   ActivityIndicator1.Animate := False;
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('FGrayline.Calc=' + IntToStr(msg.LParam) + 'ms'));
+   {$ENDIF}
+   Timer1Timer(nil);
+   Timer1.Enabled := True;
+end;
+
+constructor TGraylineCalcThread.Create(AOwnerWnd: HWND; AGrayline: TGrayLineMap; AUtc: TDateTime);
+begin
+   FOwnerWnd := AOwnerWnd;
+   FUtc := AUtc;
+   FGrayline := AGrayline;
+   FreeOnTerminate := True;
+   Inherited Create(False);
+end;
+
+procedure TGraylineCalcThread.Execute();
+var
+   dwTick: DWORD;
+begin
+   dwTick := GetTickCount();
+   FGrayline.Calc(FUtc);
+   dwTick := GetTickCount() - dwTick;
+   PostMessage(FOwnerWnd, WM_GRAYLINE_COMPLETE, 0, dwTick);
 end;
 
 end.

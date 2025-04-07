@@ -42,16 +42,18 @@ type
     FSuntime: TSunTime;
     FTime: array[-180..180] of array[-90..90] of TGraylineTime;
   private
+    FShowGrayline: Boolean;
     function GetDayTime(X: Integer; Y: Integer): TGraylineTime;
   public
     constructor Create();
     destructor Destroy(); override;
-    procedure Calc(Nowtime: TDateTime; fShowGrayline: Boolean);
-    procedure Judge(Nowtime: TDateTime; fShowGrayline: Boolean);
-    procedure Draw(bmp: TBitmap; fShowGrayline: Boolean);
+    procedure Calc(Nowtime: TDateTime);
+    procedure Judge(Nowtime: TDateTime);
+    procedure Draw(bmp: TBitmap);
     procedure DrawLongitude(bmp: TBitmap; longitude: Extended; penstyle: TPenStyle = psSolid);
     procedure DrawLatitude(bmp: TBitmap; latitude: Extended; penstyle: TPenStyle = psSolid);
     property DayTime[X: Integer; Y: Integer]: TGraylineTime read GetDayTime;
+    property ShowGrayline: Boolean read FShowGrayline write FShowGrayline;
   end;
 
 implementation
@@ -60,6 +62,10 @@ constructor TGraylineTime.Create();
 begin
    FSunrise := 0;
    FSunset := 0;
+   FSunriseMin := 0;
+   FSunsetMin := 0;
+   FSunriseMax := 0;
+   FSunsetMax := 0;
    FGrayState := gsDaytime;
 end;
 
@@ -122,16 +128,30 @@ end;
 
 procedure TGraylineTime.SetSunrise(v: TDateTime);
 begin
-   FSunrise := v;
-   FSunriseMin := FSunrise - GRAYOFFSET_TIMEVALUE;
-   FSunriseMax := FSunrise + GRAYOFFSET_TIMEVALUE;
+   if v = 0 then begin
+      FSunrise := v;
+      FSunriseMin := 0;
+      FSunriseMax := 0;
+   end
+   else begin
+      FSunrise := v;
+      FSunriseMin := v - GRAYOFFSET_TIMEVALUE;
+      FSunriseMax := v + GRAYOFFSET_TIMEVALUE;
+   end;
 end;
 
 procedure TGraylineTime.SetSunset(v: TDateTime);
 begin
-   FSunset := v;
-   FSunsetMin := FSunset - GRAYOFFSET_TIMEVALUE;
-   FSunsetMax := FSunset + GRAYOFFSET_TIMEVALUE;
+   if v = 0 then begin
+      FSunset := v;
+      FSunsetMin := 0;
+      FSunsetMax := 0;
+   end
+   else begin
+      FSunset := v;
+      FSunsetMin := v - GRAYOFFSET_TIMEVALUE;
+      FSunsetMax := v + GRAYOFFSET_TIMEVALUE;
+   end;
 end;
 
 { TGraylineMap }
@@ -143,6 +163,7 @@ begin
    FSuntime := TSunTime.Create(nil);
    FSuntime.UseSysTimeZone := False;
    FSuntime.TimeZone := 0;
+   FShowGrayline := True;
 
    for y := 90 downto -90 do begin
       for x := 180 downto -180 do begin
@@ -164,7 +185,7 @@ begin
    FSuntime.Free();
 end;
 
-procedure TGraylineMap.Calc(Nowtime: TDateTime; fShowGrayline: Boolean);
+procedure TGraylineMap.Calc(Nowtime: TDateTime);
 var
    x, y: Integer;
    PrevDay: TDateTime;
@@ -220,12 +241,12 @@ begin
          end;
 
          // 昼夜判定
-         FTime[x, y].Judge(Nowtime, fShowGrayline);
+         FTime[x, y].Judge(Nowtime, FShowGrayline);
       end;
    end;
 end;
 
-procedure TGraylineMap.Judge(Nowtime: TDateTime; fShowGrayline: Boolean);
+procedure TGraylineMap.Judge(Nowtime: TDateTime);
 var
    x, y: Integer;
    NextDay: TDateTime;
@@ -238,7 +259,7 @@ begin
       // west->east
       for x := 180 downto -180 do begin
          // 各地点について昼夜判定
-         FTime[x, y].Judge(Nowtime, fShowGrayline);
+         FTime[x, y].Judge(Nowtime, FShowGrayline);
 
          // 既にsunsetを過ぎていたらsunriseは翌日について計算する
          sunset := FTime[x, y].SunsetMax;
@@ -275,7 +296,7 @@ begin
    end;
 end;
 
-procedure TGraylineMap.Draw(bmp: TBitmap; fShowGrayline: Boolean);
+procedure TGraylineMap.Draw(bmp: TBitmap);
 type
    TRGBTripleArray = array[0..5000] of TRGBTriple;
    PTRGBTripleArray = ^TRGBTripleArray;
@@ -305,7 +326,7 @@ begin
 
          C := FTime[xx, yy];
 
-         if fShowGrayline = True then begin
+         if FShowGrayline = True then begin
             if C.GrayState = gsGrayline1 then begin
                PX := P^[x];
 
@@ -318,9 +339,15 @@ begin
             else if C.GrayState = gsGrayline2 then begin
                PX := P^[x];
 
+               {$IFDEF DEBUG}
+               PX.rgbtRed := Max(PX.rgbtRed - 32, 0);
+               PX.rgbtGreen := Max(PX.rgbtGreen - 80, 0);
+               PX.rgbtBlue := Max(PX.rgbtBlue - 80, 0);
+               {$ELSE}
                PX.rgbtRed := Max(PX.rgbtRed - 64, 0);
                PX.rgbtGreen := Max(PX.rgbtGreen - 64, 0);
                PX.rgbtBlue := Max(PX.rgbtBlue - 64, 0);
+               {$ENDIF}
 
                P^[x] := PX;
             end
