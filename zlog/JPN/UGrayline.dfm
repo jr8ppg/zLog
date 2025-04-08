@@ -5,14 +5,13 @@ object formGrayline: TformGrayline
   ClientHeight = 275
   ClientWidth = 497
   Color = clBtnFace
-  Constraints.MinHeight = 314
-  Constraints.MinWidth = 513
+  Constraints.MinHeight = 294
+  Constraints.MinWidth = 496
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  PopupMenu = PopupMenu1
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnHide = FormHide
@@ -23,13 +22,14 @@ object formGrayline: TformGrayline
     275)
   TextHeight = 13
   object Image1: TImage
-    Left = 8
-    Top = 7
-    Width = 480
-    Height = 255
+    Left = 0
+    Top = 0
+    Width = 497
+    Height = 275
     Anchors = [akLeft, akTop, akRight, akBottom]
-    PopupMenu = PopupMenu1
     Stretch = True
+    ExplicitWidth = 480
+    ExplicitHeight = 255
   end
   object ActivityIndicator1: TActivityIndicator
     Left = 264

@@ -56,6 +56,7 @@ type
     { Private 宣言 }
     FGrayline: TGrayLineMap;
     FWorldmap: TBitmap;
+    procedure IndicatorCenter();
     procedure GraylineProc();
     procedure SetStayOnTop();
   public
@@ -109,6 +110,7 @@ end;
 
 procedure TformGrayline.FormResize(Sender: TObject);
 begin
+   IndicatorCenter();
    GraylineProc();
 end;
 
@@ -118,15 +120,33 @@ var
    calc: TGraylineCalcThread;
 begin
    Inherited;
+
+   // インジケーターをセンタリング
+   IndicatorCenter();
+   Application.ProcessMessages();
+
+   // 右クリックメニュー無効
+   Self.PopupMenu := nil;
+
+   // 現在時刻
    utc := Now;
    utc := IncHour(utc, -9);
 
-   ActivityIndicator1.Left := Image1.Left + ((Image1.Width - ActivityIndicator1.Width) div 2);
-   ActivityIndicator1.Top := Image1.Top + ((Image1.Height - ActivityIndicator1.Height) div 2);
+   // インジケーター開始
+   ActivityIndicator1.Visible := True;
    ActivityIndicator1.Animate := True;
+
+   // 初期計算スレッド開始
    calc := TGraylineCalcThread.Create(Handle, FGrayline, utc);
 
+   // タイマー間隔セット
    Timer1.Interval := 60 * 1000 * 5;   // 5min.
+end;
+
+procedure TformGrayline.IndicatorCenter();
+begin
+   ActivityIndicator1.Left := ((ClientWidth - ActivityIndicator1.Width) div 2);
+   ActivityIndicator1.Top := ((ClientHeight - ActivityIndicator1.Height) div 2);
 end;
 
 procedure TformGrayline.GraylineProc();
@@ -229,14 +249,27 @@ end;
 
 procedure TformGrayline.WMGraylineComplete(var msg: TMessage);
 begin
-   GraylineProc();
+   // インジケーター終わり
+   ActivityIndicator1.Visible := False;
    ActivityIndicator1.Animate := False;
+   Application.ProcessMessages();
+
    {$IFDEF DEBUG}
    OutputDebugString(PChar('FGrayline.Calc=' + IntToStr(msg.LParam) + 'ms'));
    {$ENDIF}
-   Timer1Timer(nil);
+
+   // 描画
+   GraylineProc();
+
+   // 右クリックメニュー有効
+   Self.PopupMenu := PopupMenu1;
+
+   // タイマー開始
+//   Timer1Timer(nil);
    Timer1.Enabled := True;
 end;
+
+{ TGraylineCalcThread }
 
 constructor TGraylineCalcThread.Create(AOwnerWnd: HWND; AGrayline: TGrayLineMap; AUtc: TDateTime);
 begin
