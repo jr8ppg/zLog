@@ -1111,13 +1111,7 @@ begin
             end;
          end
          else begin
-            if aQSO.Mode = mSSB then begin
-               Result := True;
-            end
-            else if aQSO.Mode = mFM then begin
-               Result := True;
-            end
-            else if aQSO.Mode = mAM then begin
+            if aQSO.Mode = Self.FMode then begin
                Result := True;
             end;
          end;

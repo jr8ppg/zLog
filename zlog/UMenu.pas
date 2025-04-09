@@ -158,11 +158,11 @@ procedure TMenuForm.FormShow(Sender: TObject);
 var
    parser: TUserDefinedContest;
 begin
-   if dmZlogGlobal.Band = 0 then begin
+   if dmZlogGlobal.ContestBand = 0 then begin
       BandGroup.ItemIndex := 0;
    end
    else begin
-      BandGroup.ItemIndex := OldBandOrd(TBand(dmZlogGlobal.Band - 1)) + 1;
+      BandGroup.ItemIndex := OldBandOrd(TBand(dmZlogGlobal.ContestBand - 1)) + 1;
    end;
 
    ModeGroup.ItemIndex := Integer(dmZlogGlobal.ContestMode);

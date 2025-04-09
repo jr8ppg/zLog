@@ -5,8 +5,8 @@ object formGrayline: TformGrayline
   ClientHeight = 275
   ClientWidth = 497
   Color = clBtnFace
-  Constraints.MinHeight = 314
-  Constraints.MinWidth = 513
+  Constraints.MinHeight = 294
+  Constraints.MinWidth = 496
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
@@ -20,15 +20,22 @@ object formGrayline: TformGrayline
   DesignSize = (
     497
     275)
-  TextHeight = 16
+  TextHeight = 13
   object Image1: TImage
-    Left = 8
-    Top = 7
-    Width = 480
-    Height = 255
+    Left = 0
+    Top = 0
+    Width = 497
+    Height = 275
     Anchors = [akLeft, akTop, akRight, akBottom]
-    PopupMenu = PopupMenu1
     Stretch = True
+    ExplicitWidth = 480
+    ExplicitHeight = 255
+  end
+  object ActivityIndicator1: TActivityIndicator
+    Left = 264
+    Top = 128
+    IndicatorSize = aisLarge
+    IndicatorType = aitRotatingLines
   end
   object Timer1: TTimer
     Enabled = False
@@ -42,25 +49,33 @@ object formGrayline: TformGrayline
     Left = 320
     Top = 184
     object menuShowGrayline: TMenuItem
+      AutoCheck = True
       Caption = #12464#12524#12452#12521#12452#12531#12434#34920#31034
       Checked = True
       OnClick = menuShowGraylineClick
-      AutoCheck = True
     end
     object menuShowMeridians: TMenuItem
+      AutoCheck = True
       Caption = #23376#21320#32218#12434#34920#31034
       OnClick = menuShowMeridiansClick
-      AutoCheck = True
     end
     object menuShowEquator: TMenuItem
+      AutoCheck = True
       Caption = #36196#36947#12434#34920#31034
       OnClick = menuShowEquatorClick
-      AutoCheck = True
     end
     object menuShowMyLocation: TMenuItem
+      AutoCheck = True
       Caption = #33258#23616#20301#32622#12434#34920#31034
       OnClick = menuShowMyLocationClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object menuStayOnTop: TMenuItem
       AutoCheck = True
+      Caption = #25163#21069#12395#34920#31034
+      OnClick = menuStayOnTopClick
     end
   end
 end

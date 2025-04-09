@@ -65,6 +65,7 @@ type
     FCountMultiOnce: Boolean;
     FNoCountryMulti: string;
     FAcceptDifferentMode: Boolean;
+    FAllPhone: Boolean;
 
     FCut: Integer;
     FLCut: Integer;
@@ -169,6 +170,7 @@ type
     property CountMultiOnce: Boolean read FCountMultiOnce;
     property NoCountryMulti: string read FNoCountryMulti;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode;
+    property AllPhone: Boolean read FAllPhone;
 
     property Cut: Integer read FCut;
     property LCut: Integer read FLCut;
@@ -269,6 +271,7 @@ begin
    FCountMultiOnce := False;
    FNoCountryMulti := '';
    FAcceptDifferentMode := False;
+   FAllPhone := True;
 
    FCut := 0;
    FLCut := 0;
@@ -594,6 +597,10 @@ begin
 
          if strCmd = 'MODE' then begin
             D.FAcceptDifferentMode := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'ALLPHONE' then begin
+            D.FAllPhone := ParseOnOff(strParam);
          end;
 
          if strCmd = 'CUT' then begin

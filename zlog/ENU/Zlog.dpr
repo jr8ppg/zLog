@@ -47,6 +47,7 @@ library Zlog;
 {ITE} {DFMFileType} {UExportHamlog.dfm}
 {ITE} {DFMFileType} {UFDMulti.dfm}
 {ITE} {DFMFileType} {UFreqList.dfm}
+{ITE} {DFMFileType} {UFreqMemDialog.dfm}
 {ITE} {DFMFileType} {UFreqPanel.dfm}
 {ITE} {DFMFileType} {UFreqTest.dfm}
 {ITE} {DFMFileType} {UFunctionKeyPanel.dfm}
@@ -102,6 +103,7 @@ library Zlog;
 {ITE} {DFMFileType} {USpotForm.dfm}
 {ITE} {DFMFileType} {USpotterListDlg.dfm}
 {ITE} {DFMFileType} {UStartTimeDialog.dfm}
+{ITE} {DFMFileType} {UStartup.dfm}
 {ITE} {DFMFileType} {UStatusEdit.dfm}
 {ITE} {DFMFileType} {USummaryInfo.dfm}
 {ITE} {DFMFileType} {USuperCheck.dfm}
@@ -174,6 +176,7 @@ library Zlog;
 {$R 'UExportHamlog.dfm' 'formExportHamlog:TForm'}
 {$R 'UFDMulti.dfm' 'FDMulti:TForm(ACAGMulti)'}
 {$R 'UFreqList.dfm' 'FreqList:TForm(CheckWin)'}
+{$R 'UFreqMemDialog.dfm' 'formFreqMemDialog:TForm'}
 {$R 'UFreqPanel.dfm' 'formFreqPanel:TForm'}
 {$R 'UFreqTest.dfm' 'formFreqTest:TForm'}
 {$R 'UFunctionKeyPanel.dfm' 'formFunctionKeyPanel:TForm(ZLogForm)'}
@@ -229,6 +232,7 @@ library Zlog;
 {$R 'USpotForm.dfm' 'SpotForm:TForm'}
 {$R 'USpotterListDlg.dfm' 'formSpotterListDlg:TForm'}
 {$R 'UStartTimeDialog.dfm' 'StartTimeDialog:TForm'}
+{$R 'UStartup.dfm' 'formStartup:TForm'}
 {$R 'UStatusEdit.dfm' 'formStatusEdit:TForm'}
 {$R 'USummaryInfo.dfm' 'SummaryInfo:TForm'}
 {$R 'USuperCheck.dfm' 'SuperCheck:TForm(ZLogForm)'}

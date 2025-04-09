@@ -1056,9 +1056,6 @@ type
     FCurrentRigSet: Integer; // 現在のRIGSET 1/2/3
     FWaitForQsoFinish: array[0..4] of Boolean;
 
-    // 周波数メモリー
-    FFreqMem: TFreqMemoryList;
-
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
     FLastFreq: array[1..3] of TFrequency;
@@ -1269,6 +1266,9 @@ type
     procedure SetCurrentRxRigFlag();
     procedure LoadSpotData(slFileList: TStrings);
     procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
+    function GetFixEdge(b: TBand; m: TMode): Integer;
+    procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
+    procedure InitGrid();
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1471,7 +1471,7 @@ uses
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
   UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
-  UCountryChecker, USelectClusterLog, USpcViewer, UOptions3;
+  UCountryChecker, USelectClusterLog, USpcViewer, UOptions3, UStartup;
 
 {$R *.DFM}
 
@@ -2617,9 +2617,6 @@ begin
    BuildOpListMenu2(OpMenu.Items, OpMenuClick);
 
    FTempQSOList := TQSOList.Create();
-
-   FFreqMem := TFreqMemoryList.Create();
-   FFreqMem.LoadFromFile('zlog_freqmem.txt');
 
    RestoreWindowsPos();
 
@@ -3981,6 +3978,7 @@ procedure TMainForm.LoadNewContestFromFile(filename: string);
 var
    Q: TQSO;
    bak_acceptdiff: Boolean;
+   bak_allphone: Boolean;
    bak_counthigher: Boolean;
    bak_coeff: Extended;
    S: string;
@@ -4019,6 +4017,7 @@ begin
    Q := TQSO.Create();
    Q.Assign(Log.QsoList[0]);
    bak_acceptdiff := Log.AcceptDifferentMode;
+   bak_allphone := Log.AllPhone;
    bak_counthigher := Log.CountHigherPoints;
    bak_coeff := Log.ScoreCoeff;
 
@@ -4026,6 +4025,7 @@ begin
 
    Log.ScoreCoeff := bak_coeff;
    Log.AcceptDifferentMode := bak_acceptdiff;
+   Log.AllPhone := bak_allphone;
    Log.CountHigherPoints := bak_counthigher;
    Log.QsoList[0].Assign(Q); // contest info is set to current contest.
    Q.Free();
@@ -5183,7 +5183,6 @@ begin
 
    EditScreen.Free();
    FTempQSOList.Free();
-   FFreqMem.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
    FCWMessagePad.Release();
@@ -7985,32 +7984,208 @@ begin
    end;
 end;
 
+procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
+begin
+   case contestno of
+      // ALL JA
+      0: begin
+         InitALLJA();
+      end;
+
+      // 6m & DOWN
+      1: begin
+         Init6D();
+      end;
+
+      // FIELD DAY
+      2: begin
+         InitFD();
+      end;
+
+      // ACAG
+      3: begin
+         InitACAG();
+      end;
+
+      // ALL JA0(JA0)
+      4: begin
+         InitALLJA0_JA0(contestband);
+      end;
+
+      // ALL JA0(other)
+      5: begin
+         InitALLJA0_Other(contestband);
+      end;
+
+      // DX pedi
+      8: begin
+         InitDxPedi();
+      end;
+
+      // User Defined
+      9: begin
+         InitUserDefined(strContestName, strCfgFileName);
+      end;
+
+      // CQWW
+      10: begin
+         InitCQWW();
+      end;
+
+      // WPX
+      11: begin
+         InitWPX(category);
+      end;
+
+      // JIDX
+      // now determines JA/DX from callsign
+      7, 12: begin
+         InitJIDX();
+      end;
+
+      // AP Sprint
+      13: begin
+         InitAPSprint();
+      end;
+
+      // ARRL DX(W/VE)
+      14: begin
+         InitARRL_W();
+      end;
+
+      // ARRL(DX)
+      15: begin
+         InitARRL_DX();
+      end;
+
+      // ARRL 10m
+      16: begin
+         InitARRL10m();
+      end;
+
+      // IARU HF
+      17: begin
+         InitIARU();
+      end;
+
+      // All Asian DX(Asia)
+      18: begin
+         InitAllAsianDX();
+      end;
+
+      // IOTA
+      19: begin
+         InitIOTA();
+      end;
+
+      // WAEDC(DX)
+      20: begin
+         InitWAE();
+      end;
+   end;
+end;
+
+procedure TMainForm.InitGrid();
+var
+   i, j: Integer;
+begin
+   with Grid do begin
+      ColCount := 10;
+      FixedCols := 0;
+      FixedRows := 1;
+      ColCount := 10;
+      Height := 291;
+      DefaultRowHeight := 17;
+   end;
+
+   for i := 1 to Grid.RowCount - 1 do begin
+      for j := 0 to Grid.ColCount - 1 do begin
+         Grid.Cells[j, i] := '';
+      end;
+   end;
+end;
+
 procedure TMainForm.OnZLogInit( var Message: TMessage );
 var
    menu: TMenuForm;
-   c, r: Integer;
-   i, j: Integer;
+   c: Integer;
+   i: Integer;
    b: Integer;
    BB: TBand;
    rigno: Integer;
    Q: TQSO;
+   startup: TformStartup;
+   mr: TModalResult;
+   strContestName: string;
+   strCfgFileName: string;
+   fScoreCoeff: Extended;
+   fNewContest: Boolean;
 begin
    FInitialized := False;
 
    SuperCheckDataLoad();
 
+   startup := TformStartup.Create(Self);
    menu := TMenuForm.Create(Self);
    try
-      if menu.ShowModal() = mrCancel then begin
-         Close();
-         Exit;
+      dmZLogGlobal.SetLogFileName('');
+      fScoreCoeff := 1;
+      fNewContest := True;
+
+      if dmZLogGlobal.Settings.FDontShowStartupWindow = False then begin
+         if (dmZLogGlobal.LastContest.FFileName = '') or
+            (dmZLogGlobal.LastContest.FMyCall = '') or
+            ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) or
+            (dmZLogGlobal.ContestCategory = TContestCategory(-1)) then begin
+            fNewContest := True;
+         end
+         else begin
+            fNewContest := False;
+         end;
+
+         if fNewContest = False then begin
+            startup.LastContestName := dmZLogGlobal.LastContest.FContestName;
+            startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
+            mr := startup.ShowModal();
+            if mr = mrNo then begin // Last contest
+               dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
+               dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
+               dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
+               dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
+               dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
+               dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
+               FPostContest := dmZLogGlobal.LastContest.FPostContest;
+               strContestName := dmZLogGlobal.LastContest.FContestName;
+               strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
+               fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
+               dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
+               dmZLogGlobal.Settings.FDontShowStartupWindow := startup.DontShowThisWindow;
+            end
+            else begin
+               fNewContest := True;
+            end;
+         end;
       end;
 
-      dmZlogGlobal.SetLogFileName('');
+      if fNewContest = True then begin // new contest
+         if menu.ShowModal() = mrCancel then begin
+            Close();
+            Exit;
+         end;
+
+         dmZLogGlobal.ContestCategory := menu.ContestCategory;
+         dmZLogGlobal.ContestBand := menu.BandGroupIndex;
+         dmZLogGlobal.ContestMode := menu.ContestMode;
+         dmZLogGlobal.MyCall := menu.Callsign;
+         dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
+         dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
+         FPostContest := menu.PostContest;
+         strContestName := menu.GeneralName;
+         strCfgFileName := menu.CFGFileName;
+         fScoreCoeff := menu.ScoreCoeff;
+      end;
 
       mPXListWPX.Visible := False;
-
-      dmZlogGlobal.ContestCategory := menu.ContestCategory;
 
       // SO2RはSingleOpのみが設定可能
       if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
@@ -8022,22 +8197,11 @@ begin
          end;
       end;
 
-      dmZlogGlobal.Band := menu.BandGroupIndex;
-
-      dmZlogGlobal.ContestMode := menu.ContestMode;
-
-      dmZlogGlobal.MyCall := menu.Callsign;
-
-      dmZlogGlobal.ContestMenuNo := menu.ContestNumber;
-
-      if menu.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
-         dmZlogGlobal.TXNr := menu.TxNumber;    // TX#
-         if dmZlogGlobal.Settings._pcname = '' then begin
-            dmZlogGlobal.Settings._pcname := 'PC' + IntToStr(menu.TxNumber);
+      if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+         if dmZLogGlobal.Settings._pcname = '' then begin
+            dmZLogGlobal.Settings._pcname := 'PC' + IntToStr(dmZLogGlobal.TXNr);
          end;
       end;
-
-      FPostContest := menu.PostContest;
 
       { Open New Contest from main menu }
       if MyContest <> nil then begin
@@ -8047,7 +8211,7 @@ begin
       dmZLogGlobal.CreateLog();
 
       // 0:ALL BAND 1～:SINGLE BAND
-      b := menu.BandGroupIndex;
+      b := dmZLogGlobal.ContestBand;
       if b > 0 then begin
          CurrentQSO.Band := TBand(b - 1);
 
@@ -8065,128 +8229,15 @@ begin
          end;
       end;
 
-      for r := 0 to Grid.RowCount - 1 do begin
-         for c := 0 to Grid.ColCount - 1 do begin
-            Grid.Cells[c, r] := '';
-         end;
-      end;
-
       if EditScreen <> nil then begin
          EditScreen.Free;
       end;
 
       RenewBandMenu();
 
-      with Grid do begin
-         ColCount := 10;
-         FixedCols := 0;
-         FixedRows := 1;
-         ColCount := 10;
-         Height := 291;
-         DefaultRowHeight := 17;
-      end;
+      InitGrid();
 
-      for i := 1 to Grid.RowCount - 1 do
-         for j := 0 to Grid.ColCount - 1 do
-            Grid.Cells[j, i] := '';
-
-      case dmZlogGlobal.ContestMenuNo of
-         // ALL JA
-         0: begin
-            InitALLJA();
-         end;
-
-         // 6m & DOWN
-         1: begin
-            Init6D();
-         end;
-
-         // FIELD DAY
-         2: begin
-            InitFD();
-         end;
-
-         // ACAG
-         3: begin
-            InitACAG();
-         end;
-
-         // ALL JA0(JA0)
-         4: begin
-            InitALLJA0_JA0(menu.BandGroupIndex);
-         end;
-
-         // ALL JA0(other)
-         5: begin
-            InitALLJA0_Other(menu.BandGroupIndex);
-         end;
-
-         // DX pedi
-         8: begin
-            InitDxPedi();
-         end;
-
-         // User Defined
-         9: begin
-            InitUserDefined(menu.GeneralName, menu.CFGFileName);
-         end;
-
-         // CQWW
-         10: begin
-            InitCQWW();
-         end;
-
-         // WPX
-         11: begin
-            InitWPX(menu.ContestCategory);
-         end;
-
-         // JIDX
-         // now determines JA/DX from callsign
-         7, 12: begin
-            InitJIDX();
-         end;
-
-         // AP Sprint
-         13: begin
-            InitAPSprint();
-         end;
-
-         // ARRL DX(W/VE)
-         14: begin
-            InitARRL_W();
-         end;
-
-         // ARRL(DX)
-         15: begin
-            InitARRL_DX();
-         end;
-
-         // ARRL 10m
-         16: begin
-            InitARRL10m();
-         end;
-
-         // IARU HF
-         17: begin
-            InitIARU();
-         end;
-
-         // All Asian DX(Asia)
-         18: begin
-            InitAllAsianDX();
-         end;
-
-         // IOTA
-         19: begin
-            InitIOTA();
-         end;
-
-         // WAEDC(DX)
-         20: begin
-            InitWAE();
-         end;
-      end;
+      InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestBand, strContestName, strCfgFileName);
 
       MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
       MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
@@ -8200,7 +8251,7 @@ begin
       InitSerialPanel();
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)
-      case menu.ContestMode of
+      case dmZLogGlobal.ContestMode of
          // PH/CW
          cmMix: begin
             CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
@@ -8243,7 +8294,7 @@ begin
 
       // 局種係数
       if MyContest.UseCoeff = True then begin
-         Log.ScoreCoeff := menu.ScoreCoeff;
+         Log.ScoreCoeff := fScoreCoeff;
       end;
 
       // ファイル名の指定が無い場合は選択ダイアログを出す
@@ -8266,6 +8317,14 @@ begin
          end
          else begin // user hit cancel
             MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
+         end;
+      end
+      else begin
+         if FileExists(CurrentFileName) then begin
+            LoadNewContestFromFile(CurrentFileName);
+         end
+         else begin
+            Log.SaveToFile(CurrentFileName);
          end;
       end;
 
@@ -8460,7 +8519,7 @@ begin
       FInitialized := True;
       Timer1.Interval := dmZLogGlobal.Settings.FInfoUpdateInterval;
       Timer1.Enabled := True;
-      zyloContestOpened(MyContest.Name, menu.CFGFileName);
+      zyloContestOpened(MyContest.Name, strCfgFileName);
 
       // Sent NRチェック
       if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '')) or
@@ -8472,8 +8531,22 @@ begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
       end;
+
+      // save last contest
+      dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
+      dmZLogGlobal.LastContest.FContestBand := dmZLogGlobal.ContestBand;
+      dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
+      dmZLogGlobal.LastContest.FMyCall := dmZLogGlobal.MyCall;
+      dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
+      dmZLogGlobal.LastContest.FTxNr := dmZLogGlobal.TXNr;
+      dmZLogGlobal.LastContest.FPostContest := FPostContest;
+      dmZLogGlobal.LastContest.FContestName := MyContest.Name;
+      dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
+      dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
+      dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
    finally
       menu.Release();
+      startup.Release();
    end;
 end;
 
@@ -10120,17 +10193,20 @@ var
    m: TMode;
    r: Integer;
    e: Integer;
+   D: TFreqMemory;
 begin
    no := TAction(Sender).Tag;
 
-   if dmZLogGlobal.Settings.FQuickQSY[no].FUse = False then begin
+   if dmZLogGlobal.FreqMemList.Count < no then begin
       Exit;
    end;
 
-   f := dmZLogGlobal.Settings.FQuickQSY[no].FFreq;
-   m := dmZLogGlobal.Settings.FQuickQSY[no].FMode;
-   r := dmZLogGlobal.Settings.FQuickQSY[no].FRig;
-   e := dmZLogGlobal.Settings.FQuickQSY[no].FFixEdge;
+   D := dmZLogGlobal.FreqMemList[no - 1];
+
+   f := D.Frequency;
+   m := D.Mode;
+   r := D.RigNo;
+   e := D.FixEdgeNo;
 
    QSY(bUnknown, m, r, f, e);
 
@@ -11120,6 +11196,7 @@ var
    b: TBand;
    rigset: Integer;
    dwTick: DWORD;
+   edge: Integer;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionSetLastFreqExecute---'));
@@ -11156,6 +11233,12 @@ begin
 
       // Antenna Select
       AntennaSelect(rig, rigset, b);
+
+      // Fix edge選択
+      edge := GetFixEdge(b, FLastMode[rigset]);
+      if edge <> 0 then begin
+         rig.FixEdgeSelect(edge);
+      end;
    end;
 
    Restore2bsiqMode();
@@ -12223,6 +12306,7 @@ var
    rigset: Integer;
    nID: Integer;
    mode: TMode;
+   edge: Integer;
 begin
    if freq = 0 then begin
       Exit;
@@ -12259,6 +12343,7 @@ begin
    rigset := CurrentRx + 1;
 
    b := dmZLogGlobal.BandPlan.FreqToBand(freq);
+   m := TextToMode(FEditPanel[rigset - 1].ModeEdit.Text);
 
    rig := RigControl.GetRig(rigset, b);
    if rig <> nil then begin
@@ -12275,7 +12360,6 @@ begin
          Q.Mode := dmZLogGlobal.BandPlan.GetEstimatedMode(freq);
 
          // 現在のモードと異なる or 常にモードセットなら
-         m := TextToMode(FEditPanel[rigset - 1].ModeEdit.Text);
          if (m <> Q.Mode) or (dmZLogGlobal.Settings._bandscope_always_change_mode = True) then begin
             // 推定モードセット
 	        rig.SetMode(Q);
@@ -12286,6 +12370,9 @@ begin
             end;
          end;
 
+         // GetFixEdge()用
+         m := Q.Mode;
+
          Q.Free();
       end;
 
@@ -12293,6 +12380,12 @@ begin
       AntennaSelect(rig, rigset, b);
 
       rig.UpdateStatus();
+
+      // Fix edge選択
+      edge := GetFixEdge(b, m);
+      if edge <> 0 then begin
+         rig.FixEdgeSelect(edge);
+      end;
 
       // Zeroin避け
       if dmZLogGlobal.Settings.FAntiZeroinXitOn1 = True then begin
@@ -14418,36 +14511,16 @@ var
    r: Integer;
    e: Integer;
    obj: TFreqMemory;
-   i: Integer;
-   fFound: Boolean;
 begin
-   m := mCW;
-   f := 0;
-   r := 0;
-   e := 0;
-
-   fFound := False;
-   for i := Low(dmZLogGlobal.Settings.FQuickQSY) to High(dmZLogGlobal.Settings.FQuickQSY) do begin
-      if dmZLogGlobal.Settings.FQuickQSY[i].FCommand = strCommand then begin
-         m := dmZLogGlobal.Settings.FQuickQSY[i].FMode;
-         r := dmZLogGlobal.Settings.FQuickQSY[i].FRig;
-         f := dmZLogGlobal.Settings.FQuickQSY[i].FFreq;
-         e := dmZLogGlobal.Settings.FQuickQSY[i].FFixEdge;
-         fFound := True;
-         Break;
-      end;
+   obj := dmZLogGlobal.FreqMemList.ObjectOf(strCommand);
+   if obj = nil then begin
+      Exit;
    end;
 
-   if fFound = False then begin
-      obj := FFreqMem.ObjectOf(strCommand);
-      if obj = nil then begin
-         Exit;
-      end;
-      m := obj.Mode;
-      f := obj.Frequency;
-      r := 0;
-      e := obj.FixEdgeNo;
-   end;
+   m := obj.Mode;
+   f := obj.Frequency;
+   r := obj.RigNo;
+   e := obj.FixEdgeNo;
 
    // Mode不明ならバンドプランより求める
    if m = mOther then begin
@@ -14691,6 +14764,24 @@ begin
          FTwoLetterMatrix[x, y].AddData(D, C, N, B, True);
       end;
    end;
+end;
+
+function TMainForm.GetFixEdge(b: TBand; m: TMode): Integer;
+var
+   i: Integer;
+   D: TFreqMemory;
+begin
+   // FreqMemory
+   for i := 0 to dmZLogGlobal.FreqMemList.Count - 1 do begin
+      D := dmZLogGlobal.FreqMemList[i];
+      if (dmZLogGlobal.BandPlan.FreqToBand(D.Frequency) = b) and
+         (D.Mode = m) then begin
+         Result := D.FixEdgeNo;
+         Exit;
+      end;
+   end;
+
+   Result := 0;
 end;
 
 { TBandScopeNotifyThread }

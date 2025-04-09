@@ -5,8 +5,8 @@ object formGrayline: TformGrayline
   ClientHeight = 275
   ClientWidth = 497
   Color = clBtnFace
-  Constraints.MinHeight = 314
-  Constraints.MinWidth = 513
+  Constraints.MinHeight = 294
+  Constraints.MinWidth = 496
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
@@ -22,12 +22,20 @@ object formGrayline: TformGrayline
     275)
   TextHeight = 13
   object Image1: TImage
-    Left = 8
-    Top = 7
-    Width = 480
-    Height = 255
+    Left = 0
+    Top = 0
+    Width = 497
+    Height = 275
     Anchors = [akLeft, akTop, akRight, akBottom]
     Stretch = True
+    ExplicitWidth = 480
+    ExplicitHeight = 255
+  end
+  object ActivityIndicator1: TActivityIndicator
+    Left = 264
+    Top = 128
+    IndicatorSize = aisLarge
+    IndicatorType = aitRotatingLines
   end
   object Timer1: TTimer
     Enabled = False
@@ -41,21 +49,33 @@ object formGrayline: TformGrayline
     Left = 320
     Top = 184
     object menuShowGrayline: TMenuItem
+      AutoCheck = True
       Caption = 'Show grayline'
       Checked = True
       OnClick = menuShowGraylineClick
     end
     object menuShowMeridians: TMenuItem
+      AutoCheck = True
       Caption = 'Show meridians'
       OnClick = menuShowMeridiansClick
     end
     object menuShowEquator: TMenuItem
+      AutoCheck = True
       Caption = 'Show equator'
       OnClick = menuShowEquatorClick
     end
     object menuShowMyLocation: TMenuItem
+      AutoCheck = True
       Caption = 'Show my location'
       OnClick = menuShowMyLocationClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object menuStayOnTop: TMenuItem
+      AutoCheck = True
+      Caption = 'Stay on top'
+      OnClick = menuStayOnTopClick
     end
   end
 end

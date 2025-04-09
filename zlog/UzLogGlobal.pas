@@ -8,7 +8,7 @@ uses
   System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
-  UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort;
+  UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort, UzFreqMemory;
 
 type
   TCWSettingsParam = record
@@ -47,15 +47,6 @@ type
     FBaudRate: Integer;
     FLineBreak: Integer;
     FLocalEcho: Boolean;
-  end;
-
-  TQuickQSY = record
-    FUse: Boolean;
-    FFreq: TFrequency;
-    FMode: TMode;
-    FRig: Integer;
-    FCommand: string;
-    FFixEdge: Integer;
   end;
 
   TSuperCheckParam = record
@@ -289,7 +280,6 @@ type
     FAntiZeroinAutoCancel: Boolean;
     FAntiZeroinStopCq: Boolean;     // Stop CQ in SP mode
 
-    FQuickQSY: array[1..8] of TQuickQSY;
     FUseKhzQsyCommand: Boolean;
     FSuperCheck: TSuperCheckParam;
     FPartialCheck: TPartialCheckParam;
@@ -394,6 +384,24 @@ type
     FShowMeridians: Boolean;
     FShowEquator: Boolean;
     FShowMyLocation: Boolean;
+    FGrayLineStayOnTop: Boolean;
+
+    // Startup window
+    FDontShowStartupWindow: Boolean;
+  end;
+
+  TLastContest = record
+    FContestCategory: TContestCategory;
+    FContestBand: Integer;
+    FContestMode: TContestMode;
+    FMyCall: string;
+    FContestMenuNo: Integer;
+    FTxNr: Integer;
+    FPostContest: Boolean;
+    FContestName: string;
+    FCfgFileName: string;
+    FScoreCoeff: Extended;
+    FFileName: string;
   end;
 
   TCommPort = class(TObject)
@@ -449,6 +457,7 @@ type
     FPrefixList : TPrefixList;
 
     FPacketClusterList: TTelnetSettingList;
+    FFreqMemList: TFreqMemoryList;
 
     function Load_CTYDAT(): Boolean;
     procedure AnalyzeMyCountry();
@@ -505,6 +514,7 @@ public
     FLog : TLog;
 
     Settings : TSettingsParam;
+    LastContest: TLastContest;
 
     procedure ClearParamImportedFlag();
 
@@ -514,7 +524,7 @@ public
 
     property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
-    property Band: Integer read GetBand write SetBand;
+    property ContestBand: Integer read GetBand write SetBand;
     property ContestMode: TContestMode read GetMode write SetMode;
     property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
@@ -582,6 +592,7 @@ public
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
     property PacketClusterList: TTelnetSettingList read FPacketClusterList;
+    property FreqMemList: TFreqMemoryList read FFreqMemList;
 
     procedure SelectBandPlan(preset_name: string);
 
@@ -699,6 +710,9 @@ begin
    // PacketClusterリスト
    FPacketClusterList := TTelnetSettingList.Create();
 
+   // FreqMemory(Quick QSY)
+   FFreqMemList := TFreqMemoryList.Create();
+
    LoadIniFile;
    Settings.CW.CurrentBank := 1;
 
@@ -762,6 +776,7 @@ begin
    FOpList.Free();
    FLog.Free();
    FPacketClusterList.Free();
+   FFreqMemList.Free();
 end;
 
 procedure TdmZLogGlobal.ClearParamImportedFlag();
@@ -814,6 +829,7 @@ var
    strKey: string;
    num: Integer;
    setting: TTelnetSetting;
+   D: TFreqMemory;
 begin
    slParam := TStringList.Create();
    slSection := TStringList.Create();
@@ -1307,6 +1323,10 @@ begin
       Settings.FShowMeridians := ini.ReadBool('Grayline', 'ShowMeridians', False);
       Settings.FShowEquator := ini.ReadBool('Grayline', 'ShowEquator', False);
       Settings.FShowMyLocation := ini.ReadBool('Grayline', 'ShowMyLocation', False);
+      Settings.FGrayLineStayOnTop := ini.ReadBool('Grayline', 'GrayLineStayOnTop', False);
+
+      // Startup window
+      Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
 
       //
       // ここから隠し設定
@@ -1341,16 +1361,25 @@ begin
       Settings.FExtAntSelWndClass := ini.ReadString('ExtAntSel', 'WndClass', '');
 
       // QuickQSY
-      for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
-         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,,,';
-         Settings.FQuickQSY[i].FUse := StrToBoolDef(slParam[0], False);
-         Settings.FQuickQSY[i].FFreq := StrToInt64Def(slParam[1], 0);
-         Settings.FQuickQSY[i].FMode := StrToModeDef(slParam[2], mSSB);
-         Settings.FQuickQSY[i].FRig  := StrToIntDef(slParam[3], 0);
-         Settings.FQuickQSY[i].FCommand  := slParam[4];
-         Settings.FQuickQSY[i].FFixEdge  := StrToIntDef(slParam[5], 0);
-      end;
+      for i := 1 to 8 do begin
+         slParam.CommaText := ini.ReadString('QuickQSY', '#' + IntToStr(i), '0,,') + ',,,,';
+         if StrToBoolDef(slParam[0], False) = False then begin
+            Continue;
+         end;
 
+         if FFreqMemList.IndexOf(slParam[4]) >= 0 then begin
+            Continue;
+         end;
+
+         D := TFreqMemory.Create();
+         D.Frequency := StrToInt64Def(slParam[1], 0);
+         D.Mode := StrToModeDef(slParam[2], mSSB);
+         D.RigNo  := StrToIntDef(slParam[3], 0);
+         D.Command  := slParam[4];
+         D.FixEdgeNo  := StrToIntDef(slParam[5], 0);
+         FFreqMemList.Add(D);
+      end;
+      FFreqMemList.LoadFromFile('zlog_freqmem.txt');
       Settings.FUseKhzQsyCommand := ini.ReadBool('QuickQSY', 'UseKhzQsyCommand', False);
 
       // SuperCheck
@@ -1580,6 +1609,19 @@ begin
 
       // Band Plan
       Settings.FBandPlanPresetList := ini.ReadString('BandPlan', 'PresetNameList', 'JA,DX');
+
+      // Last contest
+      LastContest.FContestCategory := TContestCategory(ini.ReadInteger('LastContest', 'ContestCategory', -1));
+      LastContest.FContestBand := ini.ReadInteger('LastContest', 'Band', 0);
+      LastContest.FContestMode := TContestMode(ini.ReadInteger('LastContest', 'Mode', 0));
+      LastContest.FMyCall := ini.ReadString('LastContest', 'MyCall', '');
+      LastContest.FContestMenuNo := ini.ReadInteger('LastContest', 'ContestMenuNo', 0);
+      LastContest.FTxNr := ini.ReadInteger('LastContest', 'TxNr', 0);
+      LastContest.FPostContest := ini.ReadBool('LastContest', 'PostContest', False);
+      LastContest.FContestName := ini.ReadString('LastContest', 'ContestName', '');
+      LastContest.FCfgFileName := ini.ReadString('LastContest', 'CfgFileName', '');
+      LastContest.FScoreCoeff := ini.ReadFloat('LastContest', 'ScoreCoeff', 0);
+      LastContest.FFileName := ini.ReadString('LastContest', 'FileName', '');
    finally
       ini.Free();
       slParam.Free();
@@ -2047,6 +2089,10 @@ begin
       ini.WriteBool('Grayline', 'ShowMeridians', Settings.FShowMeridians);
       ini.WriteBool('Grayline', 'ShowEquator', Settings.FShowEquator);
       ini.WriteBool('Grayline', 'ShowMyLocation', Settings.FShowMyLocation);
+      ini.WriteBool('Grayline', 'GrayLineStayOnTop', Settings.FGrayLineStayOnTop);
+
+      // Startup window
+      ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
 
       //
       // ここから隠し設定
@@ -2071,17 +2117,10 @@ begin
       ini.WriteString('ExtAntSel', 'WndClass', Settings.FExtAntSelWndClass);
 
       // QuickQSY
-      for i := Low(Settings.FQuickQSY) to High(Settings.FQuickQSY) do begin
-         slParam.Clear();
-         slParam.Add( BoolToStr(Settings.FQuickQSY[i].FUse, False) );
-         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFreq) );
-         slParam.Add( ModeString[ Settings.FQuickQSY[i].FMode ]);
-         slParam.Add( IntToStr(Settings.FQuickQSY[i].FRig) );
-         slParam.Add( Settings.FQuickQSY[i].FCommand );
-         slParam.Add( IntToStr(Settings.FQuickQSY[i].FFixEdge) );
-         ini.WriteString('QuickQSY', '#' + IntToStr(i), slParam.CommaText);
+      for i := 1 to 8 do begin
+         ini.WriteString('QuickQSY', '#' + IntToStr(i), '');
       end;
-
+      FFreqMemList.SaveToFile('zlog_freqmem.txt');
       ini.WriteBool('QuickQSY', 'UseKhzQsyCommand', Settings.FUseKhzQsyCommand);
 
       // SuperCheck
@@ -2241,6 +2280,19 @@ begin
       // Band Plan
       ini.WriteString('BandPlan', 'PresetNameList', Settings.FBandPlanPresetList);
 
+      // Last contest
+      ini.WriteInteger('LastContest', 'ContestCategory', Integer(LastContest.FContestCategory));
+      ini.WriteInteger('LastContest', 'Band', LastContest.FContestBand);
+      ini.WriteInteger('LastContest', 'Mode', Integer(LastContest.FContestMode));
+      ini.WriteString('LastContest', 'MyCall', LastContest.FMyCall);
+      ini.WriteInteger('LastContest', 'ContestMenuNo', LastContest.FContestMenuNo);
+      ini.WriteInteger('LastContest', 'TxNr', LastContest.FTxNr);
+      ini.WriteBool('LastContest', 'PostContest', LastContest.FPostContest);
+      ini.WriteString('LastContest', 'ContestName', LastContest.FContestName);
+      ini.WriteString('LastContest', 'CfgFileName', LastContest.FCfgFileName);
+      ini.WriteFloat('LastContest', 'ScoreCoeff', LastContest.FScoreCoeff);
+      ini.WriteString('LastContest', 'FileName', LastContest.FFileName);
+
       ini.UpdateFile();
    finally
       ini.Free();
@@ -2256,7 +2308,7 @@ procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
 begin
    if _OnCreate = False then begin
       if Settings._band > 0 then begin // single band
-         Band := Settings._band; // resets the bandmenu.items.enabled for the single band entry
+         ContestBand := Settings._band; // resets the bandmenu.items.enabled for the single band entry
       end;
    end;
 

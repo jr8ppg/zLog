@@ -166,7 +166,9 @@ uses
   UEntityInfo in 'UEntityInfo.pas' {formEntityInfo},
   UzLogAdif in 'UzLogAdif.pas',
   UGrayline in 'UGrayline.pas' {formGrayline},
-  UzGraylineMap in 'UzGraylineMap.pas';
+  UzGraylineMap in 'UzGraylineMap.pas',
+  UFreqMemDialog in 'UFreqMemDialog.pas' {formFreqMemDialog},
+  UStartup in 'UStartup.pas' {formStartup};
 
 {$R *.res}
 
