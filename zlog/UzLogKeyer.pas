@@ -4843,6 +4843,7 @@ begin
       end;
 
       WM_USER_WKCHANGEWPM: begin
+         FKeyerInitWPM := msg.LParam;
          SetWPM(msg.LParam);
          msg.Result := 0;
       end;
