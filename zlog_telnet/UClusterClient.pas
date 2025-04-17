@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
   System.AnsiStrings, Vcl.ComCtrls, System.IniFiles, System.DateUtils,
   System.IOUtils,
-  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket,
+  OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket, OverbyteIcsTypes,
   UOptions, USpotClass, UzLogConst, HelperLib, UTelnetSetting;
 
 const

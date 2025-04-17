@@ -242,7 +242,11 @@ begin
       sjis := AnsiString(temp);
       TimeStr := string(Copy(sjis, 71, 5));
       Comment := string(Copy(sjis, 40, 30));
-      Call := Trim(string(Copy(sjis, 27, 12)));
+      temp2 := Trim(string(Copy(sjis, 27, 12)));
+      if temp2 = '' then begin
+         Exit;
+      end;
+      Call := temp2;
 
       if Pos('CQ', Comment) > 0 then begin
          CQ := True;
@@ -292,7 +296,11 @@ begin
    else if Pos('To ALL', temp) = 1 then begin
       Exit;
    end
+   {$IFNDEF ZLOG_TELNET}
    else if dmZLogGlobal.Settings.FClusterIgnoreSHDX = False then begin    // check for SH/DX responses
+   {$ELSE}
+   else begin
+   {$ENDIF}
       i := length(temp);
       if i = 0 then begin
          exit;
@@ -344,7 +352,11 @@ begin
       temp := TrimLeft(temp);
       i := pos(' ', temp);
       if i > 0 then begin
-         Call := copy(temp, 1, i - 1);
+         temp2 := Trim(Copy(temp, 1, i - 1));
+         if temp2 = '' then begin
+            Exit;
+         end;
+         Call := temp2;
       end
       else begin
          exit;

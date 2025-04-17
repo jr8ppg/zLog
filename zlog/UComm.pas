@@ -1062,7 +1062,6 @@ begin
    for i := 1 to Length(str) do begin
       if str[i] = #10 then begin
          line := TrimCRLF(Copy(str, st, i - st + 1));
-         AddConsole(line);
          FCommBuffer.Add(line);
          st := i + 1;
       end;
@@ -1070,7 +1069,6 @@ begin
 
    line := TrimCRLF(Copy(str, st));
    if line <> '' then begin
-      AddConsole(line);
       FCommBuffer.Add(line);
    end;
 

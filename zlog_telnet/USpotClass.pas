@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Windows, Classes, Messages,
-  Generics.Collections, Generics.Defaults,
+  Generics.Collections, Generics.Defaults, System.DateUtils,
   UzLogConst, UzLogGlobal{$IFNDEF ZLOG_TELNET}, UzLogQSO, UzLogSpc{$ENDIF};
 
 type
@@ -84,14 +84,19 @@ type
   TBSData = class(TBaseSpot)
   protected
     FBold : boolean;
+    FIndex: Integer;
   public
     constructor Create; override;
-    function LabelStr : string;
-    function InText : string; override;
-    procedure FromText(S : string); override;
+    function LabelStr(): string;
+    function InText(): string; override;
+    procedure FromText(S: string); override;
     procedure Assign(O: TBaseSpot); override;
 
+    function InTextEx(): string;
+    procedure FromTextEx(S: string);
+
     property Bold: Boolean read FBold write FBold;
+    property Index: Integer read FIndex write FIndex;
   end;
 
   TSpotList = class(TObjectList<TSpot>)
@@ -99,9 +104,42 @@ type
     constructor Create(OwnsObjects: Boolean = True);
   end;
 
+  TBSDataFreqAscComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSDataFreqDescComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSDataTimeAscComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSDataTimeDescComparer = class(TComparer<TBSData>)
+  public
+    function Compare(const Left, Right: TBSData): Integer; override;
+  end;
+
+  TBSSortMethod = (soBsFreqAsc = 0, soBsFreqDesc, soBsTimeAsc, soBsTimeDesc );
+
   TBSList = class(TObjectList<TBSData>)
+  private
+    FFreqAscComparer: TBSDataFreqAscComparer;
+    FFreqDescComparer: TBSDataFreqDescComparer;
+    FTimeAscComparer: TBSDataTimeAscComparer;
+    FTimeDescComparer: TBSDataTimeDescComparer;
   public
     constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
+    procedure Sort(SortMethod: TBSSortMethod); overload;
+    function BinarySearch(SortMethod: TBSSortMethod; D: TBSData): Integer; overload;
+    function BinarySearch(SortMethod: TBSSortMethod; D: TBSData; var Found: Boolean): Integer; overload;
+    procedure SaveToFile(filename: string);
+    procedure LoadFromFile(filename: string);
   end;
 
   {$IFNDEF ZLOG_TELNET}
@@ -112,7 +150,7 @@ var
   hLookupServer: HWND;
 
 {$IFNDEF ZLOG_TELNET}
-  function ExecLookup(strCallsign: string): string;
+  function ExecLookup(strCallsign: string; b: TBand): string;
   function FindLookupServer(): HWND;
 {$ENDIF}
 
@@ -120,7 +158,7 @@ implementation
 
 {$IFNDEF ZLOG_TELNET}
 uses
-  Main;
+  UzLogContest, Main;
 {$ENDIF}
 
 constructor TBaseSpot.Create;
@@ -158,6 +196,7 @@ constructor TBSData.Create;
 begin
    inherited;
    FBold := False;
+   FIndex := 0;
 end;
 
 function TBSData.LabelStr : string;
@@ -185,7 +224,7 @@ begin
       exit;
 
    {$IFDEF DEBUG}
-   OutputDebugString(PChar('[' + S + ']'));
+//   OutputDebugString(PChar('[' + S + ']'));
    {$ENDIF}
 
    temp := TrimRight(TrimLeft(S));
@@ -203,7 +242,11 @@ begin
       sjis := AnsiString(temp);
       TimeStr := string(Copy(sjis, 71, 5));
       Comment := string(Copy(sjis, 40, 30));
-      Call := Trim(string(Copy(sjis, 27, 12)));
+      temp2 := Trim(string(Copy(sjis, 27, 12)));
+      if temp2 = '' then begin
+         Exit;
+      end;
+      Call := temp2;
 
       if Pos('CQ', Comment) > 0 then begin
          CQ := True;
@@ -253,7 +296,11 @@ begin
    else if Pos('To ALL', temp) = 1 then begin
       Exit;
    end
-   else begin    // check for SH/DX responses
+   {$IFNDEF ZLOG_TELNET}
+   else if dmZLogGlobal.Settings.FClusterIgnoreSHDX = False then begin    // check for SH/DX responses
+   {$ELSE}
+   else begin
+   {$ENDIF}
       i := length(temp);
       if i = 0 then begin
          exit;
@@ -305,7 +352,11 @@ begin
       temp := TrimLeft(temp);
       i := pos(' ', temp);
       if i > 0 then begin
-         Call := copy(temp, 1, i - 1);
+         temp2 := Trim(Copy(temp, 1, i - 1));
+         if temp2 = '' then begin
+            Exit;
+         end;
+         Call := temp2;
       end
       else begin
          exit;
@@ -348,8 +399,25 @@ begin
 end;
 
 function TSpot.InText : string;
+var
+   SL: TStringList;
 begin
-   Result := '';
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.Add(Call);
+      SL.Add(IntToStr(FreqHz));
+      SL.Add(IntToStr(Ord(Band)));
+      SL.Add(IntToStr(Ord(Mode)));
+      SL.Add(FloatToStr(Time));
+      SL.Add(ZBoolToStr(CQ));
+      SL.Add(Number);
+      SL.Add(ReportedBy);
+      Result := SL.DelimitedText;
+   finally
+      SL.Free();
+   end;
 end;
 
 procedure TSpot.FromText(S : string);
@@ -404,18 +472,7 @@ begin
    FReliableSpotter := O.ReliableSpotter;
 end;
 
-function TBSData.InText : string;
-(*  Call : string;
-    FreqHz : LongInt;
-    CtyIndex : integer;
-    Zone : integer;
-    NewCty : boolean;
-    NewZone : boolean;
-    Worked : boolean;
-    Band : TBand;
-    Mode : TMode;
-    Time : TDateTime;
-    LabelRect : TRect;  *)
+function TBSData.InText(): string;
 var
    SL: TStringList;
 begin
@@ -431,6 +488,41 @@ begin
       SL.Add(ZBoolToStr(CQ));
       SL.Add(Number);
       SL.Add(ReportedBy);
+      Result := SL.DelimitedText;
+   finally
+      SL.Free();
+   end;
+end;
+
+function TBSData.InTextEx(): string;
+var
+   SL: TStringList;
+begin
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.Add(Call);
+      SL.Add(IntToStr(FreqHz));
+      SL.Add(IntToStr(Ord(Band)));
+      SL.Add(IntToStr(Ord(Mode)));
+      SL.Add(FloatToStr(Time));
+      SL.Add(ZBoolToStr(CQ));
+      SL.Add(Number);
+      SL.Add(ReportedBy);
+
+      SL.Add(IntToStr(CtyIndex));
+      SL.Add(IntToStr(Zone));
+      SL.Add(ZBoolToStr(NewCty));
+      SL.Add(ZBoolToStr(NewZone));
+      SL.Add(ZBoolToStr(Worked));
+      SL.Add(IntToStr(Integer(SpotSource)));
+      SL.Add(IntToStr(SpotGroup));
+      SL.Add(ZBoolToStr(FNewJaMulti));
+      SL.Add(ZBoolToStr(FIsDomestic));
+      SL.Add(ZBoolToStr(LookupFailed));
+      SL.Add(ZBoolToStr(ReliableSpotter));
+
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -459,6 +551,39 @@ begin
    end;
 end;
 
+procedure TBSData.FromTextEx(S : string);
+var
+   SL: TStringList;
+begin
+   SL := TStringList.Create();
+   SL.Delimiter := '%';
+   SL.StrictDelimiter := True;
+   try
+      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%%%';
+      Call := SL[0];
+      FreqHz := StrToIntDef(SL[1], 0);
+      Band := TBand(StrToIntDef(SL[2], Integer(b19)));
+      Mode := TMode(StrToIntDef(SL[3], Integer(mCW)));
+      Time := StrToFloatDef(SL[4], 0);
+      CQ := ZStrToBool(SL[5]);
+      Number := SL[6];
+      ReportedBy := SL[7];
+      CtyIndex := StrToIntDef(SL[8], 0);
+      Zone := StrToIntDef(SL[9], 0);
+      NewCty := ZStrToBool(SL[10]);
+      NewZone := ZStrToBool(SL[11]);
+      Worked := ZStrToBool(SL[12]);
+      SpotSource := TSpotSource(StrToIntDef(SL[13], 0));
+      SpotGroup := StrToIntDef(SL[14], 0);
+      NewJaMulti := ZStrToBool(SL[15]);
+      IsDomestic := ZStrToBool(SL[16]);
+      LookupFailed := ZStrToBool(SL[17]);
+      ReliableSpotter := ZStrToBool(SL[18]);
+   finally
+      SL.Free();
+   end;
+end;
+
 procedure TBSData.Assign(O: TBaseSpot);
 begin
    Inherited Assign(O);
@@ -470,9 +595,203 @@ begin
    Inherited Create(OwnsObjects);
 end;
 
+{ TBSDataFreqAscComparer }
+
+function TBSDataFreqAscComparer.Compare(const Left, Right: TBSData): Integer;
+var
+   diff: TFrequency;
+begin
+   if (Left.FreqHz - Right.FreqHz) = 0 then begin
+      Result := 0;   //(Left.Index - Right.Index);
+   end
+   else begin
+      diff := Left.FreqHz - Right.FreqHz;
+      if diff < 0 then begin
+         Result := -1;
+      end
+      else begin
+         Result := 1;
+      end;
+   end;
+end;
+
+{ TBSDataFreqDescComparer }
+
+function TBSDataFreqDescComparer.Compare(const Left, Right: TBSData): Integer;
+var
+   diff: TFrequency;
+begin
+   if (Left.FreqHz - Right.FreqHz) = 0 then begin
+      Result := 0;   //(Right.Index - Left.Index);
+   end
+   else begin
+      diff := Right.FreqHz - Left.FreqHz;
+      if diff < 0 then begin
+         Result := -1;
+      end
+      else begin
+         Result := 1;
+      end;
+   end;
+end;
+
+{ TBSDataTimeAscComparer }
+
+function TBSDataTimeAscComparer.Compare(const Left, Right: TBSData): Integer;
+begin
+   if CompareDateTime(Left.Time, Right.Time) = 0 then begin
+      Result := (Left.Index - Right.Index);
+   end
+   else begin
+      Result := CompareDateTime(Left.Time, Right.Time);
+   end;
+end;
+
+{ TBSDataTimeDescComparer }
+
+function TBSDataTimeDescComparer.Compare(const Left, Right: TBSData): Integer;
+begin
+   if CompareDateTime(Left.Time, Right.Time) = 0 then begin
+      Result := (Right.Index - Left.Index);
+   end
+   else begin
+      Result := CompareDateTime(Right.Time, Left.Time);
+   end;
+end;
+
+{ TBSList }
+
 constructor TBSList.Create(OwnsObjects: Boolean);
 begin
    Inherited Create(OwnsObjects);
+   FFreqAscComparer := TBSDataFreqAscComparer.Create();
+   FFreqDescComparer := TBSDataFreqDescComparer.Create();
+   FTimeAscComparer := TBSDataTimeAscComparer.Create();
+   FTimeDescComparer := TBSDataTimeDescComparer.Create();
+end;
+
+destructor TBSList.Destroy();
+begin
+   Inherited;
+   FFreqAscComparer.Free();
+   FFreqDescComparer.Free();
+   FTimeAscComparer.Free();
+   FTimeDescComparer.Free();
+end;
+
+procedure TBSList.Sort(SortMethod: TBSSortMethod);
+var
+   i: Integer;
+begin
+   for i := 0 to Count - 1 do begin
+      Items[i].Index := i;
+   end;
+
+   case SortMethod of
+      soBsFreqAsc: Sort(FFreqAscComparer);
+      soBsFreqDesc: Sort(FFreqDescComparer);
+      soBsTimeAsc: Sort(FTimeAscComparer);
+      soBsTimeDesc: Sort(FTimeDescComparer);
+   end;
+end;
+
+function TBSList.BinarySearch(SortMethod: TBSSortMethod; D: TBSData): Integer;
+var
+   NewIndex: Integer;
+begin
+   NewIndex := 0;
+   case SortMethod of
+      soBsFreqAsc: BinarySearch(D, NewIndex, FFreqAscComparer);
+      soBsFreqDesc: BinarySearch(D, NewIndex, FFreqDescComparer);
+      soBsTimeAsc: BinarySearch(D, NewIndex, FTimeAscComparer);
+      soBsTimeDesc: BinarySearch(D, NewIndex, FTimeDescComparer);
+   end;
+   Result := NewIndex;
+end;
+
+function TBSList.BinarySearch(SortMethod: TBSSortMethod; D: TBSData; var Found: Boolean): Integer;
+var
+   NewIndex: Integer;
+begin
+   NewIndex := 0;
+   case SortMethod of
+      soBsFreqAsc: Found := BinarySearch(D, NewIndex, FFreqAscComparer);
+      soBsFreqDesc: Found := BinarySearch(D, NewIndex, FFreqDescComparer);
+      soBsTimeAsc: Found := BinarySearch(D, NewIndex, FTimeAscComparer);
+      soBsTimeDesc: Found := BinarySearch(D, NewIndex, FTimeDescComparer);
+   end;
+   Result := NewIndex;
+end;
+
+procedure TBSList.SaveToFile(filename: string);
+var
+   i: Integer;
+   D: TBSData;
+   SL: TStringList;
+   S: string;
+begin
+   SL := TStringList.Create();
+   try
+      S := 'BANDSCOPE DATA';
+      SL.Add(S);
+
+      S := FormatDateTime('yyyymmddhhnnss', Now);
+      SL.Add(S);
+
+      for i := 0 to Count -1 do begin
+         D := Items[i];
+         S := D.InTextEx();
+         SL.Add(S);
+      end;
+
+      SL.SaveToFile(filename);
+   finally
+      SL.Free();
+   end;
+end;
+
+procedure TBSList.LoadFromFile(filename: string);
+var
+   i: Integer;
+   D: TBSData;
+   SL: TStringList;
+   S: string;
+   t: TDatetime;
+   yyyy, mm, dd, hh, nn, ss: Word;
+begin
+   SL := TStringList.Create();
+   try
+      SL.LoadFromFile(filename);
+
+      if SL.Strings[0] <> 'BANDSCOPE DATA' then begin
+         Exit;
+      end;
+
+      S := SL.Strings[1];
+
+      t    := Now;
+      yyyy := StrToIntDef(Copy(S, 1, 4), YearOf(t));
+      mm   := StrToIntDef(Copy(S, 5, 2), MonthOf(t));
+      dd   := StrToIntDef(Copy(S, 7, 2), DayOf(t));
+      hh   := StrToIntDef(Copy(S, 9, 2), HourOf(t));
+      nn   := StrToIntDef(Copy(S, 11, 2), MinuteOf(t));
+      ss   := StrToIntDef(Copy(S, 13, 2), SecondOf(t));
+      t := EncodeDateTime(yyyy, mm, dd, hh, nn, ss, 0);
+
+      // 30分経過していたら無効なデータとしてロードしない
+      if (MinuteSpan(Now, t) > 30) then begin
+         Exit;
+      end;
+
+      for i := 2 to SL.Count - 1 do begin
+         S := SL[i];
+         D := TBSData.Create();
+         D.FromTextEx(S);
+         Add(D);
+      end;
+   finally
+      SL.Free();
+   end;
 end;
 
 {$IFNDEF ZLOG_TELNET}
@@ -485,13 +804,17 @@ begin
    // 交信済みか確認する
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
 
+   if Sp.Worked = False then begin
+      MyContest.MultiForm.ProcessCluster(Sp);
+   end;
+
    // NR未入力の場合
    if (Sp.Number = '') and (fWorkedScrub = False) then begin
       // 他のバンドで交信済みならマルチを取得
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
       end
-      else begin
+      else if dmZLogGlobal.Settings._bandscope_use_number_lookup = True then begin
          // 他のバンドで未交信ならSPCデータよりマルチを取得
          SD := TSuperData.Create();
          Sd.Callsign := Sp.Call;
@@ -502,29 +825,34 @@ begin
 
          // SPCからも取得できない場合はLookup Serverに依頼する
          if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
-            Sp.Number := ExecLookup(Sp.Call);
+            Sp.Number := ExecLookup(Sp.Call, Sp.Band);
+            if Sp.Number = '' then begin
+               Sp.LookupFailed := True;
+            end;
          end;
          SD.Free();
       end;
    end;
 
    // そのマルチはSp.BandでNEW MULTIか
-   if Sp.Number <> '' then begin
-      Q := TQSO.Create();
-      try
-         Q.Callsign := Sp.Call;
-         Q.Band := Sp.Band;
-         Q.Mode := Sp.Mode;
-         Q.NrRcvd := Sp.Number;
-         multi := MyContest.MultiForm.ExtractMulti(Q);
-         Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, multi);
-      finally
-         Q.Free();
+   if MyContest.NeedCtyDat = False then begin
+      if Sp.Number <> '' then begin
+         Q := TQSO.Create();
+         try
+            Q.Callsign := Sp.Call;
+            Q.Band := Sp.Band;
+            Q.Mode := Sp.Mode;
+            Q.NrRcvd := Sp.Number;
+            multi := MyContest.MultiForm.ExtractMulti(Q);
+            Sp.NewJaMulti := Log.IsNewMulti(Sp.Band, multi);
+         finally
+            Q.Free();
+         end;
       end;
    end;
 end;
 
-function ExecLookup(strCallsign: string): string;
+function ExecLookup(strCallsign: string; b: TBand): string;
 var
    callsign_atom: ATOM;
    number_atom: ATOM;
@@ -548,13 +876,25 @@ begin
       Exit;
    end;
 
-   if Pos('$Q', MyContest.SentStr) > 0 then begin
-      reqcode := 1;
+   if (MyContest is TFDContest) or
+      (MyContest is TSixDownContest) then begin
+      if (b >= b2400) then begin
+         reqcode := 1;
+      end
+      else begin
+         reqcode := 0;
+      end;
    end
    else begin
-      reqcode := 0;
+      if Pos('$Q', MyContest.SentStr) > 0 then begin
+         // city
+         reqcode := 1;
+      end
+      else begin
+         // prov
+         reqcode := 0;
+      end;
    end;
-
 
    S := strCallsign;
    callsign_atom := GlobalAddAtom(PChar(S));
