@@ -17,7 +17,7 @@ type
     FCommandList: string;
   public
     constructor Create();
-    destructor Destroy();
+    destructor Destroy(); override;
     procedure Assign(src: TTelnetSetting);
     property Name: string read FSettingName write FSettingName;
     property HostName: string read FHostName write FHostName;

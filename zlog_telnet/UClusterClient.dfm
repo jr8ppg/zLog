@@ -140,8 +140,6 @@ object ClusterClient: TClusterClient
       TabOrder = 0
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 282
-      ExplicitHeight = 42
     end
     object Console: TListBox
       Left = 1
@@ -157,8 +155,6 @@ object ClusterClient: TClusterClient
       ItemHeight = 12
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 47
-      ExplicitWidth = 282
     end
   end
   object panelShowInfo: TPanel
