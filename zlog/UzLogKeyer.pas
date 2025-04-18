@@ -4212,14 +4212,28 @@ begin
    //              e  e  i  T
    //              y  y  d  T
    //              1  2  e
+   // b0は0でPTT使用、1でPTT使用しない
    // b2とb3はdatasheetと現物は逆になっている
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   // PTT制御有無
-   if fUsePttPort = True then begin
-      Buff[1] := Buff[1] or $1;
+   // PTT制御有無 SO2RNeo利用の場合はb0は1とする
+   if FSo2rType = so2rNeo then begin
+      if fUsePttPort = True then begin
+         Buff[1] := Buff[1] or $1;
+      end
+      else begin
+         Buff[1] := Buff[1] and $fe;
+      end;
+   end
+   else begin  // WinKeyer
+      if fUsePttPort = True then begin
+         Buff[1] := Buff[1] and $fe;
+      end
+      else begin
+         Buff[1] := Buff[1] or $1;
+      end;
    end;
 
    // サイドトーン有無
