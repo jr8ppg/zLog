@@ -1944,6 +1944,10 @@ begin
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
          dmZLogGlobal.Settings._pttenabled_ph := True;
       end;
+
+      if dmZLogKeyer.UseWinKeyer = True then begin
+         dmZLogKeyer.WinKeyerSetPinCfg(False);
+      end;
    end
    else begin
       CurrentQSO.RSTRcvd := 599;
@@ -1953,6 +1957,10 @@ begin
       // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
          dmZLogGlobal.Settings._pttenabled_ph := False;
+      end;
+
+      if dmZLogKeyer.UseWinKeyer = True then begin
+         dmZLogKeyer.WinKeyerSetPinCfg(True);
       end;
    end;
 
@@ -9678,7 +9686,7 @@ begin
       end;
 
       // RIG Select
-      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet, rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet, rig.RigNumber, rig.CurrentMode);
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
@@ -10987,7 +10995,7 @@ begin
       AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
 
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber, rig.CurrentMode);
    end;
 end;
 
@@ -13053,7 +13061,7 @@ begin
    rig := RigControl.GetRig(rigset, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(rigset, rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(rigset, rig.RigNumber, rig.CurrentMode);
       dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
       RigControl.LastFreq := FLastFreq[rigset];
    end;
@@ -13378,7 +13386,7 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if Assigned(rig) then begin
       RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet, rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet, rig.RigNumber, rig.CurrentMode);
       UpdateBand(rig.CurrentBand);
       UpdateMode(rig.CurrentMode);
 
@@ -13427,7 +13435,7 @@ var
 begin
    nID := GetTxRigID();
    if dmZLogGlobal.Settings._use_winkeyer = True then begin
-      dmZLogKeyer.WinKeyerControlPTT2(fOn);
+      dmZLogKeyer.WinKeyerControlPTT(fOn);
    end
    else begin
       dmZLogKeyer.ControlPTT(nID, fOn);
@@ -14621,7 +14629,7 @@ var
 begin
    rig := RigControl.GetRig(FCurrentTx + 1, TextToBand(FEditPanel[FCurrentTx].BandEdit.Text));
    if rig <> nil then begin
-      dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber, rig.CurrentMode);
    end;
 end;
 
