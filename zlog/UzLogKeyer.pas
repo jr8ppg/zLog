@@ -346,6 +346,7 @@ type
     procedure SetKeyingPortConfig(Index: Integer; v: TPortConfig);
     procedure DumpSendBuf();
     procedure SetOtrspPortParam(CP: TCommPortDriver);
+    procedure WinKeyerSleep(dwMilidec: DWORD);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -4056,14 +4057,14 @@ begin
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_OPEN;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 
    // set to WK2 mode
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_SET_WK2_MODE;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 
    // set serial echo back to on
    mode := WK_SETMODE_SERIALECHOBACK;
@@ -4135,7 +4136,7 @@ begin
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_CLOSE;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
    FComKeying[0].Disconnect();
 end;
 
@@ -4150,7 +4151,7 @@ begin
    Buff[0] := WK_SETWPM_CMD;
    Buff[1] := nWPM;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+//   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerAbort();
@@ -4179,7 +4180,7 @@ begin
       FWkMessageStr := '';
       FWkMessageIndex := 1;
       FWkStatus := 0;
-      Sleep(50);
+//      WinKeyerSleep(50);
    end
    else begin
       FWkAbort := True;
@@ -4202,7 +4203,7 @@ begin
       Buff[1] := $86;
    end;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPinCfg(fUsePttPort: Boolean);
@@ -4255,14 +4256,14 @@ begin
    end;
 
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 
    FPTTFLAG := False;
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_PTT_CMD;
    Buff[1] := WK_PTT_OFF;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 // PTT On/Off <18><nn> nn = 01 PTT on, n = 00 PTT off
@@ -4294,7 +4295,7 @@ begin
    end;
 
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+//   WinKeyerSleep(50);
 
    if Assigned(FOnWkStatusProc) then begin
       FOnWkStatusProc(nil, FWkTxRigSet, FWkRxRigSet, FPTTFLAG);
@@ -4313,7 +4314,7 @@ begin
    Buff[1] := before div 10;
    Buff[2] := after div 10;
    FComKeying[0].SendData(@Buff, 3);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetMode(mode: Byte);
@@ -4324,7 +4325,7 @@ begin
    Buff[0] := WK_SETMODE_CMD;
    Buff[1] := mode;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
@@ -5105,6 +5106,18 @@ begin
       FParallelPort.ResetBit(PARALLEL_BLEND);
    end;
    FParallelPort.Write();
+end;
+
+procedure TdmZLogKeyer.WinKeyerSleep(dwMilidec: DWORD);
+begin
+   if dmZLogGlobal.Settings._use_wk_delay = True then begin
+      if dmZLogGlobal.Settings._wk_delaytime = 0 then begin
+         Sleep(dwMilidec);
+      end
+      else begin
+         Sleep(dmZLogGlobal.Settings._wk_delaytime);
+      end;
+   end;
 end;
 
 { TUSBPortInfo }

@@ -162,6 +162,8 @@ type
     _use_wk_outp_select: Boolean;
     _use_wk_ignore_speed_pot: Boolean;
     _use_wk_always9600: Boolean;
+    _use_wk_delay: Boolean;
+    _wk_delaytime: Integer;
 
     // F2A/Voice options
     _sound_device: array[1..4] of Integer;
@@ -1143,6 +1145,8 @@ begin
       Settings._use_wk_outp_select := ini.ReadBool('Hardware', 'UseWkOutpSelect', True);
       Settings._use_wk_ignore_speed_pot := ini.ReadBool('Hardware', 'UseWkIgnoreSpeedPot', False);
       Settings._use_wk_always9600 := ini.ReadBool('Hardware', 'UseWkAlways9600', False);
+      Settings._use_wk_delay := ini.ReadBool('Hardware', 'UseWkDelay', True);
+      Settings._wk_delaytime := ini.ReadInteger('Hardware', 'WkDelayTime', 25);
 
       // F2A/Voice options
       for i := 1 to 4 do begin
