@@ -232,9 +232,13 @@ procedure zLogSendStr(nID: Integer; S: string; C: string);
 var
    rig: TRig;
 begin
+   // WPMを初期値に戻す
    dmZLogKeyer.ResetSpeed();
+
+   // CWモニターに送信電文をセット
    zLogSetSendText(nID, S, C);
 
+   // 各I/F別の電文送信処理
    if dmZLogKeyer.UseWinKeyer = True then begin
 
       if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin

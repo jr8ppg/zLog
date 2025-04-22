@@ -334,7 +334,7 @@ type
     procedure WinKeyerClose();
     procedure WinKeyerSetSpeed(nWPM: Integer);
     procedure WinKeyerSetSideTone(fOn: Boolean);
-    procedure WinKeyerSetPinCfg(fUsePttPort: Boolean);
+//    procedure WinKeyerSetPinCfg(fUsePttPort: Boolean);
     procedure WinKeyerSetPTTDelay(before, after: Byte);
     procedure WinKeyerSetMode(mode: Byte);
 
@@ -346,6 +346,7 @@ type
     procedure SetKeyingPortConfig(Index: Integer; v: TPortConfig);
     procedure DumpSendBuf();
     procedure SetOtrspPortParam(CP: TCommPortDriver);
+    procedure WinKeyerSleep(dwMilidec: DWORD);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -374,7 +375,7 @@ type
     procedure SetCWSendBufCharPTT(nID: Integer; C: char); {Adds a char to the end of buffer. Also controls PTT if enabled. Called from Keyboard}
 
     // TX select
-    procedure SetTxRigFlag(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
+    procedure SetTxRigFlag(rigset, rigno: Integer; mode: TMode); // 0 : no rigs, 1 : rig 1, etc
 
     // RX select
     procedure SetRxRigFlag(rigset, rigno: Integer; fForce: Boolean = False);
@@ -445,7 +446,6 @@ type
     procedure WinKeyerSendStr2(S: string);
     function WinKeyerBuildMessage(S: string): string;
     procedure WinKeyerControlPTT(fOn: Boolean);
-    procedure WinKeyerControlPTT2(fOn: Boolean);
     procedure WinKeyerAbort();
     procedure WinKeyerClear();
     procedure WinKeyerCancelLastChar();
@@ -453,6 +453,7 @@ type
     procedure WinKeyerSendMessage(S: string);
     procedure WinKeyerTuneOn();
     procedure WinKeyerTuneOff();
+    procedure WinKeyerSetPinCfg(fUsePttPort: Boolean);
 
     // SO2R support
     property So2rType: TSo2rType read FSo2rType write FSo2rType;
@@ -791,7 +792,7 @@ begin
    {$ENDIF}
 end;
 
-procedure TdmZLogKeyer.SetTxRigFlag(rigset, rigno: Integer); // 0 : no rigs, 1 : rig 1, etc
+procedure TdmZLogKeyer.SetTxRigFlag(rigset, rigno: Integer; mode: TMode); // 0 : no rigs, 1 : rig 1, etc
 begin
    if (rigset = 0) or (rigset = 1) then begin
       FWkTxRigSet := 0;
@@ -810,7 +811,12 @@ begin
 
          // WinKeyerの場合
          if (FKeyingPort[0] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = True) then begin
-            WinKeyerSetPinCfg(FPTTEnabled);
+            if mode = mCW then begin
+               WinKeyerSetPinCfg(True);
+            end
+            else begin
+               WinKeyerSetPinCfg(False);
+            end;
          end;
       end;
 
@@ -2919,7 +2925,7 @@ begin
       WinKeyerClear();
 
       // Set PTT Mode(PINCFG)
-      WinKeyerSetPinCfg(FPTTEnabled);
+      WinKeyerSetPinCfg(True);
 
       // set serial echo back to on
       mode := WK_SETMODE_SERIALECHOBACK;
@@ -4051,14 +4057,14 @@ begin
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_OPEN;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 
    // set to WK2 mode
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_SET_WK2_MODE;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 
    // set serial echo back to on
    mode := WK_SETMODE_SERIALECHOBACK;
@@ -4107,7 +4113,7 @@ begin
    end;
 
    // Set PTT Mode(PINCFG)
-   WinKeyerSetPinCfg(FPTTEnabled);
+   WinKeyerSetPinCfg(True);
 
    // Set PTT Delay time
    WinKeyerSetPTTDelay(FPttDelayBeforeTime, FPttDelayAfterTime);
@@ -4130,7 +4136,7 @@ begin
    Buff[0] := WK_ADMIN_CMD;
    Buff[1] := WK_ADMIN_CLOSE;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
    FComKeying[0].Disconnect();
 end;
 
@@ -4145,7 +4151,7 @@ begin
    Buff[0] := WK_SETWPM_CMD;
    Buff[1] := nWPM;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+//   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerAbort();
@@ -4174,7 +4180,7 @@ begin
       FWkMessageStr := '';
       FWkMessageIndex := 1;
       FWkStatus := 0;
-      Sleep(50);
+//      WinKeyerSleep(50);
    end
    else begin
       FWkAbort := True;
@@ -4197,7 +4203,7 @@ begin
       Buff[1] := $86;
    end;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetPinCfg(fUsePttPort: Boolean);
@@ -4212,28 +4218,18 @@ begin
    //              e  e  i  T
    //              y  y  d  T
    //              1  2  e
-   // b0は0でPTT使用、1でPTT使用しない
+   // b0は0でPTT制御をzLogが行う、1でPTT制御をWinKeyerが行う
    // b2とb3はdatasheetと現物は逆になっている
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_SET_PINCFG_CMD;
    Buff[1] := $a0;
 
-   // PTT制御有無 SO2RNeo利用の場合はb0は1とする
-   if FSo2rType = so2rNeo then begin
-      if fUsePttPort = True then begin
-         Buff[1] := Buff[1] or $1;
-      end
-      else begin
-         Buff[1] := Buff[1] and $fe;
-      end;
+   // PTT制御有無
+   if fUsePttPort = True then begin
+      Buff[1] := Buff[1] or $1;
    end
-   else begin  // WinKeyer
-      if fUsePttPort = True then begin
-         Buff[1] := Buff[1] and $fe;
-      end
-      else begin
-         Buff[1] := Buff[1] or $1;
-      end;
+   else begin
+      Buff[1] := Buff[1] and $fe;
    end;
 
    // サイドトーン有無
@@ -4260,17 +4256,21 @@ begin
    end;
 
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 
    FPTTFLAG := False;
    FillChar(Buff, SizeOf(Buff), 0);
    Buff[0] := WK_PTT_CMD;
    Buff[1] := WK_PTT_OFF;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 // PTT On/Off <18><nn> nn = 01 PTT on, n = 00 PTT off
+//
+// This command allows the PTT output to be used for a custom purpose.
+// The command is operational only when PTT is disabled
+// (see PINCFG command on page 9).
 procedure TdmZLogKeyer.WinKeyerControlPTT(fOn: Boolean);
 var
    Buff: array[0..10] of Byte;
@@ -4281,7 +4281,7 @@ begin
 
    FPTTFLAG := fOn;
 
-   if (FSo2rType <> so2rNeo) and (FPttEnabled = False) then begin
+   if FPttEnabled = False then begin
       Exit;
    end;
 
@@ -4295,22 +4295,10 @@ begin
    end;
 
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+//   WinKeyerSleep(50);
 
    if Assigned(FOnWkStatusProc) then begin
       FOnWkStatusProc(nil, FWkTxRigSet, FWkRxRigSet, FPTTFLAG);
-   end;
-end;
-
-procedure TdmZLogKeyer.WinKeyerControlPTT2(fOn: Boolean);
-begin
-   if FSo2rType = so2rNeo then begin
-//      WinKeyerSetPinCfg(True);
-      WinKeyerControlPTT(fOn);
-//      WinKeyerSetPinCfg(FPTTEnabled);
-   end
-   else begin
-      WinKeyerControlPTT(fOn);
    end;
 end;
 
@@ -4326,7 +4314,7 @@ begin
    Buff[1] := before div 10;
    Buff[2] := after div 10;
    FComKeying[0].SendData(@Buff, 3);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSetMode(mode: Byte);
@@ -4337,7 +4325,7 @@ begin
    Buff[0] := WK_SETMODE_CMD;
    Buff[1] := mode;
    FComKeying[0].SendData(@Buff, 2);
-   Sleep(50);
+   WinKeyerSleep(50);
 end;
 
 procedure TdmZLogKeyer.WinKeyerSendChar(C: Char);
@@ -5118,6 +5106,18 @@ begin
       FParallelPort.ResetBit(PARALLEL_BLEND);
    end;
    FParallelPort.Write();
+end;
+
+procedure TdmZLogKeyer.WinKeyerSleep(dwMilidec: DWORD);
+begin
+   if dmZLogGlobal.Settings._use_wk_delay = True then begin
+      if dmZLogGlobal.Settings._wk_delaytime = 0 then begin
+         Sleep(dwMilidec);
+      end
+      else begin
+         Sleep(dmZLogGlobal.Settings._wk_delaytime);
+      end;
+   end;
 end;
 
 { TUSBPortInfo }
