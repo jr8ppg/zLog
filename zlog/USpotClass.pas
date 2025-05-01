@@ -3,7 +3,8 @@ unit USpotClass;
 interface
 
 uses
-  SysUtils, Windows, Classes, Messages,
+  System.SysUtils, WinApi.Windows, System.Classes, WinApi.Messages,
+  System.StrUtils,
   Generics.Collections, Generics.Defaults, System.DateUtils,
   UzLogConst, UzLogGlobal{$IFNDEF ZLOG_TELNET}, UzLogQSO, UzLogSpc{$ENDIF};
 
@@ -208,20 +209,61 @@ begin
    end;
 end;
 
-function TSpot.Analyze(S : string) : boolean;
+function TSpot.Analyze(S : string): Boolean;
 var
    temp, temp2 : string;
    i : integer;
-   sjis: AnsiString;
+   len: Integer;
+   p: Integer;
+   strFreq: string;
 
    {$IFNDEF ZLOG_TELNET}
    b: TBand;
    {$ENDIF}
+
+   function GetStr(instr: string; var p: Integer): string;
+   var
+      outstr: string;
+      len: Integer;
+      ch: Char;
+      fStart: Boolean;
+   begin
+      len := Length(instr);
+
+      fStart := False;
+      while(p <= len) do begin
+         ch := instr[p];
+
+         if (ch = ' ') and (fStart = False) then begin
+            Inc(p);
+            Continue;
+         end
+         else begin
+            fStart := True;
+         end;
+
+         if ((ch = ' ') or (ch = #$13)) and (fStart = True) then begin
+            Break;
+         end;
+
+         outstr := outstr + ch;
+         Inc(p);
+
+         if (ch = ':') then begin
+            Break;
+         end;
+      end;
+
+      Result := outstr;
+   end;
 begin
    Result := False;
 
-   if length(S) < 5 then
-      exit;
+   // 最小５文字必要
+   len := Length(S);
+   if (len < 5) then begin
+      Exit;
+   end;
 
    {$IFDEF DEBUG}
 //   OutputDebugString(PChar('[' + S + ']'));
@@ -229,60 +271,58 @@ begin
 
    temp := TrimRight(TrimLeft(S));
 
+   // 行頭が'DX de'で始まらない場合はそこまで削除
    i := pos('DX de', temp);
    if i > 1 then begin
       Delete(temp, 1, i);
    end;
 
    if pos('DX de', temp) = 1 then begin
+      // 最低75バイト必要
+      if (len < 75) then begin
+         Exit;
+      end;
+
       //000000000111111111122222222223333333333444444444455555555556666666666777777
       //123456789012345678901234567890123456789012345678901234567890123456789012345
       //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ             1208Z
       //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ             1208Z
-      sjis := AnsiString(temp);
-      TimeStr := string(Copy(sjis, 71, 5));
-      Comment := string(Copy(sjis, 40, 30));
-      temp2 := Trim(string(Copy(sjis, 27, 12)));
-      if temp2 = '' then begin
+
+      // reportor取得
+      p := 7;
+      ReportedBy := GetStr(temp, p);
+
+      // 周波数取得
+      strFreq := GetStr(temp, p);
+      try
+         FreqHz := Round(StrToFloat(strFreq) * 1000);
+      except
+         on EConvertError do begin
+            Exit;
+         end;
+      end;
+
+      // コールサイン取得
+      Call := GetStr(temp, p);
+      if Call = '' then begin
          Exit;
       end;
-      Call := temp2;
 
+      // コルサインの後から末尾の時間の前までをコメントとする
+      Comment := Trim(Copy(temp, p, len - p - 5 + 1));
+
+      // 時間は末尾から取得
+      TimeStr := RightStr(temp, 5);
+
+      // CQフラグ
       if Pos('CQ', Comment) > 0 then begin
          CQ := True;
-      end;
-
-      i := pos(':', temp);
-      if i > 0 then begin
-         temp2 := copy(temp, 7, i - 7);
-         ReportedBy := temp2;
-      end
-      else begin
-         exit;
-      end;
-
-      Delete(temp, 1, i);
-      temp := TrimLeft(temp);
-
-      // Freq.
-      i := pos(' ', temp);
-      if i > 0 then begin
-         temp2 := copy(temp, 1, i - 1);
-      end
-      else begin
-         exit;
-      end;
-
-      try
-         FreqHz := Round(StrToFloat(temp2)*1000);
-      except
-         on EConvertError do
-            exit;
       end;
 
       {$IFDEF ZLOG_TELNET}
       Band := TBand(GetBandIndex(FreqHz, 0));
       {$ELSE}
+      // 周波数からバンドを求める
       b := dmZLogGlobal.BandPlan.FreqToBand(FreqHz);
       if b = bUnknown then begin
          Exit;
