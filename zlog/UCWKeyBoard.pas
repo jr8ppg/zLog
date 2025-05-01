@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Winapi.RichEdit, Vcl.ComCtrls,
-  System.Math,
+  System.Math, System.SyncObjs,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
   UzLogForm, Vcl.Samples.Spin;
 
@@ -116,6 +116,9 @@ type
     property UnsentChars: Integer read GetUnsentChars;
   end;
 
+var
+  CWKbdSync: TCriticalSection;
+
 implementation
 
 uses
@@ -191,25 +194,30 @@ procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
 begin
-   if Key = Chr($1B) then begin
-      Exit;
-   end;
+   CWKbdSync.Enter();
+   try
+      if Key = Chr($1B) then begin
+         Exit;
+      end;
 
-   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
-      Exit;
-   end;
+      if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+         Exit;
+      end;
 
-   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-      K := LowCase(Key);
-   end
-   else begin
-      K := UpCase(Key);
-   end;
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         K := LowCase(Key);
+      end
+      else begin
+         K := UpCase(Key);
+      end;
 
-   // 送信可能文字以外ならパス
-   if (Not CharInSet(K, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
-      Key := #00;
-      Exit;
+      // 送信可能文字以外ならパス
+      if (Not CharInSet(K, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
+         Key := #00;
+         Exit;
+      end;
+   finally
+      CWKbdSync.Leave();
    end;
 
    // CQループ中なら中止する
@@ -512,47 +520,64 @@ procedure TCWKeyBoard.OneCharSentProc();
 var
    fEnd: Boolean;
    ch: Char;
+   S: string;
+   len: Integer;
 begin
-   fEnd := False;
    Timer1.Enabled := False;
+   S := Console.Text;
+   CWKbdSync.Enter();
+   try
+      fEnd := False;
 
-   // 未送信が０文字なら終了
-   if UnsentChars = 0 then begin
-      fEnd := True;
-   end;
+      // 未送信が０文字なら終了
+      if UnsentChars = 0 then begin
+         fEnd := True;
+      end;
 
-   // 送信位置を進める
-   ch := Console.Text[FSendPos + 1];
-   if ch = '[' then begin
-      Inc(FSendPos, 4);
-      Inc(FDonePos, 4);
-   end
-   else if ch = #13 then begin
-      Inc(FSendPos, 2);
-      Inc(FDonePos);
-   end
-   else begin
-      Inc(FSendPos);
-      Inc(FDonePos);
-   end;
+      // 送信位置を進める
+      len := Length(S);
+      if (FSendPos + 1) > len then begin
+         Exit;
+      end;
 
-   if fEnd = True then begin
-      MainForm.StartCWKeyboard := False;
-      StartCountdown();
-      Exit;
-   end;
+      ch := S[FSendPos + 1];
 
-   // 送信位置が末尾を超えたら終了
-   if (FSendPos + 1) > Length(Console.Text) then begin
-      MainForm.StartCWKeyboard := False;
-      StartCountdown();
-      Exit;
+      if ch = '[' then begin
+         Inc(FSendPos, 4);
+         Inc(FDonePos, 4);
+      end
+      else if ch = #13 then begin
+         Inc(FSendPos, 2);
+         Inc(FDonePos);
+      end
+      else begin
+         Inc(FSendPos);
+         Inc(FDonePos);
+      end;
+
+      if fEnd = True then begin
+         MainForm.StartCWKeyboard := False;
+         StartCountdown();
+         Exit;
+      end;
+
+      // 送信位置が末尾を超えたら終了
+      if (FSendPos + 1) > len then begin
+         MainForm.StartCWKeyboard := False;
+         StartCountdown();
+         Exit;
+      end;
+
+      // 次に送る文字
+      ch := S[FSendPos + 1];
+   finally
+      CWKbdSync.Leave();
    end;
 
    // １文字送信
-   SendChar(Console.Text[FSendPos + 1]);
+   SendChar(ch);
 
-   Console.SelStart := Length(Console.Text);
+   Console.SelStart := len;
 end;
 
 procedure TCWKeyBoard.Clear();
@@ -565,19 +590,24 @@ end;
 
 procedure TCWKeyBoard.Reset();
 begin
-   Timer1.Enabled := False;
-   FSendPos := 0;
-   FDonePos := 0;
-   FCounter := 0;
-   ShowProgress();
-   Console.SelStart := 0;
-   Console.SelLength := Length(Console.Text);
-   Console.SelAttributes.Protected := False;
-   Console.SelAttributes.BackColor := clWIndow;
-   Console.SelAttributes.Color := clBlack;
-   Console.SelStart := 0;
-   Console.SelLength := 0;
-   Console.Refresh();
+   CWKbdSync.Enter();
+   try
+      Timer1.Enabled := False;
+      FSendPos := 0;
+      FDonePos := 0;
+      FCounter := 0;
+      ShowProgress();
+      Console.SelStart := 0;
+      Console.SelLength := Length(Console.Text);
+      Console.SelAttributes.Protected := False;
+      Console.SelAttributes.BackColor := clWIndow;
+      Console.SelAttributes.Color := clBlack;
+      Console.SelStart := 0;
+      Console.SelLength := 0;
+      Console.Refresh();
+   finally
+      CWKbdSync.Leave();
+   end;
 end;
 
 procedure TCWKeyBoard.Finish();
@@ -603,32 +633,46 @@ end;
 procedure TCWKeyBoard.OnZLogUpdateProgress( var Message: TMessage );
 var
    ch: Char;
+   S: string;
+   len: Integer;
 begin
-   // 送信済み位置
-   Console.SelStart := FDonePos;
+   CWKbdSync.Enter();
+   try
+      // 送信済み位置
+      Console.SelStart := FDonePos;
 
-   // 送信位置から１文字分色を付ける
-   ch := Console.Text[FSendPos + 1];
-   if ch = '[' then begin
-      Console.SelLength := 4;
-   end
-   else begin
-      Console.SelLength := 1;
+      // 送信位置から１文字分色を付ける
+      S := Console.Text;
+      len := Length(S);
+
+      if (FSendPos + 1) > len then begin
+         Exit;
+      end;
+
+      ch := S[FSendPos + 1];
+      if ch = '[' then begin
+         Console.SelLength := 4;
+      end
+      else begin
+         Console.SelLength := 1;
+      end;
+
+      // 送信済みは青
+      Console.SelAttributes.BackColor := clBlue;
+      Console.SelAttributes.Color := clWhite;
+      Console.SelAttributes.Protected := True;
+
+      // 色を元に戻す
+      Console.SelStart := len;
+      Console.SelLength := 0;
+      Console.SelAttributes.Protected := False;
+      Console.SelAttributes.BackColor := clWindow;
+      Console.SelAttributes.Color := clBlack;
+
+      Console.Refresh();
+   finally
+      CWKbdSync.Leave();
    end;
-
-   // 送信済みは青
-   Console.SelAttributes.BackColor := clBlue;
-   Console.SelAttributes.Color := clWhite;
-   Console.SelAttributes.Protected := True;
-
-   // 色を元に戻す
-   Console.SelStart := Length(Console.Text);
-   Console.SelLength := 0;
-   Console.SelAttributes.Protected := False;
-   Console.SelAttributes.BackColor := clWindow;
-   Console.SelAttributes.Color := clBlack;
-
-   Console.Refresh();
 end;
 
 procedure TCWKeyBoard.StartCountdown();
@@ -705,5 +749,11 @@ begin
    FBitmap.PixelFormat := pf24bit;
    Image1.Picture.Bitmap.Assign(FBitmap);
 end;
+
+initialization
+   CWKbdSync := TCriticalSection.Create();
+
+finalization
+   CWKbdSync.Free();
 
 end.
