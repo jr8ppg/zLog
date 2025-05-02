@@ -64,6 +64,7 @@ library Zlog;
 {ITE} {DFMFileType} {UJA0Multi.dfm}
 {ITE} {DFMFileType} {UJA0Score.dfm}
 {ITE} {DFMFileType} {UJarlMemberInfo.dfm}
+{ITE} {DFMFileType} {UJarlWebUpload.dfm}
 {ITE} {DFMFileType} {UJIDX_DX_Multi.dfm}
 {ITE} {DFMFileType} {UJIDX_DX_Score.dfm}
 {ITE} {DFMFileType} {UJIDXMulti.dfm}
@@ -193,6 +194,7 @@ library Zlog;
 {$R 'UJA0Multi.dfm' 'JA0Multi:TForm(BasicMulti)'}
 {$R 'UJA0Score.dfm' 'JA0Score:TForm(BasicScore)'}
 {$R 'UJarlMemberInfo.dfm' 'formJarlMemberInfo:TForm'}
+{$R 'UJarlWebUpload.dfm' 'formJarlWebUpload:TForm'}
 {$R 'UJIDX_DX_Multi.dfm' 'JIDX_DX_Multi:TForm(BasicMulti)'}
 {$R 'UJIDX_DX_Score.dfm' 'JIDX_DX_Score:TForm(BasicScore)'}
 {$R 'UJIDXMulti.dfm' 'JIDXMulti:TForm(WWMulti)'}

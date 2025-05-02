@@ -87,15 +87,15 @@
 #define Main_TMainForm_Switch_CW_Bank_A 64237
 #define Main_TMainForm_Switch_CW_Bank_B 64238
 #define Main_TMainForm_This_QSO_is_locked 64239
-#define URateDialogEx_HOURCAPTION_SHOWLAST 64240
-#define UCFGEdit_Please_enter_the_prov_code 64241
-#define UCFGEdit_Please_enter_the_city_code 64242
-#define USelectUserDefinedContest_Setup_prov_first 64243
-#define USelectUserDefinedContest_Setup_city_first 64244
-#define UMenu_UMenu_PleaseEnterYourCallsign 64245
-#define Vcl_EdgeConst_SWebViewFailure 64246
-#define Vcl_EdgeConst_SNoWebView 64247
-#define IEConst_sNotSupportedByEdge 64248
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64240
+#define URateDialogEx_HOURCAPTION_SHOWFIRST 64241
+#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64242
+#define URateDialogEx_HOURCAPTION_SHOWLAST 64243
+#define UCFGEdit_Please_enter_the_prov_code 64244
+#define UCFGEdit_Please_enter_the_city_code 64245
+#define USelectUserDefinedContest_Setup_prov_first 64246
+#define USelectUserDefinedContest_Setup_city_first 64247
+#define UMenu_UMenu_PleaseEnterYourCallsign 64248
 #define UBandPlanEditDialog_Input_Text 64249
 #define UBandPlanEditDialog_Delete_Preset 64250
 #define Main_TMainForm_Enter_Frequency 64251
@@ -107,18 +107,18 @@
 #define System_NetConsts_SMimeWeightOutOfRange 64257
 #define UzLogGlobal_MSG_INVALID_CHARACTER 64258
 #define UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE 64259
-#define URateDialog_HOURCAPTION_SHOWFIRST 64260
-#define URateDialog_HOURCAPTION_SHOWCURRENT 64261
-#define URateDialog_HOURCAPTION_SHOWLAST 64262
-#define URateDialogEx_SCOREGRID_TOTAL 64263
-#define URateDialogEx_SCOREGRID_TARGET 64264
-#define URateDialogEx_SCOREGRID_DIFF 64265
-#define URateDialogEx_SCOREGRID_DIFF2 64266
-#define URateDialogEx_SCOREGRID_CUMULATIVE 64267
-#define URateDialogEx_SCOREGRID_WINLOSS_L 64268
-#define URateDialogEx_SCOREGRID_WINLOSS_S 64269
-#define URateDialogEx_HOURCAPTION_SHOWFIRST 64270
-#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64271
+#define Vcl_EdgeConst_SWebViewFailure 64260
+#define Vcl_EdgeConst_SNoWebView 64261
+#define IEConst_sNotSupportedByEdge 64262
+#define URateDialog_HOURCAPTION_SHOWFIRST 64263
+#define URateDialog_HOURCAPTION_SHOWCURRENT 64264
+#define URateDialog_HOURCAPTION_SHOWLAST 64265
+#define URateDialogEx_SCOREGRID_TOTAL 64266
+#define URateDialogEx_SCOREGRID_TARGET 64267
+#define URateDialogEx_SCOREGRID_DIFF 64268
+#define URateDialogEx_SCOREGRID_DIFF2 64269
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64270
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64271
 #define System_NetConsts_SNetHttpClientUnknownError 64272
 #define System_NetConsts_SNetHttpComponentRequestClient 64273
 #define System_NetConsts_SNetHttpHeadersError 64274
@@ -1464,15 +1464,15 @@ BEGIN
 	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
 	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B\x306B\x5909\x66F4\x3057\x307E\x3057\x305F"
 	Main_TMainForm_This_QSO_is_locked,	L"\x3053\x306EQSO\x306F\x30ED\x30C3\x30AF\x3055\x308C\x3066\x3044\x307E\x3059"
+	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
+	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"\x6700\x521D\x304B\x3089"
+	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"\x73FE\x5728\x306E"
 	URateDialogEx_HOURCAPTION_SHOWLAST,	L"\x6700\x5F8C\x304B\x3089"
 	UCFGEdit_Please_enter_the_prov_code,	L"\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3092\x5165\x529B\x3057\x3066\x304F\x3060\x3055\x3044"
 	UCFGEdit_Please_enter_the_city_code,	L"\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x5165\x529B\x3057\x3066\x304F\x3060\x3055\x3044"
 	USelectUserDefinedContest_Setup_prov_first,	L"\x6700\x521D\x306B\x90FD\x9053\x5E9C\x770C\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
 	USelectUserDefinedContest_Setup_city_first,	L"\x6700\x521D\x306B\x5E02\x533A\x90E1\x30B3\x30FC\x30C9\x3092\x8A2D\x5B9A\x3057\x3066\x304F\x3060\x3055\x3044"
 	UMenu_UMenu_PleaseEnterYourCallsign,	L"\x8CB4\x5C40\x306E\x30B3\x30FC\x30EB\x30B5\x30A4\x30F3\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
-	Vcl_EdgeConst_SWebViewFailure,	L"Edge \x30D6\x30E9\x30A6\x30B6 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F"
-	Vcl_EdgeConst_SNoWebView,	L"\x57FA\x790E\x3068\x3059\x308B WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x304C\x521D\x671F\x5316\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
-	IEConst_sNotSupportedByEdge,	L"\x64CD\x4F5C\x306F Edge WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3067\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	UBandPlanEditDialog_Input_Text,	L"\x30D7\x30EA\x30BB\x30C3\x30C8\x540D\x3092\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
 	UBandPlanEditDialog_Delete_Preset,	L"\x30D7\x30EA\x30BB\x30C3\x30C8 [%s] \x3092\x524A\x9664\x3057\x3066\x3082\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Enter_Frequency,	L"\x5468\x6CE2\x6570\x3092kHz\x3067\x5165\x529B\x3057\x3066\x4E0B\x3055\x3044"
@@ -1484,6 +1484,9 @@ BEGIN
 	System_NetConsts_SMimeWeightOutOfRange,	L"\x54C1\x8CEA\x306E\x91CD\x307F\x304C\x7BC4\x56F2\x5916\x3067\x3059"
 	UzLogGlobal_MSG_INVALID_CHARACTER,	L"\x3053\x306E\x6587\x5B57\x306F\x4F7F\x7528\x3067\x304D\x307E\x305B\x3093\x3002 [%s]"
 	UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE,	L"\x30B3\x30DE\x30F3\x30C9\x306F\x65E2\x306B\x4F7F\x7528\x3055\x308C\x3066\x3044\x307E\x3059"
+	Vcl_EdgeConst_SWebViewFailure,	L"Edge \x30D6\x30E9\x30A6\x30B6 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F"
+	Vcl_EdgeConst_SNoWebView,	L"\x57FA\x790E\x3068\x3059\x308B WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x304C\x521D\x671F\x5316\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
+	IEConst_sNotSupportedByEdge,	L"\x64CD\x4F5C\x306F Edge WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3067\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	URateDialog_HOURCAPTION_SHOWFIRST,	L"\x6700\x521D\x304B\x3089"
 	URateDialog_HOURCAPTION_SHOWCURRENT,	L"\x73FE\x5728\x306E"
 	URateDialog_HOURCAPTION_SHOWLAST,	L"\x6700\x5F8C\x304B\x3089"
@@ -1493,9 +1496,6 @@ BEGIN
 	URateDialogEx_SCOREGRID_DIFF2,	L"+/-"
 	URateDialogEx_SCOREGRID_CUMULATIVE,	L"\x7D2F\x8A08"
 	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
-	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
-	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"\x6700\x521D\x304B\x3089"
-	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"\x73FE\x5728\x306E"
 	System_NetConsts_SNetHttpClientUnknownError,	L"\x4E0D\x660E\x306A\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x305F\x305F\x3081\x8981\x6C42\x306E\x5B9F\x884C\x304C\x7D42\x4E86\x3057\x307E\x3057\x305F"
 	System_NetConsts_SNetHttpComponentRequestClient,	L"\x8981\x6C42\x30B3\x30F3\x30DD\x30FC\x30CD\x30F3\x30C8\x306B\x30AF\x30E9\x30A4\x30A2\x30F3\x30C8\x304C\x5272\x308A\x5F53\x3066\x3089\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SNetHttpHeadersError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x554F\x3044\x5408\x308F\x305B\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
@@ -2773,142 +2773,143 @@ END
 /* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\ICSCerts.RES */
 /* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\RootCaCertsBundle.RES */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\SPIN.RES */
-/* D:\github\zLog_v2930\zlog\UzLogForm.dfm */
-/* D:\github\zLog_v2930\zlog\USuperCheck2.DFM */
+/* D:\github\zLog_v2940\zlog\UzLogForm.dfm */
+/* D:\github\zLog_v2940\zlog\USuperCheck2.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\FileCtrl.res */
 /* D:\JEDI\jvcl\resources\JvConsts.res */
 /* D:\JEDI\jvcl\resources\JvToolEdit.res */
 /* D:\JEDI\jvcl\resources\JvColorCombo.res */
-/* D:\github\zLog_v2930\zlog\UIntegerDialog.DFM */
-/* D:\github\zLog_v2930\zlog\UOperatorPowerDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UOperatorEdit.dfm */
-/* D:\github\zLog_v2930\zlog\UzLogKeyer.dfm */
-/* D:\github\zLog_v2930\zlog\UCWMonitor.dfm */
-/* D:\github\zLog_v2930\zlog\UClusterTelnetSet.DFM */
-/* D:\github\zLog_v2930\zlog\UClusterCOMSet.DFM */
-/* D:\github\zLog_v2930\zlog\UPortConfigDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UZlinkTelnetSet.DFM */
-/* D:\github\zLog_v2930\zlog\UConsolePad.DFM */
-/* D:\github\zLog_v2930\zlog\UScratchSheet.DFM */
-/* D:\github\zLog_v2930\zlog\UChat.DFM */
-/* D:\github\zLog_v2930\zlog\UZServerInquiry.DFM */
+/* D:\github\zLog_v2940\zlog\UIntegerDialog.DFM */
+/* D:\github\zLog_v2940\zlog\UOperatorPowerDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UOperatorEdit.dfm */
+/* D:\github\zLog_v2940\zlog\UzLogKeyer.dfm */
+/* D:\github\zLog_v2940\zlog\UCWMonitor.dfm */
+/* D:\github\zLog_v2940\zlog\UClusterTelnetSet.DFM */
+/* D:\github\zLog_v2940\zlog\UClusterCOMSet.DFM */
+/* D:\github\zLog_v2940\zlog\UPortConfigDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UZlinkTelnetSet.DFM */
+/* D:\github\zLog_v2940\zlog\UConsolePad.DFM */
+/* D:\github\zLog_v2940\zlog\UScratchSheet.DFM */
+/* D:\github\zLog_v2940\zlog\UChat.DFM */
+/* D:\github\zLog_v2940\zlog\UZServerInquiry.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\WinXCtrls.res */
-/* D:\github\zLog_v2930\zlog\UCheckWin.DFM */
-/* D:\github\zLog_v2930\zlog\UFreqList.DFM */
-/* D:\github\zLog_v2930\zlog\UBandScope2.dfm */
-/* D:\github\zLog_v2930\zlog\URigControl.DFM */
-/* D:\github\zLog_v2930\zlog\UZLinkForm.DFM */
-/* D:\github\zLog_v2930\zlog\USpotterListDlg.dfm */
-/* D:\github\zLog_v2930\zlog\UOptions.DFM */
-/* D:\github\zLog_v2930\zlog\UComm.DFM */
-/* D:\github\zLog_v2930\zlog\UBasicMulti.DFM */
-/* D:\github\zLog_v2930\zlog\USummaryInfo.DFM */
-/* D:\github\zLog_v2930\zlog\UBasicScore.DFM */
-/* D:\github\zLog_v2930\zlog\UQTCForm.DFM */
-/* D:\github\zLog_v2930\zlog\UPartials.DFM */
-/* D:\github\zLog_v2930\zlog\UEditDialog.DFM */
-/* D:\github\zLog_v2930\zlog\UWWZone.DFM */
-/* D:\github\zLog_v2930\zlog\UACAGMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UNewIOTARef.DFM */
-/* D:\github\zLog_v2930\zlog\UIOTACategory.DFM */
-/* D:\github\zLog_v2930\zlog\UIOTAMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UNewPrefix.DFM */
-/* D:\github\zLog_v2930\zlog\UWWMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UJIDXMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UJIDXScore2.DFM */
-/* D:\github\zLog_v2930\zlog\UWWScore.DFM */
-/* D:\github\zLog_v2930\zlog\UARRLDXMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UARRLDXScore.DFM */
-/* D:\github\zLog_v2930\zlog\UWPXMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UAPSprintScore.DFM */
-/* D:\github\zLog_v2930\zlog\UJA0Score.DFM */
-/* D:\github\zLog_v2930\zlog\UJA0Multi.DFM */
-/* D:\github\zLog_v2930\zlog\UARRLWMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UIARUScore.DFM */
-/* D:\github\zLog_v2930\zlog\UAllAsianScore.DFM */
-/* D:\github\zLog_v2930\zlog\UJIDX_DX_Multi.DFM */
-/* D:\github\zLog_v2930\zlog\UJIDX_DX_Score.DFM */
-/* D:\github\zLog_v2930\zlog\UWPXScore.DFM */
-/* D:\github\zLog_v2930\zlog\UWAEMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UWAEScore.DFM */
-/* D:\github\zLog_v2930\zlog\UIARUMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UARRL10Multi.DFM */
-/* D:\github\zLog_v2930\zlog\UARRL10Score.DFM */
-/* D:\github\zLog_v2930\zlog\UPediScore.DFM */
-/* D:\github\zLog_v2930\zlog\UALLJAMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UALLJAScore.DFM */
-/* D:\github\zLog_v2930\zlog\UFDMulti.DFM */
-/* D:\github\zLog_v2930\zlog\USixDownMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UPackageLoader.dfm */
-/* D:\github\zLog_v2930\zlog\UPluginManager.dfm */
-/* D:\github\zLog_v2930\zlog\UGeneralScore.DFM */
-/* D:\github\zLog_v2930\zlog\UGeneralMulti2.DFM */
-/* D:\github\zLog_v2930\zlog\UzLogGlobal.dfm */
-/* D:\github\zLog_v2930\zlog\UFreqPanel.dfm */
-/* D:\github\zLog_v2930\zlog\UFreqMemDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UOptions2.DFM */
-/* D:\github\zLog_v2930\zlog\UTTYConsole.DFM */
-/* D:\github\zLog_v2930\zlog\UELogJarl1.dfm */
-/* D:\github\zLog_v2930\zlog\UELogJarl2.dfm */
-/* D:\github\zLog_v2930\zlog\UELogJarlEx.dfm */
-/* D:\github\zLog_v2930\zlog\UELogCabrillo.dfm */
-/* D:\github\zLog_v2930\zlog\UQuickRef.dfm */
-/* D:\github\zLog_v2930\zlog\UZAnalyze.dfm */
+/* D:\github\zLog_v2940\zlog\UCheckWin.DFM */
+/* D:\github\zLog_v2940\zlog\UFreqList.DFM */
+/* D:\github\zLog_v2940\zlog\UBandScope2.dfm */
+/* D:\github\zLog_v2940\zlog\URigControl.DFM */
+/* D:\github\zLog_v2940\zlog\UZLinkForm.DFM */
+/* D:\github\zLog_v2940\zlog\USpotterListDlg.dfm */
+/* D:\github\zLog_v2940\zlog\UOptions.DFM */
+/* D:\github\zLog_v2940\zlog\UComm.DFM */
+/* D:\github\zLog_v2940\zlog\UBasicMulti.DFM */
+/* D:\github\zLog_v2940\zlog\USummaryInfo.DFM */
+/* D:\github\zLog_v2940\zlog\UBasicScore.DFM */
+/* D:\github\zLog_v2940\zlog\UQTCForm.DFM */
+/* D:\github\zLog_v2940\zlog\UPartials.DFM */
+/* D:\github\zLog_v2940\zlog\UEditDialog.DFM */
+/* D:\github\zLog_v2940\zlog\UWWZone.DFM */
+/* D:\github\zLog_v2940\zlog\UACAGMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UNewIOTARef.DFM */
+/* D:\github\zLog_v2940\zlog\UIOTACategory.DFM */
+/* D:\github\zLog_v2940\zlog\UIOTAMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UNewPrefix.DFM */
+/* D:\github\zLog_v2940\zlog\UWWMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UJIDXMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UJIDXScore2.DFM */
+/* D:\github\zLog_v2940\zlog\UWWScore.DFM */
+/* D:\github\zLog_v2940\zlog\UARRLDXMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UARRLDXScore.DFM */
+/* D:\github\zLog_v2940\zlog\UWPXMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UAPSprintScore.DFM */
+/* D:\github\zLog_v2940\zlog\UJA0Score.DFM */
+/* D:\github\zLog_v2940\zlog\UJA0Multi.DFM */
+/* D:\github\zLog_v2940\zlog\UARRLWMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UIARUScore.DFM */
+/* D:\github\zLog_v2940\zlog\UAllAsianScore.DFM */
+/* D:\github\zLog_v2940\zlog\UJIDX_DX_Multi.DFM */
+/* D:\github\zLog_v2940\zlog\UJIDX_DX_Score.DFM */
+/* D:\github\zLog_v2940\zlog\UWPXScore.DFM */
+/* D:\github\zLog_v2940\zlog\UWAEMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UWAEScore.DFM */
+/* D:\github\zLog_v2940\zlog\UIARUMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UARRL10Multi.DFM */
+/* D:\github\zLog_v2940\zlog\UARRL10Score.DFM */
+/* D:\github\zLog_v2940\zlog\UPediScore.DFM */
+/* D:\github\zLog_v2940\zlog\UALLJAMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UALLJAScore.DFM */
+/* D:\github\zLog_v2940\zlog\UFDMulti.DFM */
+/* D:\github\zLog_v2940\zlog\USixDownMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UPackageLoader.dfm */
+/* D:\github\zLog_v2940\zlog\UPluginManager.dfm */
+/* D:\github\zLog_v2940\zlog\UGeneralScore.DFM */
+/* D:\github\zLog_v2940\zlog\UGeneralMulti2.DFM */
+/* D:\github\zLog_v2940\zlog\UzLogGlobal.dfm */
+/* D:\github\zLog_v2940\zlog\UFreqPanel.dfm */
+/* D:\github\zLog_v2940\zlog\UFreqMemDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UOptions2.DFM */
+/* D:\github\zLog_v2940\zlog\UTTYConsole.DFM */
+/* D:\github\zLog_v2940\zlog\UELogJarl1.dfm */
+/* D:\github\zLog_v2940\zlog\UELogJarl2.dfm */
+/* D:\github\zLog_v2940\zlog\UJarlWebUpload.dfm */
+/* D:\github\zLog_v2940\zlog\UELogJarlEx.dfm */
+/* D:\github\zLog_v2940\zlog\UELogCabrillo.dfm */
+/* D:\github\zLog_v2940\zlog\UQuickRef.dfm */
+/* D:\github\zLog_v2940\zlog\UZAnalyze.dfm */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\TeeFonts.res */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\TeeResou.res */
-/* D:\github\zLog_v2930\zlog\URateDialog.DFM */
-/* D:\github\zLog_v2930\zlog\URateDialogEx.DFM */
-/* D:\github\zLog_v2930\zlog\USuperCheck.DFM */
-/* D:\github\zLog_v2930\zlog\UCWKeyBoard.DFM */
-/* D:\github\zLog_v2930\zlog\USpotForm.DFM */
-/* D:\github\zLog_v2930\zlog\UCheckCall2.DFM */
-/* D:\github\zLog_v2930\zlog\UCheckMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UCheckCountry.DFM */
-/* D:\github\zLog_v2930\zlog\UTextEditor.dfm */
-/* D:\github\zLog_v2930\zlog\UCwMessageEditor.dfm */
-/* D:\github\zLog_v2930\zlog\UCwMessagePad.dfm */
-/* D:\github\zLog_v2930\zlog\UNRDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UFunctionKeyPanel.dfm */
-/* D:\github\zLog_v2930\zlog\Progress.dfm */
-/* D:\github\zLog_v2930\zlog\Progress2.dfm */
-/* D:\github\zLog_v2930\zlog\UQsyInfo.dfm */
-/* D:\github\zLog_v2930\zlog\USo2rNeoCp.dfm */
-/* D:\github\zLog_v2930\zlog\UInformation.dfm */
-/* D:\github\zLog_v2930\zlog\UWinKeyerTester.dfm */
-/* D:\github\zLog_v2930\zlog\UStatusEdit.dfm */
-/* D:\github\zLog_v2930\zlog\UMessageManager.dfm */
-/* D:\github\zLog_v2930\zlog\UFreqTest.dfm */
-/* D:\github\zLog_v2930\zlog\USearch.dfm */
-/* D:\github\zLog_v2930\zlog\UEntityInfo.dfm */
-/* D:\github\zLog_v2930\zlog\UGrayline.dfm */
-/* D:\github\zLog_v2930\zlog\UAbout.DFM */
-/* D:\github\zLog_v2930\zlog\UCFGEdit.dfm */
-/* D:\github\zLog_v2930\zlog\USelectUserDefinedContest.dfm */
-/* D:\github\zLog_v2930\zlog\UMenu.DFM */
-/* D:\github\zLog_v2930\zlog\UJIDXScore.DFM */
-/* D:\github\zLog_v2930\zlog\UKCJZone.DFM */
-/* D:\github\zLog_v2930\zlog\UKCJMulti.DFM */
-/* D:\github\zLog_v2930\zlog\UKCJScore.DFM */
-/* D:\github\zLog_v2930\zlog\UJarlMemberInfo.dfm */
-/* D:\github\zLog_v2930\zlog\UBandPlanEditDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UGraphColorDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UAgeDialog.DFM */
-/* D:\github\zLog_v2930\zlog\UUTCDialog.DFM */
-/* D:\github\zLog_v2930\zlog\UTargetEditor.dfm */
-/* D:\github\zLog_v2930\zlog\UExportHamlog.dfm */
-/* D:\github\zLog_v2930\zlog\UExportCabrillo.dfm */
-/* D:\github\zLog_v2930\zlog\UStartTimeDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UDateDialog.dfm */
-/* D:\github\zLog_v2930\zlog\UCountryChecker.dfm */
-/* D:\github\zLog_v2930\zlog\USelectClusterLog.dfm */
-/* D:\github\zLog_v2930\zlog\USpcViewer.dfm */
-/* D:\github\zLog_v2930\zlog\UOptions3.DFM */
-/* D:\github\zLog_v2930\zlog\UStartup.dfm */
-/* D:\github\zLog_v2930\zlog\Main.DFM */
+/* D:\github\zLog_v2940\zlog\URateDialog.DFM */
+/* D:\github\zLog_v2940\zlog\URateDialogEx.DFM */
+/* D:\github\zLog_v2940\zlog\USuperCheck.DFM */
+/* D:\github\zLog_v2940\zlog\UCWKeyBoard.DFM */
+/* D:\github\zLog_v2940\zlog\USpotForm.DFM */
+/* D:\github\zLog_v2940\zlog\UCheckCall2.DFM */
+/* D:\github\zLog_v2940\zlog\UCheckMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UCheckCountry.DFM */
+/* D:\github\zLog_v2940\zlog\UTextEditor.dfm */
+/* D:\github\zLog_v2940\zlog\UCwMessageEditor.dfm */
+/* D:\github\zLog_v2940\zlog\UCwMessagePad.dfm */
+/* D:\github\zLog_v2940\zlog\UNRDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UFunctionKeyPanel.dfm */
+/* D:\github\zLog_v2940\zlog\Progress.dfm */
+/* D:\github\zLog_v2940\zlog\Progress2.dfm */
+/* D:\github\zLog_v2940\zlog\UQsyInfo.dfm */
+/* D:\github\zLog_v2940\zlog\USo2rNeoCp.dfm */
+/* D:\github\zLog_v2940\zlog\UInformation.dfm */
+/* D:\github\zLog_v2940\zlog\UWinKeyerTester.dfm */
+/* D:\github\zLog_v2940\zlog\UStatusEdit.dfm */
+/* D:\github\zLog_v2940\zlog\UMessageManager.dfm */
+/* D:\github\zLog_v2940\zlog\UFreqTest.dfm */
+/* D:\github\zLog_v2940\zlog\USearch.dfm */
+/* D:\github\zLog_v2940\zlog\UEntityInfo.dfm */
+/* D:\github\zLog_v2940\zlog\UGrayline.dfm */
+/* D:\github\zLog_v2940\zlog\UAbout.DFM */
+/* D:\github\zLog_v2940\zlog\UCFGEdit.dfm */
+/* D:\github\zLog_v2940\zlog\USelectUserDefinedContest.dfm */
+/* D:\github\zLog_v2940\zlog\UMenu.DFM */
+/* D:\github\zLog_v2940\zlog\UJIDXScore.DFM */
+/* D:\github\zLog_v2940\zlog\UKCJZone.DFM */
+/* D:\github\zLog_v2940\zlog\UKCJMulti.DFM */
+/* D:\github\zLog_v2940\zlog\UKCJScore.DFM */
+/* D:\github\zLog_v2940\zlog\UJarlMemberInfo.dfm */
+/* D:\github\zLog_v2940\zlog\UBandPlanEditDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UGraphColorDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UAgeDialog.DFM */
+/* D:\github\zLog_v2940\zlog\UUTCDialog.DFM */
+/* D:\github\zLog_v2940\zlog\UTargetEditor.dfm */
+/* D:\github\zLog_v2940\zlog\UExportHamlog.dfm */
+/* D:\github\zLog_v2940\zlog\UExportCabrillo.dfm */
+/* D:\github\zLog_v2940\zlog\UStartTimeDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UDateDialog.dfm */
+/* D:\github\zLog_v2940\zlog\UCountryChecker.dfm */
+/* D:\github\zLog_v2940\zlog\USelectClusterLog.dfm */
+/* D:\github\zLog_v2940\zlog\USpcViewer.dfm */
+/* D:\github\zLog_v2940\zlog\UOptions3.DFM */
+/* D:\github\zLog_v2940\zlog\UStartup.dfm */
+/* D:\github\zLog_v2940\zlog\Main.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\MPlayer.res */
-/* D:\github\zLog_v2930\zlog\UVoiceForm.dfm */
-/* D:\github\zLog_v2930\zlog\UExceptionDialog.dfm */
-/* D:\github\zLog_v2930\zlog\resource.res */
-/* D:\github\zLog_v2930\zlog\zLog.dres */
-/* D:\github\zLog_v2930\zlog\zLog.res */
-/* D:\github\zLog_v2930\zlog\zLog.drf */
+/* D:\github\zLog_v2940\zlog\UVoiceForm.dfm */
+/* D:\github\zLog_v2940\zlog\UExceptionDialog.dfm */
+/* D:\github\zLog_v2940\zlog\resource.res */
+/* D:\github\zLog_v2940\zlog\zLog.dres */
+/* D:\github\zLog_v2940\zlog\zLog.res */
+/* D:\github\zLog_v2940\zlog\zLog.drf */

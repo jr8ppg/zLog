@@ -24,8 +24,6 @@ object formELogJarlEx: TformELogJarlEx
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 658
-    ExplicitWidth = 842
     object buttonCreateLog: TButton
       Left = 377
       Top = 6
@@ -45,13 +43,13 @@ object formELogJarlEx: TformELogJarlEx
       OnClick = buttonSaveClick
     end
     object buttonCancel: TButton
-      Left = 481
+      Left = 750
       Top = 6
       Width = 89
       Height = 23
       Caption = #38281#12376#12427
       ModalResult = 2
-      TabOrder = 3
+      TabOrder = 4
       OnClick = buttonCancelClick
     end
     object checkFieldExtend: TCheckBox
@@ -61,6 +59,15 @@ object formELogJarlEx: TformELogJarlEx
       Height = 17
       Caption = #25313#24373#65288#12510#12523#12481#65292#24471#28857#65292'TX#'#12434#36861#21152#65289
       TabOrder = 0
+    end
+    object buttonWebUpload: TButton
+      Left = 480
+      Top = 6
+      Width = 105
+      Height = 23
+      Caption = 'Web Upload'
+      TabOrder = 3
+      OnClick = buttonWebUploadClick
     end
   end
   object TabControl1: TTabControl
@@ -75,8 +82,6 @@ object formELogJarlEx: TformELogJarlEx
       'R2.1')
     TabIndex = 0
     OnChange = TabControl1Change
-    ExplicitWidth = 842
-    ExplicitHeight = 658
     object Label2: TLabel
       Left = 24
       Top = 60

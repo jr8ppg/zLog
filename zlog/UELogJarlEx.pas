@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math, DateUtils,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, Vcl.ComCtrls;
+  Vcl.ComCtrls, UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
+  UzLogContest;
 
 type
   TformELogJarlEx = class(TForm)
@@ -147,6 +148,7 @@ type
     edLicense: TEdit;
     rPowerType: TRadioGroup;
     labelLicense: TLabel;
+    buttonWebUpload: TButton;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -158,6 +160,7 @@ type
     procedure edCategoryCodeExit(Sender: TObject);
     procedure TabControl1Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure buttonWebUploadClick(Sender: TObject);
   private
     { Private 宣言 }
     FScoreBand: array[b19..HiBand] of TCheckBox;
@@ -166,14 +169,14 @@ type
     FScoreMulti2: array[b19..HiBand] of TEdit;
     FScorePoints: array[b19..HiBand] of TEdit;
 
-    procedure CreateELogR1();
-    procedure CreateELogR2();
+    function CreateELogR1(SL: TStringList): Boolean;
+    function CreateELogR2(SL: TStringList): Boolean;
     procedure RemoveBlankLines(M : TMemo);
     procedure InitializeFields;
-    procedure WriteSummarySheetR1(var f: TextFile);
-    procedure WriteLogSheetR1(var f: TextFile);
-    procedure WriteSummarySheetR2(var f: TextFile);
-    procedure WriteLogSheetR2(var f: TextFile; fExtend: Boolean);
+    procedure WriteSummarySheetR1(SL: TStringList);
+    procedure WriteLogSheetR1(SL: TStringList);
+    procedure WriteSummarySheetR2(SL: TStringList);
+    procedure WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
     function FormatQSO_v1(q: TQSO; fValid: Boolean): string;
     function FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
     function IsNewcomer(cate: string): Boolean;
@@ -287,6 +290,17 @@ end;
 procedure TformELogJarlEx.FormShow(Sender: TObject);
 begin
    TabControl1Change(TabControl1);
+
+   if (MyContest is TALLJAContest) or
+      (MyContest is TSixDownContest) or
+      (MyContest is TFDContest) or
+      (MyContest is TACAGContest) or
+      (MyContest is TAllAsianContest) then begin
+      buttonWebUpload.Visible := True;
+   end
+   else begin
+      buttonWebUpload.Visible := False;
+   end;
 end;
 
 procedure TformELogJarlEx.RemoveBlankLines(M: TMemo);
@@ -423,25 +437,56 @@ begin
 end;
 
 procedure TformELogJarlEx.buttonCreateLogClick(Sender: TObject);
+var
+   SL: TStringList;
+   fname: string;
 begin
-   if TabControl1.TabIndex = 0 then begin
-      CreateELogR1();
-   end;
-   if TabControl1.TabIndex = 1 then begin
-      CreateELogR2();
+   SL := TStringList.Create();
+   try
+      if TabControl1.TabIndex = 0 then begin
+         if CreateELogR1(SL) = False then begin
+            Exit;
+         end;
+      end;
+      if TabControl1.TabIndex = 1 then begin
+         if CreateELogR2(SL) = False then begin
+            Exit;
+         end;
+      end;
+
+      if CurrentFileName <> '' then begin
+         SaveDialog1.InitialDir := ExtractFilePath(CurrentFileName);
+         SaveDialog1.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '.em');
+      end;
+
+      if SaveDialog1.Execute() = False then begin
+         Exit;
+      end;
+
+      fname := SaveDialog1.FileName;
+
+      // 既にファイルがある場合は上書き確認
+      if FileExists(fname) = True then begin
+         if MessageDlg('[' + fname + '] file already exists. overwrite?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then begin
+            Exit;
+         end;
+      end;
+
+      SL.SaveToFile(fname);
+
+   finally
+      SL.Free();
    end;
 end;
 
-procedure TformELogJarlEx.CreateELogR2();
-var
-   f: TextFile;
-   fname: string;
+function TformELogJarlEx.CreateELogR2(SL: TStringList): Boolean;
 begin
    // 入力チェック
    if IsNewcomer(edCategoryCode.Text) = True then begin
       if datetimeLicenseDate.Date = EncodeDate(2000, 1, 1) then begin
          MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogNewcomerCategory + ' の場合は、局免許年月日を入力して下さい', mtWarning, [mbOK], 0);
          datetimeLicenseDate.SetFocus();
+         Result := False;
          Exit;
       end;
    end;
@@ -450,73 +495,29 @@ begin
       if comboAge.Text = '' then begin
          MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogSeniorJuniorCategory + ' の場合は、年齢を入力して下さい', mtWarning, [mbOK], 0);
          comboAge.SetFocus();
+         Result := False;
          Exit;
       end;
    end;
-
-   if CurrentFileName <> '' then begin
-      SaveDialog1.InitialDir := ExtractFilePath(CurrentFileName);
-      SaveDialog1.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '.em');
-   end;
-
-   if SaveDialog1.Execute() = False then begin
-      Exit;
-   end;
-
-   fname := SaveDialog1.FileName;
-
-   // 既にファイルがある場合は上書き確認
-   if FileExists(fname) = True then begin
-      if MessageDlg('[' + fname + '] file already exists. overwrite?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then begin
-         Exit;
-      end;
-   end;
-
-   AssignFile(f, fname);
-   Rewrite(f);
 
    // サマリーシート
-   WriteSummarySheetR2(f);
+   WriteSummarySheetR2(SL);
 
    // ログシート
-   WriteLogSheetR2(f, checkFieldExtend.Checked);
+   WriteLogSheetR2(SL, checkFieldExtend.Checked);
 
-   CloseFile(f);
+   Result := True;
 end;
 
-procedure TformELogJarlEx.CreateELogR1();
-var
-   f: TextFile;
-   fname: string;
+function TformELogJarlEx.CreateELogR1(SL: TStringList): Boolean;
 begin
-   if CurrentFileName <> '' then begin
-      SaveDialog1.InitialDir := ExtractFilePath(CurrentFileName);
-      SaveDialog1.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '.em');
-   end;
-
-   if SaveDialog1.Execute() = False then begin
-      Exit;
-   end;
-
-   fname := SaveDialog1.FileName;
-
-   // 既にファイルがある場合は上書き確認
-   if FileExists(fname) = True then begin
-      if MessageDlg('[' + fname + '] file already exists. overwrite?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then begin
-         Exit;
-      end;
-   end;
-
-   AssignFile(f, fname);
-   Rewrite(f);
-
    // サマリーシート
-   WriteSummarySheetR1(f);
+   WriteSummarySheetR1(SL);
 
    // ログシート
-   WriteLogSheetR1(f);
+   WriteLogSheetR1(SL);
 
-   CloseFile(f);
+   Result := True;
 end;
 
 procedure TformELogJarlEx.buttonSaveClick(Sender: TObject);
@@ -590,6 +591,59 @@ begin
       ini.UpdateFile();
    finally
       ini.Free();
+   end;
+end;
+
+procedure TformELogJarlEx.buttonWebUploadClick(Sender: TObject);
+var
+   f: TformJarlWebUpload;
+   SL: TStringList;
+begin
+   f := TformJarlWebUpload.Create(Self);
+   SL := TStringList.Create();
+   try
+      if TabControl1.TabIndex = 0 then begin
+         if CreateELogR1(SL) = False then begin
+            Exit;
+         end;
+      end;
+      if TabControl1.TabIndex = 1 then begin
+         if CreateELogR2(SL) = False then begin
+            Exit;
+         end;
+      end;
+
+      f.LogText := SL.Text;
+
+      if MyContest is TAllJaContest then begin
+         f.Contest := wuAllJa;
+      end;
+
+      if MyContest is TSixDownContest then begin
+         f.Contest := wu6d;
+      end;
+
+      if MyContest is TFDContest then begin
+         f.Contest := wuFd;
+      end;
+
+      if MyContest is TACAGContest then begin
+         f.Contest := wuAcag;
+      end;
+
+      if MyContest is TAllAsianContest then begin
+         if Log.QSOList[1].Mode = mCW then begin
+            f.Contest := wuAacw;
+         end
+         else begin
+            f.Contest := wuAaph;
+         end;
+      end;
+
+      f.ShowModal();
+   finally
+      f.Release();
+      SL.Free();
    end;
 end;
 
@@ -674,19 +728,19 @@ begin
    Close;
 end;
 
-procedure TformELogJarlEx.WriteSummarySheetR1(var f: TextFile);
+procedure TformELogJarlEx.WriteSummarySheetR1(SL: TStringList);
 var
    fFdCoeff: Extended;
    b: TBand;
    S: string;
    multi1, multi2: Integer;
 begin
-   WriteLn(f, '<SUMMARYSHEET VERSION=R1.0>');
-   WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
-   WriteLn(f, '<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
-   WriteLn(f, '<CATEGORYNAME>' + edCategoryName.Text + '</CATEGORYNAME>');
-   WriteLn(f, '<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
-   WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
+   SL.Add('<SUMMARYSHEET VERSION=R1.0>');
+   SL.Add('<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
+   SL.Add('<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
+   SL.Add('<CATEGORYNAME>' + edCategoryName.Text + '</CATEGORYNAME>');
+   SL.Add('<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
+   SL.Add('<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
 
    for b := b19 to HiBand do begin
       if Assigned(FScoreBand[b]) and
@@ -695,10 +749,10 @@ begin
          multi2 := StrToIntDef(FScoreMulti2[b].Text, 0);
          S := FScoreQso[b].Text + ',' + FScorePoints[b].Text + ',' + IntToStr(multi1 + multi2);
          if b = b10G then begin
-            WriteLn(f, '<SCORE BAND=10.1GHz>' + S + '</SCORE>')
+            SL.Add('<SCORE BAND=10.1GHz>' + S + '</SCORE>')
          end
          else begin
-            WriteLn(f, '<SCORE BAND=' + MHzString[B] + 'MHz>' + S + '</SCORE>');
+            SL.Add('<SCORE BAND=' + MHzString[B] + 'MHz>' + S + '</SCORE>');
          end;
       end;
    end;
@@ -706,65 +760,59 @@ begin
    multi1 := StrToIntDef(editMulti1Total.Text, 0);
    multi2 := StrToIntDef(editMulti2Total.Text, 0);
    S := editQsoTotal.Text + ',' + editPointsTotal.Text + ',' + IntToStr(multi1 + multi2);
-   WriteLn(f, '<SCORE BAND=TOTAL>' + S + '</SCORE>');
+   SL.Add('<SCORE BAND=TOTAL>' + S + '</SCORE>');
 
    fFdCoeff := StrToFloatDef(editFdcoeff.Text, 1);
    if (fFdCoeff > 1) or (MyContest.UseCoeff = True) then begin
-      WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
+      SL.Add('<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 
-   WriteLn(f, '<TOTALSCORE>' + editTotalScore.Text + '</TOTALSCORE>');
+   SL.Add('<TOTALSCORE>' + editTotalScore.Text + '</TOTALSCORE>');
 
-   Write(f, '<ADDRESS>');
-   Write(f, mAddress.Text);
-   WriteLn(f, '</ADDRESS>');
+   SL.Add('<ADDRESS>' + mAddress.Text + '</ADDRESS>');
 
-   WriteLn(f, '<TEL>' + edTEL.Text + '</TEL>');
-   WriteLn(f, '<NAME>' + edOPName.Text + '</NAME>');
-   WriteLn(f, '<EMAIL>' + edEMAIL.Text + '</EMAIL>');
-   WriteLn(f, '<LICENSECLASS>' + edLicense.Text + '</LICENSECLASS>');
-   WriteLn(f, '<POWER>' + edPOWER.Text + '</POWER>');
+   SL.Add('<TEL>' + edTEL.Text + '</TEL>');
+   SL.Add('<NAME>' + edOPName.Text + '</NAME>');
+   SL.Add('<EMAIL>' + edEMAIL.Text + '</EMAIL>');
+   SL.Add('<LICENSECLASS>' + edLicense.Text + '</LICENSECLASS>');
+   SL.Add('<POWER>' + edPOWER.Text + '</POWER>');
 
    if rPowerType.ItemIndex = 0 then begin
-      WriteLn(f,'<POWERTYPE>定格出力</POWERTYPE>');
+      SL.Add('<POWERTYPE>定格出力</POWERTYPE>');
    end
    else begin
-      WriteLn(f,'<POWERTYPE>実測出力</POWERTYPE>');
+      SL.Add('<POWERTYPE>実測出力</POWERTYPE>');
    end;
 
-   WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');
-   WriteLn(f, '<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
+   SL.Add('<OPPLACE>' + edQTH.Text + '</OPPLACE>');
+   SL.Add('<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
 
-   WriteLn(f, '<EQUIPMENT>');
-   WriteLn(f, memoEquipment.Text);
-   WriteLn(f, '</EQUIPMENT>');
+   SL.Add('<EQUIPMENT>');
+   SL.Add(memoEquipment.Text);
+   SL.Add('</EQUIPMENT>');
 
-   Write(f, '<COMMENTS>');
-   Write(f, mComments.Text);
-   WriteLn(f, '</COMMENTS>');
+   SL.Add('<COMMENTS>' + mComments.Text + '</COMMENTS>');
 
-   WriteLn(f, '<REGCLUBNUMBER>' + edClubID.Text + '</REGCLUBNUMBER>');
-   WriteLn(f, '<REGCLUBNAME>' + edClubName.Text + '</REGCLUBNAME>');
+   SL.Add('<REGCLUBNUMBER>' + edClubID.Text + '</REGCLUBNUMBER>');
+   SL.Add('<REGCLUBNAME>' + edClubName.Text + '</REGCLUBNAME>');
 
-   Write(f, '<OATH>');
-   Write(f, mOath.Text);
-   WriteLn(f, '</OATH>');
+   SL.Add('<OATH>' + mOath.Text + '</OATH>');
 
-   WriteLn(f, '<DATE>' + edDate.Text + '</DATE>');
-   WriteLn(f, '<SIGNATURE>' + edSignature.Text + '</SIGNATURE>');
+   SL.Add('<DATE>' + edDate.Text + '</DATE>');
+   SL.Add('<SIGNATURE>' + edSignature.Text + '</SIGNATURE>');
 
-   WriteLn(f, '</SUMMARYSHEET>');
+   SL.Add('</SUMMARYSHEET>');
 end;
 
-procedure TformELogJarlEx.WriteLogSheetR1(var f: TextFile);
+procedure TformELogJarlEx.WriteLogSheetR1(SL: TStringList);
 var
    i: Integer;
    s: string;
    Q: TQSO;
 begin
-   WriteLn(f, '<LOGSHEET TYPE=ZLOG.ALL>');
+   SL.Add('<LOGSHEET TYPE=ZLOG.ALL>');
 
-   WriteLn(f, 'Date       Time  Callsign    RSTs ExSent RSTr ExRcvd  Mult  Mult2 MHz  Mode Pt Memo');
+   SL.Add('Date       Time  Callsign    RSTs ExSent RSTr ExRcvd  Mult  Mult2 MHz  Mode Pt Memo');
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
       if Assigned(FScoreBand[Q.Band]) = False then begin
@@ -776,12 +824,16 @@ begin
          Continue;
       end;
 
+      if Q.Invalid = True then begin
+         Continue;
+      end;
+
       s := FormatQSO_v1(Q, FScoreBand[Q.Band].Checked);
 
-      WriteLn(f, s);
+      SL.Add(s);
    end;
 
-   WriteLn(f, '</LOGSHEET>');
+   SL.Add('</LOGSHEET>');
 end;
 
 {
@@ -807,7 +859,7 @@ end;
 <SIGNATURE>署名</SIGNATURE>
 </SUMMARYSHEET>
 }
-procedure TformELogJarlEx.WriteSummarySheetR2(var f: TextFile);
+procedure TformELogJarlEx.WriteSummarySheetR2(SL: TStringList);
 var
    fFdCoeff: Extended;
    fScore: Extended;
@@ -820,63 +872,55 @@ begin
    nTotalMulti2 := StrToIntDef(editMulti2Total.Text, 0);
    nTotalPoints := StrToIntDef(editPointsTotal.Text, 0);
 
-   WriteLn(f, '<SUMMARYSHEET VERSION=R2.1>');
+   SL.Add('<SUMMARYSHEET VERSION=R2.1>');
 
-   WriteLn(f, '<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
-   WriteLn(f, '<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
-   WriteLn(f, '<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
-   WriteLn(f, '<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
+   SL.Add('<CONTESTNAME>' + edContestName.Text + '</CONTESTNAME>');
+   SL.Add('<CATEGORYCODE>' + edCategoryCode.Text + '</CATEGORYCODE>');
+   SL.Add('<CALLSIGN>' + edCallsign.Text + '</CALLSIGN>');
+   SL.Add('<OPCALLSIGN>' + edOpCallsign.Text + '</OPCALLSIGN>');
 
    fScore := zyloRequestTotal(nTotalPoints, (nTotalMulti1 + nTotalMulti2));
    if fScore = -1 then begin
       fScore := (nTotalMulti1 + nTotalMulti2) * nTotalPoints * fFdCoeff;
    end;
-   WriteLn(f, '<TOTALSCORE>' + FloatToStr(fScore) + '</TOTALSCORE>');
+   SL.Add('<TOTALSCORE>' + FloatToStr(fScore) + '</TOTALSCORE>');
 
-   Write(f, '<ADDRESS>');
-   Write(f, mAddress.Text);
-   WriteLn(f, '</ADDRESS>');
+   SL.Add('<ADDRESS>' + mAddress.Text + '</ADDRESS>');
 
-   WriteLn(f, '<NAME>' + edOPName.Text + '</NAME>');
-   WriteLn(f, '<TEL>' + edTEL.Text + '</TEL>');
-   WriteLn(f, '<EMAIL>' + edEMail.Text + '</EMAIL>');
-   WriteLn(f, '<POWER>' + edPower.Text + '</POWER>');
+   SL.Add('<NAME>' + edOPName.Text + '</NAME>');
+   SL.Add('<TEL>' + edTEL.Text + '</TEL>');
+   SL.Add('<EMAIL>' + edEMail.Text + '</EMAIL>');
+   SL.Add('<POWER>' + edPower.Text + '</POWER>');
 
    if (fFdCoeff > 1) or (MyContest.UseCoeff = True) then begin
-      WriteLn(f, '<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
+      SL.Add('<FDCOEFF>' + FloatToStr(fFdCoeff) + '</FDCOEFF>');
    end;
 
-   WriteLn(f, '<OPPLACE>' + edQTH.Text + '</OPPLACE>');
-   WriteLn(f, '<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
+   SL.Add('<OPPLACE>' + edQTH.Text + '</OPPLACE>');
+   SL.Add('<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
 
    if IsNewcomer(edCategoryCode.Text) = True then begin
-      WriteLn(f, '<LICENSEDATE>' + FormatDateTime('yyyy年mm月dd日', datetimeLicenseDate.Date) + '</LICENSEDATE>');
+      SL.Add('<LICENSEDATE>' + FormatDateTime('yyyy年mm月dd日', datetimeLicenseDate.Date) + '</LICENSEDATE>');
    end;
 
    if IsSeniorJunior(edCategoryCode.Text) = True then begin
-      WriteLn(f, '<AGE>' + comboAge.Text + '</AGE>');
+      SL.Add('<AGE>' + comboAge.Text + '</AGE>');
    end;
 
-   Write(f, '<COMMENTS>');
-   Write(f, mComments.Text);
-   WriteLn(f, '</COMMENTS>');
+   SL.Add('<COMMENTS>' + mComments.Text + '</COMMENTS>');
 
    if memoMultiOpList.Text <> '' then begin
-      Write(f, '<MULTIOPLIST>');
-      Write(f, memoMultiOpList.Lines.CommaText);
-      WriteLn(f, '</MULTIOPLIST>');
+      SL.Add('<MULTIOPLIST>' + memoMultiOpList.Lines.CommaText + '</MULTIOPLIST>');
    end;
 
-   WriteLn(f, '<REGCLUBNUMBER>' + edClubID.Text + '</REGCLUBNUMBER>');
+   SL.Add('<REGCLUBNUMBER>' + edClubID.Text + '</REGCLUBNUMBER>');
 
-   Write(f, '<OATH>');
-   Write(f, mOath.Text);
-   WriteLn(f, '</OATH>');
+   SL.Add('<OATH>' + mOath.Text + '</OATH>');
 
-   WriteLn(f, '<DATE>' + edDate.Text + '</DATE>');
-   WriteLn(f, '<SIGNATURE>' + edSignature.Text + '</SIGNATURE>');
+   SL.Add('<DATE>' + edDate.Text + '</DATE>');
+   SL.Add('<SIGNATURE>' + edSignature.Text + '</SIGNATURE>');
 
-   WriteLn(f, '</SUMMARYSHEET>');
+   SL.Add('</SUMMARYSHEET>');
 end;
 
 {
@@ -888,26 +932,30 @@ DATE(JST)	TIME	BAND	MODE	CALLSIGN	SENTNo	RCVNo	Multi	PTS
 2016-04-23	22:02	144	SSB	JA2***	59	20L	59	20L	-	1
 2016-04-23	22:15	7	CW	JE3***	599	20M	599	25M	25	1
 }
-procedure TformELogJarlEx.WriteLogSheetR2(var f: TextFile; fExtend: Boolean);
+procedure TformELogJarlEx.WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
 var
    i: Integer;
    s: string;
+   s2: string;
    Q: TQSO;
 begin
-   WriteLn(f, '<LOGSHEET TYPE=ZLOG>');
+   SL.Add('<LOGSHEET TYPE=ZLOG>');
 
    if Log.QsoList[0].RSTsent = _USEUTC then begin
-      Write(f, 'DATE(UTC)');
+      s := 'DATE(UTC)';
    end
    else begin
-      Write(f, 'DATE(JST)');
+      s := 'DATE(JST)';
    end;
-   Write(f, TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo');
 
    if fExtend = True then begin
-      Write(f, TAB + 'Multi1' + TAB + 'Multi2' + TAB + 'Points' + TAB + 'TX#');
+      s2 := TAB + 'Multi1' + TAB + 'Multi2' + TAB + 'Points' + TAB + 'TX#';
+   end
+   else begin
+      s2 := '';
    end;
-   WriteLn(f, '');
+
+   SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo' + s2);
 
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
@@ -917,11 +965,15 @@ begin
          Continue;
       end;
 
+      if Q.Invalid = True then begin
+         Continue;
+      end;
+
       s := FormatQSO_v2(Q, fExtend);
-      WriteLn(f, s);
+      SL.Add(s);
    end;
 
-   WriteLn(f, '</LOGSHEET>');
+   SL.Add('</LOGSHEET>');
 end;
 
 function TformELogJarlEx.FormatQSO_v1(q: TQSO; fValid: Boolean): string;
@@ -929,7 +981,12 @@ var
    S: string;
 begin
    S := '';
-   S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+   if q.Invalid = True then begin
+      S := S + 'X ' + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+   end
+   else begin
+      S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+   end;
    S := S + FillRight(q.CallSign, 13);
    S := S + FillRight(IntToStr(q.RSTSent), 4);
    S := S + FillRight(q.NrSent, 8);
@@ -980,7 +1037,12 @@ begin
    slLine.StrictDelimiter := True;
    slLine.Delimiter := TAB;
    try
-      slLine.Add(FormatDateTime('yyyy-mm-dd', q.Time));
+      if q.Invalid = True then begin
+         slLine.Add('X ' + FormatDateTime('yyyy-mm-dd', q.Time));
+      end
+      else begin
+         slLine.Add(FormatDateTime('yyyy-mm-dd', q.Time));
+      end;
       slLine.Add(FormatDateTime('hh:nn', q.Time));
 
       slLine.Add(MHzString[q.Band]);
