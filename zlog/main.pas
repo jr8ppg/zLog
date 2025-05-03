@@ -4351,7 +4351,6 @@ begin
       end;
 
       S := dmZlogGlobal.CWMessage(0, 2);
-      S := SetStr(S, curQSO);
 
       if dmZLogKeyer.UseWinKeyer = True then begin
 
