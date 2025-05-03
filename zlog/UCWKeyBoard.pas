@@ -96,6 +96,8 @@ type
     FBitmap: TBitmap;
     FTickCount: DWORD;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
+    procedure PlayProsigns(msg: string);
+    function GetProsignsChar(msg: string): Char;
     procedure ApplyShortcut();
     procedure SendChar(C: Char);
     function GetUnsentChars(): Integer;
@@ -296,44 +298,32 @@ end;
 
 procedure TCWKeyBoard.actionPlayMessageARExecute(Sender: TObject);
 begin
-   SendChar('a');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[AR]';
+   PlayProsigns('[AR]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBKExecute(Sender: TObject);
 begin
-   SendChar('b');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[BK]';
+   PlayProsigns('[BK]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBTExecute(Sender: TObject);
 begin
-   SendChar('t');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[BT]';
+   PlayProsigns('[BT]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageKNExecute(Sender: TObject);
 begin
-   SendChar('k');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[KN]';
+   PlayProsigns('[KN]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageSKExecute(Sender: TObject);
 begin
-   SendChar('s');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[SK]';
+   PlayProsigns('[SK]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageVAExecute(Sender: TObject);
 begin
-   SendChar('s');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[VA]';
+   PlayProsigns('[VA]');
 end;
 
 procedure TCWKeyBoard.actionIncreaseCwSpeedExecute(Sender: TObject);
@@ -366,8 +356,6 @@ begin
       Insert(CurrentQSO.Callsign, S, i);
    end;
 
-//   ClipBoard.AsText := S;
-//   Console.PasteFromClipBoard;
    Console.SelStart := Length(Console.Text);
    Console.SelAttributes.Name := Console.Font.Name;
    Console.SelAttributes.Size := Console.Font.Size;
@@ -375,6 +363,33 @@ begin
    Console.SelText := S;
 
    SendChar(Console.Text[FSendPos + 1]);
+end;
+
+procedure TCWKeyBoard.PlayProsigns(msg: string);
+var
+   ch: Char;
+begin
+   Console.SelStart := Length(Console.Text);
+   Console.SelText := msg;
+
+   if MainForm.StartCWKeyboard = False then begin
+      ch := GetProsignsChar(msg);
+      SendChar(ch);
+   end;
+end;
+
+function TCWKeyBoard.GetProsignsChar(msg: string): Char;
+var
+   ch: Char;
+begin
+   ch := #00;
+   if msg = '[AR]' then ch := 'a';
+   if msg = '[SK]' then ch := 's';
+   if msg = '[VA]' then ch := 's';
+   if msg = '[KN]' then ch := 'k';
+   if msg = '[BK]' then ch := 'b';
+   if msg = '[BT]' then ch := 't';
+   Result := ch;
 end;
 
 procedure TCWKeyBoard.ApplyShortcut();
@@ -487,7 +502,7 @@ var
    nID: Integer;
    rig: TRig;
 begin
-   if (C = #13) or (C = #10) then begin
+   if (C = #13) or (C = #10) or (c = #00) then begin
       SendMessage(Handle, WM_ZLOG_UPDATE_PROGRESS, 0, 0);
       OneCharSentProc();
       Exit;
@@ -522,6 +537,7 @@ var
    ch: Char;
    S: string;
    len: Integer;
+   S2: string;
 begin
    Timer1.Enabled := False;
    S := Console.Text;
@@ -540,6 +556,7 @@ begin
          Exit;
       end;
 
+      // ‘O‰ñ‘—‚Á‚½•¶Žš
       ch := S[FSendPos + 1];
 
       if ch = '[' then begin
@@ -570,6 +587,10 @@ begin
 
       // ŽŸ‚É‘—‚é•¶Žš
       ch := S[FSendPos + 1];
+      if ch = '[' then begin
+         S2 := Copy(S, FSendPos + 1, 4);
+         ch := GetProsignsChar(S2);
+      end;
    finally
       CWKbdSync.Leave();
    end;
