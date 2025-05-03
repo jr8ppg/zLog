@@ -726,6 +726,7 @@ end;
 procedure TICOM.PlayMessageCW(msg: string);
 var
    CMD: AnsiString;
+   Index: Integer;
 begin
    if FPlayMessageCwSupported = False then begin
       Exit;
@@ -742,6 +743,12 @@ begin
    msg := StringReplace(msg, 'b', '^BK', [rfReplaceAll]);  // BK
    msg := StringReplace(msg, '~', '^BK', [rfReplaceAll]);  // BK
    msg := StringReplace(msg, 't', '^BT', [rfReplaceAll]);  // BT
+   msg := StringReplace(msg, '.', '?',   [rfReplaceAll]);  // .
+
+   Index := Pos('?', msg);
+   if Index > 0 then begin
+      msg := Copy(msg, 1, Index);
+   end;
 
    if msg = '' then begin
       Exit;
