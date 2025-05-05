@@ -1266,6 +1266,8 @@ type
     function GetFixEdge(b: TBand; m: TMode): Integer;
     procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
+    procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
+    procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -8145,18 +8147,8 @@ begin
             startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
             mr := startup.ShowModal();
             if mr = mrNo then begin // Last contest
-               dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
-               dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
-               dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
-               dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
-               dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
-               dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
-               FPostContest := dmZLogGlobal.LastContest.FPostContest;
-               strContestName := dmZLogGlobal.LastContest.FContestName;
-               strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
-               fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
-               dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
                dmZLogGlobal.Settings.FDontShowStartupWindow := startup.DontShowThisWindow;
+               RestoreLastContestInfo(strCfgFileName, fScoreCoeff, strContestName);
             end
             else begin
                fNewContest := True;
@@ -8530,20 +8522,76 @@ begin
       end;
 
       // save last contest
-      dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
-      dmZLogGlobal.LastContest.FContestBand := dmZLogGlobal.ContestBand;
-      dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
-      dmZLogGlobal.LastContest.FMyCall := dmZLogGlobal.MyCall;
-      dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
-      dmZLogGlobal.LastContest.FTxNr := dmZLogGlobal.TXNr;
-      dmZLogGlobal.LastContest.FPostContest := FPostContest;
-      dmZLogGlobal.LastContest.FContestName := MyContest.Name;
-      dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
-      dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
-      dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
+      SaveLastContestInfo(strCfgFileName, fScoreCoeff);
    finally
       menu.Release();
       startup.Release();
+   end;
+end;
+
+procedure TMainForm.RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
+var
+   i: Integer;
+begin
+   dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
+   dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
+   dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
+   dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
+   dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
+   dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
+   FPostContest := dmZLogGlobal.LastContest.FPostContest;
+   strContestName := dmZLogGlobal.LastContest.FContestName;
+   strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
+   fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
+   dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
+
+   // User Defined Contestの場合
+   if dmZLogGlobal.ContestMenuNo = 9 then  begin
+      dmZLogGlobal.ClearParamImportedFlag();
+      if dmZLogGlobal.LastContest.ProvCityImported = True then begin
+         dmZLogGlobal.Settings.ProvCityImported := True;
+         dmZLogGlobal.Settings._prov := dmZLogGlobal.LastContest.Prov;
+         dmZLogGlobal.Settings._city := dmZLogGlobal.LastContest.City;
+      end;
+      for i := 1 to 4 do begin
+         if dmZLogGlobal.LastContest.CWStrImported[i] = True then begin
+            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := dmZLogGlobal.LastContest.CWStr[i];
+            dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
+         end;
+      end;
+      for i := 2 to 3 do begin
+         if dmZLogGlobal.LastContest.CWAddStrImported[i] = True then begin
+            dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := dmZLogGlobal.LastContest.CWAddStr[i];
+            dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] := True;
+         end;
+      end;
+   end;
+end;
+procedure TMainForm.SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
+var
+   i: Integer;
+begin
+   dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
+   dmZLogGlobal.LastContest.FContestBand := dmZLogGlobal.ContestBand;
+   dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
+   dmZLogGlobal.LastContest.FMyCall := dmZLogGlobal.MyCall;
+   dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
+   dmZLogGlobal.LastContest.FTxNr := dmZLogGlobal.TXNr;
+   dmZLogGlobal.LastContest.FPostContest := FPostContest;
+   dmZLogGlobal.LastContest.FContestName := MyContest.Name;
+   dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
+   dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
+   dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
+   dmZLogGlobal.LastContest.ProvCityImported := dmZLogGlobal.Settings.ProvCityImported;
+   dmZLogGlobal.LastContest.Prov := dmZLogGlobal.Settings._prov;
+   dmZLogGlobal.LastContest.City := dmZLogGlobal.Settings._city;
+   for i := 1 to 4 do begin
+      dmZLogGlobal.LastContest.CWStr[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
+      dmZLogGlobal.LastContest.CWStrImported[i] := dmZLogGlobal.Settings.CW.CWStrImported[1, i];
+   end;
+   for i := 2 to 3 do begin
+      dmZLogGlobal.LastContest.CWAddStr[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[i];
+      dmZLogGlobal.LastContest.CWAddStrImported[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i];
    end;
 end;
 

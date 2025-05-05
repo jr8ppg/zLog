@@ -404,6 +404,13 @@ type
     FCfgFileName: string;
     FScoreCoeff: Extended;
     FFileName: string;
+    Prov: string;
+    City: string;
+    ProvCityImported: Boolean;
+    CWStr: array[1..4] of string;
+    CWStrImported: array[1..4] of Boolean;
+    CWAddStr: array[2..3] of string;
+    CWAddStrImported: array[2..3] of Boolean;
   end;
 
   TCommPort = class(TObject)
@@ -1626,6 +1633,19 @@ begin
       LastContest.FCfgFileName := ini.ReadString('LastContest', 'CfgFileName', '');
       LastContest.FScoreCoeff := ini.ReadFloat('LastContest', 'ScoreCoeff', 0);
       LastContest.FFileName := ini.ReadString('LastContest', 'FileName', '');
+
+      // user defined contest
+      LastContest.Prov := ini.ReadString('LastContest', 'Prov', '');
+      LastContest.City := ini.ReadString('LastContest', 'City', '');
+      LastContest.ProvCityImported := ini.ReadBool('LastContest', 'ProvCityImported', False);
+      for i := 1 to 4 do begin
+         LastContest.CWStr[i] := ini.ReadString('LastContest', 'CWStr' + IntToStr(i), '');
+         LastContest.CWStrImported[i] := ini.ReadBool('LastContest', 'CWStrImported' + IntToStr(i), False);
+      end;
+      for i := 2 to 3 do begin
+         LastContest.CWAddStr[i] := ini.ReadString('LastContest', 'CWAddStr' + IntToStr(i), '');
+         LastContest.CWAddStrImported[i] := ini.ReadBool('LastContest', 'CWAddStrImported' + IntToStr(i), False);
+      end;
    finally
       ini.Free();
       slParam.Free();
@@ -2296,6 +2316,19 @@ begin
       ini.WriteString('LastContest', 'CfgFileName', LastContest.FCfgFileName);
       ini.WriteFloat('LastContest', 'ScoreCoeff', LastContest.FScoreCoeff);
       ini.WriteString('LastContest', 'FileName', LastContest.FFileName);
+
+      // user defined contest
+      ini.WriteString('LastContest', 'Prov', LastContest.Prov);
+      ini.WriteString('LastContest', 'City', LastContest.City);
+      ini.WriteBool('LastContest', 'ProvCityImported', LastContest.ProvCityImported);
+      for i := 1 to 4 do begin
+         ini.WriteString('LastContest', 'CWStr' + IntToStr(i), LastContest.CWStr[i]);
+         ini.WriteBool('LastContest', 'CWStrImported' + IntToStr(i), LastContest.CWStrImported[i]);
+      end;
+      for i := 2 to 3 do begin
+         ini.WriteString('LastContest', 'CWAddStr' + IntToStr(i), LastContest.CWAddStr[i]);
+         ini.WriteBool('LastContest', 'CWAddStrImported' + IntToStr(i), LastContest.CWAddStrImported[i]);
+      end;
 
       ini.UpdateFile();
    finally
