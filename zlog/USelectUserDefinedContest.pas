@@ -31,6 +31,7 @@ type
     buttonCFGEdit: TButton;
     checkImportCQMessage2: TCheckBox;
     checkImportCQMessage3: TCheckBox;
+    editFilterText: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonCfgFolderRefClick(Sender: TObject);
@@ -42,13 +43,14 @@ type
     procedure buttonCFGEditClick(Sender: TObject);
     procedure ListView1MouseEnter(Sender: TObject);
     procedure OnZLogShowCfgEdit( var Message: TMessage ); message WM_ZLOG_SHOWCFGEDIT;
+    procedure editFilterTextChange(Sender: TObject);
   private
     { Private êÈåæ }
     FCfgList: TUserDefinedContestList;
     FSelectedContest: TUserDefinedContest;
     FInitialContestName: string;
     function ScanCfgFiles(strFolder: string): TUserDefinedContestList;
-    procedure ShowCfgFiles(L: TUserDefinedContestList);
+    procedure ShowCfgFiles(L: TUserDefinedContestList; strFilter: string);
     function GetCfgFolder(): string;
     procedure SetCfgFolder(v: string);
     function GetImportProvCity(): Boolean;
@@ -85,6 +87,7 @@ begin
    checkImportCwMessage4.Checked := dmZLogGlobal.Settings.FImpCwMessage[4];
    checkImportCQMessage2.Checked := dmZLogGlobal.Settings.FImpCQMessage[2];
    checkImportCQMessage3.Checked := dmZLogGlobal.Settings.FImpCQMessage[3];
+   editFilterText.Text := '';
 end;
 
 procedure TSelectUserDefinedContest.FormDestroy(Sender: TObject);
@@ -111,7 +114,7 @@ begin
 
    FCfgList.Free();
    FCfgList := ScanCfgFiles(editCfgFolder.Text);
-   ShowCfgFiles(FCfgList);
+   ShowCfgFiles(FCfgList, editFilterText.Text);
 end;
 
 procedure TSelectUserDefinedContest.buttonOKClick(Sender: TObject);
@@ -131,6 +134,11 @@ begin
    end;
 
    ModalResult := mrOK;
+end;
+
+procedure TSelectUserDefinedContest.editFilterTextChange(Sender: TObject);
+begin
+   ShowCfgFiles(FCfgList, editFilterText.Text);
 end;
 
 procedure TSelectUserDefinedContest.buttonCFGEditClick(Sender: TObject);
@@ -206,7 +214,7 @@ begin
 
    FCfgList.Free();
    FCfgList := ScanCfgFiles(editCfgFolder.Text);
-   ShowCfgFiles(FCfgList);
+   ShowCfgFiles(FCfgList, '');
 end;
 
 procedure TSelectUserDefinedContest.ListView1DblClick(Sender: TObject);
@@ -268,7 +276,7 @@ begin
    end;
 end;
 
-procedure TSelectUserDefinedContest.ShowCfgFiles(L: TUserDefinedContestList);
+procedure TSelectUserDefinedContest.ShowCfgFiles(L: TUserDefinedContestList; strFilter: string);
 var
    i: Integer;
    listitem: TListItem;
@@ -279,6 +287,13 @@ begin
    ListView1.Items.Clear();
    for i := 0 to L.Count - 1 do begin
       D := L[i];
+
+      if strFilter <> '' then begin
+         if (Pos(UpperCase(strFilter), UpperCase(D.FileName)) = 0) and (Pos(strFilter, D.ContestName) = 0) then begin
+            Continue;
+         end;
+      end;
+
       listitem := ListView1.Items.Add();
       listitem.Caption := D.FileName;
       listitem.SubItems.Add(D.ContestName);
