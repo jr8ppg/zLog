@@ -3804,7 +3804,10 @@ begin
          end
          else begin
             // F8 5NN$X and Log
-            actionPlayMessageA08.Execute();
+            // SHIFTキーが押されていない場合のみMSG送信
+            if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+               actionPlayMessageA08.Execute();
+            end;
 
             LogButtonClick(Self);
          end;
@@ -4516,7 +4519,16 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar(S));
             {$ENDIF}
-            zLogSendStr2(nTxRigID, S, curQSO);
+
+            if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+               zLogSendStr2(nTxRigID, S, curQSO);
+            end
+            else begin
+               // SHIFTキーが押されていない場合のみMSG送信
+               if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                  zLogSendStr2(nTxRigID, S, curQSO);
+               end;
+            end;
 
             // ログに記録
             LogButtonProc(nTxID, curQSO);
@@ -4553,7 +4565,15 @@ begin
 
             S := SetStrNoAbbrev(S, curQSO);
             if FTTYConsole <> nil then begin
-               FTTYConsole.SendStrNow(S);
+               if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+                  FTTYConsole.SendStrNow(S);
+               end
+               else begin
+                  // SHIFTキーが押されていない場合のみMSG送信
+                  if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                     FTTYConsole.SendStrNow(S);
+                  end;
+               end;
             end;
 
             LogButtonProc(nTxID, curQSO);
@@ -4568,7 +4588,15 @@ begin
                exit;
             end;
 
-            PlayMessage(mode, 1, 3, False);
+            if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+               PlayMessage(mode, 1, 3, False);
+            end
+            else begin
+               // SHIFTキーが押されていない場合のみMSG送信
+               if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                  PlayMessage(mode, 1, 3, False);
+               end;
+            end;
 
             LogButtonProc(nTxID, curQSO);
 
