@@ -12702,7 +12702,7 @@ begin
    FInformation.WPM := curr_wpm;
    SpeedLabel.Caption := IntToStr(curr_wpm) + ' wpm';
 
-   SetRigWpm(init_wpm);
+   SetRigWpm(curr_wpm);
 end;
 
 procedure TMainForm.DoVFOChange(Sender: TObject);
