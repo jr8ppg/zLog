@@ -12597,14 +12597,16 @@ begin
    FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
    FBandScope.AddClusterSpot(Sp);
 
-   if Sp.IsNewMulti = True then begin
-      FBandScopeNewMulti.AddClusterSpot(Sp);
-   end;
-
    // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
-   if (BandMenu.Items[Ord(Sp.Band)].Enabled = True) and
+   if (BandMenu.Items[Ord(Sp.Band)].Visible = True) and
       (dmZlogGlobal.Settings._activebands[Sp.Band] = True) then begin
+      // All bandsウインドウ
       FBandScopeAllBands.AddClusterSpot(Sp);
+
+      // New multiウインドウ
+      if Sp.IsNewMulti = True then begin
+         FBandScopeNewMulti.AddClusterSpot(Sp);
+      end;
    end;
 
    // スポット情報をスーパーチェックに登録
