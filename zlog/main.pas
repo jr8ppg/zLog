@@ -13340,7 +13340,9 @@ begin
       Exit;
    end;
 
-   ActionList1.Actions[nCommand].Execute();
+   if Assigned(ActionList1.Actions[nCommand].OnExecute) then begin
+      ActionList1.Actions[nCommand].OnExecute(ActionList1.Actions[nCommand]);
+   end;
 end;
 
 procedure TMainForm.checkUseRig3Click(Sender: TObject);
