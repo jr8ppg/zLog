@@ -5482,7 +5482,14 @@ begin
       end;
 
       // 現在の周波数とモードを記憶
+      // 初回CQ開始時にLastFreqを0クリアして、CQの度に0であればLastFreqを記憶する
       if (fFirst = True) then begin
+         FLastFreq[1] := 0;
+         FLastFreq[2] := 0;
+         FLastFreq[3] := 0;
+      end;
+
+      if FLastFreq[FCurrentRigSet] = 0 then begin
          SaveLastFreq();
       end;
    end;
