@@ -29,7 +29,7 @@ object formELogJarlEx: TformELogJarlEx
       Top = 6
       Width = 89
       Height = 23
-      Caption = 'E-log'#20316#25104
+      Caption = 'E-Log'#20316#25104
       TabOrder = 2
       OnClick = buttonCreateLogClick
     end

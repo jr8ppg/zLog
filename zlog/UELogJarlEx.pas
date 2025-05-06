@@ -289,18 +289,20 @@ end;
 
 procedure TformELogJarlEx.FormShow(Sender: TObject);
 begin
-   TabControl1Change(TabControl1);
-
    if (MyContest is TALLJAContest) or
       (MyContest is TSixDownContest) or
       (MyContest is TFDContest) or
       (MyContest is TACAGContest) or
       (MyContest is TAllAsianContest) then begin
       buttonWebUpload.Visible := True;
+      TabControl1.TabIndex := 1; // R2.1
    end
    else begin
       buttonWebUpload.Visible := False;
+      TabControl1.TabIndex := 0; // R1.0
    end;
+
+   TabControl1Change(TabControl1);
 end;
 
 procedure TformELogJarlEx.RemoveBlankLines(M: TMemo);
@@ -615,7 +617,7 @@ begin
 
       f.LogText := SL.Text;
 
-      if MyContest is TAllJaContest then begin
+      if MyContest is TALLJAContest then begin
          f.Contest := wuAllJa;
       end;
 
@@ -1227,6 +1229,7 @@ begin
          labelLicense.Visible := True;
          edLicense.Visible := True;
          checkFieldExtend.Visible := False;
+         buttonWebUpload.Enabled := False;
       end;
 
       // R2.1
@@ -1247,6 +1250,7 @@ begin
          labelLicense.Visible := False;
          edLicense.Visible := False;
          checkFieldExtend.Visible := True;
+         buttonWebUpload.Enabled := True;
       end;
    end;
 end;
