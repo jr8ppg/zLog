@@ -826,9 +826,9 @@ begin
          Continue;
       end;
 
-      if Q.Invalid = True then begin
-         Continue;
-      end;
+//      if Q.Invalid = True then begin
+//         Continue;
+//      end;
 
       s := FormatQSO_v1(Q, FScoreBand[Q.Band].Checked);
 
@@ -967,9 +967,9 @@ begin
          Continue;
       end;
 
-      if Q.Invalid = True then begin
-         Continue;
-      end;
+//      if Q.Invalid = True then begin
+//         Continue;
+//      end;
 
       s := FormatQSO_v2(Q, fExtend);
       SL.Add(s);
