@@ -905,11 +905,8 @@ begin
       Exit;
    end;
 
-   // 相手局をセット
-   MainForm.SetYourCallsign(Sp.Call, Sp.Number);
-
-   // 周波数をセット
-   MainForm.SetFrequency(Sp.FreqHz);
+   // 周波数と相手局をセット
+   MainForm.SetFreqAndCall(0, Sp.FreqHz, Sp.Call, Sp.Number);
 end;
 
 procedure TCommForm.ListBoxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

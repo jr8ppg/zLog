@@ -37,8 +37,6 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 239
-    ExplicitHeight = 354
     object Grid: TStringGrid
       Left = 4
       Top = 4
@@ -63,8 +61,6 @@ object BandScope2: TBandScope2
       OnMouseMove = GridMouseMove
       OnMouseWheelDown = GridMouseWheelDown
       OnMouseWheelUp = GridMouseWheelUp
-      ExplicitWidth = 227
-      ExplicitHeight = 342
     end
   end
   object panelStandardOption: TPanel
@@ -75,7 +71,6 @@ object BandScope2: TBandScope2
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 239
     DesignSize = (
       247
       19)
@@ -142,24 +137,55 @@ object BandScope2: TBandScope2
     ShowCaption = False
     TabOrder = 2
     Visible = False
-    ExplicitWidth = 239
     object buttonSortByFreq: TSpeedButton
       Left = 1
       Top = 0
-      Width = 60
+      Width = 50
       Height = 19
+      GroupIndex = 5
       Caption = #21608#27874#25968
       Images = ImageList2
       OnClick = buttonSortByFreqClick
     end
     object buttonSortByTime: TSpeedButton
-      Left = 60
+      Left = 50
       Top = 0
-      Width = 60
+      Width = 50
       Height = 19
+      GroupIndex = 5
       Caption = #26178#38291
       Images = ImageList2
       OnClick = buttonSortByTimeClick
+    end
+    object buttonImportAuto: TSpeedButton
+      Left = 120
+      Top = 0
+      Width = 43
+      Height = 19
+      GroupIndex = 6
+      Down = True
+      Caption = 'AUTO'
+      OnClick = buttonImportSelectClick
+    end
+    object buttonImportRigA: TSpeedButton
+      Tag = 1
+      Left = 162
+      Top = 0
+      Width = 43
+      Height = 19
+      GroupIndex = 6
+      Caption = 'RIG-A'
+      OnClick = buttonImportSelectClick
+    end
+    object buttonImportRigB: TSpeedButton
+      Tag = 2
+      Left = 204
+      Top = 0
+      Width = 43
+      Height = 19
+      GroupIndex = 6
+      Caption = 'RIG-B'
+      OnClick = buttonImportSelectClick
     end
   end
   object tabctrlBandSelector: TTabControl

@@ -1302,7 +1302,8 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
-    procedure SetFrequency(freq: TFrequency);
+    procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
+    procedure SetFreqAndCall(no: Integer; freq: TFrequency; strCallsign, strNumber: string);
     procedure Restore2bsiqMode();
     procedure BSRefresh();
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -3748,6 +3749,7 @@ var
    Q: TQSO;
    msg: string;
    fNoMulti: Boolean;
+   nTxRigID: Integer;
 begin
    // CQ mode
    if IsCQ() then begin
@@ -3776,6 +3778,14 @@ begin
          else begin
             msg := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
             WriteStatusLineRed(msg, True);
+         end;
+
+         // CW以外とCWでポート設定無しはナンバー欄へフォーカス
+         // CW設定がある場合は、Enterで呼び倒しなのでフォーカス移動無し
+         nTxRigID := GetTxRigID(FCurrentTx + 1);
+         if ((CurrentQSO.Mode = mCW) and (dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone)) or
+            (CurrentQSO.Mode <> mCW) then begin
+            NumberEdit.SetFocus();
          end;
       end
       else begin
@@ -4315,6 +4325,7 @@ begin
             else begin
                CallSpaceBarProc(C, N, B);
                PlayMessage(mode, 1, 2, False);
+               N.SetFocus();
             end;
 
             S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
@@ -4323,6 +4334,7 @@ begin
          else begin  // not dupe
             CallSpaceBarProc(C, N, B);
             PlayMessage(mode, 1, 2, False);
+            N.SetFocus();
          end;
 
          Exit;
@@ -4330,10 +4342,12 @@ begin
 
       // RTTY
       if mode = mRTTY then begin
-         if FTTYConsole <> nil then
+         if FTTYConsole <> nil then begin
             FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), curQSO));
+         end;
 
          CallSpaceBarProc(C, N, B);
+         N.SetFocus();
 
          FCQRepeatPlaying := False;
 
@@ -4345,7 +4359,7 @@ begin
       // CWポート設定チェック
       nTxRigID := GetTxRigID(nTxID + 1);
       if dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone then begin
-         WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+         CallsignSentProc(nil);
          Exit;
       end;
 
@@ -4492,16 +4506,13 @@ begin
 
       case mode of
          mCW: begin
-            // CWポート設定チェック
+            // CWポート設定チェック用RIGID
             nTxRigID := GetTxRigID(nTxID + 1);
-            if dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone then begin
-               WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
-               Exit;
-            end;
 
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
                // NR?自動送出使う場合
-               if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
+               if (dmZLogKeyer.KeyingPort[nTxRigID] <> tkpNone) and
+                  (dmZlogGlobal.Settings.CW._send_nr_auto = True) then begin
                   S := dmZlogGlobal.CWMessage(0, 5);
                   zLogSendStr2(nTxRigID, S, curQSO);
                end;
@@ -4513,20 +4524,22 @@ begin
                Exit;
             end;
 
-            // TU $M TEST
-            S := dmZlogGlobal.CWMessage(0, 3);
+            if (dmZLogKeyer.KeyingPort[nTxRigID] <> tkpNone) then begin
+               // TU $M TEST
+               S := dmZlogGlobal.CWMessage(0, 3);
 
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar(S));
-            {$ENDIF}
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar(S));
+               {$ENDIF}
 
-            if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
-               zLogSendStr2(nTxRigID, S, curQSO);
-            end
-            else begin
-               // SHIFTキーが押されていない場合のみMSG送信
-               if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+               if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
                   zLogSendStr2(nTxRigID, S, curQSO);
+               end
+               else begin
+                  // SHIFTキーが押されていない場合のみMSG送信
+                  if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                     zLogSendStr2(nTxRigID, S, curQSO);
+                  end;
                end;
             end;
 
@@ -9872,7 +9885,6 @@ begin
          // CWポート設定チェック
          nID := GetTxRigID();
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
-            WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
          end;
          WriteStatusLine('', False);
@@ -12336,11 +12348,16 @@ end;
 // 相手コールサインの設定
 // バンドスコープから呼ばれる
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
+begin
+   SetYourCallsignEx(0, strCallsign, strNumber);
+end;
+
+procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
 var
    nID: Integer;
    C, N, B, M, SE, OP: TEdit;
 begin
-   nID := FCurrentRx;
+   nID := no - 1;
 
    AssignControls(nID, C, N, B, M, SE, OP);
 
@@ -12377,7 +12394,7 @@ begin
 end;
 
 // Cluster or BandScopeから呼ばれる
-procedure TMainForm.SetFrequency(freq: TFrequency);
+procedure TMainForm.SetFreqAndCall(no: Integer; freq: TFrequency; strCallsign, strNumber: string);
 var
    b: TBand;
    Q: TQSO;
@@ -12392,12 +12409,17 @@ begin
       Exit;
    end;
 
+   // 取り込みバンド
+   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
+
    // 1Radioの場合
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       // CQモードなら現在の周波数とモードを記憶
       if (IsCQ() = True) and (dmZLogGlobal.Settings._bandscope_save_current_freq = True)then begin
          SaveLastFreq();
       end;
+
+      rigset := CurrentRx + 1;
    end;
 
    // 2Radioの場合、現在の2BSIQ状態を保存してOFFにする
@@ -12408,7 +12430,30 @@ begin
          F2bsiqStart := False;
          FCQRepeatPlaying := False;
       end;
+
+      // まずはRIG-AまたはRIG-Bでバンドが一致するか
+      if TextToBand(FEditPanel[0].BandEdit.Text) = b then begin
+         rigset := 1;
+      end
+      else if TextToBand(FEditPanel[1].BandEdit.Text) = b then begin
+         rigset := 2;
+      end
+      else begin
+         // バンド一致RIGが無ければ指定のRIGとする
+         if no = 0 then begin
+            rigset := CurrentRx + 1;
+         end
+         else begin
+            rigset := no;
+         end;
+      end;
+
+      if FCurrentRx <> (rigset - 1) then begin
+         SwitchRig(rigset);
+      end;
    end;
+
+   SetYourCallsignEx(rigset, strCallsign, strNumber);
 
    // CQ中止
    if FCurrentTx = FCurrentRx then begin
@@ -12420,9 +12465,7 @@ begin
 
    FQsyFromBS := True;
 
-   rigset := CurrentRx + 1;
-
-   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
+   // 取り込み先RIGのモード
    m := TextToMode(FEditPanel[rigset - 1].ModeEdit.Text);
 
    rig := RigControl.GetRig(rigset, b);
