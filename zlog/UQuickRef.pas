@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, UzLogGlobal, Vcl.ComCtrls, Vcl.ToolWin, System.ImageList,
-  Vcl.ImgList, System.IniFiles;
+  Vcl.ImgList, System.IniFiles, JvExStdCtrls, JvCombobox, JvColorCombo;
 
 type
   TQuickRef = class(TForm)
@@ -14,6 +14,8 @@ type
     toolbuttonPlus: TToolButton;
     toolbuttonMinus: TToolButton;
     ImageList1: TImageList;
+    ToolButton1: TToolButton;
+    comboFont: TJvFontComboBox;
     procedure FormCreate(Sender: TObject);
     procedure MemoKeyPress(Sender: TObject; var Key: Char);
     procedure FormDestroy(Sender: TObject);
@@ -21,6 +23,7 @@ type
     procedure toolbuttonMinusClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure comboFontChange(Sender: TObject);
   private
     { Private êÈåæ }
   public
@@ -33,11 +36,6 @@ uses Main;
 
 {$R *.dfm}
 
-procedure TQuickRef.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
 procedure TQuickRef.FormCreate(Sender: TObject);
 var
    ini: TMemIniFile;
@@ -49,14 +47,23 @@ begin
       if FileExists('ZLOGHELP.TXT') then begin
          Memo.Lines.LoadFromFile('ZLOGHELP.TXT');
       end
-      else
+      else begin
          Memo.Lines.Clear;
-
-      Memo.Font.Size := dmZLogGlobal.Settings.FQuickRefFontSize;
-      Memo.Font.Name := dmZLogGlobal.Settings.FQuickRefFontFace;
+      end;
    finally
       ini.Free();
    end;
+end;
+
+procedure TQuickRef.comboFontChange(Sender: TObject);
+begin
+   Memo.Font.Name := comboFont.Text;
+end;
+
+procedure TQuickRef.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
+   dmZLogGlobal.Settings.FQuickRefFontFace := comboFont.FontName;
 end;
 
 procedure TQuickRef.FormDestroy(Sender: TObject);
@@ -70,12 +77,15 @@ begin
    finally
       ini.Free();
    end;
-
 end;
 
 procedure TQuickRef.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
+   Memo.Font.Size := dmZLogGlobal.Settings.FQuickRefFontSize;
+   Memo.Font.Name := dmZLogGlobal.Settings.FQuickRefFontFace;
+   comboFont.FontName := dmZLogGlobal.Settings.FQuickRefFontFace;
+   Memo.SetFocus();
 end;
 
 procedure TQuickRef.MemoKeyPress(Sender: TObject; var Key: Char);

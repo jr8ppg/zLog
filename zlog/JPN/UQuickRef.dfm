@@ -10,12 +10,10 @@ object QuickRef: TQuickRef
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object Memo: TMemo
     Left = 0
@@ -57,6 +55,27 @@ object QuickRef: TQuickRef
       Caption = 'toolbuttonMinus'
       ImageIndex = 1
       OnClick = toolbuttonMinusClick
+    end
+    object ToolButton1: TToolButton
+      Left = 46
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton1'
+      ImageIndex = 2
+      Style = tbsSeparator
+    end
+    object comboFont: TJvFontComboBox
+      Left = 54
+      Top = 0
+      Width = 187
+      Height = 22
+      DroppedDownWidth = 187
+      MaxMRUCount = 0
+      FontName = #65325#65331' '#65328#12468#12471#12483#12463
+      ItemIndex = 271
+      Sorted = True
+      TabOrder = 0
+      OnChange = comboFontChange
     end
   end
   object ImageList1: TImageList
