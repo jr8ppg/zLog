@@ -195,6 +195,9 @@ end;
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
+   nID: Integer;
+   S: string;
+   rig: TRig;
 begin
    CWKbdSync.Enter();
    try
@@ -225,9 +228,35 @@ begin
    // CQループ中なら中止する
    SendMessage(MainForm.Handle, WM_ZLOG_CQABORT, 1, 0);
 
-   // １文字送信
-   if MainForm.StartCWKeyboard = False then begin
-      SendChar(K);
+   // RIGキーイングなら改行入力のタイミングで１行送信
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] = tkpRig then begin
+
+      if Key = CHar($0d) then begin
+         S := Copy(Console.Text, 1, 20);  // ICOM:30,KENWOOD:20
+         S := StringReplace(S, #13, '', [rfReplaceAll]);
+         S := StringReplace(S, #10, '', [rfReplaceAll]);
+
+         // 送信
+         rig := MainForm.RigControl.Rigs[nID + 1];
+         if rig <> nil then begin
+            rig.PlayMessageCW(S);
+            dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         end;
+
+         //
+         Clear();
+         Exit;
+      end;
+
+      Key := K;
+      Exit;
+   end
+   else begin
+      // １文字送信
+      if MainForm.StartCWKeyboard = False then begin
+         SendChar(K);
+      end;
    end;
 
    Key := K;
