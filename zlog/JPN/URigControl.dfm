@@ -2,10 +2,10 @@ object RigControl: TRigControl
   Left = 666
   Top = 35
   Caption = 'Rig Control'
-  ClientHeight = 157
+  ClientHeight = 174
   ClientWidth = 318
   Color = clBtnFace
-  Constraints.MinHeight = 195
+  Constraints.MinHeight = 213
   Constraints.MinWidth = 330
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -25,14 +25,13 @@ object RigControl: TRigControl
     Left = 0
     Top = 30
     Width = 318
-    Height = 103
+    Height = 120
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 314
-    ExplicitHeight = 102
+    ExplicitHeight = 103
     DesignSize = (
       318
-      103)
+      120)
     object buttonJumpLastFreq: TSpeedButton
       Left = 265
       Top = 21
@@ -108,6 +107,36 @@ object RigControl: TRigControl
       GroupIndex = 1
       Caption = 'M-Scan'
       OnClick = buttonMemScanClick
+    end
+    object buttonImportAuto: TSpeedButton
+      Left = 184
+      Top = 98
+      Width = 43
+      Height = 19
+      GroupIndex = 6
+      Down = True
+      Caption = 'AUTO'
+      OnClick = buttonImportSelectClick
+    end
+    object buttonImportRigA: TSpeedButton
+      Tag = 1
+      Left = 226
+      Top = 98
+      Width = 43
+      Height = 19
+      GroupIndex = 6
+      Caption = 'RIG-A'
+      OnClick = buttonImportSelectClick
+    end
+    object buttonImportRigB: TSpeedButton
+      Tag = 2
+      Left = 268
+      Top = 98
+      Width = 43
+      Height = 19
+      GroupIndex = 6
+      Caption = 'RIG-B'
+      OnClick = buttonImportSelectClick
     end
     object Panel1: TPanel
       Left = 50
@@ -232,7 +261,6 @@ object RigControl: TRigControl
     Height = 30
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 314
     DesignSize = (
       318
       30)
@@ -255,7 +283,6 @@ object RigControl: TRigControl
       Caption = 'Omni-Rig'
       TabOrder = 1
       OnClick = buttonOmniRigClick
-      ExplicitLeft = 174
     end
     object buttonReconnectRigs: TButton
       Left = 244
@@ -266,7 +293,6 @@ object RigControl: TRigControl
       Caption = 'Reset'
       TabOrder = 2
       OnClick = buttonReconnectRigsClick
-      ExplicitLeft = 240
     end
     object panelMScan: TPanel
       Left = 93
@@ -301,7 +327,7 @@ object RigControl: TRigControl
   end
   object buttongrpFreqMemory: TButtonGroup
     Left = 0
-    Top = 133
+    Top = 150
     Width = 318
     Height = 24
     Align = alBottom
@@ -330,8 +356,7 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
-    ExplicitTop = 132
-    ExplicitWidth = 314
+    ExplicitTop = 133
   end
   object Timer1: TTimer
     Enabled = False
@@ -448,7 +473,7 @@ object RigControl: TRigControl
     Enabled = False
     Interval = 350
     OnTimer = Timer2Timer
-    Left = 274
-    Top = 120
+    Left = 18
+    Top = 128
   end
 end

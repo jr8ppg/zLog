@@ -12449,7 +12449,7 @@ begin
       end;
 
       if FCurrentRx <> (rigset - 1) then begin
-         SwitchRig(rigset);
+         SwitchRx(rigset);
       end;
    end;
 

@@ -2006,6 +2006,9 @@ begin
       if (Screen.Forms[i] is TBandScope2) and (Screen.Forms[i] <> Self) then begin
          TBandScope2(Screen.Forms[i]).SetImportTo(no);
       end;
+      if (Screen.Forms[i] is TRigControl) and (Screen.Forms[i] <> Self) then begin
+         TRigControl(Screen.Forms[i]).SetImportTo(no);
+      end;
    end;
 end;
 

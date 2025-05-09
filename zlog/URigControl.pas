@@ -55,6 +55,9 @@ type
     panelMScan: TPanel;
     labelMScan: TLabel;
     Timer2: TTimer;
+    buttonImportAuto: TSpeedButton;
+    buttonImportRigA: TSpeedButton;
+    buttonImportRigB: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -77,6 +80,7 @@ type
     procedure popupMemoryChPopup(Sender: TObject);
     procedure buttonMemScanClick(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
+    procedure buttonImportSelectClick(Sender: TObject);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -153,6 +157,7 @@ type
 
     procedure ToggleMemScan(scan_rigset: Integer; b: TBand);
     procedure MemScanOff();
+    procedure SetImportTo(no: Integer);
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
   end;
@@ -1267,6 +1272,20 @@ begin
    FCurrentRig.MemCh[5].Call();
 end;
 
+procedure TRigControl.buttonImportSelectClick(Sender: TObject);
+var
+   no: Integer;
+   i: Integer;
+begin
+   no := TSpeedButton(Sender).Tag;
+
+   for i := 0 to Screen.FormCount - 1 do begin
+      if (Screen.Forms[i] is TBandScope2) and (Screen.Forms[i] <> Self) then begin
+         TBandScope2(Screen.Forms[i]).SetImportTo(no);
+      end;
+   end;
+end;
+
 procedure TRigControl.buttonMemoryWriteClick(Sender: TObject);
 var
    pt: TPoint;
@@ -1479,6 +1498,15 @@ begin
    if buttonMemScan.Down = True then begin
       buttonMemScan.Down := False;
       buttonMemScanClick(nil);
+   end;
+end;
+
+procedure TRigControl.SetImportTo(no: Integer);
+begin
+   case no of
+      0: buttonImportAuto.Down := True;
+      1: buttonImportRigA.Down := True;
+      2: buttonImportRigB.Down := True;
    end;
 end;
 
