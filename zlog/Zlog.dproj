@@ -789,7 +789,7 @@
                 <RDP_Source_Files>
                     <RDP_Source_Files Name="Item0">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item1">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item2">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item2">Win32\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item3">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item5">UBasicScore.dfm</RDP_Source_Files>
@@ -919,7 +919,7 @@
                     <RDP_Source_Files Name="Item129">UFreqMemDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item130">UStartup.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item131">UJarlWebUpload.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item132">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item132">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
