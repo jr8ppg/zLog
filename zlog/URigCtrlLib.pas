@@ -77,6 +77,7 @@ type
     procedure SetXit(flag: Boolean); virtual;
     procedure SetRitOffset(offset: Integer); virtual;
     procedure UpdateFreqMem(vfo: Integer; Hz: TFrequency; M: TMode);
+    function ConvertProsignsStr(msg: string): string;
   private
     FPortConfig: TPortConfig;
 
@@ -682,6 +683,17 @@ end;
 procedure TRig.SetFreqMem(b: TBand; m: TMode; freq: TFrequency);
 begin
    FFreqMem[b, m] := freq;
+end;
+
+function TRig.ConvertProsignsStr(msg: string): string;
+begin
+   msg := StringReplace(msg, '[AR]', 'a', [rfReplaceAll]);
+   msg := StringReplace(msg, '[SK]', 's', [rfReplaceAll]);
+   msg := StringReplace(msg, '[VA]', 's', [rfReplaceAll]);
+   msg := StringReplace(msg, '[KN]', 'k', [rfReplaceAll]);
+   msg := StringReplace(msg, '[BK]', 'b', [rfReplaceAll]);
+   msg := StringReplace(msg, '[BT]', 't', [rfReplaceAll]);
+   Result := msg;
 end;
 
 { TJST145 }

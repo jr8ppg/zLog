@@ -740,6 +740,8 @@ begin
       Exit;
    end;
 
+   msg := ConvertProsignsStr(msg);
+
    msg := StringReplace(msg, 'a', '^AR', [rfReplaceAll]);  // AR
    msg := StringReplace(msg, 's', '^SK', [rfReplaceAll]);  // SK
    msg := StringReplace(msg, 'v', '^VA', [rfReplaceAll]);  // VA

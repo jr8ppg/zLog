@@ -521,6 +521,8 @@ begin
       Exit;
    end;
 
+   msg := ConvertProsignsStr(msg);
+
    msg := StringReplace(msg, 'a', '_', [rfReplaceAll]);  // AR
    msg := StringReplace(msg, 's', '>', [rfReplaceAll]);  // SK
    msg := StringReplace(msg, 'v', '>', [rfReplaceAll]);  // VA

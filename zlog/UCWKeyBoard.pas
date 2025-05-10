@@ -244,7 +244,6 @@ begin
             dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
          end;
 
-         //
          Clear();
          Exit;
       end;
@@ -371,6 +370,7 @@ procedure TCWKeyBoard.PlayMessage(nID: Integer; cb: Integer; no: Integer);
 var
    S: string;
    i: Integer;
+   rig: TRig;
 begin
    S := dmZlogGlobal.CWMessage(cb, no);
    if S = '' then begin
@@ -385,25 +385,41 @@ begin
       Insert(CurrentQSO.Callsign, S, i);
    end;
 
-   Console.SelStart := Length(Console.Text);
-   Console.SelAttributes.Name := Console.Font.Name;
-   Console.SelAttributes.Size := Console.Font.Size;
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] = tkpRig then begin
+      // ëóêM
+      rig := MainForm.RigControl.Rigs[nID + 1];
+      if rig <> nil then begin
+         rig.PlayMessageCW(S);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+      end;
+      Clear();
+   end
+   else begin
+      Console.SelStart := Length(Console.Text);
+      Console.SelAttributes.Name := Console.Font.Name;
+      Console.SelAttributes.Size := Console.Font.Size;
 
-   Console.SelText := S;
+      Console.SelText := S;
 
-   SendChar(Console.Text[FSendPos + 1]);
+      SendChar(Console.Text[FSendPos + 1]);
+   end;
 end;
 
 procedure TCWKeyBoard.PlayProsigns(msg: string);
 var
    ch: Char;
+   nID: Integer;
 begin
    Console.SelStart := Length(Console.Text);
    Console.SelText := msg;
 
-   if MainForm.StartCWKeyboard = False then begin
-      ch := GetProsignsChar(msg);
-      SendChar(ch);
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] <> tkpRig then begin
+      if MainForm.StartCWKeyboard = False then begin
+         ch := GetProsignsChar(msg);
+         SendChar(ch);
+      end;
    end;
 end;
 
