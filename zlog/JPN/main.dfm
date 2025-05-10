@@ -6057,7 +6057,7 @@ object MainForm: TMainForm
       end
       object menuBandscope: TMenuItem
         AutoLineReduction = maAutomatic
-        Caption = '&Band Scope'
+        Caption = #12496#12531#12489#12473#12467#12540#12503'(&B)'
         OnClick = menuBandscopeClick
         object menuBSAll: TMenuItem
           Action = actionShowBandScope
