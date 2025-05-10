@@ -28,7 +28,6 @@ object RigControl: TRigControl
     Height = 120
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 103
     DesignSize = (
       318
       120)
@@ -116,7 +115,6 @@ object RigControl: TRigControl
       GroupIndex = 6
       Down = True
       Caption = 'AUTO'
-      OnClick = buttonImportSelectClick
     end
     object buttonImportRigA: TSpeedButton
       Tag = 1
@@ -126,7 +124,6 @@ object RigControl: TRigControl
       Height = 19
       GroupIndex = 6
       Caption = 'RIG-A'
-      OnClick = buttonImportSelectClick
     end
     object buttonImportRigB: TSpeedButton
       Tag = 2
@@ -136,7 +133,13 @@ object RigControl: TRigControl
       Height = 19
       GroupIndex = 6
       Caption = 'RIG-B'
-      OnClick = buttonImportSelectClick
+    end
+    object Label5: TLabel
+      Left = 97
+      Top = 100
+      Width = 83
+      Height = 15
+      Caption = 'SPOT Import to'
     end
     object Panel1: TPanel
       Left = 50
@@ -356,7 +359,6 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
-    ExplicitTop = 133
   end
   object Timer1: TTimer
     Enabled = False

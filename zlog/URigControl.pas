@@ -58,6 +58,7 @@ type
     buttonImportAuto: TSpeedButton;
     buttonImportRigA: TSpeedButton;
     buttonImportRigB: TSpeedButton;
+    Label5: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -80,7 +81,6 @@ type
     procedure popupMemoryChPopup(Sender: TObject);
     procedure buttonMemScanClick(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
-    procedure buttonImportSelectClick(Sender: TObject);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -123,6 +123,9 @@ type
 
     procedure SetPrevVFO(Index: Integer; fFreq: TFrequency);
     function GetPrevVFO(Index: Integer): TFrequency;
+
+    procedure SetImportTo(no: Integer);
+    function GetImportTo(): Integer;
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -157,9 +160,9 @@ type
 
     procedure ToggleMemScan(scan_rigset: Integer; b: TBand);
     procedure MemScanOff();
-    procedure SetImportTo(no: Integer);
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
+    property ImportRigNo: Integer read GetImportTo write SetImportTo;
   end;
 
 resourcestring
@@ -209,6 +212,8 @@ begin
    FMenuMn[3] := menuM3;
    FMenuMn[4] := menuM4;
    FMenuMn[5] := menuM5;
+
+   buttonImportAuto.Down := True;
 end;
 
 procedure TRigControl.FormDestroy(Sender: TObject);
@@ -1272,20 +1277,6 @@ begin
    FCurrentRig.MemCh[5].Call();
 end;
 
-procedure TRigControl.buttonImportSelectClick(Sender: TObject);
-var
-   no: Integer;
-   i: Integer;
-begin
-   no := TSpeedButton(Sender).Tag;
-
-   for i := 0 to Screen.FormCount - 1 do begin
-      if (Screen.Forms[i] is TBandScope2) and (Screen.Forms[i] <> Self) then begin
-         TBandScope2(Screen.Forms[i]).SetImportTo(no);
-      end;
-   end;
-end;
-
 procedure TRigControl.buttonMemoryWriteClick(Sender: TObject);
 var
    pt: TPoint;
@@ -1507,6 +1498,22 @@ begin
       0: buttonImportAuto.Down := True;
       1: buttonImportRigA.Down := True;
       2: buttonImportRigB.Down := True;
+   end;
+end;
+
+function TRigControl.GetImportTo(): Integer;
+begin
+   if buttonImportAuto.Down = True then begin
+      Result := 0;
+   end
+   else if buttonImportRigA.Down = True then begin
+      Result := 1;
+   end
+   else if buttonImportRigB.Down = True then begin
+      Result := 2;
+   end
+   else begin
+      Result := 0;
    end;
 end;
 

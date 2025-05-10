@@ -1303,7 +1303,7 @@ type
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
     procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
-    procedure SetFreqAndCall(no: Integer; freq: TFrequency; strCallsign, strNumber: string);
+    procedure SetFreqAndCall(freq: TFrequency; strCallsign, strNumber: string);
     procedure Restore2bsiqMode();
     procedure BSRefresh();
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -12394,7 +12394,7 @@ begin
 end;
 
 // Cluster or BandScopeから呼ばれる
-procedure TMainForm.SetFreqAndCall(no: Integer; freq: TFrequency; strCallsign, strNumber: string);
+procedure TMainForm.SetFreqAndCall(freq: TFrequency; strCallsign, strNumber: string);
 var
    b: TBand;
    Q: TQSO;
@@ -12404,10 +12404,14 @@ var
    nID: Integer;
    mode: TMode;
    edge: Integer;
+   no: Integer;
 begin
    if freq = 0 then begin
       Exit;
    end;
+
+   // 取り込み先RIG
+   no := RigControl.ImportRigNo;
 
    // 取り込みバンド
    b := dmZLogGlobal.BandPlan.FreqToBand(freq);

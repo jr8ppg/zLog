@@ -89,9 +89,6 @@ type
     menuBS14: TMenuItem;
     menuBS15: TMenuItem;
     N3: TMenuItem;
-    buttonImportAuto: TSpeedButton;
-    buttonImportRigA: TSpeedButton;
-    buttonImportRigB: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -130,7 +127,6 @@ type
     procedure menuBSAllBandsClick(Sender: TObject);
     procedure menuBSNewMultiClick(Sender: TObject);
     procedure menuBS00Click(Sender: TObject);
-    procedure buttonImportSelectClick(Sender: TObject);
   private
     { Private 宣言 }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -200,8 +196,6 @@ type
     procedure Suspend();
     procedure Resume();
     procedure RenewTab();
-    procedure SetImportTo(no: Integer);
-    function GetImportTo(): Integer;
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property DisplayMode: TBSDisplayMode read GetDisplayMode write SetDisplayMode;
@@ -1021,11 +1015,8 @@ begin
          Exit;
       end;
 
-      // 取り込み先を取得
-      no := GetImportTo();
-
       // 周波数と相手局をセット
-      MainForm.SetFreqAndCall(no, D.FreqHz, D.Call, D.Number);
+      MainForm.SetFreqAndCall(D.FreqHz, D.Call, D.Number);
 
       // メインウインドウにフォーカス
       MainForm.LastFocus.SetFocus();
@@ -1993,48 +1984,6 @@ begin
    buttonNormalMode.Enabled := fEnable;
    buttonSyncVfo.Enabled := fEnable;
    buttonFreqCenter.Enabled := fEnable;
-end;
-
-procedure TBandScope2.buttonImportSelectClick(Sender: TObject);
-var
-   no: Integer;
-   i: Integer;
-begin
-   no := TSpeedButton(Sender).Tag;
-
-   for i := 0 to Screen.FormCount - 1 do begin
-      if (Screen.Forms[i] is TBandScope2) and (Screen.Forms[i] <> Self) then begin
-         TBandScope2(Screen.Forms[i]).SetImportTo(no);
-      end;
-      if (Screen.Forms[i] is TRigControl) and (Screen.Forms[i] <> Self) then begin
-         TRigControl(Screen.Forms[i]).SetImportTo(no);
-      end;
-   end;
-end;
-
-procedure TBandScope2.SetImportTo(no: Integer);
-begin
-   case no of
-      0: buttonImportAuto.Down := True;
-      1: buttonImportRigA.Down := True;
-      2: buttonImportRigB.Down := True;
-   end;
-end;
-
-function TBandScope2.GetImportTo(): Integer;
-begin
-   if buttonImportAuto.Down = True then begin
-      Result := 0;
-   end
-   else if buttonImportRigA.Down = True then begin
-      Result := 1;
-   end
-   else if buttonImportRigB.Down = True then begin
-      Result := 2;
-   end
-   else begin
-      Result := 0;
-   end;
 end;
 
 initialization

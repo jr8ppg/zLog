@@ -157,36 +157,6 @@ object BandScope2: TBandScope2
       Images = ImageList2
       OnClick = buttonSortByTimeClick
     end
-    object buttonImportAuto: TSpeedButton
-      Left = 120
-      Top = 0
-      Width = 43
-      Height = 19
-      GroupIndex = 6
-      Down = True
-      Caption = 'AUTO'
-      OnClick = buttonImportSelectClick
-    end
-    object buttonImportRigA: TSpeedButton
-      Tag = 1
-      Left = 162
-      Top = 0
-      Width = 43
-      Height = 19
-      GroupIndex = 6
-      Caption = 'RIG-A'
-      OnClick = buttonImportSelectClick
-    end
-    object buttonImportRigB: TSpeedButton
-      Tag = 2
-      Left = 204
-      Top = 0
-      Width = 43
-      Height = 19
-      GroupIndex = 6
-      Caption = 'RIG-B'
-      OnClick = buttonImportSelectClick
-    end
   end
   object tabctrlBandSelector: TTabControl
     Left = 0

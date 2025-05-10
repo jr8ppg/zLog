@@ -10,7 +10,7 @@ object RigControl: TRigControl
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'Arial'
+  Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
   Position = poDesigned
@@ -28,7 +28,6 @@ object RigControl: TRigControl
     Height = 120
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 103
     DesignSize = (
       318
       120)
@@ -116,7 +115,6 @@ object RigControl: TRigControl
       GroupIndex = 6
       Down = True
       Caption = 'AUTO'
-      OnClick = buttonImportSelectClick
     end
     object buttonImportRigA: TSpeedButton
       Tag = 1
@@ -126,7 +124,6 @@ object RigControl: TRigControl
       Height = 19
       GroupIndex = 6
       Caption = 'RIG-A'
-      OnClick = buttonImportSelectClick
     end
     object buttonImportRigB: TSpeedButton
       Tag = 2
@@ -136,7 +133,13 @@ object RigControl: TRigControl
       Height = 19
       GroupIndex = 6
       Caption = 'RIG-B'
-      OnClick = buttonImportSelectClick
+    end
+    object Label5: TLabel
+      Left = 85
+      Top = 102
+      Width = 83
+      Height = 15
+      Caption = #12473#12509#12483#12488#21462#12426#36796#12415#20808
     end
     object Panel1: TPanel
       Left = 50
@@ -356,7 +359,6 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
-    ExplicitTop = 133
   end
   object Timer1: TTimer
     Enabled = False

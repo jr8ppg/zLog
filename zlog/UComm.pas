@@ -906,7 +906,7 @@ begin
    end;
 
    // ü”g”‚Æ‘Šè‹Ç‚ğƒZƒbƒg
-   MainForm.SetFreqAndCall(0, Sp.FreqHz, Sp.Call, Sp.Number);
+   MainForm.SetFreqAndCall(Sp.FreqHz, Sp.Call, Sp.Number);
 end;
 
 procedure TCommForm.ListBoxKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
