@@ -3750,7 +3750,10 @@ var
    msg: string;
    fNoMulti: Boolean;
    nTxRigID: Integer;
+   C, N, B, M, SE, OP: TEdit;
 begin
+   AssignControls(CurrentRigID, C, N, B, M, SE, OP);
+
    // CQ mode
    if IsCQ() then begin
       if CallsignEdit.Focused then begin
@@ -3785,6 +3788,7 @@ begin
          nTxRigID := GetTxRigID(FCurrentTx + 1);
          if ((CurrentQSO.Mode = mCW) and (dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone)) or
             (CurrentQSO.Mode <> mCW) then begin
+            CallSpacebarProc(C, N, B);
             NumberEdit.SetFocus();
          end;
       end
@@ -9867,17 +9871,19 @@ begin
    WriteStatusLine('', False);
 
    // 2R:CQ+S&P時、F1/F2/F3以外はSPモード
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (Is2bsiq() = False) then begin
-      if no > 3 then begin
-         SetCQ(False);
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if (Is2bsiq() = False) then begin
+         if no > 3 then begin
+            SetCQ(False);
+         end;
+      end
+      else begin
+         if FInformation.IsWait = False then begin
+            m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+            StopMessage(m);
+            FMessageManager.ClearQue();
+         end;
       end;
-   end;
-
-   if FInformation.IsWait = False then begin
-      m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
-      StopMessage(m);
-      FMessageManager.ClearQue();
    end;
 
    case mode of
@@ -10110,7 +10116,9 @@ begin
       end
       else begin
          // PTT-OFF
-         VoiceControl(False);
+         if Sender <> nil then begin
+            VoiceControl(False);
+         end;
 
          VoiceStopButton.Enabled := False;
       end;
