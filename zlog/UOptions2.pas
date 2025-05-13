@@ -377,6 +377,11 @@ type
     buttonFreqMemEdit: TButton;
     buttonFreqMemDelete: TButton;
     checkShowStartupWindow: TCheckBox;
+    popupVoiceMenu: TPopupMenu;
+    menuVoicePlay: TMenuItem;
+    N1: TMenuItem;
+    menuVoiceClear: TMenuItem;
+    menuVoiceStop: TMenuItem;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -419,6 +424,21 @@ type
     procedure listviewFreqMemoryDblClick(Sender: TObject);
     procedure listviewFreqMemorySelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
+    procedure vEditEnter(Sender: TObject);
+    procedure vEditExit(Sender: TObject);
+    procedure menuVoiceClearClick(Sender: TObject);
+    procedure menuVoicePlayClick(Sender: TObject);
+    procedure menuVoiceStopClick(Sender: TObject);
+    procedure vAdditionalEditEnter(Sender: TObject);
+    procedure vAdditionalEditExit(Sender: TObject);
+    procedure vButtonEnter(Sender: TObject);
+    procedure vButtonExit(Sender: TObject);
+    procedure vAdditionalButtonEnter(Sender: TObject);
+    procedure vAdditionalButtonExit(Sender: TObject);
+    procedure vButtonContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure vAdditionalButtonContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     FEditMode: Integer;
     FEditNumber: Integer;
@@ -1398,6 +1418,36 @@ begin
    FVoiceSound.Free();
 end;
 
+procedure TformOptions2.vButtonEnter(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := TButton(Sender).Tag;
+end;
+
+procedure TformOptions2.vButtonExit(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := 0;
+end;
+
+procedure TformOptions2.vAdditionalButtonEnter(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := TButton(Sender).Tag + 100;
+end;
+
+procedure TformOptions2.vAdditionalButtonExit(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := 0;
+end;
+
+procedure TformOptions2.vButtonContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+begin
+   popupVoiceMenu.Tag := TButton(Sender).Tag;
+end;
+
+procedure TformOptions2.vAdditionalButtonContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+begin
+   popupVoiceMenu.Tag := TButton(Sender).Tag + 100;
+end;
+
 procedure TformOptions2.vButtonClick(Sender: TObject);
 begin
    OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
@@ -1405,6 +1455,26 @@ begin
       FTempVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
    end;
+end;
+
+procedure TformOptions2.vEditExit(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := 0;
+end;
+
+procedure TformOptions2.vAdditionalEditEnter(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := TEdit(Sender).Tag + 100;
+end;
+
+procedure TformOptions2.vAdditionalEditExit(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := 0;
+end;
+
+procedure TformOptions2.vEditEnter(Sender: TObject);
+begin
+   popupVoiceMenu.Tag := TEdit(Sender).Tag;
 end;
 
 procedure TformOptions2.vAdditionalButtonClick(Sender: TObject);
@@ -1623,6 +1693,60 @@ procedure TformOptions2.listviewFreqMemorySelectItem(Sender: TObject; Item: TLis
 begin
    buttonFreqMemEdit.Enabled := Selected;
    buttonFreqMemDelete.Enabled := Selected;
+end;
+
+procedure TformOptions2.menuVoiceClearClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := popupVoiceMenu.Tag;
+   if n = 0 then begin
+      Exit;
+   end;
+
+   if (n <= 12) then begin
+      FTempVoiceFiles[n] := '';
+      FVoiceEdit[n].Text := '';
+      FVoiceButton[n].Caption := 'select';
+   end
+   else begin
+      n := n - 100;
+      FTempAdditionalVoiceFiles[n] := '';
+      FAdditionalVoiceEdit[n].Text := '';
+      FAdditionalVoiceButton[n].Caption := 'select';
+   end;
+end;
+
+procedure TformOptions2.menuVoicePlayClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := popupVoiceMenu.Tag;
+   if n = 0 then begin
+      Exit;
+   end;
+
+   if (n <= 12) then begin
+      if (FTempVoiceFiles[n] <> '') and
+         (FileExists(FTempVoiceFiles[n]) = True) then begin
+         FVoiceSound.Open(FTempVoiceFiles[n], comboVoiceDevice.ItemIndex);
+         FVoiceSound.Play();
+      end;
+   end
+   else begin
+      n := n - 100;
+      if (FTempAdditionalVoiceFiles[n] <> '') and
+         (FileExists(FTempAdditionalVoiceFiles[n]) = True) then begin
+         FVoiceSound.Open(FTempAdditionalVoiceFiles[n], comboVoiceDevice.ItemIndex);
+         FVoiceSound.Play();
+      end;
+   end;
+end;
+
+procedure TformOptions2.menuVoiceStopClick(Sender: TObject);
+begin
+   FVoiceSound.Stop();
+   FVoiceSound.Close();
 end;
 
 procedure TformOptions2.buttonPartialCheckForeColorClick(Sender: TObject);
