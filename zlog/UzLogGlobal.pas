@@ -671,6 +671,7 @@ procedure ResetDupeQso(aQSO: TQSO);
 
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
+function TextToPower(text: string): TPower;
 function BandToText(b: TBand): string;
 function ModeToText(m: TMode): string;
 function BandToPower(B: TBand): TPower;
@@ -4432,6 +4433,25 @@ begin
       end;
    end;
    Result := mOther;
+end;
+
+function TextToPower(text: string): TPower;
+begin
+   if text = 'P' then begin
+      Result := pwrP;
+   end
+   else if text = 'L' then begin
+      Result := pwrL;
+   end
+   else if text = 'M' then begin
+      Result := pwrM;
+   end
+   else if text = 'H' then begin
+      Result := pwrH;
+   end
+   else begin
+      Result := pwrM;
+   end;
 end;
 
 function BandToText(b: TBand): string;

@@ -1229,7 +1229,7 @@ type
     procedure ScrollGrid();
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
-    procedure AssignControls(nID: Integer; var C, N, B, M, S, O: TEdit);
+    procedure AssignControls(nID: Integer; var C, N, B, M, S, O, P: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
     procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
@@ -3750,9 +3750,9 @@ var
    msg: string;
    fNoMulti: Boolean;
    nTxRigID: Integer;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
-   AssignControls(CurrentRigID, C, N, B, M, SE, OP);
+   AssignControls(CurrentRigID, C, N, B, M, SE, OP, P);
 
    // CQ mode
    if IsCQ() then begin
@@ -3833,9 +3833,9 @@ procedure TMainForm.SpaceBarProc(nID: Integer);
 var
    Q: TQSO;
    S: string;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
-   AssignControls(nID, C, N, B, M, SE, OP);
+   AssignControls(nID, C, N, B, M, SE, OP, P);
 
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
@@ -3861,9 +3861,9 @@ end;
 
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
 var
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
-   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE, OP);
+   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE, OP, P);
 
    CurrentQSO.Callsign := C.Text;
 
@@ -4257,7 +4257,7 @@ var
    nTxID: Integer;
    nTxRigID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
    mode: TMode;
 begin
    {$IFDEF DEBUG}
@@ -4275,14 +4275,14 @@ begin
       // 確定待ち
       FWaitForQsoFinish[nRxID] := True;
 
-      AssignControls(FKeyPressedRigID[nRxID], C, N, B, M, SE, OP);
+      AssignControls(FKeyPressedRigID[nRxID], C, N, B, M, SE, OP, P);
 
       curQSO.Callsign := C.Text;
       curQSO.NrRcvd   := N.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
       curQSO.Operator := OP.Text;
-      dmZlogGlobal.SetOpPower(curQSO);
+      curQSO.Power    := TextToPower(P.Text);
       curQSO.Serial   := StrToIntDef(SE.Text, 1);
 
       // SO2Rモード
@@ -5986,12 +5986,12 @@ var
    S: String;
    nID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
    nID := FCurrentTx;   //Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
 
-   AssignControls(nID, C, N, B, M, SE, OP);
+   AssignControls(nID, C, N, B, M, SE, OP, P);
 
    // .か?があるときは以降の送信は行わない
    if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
@@ -6067,7 +6067,7 @@ begin
    end;
 end;
 
-procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S, O: TEdit);
+procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S, O, P: TEdit);
 begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       C := CallsignEdit1;
@@ -6076,6 +6076,7 @@ begin
       M := ModeEdit1;
       S := SerialEdit1;
       O := OpEdit1;
+      P := PowerEdit;
    end
    else begin
       C := FEditPanel[nID].CallsignEdit;
@@ -6084,6 +6085,7 @@ begin
       M := FEditPanel[nID].ModeEdit;
       S := FEditPanel[nID].SerialEdit;
       O := FEditPanel[nID].OpEdit;
+      P := FEditPanel[nID].PowerEdit;
    end;
 end;
 
@@ -12363,11 +12365,11 @@ end;
 procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
 var
    nID: Integer;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
    nID := no - 1;
 
-   AssignControls(nID, C, N, B, M, SE, OP);
+   AssignControls(nID, C, N, B, M, SE, OP, P);
 
    CurrentQSO.CallSign := strCallsign;
 
