@@ -22,6 +22,7 @@ type
     FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
     FPollingCount: Integer;
+    FInitialPolling: Boolean;
 
     FCommThread: TIcomCommThread;
     FCommandList: TList<AnsiString>;
@@ -95,6 +96,7 @@ constructor TICOM.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver
 begin
    Inherited;
    FPollingCount := 0;
+   FInitialPolling := False;
    FUseTransceiveMode := True;
    FComm.StopBits := sb1BITS;
    FComm.HwFlow := hfNONE;
@@ -416,12 +418,6 @@ begin
       ICOMWriteData(AnsiChar($03));
    end
    else begin
-      case FPollingCount of
-         0: ICOMWriteData(AnsiChar($03));
-         1: ICOMWriteData(AnsiChar($04));
-         2: ICOMWriteData(AnsiChar($21) + AnsiChar($01));
-         3: ICOMWriteData(AnsiChar($21) + AnsiChar($00));
-      end;
       if FRitCtrlSupported = False then begin
          if (FPollingCount and 1) = 0 then begin
             ICOMWriteData(AnsiChar($03));
@@ -431,7 +427,12 @@ begin
          end;
       end
       else begin
-
+         case FPollingCount of
+            0: ICOMWriteData(AnsiChar($03));
+            1: ICOMWriteData(AnsiChar($04));
+            2: ICOMWriteData(AnsiChar($21) + AnsiChar($01));
+            3: ICOMWriteData(AnsiChar($21) + AnsiChar($00));
+         end;
       end;
    end;
 
@@ -687,7 +688,10 @@ begin
    if (FUseTransceiveMode = True) then begin
       if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
          ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
-         FPollingTimer.Enabled := True;
+         if FInitialPolling = False then begin
+            FPollingTimer.Enabled := True;
+            FInitialPolling := True;
+         end;
       end;
    end;
 end;
@@ -726,6 +730,7 @@ end;
 procedure TICOM.PlayMessageCW(msg: string);
 var
    CMD: AnsiString;
+   Index: Integer;
 begin
    if FPlayMessageCwSupported = False then begin
       Exit;
@@ -735,6 +740,8 @@ begin
       Exit;
    end;
 
+   msg := ConvertProsignsStr(msg);
+
    msg := StringReplace(msg, 'a', '^AR', [rfReplaceAll]);  // AR
    msg := StringReplace(msg, 's', '^SK', [rfReplaceAll]);  // SK
    msg := StringReplace(msg, 'v', '^VA', [rfReplaceAll]);  // VA
@@ -742,6 +749,12 @@ begin
    msg := StringReplace(msg, 'b', '^BK', [rfReplaceAll]);  // BK
    msg := StringReplace(msg, '~', '^BK', [rfReplaceAll]);  // BK
    msg := StringReplace(msg, 't', '^BT', [rfReplaceAll]);  // BT
+   msg := StringReplace(msg, '.', '?',   [rfReplaceAll]);  // .
+
+   Index := Pos('?', msg);
+   if Index > 0 then begin
+      msg := Copy(msg, 1, Index);
+   end;
 
    if msg = '' then begin
       Exit;

@@ -4718,23 +4718,13 @@ end;
 procedure TdmZLogKeyer.IncCWSpeed();
 begin
    WPM := WPM + 1;
-
    FKeyerInitWPM := FKeyerInitWPM + 1;
-
-   if Assigned(FOnSpeedChanged) then begin
-      FOnSpeedChanged(Self);
-   end;
 end;
 
 procedure TdmZLogKeyer.DecCWSpeed();
 begin
    WPM := WPM - 1;
-
    FKeyerInitWPM := FKeyerInitWPM - 1;
-
-   if Assigned(FOnSpeedChanged) then begin
-      FOnSpeedChanged(Self);
-   end;
 end;
 
 procedure TdmZLogKeyer.ToggleFixedSpeed();

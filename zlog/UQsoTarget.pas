@@ -325,9 +325,6 @@ begin
       if (aQSO.Time < origin) then begin     // コンテスト開始前の交信
          Continue;
       end
-      else if (aQSO.Time < start) then begin // グラフ化以前の交信
-         Inc(FBeforeGraphCount);
-      end
       else begin
          diff := aQSO.Time - origin;
          DecodeTime(diff, H, M, S, ms);
@@ -338,6 +335,10 @@ begin
          end;
 
          FBandTarget[aQSO.Band].Hours[H + 1].IncActual();
+
+         if (aQSO.Time < start) then begin // グラフ化以前の交信
+            Inc(FBeforeGraphCount);
+         end;
       end;
 
       if aQSO.TX = mytx then begin

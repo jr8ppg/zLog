@@ -168,7 +168,8 @@ uses
   UGrayline in 'UGrayline.pas' {formGrayline},
   UzGraylineMap in 'UzGraylineMap.pas',
   UFreqMemDialog in 'UFreqMemDialog.pas' {formFreqMemDialog},
-  UStartup in 'UStartup.pas' {formStartup};
+  UStartup in 'UStartup.pas' {formStartup},
+  UJarlWebUpload in 'UJarlWebUpload.pas' {formJarlWebUpload};
 
 {$R *.res}
 

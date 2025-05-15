@@ -55,6 +55,10 @@ type
     panelMScan: TPanel;
     labelMScan: TLabel;
     Timer2: TTimer;
+    buttonImportAuto: TSpeedButton;
+    buttonImportRigA: TSpeedButton;
+    buttonImportRigB: TSpeedButton;
+    Label5: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -119,6 +123,9 @@ type
 
     procedure SetPrevVFO(Index: Integer; fFreq: TFrequency);
     function GetPrevVFO(Index: Integer): TFrequency;
+
+    procedure SetImportTo(no: Integer);
+    function GetImportTo(): Integer;
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -155,6 +162,7 @@ type
     procedure MemScanOff();
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
+    property ImportRigNo: Integer read GetImportTo write SetImportTo;
   end;
 
 resourcestring
@@ -204,6 +212,8 @@ begin
    FMenuMn[3] := menuM3;
    FMenuMn[4] := menuM4;
    FMenuMn[5] := menuM5;
+
+   buttonImportAuto.Down := True;
 end;
 
 procedure TRigControl.FormDestroy(Sender: TObject);
@@ -1479,6 +1489,31 @@ begin
    if buttonMemScan.Down = True then begin
       buttonMemScan.Down := False;
       buttonMemScanClick(nil);
+   end;
+end;
+
+procedure TRigControl.SetImportTo(no: Integer);
+begin
+   case no of
+      0: buttonImportAuto.Down := True;
+      1: buttonImportRigA.Down := True;
+      2: buttonImportRigB.Down := True;
+   end;
+end;
+
+function TRigControl.GetImportTo(): Integer;
+begin
+   if buttonImportAuto.Down = True then begin
+      Result := 0;
+   end
+   else if buttonImportRigA.Down = True then begin
+      Result := 1;
+   end
+   else if buttonImportRigB.Down = True then begin
+      Result := 2;
+   end
+   else begin
+      Result := 0;
    end;
 end;
 

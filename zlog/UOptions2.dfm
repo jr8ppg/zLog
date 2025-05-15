@@ -1587,7 +1587,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 2
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit3: TEdit
           Tag = 3
@@ -1596,7 +1599,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 4
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit4: TEdit
           Tag = 4
@@ -1605,7 +1611,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 6
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit5: TEdit
           Tag = 5
@@ -1614,7 +1623,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 8
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit6: TEdit
           Tag = 6
@@ -1623,7 +1635,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 10
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit7: TEdit
           Tag = 7
@@ -1632,7 +1647,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 12
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit8: TEdit
           Tag = 8
@@ -1641,7 +1659,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 14
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit1: TEdit
           Tag = 1
@@ -1651,7 +1672,10 @@ object formOptions2: TformOptions2
           Height = 17
           AutoSize = False
           MaxLength = 255
+          PopupMenu = popupVoiceMenu
           TabOrder = 0
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vButton1: TButton
           Tag = 1
@@ -1660,8 +1684,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'vButton1'
+          PopupMenu = popupVoiceMenu
           TabOrder = 1
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton2: TButton
           Tag = 2
@@ -1670,8 +1698,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 3
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton3: TButton
           Tag = 3
@@ -1680,8 +1712,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 5
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton4: TButton
           Tag = 4
@@ -1690,8 +1726,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 7
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton5: TButton
           Tag = 5
@@ -1700,8 +1740,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 9
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton6: TButton
           Tag = 6
@@ -1710,8 +1754,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 11
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton7: TButton
           Tag = 7
@@ -1720,8 +1768,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 13
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton8: TButton
           Tag = 8
@@ -1730,8 +1782,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 15
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vEdit9: TEdit
           Tag = 7
@@ -1740,7 +1796,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 16
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vEdit10: TEdit
           Tag = 8
@@ -1749,7 +1808,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 18
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vButton9: TButton
           Tag = 9
@@ -1758,8 +1820,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 17
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vButton10: TButton
           Tag = 10
@@ -1768,8 +1834,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 19
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vEdit11: TEdit
           Tag = 8
@@ -1778,7 +1848,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 20
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vButton11: TButton
           Tag = 11
@@ -1787,8 +1860,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 21
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
         object vEdit12: TEdit
           Tag = 8
@@ -1797,7 +1874,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 22
+          OnEnter = vEditEnter
+          OnExit = vEditExit
         end
         object vButton12: TButton
           Tag = 12
@@ -1806,8 +1886,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 23
           OnClick = vButtonClick
+          OnContextPopup = vButtonContextPopup
+          OnEnter = vButtonEnter
+          OnExit = vButtonExit
         end
       end
       object GroupBox16: TGroupBox
@@ -1884,7 +1968,10 @@ object formOptions2: TformOptions2
           Width = 245
           Height = 17
           AutoSize = False
+          PopupMenu = popupVoiceMenu
           TabOrder = 2
+          OnEnter = vAdditionalEditEnter
+          OnExit = vAdditionalEditExit
         end
         object vEdit13: TEdit
           Tag = 2
@@ -1894,7 +1981,10 @@ object formOptions2: TformOptions2
           Height = 17
           AutoSize = False
           MaxLength = 255
+          PopupMenu = popupVoiceMenu
           TabOrder = 0
+          OnEnter = vAdditionalEditEnter
+          OnExit = vAdditionalEditExit
         end
         object vButton13: TButton
           Tag = 2
@@ -1903,8 +1993,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'vButton1'
+          PopupMenu = popupVoiceMenu
           TabOrder = 1
           OnClick = vAdditionalButtonClick
+          OnContextPopup = vAdditionalButtonContextPopup
+          OnEnter = vAdditionalButtonEnter
+          OnExit = vAdditionalButtonExit
         end
         object vButton14: TButton
           Tag = 3
@@ -1913,8 +2007,12 @@ object formOptions2: TformOptions2
           Width = 125
           Height = 19
           Caption = 'Button4'
+          PopupMenu = popupVoiceMenu
           TabOrder = 3
           OnClick = vAdditionalButtonClick
+          OnContextPopup = vAdditionalButtonContextPopup
+          OnEnter = vAdditionalButtonEnter
+          OnExit = vAdditionalButtonExit
         end
       end
     end
@@ -2350,6 +2448,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0
@@ -3343,5 +3442,28 @@ object formOptions2: TformOptions2
   object ColorDialog1: TColorDialog
     Left = 292
     Top = 428
+  end
+  object popupVoiceMenu: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 80
+    Top = 434
+    object menuVoicePlay: TMenuItem
+      AutoHotkeys = maManual
+      AutoLineReduction = maManual
+      Caption = 'Play'
+      OnClick = menuVoicePlayClick
+    end
+    object menuVoiceStop: TMenuItem
+      Caption = 'Stop'
+      OnClick = menuVoiceStopClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object menuVoiceClear: TMenuItem
+      Caption = 'Clear'
+      OnClick = menuVoiceClearClick
+    end
   end
 end

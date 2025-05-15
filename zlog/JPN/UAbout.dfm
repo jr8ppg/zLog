@@ -168,7 +168,6 @@ object AboutBox: TAboutBox
     ModalResult = 1
     TabOrder = 1
     OnClick = OKButtonClick
-    ExplicitTop = 376
   end
   object Panel2: TPanel
     Left = 8
@@ -186,7 +185,6 @@ object AboutBox: TAboutBox
     ParentColor = True
     ParentFont = False
     TabOrder = 2
-    ExplicitHeight = 192
     DesignSize = (
       305
       193)
@@ -211,7 +209,7 @@ object AboutBox: TAboutBox
       Top = 41
       Width = 287
       Height = 13
-      Caption = 'Portions created by JR8PPG are Copyright (C) 2024 JR8PPG'
+      Caption = 'Portions created by JR8PPG are Copyright (C) 2025 JR8PPG'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -262,7 +260,6 @@ object AboutBox: TAboutBox
       ParentFont = False
       ReadOnly = True
       TabOrder = 1
-      ExplicitHeight = 98
     end
   end
 end

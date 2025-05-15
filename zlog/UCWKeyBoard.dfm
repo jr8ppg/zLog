@@ -39,7 +39,6 @@ object CWKeyBoard: TCWKeyBoard
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 371
     DesignSize = (
       334
       29)
@@ -93,7 +92,6 @@ object CWKeyBoard: TCWKeyBoard
       TabOrder = 2
       Value = 2
       OnChange = SpinEdit1Change
-      ExplicitLeft = 299
     end
   end
   object Console: TRichEdit
@@ -107,14 +105,15 @@ object CWKeyBoard: TCWKeyBoard
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463
     Font.Style = []
+    ImeMode = imDisable
     Lines.Strings = (
       'Console')
     ParentFont = False
     PlainText = True
+    PopupMenu = popupConsole
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
     OnProtectChange = ConsoleProtectChange
-    ExplicitWidth = 371
   end
   object ActionList1: TActionList
     State = asSuspended
@@ -341,5 +340,26 @@ object CWKeyBoard: TCWKeyBoard
     OnTimer = Timer1Timer
     Left = 240
     Top = 8
+  end
+  object popupConsole: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 120
+    Top = 16
+    object menuConsoleCut: TMenuItem
+      Caption = 'Cut'
+      ShortCut = 16472
+      OnClick = menuConsoleCutClick
+    end
+    object menuConsoleCopy: TMenuItem
+      Caption = 'Copy'
+      ShortCut = 16451
+      OnClick = menuConsoleCopyClick
+    end
+    object menuConsolePaste: TMenuItem
+      Caption = 'Paste'
+      ShortCut = 16470
+      OnClick = menuConsolePasteClick
+    end
   end
 end

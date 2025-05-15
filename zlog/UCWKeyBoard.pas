@@ -6,9 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Winapi.RichEdit, Vcl.ComCtrls,
-  System.Math,
+  System.Math, System.SyncObjs, Vcl.Clipbrd,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
-  UzLogForm, Vcl.Samples.Spin;
+  UzLogForm, Vcl.Samples.Spin, Vcl.Menus;
 
 const
   WM_ZLOG_UPDATE_PROGRESS = (WM_USER + 1);
@@ -63,6 +63,10 @@ type
     Label1: TLabel;
     Label2: TLabel;
     Image1: TImage;
+    popupConsole: TPopupMenu;
+    menuConsoleCopy: TMenuItem;
+    menuConsolePaste: TMenuItem;
+    menuConsoleCut: TMenuItem;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -87,6 +91,9 @@ type
     procedure SpinEdit1Change(Sender: TObject);
     procedure OnZLogUpdateProgress( var Message: TMessage ); message WM_ZLOG_UPDATE_PROGRESS;
     procedure FormResize(Sender: TObject);
+    procedure menuConsolePasteClick(Sender: TObject);
+    procedure menuConsoleCopyClick(Sender: TObject);
+    procedure menuConsoleCutClick(Sender: TObject);
   private
     { Private declarations }
     FCounter: Integer;
@@ -96,12 +103,16 @@ type
     FBitmap: TBitmap;
     FTickCount: DWORD;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
+    procedure PlayProsigns(msg: string);
+    function GetProsignsChar(msg: string): Char;
     procedure ApplyShortcut();
     procedure SendChar(C: Char);
     function GetUnsentChars(): Integer;
     procedure StartCountdown();
     procedure ShowProgress();
     procedure InitProgress();
+    function CWStrClean(S: string): string;
+    function IsAvailableChar(C: Char): Boolean;
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
@@ -115,6 +126,9 @@ type
     property FontSize: Integer read GetFontSize write SetFontSize;
     property UnsentChars: Integer read GetUnsentChars;
   end;
+
+var
+  CWKbdSync: TCriticalSection;
 
 implementation
 
@@ -190,34 +204,67 @@ end;
 procedure TCWKeyBoard.ConsoleKeyPress(Sender: TObject; var Key: Char);
 var
    K: Char;
+   nID: Integer;
+   S: string;
+   rig: TRig;
 begin
-   if Key = Chr($1B) then begin
-      Exit;
-   end;
+   CWKbdSync.Enter();
+   try
+      if Key = Chr($1B) then begin
+         Exit;
+      end;
 
-   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
-      Exit;
-   end;
+      if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+         Exit;
+      end;
 
-   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-      K := LowCase(Key);
-   end
-   else begin
-      K := UpCase(Key);
-   end;
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         K := LowCase(Key);
+      end
+      else begin
+         K := UpCase(Key);
+      end;
 
-   // 送信可能文字以外ならパス
-   if (Not CharInSet(K, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
-      Key := #00;
-      Exit;
+      // 送信可能文字以外ならパス
+      if IsAvailableChar(K) = False then begin
+         Key := #00;
+         Exit;
+      end;
+   finally
+      CWKbdSync.Leave();
    end;
 
    // CQループ中なら中止する
    SendMessage(MainForm.Handle, WM_ZLOG_CQABORT, 1, 0);
 
-   // １文字送信
-   if MainForm.StartCWKeyboard = False then begin
-      SendChar(K);
+   // RIGキーイングなら改行入力のタイミングで１行送信
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] = tkpRig then begin
+
+      if Key = CHar($0d) then begin
+         S := Copy(Console.Text, 1, 20);  // ICOM:30,KENWOOD:20
+         S := StringReplace(S, #13, '', [rfReplaceAll]);
+         S := StringReplace(S, #10, '', [rfReplaceAll]);
+
+         // 送信
+         rig := MainForm.RigControl.Rigs[nID + 1];
+         if rig <> nil then begin
+            rig.PlayMessageCW(S);
+            dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         end;
+
+         Clear();
+         Exit;
+      end;
+
+      Key := K;
+      Exit;
+   end
+   else begin
+      // １文字送信
+      if MainForm.StartCWKeyboard = False then begin
+         SendChar(K);
+      end;
    end;
 
    Key := K;
@@ -288,44 +335,32 @@ end;
 
 procedure TCWKeyBoard.actionPlayMessageARExecute(Sender: TObject);
 begin
-   SendChar('a');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[AR]';
+   PlayProsigns('[AR]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBKExecute(Sender: TObject);
 begin
-   SendChar('b');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[BK]';
+   PlayProsigns('[BK]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageBTExecute(Sender: TObject);
 begin
-   SendChar('t');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[BT]';
+   PlayProsigns('[BT]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageKNExecute(Sender: TObject);
 begin
-   SendChar('k');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[KN]';
+   PlayProsigns('[KN]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageSKExecute(Sender: TObject);
 begin
-   SendChar('s');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[SK]';
+   PlayProsigns('[SK]');
 end;
 
 procedure TCWKeyBoard.actionPlayMessageVAExecute(Sender: TObject);
 begin
-   SendChar('s');
-   Console.SelStart := Length(Console.Text);
-   Console.SelText := '[VA]';
+   PlayProsigns('[VA]');
 end;
 
 procedure TCWKeyBoard.actionIncreaseCwSpeedExecute(Sender: TObject);
@@ -344,6 +379,7 @@ procedure TCWKeyBoard.PlayMessage(nID: Integer; cb: Integer; no: Integer);
 var
    S: string;
    i: Integer;
+   rig: TRig;
 begin
    S := dmZlogGlobal.CWMessage(cb, no);
    if S = '' then begin
@@ -358,15 +394,56 @@ begin
       Insert(CurrentQSO.Callsign, S, i);
    end;
 
-//   ClipBoard.AsText := S;
-//   Console.PasteFromClipBoard;
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] = tkpRig then begin
+      // 送信
+      rig := MainForm.RigControl.Rigs[nID + 1];
+      if rig <> nil then begin
+         rig.PlayMessageCW(S);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+      end;
+      Clear();
+   end
+   else begin
+      Console.SelStart := Length(Console.Text);
+      Console.SelAttributes.Name := Console.Font.Name;
+      Console.SelAttributes.Size := Console.Font.Size;
+
+      Console.SelText := S;
+
+      SendChar(Console.Text[FSendPos + 1]);
+   end;
+end;
+
+procedure TCWKeyBoard.PlayProsigns(msg: string);
+var
+   ch: Char;
+   nID: Integer;
+begin
    Console.SelStart := Length(Console.Text);
-   Console.SelAttributes.Name := Console.Font.Name;
-   Console.SelAttributes.Size := Console.Font.Size;
+   Console.SelText := msg;
 
-   Console.SelText := S;
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] <> tkpRig then begin
+      if MainForm.StartCWKeyboard = False then begin
+         ch := GetProsignsChar(msg);
+         SendChar(ch);
+      end;
+   end;
+end;
 
-   SendChar(Console.Text[FSendPos + 1]);
+function TCWKeyBoard.GetProsignsChar(msg: string): Char;
+var
+   ch: Char;
+begin
+   ch := #00;
+   if msg = '[AR]' then ch := 'a';
+   if msg = '[SK]' then ch := 's';
+   if msg = '[VA]' then ch := 's';
+   if msg = '[KN]' then ch := 'k';
+   if msg = '[BK]' then ch := 'b';
+   if msg = '[BT]' then ch := 't';
+   Result := ch;
 end;
 
 procedure TCWKeyBoard.ApplyShortcut();
@@ -479,7 +556,7 @@ var
    nID: Integer;
    rig: TRig;
 begin
-   if (C = #13) or (C = #10) then begin
+   if (C = #13) or (C = #10) or (c = #00) then begin
       SendMessage(Handle, WM_ZLOG_UPDATE_PROGRESS, 0, 0);
       OneCharSentProc();
       Exit;
@@ -512,47 +589,70 @@ procedure TCWKeyBoard.OneCharSentProc();
 var
    fEnd: Boolean;
    ch: Char;
+   S: string;
+   len: Integer;
+   S2: string;
 begin
-   fEnd := False;
    Timer1.Enabled := False;
+   S := Console.Text;
+   CWKbdSync.Enter();
+   try
+      fEnd := False;
 
-   // 未送信が０文字なら終了
-   if UnsentChars = 0 then begin
-      fEnd := True;
-   end;
+      // 未送信が０文字なら終了
+      if UnsentChars = 0 then begin
+         fEnd := True;
+      end;
 
-   // 送信位置を進める
-   ch := Console.Text[FSendPos + 1];
-   if ch = '[' then begin
-      Inc(FSendPos, 4);
-      Inc(FDonePos, 4);
-   end
-   else if ch = #13 then begin
-      Inc(FSendPos, 2);
-      Inc(FDonePos);
-   end
-   else begin
-      Inc(FSendPos);
-      Inc(FDonePos);
-   end;
+      // 送信位置を進める
+      len := Length(S);
+      if (FSendPos + 1) > len then begin
+         Exit;
+      end;
 
-   if fEnd = True then begin
-      MainForm.StartCWKeyboard := False;
-      StartCountdown();
-      Exit;
-   end;
+      // 前回送った文字
+      ch := S[FSendPos + 1];
 
-   // 送信位置が末尾を超えたら終了
-   if (FSendPos + 1) > Length(Console.Text) then begin
-      MainForm.StartCWKeyboard := False;
-      StartCountdown();
-      Exit;
+      if ch = '[' then begin
+         Inc(FSendPos, 4);
+         Inc(FDonePos, 4);
+      end
+      else if ch = #13 then begin
+         Inc(FSendPos, 2);
+         Inc(FDonePos);
+      end
+      else begin
+         Inc(FSendPos);
+         Inc(FDonePos);
+      end;
+
+      if fEnd = True then begin
+         MainForm.StartCWKeyboard := False;
+         StartCountdown();
+         Exit;
+      end;
+
+      // 送信位置が末尾を超えたら終了
+      if (FSendPos + 1) > len then begin
+         MainForm.StartCWKeyboard := False;
+         StartCountdown();
+         Exit;
+      end;
+
+      // 次に送る文字
+      ch := S[FSendPos + 1];
+      if ch = '[' then begin
+         S2 := Copy(S, FSendPos + 1, 4);
+         ch := GetProsignsChar(S2);
+      end;
+   finally
+      CWKbdSync.Leave();
    end;
 
    // １文字送信
-   SendChar(Console.Text[FSendPos + 1]);
+   SendChar(ch);
 
-   Console.SelStart := Length(Console.Text);
+   Console.SelStart := len;
 end;
 
 procedure TCWKeyBoard.Clear();
@@ -565,19 +665,24 @@ end;
 
 procedure TCWKeyBoard.Reset();
 begin
-   Timer1.Enabled := False;
-   FSendPos := 0;
-   FDonePos := 0;
-   FCounter := 0;
-   ShowProgress();
-   Console.SelStart := 0;
-   Console.SelLength := Length(Console.Text);
-   Console.SelAttributes.Protected := False;
-   Console.SelAttributes.BackColor := clWIndow;
-   Console.SelAttributes.Color := clBlack;
-   Console.SelStart := 0;
-   Console.SelLength := 0;
-   Console.Refresh();
+   CWKbdSync.Enter();
+   try
+      Timer1.Enabled := False;
+      FSendPos := 0;
+      FDonePos := 0;
+      FCounter := 0;
+      ShowProgress();
+      Console.SelStart := 0;
+      Console.SelLength := Length(Console.Text);
+      Console.SelAttributes.Protected := False;
+      Console.SelAttributes.BackColor := clWIndow;
+      Console.SelAttributes.Color := clBlack;
+      Console.SelStart := 0;
+      Console.SelLength := 0;
+      Console.Refresh();
+   finally
+      CWKbdSync.Leave();
+   end;
 end;
 
 procedure TCWKeyBoard.Finish();
@@ -603,32 +708,46 @@ end;
 procedure TCWKeyBoard.OnZLogUpdateProgress( var Message: TMessage );
 var
    ch: Char;
+   S: string;
+   len: Integer;
 begin
-   // 送信済み位置
-   Console.SelStart := FDonePos;
+   CWKbdSync.Enter();
+   try
+      // 送信済み位置
+      Console.SelStart := FDonePos;
 
-   // 送信位置から１文字分色を付ける
-   ch := Console.Text[FSendPos + 1];
-   if ch = '[' then begin
-      Console.SelLength := 4;
-   end
-   else begin
-      Console.SelLength := 1;
+      // 送信位置から１文字分色を付ける
+      S := Console.Text;
+      len := Length(S);
+
+      if (FSendPos + 1) > len then begin
+         Exit;
+      end;
+
+      ch := S[FSendPos + 1];
+      if ch = '[' then begin
+         Console.SelLength := 4;
+      end
+      else begin
+         Console.SelLength := 1;
+      end;
+
+      // 送信済みは青
+      Console.SelAttributes.BackColor := clBlue;
+      Console.SelAttributes.Color := clWhite;
+      Console.SelAttributes.Protected := True;
+
+      // 色を元に戻す
+      Console.SelStart := len;
+      Console.SelLength := 0;
+      Console.SelAttributes.Protected := False;
+      Console.SelAttributes.BackColor := clWindow;
+      Console.SelAttributes.Color := clBlack;
+
+      Console.Refresh();
+   finally
+      CWKbdSync.Leave();
    end;
-
-   // 送信済みは青
-   Console.SelAttributes.BackColor := clBlue;
-   Console.SelAttributes.Color := clWhite;
-   Console.SelAttributes.Protected := True;
-
-   // 色を元に戻す
-   Console.SelStart := Length(Console.Text);
-   Console.SelLength := 0;
-   Console.SelAttributes.Protected := False;
-   Console.SelAttributes.BackColor := clWindow;
-   Console.SelAttributes.Color := clBlack;
-
-   Console.Refresh();
 end;
 
 procedure TCWKeyBoard.StartCountdown();
@@ -705,5 +824,82 @@ begin
    FBitmap.PixelFormat := pf24bit;
    Image1.Picture.Bitmap.Assign(FBitmap);
 end;
+
+procedure TCWKeyBoard.menuConsoleCutClick(Sender: TObject);
+begin
+   inherited;
+   ClipBoard.AsText := Console.SelText;
+   Console.SelText := '';
+end;
+
+procedure TCWKeyBoard.menuConsoleCopyClick(Sender: TObject);
+begin
+   inherited;
+   ClipBoard.AsText := Console.SelText;
+end;
+
+procedure TCWKeyBoard.menuConsolePasteClick(Sender: TObject);
+var
+   text: string;
+   nID: Integer;
+   K: Char;
+begin
+   inherited;
+   text := ClipBoard.AsText;
+   if text = '' then begin
+      Exit;
+   end;
+
+   text := CWStrClean(text);
+   if text = '' then begin
+      Exit;
+   end;
+
+   Console.SelText := text;
+
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] <> tkpRig then begin
+      // １文字送信
+      if MainForm.StartCWKeyboard = False then begin
+         text := Console.Text;
+         K := text[1];
+         SendChar(K);
+      end;
+   end;
+end;
+
+function TCWKeyBoard.CWStrClean(S: string): string;
+var
+   i: Integer;
+   S2: string;
+   C: Char;
+begin
+   S := UpperCase(S);
+   S2 := '';
+   for i := 1 to Length(S) do begin
+      C := S[i];
+      if IsAvailableChar(C) = True then begin
+         S2 := S2 + C;
+      end;
+   end;
+
+   Result := S2;
+end;
+
+function TCWKeyBoard.IsAvailableChar(C: Char): Boolean;
+begin
+   if (CharInSet(C, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
+end;
+
+initialization
+   CWKbdSync := TCriticalSection.Create();
+
+finalization
+   CWKbdSync.Free();
 
 end.

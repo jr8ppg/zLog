@@ -109,7 +109,6 @@ object CommForm: TCommForm
       TabIndex = 0
       OnChange = TabControl1Change
       OnChanging = TabControl1Changing
-      ExplicitWidth = 281
       DesignSize = (
         202
         108)

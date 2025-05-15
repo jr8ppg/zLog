@@ -515,10 +515,13 @@ end;
 procedure TTS2000.PlayMessageCW(msg: string);
 var
    CMD: AnsiString;
+   Index: Integer;
 begin
    if Length(msg) > 24 then begin
       Exit;
    end;
+
+   msg := ConvertProsignsStr(msg);
 
    msg := StringReplace(msg, 'a', '_', [rfReplaceAll]);  // AR
    msg := StringReplace(msg, 's', '>', [rfReplaceAll]);  // SK
@@ -527,6 +530,12 @@ begin
    msg := StringReplace(msg, 'b', '\', [rfReplaceAll]);  // BK
    msg := StringReplace(msg, '~', '\', [rfReplaceAll]);  // BK
    msg := StringReplace(msg, 't', '[', [rfReplaceAll]);  // BT
+   msg := StringReplace(msg, '.', '?', [rfReplaceAll]);  // .
+
+   Index := Pos('?', msg);
+   if Index > 0 then begin
+      msg := Copy(msg, 1, Index);
+   end;
 
    if msg = '' then begin
       Exit;

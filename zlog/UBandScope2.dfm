@@ -37,8 +37,6 @@ object BandScope2: TBandScope2
     Color = clRed
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 239
-    ExplicitHeight = 354
     object Grid: TStringGrid
       Left = 4
       Top = 4
@@ -63,8 +61,6 @@ object BandScope2: TBandScope2
       OnMouseMove = GridMouseMove
       OnMouseWheelDown = GridMouseWheelDown
       OnMouseWheelUp = GridMouseWheelUp
-      ExplicitWidth = 227
-      ExplicitHeight = 342
     end
   end
   object panelStandardOption: TPanel
@@ -75,7 +71,6 @@ object BandScope2: TBandScope2
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 239
     DesignSize = (
       247
       19)
@@ -142,21 +137,22 @@ object BandScope2: TBandScope2
     ShowCaption = False
     TabOrder = 2
     Visible = False
-    ExplicitWidth = 239
     object buttonSortByFreq: TSpeedButton
       Left = 1
       Top = 0
-      Width = 60
+      Width = 50
       Height = 19
+      GroupIndex = 5
       Caption = 'freq.'
       Images = ImageList2
       OnClick = buttonSortByFreqClick
     end
     object buttonSortByTime: TSpeedButton
-      Left = 60
+      Left = 50
       Top = 0
-      Width = 60
+      Width = 50
       Height = 19
+      GroupIndex = 5
       Caption = 'time'
       Images = ImageList2
       OnClick = buttonSortByTimeClick
@@ -172,8 +168,6 @@ object BandScope2: TBandScope2
     Visible = False
     OnChange = tabctrlBandSelectorChange
     OnChanging = tabctrlBandSelectorChanging
-    ExplicitWidth = 239
-    ExplicitHeight = 354
   end
   object BSMenu: TPopupMenu
     Tag = 15

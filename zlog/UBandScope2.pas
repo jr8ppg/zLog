@@ -1000,6 +1000,7 @@ end;
 procedure TBandScope2.GridDblClick(Sender: TObject);
 var
    D: TBSData;
+   no: Integer;
 begin
    FProcessing := True;
    try
@@ -1014,11 +1015,8 @@ begin
          Exit;
       end;
 
-      // 相手局をセット
-      MainForm.SetYourCallsign(D.Call, D.Number);
-
-      // 周波数をセット
-      MainForm.SetFrequency(D.FreqHz);
+      // 周波数と相手局をセット
+      MainForm.SetFreqAndCall(D.FreqHz, D.Call, D.Number);
 
       // メインウインドウにフォーカス
       MainForm.LastFocus.SetFocus();

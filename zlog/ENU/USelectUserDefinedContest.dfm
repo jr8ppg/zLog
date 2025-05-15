@@ -24,8 +24,6 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 312
-    ExplicitWidth = 736
     DesignSize = (
       740
       33)
@@ -134,27 +132,25 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 736
     DesignSize = (
       740
       26)
     object Label1: TLabel
-      Left = 12
-      Top = 8
+      Left = 224
+      Top = 7
       Width = 66
       Height = 12
       Caption = 'CFG'#12501#12457#12523#12480
     end
     object editCfgFolder: TEdit
-      Left = 88
+      Left = 296
       Top = 3
-      Width = 589
+      Width = 381
       Height = 20
       Anchors = [akLeft, akTop, akRight]
       Color = clBtnFace
       ReadOnly = True
-      TabOrder = 0
-      ExplicitWidth = 585
+      TabOrder = 1
     end
     object buttonCfgFolderRef: TButton
       Left = 683
@@ -163,9 +159,18 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       Height = 22
       Anchors = [akTop, akRight]
       Caption = #21442#29031'...'
-      TabOrder = 1
+      TabOrder = 2
       OnClick = buttonCfgFolderRefClick
-      ExplicitLeft = 679
+    end
+    object editFilterText: TEdit
+      Left = 0
+      Top = 4
+      Width = 210
+      Height = 20
+      AutoSize = False
+      TabOrder = 0
+      TextHint = 'Search text'
+      OnChange = editFilterTextChange
     end
   end
   object ListView1: TListView

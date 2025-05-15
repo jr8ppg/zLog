@@ -381,10 +381,14 @@ begin
          aQSO := TQSO.Create;
          temp := copy(temp, 8, 255);
          aQSO.TextToQSO(temp);
-         if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
+         if (aQSO.Callsign <> '') and (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
             MyContest.LogQSO(aQSO, false);
             MainForm.GridRefreshScreen(False, True);
             MainForm.BandScopeNotifyWorked(aQSO);
+         end
+         else begin
+            dmZLogGlobal.WriteErrorLog('TZLinkForm.ProcessCommand)');
+            dmZLogGlobal.WriteErrorLog(temp);
          end;
          aQSO.Free;
       end;
@@ -812,6 +816,10 @@ begin
       if x > 0 then begin
          strTemp := copy(strTemp, x, 255);
          FCommandQue.Add(strTemp);
+      end
+      else begin
+         dmZLogGlobal.WriteErrorLog('TZLinkForm.CommProcess()');
+         dmZLogGlobal.WriteErrorLog(strTemp);
       end;
 
       FCommBuffer.Delete(0);

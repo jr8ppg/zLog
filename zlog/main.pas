@@ -1229,7 +1229,7 @@ type
     procedure ScrollGrid();
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
-    procedure AssignControls(nID: Integer; var C, N, B, M, S, O: TEdit);
+    procedure AssignControls(nID: Integer; var C, N, B, M, S, O, P: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
     procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
@@ -1266,6 +1266,8 @@ type
     function GetFixEdge(b: TBand; m: TMode): Integer;
     procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
+    procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
+    procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1300,7 +1302,8 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
-    procedure SetFrequency(freq: TFrequency);
+    procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
+    procedure SetFreqAndCall(freq: TFrequency; strCallsign, strNumber: string);
     procedure Restore2bsiqMode();
     procedure BSRefresh();
     procedure BuildOpListMenu2(P: TMenuItem; OnClickHandler: TNotifyEvent);
@@ -3746,7 +3749,11 @@ var
    Q: TQSO;
    msg: string;
    fNoMulti: Boolean;
+   nTxRigID: Integer;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
+   AssignControls(CurrentRigID, C, N, B, M, SE, OP, P);
+
    // CQ mode
    if IsCQ() then begin
       if CallsignEdit.Focused then begin
@@ -3775,6 +3782,15 @@ begin
             msg := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
             WriteStatusLineRed(msg, True);
          end;
+
+         // CW以外とCWでポート設定無しはナンバー欄へフォーカス
+         // CW設定がある場合は、Enterで呼び倒しなのでフォーカス移動無し
+         nTxRigID := GetTxRigID(FCurrentTx + 1);
+         if ((CurrentQSO.Mode = mCW) and (dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone)) or
+            (CurrentQSO.Mode <> mCW) then begin
+            CallSpacebarProc(C, N, B);
+            NumberEdit.SetFocus();
+         end;
       end
       else begin
          S := NumberEdit.Text;
@@ -3802,7 +3818,10 @@ begin
          end
          else begin
             // F8 5NN$X and Log
-            actionPlayMessageA08.Execute();
+            // SHIFTキーが押されていない場合のみMSG送信
+            if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+               actionPlayMessageA08.Execute();
+            end;
 
             LogButtonClick(Self);
          end;
@@ -3814,9 +3833,9 @@ procedure TMainForm.SpaceBarProc(nID: Integer);
 var
    Q: TQSO;
    S: string;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
-   AssignControls(nID, C, N, B, M, SE, OP);
+   AssignControls(nID, C, N, B, M, SE, OP, P);
 
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
@@ -3842,9 +3861,9 @@ end;
 
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
 var
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
-   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE, OP);
+   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE, OP, P);
 
    CurrentQSO.Callsign := C.Text;
 
@@ -4238,7 +4257,7 @@ var
    nTxID: Integer;
    nTxRigID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
    mode: TMode;
 begin
    {$IFDEF DEBUG}
@@ -4256,14 +4275,14 @@ begin
       // 確定待ち
       FWaitForQsoFinish[nRxID] := True;
 
-      AssignControls(FKeyPressedRigID[nRxID], C, N, B, M, SE, OP);
+      AssignControls(FKeyPressedRigID[nRxID], C, N, B, M, SE, OP, P);
 
       curQSO.Callsign := C.Text;
       curQSO.NrRcvd   := N.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
       curQSO.Operator := OP.Text;
-      dmZlogGlobal.SetOpPower(curQSO);
+      curQSO.Power    := TextToPower(P.Text);
       curQSO.Serial   := StrToIntDef(SE.Text, 1);
 
       // SO2Rモード
@@ -4310,6 +4329,7 @@ begin
             else begin
                CallSpaceBarProc(C, N, B);
                PlayMessage(mode, 1, 2, False);
+               N.SetFocus();
             end;
 
             S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
@@ -4318,6 +4338,7 @@ begin
          else begin  // not dupe
             CallSpaceBarProc(C, N, B);
             PlayMessage(mode, 1, 2, False);
+            N.SetFocus();
          end;
 
          Exit;
@@ -4325,10 +4346,12 @@ begin
 
       // RTTY
       if mode = mRTTY then begin
-         if FTTYConsole <> nil then
+         if FTTYConsole <> nil then begin
             FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), curQSO));
+         end;
 
          CallSpaceBarProc(C, N, B);
+         N.SetFocus();
 
          FCQRepeatPlaying := False;
 
@@ -4340,7 +4363,7 @@ begin
       // CWポート設定チェック
       nTxRigID := GetTxRigID(nTxID + 1);
       if dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone then begin
-         WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
+         CallsignSentProc(nil);
          Exit;
       end;
 
@@ -4351,7 +4374,6 @@ begin
       end;
 
       S := dmZlogGlobal.CWMessage(0, 2);
-      S := SetStr(S, curQSO);
 
       if dmZLogKeyer.UseWinKeyer = True then begin
 
@@ -4488,16 +4510,13 @@ begin
 
       case mode of
          mCW: begin
-            // CWポート設定チェック
+            // CWポート設定チェック用RIGID
             nTxRigID := GetTxRigID(nTxID + 1);
-            if dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone then begin
-               WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
-               Exit;
-            end;
 
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
                // NR?自動送出使う場合
-               if dmZlogGlobal.Settings.CW._send_nr_auto = True then begin
+               if (dmZLogKeyer.KeyingPort[nTxRigID] <> tkpNone) and
+                  (dmZlogGlobal.Settings.CW._send_nr_auto = True) then begin
                   S := dmZlogGlobal.CWMessage(0, 5);
                   zLogSendStr2(nTxRigID, S, curQSO);
                end;
@@ -4509,13 +4528,24 @@ begin
                Exit;
             end;
 
-            // TU $M TEST
-            S := dmZlogGlobal.CWMessage(0, 3);
+            if (dmZLogKeyer.KeyingPort[nTxRigID] <> tkpNone) then begin
+               // TU $M TEST
+               S := dmZlogGlobal.CWMessage(0, 3);
 
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar(S));
-            {$ENDIF}
-            zLogSendStr2(nTxRigID, S, curQSO);
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar(S));
+               {$ENDIF}
+
+               if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+                  zLogSendStr2(nTxRigID, S, curQSO);
+               end
+               else begin
+                  // SHIFTキーが押されていない場合のみMSG送信
+                  if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                     zLogSendStr2(nTxRigID, S, curQSO);
+                  end;
+               end;
+            end;
 
             // ログに記録
             LogButtonProc(nTxID, curQSO);
@@ -4552,7 +4582,15 @@ begin
 
             S := SetStrNoAbbrev(S, curQSO);
             if FTTYConsole <> nil then begin
-               FTTYConsole.SendStrNow(S);
+               if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+                  FTTYConsole.SendStrNow(S);
+               end
+               else begin
+                  // SHIFTキーが押されていない場合のみMSG送信
+                  if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                     FTTYConsole.SendStrNow(S);
+                  end;
+               end;
             end;
 
             LogButtonProc(nTxID, curQSO);
@@ -4567,7 +4605,15 @@ begin
                exit;
             end;
 
-            PlayMessage(mode, 1, 3, False);
+            if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+               PlayMessage(mode, 1, 3, False);
+            end
+            else begin
+               // SHIFTキーが押されていない場合のみMSG送信
+               if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                  PlayMessage(mode, 1, 3, False);
+               end;
+            end;
 
             LogButtonProc(nTxID, curQSO);
 
@@ -5453,7 +5499,14 @@ begin
       end;
 
       // 現在の周波数とモードを記憶
+      // 初回CQ開始時にLastFreqを0クリアして、CQの度に0であればLastFreqを記憶する
       if (fFirst = True) then begin
+         FLastFreq[1] := 0;
+         FLastFreq[2] := 0;
+         FLastFreq[3] := 0;
+      end;
+
+      if FLastFreq[FCurrentRigSet] = 0 then begin
          SaveLastFreq();
       end;
    end;
@@ -5933,12 +5986,12 @@ var
    S: String;
    nID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
    nID := FCurrentTx;   //Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
 
-   AssignControls(nID, C, N, B, M, SE, OP);
+   AssignControls(nID, C, N, B, M, SE, OP, P);
 
    // .か?があるときは以降の送信は行わない
    if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
@@ -6014,7 +6067,7 @@ begin
    end;
 end;
 
-procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S, O: TEdit);
+procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S, O, P: TEdit);
 begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       C := CallsignEdit1;
@@ -6023,6 +6076,7 @@ begin
       M := ModeEdit1;
       S := SerialEdit1;
       O := OpEdit1;
+      P := PowerEdit;
    end
    else begin
       C := FEditPanel[nID].CallsignEdit;
@@ -6031,6 +6085,7 @@ begin
       M := FEditPanel[nID].ModeEdit;
       S := FEditPanel[nID].SerialEdit;
       O := FEditPanel[nID].OpEdit;
+      P := FEditPanel[nID].PowerEdit;
    end;
 end;
 
@@ -8146,18 +8201,8 @@ begin
             startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
             mr := startup.ShowModal();
             if mr = mrNo then begin // Last contest
-               dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
-               dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
-               dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
-               dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
-               dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
-               dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
-               FPostContest := dmZLogGlobal.LastContest.FPostContest;
-               strContestName := dmZLogGlobal.LastContest.FContestName;
-               strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
-               fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
-               dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
                dmZLogGlobal.Settings.FDontShowStartupWindow := startup.DontShowThisWindow;
+               RestoreLastContestInfo(strCfgFileName, fScoreCoeff, strContestName);
             end
             else begin
                fNewContest := True;
@@ -8531,20 +8576,76 @@ begin
       end;
 
       // save last contest
-      dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
-      dmZLogGlobal.LastContest.FContestBand := dmZLogGlobal.ContestBand;
-      dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
-      dmZLogGlobal.LastContest.FMyCall := dmZLogGlobal.MyCall;
-      dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
-      dmZLogGlobal.LastContest.FTxNr := dmZLogGlobal.TXNr;
-      dmZLogGlobal.LastContest.FPostContest := FPostContest;
-      dmZLogGlobal.LastContest.FContestName := MyContest.Name;
-      dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
-      dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
-      dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
+      SaveLastContestInfo(strCfgFileName, fScoreCoeff);
    finally
       menu.Release();
       startup.Release();
+   end;
+end;
+
+procedure TMainForm.RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
+var
+   i: Integer;
+begin
+   dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
+   dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
+   dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
+   dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
+   dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
+   dmZLogGlobal.TXNr := dmZLogGlobal.LastContest.FTxNr;
+   FPostContest := dmZLogGlobal.LastContest.FPostContest;
+   strContestName := dmZLogGlobal.LastContest.FContestName;
+   strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
+   fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
+   dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
+
+   // User Defined Contestの場合
+   if dmZLogGlobal.ContestMenuNo = 9 then  begin
+      dmZLogGlobal.ClearParamImportedFlag();
+      if dmZLogGlobal.LastContest.ProvCityImported = True then begin
+         dmZLogGlobal.Settings.ProvCityImported := True;
+         dmZLogGlobal.Settings._prov := dmZLogGlobal.LastContest.Prov;
+         dmZLogGlobal.Settings._city := dmZLogGlobal.LastContest.City;
+      end;
+      for i := 1 to 4 do begin
+         if dmZLogGlobal.LastContest.CWStrImported[i] = True then begin
+            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := dmZLogGlobal.LastContest.CWStr[i];
+            dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
+         end;
+      end;
+      for i := 2 to 3 do begin
+         if dmZLogGlobal.LastContest.CWAddStrImported[i] = True then begin
+            dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := dmZLogGlobal.LastContest.CWAddStr[i];
+            dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] := True;
+         end;
+      end;
+   end;
+end;
+procedure TMainForm.SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
+var
+   i: Integer;
+begin
+   dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
+   dmZLogGlobal.LastContest.FContestBand := dmZLogGlobal.ContestBand;
+   dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
+   dmZLogGlobal.LastContest.FMyCall := dmZLogGlobal.MyCall;
+   dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
+   dmZLogGlobal.LastContest.FTxNr := dmZLogGlobal.TXNr;
+   dmZLogGlobal.LastContest.FPostContest := FPostContest;
+   dmZLogGlobal.LastContest.FContestName := MyContest.Name;
+   dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
+   dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
+   dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
+   dmZLogGlobal.LastContest.ProvCityImported := dmZLogGlobal.Settings.ProvCityImported;
+   dmZLogGlobal.LastContest.Prov := dmZLogGlobal.Settings._prov;
+   dmZLogGlobal.LastContest.City := dmZLogGlobal.Settings._city;
+   for i := 1 to 4 do begin
+      dmZLogGlobal.LastContest.CWStr[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
+      dmZLogGlobal.LastContest.CWStrImported[i] := dmZLogGlobal.Settings.CW.CWStrImported[1, i];
+   end;
+   for i := 2 to 3 do begin
+      dmZLogGlobal.LastContest.CWAddStr[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[i];
+      dmZLogGlobal.LastContest.CWAddStrImported[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i];
    end;
 end;
 
@@ -9772,17 +9873,19 @@ begin
    WriteStatusLine('', False);
 
    // 2R:CQ+S&P時、F1/F2/F3以外はSPモード
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (Is2bsiq() = False) then begin
-      if no > 3 then begin
-         SetCQ(False);
+   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if (Is2bsiq() = False) then begin
+         if no > 3 then begin
+            SetCQ(False);
+         end;
+      end
+      else begin
+         if FInformation.IsWait = False then begin
+            m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+            StopMessage(m);
+            FMessageManager.ClearQue();
+         end;
       end;
-   end;
-
-   if FInformation.IsWait = False then begin
-      m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
-      StopMessage(m);
-      FMessageManager.ClearQue();
    end;
 
    case mode of
@@ -9790,7 +9893,6 @@ begin
          // CWポート設定チェック
          nID := GetTxRigID();
          if dmZLogKeyer.KeyingPort[nID] = tkpNone then begin
-            WriteStatusLineRed(TMainForm_CW_port_is_no_set, False);
             Exit;
          end;
          WriteStatusLine('', False);
@@ -10016,7 +10118,9 @@ begin
       end
       else begin
          // PTT-OFF
-         VoiceControl(False);
+         if Sender <> nil then begin
+            VoiceControl(False);
+         end;
 
          VoiceStopButton.Enabled := False;
       end;
@@ -12254,13 +12358,18 @@ end;
 // 相手コールサインの設定
 // バンドスコープから呼ばれる
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
+begin
+   SetYourCallsignEx(0, strCallsign, strNumber);
+end;
+
+procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
 var
    nID: Integer;
-   C, N, B, M, SE, OP: TEdit;
+   C, N, B, M, SE, OP, P: TEdit;
 begin
-   nID := FCurrentRx;
+   nID := no - 1;
 
-   AssignControls(nID, C, N, B, M, SE, OP);
+   AssignControls(nID, C, N, B, M, SE, OP, P);
 
    CurrentQSO.CallSign := strCallsign;
 
@@ -12295,7 +12404,7 @@ begin
 end;
 
 // Cluster or BandScopeから呼ばれる
-procedure TMainForm.SetFrequency(freq: TFrequency);
+procedure TMainForm.SetFreqAndCall(freq: TFrequency; strCallsign, strNumber: string);
 var
    b: TBand;
    Q: TQSO;
@@ -12305,10 +12414,17 @@ var
    nID: Integer;
    mode: TMode;
    edge: Integer;
+   no: Integer;
 begin
    if freq = 0 then begin
       Exit;
    end;
+
+   // 取り込み先RIG
+   no := RigControl.ImportRigNo;
+
+   // 取り込みバンド
+   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
 
    // 1Radioの場合
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
@@ -12316,6 +12432,8 @@ begin
       if (IsCQ() = True) and (dmZLogGlobal.Settings._bandscope_save_current_freq = True)then begin
          SaveLastFreq();
       end;
+
+      rigset := CurrentRx + 1;
    end;
 
    // 2Radioの場合、現在の2BSIQ状態を保存してOFFにする
@@ -12326,7 +12444,30 @@ begin
          F2bsiqStart := False;
          FCQRepeatPlaying := False;
       end;
+
+      // まずはRIG-AまたはRIG-Bでバンドが一致するか
+      if TextToBand(FEditPanel[0].BandEdit.Text) = b then begin
+         rigset := 1;
+      end
+      else if TextToBand(FEditPanel[1].BandEdit.Text) = b then begin
+         rigset := 2;
+      end
+      else begin
+         // バンド一致RIGが無ければ指定のRIGとする
+         if no = 0 then begin
+            rigset := CurrentRx + 1;
+         end
+         else begin
+            rigset := no;
+         end;
+      end;
+
+      if FCurrentRx <> (rigset - 1) then begin
+         SwitchRx(rigset);
+      end;
    end;
+
+   SetYourCallsignEx(rigset, strCallsign, strNumber);
 
    // CQ中止
    if FCurrentTx = FCurrentRx then begin
@@ -12338,9 +12479,7 @@ begin
 
    FQsyFromBS := True;
 
-   rigset := CurrentRx + 1;
-
-   b := dmZLogGlobal.BandPlan.FreqToBand(freq);
+   // 取り込み先RIGのモード
    m := TextToMode(FEditPanel[rigset - 1].ModeEdit.Text);
 
    rig := RigControl.GetRig(rigset, b);
@@ -12550,14 +12689,16 @@ begin
    FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
    FBandScope.AddClusterSpot(Sp);
 
-   if Sp.IsNewMulti = True then begin
-      FBandScopeNewMulti.AddClusterSpot(Sp);
-   end;
-
    // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
-   if (BandMenu.Items[Ord(Sp.Band)].Enabled = True) and
+   if (BandMenu.Items[Ord(Sp.Band)].Visible = True) and
       (dmZlogGlobal.Settings._activebands[Sp.Band] = True) then begin
+      // All bandsウインドウ
       FBandScopeAllBands.AddClusterSpot(Sp);
+
+      // New multiウインドウ
+      if Sp.IsNewMulti = True then begin
+         FBandScopeNewMulti.AddClusterSpot(Sp);
+      end;
    end;
 
    // スポット情報をスーパーチェックに登録
@@ -12625,7 +12766,7 @@ begin
    FInformation.WPM := curr_wpm;
    SpeedLabel.Caption := IntToStr(curr_wpm) + ' wpm';
 
-   SetRigWpm(init_wpm);
+   SetRigWpm(curr_wpm);
 end;
 
 procedure TMainForm.DoVFOChange(Sender: TObject);
@@ -13256,7 +13397,9 @@ begin
       Exit;
    end;
 
-   ActionList1.Actions[nCommand].Execute();
+   if Assigned(ActionList1.Actions[nCommand].OnExecute) then begin
+      ActionList1.Actions[nCommand].OnExecute(ActionList1.Actions[nCommand]);
+   end;
 end;
 
 procedure TMainForm.checkUseRig3Click(Sender: TObject);
