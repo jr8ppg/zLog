@@ -110,6 +110,7 @@ object CWKeyBoard: TCWKeyBoard
       'Console')
     ParentFont = False
     PlainText = True
+    PopupMenu = popupConsole
     TabOrder = 0
     OnKeyPress = ConsoleKeyPress
     OnProtectChange = ConsoleProtectChange
@@ -339,5 +340,26 @@ object CWKeyBoard: TCWKeyBoard
     OnTimer = Timer1Timer
     Left = 240
     Top = 8
+  end
+  object popupConsole: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 120
+    Top = 16
+    object menuConsoleCut: TMenuItem
+      Caption = 'Cut'
+      ShortCut = 16472
+      OnClick = menuConsoleCutClick
+    end
+    object menuConsoleCopy: TMenuItem
+      Caption = 'Copy'
+      ShortCut = 16451
+      OnClick = menuConsoleCopyClick
+    end
+    object menuConsolePaste: TMenuItem
+      Caption = 'Paste'
+      ShortCut = 16470
+      OnClick = menuConsolePasteClick
+    end
   end
 end

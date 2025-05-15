@@ -6,9 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Winapi.RichEdit, Vcl.ComCtrls,
-  System.Math, System.SyncObjs,
+  System.Math, System.SyncObjs, Vcl.Clipbrd,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, URigCtrlLib,
-  UzLogForm, Vcl.Samples.Spin;
+  UzLogForm, Vcl.Samples.Spin, Vcl.Menus;
 
 const
   WM_ZLOG_UPDATE_PROGRESS = (WM_USER + 1);
@@ -63,6 +63,10 @@ type
     Label1: TLabel;
     Label2: TLabel;
     Image1: TImage;
+    popupConsole: TPopupMenu;
+    menuConsoleCopy: TMenuItem;
+    menuConsolePaste: TMenuItem;
+    menuConsoleCut: TMenuItem;
     procedure ConsoleKeyPress(Sender: TObject; var Key: Char);
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -87,6 +91,9 @@ type
     procedure SpinEdit1Change(Sender: TObject);
     procedure OnZLogUpdateProgress( var Message: TMessage ); message WM_ZLOG_UPDATE_PROGRESS;
     procedure FormResize(Sender: TObject);
+    procedure menuConsolePasteClick(Sender: TObject);
+    procedure menuConsoleCopyClick(Sender: TObject);
+    procedure menuConsoleCutClick(Sender: TObject);
   private
     { Private declarations }
     FCounter: Integer;
@@ -104,6 +111,8 @@ type
     procedure StartCountdown();
     procedure ShowProgress();
     procedure InitProgress();
+    function CWStrClean(S: string): string;
+    function IsAvailableChar(C: Char): Boolean;
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
@@ -217,7 +226,7 @@ begin
       end;
 
       // 送信可能文字以外ならパス
-      if (Not CharInSet(K, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
+      if IsAvailableChar(K) = False then begin
          Key := #00;
          Exit;
       end;
@@ -814,6 +823,77 @@ begin
    FBitmap.Height := Image1.Height;
    FBitmap.PixelFormat := pf24bit;
    Image1.Picture.Bitmap.Assign(FBitmap);
+end;
+
+procedure TCWKeyBoard.menuConsoleCutClick(Sender: TObject);
+begin
+   inherited;
+   ClipBoard.AsText := Console.SelText;
+   Console.SelText := '';
+end;
+
+procedure TCWKeyBoard.menuConsoleCopyClick(Sender: TObject);
+begin
+   inherited;
+   ClipBoard.AsText := Console.SelText;
+end;
+
+procedure TCWKeyBoard.menuConsolePasteClick(Sender: TObject);
+var
+   text: string;
+   nID: Integer;
+   K: Char;
+begin
+   inherited;
+   text := ClipBoard.AsText;
+   if text = '' then begin
+      Exit;
+   end;
+
+   text := CWStrClean(text);
+   if text = '' then begin
+      Exit;
+   end;
+
+   Console.SelText := text;
+
+   nID := MainForm.CurrentRigID;
+   if dmZLogKeyer.KeyingPort[nID] <> tkpRig then begin
+      // １文字送信
+      if MainForm.StartCWKeyboard = False then begin
+         text := Console.Text;
+         K := text[1];
+         SendChar(K);
+      end;
+   end;
+end;
+
+function TCWKeyBoard.CWStrClean(S: string): string;
+var
+   i: Integer;
+   S2: string;
+   C: Char;
+begin
+   S := UpperCase(S);
+   S2 := '';
+   for i := 1 to Length(S) do begin
+      C := S[i];
+      if IsAvailableChar(C) = True then begin
+         S2 := S2 + C;
+      end;
+   end;
+
+   Result := S2;
+end;
+
+function TCWKeyBoard.IsAvailableChar(C: Char): Boolean;
+begin
+   if (CharInSet(C, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
 end;
 
 initialization
