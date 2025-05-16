@@ -13371,13 +13371,16 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('*** DoWkStatusProc(' + IntToStr(tx) + ', ' + IntToStr(rx) + ', ' + BoolToStr(ptt) + ') ***'));
    {$ENDIF}
-//   FSo2rNeoCp.Rx := rx;
-   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
-      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx, 0);
-   end;
 
+   // RXの変化(SO2RNeo)
+//   if dmZLogGlobal.Settings._so2r_type <> so2rNone then begin
+//      PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETRX, rx, 0);
+//   end;
+
+   // PTTの変化(Information)
    PostMessage(Handle, WM_ZLOG_SETPTTSTATE, Integer(ptt), 0);
 
+   // PTTの変化(SO2RNeo)
    if dmZLogGlobal.Settings._so2r_type = so2rNeo then begin
       PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_SETPTT, Integer(ptt), 0);
    end;
