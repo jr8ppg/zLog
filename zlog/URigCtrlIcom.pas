@@ -440,11 +440,13 @@ begin
    if FRitCtrlSupported = False then begin
       if FPollingCount > 1 then begin
          FPollingCount := 0;
+         FInitialPolling := True;
       end;
    end
    else begin
       if FPollingCount > 3 then begin
          FPollingCount := 0;
+         FInitialPolling := True;
       end;
    end;
 end;
@@ -686,11 +688,20 @@ begin
 
    // トランシーブモード使う場合は１回か２回ポーリングする
    if (FUseTransceiveMode = True) then begin
-      if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
-         ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
-         if FInitialPolling = False then begin
-            FPollingTimer.Enabled := True;
-            FInitialPolling := True;
+      if FRitCtrlSupported = False then begin
+         if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
+            ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
+            if FInitialPolling = False then begin
+               FPollingTimer.Enabled := True;
+            end;
+         end;
+      end
+      else begin
+         if ((FGetBandAndMode = True) and  (FPollingCount < 4)) or
+            ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
+            if FInitialPolling = False then begin
+               FPollingTimer.Enabled := True;
+            end;
          end;
       end;
    end;
