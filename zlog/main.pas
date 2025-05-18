@@ -11884,10 +11884,31 @@ var
    scanrigset: Integer;
    b: TBand;
 begin
-   case FCurrentRigSet of
-      1: scanrigset := 2;
-      2: scanrigset := 1;
-      else Exit;
+   case RigControl.MemScanRigNo of
+      // AUTO
+      0: begin
+         case FCurrentRigSet of
+            1: scanrigset := 2;
+            2: scanrigset := 1;
+            else Exit;
+         end;
+      end;
+
+      // RIG-A
+      1: begin
+         scanrigset := 1;
+         if FCurrentRigSet = scanrigset then begin
+            SwitchRig(2);
+         end;
+      end;
+
+      // RIG-B
+      2: begin
+         scanrigset := 2;
+         if FCurrentRigSet = scanrigset then begin
+            SwitchRig(1);
+         end;
+      end;
    end;
 
    b := TextToBand(FEditPanel[scanrigset - 1].BandEdit.Text);

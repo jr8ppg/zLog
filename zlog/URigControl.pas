@@ -8,7 +8,8 @@ uses
   System.SyncObjs, Generics.Collections, Vcl.Buttons, Vcl.WinXCtrls,
   Vcl.ButtonGroup, Vcl.Menus, System.IniFiles,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB,
-  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft;
+  URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft,
+  JvExControls, JvLED;
 
 type
   TRigControl = class(TForm)
@@ -52,13 +53,17 @@ type
     menuM4: TMenuItem;
     menuM5: TMenuItem;
     buttonMemScan: TSpeedButton;
-    panelMScan: TPanel;
-    labelMScan: TLabel;
-    Timer2: TTimer;
     buttonImportAuto: TSpeedButton;
     buttonImportRigA: TSpeedButton;
     buttonImportRigB: TSpeedButton;
     Label5: TLabel;
+    panelSpotImport: TPanel;
+    panelMemScan: TPanel;
+    buttonMemScanAuto: TSpeedButton;
+    buttonMemScanRigA: TSpeedButton;
+    buttonMemScanRigB: TSpeedButton;
+    ledMemScan: TJvLED;
+    labelMemScan: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -80,7 +85,6 @@ type
     procedure menuMnClick(Sender: TObject);
     procedure popupMemoryChPopup(Sender: TObject);
     procedure buttonMemScanClick(Sender: TObject);
-    procedure Timer2Timer(Sender: TObject);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -126,6 +130,9 @@ type
 
     procedure SetImportTo(no: Integer);
     function GetImportTo(): Integer;
+
+    procedure SetMemScanRigNo(no: Integer);
+    function GetMemScanRigNo(): Integer;
   public
     { Public declarations }
     TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
@@ -160,6 +167,7 @@ type
 
     procedure ToggleMemScan(scan_rigset: Integer; b: TBand);
     procedure MemScanOff();
+    property MemScanRigNo: Integer read GetMemScanRigNo write SetMemScanRigNo;
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
     property ImportRigNo: Integer read GetImportTo write SetImportTo;
@@ -213,6 +221,7 @@ begin
    FMenuMn[4] := menuM4;
    FMenuMn[5] := menuM5;
 
+   labelMemScan.Caption := '';
    buttonImportAuto.Down := True;
 end;
 
@@ -261,16 +270,6 @@ begin
       MainForm.ZLinkForm.SendRigStatus;
    finally
       Timer1.Enabled := True;
-   end;
-end;
-
-procedure TRigControl.Timer2Timer(Sender: TObject);
-begin
-   if labelMScan.Visible = True then begin
-      labelMScan.Visible := False;
-   end
-   else begin
-      labelMScan.Visible := True;
    end;
 end;
 
@@ -1212,8 +1211,9 @@ begin
    buttonMemScan.Enabled := False;
    buttonMemScan.Down := False;
    buttongrpFreqMemory.Enabled := False;
-   Timer2.Enabled := False;
-   labelMScan.Visible := False;
+
+   ledMemScan.Active := False;
+   ledMemScan.Status := False;
    FScanRigSet := 1;
 end;
 
@@ -1306,9 +1306,12 @@ begin
 
       LoadMemCh(FRigs[rig.RigNumber]);
 
-      labelMScan.Caption := 'M-Scan ' + IntToStr(rig.RigNumber);
+      labelMemScan.Caption := 'RIG-' + IntToStr(rig.RigNumber);
 
       FRigs[rig.RigNumber].MemScan := buttonMemScan.Down;
+
+      ledMemScan.Active := True;
+      ledMemScan.Status := True;
    end
    else begin
       for i := Low(FRigs) to High(FRigs) do begin
@@ -1316,11 +1319,9 @@ begin
             FRigs[i].MemScan := False;
          end;
       end;
-   end;
 
-   Timer2.Enabled := buttonMemScan.Down;
-   if Timer2.Enabled = False then begin
-      labelMScan.Visible := False;
+      ledMemScan.Active := False;
+      ledMemScan.Status := False;
    end;
 end;
 
@@ -1510,6 +1511,31 @@ begin
       Result := 1;
    end
    else if buttonImportRigB.Down = True then begin
+      Result := 2;
+   end
+   else begin
+      Result := 0;
+   end;
+end;
+
+procedure TRigControl.SetMemScanRigNo(no: Integer);
+begin
+   case no of
+      0: buttonMemScanAuto.Down := True;
+      1: buttonMemScanRigA.Down := True;
+      2: buttonMemScanRigB.Down := True;
+   end;
+end;
+
+function TRigControl.GetMemScanRigNo(): Integer;
+begin
+   if buttonMemScanAuto.Down = True then begin
+      Result := 0;
+   end
+   else if buttonMemScanRigA.Down = True then begin
+      Result := 1;
+   end
+   else if buttonMemScanRigB.Down = True then begin
       Result := 2;
    end
    else begin
