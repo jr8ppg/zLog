@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   UzLogGlobal, UzLogConst, UzLogQSO, UBasicMulti, UBasicScore, UQTCForm,
-  UEditDialog, UserDefinedContest, UWWZone;
+  UserDefinedContest, UWWZone;
 
 type
   TWanted = class
@@ -43,7 +43,6 @@ type
 
     MultiForm: TBasicMulti;
     ScoreForm: TBasicScore;
-    PastEditForm: TEditDialog;
     ZoneForm: TWWZone;
 
     SameExchange : Boolean; // true by default. false when serial number etc
@@ -463,7 +462,6 @@ begin
    MultiForm := nil;
    ScoreForm := nil;
    ZoneForm := nil;
-   PastEditForm := nil;
    WantedList := TList.Create;
 
    SameExchange := True;
@@ -579,9 +577,6 @@ begin
    end;
    if Assigned(ZoneForm) then begin
       ZoneForm.Release();
-   end;
-   if Assigned(PastEditForm) then begin
-      PastEditForm.Release();
    end;
 end;
 
@@ -907,7 +902,6 @@ begin
    inherited Create(AOwner, N);
    MultiForm := TARRLDXMulti.Create(AOwner);
    ScoreForm := TARRLDXScore.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -935,7 +929,6 @@ begin
    MultiForm := TARRLWMulti.Create(AOwner);
    TARRLWMulti(MultiForm).ALLASIANFLAG := False;
    ScoreForm := TARRLDXScore.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
    ZoneForm := TWWZone.Create(AOwner);
 
    UseUTC := True;
@@ -966,7 +959,6 @@ begin
    TARRLWMulti(MultiForm).ALLASIANFLAG := True;
    ScoreForm := TAllAsianScore.Create(AOwner);
    ZoneForm := TWWZone.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -999,7 +991,6 @@ begin
 
    MultiForm := TJIDX_DX_Multi.Create(AOwner);
    ScoreForm := TJIDX_DX_Score.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    SentStr := '$V';
@@ -1030,8 +1021,6 @@ begin
    ScoreForm := TWPXScore.Create(AOwner);
    ZoneForm := nil;
    MultiForm.Reset();
-
-   PastEditForm := TEditDialog.Create(AOwner);
 
    TWPXScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
 
@@ -1066,7 +1055,6 @@ begin
    MultiForm := TWAEMulti.Create(AOwner);
    ScoreForm := TWAEScore.Create(AOwner);
    ZoneForm := TWWZone.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
    QTCForm := TQTCForm.Create(AOwner);
 
    UseUTC := True;
@@ -1110,7 +1098,6 @@ begin
    MultiForm := TIOTAMulti.Create(AOwner);
    ScoreForm := TIARUScore.Create(AOwner);
    TIARUScore(ScoreForm).InitGrid(b35, b28);
-   PastEditForm := TEditDialog.Create(AOwner);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -1138,8 +1125,6 @@ begin
    ScoreForm := TARRL10Score.Create(AOwner);
    ZoneForm := TWWZone.Create(AOwner);
 
-   PastEditForm := TEditDialog.Create(AOwner);
-
    UseUTC := True;
    Log.AcceptDifferentMode := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -1164,7 +1149,6 @@ begin
    inherited;
    MultiForm := TJA0Multi.Create(AOwner);
    ScoreForm := TJA0Score.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
 
    Log.QsoList[0].Serial := $01; // uses serial number
    FSerialType := stAll;
@@ -1208,7 +1192,6 @@ begin
    inherited;
    MultiForm := TWPXMulti.Create(AOwner);
    ScoreForm := TAPSprintScore.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
    ZoneForm := TWWZone.Create(AOwner);
 
    TAPSprintScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
@@ -1244,8 +1227,6 @@ begin
       TWWMulti(MultiForm).ZoneForm := ZoneForm;
       MultiForm.Reset();
    end;
-
-   PastEditForm := TEditDialog.Create(AOwner);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -1302,7 +1283,6 @@ begin
    MultiForm := TIARUMulti.Create(AOwner);
    ScoreForm := TIARUScore.Create(AOwner);
    ZoneForm := TWWZone.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -1337,7 +1317,6 @@ begin
    inherited;
    MultiForm := TBasicMulti.Create(AOwner);
    ScoreForm := TPediScore.Create(AOwner);
-   PastEditForm := TEditDialog.Create(AOwner);
 
    Log.AcceptDifferentMode := True;
    if UseUTC then
@@ -1368,7 +1347,6 @@ begin
    inherited;
    MultiForm := TALLJAMulti.Create(AOwner);
    ScoreForm := TALLJAScore.Create(AOwner, b19, b50);
-   PastEditForm := TEditDialog.Create(AOwner);
    SentStr := '$V$P';
    FStartTime := 21;
    FPeriod := 24;
@@ -1414,7 +1392,6 @@ begin
    inherited;
    MultiForm := TACAGMulti.Create(AOwner);
    ScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
-   PastEditForm := TEditDialog.Create(AOwner);
    SentStr := '$Q$P';
    FBandLow := b19;
    FBandHigh := b10g;
@@ -1428,7 +1405,6 @@ begin
    inherited;
    MultiForm := TFDMulti.Create(AOwner);
    ScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
-   PastEditForm := TEditDialog.Create(AOwner);
    SentStr := '$Q$P';
    FUseCoeff := True;
    FBandLow := b19;
@@ -1446,7 +1422,6 @@ begin
    TALLJAScore(ScoreForm).PointTable[b2400] := 2;
    TALLJAScore(ScoreForm).PointTable[b5600] := 2;
    TALLJAScore(ScoreForm).PointTable[b10g] := 2;
-   PastEditForm := TEditDialog.Create(AOwner);
    SentStr := '$Q$P';
    FBandLow := b50;
    FBandHigh := b10g;
@@ -1462,7 +1437,6 @@ begin
    MultiForm := TGeneralMulti2.Create(AOwner);
    ScoreForm := TGeneralScore.Create(AOwner);
    TGeneralScore(ScoreForm).formMulti := TGeneralMulti2(MultiForm);
-   PastEditForm := TEditDialog.Create(AOwner);
 
    FConfig := TUserDefinedContest.Parse(CFGFileName);
    TGeneralScore(ScoreForm).Config := FConfig;

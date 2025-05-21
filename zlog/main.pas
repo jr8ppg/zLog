@@ -6259,24 +6259,30 @@ procedure TMainForm.InsertQSO1Click(Sender: TObject);
 var
    _top, _bottom, _oldtop: LongInt;
    aQSO: TQSO;
+   edit: TEditDialog;
 begin
-   with Grid do begin
-      _oldtop := TopRow;
-      _top := Selection.top;
-      _bottom := Selection.Bottom;
+   edit := TEditDialog.Create(Self);
+   try
+      with Grid do begin
+         _oldtop := TopRow;
+         _top := Selection.top;
+         _bottom := Selection.Bottom;
+      end;
+
+      if _top = _bottom then begin
+         aQSO := TQSO(Grid.Objects[0, Grid.Row]);
+         edit.Init(aQSO, _ActInsert);
+         edit.ShowModal();
+      end;
+
+      Grid.TopRow := _oldtop;
+
+      Log.SetDupeFlags;
+
+      GridRefreshScreen();
+   finally
+      edit.Release();
    end;
-
-   if _top = _bottom then begin
-      aQSO := TQSO(Grid.Objects[0, Grid.Row]);
-      MyContest.PastEditForm.Init(aQSO, _ActInsert);
-      MyContest.PastEditForm.ShowModal;
-   end;
-
-   Grid.TopRow := _oldtop;
-
-   Log.SetDupeFlags;
-
-   GridRefreshScreen();
 end;
 
 procedure TMainForm.VoiceFMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -14142,40 +14148,46 @@ procedure TMainForm.EditCurrentRow();
 var
    R: Integer;
    aQSO: TQSO;
+   edit: TEditDialog;
 begin
-   R := MainForm.Grid.Row;
+   edit := TEditDialog.Create(Self);
+   try
+      R := MainForm.Grid.Row;
 
-   aQSO := TQSO(MainForm.Grid.Objects[0, R]);
-   if aQSO = nil then begin
-      Exit;
+      aQSO := TQSO(MainForm.Grid.Objects[0, R]);
+      if aQSO = nil then begin
+         Exit;
+      end;
+
+      if aQSO.Reserve = actLock then begin
+         WriteStatusLine(TMainForm_This_QSO_is_locked, False);
+         exit;
+      end;
+
+      edit.Init(aQSO, _ActChange);
+
+      if edit.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      GridWriteQSO(R, aQSO);
+
+      if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
+         FPartialCheck.CheckPartial(CurrentQSO);
+      end;
+
+      if FCheckCall2.Visible then begin
+         FCheckCall2.Renew(CurrentQSO);
+      end;
+
+      // 画面リフレッシュ
+      GridRefreshScreen(True);
+
+      // バンドスコープリフレッシュ
+      BSRefresh();
+   finally
+      edit.Release();
    end;
-
-   if aQSO.Reserve = actLock then begin
-      WriteStatusLine(TMainForm_This_QSO_is_locked, False);
-      exit;
-   end;
-
-   MyContest.PastEditForm.Init(aQSO, _ActChange);
-
-   if MyContest.PastEditForm.ShowModal <> mrOK then begin
-      Exit;
-   end;
-
-   GridWriteQSO(R, aQSO);
-
-   if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
-      FPartialCheck.CheckPartial(CurrentQSO);
-   end;
-
-   if FCheckCall2.Visible then begin
-      FCheckCall2.Renew(CurrentQSO);
-   end;
-
-   // 画面リフレッシュ
-   GridRefreshScreen(True);
-
-   // バンドスコープリフレッシュ
-   BSRefresh();
 end;
 
 procedure TMainForm.SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
