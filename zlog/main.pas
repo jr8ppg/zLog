@@ -80,16 +80,17 @@ type
     TimeEdit: TOvrEdit;       // 1
     DateEdit: TOvrEdit;       // 1
     CallsignEdit: TOvrEdit;   // 2
-    rcvdRSTEdit: TEdit;       // 3
-    NumberEdit: TOvrEdit;     // 4
-    ModeEdit: TEdit;          // 5
-    PowerEdit: TEdit;         // 6
-    BandEdit: TEdit;          // 7
-    PointEdit: TEdit;         // 8
-    OpEdit: TEdit;            // 9
-    MemoEdit: TOvrEdit;       // 10
-    NewMulti1Edit: TEdit;     // 11
-    NewMulti2Edit: TEdit;     // 12
+    sentRSTEdit: TEdit;       // 3
+    rcvdRSTEdit: TEdit;       // 4
+    NumberEdit: TOvrEdit;     // 5
+    ModeEdit: TEdit;          // 6
+    PowerEdit: TEdit;         // 7
+    BandEdit: TEdit;          // 8
+    PointEdit: TEdit;         // 9
+    OpEdit: TEdit;            // 10
+    MemoEdit: TOvrEdit;       // 11
+    NewMulti1Edit: TEdit;     // 12
+    NewMulti2Edit: TEdit;     // 13
     CurrentBand: TBand;
     CurrentMode: TMode;
     TxLed: TJvLED;
@@ -628,6 +629,10 @@ type
     actionShowEntityInfo1: TMenuItem;
     actionShowGrayline: TAction;
     Grayline1: TMenuItem;
+    SentRSTEdit1: TEdit;
+    SentRSTEdit2A: TEdit;
+    SentRSTEdit2B: TEdit;
+    SentRSTEdit2C: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -958,6 +963,7 @@ type
     procedure menuRbnOptionsClick(Sender: TObject);
     procedure actionShowEntityInfoExecute(Sender: TObject);
     procedure actionShowGraylineExecute(Sender: TObject);
+    procedure SentRSTEdit1Change(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1181,14 +1187,15 @@ type
     function GetDateEdit(): TEdit;        // 1
     function GetTimeEdit(): TEdit;        // 1
     function GetCallsignEdit(): TEdit;    // 2
-    function GetRSTEdit(): TEdit;         // 3
-    function GetNumberEdit(): TEdit;      // 4
-    function GetModeEdit(): TEdit;        // 5
-    function GetPowerEdit(): TEdit;       // 6
-    function GetBandEdit(): TEdit;        // 7
-    function GetPointEdit(): TEdit;       // 8
-    function GetOpEdit(): TEdit;          // 9
-    function GetMemoEdit(): TEdit;        // 10
+    function GetSentRSTEdit(): TEdit;     // 3
+    function GetRcvdRSTEdit(): TEdit;     // 4
+    function GetNumberEdit(): TEdit;      // 5
+    function GetModeEdit(): TEdit;        // 6
+    function GetPowerEdit(): TEdit;       // 7
+    function GetBandEdit(): TEdit;        // 8
+    function GetPointEdit(): TEdit;       // 9
+    function GetOpEdit(): TEdit;          // 10
+    function GetMemoEdit(): TEdit;        // 11
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
     procedure SwitchRig(rigset: Integer);
@@ -1349,7 +1356,8 @@ type
     property DateEdit: TEdit read GetDateEdit;
     property TimeEdit: TEdit read GetTimeEdit;
     property CallsignEdit: TEdit read GetCallsignEdit;
-    property RcvdRSTEdit: TEdit read GetRSTEdit;
+    property SentRSTEdit: TEdit read GetSentRSTEdit;
+    property RcvdRSTEdit: TEdit read GetRcvdRSTEdit;
     property NumberEdit: TEdit read GetNumberEdit;
     property ModeEdit: TEdit read GetModeEdit;
     property PowerEdit: TEdit read GetPowerEdit;
@@ -1595,6 +1603,7 @@ begin
          CurrentEditPanel.BandEdit.Text := MHzString[CurrentQSO.Band];
          CurrentEditPanel.PowerEdit.Text := NewPowerString[CurrentQSO.Power];
          CurrentEditPanel.PointEdit.Text := CurrentQSO.PointStr;
+         CurrentEditPanel.SentRSTEdit.Text := CurrentQSO.RSTSentStr;
          CurrentEditPanel.RcvdRSTEdit.Text := CurrentQSO.RSTStr;
          TimeEdit.Text := CurrentQSO.TimeStr;
          DateEdit.Text := CurrentQSO.DateStr;
@@ -1941,6 +1950,7 @@ begin
    If M in [mSSB, mFM, mAM] then begin
       CurrentQSO.RSTRcvd := 59;
       CurrentQSO.RSTsent := 59;
+      SentRSTEdit.Text := '59';
       RcvdRSTEdit.Text := '59';
 
       // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
@@ -1955,6 +1965,7 @@ begin
    else begin
       CurrentQSO.RSTRcvd := 599;
       CurrentQSO.RSTsent := 599;
+      SentRSTEdit.Text := '599';
       RcvdRSTEdit.Text := '599';
 
       // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
@@ -2069,6 +2080,9 @@ begin
 
       if editor.colCall >= 0 then
          Cells[editor.colCall, R] := aQSO.Callsign;
+
+      if editor.colsentRST >= 0 then
+         Cells[editor.colsentRST, R] := aQSO.RSTSentStr;
 
       if editor.colrcvdRST >= 0 then
          Cells[editor.colrcvdRST, R] := aQSO.RSTStr;
@@ -2217,9 +2231,15 @@ begin
          ColWidths[editor.colCall] := editor.CallSignWid * nColWidth;
       end;
 
+      // Sent RST
+      if editor.colsentRST >= 0 then begin
+         Cells[editor.colsentRST, 0] := 'sRST';
+         ColWidths[editor.colsentRST] := editor.sentRSTWid * nColWidth;
+      end;
+
       // Rcvd RST
       if editor.colrcvdRST >= 0 then begin
-         Cells[editor.colrcvdRST, 0] := 'RST';
+         Cells[editor.colrcvdRST, 0] := 'rRST';
          ColWidths[editor.colrcvdRST] := editor.rcvdRSTWid * nColWidth;
       end;
 
@@ -2323,9 +2343,13 @@ var
    procedure LayoutEdit(col: Integer; edit: TEdit);
    begin
       if col >= 0 then begin
+         edit.Visible := True;
          edit.Width := Grid.ColWidths[col];
          edit.Height := h;
          edit.Left := GetGridColmunLeft(col);
+      end
+      else begin
+         edit.Visible := False;
       end;
    end;
 begin
@@ -2343,6 +2367,9 @@ begin
 
    // Callsign
    LayoutEdit(editor.colCall, CallsignEdit1);
+
+   // Sent RST
+   LayoutEdit(editor.colsentRST, SentRSTEdit1);
 
    // Rcvd RST
    LayoutEdit(editor.colrcvdRST, RcvdRSTEdit1);
@@ -2612,6 +2639,7 @@ begin
    BandEdit.Text := MHzString[CurrentQSO.Band];
    PowerEdit.Text := NewPowerString[CurrentQSO.Power];
    PointEdit.Text := CurrentQSO.PointStr;
+   SentRSTEdit.Text := CurrentQSO.RSTSentStr;
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    CurrentQSO.UpdateTime;
    TimeEdit.Text := CurrentQSO.TimeStr;
@@ -3556,6 +3584,7 @@ begin
    DateEdit1.Height := h + 6;
    TimeEdit1.Height := h + 6;
    CallsignEdit1.Height := h + 6;
+   SentRSTEdit1.Height := h + 6;
    RcvdRSTEdit1.Height := h + 6;
    NumberEdit1.Height := h + 6;
    ModeEdit1.Height := h + 6;
@@ -5066,9 +5095,11 @@ begin
    Q.Reserve3 := 0;
 
    if Q.Mode in [mCW, mRTTY] then begin
+      Q.RSTSent := 599;
       Q.RSTRcvd := 599;
    end
    else begin
+      Q.RSTSent := 59;
       Q.RSTRcvd := 59;
    end;
 
@@ -5079,6 +5110,7 @@ begin
    FEditPanel[nID].TimeEdit.Text := Q.TimeStr;
    FEditPanel[nID].DateEdit.Text := Q.DateStr;
    FEditPanel[nID].CallsignEdit.Text := Q.Callsign;
+   FEditPanel[nID].sentRSTEdit.Text := Q.RSTSentStr;
    FEditPanel[nID].RcvdRSTEdit.Text := Q.RSTStr;
    FEditPanel[nID].NumberEdit.Text := Q.NrRcvd;
    FEditPanel[nID].ModeEdit.Text := Q.ModeStr;
@@ -5802,6 +5834,20 @@ begin
    dmZLogKeyer.ResumeCW;
    CWPlayButton.Visible := False;
    CWPauseButton.Visible := True;
+end;
+
+procedure TMainForm.SentRSTEdit1Change(Sender: TObject);
+var
+   i: Integer;
+begin
+   if CurrentQSO.Mode in [mCW, mRTTY] then begin
+      i := 599;
+   end
+   else begin
+      i := 59;
+   end;
+
+   CurrentQSO.RSTSent := StrToIntDef(SentRSTEdit.Text, i);
 end;
 
 procedure TMainForm.RcvdRSTEdit1Change(Sender: TObject);
@@ -8439,6 +8485,7 @@ begin
       CurrentQSO.TX := dmZlogGlobal.TXNr;
 
       ModeEdit.Text := CurrentQSO.ModeStr;
+      SentRSTEdit.Text := CurrentQSO.RSTSentStr;
       RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 
       // マルチオペの場合は最後のOPをセット
@@ -9379,7 +9426,7 @@ begin
       MultiButton.Enabled := False; // toolbar
       Multipliers1.Enabled := False; // menu
 
-      EditScreen := TGeneralEdit.Create(Self, False);
+      EditScreen := TPediEdit.Create(Self);
 
       MyContest := TPedi.Create(Self, 'Pedition mode');
       MyContest.UseUTC := F.UseUTC;
@@ -12985,42 +13032,47 @@ begin
    Result := FEditPanel[CurrentRigID].CallsignEdit;
 end;
 
-function TMainForm.GetRSTEdit(): TEdit;         // 3
+function TMainForm.GetSentRSTEdit(): TEdit;     // 3
+begin
+   Result := FEditPanel[CurrentRigID].sentRSTEdit;
+end;
+
+function TMainForm.GetRcvdRSTEdit(): TEdit;     // 4
 begin
    Result := FEditPanel[CurrentRigID].rcvdRSTEdit;
 end;
 
-function TMainForm.GetNumberEdit(): TEdit;      // 4
+function TMainForm.GetNumberEdit(): TEdit;      // 5
 begin
    Result := FEditPanel[CurrentRigID].NumberEdit;
 end;
 
-function TMainForm.GetModeEdit(): TEdit;        // 5
+function TMainForm.GetModeEdit(): TEdit;        // 6
 begin
    Result := FEditPanel[CurrentRigID].ModeEdit;
 end;
 
-function TMainForm.GetPowerEdit(): TEdit;       // 6
+function TMainForm.GetPowerEdit(): TEdit;       // 7
 begin
    Result := FEditPanel[CurrentRigID].PowerEdit;
 end;
 
-function TMainForm.GetBandEdit(): TEdit;        // 7
+function TMainForm.GetBandEdit(): TEdit;        // 8
 begin
    Result := FEditPanel[CurrentRigID].BandEdit;
 end;
 
-function TMainForm.GetPointEdit(): TEdit;       // 8
+function TMainForm.GetPointEdit(): TEdit;       // 9
 begin
    Result := FEditPanel[CurrentRigID].PointEdit;
 end;
 
-function TMainForm.GetOpEdit(): TEdit;          // 9
+function TMainForm.GetOpEdit(): TEdit;          // 10
 begin
    Result := FEditPanel[CurrentRigID].OpEdit;
 end;
 
-function TMainForm.GetMemoEdit(): TEdit;        // 10
+function TMainForm.GetMemoEdit(): TEdit;        // 11
 begin
    Result := FEditPanel[CurrentRigID].MemoEdit;
 end;
@@ -13033,7 +13085,8 @@ begin
       FEditPanel[0].DateEdit     := DateEdit1;
       FEditPanel[0].TimeEdit     := TimeEdit1;
       FEditPanel[0].CallsignEdit := CallsignEdit1;
-      FEditPanel[0].rcvdRSTEdit  := rcvdRSTEdit1;
+      FEditPanel[0].sentRSTEdit  := SentRSTEdit1;
+      FEditPanel[0].rcvdRSTEdit  := RcvdRSTEdit1;
       FEditPanel[0].NumberEdit   := NumberEdit1;
       FEditPanel[0].ModeEdit     := ModeEdit1;
       FEditPanel[0].PowerEdit    := PowerEdit1;
@@ -13047,6 +13100,7 @@ begin
       FEditPanel[1].DateEdit     := DateEdit1;
       FEditPanel[1].TimeEdit     := TimeEdit1;
       FEditPanel[1].CallsignEdit := CallsignEdit1;
+      FEditPanel[1].sentRSTEdit  := sentRSTEdit1;
       FEditPanel[1].rcvdRSTEdit  := rcvdRSTEdit1;
       FEditPanel[1].NumberEdit   := NumberEdit1;
       FEditPanel[1].ModeEdit     := ModeEdit1;
@@ -13061,6 +13115,7 @@ begin
       FEditPanel[2].DateEdit     := DateEdit1;
       FEditPanel[2].TimeEdit     := TimeEdit1;
       FEditPanel[2].CallsignEdit := CallsignEdit1;
+      FEditPanel[2].sentRSTEdit  := sentRSTEdit1;
       FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit1;
       FEditPanel[2].NumberEdit   := NumberEdit1;
       FEditPanel[2].ModeEdit     := ModeEdit1;
@@ -13079,6 +13134,7 @@ begin
       FEditPanel[0].DateEdit     := DateEdit2;
       FEditPanel[0].TimeEdit     := TimeEdit2;
       FEditPanel[0].CallsignEdit := CallsignEdit2A;
+      FEditPanel[0].sentRSTEdit  := sentRSTEdit2A;
       FEditPanel[0].rcvdRSTEdit  := rcvdRSTEdit2A;
       FEditPanel[0].NumberEdit   := NumberEdit2A;
       FEditPanel[0].ModeEdit     := ModeEdit2A;
@@ -13093,6 +13149,7 @@ begin
       FEditPanel[1].DateEdit     := DateEdit2;
       FEditPanel[1].TimeEdit     := TimeEdit2;
       FEditPanel[1].CallsignEdit := CallsignEdit2B;
+      FEditPanel[1].sentRSTEdit  := sentRSTEdit2B;
       FEditPanel[1].rcvdRSTEdit  := rcvdRSTEdit2B;
       FEditPanel[1].NumberEdit   := NumberEdit2B;
       FEditPanel[1].ModeEdit     := ModeEdit2B;
@@ -13107,6 +13164,7 @@ begin
       FEditPanel[2].DateEdit     := DateEdit2;
       FEditPanel[2].TimeEdit     := TimeEdit2;
       FEditPanel[2].CallsignEdit := CallsignEdit2C;
+      FEditPanel[2].sentRSTEdit  := sentRSTEdit2C;
       FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit2C;
       FEditPanel[2].NumberEdit   := NumberEdit2C;
       FEditPanel[2].ModeEdit     := ModeEdit2C;
@@ -13132,6 +13190,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 //      FEditPanel[id].DateEdit.Color := clWindow;
 //      FEditPanel[id].TimeEdit.Color := clWindow;
       FEditPanel[id].CallsignEdit.Color := clWindow;
+      FEditPanel[id].sentRSTEdit.Color := clWindow;
       FEditPanel[id].rcvdRSTEdit.Color := clWindow;
       FEditPanel[id].NumberEdit.Color := clWindow;
       FEditPanel[id].ModeEdit.Color := clWindow;
@@ -13146,6 +13205,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 //      FEditPanel[id].DateEdit.Color := clBtnFace;
 //      FEditPanel[id].TimeEdit.Color := clBtnFace;
       FEditPanel[id].CallsignEdit.Color := clBtnFace;
+      FEditPanel[id].sentRSTEdit.Color := clBtnFace;
       FEditPanel[id].rcvdRSTEdit.Color := clBtnFace;
       FEditPanel[id].NumberEdit.Color := clBtnFace;
       FEditPanel[id].ModeEdit.Color := clBtnFace;
@@ -13376,6 +13436,7 @@ begin
    TimeEdit.Text := CurrentQSO.TimeStr;
    DateEdit.Text := CurrentQSO.DateStr;
    CallsignEdit.Text := CurrentQSO.Callsign;
+   SentRSTEdit.Text := CurrentQSO.RSTSentStr;
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    NumberEdit.Text := CurrentQSO.NrRcvd;
    ModeEdit.Text := CurrentQSO.ModeStr;

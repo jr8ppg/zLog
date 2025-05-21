@@ -12,32 +12,34 @@ type
     colSerial : Integer;         // 0
     colTime : Integer;           // 1
     colCall : Integer;           // 2
-    colrcvdRST : Integer;        // 3
-    colrcvdNumber : Integer;     // 4
-    colMode : Integer;           // 5
-    colNewPower : Integer;       // 6
-    colBand : Integer;           // 7
-    colPoint : Integer;          // 8
-    colOp : Integer;             // 9
-    colMemo : Integer;           // 10
-    colNewMulti1 : Integer;      // 11
-    colNewMulti2 : Integer;      // 12
+    colsentRST: Integer;         // 3
+    colrcvdRST : Integer;        // 4
+    colrcvdNumber : Integer;     // 5
+    colMode : Integer;           // 6
+    colNewPower : Integer;       // 7
+    colBand : Integer;           // 8
+    colPoint : Integer;          // 9
+    colOp : Integer;             // 10
+    colMemo : Integer;           // 11
+    colNewMulti1 : Integer;      // 12
+    colNewMulti2 : Integer;      // 13
 
     GridColCount: Integer;
   public
     SerialWid : Integer;         // 0
     TimeWid : Integer;           // 1
     CallSignWid : Integer;       // 2
-    rcvdRSTWid : Integer;        // 3
-    NumberWid : Integer;         // 4
-    BandWid : Integer;           // 5
-    ModeWid : Integer;           // 6
-    NewPowerWid : Integer;       // 7
-    PointWid : Integer;          // 8
-    OpWid : Integer;             // 9
-    MemoWid : Integer;           // 10
-    NewMulti1Wid : Integer;      // 11
-    NewMulti2Wid : Integer;      // 12
+    sentRSTWid: Integer;         // 3
+    rcvdRSTWid : Integer;        // 4
+    NumberWid : Integer;         // 5
+    BandWid : Integer;           // 6
+    ModeWid : Integer;           // 7
+    NewPowerWid : Integer;       // 8
+    PointWid : Integer;          // 9
+    OpWid : Integer;             // 10
+    MemoWid : Integer;           // 11
+    NewMulti1Wid : Integer;      // 12
+    NewMulti2Wid : Integer;      // 13
 
     constructor Create(AOwner: TComponent); virtual;
     function GetNewMulti1(aQSO : TQSO) : string; virtual;
@@ -50,6 +52,12 @@ type
     constructor Create(AOwner: TComponent; UseMulti2: Boolean);
     function GetNewMulti1(aQSO : TQSO) : string; override;
     function GetNewMulti2(aQSO : TQSO) : string; override;
+  end;
+
+  TPediEdit = class(TBasicEdit)
+  private
+  public
+    constructor Create(AOwner: TComponent);
   end;
 
   TALLJAEdit = class(TBasicEdit)
@@ -139,6 +147,7 @@ begin
    colSerial := -1;
    colTime := 1;
    colCall := -1;
+   colsentRST := -1;
    colrcvdRST := -1;
    colrcvdNumber := -1;
    colMode := -1;
@@ -154,6 +163,7 @@ begin
    SerialWid := 4;
    TimeWid := 6;
    CallSignWid := 12;
+   sentRSTWid := 4;
    rcvdRSTWid := 4;
    NumberWid := 10;
    BandWid := 4;
@@ -184,7 +194,7 @@ end;
 
 constructor TGeneralEdit.Create(AOwner: TComponent; UseMulti2: Boolean);
 var
- colno: Integer;
+   colno: Integer;
 begin
    inherited Create(AOwner);
 
@@ -235,6 +245,39 @@ begin
       OpWid := 6;
       MemoWid := 7;
    end
+end;
+
+constructor TPediEdit.Create(AOwner: TComponent);
+begin
+   inherited Create(AOwner);
+
+   colTime := 0;
+   colCall := 1;
+   colsentRST := 2;
+   colrcvdRST := 3;
+   colrcvdNumber := 4;
+   colBand := 5;
+   colMode := 6;
+   colPoint := 7;
+   colOp := 8;
+   colMemo := 9;
+
+   colNewMulti1 := -1;
+   NewMulti1Wid := 0;
+
+   colNewMulti2 := -1;
+   NewMulti2Wid := 0;
+
+   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
+      OpWid := 0;
+      MemoWid := 13;
+   end
+   else begin
+      OpWid := 6;
+      MemoWid := 7;
+   end;
+
+   GridColCount := 10;
 end;
 
 constructor TARRLDXEdit.Create(AOwner: TComponent);
