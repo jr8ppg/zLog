@@ -343,7 +343,7 @@ object RigControl: TRigControl
     end
     object labelMemScan: TLabel
       Left = 25
-      Top = 5
+      Top = 6
       Width = 32
       Height = 15
       Caption = 'RIG-9'
@@ -384,11 +384,11 @@ object RigControl: TRigControl
       Caption = 'RIG-B'
     end
     object Label5: TLabel
-      Left = 97
-      Top = 4
+      Left = 80
+      Top = 6
       Width = 83
       Height = 15
-      Caption = 'SPOT Import to'
+      Caption = #12473#12509#12483#12488#21462#12426#36796#12415#20808
     end
   end
   object Timer1: TTimer

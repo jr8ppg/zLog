@@ -877,13 +877,13 @@ end;
 
 procedure TEditDialog.actionChangeRExecute(Sender: TObject);
 begin
-   MainForm.SetR(workQSO);
+   workQSO.RSTRcvd := IncreaseR(workQSO.RSTRcvd);
    RcvdRSTEdit.Text := workQSO.RSTStr;
 end;
 
 procedure TEditDialog.actionChangeSExecute(Sender: TObject);
 begin
-   MainForm.SetS(workQSO);
+   workQSO.RSTRcvd := IncreaseS(workQSO.RSTRcvd);
    RcvdRSTEdit.Text := workQSO.RSTStr;
 end;
 

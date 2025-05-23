@@ -103,8 +103,6 @@ type
     // Freq Memory
     FMemEditMode: Integer;
     FMenuMn: array[1..5] of TMenuItem;
-    FScanRigSet: Integer;
-    FScanRigBand: TBand;
     procedure VisibleChangeEvent(Sender: TObject);
     procedure RigTypeChangeEvent(Sender: TObject; RigNumber: Integer);
     procedure StatusChangeEvent(Sender: TObject; RigNumber: Integer);
@@ -165,7 +163,7 @@ type
     procedure ForcePowerOff();
     procedure ForcePowerOn();
 
-    procedure ToggleMemScan(scan_rigset: Integer; b: TBand);
+    procedure ToggleMemScan();
     procedure MemScanOff();
     property MemScanRigNo: Integer read GetMemScanRigNo write SetMemScanRigNo;
 
@@ -1214,7 +1212,6 @@ begin
 
    ledMemScan.Active := False;
    ledMemScan.Status := False;
-   FScanRigSet := 1;
 end;
 
 procedure TRigControl.ForcePowerOff();
@@ -1292,6 +1289,8 @@ procedure TRigControl.buttonMemScanClick(Sender: TObject);
 var
    rig: TRig;
    i: Integer;
+   scanrigset: Integer;
+   b: TBand;
 begin
    if FCurrentRig = nil then begin
       Exit;
@@ -1299,7 +1298,36 @@ begin
 
    if buttonMemScan.Down = True then begin
 
-      rig := GetRig(FScanRigSet, FScanRigBand);
+      case MemScanRigNo of
+         // AUTO
+         0: begin
+            case (MainForm.CurrentRigID + 1) of
+               1: scanrigset := 2;
+               2: scanrigset := 1;
+               else Exit;
+            end;
+         end;
+
+         // RIG-A
+         1: begin
+            scanrigset := 1;
+            if (MainForm.CurrentRigID + 1) = scanrigset then begin
+               SendMessage(MainForm.Handle, WM_ZLOG_SWITCH_RIG, 2, 2);
+            end;
+         end;
+
+         // RIG-B
+         2: begin
+            scanrigset := 2;
+            if (MainForm.CurrentRigID + 1) = scanrigset then begin
+               SendMessage(MainForm.Handle, WM_ZLOG_SWITCH_RIG, 1, 2);
+            end;
+         end;
+      end;
+
+      b := TextToBand(MainForm.EditPanel[scanrigset - 1].BandEdit.Text);
+
+      rig := GetRig(scanrigset, b);
       if rig = nil then begin
          Exit;
       end;
@@ -1477,10 +1505,8 @@ begin
    end;
 end;
 
-procedure TRigControl.ToggleMemScan(scan_rigset: Integer; b: TBand);
+procedure TRigControl.ToggleMemScan();
 begin
-   FScanRigSet := scan_rigset;
-   FScanRigBand := b;
    buttonMemScan.Down := not buttonMemScan.Down;
    buttonMemScanClick(nil);
 end;

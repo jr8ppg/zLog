@@ -633,6 +633,7 @@ type
     SentRSTEdit2A: TEdit;
     SentRSTEdit2B: TEdit;
     SentRSTEdit2C: TEdit;
+    actionFocusRstSent: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -964,6 +965,7 @@ type
     procedure actionShowEntityInfoExecute(Sender: TObject);
     procedure actionShowGraylineExecute(Sender: TObject);
     procedure SentRSTEdit1Change(Sender: TObject);
+    procedure actionFocusRstSentExecute(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1224,6 +1226,7 @@ type
     procedure OnNonconvertKeyPress();
     procedure OnNonconvertKeyProc(nRxID: Integer; nTxID: Integer);
     procedure OnUpKeyProc(Sender: TObject);
+    procedure OnDownKeyProc(Sender: TObject);
     procedure OnAlphaNumericKeyProc(Sender: TObject; var Key: word);
     procedure UpdateCurrentQSO();
     procedure CQAbort(fReturnStartRig: Boolean);
@@ -1278,8 +1281,6 @@ type
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
-    procedure SetR(var aQSO : TQSO); // RST
-    procedure SetS(var aQSO : TQSO);
 
     function GetNextBand(BB : TBand; Up : Boolean) : TBand;
 
@@ -1664,51 +1665,6 @@ begin
    for i := 0 to BandMenu.Items.Count - 1 do begin
       BandMenu.Items[i].Visible := True;
    end;
-end;
-
-procedure TMainForm.SetR(var aQSO: TQSO); // r of RST
-var
-   i: Integer;
-begin
-   i := aQSO.RSTRcvd;
-
-   if i < 100 then begin
-      if i > 50 then
-         i := 10 + (i mod 10)
-      else
-         i := i + 10;
-   end
-   else begin
-      if i > 500 then
-         i := 100 + (i mod 100)
-      else
-         i := i + 100;
-   end;
-
-   aQSO.RSTRcvd := i;
-   // RcvdRSTEdit.Text := CurrentQSO.RSTStr;
-end;
-
-procedure TMainForm.SetS(var aQSO: TQSO);
-var
-   i: Integer;
-begin
-   i := aQSO.RSTRcvd;
-   if i < 100 then begin
-      if (i mod 10) = 9 then
-         i := 10 * (i div 10) + 1
-      else
-         i := i + 1;
-   end
-   else begin
-      if ((i div 10) mod 10) = 9 then
-         i := 100 * (i div 100) + 10 + (i mod 10)
-      else
-         i := i + 10;
-   end;
-
-   aQSO.RSTRcvd := i;
-   // RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 end;
 
 function TMainForm.GetNextBand(BB: TBand; Up: Boolean): TBand;
@@ -4682,6 +4638,11 @@ begin
 
       VK_UP: begin
          OnUpKeyProc(Sender);
+         Key := 0;
+      end;
+
+      VK_DOWN: begin
+         OnDownKeyProc(Sender);
          Key := 0;
       end;
 
@@ -8735,18 +8696,25 @@ var
    rig: Integer;
    proc: Integer;
 begin
-//   rig := Message.WParam;
    proc := Message.LParam;
 
-   rig := FCurrentRigSet;  //RigControl.GetCurrentRig();
+   rig := FCurrentRigSet;
    rig := GetNextRigID(rig - 1) + 1;
 
-   if proc = 0 then begin
-      SwitchRig(rig);
-   end
-   else begin
-      SwitchTx(rig);
-      SwitchRx(rig);
+   case proc of
+      0: begin
+         SwitchRig(rig);
+      end;
+
+      1: begin
+         SwitchTx(rig);
+         SwitchRx(rig);
+      end;
+
+      2: begin
+         rig := Message.WParam;
+         SwitchRig(rig);
+      end;
    end;
 end;
 
@@ -11216,14 +11184,14 @@ end;
 // #93 了解度(R)変更 Shift+R
 procedure TMainForm.actionChangeRExecute(Sender: TObject);
 begin
-   SetR(CurrentQSO);
+   CurrentQSO.RSTRcvd := IncreaseR(CurrentQSO.RSTRcvd);
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 end;
 
 // #94 信号強度(S)変更 Shift+S
 procedure TMainForm.actionChangeSExecute(Sender: TObject);
 begin
-   SetS(CurrentQSO);
+   CurrentQSO.RSTRcvd := IncreaseS(CurrentQSO.RSTRcvd);
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 end;
 
@@ -11933,40 +11901,8 @@ end;
 
 // #165 Toggle Memory-Scan
 procedure TMainForm.actionToggleMemScanExecute(Sender: TObject);
-var
-   scanrigset: Integer;
-   b: TBand;
 begin
-   case RigControl.MemScanRigNo of
-      // AUTO
-      0: begin
-         case FCurrentRigSet of
-            1: scanrigset := 2;
-            2: scanrigset := 1;
-            else Exit;
-         end;
-      end;
-
-      // RIG-A
-      1: begin
-         scanrigset := 1;
-         if FCurrentRigSet = scanrigset then begin
-            SwitchRig(2);
-         end;
-      end;
-
-      // RIG-B
-      2: begin
-         scanrigset := 2;
-         if FCurrentRigSet = scanrigset then begin
-            SwitchRig(1);
-         end;
-      end;
-   end;
-
-   b := TextToBand(FEditPanel[scanrigset - 1].BandEdit.Text);
-
-   RigControl.ToggleMemScan(scanrigset, b);
+   RigControl.ToggleMemScan();
 end;
 
 // #166 Toggle F2A
@@ -12066,6 +12002,17 @@ end;
 procedure TMainForm.actionShowGraylineExecute(Sender: TObject);
 begin
    FGrayline.Show();
+end;
+
+// #171 Focus RST Sent
+procedure TMainForm.actionFocusRstSentExecute(Sender: TObject);
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('---actionFocusRstSentExecute---'));
+   {$ENDIF}
+   if (SentRSTEdit.Visible = True) and (SentRSTEdit.Enabled = True) then begin
+      SentRSTEdit.SetFocus();
+   end;
 end;
 
 procedure TMainForm.WriteKeymap();
@@ -13839,15 +13786,44 @@ procedure TMainForm.OnUpKeyProc(Sender: TObject);
 var
    L: TQSOList;
 begin
-   L := TQSOList(Grid.Tag);
-   if L.Count = 1 then begin
-      Grid.Row := 1;
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      if Sender = SentRSTEdit1 then begin
+         CurrentQSO.RSTSent := IncreaseS(CurrentQSO.RSTSent);
+         SentRSTEdit1.Text := CurrentQSO.RSTSentStr;
+      end;
+      if Sender = RcvdRSTEdit1 then begin
+         CurrentQSO.RSTRcvd := IncreaseS(CurrentQSO.RSTRcvd);
+         RcvdRSTEdit1.Text := CurrentQSO.RSTRcvdStr;
+      end;
    end
    else begin
-      Grid.Row := L.Count - 1;
+      L := TQSOList(Grid.Tag);
+      if L.Count = 1 then begin
+         Grid.Row := 1;
+      end
+      else begin
+         Grid.Row := L.Count - 1;
+      end;
+      LastFocus := TEdit(Sender);
+      Grid.SetFocus;
    end;
-   LastFocus := TEdit(Sender);
-   Grid.SetFocus;
+end;
+
+procedure TMainForm.OnDownKeyProc(Sender: TObject);
+begin
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      if Sender = SentRSTEdit1 then begin
+         CurrentQSO.RSTSent := DecreaseS(CurrentQSO.RSTSent);
+         SentRSTEdit1.Text := CurrentQSO.RSTSentStr;
+      end;
+      if Sender = RcvdRSTEdit1 then begin
+         CurrentQSO.RSTRcvd := DecreaseS(CurrentQSO.RSTRcvd);
+         RcvdRSTEdit1.Text := CurrentQSO.RSTRcvdStr;
+      end;
+   end
+   else begin
+      //
+   end;
 end;
 
 procedure TMainForm.OnAlphaNumericKeyProc(Sender: TObject; var Key: word);

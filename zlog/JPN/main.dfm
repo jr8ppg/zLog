@@ -7879,6 +7879,10 @@ object MainForm: TMainForm
       Caption = 'Grayline'
       OnExecute = actionShowGraylineExecute
     end
+    object actionFocusRstSent: TAction
+      Caption = 'actionFocusRstSent'
+      OnExecute = actionFocusRstSentExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
