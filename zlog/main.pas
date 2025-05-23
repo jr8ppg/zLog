@@ -11184,15 +11184,27 @@ end;
 // #93 了解度(R)変更 Shift+R
 procedure TMainForm.actionChangeRExecute(Sender: TObject);
 begin
-   CurrentQSO.RSTRcvd := IncreaseR(CurrentQSO.RSTRcvd);
-   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   if RcvdRSTEdit.Focused then begin
+      CurrentQSO.RSTRcvd := IncreaseR(CurrentQSO.RSTRcvd);
+      RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   end;
+   if SentRSTEdit.Focused then begin
+      CurrentQSO.RSTSent := IncreaseR(CurrentQSO.RSTSent);
+      SentRSTEdit.Text := CurrentQSO.RSTSentStr;
+   end;
 end;
 
 // #94 信号強度(S)変更 Shift+S
 procedure TMainForm.actionChangeSExecute(Sender: TObject);
 begin
-   CurrentQSO.RSTRcvd := IncreaseS(CurrentQSO.RSTRcvd);
-   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   if RcvdRSTEdit.Focused then begin
+      CurrentQSO.RSTRcvd := IncreaseS(CurrentQSO.RSTRcvd);
+      RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   end;
+   if SentRSTEdit.Focused then begin
+      CurrentQSO.RSTSent := IncreaseS(CurrentQSO.RSTSent);
+      SentRSTEdit.Text := CurrentQSO.RSTSentStr;
+   end;
 end;
 
 // #95 時刻フィールドを現在時刻にセットする Shift+T
