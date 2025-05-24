@@ -2,10 +2,10 @@ object RigControl: TRigControl
   Left = 666
   Top = 35
   Caption = 'Rig Control'
-  ClientHeight = 174
-  ClientWidth = 318
+  ClientHeight = 201
+  ClientWidth = 314
   Color = clBtnFace
-  Constraints.MinHeight = 213
+  Constraints.MinHeight = 240
   Constraints.MinWidth = 330
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -24,10 +24,12 @@ object RigControl: TRigControl
   object panelBody: TPanel
     Left = 0
     Top = 30
-    Width = 318
-    Height = 72
+    Width = 314
+    Height = 99
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 318
+    ExplicitHeight = 72
     object buttonJumpLastFreq: TSpeedButton
       Left = 265
       Top = 21
@@ -191,12 +193,13 @@ object RigControl: TRigControl
   object panelHeader: TPanel
     Left = 0
     Top = 0
-    Width = 318
+    Width = 314
     Height = 30
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 318
     DesignSize = (
-      318
+      314
       30)
     object ToggleSwitch1: TToggleSwitch
       Left = 4
@@ -209,7 +212,7 @@ object RigControl: TRigControl
       OnClick = ToggleSwitch1Click
     end
     object buttonOmniRig: TButton
-      Left = 178
+      Left = 174
       Top = 3
       Width = 65
       Height = 25
@@ -217,9 +220,10 @@ object RigControl: TRigControl
       Caption = 'Omni-Rig'
       TabOrder = 1
       OnClick = buttonOmniRigClick
+      ExplicitLeft = 178
     end
     object buttonReconnectRigs: TButton
-      Left = 244
+      Left = 240
       Top = 3
       Width = 65
       Height = 25
@@ -227,12 +231,13 @@ object RigControl: TRigControl
       Caption = 'Reset'
       TabOrder = 2
       OnClick = buttonReconnectRigsClick
+      ExplicitLeft = 244
     end
   end
   object buttongrpFreqMemory: TButtonGroup
     Left = 0
-    Top = 150
-    Width = 318
+    Top = 177
+    Width = 314
     Height = 24
     Align = alBottom
     BorderStyle = bsNone
@@ -260,78 +265,88 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
+    ExplicitTop = 150
+    ExplicitWidth = 318
   end
   object panelMemScan: TPanel
     Left = 0
-    Top = 102
-    Width = 318
+    Top = 129
+    Width = 314
     Height = 24
     Align = alBottom
     TabOrder = 3
+    ExplicitTop = 102
+    ExplicitWidth = 318
     DesignSize = (
-      318
+      314
       24)
     object buttonMemoryClear: TSpeedButton
       Tag = 2
-      Left = 93
+      Left = 89
       Top = 2
       Width = 30
-      Height = 20
+      Height = 19
       Anchors = [akTop, akRight]
       Caption = 'MC'
       OnClick = buttonMemoryWriteClick
-      ExplicitLeft = 91
+      ExplicitLeft = 93
     end
     object buttonMemoryWrite: TSpeedButton
       Tag = 1
-      Left = 63
+      Left = 59
       Top = 2
       Width = 30
-      Height = 20
+      Height = 19
       Anchors = [akTop, akRight]
       Caption = 'MW'
       OnClick = buttonMemoryWriteClick
-      ExplicitLeft = 61
+      ExplicitLeft = 63
     end
     object buttonMemScan: TSpeedButton
       Tag = 2
-      Left = 126
+      Left = 122
       Top = 2
       Width = 55
-      Height = 20
+      Height = 19
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 1
       Caption = 'M-Scan'
       OnClick = buttonMemScanClick
-      ExplicitLeft = 124
+      ExplicitLeft = 126
     end
     object buttonMemScanAuto: TSpeedButton
-      Left = 184
+      Left = 180
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 7
       Down = True
       Caption = 'AUTO'
+      ExplicitLeft = 184
     end
     object buttonMemScanRigA: TSpeedButton
       Tag = 1
-      Left = 226
+      Left = 222
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 7
       Caption = 'RIG-A'
+      ExplicitLeft = 226
     end
     object buttonMemScanRigB: TSpeedButton
       Tag = 2
-      Left = 268
+      Left = 264
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 7
       Caption = 'RIG-B'
+      ExplicitLeft = 268
     end
     object ledMemScan: TJvLED
       Left = 4
@@ -351,44 +366,57 @@ object RigControl: TRigControl
   end
   object panelSpotImport: TPanel
     Left = 0
-    Top = 126
-    Width = 318
+    Top = 153
+    Width = 314
     Height = 24
     Align = alBottom
     TabOrder = 4
+    ExplicitTop = 126
+    ExplicitWidth = 318
+    DesignSize = (
+      314
+      24)
     object buttonImportAuto: TSpeedButton
-      Left = 184
+      Left = 180
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 6
       Down = True
       Caption = 'AUTO'
+      ExplicitLeft = 184
     end
     object buttonImportRigA: TSpeedButton
       Tag = 1
-      Left = 226
+      Left = 222
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 6
       Caption = 'RIG-A'
+      ExplicitLeft = 226
     end
     object buttonImportRigB: TSpeedButton
       Tag = 2
-      Left = 268
+      Left = 264
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 6
       Caption = 'RIG-B'
+      ExplicitLeft = 268
     end
     object Label5: TLabel
-      Left = 97
+      Left = 93
       Top = 4
       Width = 83
       Height = 15
+      Anchors = [akTop, akRight]
       Caption = 'SPOT Import to'
+      ExplicitLeft = 97
     end
   end
   object Timer1: TTimer

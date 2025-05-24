@@ -2,10 +2,10 @@ object RigControl: TRigControl
   Left = 666
   Top = 35
   Caption = 'Rig Control'
-  ClientHeight = 174
+  ClientHeight = 201
   ClientWidth = 318
   Color = clBtnFace
-  Constraints.MinHeight = 213
+  Constraints.MinHeight = 240
   Constraints.MinWidth = 330
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -25,7 +25,7 @@ object RigControl: TRigControl
     Left = 0
     Top = 30
     Width = 318
-    Height = 72
+    Height = 99
     Align = alClient
     TabOrder = 0
     object buttonJumpLastFreq: TSpeedButton
@@ -231,7 +231,7 @@ object RigControl: TRigControl
   end
   object buttongrpFreqMemory: TButtonGroup
     Left = 0
-    Top = 150
+    Top = 177
     Width = 318
     Height = 24
     Align = alBottom
@@ -263,7 +263,7 @@ object RigControl: TRigControl
   end
   object panelMemScan: TPanel
     Left = 0
-    Top = 102
+    Top = 129
     Width = 318
     Height = 24
     Align = alBottom
@@ -276,41 +276,39 @@ object RigControl: TRigControl
       Left = 93
       Top = 2
       Width = 30
-      Height = 20
+      Height = 19
       Anchors = [akTop, akRight]
       Caption = 'MC'
       OnClick = buttonMemoryWriteClick
-      ExplicitLeft = 91
     end
     object buttonMemoryWrite: TSpeedButton
       Tag = 1
       Left = 63
       Top = 2
       Width = 30
-      Height = 20
+      Height = 19
       Anchors = [akTop, akRight]
       Caption = 'MW'
       OnClick = buttonMemoryWriteClick
-      ExplicitLeft = 61
     end
     object buttonMemScan: TSpeedButton
       Tag = 2
       Left = 126
       Top = 2
       Width = 55
-      Height = 20
+      Height = 19
       AllowAllUp = True
       Anchors = [akTop, akRight]
       GroupIndex = 1
       Caption = 'M-Scan'
       OnClick = buttonMemScanClick
-      ExplicitLeft = 124
     end
     object buttonMemScanAuto: TSpeedButton
       Left = 184
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 7
       Down = True
       Caption = 'AUTO'
@@ -321,6 +319,7 @@ object RigControl: TRigControl
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 7
       Caption = 'RIG-A'
     end
@@ -330,6 +329,7 @@ object RigControl: TRigControl
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 7
       Caption = 'RIG-B'
     end
@@ -351,16 +351,20 @@ object RigControl: TRigControl
   end
   object panelSpotImport: TPanel
     Left = 0
-    Top = 126
+    Top = 153
     Width = 318
     Height = 24
     Align = alBottom
     TabOrder = 4
+    DesignSize = (
+      318
+      24)
     object buttonImportAuto: TSpeedButton
       Left = 184
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 6
       Down = True
       Caption = 'AUTO'
@@ -371,6 +375,7 @@ object RigControl: TRigControl
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 6
       Caption = 'RIG-A'
     end
@@ -380,6 +385,7 @@ object RigControl: TRigControl
       Top = 2
       Width = 43
       Height = 19
+      Anchors = [akTop, akRight]
       GroupIndex = 6
       Caption = 'RIG-B'
     end
@@ -388,6 +394,7 @@ object RigControl: TRigControl
       Top = 4
       Width = 83
       Height = 15
+      Anchors = [akTop, akRight]
       Caption = 'SPOT Import to'
     end
   end
