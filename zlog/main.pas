@@ -11185,11 +11185,11 @@ end;
 procedure TMainForm.actionChangeRExecute(Sender: TObject);
 begin
    if RcvdRSTEdit.Focused then begin
-      CurrentQSO.RSTRcvd := IncreaseR(CurrentQSO.RSTRcvd);
+      CurrentQSO.RSTRcvd := DecreaseS(CurrentQSO.RSTRcvd);
       RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    end;
    if SentRSTEdit.Focused then begin
-      CurrentQSO.RSTSent := IncreaseR(CurrentQSO.RSTSent);
+      CurrentQSO.RSTSent := DecreaseS(CurrentQSO.RSTSent);
       SentRSTEdit.Text := CurrentQSO.RSTSentStr;
    end;
 end;
@@ -11198,11 +11198,11 @@ end;
 procedure TMainForm.actionChangeSExecute(Sender: TObject);
 begin
    if RcvdRSTEdit.Focused then begin
-      CurrentQSO.RSTRcvd := IncreaseS(CurrentQSO.RSTRcvd);
+      CurrentQSO.RSTRcvd := DecreaseS(CurrentQSO.RSTRcvd);
       RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    end;
    if SentRSTEdit.Focused then begin
-      CurrentQSO.RSTSent := IncreaseS(CurrentQSO.RSTSent);
+      CurrentQSO.RSTSent := DecreaseS(CurrentQSO.RSTSent);
       SentRSTEdit.Text := CurrentQSO.RSTSentStr;
    end;
 end;
