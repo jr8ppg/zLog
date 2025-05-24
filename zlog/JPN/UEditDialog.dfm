@@ -36,7 +36,7 @@ object EditDialog: TEditDialog
     object radioPseQsl: TRadioButton
       Left = 71
       Top = 16
-      Width = 61
+      Width = 66
       Height = 17
       Caption = 'PSE QSL'
       TabOrder = 1
@@ -60,7 +60,7 @@ object EditDialog: TEditDialog
     object checkCQ: TCheckBox
       Left = 16
       Top = 16
-      Width = 33
+      Width = 38
       Height = 17
       Caption = 'CQ'
       TabOrder = 0
@@ -68,7 +68,7 @@ object EditDialog: TEditDialog
     object checkDupe: TCheckBox
       Left = 67
       Top = 16
-      Width = 46
+      Width = 52
       Height = 17
       Caption = 'DUPE'
       Enabled = False
@@ -86,7 +86,7 @@ object EditDialog: TEditDialog
     object checkForced: TCheckBox
       Left = 235
       Top = 16
-      Width = 64
+      Width = 54
       Height = 17
       Caption = #24375#21046#20837#21147
       Enabled = False
@@ -179,7 +179,6 @@ object EditDialog: TEditDialog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
-    ExplicitWidth = 692
     DesignSize = (
       770
       33)
@@ -193,7 +192,6 @@ object EditDialog: TEditDialog
       Default = True
       TabOrder = 0
       OnClick = OKBtnClick
-      ExplicitLeft = 527
     end
     object CancelBtn: TButton
       Left = 686
@@ -205,7 +203,6 @@ object EditDialog: TEditDialog
       Caption = #12461#12515#12531#12475#12523
       TabOrder = 1
       OnClick = CancelBtnClick
-      ExplicitLeft = 608
     end
   end
   object groupQsoData: TGroupBox
@@ -232,9 +229,9 @@ object EditDialog: TEditDialog
     object rcvdRSTLabel: TLabel
       Left = 342
       Top = 14
-      Width = 16
+      Width = 25
       Height = 13
-      Caption = 'MY'
+      Caption = 'rRST'
     end
     object CallsignLabel: TLabel
       Left = 155
@@ -302,9 +299,9 @@ object EditDialog: TEditDialog
     object Label3: TLabel
       Left = 238
       Top = 14
-      Width = 16
+      Width = 27
       Height = 13
-      Caption = 'UR'
+      Caption = 'sRST'
     end
     object CallsignEdit: TEdit
       Left = 155
@@ -408,6 +405,8 @@ object EditDialog: TEditDialog
       AutoSize = False
       ImeMode = imDisable
       TabOrder = 2
+      OnKeyDown = EditKeyDown
+      OnKeyPress = EditKeyPress
     end
     object NewPowerEdit: TEdit
       Left = 519

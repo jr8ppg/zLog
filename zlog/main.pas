@@ -13801,11 +13801,11 @@ begin
    if GetAsyncKeyState(VK_SHIFT) < 0 then begin
       if Sender = SentRSTEdit1 then begin
          CurrentQSO.RSTSent := IncreaseS(CurrentQSO.RSTSent);
-         SentRSTEdit1.Text := CurrentQSO.RSTSentStr;
+         TEdit(Sender).Text := CurrentQSO.RSTSentStr;
       end;
-      if Sender = RcvdRSTEdit1 then begin
+      if (Sender = RcvdRSTEdit1) or (Sender = RcvdRSTEdit2A) or (Sender = RcvdRSTEdit2B) or (Sender = RcvdRSTEdit2C) then begin
          CurrentQSO.RSTRcvd := IncreaseS(CurrentQSO.RSTRcvd);
-         RcvdRSTEdit1.Text := CurrentQSO.RSTRcvdStr;
+         TEdit(Sender).Text := CurrentQSO.RSTRcvdStr;
       end;
    end
    else begin
@@ -13826,11 +13826,11 @@ begin
    if GetAsyncKeyState(VK_SHIFT) < 0 then begin
       if Sender = SentRSTEdit1 then begin
          CurrentQSO.RSTSent := DecreaseS(CurrentQSO.RSTSent);
-         SentRSTEdit1.Text := CurrentQSO.RSTSentStr;
+         TEdit(Sender).Text := CurrentQSO.RSTSentStr;
       end;
-      if Sender = RcvdRSTEdit1 then begin
+      if (Sender = RcvdRSTEdit1) or (Sender = RcvdRSTEdit2A) or (Sender = RcvdRSTEdit2B) or (Sender = RcvdRSTEdit2C) then begin
          CurrentQSO.RSTRcvd := DecreaseS(CurrentQSO.RSTRcvd);
-         RcvdRSTEdit1.Text := CurrentQSO.RSTRcvdStr;
+         TEdit(Sender).Text := CurrentQSO.RSTRcvdStr;
       end;
    end
    else begin

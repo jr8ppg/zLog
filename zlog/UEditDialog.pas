@@ -172,6 +172,8 @@ type
     Action : integer;
     procedure ChangePower(fUp: Boolean);
     procedure ApplyShortcut();
+    procedure OnUpKeyProc(Sender: TObject);
+    procedure OnDownKeyProc(Sender: TObject);
   public
     { Public declarations }
     procedure Init(aQSO : TQSO; Action_ : integer);
@@ -544,6 +546,16 @@ begin
          OutputDebugString(PChar('(–³•ÏŠ·)'));
          {$ENDIF}
          actionControlPTT.Execute();
+      end;
+
+      VK_UP: begin
+         OnUpKeyProc(Sender);
+         Key := 0;
+      end;
+
+      VK_DOWN: begin
+         OnDownKeyProc(Sender);
+         Key := 0;
       end;
    end;
 end;
@@ -1049,6 +1061,42 @@ begin
    actionChangeBand2.SecondaryShortCuts.Assign(MainForm.actionChangeBand2.SecondaryShortCuts);
    actionChangeMode2.SecondaryShortCuts.Assign(MainForm.actionChangeMode2.SecondaryShortCuts);
    actionChangePower2.SecondaryShortCuts.Assign(MainForm.actionChangePower2.SecondaryShortCuts);
+end;
+
+procedure TEditDialog.OnUpKeyProc(Sender: TObject);
+var
+   L: TQSOList;
+begin
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      if Sender = SentRSTEdit then begin
+         workQSO.RSTSent := IncreaseS(workQSO.RSTSent);
+         SentRSTEdit.Text := workQSO.RSTSentStr;
+      end;
+      if Sender = RcvdRSTEdit then begin
+         workQSO.RSTRcvd := IncreaseS(workQSO.RSTRcvd);
+         RcvdRSTEdit.Text := workQSO.RSTRcvdStr;
+      end;
+   end
+   else begin
+      //
+   end;
+end;
+
+procedure TEditDialog.OnDownKeyProc(Sender: TObject);
+begin
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      if Sender = SentRSTEdit then begin
+         workQSO.RSTSent := DecreaseS(workQSO.RSTSent);
+         SentRSTEdit.Text := workQSO.RSTSentStr;
+      end;
+      if Sender = RcvdRSTEdit then begin
+         workQSO.RSTRcvd := DecreaseS(workQSO.RSTRcvd);
+         RcvdRSTEdit.Text := workQSO.RSTRcvdStr;
+      end;
+   end
+   else begin
+      //
+   end;
 end;
 
 end.
