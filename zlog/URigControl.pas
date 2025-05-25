@@ -13,7 +13,6 @@ uses
 
 type
   TRigControl = class(TForm)
-    buttonReconnectRigs: TButton;
     RigLabel: TLabel;
     Timer1: TTimer;
     Label2: TLabel;
@@ -23,7 +22,6 @@ type
     ZCom2: TCommPortDriver;
     dispFreqA: TLabel;
     dispFreqB: TLabel;
-    buttonOmniRig: TButton;
     PollingTimer2: TTimer;
     Panel1: TPanel;
     Panel2: TPanel;
@@ -64,6 +62,10 @@ type
     buttonMemScanRigB: TSpeedButton;
     ledMemScan: TJvLED;
     labelMemScan: TLabel;
+    menuM6: TMenuItem;
+    labelScanMemChNo: TLabel;
+    buttonOmniRig: TSpeedButton;
+    buttonReconnectRigs: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -85,6 +87,7 @@ type
     procedure menuMnClick(Sender: TObject);
     procedure popupMemoryChPopup(Sender: TObject);
     procedure buttonMemScanClick(Sender: TObject);
+    procedure buttongrpFreqMemoryItems5Click(Sender: TObject);
   private
     { Private declarations }
     FRigs: TRigArray;
@@ -102,7 +105,7 @@ type
 
     // Freq Memory
     FMemEditMode: Integer;
-    FMenuMn: array[1..5] of TMenuItem;
+    FMenuMn: array[1..6] of TMenuItem;
     procedure VisibleChangeEvent(Sender: TObject);
     procedure RigTypeChangeEvent(Sender: TObject; RigNumber: Integer);
     procedure StatusChangeEvent(Sender: TObject; RigNumber: Integer);
@@ -218,8 +221,10 @@ begin
    FMenuMn[3] := menuM3;
    FMenuMn[4] := menuM4;
    FMenuMn[5] := menuM5;
+   FMenuMn[6] := menuM6;
 
    labelMemScan.Caption := '';
+   labelScanMemchNo.Caption := '';
    buttonImportAuto.Down := True;
 end;
 
@@ -283,6 +288,7 @@ begin
    end
    else begin
       FRigs[nRigNo].MemScanProcess();
+      labelScanMemchNo.Caption := 'M' + IntToStr(FRigs[nRigNo].MemScanNo);
    end;
 end;
 
@@ -465,7 +471,7 @@ end;
 function TRigControl.SetCurrentRig(N: Integer): Boolean;
    procedure SetRigName(rigno: Integer; rigname: string);
    begin
-      RigLabel.Caption := 'Current rig : ' + IntToStr(rigno) + ' (' + rigname + ')';
+      RigLabel.Caption := 'RIG-' + IntToStr(rigno) + ':' + rigname;
    end;
 begin
 //   if (N > FMaxRig) or (N < 0) then begin
@@ -1001,7 +1007,7 @@ begin
          S := FOmniRig.Rig2.RigType;
       end;
 
-      RigLabel.Caption := 'Current rig : ' + IntToStr(MainForm.RigControl.CurrentRigNumber) + ' Omni-Rig: ' + S;
+      RigLabel.Caption := 'RIG-' + IntToStr(MainForm.RigControl.CurrentRigNumber) + ':Omni-Rig(' + S + ')';
    end;
 
    // DEBUG:RITî•ñ•\Ž¦
@@ -1274,6 +1280,14 @@ begin
    FCurrentRig.MemCh[5].Call();
 end;
 
+procedure TRigControl.buttongrpFreqMemoryItems5Click(Sender: TObject);
+begin
+   if FCurrentRig = nil then begin
+      Exit;
+   end;
+   FCurrentRig.MemCh[6].Call();
+end;
+
 procedure TRigControl.buttonMemoryWriteClick(Sender: TObject);
 var
    pt: TPoint;
@@ -1418,14 +1432,14 @@ begin
       buttonMemoryClear.Enabled := False;
       buttonMemScan.Enabled := False;
       buttongrpFreqMemory.Enabled := False;
-      for i := 1 to 5 do begin
+      for i := 1 to 6 do begin
          buttongrpFreqMemory.Items[i - 1].Caption := 'M' + IntToStr(i);
          buttongrpFreqMemory.Items[i - 1].Hint := '';
       end;
       Exit;
    end;
 
-   for i := 1 to 5 do begin
+   for i := 1 to 6 do begin
       f := FCurrentRig.MemCh[i].FFreq;
       m := FCurrentRig.MemCh[i].FMode;
       b := dmZLogGlobal.BandPlan.FreqToBand(f);
@@ -1461,7 +1475,7 @@ begin
    fname := ExtractFilePath(Application.ExeName) + 'zlog_rigcontrol.ini';
    ini := TMemIniFile.Create(fname);
    try
-      for i := 1 to 5 do begin
+      for i := 1 to 6 do begin
          f := rig.MemCh[i].FFreq;
          m := rig.MemCh[i].FMode;
          strKey := 'M' + IntToStr(i);
@@ -1494,7 +1508,7 @@ begin
    fname := ExtractFilePath(Application.ExeName) + 'zlog_rigcontrol.ini';
    ini := TMemIniFile.Create(fname);
    try
-      for i := 1 to 5 do begin
+      for i := 1 to 6 do begin
          strKey := 'M' + IntToStr(i);
 
          rig.MemCh[i].FFreq := ini.ReadInt64(rig.Name, strKey + '_freq', 0);
