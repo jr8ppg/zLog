@@ -1064,8 +1064,6 @@ begin
 end;
 
 procedure TEditDialog.OnUpKeyProc(Sender: TObject);
-var
-   L: TQSOList;
 begin
    if GetAsyncKeyState(VK_SHIFT) < 0 then begin
       if Sender = SentRSTEdit then begin
