@@ -1362,6 +1362,9 @@ begin
          end;
       end;
 
+      labelMemScan.Caption := '';
+      labelScanMemChNo.Caption := '';
+
       ledMemScan.Active := False;
       ledMemScan.Status := False;
    end;

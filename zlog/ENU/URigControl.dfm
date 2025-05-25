@@ -373,16 +373,28 @@ object RigControl: TRigControl
     object labelMemScan: TLabel
       Left = 25
       Top = 5
-      Width = 32
+      Width = 30
       Height = 15
       Caption = 'RIG-9'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object labelScanMemChNo: TLabel
       Left = 81
       Top = 5
-      Width = 16
+      Width = 17
       Height = 15
       Caption = 'M1'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
   end
   object panelSpotImport: TPanel
