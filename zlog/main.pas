@@ -9432,7 +9432,7 @@ begin
    end;
 
    if MyContest.SerialType = stNone then begin
-      EditScreen := TGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2);
+      EditScreen := TGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
    end
    else begin
       EditScreen := TSerialGeneralEdit.Create(Self);
@@ -9494,7 +9494,7 @@ begin
       MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', dmZLogGlobal.ContestMode);
    end
    else begin
-      EditScreen := TGeneralEdit.Create(Self, False);
+      EditScreen := TGeneralEdit.Create(Self, False, False);
       MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)', dmZLogGlobal.ContestMode);
    end;
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);

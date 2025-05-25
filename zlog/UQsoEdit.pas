@@ -49,7 +49,7 @@ type
   TGeneralEdit = class(TBasicEdit)
   private
   public
-    constructor Create(AOwner: TComponent; UseMulti2: Boolean);
+    constructor Create(AOwner: TComponent; UseMulti2: Boolean; UseSentRST: Boolean);
     function GetNewMulti1(aQSO : TQSO) : string; override;
     function GetNewMulti2(aQSO : TQSO) : string; override;
   end;
@@ -192,7 +192,7 @@ begin
       Result := '';
 end;
 
-constructor TGeneralEdit.Create(AOwner: TComponent; UseMulti2: Boolean);
+constructor TGeneralEdit.Create(AOwner: TComponent; UseMulti2: Boolean; UseSentRST: Boolean);
 var
    colno: Integer;
 begin
@@ -200,15 +200,29 @@ begin
 
    colTime := 0;
    colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-   NewMulti1Wid := 5;
+   if UseSentRST = True then begin
+      colsentRST := 2;
+      colrcvdRST := 3;
+      colrcvdNumber := 4;
+      colBand := 5;
+      colMode := 6;
+      colPoint := 7;
+      colNewMulti1 := 8;
+      NewMulti1Wid := 5;
+      colno := 9;
+   end
+   else begin
+      colsentRST := -1;
+      colrcvdRST := 2;
+      colrcvdNumber := 3;
+      colBand := 4;
+      colMode := 5;
+      colPoint := 6;
+      colNewMulti1 := 7;
+      NewMulti1Wid := 5;
+      colno := 8;
+   end;
 
-   colno := 8;
    if UseMulti2 = True then begin
       colNewMulti2 := colno;
       NewMulti2Wid := 5;
@@ -226,7 +240,7 @@ begin
       Inc(colno);
       colMemo := colno;
       Inc(colno);
-      GridColCount := 12;
+      GridColCount := 13;
    end
    else begin
       colNewPower := -1;
@@ -234,7 +248,7 @@ begin
       Inc(colno);
       colMemo := colno;
       Inc(colno);
-      GridColCount := 11;
+      GridColCount := 12;
    end;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
