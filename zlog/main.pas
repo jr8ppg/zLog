@@ -12417,7 +12417,7 @@ begin
 
 //   MyContest.SpaceBarProc;
 
-   if N.Text = '' then begin
+   if (MyContest.SameExchange = True) and (N.Text = '') then begin
       if strNumber <> '' then begin
          N.Text := strNumber;
          N.SelStart := Length(N.Text);

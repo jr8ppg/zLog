@@ -849,7 +849,7 @@ begin
    end;
 
    // NR未入力の場合
-   if (Sp.Number = '') and (fWorkedScrub = False) then begin
+   if (MyContest.SameExchange = True) and (Sp.Number = '') and (fWorkedScrub = False) then begin
       // 他のバンドで交信済みならマルチを取得
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
