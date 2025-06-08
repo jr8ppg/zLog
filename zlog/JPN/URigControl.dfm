@@ -5,6 +5,7 @@ object RigControl: TRigControl
   ClientHeight = 171
   ClientWidth = 384
   Color = clBtnFace
+  Constraints.MinHeight = 210
   Constraints.MinWidth = 400
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -27,7 +28,6 @@ object RigControl: TRigControl
     Height = 75
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 105
     DesignSize = (
       384
       75)
@@ -281,7 +281,6 @@ object RigControl: TRigControl
       end>
     ShowHint = True
     TabOrder = 2
-    ExplicitTop = 177
   end
   object panelMemScan: TPanel
     Left = 0
@@ -290,7 +289,6 @@ object RigControl: TRigControl
     Height = 24
     Align = alBottom
     TabOrder = 3
-    ExplicitTop = 129
     DesignSize = (
       384
       24)
@@ -404,7 +402,6 @@ object RigControl: TRigControl
     Height = 24
     Align = alBottom
     TabOrder = 4
-    ExplicitTop = 153
     DesignSize = (
       384
       24)
