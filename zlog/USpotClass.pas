@@ -246,12 +246,13 @@ var
             Break;
          end;
 
-         outstr := outstr + ch;
          Inc(p);
 
          if (ch = ':') then begin
             Break;
          end;
+
+         outstr := outstr + ch;
       end;
 
       Result := outstr;
