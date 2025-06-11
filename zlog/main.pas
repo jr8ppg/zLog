@@ -9808,7 +9808,7 @@ begin
       end;
 
       // RIG Select
-      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet, rig.RigNumber, rig.CurrentMode);
+//      dmZLogKeyer.SetTxRigFlag(FCurrentRigSet, rig.RigNumber, rig.CurrentMode);
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
@@ -9896,6 +9896,9 @@ begin
    // 2R:CQ+S&P時、F1/F2/F3以外はSPモード
    if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
       if (Is2bsiq() = False) then begin
+         m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
+         StopMessage(m);
+         FMessageManager.ClearQue();
          if no > 3 then begin
             SetCQ(False);
          end;
