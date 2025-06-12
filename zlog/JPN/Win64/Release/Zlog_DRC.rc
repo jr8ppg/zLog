@@ -2802,8 +2802,6 @@ END
 /* D:\github\zLog_v2940\zlog\USummaryInfo.DFM */
 /* D:\github\zLog_v2940\zlog\UBasicScore.DFM */
 /* D:\github\zLog_v2940\zlog\UQTCForm.DFM */
-/* D:\github\zLog_v2940\zlog\UPartials.DFM */
-/* D:\github\zLog_v2940\zlog\UEditDialog.DFM */
 /* D:\github\zLog_v2940\zlog\UWWZone.DFM */
 /* D:\github\zLog_v2940\zlog\UACAGMulti.DFM */
 /* D:\github\zLog_v2940\zlog\UNewIOTARef.DFM */
@@ -2844,6 +2842,8 @@ END
 /* D:\github\zLog_v2940\zlog\UFreqPanel.dfm */
 /* D:\github\zLog_v2940\zlog\UFreqMemDialog.dfm */
 /* D:\github\zLog_v2940\zlog\UOptions2.DFM */
+/* D:\github\zLog_v2940\zlog\UPartials.DFM */
+/* D:\github\zLog_v2940\zlog\UEditDialog.DFM */
 /* D:\github\zLog_v2940\zlog\UTTYConsole.DFM */
 /* D:\github\zLog_v2940\zlog\UELogJarl1.dfm */
 /* D:\github\zLog_v2940\zlog\UELogJarl2.dfm */

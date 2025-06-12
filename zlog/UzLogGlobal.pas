@@ -675,6 +675,10 @@ function TextToPower(text: string): TPower;
 function BandToText(b: TBand): string;
 function ModeToText(m: TMode): string;
 function BandToPower(B: TBand): TPower;
+function IncreaseR(RST: Integer): Integer;
+function DecreaseR(RST: Integer): Integer;
+function IncreaseS(RST: Integer): Integer;
+function DecreaseS(RST: Integer): Integer;
 
 function LoadResourceString(uID: Integer): string;
 
@@ -4484,6 +4488,130 @@ begin
    if strPower = 'M' then Result := pwrM;
    if strPower = 'L' then Result := pwrL;
    if strPower = 'P' then Result := pwrP;
+end;
+
+function IncreaseR(RST: Integer): Integer;
+var
+   R, S, T: Integer;
+begin
+   if RST < 100 then begin
+      R := RST div 10;
+      S := RST Mod 10;
+
+      Inc(R);
+      if R > 5 then begin
+         R := 1;
+      end;
+
+      RST := (R * 10) + (S * 1);
+   end
+   else begin
+      R := RST div 100;
+      S := (RST - (R * 100)) div 10;
+      T := RST mod 10;
+
+      Inc(R);
+      if R > 5 then begin
+         R := 1;
+      end;
+
+      RST := (R * 100) + (S * 10) + (T * 1);
+   end;
+
+   Result := RST;
+end;
+
+function DecreaseR(RST: Integer): Integer;
+var
+   R, S, T: Integer;
+begin
+   if RST < 100 then begin
+      R := RST div 10;
+      S := RST Mod 10;
+
+      Dec(R);
+      if R < 1 then begin
+         R := 5;
+      end;
+
+      RST := (R * 10) + (S * 1);
+   end
+   else begin
+      R := RST div 100;
+      S := (RST - (R * 100)) div 10;
+      T := RST mod 10;
+
+      Dec(R);
+      if R < 1 then begin
+         R := 5;
+      end;
+
+      RST := (R * 100) + (S * 10) + (T * 1);
+   end;
+
+   Result := RST;
+end;
+
+function IncreaseS(RST: Integer): Integer;
+var
+   R, S, T: Integer;
+begin
+   if RST < 100 then begin
+      R := RST div 10;
+      S := RST Mod 10;
+
+      Inc(S);
+      if S > 9 then begin
+         S := 1;
+      end;
+
+      RST := (R * 10) + (S * 1);
+   end
+   else begin
+      R := RST div 100;
+      S := (RST - (R * 100)) div 10;
+      T := RST mod 10;
+
+      Inc(S);
+      if S > 9 then begin
+         S := 1;
+      end;
+
+      RST := (R * 100) + (S * 10) + (T * 1);
+   end;
+
+   Result := RST;
+end;
+
+function DecreaseS(RST: Integer): Integer;
+var
+   R, S, T: Integer;
+begin
+   if RST < 100 then begin
+      R := RST div 10;
+      S := RST Mod 10;
+
+      Dec(S);
+      if S < 1 then begin
+         S := 9;
+      end;
+
+      RST := (R * 10) + (S * 1);
+   end
+   else begin
+      R := RST div 100;
+      S := (RST - (R * 100)) div 10;
+      T := RST mod 10;
+
+      Dec(S);
+      if S < 1 then begin
+         S := 9;
+      end;
+
+      RST := (R * 100) + (S * 10) + (T * 1);
+   end;
+
+   Result := RST;
 end;
 
 function TdmZLogGlobal.GetRootPath(): string;

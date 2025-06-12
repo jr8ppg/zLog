@@ -5,7 +5,7 @@ interface
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, Menus, System.Actions, Vcl.ActnList, Vcl.ComCtrls,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UzLogKeyer, UFreqPanel;
 
 const _ActInsert = 0;
       _ActChange = 1;
@@ -74,8 +74,7 @@ type
     checkDupe: TCheckBox;
     checkQsyViolation: TCheckBox;
     checkForced: TCheckBox;
-    GroupBox3: TGroupBox;
-    editFrequency: TEdit;
+    groupFrequency: TGroupBox;
     GroupBox4: TGroupBox;
     comboTxNo: TComboBox;
     TxLabel: TLabel;
@@ -97,13 +96,13 @@ type
     Label2: TLabel;
     CallsignEdit: TEdit;
     RcvdRSTEdit: TEdit;
-    NumberEdit: TEdit;
+    NrRcvdEdit: TEdit;
     BandEdit: TEdit;
     ModeEdit: TEdit;
     MemoEdit: TEdit;
     PointEdit: TEdit;
     OpEdit: TEdit;
-    SerialEdit: TEdit;
+    NrSentEdit: TEdit;
     NewPowerEdit: TEdit;
     checkInvalid: TCheckBox;
     DateTimePicker1: TDateTimePicker;
@@ -113,6 +112,9 @@ type
     actionChangePower2: TAction;
     actionPlayCQA1: TAction;
     checkRbnVerified: TCheckBox;
+    SentRSTEdit: TEdit;
+    Label3: TLabel;
+    comboFrequency: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -162,6 +164,7 @@ type
     procedure actionToggleTXExecute(Sender: TObject);
     procedure actionSo2rToggleRigPairExecute(Sender: TObject);
     procedure checkInvalidClick(Sender: TObject);
+    procedure comboFrequencyDropDown(Sender: TObject);
   private
     { Private declarations }
     workQSO : TQSO;
@@ -169,6 +172,8 @@ type
     Action : integer;
     procedure ChangePower(fUp: Boolean);
     procedure ApplyShortcut();
+    procedure OnUpKeyProc(Sender: TObject);
+    procedure OnDownKeyProc(Sender: TObject);
   public
     { Public declarations }
     procedure Init(aQSO : TQSO; Action_ : integer);
@@ -276,8 +281,8 @@ begin
       end;
    end;
 
-   SerialEdit.Visible := MainForm.SerialEdit1.Visible;
-   SerialLabel.Visible := SerialEdit.Visible;
+//   SerialEdit.Visible := MainForm.SerialEdit1.Visible;
+//   SerialLabel.Visible := SerialEdit.Visible;
 
 //   ModeEdit.Visible := MainForm.ModeEdit1.Visible;
 //   ModeLabel.Visible := ModeEdit.Visible;
@@ -323,15 +328,6 @@ var
 begin
    // QSO Data
 
-   // Serial Number
-   i := StrToIntDef(SerialEdit.Text, 0);
-   if i > 0 then begin
-      workQSO.Serial := i;
-      if MyContest.SerialType <> stNone then begin
-         workQSO.NrSent := Format('%3.3d', [i]);
-      end;
-   end;
-
    // Date & Time
    workQSO.Time := Trunc(DateTimePicker1.Date) + Frac(DateTimePicker2.Time);
 
@@ -346,7 +342,33 @@ begin
    // Call
    workQSO.Callsign := CallsignEdit.Text;
 
-   // RST
+   // UR RST
+   try
+      i := StrToInt(SentRSTEdit.Text);
+   except
+      on EConvertError do begin
+         if workQSO.mode in [mCW, mRTTY] then
+            i := 599
+         else
+            i := 59;
+      end;
+   end;
+   workQSO.RSTSent := i;
+
+   // NR Sent
+   if MyContest.SerialType = stNone then begin
+      workQSO.NrSent := NrSentEdit.Text;
+   end
+   else begin
+      // Serial Number
+      i := StrToIntDef(NrSentEdit.Text, 0);
+      if i > 0 then begin
+         workQSO.Serial := i;
+         workQSO.NrSent := Format('%3.3d', [i]);
+      end;
+   end;
+
+   // MY RST
    try
       i := StrToInt(RcvdRSTEdit.Text);
    except
@@ -359,8 +381,8 @@ begin
    end;
    workQSO.RSTrcvd := i;
 
-   // Rcvd
-   workQSO.NRRcvd := NumberEdit.Text;
+   // NR Rcvd
+   workQSO.NRRcvd := NrRcvdEdit.Text;
 
    // memo
    workQSO.memo := MemoEdit.Text;
@@ -370,7 +392,7 @@ begin
    workQSO.TX := StrToIntDef(comboTxNo.Items[comboTxNo.ItemIndex], 0);
 
    // Frequency
-   workQSO.Freq := editFrequency.Text;
+   workQSO.Freq := comboFrequency.Text;
 
    // QSO Flags
    workQSO.CQ := checkCQ.Checked;
@@ -441,7 +463,7 @@ begin
             end;
             exit;
          end;
-         if (TEdit(Sender).Name = 'NumberEdit') or (TEdit(Sender).Name = 'TimeEdit') then begin
+         if (TEdit(Sender).Name = 'NrRcvdEdit') or (TEdit(Sender).Name = 'TimeEdit') then begin
             Key := #0;
             if dmZlogGlobal.Settings._movetomemo then
                MemoEdit.SetFocus
@@ -456,7 +478,7 @@ begin
                CallsignEdit.SelectAll;
                exit;
             end;
-            NumberEdit.SetFocus;
+            NrRcvdEdit.SetFocus;
          end;
       end;
    end;
@@ -525,6 +547,16 @@ begin
          {$ENDIF}
          actionControlPTT.Execute();
       end;
+
+      VK_UP: begin
+         OnUpKeyProc(Sender);
+         Key := 0;
+      end;
+
+      VK_DOWN: begin
+         OnDownKeyProc(Sender);
+         Key := 0;
+      end;
    end;
 end;
 
@@ -571,12 +603,27 @@ begin
    end;
 
    // QSO Data
-   SerialEdit.Text := workQSO.SerialStr;
    DateTimePicker1.Date := workQSO.Time;
    DateTimePicker2.Time := workQSO.Time;
    CallsignEdit.Text := workQSO.Callsign;
+
+   // UR RST
+   SentRSTEdit.Text := workQSO.RSTSentStr;
+
+   // NR Sent
+   if MyContest.SerialType = stNone then begin
+      NrSentEdit.Text := workQSO.NrSent;
+   end
+   else begin
+      NrSentEdit.Text := workQSO.SerialStr;
+   end;
+
+   // MY RST
    RcvdRSTEdit.Text := workQSO.RSTStr;
-   NumberEdit.Text := workQSO.NRRcvd;
+
+   // NR Rcvd
+   NrRcvdEdit.Text := workQSO.NRRcvd;
+
    ModeEdit.Text := workQSO.ModeStr;
    BandEdit.Text := workQSO.BandStr;
    NewPowerEdit.Text := workQSO.NewPowerStr;
@@ -603,7 +650,7 @@ begin
    end;
 
    // Frequency
-   editFrequency.Text := workQSO.Freq;
+   comboFrequency.Text := workQSO.Freq;
 
    // QSO Flags
    checkCQ.Checked := workQSO.CQ;
@@ -652,6 +699,37 @@ begin
    end;
 end;
 
+procedure TEditDialog.comboFrequencyDropDown(Sender: TObject);
+var
+   dlg: TformFreqPanel;
+   pt: TPoint;
+   no: Integer;
+begin
+   dlg := TformFreqPanel.Create(Self);
+   try
+      pt.X := TComboBox(Sender).Left;
+      pt.Y := TComboBox(Sender).Top + TComboBox(Sender).Height;
+      pt := groupFrequency.ClientToScreen(pt);
+      AdjustWindowPosInsideMonitor(dlg, pt.X, pt.Y);
+
+      no := TComboBox(Sender).Tag;
+
+      if (dlg.Left + dlg.Width) > (Self.Left + Self.Width) then dlg.Left := (Self.Left + Self.Width) - dlg.Width;
+      if (dlg.Top + dlg.Height) > (Self.Top + Self.Height) then dlg.Top := (Self.Top + Self.Height) - dlg.Height;
+
+      dlg.Freq := StrToIntDef(TComboBox(Sender).Text, 0);
+
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      comboFrequency.Text := IntToStr(dlg.Freq);  // dlg.Freq;
+
+   finally
+      dlg.Release();
+   end;
+end;
+
 procedure TEditDialog.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
@@ -681,7 +759,7 @@ end;
 procedure TEditDialog.actionClearCallAndRptExecute(Sender: TObject);
 begin
    CallsignEdit.Clear;
-   NumberEdit.Clear;
+   NrRcvdEdit.Clear;
    MemoEdit.Clear;
    CallsignEdit.SetFocus;
 end;
@@ -729,7 +807,7 @@ end;
 
 procedure TEditDialog.actionFocusNumberExecute(Sender: TObject);
 begin
-   NumberEdit.SetFocus;
+   NrRcvdEdit.SetFocus;
 end;
 
 procedure TEditDialog.actionFocusOpExecute(Sender: TObject);
@@ -811,13 +889,13 @@ end;
 
 procedure TEditDialog.actionChangeRExecute(Sender: TObject);
 begin
-   MainForm.SetR(workQSO);
+   workQSO.RSTRcvd := IncreaseR(workQSO.RSTRcvd);
    RcvdRSTEdit.Text := workQSO.RSTStr;
 end;
 
 procedure TEditDialog.actionChangeSExecute(Sender: TObject);
 begin
-   MainForm.SetS(workQSO);
+   workQSO.RSTRcvd := IncreaseS(workQSO.RSTRcvd);
    RcvdRSTEdit.Text := workQSO.RSTStr;
 end;
 
@@ -983,6 +1061,40 @@ begin
    actionChangeBand2.SecondaryShortCuts.Assign(MainForm.actionChangeBand2.SecondaryShortCuts);
    actionChangeMode2.SecondaryShortCuts.Assign(MainForm.actionChangeMode2.SecondaryShortCuts);
    actionChangePower2.SecondaryShortCuts.Assign(MainForm.actionChangePower2.SecondaryShortCuts);
+end;
+
+procedure TEditDialog.OnUpKeyProc(Sender: TObject);
+begin
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      if Sender = SentRSTEdit then begin
+         workQSO.RSTSent := IncreaseS(workQSO.RSTSent);
+         SentRSTEdit.Text := workQSO.RSTSentStr;
+      end;
+      if Sender = RcvdRSTEdit then begin
+         workQSO.RSTRcvd := IncreaseS(workQSO.RSTRcvd);
+         RcvdRSTEdit.Text := workQSO.RSTRcvdStr;
+      end;
+   end
+   else begin
+      //
+   end;
+end;
+
+procedure TEditDialog.OnDownKeyProc(Sender: TObject);
+begin
+   if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+      if Sender = SentRSTEdit then begin
+         workQSO.RSTSent := DecreaseS(workQSO.RSTSent);
+         SentRSTEdit.Text := workQSO.RSTSentStr;
+      end;
+      if Sender = RcvdRSTEdit then begin
+         workQSO.RSTRcvd := DecreaseS(workQSO.RSTRcvd);
+         RcvdRSTEdit.Text := workQSO.RSTRcvdStr;
+      end;
+   end
+   else begin
+      //
+   end;
 end;
 
 end.

@@ -271,6 +271,19 @@ object MainForm: TMainForm
         OnKeyPress = EditKeyPress
         TabOnEnter = False
       end
+      object SentRSTEdit1: TEdit
+        Left = 253
+        Top = 4
+        Width = 52
+        Height = 18
+        TabStop = False
+        AutoSize = False
+        ImeMode = imDisable
+        TabOrder = 12
+        OnChange = SentRSTEdit1Change
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+      end
     end
     object EditPanel2R: TPanel
       Left = 0
@@ -476,6 +489,21 @@ object MainForm: TMainForm
           ParentFont = False
           TabOrder = 7
           OnClick = checkWithRigClick
+        end
+        object SentRSTEdit2C: TEdit
+          Tag = 3
+          Left = 380
+          Top = 4
+          Width = 34
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 9
+          Visible = False
+          OnChange = RcvdRSTEdit1Change
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
         end
       end
       object EditUpperLeftPanel: TPanel
@@ -688,6 +716,20 @@ object MainForm: TMainForm
             OnChange = SerialEdit1Change
             OnKeyDown = EditKeyDown
           end
+          object SentRSTEdit2A: TEdit
+            Tag = 1
+            Left = 190
+            Top = 17
+            Width = 34
+            Height = 20
+            TabStop = False
+            AutoSize = False
+            ImeMode = imDisable
+            TabOrder = 6
+            Visible = False
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+          end
         end
         object RigPanelB: TPanel
           Left = 230
@@ -827,6 +869,20 @@ object MainForm: TMainForm
             OnChange = SerialEdit1Change
             OnKeyDown = EditKeyDown
           end
+          object SentRSTEdit2B: TEdit
+            Tag = 2
+            Left = 191
+            Top = 17
+            Width = 34
+            Height = 20
+            TabStop = False
+            AutoSize = False
+            ImeMode = imDisable
+            TabOrder = 6
+            Visible = False
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+          end
         end
       end
     end
@@ -837,7 +893,7 @@ object MainForm: TMainForm
       Height = 170
       TabStop = False
       Align = alClient
-      ColCount = 10
+      ColCount = 11
       DefaultRowHeight = 16
       DefaultDrawing = False
       FixedCols = 0
@@ -870,6 +926,7 @@ object MainForm: TMainForm
         36
         33
         46
+        64
         64
         64
         64)
@@ -7823,6 +7880,10 @@ object MainForm: TMainForm
     object actionShowGrayline: TAction
       Caption = 'Grayline'
       OnExecute = actionShowGraylineExecute
+    end
+    object actionFocusRstSent: TAction
+      Caption = 'actionFocusRstSent'
+      OnExecute = actionFocusRstSentExecute
     end
   end
   object SPCMenu: TPopupMenu

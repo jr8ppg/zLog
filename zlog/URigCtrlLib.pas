@@ -34,7 +34,7 @@ type
     procedure Write(f: TFrequency; m: TMode);
     procedure Clear();
   end;
-  TMemChArray = array[1..5] of TMemCh;
+  TMemChArray = array[1..6] of TMemCh;
 
   TRig = class
   protected
@@ -163,6 +163,7 @@ type
     property UseMemChScan: Boolean read FUseMemChScan write FUseMemChScan;
     property MemCh: TMemChArray read FMemCh;
     property MemScan: Boolean read FMemScan write FMemScan;
+    property MemScanNo: Integer read FMemScanNo;
 
     property OnUpdateStatus: TRigUpdateStatusEvent read FOnUpdateStatus write FOnUpdateStatus;
     property OnError: TRigErrorEvent read FOnError write FOnError;
@@ -464,7 +465,8 @@ begin
       (FMemCh[2].FFreq = 0) and
       (FMemCh[3].FFreq = 0) and
       (FMemCh[4].FFreq = 0) and
-      (FMemCh[5].FFreq = 0) then begin
+      (FMemCh[5].FFreq = 0) and
+      (FMemCh[6].FFreq = 0) then begin
       Exit;
    end;
 
