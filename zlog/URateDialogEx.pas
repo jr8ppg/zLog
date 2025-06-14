@@ -250,7 +250,7 @@ begin
 
    InitScoreGrid();
 
-   FPreHour := GetHour(CurrentTime());
+   FPreHour := GetHour(Now);
 end;
 
 procedure TRateDialogEx.FormDestroy(Sender: TObject);
@@ -304,7 +304,7 @@ begin
       if (PageControl1.ActivePageIndex = 1) or
          (PageControl1.ActivePageIndex = 2) then begin
          // Œ»İ‚Ì‚ğæ“¾
-         h := GetHour(CurrentTime());
+         h := GetHour(Now);
 
          // ‘O‰ñ‚Æ•Ï‚í‚ê‚Î‚O‚O•ª‚ğ‰ß‚¬‚½‚Æ”»’è
          if FPreHour <> h then begin
