@@ -1478,7 +1478,7 @@ uses
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore, UJarlMemberInfo,
   UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
-  UAgeDialog, UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
+  UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
   UCountryChecker, USelectClusterLog, USpcViewer, UOptions3, UStartup;
 
@@ -9567,26 +9567,13 @@ begin
 end;
 
 procedure TMainForm.InitAllAsianDX();
-var
-   F: TAgeDialog;
 begin
-   F := TAgeDialog.Create(Self);
-   try
-      HideBandMenuWARC();
-      HideBandMenuVU();
+   HideBandMenuWARC();
+   HideBandMenuVU();
 
-      EditScreen := TDXCCEdit.Create(Self);
+   EditScreen := TDXCCEdit.Create(Self);
 
-      MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', dmZLogGlobal.ContestMode);
-
-      if F.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      dmZLogGlobal.Settings._age := F.Age;
-   finally
-      F.Release();
-   end;
+   MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', dmZLogGlobal.ContestMode);
 end;
 
 procedure TMainForm.InitIOTA();

@@ -382,6 +382,8 @@ type
     N1: TMenuItem;
     menuVoiceClear: TMenuItem;
     menuVoiceStop: TMenuItem;
+    AgeEdit: TEdit;
+    Label31: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -633,6 +635,7 @@ begin
       Settings._city := CityEdit.Text;
       Settings._cqzone := CQZoneEdit.Text;
       Settings._iaruzone := IARUZoneEdit.Text;
+      Settings._age := AgeEdit.Text;
       Settings._PowerH := editPowerH.Text;
       Settings._PowerM := editPowerM.Text;
       Settings._PowerL := editPowerL.Text;
@@ -1011,6 +1014,7 @@ begin
 
       CQZoneEdit.Text := Settings._cqzone;
       IARUZoneEdit.Text := Settings._iaruzone;
+      AgeEdit.Text := Settings._age;
       editPowerH.Text := Settings._PowerH;
       editPowerM.Text := Settings._PowerM;
       editPowerL.Text := Settings._PowerL;

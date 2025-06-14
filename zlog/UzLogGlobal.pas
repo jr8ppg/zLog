@@ -111,6 +111,7 @@ type
     _city : string;
     _cqzone : string;
     _iaruzone : string;
+    _age : string; // all asian
     _powerH: string;
     _powerM: string;
     _powerL: string;
@@ -226,7 +227,6 @@ type
     _pcname : string;
     _saveevery : word;
     _scorecoeff : extended;
-    _age : string; // all asian
     _allowdupe : boolean;
     _output_outofperiod: Boolean;
     _use_contest_period: Boolean;
@@ -959,6 +959,9 @@ begin
 
       // ITU Zone
       Settings._iaruzone := ini.ReadString('Profiles', 'IARUZone', '');
+
+      // Age
+      Settings._age := ini.ReadString('Profiles', 'Age', '');
 
       // Power(HMLP)
       Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
@@ -1782,6 +1785,9 @@ begin
 
       // ITU Zone
       ini.WriteString('Profiles', 'IARUZone', Settings._iaruzone);
+
+      // Age
+      ini.WriteString('Profiles', 'Age', Settings._age);
 
       // Power(HMLP)
       ini.WriteString('Profiles', 'PowerH', Settings._powerH);

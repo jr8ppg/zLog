@@ -2890,7 +2890,6 @@ END
 /* D:\github\zLog_v2940\zlog\UJarlMemberInfo.dfm */
 /* D:\github\zLog_v2940\zlog\UBandPlanEditDialog.dfm */
 /* D:\github\zLog_v2940\zlog\UGraphColorDialog.dfm */
-/* D:\github\zLog_v2940\zlog\UAgeDialog.DFM */
 /* D:\github\zLog_v2940\zlog\UUTCDialog.DFM */
 /* D:\github\zLog_v2940\zlog\UTargetEditor.dfm */
 /* D:\github\zLog_v2940\zlog\UExportHamlog.dfm */
@@ -2903,6 +2902,7 @@ END
 /* D:\github\zLog_v2940\zlog\UOptions3.DFM */
 /* D:\github\zLog_v2940\zlog\UStartup.dfm */
 /* D:\github\zLog_v2940\zlog\Main.DFM */
+/* D:\github\zLog_v2940\zlog\UAgeDialog.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\MPlayer.res */
 /* D:\github\zLog_v2940\zlog\UVoiceForm.dfm */
 /* D:\github\zLog_v2940\zlog\UExceptionDialog.dfm */
