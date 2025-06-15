@@ -25,8 +25,6 @@ object formOptions3: TformOptions3
     ActivePage = tabsheetRbnOptions
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 440
-    ExplicitHeight = 433
     object tabsheetRbnOptions: TTabSheet
       Caption = 'RBN'
       ImageIndex = 11
@@ -193,6 +191,26 @@ object formOptions3: TformOptions3
         end
       end
     end
+    object tabsheetWindowStyle: TTabSheet
+      Caption = 'Style'
+      ImageIndex = 1
+      object GroupBox1: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 423
+        Height = 81
+        Caption = 'General'
+        TabOrder = 0
+        object checkUseMultiLineTabs: TCheckBox
+          Left = 11
+          Top = 22
+          Width = 217
+          Height = 17
+          Caption = 'Use Multiline Tabs'
+          TabOrder = 0
+        end
+      end
+    end
   end
   object Panel1: TPanel
     Left = 0
@@ -202,8 +220,6 @@ object formOptions3: TformOptions3
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 433
-    ExplicitWidth = 440
     DesignSize = (
       444
       37)

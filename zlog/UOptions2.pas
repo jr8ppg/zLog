@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
-  Generics.Collections, Generics.Defaults,
+  Generics.Collections, Generics.Defaults, WinApi.CommCtrl,
   UIntegerDialog, UzLogConst, UzLogSound, UOperatorEdit,
   UzLogOperatorInfo, UFreqPanel, UFreqMemDialog, UzFreqMemory;
 
@@ -442,6 +442,7 @@ type
     procedure vAdditionalButtonContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
   private
+    FOriginalHeight: Integer;
     FEditMode: Integer;
     FEditNumber: Integer;
     FActiveTab: Integer;
@@ -1329,7 +1330,19 @@ end;
 procedure TformOptions2.FormCreate(Sender: TObject);
 var
    i: integer;
+   rc: TRect;
 begin
+   FOriginalHeight := ClientHeight;
+   PageControl.MultiLine := dmZLogGlobal.Settings.FUseMultiLineTabs;
+   SendMessage(PageControl.Handle, TCM_GETITEMRECT, 0, LPARAM(@rc));
+
+   if (PageControl.MultiLine = True) then begin
+      ClientHeight := FOriginalHeight + (rc.Bottom - rc.Top);
+   end
+   else begin
+      ClientHeight := FOriginalHeight;
+   end;
+
    // BandScope
    FBSColor[1] := editBSColor1;
    FBSColor[2] := editBSColor2;

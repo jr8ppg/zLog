@@ -6584,7 +6584,7 @@ object MainForm: TMainForm
         OnClick = menuRbnVerifyClick
       end
       object menuRbnOptions: TMenuItem
-        Caption = 'RBN Options'
+        Caption = 'Labs options'
         OnClick = menuRbnOptionsClick
       end
       object N19: TMenuItem

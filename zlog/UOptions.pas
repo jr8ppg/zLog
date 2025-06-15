@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
-  Generics.Collections, Generics.Defaults,
+  Generics.Collections, Generics.Defaults, WinApi.CommCtrl,
   UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit,
   UzLogOperatorInfo, UTelnetSetting, UParallelPort;
 
@@ -447,6 +447,7 @@ type
     procedure checkUseF2ADataModeClick(Sender: TObject);
     procedure checkUseRigDeviceClick(Sender: TObject);
   private
+    FOriginalHeight: Integer;
 //    FEditMode: Integer;
 //    FEditNumber: Integer;
 //    FActiveTab: Integer;
@@ -544,7 +545,19 @@ var
    CP: TCommPort;
    list: TList<TCommPort>;
    L: TStringList;
+   rc: TRect;
 begin
+   FOriginalHeight := ClientHeight;
+   PageControl.MultiLine := dmZLogGlobal.Settings.FUseMultiLineTabs;
+   SendMessage(PageControl.Handle, TCM_GETITEMRECT, 0, LPARAM(@rc));
+
+   if (PageControl.MultiLine = True) then begin
+      ClientHeight := FOriginalHeight + (rc.Bottom - rc.Top);
+   end
+   else begin
+      ClientHeight := FOriginalHeight;
+   end;
+
    FHardware2Changed := False;
    FRigConfig[1] := groupRig1;
    FRigConfig[2] := groupRig2;

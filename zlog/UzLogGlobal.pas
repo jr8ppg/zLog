@@ -390,6 +390,9 @@ type
 
     // Startup window
     FDontShowStartupWindow: Boolean;
+
+    // Style
+    FUseMultiLineTabs: Boolean;
   end;
 
   TLastContest = record
@@ -1347,6 +1350,9 @@ begin
       // Startup window
       Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
 
+      // Style
+      Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', False);
+
       //
       // ここから隠し設定
       //
@@ -2128,6 +2134,9 @@ begin
 
       // Startup window
       ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
+
+      // Style
+      ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
 
       //
       // ここから隠し設定

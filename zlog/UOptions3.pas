@@ -6,7 +6,7 @@ uses
   System.SysUtils, Winapi.Windows, Winapi.Messages, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Forms,
   Vcl.ComCtrls, Vcl.Samples.Spin, Vcl.Buttons, System.UITypes,
-  Vcl.Dialogs, Vcl.Menus, Vcl.FileCtrl,
+  Vcl.Dialogs, Vcl.Menus, Vcl.FileCtrl, WinApi.CommCtrl,
   Generics.Collections, Generics.Defaults,
   UzLogConst, UzLogGlobal;
 
@@ -36,6 +36,9 @@ type
     Label1: TLabel;
     spNumOfRbnCount: TSpinEdit;
     Label2: TLabel;
+    tabsheetWindowStyle: TTabSheet;
+    GroupBox1: TGroupBox;
+    checkUseMultiLineTabs: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -46,6 +49,7 @@ type
     procedure checkListBoldClick(Sender: TObject);
     procedure buttonListResetClick(Sender: TObject);
   private
+    FOriginalHeight: Integer;
     FListColor: array[1..2] of TEdit;
     FListBold: array[1..2] of TCheckBox;
   public
@@ -66,7 +70,20 @@ uses
 {$R *.DFM}
 
 procedure TformOptions3.FormCreate(Sender: TObject);
+var
+   rc: TRect;
 begin
+   FOriginalHeight := ClientHeight;
+   PageControl.MultiLine := dmZLogGlobal.Settings.FUseMultiLineTabs;
+   SendMessage(PageControl.Handle, TCM_GETITEMRECT, 0, LPARAM(@rc));
+
+   if (PageControl.MultiLine = True) then begin
+      ClientHeight := FOriginalHeight + (rc.Bottom - rc.Top);
+   end
+   else begin
+      ClientHeight := FOriginalHeight;
+   end;
+
    // QSO List
    FListColor[1] := editListColor1;
    FListColor[2] := editListColor2;
@@ -81,6 +98,7 @@ var
    i: integer;
 begin
    with dmZlogGlobal do begin
+      // RBN
       checkUseSpcData.Checked := Settings.FClusterUseForSuperCheck;
       spNumOfRbnCount.Value := Settings.FRbnCountForRbnVerified;
 
@@ -89,6 +107,9 @@ begin
          FListColor[i].Color      := Settings.FQsoListColors[i].FBackColor;
          FListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
       end;
+
+      // Style
+      checkUseMultiLineTabs.Checked := Settings.FUseMultiLineTabs;
    end;
 
    PageControl.ActivePageIndex := 0;
@@ -117,6 +138,7 @@ var
    i: integer;
 begin
    with dmZLogGlobal do begin
+      // RBN
       Settings.FClusterUseForSuperCheck := checkUseSpcData.Checked;
       Settings.FRbnCountForRbnVerified := spNumOfRbnCount.Value;
 
@@ -126,6 +148,8 @@ begin
          Settings.FQsoListColors[i].FBold      := FListBold[i].Checked;
       end;
 
+      // Style
+      Settings.FUseMultiLineTabs := checkUseMultiLineTabs.Checked;
    end;
 end;
 
