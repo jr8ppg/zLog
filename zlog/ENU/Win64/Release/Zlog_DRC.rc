@@ -8,53 +8,56 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsOSVersion 64160
-#define UExceptionDialog_RsProcessor 64161
-#define UExceptionDialog_RsMemory 64162
-#define UExceptionDialog_RsScreenRes 64163
-#define UExceptionDialog_RsActiveControl 64164
-#define UExceptionDialog_RsThread 64165
-#define UExceptionDialog_RsMissingVersionInfo 64166
-#define UExceptionDialog_RsExceptionStack 64167
-#define UExceptionDialog_RsMainThreadID 64168
-#define UExceptionDialog_RsExceptionThreadID 64169
-#define UExceptionDialog_RsMainThreadCallStack 64170
-#define UExceptionDialog_RsThreadCallStack 64171
-#define UExceptionDialog_RsErrorMessage 64172
-#define UExceptionDialog_RsDetailsIntro 64173
-#define UExceptionDialog_RsUnitVersioningIntro 64174
-#define Main_TMainForm_ComfirmDownloadSound 64176
-#define Main_TMainForm_ConfirmRewindSerialNumber 64177
-#define Main_TMainForm_ConfirmContestPeriod 64178
-#define Main_TMainForm_ConfirmOverwrite 64179
-#define Main_TMainForm_ConfirmModeConvert 64180
-#define Main_TMainForm_No_QTC_Message 64181
-#define Main_TMainForm_Assigned_Another_Function 64182
-#define Main_TMainForm_To_Change_the_mode 64183
-#define Main_TMainForm_To_Change_the_band 64184
-#define Main_TMainform_rbn_verified 64185
-#define UExceptionDialog_RsAppError 64186
-#define UExceptionDialog_RsExceptionClass 64187
-#define UExceptionDialog_RsExceptionMessage 64188
-#define UExceptionDialog_RsExceptionAddr 64189
-#define UExceptionDialog_RsStackList 64190
-#define UExceptionDialog_RsModulesList 64191
+#define UExceptionDialog_RsDetailsIntro 64144
+#define UExceptionDialog_RsUnitVersioningIntro 64145
+#define UExceptionDialog_RsExceptionAddr 64160
+#define UExceptionDialog_RsStackList 64161
+#define UExceptionDialog_RsModulesList 64162
+#define UExceptionDialog_RsOSVersion 64163
+#define UExceptionDialog_RsProcessor 64164
+#define UExceptionDialog_RsMemory 64165
+#define UExceptionDialog_RsScreenRes 64166
+#define UExceptionDialog_RsActiveControl 64167
+#define UExceptionDialog_RsThread 64168
+#define UExceptionDialog_RsMissingVersionInfo 64169
+#define UExceptionDialog_RsExceptionStack 64170
+#define UExceptionDialog_RsMainThreadID 64171
+#define UExceptionDialog_RsExceptionThreadID 64172
+#define UExceptionDialog_RsMainThreadCallStack 64173
+#define UExceptionDialog_RsThreadCallStack 64174
+#define UExceptionDialog_RsErrorMessage 64175
+#define Main_TMainForm_FailedToCompressSoundFiles 64176
+#define Main_TMainForm_FileNotFound 64177
+#define Main_TMainForm_ComfirmUploadSound 64178
+#define Main_TMainForm_ComfirmDownloadSound 64179
+#define Main_TMainForm_ConfirmRewindSerialNumber 64180
+#define Main_TMainForm_ConfirmContestPeriod 64181
+#define Main_TMainForm_ConfirmOverwrite 64182
+#define Main_TMainForm_ConfirmModeConvert 64183
+#define Main_TMainForm_No_QTC_Message 64184
+#define Main_TMainForm_Assigned_Another_Function 64185
+#define Main_TMainForm_To_Change_the_mode 64186
+#define Main_TMainForm_To_Change_the_band 64187
+#define Main_TMainform_rbn_verified 64188
+#define UExceptionDialog_RsAppError 64189
+#define UExceptionDialog_RsExceptionClass 64190
+#define UExceptionDialog_RsExceptionMessage 64191
 #define Main_TMainForm_Setup_SentNR_first 64192
-#define Main_TMainForm_New_QSO_Arrived 64193
-#define Main_TMainForm_Select_Operator 64194
-#define Main_TMainForm_JARL_Member_Info 64195
-#define Main_TMainForm_Inquire_JARL_Member_Info 64196
-#define Main_TMainForm_UserDat_not_loaded 64197
-#define Main_TMainForm_ZserverNotConfigured 64198
-#define Main_TMainForm_ComfirmUploadOpList 64199
-#define Main_TMainForm_ComfirmDownloadOpList 64200
-#define Main_TMainForm_DownloadFile 64201
-#define Main_TMainForm_UploadFile 64202
-#define Main_TMainForm_SoundFileFolderNotSet 64203
-#define Main_TMainForm_Compressing 64204
-#define Main_TMainForm_FailedToCompressSoundFiles 64205
-#define Main_TMainForm_FileNotFound 64206
-#define Main_TMainForm_ComfirmUploadSound 64207
+#define Main_TMainForm_Setup_SentNR_cqzone 64193
+#define Main_TMainForm_Setup_SentNR_ituzone 64194
+#define Main_TMainForm_Setup_SentNR_age 64195
+#define Main_TMainForm_New_QSO_Arrived 64196
+#define Main_TMainForm_Select_Operator 64197
+#define Main_TMainForm_JARL_Member_Info 64198
+#define Main_TMainForm_Inquire_JARL_Member_Info 64199
+#define Main_TMainForm_UserDat_not_loaded 64200
+#define Main_TMainForm_ZserverNotConfigured 64201
+#define Main_TMainForm_ComfirmUploadOpList 64202
+#define Main_TMainForm_ComfirmDownloadOpList 64203
+#define Main_TMainForm_DownloadFile 64204
+#define Main_TMainForm_UploadFile 64205
+#define Main_TMainForm_SoundFileFolderNotSet 64206
+#define Main_TMainForm_Compressing 64207
 #define Main_TMainForm_Invalid_number 64208
 #define Main_TMainForm_Callsign_not_entered 64209
 #define Main_TMainForm_Dupe_qso 64210
@@ -1385,6 +1388,11 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
+	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
+	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
+	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
@@ -1398,8 +1406,9 @@ BEGIN
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
-	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
-	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
+	Main_TMainForm_FileNotFound,	L"file not found."
+	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
 	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
 	Main_TMainForm_ConfirmRewindSerialNumber,	L"Do you want to rewind the serial number?"
 	Main_TMainForm_ConfirmContestPeriod,	L"Do you want to change the contest period to ""not used""?"
@@ -1413,10 +1422,10 @@ BEGIN
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
-	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
-	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
-	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
-	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State and City code first"
+	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State code and City code first"
+	Main_TMainForm_Setup_SentNR_cqzone,	L"Setup CQ Zone number first"
+	Main_TMainForm_Setup_SentNR_ituzone,	L"Setup ITU Zone number first"
+	Main_TMainForm_Setup_SentNR_age,	L"Setup operator's age first"
 	Main_TMainForm_New_QSO_Arrived,	L"New QSO data has arrived. click here to view."
 	Main_TMainForm_Select_Operator,	L"Please select an operator"
 	Main_TMainForm_JARL_Member_Info,	L"JARL Member information."
@@ -1429,9 +1438,6 @@ BEGIN
 	Main_TMainForm_UploadFile,	L"Uploading..."
 	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
 	Main_TMainForm_Compressing,	L"Compressing..."
-	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
-	Main_TMainForm_FileNotFound,	L"file not found."
-	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
 	Main_TMainForm_Invalid_number,	L"Invalid number"
 	Main_TMainForm_Callsign_not_entered,	L"Callsign not entered"
 	Main_TMainForm_Dupe_qso,	L"Dupe"

@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
-  Generics.Collections, Generics.Defaults, WinApi.CommCtrl,
+  Generics.Collections, Generics.Defaults, WinApi.CommCtrl, System.Math,
   UIntegerDialog, UzLogConst, UzLogSound, UOperatorEdit,
   UzLogOperatorInfo, UFreqPanel, UFreqMemDialog, UzFreqMemory;
 
@@ -993,29 +993,45 @@ begin
 
       ProvEdit.Text := Settings._prov;
       CityEdit.Text := Settings._city;
+      CQZoneEdit.Text := Settings._cqzone;
+      IARUZoneEdit.Text := Settings._iaruzone;
+      AgeEdit.Text := Settings._age;
+
       if Settings.ProvCityImported = True then begin
          ProvEdit.ReadOnly := Settings.ReadOnlyParamImported;
          CityEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         CQZoneEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         IARUZoneEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         AgeEdit.ReadOnly := Settings.ReadOnlyParamImported;
 
          if ProvEdit.ReadOnly = True then begin
             ProvEdit.Color := clBtnFace;
             CityEdit.Color := clBtnFace;
+            CQZoneEdit.Color := clBtnFace;
+            IARUZoneEdit.Color := clBtnFace;
+            AgeEdit.Color := clBtnFace;
          end
          else begin
-            ProvEdit.Color := $00EADEFF;
-            CityEdit.Color := $00EADEFF;
+            ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
+            CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
+            CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
+            IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
+            AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
          end;
       end
       else begin
-         ProvEdit.Color := clWindow;
-         CityEdit.Color := clWindow;
+         ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
+         CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
+         CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
+         IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
+         AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
          ProvEdit.ReadOnly := False;
          CityEdit.ReadOnly := False;
+         CQZoneEdit.ReadOnly := False;
+         IARUZoneEdit.ReadOnly := False;
+         AgeEdit.ReadOnly := False;
       end;
 
-      CQZoneEdit.Text := Settings._cqzone;
-      IARUZoneEdit.Text := Settings._iaruzone;
-      AgeEdit.Text := Settings._age;
       editPowerH.Text := Settings._PowerH;
       editPowerM.Text := Settings._PowerM;
       editPowerL.Text := Settings._PowerL;

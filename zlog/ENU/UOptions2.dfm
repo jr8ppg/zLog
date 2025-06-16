@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -787,9 +787,9 @@ object formOptions2: TformOptions2
         Visible = False
       end
       object ProvEdit: TEdit
-        Left = 400
+        Left = 392
         Top = 124
-        Width = 25
+        Width = 33
         Height = 20
         AutoSize = False
         CharCase = ecUpperCase
@@ -825,7 +825,6 @@ object formOptions2: TformOptions2
         MaxLength = 3
         NumbersOnly = True
         TabOrder = 4
-        Text = '25'
       end
       object IARUZoneEdit: TEdit
         Left = 376
@@ -837,7 +836,6 @@ object formOptions2: TformOptions2
         MaxLength = 6
         NumbersOnly = True
         TabOrder = 5
-        Text = '45'
       end
       object GroupBox24: TGroupBox
         Left = 6
@@ -1002,7 +1000,6 @@ object formOptions2: TformOptions2
         MaxLength = 3
         NumbersOnly = True
         TabOrder = 6
-        Text = '50'
       end
     end
     object tabsheetCW: TTabSheet

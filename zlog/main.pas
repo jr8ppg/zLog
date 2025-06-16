@@ -1430,7 +1430,10 @@ resourcestring
   TMainForm_Invalid_zone = 'Invalid zone';
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
   TMainForm_EmptyOpList = 'Operator list is empty.';
-  TMainForm_Setup_SentNR_first = 'Setup Prov/State and City code first';
+  TMainForm_Setup_SentNR_first = 'Setup Prov/State code and City code first';
+  TMainForm_Setup_SentNR_cqzone = 'Setup CQ Zone number first';
+  TMainForm_Setup_SentNR_ituzone = 'Setup ITU Zone number first';
+  TMainForm_Setup_SentNR_age= 'Setup operator''s age first';
   TMainForm_New_QSO_Arrived = 'New QSO data has arrived. click here to view.';
   TMainForm_Select_Operator = 'Please select an operator';
   TMainForm_JARL_Member_Info = 'JARL Member information.';
@@ -8586,6 +8589,18 @@ begin
             dmZLogGlobal.Settings.ReadOnlyParamImported := False;
          end;
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+      end
+      else if ((Pos('$A', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._age = '')) then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+      end
+      else if ((Pos('$Z', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._cqzone = '')) then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+      end
+      else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iaruzone = '')) then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
       end;
 
