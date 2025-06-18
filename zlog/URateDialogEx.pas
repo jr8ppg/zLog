@@ -94,6 +94,7 @@ type
     FStartTime: TDateTime;       // グラフの表示開始日時
     FStartHour: Integer;         // 開始時
     FNowHour: Integer;           // 現在時
+    FNowDay: Integer;
     FPreHour: Integer;           // 前回timer時の時
 
     FZaqBgColor: array[0..3] of TColor;
@@ -176,6 +177,7 @@ begin
    FShowLast := 12;
    ShowLastCombo.ItemIndex := 2;
    FContestPeriod := 24;
+   FNowDay := 0;
 
    FGraphSeries[b19] := Series1;
    FGraphSeries[b35] := Series2;
@@ -441,7 +443,10 @@ begin
       DecodeTime(FStartTime, H, M, S, ms);
       FStartTime := Int(FStartTime) + EncodeTime(H, 0, 0, 0);
       H := 0;
+      D := 0;
    end;
+
+   FNowDay := D;
 
    // グラフ化以前のactual数
    actual_total_count := dmZLogGlobal.Target.BeforeGraphCount;
@@ -1121,13 +1126,19 @@ var
    i, n: Integer;
 begin
    FNowHour := GetHour(CurrentTime());
-   if FNowHour < FStartHour then begin
-      FNowHour := FNowHour + FStartHour + (FContestPeriod - FStartHour);
+   if FNowDay = 0 then begin        // day1
+   end
+   else if FNowDay = 1 then begin   // day2
+      FNowHour := FNowHour + 24;
+   end
+   else begin
+      FNowHour :=  FContestPeriod - 1;
    end;
+
    for i := 0 to (FNowHour - FStartHour) do begin
       n := FStartHour + i;
-      if n >= 24 then begin
-         n := n - 24;
+      if n >= 48 then begin
+         n := n - 48;
       end;
       ScoreGrid2.Cells[i + 1, 0] := IntToStr(n);
    end;
