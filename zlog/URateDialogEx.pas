@@ -389,6 +389,7 @@ var
    n: Integer;
    hindex: Integer;
    b: TBand;
+   end_time: TDateTime;
 
    function CalcStartTime(dt: TDateTime): TDateTime;
    begin
@@ -411,10 +412,31 @@ begin
    end
    else begin
       case GraphStartPosition of
-         spFirstQSO:    FStartTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
-         spCurrentTime: FStartTime := CalcStartTime( IncHour(CurrentTime(), (FShowLast div 2) - 1) );
-         spLastQSO:     FStartTime := ifthen(MyContest.UseContestPeriod, IncHour(Log.EndTime, (FShowLast * -1)), CalcStartTime( Log.QsoList[Log.TotalQSO].Time ));
-         else           FStartTime := CalcStartTime( CurrentTime() );
+         // 最初から
+         spFirstQSO: begin
+            FStartTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
+         end;
+
+         // 現在の
+         spCurrentTime: begin
+            // 現在時刻がコンテスト終了時刻を過ぎているか？
+            end_time := ifthen(MyContest.UseContestPeriod, Log.EndTime, Log.QsoList[Log.TotalQSO].Time);
+            if (end_time < CurrentTime()) then begin
+               FStartTime := ifthen(MyContest.UseContestPeriod, IncHour(Log.EndTime, (FShowLast * -1)), CalcStartTime( Log.QsoList[Log.TotalQSO].Time ));
+            end
+            else begin
+               FStartTime := CalcStartTime( IncHour(CurrentTime(), (FShowLast div 2) - 1) );
+            end;
+         end;
+
+         // 最後の
+         spLastQSO: begin
+            FStartTime := ifthen(MyContest.UseContestPeriod, IncHour(Log.EndTime, (FShowLast * -1)), CalcStartTime( Log.QsoList[Log.TotalQSO].Time ));
+         end;
+
+         else begin
+            FStartTime := CalcStartTime( CurrentTime() );
+         end;
       end;
 
       FOriginTime := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
@@ -1135,10 +1157,14 @@ begin
       FNowHour :=  FContestPeriod - 1;
    end;
 
+   if FNowHour < FStartHour then begin
+      FNowHour := FNowHour + FStartHour + (FContestPeriod - FStartHour);
+   end;
+
    for i := 0 to (FNowHour - FStartHour) do begin
       n := FStartHour + i;
-      if n >= 48 then begin
-         n := n - 48;
+      if n >= 24 then begin
+         n := n - 24;
       end;
       ScoreGrid2.Cells[i + 1, 0] := IntToStr(n);
    end;
