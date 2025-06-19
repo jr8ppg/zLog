@@ -2,14 +2,14 @@ object NRDialog: TNRDialog
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Correct NR'
+  Caption = #36865#20449'NR'#12398#20462#27491
   ClientHeight = 152
   ClientWidth = 260
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'MS Sans Serif'
+  Font.Name = #65325#65331' '#12468#12471#12483#12463
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
@@ -37,7 +37,7 @@ object NRDialog: TNRDialog
     Height = 25
     Anchors = [akRight, akBottom]
     Cancel = True
-    Caption = 'Cancel'
+    Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
     TabOrder = 3
   end
@@ -46,7 +46,7 @@ object NRDialog: TNRDialog
     Top = 99
     Width = 173
     Height = 13
-    Caption = 'Add power code automatically'
+    Caption = #38651#21147#31526#21495#12434#33258#21205#30340#12395#20184#21152#12377#12427
     TabOrder = 1
   end
   object GroupBox1: TGroupBox
@@ -54,21 +54,21 @@ object NRDialog: TNRDialog
     Top = 8
     Width = 241
     Height = 81
-    Caption = 'New Sent NR'
+    Caption = #26032#12375#12356#36865#20449'NR'
     TabOrder = 0
     object Label2: TLabel
       Left = 17
       Top = 50
       Width = 90
       Height = 13
-      Caption = '2400MHz or higher'
+      Caption = '2400MHz'#24111#20197#19978
     end
     object Label1: TLabel
       Left = 17
       Top = 24
       Width = 79
       Height = 13
-      Caption = '1200MHz or less'
+      Caption = '1200MHz'#24111#20197#19979
     end
     object editSentNR: TEdit
       Left = 126

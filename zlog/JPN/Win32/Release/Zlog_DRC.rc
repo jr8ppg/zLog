@@ -8,46 +8,49 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsExceptionStack 64160
-#define UExceptionDialog_RsMainThreadID 64161
-#define UExceptionDialog_RsExceptionThreadID 64162
-#define UExceptionDialog_RsMainThreadCallStack 64163
-#define UExceptionDialog_RsThreadCallStack 64164
-#define UExceptionDialog_RsErrorMessage 64165
-#define UExceptionDialog_RsDetailsIntro 64166
-#define UExceptionDialog_RsUnitVersioningIntro 64167
-#define Main_TMainForm_To_Change_the_mode 64176
-#define Main_TMainForm_To_Change_the_band 64177
-#define Main_TMainform_rbn_verified 64178
-#define UExceptionDialog_RsAppError 64179
-#define UExceptionDialog_RsExceptionClass 64180
-#define UExceptionDialog_RsExceptionMessage 64181
-#define UExceptionDialog_RsExceptionAddr 64182
-#define UExceptionDialog_RsStackList 64183
-#define UExceptionDialog_RsModulesList 64184
-#define UExceptionDialog_RsOSVersion 64185
-#define UExceptionDialog_RsProcessor 64186
-#define UExceptionDialog_RsMemory 64187
-#define UExceptionDialog_RsScreenRes 64188
-#define UExceptionDialog_RsActiveControl 64189
-#define UExceptionDialog_RsThread 64190
-#define UExceptionDialog_RsMissingVersionInfo 64191
-#define Main_TMainForm_ComfirmUploadOpList 64192
-#define Main_TMainForm_ComfirmDownloadOpList 64193
-#define Main_TMainForm_DownloadFile 64194
-#define Main_TMainForm_UploadFile 64195
-#define Main_TMainForm_SoundFileFolderNotSet 64196
-#define Main_TMainForm_Compressing 64197
-#define Main_TMainForm_FailedToCompressSoundFiles 64198
-#define Main_TMainForm_FileNotFound 64199
-#define Main_TMainForm_ComfirmUploadSound 64200
-#define Main_TMainForm_ComfirmDownloadSound 64201
-#define Main_TMainForm_ConfirmRewindSerialNumber 64202
-#define Main_TMainForm_ConfirmContestPeriod 64203
-#define Main_TMainForm_ConfirmOverwrite 64204
-#define Main_TMainForm_ConfirmModeConvert 64205
-#define Main_TMainForm_No_QTC_Message 64206
-#define Main_TMainForm_Assigned_Another_Function 64207
+#define UExceptionDialog_RsActiveControl 64160
+#define UExceptionDialog_RsThread 64161
+#define UExceptionDialog_RsMissingVersionInfo 64162
+#define UExceptionDialog_RsExceptionStack 64163
+#define UExceptionDialog_RsMainThreadID 64164
+#define UExceptionDialog_RsExceptionThreadID 64165
+#define UExceptionDialog_RsMainThreadCallStack 64166
+#define UExceptionDialog_RsThreadCallStack 64167
+#define UExceptionDialog_RsErrorMessage 64168
+#define UExceptionDialog_RsDetailsIntro 64169
+#define UExceptionDialog_RsUnitVersioningIntro 64170
+#define Main_TMainForm_ConfirmModeConvert 64176
+#define Main_TMainForm_No_QTC_Message 64177
+#define Main_TMainForm_Assigned_Another_Function 64178
+#define Main_TMainForm_To_Change_the_mode 64179
+#define Main_TMainForm_To_Change_the_band 64180
+#define Main_TMainform_rbn_verified 64181
+#define UExceptionDialog_RsAppError 64182
+#define UExceptionDialog_RsExceptionClass 64183
+#define UExceptionDialog_RsExceptionMessage 64184
+#define UExceptionDialog_RsExceptionAddr 64185
+#define UExceptionDialog_RsStackList 64186
+#define UExceptionDialog_RsModulesList 64187
+#define UExceptionDialog_RsOSVersion 64188
+#define UExceptionDialog_RsProcessor 64189
+#define UExceptionDialog_RsMemory 64190
+#define UExceptionDialog_RsScreenRes 64191
+#define Main_TMainForm_Inquire_JARL_Member_Info 64192
+#define Main_TMainForm_UserDat_not_loaded 64193
+#define Main_TMainForm_ZserverNotConfigured 64194
+#define Main_TMainForm_ComfirmUploadOpList 64195
+#define Main_TMainForm_ComfirmDownloadOpList 64196
+#define Main_TMainForm_DownloadFile 64197
+#define Main_TMainForm_UploadFile 64198
+#define Main_TMainForm_SoundFileFolderNotSet 64199
+#define Main_TMainForm_Compressing 64200
+#define Main_TMainForm_FailedToCompressSoundFiles 64201
+#define Main_TMainForm_FileNotFound 64202
+#define Main_TMainForm_ComfirmUploadSound 64203
+#define Main_TMainForm_ComfirmDownloadSound 64204
+#define Main_TMainForm_ConfirmRewindSerialNumber 64205
+#define Main_TMainForm_ConfirmContestPeriod 64206
+#define Main_TMainForm_ConfirmOverwrite 64207
 #define Main_TMainForm_Merging_now 64208
 #define Main_TMainForm_Some_qsos_merged 64209
 #define Main_TMainForm_CtyDat_not_loaded 64210
@@ -58,12 +61,12 @@
 #define Main_TMainForm_JudgePeriod 64215
 #define Main_TMainForm_EmptyOpList 64216
 #define Main_TMainForm_Setup_SentNR_first 64217
-#define Main_TMainForm_New_QSO_Arrived 64218
-#define Main_TMainForm_Select_Operator 64219
-#define Main_TMainForm_JARL_Member_Info 64220
-#define Main_TMainForm_Inquire_JARL_Member_Info 64221
-#define Main_TMainForm_UserDat_not_loaded 64222
-#define Main_TMainForm_ZserverNotConfigured 64223
+#define Main_TMainForm_Setup_SentNR_cqzone 64218
+#define Main_TMainForm_Setup_SentNR_ituzone 64219
+#define Main_TMainForm_Setup_SentNR_age 64220
+#define Main_TMainForm_New_QSO_Arrived 64221
+#define Main_TMainForm_Select_Operator 64222
+#define Main_TMainForm_JARL_Member_Info 64223
 #define Main_TMainForm_Need_File_Name 64224
 #define Main_TMainForm_QTC_Sent 64225
 #define Main_TMainForm_QTC_no_shortcut_keys 64226
@@ -1378,6 +1381,9 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
+	UExceptionDialog_RsThread,	L"Thread: %s"
+	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
@@ -1386,6 +1392,9 @@ BEGIN
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_ConfirmModeConvert,	L"Mode contains old Other, convert to new Other?"
+	Main_TMainForm_No_QTC_Message,	L"No messages to send in QTC"
+	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q is assigned to another function. Do you want to take it?"
 	Main_TMainForm_To_Change_the_mode,	L"To change the operating mode, first turn off the F2A mode."
 	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
 	Main_TMainform_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
@@ -1399,9 +1408,9 @@ BEGIN
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
-	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
-	UExceptionDialog_RsThread,	L"Thread: %s"
-	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
+	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
+	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
+	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
 	Main_TMainForm_ComfirmUploadOpList,	L"Upload the operator list to Z-Server. Are you sure?"
 	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
 	Main_TMainForm_DownloadFile,	L"Downloading..."
@@ -1415,9 +1424,6 @@ BEGIN
 	Main_TMainForm_ConfirmRewindSerialNumber,	L"Do you want to rewind the serial number?"
 	Main_TMainForm_ConfirmContestPeriod,	L"Do you want to change the contest period to ""not used""?"
 	Main_TMainForm_ConfirmOverwrite,	L"[%s] file already exists. overwrite?"
-	Main_TMainForm_ConfirmModeConvert,	L"Mode contains old Other, convert to new Other?"
-	Main_TMainForm_No_QTC_Message,	L"No messages to send in QTC"
-	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q is assigned to another function. Do you want to take it?"
 	Main_TMainForm_Merging_now,	L"Merging..."
 	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
 	Main_TMainForm_CtyDat_not_loaded,	L"CTY.DAT not loaded"
@@ -1427,13 +1433,13 @@ BEGIN
 	Main_TMainForm_Invalid_zone,	L"Invalid zone"
 	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
 	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
-	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State and City code first"
+	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State code and City code first"
+	Main_TMainForm_Setup_SentNR_cqzone,	L"Setup CQ Zone number first"
+	Main_TMainForm_Setup_SentNR_ituzone,	L"Setup ITU Zone number first"
+	Main_TMainForm_Setup_SentNR_age,	L"Setup operator's age first"
 	Main_TMainForm_New_QSO_Arrived,	L"New QSO data has arrived. click here to view."
 	Main_TMainForm_Select_Operator,	L"Please select an operator"
 	Main_TMainForm_JARL_Member_Info,	L"JARL Member information."
-	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
-	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
-	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
 	Main_TMainForm_Need_File_Name,	L"Data will NOT be saved until you enter the file name"
 	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing %s"
 	Main_TMainForm_QTC_no_shortcut_keys,	L"No shortcut keys are assigned for QTC"
@@ -2876,7 +2882,6 @@ END
 /* D:\github\zLog_v2940\zlog\UJarlMemberInfo.dfm */
 /* D:\github\zLog_v2940\zlog\UBandPlanEditDialog.dfm */
 /* D:\github\zLog_v2940\zlog\UGraphColorDialog.dfm */
-/* D:\github\zLog_v2940\zlog\UAgeDialog.DFM */
 /* D:\github\zLog_v2940\zlog\UUTCDialog.DFM */
 /* D:\github\zLog_v2940\zlog\UTargetEditor.dfm */
 /* D:\github\zLog_v2940\zlog\UExportHamlog.dfm */
@@ -2889,6 +2894,7 @@ END
 /* D:\github\zLog_v2940\zlog\UOptions3.DFM */
 /* D:\github\zLog_v2940\zlog\UStartup.dfm */
 /* D:\github\zLog_v2940\zlog\Main.DFM */
+/* D:\github\zLog_v2940\zlog\UAgeDialog.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win32\release\MPlayer.res */
 /* D:\github\zLog_v2940\zlog\UVoiceForm.dfm */
 /* D:\github\zLog_v2940\zlog\UExceptionDialog.dfm */
