@@ -29,7 +29,6 @@ object RateDialogEx: TRateDialogEx
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 386
     object Label1: TLabel
       Left = 8
       Top = 8
@@ -81,8 +80,6 @@ object RateDialogEx: TRateDialogEx
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
-    ExplicitWidth = 386
-    ExplicitHeight = 224
     object TabSheet1: TTabSheet
       Caption = 'Graph'
       object Panel2: TPanel
@@ -93,8 +90,6 @@ object RateDialogEx: TRateDialogEx
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitTop = 166
-        ExplicitWidth = 378
         DesignSize = (
           380
           30)
@@ -108,14 +103,13 @@ object RateDialogEx: TRateDialogEx
           ExplicitLeft = 255
         end
         object labelHourCaption: TLabel
-          Left = 172
+          Left = 180
           Top = 8
-          Width = 71
+          Width = 63
           Height = 13
           Alignment = taRightJustify
           Anchors = [akRight]
           Caption = 'Show current'
-          ExplicitLeft = 174
         end
         object ShowLastCombo: TComboBox
           Left = 247
@@ -138,7 +132,6 @@ object RateDialogEx: TRateDialogEx
             '24'
             '36'
             '48')
-          ExplicitLeft = 245
         end
         object check3D: TCheckBox
           Left = 333
@@ -149,7 +142,6 @@ object RateDialogEx: TRateDialogEx
           Caption = '3D'
           TabOrder = 1
           OnClick = check3DClick
-          ExplicitLeft = 331
         end
         object Panel3: TPanel
           Left = 0
@@ -208,8 +200,6 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 378
-        ExplicitHeight = 166
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 13
         object Series1: TBarSeries
@@ -495,7 +485,7 @@ object RateDialogEx: TRateDialogEx
         Width = 380
         Height = 197
         Align = alClient
-        ColCount = 27
+        ColCount = 51
         DefaultDrawing = False
         RowCount = 36
         Font.Charset = DEFAULT_CHARSET
@@ -510,7 +500,6 @@ object RateDialogEx: TRateDialogEx
         OnDrawCell = ScoreGridDrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
-        ExplicitWidth = 382
       end
     end
     object TabSheet3: TTabSheet
@@ -522,7 +511,7 @@ object RateDialogEx: TRateDialogEx
         Width = 380
         Height = 197
         Align = alClient
-        ColCount = 28
+        ColCount = 52
         DefaultDrawing = False
         RowCount = 19
         Font.Charset = DEFAULT_CHARSET
@@ -537,7 +526,6 @@ object RateDialogEx: TRateDialogEx
         OnDrawCell = ScoreGrid2DrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
-        ExplicitWidth = 382
       end
     end
   end

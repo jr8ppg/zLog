@@ -3804,7 +3804,6 @@ object formOptions: TformOptions
               Caption = 'Login'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 3
@@ -4084,13 +4083,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
+          FontName = 'Cascadia Mono SemiBold'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 7
+          ItemIndex = 62
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

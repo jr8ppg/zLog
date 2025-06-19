@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -679,7 +679,7 @@ object formOptions2: TformOptions2
       end
       object Label19: TLabel
         Left = 299
-        Top = 224
+        Top = 248
         Width = 41
         Height = 13
         Caption = 'Sent($X)'
@@ -697,6 +697,13 @@ object formOptions2: TformOptions2
         Width = 61
         Height = 13
         Caption = 'ITU Zone($I)'
+      end
+      object Label31: TLabel
+        Left = 299
+        Top = 223
+        Width = 38
+        Height = 13
+        Caption = 'Age($A)'
       end
       object GroupBox1: TGroupBox
         Left = 6
@@ -780,9 +787,9 @@ object formOptions2: TformOptions2
         Visible = False
       end
       object ProvEdit: TEdit
-        Left = 400
+        Left = 392
         Top = 124
-        Width = 25
+        Width = 33
         Height = 20
         AutoSize = False
         CharCase = ecUpperCase
@@ -799,25 +806,25 @@ object formOptions2: TformOptions2
       end
       object SentEdit: TEdit
         Left = 368
-        Top = 220
+        Top = 244
         Width = 57
         Height = 20
         AutoSize = False
         CharCase = ecUpperCase
         Color = clBtnFace
         ReadOnly = True
-        TabOrder = 6
+        TabOrder = 7
       end
       object CQZoneEdit: TEdit
-        Left = 400
+        Left = 392
         Top = 172
-        Width = 25
+        Width = 33
         Height = 20
         AutoSize = False
         CharCase = ecUpperCase
         MaxLength = 3
+        NumbersOnly = True
         TabOrder = 4
-        Text = '25'
       end
       object IARUZoneEdit: TEdit
         Left = 376
@@ -827,8 +834,8 @@ object formOptions2: TformOptions2
         AutoSize = False
         CharCase = ecUpperCase
         MaxLength = 6
+        NumbersOnly = True
         TabOrder = 5
-        Text = '45'
       end
       object GroupBox24: TGroupBox
         Left = 6
@@ -836,7 +843,7 @@ object formOptions2: TformOptions2
         Width = 203
         Height = 264
         Caption = 'Operators'
-        TabOrder = 7
+        TabOrder = 9
         object OpListBox: TListBox
           Left = 11
           Top = 19
@@ -905,7 +912,7 @@ object formOptions2: TformOptions2
       end
       object groupPower: TGroupBox
         Left = 296
-        Top = 246
+        Top = 276
         Width = 129
         Height = 127
         Caption = 'Power($N)'
@@ -982,6 +989,17 @@ object formOptions2: TformOptions2
           TabOrder = 3
           Text = '5'
         end
+      end
+      object AgeEdit: TEdit
+        Left = 392
+        Top = 220
+        Width = 33
+        Height = 20
+        AutoSize = False
+        CharCase = ecUpperCase
+        MaxLength = 3
+        NumbersOnly = True
+        TabOrder = 6
       end
     end
     object tabsheetCW: TTabSheet
@@ -2448,7 +2466,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

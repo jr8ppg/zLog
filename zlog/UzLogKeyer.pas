@@ -4717,14 +4717,14 @@ end;
 
 procedure TdmZLogKeyer.IncCWSpeed();
 begin
-   WPM := WPM + 1;
    FKeyerInitWPM := FKeyerInitWPM + 1;
+   WPM := WPM + 1;
 end;
 
 procedure TdmZLogKeyer.DecCWSpeed();
 begin
-   WPM := WPM - 1;
    FKeyerInitWPM := FKeyerInitWPM - 1;
+   WPM := WPM - 1;
 end;
 
 procedure TdmZLogKeyer.ToggleFixedSpeed();

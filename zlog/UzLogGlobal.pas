@@ -111,6 +111,7 @@ type
     _city : string;
     _cqzone : string;
     _iaruzone : string;
+    _age : string; // all asian
     _powerH: string;
     _powerM: string;
     _powerL: string;
@@ -226,7 +227,6 @@ type
     _pcname : string;
     _saveevery : word;
     _scorecoeff : extended;
-    _age : string; // all asian
     _allowdupe : boolean;
     _output_outofperiod: Boolean;
     _use_contest_period: Boolean;
@@ -390,6 +390,9 @@ type
 
     // Startup window
     FDontShowStartupWindow: Boolean;
+
+    // Style
+    FUseMultiLineTabs: Boolean;
   end;
 
   TLastContest = record
@@ -960,6 +963,9 @@ begin
       // ITU Zone
       Settings._iaruzone := ini.ReadString('Profiles', 'IARUZone', '');
 
+      // Age
+      Settings._age := ini.ReadString('Profiles', 'Age', '');
+
       // Power(HMLP)
       Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
       Settings._powerM := ini.ReadString('Profiles', 'PowerM', '100');
@@ -1343,6 +1349,9 @@ begin
 
       // Startup window
       Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
+
+      // Style
+      Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', False);
 
       //
       // ここから隠し設定
@@ -1783,6 +1792,9 @@ begin
       // ITU Zone
       ini.WriteString('Profiles', 'IARUZone', Settings._iaruzone);
 
+      // Age
+      ini.WriteString('Profiles', 'Age', Settings._age);
+
       // Power(HMLP)
       ini.WriteString('Profiles', 'PowerH', Settings._powerH);
       ini.WriteString('Profiles', 'PowerM', Settings._powerM);
@@ -2122,6 +2134,9 @@ begin
 
       // Startup window
       ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
+
+      // Style
+      ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
 
       //
       // ここから隠し設定

@@ -6,7 +6,7 @@ uses
   SysUtils, Windows, Messages, Classes, Graphics, Controls,
   StdCtrls, ExtCtrls, Forms, ComCtrls, Spin, Vcl.Buttons, System.UITypes,
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
-  Generics.Collections, Generics.Defaults,
+  Generics.Collections, Generics.Defaults, WinApi.CommCtrl, System.Math,
   UIntegerDialog, UzLogConst, UzLogSound, UOperatorEdit,
   UzLogOperatorInfo, UFreqPanel, UFreqMemDialog, UzFreqMemory;
 
@@ -382,6 +382,8 @@ type
     N1: TMenuItem;
     menuVoiceClear: TMenuItem;
     menuVoiceStop: TMenuItem;
+    AgeEdit: TEdit;
+    Label31: TLabel;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -440,6 +442,7 @@ type
     procedure vAdditionalButtonContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
   private
+    FOriginalHeight: Integer;
     FEditMode: Integer;
     FEditNumber: Integer;
     FActiveTab: Integer;
@@ -633,6 +636,7 @@ begin
       Settings._city := CityEdit.Text;
       Settings._cqzone := CQZoneEdit.Text;
       Settings._iaruzone := IARUZoneEdit.Text;
+      Settings._age := AgeEdit.Text;
       Settings._PowerH := editPowerH.Text;
       Settings._PowerM := editPowerM.Text;
       Settings._PowerL := editPowerL.Text;
@@ -989,28 +993,45 @@ begin
 
       ProvEdit.Text := Settings._prov;
       CityEdit.Text := Settings._city;
+      CQZoneEdit.Text := Settings._cqzone;
+      IARUZoneEdit.Text := Settings._iaruzone;
+      AgeEdit.Text := Settings._age;
+
       if Settings.ProvCityImported = True then begin
          ProvEdit.ReadOnly := Settings.ReadOnlyParamImported;
          CityEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         CQZoneEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         IARUZoneEdit.ReadOnly := Settings.ReadOnlyParamImported;
+         AgeEdit.ReadOnly := Settings.ReadOnlyParamImported;
 
          if ProvEdit.ReadOnly = True then begin
             ProvEdit.Color := clBtnFace;
             CityEdit.Color := clBtnFace;
+            CQZoneEdit.Color := clBtnFace;
+            IARUZoneEdit.Color := clBtnFace;
+            AgeEdit.Color := clBtnFace;
          end
          else begin
-            ProvEdit.Color := $00EADEFF;
-            CityEdit.Color := $00EADEFF;
+            ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
+            CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
+            CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
+            IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
+            AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
          end;
       end
       else begin
-         ProvEdit.Color := clWindow;
-         CityEdit.Color := clWindow;
+         ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
+         CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
+         CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
+         IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
+         AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
          ProvEdit.ReadOnly := False;
          CityEdit.ReadOnly := False;
+         CQZoneEdit.ReadOnly := False;
+         IARUZoneEdit.ReadOnly := False;
+         AgeEdit.ReadOnly := False;
       end;
 
-      CQZoneEdit.Text := Settings._cqzone;
-      IARUZoneEdit.Text := Settings._iaruzone;
       editPowerH.Text := Settings._PowerH;
       editPowerM.Text := Settings._PowerM;
       editPowerL.Text := Settings._PowerL;
@@ -1325,7 +1346,19 @@ end;
 procedure TformOptions2.FormCreate(Sender: TObject);
 var
    i: integer;
+   rc: TRect;
 begin
+   FOriginalHeight := ClientHeight;
+   PageControl.MultiLine := dmZLogGlobal.Settings.FUseMultiLineTabs;
+   SendMessage(PageControl.Handle, TCM_GETITEMRECT, 0, LPARAM(@rc));
+
+   if (PageControl.MultiLine = True) then begin
+      ClientHeight := FOriginalHeight + (rc.Bottom - rc.Top);
+   end
+   else begin
+      ClientHeight := FOriginalHeight;
+   end;
+
    // BandScope
    FBSColor[1] := editBSColor1;
    FBSColor[2] := editBSColor2;

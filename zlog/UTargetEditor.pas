@@ -44,6 +44,7 @@ type
     procedure menuPasteClick(Sender: TObject);
   private
     { Private 宣言 }
+    FContestPeriod: Integer;
     FTarget: TContestTarget;
     procedure ShowWarcBand(fShow: Boolean);
     procedure TargetToGrid(ATarget: TContestTarget);
@@ -63,6 +64,7 @@ procedure TTargetEditor.FormCreate(Sender: TObject);
 var
    i: Integer;
 begin
+   FContestPeriod := 24;
    ScoreGrid.Cells[0, 1] := MHzString[b19];
    ScoreGrid.Cells[0, 2] := MHzString[b35];
    ScoreGrid.Cells[0, 3] := MHzString[b7];
@@ -87,13 +89,14 @@ begin
       ScoreGrid.Cells[i, 0] := IntToStr(i);
       ScoreGrid.ColWidths[i] := 35;
    end;
-   ScoreGrid.Cells[25, 0] := 'Total';
-   ScoreGrid.ColWidths[25] := 64;
 
-   TargetToGrid(dmZLogGlobal.Target);
-   GridToTarget(FTarget);
-   FTarget.Refresh();
-   TargetToGrid(FTarget);
+   for i := 25 to 48 do begin
+      ScoreGrid.Cells[i, 0] := IntToStr(i);
+      ScoreGrid.ColWidths[i] := ifthen(FContestPeriod <= 24, -1, 35);
+   end;
+
+   ScoreGrid.Cells[49, 0] := 'Total';
+   ScoreGrid.ColWidths[49] := 64;
 end;
 
 procedure TTargetEditor.FormDestroy(Sender: TObject);
@@ -102,7 +105,20 @@ begin
 end;
 
 procedure TTargetEditor.FormShow(Sender: TObject);
+var
+   i: Integer;
 begin
+   FContestPeriod := Min(Max(MyContest.Period, 24), 48);
+
+   for i := 25 to 48 do begin
+      ScoreGrid.ColWidths[i] := ifthen(FContestPeriod <= 24, -1, 35);
+   end;
+
+   TargetToGrid(dmZLogGlobal.Target);
+   GridToTarget(FTarget);
+   FTarget.Refresh();
+   TargetToGrid(FTarget);
+
    ShowWarcBand(checkShowWarc.Checked);
 end;
 
@@ -210,11 +226,11 @@ var
    i: Integer;
 begin
    for b := b19 to b10g do begin
-      for i := 1 to 24 do begin
+      for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, Ord(b)+1] := IntToStr(ATarget.Bands[b].Hours[i].Target);
          ScoreGrid.Cells[i, 17]       := IntToStr(ATarget.Total.Hours[i].Target);
       end;
-      ScoreGrid.Cells[25, Ord(b)+1]   := IntToStr(ATarget.Bands[b].Total.Target);
+      ScoreGrid.Cells[49, Ord(b)+1]   := IntToStr(ATarget.Bands[b].Total.Target);
    end;
 
    ScoreGrid.Refresh();
@@ -226,7 +242,7 @@ var
    i: Integer;
 begin
    for b := b19 to b10g do begin
-      for i := 1 to 24 do begin
+      for i := 1 to FContestPeriod do begin
          ATarget.Bands[b].Hours[i].Target := StrToIntDef(ScoreGrid.Cells[i, Ord(b)+1], 0);
       end;
    end;
@@ -255,7 +271,7 @@ begin
    slLine.Delimiter := #09;
    try
       slLine.Add('');
-      for i := 1 to 24 do begin
+      for i := 1 to FContestPeriod do begin
          slLine.Add(IntToStr(i));
       end;
       slText.Add(slLine.DelimitedText);
@@ -265,7 +281,7 @@ begin
          slLine.Clear();
          slLine.Add(BandString[b]);
 
-         for i := 1 to 24 do begin
+         for i := 1 to FContestPeriod do begin
             slLine.Add(ScoreGrid.Cells[i, Ord(b)+1]);
          end;
 
@@ -328,7 +344,7 @@ begin
          end;
 
          // ２列目以降は目標値
-         for j := 1 to 24 do begin
+         for j := 1 to FContestPeriod do begin
             txt := slLine[j];
 
             // 入力された値を格納
@@ -379,7 +395,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else if ACol = 25 then begin     // 横合計列
+      else if ACol = 49 then begin     // 横合計列
          strText := ScoreGrid.Cells[ACol, ARow];
          TextRect(Rect, strText, [tfRight, tfVerticalCenter, tfSingleLine]);
 
@@ -437,7 +453,7 @@ begin
    if ARow > 16 then begin
       Exit;
    end;
-   if ACol > 24 then begin
+   if ACol > FContestPeriod then begin
       Exit;
    end;
 
@@ -449,6 +465,9 @@ begin
 
    // 合計再計算
    FTarget.Refresh();
+
+   // 合計に表示（横計）
+   ScoreGrid.Cells[49, Ord(b)+1]   := IntToStr(FTarget.Bands[b].Total.Target);
 
    // 合計行に表示（縦計）
    ScoreGrid.Cells[ACol, 17] := IntToStr(FTarget.Total.Hours[h].Target);

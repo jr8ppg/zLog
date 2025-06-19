@@ -11,12 +11,10 @@ object TargetEditor: TTargetEditor
   Font.Height = -15
   Font.Name = 'MS UI Gothic'
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 15
   object ScoreGrid: TStringGrid
     Left = 0
@@ -24,7 +22,7 @@ object TargetEditor: TTargetEditor
     Width = 1008
     Height = 488
     Align = alClient
-    ColCount = 26
+    ColCount = 50
     DefaultDrawing = False
     RowCount = 18
     Font.Charset = DEFAULT_CHARSET
