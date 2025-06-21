@@ -842,6 +842,10 @@ var
    SD, SD2: TSuperData;
    Q: TQSO;
 begin
+   if (Sp.Band < MyContest.BandLow) or (Sp.Band > MyContest.BandHigh) or (NotWARC(Sp.Band) = False) then begin
+      Exit;
+   end;
+
    // ŒğMÏ‚İ‚©Šm”F‚·‚é
    Sp.Worked := Log.IsWorked(Sp.Call, Sp.Band);
 
