@@ -12397,7 +12397,7 @@ end;
 // バンドスコープから呼ばれる
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
 begin
-   SetYourCallsignEx(0, strCallsign, strNumber);
+   SetYourCallsignEx(CurrentRx + 1, strCallsign, strNumber);
 end;
 
 procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);

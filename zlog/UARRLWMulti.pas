@@ -60,7 +60,13 @@ begin
    P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
    aQSO.Multi1 := C.Country;
-   Grid.TopRow := C.Index;
+
+   if C.Index = -1 then begin
+      Grid.TopRow := 0;
+   end
+   else begin
+      Grid.TopRow := C.Index;
+   end;
 
    if aQSO.Dupe then begin
       exit;
