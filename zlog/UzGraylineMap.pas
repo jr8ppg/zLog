@@ -49,9 +49,10 @@ type
     destructor Destroy(); override;
     procedure Calc(Nowtime: TDateTime);
     procedure Judge(Nowtime: TDateTime);
-    procedure Draw(bmp: TBitmap);
+    procedure Draw(bmp: TBitmap; ycutoff: Integer);
     procedure DrawLongitude(bmp: TBitmap; longitude: Extended; penstyle: TPenStyle = psSolid);
     procedure DrawLatitude(bmp: TBitmap; latitude: Extended; penstyle: TPenStyle = psSolid);
+    procedure DrawTime(bmp: TBitmap; time: DWORD);
     property DayTime[X: Integer; Y: Integer]: TGraylineTime read GetDayTime;
     property ShowGrayline: Boolean read FShowGrayline write FShowGrayline;
   end;
@@ -296,7 +297,7 @@ begin
    end;
 end;
 
-procedure TGraylineMap.Draw(bmp: TBitmap);
+procedure TGraylineMap.Draw(bmp: TBitmap; ycutoff: Integer);
 type
    TRGBTripleArray = array[0..5000] of TRGBTriple;
    PTRGBTripleArray = ^TRGBTripleArray;
@@ -314,7 +315,7 @@ begin
    bmp_w := bmp.Width;
    bmp_h := bmp.Height;
    w_rate := 360 / bmp_w;
-   h_rate := 180 / bmp_h;
+   h_rate := (180 - (ycutoff * 2)) / bmp_h;
 
    for y := 0 to bmp_h - 1 do begin
 
@@ -322,7 +323,7 @@ begin
 
       for x := 0 to bmp_w - 1 do begin
          xx := 180 - Trunc(x * w_rate);
-         yy := 90 - Trunc(y * h_rate);
+         yy := (90 - ycutoff) - Trunc(y * h_rate);
 
          C := FTime[xx, yy];
 
@@ -410,9 +411,30 @@ begin
    bmp.Canvas.LineTo(bmp.Width - 1, y);
 end;
 
+procedure TGraylineMap.DrawTime(bmp: TBitmap; time: DWORD);
+var
+   x: Integer;
+   y: Integer;
+   S: string;
+begin
+   S := 'Calculation time: ' + IntToStr(time) + ' milisec';
+
+   bmp.Canvas.Brush.Style := bsClear;
+   bmp.Canvas.Pen.Style := psClear;
+   bmp.Canvas.Font.Size := 9;
+   bmp.Canvas.Font.Color := clWhite;
+   bmp.Canvas.Font.Name := '‚l‚r ‚oƒSƒVƒbƒN';
+
+   x := bmp.Width - bmp.Canvas.TextWidth(S) - 4;
+   y := bmp.Height - bmp.Canvas.TextHeight(S) - 4;
+
+   bmp.Canvas.TextOut(x, y, S);
+end;
+
 function TGraylineMap.GetDayTime(X: Integer; Y: Integer): TGraylineTime;
 begin
    Result := FTime[X,Y];
 end;
 
 end.
+
