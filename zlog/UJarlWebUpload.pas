@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.OleCtrls, SHDocVw, MSHTML;
+  Vcl.OleCtrls, SHDocVw, MSHTML, Web.HTTPApp, System.Win.Registry;
 
 type
   TWebUploadContest = ( wuAllja = 0, wu6d, wuFd, wuAcag, wuAacw, wuAaph );
@@ -16,6 +16,7 @@ type
     Panel1: TPanel;
     Edit1: TEdit;
     panelBody: TPanel;
+    WebDispatcher1: TWebDispatcher;
     procedure FormShow(Sender: TObject);
     procedure WebBrowser1DocumentComplete(ASender: TObject;
       const pDisp: IDispatch; const URL: OleVariant);
@@ -29,6 +30,7 @@ type
     procedure PasteLogText();
     procedure SetLogText(v: string);
     procedure CheckOn(radio_name: string; value: string);
+    procedure SetPermissions();
   public
     { Public êÈåæ }
     procedure Navigate(url: string);
@@ -42,6 +44,7 @@ implementation
 
 procedure TformJarlWebUpload.FormCreate(Sender: TObject);
 begin
+   SetPermissions();
    FWebUploadContest := wuAllja;
    FLogText := '';
    FUploadURL := 'https://contest.jarl.org/upload/';
@@ -134,6 +137,27 @@ begin
          Element.setAttribute('checked', True, 0);
          Break;
       end;
+   end;
+end;
+
+procedure TformJarlWebUpload.SetPermissions();
+const
+   cHomePath = 'SOFTWARE';
+   cFeatureBrowserEmulation = 'Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION\';
+   cIE11 = 11001;
+var
+   Reg: TRegIniFile;
+   sKey: string;
+begin
+   sKey := ExtractFileName(ParamStr(0));
+   Reg := TRegIniFile.Create(cHomePath);
+   try
+      if Reg.OpenKey(cFeatureBrowserEmulation, True) and
+         not(TRegistry(Reg).KeyExists(sKey) and (TRegistry(Reg).ReadInteger(sKey) = cIE11)) then begin
+         TRegistry(Reg).WriteInteger(sKey, cIE11);
+      end;
+   finally
+      Reg.Free;
    end;
 end;
 
