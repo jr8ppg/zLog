@@ -158,7 +158,7 @@ begin
    bmp.Assign(FWorldmap);
 
    // grayline
-   FGrayline.Draw(bmp);
+   FGrayline.Draw(bmp, dmZLogGlobal.Settings.FGrayLineYcutsize);
 
    // ê‘ìπ
    if menuShowEquator.Checked = True then begin

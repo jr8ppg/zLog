@@ -8,113 +8,122 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsActiveControl 64160
-#define UExceptionDialog_RsThread 64161
-#define UExceptionDialog_RsMissingVersionInfo 64162
-#define UExceptionDialog_RsExceptionStack 64163
-#define UExceptionDialog_RsMainThreadID 64164
-#define UExceptionDialog_RsExceptionThreadID 64165
-#define UExceptionDialog_RsMainThreadCallStack 64166
-#define UExceptionDialog_RsThreadCallStack 64167
-#define UExceptionDialog_RsErrorMessage 64168
-#define UExceptionDialog_RsDetailsIntro 64169
-#define UExceptionDialog_RsUnitVersioningIntro 64170
-#define Main_TMainForm_ConfirmModeConvert 64176
-#define Main_TMainForm_No_QTC_Message 64177
-#define Main_TMainForm_Assigned_Another_Function 64178
-#define Main_TMainForm_To_Change_the_mode 64179
-#define Main_TMainForm_To_Change_the_band 64180
-#define Main_TMainform_rbn_verified 64181
-#define UExceptionDialog_RsAppError 64182
-#define UExceptionDialog_RsExceptionClass 64183
-#define UExceptionDialog_RsExceptionMessage 64184
-#define UExceptionDialog_RsExceptionAddr 64185
-#define UExceptionDialog_RsStackList 64186
-#define UExceptionDialog_RsModulesList 64187
-#define UExceptionDialog_RsOSVersion 64188
-#define UExceptionDialog_RsProcessor 64189
-#define UExceptionDialog_RsMemory 64190
-#define UExceptionDialog_RsScreenRes 64191
-#define Main_TMainForm_Inquire_JARL_Member_Info 64192
-#define Main_TMainForm_UserDat_not_loaded 64193
-#define Main_TMainForm_ZserverNotConfigured 64194
-#define Main_TMainForm_ComfirmUploadOpList 64195
-#define Main_TMainForm_ComfirmDownloadOpList 64196
-#define Main_TMainForm_DownloadFile 64197
-#define Main_TMainForm_UploadFile 64198
-#define Main_TMainForm_SoundFileFolderNotSet 64199
-#define Main_TMainForm_Compressing 64200
-#define Main_TMainForm_FailedToCompressSoundFiles 64201
-#define Main_TMainForm_FileNotFound 64202
-#define Main_TMainForm_ComfirmUploadSound 64203
-#define Main_TMainForm_ComfirmDownloadSound 64204
-#define Main_TMainForm_ConfirmRewindSerialNumber 64205
-#define Main_TMainForm_ConfirmContestPeriod 64206
-#define Main_TMainForm_ConfirmOverwrite 64207
-#define Main_TMainForm_Merging_now 64208
-#define Main_TMainForm_Some_qsos_merged 64209
-#define Main_TMainForm_CtyDat_not_loaded 64210
-#define Main_TMainForm_RIT_XIT_Cleared 64211
-#define Main_TMainForm_Anti_zeroin 64212
-#define Main_TMainForm_Set_CQ_Repeat_Int 64213
-#define Main_TMainForm_Invalid_zone 64214
-#define Main_TMainForm_JudgePeriod 64215
-#define Main_TMainForm_EmptyOpList 64216
-#define Main_TMainForm_Setup_SentNR_first 64217
-#define Main_TMainForm_Setup_SentNR_cqzone 64218
-#define Main_TMainForm_Setup_SentNR_ituzone 64219
-#define Main_TMainForm_Setup_SentNR_age 64220
-#define Main_TMainForm_New_QSO_Arrived 64221
-#define Main_TMainForm_Select_Operator 64222
-#define Main_TMainForm_JARL_Member_Info 64223
-#define Main_TMainForm_Need_File_Name 64224
-#define Main_TMainForm_QTC_Sent 64225
-#define Main_TMainForm_QTC_no_shortcut_keys 64226
-#define Main_TMainForm_Less_Than_10min 64227
-#define Main_TMainForm_QSY_Count_Exceeded 64228
-#define Main_TMainForm_Loading_now 64229
-#define Main_TMainForm_Switch_CW_Bank_A 64230
-#define Main_TMainForm_Switch_CW_Bank_B 64231
-#define Main_TMainForm_This_QSO_is_locked 64232
-#define Main_TMainForm_Invalid_number 64233
-#define Main_TMainForm_Callsign_not_entered 64234
-#define Main_TMainForm_Dupe_qso 64235
-#define Main_TMainForm_Thankyou_for_your_qso 64236
-#define Main_TMainForm_CW_port_is_no_set 64237
-#define Main_TMainForm_Not_a_new_multi 64238
-#define Main_TMainForm_Cannot_merge_current_file 64239
-#define USelectUserDefinedContest_Setup_city_first 64240
-#define UMenu_UMenu_PleaseEnterYourCallsign 64241
-#define UBandPlanEditDialog_Input_Text 64242
-#define UBandPlanEditDialog_Delete_Preset 64243
-#define Main_TMainForm_Enter_Frequency 64244
-#define Main_TMainForm_Comfirm_Delete_Qso 64245
-#define Main_TMainForm_Comfirm_Delete_Qsos 64246
-#define Main_TMainForm_New_Multi_Only 64247
-#define Main_TMainForm_Change_Date 64248
-#define Main_TMainForm_Confirm_Save_Changes 64249
-#define Main_TMainForm_Active_Band_Adjusted 64250
-#define Main_TMainForm_Change_Band_QSOs 64251
-#define Main_TMainForm_Change_Mode_QSOs 64252
-#define Main_TMainForm_Change_Operator_QSOs 64253
-#define Main_TMainForm_Change_Power_QSOs 64254
-#define Main_TMainForm_Change_TXNO_QSOs 64255
-#define URateDialog_HOURCAPTION_SHOWFIRST 64256
-#define URateDialog_HOURCAPTION_SHOWCURRENT 64257
-#define URateDialog_HOURCAPTION_SHOWLAST 64258
-#define URateDialogEx_SCOREGRID_TOTAL 64259
-#define URateDialogEx_SCOREGRID_TARGET 64260
-#define URateDialogEx_SCOREGRID_DIFF 64261
-#define URateDialogEx_SCOREGRID_DIFF2 64262
-#define URateDialogEx_SCOREGRID_CUMULATIVE 64263
-#define URateDialogEx_SCOREGRID_WINLOSS_L 64264
-#define URateDialogEx_SCOREGRID_WINLOSS_S 64265
-#define URateDialogEx_HOURCAPTION_SHOWFIRST 64266
-#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64267
-#define URateDialogEx_HOURCAPTION_SHOWLAST 64268
-#define UCFGEdit_Please_enter_the_prov_code 64269
-#define UCFGEdit_Please_enter_the_city_code 64270
-#define USelectUserDefinedContest_Setup_prov_first 64271
+#define UExceptionDialog_RsThreadCallStack 64144
+#define UExceptionDialog_RsErrorMessage 64145
+#define UExceptionDialog_RsDetailsIntro 64146
+#define UExceptionDialog_RsUnitVersioningIntro 64147
+#define UExceptionDialog_RsExceptionClass 64160
+#define UExceptionDialog_RsExceptionMessage 64161
+#define UExceptionDialog_RsExceptionAddr 64162
+#define UExceptionDialog_RsStackList 64163
+#define UExceptionDialog_RsModulesList 64164
+#define UExceptionDialog_RsOSVersion 64165
+#define UExceptionDialog_RsProcessor 64166
+#define UExceptionDialog_RsMemory 64167
+#define UExceptionDialog_RsScreenRes 64168
+#define UExceptionDialog_RsActiveControl 64169
+#define UExceptionDialog_RsThread 64170
+#define UExceptionDialog_RsMissingVersionInfo 64171
+#define UExceptionDialog_RsExceptionStack 64172
+#define UExceptionDialog_RsMainThreadID 64173
+#define UExceptionDialog_RsExceptionThreadID 64174
+#define UExceptionDialog_RsMainThreadCallStack 64175
+#define Main_TMainForm_SoundFileFolderNotSet 64176
+#define Main_TMainForm_Compressing 64177
+#define Main_TMainForm_FailedToCompressSoundFiles 64178
+#define Main_TMainForm_FileNotFound 64179
+#define Main_TMainForm_ComfirmUploadSound 64180
+#define Main_TMainForm_ComfirmDownloadSound 64181
+#define Main_TMainForm_ConfirmRewindSerialNumber 64182
+#define Main_TMainForm_ConfirmContestPeriod 64183
+#define Main_TMainForm_ConfirmOverwrite 64184
+#define Main_TMainForm_ConfirmModeConvert 64185
+#define Main_TMainForm_No_QTC_Message 64186
+#define Main_TMainForm_Assigned_Another_Function 64187
+#define Main_TMainForm_To_Change_the_mode 64188
+#define Main_TMainForm_To_Change_the_band 64189
+#define Main_TMainform_rbn_verified 64190
+#define UExceptionDialog_RsAppError 64191
+#define Main_TMainForm_JudgePeriod 64192
+#define Main_TMainForm_EmptyOpList 64193
+#define Main_TMainForm_Setup_SentNR_first 64194
+#define Main_TMainForm_Setup_SentNR_cqzone 64195
+#define Main_TMainForm_Setup_SentNR_ituzone 64196
+#define Main_TMainForm_Setup_SentNR_age 64197
+#define Main_TMainForm_New_QSO_Arrived 64198
+#define Main_TMainForm_Select_Operator 64199
+#define Main_TMainForm_JARL_Member_Info 64200
+#define Main_TMainForm_Inquire_JARL_Member_Info 64201
+#define Main_TMainForm_UserDat_not_loaded 64202
+#define Main_TMainForm_ZserverNotConfigured 64203
+#define Main_TMainForm_ComfirmUploadOpList 64204
+#define Main_TMainForm_ComfirmDownloadOpList 64205
+#define Main_TMainForm_DownloadFile 64206
+#define Main_TMainForm_UploadFile 64207
+#define Main_TMainForm_Switch_CW_Bank_B 64208
+#define Main_TMainForm_This_QSO_is_locked 64209
+#define Main_TMainForm_Invalid_number 64210
+#define Main_TMainForm_Callsign_not_entered 64211
+#define Main_TMainForm_Dupe_qso 64212
+#define Main_TMainForm_Thankyou_for_your_qso 64213
+#define Main_TMainForm_CW_port_is_no_set 64214
+#define Main_TMainForm_Not_a_new_multi 64215
+#define Main_TMainForm_Cannot_merge_current_file 64216
+#define Main_TMainForm_Merging_now 64217
+#define Main_TMainForm_Some_qsos_merged 64218
+#define Main_TMainForm_CtyDat_not_loaded 64219
+#define Main_TMainForm_RIT_XIT_Cleared 64220
+#define Main_TMainForm_Anti_zeroin 64221
+#define Main_TMainForm_Set_CQ_Repeat_Int 64222
+#define Main_TMainForm_Invalid_zone 64223
+#define Main_TMainForm_New_Multi_Only 64224
+#define Main_TMainForm_Change_Date 64225
+#define Main_TMainForm_Confirm_Save_Changes 64226
+#define Main_TMainForm_Active_Band_Adjusted 64227
+#define Main_TMainForm_Change_Band_QSOs 64228
+#define Main_TMainForm_Change_Mode_QSOs 64229
+#define Main_TMainForm_Change_Operator_QSOs 64230
+#define Main_TMainForm_Change_Power_QSOs 64231
+#define Main_TMainForm_Change_TXNO_QSOs 64232
+#define Main_TMainForm_Need_File_Name 64233
+#define Main_TMainForm_QTC_Sent 64234
+#define Main_TMainForm_QTC_no_shortcut_keys 64235
+#define Main_TMainForm_Less_Than_10min 64236
+#define Main_TMainForm_QSY_Count_Exceeded 64237
+#define Main_TMainForm_Loading_now 64238
+#define Main_TMainForm_Switch_CW_Bank_A 64239
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64240
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64241
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64242
+#define URateDialogEx_HOURCAPTION_SHOWFIRST 64243
+#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64244
+#define URateDialogEx_HOURCAPTION_SHOWLAST 64245
+#define UCFGEdit_Please_enter_the_prov_code 64246
+#define UCFGEdit_Please_enter_the_city_code 64247
+#define USelectUserDefinedContest_Setup_prov_first 64248
+#define USelectUserDefinedContest_Setup_city_first 64249
+#define UMenu_UMenu_PleaseEnterYourCallsign 64250
+#define UBandPlanEditDialog_Input_Text 64251
+#define UBandPlanEditDialog_Delete_Preset 64252
+#define Main_TMainForm_Enter_Frequency 64253
+#define Main_TMainForm_Comfirm_Delete_Qso 64254
+#define Main_TMainForm_Comfirm_Delete_Qsos 64255
+#define Web_WebConst_sDuplicateActionName 64256
+#define Web_WebConst_sOnlyOneDispatcher 64257
+#define Web_WebConst_sHTTPItemName 64258
+#define Web_WebConst_sHTTPItemURI 64259
+#define Web_WebConst_sHTTPItemEnabled 64260
+#define Web_WebConst_sHTTPItemDefault 64261
+#define Web_WebConst_sHTTPItemProducer 64262
+#define Web_WebConst_sHTTPItemMethod 64263
+#define Web_WebConst_sInternalApplicationError 64264
+#define URateDialog_HOURCAPTION_SHOWFIRST 64265
+#define URateDialog_HOURCAPTION_SHOWCURRENT 64266
+#define URateDialog_HOURCAPTION_SHOWLAST 64267
+#define URateDialogEx_SCOREGRID_TOTAL 64268
+#define URateDialogEx_SCOREGRID_TARGET 64269
+#define URateDialogEx_SCOREGRID_DIFF 64270
+#define URateDialogEx_SCOREGRID_DIFF2 64271
 #define System_NetConsts_SNetHttpRequestOpenError 64272
 #define System_NetConsts_SNetHttpRequestAddHeaderError 64273
 #define System_NetConsts_SNetHttpRequestRemoveHeaderError 64274
@@ -1381,24 +1390,10 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
-	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
-	UExceptionDialog_RsThread,	L"Thread: %s"
-	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
-	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
-	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
-	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
-	Main_TMainForm_ConfirmModeConvert,	L"Mode contains old Other, convert to new Other?"
-	Main_TMainForm_No_QTC_Message,	L"No messages to send in QTC"
-	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q is assigned to another function. Do you want to take it?"
-	Main_TMainForm_To_Change_the_mode,	L"To change the operating mode, first turn off the F2A mode."
-	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
-	Main_TMainform_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
-	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
@@ -1408,13 +1403,13 @@ BEGIN
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
-	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
-	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
-	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
-	Main_TMainForm_ComfirmUploadOpList,	L"Upload the operator list to Z-Server. Are you sure?"
-	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
-	Main_TMainForm_DownloadFile,	L"Downloading..."
-	Main_TMainForm_UploadFile,	L"Uploading..."
+	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
+	UExceptionDialog_RsThread,	L"Thread: %s"
+	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
+	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
+	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
+	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
 	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
 	Main_TMainForm_Compressing,	L"Compressing..."
 	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
@@ -1424,13 +1419,13 @@ BEGIN
 	Main_TMainForm_ConfirmRewindSerialNumber,	L"Do you want to rewind the serial number?"
 	Main_TMainForm_ConfirmContestPeriod,	L"Do you want to change the contest period to ""not used""?"
 	Main_TMainForm_ConfirmOverwrite,	L"[%s] file already exists. overwrite?"
-	Main_TMainForm_Merging_now,	L"Merging..."
-	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
-	Main_TMainForm_CtyDat_not_loaded,	L"CTY.DAT not loaded"
-	Main_TMainForm_RIT_XIT_Cleared,	L"RIT/XIT Offset Cleared"
-	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
-	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
-	Main_TMainForm_Invalid_zone,	L"Invalid zone"
+	Main_TMainForm_ConfirmModeConvert,	L"Mode contains old Other, convert to new Other?"
+	Main_TMainForm_No_QTC_Message,	L"No messages to send in QTC"
+	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q is assigned to another function. Do you want to take it?"
+	Main_TMainForm_To_Change_the_mode,	L"To change the operating mode, first turn off the F2A mode."
+	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
+	Main_TMainform_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
+	UExceptionDialog_RsAppError,	L"%s - application error"
 	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
 	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
 	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State code and City code first"
@@ -1440,13 +1435,13 @@ BEGIN
 	Main_TMainForm_New_QSO_Arrived,	L"New QSO data has arrived. click here to view."
 	Main_TMainForm_Select_Operator,	L"Please select an operator"
 	Main_TMainForm_JARL_Member_Info,	L"JARL Member information."
-	Main_TMainForm_Need_File_Name,	L"Data will NOT be saved until you enter the file name"
-	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing %s"
-	Main_TMainForm_QTC_no_shortcut_keys,	L"No shortcut keys are assigned for QTC"
-	Main_TMainForm_Less_Than_10min,	L"Less than 10 min since last QSY!"
-	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
-	Main_TMainForm_Loading_now,	L"Loading..."
-	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
+	Main_TMainForm_Inquire_JARL_Member_Info,	L"Querying QSL transfer status."
+	Main_TMainForm_UserDat_not_loaded,	L" not loaded"
+	Main_TMainForm_ZserverNotConfigured,	L"Z-Server settings are not configured."
+	Main_TMainForm_ComfirmUploadOpList,	L"Upload the operator list to Z-Server. Are you sure?"
+	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
+	Main_TMainForm_DownloadFile,	L"Downloading..."
+	Main_TMainForm_UploadFile,	L"Uploading..."
 	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
 	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
 	Main_TMainForm_Invalid_number,	L"Invalid number"
@@ -1456,13 +1451,13 @@ BEGIN
 	Main_TMainForm_CW_port_is_no_set,	L"CW port is not set"
 	Main_TMainForm_Not_a_new_multi,	L"NOT a new multiplier. (This is a multi stn)"
 	Main_TMainForm_Cannot_merge_current_file,	L"Cannot merge current file"
-	USelectUserDefinedContest_Setup_city_first,	L"Setup City code first"
-	UMenu_UMenu_PleaseEnterYourCallsign,	L"Please enter your callsign"
-	UBandPlanEditDialog_Input_Text,	L"Please enter preset name"
-	UBandPlanEditDialog_Delete_Preset,	L"Are you sure to delete the bandplan preset [%s]"
-	Main_TMainForm_Enter_Frequency,	L"Enter frequency in kHz"
-	Main_TMainForm_Comfirm_Delete_Qso,	L"Are you sure to delete this QSO?"
-	Main_TMainForm_Comfirm_Delete_Qsos,	L"Are you sure to delete these QSO's?"
+	Main_TMainForm_Merging_now,	L"Merging..."
+	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
+	Main_TMainForm_CtyDat_not_loaded,	L"CTY.DAT not loaded"
+	Main_TMainForm_RIT_XIT_Cleared,	L"RIT/XIT Offset Cleared"
+	Main_TMainForm_Anti_zeroin,	L"** Anti Zeroin **"
+	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
+	Main_TMainForm_Invalid_zone,	L"Invalid zone"
 	Main_TMainForm_New_Multi_Only,	L"This station is not a new multiplier, but will be logged anyway."
 	Main_TMainForm_Change_Date,	L"To change the date, double click the time field."
 	Main_TMainForm_Confirm_Save_Changes,	L"Save changes to %s ?"
@@ -1472,13 +1467,13 @@ BEGIN
 	Main_TMainForm_Change_Operator_QSOs,	L"Are you sure to change the operator names for these QSO's?"
 	Main_TMainForm_Change_Power_QSOs,	L"Are you sure to change the power for these QSO's?"
 	Main_TMainForm_Change_TXNO_QSOs,	L"Are you sure to change the TX# for these QSO's?"
-	URateDialog_HOURCAPTION_SHOWFIRST,	L"Show first"
-	URateDialog_HOURCAPTION_SHOWCURRENT,	L"Show current"
-	URateDialog_HOURCAPTION_SHOWLAST,	L"Show last"
-	URateDialogEx_SCOREGRID_TOTAL,	L"Total"
-	URateDialogEx_SCOREGRID_TARGET,	L"Target"
-	URateDialogEx_SCOREGRID_DIFF,	L"Diff"
-	URateDialogEx_SCOREGRID_DIFF2,	L"+/-"
+	Main_TMainForm_Need_File_Name,	L"Data will NOT be saved until you enter the file name"
+	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing %s"
+	Main_TMainForm_QTC_no_shortcut_keys,	L"No shortcut keys are assigned for QTC"
+	Main_TMainForm_Less_Than_10min,	L"Less than 10 min since last QSY!"
+	Main_TMainForm_QSY_Count_Exceeded,	L"QSY count exceeded limit!"
+	Main_TMainForm_Loading_now,	L"Loading..."
+	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
 	URateDialogEx_SCOREGRID_CUMULATIVE,	L"Cumulative"
 	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
 	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
@@ -1488,6 +1483,29 @@ BEGIN
 	UCFGEdit_Please_enter_the_prov_code,	L"Please enter the Prov/State code"
 	UCFGEdit_Please_enter_the_city_code,	L"Please enter the City code"
 	USelectUserDefinedContest_Setup_prov_first,	L"Setup Prov/State code first"
+	USelectUserDefinedContest_Setup_city_first,	L"Setup City code first"
+	UMenu_UMenu_PleaseEnterYourCallsign,	L"Please enter your callsign"
+	UBandPlanEditDialog_Input_Text,	L"Please enter preset name"
+	UBandPlanEditDialog_Delete_Preset,	L"Are you sure to delete the bandplan preset [%s]"
+	Main_TMainForm_Enter_Frequency,	L"Enter frequency in kHz"
+	Main_TMainForm_Comfirm_Delete_Qso,	L"Are you sure to delete this QSO?"
+	Main_TMainForm_Comfirm_Delete_Qsos,	L"Are you sure to delete these QSO's?"
+	Web_WebConst_sDuplicateActionName,	L"Duplicate action name"
+	Web_WebConst_sOnlyOneDispatcher,	L"WebDispatcher \x306F 1 \x3064\x306E\x30D5\x30A9\x30FC\x30E0/\x30C7\x30FC\x30BF \x30E2\x30B8\x30E5\x30FC\x30EB\x306B 1 \x3064\x3057\x304B\x7F6E\x3051\x307E\x305B\x3093"
+	Web_WebConst_sHTTPItemName,	L"Name"
+	Web_WebConst_sHTTPItemURI,	L"PathInfo"
+	Web_WebConst_sHTTPItemEnabled,	L"Enabled"
+	Web_WebConst_sHTTPItemDefault,	L"Default"
+	Web_WebConst_sHTTPItemProducer,	L"Producer"
+	Web_WebConst_sHTTPItemMethod,	L"\x30E1\x30BD\x30C3\x30C9"
+	Web_WebConst_sInternalApplicationError,	L"<html><body><h1>Internal Application Error</h1>\r\n<p>%0:s\r\n<p><hr width=""100%%""><i>%1:s</i></body></html>"
+	URateDialog_HOURCAPTION_SHOWFIRST,	L"Show first"
+	URateDialog_HOURCAPTION_SHOWCURRENT,	L"Show current"
+	URateDialog_HOURCAPTION_SHOWLAST,	L"Show last"
+	URateDialogEx_SCOREGRID_TOTAL,	L"Total"
+	URateDialogEx_SCOREGRID_TARGET,	L"Target"
+	URateDialogEx_SCOREGRID_DIFF,	L"Diff"
+	URateDialogEx_SCOREGRID_DIFF2,	L"+/-"
 	System_NetConsts_SNetHttpRequestOpenError,	L"\x8981\x6C42\x3092\x958B\x304F\x969B\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpRequestAddHeaderError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x8FFD\x52A0\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpRequestRemoveHeaderError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x524A\x9664\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
