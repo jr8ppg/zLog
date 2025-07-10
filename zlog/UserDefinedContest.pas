@@ -98,6 +98,7 @@ type
     FContestId: string;
 
     FUseSentRST: Boolean;
+    FAllowDxNoNumber: Boolean;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -208,6 +209,7 @@ type
     property ContestId: string read FContestId write FContestId;
 
     property UseSentRST: Boolean read FUseSentRST write FUseSentRST;
+    property AllowDxNoNumber: Boolean read FAllowDxNoNumber write FAllowDxNoNumber;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -306,6 +308,7 @@ begin
 
    FContestId := '';
    FUseSentRST := False;
+   FAllowDxNoNumber := False;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -727,6 +730,10 @@ begin
 
          if strCmd = 'USESENTRST' then begin
             D.FUseSentRST := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'ALLOWDXNONR' then begin
+            D.FAllowDxNoNumber := ParseOnOff(strParam);
          end;
       end;
    finally

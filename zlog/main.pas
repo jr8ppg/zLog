@@ -3795,6 +3795,9 @@ begin
          end;
 
          if MyContest is TGeneralContest then begin
+            if ((IsDomestic(CurrentQSO.Callsign) = False) and (TGeneralMulti2(MyContest.MultiForm).Config.AllowDxNoNumber = True)) then begin
+               fNoMulti := True;
+            end;
             if TGeneralMulti2(MyContest.MultiForm).IsMultiNeed() = False then begin
                fNoMulti := True;
             end;
