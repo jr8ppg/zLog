@@ -1911,6 +1911,8 @@ begin
       CurrentQSO.RSTsent := 59;
       SentRSTEdit.Text := '59';
       RcvdRSTEdit.Text := '59';
+      SentRSTEdit.Maxlength := 2;
+      RcvdRSTEdit.Maxlength := 2;
 
       // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
@@ -1926,6 +1928,8 @@ begin
       CurrentQSO.RSTsent := 599;
       SentRSTEdit.Text := '599';
       RcvdRSTEdit.Text := '599';
+      SentRSTEdit.Maxlength := 3;
+      RcvdRSTEdit.Maxlength := 3;
 
       // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
