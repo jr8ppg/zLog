@@ -126,7 +126,7 @@ type
   private
   public
     formMulti: TGeneralMulti2;
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent; UseMulti2: Boolean; UseSentRST: Boolean);
     function GetNewMulti1(aQSO : TQSO) : string; override;
   end;
 
@@ -200,6 +200,7 @@ begin
 
    colTime := 0;
    colCall := 1;
+
    if UseSentRST = True then begin
       colsentRST := 2;
       colrcvdRST := 3;
@@ -240,7 +241,6 @@ begin
       Inc(colno);
       colMemo := colno;
       Inc(colno);
-      GridColCount := 13;
    end
    else begin
       colNewPower := -1;
@@ -248,8 +248,8 @@ begin
       Inc(colno);
       colMemo := colno;
       Inc(colno);
-      GridColCount := 12;
    end;
+   GridColCount := colno;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;
@@ -258,7 +258,7 @@ begin
    else begin
       OpWid := 6;
       MemoWid := 7;
-   end
+   end;
 end;
 
 constructor TPediEdit.Create(AOwner: TComponent);
@@ -490,22 +490,48 @@ begin
    Result := temp;
 end;
 
-constructor TSerialGeneralEdit.Create(AOwner: TComponent);
+constructor TSerialGeneralEdit.Create(AOwner: TComponent; UseMulti2: Boolean; UseSentRST: Boolean);
+var
+   colno: Integer;
 begin
    inherited Create(AOwner);
+
    colSerial := 0;
    colTime := 1;
    colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := 6;
-   { colPower := 6; }
-   colPoint := 7;
-   colNewMulti1 := 8;
-   colNewMulti2 := 9;
-   colOp := 10;
-   colMemo := 11;
+
+   if UseSentRST = True then begin
+      colsentRST := 3;
+      colrcvdRST := 4;
+      colrcvdNumber := 5;
+      colBand := 6;
+      colMode := 7;
+      colPoint := 8;
+      colNewMulti1 := 9;
+      NewMulti1Wid := 5;
+      colno := 10;
+   end
+   else begin
+      colsentRST := -1;
+      colrcvdRST := 3;
+      colrcvdNumber := 4;
+      colBand := 5;
+      colMode := 6;
+      colPoint := 7;
+      colNewMulti1 := 8;
+      NewMulti1Wid := 5;
+      colno := 9;
+   end;
+
+   if UseMulti2 = True then begin
+      colNewMulti2 := colno;
+      NewMulti2Wid := 5;
+      Inc(colno);
+   end
+   else begin
+      colNewMulti2 := -1;
+      NewMulti2Wid := 0;
+   end;
 
    SerialWid := 4;
    TimeWid := 4;
@@ -517,10 +543,24 @@ begin
    PointWid := 2;
    OpWid := 6;
    MemoWid := 7;
-   NewMulti1Wid := 5;
-   NewMulti2Wid := 5;
 
-   GridColCount := 12;
+   if Pos('$P', dmZlogGlobal.Settings._sentstr) > 0 then begin
+      colNewPower := colno;
+      Inc(colno);
+      colOp := colno;
+      Inc(colno);
+      colMemo := colno;
+      Inc(colno);
+      GridColCount := colno;
+   end
+   else begin
+      colNewPower := -1;
+      colOp := colno;
+      Inc(colno);
+      colMemo := colno;
+      Inc(colno);
+      GridColCount := colno;
+   end;
 
    if dmZlogGlobal.ContestCategory = ccSingleOp then begin
       OpWid := 0;

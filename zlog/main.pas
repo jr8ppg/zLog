@@ -9457,7 +9457,7 @@ begin
       EditScreen := TGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
    end
    else begin
-      EditScreen := TSerialGeneralEdit.Create(Self);
+      EditScreen := TSerialGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
 
       Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
 
