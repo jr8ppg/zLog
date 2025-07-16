@@ -310,8 +310,12 @@ begin
    TabControl1Change(TabControl1);
 
    scale := GetDisplayScalingFactor();
-
-   Height := Trunc(Height / scale);
+   if scale >= 1.75 then begin
+      Height := 550;
+   end
+   else if scale >= 1.5 then begin
+      Height := 650;
+   end;
 end;
 
 procedure TformELogJarlEx.RemoveBlankLines(M: TMemo);
@@ -1267,15 +1271,37 @@ end;
 function TformELogJarlEx.GetDisplayScalingFactor(): double;
 var
    pt: TPoint;
-   mon: TMonitor;
+   scale: TDeviceScaleFactor;
+   hMon: THandle;
+type
+   TGetScaleFactorForMonitor = function(hMon: HMONITOR; out Scale: DEVICE_SCALE_FACTOR): HRESULT; stdcall;
+var
+   fnGetScaleFactorForMonitor: TGetScaleFactorForMonitor;
+   hShcore: HMODULE;
 begin
    pt.X := Left;
    pt.Y := Top;
+   hMon := MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
 
-   mon := Screen.MonitorFromPoint(pt, mdNearest);
-
-   // 96:100%, 120:125%, 144:150%  168:175%
-   Result := mon.PixelsPerInch / 96;
+   // GetScaleFactorForMonitor()‚Í Windows 8.1 and later
+   if CheckWin32Version(6, 3) = True then begin
+      hShcore := GetModuleHandle('Shcore.dll');
+      if hShcore <> 0 then begin
+         @fnGetScaleFactorForMonitor := GetProcAddress(hShcore, 'GetScaleFactorForMonitor');
+         if (fnGetScaleFactorForMonitor(hMon, scale) = S_OK) then begin
+            Result := Integer(scale) / 100;
+         end
+         else begin
+            Result := 1;
+         end;
+      end
+      else begin
+         Result := 1;
+      end;
+   end
+   else begin
+      Result := 1;
+   end;
 end;
 
 end.
