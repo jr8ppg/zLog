@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math, DateUtils,
-  Vcl.ComCtrls, UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
+  Vcl.ComCtrls, WinApi.MultiMon, WinApi.ShellScaling, WinApi.ShlObj,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
   UzLogContest;
 
 type
@@ -149,6 +150,7 @@ type
     rPowerType: TRadioGroup;
     labelLicense: TLabel;
     buttonWebUpload: TButton;
+    ScrollBox1: TScrollBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -183,6 +185,7 @@ type
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
     procedure SetBandUsed(b: TBand);
+    function GetDisplayScalingFactor(): double;
   public
     { Public êÈåæ }
   end;
@@ -288,6 +291,8 @@ begin
 end;
 
 procedure TformELogJarlEx.FormShow(Sender: TObject);
+var
+   scale: double;
 begin
    if (MyContest is TALLJAContest) or
       (MyContest is TSixDownContest) or
@@ -303,6 +308,10 @@ begin
    end;
 
    TabControl1Change(TabControl1);
+
+   scale := GetDisplayScalingFactor();
+
+   Height := Trunc(Height / scale);
 end;
 
 procedure TformELogJarlEx.RemoveBlankLines(M: TMemo);
@@ -1253,6 +1262,20 @@ begin
          buttonWebUpload.Enabled := True;
       end;
    end;
+end;
+
+function TformELogJarlEx.GetDisplayScalingFactor(): double;
+var
+   pt: TPoint;
+   mon: TMonitor;
+begin
+   pt.X := Left;
+   pt.Y := Top;
+
+   mon := Screen.MonitorFromPoint(pt, mdNearest);
+
+   // 96:100%, 120:125%, 144:150%  168:175%
+   Result := mon.PixelsPerInch / 96;
 end;
 
 end.
