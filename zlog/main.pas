@@ -6842,7 +6842,6 @@ begin
 
    if FPastEditMode = True then begin
       ShowInfoPanel('', nil, False);
-      GridRefreshScreen();
       FPastEditMode := False;
    end;
 
