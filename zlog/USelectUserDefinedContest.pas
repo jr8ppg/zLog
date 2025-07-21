@@ -32,6 +32,7 @@ type
     checkImportCQMessage2: TCheckBox;
     checkImportCQMessage3: TCheckBox;
     editFilterText: TEdit;
+    checkAllowTempChanges: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonCfgFolderRefClick(Sender: TObject);
@@ -87,6 +88,7 @@ begin
    checkImportCwMessage4.Checked := dmZLogGlobal.Settings.FImpCwMessage[4];
    checkImportCQMessage2.Checked := dmZLogGlobal.Settings.FImpCQMessage[2];
    checkImportCQMessage3.Checked := dmZLogGlobal.Settings.FImpCQMessage[3];
+   checkAllowTempChanges.Checked := Not dmZLogGlobal.Settings.ReadOnlyParamImported;
    editFilterText.Text := '';
 end;
 
@@ -100,6 +102,7 @@ begin
    dmZLogGlobal.Settings.FImpCwMessage[4] := checkImportCwMessage4.Checked;
    dmZLogGlobal.Settings.FImpCQMessage[2] := checkImportCQMessage2.Checked;
    dmZLogGlobal.Settings.FImpCQMessage[3] := checkImportCQMessage3.Checked;
+   dmZLogGlobal.Settings.ReadOnlyParamImported := Not checkAllowTempChanges.Checked;
 end;
 
 procedure TSelectUserDefinedContest.FormShow(Sender: TObject);
