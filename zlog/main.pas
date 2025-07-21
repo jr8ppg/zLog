@@ -8196,6 +8196,7 @@ var
    strCfgFileName: string;
    fScoreCoeff: Extended;
    fNewContest: Boolean;
+   S: string;
 begin
    FInitialized := False;
 
@@ -8382,7 +8383,15 @@ begin
             dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
          end
          else begin // user hit cancel
-            MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
+            // ファイル名が指定されなかった場合は自動設定する
+            S := CreateTempLogFileName();
+            if S = '' then begin
+               MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
+            end
+            else begin
+               dmZLogGlobal.SetLogFileName(S);
+               Log.SaveToFile(CurrentFileName);
+            end;
          end;
       end
       else begin

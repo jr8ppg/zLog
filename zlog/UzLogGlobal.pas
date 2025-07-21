@@ -615,6 +615,7 @@ public
 
 function Log(): TLog;
 function CurrentFileName(): string;
+function CreateTempLogFileName(): string;
 function Random10 : integer;
 function UTCOffset : integer;   //in minutes; utc = localtime + utcoffset
 function ContainsDoubleByteChar(S : string) : boolean;
@@ -3627,6 +3628,33 @@ end;
 function CurrentFileName(): string;
 begin
    Result := dmZLogGlobal.FCurrentFileName;
+end;
+
+function CreateTempLogFileName(): string;
+var
+   S: string;
+   fullpath: string;
+   c: Integer;
+begin
+   c := 0;
+   repeat
+      if (c = 50) then begin
+         Result := '';
+         Exit;
+      end;
+
+      S := FormatDateTime('yyyymmdd_hhmmss', Now);
+      if c > 0 then begin
+         S := S + IntToStr(c);
+      end;
+      S := 'ZT_' + S + '.ZLOX';
+
+      fullpath := dmZLogGlobal.CfgDatPath + S;
+
+      Inc(c);
+   until FileExists(fullpath) = False;
+
+   Result := fullpath;
 end;
 
 function Random10: integer;
