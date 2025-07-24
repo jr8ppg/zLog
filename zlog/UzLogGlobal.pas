@@ -1382,7 +1382,7 @@ begin
       Settings._super_check_columns := ini.ReadInteger('Windows', 'SuperCheckColumns', 0);
       Settings._super_check2_columns := ini.ReadInteger('Windows', 'SuperCheck2Columns', 0);
 
-      Settings.ReadOnlyParamImported := ini.ReadBool('Categories', 'ReadOnlyParamImported', True);
+      Settings.ReadOnlyParamImported := ini.ReadBool('Categories', 'ReadOnlyParamImported', False);
 
       Settings.FRigShowRitInfo := ini.ReadBool('Rig', 'ShowRitInfo', False);
 
@@ -2352,6 +2352,8 @@ begin
          ini.WriteString('LastContest', 'CWAddStr' + IntToStr(i), LastContest.CWAddStr[i]);
          ini.WriteBool('LastContest', 'CWAddStrImported' + IntToStr(i), LastContest.CWAddStrImported[i]);
       end;
+
+      ini.WriteBool('Categories', 'ReadOnlyParamImported', Settings.ReadOnlyParamImported);
 
       ini.UpdateFile();
    finally
