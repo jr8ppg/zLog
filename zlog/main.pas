@@ -1911,6 +1911,8 @@ begin
       CurrentQSO.RSTsent := 59;
       SentRSTEdit.Text := '59';
       RcvdRSTEdit.Text := '59';
+      SentRSTEdit.Maxlength := 2;
+      RcvdRSTEdit.Maxlength := 2;
 
       // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
@@ -1926,6 +1928,8 @@ begin
       CurrentQSO.RSTsent := 599;
       SentRSTEdit.Text := '599';
       RcvdRSTEdit.Text := '599';
+      SentRSTEdit.Maxlength := 3;
+      RcvdRSTEdit.Maxlength := 3;
 
       // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
       if dmZLogGlobal.Settings._usbif4cw_gen3_micsel = True then begin
@@ -3795,6 +3799,9 @@ begin
          end;
 
          if MyContest is TGeneralContest then begin
+            if ((IsDomestic(CurrentQSO.Callsign) = False) and (TGeneralMulti2(MyContest.MultiForm).Config.AllowDxNoNumber = True)) then begin
+               fNoMulti := True;
+            end;
             if TGeneralMulti2(MyContest.MultiForm).IsMultiNeed() = False then begin
                fNoMulti := True;
             end;
@@ -6835,7 +6842,6 @@ begin
 
    if FPastEditMode = True then begin
       ShowInfoPanel('', nil, False);
-      GridRefreshScreen();
       FPastEditMode := False;
    end;
 
@@ -8189,6 +8195,7 @@ var
    strCfgFileName: string;
    fScoreCoeff: Extended;
    fNewContest: Boolean;
+   S: string;
 begin
    FInitialized := False;
 
@@ -8375,7 +8382,15 @@ begin
             dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
          end
          else begin // user hit cancel
-            MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
+            // ファイル名が指定されなかった場合は自動設定する
+            S := CreateTempLogFileName();
+            if S = '' then begin
+               MessageDlg(TMainForm_Need_File_Name, mtWarning, [mbOK], 0); { HELP context 0 }
+            end
+            else begin
+               dmZLogGlobal.SetLogFileName(S);
+               Log.SaveToFile(CurrentFileName);
+            end;
          end;
       end
       else begin
@@ -9450,7 +9465,7 @@ begin
       EditScreen := TGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
    end
    else begin
-      EditScreen := TSerialGeneralEdit.Create(Self);
+      EditScreen := TSerialGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
 
       Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
 

@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math, DateUtils,
-  Vcl.ComCtrls, UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
+  Vcl.ComCtrls, WinApi.MultiMon, WinApi.ShellScaling, WinApi.ShlObj,
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
   UzLogContest;
 
 type
@@ -149,6 +150,7 @@ type
     rPowerType: TRadioGroup;
     labelLicense: TLabel;
     buttonWebUpload: TButton;
+    ScrollBox1: TScrollBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -183,6 +185,7 @@ type
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
     procedure SetBandUsed(b: TBand);
+    function GetDisplayScalingFactor(): double;
   public
     { Public éŒ¾ }
   end;
@@ -288,6 +291,8 @@ begin
 end;
 
 procedure TformELogJarlEx.FormShow(Sender: TObject);
+var
+   scale: double;
 begin
    if (MyContest is TALLJAContest) or
       (MyContest is TSixDownContest) or
@@ -303,6 +308,14 @@ begin
    end;
 
    TabControl1Change(TabControl1);
+
+   scale := GetDisplayScalingFactor();
+   if scale >= 1.75 then begin
+      Height := 550;
+   end
+   else if scale >= 1.5 then begin
+      Height := 650;
+   end;
 end;
 
 procedure TformELogJarlEx.RemoveBlankLines(M: TMemo);
@@ -1252,6 +1265,42 @@ begin
          checkFieldExtend.Visible := True;
          buttonWebUpload.Enabled := True;
       end;
+   end;
+end;
+
+function TformELogJarlEx.GetDisplayScalingFactor(): double;
+var
+   pt: TPoint;
+   scale: TDeviceScaleFactor;
+   hMon: THandle;
+type
+   TGetScaleFactorForMonitor = function(hMon: HMONITOR; out Scale: DEVICE_SCALE_FACTOR): HRESULT; stdcall;
+var
+   fnGetScaleFactorForMonitor: TGetScaleFactorForMonitor;
+   hShcore: HMODULE;
+begin
+   pt.X := Left;
+   pt.Y := Top;
+   hMon := MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+
+   // GetScaleFactorForMonitor()‚Í Windows 8.1 and later
+   if CheckWin32Version(6, 3) = True then begin
+      hShcore := GetModuleHandle('Shcore.dll');
+      if hShcore <> 0 then begin
+         @fnGetScaleFactorForMonitor := GetProcAddress(hShcore, 'GetScaleFactorForMonitor');
+         if (fnGetScaleFactorForMonitor(hMon, scale) = S_OK) then begin
+            Result := Integer(scale) / 100;
+         end
+         else begin
+            Result := 1;
+         end;
+      end
+      else begin
+         Result := 1;
+      end;
+   end
+   else begin
+      Result := 1;
    end;
 end;
 

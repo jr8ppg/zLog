@@ -863,17 +863,23 @@ begin
       MainForm.SetQSOMode(workQSO, False);
    end;
 
-   ModeEdit.Text := ModeString[workQSO.mode];
+   ModeEdit.Text := ModeString[workQSO.Mode];
 
-   if workQSO.mode in [mSSB, mFM, mAM] then begin
+   if workQSO.Mode in [mSSB, mFM, mAM] then begin
       workQSO.RSTrcvd := 59;
       workQSO.RSTsent := 59;
       RcvdRSTEdit.Text := '59';
+      SentRSTEdit.Text := '59';
+      RcvdRSTEdit.MaxLength := 2;
+      SentRSTEdit.MaxLength := 2;
    end
    else begin
       workQSO.RSTrcvd := 599;
       workQSO.RSTsent := 599;
       RcvdRSTEdit.Text := '599';
+      SentRSTEdit.Text := '599';
+      RcvdRSTEdit.MaxLength := 3;
+      SentRSTEdit.MaxLength := 3;
    end;
 end;
 

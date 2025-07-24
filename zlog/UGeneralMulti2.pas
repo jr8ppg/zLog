@@ -188,6 +188,11 @@ var
    C : TCity;
    boo : Boolean;
 begin
+   if ((IsDomestic(aQSO.Callsign) = False) and (FConfig.AllowDxNoNumber = True)) then begin
+      Result := True;
+      Exit;
+   end;
+
    if IsMultiNeed() = False then begin
       Result := True;
       Exit;

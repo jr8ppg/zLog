@@ -375,7 +375,18 @@ procedure TCommForm.ImplementOptions();
 var
    i: Integer;
    setting: TTelnetSetting;
+   prevSite: string;
+   Index: Integer;
 begin
+   // 今まで使用されていたタブの名前を覚える
+   if TabControl1.TabIndex >= 0 then begin
+      prevSite := TabControl1.Tabs[TabControl1.TabIndex];
+   end
+   else begin
+      prevSite := '';
+   end;
+
+   // タブに新しい設定をセット
    TabControl1.Tabs.Clear();
    for i := 0 to dmZLogGlobal.PacketClusterList.Count - 1 do begin
       setting := dmZLogGlobal.PacketClusterList[i];
@@ -383,7 +394,13 @@ begin
    end;
 
    if TabControl1.Tabs.Count > 0 then begin
-      TabControl1.TabIndex := 0;
+      // 前に選択されていたタブがあればそれを選択する
+      Index := TabControl1.Tabs.IndexOf(prevSite);
+      if Index = -1 then begin
+         Index := 0;
+      end;
+      TabControl1.TabIndex := Index;
+
       SelectSite(TabControl1.TabIndex);
       ConnectButton.Enabled := True;
    end
