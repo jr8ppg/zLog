@@ -3649,7 +3649,7 @@ begin
       end;
       S := 'ZT_' + S + '.ZLOX';
 
-      fullpath := dmZLogGlobal.CfgDatPath + S;
+      fullpath := dmZLogGlobal.LogPath + S;
 
       Inc(c);
    until FileExists(fullpath) = False;
