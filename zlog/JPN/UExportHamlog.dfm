@@ -22,7 +22,6 @@ object formExportHamlog: TformExportHamlog
     Align = alClient
     Caption = 'HAMLOG'#29992#20986#21147#35373#23450
     TabOrder = 0
-    ExplicitHeight = 521
     object groupRemarks1: TGroupBox
       Left = 12
       Top = 24
@@ -290,7 +289,7 @@ object formExportHamlog: TformExportHamlog
         Top = 48
         Width = 130
         Height = 13
-        Caption = 'NR'#12424#12426'JCC/G'#12434#25277#20986
+        Caption = #12510#12523#12481#12434#25277#20986
         TabOrder = 1
         OnClick = radioRemarks1Opt3Click
       end
@@ -414,7 +413,6 @@ object formExportHamlog: TformExportHamlog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 520
     DesignSize = (
       551
       36)

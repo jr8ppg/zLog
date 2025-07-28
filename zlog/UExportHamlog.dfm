@@ -22,7 +22,6 @@ object formExportHamlog: TformExportHamlog
     Align = alClient
     Caption = 'Output settings for HAMLOG'
     TabOrder = 0
-    ExplicitHeight = 521
     object groupRemarks1: TGroupBox
       Left = 12
       Top = 24
@@ -290,7 +289,7 @@ object formExportHamlog: TformExportHamlog
         Top = 48
         Width = 104
         Height = 13
-        Caption = 'Extract JCC/G'
+        Caption = 'Extract Multiplier'
         TabOrder = 1
         OnClick = radioRemarks1Opt3Click
       end
@@ -414,7 +413,6 @@ object formExportHamlog: TformExportHamlog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 520
     DesignSize = (
       551
       36)
