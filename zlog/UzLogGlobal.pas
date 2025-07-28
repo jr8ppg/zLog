@@ -7,6 +7,7 @@ uses
   Winapi.Windows, Vcl.Menus, System.Math, Vcl.Graphics, Vcl.StdCtrls,
   System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
+  WinApi.MultiMon, WinApi.ShellScaling, WinApi.ShlObj,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort, UzFreqMemory;
 
@@ -697,6 +698,7 @@ function GetCommPortsForOldVersion(lpPortNumbers: PULONG; uPortNumbersCount: ULO
 function TrimCRLF(SS : string) : string;
 function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
 procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
+function GetDisplayScalingFactor(x, y: Integer): double;
 
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
@@ -4940,6 +4942,42 @@ begin
    f.DefaultMonitor := dmDesktop;
    f.Left := x;
    f.Top := y;
+end;
+
+function GetDisplayScalingFactor(x, y: Integer): double;
+var
+   pt: TPoint;
+   scale: TDeviceScaleFactor;
+   hMon: THandle;
+type
+   TGetScaleFactorForMonitor = function(hMon: HMONITOR; out Scale: DEVICE_SCALE_FACTOR): HRESULT; stdcall;
+var
+   fnGetScaleFactorForMonitor: TGetScaleFactorForMonitor;
+   hShcore: HMODULE;
+begin
+   pt.X := x;
+   pt.Y := y;
+   hMon := MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+
+   // GetScaleFactorForMonitor()は Windows 8.1 and later
+   if CheckWin32Version(6, 3) = True then begin
+      hShcore := GetModuleHandle('Shcore.dll');
+      if hShcore <> 0 then begin
+         @fnGetScaleFactorForMonitor := GetProcAddress(hShcore, 'GetScaleFactorForMonitor');
+         if (fnGetScaleFactorForMonitor(hMon, scale) = S_OK) then begin
+            Result := Integer(scale) / 100;
+         end
+         else begin
+            Result := 1;
+         end;
+      end
+      else begin
+         Result := 1;
+      end;
+   end
+   else begin
+      Result := 1;
+   end;
 end;
 
 end.

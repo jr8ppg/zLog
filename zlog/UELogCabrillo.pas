@@ -14,20 +14,8 @@ type
     buttonCreateLog: TButton;
     buttonSave: TButton;
     buttonCancel: TButton;
-    editCallsign: TEdit;
-    comboAssisted: TComboBox;
-    comboBand: TComboBox;
-    comboMode: TComboBox;
-    comboOperator: TComboBox;
-    comboPower: TComboBox;
-    comboStation: TComboBox;
-    comboTime: TComboBox;
-    comboTransmitter: TComboBox;
-    comboOverlay: TComboBox;
-    Label1: TLabel;
-    comboCertificate: TComboBox;
-    Label2: TLabel;
-    editClaimedScore: TEdit;
+    SaveDialog1: TSaveDialog;
+    ScrollBox1: TScrollBox;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
@@ -35,47 +23,61 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
+    Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
     Label15: TLabel;
-    editClub: TEdit;
-    editEmail: TEdit;
     Label17: TLabel;
-    editGridLocator: TEdit;
     Label18: TLabel;
-    comboLocation: TComboBox;
     Label19: TLabel;
-    editName: TEdit;
+    Label2: TLabel;
     Label20: TLabel;
-    editAddress: TEdit;
     Label21: TLabel;
-    editAddressCity: TEdit;
-    editAddressStateProvince: TEdit;
     Label22: TLabel;
     Label23: TLabel;
-    editAddressPostalcode: TEdit;
-    editAddressCountry: TEdit;
     Label24: TLabel;
     Label25: TLabel;
-    editOperators: TEdit;
     Label26: TLabel;
-    editOfftime: TEdit;
-    editSoapbox: TEdit;
     Label27: TLabel;
     Label28: TLabel;
+    Label29: TLabel;
+    comboAssisted: TComboBox;
+    comboBand: TComboBox;
+    comboCertificate: TComboBox;
+    comboContest: TComboBox;
+    comboLocation: TComboBox;
+    comboMode: TComboBox;
+    comboOperator: TComboBox;
+    comboOverlay: TComboBox;
+    comboPower: TComboBox;
+    comboStation: TComboBox;
+    comboTime: TComboBox;
+    comboTransmitter: TComboBox;
+    editAddress: TEdit;
+    editAddressCity: TEdit;
+    editAddressCountry: TEdit;
+    editAddressPostalcode: TEdit;
+    editAddressStateProvince: TEdit;
+    editCallsign: TEdit;
+    editClaimedScore: TEdit;
+    editClub: TEdit;
+    editEmail: TEdit;
+    editGridLocator: TEdit;
+    editName: TEdit;
+    editOfftime: TEdit;
+    editOperators: TEdit;
+    editSoapbox: TEdit;
     GroupBox1: TGroupBox;
     radioUTC: TRadioButton;
     radioJST: TRadioButton;
-    comboContest: TComboBox;
-    Label29: TLabel;
-    SaveDialog1: TSaveDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
     procedure buttonCreateLogClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private éŒ¾ }
     procedure InitializeFields();
@@ -98,6 +100,19 @@ end;
 procedure TformELogCabrillo.FormDestroy(Sender: TObject);
 begin
 //
+end;
+
+procedure TformELogCabrillo.FormShow(Sender: TObject);
+var
+   scale: Double;
+begin
+   scale := GetDisplayScalingFactor(Left, Top);
+   if scale >= 1.75 then begin
+      Height := 550;
+   end
+   else if scale >= 1.5 then begin
+      Height := 650;
+   end;
 end;
 
 procedure TformELogCabrillo.buttonCancelClick(Sender: TObject);
