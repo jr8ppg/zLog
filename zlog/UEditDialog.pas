@@ -174,6 +174,7 @@ type
     procedure ApplyShortcut();
     procedure OnUpKeyProc(Sender: TObject);
     procedure OnDownKeyProc(Sender: TObject);
+    procedure SetRSTEditParam();
   public
     { Public declarations }
     procedure Init(aQSO : TQSO; Action_ : integer);
@@ -523,18 +524,8 @@ end;
 
 procedure TEditDialog.ModeMenuClick(Sender: TObject);
 begin
-   ModeEdit.Text := ModeString[TMode(TMenuItem(Sender).Tag)];
-   workQSO.mode := TMode(TMenuItem(Sender).Tag);
-   If TMenuItem(Sender).Tag in [1 .. 3] then begin
-      workQSO.RSTrcvd := 59;
-      workQSO.RSTsent := 59;
-      RcvdRSTEdit.Text := '59';
-   end
-   else begin
-      workQSO.RSTrcvd := 599;
-      workQSO.RSTsent := 599;
-      RcvdRSTEdit.Text := '599';
-   end;
+   workQSO.Mode := TMode(TMenuItem(Sender).Tag);
+   SetRSTEditParam();
 end;
 
 procedure TEditDialog.EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -863,24 +854,7 @@ begin
       MainForm.SetQSOMode(workQSO, False);
    end;
 
-   ModeEdit.Text := ModeString[workQSO.Mode];
-
-   if workQSO.Mode in [mSSB, mFM, mAM] then begin
-      workQSO.RSTrcvd := 59;
-      workQSO.RSTsent := 59;
-      RcvdRSTEdit.Text := '59';
-      SentRSTEdit.Text := '59';
-      RcvdRSTEdit.MaxLength := 2;
-      SentRSTEdit.MaxLength := 2;
-   end
-   else begin
-      workQSO.RSTrcvd := 599;
-      workQSO.RSTsent := 599;
-      RcvdRSTEdit.Text := '599';
-      SentRSTEdit.Text := '599';
-      RcvdRSTEdit.MaxLength := 3;
-      SentRSTEdit.MaxLength := 3;
-   end;
+   SetRSTEditParam();
 end;
 
 procedure TEditDialog.actionChangePowerExecute(Sender: TObject);
@@ -1100,6 +1074,27 @@ begin
    end
    else begin
       //
+   end;
+end;
+
+procedure TEditDialog.SetRSTEditParam();
+begin
+   ModeEdit.Text := ModeString[workQSO.Mode];
+   if workQSO.Mode in [mSSB, mFM, mAM] then begin
+      workQSO.RSTrcvd := 59;
+      workQSO.RSTsent := 59;
+      RcvdRSTEdit.Text := '59';
+      SentRSTEdit.Text := '59';
+      RcvdRSTEdit.MaxLength := 2;
+      SentRSTEdit.MaxLength := 2;
+   end
+   else begin
+      workQSO.RSTrcvd := 599;
+      workQSO.RSTsent := 599;
+      RcvdRSTEdit.Text := '599';
+      SentRSTEdit.Text := '599';
+      RcvdRSTEdit.MaxLength := 3;
+      SentRSTEdit.MaxLength := 3;
    end;
 end;
 
