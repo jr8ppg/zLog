@@ -37,8 +37,17 @@ type
     spNumOfRbnCount: TSpinEdit;
     Label2: TLabel;
     tabsheetWindowStyle: TTabSheet;
-    GroupBox1: TGroupBox;
+    groupUsabilityGeneral: TGroupBox;
     checkUseMultiLineTabs: TCheckBox;
+    groupUsabilityAfterQsoEdit: TGroupBox;
+    Panel2: TPanel;
+    radioOnOkFocusToQsoList: TRadioButton;
+    radioOnOkFocusToNewQso: TRadioButton;
+    Panel3: TPanel;
+    radioOnCancelFocusToQsoList: TRadioButton;
+    radioOnCancelFocusToNewQso: TRadioButton;
+    Label3: TLabel;
+    Label4: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -108,8 +117,21 @@ begin
          FListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
       end;
 
-      // Style
+      // Usability
       checkUseMultiLineTabs.Checked := Settings.FUseMultiLineTabs;
+
+      if Settings.FAfterQsoEditOkFocusPos = 0 then begin
+         radioOnOkFocusToQsoList.Checked := True;
+      end
+      else begin
+         radioOnOkFocusToNewQso.Checked := True;
+      end;
+      if Settings.FAfterQsoEditCancelFocusPos = 0 then begin
+         radioOnCancelFocusToQsoList.Checked := True;
+      end
+      else begin
+         radioOnCancelFocusToNewQso.Checked := True;
+      end;
    end;
 
    PageControl.ActivePageIndex := 0;
@@ -148,8 +170,21 @@ begin
          Settings.FQsoListColors[i].FBold      := FListBold[i].Checked;
       end;
 
-      // Style
+      // Usability
       Settings.FUseMultiLineTabs := checkUseMultiLineTabs.Checked;
+
+      if radioOnOkFocusToQsoList.Checked = True then begin
+         Settings.FAfterQsoEditOkFocusPos := 0;
+      end
+      else begin
+         Settings.FAfterQsoEditOkFocusPos := 1;
+      end;
+      if radioOnCancelFocusToQsoList.Checked = True then begin
+         Settings.FAfterQsoEditCancelFocusPos := 0;
+      end
+      else begin
+         Settings.FAfterQsoEditCancelFocusPos := 1;
+      end;
    end;
 end;
 

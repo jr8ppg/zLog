@@ -22,7 +22,7 @@ object formOptions3: TformOptions3
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetRbnOptions
+    ActivePage = tabsheetWindowStyle
     Align = alClient
     TabOrder = 0
     object tabsheetRbnOptions: TTabSheet
@@ -192,13 +192,13 @@ object formOptions3: TformOptions3
       end
     end
     object tabsheetWindowStyle: TTabSheet
-      Caption = 'Style'
+      Caption = #25805#20316#24615
       ImageIndex = 1
-      object GroupBox1: TGroupBox
+      object groupUsabilityGeneral: TGroupBox
         Left = 6
         Top = 4
         Width = 423
-        Height = 81
+        Height = 53
         Caption = #20840#33324
         TabOrder = 0
         object checkUseMultiLineTabs: TCheckBox
@@ -208,6 +208,76 @@ object formOptions3: TformOptions3
           Height = 17
           Caption = #12479#12502#12434#35079#25968#34892#34920#31034#12377#12427
           TabOrder = 0
+        end
+      end
+      object groupUsabilityAfterQsoEdit: TGroupBox
+        Left = 6
+        Top = 63
+        Width = 423
+        Height = 94
+        Caption = 'QSOEdit'#24460#12398#12501#12457#12540#12459#12473#20301#32622
+        TabOrder = 1
+        object Panel2: TPanel
+          Left = 11
+          Top = 24
+          Width = 302
+          Height = 25
+          BevelOuter = bvNone
+          TabOrder = 0
+          object Label3: TLabel
+            Left = 9
+            Top = 6
+            Width = 58
+            Height = 13
+            Caption = 'OK'#12463#12522#12483#12463#24460
+          end
+          object radioOnOkFocusToQsoList: TRadioButton
+            Left = 137
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = #20132#20449#12522#12473#12488
+            TabOrder = 0
+          end
+          object radioOnOkFocusToNewQso: TRadioButton
+            Left = 225
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = #27425#12398'QSO'
+            TabOrder = 1
+          end
+        end
+        object Panel3: TPanel
+          Left = 11
+          Top = 55
+          Width = 302
+          Height = 25
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Label4: TLabel
+            Left = 9
+            Top = 6
+            Width = 76
+            Height = 13
+            Caption = #12461#12515#12531#12475#12523#12463#12522#12483#12463#24460
+          end
+          object radioOnCancelFocusToQsoList: TRadioButton
+            Left = 137
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = #20132#20449#12522#12473#12488
+            TabOrder = 0
+          end
+          object radioOnCancelFocusToNewQso: TRadioButton
+            Left = 225
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = #27425#12398'QSO'
+            TabOrder = 1
+          end
         end
       end
     end

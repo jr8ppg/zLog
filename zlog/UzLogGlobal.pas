@@ -393,8 +393,10 @@ type
     // Startup window
     FDontShowStartupWindow: Boolean;
 
-    // Style
+    // Usability
     FUseMultiLineTabs: Boolean;
+    FAfterQsoEditOkFocusPos: Integer;
+    FAfterQsoEditCancelFocusPos: Integer;
   end;
 
   TLastContest = record
@@ -1355,8 +1357,10 @@ begin
       // Startup window
       Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
 
-      // Style
-      Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', False);
+      // Usability
+      Settings.FUseMultiLineTabs := ini.ReadBool('Usability', 'UseMultiLineTabs', False);
+      Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
+      Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
 
       //
       // ここから隠し設定
@@ -2140,8 +2144,10 @@ begin
       // Startup window
       ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
 
-      // Style
-      ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
+      // Usability
+      ini.WriteBool('Usability', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
+      ini.WriteInteger('Usability', 'AfterQsoEditOkFocusPos', Settings.FAfterQsoEditOkFocusPos);
+      ini.WriteInteger('Usability', 'AfterQsoEditCancelFocusPos', Settings.FAfterQsoEditCancelFocusPos);
 
       //
       // ここから隠し設定
