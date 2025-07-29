@@ -659,6 +659,10 @@ begin
             rig:= TFT710.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
+         if rname = 'FTX-1' then begin
+            rig:= TFT710.Create(rignum, Port, Comm, Timer, b19, b430);
+         end;
+
          if rname = 'JST-145' then begin
             rig := TJST145.Create(rignum, Port, Comm, Timer, b19, b28);
          end;
