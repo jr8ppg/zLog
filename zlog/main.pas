@@ -4705,10 +4705,10 @@ begin
       end
       else begin
          if (gdSelected in State) and (Grid.Focused = True) then begin
-            bg := RGB($E5, $F3, $FF);   // 選択色
+            bg := dmZLogGlobal.Settings.FQsoListFocusedSelColor;   // 選択色
          end
          else if (gdSelected in State) and (Grid.Focused = False) then begin
-            bg := RGB($E5, $E5, $E5);   // 選択色
+            bg := dmZLogGlobal.Settings.FQsoListUnfocusedSelColor;   // 選択色
          end
          else begin
             if (Q <> nil) and (Q.RbnVerified = True) then begin   // RBN照合済み

@@ -397,6 +397,8 @@ type
     FUseMultiLineTabs: Boolean;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
+    FQsoListFocusedSelColor: TColor;
+    FQsoListUnfocusedSelColor: TColor;
   end;
 
   TLastContest = record
@@ -1358,9 +1360,11 @@ begin
       Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
 
       // Usability
-      Settings.FUseMultiLineTabs := ini.ReadBool('Usability', 'UseMultiLineTabs', False);
+      Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', False);
       Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
       Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
+      Settings.FQsoListFocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListFocusedSelColor', ''), RGB($E5, $F3, $FF));
+      Settings.FQsoListUnfocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListUnfocusedSelColor', ''), RGB($E5, $E5, $E5));
 
       //
       // ここから隠し設定
@@ -2145,9 +2149,11 @@ begin
       ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
 
       // Usability
-      ini.WriteBool('Usability', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
+      ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
       ini.WriteInteger('Usability', 'AfterQsoEditOkFocusPos', Settings.FAfterQsoEditOkFocusPos);
       ini.WriteInteger('Usability', 'AfterQsoEditCancelFocusPos', Settings.FAfterQsoEditCancelFocusPos);
+      ini.WriteString('Usability', 'QsoListFocusedSelColor', ZColorToString(Settings.FQsoListFocusedSelColor));
+      ini.WriteString('Usability', 'QsoListUnfocusedSelColor', ZColorToString(Settings.FQsoListUnfocusedSelColor));
 
       //
       // ここから隠し設定

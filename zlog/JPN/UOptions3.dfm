@@ -22,7 +22,7 @@ object formOptions3: TformOptions3
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetWindowStyle
+    ActivePage = tabsheetRbnOptions
     Align = alClient
     TabOrder = 0
     object tabsheetRbnOptions: TTabSheet
@@ -32,7 +32,7 @@ object formOptions3: TformOptions3
         Left = 6
         Top = 91
         Width = 423
-        Height = 86
+        Height = 134
         Caption = #20132#20449#12522#12473#12488
         TabOrder = 1
         object Label61: TLabel
@@ -48,6 +48,20 @@ object formOptions3: TformOptions3
           Width = 61
           Height = 13
           Caption = 'RBN Verified'#34920#31034
+        end
+        object Label5: TLabel
+          Left = 8
+          Top = 77
+          Width = 94
+          Height = 13
+          Caption = #36984#25246#33394'('#12501#12457#12540#12459#12473#26377')'
+        end
+        object Label6: TLabel
+          Left = 8
+          Top = 104
+          Width = 91
+          Height = 13
+          Caption = #36984#25246#33394'('#12501#12457#12540#12459#12473#28961')'
         end
         object editListColor1: TEdit
           Left = 118
@@ -148,6 +162,66 @@ object formOptions3: TformOptions3
           Caption = #22826#23383
           TabOrder = 8
           OnClick = checkListBoldClick
+        end
+        object editListColor3: TEdit
+          Left = 118
+          Top = 74
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 10
+          Text = 'TEXT'
+        end
+        object buttonListBack3: TButton
+          Tag = 3
+          Left = 270
+          Top = 75
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 11
+          OnClick = buttonListBackClick
+        end
+        object buttonListReset3: TButton
+          Tag = 3
+          Left = 368
+          Top = 75
+          Width = 45
+          Height = 20
+          Caption = #12522#12475#12483#12488
+          TabOrder = 12
+          OnClick = buttonListResetClick
+        end
+        object editListColor4: TEdit
+          Left = 118
+          Top = 101
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 13
+          Text = 'TEXT'
+        end
+        object buttonListBack4: TButton
+          Tag = 4
+          Left = 270
+          Top = 102
+          Width = 45
+          Height = 20
+          Caption = #32972#26223#33394
+          TabOrder = 14
+          OnClick = buttonListBackClick
+        end
+        object buttonListReset4: TButton
+          Tag = 4
+          Left = 368
+          Top = 102
+          Width = 45
+          Height = 20
+          Caption = #12522#12475#12483#12488
+          TabOrder = 15
+          OnClick = buttonListResetClick
         end
       end
       object groupGeneral: TGroupBox

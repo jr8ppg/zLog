@@ -48,6 +48,14 @@ type
     radioOnCancelFocusToNewQso: TRadioButton;
     Label3: TLabel;
     Label4: TLabel;
+    Label5: TLabel;
+    editListColor3: TEdit;
+    buttonListBack3: TButton;
+    buttonListReset3: TButton;
+    Label6: TLabel;
+    editListColor4: TEdit;
+    buttonListBack4: TButton;
+    buttonListReset4: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -59,16 +67,18 @@ type
     procedure buttonListResetClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
-    FListColor: array[1..2] of TEdit;
-    FListBold: array[1..2] of TCheckBox;
+    FListColor: array[1..4] of TEdit;
+    FListBold: array[1..4] of TCheckBox;
   public
     procedure RenewSettings;
   end;
 
 const
-  QsoListDefaultColor: array[1..2] of TColorSetting = (
+  QsoListDefaultColor: array[1..4] of TColorSetting = (
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
-    ( FForeColor: clBlack; FBackColor: clWhite; FBold: False )
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
+    ( FForeColor: clBlack; FBackColor: $FFF3E5; FBold: False ) ,
+    ( FForeColor: clBlack; FBackColor: $E5E5E5; FBold: False )
   );
 
 implementation
@@ -96,8 +106,12 @@ begin
    // QSO List
    FListColor[1] := editListColor1;
    FListColor[2] := editListColor2;
+   FListColor[3] := editListColor3;
+   FListColor[4] := editListColor4;
    FListBold[1] := checkListBold1;
    FListBold[2] := checkListBold2;
+   FListBold[3] := nil;
+   FListBold[4] := nil;
 
    PageControl.ActivePage := tabsheetRbnOptions;
 end;
@@ -119,6 +133,8 @@ begin
 
       // Usability
       checkUseMultiLineTabs.Checked := Settings.FUseMultiLineTabs;
+      FListColor[3].Color := Settings.FQsoListFocusedSelColor;
+      FListColor[4].Color := Settings.FQsoListUnfocusedSelColor;
 
       if Settings.FAfterQsoEditOkFocusPos = 0 then begin
          radioOnOkFocusToQsoList.Checked := True;
@@ -172,6 +188,8 @@ begin
 
       // Usability
       Settings.FUseMultiLineTabs := checkUseMultiLineTabs.Checked;
+      Settings.FQsoListFocusedSelColor := FListColor[3].Color;
+      Settings.FQsoListUnfocusedSelColor := FListColor[4].Color;
 
       if radioOnOkFocusToQsoList.Checked = True then begin
          Settings.FAfterQsoEditOkFocusPos := 0;
@@ -234,7 +252,9 @@ begin
 
    FListColor[n].Font.Color  := QsoListDefaultColor[n].FForeColor;
    FListColor[n].Color       := QsoListDefaultColor[n].FBackColor;
-   FListBold[n].Checked      := QsoListDefaultColor[n].FBold;
+   if Assigned(FListBold[n]) then begin
+      FListBold[n].Checked      := QsoListDefaultColor[n].FBold;
+   end;
 end;
 
 end.
