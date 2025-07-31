@@ -88,7 +88,7 @@ type
     FKeyingPort: Integer; {1 : LPT1; 2 : LPT2;  11:COM1; 12 : COM2;  21: USB}
     FKeyingPortConfig: TPortConfig;
     FUseTransverter: Boolean;
-    FTransverterOffset: Integer;
+    FTransverterOffset: TFrequency;
     FPhoneChgPTT: Boolean;
   end;
 
