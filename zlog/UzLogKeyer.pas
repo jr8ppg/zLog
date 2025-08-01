@@ -1012,18 +1012,11 @@ end;
 
 procedure TdmZLogKeyer.SetTxRigFlag_mk2r(rigset, rigno: Integer);
 begin
-   case rigno of
-      1: begin
-      end;
-
-      2: begin
-      end;
-
-      3: begin
-      end;
-
-      4: begin
-      end;
+   if rigset = 1 then begin
+      ZComTxRigSelect.SendString('FT1' + CR);
+   end;
+   if rigset = 2 then begin
+      ZComTxRigSelect.SendString('FT2' + CR);
    end;
 end;
 
@@ -1242,10 +1235,10 @@ end;
 procedure TdmZLogKeyer.SetRxRigFlag_mk2r(rigset, rigno: Integer);
 begin
    if rigset = 1 then begin
-      ZComTxRigSelect.SendString('RX1' + CR);
+      ZComTxRigSelect.SendString('FR1' + CR);
    end;
    if rigset = 2 then begin
-      ZComTxRigSelect.SendString('RX2' + CR);
+      ZComTxRigSelect.SendString('FR2' + CR);
    end;
 end;
 
