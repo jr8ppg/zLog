@@ -405,6 +405,7 @@ type
     checkUseRigDevice: TCheckBox;
     radioSo2rParallel: TRadioButton;
     checkUseCanSend: TCheckBox;
+    radioSo2rMk2r: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -908,6 +909,18 @@ begin
          checkRigSelectV28.Enabled := False;
          comboSo2rOtrspPort.Enabled := False;
          comboSo2rOtrspPort.Enabled := False;
+      end;
+
+      // MK2R
+      5: begin
+         groupSo2rCom.Visible := False;
+         groupSo2rOtrsp.Visible := True;
+         comboSo2rTxSelectPort.Enabled := False;
+         comboSo2rRxSelectPort.Enabled := False;
+         comboSo2rTxRigC.Enabled := False;
+         checkRigSelectV28.Enabled := False;
+         comboSo2rOtrspPort.Enabled := False;
+         comboSo2rOtrspPort.Enabled := True;
       end;
    end;
 end;
@@ -1582,6 +1595,9 @@ begin
       else if radioSo2rParallel.Checked = True then begin
          Settings._so2r_type := so2rParallel;
       end
+      else if radioSo2rMk2r.Checked = True then begin
+         Settings._so2r_type := so2rMk2r;
+      end
       else begin
          Settings._so2r_type := so2rNone;
       end;
@@ -1886,6 +1902,12 @@ begin
                radioSo2rNone.Checked := True;
                radioSo2rClick(radioSo2rNone);
             end;
+         end;
+
+         so2rMk2r: begin
+            radioSo2rMk2r.Checked := True;
+            radioSo2rClick(radioSo2rMk2r);
+            checkUseCanSend.Checked := Settings.CW._use_cansend;
          end;
       end;
 

@@ -290,6 +290,7 @@ type
     procedure SetTxRigFlag_usbif4cw(rigset: Integer);
     procedure SetTxRigFlag_otrsp(rigset: Integer);
     procedure SetTxRigFlag_parallel(rigset, rigno: Integer);
+    procedure SetTxRigFlag_mk2r(rigset, rigno: Integer);
 
     // RX select sub
     procedure SetRxRigFlag_com(rigset, rigno: Integer);
@@ -297,6 +298,7 @@ type
     procedure SetRxRigFlag_so2rneo(rigset, rigno: Integer);
     procedure SetRxRigFlag_otrsp(rigset, rigno: Integer);
     procedure SetRxRigFlag_parallel(rigset, rigno: Integer; both: Boolean);
+    procedure SetRxRigFlag_mk2r(rigset, rigno: Integer);
 
     procedure Sound();
     procedure NoSound();
@@ -854,6 +856,11 @@ begin
       so2rParallel: begin
          SetTxRigFlag_parallel(rigset, rigno);
       end;
+
+      // MK2Rの場合
+      so2rMk2r: begin
+         SetTxRigFlag_mk2r(rigset, rigno);
+      end;
    end;
 
    FPrevTxRigSet := rigset;
@@ -1003,6 +1010,23 @@ begin
    FParallelPort.Write();
 end;
 
+procedure TdmZLogKeyer.SetTxRigFlag_mk2r(rigset, rigno: Integer);
+begin
+   case rigno of
+      1: begin
+      end;
+
+      2: begin
+      end;
+
+      3: begin
+      end;
+
+      4: begin
+      end;
+   end;
+end;
+
 //
 // rigset 1: 左
 //        2: 右
@@ -1062,6 +1086,11 @@ begin
       // パラレルポートの場合
       so2rParallel: begin
          SetRxRigFlag_parallel(rigset, rigno, False);
+      end;
+
+      // MK2Rの場合
+      so2rMk2r: begin
+         SetRxRigFlag_mk2r(rigset, rigno);
       end;
    end;
 
@@ -1208,6 +1237,16 @@ begin
       end;
    end;
    FParallelPort.Write();
+end;
+
+procedure TdmZLogKeyer.SetRxRigFlag_mk2r(rigset, rigno: Integer);
+begin
+   if rigset = 1 then begin
+      ZComTxRigSelect.SendString('RX1' + CR);
+   end;
+   if rigset = 2 then begin
+      ZComTxRigSelect.SendString('RX2' + CR);
+   end;
 end;
 
 procedure TdmZLogKeyer.SetVoiceFlag(flag: Integer); // 0 : no rigs, 1 : rig 1, etc
@@ -3266,7 +3305,7 @@ begin
    end;
 
    // RIG-1/2のKeyingポートとOTRSPポートが同じ場合
-   if ((FSo2rType = so2rOtrsp) and
+   if (((FSo2rType = so2rOtrsp) or (FSo2rType = so2rMk2r)) and
        (FKeyingPort[0] = FKeyingPort[1]) and
        (FKeyingPort[0] = FSo2rOtrspPort)) then begin
       FSameOtrsp := True;
@@ -3312,7 +3351,7 @@ begin
 
       end;
 
-      so2rOtrsp: begin
+      so2rOtrsp, so2rMk2r: begin
          if (FSo2rOtrspPort <> tkpNone) and (FSameOtrsp = False) then begin
             ZComTxRigSelect.Port := TPortNumber(FSo2rOtrspPort);
             SetOtrspPortParam(ZComTxRigSelect);
