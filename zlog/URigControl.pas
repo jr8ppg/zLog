@@ -1380,7 +1380,7 @@ var
    f: TFrequency;
    m: TMode;
 begin
-   for i := 1 to 5 do begin
+   for i := 1 to 6 do begin
       f := FCurrentRig.MemCh[i].FFreq;
       m := FCurrentRig.MemCh[i].FMode;
       if f = 0 then begin
