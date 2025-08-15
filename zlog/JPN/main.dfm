@@ -6030,11 +6030,11 @@ object MainForm: TMainForm
         OnClick = CreateELogJARL2Click
       end
       object CreateJARLELog: TMenuItem
-        Caption = 'Create JARL E-Log'
+        Caption = 'JARL E-Log'#12398#20316#25104
         OnClick = CreateJARLELogClick
       end
       object CreateCabrillo: TMenuItem
-        Caption = 'Create Cabrillo'
+        Caption = 'Cabrillo'#12501#12449#12452#12523#12398#20316#25104
         OnClick = CreateCabrilloClick
       end
       object CreateDupeCheckSheetZPRINT1: TMenuItem
