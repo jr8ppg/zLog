@@ -457,7 +457,12 @@ begin
       end;
 
       // ƒGƒŠƒA”»’è
-      area := GetAreaNumber(qso.Callsign);
+      if IsDomestic(qso.Callsign) then begin
+         area := GetAreaNumber(qso.Callsign);
+      end
+      else begin
+         area := -1;
+      end;
 
       // QSO
       Inc(FCountData[t][b].FQso);
