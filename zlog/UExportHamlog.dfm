@@ -3,7 +3,7 @@ object formExportHamlog: TformExportHamlog
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Export'
-  ClientHeight = 512
+  ClientHeight = 546
   ClientWidth = 551
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,12 +18,10 @@ object formExportHamlog: TformExportHamlog
     Left = 0
     Top = 0
     Width = 551
-    Height = 483
+    Height = 510
     Align = alClient
     Caption = 'Output settings for HAMLOG'
     TabOrder = 0
-    ExplicitWidth = 526
-    ExplicitHeight = 484
     object groupRemarks1: TGroupBox
       Left = 12
       Top = 24
@@ -215,7 +213,7 @@ object formExportHamlog: TformExportHamlog
     end
     object groupQslMark: TGroupBox
       Left = 12
-      Top = 381
+      Top = 405
       Width = 170
       Height = 96
       Caption = 'Output for Mark of QSL'
@@ -272,7 +270,7 @@ object formExportHamlog: TformExportHamlog
       Left = 12
       Top = 302
       Width = 170
-      Height = 71
+      Height = 97
       Caption = 'Operation Place of UR'
       TabOrder = 2
       object radioCodeOpt0: TRadioButton
@@ -289,10 +287,19 @@ object formExportHamlog: TformExportHamlog
       object radioCodeOpt1: TRadioButton
         Left = 25
         Top = 48
+        Width = 104
+        Height = 13
+        Caption = 'Extract Multiplier'
+        TabOrder = 1
+        OnClick = radioRemarks1Opt3Click
+      end
+      object radioCodeOpt2: TRadioButton
+        Left = 25
+        Top = 73
         Width = 92
         Height = 13
-        Caption = 'Received NR'
-        TabOrder = 1
+        Caption = 'Keep NR'
+        TabOrder = 2
         OnClick = radioRemarks1Opt3Click
       end
     end
@@ -326,7 +333,7 @@ object formExportHamlog: TformExportHamlog
     end
     object groupTime: TGroupBox
       Left = 191
-      Top = 381
+      Top = 405
       Width = 170
       Height = 96
       Caption = 'Output for QSO time'
@@ -363,7 +370,7 @@ object formExportHamlog: TformExportHamlog
     end
     object checkInquireJarlMemberInfo: TCheckBox
       Left = 376
-      Top = 448
+      Top = 472
       Width = 151
       Height = 17
       Caption = 'Inquire JARL member info.'
@@ -400,20 +407,18 @@ object formExportHamlog: TformExportHamlog
   end
   object Panel1: TPanel
     Left = 0
-    Top = 483
+    Top = 510
     Width = 551
-    Height = 29
+    Height = 36
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 484
-    ExplicitWidth = 526
     DesignSize = (
       551
-      29)
+      36)
     object buttonCancel: TButton
       Left = 284
-      Top = 2
+      Top = 6
       Width = 90
       Height = 25
       Anchors = [akLeft, akBottom]
@@ -424,7 +429,7 @@ object formExportHamlog: TformExportHamlog
     end
     object buttonOK: TButton
       Left = 188
-      Top = 2
+      Top = 6
       Width = 90
       Height = 25
       Anchors = [akLeft, akBottom]

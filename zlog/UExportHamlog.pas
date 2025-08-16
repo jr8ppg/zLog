@@ -64,6 +64,7 @@ type
     groupFreq: TGroupBox;
     radioOutputFreq1: TRadioButton;
     radioOutputFreq2: TRadioButton;
+    radioCodeOpt2: TRadioButton;
     procedure radioRemarks1Opt1Click(Sender: TObject);
     procedure radioRemarks1Opt2Click(Sender: TObject);
     procedure radioRemarks1Opt3Click(Sender: TObject);
@@ -302,6 +303,9 @@ begin
    if radioCodeOpt1.Checked = True then begin
       Result := 1;
    end
+   else if radioCodeOpt2.Checked = True then begin
+      Result := 2;
+   end
    else begin
       Result := 0;
    end;
@@ -312,6 +316,7 @@ begin
    case v of
       0: radioCodeOpt0.Checked := True;
       1: radioCodeOpt1.Checked := True;
+      2: radioCodeOpt2.Checked := True;
       else radioCodeOpt0.Checked := True;
    end;
 end;

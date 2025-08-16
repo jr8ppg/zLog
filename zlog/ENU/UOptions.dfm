@@ -58,10 +58,10 @@ object formOptions: TformOptions
           Caption = 'RIG Select'
           TabOrder = 0
           object groupSo2rCom: TGroupBox
-            Left = 128
-            Top = 13
-            Width = 265
-            Height = 84
+            Left = 187
+            Top = 11
+            Width = 209
+            Height = 102
             Caption = 'Output Port'
             TabOrder = 5
             object Label31: TLabel
@@ -116,10 +116,10 @@ object formOptions: TformOptions
                 'RIG-B')
             end
             object checkRigSelectV28: TCheckBox
-              Left = 184
-              Top = 51
-              Width = 75
-              Height = 24
+              Left = 12
+              Top = 79
+              Width = 133
+              Height = 18
               Caption = 'V2.8 compatible'
               TabOrder = 3
               WordWrap = True
@@ -167,11 +167,11 @@ object formOptions: TformOptions
             OnClick = radioSo2rClick
           end
           object groupSo2rOtrsp: TGroupBox
-            Left = 128
-            Top = 13
-            Width = 265
+            Left = 187
+            Top = 11
+            Width = 182
             Height = 76
-            Caption = 'OTRSP Option'
+            Caption = 'OTRSP/MK2R Option'
             TabOrder = 6
             object Label17: TLabel
               Left = 12
@@ -205,6 +205,16 @@ object formOptions: TformOptions
             Height = 17
             Caption = 'Parallel Port'
             TabOrder = 4
+            OnClick = radioSo2rClick
+          end
+          object radioSo2rMk2r: TRadioButton
+            Tag = 5
+            Left = 108
+            Top = 20
+            Width = 60
+            Height = 17
+            Caption = 'MK2R'
+            TabOrder = 7
             OnClick = radioSo2rClick
           end
         end
@@ -4083,13 +4093,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono SemiBold'
+          FontName = 'HG'#26126#26397'B'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 62
+          ItemIndex = 88
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

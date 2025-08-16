@@ -4705,7 +4705,10 @@ begin
       end
       else begin
          if (gdSelected in State) and (Grid.Focused = True) then begin
-            bg := RGB($E5, $F3, $FF);   // 選択色
+            bg := dmZLogGlobal.Settings.FQsoListFocusedSelColor;   // 選択色
+         end
+         else if (gdSelected in State) and (Grid.Focused = False) then begin
+            bg := dmZLogGlobal.Settings.FQsoListUnfocusedSelColor;   // 選択色
          end
          else begin
             if (Q <> nil) and (Q.RbnVerified = True) then begin   // RBN照合済み
@@ -14175,6 +14178,12 @@ begin
       edit.Init(aQSO, _ActChange);
 
       if edit.ShowModal() <> mrOK then begin
+         if dmZLogGlobal.Settings.FAfterQsoEditCancelFocusPos = 0 then begin
+            Grid.SetFocus();
+         end
+         else begin
+            CallsignEdit.SetFocus();
+         end;
          Exit;
       end;
 
@@ -14188,8 +14197,14 @@ begin
          FCheckCall2.Renew(CurrentQSO);
       end;
 
-      // 画面リフレッシュ
-      GridRefreshScreen(True);
+      if dmZLogGlobal.Settings.FAfterQsoEditOkFocusPos = 0 then begin
+         Grid.SetFocus();
+      end
+      else begin
+         // 画面リフレッシュ
+         GridRefreshScreen(True);
+         CallsignEdit.SetFocus();
+      end;
 
       // バンドスコープリフレッシュ
       BSRefresh();

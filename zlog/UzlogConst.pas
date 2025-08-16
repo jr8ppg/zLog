@@ -14,7 +14,7 @@ type
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
   TOperateStyle = (os1Radio = 0, os2Radio);
   TOperateMode = (omOriginal = 0, omEnter);
-  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp, so2rParallel);
+  TSo2rType = (so2rNone = 0, so2rCom, so2rNeo, so2rOtrsp, so2rParallel, so2rMk2r);
   TQslState = (qsNone = 0, qsPseQsl, qsNoQsl);
   TSerialType = (stNone = 0, stAll, stBand, stMultiSingle);
 
@@ -119,7 +119,7 @@ const
      );
 
 const
-  RIGNAMES : array[0..24] of string =
+  RIGNAMES : array[0..25] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -144,7 +144,8 @@ const
  'FT-2000',
  'FTDX-3000',
  'FTDX-5000/9000',
- 'FTDX-101'
+ 'FTDX-101',
+ 'FTX-1'
  );
 
 const

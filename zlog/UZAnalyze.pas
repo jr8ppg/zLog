@@ -388,7 +388,7 @@ var
    b: TBand;
    m: TMode;
    t: Integer;
-   a: Integer;
+   area: Integer;
    base_dt: TDateTime;
    dt: TDateTime;
    offset_hour: Integer;
@@ -457,7 +457,12 @@ begin
       end;
 
       // ƒGƒŠƒA”»’è
-      a := GetAreaNumber(qso.Callsign);
+      if IsDomestic(qso.Callsign) then begin
+         area := GetAreaNumber(qso.Callsign);
+      end
+      else begin
+         area := -1;
+      end;
 
       // QSO
       Inc(FCountData[t][b].FQso);
@@ -510,19 +515,20 @@ begin
       end;
 
       // ƒGƒŠƒA•Ê
-      if a = -1 then begin
+      if area = -1 then begin
          Inc(FCountData2[t][b].FUnknown);
+         Inc(FCountData2[HTOTAL][b].FUnknown);
       end
       else begin
-         Inc(FCountData2[t][b].FQso[a]);
+         Inc(FCountData2[t][b].FQso[area]);
          Inc(FCountData2[t][b].FQso[11]);                // ‰¡Œv
-         Inc(FCountData2[HTOTAL][b].FQso[a]);            // cŒv
+         Inc(FCountData2[HTOTAL][b].FQso[area]);         // cŒv
          Inc(FCountData2[HTOTAL][b].FQso[11]);           // c‰¡Œv
 
          if qso.Mode = mCW then begin
-            Inc(FCountData2[t][b].FCw[a]);
+            Inc(FCountData2[t][b].FCw[area]);
             Inc(FCountData2[t][b].FCw[11]);                // ‰¡Œv
-            Inc(FCountData2[HTOTAL][b].FCw[a]);            // cŒv
+            Inc(FCountData2[HTOTAL][b].FCw[area]);         // cŒv
             Inc(FCountData2[HTOTAL][b].FCw[11]);           // c‰¡Œv
          end;
       end;
@@ -581,40 +587,52 @@ end;
 
 function TZAnalyze.GetAreaNumber(strCallsign: string): Integer;
 var
-   a: Integer;
+   area: Integer;
    p: Integer;
    s: string;
 begin
    p := Pos('/', strCallsign);
    if p > 0 then begin
       s := Copy(strCallsign, p + 1);
-      if CharInSet(s[1], ['0'..'9']) = True then begin
-         Result := StrToIntdef(s[1], -1);
-         if Result = 0 then begin
-            Result := 10;
-         end;
+
+      if (s = '') then begin
+         Result := -1;
          Exit;
       end;
+
+      area := StrToIntDef(s, -1);
+      if ((area >= 0) and (area <= 9)) then begin
+         if area = 0 then begin
+            Result := 10;
+         end
+         else begin
+            Result := area;
+         end;
+      end
+      else begin
+         Result := -1;
+      end;
+      Exit;
    end;
 
-   a := StrToIntDef(strCallsign[3], -1);
-   if a = 0 then begin
-      a := 10;
+   area := StrToIntDef(strCallsign[3], -1);
+   if area = 0 then begin
+      area := 10;
    end;
 
    // prefix‚Å”»’è
    if strCallsign[1] = 'J' then begin
-      Result := a;
+      Result := area;
       Exit;
    end;
 
    s := Copy(strCallsign, 1, 2);
    if ((s = '7K') or (s = '7L') or (s = '7M') or (s = '7N')) and
-       ((a >= 1) and (a <= 4)) then begin
-      a := 1;
+       ((area >= 1) and (area <= 4)) then begin
+      area := 1;
    end;
 
-   Result := a;
+   Result := area;
 end;
 
 function TZAnalyze.GetLastHour(): Integer;
@@ -1378,7 +1396,7 @@ var
 begin
    strText := '[' + MHzString[b] + ' MHz]';
    sl.Add(strText);
-   strText := '         1     2     3     4     5     6     7     8     9     0     ‡Œv    —İÏ';
+   strText := '         1     2     3     4     5     6     7     8     9     0     •s–¾    ‡Œv    —İÏ';
    sl.Add(strText);
    sl.Add('');
 
@@ -1419,6 +1437,8 @@ begin
                               CwToStr(FCountData2[i][b].FCw[9], 4);
          strText := strText + QsoToStr(FCountData2[i][b].FQso[10], 2, True) +
                               CwToStr(FCountData2[i][b].FCw[10], 4);
+         strText := strText + QsoToStr(FCountData2[i][b].FUnknown, 4, True) +
+                              '     ';
          strText := strText + QsoToStr(FCountData2[i][b].FQso[11], 3, True) +
                               CwToStr(FCountData2[i][b].FCw[11], 5);
          strText := strText + QsoToStr(r, 3, True) +
@@ -1435,6 +1455,7 @@ begin
          strText := strText + QsoToStr(FCountData2[i][b].FQso[8], 2, True) + '    ';
          strText := strText + QsoToStr(FCountData2[i][b].FQso[9], 2, True) + '    ';
          strText := strText + QsoToStr(FCountData2[i][b].FQso[10], 2, True) + '    ';
+         strText := strText + QsoToStr(FCountData2[i][b].FUnknown, 4, True) + '     ';
          strText := strText + QsoToStr(FCountData2[i][b].FQso[11], 3, True) + '     ';
          strText := strText + QsoToStr(r, 3, True);
       end;
@@ -1454,6 +1475,7 @@ begin
    strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[8], 3, True) + '   ';
    strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[9], 3, True) + '   ';
    strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[10], 3, True) + '   ';
+   strText := strText + QsoToStr(FCountData2[HTOTAL][b].FUnknown, 5, True) + '    ';
    strText := strText + QsoToStr(FCountData2[HTOTAL][b].FQso[11], 4, True) + '   ';
    sl.Add(strText);
 
@@ -1469,6 +1491,7 @@ begin
       strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[8], 5) + ' ';
       strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[9], 5) + ' ';
       strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[10], 5) + '  ';
+      strText := strText + '       ' + '  ';
       strText := strText + CwToStrR(FCountData2[HTOTAL][b].FCw[11], 5);
       sl.Add(strText);
    end;

@@ -32,7 +32,7 @@ object formOptions3: TformOptions3
         Left = 6
         Top = 91
         Width = 423
-        Height = 86
+        Height = 134
         Caption = 'QSO list'
         TabOrder = 1
         object Label61: TLabel
@@ -48,6 +48,20 @@ object formOptions3: TformOptions3
           Width = 61
           Height = 13
           Caption = 'RBN Verified'
+        end
+        object Label5: TLabel
+          Left = 8
+          Top = 77
+          Width = 94
+          Height = 13
+          Caption = 'Selection (Focused)'
+        end
+        object Label6: TLabel
+          Left = 8
+          Top = 104
+          Width = 91
+          Height = 13
+          Caption = 'Selection (Inactive)'
         end
         object editListColor1: TEdit
           Left = 118
@@ -149,6 +163,66 @@ object formOptions3: TformOptions3
           TabOrder = 8
           OnClick = checkListBoldClick
         end
+        object editListColor3: TEdit
+          Left = 118
+          Top = 74
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 10
+          Text = 'TEXT'
+        end
+        object buttonListBack3: TButton
+          Tag = 3
+          Left = 270
+          Top = 75
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 11
+          OnClick = buttonListBackClick
+        end
+        object buttonListReset3: TButton
+          Tag = 3
+          Left = 368
+          Top = 75
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 12
+          OnClick = buttonListResetClick
+        end
+        object editListColor4: TEdit
+          Left = 118
+          Top = 101
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 13
+          Text = 'TEXT'
+        end
+        object buttonListBack4: TButton
+          Tag = 4
+          Left = 270
+          Top = 102
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 14
+          OnClick = buttonListBackClick
+        end
+        object buttonListReset4: TButton
+          Tag = 4
+          Left = 368
+          Top = 102
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 15
+          OnClick = buttonListResetClick
+        end
       end
       object groupGeneral: TGroupBox
         Left = 6
@@ -192,13 +266,13 @@ object formOptions3: TformOptions3
       end
     end
     object tabsheetWindowStyle: TTabSheet
-      Caption = 'Style'
+      Caption = 'Usability'
       ImageIndex = 1
-      object GroupBox1: TGroupBox
+      object groupUsabilityGeneral: TGroupBox
         Left = 6
         Top = 4
         Width = 423
-        Height = 81
+        Height = 53
         Caption = 'General'
         TabOrder = 0
         object checkUseMultiLineTabs: TCheckBox
@@ -208,6 +282,76 @@ object formOptions3: TformOptions3
           Height = 17
           Caption = 'Use Multiline Tabs'
           TabOrder = 0
+        end
+      end
+      object groupUsabilityAfterQsoEdit: TGroupBox
+        Left = 6
+        Top = 63
+        Width = 423
+        Height = 94
+        Caption = 'Focus Position After QSO Edit'
+        TabOrder = 1
+        object Panel2: TPanel
+          Left = 11
+          Top = 24
+          Width = 302
+          Height = 25
+          BevelOuter = bvNone
+          TabOrder = 0
+          object Label3: TLabel
+            Left = 9
+            Top = 6
+            Width = 58
+            Height = 13
+            Caption = 'On OK Click'
+          end
+          object radioOnOkFocusToQsoList: TRadioButton
+            Left = 107
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = 'QSO List'
+            TabOrder = 0
+          end
+          object radioOnOkFocusToNewQso: TRadioButton
+            Left = 195
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = 'New QSO'
+            TabOrder = 1
+          end
+        end
+        object Panel3: TPanel
+          Left = 11
+          Top = 55
+          Width = 302
+          Height = 25
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Label4: TLabel
+            Left = 9
+            Top = 6
+            Width = 76
+            Height = 13
+            Caption = 'On Cancel Click'
+          end
+          object radioOnCancelFocusToQsoList: TRadioButton
+            Left = 107
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = 'QSO List'
+            TabOrder = 0
+          end
+          object radioOnCancelFocusToNewQso: TRadioButton
+            Left = 195
+            Top = 5
+            Width = 73
+            Height = 17
+            Caption = 'New QSO'
+            TabOrder = 1
+          end
         end
       end
     end

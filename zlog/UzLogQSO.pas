@@ -3008,11 +3008,10 @@ begin
          slCsv.Add(Q.ModeStr);
 
          //8列目　相手局の運用地コード
-         if nCodeOption = 1 then begin
-            slCsv.Add(strMulti);
-         end
-         else begin
-            slCsv.Add('');
+         case nCodeOption of
+            1: slCsv.Add(strMulti);
+            2: slCsv.Add(Q.NrRcvd);
+            else slCsv.Add('');
          end;
 
          //9列目　相手局の運用地グリッドロケータ
