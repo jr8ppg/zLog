@@ -1443,7 +1443,7 @@ begin
    TGeneralMulti2(MultiForm).Config := FConfig;
 
    if FConfig.DatFileName <> '' then begin
-      TGeneralMulti2(MultiForm).LoadDAT(FConfig.DatFileName);
+      TGeneralMulti2(MultiForm).LoadDAT(FConfig.DatFileFullPath);
       if TGeneralMulti2(MultiForm).MultiList.List.Count > 0 then begin
          FUserDatLoaded := True;
       end;

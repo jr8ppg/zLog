@@ -125,6 +125,7 @@ type
     class function ParseIntDef(strParam: string; def: Integer): Integer;
     function GetBandLow(): TBand;
     function GetBandHigh(): TBand;
+    function GetDatFileFullPath(): string;
   public
     constructor Create(); overload;
     constructor Create(strFullPath: string); overload;
@@ -167,6 +168,7 @@ type
 
     property MinLocalLen: Integer read FMinLocalLen;
     property DatFileName: string read FDatFileName;
+    property DatFileFullPath: string read GetDatFileFullPath;
 
     property UseCtyDat: Boolean read FUseCtyDat;
 
@@ -1091,6 +1093,11 @@ begin
       end;
    end;
    Result := b50;
+end;
+
+function TUserDefinedContest.GetDatFileFullPath(): string;
+begin
+   Result := ExtractFilePath(FFullPath) + FDatFileName;
 end;
 
 { TUserDefinedContestList }
