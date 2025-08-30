@@ -116,10 +116,9 @@
         <BT_BuildType>Debug</BT_BuildType>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.5.3;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.5.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <DCC_PEOSVersion>5.0</DCC_PEOSVersion>
         <DCC_PESubSysVersion>5.0</DCC_PESubSysVersion>
-        <VerInfo_Build>3</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=2.9.5.2;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2025 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=2.9.0.0;Comments=</VerInfo_Keys>
