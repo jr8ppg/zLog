@@ -141,6 +141,7 @@ var
    h, m, s, ms, d: Word;
    aQSO: TQSO;
    diff: TDateTime;
+   period: Integer;
 begin
    OpenDialog1.InitialDir := dmZLogGlobal.LogPath;
    if OpenDialog1.Execute(Self.Handle) = False then begin
@@ -161,6 +162,14 @@ begin
       DecodeTime(origin, h, m, s, ms);
       origin := Int(origin) + EncodeTime(h, 0, 0, 0);
 
+      period := MyContest.Period;
+      if period = 0 then begin
+         period := 24;
+      end;
+      if period > 48 then begin
+         period := 48;
+      end;
+
       for i := 1 to log.TotalQSO do begin
          aQSO := log.QsoList[i];
 
@@ -174,7 +183,7 @@ begin
          d := Trunc(DaySpan(aQSO.Time, origin));
          h := h + (d * 24);
 
-         if h > 24 then begin
+         if h >= period then begin
             Continue;
          end;
 

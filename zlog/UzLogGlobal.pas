@@ -4812,6 +4812,7 @@ var
    SL: TStringList;
    resname: string;
 begin
+   filename := ExtractFileName(filename);
    resname := 'IDF_' + StringReplace(filename, '.', '_', [rfReplaceAll]);
 
    RS := nil;

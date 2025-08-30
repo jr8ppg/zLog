@@ -84,9 +84,9 @@ object EditDialog: TEditDialog
       TabOrder = 2
     end
     object checkForced: TCheckBox
-      Left = 235
+      Left = 220
       Top = 16
-      Width = 54
+      Width = 70
       Height = 17
       Caption = #24375#21046#20837#21147
       Enabled = False
@@ -106,7 +106,7 @@ object EditDialog: TEditDialog
       Top = 39
       Width = 93
       Height = 17
-      Caption = 'RBN Verified'
+      Caption = 'RBN'#29031#21512#28168
       TabOrder = 5
       OnClick = checkInvalidClick
     end
