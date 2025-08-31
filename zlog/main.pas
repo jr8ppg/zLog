@@ -15007,6 +15007,10 @@ begin
    N := Sp.Number;
    B := Sp.Band;
 
+   if (Sp.SpotQuality <> sqVerified) then begin
+      Exit;
+   end;
+
    fDomestic := IsDomestic(C);
    if (((dmZLogGlobal.Settings._bandscope_show_ja_spots = True) and (fDomestic = True)) = False) and
       (((dmZLogGlobal.Settings._bandscope_show_dx_spots = True) and (fDomestic = False)) = False) then begin

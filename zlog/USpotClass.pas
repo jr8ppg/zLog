@@ -10,6 +10,18 @@ uses
 
 type
   TSpotSource = ( ssSelf = 0, ssCluster, ssSelfFromZServer, ssClusterFromZServer );
+  TSpotQuality = ( sqUnknown = 0, sqVerified, sqQsy, sqBad );
+
+  TSpotReporterInfo = class
+    FReporterList: TStringList;
+    FCount: Integer;
+  public
+    constructor Create(); overload;
+    constructor Create(Reporter: string); overload;
+    destructor Destroy(); override;
+    procedure SetReporter(Reporter: string);
+    property Count: Integer read FCount;
+  end;
 
   TBaseSpot = class
   protected
@@ -32,6 +44,7 @@ type
     FIsDomestic: Boolean;
     FLookupFailed: Boolean;
     FReliableSpotter: Boolean;
+    FSpotQuality: TSpotQuality;
     procedure SetCall(v: string);
     function GetIsNewMulti(): Boolean; // newcty or newzone
     function GetIsPortable(): Boolean;
@@ -64,6 +77,7 @@ type
     property ReportedBy: string read FReportedBy write FReportedBy;
     property LookupFailed: Boolean read FLookupFailed write FLookupFailed;
     property ReliableSpotter: Boolean read FReliableSpotter write FReliableSpotter;
+    property SpotQuality: TSpotQuality read FSpotQuality write FSpotQuality;
   end;
 
   TSpot = class(TBaseSpot)
@@ -149,6 +163,7 @@ type
 
 var
   hLookupServer: HWND;
+  call_spotter_list: TDictionary<string, TSpotReporterInfo>;
 
 {$IFNDEF ZLOG_TELNET}
   function ExecLookup(strCallsign: string; b: TBand): string;
@@ -183,6 +198,7 @@ begin
    FIsDomestic := True;
    FLookupFailed := False;
    FReliableSpotter := True;
+   FSpotQuality := sqUnknown;
 end;
 
 constructor TSpot.Create;
@@ -216,6 +232,7 @@ var
    len: Integer;
    p: Integer;
    strFreq: string;
+   repinfo: TSpotReporterInfo;
 
    {$IFNDEF ZLOG_TELNET}
    b: TBand;
@@ -286,8 +303,8 @@ begin
 
       //000000000111111111122222222223333333333444444444455555555556666666666777777
       //123456789012345678901234567890123456789012345678901234567890123456789012345
-      //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ             1208Z
-      //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ             1208Z
+      //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ           V 1208Z
+      //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ           Q 1208Z
 
       // reportor取得
       p := 7;
@@ -315,6 +332,21 @@ begin
       // 時間は末尾から取得
       TimeStr := RightStr(temp, 5);
 
+      // スポット品質
+      temp2 := LeftStr(RightStr(temp, 7), 1);
+      if (temp2 = 'V') then begin
+         SpotQuality := sqVerified;
+      end
+      else if (temp2 = 'Q') then begin
+         SpotQuality := sqQsy;
+      end
+      else if (temp2 = 'B') then begin
+         SpotQuality := sqBad;
+      end
+      else begin
+         SpotQuality := sqUnknown;
+      end;
+
       // CQフラグ
       if Pos('CQ', Comment) > 0 then begin
          CQ := True;
@@ -331,6 +363,21 @@ begin
 
       Band := b;
       {$ENDIF}
+
+      // 異なるSpotterが３つ以上でsqVerifiedとする。
+      if call_spotter_list.TryGetValue(Call, repinfo) = True then begin
+         repinfo.SetReporter(ReportedBy);
+      end
+      else begin
+         repinfo := TSpotReporterInfo.Create(ReportedBy)
+      end;
+      call_spotter_list.AddOrSetValue(temp2, repinfo);
+
+      if SpotQuality = sqUnknown then begin
+         if repinfo.Count >= 3 then begin
+            SpotQuality := sqVerified;
+         end;
+      end;
 
       Result := True;
    end
@@ -511,6 +558,7 @@ begin
    FIsDomestic := O.IsDomestic;
    FLookupFailed := O.LookupFailed;
    FReliableSpotter := O.ReliableSpotter;
+   FSpotQuality := O.SpotQuality;
 end;
 
 function TBSData.InText(): string;
@@ -971,8 +1019,37 @@ begin
    Result := wnd;
 end;
 
+constructor TSpotReporterInfo.Create();
+begin
+   FReporterList := TStringList.Create();
+   FCount := 0;
+end;
+
+constructor TSpotReporterInfo.Create(Reporter: string);
+begin
+   Inherited Create();
+   SetReporter(Reporter);
+end;
+
+destructor TSpotReporterInfo.Destroy();
+begin
+   FReporterList.Free();
+end;
+
+procedure TSpotReporterInfo.SetReporter(Reporter: string);
+begin
+   if FReporterList.IndexOf(Reporter) = -1 then begin
+      FReporterList.Add(Reporter);
+   end;
+   FCount := FReporterList.Count;
+end;
+
 initialization
   hLookupServer := FindLookupServer();
+  call_spotter_list := TDictionary<string, TSpotReporterInfo>.Create();
+
+finalization
+  call_spotter_list.Free();
 
 {$ENDIF}
 
