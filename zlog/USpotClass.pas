@@ -11,6 +11,7 @@ uses
 type
   TSpotSource = ( ssSelf = 0, ssCluster, ssSelfFromZServer, ssClusterFromZServer );
   TSpotQuality = ( sqUnknown = 0, sqVerified, sqQsy, sqBad );
+  TSpotReliability = ( srLow = 0, srMiddle, srHigh );
 
   TSpotReporterInfo = class
     FReporterList: TStringList;
@@ -45,6 +46,7 @@ type
     FLookupFailed: Boolean;
     FReliableSpotter: Boolean;
     FSpotQuality: TSpotQuality;
+    FSpotReliability: TSpotReliability;
     procedure SetCall(v: string);
     function GetIsNewMulti(): Boolean; // newcty or newzone
     function GetIsPortable(): Boolean;
@@ -78,6 +80,7 @@ type
     property LookupFailed: Boolean read FLookupFailed write FLookupFailed;
     property ReliableSpotter: Boolean read FReliableSpotter write FReliableSpotter;
     property SpotQuality: TSpotQuality read FSpotQuality write FSpotQuality;
+    property SpotReliability: TSpotReliability read FSpotReliability write FSpotReliability;
   end;
 
   TSpot = class(TBaseSpot)
@@ -199,6 +202,7 @@ begin
    FLookupFailed := False;
    FReliableSpotter := True;
    FSpotQuality := sqUnknown;
+   FSpotReliability := srMiddle;
 end;
 
 constructor TSpot.Create;
@@ -332,7 +336,7 @@ begin
       // 時間は末尾から取得
       TimeStr := RightStr(temp, 5);
 
-      // スポット品質
+      // スポット品質＆スポット信頼度
       temp2 := LeftStr(RightStr(temp, 7), 1);
       if (temp2 = 'V') then begin
          SpotQuality := sqVerified;
@@ -559,6 +563,7 @@ begin
    FLookupFailed := O.LookupFailed;
    FReliableSpotter := O.ReliableSpotter;
    FSpotQuality := O.SpotQuality;
+   FSpotReliability := O.SpotReliability;
 end;
 
 function TBSData.InText(): string;
@@ -611,6 +616,8 @@ begin
       SL.Add(ZBoolToStr(FIsDomestic));
       SL.Add(ZBoolToStr(LookupFailed));
       SL.Add(ZBoolToStr(ReliableSpotter));
+      SL.Add(IntToStr(Integer(SpotQuality)));
+      SL.Add(IntToStr(Integer(SpotReliability)));
 
       Result := SL.DelimitedText;
    finally
@@ -648,7 +655,7 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
@@ -668,6 +675,8 @@ begin
       IsDomestic := ZStrToBool(SL[16]);
       LookupFailed := ZStrToBool(SL[17]);
       ReliableSpotter := ZStrToBool(SL[18]);
+      SpotQuality := TSpotQuality(StrToIntDef(SL[19], 0));
+      SpotReliability := TSpotReliability(StrToIntDef(SL[20], 0));
    finally
       SL.Free();
    end;
@@ -906,6 +915,7 @@ begin
       // 他のバンドで交信済みならマルチを取得
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
+         Sp.SpotReliability := srHigh;
       end
       else if dmZLogGlobal.Settings._bandscope_use_number_lookup = True then begin
          // 他のバンドで未交信ならSPCデータよりマルチを取得
@@ -914,6 +924,7 @@ begin
          SD2 := MainForm.SuperCheckList.ObjectOf(SD);
          if SD2 <> nil then begin
             Sp.Number := SD2.Number;
+            Sp.SpotReliability := srHigh;
          end;
 
          // SPCからも取得できない場合はLookup Serverに依頼する
@@ -921,6 +932,7 @@ begin
             Sp.Number := ExecLookup(Sp.Call, Sp.Band);
             if Sp.Number = '' then begin
                Sp.LookupFailed := True;
+               Sp.SpotReliability := srLow;
             end;
          end;
          SD.Free();

@@ -254,9 +254,14 @@ begin
          FBSList.Insert(i, D);
       end
       else begin
-         FBSList[i].ReportedBy := D.ReportedBy;
-         FBSList[i].ReliableSpotter := D.ReliableSpotter;
-         FBSList[i].Time := D.Time;
+         // TODO:Spot信頼度がUPしたなら更新する。
+         if FBSList[i].SpotReliability < D.SpotReliability then begin
+            FBSList[i].ReportedBy := D.ReportedBy;
+            FBSList[i].ReliableSpotter := D.ReliableSpotter;
+         end;
+         if FBSList[i].SpotReliability <= D.SpotReliability then begin
+            FBSList[i].Time := D.Time;
+         end;
       end;
    finally
       Unlock();
