@@ -350,6 +350,8 @@ begin
    D.ReportedBy := Sp.ReportedBy;
    D.LookupFailed := Sp.LookupFailed;
    D.ReliableSpotter := Sp.ReliableSpotter;
+   D.SpotQuality := Sp.SpotQuality;
+   D.SpotReliability := Sp.SpotReliability;
    AddAndDisplay(D);
 end;
 
@@ -1039,6 +1041,7 @@ var
    rc: TRect;
    sec: Integer;
    fNewMulti: Boolean;
+   S: string;
 
    function AdjustDark(c: TColor): TColor;
    var
@@ -1053,6 +1056,19 @@ var
       R := Trunc(R * 0.75);
 
       Result := RGB(R, G, B);
+   end;
+
+   function GetColorByReliability(D: TBSData): TColor;
+   begin
+      if D.SpotReliability = srHigh then begin
+         Result := dmZLogGlobal.Settings._bandscopecolor[13].FBackColor;
+      end;
+      if D.SpotReliability = srMiddle then begin
+         Result := dmZLogGlobal.Settings._bandscopecolor[14].FBackColor;
+      end;
+      if D.SpotReliability = srLow then begin
+         Result := dmZLogGlobal.Settings._bandscopecolor[15].FBackColor;
+      end;
    end;
 begin
    with Grid.Canvas do begin
@@ -1130,11 +1146,13 @@ begin
                      Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[11].FBackColor;
                   end
                   else begin
-                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+//                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                     Brush.Color  := GetColorByReliability(D);
                   end;
                end
                else begin
-                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+//                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
+                  Brush.Color  := GetColorByReliability(D);
                end;
             end;
 
@@ -1152,13 +1170,13 @@ begin
             end;
          end;
 
-         if D.LookupFailed = True then begin
-            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[10].FBackColor;
-         end;
-
-         if D.ReliableSpotter = False then begin
-            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[12].FBackColor;
-         end;
+//         if D.LookupFailed = True then begin
+//            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[10].FBackColor;
+//         end;
+//
+//         if D.ReliableSpotter = False then begin
+//            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[12].FBackColor;
+//         end;
 
          if D.Bold then begin
             Font.Style := Font.Style + [fsBold];
@@ -1176,6 +1194,21 @@ begin
 //         strText := strText + ' (' + IntToStr(sec) + ')';
          if D.Mode <= mOther then begin
             strText := strText + ' (' + ModeString[D.Mode][1] + ')';
+
+            case D.SpotQuality of
+               sqVerified: S := 'V';
+               sqQSY:      S := 'Q';
+               sqBad:      S := 'B';
+               else        S := '?';
+            end;
+
+            case D.SpotReliability of
+               srHigh:     S := S + 'H';
+               srMiddle:   S := S + 'M';
+               srLow:      S := S + 'L';
+            end;
+
+            strText := strText + ' ' + S;
          end;
          {$ENDIF}
       end;

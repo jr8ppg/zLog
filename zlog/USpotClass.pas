@@ -375,7 +375,7 @@ begin
       else begin
          repinfo := TSpotReporterInfo.Create(ReportedBy)
       end;
-      call_spotter_list.AddOrSetValue(temp2, repinfo);
+      call_spotter_list.AddOrSetValue(Call, repinfo);
 
       if SpotQuality = sqUnknown then begin
          if repinfo.Count >= 3 then begin
@@ -928,14 +928,19 @@ begin
          end;
 
          // SPCÇ©ÇÁÇ‡éÊìæÇ≈Ç´Ç»Ç¢èÍçáÇÕLookup ServerÇ…àÀóäÇ∑ÇÈ
-         if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
-            Sp.Number := ExecLookup(Sp.Call, Sp.Band);
-            if Sp.Number = '' then begin
-               Sp.LookupFailed := True;
-               Sp.SpotReliability := srLow;
+         if dmZLogGlobal.Settings._bandscope_use_lookup_server = True then begin
+            if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
+               Sp.Number := ExecLookup(Sp.Call, Sp.Band);
+               if Sp.Number <> '' then begin
+                  Sp.SpotReliability := srHigh;
+               end
+               else begin
+                  Sp.LookupFailed := True;
+                  Sp.SpotReliability := srLow;
+               end;
             end;
+            SD.Free();
          end;
-         SD.Free();
       end;
    end;
 
@@ -1033,13 +1038,14 @@ end;
 
 constructor TSpotReporterInfo.Create();
 begin
+   Inherited;
    FReporterList := TStringList.Create();
    FCount := 0;
 end;
 
 constructor TSpotReporterInfo.Create(Reporter: string);
 begin
-   Inherited Create();
+   Create();
    SetReporter(Reporter);
 end;
 
@@ -1061,6 +1067,12 @@ initialization
   call_spotter_list := TDictionary<string, TSpotReporterInfo>.Create();
 
 finalization
+var
+  Value: TSpotReporterInfo;
+
+  for Value in call_spotter_list.Values do begin
+     Value.Free();
+  end;
   call_spotter_list.Free();
 
 {$ENDIF}

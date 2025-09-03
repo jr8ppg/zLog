@@ -127,7 +127,7 @@ type
     _usebandscope_current: Boolean;
     _usebandscope_newmulti: Boolean;
     _usebandscope_allbands: Boolean;
-    _bandscopecolor: array[1..12] of TColorSetting;
+    _bandscopecolor: array[1..15] of TColorSetting;
     _bandscope_freshness_mode: Integer;
     _bandscope_freshness_icon: Integer;
 
@@ -1493,6 +1493,16 @@ begin
       Settings._bandscopecolor[12].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor12', '$ffffff'), clWhite);
       Settings._bandscopecolor[12].FBold      := ini.ReadBool('BandScopeEx', 'Bold12', True);
 
+      Settings._bandscopecolor[13].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor13', '$000000'), clBlack);
+      Settings._bandscopecolor[13].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor13', '$FFFFC0'), $FFFFC0);
+      Settings._bandscopecolor[13].FBold      := ini.ReadBool('BandScopeEx', 'Bold13', True);
+      Settings._bandscopecolor[14].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor14', '$000000'), clBlack);
+      Settings._bandscopecolor[14].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor14', '$C0FFFF'), $C0FFFF);
+      Settings._bandscopecolor[14].FBold      := ini.ReadBool('BandScopeEx', 'Bold14', True);
+      Settings._bandscopecolor[15].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor15', '$000000'), clBlack);
+      Settings._bandscopecolor[15].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor15', '$FFC0FF'), $FFC0FF);
+      Settings._bandscopecolor[15].FBold      := ini.ReadBool('BandScopeEx', 'Bold15', True);
+
       Settings._bandscope_freshness_mode := ini.ReadInteger('BandScopeEx', 'freshness_mode', 0);
       Settings._bandscope_freshness_icon := ini.ReadInteger('BandScopeEx', 'freshness_icon', 0);
 
@@ -2221,7 +2231,7 @@ begin
       ini.WriteBool('BandScope', 'NewMulti', Settings._usebandscope_newmulti);
       ini.WriteBool('BandScope', 'AllBands', Settings._usebandscope_allbands);
 
-      for i := 1 to 12 do begin
+      for i := 1 to 15 do begin
          ini.WriteString('BandScopeEx', 'ForeColor' + IntToStr(i), ZColorToString(Settings._bandscopecolor[i].FForeColor));
          ini.WriteString('BandScopeEx', 'BackColor' + IntToStr(i), ZColorToString(Settings._bandscopecolor[i].FBackColor));
          ini.WriteBool('BandScopeEx', 'Bold' + IntToStr(i), Settings._bandscopecolor[i].FBold);

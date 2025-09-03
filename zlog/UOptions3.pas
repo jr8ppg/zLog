@@ -56,6 +56,21 @@ type
     editListColor4: TEdit;
     buttonListBack4: TButton;
     buttonListReset4: TButton;
+    tabsheetBandScope3: TTabSheet;
+    groupBandscopeSpotReliability: TGroupBox;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    editBSColorSrHigh: TEdit;
+    editBSColorSrMiddle: TEdit;
+    editBSColorSrLow: TEdit;
+    buttonBSBackSrHigh: TButton;
+    buttonBSBackSrMiddle: TButton;
+    buttonBSBackSrLow: TButton;
+    buttonBSResetSrHigh: TButton;
+    buttonBSResetSrMiddle: TButton;
+    buttonBSResetSrLow: TButton;
+    ColorDialog2: TColorDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -65,10 +80,15 @@ type
     procedure buttonListBackClick(Sender: TObject);
     procedure checkListBoldClick(Sender: TObject);
     procedure buttonListResetClick(Sender: TObject);
+    procedure buttonBSBackSqClick(Sender: TObject);
+    procedure buttonBSResetClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FListColor: array[1..4] of TEdit;
     FListBold: array[1..4] of TCheckBox;
+
+    FBSColor: array[1..15] of TEdit;
+    FBSBold: array[1..15] of TCheckBox;
   public
     procedure RenewSettings;
   end;
@@ -79,6 +99,25 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
     ( FForeColor: clBlack; FBackColor: $FFF3E5; FBold: False ) ,
     ( FForeColor: clBlack; FBackColor: $E5E5E5; FBold: False )
+  );
+
+const
+  BandScopeDefaultColor: array[1..15] of TColorSetting = (
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clRed;   FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clAqua;  FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clYellow; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clRed;   FBold: True )
   );
 
 implementation
@@ -112,6 +151,10 @@ begin
    FListBold[2] := checkListBold2;
    FListBold[3] := nil;
    FListBold[4] := nil;
+
+   FBSColor[13] := editBSColorSrHigh;
+   FBSColor[14] := editBSColorSrMiddle;
+   FBSColor[15] := editBSColorSrLow;
 
    PageControl.ActivePage := tabsheetRbnOptions;
 end;
@@ -148,6 +191,15 @@ begin
       else begin
          radioOnCancelFocusToNewQso.Checked := True;
       end;
+
+      // BandScope
+      for i := 13 to 15 do begin
+         FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
+         FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
+         if FBSBold[i] <> nil then begin
+            FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
+         end;
+      end;
    end;
 
    PageControl.ActivePageIndex := 0;
@@ -169,6 +221,31 @@ end;
 procedure TformOptions3.buttonCancelClick(Sender: TObject);
 begin
 //   Close;
+end;
+
+procedure TformOptions3.buttonBSBackSqClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FBSColor[n].Color;
+   if ColorDialog1.Execute = True then begin
+      FBSColor[n].Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions3.buttonBSResetClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   FBSColor[n].Font.Color  := BandScopeDefaultColor[n].FForeColor;
+   FBSColor[n].Color       := BandScopeDefaultColor[n].FBackColor;
+   if FBSBold[n] <> nil then begin
+      FBSBold[n].Checked      := BandScopeDefaultColor[n].FBold;
+   end;
 end;
 
 procedure TformOptions3.RenewSettings;
@@ -202,6 +279,18 @@ begin
       end
       else begin
          Settings.FAfterQsoEditCancelFocusPos := 1;
+      end;
+
+      // BandScope
+      for i := 13 to 15 do begin
+         Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
+         Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
+         if FBSBold[i] = nil then begin
+            Settings._bandscopecolor[i].FBold      := False;
+         end
+         else begin
+            Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
+         end;
       end;
    end;
 end;

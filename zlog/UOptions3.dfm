@@ -22,7 +22,7 @@ object formOptions3: TformOptions3
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetRbnOptions
+    ActivePage = tabsheetBandScope3
     Align = alClient
     TabOrder = 0
     object tabsheetRbnOptions: TTabSheet
@@ -355,6 +355,132 @@ object formOptions3: TformOptions3
         end
       end
     end
+    object tabsheetBandScope3: TTabSheet
+      Caption = 'BandScope3'
+      ImageIndex = 2
+      object groupBandscopeSpotReliability: TGroupBox
+        Left = 6
+        Top = 4
+        Width = 423
+        Height = 108
+        Caption = 'Spot Reliability'
+        TabOrder = 0
+        object Label28: TLabel
+          Left = 8
+          Top = 23
+          Width = 22
+          Height = 13
+          Caption = 'High'
+        end
+        object Label29: TLabel
+          Left = 8
+          Top = 50
+          Width = 31
+          Height = 13
+          Caption = 'Middle'
+        end
+        object Label30: TLabel
+          Left = 8
+          Top = 77
+          Width = 20
+          Height = 13
+          Caption = 'Low'
+        end
+        object editBSColorSrHigh: TEdit
+          Tag = 13
+          Left = 118
+          Top = 20
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'TEXT'
+        end
+        object editBSColorSrMiddle: TEdit
+          Tag = 14
+          Left = 118
+          Top = 47
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 3
+          Text = 'TEXT'
+        end
+        object editBSColorSrLow: TEdit
+          Tag = 15
+          Left = 118
+          Top = 74
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 6
+          Text = 'TEXT'
+        end
+        object buttonBSBackSrHigh: TButton
+          Tag = 13
+          Left = 270
+          Top = 21
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 1
+          OnClick = buttonBSBackSqClick
+        end
+        object buttonBSBackSrMiddle: TButton
+          Tag = 14
+          Left = 270
+          Top = 48
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 4
+          OnClick = buttonBSBackSqClick
+        end
+        object buttonBSBackSrLow: TButton
+          Tag = 15
+          Left = 270
+          Top = 75
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 7
+          OnClick = buttonBSBackSqClick
+        end
+        object buttonBSResetSrHigh: TButton
+          Tag = 13
+          Left = 368
+          Top = 21
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 2
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSResetSrMiddle: TButton
+          Tag = 14
+          Left = 368
+          Top = 48
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 5
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSResetSrLow: TButton
+          Tag = 15
+          Left = 368
+          Top = 75
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 8
+          OnClick = buttonBSResetClick
+        end
+      end
+    end
   end
   object Panel1: TPanel
     Left = 0
@@ -394,5 +520,9 @@ object formOptions3: TformOptions3
   object ColorDialog1: TColorDialog
     Left = 292
     Top = 428
+  end
+  object ColorDialog2: TColorDialog
+    Left = 300
+    Top = 436
   end
 end
