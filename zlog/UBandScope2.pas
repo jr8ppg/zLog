@@ -89,6 +89,8 @@ type
     menuBS14: TMenuItem;
     menuBS15: TMenuItem;
     N3: TMenuItem;
+    N4: TMenuItem;
+    menuAddToBlackList: TMenuItem;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -127,6 +129,7 @@ type
     procedure menuBSAllBandsClick(Sender: TObject);
     procedure menuBSNewMultiClick(Sender: TObject);
     procedure menuBS00Click(Sender: TObject);
+    procedure menuAddToBlackListClick(Sender: TObject);
   private
     { Private 宣言 }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -150,6 +153,8 @@ type
 
     FUseResume: Boolean;
     FResumeFile: string;
+
+    FBlackList: TStringList;
     procedure AddBSList(D : TBSData);
     procedure AddAndDisplay(D : TBSData);
     procedure DeleteFromBSList(i : integer);
@@ -180,6 +185,7 @@ type
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
+    destructor Destroy(); override;
     procedure AddSelfSpot(strCallsign: string; strNrRcvd: string; b: TBand; m: TMode; Hz: TFrequency);
     procedure AddSelfSpotFromNetwork(BSText : string);
     procedure AddClusterSpot(Sp: TSpot);
@@ -233,8 +239,15 @@ begin
    buttonShowWorked.Down := True;
    FUseResume := False;
    FResumeFile := '';
+   FBlackList := TStringList.Create();
 
    RenewTab();
+end;
+
+destructor TBandScope2.Destroy();
+begin
+   Inherited;
+   FreeAndNil(FBlackList);
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -284,6 +297,11 @@ begin
       Exit;
    end;
 
+   // ブラックリストチェック
+   if (FBlackList.IndexOf(strCallsign) <> -1) then begin
+      Exit;
+   end;
+
    D := TBSData.Create;
    D.FreqHz := Hz;
    D.Band := b;
@@ -317,6 +335,12 @@ begin
       Exit;
    end;
 
+   // ブラックリストチェック
+   if (FBlackList.IndexOf(D.Call) <> -1) then begin
+      D.Free();
+      Exit;
+   end;
+
    // 交信済みチェック
    SpotCheckWorked(D);
 
@@ -329,6 +353,11 @@ var
    D: TBSData;
 begin
    if (FBandScopeStyle = bssByBand) and (FCurrBand <> Sp.Band) then begin
+      Exit;
+   end;
+
+   // ブラックリストチェック
+   if (FBlackList.IndexOf(Sp.Call) <> -1) then begin
       Exit;
    end;
 
@@ -802,6 +831,41 @@ begin
       D := TBSData(Grid.Objects[0, i]);
       MainForm.CommForm.DenyList.Add(D.ReportedBy);
    end;
+end;
+
+//
+// このスポットをブラックリストに登録
+//
+procedure TBandScope2.menuAddToBlackListClick(Sender: TObject);
+var
+   i: Integer;
+   D: TBSData;
+   S: string;
+   j: Integer;
+begin
+   if Grid.Selection.Top < 0 then begin
+      Exit;
+   end;
+
+   Lock();
+   try
+      for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
+         D := TBSData(Grid.Objects[0, i]);
+         FBlackList.Add(D.Call);
+
+         S := Grid.Cells[0, i];
+         for j := 0 to FBSList.Count - 1 do begin
+            if pos(FBSList[j].LabelStr, S) > 0 then begin
+               DeleteFromBSList(j);
+               Break;
+            end;
+         end;
+      end;
+   finally
+      Unlock();
+   end;
+
+   RewriteBandScope;
 end;
 
 procedure TBandScope2.menuBS00Click(Sender: TObject);
@@ -1986,6 +2050,7 @@ begin
    menuDeleteSpot.Enabled := fEnable;
    menuDeleteAllWorkedStations.Enabled := fEnable;
    menuAddToDenyList.Enabled := fEnable;
+   menuAddToBlackList.Enabled := fEnable;
 
    menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
    menuBSCurrent.Checked := MainForm.BandScope.Visible;

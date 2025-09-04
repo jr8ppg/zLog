@@ -939,8 +939,9 @@ begin
                   Sp.SpotReliability := srLow;
                end;
             end;
-            SD.Free();
          end;
+
+         SD.Free();
       end;
    end;
 
