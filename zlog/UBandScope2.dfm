@@ -194,9 +194,13 @@ object BandScope2: TBandScope2
     object N4: TMenuItem
       Caption = '-'
     end
-    object menuAddToBlackList: TMenuItem
-      Caption = 'Add this spot to black list'
-      OnClick = menuAddToBlackListClick
+    object menuAddBlockList: TMenuItem
+      Caption = 'Block this spot'
+      OnClick = menuAddBlockListClick
+    end
+    object menuEditBlockList: TMenuItem
+      Caption = 'Edit block list'
+      OnClick = menuEditBlockListClick
     end
     object N2: TMenuItem
       Caption = '-'

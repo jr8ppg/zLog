@@ -90,7 +90,8 @@ type
     menuBS15: TMenuItem;
     N3: TMenuItem;
     N4: TMenuItem;
-    menuAddToBlackList: TMenuItem;
+    menuAddBlockList: TMenuItem;
+    menuEditBlockList: TMenuItem;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -129,7 +130,8 @@ type
     procedure menuBSAllBandsClick(Sender: TObject);
     procedure menuBSNewMultiClick(Sender: TObject);
     procedure menuBS00Click(Sender: TObject);
-    procedure menuAddToBlackListClick(Sender: TObject);
+    procedure menuAddBlockListClick(Sender: TObject);
+    procedure menuEditBlockListClick(Sender: TObject);
   private
     { Private 宣言 }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -154,7 +156,7 @@ type
     FUseResume: Boolean;
     FResumeFile: string;
 
-    FBlackList: TStringList;
+    FBlockList: TStringList;
     procedure AddBSList(D : TBSData);
     procedure AddAndDisplay(D : TBSData);
     procedure DeleteFromBSList(i : integer);
@@ -221,7 +223,7 @@ var
 implementation
 
 uses
-  UOptions, Main, UZLinkForm, URigControl, UzLogKeyer;
+  UOptions, Main, UZLinkForm, URigControl, UzLogKeyer, UTextEditor;
 
 {$R *.dfm}
 
@@ -239,7 +241,7 @@ begin
    buttonShowWorked.Down := True;
    FUseResume := False;
    FResumeFile := '';
-   FBlackList := TStringList.Create();
+   FBlockList := TStringList.Create();
 
    RenewTab();
 end;
@@ -247,7 +249,7 @@ end;
 destructor TBandScope2.Destroy();
 begin
    Inherited;
-   FreeAndNil(FBlackList);
+   FreeAndNil(FBlockList);
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -298,7 +300,7 @@ begin
    end;
 
    // ブラックリストチェック
-   if (FBlackList.IndexOf(strCallsign) <> -1) then begin
+   if (FBlockList.IndexOf(strCallsign) <> -1) then begin
       Exit;
    end;
 
@@ -336,7 +338,7 @@ begin
    end;
 
    // ブラックリストチェック
-   if (FBlackList.IndexOf(D.Call) <> -1) then begin
+   if (FBlockList.IndexOf(D.Call) <> -1) then begin
       D.Free();
       Exit;
    end;
@@ -357,7 +359,7 @@ begin
    end;
 
    // ブラックリストチェック
-   if (FBlackList.IndexOf(Sp.Call) <> -1) then begin
+   if (FBlockList.IndexOf(Sp.Call) <> -1) then begin
       Exit;
    end;
 
@@ -834,9 +836,9 @@ begin
 end;
 
 //
-// このスポットをブラックリストに登録
+// このスポットをブロックリストに登録
 //
-procedure TBandScope2.menuAddToBlackListClick(Sender: TObject);
+procedure TBandScope2.menuAddBlockListClick(Sender: TObject);
 var
    i: Integer;
    D: TBSData;
@@ -851,7 +853,7 @@ begin
    try
       for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
          D := TBSData(Grid.Objects[0, i]);
-         FBlackList.Add(D.Call);
+         FBlockList.Add(D.Call);
 
          S := Grid.Cells[0, i];
          for j := 0 to FBSList.Count - 1 do begin
@@ -866,6 +868,25 @@ begin
    end;
 
    RewriteBandScope;
+end;
+
+//
+// ブロックリストを編集
+//
+procedure TBandScope2.menuEditBlockListClick(Sender: TObject);
+var
+   f: TTextEditor;
+begin
+   f := TTextEditor.Create(Self);
+   try
+      f.Text := FBlockList.Text;
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+      f.Text := FBlockList.Text;
+   finally
+      f.Release();
+   end;
 end;
 
 procedure TBandScope2.menuBS00Click(Sender: TObject);
@@ -2050,7 +2071,8 @@ begin
    menuDeleteSpot.Enabled := fEnable;
    menuDeleteAllWorkedStations.Enabled := fEnable;
    menuAddToDenyList.Enabled := fEnable;
-   menuAddToBlackList.Enabled := fEnable;
+   menuAddBlockList.Enabled := fEnable;
+   menuEditBlockList.Enabled := (FBlockList.Count > 0);
 
    menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
    menuBSCurrent.Checked := MainForm.BandScope.Visible;

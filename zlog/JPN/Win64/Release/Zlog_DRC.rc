@@ -2816,6 +2816,7 @@ END
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\WinXCtrls.res */
 /* D:\github\zLog_v2960\zlog\UCheckWin.DFM */
 /* D:\github\zLog_v2960\zlog\UFreqList.DFM */
+/* D:\github\zLog_v2960\zlog\UTextEditor.dfm */
 /* D:\github\zLog_v2960\zlog\UBandScope2.dfm */
 /* D:\github\zLog_v2960\zlog\URigControl.DFM */
 /* D:\github\zLog_v2960\zlog\UZLinkForm.DFM */
@@ -2886,7 +2887,6 @@ END
 /* D:\github\zLog_v2960\zlog\UCheckCall2.DFM */
 /* D:\github\zLog_v2960\zlog\UCheckMulti.DFM */
 /* D:\github\zLog_v2960\zlog\UCheckCountry.DFM */
-/* D:\github\zLog_v2960\zlog\UTextEditor.dfm */
 /* D:\github\zLog_v2960\zlog\UCwMessageEditor.dfm */
 /* D:\github\zLog_v2960\zlog\UCwMessagePad.dfm */
 /* D:\github\zLog_v2960\zlog\UNRDialog.dfm */
