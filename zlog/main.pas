@@ -1274,6 +1274,7 @@ type
     procedure LoadSpotData(slFileList: TStrings);
     procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
     function GetFixEdge(b: TBand; m: TMode): Integer;
+    procedure BandscopeShowAll(fInitial: Boolean);
     procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
@@ -6621,7 +6622,7 @@ begin
       FBandScopeAllBands.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
       FBandScopeAllBands.RenewTab();
-      actionShowBandScope.Execute();
+      BandscopeShowAll(True);
 
       // OpList再ロード
       BuildOpListMenu2(OpMenu.Items, OpMenuClick);
@@ -10921,38 +10922,8 @@ end;
 
 // #72 BandScope
 procedure TMainForm.actionShowBandScopeExecute(Sender: TObject);
-var
-   b: TBand;
 begin
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
-         FBandScopeEx[b].Show();
-      end
-      else begin
-         FBandScopeEx[b].Hide();
-      end;
-   end;
-
-   if dmZLogGlobal.Settings._usebandscope_current = True then begin
-      FBandScope.Show();
-   end
-   else begin
-      FBandScope.Hide();
-   end;
-
-   if dmZLogGlobal.Settings._usebandscope_newmulti = True then begin
-      FBandScopeNewMulti.Show();
-   end
-   else begin
-      FBandScopeNewMulti.Hide();
-   end;
-
-   if dmZLogGlobal.Settings._usebandscope_allbands = True then begin
-      FBandScopeAllBands.Show();
-   end
-   else begin
-      FBandScopeAllBands.Hide();
-   end;
+   BandscopeShowAll(False);
 end;
 
 // #73 Running Frequencies
@@ -15047,6 +15018,61 @@ begin
    end;
 
    Result := 0;
+end;
+
+procedure TMainForm.BandscopeShowAll(fInitial: Boolean);
+var
+   b: TBand;
+begin
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
+         if fInitial = True then begin
+            FBandScopeEx[b].InitialOpen();
+         end
+         else begin
+            FBandScopeEx[b].Show();
+         end;
+      end
+      else begin
+         FBandScopeEx[b].Hide();
+      end;
+   end;
+
+   if dmZLogGlobal.Settings._usebandscope_current = True then begin
+      if fInitial = True then begin
+         FBandScope.InitialOpen();
+      end
+      else begin
+         FBandScope.Show();
+      end;
+   end
+   else begin
+      FBandScope.Hide();
+   end;
+
+   if dmZLogGlobal.Settings._usebandscope_newmulti = True then begin
+      if fInitial = True then begin
+         FBandScopeNewMulti.InitialOpen();
+      end
+      else begin
+         FBandScopeNewMulti.Show();
+      end;
+   end
+   else begin
+      FBandScopeNewMulti.Hide();
+   end;
+
+   if dmZLogGlobal.Settings._usebandscope_allbands = True then begin
+      if fInitial = True then begin
+         FBandScopeAllBands.InitialOpen();
+      end
+      else begin
+         FBandScopeAllBands.Show();
+      end;
+   end
+   else begin
+      FBandScopeAllBands.Hide();
+   end;
 end;
 
 { TBandScopeNotifyThread }

@@ -144,6 +144,7 @@ type
     FCurrBand : TBand;
     FSelectFlag: Boolean;
     FShowAllBands: Boolean;
+    FInitialVisible: Boolean;
 
     FSortOrder: Integer;
     FBSList: TBSList;
@@ -204,6 +205,7 @@ type
     procedure Suspend();
     procedure Resume();
     procedure RenewTab();
+    procedure InitialOpen();
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property DisplayMode: TBSDisplayMode read GetDisplayMode write SetDisplayMode;
@@ -1969,6 +1971,7 @@ begin
    ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
    ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
    ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
+   ini.WriteBool(section, 'Open', Visible);
 end;
 
 procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
@@ -1995,6 +1998,8 @@ begin
    buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
    buttonSortByFreq.ImageIndex := ini.ReadInteger(section, 'FreqSortOrder', 0);
    buttonSortByTime.ImageIndex := ini.ReadInteger(section, 'TimeSortOrder', -1);
+   FInitialVisible := ini.ReadBool(section, 'Open', False);
+   Visible := FInitialVisible;
 end;
 
 procedure TBandScope2.ApplyFontSize(font_size: Integer);
@@ -2110,6 +2115,12 @@ begin
    buttonSyncVfo.Enabled := fEnable;
    buttonFreqCenter.Enabled := fEnable;
 end;
+
+procedure TBandScope2.InitialOpen();
+begin
+   Visible := FInitialVisible;
+end;
+
 
 initialization
    CurrentRigFrequency := 0;
