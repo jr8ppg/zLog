@@ -932,7 +932,9 @@ begin
             if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
                Sp.Number := ExecLookup(Sp.Call, Sp.Band);
                if Sp.Number <> '' then begin
-                  Sp.SpotReliability := srHigh;
+                  if Sp.SpotQuality <> sqBad then begin
+                     Sp.SpotReliability := srHigh;
+                  end;
                end
                else begin
                   Sp.LookupFailed := True;
