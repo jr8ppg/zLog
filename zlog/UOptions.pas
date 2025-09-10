@@ -1009,17 +1009,21 @@ var
 begin
    F := TformZLinkTelnetSet.Create(Self);
    try
-      F.HostName  := FTempZLinkTelnet.FHostName;
-      F.LineBreak := FTempZLinkTelnet.FLineBreak;
-      F.LocalEcho := FTempZLinkTelnet.FLocalEcho;
+      F.HostName      := FTempZLinkTelnet.FHostName;
+      F.Port          := FTempZLinkTelnet.FPort;
+      F.UseSecure     := FTempZLinkTelnet.FUseSecure;
+      F.LoginID       := FTempZLinkTelnet.FLoginID;
+      F.LoginPassword := FTempZLinkTelnet.FLoginPassword;
 
       if F.ShowModal() <> mrOK then begin
          exit;
       end;
 
-      FTempZLinkTelnet.FHostName  := F.HostName;
-      FTempZLinkTelnet.FLineBreak := F.LineBreak;
-      FTempZLinkTelnet.FLocalEcho := F.LocalEcho;
+      FTempZLinkTelnet.FHostName      := F.HostName;
+      FTempZLinkTelnet.FPort          := F.Port;
+      FTempZLinkTelnet.FUseSecure     := F.UseSecure;
+      FTempZLinkTelnet.FLoginID       := F.LoginID;
+      FTempZLinkTelnet.FLoginPassword := F.LoginPassword;
    finally
       F.Release();
    end;

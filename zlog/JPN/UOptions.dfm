@@ -1,7 +1,7 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = radio1Radio
+  ActiveControl = ZLinkCombo
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -23,7 +23,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetNetwork
     Align = alClient
     TabOrder = 0
     object tabsheetOperateStyle: TTabSheet
@@ -4089,13 +4089,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'HG'#26126#26397'B'
+          FontName = 'Cascadia Code PL'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 88
+          ItemIndex = 38
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

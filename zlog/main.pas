@@ -6898,19 +6898,11 @@ end;
 
 procedure TMainForm.menuConnectToZServerClick(Sender: TObject);
 begin
-   if dmZlogGlobal.Settings._zlink_telnet.FHostName = '' then begin
-      MessageBox(Handle, PChar(TMainForm_ZserverNotConfigured), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-      Exit;
-   end;
-
-   FZLinkForm.ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
-   FZLinkForm.ZSocket.Port := 'telnet';
    if FZLinkForm.ZServerConnected then begin
-      FZLinkForm.DisconnectedByMenu := True;
-      FZLinkForm.ZSocket.close;
+      FZLinkForm.Disconnect(True);
    end
    else begin
-      FZLinkForm.ZSocket.Connect;
+      FZLinkForm.Connect(Self, True);
    end;
 end;
 

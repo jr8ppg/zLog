@@ -44,10 +44,13 @@ type
 
   TCommParam = record
     FHostName: string;
-    FPortNumber: Integer;
+    FPort: string;
     FBaudRate: Integer;
     FLineBreak: Integer;
     FLocalEcho: Boolean;
+    FUseSecure: Boolean;
+    FLoginId: string;
+    FLoginPassword: string;
   end;
 
   TSuperCheckParam = record
@@ -1112,6 +1115,10 @@ begin
       Settings._zlink_telnet.FHostName := ini.ReadString('Z-Link', 'TELNEThost', '');
       Settings._zlink_telnet.FLineBreak := ini.ReadInteger('Z-Link', 'TELNETlinebreak', 0);
       Settings._zlink_telnet.FLocalEcho := ini.ReadBool('Z-Link', 'TELNETlocalecho', False);
+      Settings._zlink_telnet.FPort := ini.ReadString('Z-Link', 'Port', 'telnet');
+      Settings._zlink_telnet.FUseSecure := ini.ReadBool('Z-Link', 'UseSecure', False);
+      Settings._zlink_telnet.FLoginId := ini.ReadString('Z-Link', 'User', 'zloguser');
+      Settings._zlink_telnet.FLoginPassword := ini.ReadString('Z-Link', 'Password', '');
 
       //
       // RIG1-5
@@ -1918,14 +1925,14 @@ begin
       // PC Name
       ini.WriteString('Z-Link', 'PCName', Settings._pcname);
 
-      // COM(unuse)
-//      ini.WriteInteger('Z-Link', 'COMlinebreak', Settings._zlinklinebreakCOM);
-//      ini.WriteBool('Z-Link', 'COMlocalecho', Settings._zlinklocalechoCOM);
-
       // TELNET
       ini.WriteString('Z-Link', 'TELNEThost', Settings._zlink_telnet.FHostName);
       ini.WriteInteger('Z-Link', 'TELNETlinebreak', Settings._zlink_telnet.FLineBreak);
       ini.WriteBool('Z-Link', 'TELNETlocalecho', Settings._zlink_telnet.FLocalEcho);
+      ini.WriteString('Z-Link', 'Port', Settings._zlink_telnet.FPort);
+      ini.WriteBool('Z-Link', 'UseSecure', Settings._zlink_telnet.FUseSecure);
+      ini.WriteString('Z-Link', 'User', Settings._zlink_telnet.FLoginId);
+      ini.WriteString('Z-Link', 'Password', Settings._zlink_telnet.FLoginPassword);
 
       //
       // RIG1-5
