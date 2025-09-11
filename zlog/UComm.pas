@@ -1268,22 +1268,16 @@ begin
       end;
    end;
 
-   if (Sp.SpotQuality = sqVerified) then begin
+   if (Sp.SpotQuality = sqBad) then begin
+      Sp.SpotReliability := srLow;
+   end
+   else begin
       if Sp.ReliableSpotter = True then begin
          Sp.SpotReliability := srHigh;
       end
       else begin
          Sp.SpotReliability := srMiddle;
       end;
-   end
-   else if (Sp.SpotQuality = sqQsy) then begin
-      Sp.SpotReliability := srMiddle;
-   end
-   else if (Sp.SpotQuality = sqBad) then begin
-      Sp.SpotReliability := srLow;
-   end
-   else begin
-      Sp.SpotReliability := srLow;
    end;
 
    Result := True;

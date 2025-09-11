@@ -915,7 +915,6 @@ begin
       // 他のバンドで交信済みならマルチを取得
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
-         Sp.SpotReliability := srHigh;
       end
       else if dmZLogGlobal.Settings._bandscope_use_number_lookup = True then begin
          // 他のバンドで未交信ならSPCデータよりマルチを取得
@@ -924,19 +923,13 @@ begin
          SD2 := MainForm.SuperCheckList.ObjectOf(SD);
          if SD2 <> nil then begin
             Sp.Number := SD2.Number;
-            Sp.SpotReliability := srHigh;
          end;
 
          // SPCからも取得できない場合はLookup Serverに依頼する
          if dmZLogGlobal.Settings._bandscope_use_lookup_server = True then begin
             if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
                Sp.Number := ExecLookup(Sp.Call, Sp.Band);
-               if Sp.Number <> '' then begin
-                  if Sp.SpotQuality <> sqBad then begin
-                     Sp.SpotReliability := srHigh;
-                  end;
-               end
-               else begin
+               if Sp.Number = '' then begin
                   Sp.LookupFailed := True;
                   Sp.SpotReliability := srLow;
                end;
