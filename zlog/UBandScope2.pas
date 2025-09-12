@@ -273,6 +273,7 @@ begin
       else begin
          // TODO:Spot信頼度がUPしたなら更新する。
          if FBSList[i].SpotReliability < D.SpotReliability then begin
+            FBSList[i].SpotReliability := D.SpotReliability;
             FBSList[i].ReportedBy := D.ReportedBy;
             FBSList[i].ReliableSpotter := D.ReliableSpotter;
          end;
@@ -1094,7 +1095,6 @@ end;
 procedure TBandScope2.GridDblClick(Sender: TObject);
 var
    D: TBSData;
-   no: Integer;
 begin
    FProcessing := True;
    try
@@ -1228,19 +1228,18 @@ begin
             end;
 
             ssCluster: begin
-               if FBandScopeStyle = bssAllBands then begin
-                  if D.Band = CurrentQSO.Band then begin
-                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[11].FBackColor;
-                  end
-                  else begin
+               Brush.Color  := GetColorByReliability(D);
+//               if FBandScopeStyle = bssAllBands then begin
+//                  if D.Band = CurrentQSO.Band then begin
+//                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[11].FBackColor;
+//                  end
+//                  else begin
 //                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-                     Brush.Color  := GetColorByReliability(D);
-                  end;
-               end
-               else begin
+//                  end;
+//               end
+//               else begin
 //                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-                  Brush.Color  := GetColorByReliability(D);
-               end;
+//               end;
             end;
 
             ssClusterFromZServer: begin
