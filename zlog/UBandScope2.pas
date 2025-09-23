@@ -155,7 +155,8 @@ type
     FIconType: Integer;
 
     FUseResume: Boolean;
-    FResumeFile: string;
+    FResumeSpotFile: string;
+    FResumeBlockListFile: string;
 
     FBlockList: TStringList;
     procedure AddBSList(D : TBSData);
@@ -242,7 +243,8 @@ begin
    IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
    buttonShowWorked.Down := True;
    FUseResume := False;
-   FResumeFile := '';
+   FResumeSpotFile := '';
+   FResumeBlockListFile := '';
    FBlockList := TStringList.Create();
 
    RenewTab();
@@ -2016,8 +2018,13 @@ end;
 
 procedure TBandScope2.Suspend();
 begin
-   if (FUseResume = True) and (FResumeFile <> '') then begin
-      FBSList.SaveToFile(FResumeFile);
+   if (FUseResume = True) then begin
+      if (FResumeSpotFile <> '') then begin
+         FBSList.SaveToFile(FResumeSpotFile);
+      end;
+      if (FResumeBlockListFile <> '') then begin
+         FBlockList.SaveToFile(FResumeBlockListFile);
+      end;
    end;
 end;
 
@@ -2025,14 +2032,30 @@ procedure TBandScope2.Resume();
 begin
    if FUseResume = True then begin
       case FBandScopeStyle of
-         bssAllBands:      FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
-         bssNewMulti:      FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
-         bssCurrentBand:   FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
-         else              FResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+         bssAllBands: begin
+            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
+            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands_bl.txt';
+         end;
+         bssNewMulti: begin
+            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
+            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti_bl.txt';
+         end;
+         bssCurrentBand: begin
+            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
+            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband_bl.txt';
+         end
+         else begin
+            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '_bl.txt';
+         end;
       end;
 
-      if FileExists(FResumeFile) then begin
-         FBSList.LoadFromFile(FResumeFile);
+      if FileExists(FResumeSpotFile) then begin
+         FBSList.LoadFromFile(FResumeSpotFile);
+      end;
+
+      if FileExists(FResumeBlockListFile) then begin
+         FBlockList.LoadFromFile(FResumeBlockListFile);
       end;
    end;
 end;
