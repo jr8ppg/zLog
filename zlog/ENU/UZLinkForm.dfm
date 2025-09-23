@@ -84,7 +84,6 @@ object ZLinkForm: TZLinkForm
   end
   object ZSocket: TSslWSocket
     LineEnd = #13#10
-    Addr = 'ZSocketSessionConnected'
     Proto = 'tcp'
     LocalAddr = '0.0.0.0'
     LocalAddr6 = '::'
@@ -101,8 +100,8 @@ object ZLinkForm: TZLinkForm
     SslEnable = False
     SslMode = sslModeClient
     OnSslHandshakeDone = ZSocketSslHandshakeDone
-    Left = 88
-    Top = 40
+    Left = 80
+    Top = 32
   end
   object ZSslContext: TSslContext
     SslDHParamLines.Strings = (
@@ -146,7 +145,14 @@ object ZLinkForm: TZLinkForm
     SslSessionTimeout = 0
     SslSessionCacheSize = 20480
     AutoEnableBuiltinEngines = False
-    Left = 160
-    Top = 48
+    Left = 112
+    Top = 32
+  end
+  object timerLoginCheck: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = timerLoginCheckTimer
+    Left = 148
+    Top = 32
   end
 end

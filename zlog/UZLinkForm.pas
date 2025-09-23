@@ -27,6 +27,7 @@ type
     Console: TListBox;
     ZSocket: TSslWSocket;
     ZSslContext: TSslContext;
+    timerLoginCheck: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -39,6 +40,7 @@ type
     procedure ZSocketSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
     procedure ZSocketDataAvailable(Sender: TObject; Error: Word);
     procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
+    procedure timerLoginCheckTimer(Sender: TObject);
   private
     { Private declarations }
     FSecure: Boolean;
@@ -47,6 +49,7 @@ type
     FDisconnectedByMenu: Boolean;
 
     FLoginStep: TLoginStep;
+    FInitProcessDone: Boolean;
 
     FCommBuffer: TStringList;
     FCommandQue: TStringList;
@@ -61,6 +64,7 @@ type
     FDownloadFileName: string;
     FFileData: TStringList;
 
+    FOwnerWnd: THandle;
     procedure EnableConnectButton(boo : boolean);
     procedure CommProcess;
     procedure ProcessCommand;
@@ -118,6 +122,8 @@ resourcestring
   FileUploadSuccessfully = 'File upload completed successfully.';
   ZServerSettingsNotConfigured = 'Z-Server settings are not configured.';
   ZServerSecureNotConfigured = 'Z-Server secure settings are not configured.';
+  ZServerIsNotSecureMode = 'Z-Server is not in SECURE mode.';
+  UnableToLoginToZServer = 'Unable to login to Z-Server.';
 
 implementation
 
@@ -199,6 +205,8 @@ end;
 procedure TZLinkForm.ConnectButtonClick(Sender: TObject);
 begin
    try
+      FOwnerWnd := 0;
+
       if (ZSocket.State = wsConnected) then begin
          ConnectButton.Caption := 'Disconnecting...';
 
@@ -232,6 +240,16 @@ begin
    end;
 end;
 
+procedure TZLinkForm.timerLoginCheckTimer(Sender: TObject);
+begin
+   timerLoginCheck.Enabled := False;
+   if FLoginStep <> lsLogined then begin
+      ZSocket.Close();
+      AddConsole(ZServerIsNotSecureMode);
+      MessageBox(FOwnerWnd, PChar(ZServerIsNotSecureMode), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+   end;
+end;
+
 procedure TZLinkForm.ZSocketSessionConnected(Sender: TObject; Error: Word);
 begin
    if Error <> 0 then begin
@@ -243,11 +261,15 @@ begin
    MainForm.menuConnectToZServer.Caption := Disconnect_ZSERVER; // 0.23
    AddConsole('connected to ' + ZSocket.Addr);
 
+   FInitProcessDone := False;
+
    if FSecure = True then begin
       ZSocket.StartSslHandshake();
+      timerLoginCheck.Enabled := True;
    end
    else begin
       FLoginStep := lsLogined;
+      Sleep(500);
       InitProcess();
    end;
 end;
@@ -312,6 +334,10 @@ end;
 
 procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
 begin
+   timerLoginCheck.Enabled := False;
+
+   CommProcess();
+
    if Error <> 0 then begin
       AddConsole('SessionClosed Error=' + IntToStr(Error));
    end;
@@ -336,6 +362,8 @@ procedure TZLinkForm.CommProcess;
 var
    x: integer;
    strTemp: string;
+label
+   nextnext;
 begin
    CommProcessing := True;
    try
@@ -345,21 +373,35 @@ begin
          if ((FLoginStep = lsReqUser) and (strTemp = 'Login:')) then begin
             ZSocket.SendStr(dmZLogGlobal.Settings._zlink_telnet.FLoginId);
             FLoginStep := lsReqPassword;
-            Continue;
+            goto nextnext;
          end;
 
          if ((FLoginStep = lsReqPassword) and (strTemp = 'Password:')) then begin
-            ZSocket.SendStr(dmZLogGlobal.Settings._zlink_telnet.FLoginPassword);
-            FLoginStep := lsLogined;
-            InitProcess();
-            Continue;
+            if ZSocket.State = wsConnected then begin
+               ZSocket.SendStr(dmZLogGlobal.Settings._zlink_telnet.FLoginPassword);
+               FLoginStep := lsLogined;
+            end;
+            goto nextnext;
          end;
 
          if (FLoginStep = lsLogined) then begin
 
+            if (strTemp = 'Password:') then begin
+               FLoginStep := lsReqPassword;
+               Continue;
+            end;
+
             if (strTemp = 'bye...') then begin
+               timerLoginCheck.Enabled := False;
                FLoginStep := lsLoginIncorrect;
+               AddConsole(UnableToLoginToZServer);
+               MessageBox(FOwnerWnd, PChar(UnableToLoginToZServer), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
                Exit;
+            end;
+
+            if (strTemp = 'OK') then begin
+               InitProcess();
+               FInitProcessDone := True;
             end;
 
             x := pos(ZLinkHeader, strTemp);
@@ -372,7 +414,7 @@ begin
                dmZLogGlobal.WriteErrorLog(strTemp);
             end;
          end;
-
+nextnext:
          FCommBuffer.Delete(0);
       end;
 
@@ -386,6 +428,7 @@ procedure TZLinkForm.WriteData(str: string);
 begin
    if ZSocket.State = wsConnected then begin
       ZSocket.SendStr(str + FLineBreak);
+      ZSocket.Flush();
    end;
 end;
 
@@ -1273,6 +1316,9 @@ end;
 
 procedure TZLinkForm.Connect(AOwner: TForm; fromMenu: Boolean);
 begin
+   timerLoginCheck.Enabled := False;
+   FOwnerWnd := AOwner.Handle;
+
    if (dmZLogGlobal.Settings._zlink_telnet.FHostName = '') or
       (dmZLogGlobal.Settings._zlink_telnet.FPort = '') then begin
       MessageBox(AOwner.Handle, PChar(ZServerSettingsNotConfigured), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
@@ -1289,14 +1335,7 @@ begin
 
    FSecure := dmZLogGlobal.Settings._zlink_telnet.FUseSecure;
 
-   // SSL使用有無
-   if FSecure = True then begin
-      ZSocket.SslEnable := True;
-   end
-   else begin
-      ZSocket.SslEnable := False;
-   end;
-
+   ZSocket.SslEnable := FSecure;                         // SSL使用有無
    ZSocket.Addr := dmZLogGlobal.Settings._zlink_telnet.FHostName;
    ZSocket.Port := dmZLogGlobal.Settings._zlink_telnet.FPort;
    ZSocket.Connect();
@@ -1304,6 +1343,8 @@ end;
 
 procedure TZLinkForm.Disconnect(fromMenu: Boolean);
 begin
+   timerLoginCheck.Enabled := False;
+   FOwnerWnd := 0;
    FDisconnectedByMenu := fromMenu;
    ZSocket.Close();
 end;
