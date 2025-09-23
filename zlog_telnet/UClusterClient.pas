@@ -986,7 +986,6 @@ begin
          if ((FZServerLoginStep = lsReqPassword) and (line = 'Password:')) then begin
             ZServer.SendStr(FZServerLoginPassword);
             FZServerLoginStep := lsLogined;
-            InitProcess();
             Continue;
          end;
 
@@ -998,6 +997,10 @@ begin
                Telnet.Close();
                ZServer.Close();
                Exit;
+            end;
+
+            if (line = 'OK') then begin
+               InitProcess();
             end;
          end;
       end;
