@@ -27,8 +27,6 @@ object ClusterClient: TClusterClient
     Height = 117
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 124
-    ExplicitWidth = 284
     DesignSize = (
       288
       117)
@@ -110,8 +108,6 @@ object ClusterClient: TClusterClient
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitWidth = 284
-    ExplicitHeight = 96
     object Splitter1: TSplitter
       Left = 1
       Top = 44
@@ -175,7 +171,6 @@ object ClusterClient: TClusterClient
     ParentFont = False
     TabOrder = 2
     Visible = False
-    ExplicitWidth = 284
   end
   object Timer1: TTimer
     Enabled = False
@@ -222,22 +217,6 @@ object ClusterClient: TClusterClient
       end
     end
   end
-  object ZServer: TWSocket
-    LineEnd = #13#10
-    Proto = 'tcp'
-    LocalAddr = '0.0.0.0'
-    LocalAddr6 = '::'
-    LocalPort = '0'
-    SocksLevel = '5'
-    ExclusiveAddr = False
-    ComponentOptions = []
-    ListenBacklog = 15
-    OnSessionClosed = ZServerSessionClosed
-    OnSessionConnected = ZServerSessionConnected
-    SocketErrs = wsErrTech
-    Left = 16
-    Top = 24
-  end
   object timerShowInfo: TTimer
     Enabled = False
     Interval = 20
@@ -257,5 +236,78 @@ object ClusterClient: TClusterClient
     OnTimer = timerReConnectTimer
     Left = 148
     Top = 104
+  end
+  object ZServer: TSslWSocket
+    LineEnd = #13#10
+    Proto = 'tcp'
+    LocalAddr = '0.0.0.0'
+    LocalAddr6 = '::'
+    LocalPort = '0'
+    SocksLevel = '5'
+    ExclusiveAddr = False
+    ComponentOptions = []
+    ListenBacklog = 15
+    OnDataAvailable = ZServerDataAvailable
+    OnSessionClosed = ZServerSessionClosed
+    OnSessionConnected = ZServerSessionConnected
+    SocketErrs = wsErrTech
+    SslContext = ZSslContext
+    SslEnable = False
+    SslMode = sslModeClient
+    OnSslHandshakeDone = ZServerSslHandshakeDone
+    Left = 16
+    Top = 16
+  end
+  object ZSslContext: TSslContext
+    SslDHParamLines.Strings = (
+      '-----BEGIN DH PARAMETERS-----'
+      'MIICCAKCAgEA45KZVdTCptcakXZb7jJvSuuOdMlUbl1tpncHbQcYbFhRbcFmmefp'
+      'bOmZsTowlWHQpoYRRTe6NEvYox8J+44i/X5cJkMTlIgMb0ZBty7t76U9f6qAId/O'
+      '6elE0gnk2ThER9nmBcUA0ZKgSXn0XCBu6j5lzZ0FS+bx9OVNhlzvIFBclRPXbI58'
+      '71dRoTjOjfO1SIzV69T3FoKJcqur58l8b+no/TOQzekMzz4XJTRDefqvePhj7ULP'
+      'Z/Zg7vtEh11h8gHR0/rlF378S05nRMq5hbbJeLxIbj9kxQunETSbwwy9qx0SyQgH'
+      'g+90+iUCrKCJ9Fb7WKqtQLkQuzJIkkXkXUyuxUuyBOeeP9XBUAOQu+eYnRPYSmTH'
+      'GkhyRbIRTPCDiBWDFOskdyGYYDrxiK7LYJQanqHlEFtjDv9t1XmyzDm0k7W9oP/J'
+      'p0ox1+WIpFgkfv6nvihqCPHtAP5wevqXNIQADhDk5EyrR3XWRFaySeKcmREM9tbc'
+      'bOvmsEp5MWCC81ZsnaPAcVpO66aOPojNiYQZUbmm70fJsr8BDzXGpcQ44+wmL4Ds'
+      'k3+ldVWAXEXs9s1vfl4nLNXefYl74cV8E5Mtki9hCjUrUQ4dzbmNA5fg1CyQM/v7'
+      'JuP6PBYFK7baFDjG1F5YJiO0uHo8sQx+SWdJnGsq8piI3w0ON9JhUvMCAQI='
+      '-----END DH PARAMETERS-----')
+    SslVerifyPeer = False
+    SslVerifyDepth = 9
+    SslVerifyFlags = []
+    SslVerifyFlagsValue = 0
+    SslCheckHostFlags = []
+    SslCheckHostFlagsValue = 0
+    SslSecLevel = sslSecLevel80bits
+    SslOptions = [sslOpt_NO_SSLv2, sslOpt_NO_SSLv3]
+    SslOptions2 = [sslOpt2_ALLOW_UNSAFE_LEGACY_RENEGOTIATION, SslOpt2_LEGACY_SERVER_CONNECT]
+    SslVerifyPeerModes = [SslVerifyMode_PEER]
+    SslVerifyPeerModesValue = 1
+    SslSessionCacheModes = []
+    SslCipherList = 'ALL'
+    SslCipherList13 = 
+      'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_' +
+      'GCM_SHA256'
+    SslVersionMethod = sslBestVer
+    SslMinVersion = sslVerTLS1
+    SslMaxVersion = sslVerMax
+    SslECDHMethod = sslECDHNone
+    SslCryptoGroups = 'P-256:X25519:P-384:P-521'
+    SslCliSecurity = sslCliSecTls1
+    SslOcspStatus = False
+    UseSharedCAStore = False
+    SslSessionTimeout = 0
+    SslSessionCacheSize = 20480
+    AutoEnableBuiltinEngines = False
+    Left = 48
+    Top = 16
+  end
+  object timerLoginCheck: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = timerLoginCheckTimer
+    Left = 80
+    Top = 16
   end
 end

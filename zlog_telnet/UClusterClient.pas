@@ -8,12 +8,15 @@ uses
   System.AnsiStrings, Vcl.ComCtrls, System.IniFiles, System.DateUtils,
   System.IOUtils,
   OverbyteIcsWndControl, OverbyteIcsTnCnx, OverbyteIcsWSocket, OverbyteIcsTypes,
-  UOptions, USpotClass, UzLogConst, HelperLib, UTelnetSetting;
+  UOptions, USpotClass, UzLogConst, HelperLib, UTelnetSetting,
+  OverbyteIcsSslBase;
 
 const
   SPOTMAX = 2000;
 
 type
+  TLoginStep = ( lsNone = 0, lsReqUser, lsReqPassword, lsLogined, lsLoginIncorrect );
+
   TClusterClient = class(TForm)
     Timer1: TTimer;
     Panel1: TPanel;
@@ -28,7 +31,6 @@ type
     menuSettings: TMenuItem;
     N2: TMenuItem;
     menuExit: TMenuItem;
-    ZServer: TWSocket;
     panelShowInfo: TPanel;
     timerShowInfo: TTimer;
     Console: TListBox;
@@ -41,6 +43,9 @@ type
     timerForceReconnect: TTimer;
     timerReConnect: TTimer;
     Edit: TComboBox;
+    ZServer: TSslWSocket;
+    ZSslContext: TSslContext;
+    timerLoginCheck: TTimer;
     procedure buttonCloseClick(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -63,6 +68,9 @@ type
     procedure timerReConnectTimer(Sender: TObject);
     procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure EditSelect(Sender: TObject);
+    procedure ZServerSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
+    procedure ZServerDataAvailable(Sender: TObject; ErrCode: Word);
+    procedure timerLoginCheckTimer(Sender: TObject);
   private
     { Private declarations }
     FSpotExpireMin: Integer;                       // スポットの生存時間
@@ -72,6 +80,10 @@ type
     FZServerClientName: string;                    // この端末名
     FZServerHostname: string;                      // Z-Serverのホスト名
     FZServerPortNumber: string;                    // Z-Serverのポート番号
+    FZServerSecure: Boolean;                       // セキュアモードON/OFF
+    FZServerLoginId: string;                       // ZServerへのログインID
+    FZServerLoginPassword: string;                 // ZServerログイン時のパスワード
+    FZServerLoginStep: TLoginStep;                 // 現在のログインステータス
 
     // Packet Cluster options
     FClusterAutoLogin: Boolean;                    // 自動ログイン
@@ -88,7 +100,7 @@ type
     // Force reconnect
     FUseForceReconnect: Boolean;                   // 強制再接続有無
     FForceReconnectIntervalMin: Integer;           // 強制再接続時間
-    FConnectTime: TDateTime;
+    FConnectTime: TDateTime;                       // 接続時刻
 
     FPacketClusterList: TTelnetSettingList;        // PacketCluster接続先リスト
 
@@ -97,13 +109,13 @@ type
     FAllowList2: TStringList;                      // 許可２リスト
     FDenyList: TStringList;                        // 拒否リスト
 
-    FCommBuffer: TStringList;
+    FCommBuffer: TStringList;                      // Cluster側(TELNET側)の受信バッファ
 
-    FUseClusterLog: Boolean;
+    FUseClusterLog: Boolean;                       // True:Clusterログを記録する
     FClusterLog: TextFile;
     FClusterLogFileName: string;
-    FDisconnectClicked: Boolean;
-    FAutoLogined: Boolean;
+    FDisconnectClicked: Boolean;                   // True:ボタン操作で切断しました
+    FAutoLogined: Boolean;                         // True:Clusterへ自動ログインしました
 
     FLineBreak: string;
     procedure LoadSettings();
@@ -120,6 +132,8 @@ type
     procedure ShowInfo(fShow: Boolean);
     procedure AddConsole(str: string);
     procedure SelectSite(Index: Integer);
+    procedure ConnectZServer();
+    procedure InitProcess();
   public
     { Public declarations }
   end;
@@ -148,6 +162,8 @@ uses
 
 procedure TClusterClient.FormCreate(Sender: TObject);
 begin
+   FZServerSecure := False;
+   FZServerLoginStep := lsNone;
    FPacketClusterList := TTelnetSettingList.Create();
    FReConnectCount := 0;
    FRetryIntervalCount := 0;
@@ -289,6 +305,9 @@ begin
       FZServerClientName := ini.ReadString('zserver', 'clientname', '');
       FZServerHostName := ini.ReadString('zserver', 'hostname', '');
       FZServerPortNumber := ini.ReadString('zserver', 'port', '23');
+      FZServerSecure := ini.ReadBool('zserver', 'secure', False);
+      FZServerLoginId := ini.ReadString('zserver', 'login', 'zloguser');
+      FZServerLoginPassword := ini.ReadString('zserver', 'password', '');
 
       // PacketCluster
       FPacketClusterList.Clear();
@@ -340,6 +359,9 @@ begin
       ini.WriteString('zserver', 'clientname', FZServerClientName);
       ini.WriteString('zserver', 'hostname', FZServerHostName);
       ini.WriteString('zserver', 'port', FZServerPortNumber);
+      ini.WriteBool('zserver', 'secure', FZServerSecure);
+      ini.WriteString('zserver', 'login', FZServerLoginId);
+      ini.WriteString('zserver', 'password', FZServerLoginPassword);
 
       // PacketCluster
       ini.EraseSection('PacketCluster');
@@ -504,9 +526,7 @@ begin
             RelaySpot(strTemp);
          end
          else if (ZServer.State = wsClosed) and (ZServer.Addr <> '') then begin
-            ZServer.Addr := FZServerHostName;
-            ZServer.Port := FZServerPortNumber;
-            ZServer.Connect();
+            ConnectZServer();
          end;
 
          if FSpotterList.IndexOf(Sp.ReportedBy) = -1 then begin
@@ -526,6 +546,11 @@ procedure TClusterClient.TimerProcess;
 begin
    Timer1.Enabled := False;
    try
+      if (FZServerLoginStep = lsLoginIncorrect) then begin
+         buttonConnect.Click();
+         Exit;
+      end;
+
       // Auto Reconnect
       if (FClusterAutoReconnect = True) and (Telnet.IsConnected() = False) and
          (FDisconnectClicked = False) and (buttonConnect.Caption = UComm_Connect) then begin
@@ -547,7 +572,12 @@ begin
          Inc(FReConnectCount);
       end;
 
-      CommProcess;
+      if (FZServerSecure = False) and (ZServer.State = wsConnected) and (Telnet.IsConnected() = True) then begin
+         CommProcess;
+      end;
+      if (FZServerSecure = True) and (FZServerLoginStep = lsLogined) and (ZServer.State = wsConnected) and (Telnet.IsConnected() = True) then begin
+         CommProcess;
+      end;
    finally
       Timer1.Enabled := True;
    end;
@@ -609,9 +639,7 @@ begin
          LoadAllowDenyList();
          Telnet.Connect;
 
-         ZServer.Addr := FZServerHostName;
-         ZServer.Port := FZServerPortNumber;
-         ZServer.Connect();
+         ConnectZServer();
 
          buttonConnect.Caption := UComm_Connecting;
          FDisconnectClicked := False;
@@ -717,6 +745,17 @@ begin
       end;
    end;
    timerForceReconnect.Enabled := True;
+end;
+
+procedure TClusterClient.timerLoginCheckTimer(Sender: TObject);
+begin
+   timerLoginCheck.Enabled := False;
+   if FZServerLoginStep <> lsLogined then begin
+      FDisconnectClicked := False;
+      ZServer.Close();
+      Telnet.Close();
+      WriteConsole('Z-ServerがSECUREモードではありません');
+   end;
 end;
 
 procedure TClusterClient.ListBoxMeasureItem(Control: TWinControl; Index: Integer;
@@ -850,6 +889,9 @@ begin
       dlg.ZServerClientName := FZServerClientName;
       dlg.ZServerHost := FZServerHostname;
       dlg.ZServerPort := FZServerPortNumber;
+      dlg.ZServerUseSecure := FZServerSecure;
+      dlg.ZServerLoginId := FZServerLoginId;
+      dlg.ZServerLoginPassword := FZServerLoginPassword;
 
       dlg.ClusterAutoLogin := FClusterAutoLogin;
       dlg.ClusterAutoReconnect := FClusterAutoReconnect;
@@ -880,6 +922,9 @@ begin
       FZServerClientName := dlg.ZServerClientName;
       FZServerHostname := dlg.ZServerHost;
       FZServerPortNumber := dlg.ZServerPort;
+      FZServerSecure := dlg.ZServerUseSecure;
+      FZServerLoginId := dlg.ZServerLoginId;
+      FZServerLoginPassword := dlg.ZServerLoginPassword;
 
       ImplementOptions();
       SaveSettings();
@@ -893,24 +938,105 @@ begin
    WriteConsole(str + FLineBreak);
 end;
 
+procedure TClusterClient.ZServerDataAvailable(Sender: TObject; ErrCode: Word);
+const
+   BUFSIZE = 2047;
+var
+   Buf: array [0 .. BUFSIZE] of AnsiChar;
+   str: string;
+   count: integer;
+   P: PAnsiChar;
+   line: string;
+   i: Integer;
+   SL: TStringList;
+begin
+   if Error <> 0 then begin
+      AddConsole('DataAvailable Error=' + IntToStr(Error));
+      Exit;
+   end;
+
+   SL := TStringList.Create();
+   try
+      ZeroMemory(@Buf, SizeOf(Buf));
+
+      count := TSslWSocket(Sender).Receive(@Buf, SizeOf(Buf) - 1);
+      if count <= 0 then begin
+         exit;
+      end;
+
+      if count >= BUFSIZE then begin
+         count := BUFSIZE;
+      end;
+
+      Buf[count] := #0;
+      P := @Buf[0];
+      str := string(AnsiString(P));
+
+      SL.Text := str;
+
+      for i := 0 to SL.Count - 1 do begin
+         line := SL[i];
+
+         if ((FZServerLoginStep = lsReqUser) and (line = 'Login:')) then begin
+            ZServer.SendStr(FZServerLoginId);
+            FZServerLoginStep := lsReqPassword;
+            Continue;
+         end;
+
+         if ((FZServerLoginStep = lsReqPassword) and (line = 'Password:')) then begin
+            ZServer.SendStr(FZServerLoginPassword);
+            FZServerLoginStep := lsLogined;
+            InitProcess();
+            Continue;
+         end;
+
+         if (FZServerLoginStep = lsLogined) then begin
+            if (line = 'bye...') then begin
+               FZServerLoginStep := lsLoginIncorrect;
+               timerLoginCheck.Enabled := False;
+               WriteConsole('Z-Server : ログインできません');
+               Telnet.Close();
+               ZServer.Close();
+               Exit;
+            end;
+         end;
+      end;
+
+   finally
+      SL.Free();
+   end;
+end;
+
 procedure TClusterClient.ZServerSessionClosed(Sender: TObject; ErrCode: Word);
 begin
    ShowInfo(True);
+   FZServerLoginStep := lsNone;
 end;
 
 procedure TClusterClient.ZServerSessionConnected(Sender: TObject; ErrCode: Word);
-var
-   S: string;
 begin
    ShowInfo(False);
 
-   // BANDコマンド
-   S := ZLinkHeader + ' BAND ' + IntToStr(Ord(bUnknown));
-   ZServer.SendStr(S + FLineBreak);
+   if FZServerSecure = True then begin
+      ZServer.StartSslHandshake();
+      timerLoginCheck.Enabled := True;
+   end
+   else begin
+      FZServerLoginStep := lsLogined;
+      InitProcess();
+   end;
+end;
 
-   // OPERATORコマンドで端末名を送る
-   S := ZLinkHeader + ' OPERATOR ' + FZServerClientName;
-   ZServer.SendStr(S + FLineBreak);
+procedure TClusterClient.ZServerSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
+begin
+   if Error <> 0 then begin
+      AddConsole('SslHandshakeDone Error=' + IntToStr(Error));
+      Disconnect := True;
+      FZServerLoginStep := lsLoginIncorrect;
+      Exit;
+   end;
+
+   FZServerLoginStep := lsReqUser;
 end;
 
 procedure TClusterClient.WriteConsole(strText: string);
@@ -1013,6 +1139,31 @@ begin
    end;
 
    Edit.Items.CommaText := setting.CommandList;
+end;
+
+procedure TClusterClient.ConnectZServer();
+begin
+   ZServer.SslEnable := FZServerSecure;         // SSL使用有無
+   ZServer.Addr := FZServerHostName;
+   ZServer.Port := FZServerPortNumber;
+   ZServer.Connect();
+end;
+
+procedure TClusterClient.InitProcess();
+var
+   S: string;
+begin
+   // BANDコマンド
+   S := ZLinkHeader + ' BAND ' + IntToStr(Ord(bUnknown));
+   ZServer.SendStr(S + FLineBreak);
+
+   // OPERATORコマンドで端末名を送る
+   S := ZLinkHeader + ' OPERATOR ' + FZServerClientName;
+   ZServer.SendStr(S + FLineBreak);
+
+   // PCNAMEコマンドで端末名を送る
+   S := ZLinkHeader + ' PCNAME ' + FZServerClientName;
+   ZServer.SendStr(S + FLineBreak);
 end;
 
 end.

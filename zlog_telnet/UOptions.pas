@@ -48,6 +48,12 @@ type
     checkRecordLogs: TCheckBox;
     checkUseAllowDenyLists: TCheckBox;
     checkForceReconnect: TCheckBox;
+    GroupBox1: TGroupBox;
+    Label2: TLabel;
+    Label3: TLabel;
+    checkUseSecure: TCheckBox;
+    editUserPassword: TEdit;
+    editUserId: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
@@ -94,6 +100,12 @@ type
     procedure PacketClusterListViewToList();
     procedure AddPacketClusterList(setting: TTelnetSetting);
     procedure ListViewClear();
+    function GetZServerUseSecure(): Boolean;
+    procedure SetZServerUseSecure(v: Boolean);
+    function GetZServerLoginID(): string;
+    procedure SetZServerLoginID(v: string);
+    function GetZServerLoginPassword(): string;
+    procedure SetZServerLoginPassword(v: string);
   public
     { Public êÈåæ }
     property SportExpireMin: Integer read GetSpotExpire write SetSpotExpire;
@@ -112,6 +124,9 @@ type
     property ZServerHost: string read GetZServerHost write SetZServerHost;
     property ZServerPort: string read GetZServerPort write SetZServerPort;
     property ZServerClientName: string read GetZServerClientName write SetZServerClientName;
+    property ZServerUseSecure: Boolean read GetZServerUseSecure write SetZServerUseSecure;
+    property ZServerLoginID: string read GetZServerLoginID write SetZServerLoginID;
+    property ZServerLoginPassword: string read GetZServerLoginPassword write SetZServerLoginPassword;
   end;
 
 implementation
@@ -382,6 +397,36 @@ end;
 procedure TOptions.SetZServerClientName(v: string);
 begin
    editZServerClientName.Text := v;
+end;
+
+function TOptions.GetZServerUseSecure(): Boolean;
+begin
+   Result := checkUseSecure.Checked;
+end;
+
+procedure TOptions.SetZServerUseSecure(v: Boolean);
+begin
+   checkUseSecure.Checked := v;
+end;
+
+function TOptions.GetZServerLoginID(): string;
+begin
+   Result := editUserId.Text;
+end;
+
+procedure TOptions.SetZServerLoginID(v: string);
+begin
+   editUserId.Text := v;
+end;
+
+function TOptions.GetZServerLoginPassword(): string;
+begin
+   Result := editUserPassword.Text;
+end;
+
+procedure TOptions.SetZServerLoginPassword(v: string);
+begin
+   editUserPassword.Text := v;
 end;
 
 procedure TOptions.PacketClusterListToListView();
