@@ -269,7 +269,6 @@ begin
    end
    else begin
       FLoginStep := lsLogined;
-      Sleep(500);
       InitProcess();
    end;
 end;
