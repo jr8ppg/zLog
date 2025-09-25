@@ -818,6 +818,7 @@ procedure TJST145.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    fstr := AnsiString(IntToStr(Hz));
@@ -985,6 +986,8 @@ procedure TOmni.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    o_RIG: IRigX;
 begin
+   Hz := Hz - _freqoffset;
+
    if _rignumber = 1 then begin
       o_RIG := FOmniRig.Rig1;
    end

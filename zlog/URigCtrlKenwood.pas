@@ -305,6 +305,7 @@ procedure TTS690.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    fstr := AnsiString(IntToStr(Hz));

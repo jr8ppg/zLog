@@ -296,6 +296,7 @@ var
    fstr: AnsiString;
    i, j: TFrequency;
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    i := Hz;
@@ -565,6 +566,7 @@ const
 var
    freq: AnsiString;
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 8)) + AnsiString(IntToStr(Hz)), 8);
@@ -887,6 +889,8 @@ var
    fstr: AnsiString;
    i, j: TFrequency;
 begin
+   Hz := Hz - _freqoffset;
+
    i := Hz;
    i := i div 10;
 
@@ -1161,6 +1165,7 @@ var
    fstr: AnsiString;
    i, j: TFrequency;
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    i := Hz;
@@ -1249,6 +1254,7 @@ end;
 
 procedure TFT817.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    FPollingTimer.Enabled := False;
@@ -1508,6 +1514,7 @@ const
 var
    freq: AnsiString;
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    freq := AnsiStrings.RightStr(AnsiString(DupeString('0', 9)) + AnsiString(IntToStr(Hz)), 9);  // freq 9Œ…
