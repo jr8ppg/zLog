@@ -2,7 +2,7 @@ object formZLinkTelnetSet: TformZLinkTelnetSet
   Left = 28
   Top = 271
   BorderStyle = bsDialog
-  Caption = 'Z-Link TELNET settings'
+  Caption = 'Z-Link'#35373#23450
   ClientHeight = 269
   ClientWidth = 266
   Color = clBtnFace
@@ -46,21 +46,21 @@ object formZLinkTelnetSet: TformZLinkTelnetSet
     Top = 8
     Width = 250
     Height = 89
-    Caption = 'Network'
+    Caption = #12493#12483#12488#12527#12540#12463#35373#23450
     TabOrder = 0
     object Label1: TLabel
       Left = 8
       Top = 23
       Width = 51
       Height = 13
-      Caption = 'Host name'
+      Caption = #12507#12473#12488#21517
     end
     object Label4: TLabel
       Left = 8
       Top = 55
       Width = 19
       Height = 13
-      Caption = 'Port'
+      Caption = #12509#12540#12488
     end
     object comboHostName: TComboBox
       Left = 70
@@ -85,28 +85,28 @@ object formZLinkTelnetSet: TformZLinkTelnetSet
     Top = 111
     Width = 250
     Height = 114
-    Caption = 'Security'
+    Caption = #12475#12461#12517#12450#12458#12503#12471#12519#12531
     TabOrder = 2
     object Label2: TLabel
       Left = 8
       Top = 52
       Width = 51
       Height = 13
-      Caption = 'User name'
+      Caption = #12518#12540#12470#12540'ID'
     end
     object Label3: TLabel
       Left = 8
       Top = 79
       Width = 46
       Height = 13
-      Caption = 'Password'
+      Caption = #12497#12473#12527#12540#12489
     end
     object checkUseSecure: TCheckBox
       Left = 8
       Top = 24
-      Width = 129
+      Width = 170
       Height = 16
-      Caption = 'Use secure mode'
+      Caption = #12475#12461#12517#12450#12514#12540#12489#12434#20351#12358
       TabOrder = 0
     end
     object editUserPassword: TEdit

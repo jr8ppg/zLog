@@ -210,10 +210,6 @@ type
     editBSColor5: TEdit;
     buttonBSBack5: TButton;
     buttonBSReset5: TButton;
-    Label68: TLabel;
-    editBSColor6: TEdit;
-    buttonBSBack6: TButton;
-    buttonBSReset6: TButton;
     editBSColor7: TEdit;
     buttonBSBack7: TButton;
     buttonBSReset7: TButton;
@@ -347,19 +343,6 @@ type
     checkSaveCurrentFreq: TCheckBox;
     buttonBSReset8: TButton;
     buttonBSReset9: TButton;
-    groupBandscopeOtherColors: TGroupBox;
-    Label28: TLabel;
-    Label29: TLabel;
-    Label30: TLabel;
-    editBSColor10: TEdit;
-    editBSColor11: TEdit;
-    editBSColor12: TEdit;
-    buttonBSOtherBack1: TButton;
-    buttonBSOtherBack2: TButton;
-    buttonBSOtherBack3: TButton;
-    buttonBSOtherReset1: TButton;
-    buttonBSOtherReset2: TButton;
-    buttonBSOtherReset3: TButton;
     checkShowDXspots: TCheckBox;
     groupBandscopeOptions2: TGroupBox;
     checkUseResume: TCheckBox;
@@ -384,6 +367,19 @@ type
     menuVoiceStop: TMenuItem;
     AgeEdit: TEdit;
     Label31: TLabel;
+    groupBandscopeSpotReliability: TGroupBox;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    editBSColorSrHigh: TEdit;
+    editBSColorSrMiddle: TEdit;
+    editBSColorSrLow: TEdit;
+    buttonBSBackSrHigh: TButton;
+    buttonBSBackSrMiddle: TButton;
+    buttonBSBackSrLow: TButton;
+    buttonBSResetSrHigh: TButton;
+    buttonBSResetSrMiddle: TButton;
+    buttonBSResetSrLow: TButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -453,8 +449,8 @@ type
 
     FTempFreqMemList: TFreqMemoryList;
 
-    FBSColor: array[1..12] of TEdit;
-    FBSBold: array[1..12] of TCheckBox;
+    FBSColor: array[1..15] of TEdit;
+    FBSBold: array[1..15] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
 
@@ -491,7 +487,7 @@ uses
   UzLogGlobal;
 
 const
-  BandScopeDefaultColor: array[1..12] of TColorSetting = (
+  BandScopeDefaultColor: array[1..15] of TColorSetting = (
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clRed;   FBackColor: clWhite; FBold: True ),
     ( FForeColor: clGreen; FBackColor: clWhite; FBold: True ),
@@ -503,7 +499,10 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True )
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clAqua;  FBold: True ),
+    ( FForeColor: clBlack; FBackColor: clYellow; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: $FFD2FF;  FBold: True )
   );
 
 {$R *.DFM}
@@ -773,9 +772,11 @@ begin
       Settings._usebandscope_newmulti := checkBsNewMulti.Checked;
       Settings._usebandscope_allbands := checkBsAllBands.Checked;
 
-      for i := 1 to 12 do begin
-         Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
-         Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
+      for i := 1 to 15 do begin
+         if FBSColor[i] <> nil then begin
+            Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
+            Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
+         end;
          if FBSBold[i] = nil then begin
             Settings._bandscopecolor[i].FBold      := False;
          end
@@ -1127,9 +1128,11 @@ begin
       checkBsNewMulti.Checked := Settings._usebandscope_newmulti;
       checkBsAllBands.Checked := Settings._usebandscope_allbands;
 
-      for i := 1 to 12 do begin
-         FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
-         FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
+      for i := 1 to 15 do begin
+         if FBSColor[i] <> nil then begin
+            FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
+            FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
+         end;
          if FBSBold[i] <> nil then begin
             FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
          end;
@@ -1365,13 +1368,16 @@ begin
    FBSColor[3] := editBSColor3;
    FBSColor[4] := editBSColor4;
    FBSColor[5] := editBSColor5;
-   FBSColor[6] := editBSColor6;
+   FBSColor[6] := nil;
    FBSColor[7] := editBSColor7;
    FBSColor[8] := editBSColor8;
    FBSColor[9] := editBSColor9;
-   FBSColor[10] := editBSColor10;
-   FBSColor[11] := editBSColor11;
-   FBSColor[12] := editBSColor12;
+   FBSColor[10] := editBSColorSrHigh;
+   FBSColor[11] := nil;
+   FBSColor[12] := nil;
+   FBSColor[13] := editBSColorSrHigh;
+   FBSColor[14] := editBSColorSrMiddle;
+   FBSColor[15] := editBSColorSrLow;
    FBSBold[1] := checkBSBold1;
    FBSBold[2] := checkBSBold2;
    FBSBold[3] := checkBSBold3;
@@ -1384,6 +1390,9 @@ begin
    FBSBold[10] := nil;
    FBSBold[11] := nil;
    FBSBold[12] := nil;
+   FBSBold[13] := nil;
+   FBSBold[14] := nil;
+   FBSBold[15] := nil;
 
    // Quick QSY
    FTempFreqMemList := TFreqMemoryList.Create();

@@ -395,4 +395,8 @@ object formOptions3: TformOptions3
     Left = 292
     Top = 428
   end
+  object ColorDialog2: TColorDialog
+    Left = 300
+    Top = 436
+  end
 end
