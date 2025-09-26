@@ -336,6 +336,10 @@ begin
       // 時間は末尾から取得
       TimeStr := RightStr(temp, 5);
 
+      if Length(TimeStr) <> 5 then begin
+         TimeStr := FormatDateTime('hhnn', GetUTC()) + 'Z';
+      end;
+
       // スポット品質＆スポット信頼度
       temp2 := LeftStr(RightStr(temp, 7), 1);
       if (temp2 = 'V') then begin
@@ -700,7 +704,12 @@ var
    diff: TFrequency;
 begin
    if (Left.FreqHz - Right.FreqHz) = 0 then begin
-      Result := 0;   //(Left.Index - Right.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := 0;   //(Left.Index - Right.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       diff := Left.FreqHz - Right.FreqHz;
@@ -720,7 +729,12 @@ var
    diff: TFrequency;
 begin
    if (Left.FreqHz - Right.FreqHz) = 0 then begin
-      Result := 0;   //(Right.Index - Left.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := 0;   //(Right.Index - Left.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       diff := Right.FreqHz - Left.FreqHz;
@@ -738,7 +752,12 @@ end;
 function TBSDataTimeAscComparer.Compare(const Left, Right: TBSData): Integer;
 begin
    if CompareDateTime(Left.Time, Right.Time) = 0 then begin
-      Result := (Left.Index - Right.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := (Left.Index - Right.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       Result := CompareDateTime(Left.Time, Right.Time);
@@ -750,7 +769,12 @@ end;
 function TBSDataTimeDescComparer.Compare(const Left, Right: TBSData): Integer;
 begin
    if CompareDateTime(Left.Time, Right.Time) = 0 then begin
-      Result := (Right.Index - Left.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := (Right.Index - Left.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       Result := CompareDateTime(Right.Time, Left.Time);

@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Grids, Menus, DateUtils,
   USpotClass, UzLogConst, UzLogGlobal, UzLogQSO, UBandPlan,
-  System.ImageList, Vcl.ImgList, System.IniFiles,
+  System.ImageList, Vcl.ImgList, System.IniFiles, System.SyncObjs,
   System.UITypes, Vcl.Buttons, System.Actions, Vcl.ActnList, Vcl.ComCtrls;
 
 type
@@ -148,7 +148,7 @@ type
 
     FSortOrder: Integer;
     FBSList: TBSList;
-    FBSLock: TRTLCriticalSection;
+    FBSLock: TCriticalSection;
 
     FFreshnessThreshold: array[0..4] of Integer;
     FFreshnessType: Integer;
@@ -156,9 +156,7 @@ type
 
     FUseResume: Boolean;
     FResumeSpotFile: string;
-    FResumeBlockListFile: string;
 
-    FBlockList: TStringList;
     procedure AddBSList(D : TBSData);
     procedure AddAndDisplay(D : TBSData);
     procedure DeleteFromBSList(i : integer);
@@ -186,6 +184,7 @@ type
     function BandToTabIndex(b: TBand): Integer;
     function TabIndexToBand(TabIndex: Integer): TBand;
     procedure SetDisplayModeState(fEnable: Boolean);
+    function IsBlocked(strCallsign: string): Boolean;
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -222,6 +221,9 @@ type
 
 var
   CurrentRigFrequency : TFrequency; // in Hertz
+  BSBlockList: TStringList;
+  BSBLResumeFile: string;
+  BSBLLock: TCriticalSection;
 
 implementation
 
@@ -244,8 +246,6 @@ begin
    buttonShowWorked.Down := True;
    FUseResume := False;
    FResumeSpotFile := '';
-   FResumeBlockListFile := '';
-   FBlockList := TStringList.Create();
 
    RenewTab();
 end;
@@ -253,7 +253,6 @@ end;
 destructor TBandScope2.Destroy();
 begin
    Inherited;
-   FreeAndNil(FBlockList);
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -305,7 +304,7 @@ begin
    end;
 
    // ブラックリストチェック
-   if (FBlockList.IndexOf(strCallsign) <> -1) then begin
+   if IsBlocked(strCallsign) = True then begin
       Exit;
    end;
 
@@ -343,7 +342,7 @@ begin
    end;
 
    // ブラックリストチェック
-   if (FBlockList.IndexOf(D.Call) <> -1) then begin
+   if IsBlocked(D.Call) = True then begin
       D.Free();
       Exit;
    end;
@@ -364,11 +363,12 @@ begin
    end;
 
    // ブラックリストチェック
-   if (FBlockList.IndexOf(Sp.Call) <> -1) then begin
+   if IsBlocked(Sp.Call) = True then begin
       Exit;
    end;
 
-   D := TBSData.Create;
+   D := TBSData.Create();
+   D.Time := Sp.Time;
    D.Call := Sp.Call;
    D.FreqHz := Sp.FreqHz;
    D.CtyIndex := Sp.CtyIndex;
@@ -858,7 +858,9 @@ begin
    try
       for i := Grid.Selection.Top to Grid.Selection.Bottom do begin
          D := TBSData(Grid.Objects[0, i]);
-         FBlockList.Add(D.Call);
+         BSBLLock.Enter();
+         BSBlockList.Add(D.Call);
+         BSBLLock.Leave();
 
          S := Grid.Cells[0, i];
          for j := 0 to FBSList.Count - 1 do begin
@@ -884,11 +886,17 @@ var
 begin
    f := TTextEditor.Create(Self);
    try
-      f.Text := FBlockList.Text;
+      BSBLLock.Enter();
+      f.Text := BSBlockList.Text;
+      BSBLLock.Leave();
+
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
-      f.Text := FBlockList.Text;
+
+      BSBLLock.Enter();
+      BSBlockList.Text := f.Text;
+      BSBLLock.Leave();
    finally
       f.Release();
    end;
@@ -1004,7 +1012,7 @@ procedure TBandScope2.FormCreate(Sender: TObject);
 var
    b: TBand;
 begin
-   InitializeCriticalSection(FBSLock);
+   FBSLock := TCriticalSection.Create();
    FBSList := TBSList.Create();
    FProcessing := False;
    timerCleanup.Interval := 1 * 60 * 1000; // 1min.
@@ -1149,6 +1157,7 @@ var
 
    function GetColorByReliability(D: TBSData): TColor;
    begin
+      Result := 0;
       if D.SpotReliability = srHigh then begin
          Result := dmZLogGlobal.Settings._bandscopecolor[13].FBackColor;
       end;
@@ -1786,12 +1795,12 @@ end;
 
 procedure TBandScope2.Lock();
 begin
-   EnterCriticalSection(FBSLock);
+   FBSLock.Enter();
 end;
 
 procedure TBandScope2.Unlock();
 begin
-   LeaveCriticalSection(FBSLock);
+   FBSLock.Leave();
 end;
 
 procedure TBandScope2.buttonShowWorkedClick(Sender: TObject);
@@ -2022,9 +2031,6 @@ begin
       if (FResumeSpotFile <> '') then begin
          FBSList.SaveToFile(FResumeSpotFile);
       end;
-      if (FResumeBlockListFile <> '') then begin
-         FBlockList.SaveToFile(FResumeBlockListFile);
-      end;
    end;
 end;
 
@@ -2034,28 +2040,20 @@ begin
       case FBandScopeStyle of
          bssAllBands: begin
             FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
-            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands_bl.txt';
          end;
          bssNewMulti: begin
             FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
-            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti_bl.txt';
          end;
          bssCurrentBand: begin
             FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
-            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband_bl.txt';
          end
          else begin
             FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
-            FResumeBlockListFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '_bl.txt';
          end;
       end;
 
       if FileExists(FResumeSpotFile) then begin
          FBSList.LoadFromFile(FResumeSpotFile);
-      end;
-
-      if FileExists(FResumeBlockListFile) then begin
-         FBlockList.LoadFromFile(FResumeBlockListFile);
       end;
    end;
 end;
@@ -2099,7 +2097,7 @@ begin
    menuDeleteAllWorkedStations.Enabled := fEnable;
    menuAddToDenyList.Enabled := fEnable;
    menuAddBlockList.Enabled := fEnable;
-   menuEditBlockList.Enabled := (FBlockList.Count > 0);
+   menuEditBlockList.Enabled := (BSBlockList.Count > 0);
 
    menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
    menuBSCurrent.Checked := MainForm.BandScope.Visible;
@@ -2143,8 +2141,35 @@ begin
    Visible := FInitialVisible;
 end;
 
+function TBandScope2.IsBlocked(strCallsign: string): Boolean;
+begin
+   BSBLLock.Enter();
+   try
+      if (BSBlockList.IndexOf(strCallsign) <> -1) then begin
+         Result := True;
+         Exit;
+      end;
+
+      Result := False;
+   finally
+      BSBLLock.Leave();
+   end;
+end;
 
 initialization
    CurrentRigFrequency := 0;
+   BSBLLock := TCriticalSection.Create();
+   BSBlockList := TStringList.Create();
+   BSBLResumeFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_blocklist.txt';
+   if FileExists(BSBLResumeFile) then begin
+      BSBlockList.LoadFromFile(BSBLResumeFile);
+   end;
+
+finalization
+   if (BSBLResumeFile <> '') then begin
+      BSBlockList.SaveToFile(BSBLResumeFile);
+   end;
+   BSBlockList.Free();
+   BSBLLock.Free();
 
 end.
