@@ -1168,6 +1168,16 @@ var
          Result := dmZLogGlobal.Settings._bandscopecolor[15].FBackColor;
       end;
    end;
+
+   function GetSpotGroupColor(D: TBSData; n: Integer): TColor;
+   begin
+      if dmZLogGlobal.Settings._bandscopecolor[n].FUseReliability = False then begin
+         Result := dmZLogGlobal.Settings._bandscopecolor[n].FBackColor;
+      end
+      else begin
+         Result  := GetColorByReliability(D);
+      end;
+   end;
 begin
    with Grid.Canvas do begin
       Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -1255,10 +1265,10 @@ begin
 
             ssClusterFromZServer: begin
                case D.SpotGroup of
-                  1: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
-                  2: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[8].FBackColor;
-                  3: Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[9].FBackColor;
-                  else Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[7].FBackColor;
+                  1: Brush.Color  := GetSpotGroupColor(D, 7);
+                  2: Brush.Color  := GetSpotGroupColor(D, 8);
+                  3: Brush.Color  := GetSpotGroupColor(D, 9);
+                  else Brush.Color  := GetColorByReliability(D);
                end;
             end;
 

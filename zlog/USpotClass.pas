@@ -510,6 +510,8 @@ begin
       SL.Add(ZBoolToStr(CQ));
       SL.Add(Number);
       SL.Add(ReportedBy);
+      SL.Add(IntToStr(Integer(FSpotQuality)));
+      SL.Add(IntToStr(Integer(FSpotReliability)));
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -637,7 +639,7 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
@@ -646,6 +648,8 @@ begin
       CQ := ZStrToBool(SL[5]);
       Number := SL[6];
       ReportedBy := SL[7];
+      SpotQuality := TSpotQuality(StrToIntDef(SL[8], 0));
+      SpotReliability := TSpotReliability(StrToIntDef(SL[9], 0));
    finally
       SL.Free();
    end;

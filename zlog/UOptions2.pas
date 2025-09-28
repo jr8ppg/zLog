@@ -380,6 +380,9 @@ type
     buttonBSResetSrHigh: TButton;
     buttonBSResetSrMiddle: TButton;
     buttonBSResetSrLow: TButton;
+    checkUseReliability7: TCheckBox;
+    checkUseReliability8: TCheckBox;
+    checkUseReliability9: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -451,6 +454,7 @@ type
 
     FBSColor: array[1..15] of TEdit;
     FBSBold: array[1..15] of TCheckBox;
+    FBSUseReliability: array[1..15] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
 
@@ -782,6 +786,12 @@ begin
          end
          else begin
             Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
+         end;
+         if FBSUseReliability[i] = nil then begin
+            Settings._bandscopecolor[i].FUseReliability := False;
+         end
+         else begin
+            Settings._bandscopecolor[i].FUseReliability := FBSUseReliability[i].Checked;
          end;
       end;
 
@@ -1136,6 +1146,9 @@ begin
          if FBSBold[i] <> nil then begin
             FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
          end;
+         if FBSUseReliability[i] <> nil then begin
+            FBSUseReliability[i].Checked := Settings._bandscopecolor[i].FUseReliability;
+         end;
       end;
 
       // Spot鮮度表示
@@ -1393,6 +1406,21 @@ begin
    FBSBold[13] := nil;
    FBSBold[14] := nil;
    FBSBold[15] := nil;
+   FBSUseReliability[1] := nil;
+   FBSUseReliability[2] := nil;
+   FBSUseReliability[3] := nil;
+   FBSUseReliability[4] := nil;
+   FBSUseReliability[5] := nil;
+   FBSUseReliability[6] := nil;
+   FBSUseReliability[7] := checkUseReliability7;
+   FBSUseReliability[8] := checkUseReliability8;
+   FBSUseReliability[9] := checkUseReliability9;
+   FBSUseReliability[10] := nil;
+   FBSUseReliability[11] := nil;
+   FBSUseReliability[12] := nil;
+   FBSUseReliability[13] := nil;
+   FBSUseReliability[14] := nil;
+   FBSUseReliability[15] := nil;
 
    // Quick QSY
    FTempFreqMemList := TFreqMemoryList.Create();
@@ -1680,6 +1708,9 @@ begin
    FBSColor[n].Color       := BandScopeDefaultColor[n].FBackColor;
    if FBSBold[n] <> nil then begin
       FBSBold[n].Checked      := BandScopeDefaultColor[n].FBold;
+   end;
+   if FBSUseReliability[n] <> nil then begin
+      FBSUseReliability[n].Checked := False;
    end;
 end;
 

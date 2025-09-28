@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetCategories
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -3084,7 +3084,7 @@ object formOptions2: TformOptions2
         end
         object buttonBSBack5: TButton
           Tag = 5
-          Left = 270
+          Left = 317
           Top = 25
           Width = 45
           Height = 20
@@ -3115,12 +3115,12 @@ object formOptions2: TformOptions2
         end
         object buttonBSBack7: TButton
           Tag = 7
-          Left = 270
+          Left = 317
           Top = 51
           Width = 45
           Height = 20
           Caption = 'Back...'
-          TabOrder = 4
+          TabOrder = 5
           OnClick = buttonBSBackClick
         end
         object buttonBSReset7: TButton
@@ -3130,7 +3130,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = 'Reset'
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonBSResetClick
         end
         object editBSColor8: TEdit
@@ -3141,27 +3141,27 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 6
+          TabOrder = 7
           Text = 'TEXT'
         end
         object buttonBSBack8: TButton
           Tag = 8
-          Left = 270
+          Left = 317
           Top = 77
           Width = 45
           Height = 20
           Caption = 'Back...'
-          TabOrder = 7
+          TabOrder = 9
           OnClick = buttonBSBackClick
         end
         object buttonBSBack9: TButton
           Tag = 9
-          Left = 270
+          Left = 317
           Top = 103
           Width = 45
           Height = 20
           Caption = 'Back...'
-          TabOrder = 10
+          TabOrder = 13
           OnClick = buttonBSBackClick
         end
         object editBSColor9: TEdit
@@ -3172,7 +3172,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 9
+          TabOrder = 11
           Text = 'TEXT'
         end
         object buttonBSReset8: TButton
@@ -3182,7 +3182,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = 'Reset'
-          TabOrder = 8
+          TabOrder = 10
           OnClick = buttonBSResetClick
         end
         object buttonBSReset9: TButton
@@ -3192,8 +3192,32 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = 'Reset'
-          TabOrder = 11
+          TabOrder = 14
           OnClick = buttonBSResetClick
+        end
+        object checkUseReliability7: TCheckBox
+          Left = 224
+          Top = 52
+          Width = 87
+          Height = 17
+          Caption = 'Use reliability'
+          TabOrder = 4
+        end
+        object checkUseReliability8: TCheckBox
+          Left = 224
+          Top = 78
+          Width = 87
+          Height = 17
+          Caption = 'Use reliability'
+          TabOrder = 8
+        end
+        object checkUseReliability9: TCheckBox
+          Left = 224
+          Top = 104
+          Width = 87
+          Height = 17
+          Caption = 'Use reliability'
+          TabOrder = 12
         end
       end
       object groupSpotFreshness: TGroupBox
@@ -3315,7 +3339,7 @@ object formOptions2: TformOptions2
         end
         object buttonBSBackSrHigh: TButton
           Tag = 13
-          Left = 270
+          Left = 317
           Top = 25
           Width = 45
           Height = 20
@@ -3325,7 +3349,7 @@ object formOptions2: TformOptions2
         end
         object buttonBSBackSrMiddle: TButton
           Tag = 14
-          Left = 270
+          Left = 317
           Top = 52
           Width = 45
           Height = 20
@@ -3335,7 +3359,7 @@ object formOptions2: TformOptions2
         end
         object buttonBSBackSrLow: TButton
           Tag = 15
-          Left = 270
+          Left = 317
           Top = 79
           Width = 45
           Height = 20

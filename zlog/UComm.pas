@@ -482,6 +482,12 @@ begin
    Sp := TSpot.Create;
    if Sp.Analyze(S) = True then begin
 
+      // 信頼度判定
+      if JudgeReliability(Sp) = False then begin
+         Sp.Free();
+         Exit;
+      end;
+
       // データ発生源はZ-Server
       Sp.SpotSource := ssClusterFromZServer;
       Sp.SpotGroup := N;
@@ -631,6 +637,7 @@ begin
 
       Sp := TSpot.Create;
       if Sp.Analyze(strTemp) = True then begin
+
          // 信頼度判定
          if JudgeReliability(Sp) = False then begin
             Sp.Free();
