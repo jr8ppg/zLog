@@ -774,6 +774,12 @@ begin
          if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
             aQSO.Reserve := actEditOrAdd;
             Log.AddQue(aQSO);
+         end
+         else begin
+            i := Log.IndexOf(aqSO);
+            if i > -1 then begin
+               Log.QSOList[i].Assign(aQSO);
+            end;
          end;
          aQSO.Free;
       end;
