@@ -2932,6 +2932,7 @@ end;
 procedure TdmZLogGlobal.SetLogFileName(filename: string);
 begin
    FCurrentFileName := filename;
+   LastContest.FFileName := filename;
 end;
 
 procedure TdmZLogGlobal.MakeRigList(sl: TStrings);

@@ -8200,7 +8200,6 @@ begin
    startup := TformStartup.Create(Self);
    menu := TMenuForm.Create(Self);
    try
-      dmZLogGlobal.SetLogFileName('');
       fScoreCoeff := 1;
       fNewContest := True;
 
