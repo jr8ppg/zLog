@@ -23,6 +23,8 @@ type
   TAlphabetPointsTable = array[ord('0')..ord('Z')] of Integer;
   TLocalStringTable = array[0..MAXLOCAL] of string;
 
+  TSpecialCallMatch = ( scmFull = 0, scmPartial );
+
   TUserDefinedContest = class(TObject)
     FFullpath: string;
     FFileName: string;
@@ -48,6 +50,7 @@ type
 
     FSpecialCallPointsTable: TPointsTable;
     FSpecialCalls: string;  // special callsigns for specialcallpointstable
+    FSpecialCallMatch: TSpecialCallMatch;
 
     FLocalCountry: string;
     FLocalContinental: string;
@@ -157,6 +160,8 @@ type
 
     property SpecialCallPointsTable: TPointsTable read FSpecialCallPointsTable;
     property SpecialCalls: string read FSpecialCalls;
+    property SpecialCallMatch: TSpecialCallMatch read FSpecialCallMatch;
+    function IsSpecialCallMatch(strCallsign: string): Boolean;
 
     property LocalCountry: string read FLocalCountry;
     property LocalContinental: string read FLocalContinental;
@@ -257,6 +262,7 @@ begin
 
    ClearPointsTable(FSpecialCallPointsTable);
    FSpecialCalls := '';
+   FSpecialCallMatch := scmFull;
 
    FLocalCountry := '';
    FLocalContinental := '';
@@ -737,6 +743,19 @@ begin
          if strCmd = 'ALLOWDXNONR' then begin
             D.FAllowDxNoNumber := ParseOnOff(strParam);
          end;
+
+         if strCmd = 'SPCALLMATCH' then begin
+            strParam := UpperCase(strParam);
+            if strParam = 'FULL' then begin
+               D.FSpecialCallMatch := scmFull;
+            end
+            else if strParam = 'PARTIAL' then begin
+               D.FSpecialCallMatch := scmPartial;
+            end
+            else begin
+               D.FSpecialCallMatch := scmFull;
+            end;
+         end;
       end;
    finally
       SL.Free();
@@ -1099,6 +1118,42 @@ function TUserDefinedContest.GetDatFileFullPath(): string;
 begin
    Result := ExtractFilePath(FFullPath) + FDatFileName;
 end;
+
+function TUserDefinedContest.IsSpecialCallMatch(strCallsign: string): Boolean;
+var
+   SL: TStringList;
+   i: Integer;
+   S: string;
+begin
+   SL := TStringList.Create();
+   try
+      SL.CommaText := FSpecialCalls;
+      for i := 0 to SL.Count - 1 do begin
+         S := SL[i];
+
+         case FSpecialCallMatch of
+            scmFull: begin
+               if S = strCallsign then begin
+                  Result := True;
+                  Exit;
+               end;
+            end;
+
+            scmPartial: begin
+               if Pos(S, strCallsign) > 0 then begin
+                  Result := True;
+                  Exit;
+               end;
+            end;
+         end;
+      end;
+
+      Result := False;
+   finally
+      SL.Free();
+   end;
+end;
+
 
 { TUserDefinedContestList }
 

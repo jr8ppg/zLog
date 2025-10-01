@@ -291,8 +291,9 @@ begin
    end;
 
    if FConfig.SpecialCalls <> '' then begin
-      if pos(',' + aQSO.Callsign + ',', ',' + FConfig.SpecialCalls + ',') > 0 then
+      if FConfig.IsSpecialCallMatch(aQSO.Callsign) = True then begin
          aQSO.Points := FConfig.SpecialCallPointsTable[aQSO.band, aQSO.Mode];
+      end;
    end;
 end;
 
