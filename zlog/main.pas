@@ -2818,6 +2818,7 @@ begin
       FZAnalyze.ExcludeZeroPoints := dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints;
       FZAnalyze.ExcludeZeroHour := dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour;
       FZAnalyze.ShowCW := dmZLogGlobal.Settings.FAnalyzeShowCW;
+      FZAnalyze.UseRbnAnalyze := dmZLogGlobal.Settings.FUseRbnAnalyze;
 
       dmZlogGlobal.ReadWindowState(ini, MyContest.MultiForm, 'MultiForm', False);
       dmZlogGlobal.ReadWindowState(ini, MyContest.ScoreForm, 'ScoreForm', True);
@@ -7436,6 +7437,8 @@ begin
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
+
+      FZAnalyze.UseRbnAnalyze := dmZLogGlobal.Settings.FUseRbnAnalyze;
 
       GridRefreshScreen();
    finally

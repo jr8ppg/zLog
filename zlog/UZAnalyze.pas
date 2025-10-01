@@ -94,6 +94,7 @@ type
     FZADSupport: Boolean;
     FMultiGet: array[02..114] of array[b19..b10g] of Integer;
     FMultiGet2: array[b19..b10g] of TList<string>;
+    FUseRbnAnalyze: Boolean;
     procedure ShowAll(sl: TStrings);
     procedure InitTimeChart();
     procedure TotalTimeChart(qsolist: TQSOList);
@@ -122,11 +123,13 @@ type
     procedure SetExcludeZeroHour(v: Boolean);
     function GetShowCW(): Boolean;
     procedure SetShowCW(v: Boolean);
+    procedure SetUseRbnAnalyze(v: Boolean);
   public
     { Public êÈåæ }
     property ExcludeZeroPoints: Boolean read GetExcludeZeroPoint write SetExcludeZeroPoint;
     property ExcludeZeroHour: Boolean read GetExcludeZeroHour write SetExcludeZeroHour;
     property ShowCW: Boolean read GetShowCW write SetShowCW;
+    property UseRbnAnalyze: Boolean read FUseRbnAnalyze write SetUseRbnAnalyze;
   end;
 
 implementation
@@ -146,6 +149,7 @@ begin
       FMultiGet2[b] := TList<string>.Create();
    end;
 
+   UseRbnAnalyze := True;
    Memo1.Clear();
    InitTimeChart();
 end;
@@ -233,10 +237,12 @@ begin
    Memo1.Lines.SaveToFile(fname);
 
    // RBN
-   TabControl1.TabIndex := 6;
-   TabControl1Change(nil);
-   fname := ChangeFileExt(fname, '.RBN');
-   Memo1.Lines.SaveToFile(fname);
+   if FUseRbnAnalyze = True then begin
+      TabControl1.TabIndex := 6;
+      TabControl1Change(nil);
+      fname := ChangeFileExt(fname, '.RBN');
+      Memo1.Lines.SaveToFile(fname);
+   end;
 end;
 
 procedure TZAnalyze.buttonUpdateClick(Sender: TObject);
@@ -328,7 +334,9 @@ begin
 
          // RBN
          6: begin
-            ShowRBN(sl, fShowCW);
+            if FUseRbnAnalyze = True then begin
+               ShowRBN(sl, fShowCW);
+            end;
          end;
       end;
    finally
@@ -2097,6 +2105,17 @@ begin
    finally
       L.Free();
       slNplusOne.Free();
+   end;
+end;
+
+procedure TZAnalyze.SetUseRbnAnalyze(v: Boolean);
+begin
+   FUseRbnAnalyze := v;
+   if v = True then begin
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,RBN';
+   end
+   else begin
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP';
    end;
 end;
 

@@ -57,6 +57,7 @@ type
     buttonListBack4: TButton;
     buttonListReset4: TButton;
     ColorDialog2: TColorDialog;
+    checkUseRbnAnalyze: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -125,6 +126,7 @@ begin
       // RBN
       checkUseSpcData.Checked := Settings.FClusterUseForSuperCheck;
       spNumOfRbnCount.Value := Settings.FRbnCountForRbnVerified;
+      checkUseRbnAnalyze.Checked := Settings.FUseRbnAnalyze;
 
       for i := 1 to 2 do begin
          FListColor[i].Font.Color := Settings.FQsoListColors[i].FForeColor;
@@ -180,6 +182,7 @@ begin
       // RBN
       Settings.FClusterUseForSuperCheck := checkUseSpcData.Checked;
       Settings.FRbnCountForRbnVerified := spNumOfRbnCount.Value;
+      Settings.FUseRbnAnalyze := checkUseRbnAnalyze.Checked;
 
       for i := 1 to 2 do begin
          Settings.FQsoListColors[i].FForeColor := FListColor[i].Font.Color;

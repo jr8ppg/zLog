@@ -347,6 +347,7 @@ type
 
     FClusterUseForSuperCheck: Boolean;
     FRbnCountForRbnVerified: Integer;
+    FUseRbnAnalyze: Boolean;
     FQsoListColors: array[1..2] of TColorSetting;
 
     // Z-Server Messages(ChatForm)
@@ -1655,6 +1656,7 @@ begin
       // RBN Options
       Settings.FClusterUseForSuperCheck := ini.ReadBool('RBN', 'UseForSuperCheck', False);
       Settings.FRbnCountForRbnVerified := ini.ReadInteger('RBN', 'RbnCountForRbnVerified', 2);
+      Settings.FUseRbnAnalyze := ini.ReadBool('RBN', 'UseRbnAnalyze', True);
 
       Settings.FQsoListColors[1].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor1', '$000000'), clBlack);
       Settings.FQsoListColors[1].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor1', '$ffffff'), clWhite);
@@ -2356,6 +2358,7 @@ begin
 
       ini.WriteBool('RBN', 'UseForSuperCheck', Settings.FClusterUseForSuperCheck);
       ini.WriteInteger('RBN', 'RbnCountForRbnVerified', Settings.FRbnCountForRbnVerified);
+      ini.WriteBool('RBN', 'UseRbnAnalyze', Settings.FUseRbnAnalyze);
       for i := 1 to 2 do begin
          ini.WriteString('MainQsoList', 'ForeColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FForeColor));
          ini.WriteString('MainQsoList', 'BackColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FBackColor));
