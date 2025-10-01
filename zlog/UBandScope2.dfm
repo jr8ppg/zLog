@@ -191,6 +191,17 @@ object BandScope2: TBandScope2
       Caption = 'Add this reporter to deny list'
       OnClick = menuAddToDenyListClick
     end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object menuAddBlockList: TMenuItem
+      Caption = 'Block this spot'
+      OnClick = menuAddBlockListClick
+    end
+    object menuEditBlockList: TMenuItem
+      Caption = 'Edit block list'
+      OnClick = menuEditBlockListClick
+    end
     object N2: TMenuItem
       Caption = '-'
     end

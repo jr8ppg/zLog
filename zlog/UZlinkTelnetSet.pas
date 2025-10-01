@@ -4,33 +4,44 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Spin;
+  StdCtrls, ExtCtrls;
 
 type
   TformZLinkTelnetSet = class(TForm)
-    Bevel1: TBevel;
     Label1: TLabel;
-    Label2: TLabel;
     buttonOK: TButton;
     buttonCancel: TButton;
     comboHostName: TComboBox;
-    comboLineBreak: TComboBox;
-    checkLocalEcho: TCheckBox;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    checkUseSecure: TCheckBox;
+    Label2: TLabel;
+    editUserPassword: TEdit;
+    editUserId: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    comboPort: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
   private
     { Private declarations }
     function GetHostName(): string;
     procedure SetHostName(v: string);
-    function GetLineBreak(): Integer;
-    procedure SetLineBreak(v: Integer);
-    function GetLocalEcho(): Boolean;
-    procedure SetLocalEcho(v: Boolean);
+    function GetPort(): string;
+    procedure SetPort(v: string);
+    function GetUseSecure(): Boolean;
+    procedure SetUseSecure(v: Boolean);
+    function GetLoginID(): string;
+    procedure SetLoginID(v: string);
+    function GetLoginPassword(): string;
+    procedure SetLoginPassword(v: string);
   public
     { Public declarations }
     property HostName: string read GetHostName write SetHostName;
-    property LineBreak: Integer read GetLineBreak write SetLineBreak;
-    property LocalEcho: Boolean read GetLocalEcho write SetLocalEcho;
+    property Port: string read GetPort write SetPort;
+    property UseSecure: Boolean read GetUseSecure write SetUseSecure;
+    property LoginID: string read GetLoginID write SetLoginID;
+    property LoginPassword: string read GetLoginPassword write SetLoginPassword;
   end;
 
 implementation
@@ -75,24 +86,52 @@ begin
    comboHostName.Text := v;
 end;
 
-function TformZLinkTelnetSet.GetLineBreak(): Integer;
+function TformZLinkTelnetSet.GetPort(): string;
 begin
-   Result := comboLineBreak.ItemIndex;
+   Result := comboPort.Text;
 end;
 
-procedure TformZLinkTelnetSet.SetLineBreak(v: Integer);
+procedure TformZLinkTelnetSet.SetPort(v: string);
+var
+   Index: Integer;
 begin
-   comboLineBreak.ItemIndex := v;
+   Index := comboPort.Items.IndexOf(v);
+   if Index = -1 then begin
+      comboPort.Text := v;
+   end
+   else begin
+      comboPort.ItemIndex := Index;
+   end;
 end;
 
-function TformZLinkTelnetSet.GetLocalEcho(): Boolean;
+function TformZLinkTelnetSet.GetUseSecure(): Boolean;
 begin
-   Result := checkLocalEcho.Checked;
+   Result := checkUseSecure.Checked;
 end;
 
-procedure TformZLinkTelnetSet.SetLocalEcho(v: Boolean);
+procedure TformZLinkTelnetSet.SetUseSecure(v: Boolean);
 begin
-   checkLocalEcho.Checked := v;
+   checkUseSecure.Checked := v;
+end;
+
+function TformZLinkTelnetSet.GetLoginID(): string;
+begin
+   Result := editUserId.Text;
+end;
+
+procedure TformZLinkTelnetSet.SetLoginID(v: string);
+begin
+   editUserId.Text := v;
+end;
+
+function TformZLinkTelnetSet.GetLoginPassword(): string;
+begin
+   Result := editUserPassword.Text;
+end;
+
+procedure TformZLinkTelnetSet.SetLoginPassword(v: string);
+begin
+   editUserPassword.Text := v;
 end;
 
 end.

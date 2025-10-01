@@ -270,11 +270,18 @@ begin
    Key := K;
 end;
 
-procedure TCWKeyBoard.ConsoleProtectChange(Sender: TObject; StartPos,
-  EndPos: Integer; var AllowChange: Boolean);
+procedure TCWKeyBoard.ConsoleProtectChange(Sender: TObject; StartPos, EndPos: Integer; var AllowChange: Boolean);
 begin
    inherited;
-   AllowChange := True;
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('********StartPos=' + IntToStr(StartPos) + ',EndPos=' + IntToStr(EndPos) + ', FDonePos=' + IntToStr(FDonePos)));
+   {$ENDIF}
+   if EndPos > (FDonePos + 1) then begin
+      AllowChange := True;
+   end
+   else begin
+      AllowChange := False;
+   end;
 end;
 
 procedure TCWKeyBoard.buttonOKClick(Sender: TObject);
@@ -286,6 +293,7 @@ end;
 procedure TCWKeyBoard.buttonClearClick(Sender: TObject);
 begin
    Clear();
+   Console.SetFocus();
 end;
 
 procedure TCWKeyBoard.SpinEdit1Change(Sender: TObject);

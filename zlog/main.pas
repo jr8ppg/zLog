@@ -1274,6 +1274,7 @@ type
     procedure LoadSpotData(slFileList: TStrings);
     procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
     function GetFixEdge(b: TBand; m: TMode): Integer;
+    procedure BandscopeShowAll(fInitial: Boolean);
     procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
@@ -2817,6 +2818,7 @@ begin
       FZAnalyze.ExcludeZeroPoints := dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints;
       FZAnalyze.ExcludeZeroHour := dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour;
       FZAnalyze.ShowCW := dmZLogGlobal.Settings.FAnalyzeShowCW;
+      FZAnalyze.UseRbnAnalyze := dmZLogGlobal.Settings.FUseRbnAnalyze;
 
       dmZlogGlobal.ReadWindowState(ini, MyContest.MultiForm, 'MultiForm', False);
       dmZlogGlobal.ReadWindowState(ini, MyContest.ScoreForm, 'ScoreForm', True);
@@ -6621,7 +6623,7 @@ begin
       FBandScopeAllBands.IconType := dmZLogGlobal.Settings._bandscope_freshness_icon;
       FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
       FBandScopeAllBands.RenewTab();
-      actionShowBandScope.Execute();
+      BandscopeShowAll(True);
 
       // OpList再ロード
       BuildOpListMenu2(OpMenu.Items, OpMenuClick);
@@ -6897,19 +6899,11 @@ end;
 
 procedure TMainForm.menuConnectToZServerClick(Sender: TObject);
 begin
-   if dmZlogGlobal.Settings._zlink_telnet.FHostName = '' then begin
-      MessageBox(Handle, PChar(TMainForm_ZserverNotConfigured), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-      Exit;
-   end;
-
-   FZLinkForm.ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
-   FZLinkForm.ZSocket.Port := 'telnet';
    if FZLinkForm.ZServerConnected then begin
-      FZLinkForm.DisconnectedByMenu := True;
-      FZLinkForm.ZSocket.close;
+      FZLinkForm.Disconnect(True);
    end
    else begin
-      FZLinkForm.ZSocket.Connect;
+      FZLinkForm.Connect(Self, True);
    end;
 end;
 
@@ -7443,6 +7437,8 @@ begin
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
+
+      FZAnalyze.UseRbnAnalyze := dmZLogGlobal.Settings.FUseRbnAnalyze;
 
       GridRefreshScreen();
    finally
@@ -8207,7 +8203,6 @@ begin
    startup := TformStartup.Create(Self);
    menu := TMenuForm.Create(Self);
    try
-      dmZLogGlobal.SetLogFileName('');
       fScoreCoeff := 1;
       fNewContest := True;
 
@@ -10921,38 +10916,8 @@ end;
 
 // #72 BandScope
 procedure TMainForm.actionShowBandScopeExecute(Sender: TObject);
-var
-   b: TBand;
 begin
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
-         FBandScopeEx[b].Show();
-      end
-      else begin
-         FBandScopeEx[b].Hide();
-      end;
-   end;
-
-   if dmZLogGlobal.Settings._usebandscope_current = True then begin
-      FBandScope.Show();
-   end
-   else begin
-      FBandScope.Hide();
-   end;
-
-   if dmZLogGlobal.Settings._usebandscope_newmulti = True then begin
-      FBandScopeNewMulti.Show();
-   end
-   else begin
-      FBandScopeNewMulti.Hide();
-   end;
-
-   if dmZLogGlobal.Settings._usebandscope_allbands = True then begin
-      FBandScopeAllBands.Show();
-   end
-   else begin
-      FBandScopeAllBands.Hide();
-   end;
+   BandscopeShowAll(False);
 end;
 
 // #73 Running Frequencies
@@ -15007,6 +14972,10 @@ begin
    N := Sp.Number;
    B := Sp.Band;
 
+   if (Sp.SpotQuality <> sqVerified) then begin
+      Exit;
+   end;
+
    fDomestic := IsDomestic(C);
    if (((dmZLogGlobal.Settings._bandscope_show_ja_spots = True) and (fDomestic = True)) = False) and
       (((dmZLogGlobal.Settings._bandscope_show_dx_spots = True) and (fDomestic = False)) = False) then begin
@@ -15043,6 +15012,61 @@ begin
    end;
 
    Result := 0;
+end;
+
+procedure TMainForm.BandscopeShowAll(fInitial: Boolean);
+var
+   b: TBand;
+begin
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
+         if fInitial = True then begin
+            FBandScopeEx[b].InitialOpen();
+         end
+         else begin
+            FBandScopeEx[b].Show();
+         end;
+      end
+      else begin
+         FBandScopeEx[b].Hide();
+      end;
+   end;
+
+   if dmZLogGlobal.Settings._usebandscope_current = True then begin
+      if fInitial = True then begin
+         FBandScope.InitialOpen();
+      end
+      else begin
+         FBandScope.Show();
+      end;
+   end
+   else begin
+      FBandScope.Hide();
+   end;
+
+   if dmZLogGlobal.Settings._usebandscope_newmulti = True then begin
+      if fInitial = True then begin
+         FBandScopeNewMulti.InitialOpen();
+      end
+      else begin
+         FBandScopeNewMulti.Show();
+      end;
+   end
+   else begin
+      FBandScopeNewMulti.Hide();
+   end;
+
+   if dmZLogGlobal.Settings._usebandscope_allbands = True then begin
+      if fInitial = True then begin
+         FBandScopeAllBands.InitialOpen();
+      end
+      else begin
+         FBandScopeAllBands.Show();
+      end;
+   end
+   else begin
+      FBandScopeAllBands.Hide();
+   end;
 end;
 
 { TBandScopeNotifyThread }

@@ -44,10 +44,13 @@ type
 
   TCommParam = record
     FHostName: string;
-    FPortNumber: Integer;
+    FPort: string;
     FBaudRate: Integer;
     FLineBreak: Integer;
     FLocalEcho: Boolean;
+    FUseSecure: Boolean;
+    FLoginId: string;
+    FLoginPassword: string;
   end;
 
   TSuperCheckParam = record
@@ -73,6 +76,7 @@ type
     FForeColor: TColor;
     FBackColor: TColor;
     FBold: Boolean;
+    FUseReliability: Boolean;
   end;
 
   TPortConfig = record
@@ -127,7 +131,7 @@ type
     _usebandscope_current: Boolean;
     _usebandscope_newmulti: Boolean;
     _usebandscope_allbands: Boolean;
-    _bandscopecolor: array[1..12] of TColorSetting;
+    _bandscopecolor: array[1..15] of TColorSetting;
     _bandscope_freshness_mode: Integer;
     _bandscope_freshness_icon: Integer;
 
@@ -343,6 +347,7 @@ type
 
     FClusterUseForSuperCheck: Boolean;
     FRbnCountForRbnVerified: Integer;
+    FUseRbnAnalyze: Boolean;
     FQsoListColors: array[1..2] of TColorSetting;
 
     // Z-Server Messages(ChatForm)
@@ -1112,6 +1117,10 @@ begin
       Settings._zlink_telnet.FHostName := ini.ReadString('Z-Link', 'TELNEThost', '');
       Settings._zlink_telnet.FLineBreak := ini.ReadInteger('Z-Link', 'TELNETlinebreak', 0);
       Settings._zlink_telnet.FLocalEcho := ini.ReadBool('Z-Link', 'TELNETlocalecho', False);
+      Settings._zlink_telnet.FPort := ini.ReadString('Z-Link', 'Port', 'telnet');
+      Settings._zlink_telnet.FUseSecure := ini.ReadBool('Z-Link', 'UseSecure', False);
+      Settings._zlink_telnet.FLoginId := ini.ReadString('Z-Link', 'User', 'zloguser');
+      Settings._zlink_telnet.FLoginPassword := ini.ReadString('Z-Link', 'Password', '');
 
       //
       // RIG1-5
@@ -1360,7 +1369,7 @@ begin
       Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
 
       // Usability
-      Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', False);
+      Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', True);
       Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
       Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
       Settings.FQsoListFocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListFocusedSelColor', ''), RGB($E5, $F3, $FF));
@@ -1459,39 +1468,64 @@ begin
       Settings._bandscopecolor[1].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor1', '$000000'), clBlack);
       Settings._bandscopecolor[1].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor1', '$ffffff'), clWhite);
       Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', True);
+      Settings._bandscopecolor[1].FUseReliability := False;
       Settings._bandscopecolor[2].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor2', '$0000ff'), clRed);
       Settings._bandscopecolor[2].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor2', '$0000ff'), clRed);
       Settings._bandscopecolor[2].FBold      := ini.ReadBool('BandScopeEx', 'Bold2', True);
+      Settings._bandscopecolor[2].FUseReliability := False;
       Settings._bandscopecolor[3].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor3', '$008000'), clGreen);
       Settings._bandscopecolor[3].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor3', '$ffffff'), clWhite);
       Settings._bandscopecolor[3].FBold      := ini.ReadBool('BandScopeEx', 'Bold3', True);
+      Settings._bandscopecolor[3].FUseReliability := False;
       Settings._bandscopecolor[4].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor4', '$008000'), clGreen);
       Settings._bandscopecolor[4].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor4', '$ffffff'), clWhite);
       Settings._bandscopecolor[4].FBold      := ini.ReadBool('BandScopeEx', 'Bold4', True);
+      Settings._bandscopecolor[4].FUseReliability := False;
       Settings._bandscopecolor[5].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor5', '$000000'), clBlack);
       Settings._bandscopecolor[5].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor5', '$ffffff'), clWhite);
       Settings._bandscopecolor[5].FBold      := ini.ReadBool('BandScopeEx', 'Bold5', True);
+      Settings._bandscopecolor[5].FUseReliability := False;
       Settings._bandscopecolor[6].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor6', '$000000'), clBlack);
       Settings._bandscopecolor[6].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor6', '$ffffff'), clWhite);
       Settings._bandscopecolor[6].FBold      := ini.ReadBool('BandScopeEx', 'Bold6', True);
+      Settings._bandscopecolor[6].FUseReliability := False;
       Settings._bandscopecolor[7].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor7', '$000000'), clBlack);
       Settings._bandscopecolor[7].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor7', '$ffffff'), clWhite);
       Settings._bandscopecolor[7].FBold      := ini.ReadBool('BandScopeEx', 'Bold7', True);
+      Settings._bandscopecolor[7].FUseReliability := ini.ReadBool('BandScopeEx', 'UseReliability7', False);
       Settings._bandscopecolor[8].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor8', '$000000'), clBlack);
       Settings._bandscopecolor[8].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor8', '$ffffff'), clWhite);
       Settings._bandscopecolor[8].FBold      := ini.ReadBool('BandScopeEx', 'Bold8', True);
+      Settings._bandscopecolor[8].FUseReliability := ini.ReadBool('BandScopeEx', 'UseReliability8', False);
       Settings._bandscopecolor[9].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor9', '$000000'), clBlack);
       Settings._bandscopecolor[9].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor9', '$ffffff'), clWhite);
       Settings._bandscopecolor[9].FBold      := ini.ReadBool('BandScopeEx', 'Bold9', True);
+      Settings._bandscopecolor[9].FUseReliability := ini.ReadBool('BandScopeEx', 'UseReliability9', False);
       Settings._bandscopecolor[10].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor10', '$000000'), clBlack);
       Settings._bandscopecolor[10].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor10', '$ffffff'), clWhite);
       Settings._bandscopecolor[10].FBold      := ini.ReadBool('BandScopeEx', 'Bold10', True);
+      Settings._bandscopecolor[10].FUseReliability := False;
       Settings._bandscopecolor[11].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor11', '$000000'), clBlack);
       Settings._bandscopecolor[11].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor11', '$ffffff'), clWhite);
       Settings._bandscopecolor[11].FBold      := ini.ReadBool('BandScopeEx', 'Bold11', True);
+      Settings._bandscopecolor[11].FUseReliability := False;
       Settings._bandscopecolor[12].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor12', '$000000'), clBlack);
       Settings._bandscopecolor[12].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor12', '$ffffff'), clWhite);
       Settings._bandscopecolor[12].FBold      := ini.ReadBool('BandScopeEx', 'Bold12', True);
+      Settings._bandscopecolor[12].FUseReliability := False;
+
+      Settings._bandscopecolor[13].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor13', '$000000'), clBlack);
+      Settings._bandscopecolor[13].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor13', '$FFFFC0'), $FFFFC0);
+      Settings._bandscopecolor[13].FBold      := ini.ReadBool('BandScopeEx', 'Bold13', True);
+      Settings._bandscopecolor[13].FUseReliability := False;
+      Settings._bandscopecolor[14].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor14', '$000000'), clBlack);
+      Settings._bandscopecolor[14].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor14', '$C0FFFF'), $C0FFFF);
+      Settings._bandscopecolor[14].FBold      := ini.ReadBool('BandScopeEx', 'Bold14', True);
+      Settings._bandscopecolor[14].FUseReliability := False;
+      Settings._bandscopecolor[15].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor15', '$000000'), clBlack);
+      Settings._bandscopecolor[15].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor15', '$FFC0FF'), $FFC0FF);
+      Settings._bandscopecolor[15].FBold      := ini.ReadBool('BandScopeEx', 'Bold15', True);
+      Settings._bandscopecolor[15].FUseReliability := False;
 
       Settings._bandscope_freshness_mode := ini.ReadInteger('BandScopeEx', 'freshness_mode', 0);
       Settings._bandscope_freshness_icon := ini.ReadInteger('BandScopeEx', 'freshness_icon', 0);
@@ -1622,6 +1656,7 @@ begin
       // RBN Options
       Settings.FClusterUseForSuperCheck := ini.ReadBool('RBN', 'UseForSuperCheck', False);
       Settings.FRbnCountForRbnVerified := ini.ReadInteger('RBN', 'RbnCountForRbnVerified', 2);
+      Settings.FUseRbnAnalyze := ini.ReadBool('RBN', 'UseRbnAnalyze', True);
 
       Settings.FQsoListColors[1].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor1', '$000000'), clBlack);
       Settings.FQsoListColors[1].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor1', '$ffffff'), clWhite);
@@ -1908,14 +1943,14 @@ begin
       // PC Name
       ini.WriteString('Z-Link', 'PCName', Settings._pcname);
 
-      // COM(unuse)
-//      ini.WriteInteger('Z-Link', 'COMlinebreak', Settings._zlinklinebreakCOM);
-//      ini.WriteBool('Z-Link', 'COMlocalecho', Settings._zlinklocalechoCOM);
-
       // TELNET
       ini.WriteString('Z-Link', 'TELNEThost', Settings._zlink_telnet.FHostName);
       ini.WriteInteger('Z-Link', 'TELNETlinebreak', Settings._zlink_telnet.FLineBreak);
       ini.WriteBool('Z-Link', 'TELNETlocalecho', Settings._zlink_telnet.FLocalEcho);
+      ini.WriteString('Z-Link', 'Port', Settings._zlink_telnet.FPort);
+      ini.WriteBool('Z-Link', 'UseSecure', Settings._zlink_telnet.FUseSecure);
+      ini.WriteString('Z-Link', 'User', Settings._zlink_telnet.FLoginId);
+      ini.WriteString('Z-Link', 'Password', Settings._zlink_telnet.FLoginPassword);
 
       //
       // RIG1-5
@@ -2221,10 +2256,11 @@ begin
       ini.WriteBool('BandScope', 'NewMulti', Settings._usebandscope_newmulti);
       ini.WriteBool('BandScope', 'AllBands', Settings._usebandscope_allbands);
 
-      for i := 1 to 12 do begin
+      for i := 1 to 15 do begin
          ini.WriteString('BandScopeEx', 'ForeColor' + IntToStr(i), ZColorToString(Settings._bandscopecolor[i].FForeColor));
          ini.WriteString('BandScopeEx', 'BackColor' + IntToStr(i), ZColorToString(Settings._bandscopecolor[i].FBackColor));
          ini.WriteBool('BandScopeEx', 'Bold' + IntToStr(i), Settings._bandscopecolor[i].FBold);
+         ini.WriteBool('BandScopeEx', 'UseReliability' + IntToStr(i), Settings._bandscopecolor[i].FUseReliability);
       end;
 
       ini.WriteInteger('BandScopeEx', 'freshness_mode', Settings._bandscope_freshness_mode);
@@ -2322,6 +2358,7 @@ begin
 
       ini.WriteBool('RBN', 'UseForSuperCheck', Settings.FClusterUseForSuperCheck);
       ini.WriteInteger('RBN', 'RbnCountForRbnVerified', Settings.FRbnCountForRbnVerified);
+      ini.WriteBool('RBN', 'UseRbnAnalyze', Settings.FUseRbnAnalyze);
       for i := 1 to 2 do begin
          ini.WriteString('MainQsoList', 'ForeColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FForeColor));
          ini.WriteString('MainQsoList', 'BackColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FBackColor));
@@ -2898,6 +2935,7 @@ end;
 procedure TdmZLogGlobal.SetLogFileName(filename: string);
 begin
    FCurrentFileName := filename;
+   LastContest.FFileName := filename;
 end;
 
 procedure TdmZLogGlobal.MakeRigList(sl: TStrings);

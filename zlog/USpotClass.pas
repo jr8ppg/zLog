@@ -10,6 +10,19 @@ uses
 
 type
   TSpotSource = ( ssSelf = 0, ssCluster, ssSelfFromZServer, ssClusterFromZServer );
+  TSpotQuality = ( sqUnknown = 0, sqVerified, sqQsy, sqBad );
+  TSpotReliability = ( srLow = 0, srMiddle, srHigh );
+
+  TSpotReporterInfo = class
+    FReporterList: TStringList;
+    FCount: Integer;
+  public
+    constructor Create(); overload;
+    constructor Create(Reporter: string); overload;
+    destructor Destroy(); override;
+    procedure SetReporter(Reporter: string);
+    property Count: Integer read FCount;
+  end;
 
   TBaseSpot = class
   protected
@@ -32,6 +45,8 @@ type
     FIsDomestic: Boolean;
     FLookupFailed: Boolean;
     FReliableSpotter: Boolean;
+    FSpotQuality: TSpotQuality;
+    FSpotReliability: TSpotReliability;
     procedure SetCall(v: string);
     function GetIsNewMulti(): Boolean; // newcty or newzone
     function GetIsPortable(): Boolean;
@@ -64,6 +79,8 @@ type
     property ReportedBy: string read FReportedBy write FReportedBy;
     property LookupFailed: Boolean read FLookupFailed write FLookupFailed;
     property ReliableSpotter: Boolean read FReliableSpotter write FReliableSpotter;
+    property SpotQuality: TSpotQuality read FSpotQuality write FSpotQuality;
+    property SpotReliability: TSpotReliability read FSpotReliability write FSpotReliability;
   end;
 
   TSpot = class(TBaseSpot)
@@ -149,6 +166,7 @@ type
 
 var
   hLookupServer: HWND;
+  call_spotter_list: TDictionary<string, TSpotReporterInfo>;
 
 {$IFNDEF ZLOG_TELNET}
   function ExecLookup(strCallsign: string; b: TBand): string;
@@ -183,6 +201,8 @@ begin
    FIsDomestic := True;
    FLookupFailed := False;
    FReliableSpotter := True;
+   FSpotQuality := sqUnknown;
+   FSpotReliability := srMiddle;
 end;
 
 constructor TSpot.Create;
@@ -216,6 +236,7 @@ var
    len: Integer;
    p: Integer;
    strFreq: string;
+   repinfo: TSpotReporterInfo;
 
    {$IFNDEF ZLOG_TELNET}
    b: TBand;
@@ -286,8 +307,8 @@ begin
 
       //000000000111111111122222222223333333333444444444455555555556666666666777777
       //123456789012345678901234567890123456789012345678901234567890123456789012345
-      //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ             1208Z
-      //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ             1208Z
+      //DX de W1NT-6-#:  14045.0  V3MIWTJ      CW 16 dB 21 WPM CQ           V 1208Z
+      //DX de W3LPL-#:   14010.6  SM5DYC       CW 14 dB 22 WPM CQ           Q 1208Z
 
       // reportor取得
       p := 7;
@@ -315,6 +336,25 @@ begin
       // 時間は末尾から取得
       TimeStr := RightStr(temp, 5);
 
+      if Length(TimeStr) <> 5 then begin
+         TimeStr := FormatDateTime('hhnn', GetUTC()) + 'Z';
+      end;
+
+      // スポット品質＆スポット信頼度
+      temp2 := LeftStr(RightStr(temp, 7), 1);
+      if (temp2 = 'V') then begin
+         SpotQuality := sqVerified;
+      end
+      else if (temp2 = 'Q') then begin
+         SpotQuality := sqQsy;
+      end
+      else if (temp2 = 'B') then begin
+         SpotQuality := sqBad;
+      end
+      else begin
+         SpotQuality := sqUnknown;
+      end;
+
       // CQフラグ
       if Pos('CQ', Comment) > 0 then begin
          CQ := True;
@@ -331,6 +371,21 @@ begin
 
       Band := b;
       {$ENDIF}
+
+      // 異なるSpotterが３つ以上でsqVerifiedとする。
+      if call_spotter_list.TryGetValue(Call, repinfo) = True then begin
+         repinfo.SetReporter(ReportedBy);
+      end
+      else begin
+         repinfo := TSpotReporterInfo.Create(ReportedBy)
+      end;
+      call_spotter_list.AddOrSetValue(Call, repinfo);
+
+      if SpotQuality = sqUnknown then begin
+         if repinfo.Count >= 3 then begin
+            SpotQuality := sqVerified;
+         end;
+      end;
 
       Result := True;
    end
@@ -455,6 +510,8 @@ begin
       SL.Add(ZBoolToStr(CQ));
       SL.Add(Number);
       SL.Add(ReportedBy);
+      SL.Add(IntToStr(Integer(FSpotQuality)));
+      SL.Add(IntToStr(Integer(FSpotReliability)));
       Result := SL.DelimitedText;
    finally
       SL.Free();
@@ -511,6 +568,8 @@ begin
    FIsDomestic := O.IsDomestic;
    FLookupFailed := O.LookupFailed;
    FReliableSpotter := O.ReliableSpotter;
+   FSpotQuality := O.SpotQuality;
+   FSpotReliability := O.SpotReliability;
 end;
 
 function TBSData.InText(): string;
@@ -563,6 +622,8 @@ begin
       SL.Add(ZBoolToStr(FIsDomestic));
       SL.Add(ZBoolToStr(LookupFailed));
       SL.Add(ZBoolToStr(ReliableSpotter));
+      SL.Add(IntToStr(Integer(SpotQuality)));
+      SL.Add(IntToStr(Integer(SpotReliability)));
 
       Result := SL.DelimitedText;
    finally
@@ -578,7 +639,7 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
@@ -587,6 +648,8 @@ begin
       CQ := ZStrToBool(SL[5]);
       Number := SL[6];
       ReportedBy := SL[7];
+      SpotQuality := TSpotQuality(StrToIntDef(SL[8], 0));
+      SpotReliability := TSpotReliability(StrToIntDef(SL[9], 0));
    finally
       SL.Free();
    end;
@@ -600,7 +663,7 @@ begin
    SL.Delimiter := '%';
    SL.StrictDelimiter := True;
    try
-      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%%%';
+      SL.DelimitedText := S + '%%%%%%%%%%%%%%%%%%%%%%';
       Call := SL[0];
       FreqHz := StrToIntDef(SL[1], 0);
       Band := TBand(StrToIntDef(SL[2], Integer(b19)));
@@ -620,6 +683,8 @@ begin
       IsDomestic := ZStrToBool(SL[16]);
       LookupFailed := ZStrToBool(SL[17]);
       ReliableSpotter := ZStrToBool(SL[18]);
+      SpotQuality := TSpotQuality(StrToIntDef(SL[19], 0));
+      SpotReliability := TSpotReliability(StrToIntDef(SL[20], 0));
    finally
       SL.Free();
    end;
@@ -643,7 +708,12 @@ var
    diff: TFrequency;
 begin
    if (Left.FreqHz - Right.FreqHz) = 0 then begin
-      Result := 0;   //(Left.Index - Right.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := 0;   //(Left.Index - Right.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       diff := Left.FreqHz - Right.FreqHz;
@@ -663,7 +733,12 @@ var
    diff: TFrequency;
 begin
    if (Left.FreqHz - Right.FreqHz) = 0 then begin
-      Result := 0;   //(Right.Index - Left.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := 0;   //(Right.Index - Left.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       diff := Right.FreqHz - Left.FreqHz;
@@ -681,7 +756,12 @@ end;
 function TBSDataTimeAscComparer.Compare(const Left, Right: TBSData): Integer;
 begin
    if CompareDateTime(Left.Time, Right.Time) = 0 then begin
-      Result := (Left.Index - Right.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := (Left.Index - Right.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       Result := CompareDateTime(Left.Time, Right.Time);
@@ -693,7 +773,12 @@ end;
 function TBSDataTimeDescComparer.Compare(const Left, Right: TBSData): Integer;
 begin
    if CompareDateTime(Left.Time, Right.Time) = 0 then begin
-      Result := (Right.Index - Left.Index);
+      if (Left.Call = Right.Call) then begin
+         Result := (Right.Index - Left.Index);
+      end
+      else begin
+         Result := CompareText(Left.Call, Right.Call);
+      end;
    end
    else begin
       Result := CompareDateTime(Right.Time, Left.Time);
@@ -869,12 +954,16 @@ begin
          end;
 
          // SPCからも取得できない場合はLookup Serverに依頼する
-         if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
-            Sp.Number := ExecLookup(Sp.Call, Sp.Band);
-            if Sp.Number = '' then begin
-               Sp.LookupFailed := True;
+         if dmZLogGlobal.Settings._bandscope_use_lookup_server = True then begin
+            if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
+               Sp.Number := ExecLookup(Sp.Call, Sp.Band);
+               if Sp.Number = '' then begin
+                  Sp.LookupFailed := True;
+                  Sp.SpotReliability := srLow;
+               end;
             end;
          end;
+
          SD.Free();
       end;
    end;
@@ -971,8 +1060,44 @@ begin
    Result := wnd;
 end;
 
+constructor TSpotReporterInfo.Create();
+begin
+   Inherited;
+   FReporterList := TStringList.Create();
+   FCount := 0;
+end;
+
+constructor TSpotReporterInfo.Create(Reporter: string);
+begin
+   Create();
+   SetReporter(Reporter);
+end;
+
+destructor TSpotReporterInfo.Destroy();
+begin
+   FReporterList.Free();
+end;
+
+procedure TSpotReporterInfo.SetReporter(Reporter: string);
+begin
+   if FReporterList.IndexOf(Reporter) = -1 then begin
+      FReporterList.Add(Reporter);
+   end;
+   FCount := FReporterList.Count;
+end;
+
 initialization
   hLookupServer := FindLookupServer();
+  call_spotter_list := TDictionary<string, TSpotReporterInfo>.Create();
+
+finalization
+var
+  Value: TSpotReporterInfo;
+
+  for Value in call_spotter_list.Values do begin
+     Value.Free();
+  end;
+  call_spotter_list.Free();
 
 {$ENDIF}
 

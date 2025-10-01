@@ -26,8 +26,6 @@ object ACAGMulti: TACAGMulti
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 263
-    ExplicitWidth = 361
     DesignSize = (
       365
       41)
@@ -40,7 +38,6 @@ object ACAGMulti: TACAGMulti
       Caption = 'Go'
       TabOrder = 1
       OnClick = GoButtonClick2
-      ExplicitLeft = 293
     end
     object Edit1: TEdit
       Left = 230
@@ -49,11 +46,11 @@ object ACAGMulti: TACAGMulti
       Height = 21
       Anchors = [akRight, akBottom]
       CharCase = ecUpperCase
+      ImeMode = imClose
       TabOrder = 0
       OnChange = Edit1Change
       OnEnter = Edit1Enter
       OnExit = Edit1Exit
-      ExplicitLeft = 226
     end
     object StayOnTop: TCheckBox
       Left = 8
@@ -83,7 +80,6 @@ object ACAGMulti: TACAGMulti
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 361
     object Label1R9: TRotateLabel
       Left = 174
       Top = 20
@@ -312,7 +308,5 @@ object ACAGMulti: TACAGMulti
     ScrollBars = ssVertical
     TabOrder = 2
     OnDrawCell = GridDrawCell
-    ExplicitWidth = 361
-    ExplicitHeight = 222
   end
 end

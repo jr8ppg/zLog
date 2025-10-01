@@ -27,8 +27,6 @@ object CommForm: TCommForm
     Height = 120
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 118
-    ExplicitWidth = 467
     DesignSize = (
       388
       120)
@@ -42,7 +40,6 @@ object CommForm: TCommForm
       Checked = True
       State = cbChecked
       TabOrder = 1
-      ExplicitLeft = 292
     end
     object checkRelaySpot: TCheckBox
       Left = 213
@@ -52,7 +49,6 @@ object CommForm: TCommForm
       Anchors = [akTop, akRight]
       Caption = #12473#12509#12483#12488#12434#20182#12398#12496#12531#12489#12408#12522#12524#12540
       TabOrder = 3
-      ExplicitLeft = 292
     end
     object checkAutoReconnect: TCheckBox
       Left = 213
@@ -64,7 +60,6 @@ object CommForm: TCommForm
       Checked = True
       State = cbChecked
       TabOrder = 2
-      ExplicitLeft = 292
     end
     object checkRecordLogs: TCheckBox
       Left = 213
@@ -74,7 +69,6 @@ object CommForm: TCommForm
       Anchors = [akTop, akRight]
       Caption = #21463#20449#12525#12464#12434#20445#23384
       TabOrder = 4
-      ExplicitLeft = 292
     end
     object checkUseAllowDenyLists: TCheckBox
       Left = 213
@@ -84,7 +78,6 @@ object CommForm: TCommForm
       Anchors = [akTop, akRight]
       Caption = #35377#21487'/'#25298#21542#12522#12473#12488#12434#20351#29992
       TabOrder = 6
-      ExplicitLeft = 292
     end
     object checkIgnoreBEL: TCheckBox
       Left = 306
@@ -94,7 +87,6 @@ object CommForm: TCommForm
       Anchors = [akTop, akRight]
       Caption = 'BEL'#12434#28961#35222
       TabOrder = 5
-      ExplicitLeft = 385
     end
     object TabControl1: TTabControl
       Left = 6
@@ -153,7 +145,6 @@ object CommForm: TCommForm
         Caption = #25509#32154
         TabOrder = 1
         OnClick = ConnectButtonClick
-        ExplicitLeft = 198
       end
       object Edit: TComboBox
         Left = 7
@@ -174,7 +165,6 @@ object CommForm: TCommForm
       Anchors = [akTop, akRight]
       Caption = #24375#21046#20877#25509#32154
       TabOrder = 7
-      ExplicitLeft = 292
     end
   end
   object Panel2: TPanel
@@ -185,8 +175,6 @@ object CommForm: TCommForm
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitWidth = 467
-    ExplicitHeight = 118
     object Splitter1: TSplitter
       Left = 1
       Top = 54
@@ -245,8 +233,6 @@ object CommForm: TCommForm
         Width = 500
       end>
     SimplePanel = True
-    ExplicitTop = 238
-    ExplicitWidth = 467
   end
   object Timer1: TTimer
     Enabled = False

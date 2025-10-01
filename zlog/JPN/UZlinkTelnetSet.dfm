@@ -2,8 +2,8 @@ object formZLinkTelnetSet: TformZLinkTelnetSet
   Left = 28
   Top = 271
   BorderStyle = bsDialog
-  Caption = 'Z-Link TELNET settings'
-  ClientHeight = 159
+  Caption = 'Z-Link'#35373#23450
+  ClientHeight = 269
   ClientWidth = 266
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,77 +15,113 @@ object formZLinkTelnetSet: TformZLinkTelnetSet
   OnCreate = FormCreate
   DesignSize = (
     266
-    159)
+    269)
   TextHeight = 13
-  object Bevel1: TBevel
-    Left = 7
-    Top = 7
-    Width = 251
-    Height = 114
-    Shape = bsFrame
-  end
-  object Label1: TLabel
-    Left = 16
-    Top = 24
-    Width = 51
-    Height = 13
-    Caption = #12507#12473#12488#21517
-  end
-  object Label2: TLabel
-    Left = 16
-    Top = 56
-    Width = 50
-    Height = 13
-    Caption = #25913#34892#12467#12540#12489
-  end
   object buttonOK: TButton
     Left = 59
-    Top = 128
+    Top = 238
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Caption = 'OK'
     Default = True
-    TabOrder = 0
+    TabOrder = 1
     OnClick = buttonOKClick
+    ExplicitTop = 128
   end
   object buttonCancel: TButton
     Left = 141
-    Top = 128
+    Top = 238
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
     Cancel = True
     Caption = #12461#12515#12531#12475#12523
     ModalResult = 2
-    TabOrder = 1
-  end
-  object comboHostName: TComboBox
-    Left = 80
-    Top = 20
-    Width = 169
-    Height = 21
-    TabOrder = 2
-    Text = 'Host name'
-  end
-  object comboLineBreak: TComboBox
-    Left = 80
-    Top = 52
-    Width = 65
-    Height = 21
     TabOrder = 3
-    Text = 'Line break'
-    Items.Strings = (
-      'CR + LF'
-      'CR'
-      'LF')
+    ExplicitTop = 128
   end
-  object checkLocalEcho: TCheckBox
-    Left = 16
-    Top = 88
-    Width = 97
-    Height = 17
-    Caption = 'Local echo'
-    TabOrder = 4
+  object GroupBox1: TGroupBox
+    Left = 8
+    Top = 8
+    Width = 250
+    Height = 89
+    Caption = #12493#12483#12488#12527#12540#12463#35373#23450
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 8
+      Top = 23
+      Width = 51
+      Height = 13
+      Caption = #12507#12473#12488#21517
+    end
+    object Label4: TLabel
+      Left = 8
+      Top = 55
+      Width = 19
+      Height = 13
+      Caption = #12509#12540#12488
+    end
+    object comboHostName: TComboBox
+      Left = 70
+      Top = 20
+      Width = 169
+      Height = 21
+      TabOrder = 0
+      Text = 'Host name'
+    end
+    object comboPort: TComboBox
+      Left = 70
+      Top = 52
+      Width = 97
+      Height = 21
+      TabOrder = 1
+      Items.Strings = (
+        'telnet')
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 8
+    Top = 111
+    Width = 250
+    Height = 114
+    Caption = #12475#12461#12517#12450#12458#12503#12471#12519#12531
+    TabOrder = 2
+    object Label2: TLabel
+      Left = 8
+      Top = 52
+      Width = 51
+      Height = 13
+      Caption = #12518#12540#12470#12540'ID'
+    end
+    object Label3: TLabel
+      Left = 8
+      Top = 79
+      Width = 46
+      Height = 13
+      Caption = #12497#12473#12527#12540#12489
+    end
+    object checkUseSecure: TCheckBox
+      Left = 8
+      Top = 24
+      Width = 170
+      Height = 16
+      Caption = #12475#12461#12517#12450#12514#12540#12489#12434#20351#12358
+      TabOrder = 0
+    end
+    object editUserPassword: TEdit
+      Left = 71
+      Top = 76
+      Width = 137
+      Height = 21
+      TabOrder = 2
+    end
+    object editUserId: TEdit
+      Left = 71
+      Top = 49
+      Width = 137
+      Height = 21
+      TabOrder = 1
+    end
   end
 end

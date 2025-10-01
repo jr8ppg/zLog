@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetCategories
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -3034,54 +3034,47 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 4
         Width = 423
-        Height = 157
+        Height = 141
         Caption = 'SpotSource Colors'
         TabOrder = 0
         object Label61: TLabel
           Left = 8
-          Top = 23
+          Top = 27
           Width = 43
           Height = 13
           Caption = 'Self Spot'
         end
-        object Label68: TLabel
-          Left = 8
-          Top = 50
-          Width = 32
-          Height = 13
-          Caption = 'Cluster'
-        end
         object Label69: TLabel
           Left = 8
-          Top = 77
+          Top = 53
           Width = 41
           Height = 13
           Caption = 'Z-Server'
         end
         object Label79: TLabel
           Left = 58
-          Top = 77
+          Top = 53
           Width = 14
           Height = 13
           Caption = 'G1'
         end
         object Label80: TLabel
           Left = 58
-          Top = 103
+          Top = 79
           Width = 14
           Height = 13
           Caption = 'G2'
         end
         object Label81: TLabel
           Left = 58
-          Top = 129
+          Top = 105
           Width = 14
           Height = 13
           Caption = 'G3'
         end
         object editBSColor5: TEdit
           Left = 118
-          Top = 20
+          Top = 24
           Width = 100
           Height = 21
           TabStop = False
@@ -3091,8 +3084,8 @@ object formOptions2: TformOptions2
         end
         object buttonBSBack5: TButton
           Tag = 5
-          Left = 270
-          Top = 21
+          Left = 317
+          Top = 25
           Width = 45
           Height = 20
           Caption = 'Back...'
@@ -3102,16 +3095,17 @@ object formOptions2: TformOptions2
         object buttonBSReset5: TButton
           Tag = 5
           Left = 368
-          Top = 21
+          Top = 25
           Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 2
           OnClick = buttonBSResetClick
         end
-        object editBSColor6: TEdit
+        object editBSColor7: TEdit
+          Tag = 7
           Left = 118
-          Top = 47
+          Top = 50
           Width = 100
           Height = 21
           TabStop = False
@@ -3119,82 +3113,51 @@ object formOptions2: TformOptions2
           TabOrder = 3
           Text = 'TEXT'
         end
-        object buttonBSBack6: TButton
-          Tag = 6
-          Left = 270
-          Top = 48
-          Width = 45
-          Height = 20
-          Caption = 'Back...'
-          TabOrder = 4
-          OnClick = buttonBSBackClick
-        end
-        object buttonBSReset6: TButton
-          Tag = 6
-          Left = 368
-          Top = 48
-          Width = 45
-          Height = 20
-          Caption = 'Reset'
-          TabOrder = 5
-          OnClick = buttonBSResetClick
-        end
-        object editBSColor7: TEdit
-          Tag = 7
-          Left = 118
-          Top = 74
-          Width = 100
-          Height = 21
-          TabStop = False
-          ReadOnly = True
-          TabOrder = 6
-          Text = 'TEXT'
-        end
         object buttonBSBack7: TButton
           Tag = 7
-          Left = 270
-          Top = 75
+          Left = 317
+          Top = 51
           Width = 45
           Height = 20
           Caption = 'Back...'
-          TabOrder = 7
+          TabOrder = 5
           OnClick = buttonBSBackClick
         end
         object buttonBSReset7: TButton
           Tag = 7
           Left = 368
-          Top = 75
+          Top = 51
           Width = 45
           Height = 20
           Caption = 'Reset'
-          TabOrder = 8
+          TabOrder = 6
           OnClick = buttonBSResetClick
         end
         object editBSColor8: TEdit
           Tag = 8
           Left = 118
-          Top = 100
+          Top = 76
           Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 9
+          TabOrder = 7
           Text = 'TEXT'
         end
         object buttonBSBack8: TButton
           Tag = 8
-          Left = 270
-          Top = 101
+          Left = 317
+          Top = 77
           Width = 45
           Height = 20
           Caption = 'Back...'
-          TabOrder = 10
+          TabOrder = 9
           OnClick = buttonBSBackClick
         end
         object buttonBSBack9: TButton
           Tag = 9
-          Left = 270
-          Top = 127
+          Left = 317
+          Top = 103
           Width = 45
           Height = 20
           Caption = 'Back...'
@@ -3204,38 +3167,62 @@ object formOptions2: TformOptions2
         object editBSColor9: TEdit
           Tag = 9
           Left = 118
-          Top = 126
+          Top = 102
           Width = 100
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 12
+          TabOrder = 11
           Text = 'TEXT'
         end
         object buttonBSReset8: TButton
           Tag = 8
           Left = 368
-          Top = 101
+          Top = 77
           Width = 45
           Height = 20
           Caption = 'Reset'
-          TabOrder = 11
+          TabOrder = 10
           OnClick = buttonBSResetClick
         end
         object buttonBSReset9: TButton
           Tag = 9
           Left = 368
-          Top = 127
+          Top = 103
           Width = 45
           Height = 20
           Caption = 'Reset'
           TabOrder = 14
           OnClick = buttonBSResetClick
         end
+        object checkUseReliability7: TCheckBox
+          Left = 224
+          Top = 52
+          Width = 87
+          Height = 17
+          Caption = 'Use reliability'
+          TabOrder = 4
+        end
+        object checkUseReliability8: TCheckBox
+          Left = 224
+          Top = 78
+          Width = 87
+          Height = 17
+          Caption = 'Use reliability'
+          TabOrder = 8
+        end
+        object checkUseReliability9: TCheckBox
+          Left = 224
+          Top = 104
+          Width = 87
+          Height = 17
+          Caption = 'Use reliability'
+          TabOrder = 12
+        end
       end
       object groupSpotFreshness: TGroupBox
         Left = 6
-        Top = 281
+        Top = 271
         Width = 252
         Height = 121
         Caption = 'Spot Freshness'
@@ -3273,131 +3260,9 @@ object formOptions2: TformOptions2
           TabOrder = 3
         end
       end
-      object groupBandscopeOtherColors: TGroupBox
-        Left = 6
-        Top = 167
-        Width = 423
-        Height = 108
-        Caption = 'Other colors'
-        TabOrder = 1
-        object Label28: TLabel
-          Left = 8
-          Top = 23
-          Width = 64
-          Height = 13
-          Caption = 'Lookup failed'
-        end
-        object Label29: TLabel
-          Left = 8
-          Top = 50
-          Width = 61
-          Height = 13
-          Caption = 'Current band'
-        end
-        object Label30: TLabel
-          Left = 8
-          Top = 77
-          Width = 82
-          Height = 13
-          Caption = 'Unreliable spotter'
-        end
-        object editBSColor10: TEdit
-          Tag = 10
-          Left = 118
-          Top = 20
-          Width = 100
-          Height = 21
-          TabStop = False
-          ReadOnly = True
-          TabOrder = 0
-          Text = 'TEXT'
-        end
-        object editBSColor11: TEdit
-          Tag = 11
-          Left = 118
-          Top = 47
-          Width = 100
-          Height = 21
-          TabStop = False
-          ReadOnly = True
-          TabOrder = 3
-          Text = 'TEXT'
-        end
-        object editBSColor12: TEdit
-          Tag = 12
-          Left = 118
-          Top = 74
-          Width = 100
-          Height = 21
-          TabStop = False
-          ReadOnly = True
-          TabOrder = 6
-          Text = 'TEXT'
-        end
-        object buttonBSOtherBack1: TButton
-          Tag = 10
-          Left = 270
-          Top = 21
-          Width = 45
-          Height = 20
-          Caption = 'Back...'
-          TabOrder = 1
-          OnClick = buttonBSBackClick
-        end
-        object buttonBSOtherBack2: TButton
-          Tag = 11
-          Left = 270
-          Top = 48
-          Width = 45
-          Height = 20
-          Caption = 'Back...'
-          TabOrder = 4
-          OnClick = buttonBSBackClick
-        end
-        object buttonBSOtherBack3: TButton
-          Tag = 12
-          Left = 270
-          Top = 75
-          Width = 45
-          Height = 20
-          Caption = 'Back...'
-          TabOrder = 7
-          OnClick = buttonBSBackClick
-        end
-        object buttonBSOtherReset1: TButton
-          Tag = 10
-          Left = 368
-          Top = 21
-          Width = 45
-          Height = 20
-          Caption = 'Reset'
-          TabOrder = 2
-          OnClick = buttonBSResetClick
-        end
-        object buttonBSOtherReset2: TButton
-          Tag = 11
-          Left = 368
-          Top = 48
-          Width = 45
-          Height = 20
-          Caption = 'Reset'
-          TabOrder = 5
-          OnClick = buttonBSResetClick
-        end
-        object buttonBSOtherReset3: TButton
-          Tag = 12
-          Left = 368
-          Top = 75
-          Width = 45
-          Height = 20
-          Caption = 'Reset'
-          TabOrder = 8
-          OnClick = buttonBSResetClick
-        end
-      end
       object groupBandscopeOptions2: TGroupBox
         Left = 264
-        Top = 281
+        Top = 271
         Width = 165
         Height = 121
         Caption = 'Options2'
@@ -3409,6 +3274,128 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Use resume'
           TabOrder = 0
+        end
+      end
+      object groupBandscopeSpotReliability: TGroupBox
+        Left = 6
+        Top = 151
+        Width = 423
+        Height = 114
+        Caption = 'Spot Reliability'
+        TabOrder = 1
+        object Label28: TLabel
+          Left = 8
+          Top = 27
+          Width = 22
+          Height = 13
+          Caption = 'High'
+        end
+        object Label29: TLabel
+          Left = 8
+          Top = 54
+          Width = 31
+          Height = 13
+          Caption = 'Middle'
+        end
+        object Label30: TLabel
+          Left = 8
+          Top = 81
+          Width = 20
+          Height = 13
+          Caption = 'Low'
+        end
+        object editBSColorSrHigh: TEdit
+          Tag = 13
+          Left = 118
+          Top = 24
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'TEXT'
+        end
+        object editBSColorSrMiddle: TEdit
+          Tag = 14
+          Left = 118
+          Top = 51
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 3
+          Text = 'TEXT'
+        end
+        object editBSColorSrLow: TEdit
+          Tag = 15
+          Left = 118
+          Top = 78
+          Width = 100
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 6
+          Text = 'TEXT'
+        end
+        object buttonBSBackSrHigh: TButton
+          Tag = 13
+          Left = 317
+          Top = 25
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 1
+          OnClick = buttonBSBackClick
+        end
+        object buttonBSBackSrMiddle: TButton
+          Tag = 14
+          Left = 317
+          Top = 52
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 4
+          OnClick = buttonBSBackClick
+        end
+        object buttonBSBackSrLow: TButton
+          Tag = 15
+          Left = 317
+          Top = 79
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 7
+          OnClick = buttonBSBackClick
+        end
+        object buttonBSResetSrHigh: TButton
+          Tag = 13
+          Left = 368
+          Top = 25
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 2
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSResetSrMiddle: TButton
+          Tag = 14
+          Left = 368
+          Top = 52
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 5
+          OnClick = buttonBSResetClick
+        end
+        object buttonBSResetSrLow: TButton
+          Tag = 15
+          Left = 368
+          Top = 79
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 8
+          OnClick = buttonBSResetClick
         end
       end
     end

@@ -460,6 +460,7 @@ var
    fstr: AnsiString;
    freq, i: TFrequency;
 begin
+   Hz := Hz - _freqoffset;
    Inherited SetFreq(Hz, fSetLastFreq);
 
    FPollingTimer.Enabled := False;

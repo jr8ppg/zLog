@@ -3,10 +3,12 @@ unit UZLinkForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtCtrls, StdCtrls, ComCtrls, UITypes, System.NetEncoding, Generics.Collections,
-  OverbyteIcsWndControl, OverbyteIcsWSocket, OverbyteIcsTypes,
-  UzLogConst, UzLogGlobal, UzLogQSO, UScratchSheet, HelperLib;
+  WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
+  Vcl.StdCtrls, Vcl.ComCtrls, System.UITypes, System.NetEncoding,
+  Generics.Collections,
+  OverbyteIcsWndControl, OverbyteIcsWSocket, OverbyteIcsTypes, OverbyteIcsSslBase,
+  UzLogConst, UzLogGlobal, UzLogQSO, HelperLib;
 
 type
   TQSOID = class
@@ -14,33 +16,43 @@ type
     QSOIDwoCounter : integer;
   end;
 
+  TLoginStep = ( lsNone = 0, lsReqUser, lsReqPassword, lsLogined, lsLoginIncorrect );
+
   TZLinkForm = class(TForm)
     StatusLine: TStatusBar;
     Panel1: TPanel;
     Edit: TEdit;
     ConnectButton: TButton;
     Timer1: TTimer;
-    ZSocket: TWSocket;
     Console: TListBox;
-    procedure Button1Click(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
+    ZSocket: TSslWSocket;
+    ZSslContext: TSslContext;
+    timerLoginCheck: TTimer;
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ConnectButtonClick(Sender: TObject);
+    procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
+    procedure ZSocketSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
     procedure ZSocketDataAvailable(Sender: TObject; Error: Word);
     procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
-    procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
-    procedure FormDestroy(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormShow(Sender: TObject);
+    procedure timerLoginCheckTimer(Sender: TObject);
   private
     { Private declarations }
-    CommStarted : boolean;
+    FSecure: Boolean;
+    FLoginId: string;
+    FLoginPassword: string;
+    FDisconnectedByMenu: Boolean;
 
-    FCommBuffer : TStringList;
-    FCommandQue : TStringList;
+    FLoginStep: TLoginStep;
+    FInitProcessDone: Boolean;
+
+    FCommBuffer: TStringList;
+    FCommandQue: TStringList;
 
     FLineBreak: string;
 
@@ -52,6 +64,7 @@ type
     FDownloadFileName: string;
     FFileData: TStringList;
 
+    FOwnerWnd: THandle;
     procedure EnableConnectButton(boo : boolean);
     procedure CommProcess;
     procedure ProcessCommand;
@@ -62,9 +75,9 @@ type
     procedure Process_PutFileOk();
     procedure Process_PutFile(S: string);
     procedure AddConsole(str: string);
+    procedure InitProcess();
   public
     { Public declarations }
-    DisconnectedByMenu : boolean;
     procedure ImplementOptions;
     procedure WriteData(str : string);
     procedure SendBand; {Sends current band (to Z-Server) #ZLOG# BAND 3 etc}
@@ -94,6 +107,8 @@ type
     procedure PushRemoteConnect; // connect button in cluster win
     procedure GetFile(filename: string; download_folder: string);
     procedure PutFile(filepath: string);
+    procedure Connect(AOwner: TForm; fromMenu: Boolean);
+    procedure Disconnect(fromMenu: Boolean = False);
   end;
 
 resourcestring
@@ -105,6 +120,10 @@ resourcestring
   FileDownloadSuccessfully = 'File download completed successfully.';
   NoFilesFoundToUpload = 'No files found to upload.';
   FileUploadSuccessfully = 'File upload completed successfully.';
+  ZServerSettingsNotConfigured = 'Z-Server settings are not configured.';
+  ZServerSecureNotConfigured = 'Z-Server secure settings are not configured.';
+  ZServerIsNotSecureMode = 'Z-Server is not in SECURE mode.';
+  UnableToLoginToZServer = 'Unable to login to Z-Server.';
 
 implementation
 
@@ -113,30 +132,302 @@ uses
   UBandScope2;
 
 var
-  CommProcessing : boolean; // commprocess flag;
+  CommProcessing: Boolean; // commprocess flag;
 
 {$R *.DFM}
 
-procedure TZLinkForm.WriteData(str: string);
+procedure TZLinkForm.FormCreate(Sender: TObject);
 begin
-   if ZSocket.State = wsConnected then begin
-      ZSocket.SendStr(str + FLineBreak);
+   FSecure := False;
+
+   // Transparent := False;
+   FDisconnectedByMenu := false;
+   CommProcessing := false;
+   FMergeTempList := nil;
+
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 6] then begin
+      // Transparent := True; // rs-232c
+      // no rs232c allowed!
+   end;
+
+   FCommBuffer := TStringList.Create();
+   FCommandQue := TStringList.Create();
+   FFileData := TStringList.Create();
+   Timer1.Enabled := True;
+
+   ImplementOptions;
+
+   FLineBreak := LineBreakCode[dmZLogGlobal.Settings._zlink_telnet.FLineBreak];
+end;
+
+procedure TZLinkForm.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
+end;
+
+procedure TZLinkForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
+end;
+
+procedure TZLinkForm.FormDestroy(Sender: TObject);
+begin
+   FCommBuffer.Free();
+   FCommandQue.Free();
+   FFileData.Free();
+end;
+
+procedure TZLinkForm.EditKeyPress(Sender: TObject; var Key: Char);
+var
+   boo: boolean;
+begin
+   boo := dmZLogGlobal.Settings._zlink_telnet.FLocalEcho;
+
+   if Key = Chr($0D) then begin
+      WriteData(Edit.Text);
+      if boo then begin
+         AddConsole(Edit.Text);
+      end;
+
+      Key := Chr($0);
+      Edit.Text := '';
    end;
 end;
 
-procedure TZLinkForm.Button1Click(Sender: TObject);
+procedure TZLinkForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-   Close;
+   case Key of
+      VK_ESCAPE:
+         MainForm.SetLastFocus();
+   end;
+end;
+
+procedure TZLinkForm.ConnectButtonClick(Sender: TObject);
+begin
+   try
+      FOwnerWnd := 0;
+
+      if (ZSocket.State = wsConnected) then begin
+         ConnectButton.Caption := 'Disconnecting...';
+
+         Disconnect(True);
+      end
+      else begin
+         ConnectButton.Caption := 'Connecting...';
+
+         Connect(Self, False);
+      end;
+   except
+      on E: Exception do begin
+         AddConsole(E.Message);
+      end;
+   end;
 end;
 
 procedure TZLinkForm.Timer1Timer(Sender: TObject);
 begin
    Timer1.Enabled := False;
    try
+      if (FLoginStep = lsLoginIncorrect) then begin
+         ConnectButton.Click();
+         Exit;
+      end;
+
       if not(CommProcessing) then
          CommProcess;
    finally
       Timer1.Enabled := True;
+   end;
+end;
+
+procedure TZLinkForm.timerLoginCheckTimer(Sender: TObject);
+begin
+   timerLoginCheck.Enabled := False;
+   if FLoginStep <> lsLogined then begin
+      ZSocket.Close();
+      AddConsole(ZServerIsNotSecureMode);
+      MessageBox(FOwnerWnd, PChar(ZServerIsNotSecureMode), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+   end;
+end;
+
+procedure TZLinkForm.ZSocketSessionConnected(Sender: TObject; Error: Word);
+begin
+   if Error <> 0 then begin
+      AddConsole('SessionConnected Error=' + IntToStr(Error));
+      Exit;
+   end;
+
+   ConnectButton.Caption := 'Disconnect';
+   MainForm.menuConnectToZServer.Caption := Disconnect_ZSERVER; // 0.23
+   AddConsole('connected to ' + ZSocket.Addr);
+
+   FInitProcessDone := False;
+
+   if FSecure = True then begin
+      ZSocket.StartSslHandshake();
+      timerLoginCheck.Enabled := True;
+   end
+   else begin
+      FLoginStep := lsLogined;
+      InitProcess();
+   end;
+end;
+
+procedure TZLinkForm.ZSocketSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
+begin
+   if Error <> 0 then begin
+      AddConsole('SslHandshakeDone Error=' + IntToStr(Error));
+      Disconnect := True;
+      Exit;
+   end;
+
+   FLoginStep := lsReqUser;
+end;
+
+procedure TZLinkForm.ZSocketDataAvailable(Sender: TObject; Error: Word);
+const
+   BUFSIZE = 2047;
+var
+   Buf: array [0 .. BUFSIZE] of AnsiChar;
+   str: string;
+   count: integer;
+   P: PAnsiChar;
+   line: string;
+   i: Integer;
+   SL: TStringList;
+begin
+   if Error <> 0 then begin
+      AddConsole('DataAvailable Error=' + IntToStr(Error));
+      Exit;
+   end;
+
+   SL := TStringList.Create();
+   try
+      ZeroMemory(@Buf, SizeOf(Buf));
+
+      count := TSslWSocket(Sender).Receive(@Buf, SizeOf(Buf) - 1);
+      if count <= 0 then begin
+         exit;
+      end;
+
+      if count >= BUFSIZE then begin
+         count := BUFSIZE;
+      end;
+
+      Buf[count] := #0;
+      P := @Buf[0];
+      str := string(AnsiString(P));
+
+      SL.Text := str;
+
+      for i := 0 to SL.Count - 1 do begin
+         line := SL[i];
+         AddConsole(line);
+         FCommBuffer.Add(line);
+      end;
+
+   finally
+      SL.Free();
+   end;
+end;
+
+procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
+begin
+   timerLoginCheck.Enabled := False;
+
+   CommProcess();
+
+   if Error <> 0 then begin
+      AddConsole('SessionClosed Error=' + IntToStr(Error));
+   end;
+
+   AddConsole('disconnected...');
+   ConnectButton.Caption := 'Connect';
+   MainForm.menuConnectToZServer.Caption := Connect_ZSERVER;
+   MainForm.ZServerIcon.Visible := false;
+   MainForm.DisableNetworkMenus;
+   MainForm.ChatForm.SetConnectStatus(False);
+   FLoginStep := lsNone;
+
+   if FDisconnectedByMenu = false then begin
+      MessageDlg(ZServer_connection_failed, mtError, [mbOK], 0); { HELP context 0 }
+   end
+   else begin
+      FDisconnectedByMenu := false;
+   end;
+end;
+
+procedure TZLinkForm.CommProcess;
+var
+   x: integer;
+   strTemp: string;
+label
+   nextnext;
+begin
+   CommProcessing := True;
+   try
+      while FCommBuffer.Count > 0 do begin
+         strTemp := FCommBuffer.Strings[0];
+
+         if ((FLoginStep = lsReqUser) and (strTemp = 'Login:')) then begin
+            ZSocket.SendStr(dmZLogGlobal.Settings._zlink_telnet.FLoginId);
+            FLoginStep := lsReqPassword;
+            goto nextnext;
+         end;
+
+         if ((FLoginStep = lsReqPassword) and (strTemp = 'Password:')) then begin
+            if ZSocket.State = wsConnected then begin
+               ZSocket.SendStr(dmZLogGlobal.Settings._zlink_telnet.FLoginPassword);
+               FLoginStep := lsLogined;
+            end;
+            goto nextnext;
+         end;
+
+         if (FLoginStep = lsLogined) then begin
+
+            if (strTemp = 'Password:') then begin
+               FLoginStep := lsReqPassword;
+               Continue;
+            end;
+
+            if (strTemp = 'bye...') then begin
+               timerLoginCheck.Enabled := False;
+               FLoginStep := lsLoginIncorrect;
+               AddConsole(UnableToLoginToZServer);
+               MessageBox(FOwnerWnd, PChar(UnableToLoginToZServer), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+               Exit;
+            end;
+
+            if (strTemp = 'OK') then begin
+               InitProcess();
+               FInitProcessDone := True;
+            end;
+
+            x := pos(ZLinkHeader, strTemp);
+            if x > 0 then begin
+               strTemp := copy(strTemp, x, 255);
+               FCommandQue.Add(strTemp);
+            end
+            else begin
+               dmZLogGlobal.WriteErrorLog('TZLinkForm.CommProcess()');
+               dmZLogGlobal.WriteErrorLog(strTemp);
+            end;
+         end;
+nextnext:
+         FCommBuffer.Delete(0);
+      end;
+
+      ProcessCommand;
+   finally
+      CommProcessing := False;
+   end;
+end;
+
+procedure TZLinkForm.WriteData(str: string);
+begin
+   if ZSocket.State = wsConnected then begin
+      ZSocket.SendStr(str + FLineBreak);
+      ZSocket.Flush();
    end;
 end;
 
@@ -483,6 +774,12 @@ begin
          if (Log.CheckQSOID(aQSO.Reserve3) = False) then begin
             aQSO.Reserve := actEditOrAdd;
             Log.AddQue(aQSO);
+         end
+         else begin
+            i := Log.IndexOf(aqSO);
+            if i > -1 then begin
+               Log.QSOList[i].Assign(aQSO);
+            end;
          end;
          aQSO.Free;
       end;
@@ -534,7 +831,7 @@ procedure TZLinkForm.DeleteQSO(aQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' DELQSO ' + aQSO.QSOinText;
       WriteData(str);
    end;
@@ -544,7 +841,7 @@ procedure TZLinkForm.DeleteQsoEx(aQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' EXDELQSO ' + aQSO.QSOinText;
       WriteData(str);
    end;
@@ -554,7 +851,7 @@ procedure TZLinkForm.Renew();
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' RENEW ';
       WriteData(str);
    end;
@@ -564,7 +861,7 @@ procedure TZLinkForm.LockQSO(aQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       // aQSO.QSO.Reserve := actLock;
       str := ZLinkHeader + ' LOCKQSO ' + aQSO.QSOinText;
       WriteData(str);
@@ -575,7 +872,7 @@ procedure TZLinkForm.UnLockQSO(aQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       // aQSO.QSO.Reserve := actUnLock;
       str := ZLinkHeader + ' UNLOCKQSO ' + aQSO.QSOinText;
       WriteData(str);
@@ -586,7 +883,7 @@ procedure TZLinkForm.SendBand;
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' BAND ' + IntToStr(Ord(Main.CurrentQSO.Band));
       WriteData(str);
    end;
@@ -596,7 +893,7 @@ procedure TZLinkForm.SendOperator;
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' OPERATOR ' + Main.CurrentQSO.Operator;
       WriteData(str);
    end;
@@ -606,8 +903,8 @@ procedure TZLinkForm.SendPcName();
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
-      str := ZLinkHeader + ' PCNAME ' + dmZlogGlobal.Settings._pcname;
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
+      str := ZLinkHeader + ' PCNAME ' + dmZLogGlobal.Settings._pcname;
       WriteData(str);
    end;
 end;
@@ -619,7 +916,7 @@ begin
    if Hz = 0 then
       exit;
 
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
 //      if Hz > 60000 then
 //         str := MainForm.RigControl.StatusSummaryFreq(round(Hz / 1000))
 //      else
@@ -639,7 +936,7 @@ procedure TZLinkForm.SendRigStatus;
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := MainForm.RigControl.StatusSummary;
       if str = '' then begin
          exit;
@@ -655,7 +952,7 @@ procedure TZLinkForm.RelaySpot(S: string);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' SPOT ' + S;
       WriteData(str);
    end;
@@ -665,7 +962,7 @@ procedure TZLinkForm.SendSpotViaNetwork(S: string);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' SENDSPOT ' + S;
       WriteData(str);
    end;
@@ -675,7 +972,7 @@ procedure TZLinkForm.SendQSO(aQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' PUTQSO ' + aQSO.QSOinText;
       WriteData(str);
    end;
@@ -685,7 +982,7 @@ procedure TZLinkForm.SendQSO_PUTLOG(aQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' PUTLOG ' + aQSO.QSOinText;
       WriteData(str);
    end;
@@ -695,7 +992,7 @@ procedure TZLinkForm.EditQSObyID(aQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       str := ZLinkHeader + ' EDITQSOTO ' + aQSO.QSOinText;
       WriteData(str);
    end;
@@ -705,7 +1002,7 @@ procedure TZLinkForm.InsertQSO(bQSO: TQSO);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       // repeat until AsyncComm.OutQueCount = 0;
       str := ZLinkHeader + ' INSQSO ' + bQSO.QSOinText;
       WriteData(str);
@@ -802,69 +1099,6 @@ begin
    WriteData(ZLinkHeader + ' ' + 'ENDMERGE');
 end;
 
-procedure TZLinkForm.CommProcess;
-var
-   x: integer;
-   strTemp: string;
-begin
-   CommProcessing := true;
-
-   while FCommBuffer.Count > 0 do begin
-      strTemp := FCommBuffer.Strings[0];
-
-      x := pos(ZLinkHeader, strTemp);
-      if x > 0 then begin
-         strTemp := copy(strTemp, x, 255);
-         FCommandQue.Add(strTemp);
-      end
-      else begin
-         dmZLogGlobal.WriteErrorLog('TZLinkForm.CommProcess()');
-         dmZLogGlobal.WriteErrorLog(strTemp);
-      end;
-
-      FCommBuffer.Delete(0);
-   end;
-
-   ProcessCommand;
-
-   CommProcessing := false;
-end;
-
-procedure TZLinkForm.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
-procedure TZLinkForm.FormCreate(Sender: TObject);
-begin
-   // Transparent := False;
-   DisconnectedByMenu := false;
-   CommProcessing := false;
-   FMergeTempList := nil;
-
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 6] then begin
-      // Transparent := True; // rs-232c
-      // no rs232c allowed!
-   end;
-
-   CommStarted := False;
-   FCommBuffer := TStringList.Create();
-   FCommandQue := TStringList.Create();
-   FFileData := TStringList.Create();
-   Timer1.Enabled := True;
-
-   ImplementOptions;
-
-   FLineBreak := LineBreakCode[dmZlogGlobal.Settings._zlink_telnet.FLineBreak];
-end;
-
-procedure TZLinkForm.FormDestroy(Sender: TObject);
-begin
-   FCommBuffer.Free();
-   FCommandQue.Free();
-   FFileData.Free();
-end;
-
 procedure TZLinkForm.EnableConnectButton(boo : boolean);
 begin
    ConnectButton.Enabled := boo;
@@ -873,8 +1107,8 @@ end;
 procedure TZLinkForm.ImplementOptions;
 begin
    try
-      EnableConnectButton((dmZlogGlobal.Settings._zlinkport = 1) and (dmZlogGlobal.Settings._zlink_telnet.FHostName <> ''));
-      ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
+      EnableConnectButton((dmZLogGlobal.Settings._zlinkport = 1) and (dmZLogGlobal.Settings._zlink_telnet.FHostName <> ''));
+      ZSocket.Addr := dmZLogGlobal.Settings._zlink_telnet.FHostName;
    except
       on ESocketException do begin
          MainForm.WriteStatusLine('Cannnot resolve host name', true);
@@ -882,60 +1116,9 @@ begin
    end;
 end;
 
-procedure TZLinkForm.EditKeyPress(Sender: TObject; var Key: Char);
-var
-   boo: boolean;
-begin
-   boo := dmZlogGlobal.Settings._zlink_telnet.FLocalEcho;
-
-   if Key = Chr($0D) then begin
-      WriteData(Edit.Text);
-      if boo then begin
-         AddConsole(Edit.Text);
-      end;
-
-      Key := Chr($0);
-      Edit.Text := '';
-   end;
-end;
-
-procedure TZLinkForm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-   end;
-end;
-
-procedure TZLinkForm.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
-end;
-
 function TZLinkForm.ZServerConnected: boolean;
 begin
    Result := (ZSocket.State = wsConnected);
-end;
-
-procedure TZLinkForm.ConnectButtonClick(Sender: TObject);
-begin
-   try
-      if (ZSocket.State = wsConnected) then begin
-         DisconnectedByMenu := True;
-         ConnectButton.Caption := 'Disconnecting...';
-         ZSocket.Close;
-      end
-      else begin
-         ConnectButton.Caption := 'Connecting...';
-         ZSocket.Addr := dmZlogGlobal.Settings._zlink_telnet.FHostName;
-         ZSocket.Port := 'telnet';
-         ZSocket.Connect;
-      end;
-   except
-      on E: Exception do begin
-         AddConsole(E.Message);
-      end;
-   end;
 end;
 
 procedure TZLinkForm.LoadLogFromZLink;
@@ -951,73 +1134,8 @@ begin
    WriteData(ZLinkHeader + ' ' + 'SENDLOG');
 end;
 
-procedure TZLinkForm.ZSocketDataAvailable(Sender: TObject; Error: Word);
-var
-   Buf: array [0 .. 2047] of AnsiChar;
-   str: string;
-   count: integer;
-   P: PAnsiChar;
-   st: Integer;
-   line: string;
-   i: Integer;
+procedure TZLinkForm.InitProcess();
 begin
-   ZeroMemory(@Buf, SizeOf(Buf));
-   if Error <> 0 then begin
-      exit;
-   end;
-
-   count := TWSocket(Sender).Receive(@Buf, SizeOf(Buf) - 1);
-   if count <= 0 then begin
-      exit;
-   end;
-
-   Buf[count] := #0;
-   P := @Buf[0];
-   str := string(AnsiString(P));
-
-   st := 1;
-   for i := 1 to Length(str) do begin
-      if str[i] = #10 then begin
-         line := TrimCRLF(Copy(str, st, i - st + 1));
-         AddConsole(line);
-         FCommBuffer.Add(line);
-         st := i + 1;
-      end;
-   end;
-
-   line := TrimCRLF(Copy(str, st));
-   if line <> '' then begin
-      AddConsole(line);
-      FCommBuffer.Add(line);
-   end;
-end;
-
-procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
-begin
-   AddConsole('disconnected...');
-   ConnectButton.Caption := 'Connect';
-   MainForm.menuConnectToZServer.Caption := Connect_ZSERVER;
-   MainForm.ZServerIcon.Visible := false;
-   MainForm.DisableNetworkMenus;
-   MainForm.ChatForm.SetConnectStatus(False);
-
-   if DisconnectedByMenu = false then begin
-      MessageDlg(ZServer_connection_failed, mtError, [mbOK], 0); { HELP context 0 }
-   end
-   else begin
-      DisconnectedByMenu := false;
-   end;
-end;
-
-procedure TZLinkForm.ZSocketSessionConnected(Sender: TObject; Error: Word);
-begin
-   if Error <> 0 then begin
-      Exit;
-   end;
-
-   ConnectButton.Caption := 'Disconnect';
-   MainForm.menuConnectToZServer.Caption := Disconnect_ZSERVER; // 0.23
-   AddConsole('connected to ' + ZSocket.Addr);
    SendBand; { tell Z-Server current band }
    SendOperator;
    SendPcName();
@@ -1031,7 +1149,7 @@ procedure TZLinkForm.GetFile(filename: string; download_folder: string);
 var
    str: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       if DirectoryExists(download_folder) = False then begin
          ForceDirectories(download_folder);
       end;
@@ -1128,7 +1246,7 @@ var
    c: Integer;
    sendbuf: string;
 begin
-   if dmZlogGlobal.Settings._zlinkport in [1 .. 7] then begin
+   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
       base64 := TBase64Encoding.Create();
       mem := TMemoryStream.Create();
       sl := TStringList.Create();
@@ -1199,6 +1317,41 @@ begin
    end;
    Console.Items.EndUpdate();
    Console.ShowLast();
+end;
+
+procedure TZLinkForm.Connect(AOwner: TForm; fromMenu: Boolean);
+begin
+   timerLoginCheck.Enabled := False;
+   FOwnerWnd := AOwner.Handle;
+
+   if (dmZLogGlobal.Settings._zlink_telnet.FHostName = '') or
+      (dmZLogGlobal.Settings._zlink_telnet.FPort = '') then begin
+      MessageBox(AOwner.Handle, PChar(ZServerSettingsNotConfigured), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   if dmZLogGlobal.Settings._zlink_telnet.FUseSecure = True then begin
+      if (dmZlogGlobal.Settings._zlink_telnet.FLoginId = '') or
+         (dmZlogGlobal.Settings._zlink_telnet.FLoginPassword = '') then begin
+         MessageBox(AOwner.Handle, PChar(ZServerSecureNotConfigured), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         Exit;
+      end;
+   end;
+
+   FSecure := dmZLogGlobal.Settings._zlink_telnet.FUseSecure;
+
+   ZSocket.SslEnable := FSecure;                         // SSLŽg—p—L–³
+   ZSocket.Addr := dmZLogGlobal.Settings._zlink_telnet.FHostName;
+   ZSocket.Port := dmZLogGlobal.Settings._zlink_telnet.FPort;
+   ZSocket.Connect();
+end;
+
+procedure TZLinkForm.Disconnect(fromMenu: Boolean);
+begin
+   timerLoginCheck.Enabled := False;
+   FOwnerWnd := 0;
+   FDisconnectedByMenu := fromMenu;
+   ZSocket.Close();
 end;
 
 end.

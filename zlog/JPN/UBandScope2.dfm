@@ -193,6 +193,17 @@ object BandScope2: TBandScope2
       Caption = #12371#12398#22577#21578#32773#12434#25298#21542#12522#12473#12488#12395#36861#21152
       OnClick = menuAddToDenyListClick
     end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object menuAddBlockList: TMenuItem
+      Caption = #12502#12525#12483#12463#12522#12473#12488#12395#36861#21152
+      OnClick = menuAddBlockListClick
+    end
+    object menuEditBlockList: TMenuItem
+      Caption = #12502#12525#12483#12463#12522#12473#12488#12398#32232#38598
+      OnClick = menuEditBlockListClick
+    end
     object N2: TMenuItem
       Caption = '-'
     end

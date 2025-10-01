@@ -132,6 +132,7 @@ type
     procedure LoadAllowDenyList();
     function DeleteControlChar(S: string): string;
     procedure SelectSite(Index: Integer);
+    function JudgeReliability(Sp: TSpot): Boolean;
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
@@ -481,6 +482,12 @@ begin
    Sp := TSpot.Create;
    if Sp.Analyze(S) = True then begin
 
+      // 信頼度判定
+      if JudgeReliability(Sp) = False then begin
+         Sp.Free();
+         Exit;
+      end;
+
       // データ発生源はZ-Server
       Sp.SpotSource := ssClusterFromZServer;
       Sp.SpotGroup := N;
@@ -631,32 +638,10 @@ begin
       Sp := TSpot.Create;
       if Sp.Analyze(strTemp) = True then begin
 
-         // Spotterのチェック
-         if checkUseAllowDenyLists.Checked = True then begin
-            if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been rejected by the deny list'));
-               {$ENDIF}
-               Sp.Free();
-               goto nextnext;
-            end;
-
-            if (FAllowList1.Count > 0) and (FAllowList1.IndexOf(Sp.ReportedBy) >= 0) then begin
-               Sp.ReliableSpotter := True;
-            end
-            else if (FAllowList2.Count > 0) and (FAllowList2.IndexOf(Sp.ReportedBy) >= 0) then begin
-               Sp.ReliableSpotter := False;
-            end
-            else if (FAllowList1.Count = 0) and (FAllowList2.Count = 0) then begin
-               Sp.ReliableSpotter := True;
-            end
-            else begin
-               {$IFDEF DEBUG}
-               OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
-               {$ENDIF}
-               Sp.Free();
-               goto nextnext;
-            end;
+         // 信頼度判定
+         if JudgeReliability(Sp) = False then begin
+            Sp.Free();
+            goto nextnext;
          end;
 
          // データ発生源はCluster
@@ -1258,6 +1243,51 @@ begin
    end;
 
    Result := OutStr;
+end;
+
+function TCommForm.JudgeReliability(Sp: TSpot): Boolean;
+begin
+   // Spotterのチェック
+   if checkUseAllowDenyLists.Checked = True then begin
+      if (FDenyList.Count > 0) and (FDenyList.IndexOf(Sp.ReportedBy) >= 0) then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] has been rejected by the deny list'));
+         {$ENDIF}
+         Result := False;
+         Exit;
+      end;
+
+      if (FAllowList1.Count > 0) and (FAllowList1.IndexOf(Sp.ReportedBy) >= 0) then begin
+         Sp.ReliableSpotter := True;
+      end
+      else if (FAllowList2.Count > 0) and (FAllowList2.IndexOf(Sp.ReportedBy) >= 0) then begin
+         Sp.ReliableSpotter := False;
+      end
+      else if (FAllowList1.Count = 0) and (FAllowList2.Count = 0) then begin
+         Sp.ReliableSpotter := True;
+      end
+      else begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('This reporter [' + Sp.ReportedBy + '] is not on the allow list'));
+         {$ENDIF}
+         Result := False;
+         Exit;
+      end;
+   end;
+
+   if (Sp.SpotQuality = sqBad) then begin
+      Sp.SpotReliability := srLow;
+   end
+   else begin
+      if Sp.ReliableSpotter = True then begin
+         Sp.SpotReliability := srHigh;
+      end
+      else begin
+         Sp.SpotReliability := srMiddle;
+      end;
+   end;
+
+   Result := True;
 end;
 
 { TCommProcessThread }

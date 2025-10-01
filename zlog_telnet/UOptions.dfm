@@ -3,7 +3,7 @@ object Options: TOptions
   Top = 0
   BorderStyle = bsDialog
   Caption = #35373#23450
-  ClientHeight = 555
+  ClientHeight = 584
   ClientWidth = 538
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,17 +17,16 @@ object Options: TOptions
   OnShow = FormShow
   DesignSize = (
     538
-    555)
+    584)
   TextHeight = 12
   object GroupBox2: TGroupBox
     Left = 8
     Top = 119
     Width = 518
-    Height = 108
+    Height = 141
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Z-Server'
     TabOrder = 1
-    ExplicitWidth = 607
     object Label4: TLabel
       Left = 16
       Top = 50
@@ -52,7 +51,7 @@ object Options: TOptions
     object comboZServerHost: TComboBox
       Left = 80
       Top = 47
-      Width = 246
+      Width = 183
       Height = 20
       TabOrder = 1
       Items.Strings = (
@@ -74,6 +73,50 @@ object Options: TOptions
       Height = 20
       TabOrder = 0
     end
+    object GroupBox1: TGroupBox
+      Left = 277
+      Top = 17
+      Width = 227
+      Height = 114
+      Caption = #12475#12461#12517#12450#12514#12540#12489
+      TabOrder = 3
+      object Label2: TLabel
+        Left = 8
+        Top = 52
+        Width = 59
+        Height = 12
+        Caption = #12518#12540#12470#12540'ID'
+      end
+      object Label3: TLabel
+        Left = 8
+        Top = 79
+        Width = 54
+        Height = 12
+        Caption = #12497#12473#12527#12540#12489
+      end
+      object checkUseSecure: TCheckBox
+        Left = 8
+        Top = 24
+        Width = 161
+        Height = 16
+        Caption = #12475#12461#12517#12450#12514#12540#12489#12434#20351#29992#12377#12427
+        TabOrder = 0
+      end
+      object editUserPassword: TEdit
+        Left = 79
+        Top = 76
+        Width = 137
+        Height = 20
+        TabOrder = 2
+      end
+      object editUserId: TEdit
+        Left = 79
+        Top = 49
+        Width = 137
+        Height = 20
+        TabOrder = 1
+      end
+    end
   end
   object GroupBox3: TGroupBox
     Left = 8
@@ -83,7 +126,6 @@ object Options: TOptions
     Anchors = [akLeft, akTop, akRight]
     Caption = #20840#33324
     TabOrder = 0
-    ExplicitWidth = 407
     object Label6: TLabel
       Left = 16
       Top = 24
@@ -154,14 +196,13 @@ object Options: TOptions
   end
   object Panel1: TPanel
     Left = 0
-    Top = 525
+    Top = 554
     Width = 538
     Height = 30
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 385
-    ExplicitWidth = 427
+    ExplicitTop = 525
     DesignSize = (
       538
       30)
@@ -190,13 +231,12 @@ object Options: TOptions
   end
   object groupPacketCluster: TGroupBox
     Left = 8
-    Top = 233
+    Top = 266
     Width = 518
     Height = 282
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Packet Cluster'
     TabOrder = 2
-    ExplicitWidth = 607
     DesignSize = (
       518
       282)
@@ -251,7 +291,6 @@ object Options: TOptions
       Caption = #12473#12509#12483#12479#12540#12522#12473#12488
       TabOrder = 12
       OnClick = buttonSpotterListClick
-      ExplicitLeft = 312
     end
     object listviewPacketCluster: TListView
       Left = 14
@@ -283,7 +322,6 @@ object Options: TOptions
       ViewStyle = vsReport
       OnDblClick = listviewPacketClusterDblClick
       OnSelectItem = listviewPacketClusterSelectItem
-      ExplicitWidth = 400
     end
     object buttonClusterAdd: TButton
       Left = 14
