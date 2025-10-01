@@ -4,9 +4,9 @@ inherited KCJMulti: TKCJMulti
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   Caption = 'Multipliers info'
+  StyleElements = [seFont, seClient, seBorder]
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
@@ -38,6 +38,7 @@ inherited KCJMulti: TKCJMulti
       Top = 9
       Width = 73
       Height = 21
+      ImeMode = imClose
       TabOrder = 2
       Text = 'combBand'
       OnChange = combBandChange
