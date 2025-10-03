@@ -30,7 +30,7 @@ object formOptions3: TformOptions3
       ImageIndex = 11
       object groupQsoListColors: TGroupBox
         Left = 6
-        Top = 91
+        Top = 115
         Width = 423
         Height = 134
         Caption = #20132#20449#12522#12473#12488
@@ -228,7 +228,7 @@ object formOptions3: TformOptions3
         Left = 6
         Top = 4
         Width = 423
-        Height = 81
+        Height = 105
         Caption = #20840#33324
         TabOrder = 0
         object Label1: TLabel
@@ -262,6 +262,14 @@ object formOptions3: TformOptions3
           MinValue = 1
           TabOrder = 1
           Value = 1
+        end
+        object checkUseRbnAnalyze: TCheckBox
+          Left = 11
+          Top = 76
+          Width = 217
+          Height = 17
+          Caption = 'RBN'#20998#26512#12434#20351#12358
+          TabOrder = 2
         end
       end
     end
