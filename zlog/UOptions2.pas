@@ -383,6 +383,9 @@ type
     checkUseReliability7: TCheckBox;
     checkUseReliability8: TCheckBox;
     checkUseReliability9: TCheckBox;
+    groupReliability: TGroupBox;
+    radioReliabilityHigh: TRadioButton;
+    radioReliabilityMiddle: TRadioButton;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -831,6 +834,9 @@ begin
       // BandScope Options2
       Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
 
+      // Reliability
+      Settings._bandscope_initial_reliability_high := radioReliabilityHigh.Checked;
+
       // Quick Memo
       for i := 1 to 5 do begin
          Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
@@ -1173,6 +1179,10 @@ begin
 
       // BandScope Options2
       checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
+
+      // Reliability
+      radioReliabilityHigh.Checked := Settings._bandscope_initial_reliability_high;
+      radioReliabilityMiddle.Checked := not Settings._bandscope_initial_reliability_high;
 
       // 1Radio時のみ設定可能とする
       if Settings._operate_style = os1Radio then begin

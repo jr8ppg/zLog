@@ -480,6 +480,7 @@ var
    Sp : TSpot;
 begin
    Sp := TSpot.Create;
+   Sp.ReliableSpotter := dmZLogGlobal.Settings._bandscope_initial_reliability_high;
    if Sp.Analyze(S) = True then begin
 
       // 信頼度判定
@@ -636,6 +637,7 @@ begin
       end;
 
       Sp := TSpot.Create;
+      Sp.ReliableSpotter := dmZLogGlobal.Settings._bandscope_initial_reliability_high;
       if Sp.Analyze(strTemp) = True then begin
 
          // 信頼度判定

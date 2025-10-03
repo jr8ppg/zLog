@@ -145,6 +145,7 @@ type
     _bandscope_setfreq_after_mode_change: Boolean;
     _bandscope_always_change_mode: Boolean;
     _bandscope_save_current_freq: Boolean;
+    _bandscope_initial_reliability_high: Boolean;
 
     CW : TCWSettingsParam;
 
@@ -1540,6 +1541,7 @@ begin
       Settings._bandscope_setfreq_after_mode_change := ini.ReadBool('BandScopeOptions', 'setfreq_after_mode_change', False);
       Settings._bandscope_always_change_mode := ini.ReadBool('BandScopeOptions', 'always_change_mode', True);
       Settings._bandscope_save_current_freq := ini.ReadBool('BandScopeOptions', 'save_current_freq', True);
+      Settings._bandscope_initial_reliability_high := ini.ReadBool('BandScopeOptions', 'initial_reliability_high', False);
 
       // Quick Memo
       Settings.FQuickMemoText[1] := ini.ReadString('QuickMemo', '#1', '');
@@ -2276,6 +2278,7 @@ begin
       ini.WriteBool('BandScopeOptions', 'setfreq_after_mode_change', Settings._bandscope_setfreq_after_mode_change);
       ini.WriteBool('BandScopeOptions', 'always_change_mode', Settings._bandscope_always_change_mode);
       ini.WriteBool('BandScopeOptions', 'save_current_freq', Settings._bandscope_save_current_freq);
+      ini.WriteBool('BandScopeOptions', 'initial_reliability_high', Settings._bandscope_initial_reliability_high);
 
       // Quick Memo
       for i := 1 to 5 do begin
