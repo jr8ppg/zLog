@@ -187,6 +187,8 @@ type
     function TabIndexToBand(TabIndex: Integer): TBand;
     procedure SetDisplayModeState(fEnable: Boolean);
     function IsBlocked(strCallsign: string; b: TBand): Boolean;
+    procedure SelectAllTab();
+    procedure SelectBandTab(b: TBand);
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -1477,7 +1479,7 @@ begin
    end
    else begin
       FShowAllBands := False;
-      CurrentBand := b;
+      SelectBandTab(b);
       buttonToggleAllCur.Caption := SHOW_ALLBANDS;
    end;
 end;
@@ -1667,12 +1669,7 @@ begin
 
    FCurrBand := b;
    SetCaption();
-
-   tabctrlBandSelector.TabIndex := BandToTabIndex(b);
-   FShowAllBands := False;
-   buttonToggleAllCur.Caption := SHOW_ALLBANDS;
-
-   RewriteBandScope();
+   SelectBandTab(b);
 end;
 
 procedure TBandScope2.SetBandScopeStyle(style: TBandScopeStyle);
@@ -1900,14 +1897,11 @@ procedure TBandScope2.buttonToggleAllCurClick(Sender: TObject);
 begin
    if FShowAllBands = True then begin  // ALL
       SetCaption();
-      tabctrlBandSelector.TabIndex := BandToTabIndex(FCurrBand);
-      FShowAllBands := False;
-      buttonToggleAllCur.Caption := SHOW_ALLBANDS;
-      RewriteBandScope();
+      FCurrBand := CurrentQSO.Band;
+      SelectBandTab(FCurrBand);
    end
    else begin
-      tabctrlBandSelector.TabIndex := 0;
-      tabctrlBandSelectorChange(tabctrlBandSelector);
+      SelectAllTab();
    end;
 end;
 
@@ -2123,6 +2117,13 @@ begin
          tabctrlBandSelector.Tabs.Add(MHzString[b]);
       end;
    end;
+
+   if (FBandScopeStyle in [bssCurrentBand]) then begin
+      SelectBandTab(FCurrBand);
+   end;
+   if (FBandScopeStyle in [bssAllBands]) then begin
+      SelectAllTab();
+   end;
 end;
 
 function TBandScope2.BandToTabIndex(b: TBand): Integer;
@@ -2219,6 +2220,21 @@ begin
    finally
       BSBLLock[b].Leave();
    end;
+end;
+
+procedure TBandScope2.SelectAllTab();
+begin
+   tabctrlBandSelector.TabIndex := 0;
+   tabctrlBandSelectorChange(tabctrlBandSelector);
+end;
+
+procedure TBandScope2.SelectBandTab(b: TBand);
+begin
+   tabctrlBandSelector.TabIndex := BandToTabIndex(b);
+   FShowAllBands := False;
+   FCurrBand := b;
+   buttonToggleAllCur.Caption := SHOW_ALLBANDS;
+   RewriteBandScope();
 end;
 
 initialization
