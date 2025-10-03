@@ -92,6 +92,7 @@ type
     N4: TMenuItem;
     menuAddBlockList: TMenuItem;
     menuEditBlockList: TMenuItem;
+    buttonToggleAllCur: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -132,6 +133,7 @@ type
     procedure menuBS00Click(Sender: TObject);
     procedure menuAddBlockListClick(Sender: TObject);
     procedure menuEditBlockListClick(Sender: TObject);
+    procedure buttonToggleAllCurClick(Sender: TObject);
   private
     { Private 宣言 }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -224,6 +226,12 @@ var
   BSBlockList: array[b19..b10g] of TStringList;
   BSBLLock: array[b19..b10g] of TCriticalSection;
   BSBLResumeFile: array[b19..b10g] of string;
+
+resourcestring
+  SHOW_ALLBANDS = 'To ALL';
+  SHOW_CURRENT = 'To Current';
+  MENU_BLOCK_THIS_SPOT = 'Block this spot';
+  MENU_EDIT_BLOCKLIST = 'Edit block list';
 
 implementation
 
@@ -1143,7 +1151,9 @@ var
    rc: TRect;
    sec: Integer;
    fNewMulti: Boolean;
+   {$IFDEF DEBUG}
    S: string;
+   {$ENDIF}
 
    function AdjustDark(c: TColor): TColor;
    var
@@ -1463,10 +1473,12 @@ begin
    if tabctrlBandSelector.TabIndex = 0 then begin
       FShowAllBands := True;
       RewriteBandScope();
+      buttonToggleAllCur.Caption := SHOW_CURRENT;
    end
    else begin
       FShowAllBands := False;
       CurrentBand := b;
+      buttonToggleAllCur.Caption := SHOW_ALLBANDS;
    end;
 end;
 
@@ -1658,6 +1670,7 @@ begin
 
    tabctrlBandSelector.TabIndex := BandToTabIndex(b);
    FShowAllBands := False;
+   buttonToggleAllCur.Caption := SHOW_ALLBANDS;
 
    RewriteBandScope();
 end;
@@ -1682,18 +1695,29 @@ begin
       tabctrlBandSelector.Visible := True;
       tabctrlBandSelector.TabIndex := 0;
       FShowAllBands := True;
+      buttonToggleAllCur.Caption := SHOW_CURRENT;
    end
    else begin
       Panel1.Parent := Self;
       tabctrlBandSelector.Visible := False;
       tabctrlBandSelector.TabIndex := 0;
       FShowAllBands := False;
+      buttonToggleAllCur.Caption := SHOW_ALLBANDS;
    end;
 
    // 全バンド用オプション
    panelAllBandsOption.Visible := True;
    buttonSortByFreq.ImageIndex := 0;
    FSortOrder := 0;
+
+   // Current band用オプション
+   if (FBandScopeStyle in [bssCurrentBand]) then begin
+      buttonToggleAllCur.Visible := True;
+   end
+   else begin
+      buttonToggleAllCur.Visible := False;
+   end;
+
 end;
 
 procedure TBandScope2.SetCaption();
@@ -1870,6 +1894,21 @@ begin
 
    SetDisplayModeState(False);
    RewriteBandScope();
+end;
+
+procedure TBandScope2.buttonToggleAllCurClick(Sender: TObject);
+begin
+   if FShowAllBands = True then begin  // ALL
+      SetCaption();
+      tabctrlBandSelector.TabIndex := BandToTabIndex(FCurrBand);
+      FShowAllBands := False;
+      buttonToggleAllCur.Caption := SHOW_ALLBANDS;
+      RewriteBandScope();
+   end
+   else begin
+      tabctrlBandSelector.TabIndex := 0;
+      tabctrlBandSelectorChange(tabctrlBandSelector);
+   end;
 end;
 
 procedure TBandScope2.actionPlayMessageAExecute(Sender: TObject);
@@ -2115,10 +2154,14 @@ begin
    if FShowAllBands = False then begin
       menuAddBlockList.Enabled := fEnable;
       menuEditBlockList.Enabled := (BSBlockList[FCurrBand].Count > 0);
+      menuAddBlockList.Caption := MENU_BLOCK_THIS_SPOT + ' [' + BandString[FCurrBand] + ']';
+      menuEditBlockList.Caption := MENU_EDIT_BLOCKLIST + ' [' + BandString[FCurrBand] + ']';
    end
    else begin
       menuAddBlockList.Enabled := False;
       menuEditBlockList.Enabled := False;
+      menuAddBlockList.Caption := MENU_BLOCK_THIS_SPOT;
+      menuEditBlockList.Caption := MENU_EDIT_BLOCKLIST;
    end;
 
    menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
