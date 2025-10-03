@@ -3406,17 +3406,17 @@ object formOptions2: TformOptions2
         Caption = 'Initial reliability'
         TabOrder = 4
         object radioReliabilityHigh: TRadioButton
-          Left = 16
+          Left = 12
           Top = 26
-          Width = 65
+          Width = 74
           Height = 17
           Caption = 'High'
           TabOrder = 0
         end
         object radioReliabilityMiddle: TRadioButton
-          Left = 88
+          Left = 84
           Top = 26
-          Width = 65
+          Width = 74
           Height = 17
           Caption = 'Middle'
           TabOrder = 1

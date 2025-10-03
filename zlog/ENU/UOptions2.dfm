@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope2
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -3264,12 +3264,12 @@ object formOptions2: TformOptions2
         Left = 264
         Top = 271
         Width = 165
-        Height = 121
+        Height = 58
         Caption = 'Options2'
         TabOrder = 3
         object checkUseResume: TCheckBox
           Left = 12
-          Top = 24
+          Top = 26
           Width = 145
           Height = 17
           Caption = 'Use resume'
@@ -3396,6 +3396,30 @@ object formOptions2: TformOptions2
           Caption = 'Reset'
           TabOrder = 8
           OnClick = buttonBSResetClick
+        end
+      end
+      object groupReliability: TGroupBox
+        Left = 264
+        Top = 334
+        Width = 165
+        Height = 58
+        Caption = 'Initial reliability'
+        TabOrder = 4
+        object radioReliabilityHigh: TRadioButton
+          Left = 12
+          Top = 26
+          Width = 74
+          Height = 17
+          Caption = 'High'
+          TabOrder = 0
+        end
+        object radioReliabilityMiddle: TRadioButton
+          Left = 84
+          Top = 26
+          Width = 74
+          Height = 17
+          Caption = 'Middle'
+          TabOrder = 1
         end
       end
     end

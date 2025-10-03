@@ -137,6 +137,9 @@ object BandScope2: TBandScope2
     ShowCaption = False
     TabOrder = 2
     Visible = False
+    DesignSize = (
+      247
+      19)
     object buttonSortByFreq: TSpeedButton
       Left = 1
       Top = 0
@@ -156,6 +159,18 @@ object BandScope2: TBandScope2
       Caption = #26178#38291
       Images = ImageList2
       OnClick = buttonSortByTimeClick
+    end
+    object buttonToggleAllCur: TSpeedButton
+      Left = 176
+      Top = 0
+      Width = 70
+      Height = 19
+      Hint = 'Toggle ALL/Current band'
+      Anchors = [akTop, akRight]
+      Caption = 'ALL/CUR'
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonToggleAllCurClick
     end
   end
   object tabctrlBandSelector: TTabControl
