@@ -1186,13 +1186,50 @@ var
       end;
    end;
 
+   function GetColorByReliability2(D: TBSData; C: TColor): TColor;
+   begin
+      Result := 0;
+      if D.SpotReliability = srHigh then begin
+         if dmZLogGlobal.Settings._bandscopecolor[13].FTransparent = False then begin
+            Result := dmZLogGlobal.Settings._bandscopecolor[13].FBackColor;
+         end
+         else begin
+            Result := C;
+         end;
+      end;
+      if D.SpotReliability = srMiddle then begin
+         if dmZLogGlobal.Settings._bandscopecolor[14].FTransparent = False then begin
+            Result := dmZLogGlobal.Settings._bandscopecolor[14].FBackColor;
+         end
+         else begin
+            Result := C;
+         end;
+      end;
+      if D.SpotReliability = srLow then begin
+         if dmZLogGlobal.Settings._bandscopecolor[15].FTransparent = False then begin
+            Result := dmZLogGlobal.Settings._bandscopecolor[15].FBackColor;
+         end
+         else begin
+            Result := C;
+         end;
+      end;
+   end;
+
    function GetSpotGroupColor(D: TBSData; n: Integer): TColor;
    begin
-      if dmZLogGlobal.Settings._bandscopecolor[n].FUseReliability = False then begin
-         Result := dmZLogGlobal.Settings._bandscopecolor[n].FBackColor;
-      end
-      else begin
-         Result  := GetColorByReliability(D);
+      Result := dmZLogGlobal.Settings._bandscopecolor[n].FBackColor;
+
+      if dmZLogGlobal.Settings._bandscopecolor[n].FUseReliability = True then begin
+         Result  := GetColorByReliability2(D, Result);
+      end;
+   end;
+
+   function GetSelfSpotColor(D: TBSData): TColor;
+   begin
+      Result := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+
+      if dmZLogGlobal.Settings._bandscopecolor[5].FUseReliability = True then begin
+         Result  := GetColorByReliability2(D, Result);
       end;
    end;
 begin
@@ -1262,22 +1299,11 @@ begin
          // îwåiêFÇÕSpotSourceï Ç…Ç∑ÇÈ
          case D.SpotSource of
             ssSelf, ssSelfFromZserver: begin
-               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+               Brush.Color  := GetSelfSpotColor(D);
             end;
 
             ssCluster: begin
                Brush.Color  := GetColorByReliability(D);
-//               if FBandScopeStyle = bssAllBands then begin
-//                  if D.Band = CurrentQSO.Band then begin
-//                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[11].FBackColor;
-//                  end
-//                  else begin
-//                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-//                  end;
-//               end
-//               else begin
-//                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-//               end;
             end;
 
             ssClusterFromZServer: begin
@@ -1293,14 +1319,6 @@ begin
                Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
             end;
          end;
-
-//         if D.LookupFailed = True then begin
-//            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[10].FBackColor;
-//         end;
-//
-//         if D.ReliableSpotter = False then begin
-//            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[12].FBackColor;
-//         end;
 
          if D.Bold then begin
             Font.Style := Font.Style + [fsBold];

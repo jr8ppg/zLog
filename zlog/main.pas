@@ -12707,12 +12707,15 @@ end;
 
 procedure TMainForm.BandScopeAddClusterSpot(Sp: TSpot);
 begin
+   // バンド別ウインドウ
    FBandScopeEx[Sp.Band].AddClusterSpot(Sp);
-   FBandScope.AddClusterSpot(Sp);
 
    // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
    if (BandMenu.Items[Ord(Sp.Band)].Visible = True) and
       (dmZlogGlobal.Settings._activebands[Sp.Band] = True) then begin
+      // Currentウインドウ
+      FBandScope.AddClusterSpot(Sp);
+
       // All bandsウインドウ
       FBandScopeAllBands.AddClusterSpot(Sp);
 
