@@ -963,7 +963,12 @@ begin
                   Sp.SpotReliability := srLow;
                end
                else begin
-                  Sp.SpotReliability := srHigh;
+                  if Sp.ReliableSpotter = True then begin
+                     Sp.SpotReliability := srHigh;
+                  end
+                  else begin
+                     Sp.SpotReliability := srMiddle;
+                  end;
                end;
             end;
          end;

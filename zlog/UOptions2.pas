@@ -507,8 +507,8 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clAqua;  FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clYellow; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: $FFFFC0;  FBold: True ),
+    ( FForeColor: clBlack; FBackColor: $C0FFFF; FBold: True ),
     ( FForeColor: clBlack; FBackColor: $FFD2FF;  FBold: True )
   );
 

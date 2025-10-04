@@ -1524,7 +1524,7 @@ begin
       Settings._bandscopecolor[14].FBold      := ini.ReadBool('BandScopeEx', 'Bold14', True);
       Settings._bandscopecolor[14].FUseReliability := False;
       Settings._bandscopecolor[15].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor15', '$000000'), clBlack);
-      Settings._bandscopecolor[15].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor15', '$FFC0FF'), $FFC0FF);
+      Settings._bandscopecolor[15].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor15', '$FFD2FF'), $FFD2FF);
       Settings._bandscopecolor[15].FBold      := ini.ReadBool('BandScopeEx', 'Bold15', True);
       Settings._bandscopecolor[15].FUseReliability := False;
 
