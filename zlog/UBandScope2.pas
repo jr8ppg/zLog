@@ -170,7 +170,7 @@ type
     function FormatSpotInfo(D: TBSData): string;
     function EstimateNumRows(): Integer;
     procedure SetSelect(fSelect: Boolean);
-    procedure Cleanup(D: TBSData);
+    procedure Cleanup(var D: TBSData);
     procedure SetFreshnessType(v: Integer);
     procedure SetIconType(v: Integer);
     function CalcRemainTime(T1, T2: TDateTime): Integer;
@@ -292,7 +292,9 @@ end;
 procedure TBandScope2.AddAndDisplay(D: TBSData);
 begin
    Cleanup(D);
-   AddBSList(D);
+   if D <> nil then begin
+      AddBSList(D);
+   end;
 end;
 
 // Self Spot
@@ -404,15 +406,20 @@ begin
 end;
 
 procedure TBandScope2.timerCleanupTimer(Sender: TObject);
+var
+   D: TBSData;
 begin
-   Cleanup(nil);
+   D := nil;
+   Cleanup(D);
 end;
 
-procedure TBandScope2.Cleanup(D: TBSData);
+procedure TBandScope2.Cleanup(var D: TBSData);
 var
    i: Integer;
    BS: TBSData;
    Diff: TDateTime;
+   BS_khz: TFrequency;
+   D_khz: TFrequency;
 begin
    Lock();
    try
@@ -420,6 +427,9 @@ begin
          BS := FBSList[i];
 
          if Assigned(D) then begin
+            BS_khz := Round(BS.FreqHz / 100);
+            D_khz :=  Round(D.FreqHz / 100);
+
             // 同一コール同一バンド
             if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
 
@@ -436,9 +446,12 @@ begin
 
                // 周波数を更新
                BS.FreqHz := D.FreqHz;
+
+               D.Free();
+               D := nil;
             end
             // コールが違う同一周波数SPOTは消す
-            else if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
+            else if (BS.Call <> D.Call) and (BS_khz = D_khz) then begin
                FBSList[i] := nil;
             end;
          end;
