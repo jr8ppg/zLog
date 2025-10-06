@@ -92,6 +92,7 @@ type
     N4: TMenuItem;
     menuAddBlockList: TMenuItem;
     menuEditBlockList: TMenuItem;
+    buttonToggleAllCur: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -132,6 +133,7 @@ type
     procedure menuBS00Click(Sender: TObject);
     procedure menuAddBlockListClick(Sender: TObject);
     procedure menuEditBlockListClick(Sender: TObject);
+    procedure buttonToggleAllCurClick(Sender: TObject);
   private
     { Private 宣言 }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -168,7 +170,7 @@ type
     function FormatSpotInfo(D: TBSData): string;
     function EstimateNumRows(): Integer;
     procedure SetSelect(fSelect: Boolean);
-    procedure Cleanup(D: TBSData);
+    procedure Cleanup(var D: TBSData);
     procedure SetFreshnessType(v: Integer);
     procedure SetIconType(v: Integer);
     function CalcRemainTime(T1, T2: TDateTime): Integer;
@@ -185,6 +187,8 @@ type
     function TabIndexToBand(TabIndex: Integer): TBand;
     procedure SetDisplayModeState(fEnable: Boolean);
     function IsBlocked(strCallsign: string; b: TBand): Boolean;
+    procedure SelectAllTab();
+    procedure SelectBandTab(b: TBand);
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -224,6 +228,12 @@ var
   BSBlockList: array[b19..b10g] of TStringList;
   BSBLLock: array[b19..b10g] of TCriticalSection;
   BSBLResumeFile: array[b19..b10g] of string;
+
+resourcestring
+  SHOW_ALLBANDS = 'To ALL';
+  SHOW_CURRENT = 'To Current';
+  MENU_BLOCK_THIS_SPOT = 'Block this spot';
+  MENU_EDIT_BLOCKLIST = 'Edit block list';
 
 implementation
 
@@ -282,7 +292,9 @@ end;
 procedure TBandScope2.AddAndDisplay(D: TBSData);
 begin
    Cleanup(D);
-   AddBSList(D);
+   if D <> nil then begin
+      AddBSList(D);
+   end;
 end;
 
 // Self Spot
@@ -394,15 +406,20 @@ begin
 end;
 
 procedure TBandScope2.timerCleanupTimer(Sender: TObject);
+var
+   D: TBSData;
 begin
-   Cleanup(nil);
+   D := nil;
+   Cleanup(D);
 end;
 
-procedure TBandScope2.Cleanup(D: TBSData);
+procedure TBandScope2.Cleanup(var D: TBSData);
 var
    i: Integer;
    BS: TBSData;
    Diff: TDateTime;
+   BS_khz: TFrequency;
+   D_khz: TFrequency;
 begin
    Lock();
    try
@@ -410,6 +427,9 @@ begin
          BS := FBSList[i];
 
          if Assigned(D) then begin
+            BS_khz := Round(BS.FreqHz / 100);
+            D_khz :=  Round(D.FreqHz / 100);
+
             // 同一コール同一バンド
             if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
 
@@ -426,9 +446,12 @@ begin
 
                // 周波数を更新
                BS.FreqHz := D.FreqHz;
+
+               D.Free();
+               D := nil;
             end
             // コールが違う同一周波数SPOTは消す
-            else if round(BS.FreqHz / 100) = round(D.FreqHz / 100) then begin
+            else if (BS.Call <> D.Call) and (BS_khz = D_khz) then begin
                FBSList[i] := nil;
             end;
          end;
@@ -1143,7 +1166,9 @@ var
    rc: TRect;
    sec: Integer;
    fNewMulti: Boolean;
+   {$IFDEF DEBUG}
    S: string;
+   {$ENDIF}
 
    function AdjustDark(c: TColor): TColor;
    var
@@ -1174,13 +1199,50 @@ var
       end;
    end;
 
+   function GetColorByReliability2(D: TBSData; C: TColor): TColor;
+   begin
+      Result := 0;
+      if D.SpotReliability = srHigh then begin
+         if dmZLogGlobal.Settings._bandscopecolor[13].FTransparent = False then begin
+            Result := dmZLogGlobal.Settings._bandscopecolor[13].FBackColor;
+         end
+         else begin
+            Result := C;
+         end;
+      end;
+      if D.SpotReliability = srMiddle then begin
+         if dmZLogGlobal.Settings._bandscopecolor[14].FTransparent = False then begin
+            Result := dmZLogGlobal.Settings._bandscopecolor[14].FBackColor;
+         end
+         else begin
+            Result := C;
+         end;
+      end;
+      if D.SpotReliability = srLow then begin
+         if dmZLogGlobal.Settings._bandscopecolor[15].FTransparent = False then begin
+            Result := dmZLogGlobal.Settings._bandscopecolor[15].FBackColor;
+         end
+         else begin
+            Result := C;
+         end;
+      end;
+   end;
+
    function GetSpotGroupColor(D: TBSData; n: Integer): TColor;
    begin
-      if dmZLogGlobal.Settings._bandscopecolor[n].FUseReliability = False then begin
-         Result := dmZLogGlobal.Settings._bandscopecolor[n].FBackColor;
-      end
-      else begin
-         Result  := GetColorByReliability(D);
+      Result := dmZLogGlobal.Settings._bandscopecolor[n].FBackColor;
+
+      if dmZLogGlobal.Settings._bandscopecolor[n].FUseReliability = True then begin
+         Result  := GetColorByReliability2(D, Result);
+      end;
+   end;
+
+   function GetSelfSpotColor(D: TBSData): TColor;
+   begin
+      Result := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+
+      if dmZLogGlobal.Settings._bandscopecolor[5].FUseReliability = True then begin
+         Result  := GetColorByReliability2(D, Result);
       end;
    end;
 begin
@@ -1250,22 +1312,11 @@ begin
          // 背景色はSpotSource別にする
          case D.SpotSource of
             ssSelf, ssSelfFromZserver: begin
-               Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
+               Brush.Color  := GetSelfSpotColor(D);
             end;
 
             ssCluster: begin
                Brush.Color  := GetColorByReliability(D);
-//               if FBandScopeStyle = bssAllBands then begin
-//                  if D.Band = CurrentQSO.Band then begin
-//                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[11].FBackColor;
-//                  end
-//                  else begin
-//                     Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-//                  end;
-//               end
-//               else begin
-//                  Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[6].FBackColor;
-//               end;
             end;
 
             ssClusterFromZServer: begin
@@ -1281,14 +1332,6 @@ begin
                Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[5].FBackColor;
             end;
          end;
-
-//         if D.LookupFailed = True then begin
-//            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[10].FBackColor;
-//         end;
-//
-//         if D.ReliableSpotter = False then begin
-//            Brush.Color  := dmZLogGlobal.Settings._bandscopecolor[12].FBackColor;
-//         end;
 
          if D.Bold then begin
             Font.Style := Font.Style + [fsBold];
@@ -1463,10 +1506,12 @@ begin
    if tabctrlBandSelector.TabIndex = 0 then begin
       FShowAllBands := True;
       RewriteBandScope();
+      buttonToggleAllCur.Caption := SHOW_CURRENT;
    end
    else begin
       FShowAllBands := False;
-      CurrentBand := b;
+      SelectBandTab(b);
+      buttonToggleAllCur.Caption := SHOW_ALLBANDS;
    end;
 end;
 
@@ -1655,11 +1700,7 @@ begin
 
    FCurrBand := b;
    SetCaption();
-
-   tabctrlBandSelector.TabIndex := BandToTabIndex(b);
-   FShowAllBands := False;
-
-   RewriteBandScope();
+   SelectBandTab(b);
 end;
 
 procedure TBandScope2.SetBandScopeStyle(style: TBandScopeStyle);
@@ -1682,18 +1723,29 @@ begin
       tabctrlBandSelector.Visible := True;
       tabctrlBandSelector.TabIndex := 0;
       FShowAllBands := True;
+      buttonToggleAllCur.Caption := SHOW_CURRENT;
    end
    else begin
       Panel1.Parent := Self;
       tabctrlBandSelector.Visible := False;
       tabctrlBandSelector.TabIndex := 0;
       FShowAllBands := False;
+      buttonToggleAllCur.Caption := SHOW_ALLBANDS;
    end;
 
    // 全バンド用オプション
    panelAllBandsOption.Visible := True;
    buttonSortByFreq.ImageIndex := 0;
    FSortOrder := 0;
+
+   // Current band用オプション
+   if (FBandScopeStyle in [bssCurrentBand]) then begin
+      buttonToggleAllCur.Visible := True;
+   end
+   else begin
+      buttonToggleAllCur.Visible := False;
+   end;
+
 end;
 
 procedure TBandScope2.SetCaption();
@@ -1870,6 +1922,18 @@ begin
 
    SetDisplayModeState(False);
    RewriteBandScope();
+end;
+
+procedure TBandScope2.buttonToggleAllCurClick(Sender: TObject);
+begin
+   if FShowAllBands = True then begin  // ALL
+      SetCaption();
+      FCurrBand := CurrentQSO.Band;
+      SelectBandTab(FCurrBand);
+   end
+   else begin
+      SelectAllTab();
+   end;
 end;
 
 procedure TBandScope2.actionPlayMessageAExecute(Sender: TObject);
@@ -2084,6 +2148,13 @@ begin
          tabctrlBandSelector.Tabs.Add(MHzString[b]);
       end;
    end;
+
+   if (FBandScopeStyle in [bssCurrentBand]) then begin
+      SelectBandTab(FCurrBand);
+   end;
+   if (FBandScopeStyle in [bssAllBands]) then begin
+      SelectAllTab();
+   end;
 end;
 
 function TBandScope2.BandToTabIndex(b: TBand): Integer;
@@ -2115,10 +2186,14 @@ begin
    if FShowAllBands = False then begin
       menuAddBlockList.Enabled := fEnable;
       menuEditBlockList.Enabled := (BSBlockList[FCurrBand].Count > 0);
+      menuAddBlockList.Caption := MENU_BLOCK_THIS_SPOT + ' [' + BandString[FCurrBand] + ']';
+      menuEditBlockList.Caption := MENU_EDIT_BLOCKLIST + ' [' + BandString[FCurrBand] + ']';
    end
    else begin
       menuAddBlockList.Enabled := False;
       menuEditBlockList.Enabled := False;
+      menuAddBlockList.Caption := MENU_BLOCK_THIS_SPOT;
+      menuEditBlockList.Caption := MENU_EDIT_BLOCKLIST;
    end;
 
    menuBSCurrent.Visible := dmZLogGlobal.Settings._usebandscope_current;
@@ -2176,6 +2251,21 @@ begin
    finally
       BSBLLock[b].Leave();
    end;
+end;
+
+procedure TBandScope2.SelectAllTab();
+begin
+   tabctrlBandSelector.TabIndex := 0;
+   tabctrlBandSelectorChange(tabctrlBandSelector);
+end;
+
+procedure TBandScope2.SelectBandTab(b: TBand);
+begin
+   tabctrlBandSelector.TabIndex := BandToTabIndex(b);
+   FShowAllBands := False;
+   FCurrBand := b;
+   buttonToggleAllCur.Caption := SHOW_ALLBANDS;
+   RewriteBandScope();
 end;
 
 initialization

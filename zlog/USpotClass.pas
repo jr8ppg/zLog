@@ -384,6 +384,7 @@ begin
       if SpotQuality = sqUnknown then begin
          if repinfo.Count >= 3 then begin
             SpotQuality := sqVerified;
+            ReliableSpotter := True;
          end;
       end;
 
@@ -960,6 +961,14 @@ begin
                if Sp.Number = '' then begin
                   Sp.LookupFailed := True;
                   Sp.SpotReliability := srLow;
+               end
+               else begin
+                  if Sp.ReliableSpotter = True then begin
+                     Sp.SpotReliability := srHigh;
+                  end
+                  else begin
+                     Sp.SpotReliability := srMiddle;
+                  end;
                end;
             end;
          end;

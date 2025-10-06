@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetBandScope2
     Align = alClient
     TabOrder = 0
     object tabsheetPreferences: TTabSheet
@@ -3089,7 +3089,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 1
+          TabOrder = 2
           OnClick = buttonBSBackClick
         end
         object buttonBSReset5: TButton
@@ -3099,7 +3099,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 2
+          TabOrder = 3
           OnClick = buttonBSResetClick
         end
         object editBSColor7: TEdit
@@ -3110,7 +3110,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 3
+          TabOrder = 4
           Text = 'TEXT'
         end
         object buttonBSBack7: TButton
@@ -3120,7 +3120,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 5
+          TabOrder = 6
           OnClick = buttonBSBackClick
         end
         object buttonBSReset7: TButton
@@ -3130,7 +3130,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 6
+          TabOrder = 7
           OnClick = buttonBSResetClick
         end
         object editBSColor8: TEdit
@@ -3141,7 +3141,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 7
+          TabOrder = 8
           Text = 'TEXT'
         end
         object buttonBSBack8: TButton
@@ -3151,7 +3151,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 9
+          TabOrder = 10
           OnClick = buttonBSBackClick
         end
         object buttonBSBack9: TButton
@@ -3161,7 +3161,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 13
+          TabOrder = 14
           OnClick = buttonBSBackClick
         end
         object editBSColor9: TEdit
@@ -3172,7 +3172,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 11
+          TabOrder = 12
           Text = 'TEXT'
         end
         object buttonBSReset8: TButton
@@ -3182,7 +3182,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 10
+          TabOrder = 11
           OnClick = buttonBSResetClick
         end
         object buttonBSReset9: TButton
@@ -3192,7 +3192,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 14
+          TabOrder = 15
           OnClick = buttonBSResetClick
         end
         object checkUseReliability7: TCheckBox
@@ -3201,7 +3201,7 @@ object formOptions2: TformOptions2
           Width = 87
           Height = 17
           Caption = #20449#38972#24230#21029
-          TabOrder = 4
+          TabOrder = 5
         end
         object checkUseReliability8: TCheckBox
           Left = 224
@@ -3209,7 +3209,7 @@ object formOptions2: TformOptions2
           Width = 87
           Height = 17
           Caption = #20449#38972#24230#21029
-          TabOrder = 8
+          TabOrder = 9
         end
         object checkUseReliability9: TCheckBox
           Left = 224
@@ -3217,7 +3217,15 @@ object formOptions2: TformOptions2
           Width = 87
           Height = 17
           Caption = #20449#38972#24230#21029
-          TabOrder = 12
+          TabOrder = 13
+        end
+        object checkUseReliability5: TCheckBox
+          Left = 224
+          Top = 26
+          Width = 87
+          Height = 17
+          Caption = #20449#38972#24230#21029
+          TabOrder = 1
         end
       end
       object groupSpotFreshness: TGroupBox
@@ -3264,12 +3272,12 @@ object formOptions2: TformOptions2
         Left = 264
         Top = 271
         Width = 165
-        Height = 121
+        Height = 58
         Caption = #12458#12503#12471#12519#12531#65298
         TabOrder = 3
         object checkUseResume: TCheckBox
           Left = 12
-          Top = 24
+          Top = 26
           Width = 145
           Height = 17
           Caption = #12524#12472#12517#12540#12512#27231#33021#12434#20351#12358
@@ -3323,7 +3331,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 3
+          TabOrder = 4
           Text = 'TEXT'
         end
         object editBSColorSrLow: TEdit
@@ -3334,7 +3342,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 6
+          TabOrder = 8
           Text = 'TEXT'
         end
         object buttonBSBackSrHigh: TButton
@@ -3344,7 +3352,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 1
+          TabOrder = 2
           OnClick = buttonBSBackClick
         end
         object buttonBSBackSrMiddle: TButton
@@ -3354,7 +3362,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 4
+          TabOrder = 6
           OnClick = buttonBSBackClick
         end
         object buttonBSBackSrLow: TButton
@@ -3364,7 +3372,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 7
+          TabOrder = 10
           OnClick = buttonBSBackClick
         end
         object buttonBSResetSrHigh: TButton
@@ -3374,7 +3382,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 2
+          TabOrder = 3
           OnClick = buttonBSResetClick
         end
         object buttonBSResetSrMiddle: TButton
@@ -3384,7 +3392,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 5
+          TabOrder = 7
           OnClick = buttonBSResetClick
         end
         object buttonBSResetSrLow: TButton
@@ -3394,8 +3402,56 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 8
+          TabOrder = 11
           OnClick = buttonBSResetClick
+        end
+        object checkTransparentSrHigh: TCheckBox
+          Left = 224
+          Top = 26
+          Width = 87
+          Height = 17
+          Caption = #36879#26126
+          TabOrder = 1
+        end
+        object checkTransparentSrMiddle: TCheckBox
+          Left = 224
+          Top = 53
+          Width = 87
+          Height = 17
+          Caption = #36879#26126
+          TabOrder = 5
+        end
+        object checkTransparentSrLow: TCheckBox
+          Left = 224
+          Top = 80
+          Width = 87
+          Height = 17
+          Caption = #36879#26126
+          TabOrder = 9
+        end
+      end
+      object groupReliability: TGroupBox
+        Left = 264
+        Top = 334
+        Width = 165
+        Height = 58
+        Caption = #20449#38972#24230#21021#26399#20516
+        TabOrder = 4
+        object radioReliabilityHigh: TRadioButton
+          Left = 12
+          Top = 26
+          Width = 74
+          Height = 17
+          Caption = #39640#65288'High'#65289
+          TabOrder = 0
+        end
+        object radioReliabilityMiddle: TRadioButton
+          Left = 84
+          Top = 26
+          Width = 74
+          Height = 17
+          Caption = #20013#65288'Middle'#65289
+          TabOrder = 1
         end
       end
     end

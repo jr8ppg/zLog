@@ -383,6 +383,13 @@ type
     checkUseReliability7: TCheckBox;
     checkUseReliability8: TCheckBox;
     checkUseReliability9: TCheckBox;
+    groupReliability: TGroupBox;
+    radioReliabilityHigh: TRadioButton;
+    radioReliabilityMiddle: TRadioButton;
+    checkTransparentSrHigh: TCheckBox;
+    checkTransparentSrMiddle: TCheckBox;
+    checkTransparentSrLow: TCheckBox;
+    checkUseReliability5: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -455,6 +462,7 @@ type
     FBSColor: array[1..15] of TEdit;
     FBSBold: array[1..15] of TCheckBox;
     FBSUseReliability: array[1..15] of TCheckBox;
+    FBSTransparent: array[1..15] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
 
@@ -504,8 +512,8 @@ const
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clAqua;  FBold: True ),
-    ( FForeColor: clBlack; FBackColor: clYellow; FBold: True ),
+    ( FForeColor: clBlack; FBackColor: $FFFFC0;  FBold: True ),
+    ( FForeColor: clBlack; FBackColor: $C0FFFF; FBold: True ),
     ( FForeColor: clBlack; FBackColor: $FFD2FF;  FBold: True )
   );
 
@@ -793,6 +801,12 @@ begin
          else begin
             Settings._bandscopecolor[i].FUseReliability := FBSUseReliability[i].Checked;
          end;
+         if FBSTransparent[i] = nil then begin
+            Settings._bandscopecolor[i].FTransparent := False;
+         end
+         else begin
+            Settings._bandscopecolor[i].FTransparent := FBSTransparent[i].Checked;
+         end;
       end;
 
       // Spot鮮度表示
@@ -830,6 +844,9 @@ begin
 
       // BandScope Options2
       Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
+
+      // Reliability
+      Settings._bandscope_initial_reliability_high := radioReliabilityHigh.Checked;
 
       // Quick Memo
       for i := 1 to 5 do begin
@@ -1149,6 +1166,9 @@ begin
          if FBSUseReliability[i] <> nil then begin
             FBSUseReliability[i].Checked := Settings._bandscopecolor[i].FUseReliability;
          end;
+         if FBSTransparent[i] <> nil then begin
+            FBSTransparent[i].Checked := Settings._bandscopecolor[i].FTransparent;
+         end;
       end;
 
       // Spot鮮度表示
@@ -1173,6 +1193,10 @@ begin
 
       // BandScope Options2
       checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
+
+      // Reliability
+      radioReliabilityHigh.Checked := Settings._bandscope_initial_reliability_high;
+      radioReliabilityMiddle.Checked := not Settings._bandscope_initial_reliability_high;
 
       // 1Radio時のみ設定可能とする
       if Settings._operate_style = os1Radio then begin
@@ -1410,7 +1434,7 @@ begin
    FBSUseReliability[2] := nil;
    FBSUseReliability[3] := nil;
    FBSUseReliability[4] := nil;
-   FBSUseReliability[5] := nil;
+   FBSUseReliability[5] := checkUseReliability5;
    FBSUseReliability[6] := nil;
    FBSUseReliability[7] := checkUseReliability7;
    FBSUseReliability[8] := checkUseReliability8;
@@ -1421,6 +1445,21 @@ begin
    FBSUseReliability[13] := nil;
    FBSUseReliability[14] := nil;
    FBSUseReliability[15] := nil;
+   FBSTransparent[1] := nil;
+   FBSTransparent[2] := nil;
+   FBSTransparent[3] := nil;
+   FBSTransparent[4] := nil;
+   FBSTransparent[5] := nil;
+   FBSTransparent[6] := nil;
+   FBSTransparent[7] := nil;
+   FBSTransparent[8] := nil;
+   FBSTransparent[9] := nil;
+   FBSTransparent[10] := nil;
+   FBSTransparent[11] := nil;
+   FBSTransparent[12] := nil;
+   FBSTransparent[13] := checkTransparentSrHigh;
+   FBSTransparent[14] := checkTransparentSrMiddle;
+   FBSTransparent[15] := checkTransparentSrLow;
 
    // Quick QSY
    FTempFreqMemList := TFreqMemoryList.Create();
@@ -1711,6 +1750,9 @@ begin
    end;
    if FBSUseReliability[n] <> nil then begin
       FBSUseReliability[n].Checked := False;
+   end;
+   if FBSTransparent[n] <> nil then begin
+      FBSTransparent[n].Checked := False;
    end;
 end;
 
