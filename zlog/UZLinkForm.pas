@@ -6,7 +6,7 @@ uses
   WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.ComCtrls, System.UITypes, System.NetEncoding,
-  Generics.Collections,
+  System.StrUtils, Generics.Collections,
   OverbyteIcsWndControl, OverbyteIcsWSocket, OverbyteIcsTypes, OverbyteIcsSslBase,
   UzLogConst, UzLogGlobal, UzLogQSO, HelperLib;
 
@@ -28,6 +28,7 @@ type
     ZSocket: TSslWSocket;
     ZSslContext: TSslContext;
     timerLoginCheck: TTimer;
+    Timer2: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -41,16 +42,16 @@ type
     procedure ZSocketDataAvailable(Sender: TObject; Error: Word);
     procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
     procedure timerLoginCheckTimer(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     { Private declarations }
     FSecure: Boolean;
-    FLoginId: string;
-    FLoginPassword: string;
     FDisconnectedByMenu: Boolean;
 
     FLoginStep: TLoginStep;
     FInitProcessDone: Boolean;
 
+    FCommandTemp: string;
     FCommBuffer: TStringList;
     FCommandQue: TStringList;
 
@@ -77,6 +78,7 @@ type
     procedure Process_PutFile(S: string);
     procedure AddConsole(str: string);
     procedure InitProcess();
+    function SetCommandBuffer(fFinal: Boolean): Boolean;
   public
     { Public declarations }
     procedure ImplementOptions;
@@ -241,6 +243,12 @@ begin
    end;
 end;
 
+procedure TZLinkForm.Timer2Timer(Sender: TObject);
+begin
+   Timer2.Enabled := False;
+   SetCommandBuffer(True);
+end;
+
 procedure TZLinkForm.timerLoginCheckTimer(Sender: TObject);
 begin
    timerLoginCheck.Enabled := False;
@@ -290,46 +298,67 @@ const
    BUFSIZE = 2047;
 var
    Buf: array [0 .. BUFSIZE] of AnsiChar;
-   str: string;
    count: integer;
-   P: PAnsiChar;
-   line: string;
-   i: Integer;
-   SL: TStringList;
+   S: string;
 begin
+   Timer2.Enabled := False;
    if Error <> 0 then begin
       AddConsole('DataAvailable Error=' + IntToStr(Error));
       Exit;
    end;
 
-   SL := TStringList.Create();
-   try
-      ZeroMemory(@Buf, SizeOf(Buf));
+   ZeroMemory(@Buf, SizeOf(Buf));
 
-      count := TSslWSocket(Sender).Receive(@Buf, SizeOf(Buf) - 1);
-      if count <= 0 then begin
-         exit;
-      end;
-
-      if count >= BUFSIZE then begin
-         count := BUFSIZE;
-      end;
-
-      Buf[count] := #0;
-      P := @Buf[0];
-      str := string(AnsiString(P));
-
-      SL.Text := str;
-
-      for i := 0 to SL.Count - 1 do begin
-         line := SL[i];
-         AddConsole(line);
-         FCommBuffer.Add(line);
-      end;
-
-   finally
-      SL.Free();
+   count := TSslWSocket(Sender).Receive(@Buf, SizeOf(Buf) - 1);
+   if count <= 0 then begin
+      Exit;
    end;
+
+   if count >= BUFSIZE then begin
+      count := BUFSIZE;
+   end;
+
+   Buf[count] := #0;
+   S := StrPas(PAnsiChar(@Buf[0]));
+   FCommandTemp := FCommandTemp + S;
+
+   // CRLFで終わっている場合はコマンドとする
+   if SetCommandBuffer(False) = False then begin
+      Timer2.Enabled := True;
+   end;
+end;
+
+function TZLinkForm.SetCommandBuffer(fFinal: Boolean): Boolean;
+var
+   i: Integer;
+   SL: TStringList;
+   line: string;
+   C: Char;
+   Index: Integer;
+   S: string;
+begin
+   while Length(FCommandTemp) > 0 do begin
+      Index := Pos(#13#10, FCommandTemp);
+      if (Index = 0) and (fFinal = False) then begin
+         Result := False;
+         Exit;
+      end;
+
+      // CRLFの手前まで取り出ししてコマンドバッファに追加
+      if Index = 0 then begin
+         S := FCommandTemp;
+         FCommandTemp := '';
+      end
+      else begin
+         S := Copy(FCommandTemp, 1, Index - 1);
+         // CRLFまで削除
+         FCommandTemp := Copy(FCommandTemp, Index + 2);
+      end;
+      AddConsole(S);
+      FCommBuffer.Add(S);
+   end;
+
+   Result := True;
 end;
 
 procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
