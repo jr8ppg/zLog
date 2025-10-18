@@ -136,9 +136,7 @@ type
     function GetMemScanRigNo(): Integer;
   public
     { Public declarations }
-    TempFreq: TFreqArray; //  temp. freq storage when rig is not connected. in kHz
-    function StatusSummaryFreq(kHz : TFrequency): string; // returns current rig's band freq mode
-    function StatusSummaryFreqHz(Hz : TFrequency): string; // returns current rig's band freq mode
+    function StatusSummaryFreqHz(b: TBand; m: TMode; Hz : TFrequency): string; // returns current rig's band freq mode
     function StatusSummary: string; // returns current rig's band freq mode
     procedure ImplementOptions(rig: Integer = 1);
     procedure Stop();
@@ -203,10 +201,6 @@ begin
 
    FCurrentRigNumber := 1;
    FMaxRig := 3;
-
-   for B := b19 to HiBand do begin
-      TempFreq[B] := 0;
-   end;
 
    FOmniRig := TOmniRigX.Create(Self);
 
@@ -346,40 +340,7 @@ begin
    Result := S;
 end;
 
-function TRigControl.StatusSummaryFreq(kHz: TFrequency): string; // returns current rig's band freq mode
-var
-   S, ss: string;
-begin
-   S := '';
-
-   if (dmZLogGlobal.IsMultiStation() = True) then begin
-      ss := '30';
-   end
-   else begin
-      ss := IntToStr(Ord(Main.CurrentQSO.Band));
-   end;
-
-   ss := FillRight(ss, 3);
-
-   S := ss + S;
-   S := S + FillRight(MHzString[Main.CurrentQSO.Band], 5);
-   S := S + FillRight(IntToStr(kHz), 11);
-   S := S + FillRight(ModeString[Main.CurrentQSO.Mode], 5);
-
-   ss := TimeToStr(CurrentTime);
-   if Main.CurrentQSO.CQ then begin
-      ss := 'CQ ' + ss + ' ';
-   end
-   else begin
-      ss := 'SP ' + ss + ' ';
-   end;
-
-   S := S + ss + ' [' + dmZlogGlobal.Settings._pcname + ']';
-
-   Result := S;
-end;
-
-function TRigControl.StatusSummaryFreqHz(Hz: TFrequency): string; // returns current rig's band freq mode
+function TRigControl.StatusSummaryFreqHz(b: TBand; m: TMode; Hz: TFrequency): string; // returns current rig's band freq mode
 var
    S, ss: string;
 begin
@@ -394,9 +355,9 @@ begin
 
    ss := FillRight(ss, 3);
    S := ss + S;
-   S := S + FillRight(MHzString[Main.CurrentQSO.Band], 5);
+   S := S + FillRight(MHzString[b], 5);
    S := S + FillLeft(FloatToStrF(Hz / 1000.0, ffFixed, 12, 1), 10) + ' ';
-   S := S + FillRight(ModeString[Main.CurrentQSO.Mode], 5);
+   S := S + FillRight(ModeString[m], 5);
    ss := TimeToStr(CurrentTime);
 
    if Main.CurrentQSO.CQ then begin
@@ -418,13 +379,7 @@ begin
       Exit;
    end;
 
-//   if FCurrentRig.CurrentFreqKHz > 60000 then begin
-//      Result := StatusSummaryFreq(FCurrentRig.CurrentFreqKHz);
-//   end
-//   else begin
-//      Result := StatusSummaryFreqHz(FCurrentRig.CurrentFreqHz);
-//   end;
-   Result := StatusSummaryFreqHz(FCurrentRig.CurrentFreqHz);
+   Result := StatusSummaryFreqHz(FCurrentRig.CurrentBand, FCurrentRig.CurrentMode, FCurrentRig.CurrentFreqHz);
 end;
 
 function TRigControl.CheckSameBand(B: TBand): Boolean; // returns true if inactive rig is in B

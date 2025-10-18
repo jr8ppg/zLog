@@ -1875,12 +1875,7 @@ begin
    end;
 
    rig := RigControl.GetRig(FCurrentRigSet, B);
-   if rig = nil then begin
-      if B <= HiBand then begin
-         FZLinkForm.SendFreqInfo(RigControl.TempFreq[B] * 1000);
-      end;
-   end
-   else begin
+   if rig <> nil then begin
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
    end;
 
@@ -3092,7 +3087,7 @@ begin
    end;
 
    if S = 'SF' then begin
-      FZLinkForm.SendRigStatus;
+      FZLinkForm.SendRigStatus();
    end;
 
    if S = 'CQ' then begin
@@ -3455,11 +3450,9 @@ begin
       if CurrentQSO.Mode = mSSB then begin
          rig.SetMode(CurrentQSO);
       end;
-   end
-   else begin
-      RigControl.TempFreq[CurrentQSO.Band] := hz div 1000;
+
+      FZLinkForm.SendRigStatus();
    end;
-   FZLinkForm.SendFreqInfo(hz);
 end;
 
 procedure TMainForm.ChangeTxNr(txnr: Integer);
@@ -5397,12 +5390,9 @@ begin
       end;
    end;
 
-   FZLinkForm.SendRigStatus;
-
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
-   if rig = nil then begin
-      FZLinkForm.SendFreqInfo(RigControl.TempFreq[CurrentQSO.Band] * 1000);
-   end;
+
+   FZLinkForm.SendRigStatus();
 
    if dmZlogGlobal.Settings._switchcqsp then begin
       if CQ then

@@ -55,6 +55,7 @@ type
     FCommandQue: TStringList;
 
     FLineBreak: string;
+    FPrevSendFreq: DWORD;
 
     // temporary list to hold Z-Server QSOID list
     // created when GETQSOIDS is issued and destroyed
@@ -86,8 +87,7 @@ type
     procedure SendQSO(aQSO : TQSO);
     procedure RelaySpot(S : string); //called from CommForm to relay spot info
     procedure SendSpotViaNetwork(S : string);
-    procedure SendFreqInfo(Hz: TFrequency);
-    procedure SendRigStatus;
+    procedure SendRigStatus();
     procedure MergeLogWithZServer;
     procedure DeleteQSO(aQSO : TQSO);
     procedure DeleteQsoEx(aQSO: TQSO);
@@ -144,6 +144,7 @@ begin
    FDisconnectedByMenu := false;
    CommProcessing := false;
    FMergeTempList := nil;
+   FPrevSendFreq := 0;
 
    if dmZLogGlobal.Settings._zlinkport in [1 .. 6] then begin
       // Transparent := True; // rs-232c
@@ -909,42 +910,32 @@ begin
    end;
 end;
 
-procedure TZLinkForm.SendFreqInfo(Hz: TFrequency);
+procedure TZLinkForm.SendRigStatus();
 var
    str: string;
-begin
-   if Hz = 0 then
-      exit;
-
-   if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
-//      if Hz > 60000 then
-//         str := MainForm.RigControl.StatusSummaryFreq(round(Hz / 1000))
-//      else
-//         str := MainForm.RigControl.StatusSummaryFreqHz(Hz);
-
-      str := MainForm.RigControl.StatusSummaryFreqHz(Hz);
-      if str = '' then
-         exit;
-
-      MainForm.FreqList.ProcessFreqData(str);
-      str := ZLinkHeader + ' FREQ ' + str;
-      WriteData(str);
-   end;
-end;
-
-procedure TZLinkForm.SendRigStatus;
-var
-   str: string;
+   dwTickCount: DWORD;
 begin
    if dmZLogGlobal.Settings._zlinkport in [1 .. 7] then begin
+      // 前回送信から1秒経過していない場合はパス
+      dwTickCount := GetTickCount();
+      if ((dwTickCount - FPrevSendFreq) < 1000) then begin
+         Exit;
+      end;
+
+      // 配信データ作成
       str := MainForm.RigControl.StatusSummary;
       if str = '' then begin
          exit;
       end;
 
+      // 自分のウインドウに表示
       MainForm.FreqList.ProcessFreqData(str);
+
+      // Z-Serverへ送信
       str := ZLinkHeader + ' FREQ ' + str;
       WriteData(str);
+
+      FPrevSendFreq := GetTickCount();
    end;
 end;
 
