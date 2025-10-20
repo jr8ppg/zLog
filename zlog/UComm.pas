@@ -55,6 +55,7 @@ type
     checkForceReconnect: TCheckBox;
     timerForceReconnect: TTimer;
     Edit: TComboBox;
+    Timer2: TTimer;
     procedure CommReceiveData(Buffer: Pointer; BufferLength: Word);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -86,6 +87,7 @@ type
     procedure timerForceReconnectTimer(Sender: TObject);
     procedure TabControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure EditSelect(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     { Private declarations }
     FCommBuffer : TStringList;
@@ -133,6 +135,8 @@ type
     function DeleteControlChar(S: string): string;
     procedure SelectSite(Index: Integer);
     function JudgeReliability(Sp: TSpot): Boolean;
+    procedure StartAutoReConnect();
+    procedure StopAutoReConnect();
   protected
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
@@ -454,11 +458,7 @@ begin
    FDenyList.Sorted := True;
    FDenyList.CaseSensitive := False;
 
-   FReConnectMax := dmZLogGlobal.Settings.FClusterReConnectMax;
-   FReConnectCount := 0;
-   FRetryIntervalSec := dmZLogGlobal.Settings.FClusterRetryIntervalSec;
-   FRetryIntervalCount := 0;
-   timerReConnect.Enabled := False;
+   StopAutoReConnect();
 
    ImplementOptions();
 
@@ -682,9 +682,7 @@ begin
          if (FReConnectCount >= FReConnectMax) then begin
             WriteLineConsole(UComm_ExceededLimit);
             WriteStatusLine('');
-            timerReconnect.Enabled := False;
-            FReConnectCount := 0;
-            FRetryIntervalCount := 0;
+            StopAutoReConnect();
             Exit;
          end;
 
@@ -831,7 +829,7 @@ begin
       ConnectButton.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
 
-      timerReConnect.Enabled := False;
+      StopAutoReConnect();
 
       FAutoLogined := False;
 
@@ -845,6 +843,8 @@ begin
       if dmZLogGlobal.Settings.FClusterForceReconnectIntervalMin > 0 then begin
          timerForceReconnect.Enabled := True;
       end;
+
+//      Timer2.Enabled := True;
    except
       on E: Exception do begin
          AddConsole(E.Message);
@@ -880,7 +880,7 @@ begin
    FDenyList.SaveToFile(fname);
 
    if FDisconnectClicked = False then begin
-      timerReConnect.Enabled := True;
+      StartAutoReConnect();
    end;
    TerminateCommProcessThread();
    timerForceReconnect.Enabled := False;
@@ -1171,6 +1171,13 @@ begin
    end;
 end;
 
+procedure TCommForm.Timer2Timer(Sender: TObject);
+begin
+   inherited;
+   Timer2.Enabled := False;
+   Telnet.Close();
+end;
+
 procedure TCommForm.timerForceReconnectTimer(Sender: TObject);
 var
    diff: TDateTime;
@@ -1290,6 +1297,22 @@ begin
    end;
 
    Result := True;
+end;
+
+procedure TCommForm.StartAutoReConnect();
+begin
+   FReConnectMax := dmZLogGlobal.Settings.FClusterReConnectMax;
+   FReConnectCount := 0;
+   FRetryIntervalSec := dmZLogGlobal.Settings.FClusterRetryIntervalSec;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := True;
+end;
+
+procedure TCommForm.StopAutoReConnect();
+begin
+   FReConnectCount := 0;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := False;
 end;
 
 { TCommProcessThread }
