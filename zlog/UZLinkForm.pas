@@ -6,7 +6,7 @@ uses
   WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.ComCtrls, System.UITypes, System.NetEncoding,
-  System.StrUtils, Generics.Collections,
+  System.AnsiStrings, Generics.Collections,
   OverbyteIcsWndControl, OverbyteIcsWSocket, OverbyteIcsTypes, OverbyteIcsSslBase,
   UzLogConst, UzLogGlobal, UzLogQSO, HelperLib;
 
@@ -319,7 +319,7 @@ begin
    end;
 
    Buf[count] := #0;
-   S := StrPas(PAnsiChar(@Buf[0]));
+   S := string(System.AnsiStrings.StrPas(PAnsiChar(@Buf[0])));
    FCommandTemp := FCommandTemp + S;
 
    // CRLFで終わっている場合はコマンドとする
@@ -330,10 +330,6 @@ end;
 
 function TZLinkForm.SetCommandBuffer(fFinal: Boolean): Boolean;
 var
-   i: Integer;
-   SL: TStringList;
-   line: string;
-   C: Char;
    Index: Integer;
    S: string;
 begin
