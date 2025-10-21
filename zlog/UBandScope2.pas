@@ -550,6 +550,8 @@ begin
 
       Lock();
       try
+         FBSList.Sort(TBSSortMethod(FSortOrder));
+
          R := 0;
          for i := 0 to FBSList.Count - 1 do begin
             D := FBSList[i];
