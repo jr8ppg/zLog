@@ -4861,6 +4861,8 @@ begin
                {$ENDIF}
                FOnSendFinishProc(Self, mCW, False);
             end;
+
+            WinKeyerClear();
          end;
 
          msg.Result := 0;
