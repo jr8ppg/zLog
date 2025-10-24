@@ -466,6 +466,8 @@ begin
    nID := MainForm.CurrentRigID;
    if dmZLogKeyer.KeyingPort[nID] <> tkpRig then begin
       if MainForm.StartCWKeyboard = False then begin
+         MainForm.StartCWKeyboard := True;
+         FSendStr := False;
          ch := GetProsignsChar(msg);
          SendChar(ch);
       end;
@@ -581,7 +583,7 @@ begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('tick=' + IntToStr(GetTickCount() - FTickCount) + ' milisec.'));
       {$ENDIF}
-      buttonClear.Click();
+      Clear();
    end;
 end;
 
