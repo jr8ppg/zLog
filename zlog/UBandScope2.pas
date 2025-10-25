@@ -2060,6 +2060,7 @@ begin
    end;
 
    ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
+   ini.WriteInteger(section, 'SortMethod', FSortOrder);
    ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
    ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
    ini.WriteBool(section, 'Open', Visible);
@@ -2087,8 +2088,14 @@ begin
    end;
 
    buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   FSortOrder := ini.ReadInteger(section, 'SortMethod', 0);
    buttonSortByFreq.ImageIndex := ini.ReadInteger(section, 'FreqSortOrder', 0);
    buttonSortByTime.ImageIndex := ini.ReadInteger(section, 'TimeSortOrder', -1);
+   case FSortOrder of
+      0, 1: buttonSortByFreq.Down := True;
+      2, 3: buttonSortByTime.Down := True;
+   end;
+
    FInitialVisible := ini.ReadBool(section, 'Open', False);
    Visible := FInitialVisible;
 end;
