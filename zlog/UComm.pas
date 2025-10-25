@@ -766,8 +766,6 @@ begin
          ConnectButton.Caption := UComm_Connecting;
          FDisconnectClicked := False;
          Timer1.Enabled := True;
-         FCommProcessThread := TCommProcessThread.Create(Self);
-         FCommProcessThread.Start();
       end;
    except
       on E: Exception do begin
@@ -818,6 +816,9 @@ begin
          end;
       end;
 
+      FCommProcessThread := TCommProcessThread.Create(Self);
+      FCommProcessThread.Start();
+
       checkAutoLogin.Enabled := False;
       checkAutoReconnect.Enabled := False;
       checkRelaySpot.Enabled := False;
@@ -844,7 +845,9 @@ begin
          timerForceReconnect.Enabled := True;
       end;
 
-//      Timer2.Enabled := True;
+      {$IFDEF DEBUG}
+      Timer2.Enabled := True;
+      {$ENDIF}
    except
       on E: Exception do begin
          AddConsole(E.Message);
@@ -1174,8 +1177,10 @@ end;
 procedure TCommForm.Timer2Timer(Sender: TObject);
 begin
    inherited;
+   {$IFDEF DEBUG}
    Timer2.Enabled := False;
    Telnet.Close();
+   {$ENDIF}
 end;
 
 procedure TCommForm.timerForceReconnectTimer(Sender: TObject);
