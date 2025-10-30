@@ -93,6 +93,7 @@ type
     menuAddBlockList: TMenuItem;
     menuEditBlockList: TMenuItem;
     buttonToggleAllCur: TSpeedButton;
+    buttonToggleCQonly: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -134,6 +135,7 @@ type
     procedure menuAddBlockListClick(Sender: TObject);
     procedure menuEditBlockListClick(Sender: TObject);
     procedure buttonToggleAllCurClick(Sender: TObject);
+    procedure buttonToggleCQonlyClick(Sender: TObject);
   private
     { Private êÈåæ }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -146,6 +148,7 @@ type
     FCurrBand : TBand;
     FSelectFlag: Boolean;
     FShowAllBands: Boolean;
+    FShowCQonly: Boolean;
     FInitialVisible: Boolean;
 
     FSortOrder: Integer;
@@ -1068,6 +1071,8 @@ begin
    for b := b19 to b10g do begin
       FBandScopeMenu[b].Caption := BandString[b];
    end;
+
+   FShowCQonly := False;
 end;
 
 procedure TBandScope2.FormDestroy(Sender: TObject);
@@ -1100,6 +1105,7 @@ begin
    MainForm.AddTaskbar(Handle);
    ApplyShortcut();
    Timer1.Enabled := True;
+   buttonToggleCQonly.Down := FShowCQonly;
 end;
 
 procedure TBandScope2.FormActivate(Sender: TObject);
@@ -1936,6 +1942,12 @@ begin
    else begin
       SelectAllTab();
    end;
+end;
+
+procedure TBandScope2.buttonToggleCQonlyClick(Sender: TObject);
+begin
+   FShowCQonly := buttonToggleCQonly.Down;
+   RewriteBandScope();
 end;
 
 procedure TBandScope2.actionPlayMessageAExecute(Sender: TObject);
