@@ -800,6 +800,12 @@ begin
       Exit;
    end;
 
+   // CQ�̂݁H
+   if (FShowCQonly = True) and (D.CQ = False) then begin
+      Result := False;
+      Exit;
+   end;
+
    Result := True;
 end;
 

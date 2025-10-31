@@ -172,6 +172,20 @@ object BandScope2: TBandScope2
       ShowHint = True
       OnClick = buttonToggleAllCurClick
     end
+    object buttonToggleCQonly: TSpeedButton
+      Left = 127
+      Top = 0
+      Width = 51
+      Height = 19
+      Hint = 'Toggle ALL/CQ only'
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 6
+      Caption = 'CQ only'
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonToggleCQonlyClick
+    end
   end
   object tabctrlBandSelector: TTabControl
     Left = 0

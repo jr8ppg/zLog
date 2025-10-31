@@ -346,19 +346,19 @@
 #define System_Bindings_Consts_sDuplicatedConverterType 64477
 #define System_Bindings_Consts_sDuplicatedConverterType2 64478
 #define System_Bindings_Consts_sMismatchArgCount 64479
-#define UOptions_zLogRootFolderNotExist 64480
-#define UOptions_RigIsNotAssignedToAntBand 64481
-#define UOptions_BandsHaveNoRigsAssigned 64482
-#define UComm_UComm_Connect 64483
-#define UComm_UComm_Disconnect 64484
-#define UComm_UComm_Connecting 64485
-#define UComm_UComm_Disconnecting 64486
-#define UComm_UComm_SecondsLeft 64487
-#define UComm_UComm_ExceededLimit 64488
-#define UComm_UComm_SiteChanging 64489
-#define UQTCForm_QTC_DONE 64490
-#define UQTCForm_QTC_SEND 64491
-#define UQTCForm_QTC_SENT 64492
+#define UComm_UComm_Connecting 64480
+#define UComm_UComm_Disconnecting 64481
+#define UComm_UComm_SecondsLeft 64482
+#define UComm_UComm_ExceededLimit 64483
+#define UComm_UComm_SiteChanging 64484
+#define UOptions_SELECT_FOLDER 64485
+#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64486
+#define UOptions_Installed_Plugins_Disabled 64487
+#define UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64488
+#define UOptions_EnterTheFullPathOfRootFolder 64489
+#define UOptions_zLogRootFolderNotExist 64490
+#define UOptions_RigIsNotAssignedToAntBand 64491
+#define UOptions_BandsHaveNoRigsAssigned 64492
 #define System_RegularExpressionsConsts_SRegExMissingExpression 64493
 #define System_RegularExpressionsConsts_SRegExExpressionError 64494
 #define System_RegularExpressionsConsts_SRegExStudyError 64495
@@ -373,91 +373,91 @@
 #define UZLinkForm_ZServerSecureNotConfigured 64504
 #define UZLinkForm_ZServerIsNotSecureMode 64505
 #define UZLinkForm_UnableToLoginToZServer 64506
-#define UOptions_SELECT_FOLDER 64507
-#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64508
-#define UOptions_Installed_Plugins_Disabled 64509
-#define UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64510
-#define UOptions_EnterTheFullPathOfRootFolder 64511
-#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64512
-#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64513
-#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64514
-#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64515
-#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64516
-#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64517
-#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64518
-#define Vcl_Imaging_pnglang_EInvalidNewSize 64519
-#define Vcl_Imaging_pnglang_EInvalidSpec 64520
-#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64521
+#define UQTCForm_QTC_DONE 64507
+#define UQTCForm_QTC_SEND 64508
+#define UQTCForm_QTC_SENT 64509
+#define UComm_UComm_Connect 64510
+#define UComm_UComm_Disconnect 64511
+#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64512
+#define Vcl_Imaging_pnglang_EInvalidNewSize 64513
+#define Vcl_Imaging_pnglang_EInvalidSpec 64514
+#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64515
+#define Vcl_OleConst_SBadPropValue 64516
+#define Vcl_OleConst_SCannotActivate 64517
+#define Vcl_OleConst_SNoWindowHandle 64518
+#define Vcl_OleConst_SInvalidLicense 64519
+#define Vcl_OleConst_SNotLicensed 64520
+#define Vcl_OleConst_sNoRunningObject 64521
 #define UBandScope2_SHOW_ALLBANDS 64522
 #define UBandScope2_SHOW_CURRENT 64523
 #define UBandScope2_MENU_BLOCK_THIS_SPOT 64524
 #define UBandScope2_MENU_EDIT_BLOCKLIST 64525
 #define URigControl_RECONNECT_ALL_RIGS 64526
 #define UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink 64527
-#define Vcl_OleConst_sNoRunningObject 64528
-#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64529
-#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64530
-#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64531
-#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64532
-#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64533
-#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64534
-#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64535
-#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64536
-#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64537
-#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64538
-#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64539
-#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64540
-#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64541
-#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64542
-#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64543
-#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64544
-#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64545
-#define Data_DBConsts_SBcdOverflow 64546
-#define Data_DBConsts_SInvalidBcdValue 64547
-#define Data_DBConsts_SCouldNotParseTimeStamp 64548
-#define Data_DBConsts_SInvalidSqlTimeStamp 64549
-#define Vcl_Imaging_JConsts_sChangeJPGSize 64550
-#define Vcl_Imaging_JConsts_sJPEGError 64551
-#define Vcl_Imaging_JConsts_sJPEGImageFile 64552
-#define UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins 64553
-#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64554
-#define Vcl_OleConst_SBadPropValue 64555
-#define Vcl_OleConst_SCannotActivate 64556
-#define Vcl_OleConst_SNoWindowHandle 64557
-#define Vcl_OleConst_SInvalidLicense 64558
-#define Vcl_OleConst_SNotLicensed 64559
-#define OverbyteIcsCharsetUtils_sEstonianISO 64560
-#define OverbyteIcsCharsetUtils_sGreekISO 64561
-#define OverbyteIcsCharsetUtils_sGreekWindows 64562
-#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64563
-#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64564
-#define OverbyteIcsCharsetUtils_sHebrewWindows 64565
-#define OverbyteIcsCharsetUtils_sJapaneseJIS 64566
-#define OverbyteIcsCharsetUtils_sKorean 64567
-#define OverbyteIcsCharsetUtils_sKoreanEUC 64568
-#define OverbyteIcsCharsetUtils_sLatin9 64569
-#define OverbyteIcsCharsetUtils_sThaiWindows 64570
-#define OverbyteIcsCharsetUtils_sTurkishISO 64571
-#define OverbyteIcsCharsetUtils_sTurkishWindows 64572
-#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64573
-#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64574
-#define OverbyteIcsCharsetUtils_sVietnameseWindows 64575
+#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64528
+#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64529
+#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64530
+#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64531
+#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64532
+#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64533
+#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64534
+#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64535
+#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64536
+#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64537
+#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64538
+#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64539
+#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64540
+#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64541
+#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64542
+#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64543
+#define OverbyteIcsCharsetUtils_sKorean 64544
+#define OverbyteIcsCharsetUtils_sKoreanEUC 64545
+#define OverbyteIcsCharsetUtils_sLatin9 64546
+#define OverbyteIcsCharsetUtils_sThaiWindows 64547
+#define OverbyteIcsCharsetUtils_sTurkishISO 64548
+#define OverbyteIcsCharsetUtils_sTurkishWindows 64549
+#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64550
+#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64551
+#define OverbyteIcsCharsetUtils_sVietnameseWindows 64552
+#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64553
+#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64554
+#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64555
+#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64556
+#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64557
+#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64558
+#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64559
+#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64560
+#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64561
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64562
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64563
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64564
+#define OverbyteIcsCharsetUtils_sCyrillicISO 64565
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64566
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64567
+#define OverbyteIcsCharsetUtils_sCyrillicWindows 64568
+#define OverbyteIcsCharsetUtils_sEstonianISO 64569
+#define OverbyteIcsCharsetUtils_sGreekISO 64570
+#define OverbyteIcsCharsetUtils_sGreekWindows 64571
+#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64572
+#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64573
+#define OverbyteIcsCharsetUtils_sHebrewWindows 64574
+#define OverbyteIcsCharsetUtils_sJapaneseJIS 64575
 #define JclResources_RsEFunctionNotFound 64576
 #define UzLogConst_PortActionList 64577
-#define OverbyteIcsCharsetUtils_sArabicISO 64578
-#define OverbyteIcsCharsetUtils_sArabicWindows 64579
-#define OverbyteIcsCharsetUtils_sBalticISO 64580
-#define OverbyteIcsCharsetUtils_sBalticWindows 64581
-#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64582
-#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64583
-#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64584
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64585
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64586
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64587
-#define OverbyteIcsCharsetUtils_sCyrillicISO 64588
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64589
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64590
-#define OverbyteIcsCharsetUtils_sCyrillicWindows 64591
+#define Data_DBConsts_SBcdOverflow 64578
+#define Data_DBConsts_SInvalidBcdValue 64579
+#define Data_DBConsts_SCouldNotParseTimeStamp 64580
+#define Data_DBConsts_SInvalidSqlTimeStamp 64581
+#define Vcl_Imaging_JConsts_sChangeJPGSize 64582
+#define Vcl_Imaging_JConsts_sJPEGError 64583
+#define Vcl_Imaging_JConsts_sJPEGImageFile 64584
+#define UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins 64585
+#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64586
+#define OverbyteIcsCharsetUtils_sArabicISO 64587
+#define OverbyteIcsCharsetUtils_sArabicWindows 64588
+#define OverbyteIcsCharsetUtils_sBalticISO 64589
+#define OverbyteIcsCharsetUtils_sBalticWindows 64590
+#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64591
 #define JclResources_RsOSVersionWin11 64592
 #define JclResources_RsProductTypeWorkStation 64593
 #define JclResources_RsProductTypeServer 64594
@@ -1742,19 +1742,19 @@ BEGIN
 	System_Bindings_Consts_sDuplicatedConverterType,	L"\x5165\x529B\x578B (%s) \x304A\x3088\x3073\x51FA\x529B\x578B (%s) \x304C\x540C\x3058\x3067\x3042\x308B ""%s"" \x3068\x3044\x3046\x540D\x524D\x306E\x5909\x63DB\x30B3\x30F3\x30DD\x30FC\x30CD\x30F3\x30C8\x304C\x65E2\x306B\x8FFD\x52A0\x3055\x308C\x3066\x3044\x307E\x3059"
 	System_Bindings_Consts_sDuplicatedConverterType2,	L"\x30B3\x30F3\x30D0\x30FC\x30BF ""%s"" \x306F\x30B3\x30F3\x30D0\x30FC\x30BF ""%s(%s, %s)"" \x3068\x91CD\x8907\x3057\x3066\x3044\x307E\x3059"
 	System_Bindings_Consts_sMismatchArgCount,	L"\x5F15\x6570\x306E\x6570\x304C\x6B63\x3057\x304F\x3042\x308A\x307E\x305B\x3093\x3002%d \x500B\x5FC5\x8981\x3067\x3059\x304C\x3001\x53D7\x3051\x53D6\x3063\x305F\x306E\x306F %d \x500B\x3067\x3059"
-	UOptions_zLogRootFolderNotExist,	L"zLog root folder does not exist"
-	UOptions_RigIsNotAssignedToAntBand,	L"RIG-%d %s is not assigned to any band. Do you want to assign it now?"
-	UOptions_BandsHaveNoRigsAssigned,	L"There are bands that have no rigs assigned. Do you want to assign them now?"
-	UComm_UComm_Connect,	L"Connect"
-	UComm_UComm_Disconnect,	L"Disconnect"
 	UComm_UComm_Connecting,	L"Connecting..."
 	UComm_UComm_Disconnecting,	L"Disconnecting..."
 	UComm_UComm_SecondsLeft,	L"%s seconds left to reconnect"
 	UComm_UComm_ExceededLimit,	L"reconnection attempts exceeded limit"
 	UComm_UComm_SiteChanging,	L"You are already connected to the %s. Do you want to disconnect?"
-	UQTCForm_QTC_DONE,	L"Done"
-	UQTCForm_QTC_SEND,	L"Send"
-	UQTCForm_QTC_SENT,	L" Sent"
+	UOptions_SELECT_FOLDER,	L"Select folder"
+	UOptions_PLEASE_INPUT_OFFSET_FREQ,	L"Please input the offset frequency in kHz"
+	UOptions_Installed_Plugins_Disabled,	L"Plugins folder changed. Installed plugins will be disabled. Are you sure?"
+	UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins,	L"Do you want the following bands to have the same settings?"
+	UOptions_EnterTheFullPathOfRootFolder,	L"Enter the full path of the zLog root folder"
+	UOptions_zLogRootFolderNotExist,	L"zLog root folder does not exist"
+	UOptions_RigIsNotAssignedToAntBand,	L"RIG-%d %s is not assigned to any band. Do you want to assign it now?"
+	UOptions_BandsHaveNoRigsAssigned,	L"There are bands that have no rigs assigned. Do you want to assign them now?"
 	System_RegularExpressionsConsts_SRegExMissingExpression,	L"RegEx \x306B\x6B63\x898F\x8868\x73FE\x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059"
 	System_RegularExpressionsConsts_SRegExExpressionError,	L"\x30AA\x30D5\x30BB\x30C3\x30C8 %d \x3067\x6B63\x898F\x8868\x73FE\x306B\x30A8\x30E9\x30FC\x304C\x3042\x308A\x307E\x3059: %s"
 	System_RegularExpressionsConsts_SRegExStudyError,	L"\x6B63\x898F\x8868\x73FE\x306E\x89E3\x6790\x3067\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: %s"
@@ -1769,33 +1769,27 @@ BEGIN
 	UZLinkForm_ZServerSecureNotConfigured,	L"Z-Server secure settings are not configured."
 	UZLinkForm_ZServerIsNotSecureMode,	L"Z-Server is not in SECURE mode."
 	UZLinkForm_UnableToLoginToZServer,	L"Unable to login to Z-Server."
-	UOptions_SELECT_FOLDER,	L"Select folder"
-	UOptions_PLEASE_INPUT_OFFSET_FREQ,	L"Please input the offset frequency in kHz"
-	UOptions_Installed_Plugins_Disabled,	L"Plugins folder changed. Installed plugins will be disabled. Are you sure?"
-	UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins,	L"Do you want the following bands to have the same settings?"
-	UOptions_EnterTheFullPathOfRootFolder,	L"Enter the full path of the zLog root folder"
-	Vcl_Imaging_pnglang_EPNGNoImageDataText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
-	Vcl_Imaging_pnglang_EPNGCannotAddChunkText,	L"\x30D7\x30ED\x30B0\x30E9\x30E0\x304C\x73FE\x5728\x306E\x753B\x50CF\x306B\x65E2\x5B58\x306E\x5FC5\x9808\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x3092\x8A66\x884C\x3057\x307E\x3057\x305F\x3002\x3053\x308C\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
-	Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText,	L"\x65B0\x3057\x3044\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002\x73FE\x5728\x306E\x753B\x50CF\x304C\x6709\x52B9\x3067\x306F\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
-	Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText,	L"PNG \x753B\x50CF\x306F\x30EA\x30BD\x30FC\x30B9 ID \x304B\x3089\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_Imaging_pnglang_EPNGOutMemoryText,	L"\x4E00\x90E8\x306E\x64CD\x4F5C\x304C\x5B9F\x884C\x3055\x308C\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30B7\x30B9\x30C6\x30E0\x306E\x30EA\x30BD\x30FC\x30B9\x304C\x4E0D\x8DB3\x3057\x3066\x3044\x308B\x305F\x3081\x3067\x3059\x3002\x4E00\x90E8\x306E\x30A6\x30A3\x30F3\x30C9\x30A6\x3092\x9589\x3058\x3066\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
-	Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText,	L"\x5404\x30D4\x30AF\x30BB\x30EB\x306B\x5BFE\x3059\x308B\x30A2\x30EB\x30D5\x30A1\x5024 (COLOR_RGBALPHA \x3068 COLOR_GRAYSCALEALPHA) \x3092\x542B\x3080 PNG \x753B\x50CF\x3067\x900F\x904E\x8272\x306E\x30D3\x30C3\x30C8\x8A2D\x5B9A\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
+	UQTCForm_QTC_DONE,	L"Done"
+	UQTCForm_QTC_SEND,	L"Send"
+	UQTCForm_QTC_SENT,	L" Sent"
+	UComm_UComm_Connect,	L"Connect"
+	UComm_UComm_Disconnect,	L"Disconnect"
 	Vcl_Imaging_pnglang_EPNGHeaderNotPresentText,	L"\x3053\x306E\x64CD\x4F5C\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x73FE\x5728\x306E\x753B\x50CF\x306B\x6709\x52B9\x306A\x30D8\x30C3\x30C0\x30FC\x304C\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EInvalidNewSize,	L"\x30B5\x30A4\x30BA\x5909\x66F4\x3059\x308B\x753B\x50CF\x306E\x65B0\x3057\x3044\x30B5\x30A4\x30BA\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
 	Vcl_Imaging_pnglang_EInvalidSpec,	L"""Portable Network Graphics"" \x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x753B\x50CF\x30BF\x30A4\x30D7 \x30D1\x30E9\x30E1\x30FC\x30BF\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
+	Vcl_OleConst_SCannotActivate,	L"OLE control activation failed"
+	Vcl_OleConst_SNoWindowHandle,	L"Could not obtain OLE control window handle"
+	Vcl_OleConst_SInvalidLicense,	L"License information for %s is invalid"
+	Vcl_OleConst_SNotLicensed,	L"License information for %s not found. You cannot use this control in design mode"
+	Vcl_OleConst_sNoRunningObject,	L"%s/%s \x3068\x3057\x3066\x767B\x9332\x3055\x308C\x3066\x3044\x308B\x5B9F\x884C\x4E2D\x306E\x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x304B\x3089\x30DD\x30A4\x30F3\x30BF\x3092\x53D6\x5F97\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	UBandScope2_SHOW_ALLBANDS,	L"To ALL"
 	UBandScope2_SHOW_CURRENT,	L"To Current"
 	UBandScope2_MENU_BLOCK_THIS_SPOT,	L"Block this spot"
 	UBandScope2_MENU_EDIT_BLOCKLIST,	L"Edit block list"
 	URigControl_RECONNECT_ALL_RIGS,	L"Reconnect all RIGs?"
 	UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink,	L"This will delete all data and loads data using Z-Link"
-	Vcl_OleConst_sNoRunningObject,	L"%s/%s \x3068\x3057\x3066\x767B\x9332\x3055\x308C\x3066\x3044\x308B\x5B9F\x884C\x4E2D\x306E\x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x304B\x3089\x30DD\x30A4\x30F3\x30BF\x3092\x53D6\x5F97\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_Imaging_pnglang_EPngInvalidCRCText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x4E0D\x6B63\x306A\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059 (CRC \x30A8\x30E9\x30FC)"
-	Vcl_Imaging_pnglang_EPNGInvalidIHDRText,	L"""Portable Network Graphics"" \x753B\x50CF\x3092\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30C7\x30FC\x30BF\x306E\x30E1\x30A4\x30F3\x90E8\x5206\x306E 1 \x3064 (IHDR) \x304C\x7834\x640D\x3057\x3066\x3044\x308B\x53EF\x80FD\x6027\x304C\x3042\x308B\x304B\x3089\x3067\x3059\x3002"
-	Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x753B\x50CF\x90E8\x5206\x304C\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
-	Vcl_Imaging_pnglang_EPNGZLIBErrorText,	L"\x753B\x50CF\x3092\x89E3\x51CD\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x5727\x7E2E\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x308B\x305F\x3081\x3067\x3059\x3002\r\n \x8AAC\x660E: "
-	Vcl_Imaging_pnglang_EPNGInvalidPaletteText,	L"""Portable Network Graphics"" \x753B\x50CF\x306B\x4E0D\x6B63\x306A\x30D1\x30EC\x30C3\x30C8\x304C\x542B\x307E\x308C\x307E\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText,	L"\x8AAD\x307F\x53D6\x3089\x308C\x305F\x30D5\x30A1\x30A4\x30EB\x306F\x6709\x52B9\x306A ""Portable Network Graphics"" \x753B\x50CF\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x7121\x52B9\x306A\x30D8\x30C3\x30C0\x30FC\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059\x3002 \x3053\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x7834\x640D\x3057\x3066\x3044\x308B\x53EF\x80FD\x6027\x304C\x3042\x308A\x307E\x3059\x3002\x53D6\x5F97\x3092\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
 	Vcl_Imaging_pnglang_EPNGIHDRNotFirstText,	L"""Portable Network Graphics"" \x753B\x50CF\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x306A\x3044\x3001\x3042\x308B\x3044\x306F\x7121\x52B9\x3067\x3059\r\n(IHDR \x30C1\x30E3\x30F3\x30AF\x304C\x6700\x521D\x306B\x3042\x308A\x307E\x305B\x3093)\x3002"
 	Vcl_Imaging_pnglang_EPNGSizeExceedsText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002\x5E45\x307E\x305F\x306F\x9AD8\x3055\x304C\x6700\x5927\x5024 (65535 \x30D4\x30AF\x30BB\x30EB) \x3092\x8D85\x3048\x3066\x3044\x308B\x304B\x3089\x3067\x3059\x3002"
@@ -1806,29 +1800,12 @@ BEGIN
 	Vcl_Imaging_pnglang_EPNGUnknownColorTypeText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x672A\x77E5\x306E\x30AB\x30E9\x30FC\x578B\x3092\x4F7F\x7528\x3057\x3066\x304A\x308A\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	Vcl_Imaging_pnglang_EPNGCannotAssignChunkText,	L"\x30C1\x30E3\x30F3\x30AF\x306F\x5272\x308A\x5F53\x3066\x5BFE\x8C61\x3068\x4E92\x63DB\x6027\x304C\x5FC5\x8981\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGUnexpectedEndText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x30C7\x30B3\x30FC\x30C0\x304C\x4E88\x671F\x3057\x306A\x3044\x30D5\x30A1\x30A4\x30EB\x306E\x7D42\x7AEF\x3092\x691C\x51FA\x3057\x305F\x305F\x3081\x3067\x3059\x3002"
-	OverbyteIcsCharsetUtils_sWesternEuropeanISO,	L"Western European (ISO)"
-	OverbyteIcsCharsetUtils_sWesternEuropeanWindows,	L"Western European (Windows)"
-	Data_DBConsts_SBcdOverflow,	L"BCD \x30AA\x30FC\x30D0\x30FC\x30D5\x30ED\x30FC"
-	Data_DBConsts_SInvalidBcdValue,	L"%s \x306F BCD \x5024\x3068\x3057\x3066\x306F\x9069\x5207\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
-	Data_DBConsts_SCouldNotParseTimeStamp,	L"SQL \x30BF\x30A4\x30E0\x30B9\x30BF\x30F3\x30D7\x6587\x5B57\x5217\x304C\x89E3\x6790\x3067\x304D\x307E\x305B\x3093"
-	Data_DBConsts_SInvalidSqlTimeStamp,	L"SQL \x65E5\x4ED8/\x6642\x523B\x578B\x306E\x5024\x304C\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093"
-	Vcl_Imaging_JConsts_sChangeJPGSize,	L"JPEG \x30A4\x30E1\x30FC\x30B8\x306E\x30B5\x30A4\x30BA\x306F\x5909\x66F4\x3067\x304D\x307E\x305B\x3093"
-	Vcl_Imaging_JConsts_sJPEGError,	L"JPEG \x30A8\x30E9\x30FC #%d"
-	Vcl_Imaging_JConsts_sJPEGImageFile,	L"JPEG \x30A4\x30E1\x30FC\x30B8\x30D5\x30A1\x30A4\x30EB"
-	UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins,	L"Do you want the higher bands to have the same settings?"
-	UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN,	L"Please enter the operator's callsign"
-	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
-	Vcl_OleConst_SCannotActivate,	L"OLE control activation failed"
-	Vcl_OleConst_SNoWindowHandle,	L"Could not obtain OLE control window handle"
-	Vcl_OleConst_SInvalidLicense,	L"License information for %s is invalid"
-	Vcl_OleConst_SNotLicensed,	L"License information for %s not found. You cannot use this control in design mode"
-	OverbyteIcsCharsetUtils_sEstonianISO,	L"Estonian (ISO)"
-	OverbyteIcsCharsetUtils_sGreekISO,	L"Greek (ISO)"
-	OverbyteIcsCharsetUtils_sGreekWindows,	L"Greek (Windows)"
-	OverbyteIcsCharsetUtils_sHebrewISOLogical,	L"Hebrew (ISO-Logical)"
-	OverbyteIcsCharsetUtils_sHebrewISOVisual,	L"Hebrew (ISO-Visual)"
-	OverbyteIcsCharsetUtils_sHebrewWindows,	L"Hebrew (Windows)"
-	OverbyteIcsCharsetUtils_sJapaneseJIS,	L"Japanese (JIS)"
+	Vcl_Imaging_pnglang_EPNGNoImageDataText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
+	Vcl_Imaging_pnglang_EPNGCannotAddChunkText,	L"\x30D7\x30ED\x30B0\x30E9\x30E0\x304C\x73FE\x5728\x306E\x753B\x50CF\x306B\x65E2\x5B58\x306E\x5FC5\x9808\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x3092\x8A66\x884C\x3057\x307E\x3057\x305F\x3002\x3053\x308C\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
+	Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText,	L"\x65B0\x3057\x3044\x30C1\x30E3\x30F3\x30AF\x306E\x8FFD\x52A0\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002\x73FE\x5728\x306E\x753B\x50CF\x304C\x6709\x52B9\x3067\x306F\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
+	Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText,	L"PNG \x753B\x50CF\x306F\x30EA\x30BD\x30FC\x30B9 ID \x304B\x3089\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_Imaging_pnglang_EPNGOutMemoryText,	L"\x4E00\x90E8\x306E\x64CD\x4F5C\x304C\x5B9F\x884C\x3055\x308C\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30B7\x30B9\x30C6\x30E0\x306E\x30EA\x30BD\x30FC\x30B9\x304C\x4E0D\x8DB3\x3057\x3066\x3044\x308B\x305F\x3081\x3067\x3059\x3002\x4E00\x90E8\x306E\x30A6\x30A3\x30F3\x30C9\x30A6\x3092\x9589\x3058\x3066\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
+	Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText,	L"\x5404\x30D4\x30AF\x30BB\x30EB\x306B\x5BFE\x3059\x308B\x30A2\x30EB\x30D5\x30A1\x5024 (COLOR_RGBALPHA \x3068 COLOR_GRAYSCALEALPHA) \x3092\x542B\x3080 PNG \x753B\x50CF\x3067\x900F\x904E\x8272\x306E\x30D3\x30C3\x30C8\x8A2D\x5B9A\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	OverbyteIcsCharsetUtils_sKorean,	L"Korean"
 	OverbyteIcsCharsetUtils_sKoreanEUC,	L"Korean (EUC)"
 	OverbyteIcsCharsetUtils_sLatin9,	L"Latin 9 (ISO)"
@@ -1838,13 +1815,13 @@ BEGIN
 	OverbyteIcsCharsetUtils_sUnicodeUTF7,	L"Unicode (UTF-7)"
 	OverbyteIcsCharsetUtils_sUnicodeUTF8,	L"Unicode (UTF-8)"
 	OverbyteIcsCharsetUtils_sVietnameseWindows,	L"Vietnamese (Windows)"
-	JclResources_RsEFunctionNotFound,	L"Function not found: %s.%s"
-	UzLogConst_PortActionList,	L"None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake"
-	OverbyteIcsCharsetUtils_sArabicISO,	L"Arabic (ISO)"
-	OverbyteIcsCharsetUtils_sArabicWindows,	L"Arabic (Windows)"
-	OverbyteIcsCharsetUtils_sBalticISO,	L"Baltic (ISO)"
-	OverbyteIcsCharsetUtils_sBalticWindows,	L"Baltic (Windows)"
-	OverbyteIcsCharsetUtils_sCentralEuropeanISO,	L"Central European (ISO)"
+	OverbyteIcsCharsetUtils_sWesternEuropeanISO,	L"Western European (ISO)"
+	OverbyteIcsCharsetUtils_sWesternEuropeanWindows,	L"Western European (Windows)"
+	Vcl_Imaging_pnglang_EPngInvalidCRCText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x4E0D\x6B63\x306A\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059 (CRC \x30A8\x30E9\x30FC)"
+	Vcl_Imaging_pnglang_EPNGInvalidIHDRText,	L"""Portable Network Graphics"" \x753B\x50CF\x3092\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30C7\x30FC\x30BF\x306E\x30E1\x30A4\x30F3\x90E8\x5206\x306E 1 \x3064 (IHDR) \x304C\x7834\x640D\x3057\x3066\x3044\x308B\x53EF\x80FD\x6027\x304C\x3042\x308B\x304B\x3089\x3067\x3059\x3002"
+	Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x753B\x50CF\x90E8\x5206\x304C\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
+	Vcl_Imaging_pnglang_EPNGZLIBErrorText,	L"\x753B\x50CF\x3092\x89E3\x51CD\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x5727\x7E2E\x30C7\x30FC\x30BF\x304C\x542B\x307E\x308C\x308B\x305F\x3081\x3067\x3059\x3002\r\n \x8AAC\x660E: "
+	Vcl_Imaging_pnglang_EPNGInvalidPaletteText,	L"""Portable Network Graphics"" \x753B\x50CF\x306B\x4E0D\x6B63\x306A\x30D1\x30EC\x30C3\x30C8\x304C\x542B\x307E\x308C\x307E\x3059\x3002"
 	OverbyteIcsCharsetUtils_sCentralEuropeanWindows,	L"Central European (Windows)"
 	OverbyteIcsCharsetUtils_sChineseTraditionalBig5,	L"Chinese Traditional (Big5)"
 	OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030,	L"Chinese Simplified (GB18030)"
@@ -1854,6 +1831,29 @@ BEGIN
 	OverbyteIcsCharsetUtils_sCyrillicKOI8R,	L"Cyrillic (KOI8-R)"
 	OverbyteIcsCharsetUtils_sCyrillicKOI8U,	L"Cyrillic (KOI8-U)"
 	OverbyteIcsCharsetUtils_sCyrillicWindows,	L"Cyrillic (Windows)"
+	OverbyteIcsCharsetUtils_sEstonianISO,	L"Estonian (ISO)"
+	OverbyteIcsCharsetUtils_sGreekISO,	L"Greek (ISO)"
+	OverbyteIcsCharsetUtils_sGreekWindows,	L"Greek (Windows)"
+	OverbyteIcsCharsetUtils_sHebrewISOLogical,	L"Hebrew (ISO-Logical)"
+	OverbyteIcsCharsetUtils_sHebrewISOVisual,	L"Hebrew (ISO-Visual)"
+	OverbyteIcsCharsetUtils_sHebrewWindows,	L"Hebrew (Windows)"
+	OverbyteIcsCharsetUtils_sJapaneseJIS,	L"Japanese (JIS)"
+	JclResources_RsEFunctionNotFound,	L"Function not found: %s.%s"
+	UzLogConst_PortActionList,	L"None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake"
+	Data_DBConsts_SBcdOverflow,	L"BCD \x30AA\x30FC\x30D0\x30FC\x30D5\x30ED\x30FC"
+	Data_DBConsts_SInvalidBcdValue,	L"%s \x306F BCD \x5024\x3068\x3057\x3066\x306F\x9069\x5207\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
+	Data_DBConsts_SCouldNotParseTimeStamp,	L"SQL \x30BF\x30A4\x30E0\x30B9\x30BF\x30F3\x30D7\x6587\x5B57\x5217\x304C\x89E3\x6790\x3067\x304D\x307E\x305B\x3093"
+	Data_DBConsts_SInvalidSqlTimeStamp,	L"SQL \x65E5\x4ED8/\x6642\x523B\x578B\x306E\x5024\x304C\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093"
+	Vcl_Imaging_JConsts_sChangeJPGSize,	L"JPEG \x30A4\x30E1\x30FC\x30B8\x306E\x30B5\x30A4\x30BA\x306F\x5909\x66F4\x3067\x304D\x307E\x305B\x3093"
+	Vcl_Imaging_JConsts_sJPEGError,	L"JPEG \x30A8\x30E9\x30FC #%d"
+	Vcl_Imaging_JConsts_sJPEGImageFile,	L"JPEG \x30A4\x30E1\x30FC\x30B8\x30D5\x30A1\x30A4\x30EB"
+	UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins,	L"Do you want the higher bands to have the same settings?"
+	UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN,	L"Please enter the operator's callsign"
+	OverbyteIcsCharsetUtils_sArabicISO,	L"Arabic (ISO)"
+	OverbyteIcsCharsetUtils_sArabicWindows,	L"Arabic (Windows)"
+	OverbyteIcsCharsetUtils_sBalticISO,	L"Baltic (ISO)"
+	OverbyteIcsCharsetUtils_sBalticWindows,	L"Baltic (Windows)"
+	OverbyteIcsCharsetUtils_sCentralEuropeanISO,	L"Central European (ISO)"
 	JclResources_RsOSVersionWin11,	L"Windows 11"
 	JclResources_RsProductTypeWorkStation,	L"Workstation"
 	JclResources_RsProductTypeServer,	L"Server"
@@ -2806,26 +2806,24 @@ END
 /* D:\JEDI\jcl\source\common\JclUnicode.res */
 /* D:\JEDI\jvcl\resources\JvLED.res */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\CategoryButtons.res */
-/* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\ExtDlgs.res */
-/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\LibV33OpenSSL64.RES */
-/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\ICSCerts.RES */
-/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\RootCaCertsBundle.RES */
+/* D:\github\zLog_v2970\zlog\UzLogKeyer.dfm */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\SPIN.RES */
-/* D:\github\zLog_v2970\zlog\UzLogForm.dfm */
-/* D:\github\zLog_v2970\zlog\USuperCheck2.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\FileCtrl.res */
+/* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\ExtDlgs.res */
 /* D:\JEDI\jvcl\resources\JvConsts.res */
 /* D:\JEDI\jvcl\resources\JvToolEdit.res */
 /* D:\JEDI\jvcl\resources\JvColorCombo.res */
 /* D:\github\zLog_v2970\zlog\UIntegerDialog.DFM */
 /* D:\github\zLog_v2970\zlog\UOperatorPowerDialog.dfm */
 /* D:\github\zLog_v2970\zlog\UOperatorEdit.dfm */
-/* D:\github\zLog_v2970\zlog\UzLogKeyer.dfm */
-/* D:\github\zLog_v2970\zlog\UCWMonitor.dfm */
-/* D:\github\zLog_v2970\zlog\UClusterTelnetSet.DFM */
-/* D:\github\zLog_v2970\zlog\UClusterCOMSet.DFM */
-/* D:\github\zLog_v2970\zlog\UPortConfigDialog.dfm */
-/* D:\github\zLog_v2970\zlog\UZlinkTelnetSet.DFM */
+/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\LibV33OpenSSL64.RES */
+/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\ICSCerts.RES */
+/* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\RootCaCertsBundle.RES */
+/* D:\github\zLog_v2970\zlog\UzLogForm.dfm */
+/* D:\github\zLog_v2970\zlog\USuperCheck2.DFM */
+/* D:\github\zLog_v2970\zlog\UBasicMulti.DFM */
+/* D:\github\zLog_v2970\zlog\USummaryInfo.DFM */
+/* D:\github\zLog_v2970\zlog\UBasicScore.DFM */
 /* D:\github\zLog_v2970\zlog\UChat.DFM */
 /* D:\github\zLog_v2970\zlog\UZServerInquiry.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win64\release\WinXCtrls.res */
@@ -2837,12 +2835,6 @@ END
 /* D:\github\zLog_v2970\zlog\UConsolePad.DFM */
 /* D:\github\zLog_v2970\zlog\UScratchSheet.DFM */
 /* D:\github\zLog_v2970\zlog\UZLinkForm.DFM */
-/* D:\github\zLog_v2970\zlog\USpotterListDlg.dfm */
-/* D:\github\zLog_v2970\zlog\UOptions.DFM */
-/* D:\github\zLog_v2970\zlog\UComm.DFM */
-/* D:\github\zLog_v2970\zlog\UBasicMulti.DFM */
-/* D:\github\zLog_v2970\zlog\USummaryInfo.DFM */
-/* D:\github\zLog_v2970\zlog\UBasicScore.DFM */
 /* D:\github\zLog_v2970\zlog\UQTCForm.DFM */
 /* D:\github\zLog_v2970\zlog\UWWZone.DFM */
 /* D:\github\zLog_v2970\zlog\UACAGMulti.DFM */
@@ -2876,10 +2868,18 @@ END
 /* D:\github\zLog_v2970\zlog\UALLJAScore.DFM */
 /* D:\github\zLog_v2970\zlog\UFDMulti.DFM */
 /* D:\github\zLog_v2970\zlog\USixDownMulti.DFM */
-/* D:\github\zLog_v2970\zlog\UPackageLoader.dfm */
-/* D:\github\zLog_v2970\zlog\UPluginManager.dfm */
 /* D:\github\zLog_v2970\zlog\UGeneralScore.DFM */
 /* D:\github\zLog_v2970\zlog\UGeneralMulti2.DFM */
+/* D:\github\zLog_v2970\zlog\UComm.DFM */
+/* D:\github\zLog_v2970\zlog\UClusterTelnetSet.DFM */
+/* D:\github\zLog_v2970\zlog\UClusterCOMSet.DFM */
+/* D:\github\zLog_v2970\zlog\UPortConfigDialog.dfm */
+/* D:\github\zLog_v2970\zlog\UZlinkTelnetSet.DFM */
+/* D:\github\zLog_v2970\zlog\USpotterListDlg.dfm */
+/* D:\github\zLog_v2970\zlog\UOptions.DFM */
+/* D:\github\zLog_v2970\zlog\UCWMonitor.dfm */
+/* D:\github\zLog_v2970\zlog\UPackageLoader.dfm */
+/* D:\github\zLog_v2970\zlog\UPluginManager.dfm */
 /* D:\github\zLog_v2970\zlog\UzLogGlobal.dfm */
 /* D:\github\zLog_v2970\zlog\UFreqPanel.dfm */
 /* D:\github\zLog_v2970\zlog\UFreqMemDialog.dfm */
