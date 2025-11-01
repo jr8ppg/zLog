@@ -582,9 +582,10 @@ begin
 
             str := FormatSpotInfo(D);
 
+            // Œ»İƒoƒ“ƒh•\¦
             if (fOnFreq = True) or
                ((FShowAllBands = True) and (D.Band = CurrentQSO.Band)) then begin
-               str := '>>' + str + '<<';
+               str := '>' + str + '<';
             end;
 
             Grid.Cells[0, R] := str;
