@@ -129,6 +129,7 @@ type
     FAutoLogined: Boolean;                         // True:ClusterÇ÷é©ìÆÉçÉOÉCÉìÇµÇ‹ÇµÇΩ
 
     FLineBreak: string;
+    FLocalEcho: Boolean;
     procedure LoadSettings();
     procedure SaveSettings();
     procedure ImplementOptions;
@@ -252,19 +253,14 @@ end;
 
 procedure TClusterClient.EditKeyPress(Sender: TObject; var Key: Char);
 var
-   boo: boolean;
    s : string;
 begin
-   boo := False;
-
- //  7 : boo := dmZlogGlobal.Settings._cluster_telnet.FLocalEcho;
-
    s := '';
    if Key = Chr($0D) then begin
 
       WriteData(Edit.Text + FLineBreak);
 
-      if boo then begin
+      if FLocalEcho then begin
          WriteConsole(Edit.Text + FLineBreak);
       end;
 
@@ -1183,6 +1179,8 @@ begin
    end;
 
    Edit.Items.CommaText := setting.CommandList;
+
+   FLocalEcho := setting.LocalEcho;
 end;
 
 procedure TClusterClient.ConnectZServer();
