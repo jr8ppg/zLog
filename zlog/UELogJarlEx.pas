@@ -941,7 +941,7 @@ end;
 ・１交信１行、英数字半角を使います。全角(2バイト)文字は絶対に使用しない。
 ・連続する１個以上の空白およびタブを各項目間に区切り文字（デリミタ）とします。
 
-DATE(JST)	TIME	BAND	MODE	CALLSIGN	SENTNo	RCVNo	Multi	PTS
+DATE(JST)	TIME	BAND	MODE	CALLSIGN	SENTNo	RCVDNo	Multi	PTS
 2016-04-23	21:53	50	SSB	JA2Y**	59	20L	59	20L	20	1
 2016-04-23	22:02	144	SSB	JA2***	59	20L	59	20L	-	1
 2016-04-23	22:15	7	CW	JE3***	599	20M	599	25M	25	1
@@ -969,7 +969,7 @@ begin
       s2 := '';
    end;
 
-   SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo' + s2);
+   SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVDNo' + s2);
 
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
