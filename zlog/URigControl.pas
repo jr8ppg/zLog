@@ -358,7 +358,7 @@ begin
    S := S + FillRight(MHzString[b], 5);
    S := S + FillLeft(FloatToStrF(Hz / 1000.0, ffFixed, 12, 1), 10) + ' ';
    S := S + FillRight(ModeString[m], 5);
-   ss := TimeToStr(CurrentTime);
+   ss := FormatDateTime('hh:nn:ss', CurrentTime);
 
    if Main.CurrentQSO.CQ then begin
       ss := 'CQ ' + ss + ' ';
