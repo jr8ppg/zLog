@@ -1512,6 +1512,9 @@ begin
             FWkMessageIndex := 1;
             FWkMessageStr := Copy(S, 2);
             FComKeying[0].SendString(AnsiString(S));
+            if (Assigned(FOnOneCharSentProc)) then begin
+               FOnOneCharSentProc(Self);
+            end;
          end
          else begin  // 通常キャラクタ
             FWkMessageIndex := 1;
@@ -1525,6 +1528,9 @@ begin
             FWkMessageIndex := 1;
             FWkMessageStr := FWkMessageStr + Copy(S, 2);
             FComKeying[0].SendString(AnsiString(S));
+            if (Assigned(FOnOneCharSentProc)) then begin
+               FOnOneCharSentProc(Self);
+            end;
          end
          else begin
             FWkMessageStr := FWkMessageStr + S;
@@ -4861,6 +4867,8 @@ begin
                {$ENDIF}
                FOnSendFinishProc(Self, mCW, False);
             end;
+
+            WinKeyerClear();
          end;
 
          msg.Result := 0;

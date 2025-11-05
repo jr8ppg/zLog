@@ -55,7 +55,7 @@ type
     datetimeLicenseDate: TDateTimePicker;
     labelAge: TLabel;
     comboAge: TComboBox;
-    checkFieldExtend: TCheckBox;
+    checkFieldExtend1: TCheckBox;
     GroupBox1: TGroupBox;
     mOath: TMemo;
     radioOrganizerJarl: TRadioButton;
@@ -151,6 +151,7 @@ type
     labelLicense: TLabel;
     buttonWebUpload: TButton;
     ScrollBox1: TScrollBox;
+    checkFieldExtend2: TCheckBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -178,9 +179,9 @@ type
     procedure WriteSummarySheetR1(SL: TStringList);
     procedure WriteLogSheetR1(SL: TStringList);
     procedure WriteSummarySheetR2(SL: TStringList);
-    procedure WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
+    procedure WriteLogSheetR2(SL: TStringList; fExtend1, fExtend2: Boolean);
     function FormatQSO_v1(q: TQSO; fValid: Boolean): string;
-    function FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
+    function FormatQSO_v2(q: TQSO; fExtend1, fExtend2: Boolean): string;
     function IsNewcomer(cate: string): Boolean;
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
@@ -425,7 +426,8 @@ begin
          else radioOrganizerJarl.Checked := True;
       end;
 
-      checkFieldExtend.Checked := ini.ReadBool('LogSheet', 'FieldExtend', False);
+      checkFieldExtend1.Checked := ini.ReadBool('LogSheet', 'FieldExtend1', True);
+      checkFieldExtend2.Checked := ini.ReadBool('LogSheet', 'FieldExtend2', False);
 
       if Log.ScoreCoeff > 0 then begin
          edFDCoefficient.Text := FloatToStr(Log.ScoreCoeff);
@@ -518,7 +520,7 @@ begin
    WriteSummarySheetR2(SL);
 
    // ログシート
-   WriteLogSheetR2(SL, checkFieldExtend.Checked);
+   WriteLogSheetR2(SL, checkFieldExtend1.Checked, checkFieldExtend2.Checked);
 
    Result := True;
 end;
@@ -600,7 +602,8 @@ begin
          ini.WriteInteger('SummaryInfo', 'Organizer', 1);
       end;
 
-      ini.WriteBool('LogSheet', 'FieldExtend', checkFieldExtend.Checked);
+      ini.WriteBool('LogSheet', 'FieldExtend1', checkFieldExtend1.Checked);
+      ini.WriteBool('LogSheet', 'FieldExtend2', checkFieldExtend2.Checked);
 
       ini.UpdateFile();
    finally
@@ -941,16 +944,17 @@ end;
 ・１交信１行、英数字半角を使います。全角(2バイト)文字は絶対に使用しない。
 ・連続する１個以上の空白およびタブを各項目間に区切り文字（デリミタ）とします。
 
-DATE(JST)	TIME	BAND	MODE	CALLSIGN	SENTNo	RCVNo	Multi	PTS
+DATE(JST)	TIME	BAND	MODE	CALLSIGN	SENTNo	RCVDNo	Multi	PTS
 2016-04-23	21:53	50	SSB	JA2Y**	59	20L	59	20L	20	1
 2016-04-23	22:02	144	SSB	JA2***	59	20L	59	20L	-	1
 2016-04-23	22:15	7	CW	JE3***	599	20M	599	25M	25	1
 }
-procedure TformELogJarlEx.WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
+procedure TformELogJarlEx.WriteLogSheetR2(SL: TStringList; fExtend1, fExtend2: Boolean);
 var
    i: Integer;
    s: string;
    s2: string;
+   s3: string;
    Q: TQSO;
 begin
    SL.Add('<LOGSHEET TYPE=ZLOG>');
@@ -962,14 +966,21 @@ begin
       s := 'DATE(JST)';
    end;
 
-   if fExtend = True then begin
-      s2 := TAB + 'Multi1' + TAB + 'Multi2' + TAB + 'Points' + TAB + 'TX#';
+   if fExtend1 = True then begin
+      s2 := TAB + 'Multi1' + TAB + 'Multi2' + TAB + 'Points';
    end
    else begin
       s2 := '';
    end;
 
-   SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVNo' + s2);
+   if fExtend2 = True then begin
+      s3 := TAB + 'TX#';
+   end
+   else begin
+      s3 := '';
+   end;
+
+   SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVDNo' + s2 + s3);
 
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
@@ -983,7 +994,7 @@ begin
 //         Continue;
 //      end;
 
-      s := FormatQSO_v2(Q, fExtend);
+      s := FormatQSO_v2(Q, fExtend1, fExtend2);
       SL.Add(s);
    end;
 
@@ -1043,7 +1054,7 @@ begin
    Result := S;
 end;
 
-function TformELogJarlEx.FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
+function TformELogJarlEx.FormatQSO_v2(q: TQSO; fExtend1, fExtend2: Boolean): string;
 var
    slLine: TStringList;
 begin
@@ -1066,7 +1077,7 @@ begin
       slLine.Add(IntToStr(q.RSTsent) + ' ' + q.NrSent);
       slLine.Add(IntToStr(q.RSTrcvd) + ' ' + q.NrRcvd);
 
-      if fExtend = True then begin
+      if fExtend1 = True then begin
          if q.NewMulti1 = True then begin
             slLine.Add(q.Multi1);
          end
@@ -1082,6 +1093,9 @@ begin
          end;
 
          slLine.Add(IntToStr(q.Points));
+      end;
+
+      if fExtend2 = True then begin
          slLine.Add('TX#' + IntToStr(q.TX));
       end;
 
@@ -1240,7 +1254,8 @@ begin
          edClubName.Visible := True;
          labelLicense.Visible := True;
          edLicense.Visible := True;
-         checkFieldExtend.Visible := False;
+         checkFieldExtend1.Visible := False;
+         checkFieldExtend2.Visible := False;
          buttonWebUpload.Enabled := False;
       end;
 
@@ -1261,7 +1276,8 @@ begin
          edClubName.Visible := False;
          labelLicense.Visible := False;
          edLicense.Visible := False;
-         checkFieldExtend.Visible := True;
+         checkFieldExtend1.Visible := True;
+         checkFieldExtend2.Visible := True;
          buttonWebUpload.Enabled := True;
       end;
    end;

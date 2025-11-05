@@ -301,4 +301,11 @@ object CommForm: TCommForm
     Left = 376
     Top = 16
   end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = Timer2Timer
+    Left = 176
+    Top = 8
+  end
 end

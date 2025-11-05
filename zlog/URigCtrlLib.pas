@@ -219,7 +219,6 @@ type
   end;
 
   TRigArray = array[1..5] of TRig;
-  TFreqArray = array [b19..HiBand] of TFrequency;
 
 function hex2dec(i: Integer): Integer;
 function dec2hex(i: Integer): Integer;

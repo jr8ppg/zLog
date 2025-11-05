@@ -93,6 +93,7 @@ type
     menuAddBlockList: TMenuItem;
     menuEditBlockList: TMenuItem;
     buttonToggleAllCur: TSpeedButton;
+    buttonToggleCQonly: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -134,6 +135,7 @@ type
     procedure menuAddBlockListClick(Sender: TObject);
     procedure menuEditBlockListClick(Sender: TObject);
     procedure buttonToggleAllCurClick(Sender: TObject);
+    procedure buttonToggleCQonlyClick(Sender: TObject);
   private
     { Private 宣言 }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -146,6 +148,7 @@ type
     FCurrBand : TBand;
     FSelectFlag: Boolean;
     FShowAllBands: Boolean;
+    FShowCQonly: Boolean;
     FInitialVisible: Boolean;
 
     FSortOrder: Integer;
@@ -550,6 +553,8 @@ begin
 
       Lock();
       try
+         FBSList.Sort(TBSSortMethod(FSortOrder));
+
          R := 0;
          for i := 0 to FBSList.Count - 1 do begin
             D := FBSList[i];
@@ -577,9 +582,10 @@ begin
 
             str := FormatSpotInfo(D);
 
+            // 現在バンド表示
             if (fOnFreq = True) or
                ((FShowAllBands = True) and (D.Band = CurrentQSO.Band)) then begin
-               str := '>>' + str + '<<';
+               str := '>' + str + '<';
             end;
 
             Grid.Cells[0, R] := str;
@@ -791,6 +797,12 @@ begin
 
    // 全バンド表示中か
    if {(FNewMultiOnly = False) and} (FCurrBand <> D.Band) and (FShowAllBands = False) then begin
+      Result := False;
+      Exit;
+   end;
+
+   // CQのみ？
+   if (FShowCQonly = True) and (D.CQ = False) then begin
       Result := False;
       Exit;
    end;
@@ -1066,6 +1078,8 @@ begin
    for b := b19 to b10g do begin
       FBandScopeMenu[b].Caption := BandString[b];
    end;
+
+   FShowCQonly := False;
 end;
 
 procedure TBandScope2.FormDestroy(Sender: TObject);
@@ -1098,6 +1112,7 @@ begin
    MainForm.AddTaskbar(Handle);
    ApplyShortcut();
    Timer1.Enabled := True;
+   buttonToggleCQonly.Down := FShowCQonly;
 end;
 
 procedure TBandScope2.FormActivate(Sender: TObject);
@@ -1936,6 +1951,12 @@ begin
    end;
 end;
 
+procedure TBandScope2.buttonToggleCQonlyClick(Sender: TObject);
+begin
+   FShowCQonly := buttonToggleCQonly.Down;
+   RewriteBandScope();
+end;
+
 procedure TBandScope2.actionPlayMessageAExecute(Sender: TObject);
 var
    no: Integer;
@@ -2058,6 +2079,7 @@ begin
    end;
 
    ini.WriteBool(section, 'ShowWorked', buttonShowWorked.Down);
+   ini.WriteInteger(section, 'SortMethod', FSortOrder);
    ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
    ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
    ini.WriteBool(section, 'Open', Visible);
@@ -2085,8 +2107,14 @@ begin
    end;
 
    buttonShowWorked.Down := ini.ReadBool(section, 'ShowWorked', True);
+   FSortOrder := ini.ReadInteger(section, 'SortMethod', 0);
    buttonSortByFreq.ImageIndex := ini.ReadInteger(section, 'FreqSortOrder', 0);
    buttonSortByTime.ImageIndex := ini.ReadInteger(section, 'TimeSortOrder', -1);
+   case FSortOrder of
+      0, 1: buttonSortByFreq.Down := True;
+      2, 3: buttonSortByTime.Down := True;
+   end;
+
    FInitialVisible := ini.ReadBool(section, 'Open', False);
    Visible := FInitialVisible;
 end;

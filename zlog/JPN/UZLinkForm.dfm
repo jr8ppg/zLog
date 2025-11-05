@@ -155,4 +155,11 @@ object ZLinkForm: TZLinkForm
     Left = 148
     Top = 32
   end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 500
+    OnTimer = Timer2Timer
+    Left = 148
+    Top = 100
+  end
 end

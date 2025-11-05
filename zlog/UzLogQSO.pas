@@ -371,8 +371,10 @@ type
     function GetActualFreq(b: TBand; strFreq: string): string;
     function GetEndTime(): TDateTime;
     procedure SetPeriod(v: Integer);
+    {$IFNDEF ZSERVER}
     function GetLastCallsign(): string;
     function GetLastNumber(): string;
+    {$ENDIF}
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -430,11 +432,13 @@ type
 
     function LoadFromFile(filename: string): Integer;
     function LoadFromFileEx(filename: string): Integer;
+    {$IFNDEF ZSERVER}
     function LoadFromFileAszLogCsv(Filename: string): Integer;
     function LoadFromFileAsAdif(Filename: string): Integer;
 //    function MergeFile(filename: string): Integer;
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
+    {$ENDIF}
     function IsNewMulti(band: TBand; multi: string): Boolean;
     procedure RenewMulti();
     function IsContainsSameQSO(Q: TQSO): Boolean;
@@ -444,10 +448,10 @@ type
     {$IFNDEF ZSERVER}
     function IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
     function EvaluateQSYCount(nStartIndex: Integer): Integer;
-    {$ENDIF}
 
     function GetLastSerial(aQSO: TQSO): Integer;
     function GetCurrentSerial(aQSO: TQSO): Integer;
+    {$ENDIF}
 
     procedure Renumber();
 
@@ -468,16 +472,18 @@ type
     property EndTime: TDateTime read GetEndTime;
     property Period: Integer read FPeriod write SetPeriod;
 
+    {$IFNDEF ZSERVER}
     property LastCallsign: string read GetLastCallsign;
     property LastNumber: string read GetLastNumber;
+    {$ENDIF}
   end;
 
 implementation
 
 uses
-  UzLogGlobal, UzLogContest, UzLogExtension
+  UzLogGlobal, UzLogExtension
   {$IFNDEF ZSERVER}
-  , Main
+  , UzLogContest, Main
   {$ENDIF};
 
 { TQSO }
@@ -1287,7 +1293,7 @@ begin
    Result.Memo       := ShortString(MemoStr);
    Result.CQ         := FCQ;
    Result.Dupe       := FDupe;
-   Result.Reserve    := Byte(FReserve);
+   Result.Reserve    := 0;
    Result.TX         := Byte(FTX);
    Result.Power2     := FPower2;
    Result.Reserve2   := FReserve2;
@@ -1382,7 +1388,7 @@ begin
    Result.Memo       := ShortString(FMemo);
    Result.CQ         := FCQ;
    Result.Dupe       := FDupe;
-   Result.Reserve    := Byte(FReserve);
+   Result.Reserve    := 0;
    Result.TX         := Byte(FTX);
    Result.Power2     := FPower2;
    Result.Reserve2   := FReserve2;
@@ -1864,6 +1870,7 @@ begin
    end;
 
    ClearDupeCheckList;
+   FQsoIdDic.Clear();
    FSaved := False;
 end;
 
@@ -1996,6 +2003,13 @@ begin
             RebuildDupeCheckList;
             zyloLogUpdated(evUpdateQSO, beforeQSO, afterQSO);
             afterQSO.Free();
+
+   			{$IFDEF ZSERVER}
+            if FQsoIdDic.ContainsKey(beforeQSO.QsoId) = True then begin
+               FQsoIdDic.Remove(beforeQSO.QsoId);
+            end;
+            FQsoIdDic.Add(wQSO.QsoId, wQSO);
+            {$ENDIF}
             Exit;
          end;
       end;
@@ -2305,26 +2319,23 @@ const
                '"Band","Power","Multi1","Multi2","NewMulti1","NewMulti2","Points","Operator","Memo","CQ",' +
                '"Dupe","Reserve","TX","Power2","Reserve2","Reserve3","Freq","QsyViolation","PCName","Forced","QslState","Invalid","Area","RBN Verified"';
 var
-   F: TextFile;
    i: Integer;
    strText: string;
    Q: TQSO;
    offsetmin: Integer;
    slCsv: TStringList;
+   slFile: TStringList;
 begin
    slCsv := TStringList.Create();
    slCsv.StrictDelimiter := True;
    slCsv.QuoteChar := #0;
+   slFile := TStringList.Create();
+   slFile.StrictDelimiter := True;
    try
-      AssignFile(F, Filename);
-      ReWrite(F);
-
       offsetmin := FQsoList[0].RSTsent;
 
-      // BOM
-      Write(F, #$EF + #$BB + #$BF);
-
-      WriteLn(F, UTF8String(csvheader));
+      // CSVÉwÉbÉ_Å[
+      slFile.Add(csvheader);
 
       for i := 1 to FQSOList.Count - 1 do begin
          Q := FQSOList[i];
@@ -2439,12 +2450,14 @@ begin
          // 34óÒñ⁄ RBN Verified
          slCsv.Add(BoolToStr(Q.RbnVerified, True));
 
-         WriteLn(F, UTF8String(slCsv.DelimitedText));
+         slFile.Add(slCsv.DelimitedText);
       end;
 
-      CloseFile(F);
+      slFile.WriteBOM := True;
+      slFile.SaveToFile(Filename, TEncoding.UTF8);
    finally
       slCsv.Free();
+      slFile.Free();
    end;
 end;
 
@@ -2550,6 +2563,8 @@ begin
    FEndTime := IncHour(FStartTime, FPeriod);
 end;
 
+{$IFNDEF ZSERVER}
+
 function TLog.GetLastCallsign(): string;
 var
    txnr, i: Integer;
@@ -2646,6 +2661,8 @@ begin
 
    Result := GetLastSerial(aQSO) + 1;
 end;
+
+{$ENDIF}
 
 // https://wwrof.org/cabrillo/
 // https://wwrof.org/cabrillo/cabrillo-qso-data/
@@ -3963,6 +3980,8 @@ begin
    Result := TotalQSO;
 end;
 
+{$IFNDEF ZSERVER}
+
 function TLog.LoadFromFileAszLogCsv(Filename: string): Integer;
 var
    i: Integer;
@@ -4417,7 +4436,6 @@ begin
    end;
 end;
 
-{$IFNDEF ZSERVER}
 function TLog.IsOtherBandWorked(strCallsign: string; exclude_band: TBand; var workdmulti: string): Boolean;
 var
    Q: TQSO;

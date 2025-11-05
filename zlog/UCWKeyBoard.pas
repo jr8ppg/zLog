@@ -100,6 +100,7 @@ type
     FCountMax: Integer;
     FSendPos: Integer;
     FDonePos: Integer;
+    FSendStr: Boolean;
     FBitmap: TBitmap;
     FTickCount: DWORD;
     procedure PlayMessage(nID: Integer; cb: Integer; no: Integer);
@@ -144,6 +145,7 @@ begin
    FBitmap := TBitmap.Create();
    FSendPos := 0;
    FDonePos := 0;
+   FSendStr := False;
    Console.Clear();
    Console.Font.Charset := DEFAULT_CHARSET;
    Console.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -263,6 +265,8 @@ begin
    else begin
       // ÇPï∂éöëóêM
       if MainForm.StartCWKeyboard = False then begin
+         MainForm.StartCWKeyboard := True;
+         FSendStr := False;
          SendChar(K);
       end;
    end;
@@ -419,7 +423,35 @@ begin
 
       Console.SelText := S;
 
-      SendChar(Console.Text[FSendPos + 1]);
+      MainForm.StartCWKeyboard := True;
+      FSendStr := True;
+
+      if dmZLogKeyer.UseWinKeyer = True then begin
+         if FSendStr = False then begin
+            SendChar(Console.Text[FSendPos + 1]);
+         end
+         else begin
+            SendMessage(Handle, WM_ZLOG_UPDATE_PROGRESS, 0, 0);
+            dmZLogKeyer.WinKeyerSendStr2(S);
+         end;
+      end
+      else begin
+         if FSendStr = False then begin
+            SendChar(Console.Text[FSendPos + 1]);
+         end
+         else begin
+            SendMessage(Handle, WM_ZLOG_UPDATE_PROGRESS, 0, 0);
+
+            dmZLogKeyer.PauseCW;
+            if dmZLogGlobal.Settings.CW._FIFO then begin
+               dmZLogKeyer.SendStrFIFO(nID, S);
+            end
+            else begin
+               dmZLogKeyer.SendStr(nID, S);
+            end;
+            dmZLogKeyer.ResumeCW;
+         end;
+      end;
    end;
 end;
 
@@ -434,6 +466,8 @@ begin
    nID := MainForm.CurrentRigID;
    if dmZLogKeyer.KeyingPort[nID] <> tkpRig then begin
       if MainForm.StartCWKeyboard = False then begin
+         MainForm.StartCWKeyboard := True;
+         FSendStr := False;
          ch := GetProsignsChar(msg);
          SendChar(ch);
       end;
@@ -549,7 +583,7 @@ begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('tick=' + IntToStr(GetTickCount() - FTickCount) + ' milisec.'));
       {$ENDIF}
-      buttonClear.Click();
+      Clear();
    end;
 end;
 
@@ -569,8 +603,6 @@ begin
       OneCharSentProc();
       Exit;
    end;
-
-   MainForm.StartCWKeyboard := True;
 
    nID := MainForm.GetTxRigID();
 
@@ -658,7 +690,12 @@ begin
    end;
 
    // ÇPï∂éöëóêM
-   SendChar(ch);
+   if FSendStr = False then begin
+      SendChar(ch);
+   end
+   else begin
+      SendMessage(Handle, WM_ZLOG_UPDATE_PROGRESS, 0, 0);
+   end;
 
    Console.SelStart := len;
 end;
@@ -735,6 +772,9 @@ begin
       ch := S[FSendPos + 1];
       if ch = '[' then begin
          Console.SelLength := 4;
+      end
+      else if ch = '\' then begin
+         Console.SelLength := 3;
       end
       else begin
          Console.SelLength := 1;

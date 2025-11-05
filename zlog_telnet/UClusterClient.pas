@@ -17,6 +17,15 @@ const
 type
   TLoginStep = ( lsNone = 0, lsReqUser, lsReqPassword, lsLogined, lsLoginIncorrect );
 
+  TCommProcessThread = class(TThread)
+  private
+    FParent: TForm;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(formParent: TForm);
+  end;
+
   TClusterClient = class(TForm)
     Timer1: TTimer;
     Panel1: TPanel;
@@ -102,6 +111,8 @@ type
     FForceReconnectIntervalMin: Integer;           // 強制再接続時間
     FConnectTime: TDateTime;                       // 接続時刻
 
+    FCommProcessThread: TCommProcessThread;
+
     FPacketClusterList: TTelnetSettingList;        // PacketCluster接続先リスト
 
     FSpotterList: TStringList;                     // スポッターリスト
@@ -118,6 +129,7 @@ type
     FAutoLogined: Boolean;                         // True:Clusterへ自動ログインしました
 
     FLineBreak: string;
+    FLocalEcho: Boolean;
     procedure LoadSettings();
     procedure SaveSettings();
     procedure ImplementOptions;
@@ -134,6 +146,9 @@ type
     procedure SelectSite(Index: Integer);
     procedure ConnectZServer();
     procedure InitProcess();
+    procedure TerminateCommProcessThread();
+    procedure StartAutoReConnect();
+    procedure StopAutoReConnect();
   public
     { Public declarations }
   end;
@@ -165,9 +180,8 @@ begin
    FZServerSecure := False;
    FZServerLoginStep := lsNone;
    FPacketClusterList := TTelnetSettingList.Create();
-   FReConnectCount := 0;
-   FRetryIntervalCount := 0;
-   timerReConnect.Enabled := False;
+
+   StopAutoReConnect();
 
    FCommBuffer := TStringList.Create;
    Timer1.Enabled := False;
@@ -195,12 +209,16 @@ begin
    FDenyList.Sorted := True;
    FDenyList.CaseSensitive := False;
    FDenyList.Duplicates := dupIgnore;
+   FCommProcessThread := nil;
 end;
 
 procedure TClusterClient.FormDestroy(Sender: TObject);
 begin
    Telnet.Close();
    ZServer.Close();
+
+   TerminateCommProcessThread();
+
    SaveSettings();
    FCommBuffer.Free();
 
@@ -235,19 +253,14 @@ end;
 
 procedure TClusterClient.EditKeyPress(Sender: TObject; var Key: Char);
 var
-   boo: boolean;
    s : string;
 begin
-   boo := False;
-
- //  7 : boo := dmZlogGlobal.Settings._cluster_telnet.FLocalEcho;
-
    s := '';
    if Key = Chr($0D) then begin
 
       WriteData(Edit.Text + FLineBreak);
 
-      if boo then begin
+      if FLocalEcho then begin
          WriteConsole(Edit.Text + FLineBreak);
       end;
 
@@ -475,6 +488,17 @@ var
 label
    nextnext;
 begin
+   if (FZServerSecure = False) then begin
+      if (ZServer.State <> wsConnected) or (Telnet.IsConnected() = False) then begin
+         Exit;
+      end;
+   end
+   else begin
+      if (FZServerLoginStep <> lsLogined) or (ZServer.State <> wsConnected) or (Telnet.IsConnected() = False) then begin
+         Exit;
+      end;
+   end;
+
    while FCommBuffer.Count > 0 do begin
       strTemp := FCommBuffer.Strings[0];
 
@@ -558,9 +582,7 @@ begin
          if (FReConnectCount >= FReConnectMax) then begin
             WriteLineConsole(UComm_ExceededLimit);
 //            WriteStatusLine('');
-            timerReconnect.Enabled := False;
-            FReConnectCount := 0;
-            FRetryIntervalCount := 0;
+            StopAutoReConnect();
             Exit;
          end;
 
@@ -571,15 +593,18 @@ begin
          buttonConnect.Click();
          Inc(FReConnectCount);
       end;
-
-      if (FZServerSecure = False) and (ZServer.State = wsConnected) and (Telnet.IsConnected() = True) then begin
-         CommProcess;
-      end;
-      if (FZServerSecure = True) and (FZServerLoginStep = lsLogined) and (ZServer.State = wsConnected) and (Telnet.IsConnected() = True) then begin
-         CommProcess;
-      end;
    finally
       Timer1.Enabled := True;
+   end;
+end;
+
+procedure TClusterClient.TerminateCommProcessThread();
+begin
+   if Assigned(FCommProcessThread) then begin
+      FCommProcessThread.Terminate();
+      FCommProcessThread.WaitFor();
+      FCommProcessThread.Free();
+      FCommProcessThread := nil;
    end;
 end;
 
@@ -677,9 +702,15 @@ begin
          end;
       end;
 
+      FCommProcessThread := TCommProcessThread.Create(Self);
+      FCommProcessThread.Start();
+
       buttonConnect.Caption := UComm_Disconnect;
       WriteLineConsole('connected to ' + Telnet.Host);
       Caption := Application.Title + ' - ' + Telnet.Host + ' [' + FZServerClientName + ']';
+
+      StopAutoReConnect();
+
       FAutoLogined := False;
 
       FRetryIntervalCount := 0;
@@ -716,6 +747,12 @@ begin
 
    fname := ExtractFilePath(Application.ExeName) + 'spotter_list.txt';
    FSpotterList.SaveToFile(fname);
+
+   if FDisconnectClicked = False then begin
+      StartAutoReConnect();
+   end;
+
+   TerminateCommProcessThread();
 end;
 
 procedure TClusterClient.timerForceReconnectTimer(Sender: TObject);
@@ -1142,6 +1179,8 @@ begin
    end;
 
    Edit.Items.CommaText := setting.CommandList;
+
+   FLocalEcho := setting.LocalEcho;
 end;
 
 procedure TClusterClient.ConnectZServer();
@@ -1167,6 +1206,46 @@ begin
    // PCNAMEコマンドで端末名を送る
    S := ZLinkHeader + ' PCNAME ' + FZServerClientName;
    ZServer.SendStr(S + FLineBreak);
+end;
+
+procedure TClusterClient.StartAutoReConnect();
+begin
+//   FReConnectMax := dmZLogGlobal.Settings.FClusterReConnectMax;
+   FReConnectCount := 0;
+//   FRetryIntervalSec := dmZLogGlobal.Settings.FClusterRetryIntervalSec;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := True;
+end;
+
+procedure TClusterClient.StopAutoReConnect();
+begin
+   FReConnectCount := 0;
+   FRetryIntervalCount := 0;
+   timerReConnect.Enabled := False;
+end;
+
+{ TCommProcessThread }
+
+constructor TCommProcessThread.Create(formParent: TForm);
+begin
+   inherited Create(True);
+   FParent := formParent;
+end;
+
+procedure TCommProcessThread.Execute();
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** begin - TCommProcessThread.Execute - ****'));
+   {$ENDIF}
+
+   repeat
+      Sleep(100);
+      TClusterClient(FParent).CommProcess;
+   until Terminated;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** end - TCommProcessThread.Execute - ****'));
+   {$ENDIF}
 end;
 
 end.

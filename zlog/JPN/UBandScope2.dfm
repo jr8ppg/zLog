@@ -165,12 +165,26 @@ object BandScope2: TBandScope2
       Top = 0
       Width = 70
       Height = 19
-      Hint = 'Toggle ALL/Current band'
+      Hint = #20840#12496#12531#12489'/'#29694#22312#12496#12531#12489#12398#20999#26367
       Anchors = [akTop, akRight]
       Caption = 'ALL/CUR'
       ParentShowHint = False
       ShowHint = True
       OnClick = buttonToggleAllCurClick
+    end
+    object buttonToggleCQonly: TSpeedButton
+      Left = 127
+      Top = 0
+      Width = 51
+      Height = 19
+      Hint = #20840#12473#12509#12483#12488#34920#31034'/CQ'#12398#12415#34920#31034#12398#20999#26367
+      AllowAllUp = True
+      Anchors = [akTop, akRight]
+      GroupIndex = 6
+      Caption = 'CQ'#12398#12415
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = buttonToggleCQonlyClick
     end
   end
   object tabctrlBandSelector: TTabControl
