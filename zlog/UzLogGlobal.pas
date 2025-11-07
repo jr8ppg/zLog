@@ -651,8 +651,9 @@ function PXMoreX(a, b : string) : boolean; // double char index
 function HexStrToInt(str : string) : integer;
 function Less(x, y : integer): integer;
 function More(x, y : integer): integer;
-function FillRight(s : string; len : integer) : string;
-function FillLeft(s : string; len : integer) : string;
+function FillRight(S: string; len: Integer): string;
+function FillRight2(S: string; len: Integer): string;
+function FillLeft(S: string; len: Integer): string;
 function GetUTC: TDateTime;
 function GetContestName(Filename: string) : string;
 function CoreCall(call : string) : string;
@@ -4040,17 +4041,33 @@ begin
       Result := y;
 end;
 
-function FillRight(S: string; len: integer): string;
+function FillRight(S: string; len: Integer): string;
 var
    sjis: AnsiString;
 begin
    sjis := AnsiString(S);
    sjis := sjis + AnsiString(DupeString(' ', len));
    sjis := Copy(sjis, 1, len);
-   Result := String(sjis);
+   Result := string(sjis);
 end;
 
-function FillLeft(S: string; len: integer): string;
+function FillRight2(S: string; len: Integer): string;
+var
+   sjis: AnsiString;
+begin
+   sjis := AnsiString(S);
+   if Length(sjis) >= len then begin
+      sjis := sjis + ' ';
+   end
+   else begin
+      sjis := sjis + AnsiString(DupeString(' ', len));
+      sjis := Copy(sjis, 1, len);
+   end;
+
+   Result := string(sjis);
+end;
+
+function FillLeft(S: string; len: Integer): string;
 var
    sjis: AnsiString;
 begin
