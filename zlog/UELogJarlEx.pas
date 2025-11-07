@@ -1012,41 +1012,41 @@ begin
    else begin
       S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
    end;
-   S := S + FillRight(q.CallSign, 13);
-   S := S + FillRight(IntToStr(q.RSTSent), 4);
-   S := S + FillRight(q.NrSent, 8);
-   S := S + FillRight(IntToStr(q.RSTRcvd), 4);
-   S := S + FillRight(q.NrRcvd, 8);
+   S := S + FillRight2(q.CallSign, 13);
+   S := S + FillRight2(IntToStr(q.RSTSent), 4);
+   S := S + FillRight2(q.NrSent, 8);
+   S := S + FillRight2(IntToStr(q.RSTRcvd), 4);
+   S := S + FillRight2(q.NrRcvd, 8);
 
    if q.NewMulti1 then begin
-      S := S + FillRight(q.Multi1, 6);
+      S := S + FillRight2(q.Multi1, 6);
    end
    else begin
       S := S + '-     ';
    end;
 
    if q.NewMulti2 then begin
-      S := S + FillRight(q.Multi2, 6);
+      S := S + FillRight2(q.Multi2, 6);
    end
    else begin
       S := S + '-     ';
    end;
 
-   S := S + FillRight(MHzString[q.Band], 5);
-   S := S + FillRight(ModeString[q.Mode], 5);
+   S := S + FillRight2(MHzString[q.Band], 5);
+   S := S + FillRight2(ModeString[q.Mode], 5);
    if fValid = True then begin
-      S := S + FillRight(IntToStr(q.Points), 3);
+      S := S + FillRight2(IntToStr(q.Points), 3);
    end
    else begin
-      S := S + FillRight(IntToStr(0), 3);
+      S := S + FillRight2(IntToStr(0), 3);
    end;
 
    if q.Operator <> '' then begin
-      S := S + FillRight('%%' + q.Operator + '%%', 19);
+      S := S + FillRight2('%%' + q.Operator + '%%', 19);
    end;
 
    if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
-      S := S + FillRight('TX#' + IntToStr(q.TX), 6);
+      S := S + FillRight2('TX#' + IntToStr(q.TX), 6);
    end;
 
 //   S := S + q.Memo;
