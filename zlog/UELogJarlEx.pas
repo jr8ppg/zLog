@@ -55,7 +55,6 @@ type
     datetimeLicenseDate: TDateTimePicker;
     labelAge: TLabel;
     comboAge: TComboBox;
-    checkFieldExtend1: TCheckBox;
     GroupBox1: TGroupBox;
     mOath: TMemo;
     radioOrganizerJarl: TRadioButton;
@@ -151,7 +150,7 @@ type
     labelLicense: TLabel;
     buttonWebUpload: TButton;
     ScrollBox1: TScrollBox;
-    checkFieldExtend2: TCheckBox;
+    checkFieldExtend: TCheckBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -179,9 +178,9 @@ type
     procedure WriteSummarySheetR1(SL: TStringList);
     procedure WriteLogSheetR1(SL: TStringList);
     procedure WriteSummarySheetR2(SL: TStringList);
-    procedure WriteLogSheetR2(SL: TStringList; fExtend1, fExtend2: Boolean);
+    procedure WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
     function FormatQSO_v1(q: TQSO; fValid: Boolean): string;
-    function FormatQSO_v2(q: TQSO; fExtend1, fExtend2: Boolean): string;
+    function FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
     function IsNewcomer(cate: string): Boolean;
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
@@ -426,8 +425,7 @@ begin
          else radioOrganizerJarl.Checked := True;
       end;
 
-      checkFieldExtend1.Checked := ini.ReadBool('LogSheet', 'FieldExtend1', True);
-      checkFieldExtend2.Checked := ini.ReadBool('LogSheet', 'FieldExtend2', False);
+      checkFieldExtend.Checked := ini.ReadBool('LogSheet', 'FieldExtend', False);
 
       if Log.ScoreCoeff > 0 then begin
          edFDCoefficient.Text := FloatToStr(Log.ScoreCoeff);
@@ -520,7 +518,7 @@ begin
    WriteSummarySheetR2(SL);
 
    // ログシート
-   WriteLogSheetR2(SL, checkFieldExtend1.Checked, checkFieldExtend2.Checked);
+   WriteLogSheetR2(SL, checkFieldExtend.Checked);
 
    Result := True;
 end;
@@ -602,8 +600,7 @@ begin
          ini.WriteInteger('SummaryInfo', 'Organizer', 1);
       end;
 
-      ini.WriteBool('LogSheet', 'FieldExtend1', checkFieldExtend1.Checked);
-      ini.WriteBool('LogSheet', 'FieldExtend2', checkFieldExtend2.Checked);
+      ini.WriteBool('LogSheet', 'FieldExtend', checkFieldExtend.Checked);
 
       ini.UpdateFile();
    finally
@@ -827,7 +824,7 @@ var
    s: string;
    Q: TQSO;
 begin
-   SL.Add('<LOGSHEET TYPE=ZLOG.ALL>');
+   SL.Add('<LOGSHEET TYPE="ZLOG.ALL">');
 
    SL.Add('Date       Time  Callsign    RSTs ExSent RSTr ExRcvd  Mult  Mult2 MHz  Mode Pt Memo');
    for i := 1 to Log.TotalQSO do begin
@@ -949,15 +946,14 @@ DATE(JST)	TIME	BAND	MODE	CALLSIGN	SENTNo	RCVDNo	Multi	PTS
 2016-04-23	22:02	144	SSB	JA2***	59	20L	59	20L	-	1
 2016-04-23	22:15	7	CW	JE3***	599	20M	599	25M	25	1
 }
-procedure TformELogJarlEx.WriteLogSheetR2(SL: TStringList; fExtend1, fExtend2: Boolean);
+procedure TformELogJarlEx.WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
 var
    i: Integer;
    s: string;
    s2: string;
-   s3: string;
    Q: TQSO;
 begin
-   SL.Add('<LOGSHEET TYPE=ZLOG>');
+   SL.Add('<LOGSHEET TYPE="ZLOG">');
 
    if Log.QsoList[0].RSTsent = _USEUTC then begin
       s := 'DATE(UTC)';
@@ -966,21 +962,14 @@ begin
       s := 'DATE(JST)';
    end;
 
-   if fExtend1 = True then begin
-      s2 := TAB + 'Multi1' + TAB + 'Multi2' + TAB + 'Points';
+   if fExtend = True then begin
+      s2 := TAB + 'TX#';
    end
    else begin
       s2 := '';
    end;
 
-   if fExtend2 = True then begin
-      s3 := TAB + 'TX#';
-   end
-   else begin
-      s3 := '';
-   end;
-
-   SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVDNo' + s2 + s3);
+   SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVDNo' + TAB + 'Multi' + TAB + 'Points' + s2);
 
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
@@ -994,7 +983,7 @@ begin
 //         Continue;
 //      end;
 
-      s := FormatQSO_v2(Q, fExtend1, fExtend2);
+      s := FormatQSO_v2(Q, fExtend);
       SL.Add(s);
    end;
 
@@ -1054,7 +1043,7 @@ begin
    Result := S;
 end;
 
-function TformELogJarlEx.FormatQSO_v2(q: TQSO; fExtend1, fExtend2: Boolean): string;
+function TformELogJarlEx.FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
 var
    slLine: TStringList;
 begin
@@ -1077,25 +1066,16 @@ begin
       slLine.Add(IntToStr(q.RSTsent) + ' ' + q.NrSent);
       slLine.Add(IntToStr(q.RSTrcvd) + ' ' + q.NrRcvd);
 
-      if fExtend1 = True then begin
-         if q.NewMulti1 = True then begin
-            slLine.Add(q.Multi1);
-         end
-         else begin
-            slLine.Add('');
-         end;
-
-         if q.NewMulti2 = True then begin
-            slLine.Add(q.Multi2);
-         end
-         else begin
-            slLine.Add('');
-         end;
-
-         slLine.Add(IntToStr(q.Points));
+      if q.NewMulti1 = True then begin
+         slLine.Add(q.Multi1);
+      end
+      else begin
+         slLine.Add('');
       end;
 
-      if fExtend2 = True then begin
+      slLine.Add(IntToStr(q.Points));
+
+      if fExtend = True then begin
          slLine.Add('TX#' + IntToStr(q.TX));
       end;
 
@@ -1254,8 +1234,7 @@ begin
          edClubName.Visible := True;
          labelLicense.Visible := True;
          edLicense.Visible := True;
-         checkFieldExtend1.Visible := False;
-         checkFieldExtend2.Visible := False;
+         checkFieldExtend.Visible := False;
          buttonWebUpload.Enabled := False;
       end;
 
@@ -1276,8 +1255,7 @@ begin
          edClubName.Visible := False;
          labelLicense.Visible := False;
          edLicense.Visible := False;
-         checkFieldExtend1.Visible := True;
-         checkFieldExtend2.Visible := True;
+         checkFieldExtend.Visible := True;
          buttonWebUpload.Enabled := True;
       end;
    end;
