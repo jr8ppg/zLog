@@ -386,12 +386,16 @@ begin
       list.Text := AdjustLineBreaks(CtoD(f), tlbsLF);
       for line in list do begin
          vals := TRegEx.Split(line, '\s+');
-         if Length(vals) <> 2 then begin
+         if Length(vals) = 0 then begin
             Continue;
          end;
          city := TCity.Create;
          city.CityNumber := vals[0];
-         city.CityName := vals[1];
+
+         if Length(vals) >= 2 then begin
+            city.CityName := vals[1];
+         end;
+
          city.Index := CityList.List.Count;
          CityList.List.Add(city);
          CityList.SortedMultiList.AddObject(city.CityNumber, city);
