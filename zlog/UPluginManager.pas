@@ -155,6 +155,7 @@ begin
 	text := TStringList.Create;
 	for item in list do text.Append(item);
    dmZLogGlobal.Settings._pluginlist := text.DelimitedText;
+   dmZLogGlobal.SaveCurrentSettings();
 	text.Free;
 end;
 
