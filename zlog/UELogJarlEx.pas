@@ -1070,7 +1070,7 @@ begin
          slLine.Add(q.Multi1);
       end
       else begin
-         slLine.Add('');
+         slLine.Add('-');
       end;
 
       slLine.Add(IntToStr(q.Points));
