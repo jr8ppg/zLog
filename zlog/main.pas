@@ -8217,6 +8217,7 @@ begin
             end
             else begin
                fNewContest := True;
+               dmZLogGlobal.FCurrentFileName := '';
             end;
          end;
       end;
