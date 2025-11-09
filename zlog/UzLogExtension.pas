@@ -382,17 +382,23 @@ var
 	vals: TArray<string>;
 begin
 	list := TStringList.Create;
-	list.Text := AdjustLineBreaks(CtoD(f), tlbsLF);
-	for line in list do begin
-		city := TCity.Create;
-		vals := TRegEx.Split(line, '\s+');
-		city.CityNumber := vals[0];
-		city.CityName := vals[1];
-		city.Index := CityList.List.Count;
-		CityList.List.Add(city);
-		CityList.SortedMultiList.AddObject(city.CityNumber, city);
-	end;
-	list.Free;
+   try
+      list.Text := AdjustLineBreaks(CtoD(f), tlbsLF);
+      for line in list do begin
+         vals := TRegEx.Split(line, '\s+');
+         if Length(vals) <> 2 then begin
+            Continue;
+         end;
+         city := TCity.Create;
+         city.CityNumber := vals[0];
+         city.CityName := vals[1];
+         city.Index := CityList.List.Count;
+         CityList.List.Add(city);
+         CityList.SortedMultiList.AddObject(city.CityNumber, city);
+      end;
+   finally
+   	list.Free;
+   end;
 end;
 
 /// <summary>
