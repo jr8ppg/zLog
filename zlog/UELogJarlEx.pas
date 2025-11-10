@@ -151,6 +151,7 @@ type
     buttonWebUpload: TButton;
     ScrollBox1: TScrollBox;
     checkFieldExtend: TCheckBox;
+    Label3: TLabel;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -163,6 +164,8 @@ type
     procedure TabControl1Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonWebUploadClick(Sender: TObject);
+    procedure ControlEnter(Sender: TObject);
+    procedure ControlExit(Sender: TObject);
   private
     { Private éŒ¾ }
     FScoreBand: array[b19..HiBand] of TCheckBox;
@@ -175,6 +178,7 @@ type
     function CreateELogR2(SL: TStringList): Boolean;
     procedure RemoveBlankLines(M : TMemo);
     procedure InitializeFields;
+    procedure RequiredInputCheck(ctrl: TObject);
     procedure WriteSummarySheetR1(SL: TStringList);
     procedure WriteLogSheetR1(SL: TStringList);
     procedure WriteSummarySheetR2(SL: TStringList);
@@ -292,6 +296,8 @@ end;
 procedure TformELogJarlEx.FormShow(Sender: TObject);
 var
    scale: double;
+   i: Integer;
+   ctrl: TComponent;
 begin
    if (MyContest is TALLJAContest) or
       (MyContest is TSixDownContest) or
@@ -314,6 +320,31 @@ begin
    end
    else if scale >= 1.5 then begin
       Height := 650;
+   end;
+
+   for i := 0 to ComponentCount - 1 do begin
+      ctrl := Components[i];
+      if ctrl is TLabel then begin
+         if (TEdit(ctrl).Tag = 1) then begin
+            if (MyContest is TFDContest) then begin
+               TLabel(ctrl).Font.Color := clBlue;
+            end
+            else begin
+               TLabel(ctrl).Font.Color := clWindowText;
+            end;
+         end;
+      end;
+
+      if ctrl is TEdit then begin
+         if Assigned(TEdit(ctrl).OnEnter) then begin
+            TEdit(ctrl).OnEnter(ctrl);
+         end;
+      end;
+      if ctrl is TMemo then begin
+         if Assigned(TMemo(ctrl).OnEnter) then begin
+            TMemo(ctrl).OnEnter(ctrl);
+         end;
+      end;
    end;
 end;
 
@@ -727,6 +758,16 @@ begin
    end;
 end;
 
+procedure TformELogJarlEx.ControlEnter(Sender: TObject);
+begin
+   RequiredInputCheck(Sender);
+end;
+
+procedure TformELogJarlEx.ControlExit(Sender: TObject);
+begin
+   RequiredInputCheck(Sender);
+end;
+
 procedure TformELogJarlEx.edFDCoefficientChange(Sender: TObject);
 var
    E: Extended;
@@ -740,6 +781,37 @@ end;
 procedure TformELogJarlEx.buttonCancelClick(Sender: TObject);
 begin
    Close;
+end;
+
+procedure TformELogJarlEx.RequiredInputCheck(ctrl: TObject);
+var
+   fFieldDay: Boolean;
+begin
+   fFieldDay := (MyContest is TFDContest);
+
+   if ctrl is TEdit then begin
+      if TEdit(ctrl).Tag = 1 then begin
+         if fFieldDay = False then begin
+            Exit;
+         end;
+      end;
+
+      if TEdit(ctrl).Text = '' then begin
+         TEdit(ctrl).Color := $00EADEFF;   // light pink
+      end
+      else begin
+         TEdit(ctrl).Color := clWindow;
+      end;
+   end;
+
+   if ctrl is TMemo then begin
+      if TMemo(ctrl).Text = '' then begin
+         TMemo(ctrl).Color := $00EADEFF;   // light pink
+      end
+      else begin
+         TMemo(ctrl).Color := clWindow;
+      end;
+   end;
 end;
 
 procedure TformELogJarlEx.WriteSummarySheetR1(SL: TStringList);

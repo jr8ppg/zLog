@@ -185,6 +185,7 @@ object formELogJarlEx: TformELogJarlEx
         Caption = #36939#29992#32773#12398#12467#12540#12523#12469#12452#12531
       end
       object Label6: TLabel
+        Tag = 1
         Left = 16
         Top = 96
         Width = 95
@@ -265,8 +266,17 @@ object formELogJarlEx: TformELogJarlEx
         Width = 74
         Height = 12
         Caption = 'E-mail'#12450#12489#12524#12473
+        Color = clBtnFace
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -12
+        Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
       end
       object Label13: TLabel
+        Tag = 1
         Left = 16
         Top = 307
         Width = 83
@@ -293,6 +303,7 @@ object formELogJarlEx: TformELogJarlEx
         ParentFont = False
       end
       object Label15: TLabel
+        Tag = 1
         Left = 243
         Top = 307
         Width = 115
@@ -365,6 +376,8 @@ object formELogJarlEx: TformELogJarlEx
         ParentFont = False
         ScrollBars = ssVertical
         TabOrder = 6
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object mComments: TMemo
         Left = 16
@@ -470,6 +483,8 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 3
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edCategoryCode: TEdit
         Left = 108
@@ -483,7 +498,8 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 1
-        OnExit = edCategoryCodeExit
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edCategoryName: TEdit
         Left = 265
@@ -536,6 +552,8 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 0
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edDate: TEdit
         Left = 443
@@ -549,6 +567,8 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 23
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edEMail: TEdit
         Left = 108
@@ -562,8 +582,11 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 9
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edFDCoefficient: TEdit
+        Tag = 1
         Left = 156
         Top = 92
         Width = 45
@@ -576,6 +599,8 @@ object formELogJarlEx: TformELogJarlEx
         ParentFont = False
         TabOrder = 5
         OnChange = edFDCoefficientChange
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edLicense: TEdit
         Left = 172
@@ -615,6 +640,8 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 8
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edPower: TEdit
         Left = 236
@@ -628,8 +655,11 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 10
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edPowerSupply: TEdit
+        Tag = 1
         Left = 365
         Top = 303
         Width = 116
@@ -641,8 +671,11 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 13
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edQTH: TEdit
+        Tag = 1
         Left = 108
         Top = 303
         Width = 121
@@ -654,6 +687,8 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 12
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edSignature: TEdit
         Left = 704
@@ -667,6 +702,8 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 24
+        OnEnter = ControlEnter
+        OnExit = ControlExit
       end
       object edTEL: TEdit
         Left = 108
@@ -684,9 +721,8 @@ object formELogJarlEx: TformELogJarlEx
       object GroupBox1: TGroupBox
         Left = 16
         Top = 538
-        Width = 762
-        Height = 72
-        Caption = #23459#35475#25991
+        Width = 809
+        Height = 68
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -694,9 +730,22 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         TabOrder = 22
-        object mOath: TMemo
-          Left = 72
+        object Label3: TLabel
+          Left = 9
           Top = 14
+          Width = 36
+          Height = 12
+          Caption = #23459#35475#25991
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -12
+          Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+          Font.Style = []
+          ParentFont = False
+        end
+        object mOath: TMemo
+          Left = 115
+          Top = 10
           Width = 681
           Height = 49
           Font.Charset = DEFAULT_CHARSET
@@ -710,10 +759,12 @@ object formELogJarlEx: TformELogJarlEx
           ParentFont = False
           ScrollBars = ssVertical
           TabOrder = 2
+          OnEnter = ControlEnter
+          OnExit = ControlExit
         end
         object radioOrganizerJarl: TRadioButton
-          Left = 10
-          Top = 17
+          Left = 56
+          Top = 13
           Width = 56
           Height = 17
           Caption = 'JARL'
@@ -723,8 +774,8 @@ object formELogJarlEx: TformELogJarlEx
           OnClick = radioOrganizerJarlClick
         end
         object radioOrganizerOther: TRadioButton
-          Left = 10
-          Top = 37
+          Left = 56
+          Top = 39
           Width = 56
           Height = 17
           Caption = #20027#20652#32773
