@@ -900,13 +900,8 @@ begin
 
    SL.Add('<OPPLACE>' + edQTH.Text + '</OPPLACE>');
    SL.Add('<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
-
-   SL.Add('<EQUIPMENT>');
-   SL.Add(memoEquipment.Text);
-   SL.Add('</EQUIPMENT>');
-
+   SL.Add('<EQUIPMENT>' + memoEquipment.Text + '</EQUIPMENT>');
    SL.Add('<COMMENTS>' + mComments.Text + '</COMMENTS>');
-
    SL.Add('<REGCLUBNUMBER>' + edClubID.Text + '</REGCLUBNUMBER>');
    SL.Add('<REGCLUBNAME>' + edClubName.Text + '</REGCLUBNAME>');
 
