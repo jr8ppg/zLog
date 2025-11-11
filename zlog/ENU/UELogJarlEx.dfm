@@ -110,7 +110,7 @@ object formELogJarlEx: TformELogJarlEx
         Height = 12
         Caption = #24180#40802'(XS,CS,SOSV,SOJR'#24517#38920')'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlue
+        Font.Color = clWindowText
         Font.Height = -12
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
@@ -232,7 +232,7 @@ object formELogJarlEx: TformELogJarlEx
         Height = 12
         Caption = #23616#20813#35377#24180#26376#26085'(PN'#24517#38920')'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlue
+        Font.Color = clWindowText
         Font.Height = -12
         Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
         Font.Style = []
@@ -429,6 +429,8 @@ object formELogJarlEx: TformELogJarlEx
         Height = 20
         DropDownCount = 10
         TabOrder = 18
+        OnEnter = ControlEnter
+        OnExit = ControlExit
         Items.Strings = (
           '70'
           '71'
@@ -499,7 +501,7 @@ object formELogJarlEx: TformELogJarlEx
         ParentFont = False
         TabOrder = 1
         OnEnter = ControlEnter
-        OnExit = ControlExit
+        OnExit = edCategoryCodeExit
       end
       object edCategoryName: TEdit
         Left = 265

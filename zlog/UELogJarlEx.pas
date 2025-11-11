@@ -756,6 +756,21 @@ begin
       end;
       SetBandUsed(b);
    end;
+
+   if IsNewcomer(edCategoryCode.Text) then begin
+      labelLicenseDate.Font.Color := clBlue;
+   end
+   else begin
+      labelLicenseDate.Font.Color := clWindowText;
+   end;
+   if IsSeniorJunior(edCategoryCode.Text) then begin
+      labelAge.Font.Color := clBlue;
+   end
+   else begin
+      labelAge.Font.Color := clWindowText;
+   end;
+
+   RequiredInputCheck(Sender);
 end;
 
 procedure TformELogJarlEx.ControlEnter(Sender: TObject);
@@ -810,6 +825,19 @@ begin
       end
       else begin
          TMemo(ctrl).Color := clWindow;
+      end;
+   end;
+
+   if IsNewcomer(edCategoryCode.Text) then begin
+
+   end;
+
+   if IsSeniorJunior(edCategoryCode.Text) then begin
+      if comboAge.Text = '' then begin
+         comboAge.Color := $00EADEFF;   // light pink
+      end
+      else begin
+         comboAge.Color := clWindow;
       end;
    end;
 end;
