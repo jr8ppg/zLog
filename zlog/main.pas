@@ -7605,6 +7605,7 @@ var
    ext: string;
    i: Integer;
    S: string;
+   dlg2: TformExportCabrillo;
 begin
    FileImportDialog.InitialDir := dmZlogGlobal.LogPath;
    FileImportDialog.FileName := '';
@@ -7641,6 +7642,22 @@ begin
 
    if ext = '.ADI' then begin
       i := Log.LoadFromFileAsAdif(ff);
+   end;
+
+   if ext = '.CBR' then begin
+      dlg2 := TformExportCabrillo.Create(Self);
+      try
+         if dlg2.ShowModal() = mrCancel then begin
+            Exit;
+         end;
+         i := Log.LoadFromFileAsCabrillo(ff, dlg2.TimeZoneOffset);
+      finally
+         dlg2.Release();
+      end;
+   end;
+
+   if ext = '.LG8' then begin
+      i := Log.LoadFromFileAsCtestwin(ff);
    end;
 
    if i = 0 then begin

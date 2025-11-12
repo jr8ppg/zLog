@@ -199,6 +199,12 @@ const
                                              '6m','2m','70cm','23cm','13cm',
                                              '6cm','3cm');
 
+  CabrilloBandString: array[b19..b10g] of string = (
+    ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
+    '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
+  );
+  CabrilloModeString: array[mCW..mOther] of string = ('CW','PH','FM','PH','RY','DG','DG','  ');
+
   ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','FT4','FT8','Other');
   ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','DG','DG','Other');
 
