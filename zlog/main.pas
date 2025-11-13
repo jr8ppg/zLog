@@ -7660,6 +7660,10 @@ begin
       i := Log.LoadFromFileAsCtestwin(ff);
    end;
 
+   if ext = '.TXT' then begin
+      i := Log.LoadFromFileAsJarlPubLog(ff);
+   end;
+
    if i = 0 then begin
       (* if none of the avobe formats succeeed *)
       i := zyloImportFile(ff);

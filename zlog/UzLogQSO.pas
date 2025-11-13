@@ -462,6 +462,7 @@ type
     function LoadFromFileAsAdif(Filename: string): Integer;
     function LoadFromFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer): Integer;
     function LoadFromFileAsCtestwin(Filename: string): Integer;
+    function LoadFromFileAsJarlPubLog(Filename: string): Integer;
 //    function MergeFile(filename: string): Integer;
 
     function IsWorked(strCallsign: string; band: TBand): Boolean;
@@ -4650,6 +4651,166 @@ begin
    Result := TotalQSO;
 
    CloseFile(f);
+end;
+
+//
+// JARL publiclogのインポート
+//
+// 1234567890123456789012345678901234567890123456789012345678901234567890123456
+//   50 PH 2025-04-26 2100 JR8xxx        59  18M      JA1xxx        59  10M
+//   50 PH 2025-04-26 2101 JR8xxx        59  18M      JA1xxx        59  11M
+function TLog.LoadFromFileAsJarlPubLog(Filename: string): Integer;
+var
+   slFile: TStringList;
+   i: Integer;
+   Q: TQSO;
+   L: string;
+   p: Integer;
+   S: string;
+   m: TMode;
+   D, T: string;
+   yy, mm, dd, hh, nn: Word;
+   b: TBand;
+   defrst: Integer;
+   jst: TDateTime;
+   power: Char;
+
+   function GetStr(instr: string; var p: Integer): string;
+   var
+      outstr: string;
+      len: Integer;
+      ch: Char;
+      fStart: Boolean;
+   begin
+      len := Length(instr);
+
+      fStart := False;
+      while(p <= len) do begin
+         ch := instr[p];
+
+         if (ch = ' ') and (fStart = False) then begin
+            Inc(p);
+            Continue;
+         end
+         else begin
+            fStart := True;
+         end;
+
+         if ((ch = ' ') or (ch = #$13)) and (fStart = True) then begin
+            Break;
+         end;
+
+         Inc(p);
+
+         outstr := outstr + ch;
+      end;
+
+      Result := Trim(outstr);
+   end;
+
+   function FreqToBand(freq: string): TBand;
+   var
+      b: TBand;
+   begin
+      for b := Low(JarlPubLogMHzString) to High(JarlPubLogMHzString) do begin
+         if Trim(JarlPubLogMHzString[b]) = freq then begin
+            Result := b;
+            Exit;
+         end;
+      end;
+      Result := bUnknown;
+   end;
+begin
+   slFile := TStringList.Create();
+   try
+      if FileExists(Filename) = False then begin
+         Result := 0;
+         Exit;
+      end;
+
+      slFile.LoadFromFile(Filename);
+
+      Q := nil;
+      for i := 0 to slFile.Count - 1 do begin
+         L := slFile[i];
+
+         Q := TQSO.Create();
+
+         // FREQ/Band
+         p := 1;
+         S := GetStr(L, p);
+
+         b := FreqToBand(S);
+         Q.Freq := '';
+         Q.Band := b;
+
+         // Mode
+         S := GetStr(L, p);
+
+         Q.Mode := mOther;
+         for m := Low(CabrilloModeString) to High(CabrilloModeString) do begin
+            if CabrilloModeString[m] = S then begin
+               Q.Mode := m;
+               Break;
+            end;
+         end;
+
+         if (m = mSSB) or (m = mAM) or (m = mFM) then begin
+            defrst := 59;
+         end
+         else begin
+            defrst := 599;
+         end;
+
+         // DATE/TIME
+         D := GetStr(L, p);
+         T := GetStr(L, p);
+         yy := StrToIntDef(Copy(D, 1, 4), 1990);
+         mm := StrToIntDef(Copy(D, 6, 2), 1);
+         dd := StrToIntDef(Copy(D, 9, 2), 1);
+         hh := StrToIntDef(Copy(T, 1, 2), 0);
+         nn := StrToIntDef(Copy(T, 3, 2), 0);
+
+         jst := EncodeDateTime(yy, mm, dd, hh, nn, 0, 0);
+
+         Q.Time := jst;
+
+         // UR CALL, RST, NR
+         S := GetStr(L, p);
+
+         S := GetStr(L, p);
+         Q.RSTSent := StrToIntDef(S, defrst);
+
+         S := GetStr(L, p);
+         Q.NrSent := S;
+
+         // MY CALL, RST, NR
+         Q.Callsign := GetStr(L, p);
+         S := GetStr(L, p);
+         Q.RSTRcvd := StrToIntDef(S, defrst);
+         S := GetStr(L, p);
+         Q.NrRcvd := S;
+
+         power := RightStr(Q.NrSent, 1)[1];
+         case power of
+            'H': Q.Power := pwrH;
+            'M': Q.Power := pwrM;
+            'L': Q.Power := pwrL;
+            'P': Q.Power := pwrP;
+            else Q.Power := pwrM;
+         end;
+
+         ImportSetQsoId(Q);
+
+         Add(Q, True);
+      end;
+
+      ImportFinish(Q);
+
+      Result := TotalQSO;
+   finally
+      slFile.Free();
+   end;
 end;
 
 procedure TLog.ImportSetQsoId(Q: TQSO);

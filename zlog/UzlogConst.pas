@@ -205,6 +205,11 @@ const
   );
   CabrilloModeString: array[mCW..mOther] of string = ('CW','PH','FM','PH','RY','DG','DG','  ');
 
+  JarlPubLogMHzString: array[b19..b10g] of string = (
+    '1.8','3.5','7','10','14', '18','21','24','28',
+    '50','144', '430','1200','2400','5600','10G'
+  );
+
   ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','FT4','FT8','Other');
   ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','DG','DG','Other');
 
