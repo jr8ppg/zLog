@@ -95,9 +95,8 @@ type
   TCTestwinHeader = packed record
     QsoCount: WORD;
     filler1: WORD;
-    filler2: WORD;
-    filler3: WORD;
-    CQsoData: array[0..7] of AnsiChar;
+    CQsoDataId: DWORD;
+    CQsoDataNm: array[0..7] of AnsiChar;
   end;
 
    TCTestwinQsoData = packed record
@@ -106,14 +105,14 @@ type
       RecvNr: array[0..29] of AnsiChar;
       Mode: WORD;
       Band: WORD;
-      Time: Int64;
+      TimeId: Int32;
+      Time: Int32;
       OpeName: array[0..19] of AnsiChar;
       filler1: WORD;
       filler2: WORD;
       Dupe: WORD;
       Remarks: array[0..49] of AnsiChar;
-      filler3: BYTE;
-      filler4: BYTE;
+      Delimiter: WORD;
    end;
 
   TQSO = class(TObject)
@@ -4562,29 +4561,6 @@ const
       b144, b430, b1200, b2400, b5600, b10g, bUnknown, bUnknown, bUnknown, bUnknown,
       bUnknown, bUnknown, bUnknown
    );
-
-   // CTESTWINのTimeはInt64だけど、後半の４バイトのみを使用する(UTCで格納)
-   function ConvDateTime(filedt: Int64): TDateTime;
-   var
-      bytes: array[0..7] of Byte;
-      dt: Int64 absolute bytes;
-      tmp: array[0..7] of Byte;
-   begin
-      dt := filedt;
-
-      tmp[0] := bytes[4];
-      tmp[1] := bytes[5];
-      tmp[2] := bytes[6];
-      tmp[3] := bytes[7];
-      tmp[4] := 0;
-      tmp[5] := 0;
-      tmp[6] := 0;
-      tmp[7] := 0;
-
-      Move(tmp, bytes, 8);
-
-      Result := UnixToDateTime(dt, False);
-   end;
 begin
    if FileExists(Filename) = False then begin
       Result := 0;
@@ -4648,7 +4624,7 @@ begin
       Q.Callsign := string(D.Callsign);
       Q.Mode := m;
       Q.Band := b;
-      Q.Time := ConvDateTime(D.Time);
+      Q.Time := UnixToDateTime(D.Time, False);
       Q.Operator := string(D.OpeName);
       Q.Memo := string(D.Remarks);
       Q.Power := dmZLogGlobal.PowerOfBand[Q.Band];
