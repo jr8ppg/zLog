@@ -1,7 +1,6 @@
 object formOptions: TformOptions
   Left = 532
   Top = 236
-  ActiveControl = ZLinkCombo
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -23,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetNetwork
+    ActivePage = tabsheetHardware1
     Align = alClient
     TabOrder = 0
     object tabsheetOperateStyle: TTabSheet
@@ -595,6 +594,16 @@ object formOptions: TformOptions
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
         end
+        object checkRig2UsePolling: TCheckBox
+          Tag = 1
+          Left = 344
+          Top = 10
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
+        end
       end
       object groupRig1: TGroupBox
         Left = 6
@@ -731,6 +740,16 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
+        end
+        object checkRig1UsePolling: TCheckBox
+          Tag = 1
+          Left = 344
+          Top = 10
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
         end
       end
       object groupRig4: TGroupBox
@@ -869,6 +888,16 @@ object formOptions: TformOptions
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
         end
+        object checkRig4UsePolling: TCheckBox
+          Tag = 1
+          Left = 344
+          Top = 10
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
+        end
       end
       object groupRig3: TGroupBox
         Left = 6
@@ -1005,6 +1034,16 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
+        end
+        object checkRig3UsePolling: TCheckBox
+          Tag = 1
+          Left = 344
+          Top = 10
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
         end
       end
     end
@@ -2566,19 +2605,12 @@ object formOptions: TformOptions
         Height = 74
         Caption = 'ICOM CI-V Options'
         TabOrder = 0
-        object Label83: TLabel
-          Left = 9
-          Top = 23
-          Width = 27
-          Height = 13
-          Caption = 'Mode'
-        end
         object Label84: TLabel
-          Left = 209
+          Left = 178
           Top = 23
-          Width = 36
+          Width = 69
           Height = 13
-          Caption = 'Method'
+          Caption = 'Polling method'
         end
         object Label110: TLabel
           Left = 262
@@ -2587,21 +2619,6 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'Response timeout(ms)'
         end
-        object comboIcomMode: TComboBox
-          Left = 42
-          Top = 20
-          Width = 160
-          Height = 21
-          Style = csDropDownList
-          ImeMode = imDisable
-          ItemIndex = 0
-          TabOrder = 0
-          Text = 'CI-V Transceive On'
-          OnChange = comboIcomModeChange
-          Items.Strings = (
-            'CI-V Transceive On'
-            'CI-V Transceive Off (Polling)')
-        end
         object comboIcomMethod: TComboBox
           Left = 253
           Top = 20
@@ -2609,7 +2626,7 @@ object formOptions: TformOptions
           Height = 21
           Style = csDropDownList
           ItemIndex = 0
-          TabOrder = 1
+          TabOrder = 0
           Text = 'Get freq. and mode (slow)'
           Items.Strings = (
             'Get freq. and mode (slow)'
@@ -2622,7 +2639,7 @@ object formOptions: TformOptions
           Height = 21
           MaxLength = 4
           NumbersOnly = True
-          TabOrder = 2
+          TabOrder = 1
           Text = '1000'
           OnKeyPress = NumberEditKeyPress
         end
@@ -4093,13 +4110,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code PL'
+          FontName = 'Consolas'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 38
+          ItemIndex = 66
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

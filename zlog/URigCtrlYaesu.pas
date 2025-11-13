@@ -36,8 +36,6 @@ type
     procedure SetRit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
     procedure SetXit(flag: Boolean); override;
-  private
-    FVFO: Integer;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
@@ -379,7 +377,6 @@ begin
    TerminatorCode := ';';
    FComm.StopBits := sb2BITS;
    FComm.DataBits := db8BITS;
-   FVFO := 0;
    FControlPTTSupported := True;
 end;
 
@@ -409,73 +406,113 @@ end;
 // 00000 00001111 11111 12 2222222223
 // 12345 67890123 45678 90 1234567890
 // IF001 07131790 +0000 10 140000;
+// 12345678901
+// FA07131790;
+// FB07131790;
+// RM00000;
 procedure TFT2000.ExecuteCommand(S: AnsiString);
 var
    M: TMode;
    i: Integer;
    strTemp: string;
+   strCommand: string;
+   vfo: Integer;
 begin
    try
-      if Length(S) <> 27 then begin
-         Exit;
-      end;
+      strCommand := string(Copy(S, 1, 2));
 
-      // Memory Channel
-      // 3-5
-
-      // ÉÇÅ[Éh
-      strTemp := string(S[21]);
-      case StrToIntDef(strTemp, 99) of
-         1, 2: M := mSSB;
-         3, 7: M := mCW;
-         4:    M := mFM;
-         5:    M := mAM;
-         6, 9: M := mRTTY;
-         else  M := mOther;
-      end;
-
-      // é¸îgêî(Hz)
-      strTemp := string(Copy(S, 6, 8));
-      i := StrToIntDef(strTemp, 0);
-      _currentfreq[FVFO] := i;
-
-      if _currentvfo = FVFO then begin
-         if FIgnoreRigMode = False then begin
-            _currentmode := M;
+      if (strCommand = 'IF') or (strCommand = 'OI') then begin
+         if Length(S) <> 27 then begin
+            Exit;
          end;
 
-         UpdateFreqMem(FVFO, i, M);
+         if (strCommand = 'IF') then begin
+            vfo := 0;
+         end
+         else begin
+            vfo := 1;
+         end;
+
+         // Memory Channel
+         // 3-5
+
+         // ÉÇÅ[Éh
+         strTemp := string(S[21]);
+         case StrToIntDef(strTemp, 99) of
+            1, 2: M := mSSB;
+            3, 7: M := mCW;
+            4:    M := mFM;
+            5:    M := mAM;
+            6, 9: M := mRTTY;
+            else  M := mOther;
+         end;
+
+         // é¸îgêî(Hz)
+         strTemp := string(Copy(S, 6, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[vfo] := i;
+
+         if _currentvfo = vfo then begin
+            if FIgnoreRigMode = False then begin
+               _currentmode := M;
+            end;
+
+            UpdateFreqMem(vfo, i, M);
+         end;
+
+         // RITÇÕVFO AÇÃÇ›
+         if vfo = 0 then begin
+            // RIT/XIT offset
+            strTemp := string(Copy(S, 14, 5));
+            FRitOffset := StrToIntDef(strTemp, 0);
+
+            // RIT Status
+            strTemp := string(Copy(S, 19, 1));
+            FRit := StrToBoolDef(strTemp, False);
+
+            // XIT Status
+            strTemp := string(Copy(S, 20, 1));
+            FXit := StrToBoolDef(strTemp, False);
+         end;
+
+         Inc(FPollingCount);
       end;
 
-      // RITÇÕVFO AÇÃÇ›
-      if FVFO = 0 then begin
-         // RIT/XIT offset
-         strTemp := string(Copy(S, 14, 5));
-         FRitOffset := StrToIntDef(strTemp, 0);
+      if strCommand = 'FA' then begin
+         // é¸îgêî(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[0] := i;
+      end;
 
-         // RIT Status
-         strTemp := string(Copy(S, 19, 1));
-         FRit := StrToBoolDef(strTemp, False);
-
-         // XIT Status
-         strTemp := string(Copy(S, 20, 1));
-         FXit := StrToBoolDef(strTemp, False);
+      if strCommand = 'FB' then begin
+         // é¸îgêî(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[1] := i;
       end;
 
       if Selected then begin
          UpdateStatus;
       end;
-
-      Inc(FVFO);
-      FVFO := FVFO and 1;
    finally
-      FPollingTimer.Enabled := True;
+      if (FUsePolling = True) or (FInitialPolling = False) then begin
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
 procedure TFT2000.Initialize();
 begin
    Inherited;
+
+   if FUsePolling = True then begin
+      WriteData('AI0;');
+   end
+   else begin
+      WriteData('AI1;');
+   end;
+
    FPollingTimer.Enabled := True;
 end;
 
@@ -487,16 +524,25 @@ end;
 // TerminatorCodeÇéÛêMÇ∑ÇÈÇ‹Ç≈ë“Ç¡ÇƒÅA
 // ìûíÖÇ∑ÇÈÇ∆ExecuteCommandé¿çs
 procedure TFT2000.ParseBufferString;
+var
+   Index: Integer;
+   cmd: AnsiString;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('***FT-2000 [' + string(BufferString) + ']'));
-   {$ENDIF}
+   while True do begin
+      Index := Pos(TerminatorCode, BufferString);
+      if Index = 0 then begin
+         Exit;
+      end;
 
-   if AnsiStrings.RightStr(BufferString, 1) <> TerminatorCode then begin
-      Exit;
+      cmd := Copy(BufferString, 1, Index);
+      BufferString := Copy(BufferString, Index + 1);
+
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('***FT-2000 COMMAND=[' + string(cmd) + ']'));
+      {$ENDIF}
+
+      ExecuteCommand(cmd);
    end;
-
-   ExecuteCommand(BufferString);
 
    Reset();
 end;
@@ -530,11 +576,12 @@ begin
       Exit;
    end;
 
-   if FVFO = 0 then begin
+   if (FPollingCount = 0) or ((FPollingCount and 1) = 0) then begin
       WriteData('IF;');
    end
    else begin
       WriteData('OI;');
+      FInitialPolling := True;
    end;
 end;
 
@@ -1455,56 +1502,83 @@ var
    M: TMode;
    i: Integer;
    strTemp: string;
+   strCommand: string;
+   vfo: Integer;
 begin
    try
-      if Length(S) <> 28 then begin   //ëSí∑28ï∂éö
-         Exit;
-      end;
+      strCommand := string(Copy(S, 1, 2));
 
-      // ÉÇÅ[Éh
-      strTemp := string(S[22]);      //22ï∂éöñ⁄
-      case StrToIntDef(strTemp, 99) of
-         1, 2: M := mSSB;
-         3, 7: M := mCW;
-         4, $A, $B: M := mFM;
-         5, $D: M := mAM;
-         6, 9: M := mRTTY;
-         else  M := mOther;
-      end;
-
-      // é¸îgêî(Hz)
-      strTemp := string(Copy(S, 6, 9));        // 6åÖñ⁄Ç©ÇÁ9ï∂éö
-      i := StrToIntDef(strTemp, 0);
-      _currentfreq[FVFO] := i;
-
-      if _currentvfo = FVFO then begin
-         if FIgnoreRigMode = False then begin
-            _currentmode := M;
+      if (strCommand = 'IF') or (strCommand = 'OI') then begin
+         if Length(S) <> 28 then begin   //ëSí∑28ï∂éö
+            Exit;
          end;
 
-         UpdateFreqMem(FVFO, i, M);
+         if (strCommand = 'IF') then begin
+            vfo := 0;
+         end
+         else begin
+            vfo := 1;
+         end;
+
+         // ÉÇÅ[Éh
+         strTemp := string(S[22]);      //22ï∂éöñ⁄
+         case StrToIntDef(strTemp, 99) of
+            1, 2: M := mSSB;
+            3, 7: M := mCW;
+            4, $A, $B: M := mFM;
+            5, $D: M := mAM;
+            6, 9: M := mRTTY;
+            else  M := mOther;
+         end;
+
+         // é¸îgêî(Hz)
+         strTemp := string(Copy(S, 6, 9));        // 6åÖñ⁄Ç©ÇÁ9ï∂éö
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[vfo] := i;
+
+         if _currentvfo = vfo then begin
+            if FIgnoreRigMode = False then begin
+               _currentmode := M;
+            end;
+
+            UpdateFreqMem(vfo, i, M);
+         end;
+
+         // RIT/XIT offset
+         strTemp := string(Copy(S, 15, 5));
+         FRitOffset := StrToIntDef(strTemp, 0);
+
+         // RIT Status
+         strTemp := string(Copy(S, 20, 1));
+         FRit := StrToBoolDef(strTemp, False);
+
+         // XIT Status
+         strTemp := string(Copy(S, 21, 1));
+         FXit := StrToBoolDef(strTemp, False);
       end;
 
-      // RIT/XIT offset
-      strTemp := string(Copy(S, 15, 5));
-      FRitOffset := StrToIntDef(strTemp, 0);
+      if strCommand = 'FA' then begin
+         // é¸îgêî(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[0] := i;
+      end;
 
-      // RIT Status
-      strTemp := string(Copy(S, 20, 1));
-      FRit := StrToBoolDef(strTemp, False);
-
-      // XIT Status
-      strTemp := string(Copy(S, 21, 1));
-      FXit := StrToBoolDef(strTemp, False);
+      if strCommand = 'FB' then begin
+         // é¸îgêî(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[1] := i;
+      end;
 
       if Selected then begin
          UpdateStatus;
       end;
-
-      Inc(FVFO);
-      FVFO := FVFO and 1;
    finally
-      FPollingTimer.Enabled := True;
+      if (FUsePolling = True) or (FInitialPolling = False) then begin
+         Inc(FPollingCount);
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 

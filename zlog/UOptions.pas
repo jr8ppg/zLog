@@ -79,9 +79,7 @@ type
     Label103: TLabel;
     tabsheetHardware3: TTabSheet;
     groupOptCI_V: TGroupBox;
-    Label83: TLabel;
     Label84: TLabel;
-    comboIcomMode: TComboBox;
     comboIcomMethod: TComboBox;
     groupOptCwPtt: TGroupBox;
     Label38: TLabel;
@@ -406,6 +404,10 @@ type
     radioSo2rParallel: TRadioButton;
     checkUseCanSend: TCheckBox;
     radioSo2rMk2r: TRadioButton;
+    checkRig1UsePolling: TCheckBox;
+    checkRig2UsePolling: TCheckBox;
+    checkRig3UsePolling: TCheckBox;
+    checkRig4UsePolling: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -418,7 +420,6 @@ type
     procedure checkRig1AXvtClick(Sender: TObject);
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig3NameChange(Sender: TObject);
-    procedure comboIcomModeChange(Sender: TObject);
     procedure comboCwPttPortChange(Sender: TObject);
     procedure checkUseWinKeyerClick(Sender: TObject);
     procedure radioSo2rClick(Sender: TObject);
@@ -473,6 +474,7 @@ type
     FRigXvt: array[1..5] of TCheckBox;
     FRigXvtConfig: array[1..5] of TButton;
     FRigPhoneChgPTT: array[1..5] of TCheckBox;
+    FRigUsePolling: array[1..5] of TCheckBox;
 
     FSoundDevice: array[1..4] of TComboBox;
     FF2AVolume: array[1..4] of TSpinEdit;
@@ -610,6 +612,11 @@ begin
    FRigPhoneChgPTT[3] := checkRig3ChangePTT;
    FRigPhoneChgPTT[4] := checkRig4ChangePTT;
    FRigPhoneChgPTT[5] := nil;
+   FRigUsePolling[1] := checkRig1UsePolling;
+   FRigUsePolling[2] := checkRig2UsePolling;
+   FRigUsePolling[3] := checkRig3UsePolling;
+   FRigUsePolling[4] := checkRig4UsePolling;
+   FRigUsePolling[5] := nil;
 
    // Set of RIG
    FRigSetA_rig[b19]    := comboRigA_b19;
@@ -1188,17 +1195,6 @@ begin
    end;
 end;
 
-procedure TformOptions.comboIcomModeChange(Sender: TObject);
-begin
-   if comboIcomMode.ItemIndex = 0 then begin
-      comboIcomMethod.Enabled := False;
-      comboIcomMethod.ItemIndex := 0;
-   end
-   else begin
-      comboIcomMethod.Enabled := True;
-   end;
-end;
-
 procedure TformOptions.comboRigControlChange(Sender: TObject);
 var
    r: Integer;
@@ -1558,6 +1554,10 @@ var
          if Assigned(FRigPhoneChgPTT[no]) then begin
             Settings.FRigControl[no].FPhoneChgPTT := FRigPhoneChgPTT[no].Checked;
          end;
+
+         if Assigned(FRigUsePolling[no]) then begin
+            Settings.FRigControl[no].FUsePolling := FRigUsePolling[no].Checked;
+         end;
       end;
    end;
 begin
@@ -1654,13 +1654,6 @@ begin
       //
 
       // ICOM CI-V options
-      if comboIcomMode.ItemIndex = 0 then begin
-         Settings._use_transceive_mode := True;
-      end
-      else begin
-         Settings._use_transceive_mode := False;
-      end;
-
       if comboIcomMethod.ItemIndex = 0 then begin
          Settings._icom_polling_freq_and_mode := True;
       end
@@ -1835,6 +1828,10 @@ var
          if Assigned(FRigPhoneChgPTT[no]) then begin
             FRigPhoneChgPTT[no].Checked := Settings.FRigControl[no].FPhoneChgPTT;
          end;
+
+         if Assigned(FRigUsePolling[no]) then begin
+            FRigUsePolling[no].Checked := Settings.FRigControl[no].FUsePolling;
+         end;
       end;
    end;
 begin
@@ -1990,21 +1987,12 @@ begin
       //
 
       // ICOM CI-V options
-      if Settings._use_transceive_mode = True then begin
-         comboIcomMode.ItemIndex := 0;
-      end
-      else begin
-         comboIcomMode.ItemIndex := 1;
-      end;
-
       if Settings._icom_polling_freq_and_mode = True then begin
          comboIcomMethod.ItemIndex := 0;
       end
       else begin
          comboIcomMethod.ItemIndex := 1;
       end;
-
-      comboIcomModeChange(nil);
 
       editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 

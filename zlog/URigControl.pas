@@ -367,7 +367,7 @@ begin
       ss := 'SP ' + ss + ' ';
    end;
 
-   S := S + ss + ' [' + dmZlogGlobal.Settings._pcname + ']';
+   S := S + ss + ' [' + dmZLogGlobal.Settings._pcname + ']';
 
    Result := S;
 end;
@@ -467,10 +467,11 @@ var
    Comm: TCommPortDriver;
    Timer: TTimer;
    Port: Integer;
+   UsePolling: Boolean;
 begin
    rig := nil;
    try
-      if dmZlogGlobal.RigNameStr[rignum] = 'Omni-Rig' then begin
+      if dmZLogGlobal.RigNameStr[rignum] = 'Omni-Rig' then begin
          rig := TOmni.Create(rignum, FOmniRig);
          rig.MinBand := b19;
          rig.MaxBand := b1200;
@@ -493,29 +494,33 @@ begin
          buttonOmniRig.Enabled := True;
       end;
 
-      if dmZlogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
-         rname := dmZlogGlobal.RigNameStr[rignum];
+      if dmZLogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
+         rname := dmZLogGlobal.RigNameStr[rignum];
          if rname = 'None' then begin
             Exit;
          end;
 
          if rignum = 1 then begin
-            Port := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[1].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[1].FUsePolling;
             Comm := ZCom1;
             Timer := PollingTimer1;
          end
          else if rignum = 2 then begin
-            Port := dmZlogGlobal.Settings.FRigControl[2].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[2].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[2].FUsePolling;
             Comm := ZCom2;
             Timer := PollingTimer2;
          end
          else if rignum = 3 then begin
-            Port := dmZlogGlobal.Settings.FRigControl[3].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[3].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[3].FUsePolling;
             Comm := ZCom3;
             Timer := PollingTimer3;
          end
          else begin
-            Port := dmZlogGlobal.Settings.FRigControl[4].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[4].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[4].FUsePolling;
             Comm := ZCom4;
             Timer := PollingTimer4;
          end;
@@ -548,10 +553,6 @@ begin
 
          if rname = 'TS-2000' then begin
             rig := TTS2000.Create(rignum, Port, Comm, Timer, b19, b2400);
-         end;
-
-         if rname = 'TS-2000/P' then begin
-            rig := TTS2000P.Create(rignum, Port, Comm, Timer, b19, b2400);
          end;
 
          if rname = 'FT-2000' then begin
@@ -646,7 +647,6 @@ begin
             else begin
                rig := TICOM.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end;
-            TICOM(rig).UseTransceiveMode := dmZLogGlobal.Settings._use_transceive_mode;
             TICOM(rig).GetBandAndModeFlag := dmZLogGlobal.Settings._icom_polling_freq_and_mode;
 
             TICOM(rig).RigAddr := ICOMLIST[i].addr;
@@ -660,6 +660,8 @@ begin
                TICOM(rig).Freq4Bytes := True;
             end;
          end;
+
+         rig.UsePolling := UsePolling;
       end;
 
       if Assigned(rig) then begin
@@ -713,19 +715,19 @@ begin
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
    for i := 1 to 4 do begin
-      if (FRigs[i] <> nil) and (dmZlogGlobal.Settings.FRigControl[i].FControlPort = dmZlogGlobal.Settings.FRigControl[i].FKeyingPort) then begin
+      if (FRigs[i] <> nil) and (dmZLogGlobal.Settings.FRigControl[i].FControlPort = dmZLogGlobal.Settings.FRigControl[i].FKeyingPort) then begin
          FPollingTimer[i].Enabled := False;
          dmZLogKeyer.SetCommPortDriver(i - 1, FRigs[i].CommPortDriver);
          FPollingTimer[i].Enabled := True;
       end
       else begin
-         dmZLogKeyer.ResetCommPortDriver(i - 1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[i].FKeyingPort));
+         dmZLogKeyer.ResetCommPortDriver(i - 1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[i].FKeyingPort));
       end;
    end;
 
 (*
-   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort)) and
-      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort)) then begin
+   if ((FRigs[1] <> nil) and (dmZLogGlobal.Settings.FRigControl[1].FControlPort = dmZLogGlobal.Settings.FRigControl[1].FKeyingPort)) and
+      ((FRigs[2] <> nil) and (dmZLogGlobal.Settings.FRigControl[2].FControlPort = dmZLogGlobal.Settings.FRigControl[2].FKeyingPort)) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
@@ -734,30 +736,30 @@ begin
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
-   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort) then begin
+   else if (FRigs[1] <> nil) and (dmZLogGlobal.Settings.FRigControl[1].FControlPort = dmZLogGlobal.Settings.FRigControl[1].FKeyingPort) then begin
       PollingTimer1.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
       PollingTimer1.Enabled := True;
 
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[2].FKeyingPort));
    end
-   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort) then begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
+   else if (FRigs[2] <> nil) and (dmZLogGlobal.Settings.FRigControl[2].FControlPort = dmZLogGlobal.Settings.FRigControl[2].FKeyingPort) then begin
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZLogGlobal.Settings.FRigControl[1].FKeyingPort));
 
       PollingTimer2.Enabled := False;
       dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
       PollingTimer2.Enabled := True;
    end
    else begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZLogGlobal.Settings.FRigControl[1].FKeyingPort));
+      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[2].FKeyingPort));
    end;
 *)
 
    for i := 1 to 4 do begin
       if FRigs[i] <> nil then begin
-         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
-            FRigs[i].FreqOffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
+         if dmZLogGlobal.Settings.FRigControl[i].FUseTransverter then begin
+            FRigs[i].FreqOffset := 1000 * dmZLogGlobal.Settings.FRigControl[i].FTransverterOffset;
          end
          else begin
             FRigs[i].FreqOffset := 0;
@@ -1141,11 +1143,11 @@ begin
    // CW停止
    dmZLogKeyer.ClrBuffer();
    dmZLogKeyer.Close();
-   dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(3, TKeyingPort(dmZlogGlobal.Settings.FRigControl[4].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(4, TKeyingPort(dmZlogGlobal.Settings.FRigControl[5].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZLogGlobal.Settings.FRigControl[1].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[2].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZLogGlobal.Settings.FRigControl[3].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(3, TKeyingPort(dmZLogGlobal.Settings.FRigControl[4].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(4, TKeyingPort(dmZLogGlobal.Settings.FRigControl[5].FKeyingPort));
 
    // リグコン停止
    Stop();

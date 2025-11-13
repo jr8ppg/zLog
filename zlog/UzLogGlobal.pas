@@ -95,6 +95,7 @@ type
     FUseTransverter: Boolean;
     FTransverterOffset: TFrequency;
     FPhoneChgPTT: Boolean;
+    FUsePolling: Boolean;
   end;
 
   TRigSet = record
@@ -155,7 +156,6 @@ type
     FRigShowRitInfo: Boolean;
     FExtAntSelWndClass: string;
 
-    _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
@@ -1141,6 +1141,7 @@ begin
          Settings.FRigControl[i].FKeyingPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'keying_port_rts', Integer(paPtt)));
          Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
          Settings.FRigControl[i].FPhoneChgPTT := ini.ReadBool(s, 'PhoneChgPTT', False);
+         Settings.FRigControl[i].FUsePolling := ini.ReadBool(s, 'UsePolling', True);
       end;
 
       //
@@ -1152,9 +1153,6 @@ begin
          Settings.FRigSet[2].FRig[b] := ini.ReadInteger('RigSetB', 'Rig_' + MHzString[b], 0);
          Settings.FRigSet[2].FAnt[b] := ini.ReadInteger('RigSetB', 'Ant_' + MHzString[b], 0);
       end;
-
-      // USE TRANSCEIVE MODE(ICOM only)
-      Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
 
       // Get band and mode when polling(ICOM only)
       Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
@@ -1987,6 +1985,7 @@ begin
          ini.WriteInteger(s, 'keying_port_rts', Integer(Settings.FRigControl[i].FKeyingPortConfig.FRts));
          ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
          ini.WriteBool(s, 'PhoneChgPTT', Settings.FRigControl[i].FPhoneChgPTT);
+         ini.WriteBool(s, 'UsePolling', Settings.FRigControl[i].FUsePolling);
       end;
 
       //
@@ -1998,9 +1997,6 @@ begin
          ini.WriteInteger('RigSetB', 'Rig_' + MHzString[b], Settings.FRigSet[2].FRig[b]);
          ini.WriteInteger('RigSetB', 'Ant_' + MHzString[b], Settings.FRigSet[2].FAnt[b]);
       end;
-
-      // USE TRANSCEIVE MODE(ICOM only)
-      ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
 
       // Get band and mode when polling(ICOM only)
       ini.WriteBool('Hardware', 'PollingFreqAndMode', Settings._icom_polling_freq_and_mode);

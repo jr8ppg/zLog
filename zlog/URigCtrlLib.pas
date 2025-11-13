@@ -49,6 +49,9 @@ type
     _currentvfo : integer; // 0 : VFO A; 1 : VFO B
     FPollingTimer: TTimer;
     FPollingInterval: Integer;
+    FUsePolling: Boolean;
+    FInitialPolling: Boolean;
+    FPollingCount: Integer;
     FComm : TCommPortDriver; // points to the right CommPortDriver
     ModeWidth : array[mCW..mOther] of Integer; // used in icom
     FFreqMem : array[b19..b10g, mCW..mOther] of TFrequency;
@@ -159,6 +162,7 @@ type
     property FixEdgeSelectSupported: Boolean read FFixEdgeSelectSupported write FFixEdgeSelectSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
+    property UsePolling: Boolean read FUsePolling write FUsePolling;
 
     property UseMemChScan: Boolean read FUseMemChScan write FUseMemChScan;
     property MemCh: TMemChArray read FMemCh;
@@ -252,6 +256,9 @@ begin
 
    FComm := AComm;
    FPollingTimer := ATimer;
+   FUsePolling := True;
+   FInitialPolling := False;
+   FPollingCount := 0;
    prtnr := APort;
 
 //   if _rignumber = 1 then begin

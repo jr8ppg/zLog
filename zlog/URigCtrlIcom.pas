@@ -19,10 +19,7 @@ type
   private
     FMyAddr: Byte;
     FRigAddr: Byte;
-    FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
-    FPollingCount: Integer;
-    FInitialPolling: Boolean;
 
     FCommThread: TIcomCommThread;
     FCommandList: TList<AnsiString>;
@@ -56,7 +53,6 @@ type
     procedure StopMessageCW(); override;
     procedure ControlPTT(fOn: Boolean); override;
 
-    property UseTransceiveMode: Boolean read FUseTransceiveMode write FUseTransceiveMode;
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
@@ -95,9 +91,7 @@ implementation
 constructor TICOM.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
 begin
    Inherited;
-   FPollingCount := 0;
-   FInitialPolling := False;
-   FUseTransceiveMode := True;
+   FUsePolling := False;
    FComm.StopBits := sb1BITS;
    FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
@@ -683,12 +677,12 @@ begin
    end;
 
    // トランシーブモード使わない時はポーリング再開
-   if (FUseTransceiveMode = False) then begin
+   if (FUsePolling = True) then begin
       FPollingTimer.Enabled := True;
    end;
 
    // トランシーブモード使う場合は１回か２回ポーリングする
-   if (FUseTransceiveMode = True) then begin
+   if (FUsePolling = False) then begin
       if FRitCtrlSupported = False then begin
          if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
             ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
