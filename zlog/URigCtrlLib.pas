@@ -63,6 +63,7 @@ type
     FRit: Boolean;
     FXit: Boolean;
     FRitOffset: Integer;
+    FSMeter: array[0..1] of Integer;
 
     FStopRequest: Boolean;
 
@@ -94,6 +95,7 @@ type
     procedure SetCurrentFreq(Index: Integer; freq: TFrequency);
     function GetFreqMem(b: TBand; m: TMode): TFrequency;
     procedure SetFreqMem(b: TBand; m: TMode; freq: TFrequency);
+    function GetSMeter(vfo: Integer): Integer;
   public
     constructor Create(RigNum : Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); virtual;
     destructor Destroy; override;
@@ -146,6 +148,7 @@ type
     property FreqOffset: TFrequency read _freqoffset write _freqoffset;
     property CurrentFreq[Index: Integer]: TFrequency read GetCurrentFreq write SetCurrentFreq;
     property FreqMem[b: TBand; m: TMode]: TFrequency read GetFreqMem write SetFreqMem;
+    property SMeter[Index: Integer]: Integer read GetSMeter;
 //    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
     property IgnoreMode: Boolean read FIgnoreRigMode write FIgnoreRigMode;
 
@@ -260,6 +263,9 @@ begin
    FInitialPolling := False;
    FPollingCount := 0;
    prtnr := APort;
+
+   FSMeter[0] := 0;
+   FSMeter[1] := 0;
 
 //   if _rignumber = 1 then begin
 //      prtnr := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
@@ -702,6 +708,11 @@ begin
    msg := StringReplace(msg, '[BK]', 'b', [rfReplaceAll]);
    msg := StringReplace(msg, '[BT]', 't', [rfReplaceAll]);
    Result := msg;
+end;
+
+function TRig.GetSMeter(vfo: Integer): Integer;
+begin
+   Result := FSMeter[vfo];
 end;
 
 { TJST145 }

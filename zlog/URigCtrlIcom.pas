@@ -330,6 +330,18 @@ begin
                end;
             end;
          end;
+
+         // 各種情報
+         $15: begin
+            // Sメーターレベル
+            if Ord(ss[2]) = $02 then begin
+               i1 := Ord(ss[3]) and $0f;
+               i2 := (Ord(ss[3]) and $f0) shr 4;
+               i3 := Ord(ss[4]) and $0f;
+               i4 := (Ord(ss[4]) and $f0) shr 4;
+               FSMeter[_currentvfo] := Round(((i4 * 1000) + (i3 * 100) + (i2 * 10) + i1) * (100 / 255));
+            end;
+         end;
       end;
    finally
    end;

@@ -9,7 +9,7 @@ uses
   Vcl.ButtonGroup, Vcl.Menus, System.IniFiles,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB,
   URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft,
-  JvExControls, JvLED;
+  JvExControls, JvLED, RLed;
 
 type
   TRigControl = class(TForm)
@@ -66,6 +66,8 @@ type
     labelScanMemChNo: TLabel;
     buttonOmniRig: TSpeedButton;
     buttonReconnectRigs: TSpeedButton;
+    ledSMeter1: TRLed;
+    ledSMeter2: TRLed;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -984,6 +986,10 @@ begin
          Caption := 'Rig Control ' + S;
       end;
    end;
+
+   // S-Meter
+   ledSMeter1.Position := TRig(Sender).SMeter[0];
+   ledSMeter2.Position := TRig(Sender).SMeter[1];
 end;
 
 procedure TRigControl.OnErrorProc(Sender: TObject; msg: string);

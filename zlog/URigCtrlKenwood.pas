@@ -250,6 +250,11 @@ begin
          end;
       end;
 
+      // Sメーター値読み出し（0-30を0-100にマップする）
+      if Command = 'SM' then begin
+         FSMeter[_currentvfo] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 30));
+      end;
+
       if Selected then begin
          UpdateStatus;
       end;
