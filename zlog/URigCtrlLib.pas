@@ -63,7 +63,8 @@ type
     FRit: Boolean;
     FXit: Boolean;
     FRitOffset: Integer;
-    FSMeter: array[0..1] of Integer;
+    FSMeterValue: array[0..1] of Integer;
+    FSMeterMax: Integer;
 
     FStopRequest: Boolean;
 
@@ -264,8 +265,9 @@ begin
    FPollingCount := 0;
    prtnr := APort;
 
-   FSMeter[0] := 0;
-   FSMeter[1] := 0;
+   FSMeterValue[0] := 0;
+   FSMeterValue[1] := 0;
+   FSMeterMax := 0;
 
 //   if _rignumber = 1 then begin
 //      prtnr := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
@@ -712,7 +714,7 @@ end;
 
 function TRig.GetSMeter(vfo: Integer): Integer;
 begin
-   Result := FSMeter[vfo];
+   Result := FSMeterValue[vfo];
 end;
 
 { TJST145 }

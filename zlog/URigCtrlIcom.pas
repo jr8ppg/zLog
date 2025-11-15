@@ -339,7 +339,7 @@ begin
                i2 := (Ord(ss[3]) and $f0) shr 4;
                i3 := Ord(ss[4]) and $0f;
                i4 := (Ord(ss[4]) and $f0) shr 4;
-               FSMeter[_currentvfo] := Round(((i4 * 1000) + (i3 * 100) + (i2 * 10) + i1) * (100 / 255));
+               FSMeterValue[_currentvfo] := Round(((i4 * 1000) + (i3 * 100) + (i2 * 10) + i1) * (100 / 255));
             end;
          end;
       end;

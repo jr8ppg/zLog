@@ -185,8 +185,6 @@ uses
 {$R *.DFM}
 
 procedure TRigControl.FormCreate(Sender: TObject);
-var
-   B: TBand;
 begin
    RigLabel.Caption := '';
    FCurrentRig := nil;
@@ -1273,6 +1271,7 @@ var
    scanrigset: Integer;
    b: TBand;
 begin
+   scanrigset := 1;
    if FCurrentRig = nil then begin
       Exit;
    end;

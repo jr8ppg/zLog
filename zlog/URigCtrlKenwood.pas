@@ -54,11 +54,13 @@ type
 
   TTS890 = class(TTS2000)
   public
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure FixEdgeSelect(no: Integer); override;
   end;
 
   TTS990 = class(TTS2000)
   public
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure AntSelect(no: Integer); override;
   end;
 
@@ -74,6 +76,7 @@ begin
    _CWR := False;
    FFineStep := False;
    FControlPTTSupported := True;
+   FSMeterMax := 15;
 end;
 
 destructor TTS690.Destroy;
@@ -252,7 +255,7 @@ begin
 
       // Sメーター値読み出し（0-30を0-100にマップする）
       if Command = 'SM' then begin
-         FSMeter[_currentvfo] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 30));
+         FSMeterValue[_currentvfo] := Round(StrToFloatDef(Copy(string(S), 4, 3), 0) * (100 / FSMeterMax));
       end;
 
       if Selected then begin
@@ -484,6 +487,7 @@ begin
    TerminatorCode := ';';
    FComm.StopBits := sb1BITS;
    FPlayMessageCwSupported := True;
+   FSMeterMax := 30;
 end;
 
 destructor TTS2000.Destroy;
@@ -592,6 +596,7 @@ begin
    Inherited;
    TerminatorCode := ';';
    FComm.StopBits := sb1BITS;
+   FSMeterMax := 15;
 end;
 
 procedure TTS570.Initialize();
@@ -610,6 +615,12 @@ end;
 
 { TTS890 }
 
+constructor TTS890.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FSMeterMax := 70;
+end;
+
 procedure TTS890.FixEdgeSelect(no: Integer);
 begin
    case no of
@@ -621,6 +632,12 @@ begin
 end;
 
 { TTS990 }
+
+constructor TTS990.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FSMeterMax := 70;
+end;
 
 procedure TTS990.AntSelect(no: Integer);
 begin

@@ -495,9 +495,9 @@ begin
       // メーター値読み出し（0-255を0-100にマップする）
       if strCommand = 'RM' then begin
          case S[3] of
-            '0': FSMeter[_currentvfo] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
-            '1': FSMeter[0] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
-            '2': FSMeter[1] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
+            '0': FSMeterValue[_currentvfo] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
+            '1': FSMeterValue[0] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
+            '2': FSMeterValue[1] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
          end;
       end;
 
