@@ -213,7 +213,7 @@ begin
       case Command of
          // MODE
          $01, $04: begin
-            temp := Ord(ss[2]);
+            temp := (Ord(ss[2]) mod 16) + (Ord(ss[2]) div 16) * 10;
             case temp of
                0, 1:
                   M := mSSB;
@@ -225,6 +225,8 @@ begin
                   M := mAM;
                4, 8:
                   M := mRTTY;
+               17:
+                  M := mDV;
                else
                   M := mOther;
             end;
@@ -538,6 +540,8 @@ begin
             para := 2;
          mRTTY:
             para := 4;
+         mDV:
+            para := $17;
          else
             Exit;
       end;

@@ -866,7 +866,7 @@ begin
       PM_SSB_U, PM_SSB_L:
          R.CurrentMode := mSSB;
       PM_DIG_U, PM_DIG_L:
-         R.CurrentMode := mOther;
+         R.CurrentMode := mDV;
       PM_AM:
          R.CurrentMode := mAM;
       PM_FM:

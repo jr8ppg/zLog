@@ -6736,6 +6736,7 @@ object MainForm: TMainForm
     end
   end
   object ModeMenu: TPopupMenu
+    Tag = 8
     AutoHotkeys = maManual
     AutoLineReduction = maManual
     Left = 120
@@ -6772,6 +6773,11 @@ object MainForm: TMainForm
     object FT81: TMenuItem
       Tag = 6
       Caption = 'FT8'
+      OnClick = ModeMenuClick
+    end
+    object DV1: TMenuItem
+      Tag = 8
+      Caption = 'DV'
       OnClick = ModeMenuClick
     end
     object Other1: TMenuItem

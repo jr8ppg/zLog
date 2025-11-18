@@ -1362,7 +1362,7 @@ begin
 
          {$IFDEF DEBUG}
 //         strText := strText + ' (' + IntToStr(sec) + ')';
-         if D.Mode <= mOther then begin
+         if D.Mode <= LastMode then begin
             strText := strText + ' (' + ModeString[D.Mode][1] + ')';
 
             case D.SpotQuality of

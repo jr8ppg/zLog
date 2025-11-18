@@ -16,7 +16,7 @@ type
   TBandPlan = class(TObject)
   private
     FPresetName: string;
-    FLimit: array [mCW..mOther] of TFreqLimitArray;
+    FLimit: array [mCW..LastMode] of TFreqLimitArray;
     function GetLimit(m: TMode): TFreqLimitArray;
     procedure SetLimit(m: TMode; v: TFreqLimitArray);
     function GetFileName(): string;
@@ -341,7 +341,7 @@ begin
    SL := TStringList.Create();
    ini := TMemIniFile.Create(filename);
    try
-      for m := mCW to mOther do begin
+      for m := mCW to LastMode do begin
          for b := b19 to b10g do begin
             strSection := ModeString[m];
             strKey := MHzString[b];
@@ -371,7 +371,7 @@ begin
    SL := TStringList.Create();
    ini := TMemIniFile.Create(filename);
    try
-      for m := mCW to mOther do begin
+      for m := mCW to LastMode do begin
          for b := b19 to b10g do begin
             strSection := ModeString[m];
             strKey := MHzString[b];
@@ -407,7 +407,7 @@ var
    m: TMode;
    l, u: TFrequency;
 begin
-   for m := mCW to mOther do begin
+   for m := mCW to LastMode do begin
       l := FLimit[m][b].Lower;
       u := FLimit[m][b].Upper;
       if (l <= 0) or (u <= 0) then begin

@@ -6,7 +6,7 @@ uses
   Graphics;
 
 type
-  TMode = (mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mOther);
+  TMode = (mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mOther, mDV);
   TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
@@ -28,6 +28,7 @@ resourcestring
 
 const
   HiBand = b10g;
+  LastMode = mDV;
 
 type
   TBandBool = array[b19..HiBand] of boolean;
@@ -202,15 +203,15 @@ const
     ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
     '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
   );
-  CabrilloModeString: array[mCW..mOther] of string = ('CW','PH','FM','PH','RY','DG','DG','  ');
+  CabrilloModeString: array[mCW..LastMode] of string = ('CW','PH','FM','PH','RY','DG','DG','  ','DV');
 
   JarlPubLogMHzString: array[b19..b10g] of string = (
     '1.8','3.5','7','10','14', '18','21','24','28',
     '50','144', '430','1200','2400','5600','10G'
   );
 
-  ModeString : array[mCW..mOther] of string = ('CW','SSB','FM','AM','RTTY','FT4','FT8','Other');
-  ModeString2 : array[mCW..mOther] of string = ('CW','PH','PH','PH','RTTY','DG','DG','Other');
+  ModeString : array[mCW..LastMode] of string = ('CW','SSB','FM','AM','RTTY','FT4','FT8','Other','DV');
+  ModeString2 : array[mCW..LastMode] of string = ('CW','PH','PH','PH','RTTY','DG','DG','Other','DV');
 
   pwrP = TPower(0);
   pwrL = TPower(1);

@@ -17,7 +17,7 @@ type
     procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
-    Stats: array[b19..HiBand, mCW..mOther] of integer;
+    Stats: array[b19..HiBand, mCW..LastMode] of integer;
   public
     { Public declarations }
     procedure UpdateData; override;
@@ -52,13 +52,13 @@ var
    b: TBand;
    M: TMode;
    TotQSO, TotBandQSO: LongInt;
-   ModeQSO: array [mCW .. mOther] of Integer;
+   ModeQSO: array [mCW .. LastMode] of Integer;
 begin
    AssignFile(f, FileName);
    Append(f);
 
    write(f, 'MHz     ');
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       write(f, FillLeft(ModeString[M], 6));
    end;
 
@@ -66,7 +66,7 @@ begin
    writeln(f);
 
    TotQSO := 0;
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeQSO[M] := 0;
    end;
 
@@ -74,7 +74,7 @@ begin
       TotBandQSO := 0;
       write(f, FillRight(MHzString[b], 8));
 
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          write(f, FillLeft(IntToStr(Stats[b, M]), 6));
          Inc(TotBandQSO, Stats[b, M]);
          Inc(ModeQSO[M], Stats[b, M]);
@@ -87,7 +87,7 @@ begin
 
    write(f, FillRight('Total', 8));
 
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       write(f, FillLeft(IntToStr(ModeQSO[M]), 6));
    end;
    writeln(f, FillLeft(IntToStr(TotQSO), 6));
@@ -100,7 +100,7 @@ var
    b: TBand;
    M: TMode;
    TotQSO, TotBandQSO: LongInt;
-   ModeQSO: array [mCW .. mOther] of Integer;
+   ModeQSO: array [mCW .. LastMode] of Integer;
    w: Integer;
 begin
    TotQSO := 0;
@@ -115,8 +115,9 @@ begin
    Grid.Cells[7, 0] := 'FT4';
    Grid.Cells[8, 0] := 'FT8';
    Grid.Cells[9, 0] := 'Other';
+   Grid.Cells[10, 0] := 'DV';
 
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeQSO[M] := 0;
    end;
 
@@ -124,7 +125,7 @@ begin
       TotBandQSO := 0;
 
       Grid.Cells[0, ord(b) + 1] := '*' + MHzString[b];
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          Grid.Cells[ord(M) + 2, ord(b) + 1] := IntToStr3(Stats[b, M]);
 
          Inc(TotBandQSO, Stats[b, M]);
@@ -139,11 +140,11 @@ begin
    Grid.Cells[0, ord(HiBand) + 2] := 'Total';
    Grid.Cells[1, ord(HiBand) + 2] := IntToStr3(TotQSO);
 
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       Grid.Cells[ord(M) + 2, ord(HiBand) + 2] := IntToStr3(ModeQSO[M]);
    end;
 
-   Grid.ColCount := 10;
+   Grid.ColCount := 11;
    Grid.RowCount := 18;
 
    // カラム幅をセット
@@ -158,6 +159,7 @@ begin
    Grid.ColWidths[7] := w * 7;
    Grid.ColWidths[8] := w * 7;
    Grid.ColWidths[9] := w * 7;
+   Grid.ColWidths[10] := w * 7;
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
@@ -175,7 +177,7 @@ var
    M: TMode;
 begin
    for b := b19 to HiBand do begin
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          Stats[b, M] := 0;
       end;
    end;

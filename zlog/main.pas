@@ -634,6 +634,7 @@ type
     SentRSTEdit2B: TEdit;
     SentRSTEdit2C: TEdit;
     actionFocusRstSent: TAction;
+    DV1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1902,7 +1903,7 @@ procedure TMainForm.UpdateMode(M: TMode);
 begin
    ModeEdit.Text := ModeString[M];
    CurrentQSO.Mode := M;
-   If M in [mSSB, mFM, mAM] then begin
+   if M in [mSSB, mFM, mAM, mDV] then begin
       CurrentQSO.RSTRcvd := 59;
       CurrentQSO.RSTsent := 59;
       SentRSTEdit.Text := '59';
@@ -1966,7 +1967,7 @@ begin
       maxmode := mRTTY;
    end
    else begin
-      maxmode := mOther;
+      maxmode := LastMode;
       case aQSO.Band of
          b19 .. b24:
             maxmode := mSSB;
@@ -1980,7 +1981,7 @@ begin
    end;
 
    if Pos('Pedition', MyContest.Name) > 0 then begin
-      maxmode := mOther;
+      maxmode := LastMode;
    end;
 
    if fUp = True then begin
@@ -4307,7 +4308,7 @@ begin
       end;
 
       // PHONE
-      if mode in [mSSB, mFM, mAM] then begin
+      if mode in [mSSB, mFM, mAM, mDV] then begin
          Q := Log.QuickDupe(curQSO);
          if Q <> nil then begin  // dupe
             // ALLOW DUPEしない場合は4番を送出
@@ -4586,7 +4587,7 @@ begin
             LogButtonProc(nTxID, curQSO);
          end;
 
-         mSSB, mFM, mAM: begin
+         mSSB, mFM, mAM, mDV: begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
                PlayMessage(mode, 1, 5, False);
                WriteStatusLine(TMainForm_Invalid_number, False);
@@ -7028,14 +7029,14 @@ begin
    if _top = _bottom then begin
       aQSO := TQSO(Grid.Objects[0, _top]);
 
-      if M in [mSSB, mAM, mFM] then begin
-         if not(aQSO.mode in [mSSB, mAM, mFM]) then begin
+      if M in [mSSB, mAM, mFM, mDV] then begin
+         if not(aQSO.mode in [mSSB, mAM, mFM, mDV]) then begin
             aQSO.RSTsent := aQSO.RSTsent div 10;
             aQSO.RSTRcvd := aQSO.RSTRcvd div 10;
          end;
       end
       else begin
-         if aQSO.mode in [mSSB, mAM, mFM] then begin
+         if aQSO.mode in [mSSB, mAM, mFM, mDV] then begin
             aQSO.RSTsent := aQSO.RSTsent * 10 + 9;
             aQSO.RSTRcvd := aQSO.RSTRcvd * 10 + 9;
          end;
@@ -7054,14 +7055,14 @@ begin
          for i := _top to _bottom do begin
             aQSO := TQSO(Grid.Objects[0, i]);
 
-            if M in [mSSB, mAM, mFM] then begin
-               if not(aQSO.mode in [mSSB, mAM, mFM]) then begin
+            if M in [mSSB, mAM, mFM, mDV] then begin
+               if not(aQSO.mode in [mSSB, mAM, mFM, mDV]) then begin
                   aQSO.RSTsent := aQSO.RSTsent div 10;
                   aQSO.RSTRcvd := aQSO.RSTRcvd div 10;
                end;
             end
             else begin
-               if aQSO.mode in [mSSB, mAM, mFM] then begin
+               if aQSO.mode in [mSSB, mAM, mFM, mDV] then begin
                   aQSO.RSTsent := aQSO.RSTsent * 10 + 9;
                   aQSO.RSTRcvd := aQSO.RSTRcvd * 10 + 9;
                end;
@@ -9950,7 +9951,7 @@ begin
          PlayMessageCW(bank, no, fResetTx);
       end;
 
-      mSSB, mFM, mAM: begin
+      mSSB, mFM, mAM, mDV: begin
          PlayMessagePH(no, fResetTx);
       end;
 
@@ -13620,7 +13621,7 @@ begin
       FCWMonitor.ClearSendingText();
       FCWKeyboard.Clear();
    end
-   else if (mode = mSSB) or (mode = mFM) or (mode = mAM) then begin
+   else if (mode = mSSB) or (mode = mFM) or (mode = mAM) or (mode = mDV) then begin
       VoiceStopButtonClick(Self);
    end;
 end;

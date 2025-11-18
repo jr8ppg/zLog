@@ -1537,6 +1537,7 @@ begin
             4, $A, $B: M := mFM;
             5, $D: M := mAM;
             6, 9: M := mRTTY;
+            $E: M := mDV;
             else  M := mOther;
          end;
 

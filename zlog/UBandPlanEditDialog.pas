@@ -114,7 +114,7 @@ type
       var Handled: Boolean);
   private
     { Private êÈåæ }
-    FTmpLimit: array [mCW..mOther] of TFreqLimitArray;
+    FTmpLimit: array [mCW..LastMode] of TFreqLimitArray;
     FLabelArray: array[b19..HiBand] of TLabel;
     FLowerEditArray: array[b19..HiBand] of TEdit;
     FUpperEditArray: array[b19..HiBand] of TEdit;
@@ -289,7 +289,7 @@ var
 begin
    if dmZLogGlobal.BandPlans.ContainsKey(preset) = True then begin
       bandplan := dmZLogGlobal.BandPlans[preset];
-      for mm := mCW to mOther do begin
+      for mm := mCW to LastMode do begin
          FTmpLimit[mm] := bandplan.Limit[mm];
       end;
    end
@@ -318,7 +318,7 @@ begin
 
    if dmZLogGlobal.BandPlans.ContainsKey(preset) = True then begin
       bandplan := dmZLogGlobal.BandPlans[preset];
-      for mm := mCW to mOther do begin
+      for mm := mCW to LastMode do begin
          bandplan.Limit[mm] := FTmpLimit[mm];
       end;
    end;

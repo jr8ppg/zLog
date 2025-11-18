@@ -1138,9 +1138,9 @@ begin
          end;
       end;
 
-      mSSB, mFM, mAM: begin
+      mSSB, mFM, mAM, mDV: begin
          if IsAllPhone = True then begin
-            if aQSO.FMode in [mSSB, mFM, mAM] then begin
+            if aQSO.FMode in [mSSB, mFM, mAM, mDV] then begin
                Result := True;
             end;
          end
@@ -1207,7 +1207,7 @@ end;
 
 function TQSO.GetMode2(): TMode;
 const
-   Mode2: array[mCW..mOther] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mFT4, mFT8, mOther );
+   Mode2: array[mCW..LastMode] of TMode = (mCW, mSSB, mSSB, mSSB, mRTTY, mFT4, mFT8, mOther, mDV );
 begin
    Result := Mode2[Self.Mode];
 end;
@@ -4157,7 +4157,7 @@ var
    var
       m: TMode;
    begin
-      for m := mCW to mOther do begin
+      for m := mCW to LastMode do begin
          if ModeString[m] = adifMode then begin
             Result := m;
             Exit;
@@ -4472,7 +4472,7 @@ begin
             end;
          end;
 
-         if (m = mSSB) or (m = mAM) or (m = mFM) then begin
+         if (m = mSSB) or (m = mAM) or (m = mFM) or (m = mDV) then begin
             defrst := 59;
          end
          else begin
@@ -4553,8 +4553,11 @@ var
    hz: TFrequency;
 const
    mode_table: array[0..24] of TMode = (
+   // CW,  RTTY,  SSB,  FM,  AM,  ATV,    SSTV,   PSK,    GMSK,   MFSK,
       mCW, mRTTY, mSSB, mFM, mAM, mOther, mOther, mOther, mOther, mOther,
-      mOther, mOther, mOther, mOther, mOther, mOther, mOther, mFT8, mOther, mOther,
+   // QPSK,   FSK,    D-STAR, C4FM, JT65,   JT9,    ISCAT,  FT8,  JT4,    QRA64,
+      mOther, mOther, mDV,    mDV,  mOther, mOther, mOther, mFT8, mOther, mOther,
+   // MSK144, WSPR,   JTMS,   FT4,  FST4
       mOther, mOther, mOther, mFT4, mOther
    );
    band_table: array[0..22] of TBand = (

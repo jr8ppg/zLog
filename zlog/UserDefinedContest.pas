@@ -16,7 +16,7 @@ const
   band_without_warc_table: array[1..13] of TBand = ( b19, b35, b7, b14, b21, b28, b50, b144, b430, b1200, b2400, b5600, b10g );
 
 type
-  TPointsTable = array[b19..HiBand, mCW..mOther] of Integer;
+  TPointsTable = array[b19..HiBand, mCW..LastMode] of Integer;
   PTPointsTable = ^TPointsTable;
   TPowerTable = array[b19..HiBand] of string;
   TSerialTable = array[b19..HiBand] of Integer;
@@ -347,7 +347,7 @@ var
    M: TMode;
 begin
    for B := b19 to HiBand do begin
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          PT[B, M] := 1;
       end;
    end;

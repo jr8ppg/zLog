@@ -53,8 +53,8 @@ type
     FInitialPolling: Boolean;
     FPollingCount: Integer;
     FComm : TCommPortDriver; // points to the right CommPortDriver
-    ModeWidth : array[mCW..mOther] of Integer; // used in icom
-    FFreqMem : array[b19..b10g, mCW..mOther] of TFrequency;
+    ModeWidth : array[mCW..LastMode] of Integer; // used in icom
+    FFreqMem : array[b19..b10g, mCW..LastMode] of TFrequency;
     _freqoffset: TFrequency; // freq offset for transverters in Hz
     _rignumber : Integer;
     FRitCtrlSupported: Boolean;
@@ -246,7 +246,7 @@ var
    i: Integer;
 begin
    // inherited
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeWidth[M] := -1;
    end;
 
@@ -313,7 +313,7 @@ begin
 
    // LastMode := mCW;
    for B := b19 to b10g do begin
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
    end;
@@ -909,7 +909,7 @@ var
    B: TBand;
 begin
    FOmniRig := AOmniRig;
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeWidth[M] := -1;
    end;
 
@@ -934,7 +934,7 @@ begin
    _currentvfo := 0; // VFO A
 
    for B := b19 to b10g do begin
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
    end;
@@ -1085,7 +1085,7 @@ var
    M: TMode;
    B: TBand;
 begin
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeWidth[M] := -1;
    end;
 
@@ -1110,7 +1110,7 @@ begin
    _currentvfo := 0; // VFO A
 
    for B := b19 to b10g do begin
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
    end;
