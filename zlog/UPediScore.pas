@@ -102,6 +102,9 @@ var
    TotQSO, TotBandQSO: LongInt;
    ModeQSO: array [mCW .. LastMode] of Integer;
    w: Integer;
+   C: Integer;
+const
+   disptbl: array[mCW..LastMode] of Integer = (2, 3, 4, 5, 6, 7, 8, 10, 9 );
 begin
    TotQSO := 0;
 
@@ -114,8 +117,8 @@ begin
    Grid.Cells[6, 0] := 'RTTY';
    Grid.Cells[7, 0] := 'FT4';
    Grid.Cells[8, 0] := 'FT8';
-   Grid.Cells[9, 0] := 'Other';
-   Grid.Cells[10, 0] := 'DV';
+   Grid.Cells[9, 0] := 'DV';
+   Grid.Cells[10, 0] := 'Other';
 
    for M := mCW to LastMode do begin
       ModeQSO[M] := 0;
@@ -126,7 +129,8 @@ begin
 
       Grid.Cells[0, ord(b) + 1] := '*' + MHzString[b];
       for M := mCW to LastMode do begin
-         Grid.Cells[ord(M) + 2, ord(b) + 1] := IntToStr3(Stats[b, M]);
+         C := disptbl[M];
+         Grid.Cells[C, ord(b) + 1] := IntToStr3(Stats[b, M]);
 
          Inc(TotBandQSO, Stats[b, M]);
          Inc(ModeQSO[M], Stats[b, M]);
@@ -141,7 +145,8 @@ begin
    Grid.Cells[1, ord(HiBand) + 2] := IntToStr3(TotQSO);
 
    for M := mCW to LastMode do begin
-      Grid.Cells[ord(M) + 2, ord(HiBand) + 2] := IntToStr3(ModeQSO[M]);
+      C := disptbl[M];
+      Grid.Cells[C, ord(HiBand) + 2] := IntToStr3(ModeQSO[M]);
    end;
 
    Grid.ColCount := 11;
