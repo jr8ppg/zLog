@@ -1962,6 +1962,10 @@ end;
 procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
 var
    maxmode: TMode;
+const
+//                                          (mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mOther, mDV);
+   uptable: array[mCW..LastMode] of TMode = (mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mDV, mCW, mOther);
+   dwtable: array[mCW..LastMode] of TMode = (mOther, mCW, mSSB, mFM, mAM, mRTTY, mFT4, mDV, mFT8);
 begin
    if dmZLogGlobal.ContestMode = cmAll then begin
       maxmode := mRTTY;
@@ -1985,18 +1989,14 @@ begin
    end;
 
    if fUp = True then begin
-      if aQSO.Mode < maxmode then begin
-         aQSO.Mode := TMode(Integer(aQSO.Mode) + 1);
-      end
-      else begin
+      aQSO.Mode := uptable[aQSO.Mode];
+      if aQSO.Mode > maxmode then begin
          aQSO.Mode := mCW;
       end;
    end
    else begin
-      if aQSO.Mode > mCW then begin
-         aQSO.Mode := TMode(Integer(aQSO.Mode) - 1);
-      end
-      else begin
+      aQSO.Mode := dwtable[aQSO.Mode];
+      if aQSO.Mode > maxmode then begin
          aQSO.Mode := maxmode;
       end;
    end;
