@@ -61,6 +61,12 @@ type
     menuDispAlternating: TMenuItem;
     menuDispOrder: TMenuItem;
     timerRefresh: TTimer;
+    Series18: TBarSeries;
+    Series19: TBarSeries;
+    Series20: TBarSeries;
+    Series21: TBarSeries;
+    Series22: TBarSeries;
+    SeriesTarget: TBarSeries;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -195,7 +201,13 @@ begin
    FGraphSeries[b2400] := Series14;
    FGraphSeries[b5600] := Series15;
    FGraphSeries[b10g] := Series16;
-   FGraphSeries[bTarget] := Series17;
+   FGraphSeries[b104g] := Series17;
+   FGraphSeries[b24g] := Series18;
+   FGraphSeries[b47g] := Series19;
+   FGraphSeries[b77g] := Series20;
+   FGraphSeries[b135g] := Series21;
+   FGraphSeries[b248g] := Series22;
+   FGraphSeries[bTarget] := SeriesTarget;
 
    FGraphStyle := rsOriginal;
    FGraphStartPosition := spCurrentTime;
@@ -540,6 +552,12 @@ begin
       FGraphSeries[b2400].Add(0);
       FGraphSeries[b5600].Add(0);
       FGraphSeries[b10g].Add(0);
+      FGraphSeries[b104g].Add(0);
+      FGraphSeries[b24g].Add(0);
+      FGraphSeries[b47g].Add(0);
+      FGraphSeries[b77g].Add(0);
+      FGraphSeries[b135g].Add(0);
+      FGraphSeries[b248g].Add(0);
       FGraphSeries[bTarget].Add(target_hour_count);
 
       // 実績値累計
@@ -596,7 +614,7 @@ var
 begin
    hour_count := 0;
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       part_count := dmZLogGlobal.Target.Bands[b].Hours[hh].Actual;
 
       // この時間帯の合計
@@ -606,7 +624,7 @@ begin
    // Actual QSOs
    FGraphSeries[b19].Add(hour_count);
 
-   for b := b35 to b10g do begin
+   for b := b35 to HiBand do begin
       FGraphSeries[b].Add(0);
    end;
 
@@ -623,7 +641,7 @@ var
 begin
    hour_count := 0;
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       part_count := dmZLogGlobal.Target.Bands[b].Hours[hh].Actual;
 
       // グラフデータの追加
@@ -702,11 +720,23 @@ begin
 
    // SHF
    part_count := dmZLogGlobal.Target.Bands[b5600].Hours[hh].Actual +
-                 dmZLogGlobal.Target.Bands[b10g].Hours[hh].Actual;
+                 dmZLogGlobal.Target.Bands[b10g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b104g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b24g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b47g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b77g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b135g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b248g].Hours[hh].Actual;
 
    // グラフデータの追加
    FGraphSeries[b5600].Add(part_count);
    FGraphSeries[b10g].Add(0);
+   FGraphSeries[b104g].Add(0);
+   FGraphSeries[b24g].Add(0);
+   FGraphSeries[b47g].Add(0);
+   FGraphSeries[b77g].Add(0);
+   FGraphSeries[b135g].Add(0);
+   FGraphSeries[b248g].Add(0);
    FGraphSeries[bTarget].Add(0);
 
    // この時間帯の合計
@@ -1258,9 +1288,21 @@ begin
    ScoreGrid.Cells[0, 30] := '';
    ScoreGrid.Cells[0, 31] := MHzString[b10g];
    ScoreGrid.Cells[0, 32] := '';
-   ScoreGrid.Cells[0, 33] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 33] := MHzString[b104g];
    ScoreGrid.Cells[0, 34] := '';
-   ScoreGrid.Cells[0, 35] := '%';
+   ScoreGrid.Cells[0, 35] := MHzString[b24g];
+   ScoreGrid.Cells[0, 36] := '';
+   ScoreGrid.Cells[0, 37] := MHzString[b47g];
+   ScoreGrid.Cells[0, 38] := '';
+   ScoreGrid.Cells[0, 39] := MHzString[b77g];
+   ScoreGrid.Cells[0, 40] := '';
+   ScoreGrid.Cells[0, 41] := MHzString[b135g];
+   ScoreGrid.Cells[0, 42] := '';
+   ScoreGrid.Cells[0, 43] := MHzString[b248g];
+   ScoreGrid.Cells[0, 44] := '';
+   ScoreGrid.Cells[0, 45] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 46] := '';
+   ScoreGrid.Cells[0, 47] := '%';
 
    for i := 1 to 24 do begin
       ScoreGrid.ColWidths[i] := 42;
@@ -1275,7 +1317,7 @@ begin
    ScoreGrid.Cells[50, 0] := '%';
    ScoreGrid.ColWidths[50] := 50;
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       R := Ord(b) * 2;
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid.RowHeights[R + 1] := 24;
@@ -1310,27 +1352,39 @@ begin
    ScoreGrid.Cells[0, 14] := MHzString[b2400];
    ScoreGrid.Cells[0, 15] := MHzString[b5600];
    ScoreGrid.Cells[0, 16] := MHzString[b10g];
-   ScoreGrid.Cells[0, 17] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 17] := MHzString[b104g];
+   ScoreGrid.Cells[0, 18] := MHzString[b24g];
+   ScoreGrid.Cells[0, 19] := MHzString[b47g];
+   ScoreGrid.Cells[0, 20] := MHzString[b77g];
+   ScoreGrid.Cells[0, 21] := MHzString[b135g];
+   ScoreGrid.Cells[0, 22] := MHzString[b248g];
+   ScoreGrid.Cells[0, 23] := SCOREGRID_TOTAL;
 
-   ScoreGrid.Cells[0, 18] := MHzString[b19];
-   ScoreGrid.Cells[0, 19] := MHzString[b35];
-   ScoreGrid.Cells[0, 20] := MHzString[b7];
-   ScoreGrid.Cells[0, 21] := MHzString[b10];
-   ScoreGrid.Cells[0, 22] := MHzString[b14];
-   ScoreGrid.Cells[0, 23] := MHzString[b18];
-   ScoreGrid.Cells[0, 24] := MHzString[b21];
-   ScoreGrid.Cells[0, 25] := MHzString[b24];
-   ScoreGrid.Cells[0, 26] := MHzString[b28];
-   ScoreGrid.Cells[0, 27] := MHzString[b50];
-   ScoreGrid.Cells[0, 28] := MHzString[b144];
-   ScoreGrid.Cells[0, 29] := MHzString[b430];
-   ScoreGrid.Cells[0, 30] := MHzString[b1200];
-   ScoreGrid.Cells[0, 31] := MHzString[b2400];
-   ScoreGrid.Cells[0, 32] := MHzString[b5600];
-   ScoreGrid.Cells[0, 33] := MHzString[b10g];
+   ScoreGrid.Cells[0, 24] := MHzString[b19];
+   ScoreGrid.Cells[0, 25] := MHzString[b35];
+   ScoreGrid.Cells[0, 26] := MHzString[b7];
+   ScoreGrid.Cells[0, 27] := MHzString[b10];
+   ScoreGrid.Cells[0, 28] := MHzString[b14];
+   ScoreGrid.Cells[0, 29] := MHzString[b18];
+   ScoreGrid.Cells[0, 30] := MHzString[b21];
+   ScoreGrid.Cells[0, 31] := MHzString[b24];
+   ScoreGrid.Cells[0, 32] := MHzString[b28];
+   ScoreGrid.Cells[0, 33] := MHzString[b50];
+   ScoreGrid.Cells[0, 34] := MHzString[b144];
+   ScoreGrid.Cells[0, 35] := MHzString[b430];
+   ScoreGrid.Cells[0, 36] := MHzString[b1200];
+   ScoreGrid.Cells[0, 37] := MHzString[b2400];
+   ScoreGrid.Cells[0, 38] := MHzString[b5600];
+   ScoreGrid.Cells[0, 39] := MHzString[b10g];
+   ScoreGrid.Cells[0, 40] := MHzString[b104g];
+   ScoreGrid.Cells[0, 41] := MHzString[b24g];
+   ScoreGrid.Cells[0, 42] := MHzString[b47g];
+   ScoreGrid.Cells[0, 43] := MHzString[b77g];
+   ScoreGrid.Cells[0, 44] := MHzString[b135g];
+   ScoreGrid.Cells[0, 45] := MHzString[b248g];
 
-   ScoreGrid.Cells[0, 34] := SCOREGRID_TOTAL;
-   ScoreGrid.Cells[0, 35] := '%';
+   ScoreGrid.Cells[0, 46] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 47] := '%';
 
    for i := 1 to 24 do begin
       ScoreGrid.ColWidths[i] := 42;
@@ -1347,7 +1401,7 @@ begin
 
    // 使用しないバンド非表示(actual)
    R := 1;
-   for b := b19 to b10g do begin
+   for b := b19 to Hiband do begin
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid.RowHeights[R] := 24;
       end
@@ -1361,7 +1415,7 @@ begin
    Inc(R);
 
    // 使用しないバンド非表示(target)
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid.RowHeights[R] := 24;
       end
@@ -1396,8 +1450,14 @@ begin
    ScoreGrid2.Cells[0, 14] := MHzString[b2400];
    ScoreGrid2.Cells[0, 15] := MHzString[b5600];
    ScoreGrid2.Cells[0, 16] := MHzString[b10g];
-   ScoreGrid2.Cells[0, 17] := SCOREGRID_TOTAL;
-   ScoreGrid2.Cells[0, 18] := SCOREGRID_CUMULATIVE;
+   ScoreGrid2.Cells[0, 17] := MHzString[b104g];
+   ScoreGrid2.Cells[0, 18] := MHzString[b24g];
+   ScoreGrid2.Cells[0, 19] := MHzString[b47g];
+   ScoreGrid2.Cells[0, 20] := MHzString[b77g];
+   ScoreGrid2.Cells[0, 21] := MHzString[b135g];
+   ScoreGrid2.Cells[0, 22] := MHzString[b248g];
+   ScoreGrid2.Cells[0, 23] := SCOREGRID_TOTAL;
+   ScoreGrid2.Cells[0, 24] := SCOREGRID_CUMULATIVE;
 
    // 列見出し
    for i := 1 to 24 do begin
@@ -1418,7 +1478,7 @@ begin
    ScoreGrid2.ColWidths[51] := 50;
 
    // 行高さ
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       R := Ord(b);
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid2.RowHeights[R + 1] := 24;
@@ -1435,7 +1495,7 @@ var
    i: Integer;
    R: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       R := (Ord(b) * 2) + 1;
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R + 0] := IntToStr(ATarget.Bands[b].Hours[i].Target);
@@ -1486,7 +1546,7 @@ begin
    R := 1;
 
    // まずはactual
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
       end;
@@ -1510,7 +1570,7 @@ begin
    Inc(R);
 
    // target
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R] := IntToStr(ATarget.Bands[b].Hours[i].Target);
       end;
@@ -1565,7 +1625,7 @@ var
    t: Integer;
    h: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       // 行位置
       R := Ord(b) + 1;
 

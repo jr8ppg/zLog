@@ -635,6 +635,12 @@ type
     SentRSTEdit2C: TEdit;
     actionFocusRstSent: TAction;
     DV1: TMenuItem;
+    N104GHz1: TMenuItem;
+    N24GHz1: TMenuItem;
+    N48GHz1: TMenuItem;
+    N77GHZ1: TMenuItem;
+    N135GHz1: TMenuItem;
+    N248GHz1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);

@@ -103,6 +103,7 @@ var
    ModeQSO: array [mCW .. LastMode] of Integer;
    w: Integer;
    C: Integer;
+   R: Integer;
 const
    disptbl: array[mCW..LastMode] of Integer = (2, 3, 4, 5, 6, 7, 8, 10, 9 );
 begin
@@ -124,13 +125,18 @@ begin
       ModeQSO[M] := 0;
    end;
 
+   R := 1;
    for b := b19 to HiBand do begin
+      if dmZLogGlobal.Settings._activebands[b] = False then begin
+         Continue;
+      end;
+
       TotBandQSO := 0;
 
-      Grid.Cells[0, ord(b) + 1] := '*' + MHzString[b];
+      Grid.Cells[0, R] := '*' + MHzString[b];
       for M := mCW to LastMode do begin
          C := disptbl[M];
-         Grid.Cells[C, ord(b) + 1] := IntToStr3(Stats[b, M]);
+         Grid.Cells[C, R] := IntToStr3(Stats[b, M]);
 
          Inc(TotBandQSO, Stats[b, M]);
          Inc(ModeQSO[M], Stats[b, M]);
@@ -138,19 +144,21 @@ begin
 
       Inc(TotQSO, TotBandQSO);
 
-      Grid.Cells[1, ord(b) + 1] := IntToStr3(TotBandQSO);
+      Grid.Cells[1, R] := IntToStr3(TotBandQSO);
+
+      Inc(R);
    end;
 
-   Grid.Cells[0, ord(HiBand) + 2] := 'Total';
-   Grid.Cells[1, ord(HiBand) + 2] := IntToStr3(TotQSO);
+   Grid.Cells[0, R] := 'Total';
+   Grid.Cells[1, R] := IntToStr3(TotQSO);
 
    for M := mCW to LastMode do begin
       C := disptbl[M];
-      Grid.Cells[C, ord(HiBand) + 2] := IntToStr3(ModeQSO[M]);
+      Grid.Cells[C, R] := IntToStr3(ModeQSO[M]);
    end;
 
    Grid.ColCount := 11;
-   Grid.RowCount := 18;
+   Grid.RowCount := R + 1;
 
    // カラム幅をセット
    w := Grid.Canvas.TextWidth('9');

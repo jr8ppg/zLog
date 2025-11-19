@@ -873,39 +873,10 @@ begin
       //
 
       // Active bands
-      Settings._activebands[b19] := ini.ReadBool('Profiles', 'Active1.9MHz', True);
-      Settings._activebands[b35] := ini.ReadBool('Profiles', 'Active3.5MHz', True);
-      Settings._activebands[b7] := ini.ReadBool('Profiles', 'Active7MHz', True);
-      Settings._activebands[b10] := ini.ReadBool('Profiles', 'Active10MHz', True);
-      Settings._activebands[b14] := ini.ReadBool('Profiles', 'Active14MHz', True);
-      Settings._activebands[b18] := ini.ReadBool('Profiles', 'Active18MHz', True);
-      Settings._activebands[b21] := ini.ReadBool('Profiles', 'Active21MHz', True);
-      Settings._activebands[b24] := ini.ReadBool('Profiles', 'Active24MHz', True);
-      Settings._activebands[b28] := ini.ReadBool('Profiles', 'Active28MHz', True);
-      Settings._activebands[b50] := ini.ReadBool('Profiles', 'Active50MHz', True);
-      Settings._activebands[b144] := ini.ReadBool('Profiles', 'Active144MHz', True);
-      Settings._activebands[b430] := ini.ReadBool('Profiles', 'Active430MHz', True);
-      Settings._activebands[b1200] := ini.ReadBool('Profiles', 'Active1200MHz', True);
-      Settings._activebands[b2400] := ini.ReadBool('Profiles', 'Active2400MHz', True);
-      Settings._activebands[b5600] := ini.ReadBool('Profiles', 'Active5600MHz', True);
-      Settings._activebands[b10g] := ini.ReadBool('Profiles', 'Active10GHz', True);
-
-      Settings._power[b19]    := ini.ReadString('Profiles', 'Power1.9MHz', 'H');
-      Settings._power[b35]    := ini.ReadString('Profiles', 'Power3.5MHz', 'H');
-      Settings._power[b7]     := ini.ReadString('Profiles', 'Power7MHz', 'H');
-      Settings._power[b10]    := ini.ReadString('Profiles', 'Power10MHz', 'H');
-      Settings._power[b14]    := ini.ReadString('Profiles', 'Power14MHz', 'H');
-      Settings._power[b18]    := ini.ReadString('Profiles', 'Power18MHz', 'H');
-      Settings._power[b21]    := ini.ReadString('Profiles', 'Power21MHz', 'H');
-      Settings._power[b24]    := ini.ReadString('Profiles', 'Power24MHz', 'H');
-      Settings._power[b28]    := ini.ReadString('Profiles', 'Power28MHz', 'H');
-      Settings._power[b50]    := ini.ReadString('Profiles', 'Power50MHz', 'H');
-      Settings._power[b144]   := ini.ReadString('Profiles', 'Power144MHz', 'H');
-      Settings._power[b430]   := ini.ReadString('Profiles', 'Power430MHz', 'H');
-      Settings._power[b1200]  := ini.ReadString('Profiles', 'Power1200MHz', 'H');
-      Settings._power[b2400]  := ini.ReadString('Profiles', 'Power2400MHz', 'H');
-      Settings._power[b5600]  := ini.ReadString('Profiles', 'Power5600MHz', 'H');
-      Settings._power[b10g]   := ini.ReadString('Profiles', 'Power10GHz', 'H');
+      for b := b19 to HiBand do begin
+         Settings._activebands[b] := ini.ReadBool('Profiles', 'Active' + BandIniString[b], DefIniUseBand[b]);
+         Settings._power[b] := ini.ReadString('Profiles', 'Power' + BandIniString[b], DefIniPower[b]);
+      end;
 
       // Automatically enter exchange from SuperCheck
       Settings._entersuperexchange := ini.ReadBool('Preferences', 'AutoEnterSuper', False);
@@ -1749,39 +1720,10 @@ begin
       //
 
       // Active bands
-      ini.WriteBool('Profiles', 'Active1.9MHz', Settings._activebands[b19]);
-      ini.WriteBool('Profiles', 'Active3.5MHz', Settings._activebands[b35]);
-      ini.WriteBool('Profiles', 'Active7MHz', Settings._activebands[b7]);
-      ini.WriteBool('Profiles', 'Active10MHz', Settings._activebands[b10]);
-      ini.WriteBool('Profiles', 'Active14MHz', Settings._activebands[b14]);
-      ini.WriteBool('Profiles', 'Active18MHz', Settings._activebands[b18]);
-      ini.WriteBool('Profiles', 'Active21MHz', Settings._activebands[b21]);
-      ini.WriteBool('Profiles', 'Active24MHz', Settings._activebands[b24]);
-      ini.WriteBool('Profiles', 'Active28MHz', Settings._activebands[b28]);
-      ini.WriteBool('Profiles', 'Active50MHz', Settings._activebands[b50]);
-      ini.WriteBool('Profiles', 'Active144MHz', Settings._activebands[b144]);
-      ini.WriteBool('Profiles', 'Active430MHz', Settings._activebands[b430]);
-      ini.WriteBool('Profiles', 'Active1200MHz', Settings._activebands[b1200]);
-      ini.WriteBool('Profiles', 'Active2400MHz', Settings._activebands[b2400]);
-      ini.WriteBool('Profiles', 'Active5600MHz', Settings._activebands[b5600]);
-      ini.WriteBool('Profiles', 'Active10GHz', Settings._activebands[b10g]);
-
-      ini.WriteString('Profiles', 'Power1.9MHz',   Settings._power[b19]);
-      ini.WriteString('Profiles', 'Power3.5MHz',   Settings._power[b35]);
-      ini.WriteString('Profiles', 'Power7MHz',     Settings._power[b7]);
-      ini.WriteString('Profiles', 'Power10MHz',    Settings._power[b10]);
-      ini.WriteString('Profiles', 'Power14MHz',    Settings._power[b14]);
-      ini.WriteString('Profiles', 'Power18MHz',    Settings._power[b18]);
-      ini.WriteString('Profiles', 'Power21MHz',    Settings._power[b21]);
-      ini.WriteString('Profiles', 'Power24MHz',    Settings._power[b24]);
-      ini.WriteString('Profiles', 'Power28MHz',    Settings._power[b28]);
-      ini.WriteString('Profiles', 'Power50MHz',    Settings._power[b50]);
-      ini.WriteString('Profiles', 'Power144MHz',   Settings._power[b144]);
-      ini.WriteString('Profiles', 'Power430MHz',   Settings._power[b430]);
-      ini.WriteString('Profiles', 'Power1200MHz',  Settings._power[b1200]);
-      ini.WriteString('Profiles', 'Power2400MHz',  Settings._power[b2400]);
-      ini.WriteString('Profiles', 'Power5600MHz',  Settings._power[b5600]);
-      ini.WriteString('Profiles', 'Power10GHz',    Settings._power[b10g]);
+      for b := b19 to HiBand do begin
+         ini.WriteBool('Profiles', 'Active' + BandIniString[b],  Settings._activebands[b]);
+         ini.WriteString('Profiles', 'Power' + BandIniString[b], Settings._power[b]);
+      end;
 
       // Automatically enter exchange from SuperCheck
       ini.WriteBool('Preferences', 'AutoEnterSuper', Settings._entersuperexchange);

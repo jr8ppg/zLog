@@ -74,7 +74,7 @@ type
     act1200: TCheckBox;
     act2400: TCheckBox;
     act5600: TCheckBox;
-    act10g: TCheckBox;
+    act101g: TCheckBox;
     GroupBox4: TGroupBox;
     Label20: TLabel;
     Label21: TLabel;
@@ -153,7 +153,7 @@ type
     comboPower1200: TComboBox;
     comboPower2400: TComboBox;
     comboPower5600: TComboBox;
-    comboPower10g: TComboBox;
+    comboPower101g: TComboBox;
     GroupBox5: TGroupBox;
     checkHighlightFullmatch: TCheckBox;
     editFullmatchColor: TEdit;
@@ -390,6 +390,18 @@ type
     checkTransparentSrMiddle: TCheckBox;
     checkTransparentSrLow: TCheckBox;
     checkUseReliability5: TCheckBox;
+    act104g: TCheckBox;
+    comboPower104g: TComboBox;
+    act24g: TCheckBox;
+    comboPower24g: TComboBox;
+    act47g: TCheckBox;
+    comboPower47g: TComboBox;
+    act77g: TCheckBox;
+    comboPower77g: TComboBox;
+    act135g: TCheckBox;
+    comboPower135g: TComboBox;
+    act248g: TCheckBox;
+    comboPower248g: TComboBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -452,6 +464,10 @@ type
     FEditMode: Integer;
     FEditNumber: Integer;
     FActiveTab: Integer;
+
+    FActiveBands: array[b19..HiBand] of TCheckBox;
+    FPowerPerBand: array[b19..HiBand] of TComboBox;
+
     FTempVoiceFiles : array[1..maxmessage] of string;
     FTempAdditionalVoiceFiles : array[2..3] of string;
     TempCurrentBank : integer;
@@ -573,6 +589,7 @@ procedure TformOptions2.RenewSettings;
 var
    r: double;
    i, j: integer;
+   b: TBand;
 begin
    with dmZLogGlobal do begin
       Settings._savewhennocw := cbSaveWhenNoCW.Checked;
@@ -583,39 +600,10 @@ begin
 
       Settings._maxsuperhit := spMaxSuperHit.Value;
 
-      Settings._activebands[b19] := act19.Checked;
-      Settings._activebands[b35] := act35.Checked;
-      Settings._activebands[b7] := act7.Checked;
-      Settings._activebands[b10] := act10.Checked;
-      Settings._activebands[b14] := act14.Checked;
-      Settings._activebands[b18] := act18.Checked;
-      Settings._activebands[b21] := act21.Checked;
-      Settings._activebands[b24] := act24.Checked;
-      Settings._activebands[b28] := act28.Checked;
-      Settings._activebands[b50] := act50.Checked;
-      Settings._activebands[b144] := act144.Checked;
-      Settings._activebands[b430] := act430.Checked;
-      Settings._activebands[b1200] := act1200.Checked;
-      Settings._activebands[b2400] := act2400.Checked;
-      Settings._activebands[b5600] := act5600.Checked;
-      Settings._activebands[b10g] := act10g.Checked;
-
-      Settings._power[b19] := comboPower19.Text;
-      Settings._power[b35] := comboPower35.Text;
-      Settings._power[b7] := comboPower7.Text;
-      Settings._power[b10] := comboPower10.Text;
-      Settings._power[b14] := comboPower14.Text;
-      Settings._power[b18] := comboPower18.Text;
-      Settings._power[b21] := comboPower21.Text;
-      Settings._power[b24] := comboPower24.Text;
-      Settings._power[b28] := comboPower28.Text;
-      Settings._power[b50] := comboPower50.Text;
-      Settings._power[b144] := comboPower144.Text;
-      Settings._power[b430] := comboPower430.Text;
-      Settings._power[b1200] := comboPower1200.Text;
-      Settings._power[b2400] := comboPower2400.Text;
-      Settings._power[b5600] := comboPower5600.Text;
-      Settings._power[b10g] := comboPower10g.Text;
+      for b := b19 to HiBand do begin
+         Settings._activebands[b] := FActiveBands[b].Checked;
+         Settings._power[b] := FPowerPerBand[b].Text;
+      end;
 
       // My position
       Settings._mylatitude := editMyLatitude.Text;
@@ -917,6 +905,7 @@ end;
 procedure TformOptions2.FormShow(Sender: TObject);
 var
    i, j: integer;
+   b: TBand;
 begin
    with dmZlogGlobal do begin
       cbSaveWhenNoCW.Checked := Settings._savewhennocw;
@@ -929,39 +918,10 @@ begin
       cbUpdateThread.Checked := Settings._renewbythread;
       cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
 
-      act19.Checked := Settings._activebands[b19];
-      act35.Checked := Settings._activebands[b35];
-      act7.Checked := Settings._activebands[b7];
-      act10.Checked := Settings._activebands[b10];
-      act14.Checked := Settings._activebands[b14];
-      act18.Checked := Settings._activebands[b18];
-      act21.Checked := Settings._activebands[b21];
-      act24.Checked := Settings._activebands[b24];
-      act28.Checked := Settings._activebands[b28];
-      act50.Checked := Settings._activebands[b50];
-      act144.Checked := Settings._activebands[b144];
-      act430.Checked := Settings._activebands[b430];
-      act1200.Checked := Settings._activebands[b1200];
-      act2400.Checked := Settings._activebands[b2400];
-      act5600.Checked := Settings._activebands[b5600];
-      act10g.Checked := Settings._activebands[b10g];
-
-      comboPower19.Text := Settings._power[b19];
-      comboPower35.Text := Settings._power[b35];
-      comboPower7.Text := Settings._power[b7];
-      comboPower10.Text := Settings._power[b10];
-      comboPower14.Text := Settings._power[b14];
-      comboPower18.Text := Settings._power[b18];
-      comboPower21.Text := Settings._power[b21];
-      comboPower24.Text := Settings._power[b24];
-      comboPower28.Text := Settings._power[b28];
-      comboPower50.Text := Settings._power[b50];
-      comboPower144.Text := Settings._power[b144];
-      comboPower430.Text := Settings._power[b430];
-      comboPower1200.Text := Settings._power[b1200];
-      comboPower2400.Text := Settings._power[b2400];
-      comboPower5600.Text := Settings._power[b5600];
-      comboPower10g.Text := Settings._power[b10g];
+      for b := b19 to HiBand do begin
+         FActiveBands[b].Checked := Settings._activebands[b];
+         FPowerPerBand[b].Text := Settings._power[b];
+      end;
 
       // My position
       editMyLatitude.Text := Settings._mylatitude;
@@ -1398,6 +1358,52 @@ begin
    else begin
       ClientHeight := FOriginalHeight;
    end;
+
+   FActiveBands[b19]   := act19;
+   FActiveBands[b35]   := act35;
+   FActiveBands[b7]    := act7;
+   FActiveBands[b10]   := act10;
+   FActiveBands[b14]   := act14;
+   FActiveBands[b18]   := act18;
+   FActiveBands[b21]   := act21;
+   FActiveBands[b24]   := act24;
+   FActiveBands[b28]   := act28;
+   FActiveBands[b50]   := act50;
+   FActiveBands[b144]  := act144;
+   FActiveBands[b430]  := act430;
+   FActiveBands[b1200] := act1200;
+   FActiveBands[b2400] := act2400;
+   FActiveBands[b5600] := act5600;
+   FActiveBands[b10g]  := act101g;
+   FActiveBands[b104g] := act104g;
+   FActiveBands[b24g]  := act24g;
+   FActiveBands[b47g]  := act47g;
+   FActiveBands[b77g]  := act77g;
+   FActiveBands[b135g] := act135g;
+   FActiveBands[b248g] := act248g;
+
+   FPowerPerBand[b19]   := comboPower19;
+   FPowerPerBand[b35]   := comboPower35;
+   FPowerPerBand[b7]    := comboPower7;
+   FPowerPerBand[b10]   := comboPower10;
+   FPowerPerBand[b14]   := comboPower14;
+   FPowerPerBand[b18]   := comboPower18;
+   FPowerPerBand[b21]   := comboPower21;
+   FPowerPerBand[b24]   := comboPower24;
+   FPowerPerBand[b28]   := comboPower28;
+   FPowerPerBand[b50]   := comboPower50;
+   FPowerPerBand[b144]  := comboPower144;
+   FPowerPerBand[b430]  := comboPower430;
+   FPowerPerBand[b1200] := comboPower1200;
+   FPowerPerBand[b2400] := comboPower2400;
+   FPowerPerBand[b5600] := comboPower5600;
+   FPowerPerBand[b10g]  := comboPower101g;
+   FPowerPerBand[b104g] := comboPower104g;
+   FPowerPerBand[b24g]  := comboPower24g;
+   FPowerPerBand[b47g]  := comboPower47g;
+   FPowerPerBand[b77g]  := comboPower77g;
+   FPowerPerBand[b135g] := comboPower135g;
+   FPowerPerBand[b248g] := comboPower248g;
 
    // BandScope
    FBSColor[1] := editBSColor1;

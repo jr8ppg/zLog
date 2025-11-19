@@ -7,7 +7,9 @@ uses
 
 type
   TMode = (mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mOther, mDV);
-  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50, b144, b430, b1200, b2400, b5600, b10g, bTarget, bUnknown);
+  TBand = (b19, b35, b7, b10, b14, b18, b21, b24, b28, b50,
+           b144, b430, b1200, b2400, b5600, b10g, b104g, b24g, b47g, b77g,
+           b135g, b248g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
   TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
@@ -27,7 +29,7 @@ resourcestring
   PortActionList = 'None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake';
 
 const
-  HiBand = b10g;
+  HiBand = b248g;
   LastMode = mDV;
 
 type
@@ -106,7 +108,7 @@ const
        (name: 'IC-575';       addr: $16; minband: b28; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-820';       addr: $42; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-821';       addr: $4C; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
-       (name: 'IC-905';       addr: $AC; minband: b144; maxband: b10g;  RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: True),
+       (name: 'IC-905';       addr: $AC; minband: b144; maxband: b104g; RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: True),
        (name: 'IC-910/911';   addr: $60; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-970';       addr: $2E; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-271';       addr: $20; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
@@ -177,12 +179,38 @@ const
   {$IFNDEF ZSERVER}
   MHzString: array[b19..bUnknown] of string = ('1.9','3.5','7','10','14',
                                              '18','21','24','28','50','144',
-                                             '430','1200','2400','5600','10G','Target','Unknown');
+                                             '430','1200','2400','5600','10.1G',
+                                             '10.4G','24G','47G','77G','135G',
+                                             '248G','Target','Unknown');
 
   BandString: array[b19..HiBand] of string = ('1.9 MHz','3.5 MHz','7 MHz','10 MHz',
                                              '14 MHz', '18 MHz','21 MHz','24 MHz','28 MHz',
                                              '50 MHz','144 MHz','430 MHz','1200 MHz','2400 MHz',
-                                             '5600 MHz','10 GHz & up');
+                                             '5600 MHz','10.1 GHz','10.4 GHz',
+                                             '24 GHz','47 GHz','77 GHz','135 GHz',
+                                             '248 GHz');
+
+  BandIniString: array[b19..HiBand] of string = (
+    '1.9MHz', '3.5MHz',  '7MHz',    '10MHz',   '14MHz',
+    '18MHz',  '21MHz',   '24MHz',   '28MHz',   '50MHz',
+    '144MHz', '430MHz',  '1200MHz', '2400MHz', '5600MHz',
+    '10GHz',  '10.4GHz', '24GHz',   '47GHz',   '77GHz',
+    '135GHz', '248GHz'
+  );
+  DefIniUseBand: array[b19..HiBand] of Boolean = (
+    True,  True,  True,  True,  True,
+    True,  True,  True,  True,  True,
+    True,  True,  True,  True,  True,
+    True,  True,  False, False, False,
+    False, False
+  );
+  DefIniPower: array[b19..HiBand] of string = (
+    'H', 'H', 'H', 'H', 'H',
+    'H', 'H', 'H', 'H', 'H',
+    'M', 'M', 'L', 'L', 'L',
+    'P', 'P', 'P', 'P', 'P',
+    'P', 'P'
+  );
   {$ELSE}
   MHzString: array[b19..bUnknown] of string = ('1.9','3.5','7','10','14',
                                              '18','21','24','28','50','144',
@@ -194,20 +222,23 @@ const
                                              '5600 MHz','10 GHz & up', '', 'TELNET');
   {$ENDIF}
 
-  ADIFBandString : array[b19..HiBand] of string = ('160m','80m','40m','30m',
-                                             '20m', '17m','15m','12m','10m',
-                                             '6m','2m','70cm','23cm','13cm',
-                                             '6cm','3cm');
+  ADIFBandString : array[b19..HiBand] of string = (
+    '160m','80m','40m','30m','20m', '17m','15m','12m',
+    '10m','6m','2m','70cm','23cm','13cm','6cm','3cm',
+    '3cm','1.25cm','6mm','4mm','2mm','1mm'
+  );
 
-  CabrilloBandString: array[b19..b10g] of string = (
+  CabrilloBandString: array[b19..HiBand] of string = (
     ' 1800', ' 3500', ' 7000', '10000', '14000', '18000', '21000', '24500',
-    '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G'
+    '28000', '   50', '  144', '  432', ' 1.2G', ' 2.3G', ' 5.7G', '  10G',
+    '  10G', '  24G', '  47G', '  75G', ' 134G', ' 241G'
   );
   CabrilloModeString: array[mCW..LastMode] of string = ('CW','PH','FM','PH','RY','DG','DG','  ','DV');
 
-  JarlPubLogMHzString: array[b19..b10g] of string = (
+  JarlPubLogMHzString: array[b19..HiBand] of string = (
     '1.8','3.5','7','10','14', '18','21','24','28',
-    '50','144', '430','1200','2400','5600','10G'
+    '50','144', '430','1200','2400','5600','10G',
+    '10G','24G','47G','75G','134G','241G'
   );
 
   ModeString : array[mCW..LastMode] of string = ('CW','SSB','FM','AM','RTTY','FT4','FT8','Other','DV');
@@ -230,13 +261,17 @@ const
     $0080FF00, $000000FF, $00FF0000, $00808080,
     $0000FFFF, $00808080, $00FF00FF, $00808080,
     $00FFFF80, $004080FF, $00FF8000, $00C080FF,
-    $00FF0080, $00359CF3, $00144CF1, $0080FFFF
+    $00FF0080, $00359CF3, $00144CF1, $0080FFFF,
+    $0080FFFF, $0080FFFF, $0080FFFF, $0080FFFF,
+    $0080FFFF, $0080FFFF
   );
   default_graph_text_color: array[b19..HiBand] of TColor = (
     $00400040, $00FFFFFF, $00FFFFFF, $00FFFFFF,
     $00000000, $00FFFFFF, $00000000, $00FFFFFF,
     $00000000, $00FFFFFF, $00FFFFFF, $00000000,
-    $00FFFFFF, $00000000, $00FFFFFF, $00400040
+    $00FFFFFF, $00000000, $00FFFFFF, $00400040,
+    $00400040, $00400040, $00400040, $00400040,
+    $00400040, $00400040
   );
 
   default_other_bg_color: array[0..1] of TColor = (

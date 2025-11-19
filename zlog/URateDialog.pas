@@ -46,6 +46,12 @@ type
     radioOriginLastQSO: TRadioButton;
     radioOriginFirstQSO: TRadioButton;
     timerRefresh: TTimer;
+    Series17: TBarSeries;
+    Series18: TBarSeries;
+    Series19: TBarSeries;
+    Series20: TBarSeries;
+    Series21: TBarSeries;
+    Series22: TBarSeries;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -63,7 +69,7 @@ type
     FLast10QsoRateMax: Double;
     FLast100QsoRateMax: Double;
     FShowLast: Integer;      { Show last x hours. default = 12}
-    FGraphSeries: array[b19..b10g] of TBarSeries;
+    FGraphSeries: array[b19..HiBand] of TBarSeries;
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
     function GetGraphSeries(b: TBand): TBarSeries;
@@ -117,6 +123,12 @@ begin
    FGraphSeries[b2400] := Series14;
    FGraphSeries[b5600] := Series15;
    FGraphSeries[b10g] := Series16;
+   FGraphSeries[b104g] := Series17;
+   FGraphSeries[b24g] := Series18;
+   FGraphSeries[b47g] := Series19;
+   FGraphSeries[b77g] := Series20;
+   FGraphSeries[b135g] := Series21;
+   FGraphSeries[b248g] := Series22;
 
    FGraphStyle := rsOriginal;
    FGraphStartPosition := spCurrentTime;
@@ -325,7 +337,7 @@ var
    b: TBand;
    aQSO: TQSO;
    diff: TDateTime;
-   count_array: array[0..48] of array[b19..b10g] of Integer;
+   count_array: array[0..48] of array[b19..HiBand] of Integer;
 
    function CalcStartTime(dt: TDateTime): TDateTime;
    begin
@@ -334,7 +346,7 @@ var
 begin
    timerRefresh.Enabled := False;
    try
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FGraphSeries[b].Clear();
    end;
    SeriesTotalQSOs.Clear();
@@ -364,7 +376,7 @@ begin
 //   end;
 
    for i := 0 to 48 do begin
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          count_array[i][b] := 0;
       end;
    end;
@@ -418,7 +430,7 @@ begin
 
       hour_count := 0;
       if GraphStyle = rsOriginal then begin
-         for b := b19 to b10g do begin
+         for b := b19 to HiBand do begin
             part_count := count_array[i][b];
 
             // この時間帯の合計
@@ -429,7 +441,7 @@ begin
          FGraphSeries[b19].Add(hour_count);
       end
       else if GraphStyle = rsByBand then begin
-         for b := b19 to b10g do begin
+         for b := b19 to HiBand do begin
             part_count := count_array[i][b];
 
             // グラフデータの追加
@@ -488,7 +500,13 @@ begin
 
          // SHF
          part_count := count_array[i][b5600] +
-                       count_array[i][b10g];
+                       count_array[i][b10g] +
+                       count_array[i][b104g] +
+                       count_array[i][b24g] +
+                       count_array[i][b47g] +
+                       count_array[i][b77g] +
+                       count_array[i][b135g] +
+                       count_array[i][b248g];
 
          // グラフデータの追加
          FGraphSeries[b5600].Add(part_count);

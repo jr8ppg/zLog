@@ -46,7 +46,7 @@ type
 
   TContestTarget = class(TObject)
   private
-    FBandTarget: array[b19..b10g] of THourTarget;
+    FBandTarget: array[b19..HiBand] of THourTarget;
     FBandTotal: THourTarget;   // ècåv
     FBandCumulative: THourTarget;   // ècåv
     FTotal: TQsoTarget;    // ècâ°åv
@@ -203,7 +203,7 @@ constructor TContestTarget.Create();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FBandTarget[b] := THourTarget.Create();
    end;
    FBandTotal := THourTarget.Create();
@@ -219,7 +219,7 @@ destructor TContestTarget.Destroy();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FBandTarget[b].Free();
    end;
    FBandTotal.Free();
@@ -237,12 +237,12 @@ var
    b: TBand;
    h: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FBandTarget[b].Refresh();
    end;
 
    FBandTotal.Clear();
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for h := 1 to MAX_HOURS do begin
          FBandTotal.Hours[h].Actual := FBandTotal.Hours[h].Actual + FBandTarget[b].Hours[h].Actual;
          FBandTotal.Hours[h].Target := FBandTotal.Hours[h].Target + FBandTarget[b].Hours[h].Target;
@@ -274,7 +274,7 @@ var
    i: Integer;
    t: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 1 to MAX_HOURS do begin
          t := FBandTarget[b].Hours[i].Target;
 
@@ -410,7 +410,7 @@ procedure TContestTarget.Clear();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FBandTarget[b].Clear();
    end;
    FBandTotal.Clear();
@@ -422,7 +422,7 @@ procedure TContestTarget.ActualClear();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FBandTarget[b].ActualClear();
    end;
    FBandTotal.ActualClear();
@@ -501,7 +501,7 @@ begin
    slText := TStringList.Create();
    slLine := TStringList.Create();
    try
-      for b := b19 to b10g do begin
+      for b := b19 to hiBand do begin
          slLine.Clear();
          slLine.Add(IntToStr(Ord(b)));
 

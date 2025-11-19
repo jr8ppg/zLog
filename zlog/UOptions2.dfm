@@ -3,8 +3,8 @@ object formOptions2: TformOptions2
   Top = 236
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 471
-  ClientWidth = 444
+  ClientHeight = 511
+  ClientWidth = 534
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,23 +20,25 @@ object formOptions2: TformOptions2
   object PageControl: TPageControl
     Left = 0
     Top = 0
-    Width = 444
-    Height = 434
-    ActivePage = tabsheetBandScope2
+    Width = 534
+    Height = 474
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 444
+    ExplicitHeight = 434
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
-        Left = 208
-        Top = 212
+        Left = 288
+        Top = 252
         Width = 54
         Height = 13
         Caption = 'Save every'
       end
       object Label41: TLabel
-        Left = 316
-        Top = 212
+        Left = 396
+        Top = 252
         Width = 28
         Height = 13
         Caption = 'QSOs'
@@ -45,13 +47,13 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 4
         Width = 256
-        Height = 202
+        Height = 261
         Caption = 'Active bands and powers'
         TabOrder = 0
         object act19: TCheckBox
           Left = 11
           Top = 20
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '1.9 MHz'
           Checked = True
@@ -61,7 +63,7 @@ object formOptions2: TformOptions2
         object act35: TCheckBox
           Left = 11
           Top = 41
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '3.5 MHz'
           Checked = True
@@ -71,7 +73,7 @@ object formOptions2: TformOptions2
         object act7: TCheckBox
           Left = 11
           Top = 62
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '7 MHz'
           Checked = True
@@ -81,7 +83,7 @@ object formOptions2: TformOptions2
         object act14: TCheckBox
           Left = 11
           Top = 104
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '14 MHz'
           Checked = True
@@ -91,7 +93,7 @@ object formOptions2: TformOptions2
         object act21: TCheckBox
           Left = 11
           Top = 146
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '21 MHz'
           Checked = True
@@ -99,9 +101,9 @@ object formOptions2: TformOptions2
           TabOrder = 12
         end
         object act28: TCheckBox
-          Left = 138
-          Top = 20
-          Width = 67
+          Left = 11
+          Top = 188
+          Width = 70
           Height = 17
           Caption = '28 MHz'
           Checked = True
@@ -109,9 +111,9 @@ object formOptions2: TformOptions2
           TabOrder = 16
         end
         object act50: TCheckBox
-          Left = 138
-          Top = 41
-          Width = 67
+          Left = 11
+          Top = 209
+          Width = 70
           Height = 17
           Caption = '50 MHz'
           Checked = True
@@ -119,9 +121,9 @@ object formOptions2: TformOptions2
           TabOrder = 18
         end
         object act144: TCheckBox
-          Left = 138
-          Top = 62
-          Width = 67
+          Left = 11
+          Top = 230
+          Width = 70
           Height = 17
           Caption = '144 MHz'
           Checked = True
@@ -129,9 +131,9 @@ object formOptions2: TformOptions2
           TabOrder = 20
         end
         object act430: TCheckBox
-          Left = 138
-          Top = 83
-          Width = 67
+          Left = 136
+          Top = 20
+          Width = 70
           Height = 17
           Caption = '430 MHz'
           Checked = True
@@ -139,9 +141,9 @@ object formOptions2: TformOptions2
           TabOrder = 22
         end
         object act1200: TCheckBox
-          Left = 138
-          Top = 104
-          Width = 67
+          Left = 136
+          Top = 41
+          Width = 70
           Height = 17
           Caption = '1200 MHz'
           Checked = True
@@ -149,9 +151,9 @@ object formOptions2: TformOptions2
           TabOrder = 24
         end
         object act2400: TCheckBox
-          Left = 138
-          Top = 125
-          Width = 67
+          Left = 136
+          Top = 62
+          Width = 70
           Height = 17
           Caption = '2400 MHz'
           Checked = True
@@ -159,21 +161,21 @@ object formOptions2: TformOptions2
           TabOrder = 26
         end
         object act5600: TCheckBox
-          Left = 138
-          Top = 146
-          Width = 67
+          Left = 136
+          Top = 83
+          Width = 70
           Height = 17
           Caption = '5600 MHz'
           Checked = True
           State = cbChecked
           TabOrder = 28
         end
-        object act10g: TCheckBox
-          Left = 138
-          Top = 167
-          Width = 67
+        object act101g: TCheckBox
+          Left = 136
+          Top = 104
+          Width = 70
           Height = 17
-          Caption = '10 G && up'
+          Caption = '10.1 GHz'
           Checked = True
           State = cbChecked
           TabOrder = 30
@@ -181,7 +183,7 @@ object formOptions2: TformOptions2
         object act24: TCheckBox
           Left = 11
           Top = 167
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '24 MHz'
           Checked = True
@@ -191,7 +193,7 @@ object formOptions2: TformOptions2
         object act18: TCheckBox
           Left = 11
           Top = 125
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '18 MHz'
           Checked = True
@@ -201,7 +203,7 @@ object formOptions2: TformOptions2
         object act10: TCheckBox
           Left = 11
           Top = 83
-          Width = 60
+          Width = 70
           Height = 17
           Caption = '10 MHz'
           Checked = True
@@ -209,7 +211,7 @@ object formOptions2: TformOptions2
           TabOrder = 6
         end
         object comboPower19: TComboBox
-          Left = 73
+          Left = 83
           Top = 18
           Width = 38
           Height = 21
@@ -223,7 +225,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower35: TComboBox
-          Left = 73
+          Left = 83
           Top = 39
           Width = 38
           Height = 21
@@ -237,7 +239,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower7: TComboBox
-          Left = 73
+          Left = 83
           Top = 60
           Width = 38
           Height = 21
@@ -251,7 +253,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower10: TComboBox
-          Left = 73
+          Left = 83
           Top = 81
           Width = 38
           Height = 21
@@ -265,7 +267,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower14: TComboBox
-          Left = 73
+          Left = 83
           Top = 102
           Width = 38
           Height = 21
@@ -279,7 +281,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower18: TComboBox
-          Left = 73
+          Left = 83
           Top = 123
           Width = 38
           Height = 21
@@ -293,7 +295,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower21: TComboBox
-          Left = 73
+          Left = 83
           Top = 144
           Width = 38
           Height = 21
@@ -307,7 +309,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower24: TComboBox
-          Left = 73
+          Left = 83
           Top = 165
           Width = 38
           Height = 21
@@ -321,8 +323,8 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower28: TComboBox
-          Left = 208
-          Top = 18
+          Left = 83
+          Top = 186
           Width = 38
           Height = 21
           ItemIndex = 0
@@ -335,8 +337,8 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower50: TComboBox
-          Left = 208
-          Top = 39
+          Left = 83
+          Top = 207
           Width = 38
           Height = 21
           ItemIndex = 0
@@ -349,8 +351,8 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower144: TComboBox
-          Left = 208
-          Top = 60
+          Left = 83
+          Top = 228
           Width = 38
           Height = 21
           ItemIndex = 0
@@ -364,7 +366,7 @@ object formOptions2: TformOptions2
         end
         object comboPower430: TComboBox
           Left = 208
-          Top = 81
+          Top = 18
           Width = 38
           Height = 21
           ItemIndex = 0
@@ -378,7 +380,7 @@ object formOptions2: TformOptions2
         end
         object comboPower1200: TComboBox
           Left = 208
-          Top = 102
+          Top = 39
           Width = 38
           Height = 21
           ItemIndex = 0
@@ -392,7 +394,7 @@ object formOptions2: TformOptions2
         end
         object comboPower2400: TComboBox
           Left = 208
-          Top = 123
+          Top = 60
           Width = 38
           Height = 21
           ItemIndex = 0
@@ -406,7 +408,7 @@ object formOptions2: TformOptions2
         end
         object comboPower5600: TComboBox
           Left = 208
-          Top = 144
+          Top = 81
           Width = 38
           Height = 21
           ItemIndex = 0
@@ -418,13 +420,147 @@ object formOptions2: TformOptions2
             'L'
             'P')
         end
-        object comboPower10g: TComboBox
+        object comboPower101g: TComboBox
+          Left = 208
+          Top = 102
+          Width = 38
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 31
+          Text = 'H'
+          Items.Strings = (
+            'H'
+            'M'
+            'L'
+            'P')
+        end
+        object act104g: TCheckBox
+          Left = 136
+          Top = 125
+          Width = 70
+          Height = 17
+          Caption = '10.4 GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 32
+        end
+        object comboPower104g: TComboBox
+          Left = 208
+          Top = 123
+          Width = 38
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 33
+          Text = 'H'
+          Items.Strings = (
+            'H'
+            'M'
+            'L'
+            'P')
+        end
+        object act24g: TCheckBox
+          Left = 136
+          Top = 146
+          Width = 70
+          Height = 17
+          Caption = '24 GHz'
+          TabOrder = 34
+        end
+        object comboPower24g: TComboBox
+          Left = 208
+          Top = 144
+          Width = 38
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 35
+          Text = 'H'
+          Items.Strings = (
+            'H'
+            'M'
+            'L'
+            'P')
+        end
+        object act47g: TCheckBox
+          Left = 136
+          Top = 167
+          Width = 70
+          Height = 17
+          Caption = '47 GHz'
+          TabOrder = 36
+        end
+        object comboPower47g: TComboBox
           Left = 208
           Top = 165
           Width = 38
           Height = 21
           ItemIndex = 0
-          TabOrder = 31
+          TabOrder = 37
+          Text = 'H'
+          Items.Strings = (
+            'H'
+            'M'
+            'L'
+            'P')
+        end
+        object act77g: TCheckBox
+          Left = 136
+          Top = 188
+          Width = 70
+          Height = 17
+          Caption = '77 GHz'
+          TabOrder = 38
+        end
+        object comboPower77g: TComboBox
+          Left = 208
+          Top = 186
+          Width = 38
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 39
+          Text = 'H'
+          Items.Strings = (
+            'H'
+            'M'
+            'L'
+            'P')
+        end
+        object act135g: TCheckBox
+          Left = 136
+          Top = 209
+          Width = 70
+          Height = 17
+          Caption = '135 GHz'
+          TabOrder = 40
+        end
+        object comboPower135g: TComboBox
+          Left = 208
+          Top = 207
+          Width = 38
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 41
+          Text = 'H'
+          Items.Strings = (
+            'H'
+            'M'
+            'L'
+            'P')
+        end
+        object act248g: TCheckBox
+          Left = 136
+          Top = 230
+          Width = 70
+          Height = 17
+          Caption = '248 GHz'
+          TabOrder = 42
+        end
+        object comboPower248g: TComboBox
+          Left = 208
+          Top = 228
+          Width = 38
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 43
           Text = 'H'
           Items.Strings = (
             'H'
@@ -443,8 +579,8 @@ object formOptions2: TformOptions2
         Visible = False
       end
       object SaveEvery: TSpinEdit
-        Left = 271
-        Top = 209
+        Left = 351
+        Top = 249
         Width = 38
         Height = 22
         AutoSize = False
@@ -454,8 +590,8 @@ object formOptions2: TformOptions2
         Value = 3
       end
       object cbDispExchange: TCheckBox
-        Left = 17
-        Top = 257
+        Left = 276
+        Top = 297
         Width = 193
         Height = 17
         Caption = 'Display exchange on other bands'
@@ -470,7 +606,7 @@ object formOptions2: TformOptions2
         TabOrder = 2
       end
       object cbSaveWhenNoCW: TCheckBox
-        Left = 17
+        Left = 276
         Top = 211
         Width = 161
         Height = 17
@@ -478,16 +614,16 @@ object formOptions2: TformOptions2
         TabOrder = 7
       end
       object cbAutoEnterSuper: TCheckBox
-        Left = 17
-        Top = 237
+        Left = 276
+        Top = 277
         Width = 260
         Height = 17
         Caption = 'Automatically enter exchange from SuperCheck'
         TabOrder = 9
       end
       object groupQsyAssist: TGroupBox
-        Left = 222
-        Top = 304
+        Left = 225
+        Top = 343
         Width = 204
         Height = 89
         Caption = 'QSY Assist'
@@ -560,7 +696,7 @@ object formOptions2: TformOptions2
       end
       object GroupBox13: TGroupBox
         Left = 17
-        Top = 303
+        Top = 343
         Width = 101
         Height = 89
         Caption = 'QSL Default'
@@ -593,8 +729,8 @@ object formOptions2: TformOptions2
         end
       end
       object checkDispLongDateTime: TCheckBox
-        Left = 17
-        Top = 277
+        Left = 276
+        Top = 317
         Width = 193
         Height = 17
         Caption = 'Display long date time'
@@ -3458,14 +3594,16 @@ object formOptions2: TformOptions2
   end
   object Panel1: TPanel
     Left = 0
-    Top = 434
-    Width = 444
+    Top = 474
+    Width = 534
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 434
+    ExplicitWidth = 444
     DesignSize = (
-      444
+      534
       37)
     object buttonOK: TButton
       Left = 149

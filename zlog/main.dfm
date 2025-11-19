@@ -6731,7 +6731,37 @@ object MainForm: TMainForm
     end
     object N10GHzup1: TMenuItem
       Tag = 15
-      Caption = '10GHz&&up'
+      Caption = '10.1GHz'
+      OnClick = BandMenuClick
+    end
+    object N104GHz1: TMenuItem
+      Tag = 16
+      Caption = '10.4GHz'
+      OnClick = BandMenuClick
+    end
+    object N24GHz1: TMenuItem
+      Tag = 17
+      Caption = '24GHz'
+      OnClick = BandMenuClick
+    end
+    object N48GHz1: TMenuItem
+      Tag = 18
+      Caption = '47GHz'
+      OnClick = BandMenuClick
+    end
+    object N77GHZ1: TMenuItem
+      Tag = 19
+      Caption = '77GHZ'
+      OnClick = BandMenuClick
+    end
+    object N135GHz1: TMenuItem
+      Tag = 20
+      Caption = '135GHz'
+      OnClick = BandMenuClick
+    end
+    object N248GHz1: TMenuItem
+      Tag = 21
+      Caption = '248GHz'
       OnClick = BandMenuClick
     end
   end
