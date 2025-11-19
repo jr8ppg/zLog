@@ -518,6 +518,42 @@ begin
             end;
          end;
 
+         // EXPT1.9,EXPT3.5,EXPT7 ... EXPT10G
+         if Pos('EXPT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 5, 3);
+            B := GetBand(strTmp);
+
+            // mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mDV, mOther
+            SL.CommaText := UpperCase(strParam) + ',,,,,,,,,';
+            D.FPointsTable[B, mCW]    := StrToIntDef(SL[0], 1);
+            D.FPointsTable[B, mSSB]   := StrToIntDef(SL[1], 1);
+            D.FPointsTable[B, mFM]    := StrToIntDef(SL[2], 1);
+            D.FPointsTable[B, mAM]    := StrToIntDef(SL[3], 1);
+            D.FPointsTable[B, mRTTY]  := StrToIntDef(SL[4], 1);
+            D.FPointsTable[B, mFT4]   := StrToIntDef(SL[5], 1);
+            D.FPointsTable[B, mFT8]   := StrToIntDef(SL[6], 1);
+            D.FPointsTable[B, mDV]    := StrToIntDef(SL[7], 1);
+            D.FPointsTable[B, mOther] := StrToIntDef(SL[8], 1);
+         end;
+
+         // EXLPT1.9,EXLPT3.5,EXLPT7 ... EXLPT10G
+         if Pos('EXLPT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 6, 3);
+            B := GetBand(strTmp);
+
+            // mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mDV, mOther
+            SL.CommaText := UpperCase(strParam) + ',,,,,,,,,';
+            D.FLocalPointsTable[B, mCW]    := StrToIntDef(SL[0], 1);
+            D.FLocalPointsTable[B, mSSB]   := StrToIntDef(SL[1], 1);
+            D.FLocalPointsTable[B, mFM]    := StrToIntDef(SL[2], 1);
+            D.FLocalPointsTable[B, mAM]    := StrToIntDef(SL[3], 1);
+            D.FLocalPointsTable[B, mRTTY]  := StrToIntDef(SL[4], 1);
+            D.FLocalPointsTable[B, mFT4]   := StrToIntDef(SL[5], 1);
+            D.FLocalPointsTable[B, mFT8]   := StrToIntDef(SL[6], 1);
+            D.FLocalPointsTable[B, mDV]    := StrToIntDef(SL[7], 1);
+            D.FLocalPointsTable[B, mOther] := StrToIntDef(SL[8], 1);
+         end;
+
          if strCmd = 'SAMECTYPT' then begin
             SetPointsTable(@D.SameCTYPointsTable, strParam);
             D.FSameCTYPoints := True;
