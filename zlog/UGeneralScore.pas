@@ -97,6 +97,11 @@ begin
       TotMulti1 := TotMulti1 + Multi[band];
       TotMulti2 := TotMulti2 + Multi2[band];
 
+      // 10G
+      if (band = b104g) and (FConfig.Single10G = True) then begin
+         Continue;
+      end;
+
       if (MainForm.BandMenu.Items[Ord(band)].Visible = True) and
          (dmZlogGlobal.Settings._activebands[band] = True) then begin
 
@@ -257,12 +262,17 @@ var
    i: Integer;
    ch: Char;
    C: TCountry;
+   b: TBand;
 begin
    if zyloRequestScore(aQSO) = True then begin
       Exit;
    end;
 
-   aQSO.Points := FConfig.PointsTable[aQSO.band, aQSO.Mode];
+   b := aQSO.Band;
+   if (FConfig.Single10G = True) and (b = b104g) then begin
+      b := b10g;
+   end;
+   aQSO.Points := FConfig.PointsTable[b, aQSO.Mode];
 
    if FConfig.UseCtyDat then begin
       if FConfig.SameCTYPoints or FConfig.SameCONTPoints then begin
@@ -270,15 +280,16 @@ begin
          if (i < dmZLogGlobal.CountryList.Count) and (i >= 0) then begin
             C := TCountry(dmZLogGlobal.CountryList.List[i]);
             if FConfig.SameCTYPoints and (C.Country = dmZLogGlobal.MyCountry) then
-               aQSO.Points := FConfig.SameCTYPointsTable[aQSO.band, aQSO.Mode]
+               aQSO.Points := FConfig.SameCTYPointsTable[b, aQSO.Mode]
             else if FConfig.SameCONTPoints and (C.Continent = dmZLogGlobal.MyContinent) then
-               aQSO.Points := FConfig.SameCONTPointsTable[aQSO.band, aQSO.Mode];
+               aQSO.Points := FConfig.SameCONTPointsTable[b, aQSO.Mode];
          end;
       end;
    end;
 
-   if formMulti.IsLocal(aQSO) then
-      aQSO.Points := FConfig.LocalPointsTable[aQSO.band, aQSO.Mode];
+   if formMulti.IsLocal(aQSO) then begin
+      aQSO.Points := FConfig.LocalPointsTable[b, aQSO.Mode];
+   end;
 
    if FConfig.AlphabetPoints then begin
       aQSO.Points := 0;
@@ -292,7 +303,7 @@ begin
 
    if FConfig.SpecialCalls <> '' then begin
       if FConfig.IsSpecialCallMatch(aQSO.Callsign) = True then begin
-         aQSO.Points := FConfig.SpecialCallPointsTable[aQSO.band, aQSO.Mode];
+         aQSO.Points := FConfig.SpecialCallPointsTable[b, aQSO.Mode];
       end;
    end;
 end;

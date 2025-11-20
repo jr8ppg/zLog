@@ -13,7 +13,10 @@ const
   PX_WPX    = 1;
   PX_NORMAL = 2;
 
-  band_without_warc_table: array[1..13] of TBand = ( b19, b35, b7, b14, b21, b28, b50, b144, b430, b1200, b2400, b5600, b10g );
+  band_without_warc_table: array[1..19] of TBand = (
+    b19, b35, b7, b14, b21, b28, b50, b144, b430, b1200, b2400, b5600, b10g,
+    b104g, b24g, b47g, b77g, b135g, b248g
+  );
 
 type
   TPointsTable = array[b19..HiBand, mCW..LastMode] of Integer;
@@ -102,6 +105,7 @@ type
 
     FUseSentRST: Boolean;
     FAllowDxNoNumber: Boolean;
+    FSingle10G: Boolean;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -217,6 +221,7 @@ type
 
     property UseSentRST: Boolean read FUseSentRST write FUseSentRST;
     property AllowDxNoNumber: Boolean read FAllowDxNoNumber write FAllowDxNoNumber;
+    property Single10G: Boolean read FSingle10G write FSingle10G;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -317,6 +322,7 @@ begin
    FContestId := '';
    FUseSentRST := False;
    FAllowDxNoNumber := False;
+   FSingle10G := True;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -792,6 +798,10 @@ begin
                D.FSpecialCallMatch := scmFull;
             end;
          end;
+
+         if strCmd = 'SINGLE10G' then begin
+            D.Single10G := ParseOnOff(strParam);
+         end;
       end;
    finally
       SL.Free();
@@ -883,6 +893,24 @@ begin
    end
    else if strBand = '10G' then begin
       B := b10g;
+   end
+   else if strBand = '104' then begin
+      B := b104g;
+   end
+   else if strBand = '24G' then begin
+      B := b24g;
+   end
+   else if strBand = '47G' then begin
+      B := b47g;
+   end
+   else if strBand = '77G' then begin
+      B := b77g;
+   end
+   else if strBand = '135' then begin
+      B := b135g;
+   end
+   else if strBand = '248' then begin
+      B := b248g;
    end
    else begin
       B := b19;
@@ -1128,7 +1156,7 @@ function TUserDefinedContest.GetBandLow(): TBand;
 var
    i: Integer;
 begin
-   for i := 1 to 13 do begin
+   for i := 1 to High(band_without_warc_table) do begin
       if FPower[i] <> '-' then begin
          Result := band_without_warc_table[i];
          Exit;
@@ -1141,7 +1169,7 @@ function TUserDefinedContest.GetBandHigh(): TBand;
 var
    i: Integer;
 begin
-   for i := 13 downto 1 do begin
+   for i := High(band_without_warc_table) downto 1 do begin
       if FPower[i] <> '-' then begin
          Result := band_without_warc_table[i];
          Exit;

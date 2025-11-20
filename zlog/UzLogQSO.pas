@@ -400,6 +400,7 @@ type
     function GetLastCallsign(): string;
     function GetLastNumber(): string;
     {$ENDIF}
+    function IsSameBand(b1: TBand; b2: TBand): Boolean;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -1914,17 +1915,23 @@ end;
 procedure TLog.Add(aQSO: TQSO; fNoSort: Boolean);
 var
    xQSO: TQSO;
+   b: TBand;
 begin
    FQsoList.Add(aQSO);
 
    xQSO := TQSO.Create;
    xQSO.Assign(aQSO);
-   FDupeCheckList[xQSO.FBand].Add(xQSO);
-   if fNoSort = False then begin
-      FDupeCheckList[xQSO.FBand].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
+   b := xQSO.Band;
+   if (MyContest.Single10G = True) and (b = b104g) then begin
+      b := b10g;
    end;
 
-   FBandList[xQSO.Band].Add(aQSO);
+   FDupeCheckList[b].Add(xQSO);
+   if fNoSort = False then begin
+      FDupeCheckList[b].Sort(soDupeCheck, FAcceptDifferentMode, FAllPhone);
+   end;
+
+   FBandList[b].Add(aQSO);
    FTxList[xQSO.TX].Add(aQSO);
 
    if FQsoIdDic.ContainsKey(xQSO.QsoId) = False then begin
@@ -3547,6 +3554,15 @@ begin
    Result := j;
 end;
 
+function TLog.IsSameBand(b1: TBand; b2: TBand): Boolean;
+begin
+   if MyContest.Single10G = True then begin
+      if b1 = b104g then b1 := b10g;
+      if b2 = b104g then b2 := b10g;
+   end;
+   Result := b1 = b2;
+end;
+
 function TLog.IsDupe(aQSO: TQSO): Integer;
 var
    x: Integer;
@@ -3563,7 +3579,7 @@ begin
          Continue;
       end;
 
-      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
+      if IsSameBand(aQSO.FBand, FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
          if Not(FAcceptDifferentMode) then begin
             x := i;
             break;
@@ -3603,7 +3619,7 @@ begin
          Continue;
       end;
 
-      if (aQSO.FBand = FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
+      if IsSameBand(aQSO.FBand, FQsoList[i].Band) and (str = CoreCall(FQsoList[i].CallSign)) then begin
          if Not(AcceptDifferentMode) or (AcceptDifferentMode and aQSO.SameMode(FQsoList[i], FAllPhone)) then begin
             boo := True;
             if index > 0 then begin

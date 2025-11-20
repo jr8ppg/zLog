@@ -165,11 +165,17 @@ procedure TACAGMulti.AddNoUpdate(var aQSO: TQSO);
 var
    str: string;
    C: TCity;
+   b: TBand;
 begin
    aQSO.NewMulti1 := False;
    str := aQSO.NrRcvd;
    Delete(str, length(str), 1);
    aQSO.Multi1 := str;
+
+   b := aQSO.Band;
+   if b = b104g then begin
+      b := b10g;
+   end;
 
    if aQSO.Dupe then begin
       Exit;
@@ -177,8 +183,8 @@ begin
 
    C := CityList.GetCity(str);
    if C <> nil then begin
-      if C.Worked[aQSO.Band] = False then begin
-         C.Worked[aQSO.Band] := True;
+      if C.Worked[b] = False then begin
+         C.Worked[b] := True;
          aQSO.NewMulti1 := True;
       end;
       LatestMultiAddition := C.Index;

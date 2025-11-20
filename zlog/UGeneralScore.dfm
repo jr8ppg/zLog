@@ -2,13 +2,13 @@ inherited GeneralScore: TGeneralScore
   Left = 133
   Top = 136
   Caption = 'Score'
-  ClientHeight = 235
   ClientWidth = 200
-  ExplicitWidth = 212
+  StyleElements = [seFont, seClient, seBorder]
+  ExplicitWidth = 216
   TextHeight = 12
   inherited Panel1: TPanel
-    Top = 202
     Width = 200
+    StyleElements = [seFont, seClient, seBorder]
     ExplicitWidth = 196
     DesignSize = (
       200

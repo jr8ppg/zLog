@@ -137,6 +137,11 @@ begin
          Continue;
       end;
 
+      // 10G
+      if band = b104g then begin
+         Continue;
+      end;
+
       TotPoints := TotPoints + Points[band];
       TotMulti := TotMulti + Multi[band];
       TotQSO := TotQSO + QSO[band];

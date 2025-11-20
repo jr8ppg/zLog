@@ -3,12 +3,13 @@ inherited ALLJAScore: TALLJAScore
   Top = 30
   Caption = 'Score'
   ClientWidth = 200
+  StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
   ExplicitWidth = 216
-  PixelsPerInch = 96
   TextHeight = 12
   inherited Panel1: TPanel
     Width = 200
+    StyleElements = [seFont, seClient, seBorder]
     ExplicitWidth = 200
     inherited CWButton: TSpeedButton
       Left = 160

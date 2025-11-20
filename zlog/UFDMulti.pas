@@ -121,19 +121,26 @@ procedure TFDMulti.AddNoUpdate(var aQSO: TQSO);
 var
    str: string;
    C: TCity;
+   b: TBand;
 begin
    aQSO.NewMulti1 := false;
    str := aQSO.NrRcvd;
    Delete(str, length(str), 1);
    aQSO.Multi1 := str;
 
-   if aQSO.Dupe then
-      exit;
+   b := aQSO.Band;
+   if b = b104g then begin
+      b := b10g;
+   end;
+
+   if aQSO.Dupe then begin
+      Exit;
+   end;
 
    C := CityList.GetCity(str);
    if C <> nil then begin
-      if C.Worked[aQSO.Band] = false then begin
-         C.Worked[aQSO.Band] := true;
+      if C.Worked[b] = false then begin
+         C.Worked[b] := true;
          aQSO.NewMulti1 := true;
       end;
       LatestMultiAddition := C.Index;

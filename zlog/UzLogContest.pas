@@ -31,7 +31,7 @@ type
     FStartTime: Integer;   // 開始時間 21や0など UTCかどうかはLog.QsoList[0].RSTsentで判断する
     FPeriod: Integer;      // 期間 12,24,48など
     FUseUTC: Boolean;      // False:JST True:UTC
-
+    FSingle10G: Boolean;   // False:10.1Gと10.4Gは別バンド True:10.1Gと10.4Gは１つのバンド
     FAdifContestId: string;
 
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
@@ -82,6 +82,7 @@ type
     property BandLow: TBand read FBandLow;
     property BandHigh: TBand read FBandHigh;
     property BandPlan: string read FBandPlan;
+    property Single10G: Boolean read FSingle10G write FSingle10G;
 
     property UseContestPeriod: Boolean read GetUseContestPeriod write FUseContestPeriod;
     property StartTime: Integer read FStartTime write FStartTime;
@@ -1332,7 +1333,7 @@ begin
    SentStr := '';
 
    FBandLow := b19;
-   FBandHigh := b10g;
+   FBandHigh := HiBand;
 
    FUseContestPeriod := False;
    FStartTime := -1;
@@ -1394,7 +1395,7 @@ begin
    ScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
    SentStr := '$Q$P';
    FBandLow := b19;
-   FBandHigh := b10g;
+   FBandHigh := HiBand;
    FStartTime := 21;
    FPeriod := 24;
    AdifContestId := 'JA_DOMESTIC';
@@ -1408,7 +1409,7 @@ begin
    SentStr := '$Q$P';
    FUseCoeff := True;
    FBandLow := b19;
-   FBandHigh := b10g;
+   FBandHigh := HiBand;
    FStartTime := 21;
    FPeriod := 18;
    AdifContestId := 'JA_DOMESTIC';
@@ -1422,9 +1423,15 @@ begin
    TALLJAScore(ScoreForm).PointTable[b2400] := 2;
    TALLJAScore(ScoreForm).PointTable[b5600] := 2;
    TALLJAScore(ScoreForm).PointTable[b10g] := 2;
+   TALLJAScore(ScoreForm).PointTable[b104g] := 0;
+   TALLJAScore(ScoreForm).PointTable[b24g] := 2;
+   TALLJAScore(ScoreForm).PointTable[b47g] := 2;
+   TALLJAScore(ScoreForm).PointTable[b77g] := 2;
+   TALLJAScore(ScoreForm).PointTable[b135g] := 2;
+   TALLJAScore(ScoreForm).PointTable[b248g] := 2;
    SentStr := '$Q$P';
    FBandLow := b50;
-   FBandHigh := b10g;
+   FBandHigh := HiBand;
    FStartTime := 21;
    FPeriod := 18;
    AdifContestId := 'JA_DOMESTIC';
@@ -1482,6 +1489,8 @@ begin
    FPeriod := FConfig.Period;
 
    AdifContestId := FConfig.ContestId;
+
+   FSingle10G := FConfig.Single10G;
 end;
 
 destructor TGeneralContest.Destroy();
