@@ -173,9 +173,6 @@ begin
    aQSO.Multi1 := str;
 
    b := aQSO.Band;
-   if b = b104g then begin
-      b := b10g;
-   end;
 
    if aQSO.Dupe then begin
       Exit;

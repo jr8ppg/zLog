@@ -1705,6 +1705,10 @@ begin
    end
    else begin
       Inc(nextband);
+
+      if (nextband = b104g) and (MyContest.Single10G = True) then begin
+         Inc(nextband);
+      end;
    end;
 
    // 次のバンドに対応したリグはあるか
@@ -1762,6 +1766,10 @@ begin
    end
    else begin
       Dec(prevband);
+
+      if (prevband = b104g) and (MyContest.Single10G = True) then begin
+         Dec(prevband);
+      end;
    end;
 
    // 前のバンドに対応したリグはあるか

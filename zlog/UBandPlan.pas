@@ -363,6 +363,9 @@ const
 
 implementation
 
+uses
+  Main;
+
 { TBandPlan }
 
 constructor TBandPlan.Create();
@@ -578,8 +581,20 @@ begin
          b := b2400;
       5600000..5899999:
          b := b5600;
-      10000000..90000000:
+      10000000..10449999:
          b := b10g;
+      10450000..10499999:
+         if MyContest.Single10G then b := b10g else b := b104g;
+      24000000..24049999:
+         b := b24g;
+      47000000..47199999:
+         b := b47g;
+      77500000..77999999:
+         b := b77g;
+      134000000..135999999:
+         b := b135g;
+      248000000..249999999:
+         b := b248g;
       else
          b := bUnknown;
    end;

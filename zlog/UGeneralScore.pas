@@ -269,9 +269,6 @@ begin
    end;
 
    b := aQSO.Band;
-   if (FConfig.Single10G = True) and (b = b104g) then begin
-      b := b10g;
-   end;
    aQSO.Points := FConfig.PointsTable[b, aQSO.Mode];
 
    if FConfig.UseCtyDat then begin

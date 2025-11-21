@@ -1922,9 +1922,6 @@ begin
    xQSO := TQSO.Create;
    xQSO.Assign(aQSO);
    b := xQSO.Band;
-   if (MyContest.Single10G = True) and (b = b104g) then begin
-      b := b10g;
-   end;
 
    FDupeCheckList[b].Add(xQSO);
    if fNoSort = False then begin

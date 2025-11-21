@@ -99,8 +99,8 @@ type
   end;
 
   TRigSet = record
-    FRig: array[b19..b10g] of Integer;
-    FAnt: array[b19..b10g] of Integer;
+    FRig: array[b19..HiBand] of Integer;
+    FAnt: array[b19..HiBand] of Integer;
   end;
 
   TSettingsParam = record
