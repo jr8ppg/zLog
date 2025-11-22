@@ -59,7 +59,7 @@ type
   end;
 
 const
-  MAXICOM = 53;
+  MAXICOM = 54;
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
@@ -84,6 +84,7 @@ const
        (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: False; PlayCW: True; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: False),
+       (name: 'IC-7300MK2';   addr: $B6; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: True),
        (name: 'IC-7400';      addr: $66; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-7410';      addr: $80; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
        (name: 'IC-750/750A(IC-751)'; addr: $1C; minband: b19; maxband: b28; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False),
