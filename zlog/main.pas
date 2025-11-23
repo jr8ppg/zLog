@@ -1766,10 +1766,6 @@ begin
    end
    else begin
       Dec(prevband);
-
-      if (prevband = b104g) and (MyContest.Single10G = True) then begin
-         Dec(prevband);
-      end;
    end;
 
    // 前のバンドに対応したリグはあるか
@@ -1795,6 +1791,10 @@ begin
    // minband～maxband内をスキャン
    for B := B0 downto minband do begin
       if IsAvailableBand(B) = True then begin
+         if (B = b104g) and (MyContest.Single10G = True) then begin
+            Continue;
+         end;
+
          Result := B;
          Exit;
       end;
@@ -1802,6 +1802,10 @@ begin
 
    for B := maxband downto B0 do begin
       if IsAvailableBand(B) = True then begin
+         if (B = b104g) and (MyContest.Single10G = True) then begin
+            Continue;
+         end;
+
          Result := B;
          Exit;
       end;
@@ -12793,7 +12797,8 @@ var
    b: TBand;
 begin
    for b := b19 to HiBand do begin
-      BandMenu.Items[ord(b)].Enabled := ({BandMenu.Items[ord(b)].Enabled and} dmZLogGlobal.Settings._activebands[b]);
+      BandMenu.Items[ord(b)].Enabled := dmZLogGlobal.Settings._activebands[b];
+      BandMenu.Items[ord(b)].Visible := dmZLogGlobal.Settings._activebands[b];
    end;
 end;
 

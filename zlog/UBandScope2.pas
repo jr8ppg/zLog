@@ -224,7 +224,7 @@ type
     property Style: TBandScopeStyle read FBandScopeStyle write SetBandScopeStyle;
   end;
 
-  TBandScopeArray = array[b19..b10g] of TBandScope2;
+  TBandScopeArray = array[b19..b248g] of TBandScope2;
 
 var
   CurrentRigFrequency : TFrequency; // in Hertz

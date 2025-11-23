@@ -54,7 +54,7 @@ type
     FPollingCount: Integer;
     FComm : TCommPortDriver; // points to the right CommPortDriver
     ModeWidth : array[mCW..LastMode] of Integer; // used in icom
-    FFreqMem : array[b19..b10g, mCW..LastMode] of TFrequency;
+    FFreqMem : array[b19..HiBand, mCW..LastMode] of TFrequency;
     _freqoffset: TFrequency; // freq offset for transverters in Hz
     _rignumber : Integer;
     FRitCtrlSupported: Boolean;
@@ -312,7 +312,7 @@ begin
    FIgnoreRigMode := False;
 
    // LastMode := mCW;
-   for B := b19 to b10g do begin
+   for B := b19 to HiBand do begin
       for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
@@ -933,7 +933,7 @@ begin
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
 
-   for B := b19 to b10g do begin
+   for B := b19 to HiBand do begin
       for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
@@ -1092,7 +1092,7 @@ begin
    FFILO := False; // used for YAESU
    _freqoffset := 0;
    _minband := b19;
-   _maxband := b10g;
+   _maxband := HiBand;
    Name := '';
    _rignumber := RigNum;
    TerminatorCode := ';';
@@ -1109,7 +1109,7 @@ begin
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
 
-   for B := b19 to b10g do begin
+   for B := b19 to HiBand do begin
       for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;

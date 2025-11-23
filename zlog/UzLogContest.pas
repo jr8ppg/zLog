@@ -492,6 +492,7 @@ begin
    UseUTC := False;
 
    AdifContestId := '';
+   FSingle10G := True;
 end;
 
 procedure TContest.PostWanted(S: string);
