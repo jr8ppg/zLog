@@ -408,6 +408,42 @@ type
     checkRig2UsePolling: TCheckBox;
     checkRig3UsePolling: TCheckBox;
     checkRig4UsePolling: TCheckBox;
+    Label41: TLabel;
+    comboRigA_b104g: TComboBox;
+    comboRigA_Antb104g: TComboBox;
+    Label47: TLabel;
+    comboRigA_b24g: TComboBox;
+    comboRigA_Antb24g: TComboBox;
+    Label48: TLabel;
+    comboRigA_b47g: TComboBox;
+    comboRigA_Antb47g: TComboBox;
+    Label49: TLabel;
+    comboRigA_b77g: TComboBox;
+    comboRigA_Antb77g: TComboBox;
+    Label52: TLabel;
+    comboRigA_b135g: TComboBox;
+    comboRigA_Antb135g: TComboBox;
+    Label53: TLabel;
+    comboRigA_b248g: TComboBox;
+    comboRigA_Antb248g: TComboBox;
+    Label54: TLabel;
+    comboRigB_b104g: TComboBox;
+    comboRigB_Antb104g: TComboBox;
+    Label57: TLabel;
+    comboRigB_b24g: TComboBox;
+    comboRigB_Antb24g: TComboBox;
+    Label58: TLabel;
+    comboRigB_b47g: TComboBox;
+    comboRigB_Antb47g: TComboBox;
+    Label59: TLabel;
+    comboRigB_b77g: TComboBox;
+    comboRigB_Antb77g: TComboBox;
+    Label60: TLabel;
+    comboRigB_b135g: TComboBox;
+    comboRigB_Antb135g: TComboBox;
+    Label61: TLabel;
+    comboRigB_b248g: TComboBox;
+    comboRigB_Antb248g: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -459,10 +495,10 @@ type
 
     FNeedSuperCheckLoad: Boolean;
 
-    FRigSetA_rig: array[b19..b10g] of TComboBox;
-    FRigSetA_ant: array[b19..b10g] of TComboBox;
-    FRigSetB_rig: array[b19..b10g] of TComboBox;
-    FRigSetB_ant: array[b19..b10g] of TComboBox;
+    FRigSetA_rig: array[b19..HiBand] of TComboBox;
+    FRigSetA_ant: array[b19..HiBand] of TComboBox;
+    FRigSetB_rig: array[b19..HiBand] of TComboBox;
+    FRigSetB_ant: array[b19..HiBand] of TComboBox;
 
     FRigConfig: array[1..5] of TGroupBox;
     FRigControlPort: array[1..5] of TComboBox;
@@ -635,6 +671,12 @@ begin
    FRigSetA_rig[b2400]  := comboRigA_b2400;
    FRigSetA_rig[b5600]  := comboRigA_b5600;
    FRigSetA_rig[b10g]   := comboRigA_b10g;
+   FRigSetA_rig[b104g]  := comboRigA_b104g;
+   FRigSetA_rig[b24g]   := comboRigA_b24g;
+   FRigSetA_rig[b47g]   := comboRigA_b47g;
+   FRigSetA_rig[b77g]   := comboRigA_b77g;
+   FRigSetA_rig[b135g]  := comboRigA_b135g;
+   FRigSetA_rig[b248g]  := comboRigA_b248g;
 
    FRigSetA_ant[b19]    := comboRigA_Antb19;
    FRigSetA_ant[b35]    := comboRigA_Antb35;
@@ -652,6 +694,12 @@ begin
    FRigSetA_ant[b2400]  := comboRigA_Antb2400;
    FRigSetA_ant[b5600]  := comboRigA_Antb5600;
    FRigSetA_ant[b10g]   := comboRigA_Antb10g;
+   FRigSetA_ant[b104g]  := comboRigA_Antb104g;
+   FRigSetA_ant[b24g]   := comboRigA_Antb24g;
+   FRigSetA_ant[b47g]   := comboRigA_Antb47g;
+   FRigSetA_ant[b77g]   := comboRigA_Antb77g;
+   FRigSetA_ant[b135g]  := comboRigA_Antb135g;
+   FRigSetA_ant[b248g]  := comboRigA_Antb248g;
 
    FRigSetB_rig[b19]    := comboRigB_b19;
    FRigSetB_rig[b35]    := comboRigB_b35;
@@ -669,6 +717,12 @@ begin
    FRigSetB_rig[b2400]  := comboRigB_b2400;
    FRigSetB_rig[b5600]  := comboRigB_b5600;
    FRigSetB_rig[b10g]   := comboRigB_b10g;
+   FRigSetB_rig[b104g]  := comboRigB_b104g;
+   FRigSetB_rig[b24g]   := comboRigB_b24g;
+   FRigSetB_rig[b47g]   := comboRigB_b47g;
+   FRigSetB_rig[b77g]   := comboRigB_b77g;
+   FRigSetB_rig[b135g]  := comboRigB_b135g;
+   FRigSetB_rig[b248g]  := comboRigB_b248g;
 
    FRigSetB_ant[b19]    := comboRigB_Antb19;
    FRigSetB_ant[b35]    := comboRigB_Antb35;
@@ -686,6 +740,12 @@ begin
    FRigSetB_ant[b2400]  := comboRigB_Antb2400;
    FRigSetB_ant[b5600]  := comboRigB_Antb5600;
    FRigSetB_ant[b10g]   := comboRigB_Antb10g;
+   FRigSetB_ant[b104g]  := comboRigB_Antb104g;
+   FRigSetB_ant[b24g]   := comboRigB_Antb24g;
+   FRigSetB_ant[b47g]   := comboRigB_Antb47g;
+   FRigSetB_ant[b77g]   := comboRigB_Antb77g;
+   FRigSetB_ant[b135g]  := comboRigB_Antb135g;
+   FRigSetB_ant[b248g]  := comboRigB_Antb248g;
 
    PageControl.ActivePage := tabsheetOperateStyle;
 
@@ -1278,7 +1338,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetA_rig[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1291,7 +1351,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetA_ant[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1304,7 +1364,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetB_rig[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1317,7 +1377,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetB_ant[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1642,7 +1702,7 @@ begin
       //
 
       // Set of RIG
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          Settings.FRigSet[1].FRig[b] := FRigSetA_rig[b].ItemIndex;
          Settings.FRigSet[1].FAnt[b] := FRigSetA_ant[b].ItemIndex;
          Settings.FRigSet[2].FRig[b] := FRigSetB_rig[b].ItemIndex;
@@ -1975,7 +2035,7 @@ begin
       //
 
       // Set of RIG
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          FRigSetA_rig[b].ItemIndex := Settings.FRigSet[1].FRig[b];
          FRigSetA_ant[b].ItemIndex := Settings.FRigSet[1].FAnt[b];
          FRigSetB_rig[b].ItemIndex := Settings.FRigSet[2].FRig[b];
@@ -2266,7 +2326,7 @@ procedure TformOptions.Assign1Radio();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FRigSetA_rig[b].ItemIndex := 1;
       FRigSetA_rig[b].Enabled := False;
       FRigSetB_rig[b].ItemIndex := 2;
@@ -2278,7 +2338,7 @@ procedure TformOptions.Assign2Radio();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FRigSetA_rig[b].Enabled := True;
       FRigSetB_rig[b].Enabled := True;
    end;

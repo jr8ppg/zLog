@@ -3,7 +3,7 @@ object formOptions2: TformOptions2
   Top = 236
   BorderStyle = bsDialog
   Caption = 'Options'
-  ClientHeight = 511
+  ClientHeight = 571
   ClientWidth = 534
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,12 +21,11 @@ object formOptions2: TformOptions2
     Left = 0
     Top = 0
     Width = 534
-    Height = 474
+    Height = 534
     ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 444
-    ExplicitHeight = 434
+    ExplicitHeight = 474
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
@@ -2644,14 +2643,14 @@ object formOptions2: TformOptions2
       object groupBandscopeBands: TGroupBox
         Left = 6
         Top = 4
-        Width = 423
-        Height = 128
+        Width = 507
+        Height = 149
         Caption = 'Bands'
         TabOrder = 0
         object checkBs01: TCheckBox
           Left = 12
           Top = 18
-          Width = 60
+          Width = 90
           Height = 17
           Caption = '1.9 MHz'
           Checked = True
@@ -2659,9 +2658,9 @@ object formOptions2: TformOptions2
           TabOrder = 0
         end
         object checkBs02: TCheckBox
-          Left = 12
-          Top = 39
-          Width = 60
+          Left = 109
+          Top = 18
+          Width = 90
           Height = 17
           Caption = '3.5 MHz'
           Checked = True
@@ -2669,9 +2668,9 @@ object formOptions2: TformOptions2
           TabOrder = 1
         end
         object checkBs03: TCheckBox
-          Left = 12
-          Top = 60
-          Width = 60
+          Left = 206
+          Top = 18
+          Width = 90
           Height = 17
           Caption = '7 MHz'
           Checked = True
@@ -2679,9 +2678,9 @@ object formOptions2: TformOptions2
           TabOrder = 2
         end
         object checkBs05: TCheckBox
-          Left = 108
+          Left = 400
           Top = 18
-          Width = 60
+          Width = 90
           Height = 17
           Caption = '14 MHz'
           Checked = True
@@ -2689,9 +2688,9 @@ object formOptions2: TformOptions2
           TabOrder = 4
         end
         object checkBs07: TCheckBox
-          Left = 108
-          Top = 60
-          Width = 60
+          Left = 109
+          Top = 39
+          Width = 90
           Height = 17
           Caption = '21 MHz'
           Checked = True
@@ -2699,9 +2698,9 @@ object formOptions2: TformOptions2
           TabOrder = 6
         end
         object checkBs09: TCheckBox
-          Left = 205
-          Top = 18
-          Width = 67
+          Left = 303
+          Top = 39
+          Width = 90
           Height = 17
           Caption = '28 MHz'
           Checked = True
@@ -2709,9 +2708,9 @@ object formOptions2: TformOptions2
           TabOrder = 8
         end
         object checkBs10: TCheckBox
-          Left = 205
+          Left = 400
           Top = 39
-          Width = 67
+          Width = 90
           Height = 17
           Caption = '50 MHz'
           Checked = True
@@ -2719,9 +2718,9 @@ object formOptions2: TformOptions2
           TabOrder = 9
         end
         object checkBs11: TCheckBox
-          Left = 205
+          Left = 12
           Top = 60
-          Width = 67
+          Width = 90
           Height = 17
           Caption = '144 MHz'
           Checked = True
@@ -2729,9 +2728,9 @@ object formOptions2: TformOptions2
           TabOrder = 10
         end
         object checkBs12: TCheckBox
-          Left = 205
-          Top = 81
-          Width = 67
+          Left = 109
+          Top = 60
+          Width = 90
           Height = 17
           Caption = '430 MHz'
           Checked = True
@@ -2739,9 +2738,9 @@ object formOptions2: TformOptions2
           TabOrder = 11
         end
         object checkBs13: TCheckBox
-          Left = 301
-          Top = 18
-          Width = 67
+          Left = 206
+          Top = 60
+          Width = 90
           Height = 17
           Caption = '1200 MHz'
           Checked = True
@@ -2749,9 +2748,9 @@ object formOptions2: TformOptions2
           TabOrder = 12
         end
         object checkBs14: TCheckBox
-          Left = 301
-          Top = 39
-          Width = 67
+          Left = 303
+          Top = 60
+          Width = 90
           Height = 17
           Caption = '2400 MHz'
           Checked = True
@@ -2759,9 +2758,9 @@ object formOptions2: TformOptions2
           TabOrder = 13
         end
         object checkBs15: TCheckBox
-          Left = 301
+          Left = 400
           Top = 60
-          Width = 67
+          Width = 90
           Height = 17
           Caption = '5600 MHz'
           Checked = True
@@ -2769,19 +2768,19 @@ object formOptions2: TformOptions2
           TabOrder = 14
         end
         object checkBs16: TCheckBox
-          Left = 301
+          Left = 12
           Top = 81
-          Width = 67
+          Width = 90
           Height = 17
-          Caption = '10 G && up'
+          Caption = '10.1 GHz'
           Checked = True
           State = cbChecked
           TabOrder = 15
         end
         object checkBs08: TCheckBox
-          Left = 108
-          Top = 81
-          Width = 60
+          Left = 206
+          Top = 39
+          Width = 90
           Height = 17
           Caption = '24 MHz'
           Checked = True
@@ -2789,9 +2788,9 @@ object formOptions2: TformOptions2
           TabOrder = 7
         end
         object checkBs06: TCheckBox
-          Left = 108
+          Left = 12
           Top = 39
-          Width = 60
+          Width = 90
           Height = 17
           Caption = '18 MHz'
           Checked = True
@@ -2799,9 +2798,9 @@ object formOptions2: TformOptions2
           TabOrder = 5
         end
         object checkBs04: TCheckBox
-          Left = 12
-          Top = 81
-          Width = 60
+          Left = 303
+          Top = 18
+          Width = 90
           Height = 17
           Caption = '10 MHz'
           Checked = True
@@ -2809,39 +2808,99 @@ object formOptions2: TformOptions2
           TabOrder = 3
         end
         object checkBsCurrent: TCheckBox
-          Left = 205
-          Top = 104
+          Left = 109
+          Top = 124
           Width = 90
           Height = 17
           Caption = 'Current'
           Checked = True
           State = cbChecked
-          TabOrder = 17
+          TabOrder = 23
         end
         object checkBsNewMulti: TCheckBox
-          Left = 301
-          Top = 104
-          Width = 112
+          Left = 206
+          Top = 124
+          Width = 130
           Height = 17
           Caption = 'New Multi'
           Checked = True
           State = cbChecked
-          TabOrder = 18
+          TabOrder = 24
         end
         object checkBsAllBands: TCheckBox
           Left = 12
-          Top = 104
-          Width = 141
+          Top = 124
+          Width = 90
           Height = 17
           Caption = 'All bands'
           Checked = True
           State = cbChecked
+          TabOrder = 22
+        end
+        object checkBs19: TCheckBox
+          Left = 303
+          Top = 81
+          Width = 90
+          Height = 17
+          Caption = '47 GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 18
+        end
+        object checkBs20: TCheckBox
+          Left = 400
+          Top = 81
+          Width = 90
+          Height = 17
+          Caption = '77 GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 19
+        end
+        object checkBs18: TCheckBox
+          Left = 206
+          Top = 81
+          Width = 90
+          Height = 17
+          Caption = '24 GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 17
+        end
+        object checkBs17: TCheckBox
+          Left = 109
+          Top = 81
+          Width = 90
+          Height = 17
+          Caption = '10.4 GHz'
+          Checked = True
+          State = cbChecked
           TabOrder = 16
+        end
+        object checkBs22: TCheckBox
+          Left = 109
+          Top = 103
+          Width = 90
+          Height = 17
+          Caption = '248 GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 21
+        end
+        object checkBs21: TCheckBox
+          Left = 12
+          Top = 103
+          Width = 90
+          Height = 17
+          Caption = '135 GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 20
         end
       end
       object groupBandscopeInfoColors: TGroupBox
         Left = 6
-        Top = 145
+        Top = 159
         Width = 423
         Height = 130
         Caption = 'Info. Colors'
@@ -3081,9 +3140,9 @@ object formOptions2: TformOptions2
       end
       object groupBandscopeOptions1: TGroupBox
         Left = 6
-        Top = 281
+        Top = 295
         Width = 423
-        Height = 112
+        Height = 146
         Caption = 'BandScope Options'
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
@@ -3160,6 +3219,38 @@ object formOptions2: TformOptions2
           Caption = 'Use multi lookup'
           TabOrder = 3
           OnClick = checkUseNumberLookupClick
+        end
+        object checkUseResume: TCheckBox
+          Left = 12
+          Top = 109
+          Width = 145
+          Height = 17
+          Caption = 'Use resume'
+          TabOrder = 9
+        end
+      end
+      object groupReliability: TGroupBox
+        Left = 6
+        Top = 445
+        Width = 165
+        Height = 58
+        Caption = 'Initial reliability'
+        TabOrder = 3
+        object radioReliabilityHigh: TRadioButton
+          Left = 12
+          Top = 26
+          Width = 74
+          Height = 17
+          Caption = 'High'
+          TabOrder = 0
+        end
+        object radioReliabilityMiddle: TRadioButton
+          Left = 84
+          Top = 26
+          Width = 74
+          Height = 17
+          Caption = 'Middle'
+          TabOrder = 1
         end
       end
     end
@@ -3404,22 +3495,6 @@ object formOptions2: TformOptions2
           TabOrder = 3
         end
       end
-      object groupBandscopeOptions2: TGroupBox
-        Left = 264
-        Top = 271
-        Width = 165
-        Height = 58
-        Caption = 'Options2'
-        TabOrder = 3
-        object checkUseResume: TCheckBox
-          Left = 12
-          Top = 26
-          Width = 145
-          Height = 17
-          Caption = 'Use resume'
-          TabOrder = 0
-        end
-      end
       object groupBandscopeSpotReliability: TGroupBox
         Left = 6
         Top = 151
@@ -3566,42 +3641,17 @@ object formOptions2: TformOptions2
           TabOrder = 9
         end
       end
-      object groupReliability: TGroupBox
-        Left = 264
-        Top = 334
-        Width = 165
-        Height = 58
-        Caption = 'Initial reliability'
-        TabOrder = 4
-        object radioReliabilityHigh: TRadioButton
-          Left = 12
-          Top = 26
-          Width = 74
-          Height = 17
-          Caption = 'High'
-          TabOrder = 0
-        end
-        object radioReliabilityMiddle: TRadioButton
-          Left = 84
-          Top = 26
-          Width = 74
-          Height = 17
-          Caption = 'Middle'
-          TabOrder = 1
-        end
-      end
     end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 474
+    Top = 534
     Width = 534
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 434
-    ExplicitWidth = 444
+    ExplicitTop = 474
     DesignSize = (
       534
       37)
