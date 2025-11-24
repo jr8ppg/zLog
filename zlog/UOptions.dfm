@@ -31,8 +31,8 @@ object formOptions: TformOptions
       Caption = 'Operate Style'
       ImageIndex = 7
       object groupSo2rSupport: TGroupBox
-        Left = 6
-        Top = 103
+        Left = 3
+        Top = 175
         Width = 423
         Height = 294
         Caption = 'SO2R options'
@@ -350,7 +350,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 329
-        Height = 93
+        Height = 125
         Caption = 'Operate style'
         TabOrder = 0
         object Label1: TLabel
@@ -386,13 +386,22 @@ object formOptions: TformOptions
           TabStop = True
           OnClick = radio1RadioClick
         end
-        object radio2Radio: TRadioButton
+        object radio2RadioH: TRadioButton
           Left = 13
           Top = 58
-          Width = 58
+          Width = 73
           Height = 17
-          Caption = '2Radio'
+          Caption = '2Radio (H)'
           TabOrder = 1
+          OnClick = radio2RadioClick
+        end
+        object radio2RadioV: TRadioButton
+          Left = 13
+          Top = 92
+          Width = 73
+          Height = 17
+          Caption = '2Radio (V)'
+          TabOrder = 2
           OnClick = radio2RadioClick
         end
       end
@@ -4385,7 +4394,6 @@ object formOptions: TformOptions
               Caption = 'Login'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 3

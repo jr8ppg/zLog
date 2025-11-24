@@ -292,7 +292,7 @@ type
     spinSo2rAccelerateCW: TSpinEdit;
     GroupBox1: TGroupBox;
     radio1Radio: TRadioButton;
-    radio2Radio: TRadioButton;
+    radio2RadioH: TRadioButton;
     Label1: TLabel;
     Label2: TLabel;
     checkWkAlways9600: TCheckBox;
@@ -444,6 +444,7 @@ type
     Label61: TLabel;
     comboRigB_b248g: TComboBox;
     comboRigB_Antb248g: TComboBox;
+    radio2RadioV: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -849,8 +850,11 @@ begin
    if radio1Radio.Checked = True then begin
       radio1RadioClick(radio1Radio);
    end
+   else if radio2RadioH.Checked = True then begin
+      radio2RadioClick(radio2RadioH);
+   end
    else begin
-      radio2RadioClick(radio2Radio);
+      radio2RadioClick(radio2RadioV);
    end;
 
    checkUseRigDeviceClick(nil);
@@ -1628,8 +1632,11 @@ begin
       if radio1Radio.Checked = True then begin
          Settings._operate_style := os1Radio;
       end
+      else if radio2RadioH.Checked = True then begin
+         Settings._operate_style := os2RadioH;
+      end
       else begin
-         Settings._operate_style := os2Radio;
+         Settings._operate_style := os2RadioV;
       end;
 
       //
@@ -1904,8 +1911,12 @@ begin
             radio1Radio.Checked := True;
          end;
 
-         os2Radio: begin
-            radio2Radio.Checked := True;
+         os2RadioH: begin
+            radio2RadioH.Checked := True;
+         end;
+
+         os2RadioV: begin
+            radio2RadioV.Checked := True;
          end;
 
          else begin

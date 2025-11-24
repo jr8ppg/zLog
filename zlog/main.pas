@@ -94,6 +94,8 @@ type
     CurrentBand: TBand;
     CurrentMode: TMode;
     TxLed: TJvLED;
+    SelShape: TShape;
+    Title: TLabel;
   end;
   TEditPanelArray = array[0..2] of TEditPanel;
 
@@ -453,14 +455,14 @@ type
     menuPluginManager: TMenuItem;
     N7: TMenuItem;
     N8: TMenuItem;
-    EditPanel2R: TPanel;
+    EditPanel2RH: TPanel;
     RcvdRSTEdit2A: TEdit;
     BandEdit2A: TEdit;
     ModeEdit2A: TEdit;
     CallsignEdit2A: TOvrEdit;
     NumberEdit2A: TOvrEdit;
-    TimeEdit2: TOvrEdit;
-    DateEdit2: TOvrEdit;
+    TimeEdit2RH: TOvrEdit;
+    DateEdit2RH: TOvrEdit;
     RigPanelA: TPanel;
     RigPanelShape2A: TShape;
     RigPanelB: TPanel;
@@ -492,7 +494,7 @@ type
     actionShowInformation: TAction;
     menuShowInformation: TMenuItem;
     actionToggleSo2r2bsiq: TAction;
-    checkUseRig3: TCheckBox;
+    checkUseRig3H: TCheckBox;
     actionSo2rNeoToggleAutoRxSelect: TAction;
     actionToggleTx: TAction;
     ledTx2A: TJvLED;
@@ -501,16 +503,16 @@ type
     actionToggleRx: TAction;
     actionMatchRxToTx: TAction;
     actionMatchTxToRx: TAction;
-    labelRig1Title: TLabel;
-    labelRig2Title: TLabel;
+    labelRigTitle2HA: TLabel;
+    labelRigTitle2HB: TLabel;
     ledTx2C: TJvLED;
-    labelRig3Title: TLabel;
-    checkWithRig1: TCheckBox;
-    checkWithRig2: TCheckBox;
+    labelRigTitle2HC: TLabel;
+    checkWithRig1H: TCheckBox;
+    checkWithRig2H: TCheckBox;
     actionSo2rToggleRigPair: TAction;
     MainPanel: TPanel;
-    EditUpperLeftPanel: TPanel;
-    EditUpperRightPanel: TGridPanel;
+    EditUpperLeftPanel2RH: TPanel;
+    EditUpperRightPanel2RH: TGridPanel;
     timerCqRepeat: TTimer;
     FileImportDialog: TOpenDialog;
     actionChangeTxNr0: TAction;
@@ -641,6 +643,47 @@ type
     N77GHZ1: TMenuItem;
     N135GHz1: TMenuItem;
     N248GHz1: TMenuItem;
+    EditPanel2RV: TPanel;
+    EditUpperLeftPanel2RV: TPanel;
+    DateEdit2RV: TOvrEdit;
+    TimeEdit2RV: TOvrEdit;
+    EditUpperRightPanel2RV: TGridPanel;
+    RigPanelVA: TPanel;
+    RigPanelShape2VA: TShape;
+    ledTx2VA: TJvLED;
+    labelRigTitle2VA: TLabel;
+    CallsignEdit2VA: TOvrEdit;
+    NumberEdit2VA: TOvrEdit;
+    RcvdRSTEdit2VA: TEdit;
+    BandEdit2VA: TEdit;
+    ModeEdit2VA: TEdit;
+    SentRSTEdit2VA: TEdit;
+    RigPanelVB: TPanel;
+    RigPanelShape2VB: TShape;
+    ledTx2VB: TJvLED;
+    labelRigTitle2VB: TLabel;
+    CallsignEdit2VB: TOvrEdit;
+    NumberEdit2VB: TOvrEdit;
+    RcvdRSTEdit2VB: TEdit;
+    BandEdit2VB: TEdit;
+    ModeEdit2VB: TEdit;
+    SentRSTEdit2VB: TEdit;
+    SerialEdit2VA: TEdit;
+    SerialEdit2VB: TEdit;
+    Panel1: TPanel;
+    RigPanelShape2VC: TShape;
+    ledTx2VC: TJvLED;
+    labelRigTitle2VC: TLabel;
+    CallsignEdit2VC: TOvrEdit;
+    NumberEdit2VC: TOvrEdit;
+    RcvdRSTEdit2VC: TEdit;
+    BandEdit2VC: TEdit;
+    ModeEdit2VC: TEdit;
+    SerialEdit2VC: TEdit;
+    checkUseRig3V: TCheckBox;
+    checkWithRig1V: TCheckBox;
+    checkWithRig2V: TCheckBox;
+    SentRSTEdit2VC: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -911,7 +954,7 @@ type
     procedure actionToggleRxExecute(Sender: TObject);
     procedure actionMatchRxToTxExecute(Sender: TObject);
     procedure actionMatchTxToRxExecute(Sender: TObject);
-    procedure labelRig3TitleClick(Sender: TObject);
+    procedure labelRigTitleCClick(Sender: TObject);
     procedure checkWithRigClick(Sender: TObject);
     procedure actionSo2rToggleRigPairExecute(Sender: TObject);
     procedure timerCqRepeatTimer(Sender: TObject);
@@ -1050,6 +1093,9 @@ type
     FCurrentRx: Integer;
     FCurrentTx: Integer;
     FEditPanel: TEditPanelArray;
+    FUseRigC: array[os2RadioH..os2RadioV] of TCheckBox;
+    FWithRigA: array[os2RadioH..os2RadioV] of TCheckBox;
+    FWithRigB: array[os2RadioH..os2RadioV] of TCheckBox;
     FRigSwitchTime: TDateTime;
     FKeyPressedRigID: array[0..4] of Integer;
 
@@ -1286,6 +1332,7 @@ type
     procedure InitGrid();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
     procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
+    function Is2Radio(): Boolean;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1636,7 +1683,7 @@ begin
    SpeedLabel.Caption := IntToStr(SpeedBar.Position) + ' wpm';
    FInformation.InitWPM := dmZLogKeyer.InitWPM;
    FInformation.WPM := dmZLogKeyer.WPM;
-   FInformation.So2rMode := (dmZLogGlobal.Settings._operate_style = os2Radio);
+   FInformation.So2rMode := Is2Radio();
    i := dmZlogGlobal.Settings.CW.CurrentBank;
    CWF1.Hint := dmZlogGlobal.CWMessage(i, 1);
    CWF2.Hint := dmZlogGlobal.CWMessage(i, 2);
@@ -2401,7 +2448,8 @@ begin
    // フォント設定
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
    EditPanel1R.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   EditPanel2R.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   EditPanel2RH.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   EditPanel2RV.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
 
    // QSO Editパネルの初期設定
    InitQsoEditPanel();
@@ -4295,7 +4343,7 @@ begin
       curQSO.Serial   := StrToIntDef(SE.Text, 1);
 
       // SO2Rモード
-      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if Is2Radio() = True then begin
          // 2BSIQ OFFの場合はTXをRXにあわせる
          // CQ+S&P
          // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
@@ -4400,7 +4448,7 @@ begin
       end;
 
       // SO2Rモードの場合
-      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if Is2Radio() = True then begin
          // 2BSIQ=OFF
          if (Is2bsiq() = False) then begin
             // 送受が異なる場合はpickupなので、TXを戻す
@@ -4488,7 +4536,7 @@ begin
       curQSO.Assign(CurrentQSO);
 
       // SO2Rモードの場合
-      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if Is2Radio() = True then begin
          // 2BSIQ=OFF
          if (Is2bsiq() = False) then begin
             // ↓キーを押した方にTXを合わせる
@@ -4560,7 +4608,7 @@ begin
             LogButtonProc(nTxID, curQSO);
 
             // SO2Rモードの場合
-            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+            if Is2Radio() = True then begin
                // 2BSIQ=OFF
                if (Is2bsiq() = False) then begin
                   // 送受が異なる場合はpickupなので、TXを戻す
@@ -4627,7 +4675,7 @@ begin
             LogButtonProc(nTxID, curQSO);
 
             // SO2Rモードの場合
-            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+            if Is2Radio() = True then begin
                // 2BSIQ=OFF
                if (Is2bsiq() = False) then begin
                   // 送受が異なる場合はpickupなので、TXを戻す
@@ -5109,7 +5157,7 @@ begin
    FEditPanel[nID].MemoEdit.Text := '';
 
    if (dmZLogGlobal.Settings._operate_style = os1Radio) or
-      ((dmZLogGlobal.Settings._operate_style = os2Radio) and (Is2bsiq() = False)) then begin
+      ((Is2Radio() = True) and (Is2bsiq() = False)) then begin
       if FPostContest then begin
          TimeEdit.SetFocus;
       end
@@ -5440,9 +5488,12 @@ begin
    Result := CurrentQSO.CQ;
 end;
 
-procedure TMainForm.labelRig3TitleClick(Sender: TObject);
+procedure TMainForm.labelRigTitleCClick(Sender: TObject);
+var
+   n: TOperateStyle;
 begin
-   checkUseRig3.Checked := not checkUseRig3.Checked;
+   n := TOperateStyle(TLabel(Sender).Tag);
+   FUseRigC[n].Checked := not FUseRigC[n].Checked;
 end;
 
 procedure TMainForm.CQRepeatClick1(Sender: TObject);
@@ -5476,7 +5527,7 @@ begin
 
    try
    // 確定待ち中で、現在の受信と次の送信が同じRIGの場合はパス
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
+   if (Is2Radio() = True) and
       (FWaitForQsoFinish[FCurrentRigSet - 1] = True) then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('**** QSO確定待ち ****'));
@@ -5503,7 +5554,7 @@ begin
    // 2Radioの場合
    // CQ+S&P
    // 現在RIGがRIG2(SP)ならRIG1(CQ)へ戻る
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       if (Is2bsiq() = False) then begin
          // 開始時RIG(RUN)と現在TXが異なる場合はCQはかけない
          if ((FCQLoopStartRig - 1) <> FCurrentTx) then begin
@@ -5533,7 +5584,7 @@ begin
 //   currig := RigControl.GetCurrentRig();
 
    // SO2Rの場合
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       // 2BSIQの場合
       if Is2bsiq() = True then begin
          // TXとRXが違う場合、RXをTXに合わせてからInvertTxする
@@ -5572,8 +5623,7 @@ begin
    FMessageManager.AddQue(WM_ZLOG_SETCQ, 1, 0);
 
    // 自動リグ変更の場合Messageを切り替える
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (Is2bsiq() = True) then begin
+   if (Is2Radio() = True) and (Is2bsiq() = True) then begin
       bank := dmZLogGlobal.Settings._so2r_cq_msg_bank;
       msgno := dmZLogGlobal.Settings._so2r_cq_msg_number;
    end
@@ -5887,7 +5937,7 @@ begin
    end;
 
    // SO2R
-   dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
+   dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
 
    // Last CQ mode
    dmZLogGlobal.Settings.FLastCQMode := IsCQ();
@@ -6520,13 +6570,14 @@ begin
       // KeyingとRigControlを一旦終了
       FRigControl.ForcePowerOff();
       CancelCqRepeat();
-      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3.Checked;
+      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+      checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+      checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZlogGlobal.ImplementSettings(False);
       dmZlogGlobal.SaveCurrentSettings();
       InitBandMenu();
@@ -6586,7 +6637,8 @@ begin
          Exit;
       end;
 
-      checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+      checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+      checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZlogGlobal.ImplementSettings(False);
       dmZlogGlobal.SaveCurrentSettings();
       InitBandMenu();
@@ -6850,7 +6902,7 @@ var
 begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       FCurrentRigSet := edit.Tag;
    end;
 
@@ -6860,7 +6912,7 @@ begin
    end;
 
    // SO2Rの場合、現在RIGとクリックされたControlのRIGが違うと強制切り替え
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       if FCurrentRx <> (FCurrentRigSet - 1) then begin
          SwitchRig(FCurrentRigSet);
          FCQLoopStartRig := FCurrentRigSet;
@@ -8284,7 +8336,7 @@ begin
 
       // SO2RはSingleOpのみが設定可能
       if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
-         if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+         if Is2Radio() = True then begin
             dmZLogGlobal.Settings._operate_style := os1Radio;
             InitQsoEditPanel();
             UpdateQsoEditPanel(1);
@@ -8350,7 +8402,7 @@ begin
          // PH/CW
          cmMix: begin
             CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
-            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+            if Is2Radio() = True then begin
                FEditPanel[0].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[0]);
                FEditPanel[1].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[1]);
                FEditPanel[2].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[2]);
@@ -8370,7 +8422,7 @@ begin
          // Other
          else begin
             CurrentQSO.Mode := dmZLogGlobal.LastMode[0];
-            if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+            if Is2Radio() = True then begin
                FEditPanel[0].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[0]);
                FEditPanel[1].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[1]);
                FEditPanel[2].ModeEdit.Text := ModeToText(dmZLogGlobal.LastMode[2]);
@@ -8488,7 +8540,7 @@ begin
          CurrentQSO.Band := MyContest.BandLow;
       end;
 
-      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if Is2Radio() = True then begin
          for i := 0 to 2 do begin
             FEditPanel[i].BandEdit.Text := BandToText(dmZLogGlobal.LastBand[i]);
          end;
@@ -8561,8 +8613,9 @@ begin
       LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
 
       // SO2R
-      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
-         checkUseRig3.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+      if Is2Radio() = True then begin
+         checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
+         checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       end;
 
       // Select BandPlan
@@ -8576,7 +8629,7 @@ begin
       // リグコントロール開始
       FRigControl.ForcePowerOn();
 
-      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if Is2Radio() = True then begin
          // 右側のバンドとモードを取得＆設定
          for BB := b19 to b10g do begin
             rigno := dmZLogGlobal.Settings.FRigSet[2].FRig[BB];
@@ -9860,7 +9913,7 @@ begin
 
    // SO2Rではモード変更不要
    if (dmZLogGlobal.Settings._operate_style = os1Radio) or
-      ((dmZLogGlobal.Settings._operate_style = os2Radio) and (dmZLogGlobal.Settings._so2r_ignore_mode_change = False)) then begin
+      ((Is2Radio() = True) and (dmZLogGlobal.Settings._so2r_ignore_mode_change = False)) then begin
       if CurrentQSO.Mode <> m then begin
          UpdateMode(m);
       end;
@@ -9940,7 +9993,7 @@ begin
    WriteStatusLine('', False);
 
    // 2R:CQ+S&P時、F1/F2/F3以外はSPモード
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       if (Is2bsiq() = False) then begin
          m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
          StopMessage(m);
@@ -10037,7 +10090,7 @@ begin
    FMessageManager.AddQue(0, S, Q);
 
    // SO2Rモードの場合
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       // 2BSIQ=OFF
       if (Is2bsiq() = False) then begin
          // 送受が異なる場合はpickupなので、TXを戻してCQモードにする
@@ -10103,7 +10156,7 @@ begin
    end;
 
    // SO2Rモードの場合
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       // 2BSIQ=OFF
       if (Is2bsiq() = False) then begin
          // 送受が異なる場合はpickupなので、TXを戻す
@@ -10229,7 +10282,7 @@ begin
       // TABキー押下後
       if FTabKeyPressed[tx] = True then begin
          // SO2R
-         if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+         if Is2Radio() = True then begin
             // CQ+SP
             if (Is2bsiq() = False) and (FCQLoopRunning = True) then begin
 //               if (CurrentQSO.CQ = False) and (dmZlogGlobal.Settings._switchcqsp = True) then begin
@@ -10249,7 +10302,7 @@ begin
          FCQLoopCount := 0;
 
          // SO2R
-         if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+         if Is2Radio() = True then begin
             // 2BSIQ
             if (Is2bsiq() = True) and (FCQLoopRunning = True) then begin
 //               FMessageManager.AddQue(WM_ZLOG_SET_LOOP_PAUSE, 0, 0);
@@ -10269,8 +10322,7 @@ begin
       // CQリピート再開
       if (FCQLoopRunning = True) then begin
          // TAB or ↓キーは即実行
-         if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-            (Is2bsiq() = True) then begin
+         if (Is2Radio() = True) and (Is2bsiq() = True) then begin
             if ((FTabKeyPressed[tx] = True) or (FDownKeyPressed[tx] = True)) then begin
                FTabKeyPressed[tx] := False;
                FDownKeyPressed[tx] := False;
@@ -11795,13 +11847,14 @@ const
   rig2: array[0..3] of Boolean = ( False, False, True, True );
 var
    n: Integer;
+   os: TOperateStyle;
 
    function FindIndex(): Integer;
    var
       i: Integer;
    begin
       for i := 0 to 3 do begin
-         if (rig1[i] = checkWithRig1.Checked) and (rig2[i] = checkWithRig2.Checked) then begin
+         if (rig1[i] = FWithRigA[os].Checked) and (rig2[i] = FWithRigB[os].Checked) then begin
             Result := i;
             Exit;
          end;
@@ -11809,6 +11862,7 @@ var
       Result := 0;
    end;
 begin
+   os := dmZLogGlobal.Settings._operate_style;
    n := FindIndex();
 
    Inc(n);
@@ -11816,8 +11870,8 @@ begin
       n := 1;
    end;
 
-   checkWithRig1.Checked := rig1[n];
-   checkWithRig2.Checked := rig2[n];
+   FWithRigA[os].Checked := rig1[n];
+   FWithRigA[os].Checked := rig2[n];
 end;
 
 // #151-#153 Change TX NR
@@ -12489,7 +12543,7 @@ begin
    end;
 
    // 2Radioの場合、現在の2BSIQ状態を保存してOFFにする
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       FPrev2bsiqMode := FInformation.Is2bsiq;
       if (Is2bsiq() = True) then begin
          FInformation.Is2bsiq := False;
@@ -12609,7 +12663,7 @@ end;
 
 procedure TMainForm.Restore2bsiqMode();
 begin
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       FInformation.Is2bsiq := FPrev2bsiqMode;
       if FPrev2bsiqMode = True then begin
          F2bsiqStart := True;
@@ -13083,6 +13137,9 @@ begin
       FEditPanel[0].OpEdit       := OpEdit1;
       FEditPanel[0].MemoEdit     := MemoEdit1;
       FEditPanel[0].TxLed        := nil;
+      FEditPanel[0].TxLed        := nil;
+      FEditPanel[0].SelShape     := nil;
+      FEditPanel[0].Title        := nil;
 
       FEditPanel[1].SerialEdit   := SerialEdit1;
       FEditPanel[1].DateEdit     := DateEdit1;
@@ -13098,6 +13155,9 @@ begin
       FEditPanel[1].OpEdit       := OpEdit1;
       FEditPanel[1].MemoEdit     := MemoEdit1;
       FEditPanel[1].TxLed        := nil;
+      FEditPanel[1].TxLed        := nil;
+      FEditPanel[1].SelShape     := nil;
+      FEditPanel[1].Title        := nil;
 
       FEditPanel[2].SerialEdit   := SerialEdit1;
       FEditPanel[2].DateEdit     := DateEdit1;
@@ -13113,14 +13173,18 @@ begin
       FEditPanel[2].OpEdit       := OpEdit1;
       FEditPanel[2].MemoEdit     := MemoEdit1;
       FEditPanel[2].TxLed        := nil;
+      FEditPanel[2].TxLed        := nil;
+      FEditPanel[2].SelShape     := nil;
+      FEditPanel[2].Title        := nil;
 
       EditPanel1R.Visible := True;
-      EditPanel2R.Visible := False;
+      EditPanel2RH.Visible := False;
+      EditPanel2RV.Visible := False;
    end
-   else begin  // 2R
+   else if (dmZLogGlobal.Settings._operate_style = os2RadioH) then begin   // 2R Horizontal
       FEditPanel[0].SerialEdit   := SerialEdit2A;
-      FEditPanel[0].DateEdit     := DateEdit2;
-      FEditPanel[0].TimeEdit     := TimeEdit2;
+      FEditPanel[0].DateEdit     := DateEdit2RH;
+      FEditPanel[0].TimeEdit     := TimeEdit2RH;
       FEditPanel[0].CallsignEdit := CallsignEdit2A;
       FEditPanel[0].sentRSTEdit  := sentRSTEdit2A;
       FEditPanel[0].rcvdRSTEdit  := rcvdRSTEdit2A;
@@ -13132,10 +13196,12 @@ begin
       FEditPanel[0].OpEdit       := nil;
       FEditPanel[0].MemoEdit     := nil;
       FEditPanel[0].TxLed        := ledTx2A;
+      FEditPanel[0].SelShape     := RigPanelShape2A;
+      FEditPanel[0].Title        := labelRigTitle2HA;
 
       FEditPanel[1].SerialEdit   := SerialEdit2B;
-      FEditPanel[1].DateEdit     := DateEdit2;
-      FEditPanel[1].TimeEdit     := TimeEdit2;
+      FEditPanel[1].DateEdit     := DateEdit2RH;
+      FEditPanel[1].TimeEdit     := TimeEdit2RH;
       FEditPanel[1].CallsignEdit := CallsignEdit2B;
       FEditPanel[1].sentRSTEdit  := sentRSTEdit2B;
       FEditPanel[1].rcvdRSTEdit  := rcvdRSTEdit2B;
@@ -13147,10 +13213,12 @@ begin
       FEditPanel[1].OpEdit       := nil;
       FEditPanel[1].MemoEdit     := nil;
       FEditPanel[1].TxLed        := ledTx2B;
+      FEditPanel[1].SelShape     := RigPanelShape2B;
+      FEditPanel[1].Title        := labelRigTitle2HB;
 
       FEditPanel[2].SerialEdit   := SerialEdit2C;
-      FEditPanel[2].DateEdit     := DateEdit2;
-      FEditPanel[2].TimeEdit     := TimeEdit2;
+      FEditPanel[2].DateEdit     := DateEdit2RH;
+      FEditPanel[2].TimeEdit     := TimeEdit2RH;
       FEditPanel[2].CallsignEdit := CallsignEdit2C;
       FEditPanel[2].sentRSTEdit  := sentRSTEdit2C;
       FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit2C;
@@ -13162,12 +13230,80 @@ begin
       FEditPanel[2].OpEdit       := nil;
       FEditPanel[2].MemoEdit     := nil;
       FEditPanel[2].TxLed        := ledTx2C;
+      FEditPanel[2].SelShape     := RigPanelShape2C;
+      FEditPanel[2].Title        := labelRigTitle2HC;
 
       EditPanel1R.Visible := False;
-      EditPanel2R.Visible := True;
+      EditPanel2RH.Visible := True;
+      EditPanel2RV.Visible := False;
+
+      ShowTxIndicator();
+   end
+   else begin  // 2R Vertical
+      FEditPanel[0].SerialEdit   := SerialEdit2VA;
+      FEditPanel[0].DateEdit     := DateEdit2RV;
+      FEditPanel[0].TimeEdit     := TimeEdit2RV;
+      FEditPanel[0].CallsignEdit := CallsignEdit2VA;
+      FEditPanel[0].sentRSTEdit  := sentRSTEdit2VA;
+      FEditPanel[0].rcvdRSTEdit  := rcvdRSTEdit2VA;
+      FEditPanel[0].NumberEdit   := NumberEdit2VA;
+      FEditPanel[0].ModeEdit     := ModeEdit2VA;
+      FEditPanel[0].PowerEdit    := nil;
+      FEditPanel[0].BandEdit     := BandEdit2VA;
+      FEditPanel[0].PointEdit    := nil;
+      FEditPanel[0].OpEdit       := nil;
+      FEditPanel[0].MemoEdit     := nil;
+      FEditPanel[0].TxLed        := ledTx2VA;
+      FEditPanel[0].SelShape     := RigPanelShape2VA;
+      FEditPanel[0].Title        := labelRigTitle2VA;
+
+      FEditPanel[1].SerialEdit   := SerialEdit2VB;
+      FEditPanel[1].DateEdit     := DateEdit2RV;
+      FEditPanel[1].TimeEdit     := TimeEdit2RV;
+      FEditPanel[1].CallsignEdit := CallsignEdit2VB;
+      FEditPanel[1].sentRSTEdit  := sentRSTEdit2VB;
+      FEditPanel[1].rcvdRSTEdit  := rcvdRSTEdit2VB;
+      FEditPanel[1].NumberEdit   := NumberEdit2VB;
+      FEditPanel[1].ModeEdit     := ModeEdit2VB;
+      FEditPanel[1].PowerEdit    := nil;
+      FEditPanel[1].BandEdit     := BandEdit2VB;
+      FEditPanel[1].PointEdit    := nil;
+      FEditPanel[1].OpEdit       := nil;
+      FEditPanel[1].MemoEdit     := nil;
+      FEditPanel[1].TxLed        := ledTx2VB;
+      FEditPanel[1].SelShape     := RigPanelShape2VB;
+      FEditPanel[1].Title        := labelRigTitle2VB;
+
+      FEditPanel[2].SerialEdit   := SerialEdit2VC;
+      FEditPanel[2].DateEdit     := DateEdit2RV;
+      FEditPanel[2].TimeEdit     := TimeEdit2RV;
+      FEditPanel[2].CallsignEdit := CallsignEdit2VC;
+      FEditPanel[2].sentRSTEdit  := sentRSTEdit2VC;
+      FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit2VC;
+      FEditPanel[2].NumberEdit   := NumberEdit2VC;
+      FEditPanel[2].ModeEdit     := ModeEdit2VC;
+      FEditPanel[2].PowerEdit    := nil;
+      FEditPanel[2].BandEdit     := BandEdit2VC;
+      FEditPanel[2].PointEdit    := nil;
+      FEditPanel[2].OpEdit       := nil;
+      FEditPanel[2].MemoEdit     := nil;
+      FEditPanel[2].TxLed        := ledTx2VC;
+      FEditPanel[2].SelShape     := RigPanelShape2C;
+      FEditPanel[2].Title        := labelRigTitle2VC;
+
+      EditPanel1R.Visible := False;
+      EditPanel2RH.Visible := False;
+      EditPanel2RV.Visible := True;
 
       ShowTxIndicator();
    end;
+
+   FUseRigC[os2RadioH] := checkUseRig3H;
+   FUseRigC[os2RadioV] := checkUseRig3V;
+   FWithRigA[os2RadioH] := checkWithRig1H;
+   FWithRigA[os2RadioV] := checkWithRig1V;
+   FWithRigB[os2RadioH] := checkWithRig2H;
+   FWithRigB[os2RadioV] := checkWithRig2V;
 end;
 
 procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
@@ -13206,13 +13342,16 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
    const
       title_color: array[False .. True] of TColor = (clBlack, clBlue);
    begin
-      labelRig1Title.Font.Color := title_color[rig1];
-      labelRig2Title.Font.Color := title_color[rig2];
-      if checkUseRig3.Checked = True then begin
-         labelRig3Title.Font.Color := title_color[rig3];
+      FEditPanel[0].Title.Font.Color := title_color[rig1];
+      FEditPanel[1].Title.Font.Color := title_color[rig2];
+      if checkUseRig3H.Checked = True then begin
+         FEditPanel[2].Title.Font.Color := title_color[rig3];
+      end
+      else if checkUseRig3V.Checked = True then begin
+         FEditPanel[2].Title.Font.Color := title_color[rig3];
       end
       else begin
-         labelRig3Title.Font.Color := clGray;
+         FEditPanel[2].Title.Font.Color := clGray;
       end;
    end;
 begin
@@ -13222,27 +13361,27 @@ begin
    end
    else begin
       if rig = 1 then begin
-         RigPanelShape2A.Pen.Color := clBlue;
-         RigPanelShape2B.Pen.Color := clBlack;
-         RigPanelShape2C.Pen.Color := clBlack;
+         FEditPanel[0].SelShape.Pen.Color := clBlue;
+         FEditPanel[1].SelShape.Pen.Color := clBlack;
+         FEditPanel[2].SelShape.Pen.Color := clBlack;
          SetRigTitleColor(True, False, False);
          SetWhite(0);
          SetGlay(1);
          SetGlay(2);
       end
       else if rig = 2 then begin
-         RigPanelShape2A.Pen.Color := clBlack;
-         RigPanelShape2B.Pen.Color := clBlue;
-         RigPanelShape2C.Pen.Color := clBlack;
+         FEditPanel[0].SelShape.Pen.Color := clBlack;
+         FEditPanel[1].SelShape.Pen.Color := clBlue;
+         FEditPanel[2].SelShape.Pen.Color := clBlack;
          SetRigTitleColor(False, True, False);
          SetGlay(0);
          SetWhite(1);
          SetGlay(2);
       end
       else begin
-         RigPanelShape2A.Pen.Color := clBlack;
-         RigPanelShape2B.Pen.Color := clBlack;
-         RigPanelShape2C.Pen.Color := clBlue;
+         FEditPanel[0].SelShape.Pen.Color := clBlack;
+         FEditPanel[1].SelShape.Pen.Color := clBlack;
+         FEditPanel[2].SelShape.Pen.Color := clBlue;
          SetRigTitleColor(False, False, True);
          SetGlay(0);
          SetGlay(1);
@@ -13278,7 +13417,7 @@ begin
 
    UpdateBandAndMode();
 
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       UpdateQsoEditPanel(rigset);
       if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
          EditEnter(FEditPanel[rigset - 1].NumberEdit);
@@ -13333,7 +13472,7 @@ begin
    ShowTxIndicator();
    SetCurrentTxRigFlag();
 
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       UpdateQsoEditPanel(rigset);
       if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
          EditEnter(FEditPanel[rigset - 1].NumberEdit);
@@ -13369,7 +13508,7 @@ begin
       end;
    end;
 
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+   if Is2Radio() = True then begin
       UpdateQsoEditPanel(rigset);
       if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
 //         EditEnter(FEditPanel[rigset - 1].NumberEdit);
@@ -13482,7 +13621,7 @@ begin
 //   rig := RigControl.GetCurrentRig();
    rig := FCurrentRigSet;
 
-   if checkUseRig3.Checked = True then begin
+   if checkUseRig3H.Checked = True then begin
       RigControl.MaxRig := 3;
       CallsignEdit2C.Enabled := True;
       RcvdRSTEdit2C.Enabled := True;
@@ -13491,8 +13630,19 @@ begin
       ModeEdit2C.Enabled := True;
       SerialEdit2C.Enabled := True;
       RigPanelShape2C.Pen.Color := clBlack;
-      labelRig3Title.Font.Color := clBlack;
-
+      FEditPanel[2].Title.Font.Color := clBlack;
+      FEditPanel[rig - 1].CallsignEdit.SetFocus();
+   end
+   else if checkUseRig3V.Checked = True then begin
+      RigControl.MaxRig := 3;
+      CallsignEdit2VC.Enabled := True;
+      RcvdRSTEdit2VC.Enabled := True;
+      NumberEdit2VC.Enabled := True;
+      BandEdit2VC.Enabled := True;
+      ModeEdit2VC.Enabled := True;
+      SerialEdit2VC.Enabled := True;
+      RigPanelShape2VC.Pen.Color := clBlack;
+      FEditPanel[2].Title.Font.Color := clBlack;
       FEditPanel[rig - 1].CallsignEdit.SetFocus();
    end
    else begin
@@ -13508,7 +13658,7 @@ begin
       ModeEdit2C.Enabled := False;
       SerialEdit2C.Enabled := False;
       RigPanelShape2C.Pen.Color := clGray;
-      labelRig3Title.Font.Color := clGray;
+      FEditPanel[2].Title.Font.Color := clGray;
    end;
 end;
 
@@ -13534,6 +13684,7 @@ end;
 function TMainForm.GetNextRigID(curid: Integer): Integer;
 var
    nextid: Integer;
+   os: TOperateStyle;
 
    function ToggleRigID(id: Integer): Integer;
    begin
@@ -13544,20 +13695,21 @@ var
       Result := id;
    end;
 begin
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (RigControl.MaxRig = 3) then begin
+   os := dmZLogGlobal.Settings._operate_style;
+
+   if (Is2Radio() = True) and (RigControl.MaxRig = 3) then begin
       // RIG1,RIG2両方にチェックがある場合と
       // RIG1,RIG2両方にチェックがない場合
       // RIG1-RIG3を巡回
-      if ((checkWithRig1.Checked = True) and (checkWithRig2.Checked = True)) or
-         ((checkWithRig1.Checked = False) and (checkWithRig2.Checked = False)) then begin
+      if ((FWithRigA[os].Checked = True) and (FWithRigB[os].Checked = True)) or
+         ((FWithRigA[os].Checked = False) and (FWithRigB[os].Checked = False)) then begin
          Result := ToggleRigID(curid);
          Exit;
       end;
 
       if curid = 0 then begin
          // 現在RIG1で、RIG3にチェックがあってRIG1とペアなら、RIG1-RIG3をトグル
-         if (checkWithRig1.Checked = True) then begin
+         if (FWithRigA[os].Checked = True) then begin
             nextid := 2;
          end
          else begin  // そうでなければRIG1-RIG2でトグル
@@ -13566,7 +13718,7 @@ begin
       end
       else if curid = 1 then begin
          // 現在RIG2で、RIG3にチェックがあってRIG2とペアなら、RIG2-RIG3をトグル
-         if (checkWithRig2.Checked = True) then begin
+         if (FWithRigB[os].Checked = True) then begin
             nextid := 2;
          end
          else begin  // そうでなければRIG1-RIG2でトグル
@@ -13575,10 +13727,10 @@ begin
       end
       else begin
          // 現在RIG3ならチェックのある方とペア
-         if checkWithRig1.Checked = True then begin
+         if FWithRigA[os].Checked = True then begin
             nextid := 0;
          end
-         else if checkWithRig2.Checked = True then begin
+         else if FWithRigB[os].Checked = True then begin
             nextid := 1;
          end
          else begin
@@ -13951,7 +14103,7 @@ begin
 
    // 2R:2BSIQ OFFの場合はRIG1に戻す
    if fReturnStartRig = True then begin
-      if (dmZLogGlobal.Settings._operate_style = os2Radio) then begin
+      if Is2Radio() = True then begin
          if (Is2bsiq() = False) then begin
             // CQ開始時のリグに戻す
             if FCurrentRigSet <> FCQLoopStartRig then begin
@@ -14246,8 +14398,7 @@ procedure TMainForm.StartCqRepeatTimer();
 var
    interval: Double;
 begin
-   if (dmZLogGlobal.Settings._operate_style = os2Radio) and
-      (Is2bsiq() = True) then begin
+   if (Is2Radio() = True) and (Is2bsiq() = True) then begin
       interval := dmZLogGlobal.Settings._so2r_cq_rpt_interval_sec;
    end
    else begin
@@ -15102,6 +15253,12 @@ begin
    else begin
       FBandScopeAllBands.Hide();
    end;
+end;
+
+function TMainForm.Is2Radio(): Boolean;
+begin
+   Result := ((dmZLogGlobal.Settings._operate_style = os2RadioH) or
+              (dmZLogGlobal.Settings._operate_style = os2RadioV));
 end;
 
 { TBandScopeNotifyThread }
