@@ -78,19 +78,20 @@ type
   TEditPanel = record
     SerialEdit: TEdit;        // 0
     TimeEdit: TOvrEdit;       // 1
-    DateEdit: TOvrEdit;       // 1
-    CallsignEdit: TOvrEdit;   // 2
-    sentRSTEdit: TEdit;       // 3
-    rcvdRSTEdit: TEdit;       // 4
-    NumberEdit: TOvrEdit;     // 5
-    ModeEdit: TEdit;          // 6
-    PowerEdit: TEdit;         // 7
-    BandEdit: TEdit;          // 8
-    PointEdit: TEdit;         // 9
-    OpEdit: TEdit;            // 10
-    MemoEdit: TOvrEdit;       // 11
-    NewMulti1Edit: TEdit;     // 12
-    NewMulti2Edit: TEdit;     // 13
+    DateEdit: TOvrEdit;       // 2
+    CallsignEdit: TOvrEdit;   // 3
+    SentRSTEdit: TEdit;       // 4
+    SentNumberEdit: TOvrEdit; // 5
+    RcvdRSTEdit: TEdit;       // 6
+    RcvdNumberEdit: TOvrEdit; // 7
+    ModeEdit: TEdit;          // 8
+    PowerEdit: TEdit;         // 9
+    BandEdit: TEdit;          // 10
+    PointEdit: TEdit;         // 11
+    OpEdit: TEdit;            // 12
+    MemoEdit: TOvrEdit;       // 13
+    NewMulti1Edit: TEdit;     // 14
+    NewMulti2Edit: TEdit;     // 15
     CurrentBand: TBand;
     CurrentMode: TMode;
     TxLed: TJvLED;
@@ -472,16 +473,13 @@ type
     RcvdRSTEdit2B: TEdit;
     BandEdit2B: TEdit;
     ModeEdit2B: TEdit;
-    SerialEdit2A: TEdit;
-    SerialEdit2B: TEdit;
-    RigPanelC: TPanel;
+    RigPanelHC: TPanel;
     RigPanelShape2C: TShape;
     CallsignEdit2C: TOvrEdit;
     NumberEdit2C: TOvrEdit;
     RcvdRSTEdit2C: TEdit;
     BandEdit2C: TEdit;
     ModeEdit2C: TEdit;
-    SerialEdit2C: TEdit;
     actionShowSo2rNeoCp: TAction;
     actionSo2rNeoSelRx1: TAction;
     actionSo2rNeoSelRx2: TAction;
@@ -632,9 +630,9 @@ type
     actionShowGrayline: TAction;
     Grayline1: TMenuItem;
     SentRSTEdit1: TEdit;
-    SentRSTEdit2A: TEdit;
-    SentRSTEdit2B: TEdit;
-    SentRSTEdit2C: TEdit;
+    SentRSTEdit2HA: TEdit;
+    SentRSTEdit2HB: TEdit;
+    SentRSTEdit2HC: TEdit;
     actionFocusRstSent: TAction;
     DV1: TMenuItem;
     N104GHz1: TMenuItem;
@@ -657,7 +655,6 @@ type
     RcvdRSTEdit2VA: TEdit;
     BandEdit2VA: TEdit;
     ModeEdit2VA: TEdit;
-    SentRSTEdit2VA: TEdit;
     RigPanelVB: TPanel;
     RigPanelShape2VB: TShape;
     ledTx2VB: TJvLED;
@@ -667,10 +664,8 @@ type
     RcvdRSTEdit2VB: TEdit;
     BandEdit2VB: TEdit;
     ModeEdit2VB: TEdit;
-    SentRSTEdit2VB: TEdit;
     SerialEdit2VA: TEdit;
-    SerialEdit2VB: TEdit;
-    Panel1: TPanel;
+    RigPanelVC: TPanel;
     RigPanelShape2VC: TShape;
     ledTx2VC: TJvLED;
     labelRigTitle2VC: TLabel;
@@ -679,10 +674,12 @@ type
     RcvdRSTEdit2VC: TEdit;
     BandEdit2VC: TEdit;
     ModeEdit2VC: TEdit;
-    SerialEdit2VC: TEdit;
     checkUseRig3V: TCheckBox;
     checkWithRig1V: TCheckBox;
     checkWithRig2V: TCheckBox;
+    SerialEdit2A: TEdit;
+    SentRSTEdit2VA: TEdit;
+    SentRSTEdit2VB: TEdit;
     SentRSTEdit2VC: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -1244,7 +1241,7 @@ type
     function GetCallsignEdit(): TEdit;    // 2
     function GetSentRSTEdit(): TEdit;     // 3
     function GetRcvdRSTEdit(): TEdit;     // 4
-    function GetNumberEdit(): TEdit;      // 5
+    function GetRcvdNumberEdit(): TEdit;  // 5
     function GetModeEdit(): TEdit;        // 6
     function GetPowerEdit(): TEdit;       // 7
     function GetBandEdit(): TEdit;        // 8
@@ -1414,7 +1411,7 @@ type
     property CallsignEdit: TEdit read GetCallsignEdit;
     property SentRSTEdit: TEdit read GetSentRSTEdit;
     property RcvdRSTEdit: TEdit read GetRcvdRSTEdit;
-    property NumberEdit: TEdit read GetNumberEdit;
+    property RcvdNumberEdit: TEdit read GetRcvdNumberEdit;
     property ModeEdit: TEdit read GetModeEdit;
     property PowerEdit: TEdit read GetPowerEdit;
     property BandEdit: TEdit read GetBandEdit;
@@ -1658,12 +1655,12 @@ begin
 
       with CurrentEditPanel do begin
          CallsignEdit.Text := CurrentQSO.Callsign;
-         CurrentEditPanel.NumberEdit.Text := CurrentQSO.NrRcvd;
-         CurrentEditPanel.BandEdit.Text := MHzString[CurrentQSO.Band];
-         CurrentEditPanel.PowerEdit.Text := NewPowerString[CurrentQSO.Power];
-         CurrentEditPanel.PointEdit.Text := CurrentQSO.PointStr;
-         CurrentEditPanel.SentRSTEdit.Text := CurrentQSO.RSTSentStr;
-         CurrentEditPanel.RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+         RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+         RcvdNumberEdit.Text := CurrentQSO.NrRcvd;
+         BandEdit.Text := MHzString[CurrentQSO.Band];
+         PowerEdit.Text := NewPowerString[CurrentQSO.Power];
+         PointEdit.Text := CurrentQSO.PointStr;
+         SentRSTEdit.Text := CurrentQSO.RSTSentStr;
          TimeEdit.Text := CurrentQSO.TimeStr;
          DateEdit.Text := CurrentQSO.DateStr;
          ModeEdit.Text := ModeString[CurrentQSO.Mode];
@@ -1972,8 +1969,8 @@ begin
       CurrentQSO.RSTRcvd := 59;
       CurrentQSO.RSTsent := 59;
       SentRSTEdit.Text := '59';
-      RcvdRSTEdit.Text := '59';
       SentRSTEdit.Maxlength := 2;
+      RcvdRSTEdit.Text := '59';
       RcvdRSTEdit.Maxlength := 2;
 
       // USBIF4CW gen3で音声使う際は、PHでPTT制御あり
@@ -1989,8 +1986,8 @@ begin
       CurrentQSO.RSTRcvd := 599;
       CurrentQSO.RSTsent := 599;
       SentRSTEdit.Text := '599';
-      RcvdRSTEdit.Text := '599';
       SentRSTEdit.Maxlength := 3;
+      RcvdRSTEdit.Text := '599';
       RcvdRSTEdit.Maxlength := 3;
 
       // USBIF4CW gen3で音声使う際は、CWでPTT制御なし
@@ -2661,7 +2658,7 @@ begin
       Reserve3 := dmZlogGlobal.NewQSOID();
    end;
 
-   NumberEdit.Text := '';
+   RcvdNumberEdit.Text := '';
    BandEdit.Text := MHzString[CurrentQSO.Band];
    PowerEdit.Text := NewPowerString[CurrentQSO.Power];
    PointEdit.Text := CurrentQSO.PointStr;
@@ -3701,11 +3698,11 @@ begin
    if CallsignEdit.Font.Color = clGrayText then begin
       if Key <> ' ' then begin
          CallsignEdit.Text := OldCallsign;
-         NumberEdit.Text := OldNumber;
+         RcvdNumberEdit.Text := OldNumber;
       end;
 
       CallsignEdit.Font.Color := defaultTextColor;
-      NumberEdit.Font.Color := defaultTextColor;
+      RcvdNumberEdit.Font.Color := defaultTextColor;
 
       if Key <> ' ' then begin
          exit;
@@ -3737,7 +3734,7 @@ begin
             Key := #0;
 
             if CallsignEdit.Text = '' then begin
-               NumberEdit.SetFocus;
+               RcvdNumberEdit.SetFocus;
                Exit;
             end;
 
@@ -3843,11 +3840,11 @@ begin
          if ((CurrentQSO.Mode = mCW) and (dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone)) or
             (CurrentQSO.Mode <> mCW) then begin
             CallSpacebarProc(C, N, B);
-            NumberEdit.SetFocus();
+            RcvdNumberEdit.SetFocus();
          end;
       end
       else begin
-         S := NumberEdit.Text;
+         S := RcvdNumberEdit.Text;
 
          fNoMulti := False;
 
@@ -3956,7 +3953,7 @@ end;
 
 procedure TMainForm.NumberEdit1Change(Sender: TObject);
 begin
-   CurrentQSO.NrRcvd := NumberEdit.Text;
+   CurrentQSO.NrRcvd := RcvdNumberEdit.Text;
 
    if Assigned(MyContest) then begin
       if MyContest.MultiForm.IsIncrementalSearchPresent = True then begin
@@ -4579,8 +4576,8 @@ begin
                end;
 
                WriteStatusLine(TMainForm_Invalid_number, False);
-               FEditPanel[nTxID].NumberEdit.SetFocus;
-               FEditPanel[nTxID].NumberEdit.SelectAll;
+               FEditPanel[nTxID].RcvdNumberEdit.SetFocus;
+               FEditPanel[nTxID].RcvdNumberEdit.SelectAll;
 
                Exit;
             end;
@@ -4629,8 +4626,8 @@ begin
                   FTTYConsole.SendStrNow(S);
                end;
                WriteStatusLine(TMainForm_Invalid_number, False);
-               NumberEdit.SetFocus;
-               NumberEdit.SelectAll;
+               RcvdNumberEdit.SetFocus;
+               RcvdNumberEdit.SelectAll;
                FCQRepeatPlaying := False;
                exit;
             end;
@@ -4657,8 +4654,8 @@ begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
                PlayMessage(mode, 1, 5, False);
                WriteStatusLine(TMainForm_Invalid_number, False);
-               NumberEdit.SetFocus;
-               NumberEdit.SelectAll;
+               RcvdNumberEdit.SetFocus;
+               RcvdNumberEdit.SelectAll;
                exit;
             end;
 
@@ -4924,8 +4921,8 @@ begin
       // 無効マルチは入力できない
       if MyContest.MultiForm.ValidMulti(Q) = False then begin
          WriteStatusLine(TMainForm_Invalid_number, False);
-         FEditPanel[nID].NumberEdit.SetFocus;
-         FEditPanel[nID].NumberEdit.SelectAll;
+         FEditPanel[nID].RcvdNumberEdit.SetFocus;
+         FEditPanel[nID].RcvdNumberEdit.SelectAll;
          Exit;
       end;
 
@@ -5146,9 +5143,9 @@ begin
    FEditPanel[nID].TimeEdit.Text := Q.TimeStr;
    FEditPanel[nID].DateEdit.Text := Q.DateStr;
    FEditPanel[nID].CallsignEdit.Text := Q.Callsign;
-   FEditPanel[nID].sentRSTEdit.Text := Q.RSTSentStr;
+   FEditPanel[nID].SentRSTEdit.Text := Q.RSTSentStr;
    FEditPanel[nID].RcvdRSTEdit.Text := Q.RSTStr;
-   FEditPanel[nID].NumberEdit.Text := Q.NrRcvd;
+   FEditPanel[nID].RcvdNumberEdit.Text := Q.NrRcvd;
    FEditPanel[nID].ModeEdit.Text := Q.ModeStr;
    FEditPanel[nID].BandEdit.Text := Q.BandStr;
    FEditPanel[nID].PowerEdit.Text := Q.NewPowerStr;
@@ -6161,7 +6158,7 @@ begin
    end
    else begin
       C := FEditPanel[nID].CallsignEdit;
-      N := FEditPanel[nID].NumberEdit;
+      N := FEditPanel[nID].RcvdNumberEdit;
       B := FEditPanel[nID].BandEdit;
       M := FEditPanel[nID].ModeEdit;
       S := FEditPanel[nID].SerialEdit;
@@ -6922,7 +6919,8 @@ begin
    SetEditColor(TEdit(Sender), False);
 
    if (edit = CallsignEdit1) or
-      (edit = CallsignEdit2A) or (edit = CallsignEdit2B) or (edit = CallsignEdit2C) then begin
+      (edit = CallsignEdit2A) or (edit = CallsignEdit2B) or (edit = CallsignEdit2C) or
+      (edit = CallsignEdit2VA) or (edit = CallsignEdit2VB) or (edit = CallsignEdit2VC) then begin
       P := Pos('.', edit.Text);
       if P > 0 then begin
          edit.SelStart := P - 1;
@@ -7982,11 +7980,11 @@ end;
 procedure TMainForm.AutoInput(D: TBSData);
 begin
    OldCallsign := CallsignEdit.Text;
-   OldNumber := NumberEdit.Text;
+   OldNumber := RcvdNumberEdit.Text;
    CallsignEdit.Text := D.Call;
-   NumberEdit.Text := D.Number;
+   RcvdNumberEdit.Text := D.Number;
    CallsignEdit.Font.Color := clGrayText;
-   NumberEdit.Font.Color := clGrayText;
+   RcvdNumberEdit.Font.Color := clGrayText;
 end;
 
 procedure TMainForm.menuQuickReferenceClick(Sender: TObject);
@@ -8985,7 +8983,7 @@ begin
       CallsignEdit.SetFocus();
    end
    else begin
-      NumberEdit.SetFocus();
+      RcvdNumberEdit.SetFocus();
    end;
 end;
 
@@ -9233,10 +9231,10 @@ begin
    {$ENDIF}
    nID := Message.WParam;
    if FEditPanel[nID].CallsignEdit.Text <> '' then begin
-      if FEditPanel[nID].NumberEdit.Visible and FEditPanel[nID].NumberEdit.Enabled then begin
-         FEditPanel[nID].NumberEdit.SetFocus();
-         FEditPanel[nID].NumberEdit.SelStart := Length(FEditPanel[nID].NumberEdit.Text);
-         LastFocus := FEditPanel[nID].NumberEdit;
+      if FEditPanel[nID].RcvdNumberEdit.Visible and FEditPanel[nID].RcvdNumberEdit.Enabled then begin
+         FEditPanel[nID].RcvdNumberEdit.SetFocus();
+         FEditPanel[nID].RcvdNumberEdit.SelStart := Length(FEditPanel[nID].RcvdNumberEdit.Text);
+         LastFocus := FEditPanel[nID].RcvdNumberEdit;
       end;
    end
    else begin
@@ -10405,7 +10403,7 @@ begin
    if fShiftKey = False then begin
       CallsignEdit.Clear;
       CallsignEdit.SetFocus();
-      NumberEdit.Clear;
+      RcvdNumberEdit.Clear;
    end;
 end;
 
@@ -10498,7 +10496,7 @@ procedure TMainForm.actionShowCheckPartialExecute(Sender: TObject);
 begin
    FormShowAndRestore(FPartialCheck);
 
-   if ActiveControl = NumberEdit then begin
+   if ActiveControl = RcvdNumberEdit then begin
       FPartialCheck.CheckPartialNumber(CurrentQSO);
    end
    else begin
@@ -10729,7 +10727,7 @@ procedure TMainForm.actionClearCallAndRptExecute(Sender: TObject);
 begin
    EditedSinceTABPressed := tabstate_normal;
    CallsignEdit.Clear;
-   NumberEdit.Clear;
+   RcvdNumberEdit.Clear;
    if Assigned(MemoEdit) then MemoEdit.Clear;
    CallsignEdit.SetFocus;
    WriteStatusLine('', False);
@@ -10883,7 +10881,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actionFocusNumberExecute---'));
    {$ENDIF}
-   NumberEdit.SetFocus;
+   RcvdNumberEdit.SetFocus;
 end;
 
 // #63 OP欄にフォーカス移動
@@ -10937,7 +10935,7 @@ begin
    OutputDebugString(PChar('---actoinClearCallAndNumAftFocusExecute---'));
    {$ENDIF}
    CallsignEdit.Clear();
-   NumberEdit.Clear();
+   RcvdNumberEdit.Clear();
    if Assigned(MemoEdit) then MemoEdit.Clear();
    WriteStatusLine('', False);
    CallsignEdit.SetFocus;
@@ -13084,9 +13082,9 @@ begin
    Result := FEditPanel[CurrentRigID].rcvdRSTEdit;
 end;
 
-function TMainForm.GetNumberEdit(): TEdit;      // 5
+function TMainForm.GetRcvdNumberEdit(): TEdit;      // 5
 begin
-   Result := FEditPanel[CurrentRigID].NumberEdit;
+   Result := FEditPanel[CurrentRigID].RcvdNumberEdit;
 end;
 
 function TMainForm.GetModeEdit(): TEdit;        // 6
@@ -13123,115 +13121,121 @@ procedure TMainForm.InitQsoEditPanel();
 begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       // 1R
-      FEditPanel[0].SerialEdit   := SerialEdit1;
-      FEditPanel[0].DateEdit     := DateEdit1;
-      FEditPanel[0].TimeEdit     := TimeEdit1;
-      FEditPanel[0].CallsignEdit := CallsignEdit1;
-      FEditPanel[0].sentRSTEdit  := SentRSTEdit1;
-      FEditPanel[0].rcvdRSTEdit  := RcvdRSTEdit1;
-      FEditPanel[0].NumberEdit   := NumberEdit1;
-      FEditPanel[0].ModeEdit     := ModeEdit1;
-      FEditPanel[0].PowerEdit    := PowerEdit1;
-      FEditPanel[0].BandEdit     := BandEdit1;
-      FEditPanel[0].PointEdit    := PointEdit1;
-      FEditPanel[0].OpEdit       := OpEdit1;
-      FEditPanel[0].MemoEdit     := MemoEdit1;
-      FEditPanel[0].TxLed        := nil;
-      FEditPanel[0].TxLed        := nil;
-      FEditPanel[0].SelShape     := nil;
-      FEditPanel[0].Title        := nil;
+      FEditPanel[0].SerialEdit     := SerialEdit1;
+      FEditPanel[0].DateEdit       := DateEdit1;
+      FEditPanel[0].TimeEdit       := TimeEdit1;
+      FEditPanel[0].CallsignEdit   := CallsignEdit1;
+      FEditPanel[0].SentRSTEdit    := SentRSTEdit1;
+      FEditPanel[0].SentNumberEdit := nil;
+      FEditPanel[0].RcvdRSTEdit    := RcvdRSTEdit1;
+      FEditPanel[0].RcvdNumberEdit := NumberEdit1;
+      FEditPanel[0].ModeEdit       := ModeEdit1;
+      FEditPanel[0].PowerEdit      := PowerEdit1;
+      FEditPanel[0].BandEdit       := BandEdit1;
+      FEditPanel[0].PointEdit      := PointEdit1;
+      FEditPanel[0].OpEdit         := OpEdit1;
+      FEditPanel[0].MemoEdit       := MemoEdit1;
+      FEditPanel[0].TxLed          := nil;
+      FEditPanel[0].TxLed          := nil;
+      FEditPanel[0].SelShape       := nil;
+      FEditPanel[0].Title          := nil;
 
-      FEditPanel[1].SerialEdit   := SerialEdit1;
-      FEditPanel[1].DateEdit     := DateEdit1;
-      FEditPanel[1].TimeEdit     := TimeEdit1;
-      FEditPanel[1].CallsignEdit := CallsignEdit1;
-      FEditPanel[1].sentRSTEdit  := sentRSTEdit1;
-      FEditPanel[1].rcvdRSTEdit  := rcvdRSTEdit1;
-      FEditPanel[1].NumberEdit   := NumberEdit1;
-      FEditPanel[1].ModeEdit     := ModeEdit1;
-      FEditPanel[1].PowerEdit    := PowerEdit1;
-      FEditPanel[1].BandEdit     := BandEdit1;
-      FEditPanel[1].PointEdit    := PointEdit1;
-      FEditPanel[1].OpEdit       := OpEdit1;
-      FEditPanel[1].MemoEdit     := MemoEdit1;
-      FEditPanel[1].TxLed        := nil;
-      FEditPanel[1].TxLed        := nil;
-      FEditPanel[1].SelShape     := nil;
-      FEditPanel[1].Title        := nil;
+      FEditPanel[1].SerialEdit     := SerialEdit1;
+      FEditPanel[1].DateEdit       := DateEdit1;
+      FEditPanel[1].TimeEdit       := TimeEdit1;
+      FEditPanel[1].CallsignEdit   := CallsignEdit1;
+      FEditPanel[1].SentRSTEdit    := sentRSTEdit1;
+      FEditPanel[1].SentNumberEdit := nil;
+      FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit1;
+      FEditPanel[1].RcvdNumberEdit := NumberEdit1;
+      FEditPanel[1].ModeEdit       := ModeEdit1;
+      FEditPanel[1].PowerEdit      := PowerEdit1;
+      FEditPanel[1].BandEdit       := BandEdit1;
+      FEditPanel[1].PointEdit      := PointEdit1;
+      FEditPanel[1].OpEdit         := OpEdit1;
+      FEditPanel[1].MemoEdit       := MemoEdit1;
+      FEditPanel[1].TxLed          := nil;
+      FEditPanel[1].TxLed          := nil;
+      FEditPanel[1].SelShape       := nil;
+      FEditPanel[1].Title          := nil;
 
-      FEditPanel[2].SerialEdit   := SerialEdit1;
-      FEditPanel[2].DateEdit     := DateEdit1;
-      FEditPanel[2].TimeEdit     := TimeEdit1;
-      FEditPanel[2].CallsignEdit := CallsignEdit1;
-      FEditPanel[2].sentRSTEdit  := sentRSTEdit1;
-      FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit1;
-      FEditPanel[2].NumberEdit   := NumberEdit1;
-      FEditPanel[2].ModeEdit     := ModeEdit1;
-      FEditPanel[2].PowerEdit    := PowerEdit1;
-      FEditPanel[2].BandEdit     := BandEdit1;
-      FEditPanel[2].PointEdit    := PointEdit1;
-      FEditPanel[2].OpEdit       := OpEdit1;
-      FEditPanel[2].MemoEdit     := MemoEdit1;
-      FEditPanel[2].TxLed        := nil;
-      FEditPanel[2].TxLed        := nil;
-      FEditPanel[2].SelShape     := nil;
-      FEditPanel[2].Title        := nil;
+      FEditPanel[2].SerialEdit     := SerialEdit1;
+      FEditPanel[2].DateEdit       := DateEdit1;
+      FEditPanel[2].TimeEdit       := TimeEdit1;
+      FEditPanel[2].CallsignEdit   := CallsignEdit1;
+      FEditPanel[2].SentRSTEdit    := sentRSTEdit1;
+      FEditPanel[2].SentNumberEdit := nil;
+      FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit1;
+      FEditPanel[2].RcvdNumberEdit := NumberEdit1;
+      FEditPanel[2].ModeEdit       := ModeEdit1;
+      FEditPanel[2].PowerEdit      := PowerEdit1;
+      FEditPanel[2].BandEdit       := BandEdit1;
+      FEditPanel[2].PointEdit      := PointEdit1;
+      FEditPanel[2].OpEdit         := OpEdit1;
+      FEditPanel[2].MemoEdit       := MemoEdit1;
+      FEditPanel[2].TxLed          := nil;
+      FEditPanel[2].TxLed          := nil;
+      FEditPanel[2].SelShape       := nil;
+      FEditPanel[2].Title          := nil;
 
       EditPanel1R.Visible := True;
       EditPanel2RH.Visible := False;
       EditPanel2RV.Visible := False;
    end
    else if (dmZLogGlobal.Settings._operate_style = os2RadioH) then begin   // 2R Horizontal
-      FEditPanel[0].SerialEdit   := SerialEdit2A;
-      FEditPanel[0].DateEdit     := DateEdit2RH;
-      FEditPanel[0].TimeEdit     := TimeEdit2RH;
-      FEditPanel[0].CallsignEdit := CallsignEdit2A;
-      FEditPanel[0].sentRSTEdit  := sentRSTEdit2A;
-      FEditPanel[0].rcvdRSTEdit  := rcvdRSTEdit2A;
-      FEditPanel[0].NumberEdit   := NumberEdit2A;
-      FEditPanel[0].ModeEdit     := ModeEdit2A;
-      FEditPanel[0].PowerEdit    := nil;
-      FEditPanel[0].BandEdit     := BandEdit2A;
-      FEditPanel[0].PointEdit    := nil;
-      FEditPanel[0].OpEdit       := nil;
-      FEditPanel[0].MemoEdit     := nil;
-      FEditPanel[0].TxLed        := ledTx2A;
-      FEditPanel[0].SelShape     := RigPanelShape2A;
-      FEditPanel[0].Title        := labelRigTitle2HA;
+      FEditPanel[0].SerialEdit     := SerialEdit2A;
+      FEditPanel[0].DateEdit       := DateEdit2RH;
+      FEditPanel[0].TimeEdit       := TimeEdit2RH;
+      FEditPanel[0].CallsignEdit   := CallsignEdit2A;
+      FEditPanel[0].SentRSTEdit    := SentRSTEdit2HA;
+      FEditPanel[0].SentNumberEdit := nil;
+      FEditPanel[0].rcvdRSTEdit    := rcvdRSTEdit2A;
+      FEditPanel[0].RcvdNumberEdit := NumberEdit2A;
+      FEditPanel[0].ModeEdit       := ModeEdit2A;
+      FEditPanel[0].PowerEdit      := nil;
+      FEditPanel[0].BandEdit       := BandEdit2A;
+      FEditPanel[0].PointEdit      := nil;
+      FEditPanel[0].OpEdit         := nil;
+      FEditPanel[0].MemoEdit       := nil;
+      FEditPanel[0].TxLed          := ledTx2A;
+      FEditPanel[0].SelShape       := RigPanelShape2A;
+      FEditPanel[0].Title          := labelRigTitle2HA;
 
-      FEditPanel[1].SerialEdit   := SerialEdit2B;
-      FEditPanel[1].DateEdit     := DateEdit2RH;
-      FEditPanel[1].TimeEdit     := TimeEdit2RH;
-      FEditPanel[1].CallsignEdit := CallsignEdit2B;
-      FEditPanel[1].sentRSTEdit  := sentRSTEdit2B;
-      FEditPanel[1].rcvdRSTEdit  := rcvdRSTEdit2B;
-      FEditPanel[1].NumberEdit   := NumberEdit2B;
-      FEditPanel[1].ModeEdit     := ModeEdit2B;
-      FEditPanel[1].PowerEdit    := nil;
-      FEditPanel[1].BandEdit     := BandEdit2B;
-      FEditPanel[1].PointEdit    := nil;
-      FEditPanel[1].OpEdit       := nil;
-      FEditPanel[1].MemoEdit     := nil;
-      FEditPanel[1].TxLed        := ledTx2B;
-      FEditPanel[1].SelShape     := RigPanelShape2B;
-      FEditPanel[1].Title        := labelRigTitle2HB;
+      FEditPanel[1].SerialEdit     := SerialEdit2A;
+      FEditPanel[1].DateEdit       := DateEdit2RH;
+      FEditPanel[1].TimeEdit       := TimeEdit2RH;
+      FEditPanel[1].CallsignEdit   := CallsignEdit2B;
+      FEditPanel[1].SentRSTEdit    := SentRSTEdit2HB;
+      FEditPanel[1].SentNumberEdit := nil;
+      FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit2B;
+      FEditPanel[1].RcvdNumberEdit := NumberEdit2B;
+      FEditPanel[1].ModeEdit       := ModeEdit2B;
+      FEditPanel[1].PowerEdit      := nil;
+      FEditPanel[1].BandEdit       := BandEdit2B;
+      FEditPanel[1].PointEdit      := nil;
+      FEditPanel[1].OpEdit         := nil;
+      FEditPanel[1].MemoEdit       := nil;
+      FEditPanel[1].TxLed          := ledTx2B;
+      FEditPanel[1].SelShape       := RigPanelShape2B;
+      FEditPanel[1].Title          := labelRigTitle2HB;
 
-      FEditPanel[2].SerialEdit   := SerialEdit2C;
-      FEditPanel[2].DateEdit     := DateEdit2RH;
-      FEditPanel[2].TimeEdit     := TimeEdit2RH;
-      FEditPanel[2].CallsignEdit := CallsignEdit2C;
-      FEditPanel[2].sentRSTEdit  := sentRSTEdit2C;
-      FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit2C;
-      FEditPanel[2].NumberEdit   := NumberEdit2C;
-      FEditPanel[2].ModeEdit     := ModeEdit2C;
-      FEditPanel[2].PowerEdit    := nil;
-      FEditPanel[2].BandEdit     := BandEdit2C;
-      FEditPanel[2].PointEdit    := nil;
-      FEditPanel[2].OpEdit       := nil;
-      FEditPanel[2].MemoEdit     := nil;
-      FEditPanel[2].TxLed        := ledTx2C;
-      FEditPanel[2].SelShape     := RigPanelShape2C;
-      FEditPanel[2].Title        := labelRigTitle2HC;
+      FEditPanel[2].SerialEdit     := SerialEdit2A;
+      FEditPanel[2].DateEdit       := DateEdit2RH;
+      FEditPanel[2].TimeEdit       := TimeEdit2RH;
+      FEditPanel[2].CallsignEdit   := CallsignEdit2C;
+      FEditPanel[2].SentRSTEdit    := SentRSTEdit2HC;
+      FEditPanel[2].SentNumberEdit := nil;
+      FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit2C;
+      FEditPanel[2].RcvdNumberEdit := NumberEdit2C;
+      FEditPanel[2].ModeEdit       := ModeEdit2C;
+      FEditPanel[2].PowerEdit      := nil;
+      FEditPanel[2].BandEdit       := BandEdit2C;
+      FEditPanel[2].PointEdit      := nil;
+      FEditPanel[2].OpEdit         := nil;
+      FEditPanel[2].MemoEdit       := nil;
+      FEditPanel[2].TxLed          := ledTx2C;
+      FEditPanel[2].SelShape       := RigPanelShape2C;
+      FEditPanel[2].Title          := labelRigTitle2HC;
 
       EditPanel1R.Visible := False;
       EditPanel2RH.Visible := True;
@@ -13240,56 +13244,59 @@ begin
       ShowTxIndicator();
    end
    else begin  // 2R Vertical
-      FEditPanel[0].SerialEdit   := SerialEdit2VA;
-      FEditPanel[0].DateEdit     := DateEdit2RV;
-      FEditPanel[0].TimeEdit     := TimeEdit2RV;
-      FEditPanel[0].CallsignEdit := CallsignEdit2VA;
-      FEditPanel[0].sentRSTEdit  := sentRSTEdit2VA;
-      FEditPanel[0].rcvdRSTEdit  := rcvdRSTEdit2VA;
-      FEditPanel[0].NumberEdit   := NumberEdit2VA;
-      FEditPanel[0].ModeEdit     := ModeEdit2VA;
-      FEditPanel[0].PowerEdit    := nil;
-      FEditPanel[0].BandEdit     := BandEdit2VA;
-      FEditPanel[0].PointEdit    := nil;
-      FEditPanel[0].OpEdit       := nil;
-      FEditPanel[0].MemoEdit     := nil;
-      FEditPanel[0].TxLed        := ledTx2VA;
-      FEditPanel[0].SelShape     := RigPanelShape2VA;
-      FEditPanel[0].Title        := labelRigTitle2VA;
+      FEditPanel[0].SerialEdit     := SerialEdit2VA;
+      FEditPanel[0].DateEdit       := DateEdit2RV;
+      FEditPanel[0].TimeEdit       := TimeEdit2RV;
+      FEditPanel[0].CallsignEdit   := CallsignEdit2VA;
+      FEditPanel[0].SentRSTEdit    := SentRSTEdit2VA;
+      FEditPanel[0].SentNumberEdit := nil;
+      FEditPanel[0].RcvdRSTEdit    := rcvdRSTEdit2VA;
+      FEditPanel[0].RcvdNumberEdit := NumberEdit2VA;
+      FEditPanel[0].ModeEdit       := ModeEdit2VA;
+      FEditPanel[0].PowerEdit      := nil;
+      FEditPanel[0].BandEdit       := BandEdit2VA;
+      FEditPanel[0].PointEdit      := nil;
+      FEditPanel[0].OpEdit         := nil;
+      FEditPanel[0].MemoEdit       := nil;
+      FEditPanel[0].TxLed          := ledTx2VA;
+      FEditPanel[0].SelShape       := RigPanelShape2VA;
+      FEditPanel[0].Title          := labelRigTitle2VA;
 
-      FEditPanel[1].SerialEdit   := SerialEdit2VB;
-      FEditPanel[1].DateEdit     := DateEdit2RV;
-      FEditPanel[1].TimeEdit     := TimeEdit2RV;
-      FEditPanel[1].CallsignEdit := CallsignEdit2VB;
-      FEditPanel[1].sentRSTEdit  := sentRSTEdit2VB;
-      FEditPanel[1].rcvdRSTEdit  := rcvdRSTEdit2VB;
-      FEditPanel[1].NumberEdit   := NumberEdit2VB;
-      FEditPanel[1].ModeEdit     := ModeEdit2VB;
-      FEditPanel[1].PowerEdit    := nil;
-      FEditPanel[1].BandEdit     := BandEdit2VB;
-      FEditPanel[1].PointEdit    := nil;
-      FEditPanel[1].OpEdit       := nil;
-      FEditPanel[1].MemoEdit     := nil;
-      FEditPanel[1].TxLed        := ledTx2VB;
-      FEditPanel[1].SelShape     := RigPanelShape2VB;
-      FEditPanel[1].Title        := labelRigTitle2VB;
+      FEditPanel[1].SerialEdit     := SerialEdit2VA;
+      FEditPanel[1].DateEdit       := DateEdit2RV;
+      FEditPanel[1].TimeEdit       := TimeEdit2RV;
+      FEditPanel[1].CallsignEdit   := CallsignEdit2VB;
+      FEditPanel[1].SentRSTEdit    := SentRSTEdit2VB;
+      FEditPanel[1].SentNumberEdit := nil;
+      FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit2VB;
+      FEditPanel[1].RcvdNumberEdit := NumberEdit2VB;
+      FEditPanel[1].ModeEdit       := ModeEdit2VB;
+      FEditPanel[1].PowerEdit      := nil;
+      FEditPanel[1].BandEdit       := BandEdit2VB;
+      FEditPanel[1].PointEdit      := nil;
+      FEditPanel[1].OpEdit         := nil;
+      FEditPanel[1].MemoEdit       := nil;
+      FEditPanel[1].TxLed          := ledTx2VB;
+      FEditPanel[1].SelShape       := RigPanelShape2VB;
+      FEditPanel[1].Title          := labelRigTitle2VB;
 
-      FEditPanel[2].SerialEdit   := SerialEdit2VC;
-      FEditPanel[2].DateEdit     := DateEdit2RV;
-      FEditPanel[2].TimeEdit     := TimeEdit2RV;
-      FEditPanel[2].CallsignEdit := CallsignEdit2VC;
-      FEditPanel[2].sentRSTEdit  := sentRSTEdit2VC;
-      FEditPanel[2].rcvdRSTEdit  := rcvdRSTEdit2VC;
-      FEditPanel[2].NumberEdit   := NumberEdit2VC;
-      FEditPanel[2].ModeEdit     := ModeEdit2VC;
-      FEditPanel[2].PowerEdit    := nil;
-      FEditPanel[2].BandEdit     := BandEdit2VC;
-      FEditPanel[2].PointEdit    := nil;
-      FEditPanel[2].OpEdit       := nil;
-      FEditPanel[2].MemoEdit     := nil;
-      FEditPanel[2].TxLed        := ledTx2VC;
-      FEditPanel[2].SelShape     := RigPanelShape2C;
-      FEditPanel[2].Title        := labelRigTitle2VC;
+      FEditPanel[2].SerialEdit     := SerialEdit2VA;
+      FEditPanel[2].DateEdit       := DateEdit2RV;
+      FEditPanel[2].TimeEdit       := TimeEdit2RV;
+      FEditPanel[2].CallsignEdit   := CallsignEdit2VC;
+      FEditPanel[2].SentRSTEdit    := SentRSTEdit2VC;
+      FEditPanel[2].SentNumberEdit := nil;
+      FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit2VC;
+      FEditPanel[2].RcvdNumberEdit := NumberEdit2VC;
+      FEditPanel[2].ModeEdit       := ModeEdit2VC;
+      FEditPanel[2].PowerEdit      := nil;
+      FEditPanel[2].BandEdit       := BandEdit2VC;
+      FEditPanel[2].PointEdit      := nil;
+      FEditPanel[2].OpEdit         := nil;
+      FEditPanel[2].MemoEdit       := nil;
+      FEditPanel[2].TxLed          := ledTx2VC;
+      FEditPanel[2].SelShape       := RigPanelShape2C;
+      FEditPanel[2].Title          := labelRigTitle2VC;
 
       EditPanel1R.Visible := False;
       EditPanel2RH.Visible := False;
@@ -13314,9 +13321,9 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 //      FEditPanel[id].DateEdit.Color := clWindow;
 //      FEditPanel[id].TimeEdit.Color := clWindow;
       FEditPanel[id].CallsignEdit.Color := clWindow;
-      FEditPanel[id].sentRSTEdit.Color := clWindow;
+      FEditPanel[id].SentRSTEdit.Color := clWindow;
       FEditPanel[id].rcvdRSTEdit.Color := clWindow;
-      FEditPanel[id].NumberEdit.Color := clWindow;
+      FEditPanel[id].RcvdNumberEdit.Color := clWindow;
       FEditPanel[id].ModeEdit.Color := clWindow;
       FEditPanel[id].BandEdit.Color := clWindow;
       FEditPanel[id].ModeEdit.Enabled := True;
@@ -13329,33 +13336,33 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 //      FEditPanel[id].DateEdit.Color := clBtnFace;
 //      FEditPanel[id].TimeEdit.Color := clBtnFace;
       FEditPanel[id].CallsignEdit.Color := clBtnFace;
-      FEditPanel[id].sentRSTEdit.Color := clBtnFace;
+      FEditPanel[id].SentRSTEdit.Color := clBtnFace;
       FEditPanel[id].rcvdRSTEdit.Color := clBtnFace;
-      FEditPanel[id].NumberEdit.Color := clBtnFace;
+      FEditPanel[id].RcvdNumberEdit.Color := clBtnFace;
       FEditPanel[id].ModeEdit.Color := clBtnFace;
       FEditPanel[id].BandEdit.Color := clBtnFace;
       FEditPanel[id].ModeEdit.Enabled := False;
       FEditPanel[id].BandEdit.Enabled := False;
    end;
 
-   procedure SetRigTitleColor(rig1, rig2, rig3: Boolean);
+   procedure SetRigTitleColor(os: TOperateStyle; rig1, rig2, rig3: Boolean);
    const
       title_color: array[False .. True] of TColor = (clBlack, clBlue);
    begin
       FEditPanel[0].Title.Font.Color := title_color[rig1];
       FEditPanel[1].Title.Font.Color := title_color[rig2];
-      if checkUseRig3H.Checked = True then begin
-         FEditPanel[2].Title.Font.Color := title_color[rig3];
-      end
-      else if checkUseRig3V.Checked = True then begin
+      if (FUseRigC[os].Checked = True) then begin
          FEditPanel[2].Title.Font.Color := title_color[rig3];
       end
       else begin
          FEditPanel[2].Title.Font.Color := clGray;
       end;
    end;
+var
+   os: TOperateStyle;
 begin
-   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+   os := dmZLogGlobal.Settings._operate_style;
+   if (os = os1Radio) then begin
       LastFocus := CallsignEdit1;
       Exit;
    end
@@ -13364,7 +13371,7 @@ begin
          FEditPanel[0].SelShape.Pen.Color := clBlue;
          FEditPanel[1].SelShape.Pen.Color := clBlack;
          FEditPanel[2].SelShape.Pen.Color := clBlack;
-         SetRigTitleColor(True, False, False);
+         SetRigTitleColor(os, True, False, False);
          SetWhite(0);
          SetGlay(1);
          SetGlay(2);
@@ -13373,7 +13380,7 @@ begin
          FEditPanel[0].SelShape.Pen.Color := clBlack;
          FEditPanel[1].SelShape.Pen.Color := clBlue;
          FEditPanel[2].SelShape.Pen.Color := clBlack;
-         SetRigTitleColor(False, True, False);
+         SetRigTitleColor(os, False, True, False);
          SetGlay(0);
          SetWhite(1);
          SetGlay(2);
@@ -13382,7 +13389,7 @@ begin
          FEditPanel[0].SelShape.Pen.Color := clBlack;
          FEditPanel[1].SelShape.Pen.Color := clBlack;
          FEditPanel[2].SelShape.Pen.Color := clBlue;
-         SetRigTitleColor(False, False, True);
+         SetRigTitleColor(os, False, False, True);
          SetGlay(0);
          SetGlay(1);
          SetWhite(2);
@@ -13419,8 +13426,8 @@ begin
 
    if Is2Radio() = True then begin
       UpdateQsoEditPanel(rigset);
-      if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
-         EditEnter(FEditPanel[rigset - 1].NumberEdit);
+      if LastFocus = FEditPanel[rigset - 1].RcvdNumberEdit then begin
+         EditEnter(FEditPanel[rigset - 1].RcvdNumberEdit);
       end
       else begin
          SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigset - 1, 0);
@@ -13474,8 +13481,8 @@ begin
 
    if Is2Radio() = True then begin
       UpdateQsoEditPanel(rigset);
-      if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
-         EditEnter(FEditPanel[rigset - 1].NumberEdit);
+      if LastFocus = FEditPanel[rigset - 1].RcvdNumberEdit then begin
+         EditEnter(FEditPanel[rigset - 1].RcvdNumberEdit);
       end
       else begin
          FEditPanel[rigset - 1].CallsignEdit.SetFocus();
@@ -13510,8 +13517,8 @@ begin
 
    if Is2Radio() = True then begin
       UpdateQsoEditPanel(rigset);
-      if LastFocus = FEditPanel[rigset - 1].NumberEdit then begin
-//         EditEnter(FEditPanel[rigset - 1].NumberEdit);
+      if LastFocus = FEditPanel[rigset - 1].RcvdNumberEdit then begin
+//         EditEnter(FEditPanel[rigset - 1].RcvdNumberEdit);
       end
       else begin
          SendMessage(Handle, WM_ZLOG_SETFOCUS_CALLSIGN, rigset - 1, 0);
@@ -13565,7 +13572,7 @@ begin
    CallsignEdit.Text := CurrentQSO.Callsign;
    SentRSTEdit.Text := CurrentQSO.RSTSentStr;
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
-   NumberEdit.Text := CurrentQSO.NrRcvd;
+   RcvdNumberEdit.Text := CurrentQSO.NrRcvd;
    ModeEdit.Text := CurrentQSO.ModeStr;
    BandEdit.Text := CurrentQSO.BandStr;
    PowerEdit.Text := CurrentQSO.NewPowerStr;
@@ -13618,30 +13625,18 @@ procedure TMainForm.checkUseRig3Click(Sender: TObject);
 var
    rig: Integer;
 begin
-//   rig := RigControl.GetCurrentRig();
    rig := FCurrentRigSet;
 
-   if checkUseRig3H.Checked = True then begin
+   if (((Sender = checkUseRig3H) and (checkUseRig3H.Checked = True)) or
+       ((Sender = checkUseRig3V) and (checkUseRig3V.Checked = True))) then begin
       RigControl.MaxRig := 3;
-      CallsignEdit2C.Enabled := True;
-      RcvdRSTEdit2C.Enabled := True;
-      NumberEdit2C.Enabled := True;
-      BandEdit2C.Enabled := True;
-      ModeEdit2C.Enabled := True;
-      SerialEdit2C.Enabled := True;
-      RigPanelShape2C.Pen.Color := clBlack;
-      FEditPanel[2].Title.Font.Color := clBlack;
-      FEditPanel[rig - 1].CallsignEdit.SetFocus();
-   end
-   else if checkUseRig3V.Checked = True then begin
-      RigControl.MaxRig := 3;
-      CallsignEdit2VC.Enabled := True;
-      RcvdRSTEdit2VC.Enabled := True;
-      NumberEdit2VC.Enabled := True;
-      BandEdit2VC.Enabled := True;
-      ModeEdit2VC.Enabled := True;
-      SerialEdit2VC.Enabled := True;
-      RigPanelShape2VC.Pen.Color := clBlack;
+      FEditPanel[2].CallsignEdit.Enabled := True;
+      FEditPanel[2].RcvdRSTEdit.Enabled := True;
+      FEditPanel[2].RcvdNumberEdit.Enabled := True;
+      FEditPanel[2].BandEdit.Enabled := True;
+      FEditPanel[2].ModeEdit.Enabled := True;
+      FEditPanel[2].SerialEdit.Enabled := True;
+      FEditPanel[2].SelShape.Pen.Color := clBlack;
       FEditPanel[2].Title.Font.Color := clBlack;
       FEditPanel[rig - 1].CallsignEdit.SetFocus();
    end
@@ -13651,13 +13646,13 @@ begin
       end;
       RigControl.MaxRig := 2;
       SwitchRig(rig);
-      CallsignEdit2C.Enabled := False;
-      RcvdRSTEdit2C.Enabled := False;
-      NumberEdit2C.Enabled := False;
-      BandEdit2C.Enabled := False;
-      ModeEdit2C.Enabled := False;
-      SerialEdit2C.Enabled := False;
-      RigPanelShape2C.Pen.Color := clGray;
+      FEditPanel[2].CallsignEdit.Enabled := False;
+      FEditPanel[2].RcvdRSTEdit.Enabled := False;
+      FEditPanel[2].RcvdNumberEdit.Enabled := False;
+      FEditPanel[2].BandEdit.Enabled := False;
+      FEditPanel[2].ModeEdit.Enabled := False;
+      FEditPanel[2].SerialEdit.Enabled := False;
+      FEditPanel[2].SelShape.Pen.Color := clGray;
       FEditPanel[2].Title.Font.Color := clGray;
    end;
 end;
@@ -13978,7 +13973,9 @@ begin
          CurrentQSO.RSTSent := IncreaseS(CurrentQSO.RSTSent);
          TEdit(Sender).Text := CurrentQSO.RSTSentStr;
       end;
-      if (Sender = RcvdRSTEdit1) or (Sender = RcvdRSTEdit2A) or (Sender = RcvdRSTEdit2B) or (Sender = RcvdRSTEdit2C) then begin
+      if (Sender = RcvdRSTEdit1) or
+         (Sender = RcvdRSTEdit2A) or (Sender = RcvdRSTEdit2B) or (Sender = RcvdRSTEdit2C) or
+         (Sender = RcvdRSTEdit2VA) or (Sender = RcvdRSTEdit2VB) or (Sender = RcvdRSTEdit2VC) then begin
          CurrentQSO.RSTRcvd := IncreaseS(CurrentQSO.RSTRcvd);
          TEdit(Sender).Text := CurrentQSO.RSTRcvdStr;
       end;
@@ -14003,7 +14000,9 @@ begin
          CurrentQSO.RSTSent := DecreaseS(CurrentQSO.RSTSent);
          TEdit(Sender).Text := CurrentQSO.RSTSentStr;
       end;
-      if (Sender = RcvdRSTEdit1) or (Sender = RcvdRSTEdit2A) or (Sender = RcvdRSTEdit2B) or (Sender = RcvdRSTEdit2C) then begin
+      if (Sender = RcvdRSTEdit1) or
+         (Sender = RcvdRSTEdit2A) or (Sender = RcvdRSTEdit2B) or (Sender = RcvdRSTEdit2C) or
+         (Sender = RcvdRSTEdit2VA) or (Sender = RcvdRSTEdit2VB) or (Sender = RcvdRSTEdit2VC) then begin
          CurrentQSO.RSTRcvd := DecreaseS(CurrentQSO.RSTRcvd);
          TEdit(Sender).Text := CurrentQSO.RSTRcvdStr;
       end;
@@ -14076,7 +14075,7 @@ begin
    if Assigned(CallsignEdit.OnChange) then begin
       CallsignEdit.OnChange(nil);
    end;
-   CurrentQSO.NrRcvd := NumberEdit.Text;
+   CurrentQSO.NrRcvd := RcvdNumberEdit.Text;
    CurrentQSO.Band := TextToBand(BandEdit.Text);
    CurrentQSO.Mode := TextToMode(ModeEdit.Text);
 end;
@@ -14190,14 +14189,10 @@ begin
    end
    else begin
       if MyContest.SerialType = stNone then begin
-         SerialEdit2A.Visible := False;
-         SerialEdit2B.Visible := False;
-         SerialEdit2C.Visible := False;
+         FEditPanel[0].SerialEdit.Visible := False;
       end
       else begin
-         SerialEdit2A.Visible := True;
-         SerialEdit2B.Visible := True;
-         SerialEdit2C.Visible := True;
+         FEditPanel[0].SerialEdit.Visible := True;
       end;
    end;
 end;
@@ -14208,9 +14203,7 @@ begin
       SerialEdit.Text := aQSO.SerialStr;
    end
    else begin
-      SerialEdit2A.Text := aQSO.SerialStr;
-      SerialEdit2B.Text := aQSO.SerialStr;
-      SerialEdit2C.Text := aQSO.SerialStr;
+      FEditPanel[0].SerialEdit.Text := aQSO.SerialStr;
    end;
 
    ShowSentNumber();
@@ -14297,13 +14290,13 @@ begin
       CurrentQSO.Callsign := CallsignEdit.Text;
       CurrentQSO.Mode := TextToMode(ModeEdit.Text);
       CurrentQSO.Band := TextToBand(BandEdit.Text);
-      CurrentQSO.NrRcvd := NumberEdit.Text;
+      CurrentQSO.NrRcvd := RcvdNumberEdit.Text;
    end
    else begin
       CurrentQSO.Callsign := FEditPanel[nID].CallsignEdit.Text;
       CurrentQSO.Mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
       CurrentQSO.Band := TextToBand(FEditPanel[nID].BandEdit.Text);
-      CurrentQSO.NrRcvd := FEditPanel[nID].NumberEdit.Text;
+      CurrentQSO.NrRcvd := FEditPanel[nID].RcvdNumberEdit.Text;
    end;
 end;
 

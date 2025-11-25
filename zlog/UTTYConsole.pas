@@ -179,9 +179,9 @@ begin
             if i > 0 then
                S := copy(S, 1, i - 1);
             if length(S) > 0 then begin
-               if MainForm.NumberEdit.Text <> S then begin
-                  MainForm.NumberEdit.Text := S;
-                  MainForm.NumberEdit.SelectAll;
+               if MainForm.RcvdNumberEdit.Text <> S then begin
+                  MainForm.RcvdNumberEdit.Text := S;
+                  MainForm.RcvdNumberEdit.SelectAll;
                end;
                // TTYLineBuffer := '';
             end;

@@ -177,25 +177,25 @@ procedure TBasicMulti.SetNumberEditFocusJARL;
 var
    S: string;
 begin
-   MainForm.NumberEdit.SetFocus;
-   S := MainForm.NumberEdit.Text;
+   MainForm.RcvdNumberEdit.SetFocus;
+   S := MainForm.RcvdNumberEdit.Text;
    if S = '' then
       exit;
 
    if CharInSet(S[length(S)], ['A' .. 'Z']) then begin
-      MainForm.NumberEdit.SelStart := length(S) - 1;
-      MainForm.NumberEdit.SelLength := 1;
+      MainForm.RcvdNumberEdit.SelStart := length(S) - 1;
+      MainForm.RcvdNumberEdit.SelLength := 1;
    end
    else begin
-      MainForm.NumberEdit.SelStart := length(S);
-      MainForm.NumberEdit.SelLength := 0;
+      MainForm.RcvdNumberEdit.SelStart := length(S);
+      MainForm.RcvdNumberEdit.SelLength := 0;
    end;
 end;
 
 procedure TBasicMulti.SetNumberEditFocus;
 begin
-   MainForm.NumberEdit.SetFocus;
-   MainForm.NumberEdit.SelectAll;
+   MainForm.RcvdNumberEdit.SetFocus;
+   MainForm.RcvdNumberEdit.SelectAll;
 end;
 
 procedure TBasicMulti.AdjustGridSize(Grid: TStringGrid);

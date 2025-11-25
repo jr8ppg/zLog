@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Top = 138
   VertScrollBar.Visible = False
   Caption = 'zLog for Windows'
-  ClientHeight = 441
+  ClientHeight = 422
   ClientWidth = 528
   Color = clBtnFace
   Constraints.MinWidth = 540
@@ -34,7 +34,7 @@ object MainForm: TMainForm
   end
   object StatusLine: TStatusBar
     Left = 0
-    Top = 421
+    Top = 402
     Width = 528
     Height = 20
     Font.Charset = DEFAULT_CHARSET
@@ -63,20 +63,18 @@ object MainForm: TMainForm
     UseSystemFont = False
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
-    ExplicitTop = 402
   end
   object MainPanel: TPanel
     Left = 0
     Top = 122
     Width = 528
-    Height = 299
+    Height = 280
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitHeight = 280
     object EditPanel1R: TPanel
       Left = 0
-      Top = 99
+      Top = 80
       Width = 528
       Height = 27
       Align = alBottom
@@ -87,7 +85,6 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = 170
       object RcvdRSTEdit1: TEdit
         Left = 117
         Top = 4
@@ -290,7 +287,7 @@ object MainForm: TMainForm
     end
     object EditPanel2RH: TPanel
       Left = 0
-      Top = 126
+      Top = 107
       Width = 528
       Height = 83
       Align = alBottom
@@ -301,8 +298,7 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitTop = 197
-      object RigPanelC: TPanel
+      object RigPanelHC: TPanel
         Left = 1
         Top = 54
         Width = 526
@@ -323,7 +319,6 @@ object MainForm: TMainForm
           Brush.Style = bsClear
           Pen.Width = 2
           ExplicitLeft = 1
-          ExplicitWidth = 499
         end
         object ledTx2C: TJvLED
           Left = 71
@@ -430,20 +425,6 @@ object MainForm: TMainForm
           OnClick = ModeEdit1Click
           OnKeyDown = EditKeyDown
         end
-        object SerialEdit2C: TEdit
-          Tag = 3
-          Left = 392
-          Top = 4
-          Width = 45
-          Height = 20
-          TabStop = False
-          AutoSize = False
-          ImeMode = imDisable
-          TabOrder = 5
-          Visible = False
-          OnChange = SerialEdit1Change
-          OnKeyDown = EditKeyDown
-        end
         object checkUseRig3H: TCheckBox
           Left = 7
           Top = 6
@@ -457,11 +438,11 @@ object MainForm: TMainForm
           Font.Style = []
           ParentFont = False
           State = cbChecked
-          TabOrder = 8
+          TabOrder = 7
           OnClick = checkUseRig3Click
         end
         object checkWithRig1H: TCheckBox
-          Left = 443
+          Left = 445
           Top = 6
           Width = 34
           Height = 15
@@ -474,12 +455,12 @@ object MainForm: TMainForm
           Font.Name = 'Arial Black'
           Font.Style = []
           ParentFont = False
-          TabOrder = 6
+          TabOrder = 5
           OnClick = checkWithRigClick
         end
         object checkWithRig2H: TCheckBox
           Tag = 1
-          Left = 480
+          Left = 482
           Top = 6
           Width = 34
           Height = 15
@@ -492,10 +473,10 @@ object MainForm: TMainForm
           Font.Name = 'Arial Black'
           Font.Style = []
           ParentFont = False
-          TabOrder = 7
+          TabOrder = 6
           OnClick = checkWithRigClick
         end
-        object SentRSTEdit2C: TEdit
+        object SentRSTEdit2HC: TEdit
           Tag = 3
           Left = 380
           Top = 4
@@ -504,7 +485,7 @@ object MainForm: TMainForm
           TabStop = False
           AutoSize = False
           ImeMode = imDisable
-          TabOrder = 9
+          TabOrder = 8
           Visible = False
           OnChange = RcvdRSTEdit1Change
           OnKeyDown = EditKeyDown
@@ -519,7 +500,6 @@ object MainForm: TMainForm
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitTop = 0
         object DateEdit2RH: TOvrEdit
           Left = 5
           Top = 27
@@ -552,6 +532,20 @@ object MainForm: TMainForm
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
           TabOnEnter = False
+        end
+        object SerialEdit2A: TEdit
+          Tag = 1
+          Left = 12
+          Top = 5
+          Width = 45
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          TabOrder = 2
+          Visible = False
+          OnChange = SerialEdit1Change
+          OnKeyDown = EditKeyDown
         end
       end
       object EditUpperRightPanel2RH: TGridPanel
@@ -708,21 +702,7 @@ object MainForm: TMainForm
             OnClick = ModeEdit1Click
             OnKeyDown = EditKeyDown
           end
-          object SerialEdit2A: TEdit
-            Tag = 1
-            Left = 63
-            Top = 5
-            Width = 45
-            Height = 20
-            TabStop = False
-            AutoSize = False
-            ImeMode = imDisable
-            TabOrder = 5
-            Visible = False
-            OnChange = SerialEdit1Change
-            OnKeyDown = EditKeyDown
-          end
-          object SentRSTEdit2A: TEdit
+          object SentRSTEdit2HA: TEdit
             Tag = 1
             Left = 190
             Top = 17
@@ -731,7 +711,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
-            TabOrder = 6
+            TabOrder = 5
             Visible = False
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
@@ -861,21 +841,7 @@ object MainForm: TMainForm
             OnClick = ModeEdit1Click
             OnKeyDown = EditKeyDown
           end
-          object SerialEdit2B: TEdit
-            Tag = 2
-            Left = 63
-            Top = 5
-            Width = 45
-            Height = 20
-            TabStop = False
-            AutoSize = False
-            ImeMode = imDisable
-            TabOrder = 5
-            Visible = False
-            OnChange = SerialEdit1Change
-            OnKeyDown = EditKeyDown
-          end
-          object SentRSTEdit2B: TEdit
+          object SentRSTEdit2HB: TEdit
             Tag = 2
             Left = 191
             Top = 17
@@ -884,7 +850,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
-            TabOrder = 6
+            TabOrder = 5
             Visible = False
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
@@ -896,7 +862,7 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Width = 528
-      Height = 99
+      Height = 80
       TabStop = False
       Align = alClient
       ColCount = 11
@@ -924,7 +890,6 @@ object MainForm: TMainForm
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged
-      ExplicitHeight = 170
       ColWidths = (
         38
         65
@@ -1042,7 +1007,7 @@ object MainForm: TMainForm
     end
     object EditPanel2RV: TPanel
       Left = 0
-      Top = 209
+      Top = 190
       Width = 528
       Height = 90
       Align = alBottom
@@ -1055,12 +1020,9 @@ object MainForm: TMainForm
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 9
-        ExplicitTop = 2
-        ExplicitHeight = 39
         object DateEdit2RV: TOvrEdit
           Left = 5
-          Top = 5
+          Top = 36
           Width = 57
           Height = 20
           TabStop = False
@@ -1077,7 +1039,7 @@ object MainForm: TMainForm
         end
         object TimeEdit2RV: TOvrEdit
           Left = 5
-          Top = 5
+          Top = 36
           Width = 57
           Height = 20
           TabStop = False
@@ -1093,28 +1055,14 @@ object MainForm: TMainForm
         end
         object SerialEdit2VA: TEdit
           Tag = 1
-          Left = 11
-          Top = 34
+          Left = 12
+          Top = 5
           Width = 45
           Height = 20
           TabStop = False
           AutoSize = False
           ImeMode = imDisable
           TabOrder = 2
-          Visible = False
-          OnChange = SerialEdit1Change
-          OnKeyDown = EditKeyDown
-        end
-        object SerialEdit2VB: TEdit
-          Tag = 2
-          Left = 11
-          Top = 57
-          Width = 45
-          Height = 20
-          TabStop = False
-          AutoSize = False
-          ImeMode = imDisable
-          TabOrder = 3
           Visible = False
           OnChange = SerialEdit1Change
           OnKeyDown = EditKeyDown
@@ -1150,9 +1098,6 @@ object MainForm: TMainForm
             Value = 50.000000000000000000
           end>
         TabOrder = 1
-        ExplicitLeft = 67
-        ExplicitTop = 2
-        ExplicitHeight = 81
         object RigPanelVA: TPanel
           Left = 0
           Top = 0
@@ -1161,7 +1106,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitHeight = 35
           object RigPanelShape2VA: TShape
             Tag = 1
             Left = 0
@@ -1171,8 +1115,7 @@ object MainForm: TMainForm
             Align = alClient
             Brush.Style = bsClear
             Pen.Width = 2
-            ExplicitLeft = 29
-            ExplicitHeight = 57
+            ExplicitTop = -1
           end
           object ledTx2VA: TJvLED
             Left = 6
@@ -1182,7 +1125,7 @@ object MainForm: TMainForm
           end
           object labelRigTitle2VA: TLabel
             Left = 30
-            Top = 6
+            Top = 5
             Width = 40
             Height = 18
             Caption = 'RIG-A'
@@ -1215,7 +1158,7 @@ object MainForm: TMainForm
           end
           object NumberEdit2VA: TOvrEdit
             Tag = 1
-            Left = 273
+            Left = 198
             Top = 5
             Width = 70
             Height = 20
@@ -1235,7 +1178,7 @@ object MainForm: TMainForm
           end
           object RcvdRSTEdit2VA: TEdit
             Tag = 1
-            Left = 237
+            Left = 161
             Top = 5
             Width = 34
             Height = 20
@@ -1249,8 +1192,8 @@ object MainForm: TMainForm
           end
           object BandEdit2VA: TEdit
             Tag = 1
-            Left = 349
-            Top = 4
+            Left = 271
+            Top = 5
             Width = 50
             Height = 20
             TabStop = False
@@ -1264,8 +1207,8 @@ object MainForm: TMainForm
           end
           object ModeEdit2VA: TEdit
             Tag = 1
-            Left = 403
-            Top = 4
+            Left = 324
+            Top = 5
             Width = 50
             Height = 20
             TabStop = False
@@ -1279,7 +1222,7 @@ object MainForm: TMainForm
           end
           object SentRSTEdit2VA: TEdit
             Tag = 1
-            Left = 160
+            Left = 395
             Top = 5
             Width = 34
             Height = 20
@@ -1300,10 +1243,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 230
-          ExplicitTop = 0
-          ExplicitWidth = 231
-          ExplicitHeight = 53
           object RigPanelShape2VB: TShape
             Tag = 2
             Left = 0
@@ -1313,9 +1252,7 @@ object MainForm: TMainForm
             Align = alClient
             Brush.Style = bsClear
             Pen.Width = 2
-            ExplicitLeft = -1
-            ExplicitWidth = 217
-            ExplicitHeight = 51
+            ExplicitTop = -1
           end
           object ledTx2VB: TJvLED
             Left = 6
@@ -1339,7 +1276,7 @@ object MainForm: TMainForm
           object CallsignEdit2VB: TOvrEdit
             Tag = 2
             Left = 78
-            Top = 6
+            Top = 5
             Width = 80
             Height = 20
             TabStop = False
@@ -1358,8 +1295,8 @@ object MainForm: TMainForm
           end
           object NumberEdit2VB: TOvrEdit
             Tag = 2
-            Left = 273
-            Top = 6
+            Left = 198
+            Top = 5
             Width = 70
             Height = 20
             TabStop = False
@@ -1378,8 +1315,8 @@ object MainForm: TMainForm
           end
           object RcvdRSTEdit2VB: TEdit
             Tag = 2
-            Left = 237
-            Top = 6
+            Left = 161
+            Top = 5
             Width = 34
             Height = 20
             TabStop = False
@@ -1392,8 +1329,8 @@ object MainForm: TMainForm
           end
           object BandEdit2VB: TEdit
             Tag = 2
-            Left = 349
-            Top = 6
+            Left = 271
+            Top = 5
             Width = 50
             Height = 20
             TabStop = False
@@ -1407,8 +1344,8 @@ object MainForm: TMainForm
           end
           object ModeEdit2VB: TEdit
             Tag = 2
-            Left = 403
-            Top = 6
+            Left = 324
+            Top = 5
             Width = 50
             Height = 20
             TabStop = False
@@ -1422,8 +1359,8 @@ object MainForm: TMainForm
           end
           object SentRSTEdit2VB: TEdit
             Tag = 2
-            Left = 160
-            Top = 6
+            Left = 395
+            Top = 4
             Width = 34
             Height = 20
             TabStop = False
@@ -1436,7 +1373,7 @@ object MainForm: TMainForm
           end
         end
       end
-      object Panel1: TPanel
+      object RigPanelVC: TPanel
         Left = 1
         Top = 61
         Width = 526
@@ -1444,7 +1381,6 @@ object MainForm: TMainForm
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
-        ExplicitTop = 54
         DesignSize = (
           526
           28)
@@ -1457,8 +1393,7 @@ object MainForm: TMainForm
           Align = alClient
           Brush.Style = bsClear
           Pen.Width = 2
-          ExplicitLeft = 1
-          ExplicitWidth = 499
+          ExplicitTop = -1
         end
         object ledTx2VC: TJvLED
           Left = 71
@@ -1468,7 +1403,7 @@ object MainForm: TMainForm
         end
         object labelRigTitle2VC: TLabel
           Tag = 2
-          Left = 25
+          Left = 95
           Top = 5
           Width = 40
           Height = 18
@@ -1483,7 +1418,7 @@ object MainForm: TMainForm
         end
         object CallsignEdit2VC: TOvrEdit
           Tag = 3
-          Left = 93
+          Left = 143
           Top = 4
           Width = 80
           Height = 20
@@ -1503,7 +1438,7 @@ object MainForm: TMainForm
         end
         object NumberEdit2VC: TOvrEdit
           Tag = 3
-          Left = 213
+          Left = 263
           Top = 4
           Width = 70
           Height = 20
@@ -1523,7 +1458,7 @@ object MainForm: TMainForm
         end
         object RcvdRSTEdit2VC: TEdit
           Tag = 3
-          Left = 176
+          Left = 226
           Top = 4
           Width = 34
           Height = 20
@@ -1537,7 +1472,7 @@ object MainForm: TMainForm
         end
         object BandEdit2VC: TEdit
           Tag = 3
-          Left = 286
+          Left = 336
           Top = 4
           Width = 50
           Height = 20
@@ -1552,7 +1487,7 @@ object MainForm: TMainForm
         end
         object ModeEdit2VC: TEdit
           Tag = 3
-          Left = 339
+          Left = 389
           Top = 4
           Width = 50
           Height = 20
@@ -1565,21 +1500,8 @@ object MainForm: TMainForm
           OnClick = ModeEdit1Click
           OnKeyDown = EditKeyDown
         end
-        object SerialEdit2VC: TEdit
-          Tag = 3
-          Left = 392
-          Top = 4
-          Width = 45
-          Height = 20
-          TabStop = False
-          AutoSize = False
-          ImeMode = imDisable
-          TabOrder = 5
-          Visible = False
-          OnChange = SerialEdit1Change
-          OnKeyDown = EditKeyDown
-        end
         object checkUseRig3V: TCheckBox
+          Tag = 1
           Left = 7
           Top = 6
           Width = 18
@@ -1592,11 +1514,11 @@ object MainForm: TMainForm
           Font.Style = []
           ParentFont = False
           State = cbChecked
-          TabOrder = 8
+          TabOrder = 7
           OnClick = checkUseRig3Click
         end
         object checkWithRig1V: TCheckBox
-          Left = 443
+          Left = 445
           Top = 6
           Width = 34
           Height = 15
@@ -1609,12 +1531,12 @@ object MainForm: TMainForm
           Font.Name = 'Arial Black'
           Font.Style = []
           ParentFont = False
-          TabOrder = 6
+          TabOrder = 5
           OnClick = checkWithRigClick
         end
         object checkWithRig2V: TCheckBox
           Tag = 1
-          Left = 480
+          Left = 482
           Top = 6
           Width = 34
           Height = 15
@@ -1627,19 +1549,19 @@ object MainForm: TMainForm
           Font.Name = 'Arial Black'
           Font.Style = []
           ParentFont = False
-          TabOrder = 7
+          TabOrder = 6
           OnClick = checkWithRigClick
         end
         object SentRSTEdit2VC: TEdit
           Tag = 3
-          Left = 380
-          Top = 4
+          Left = 31
+          Top = 6
           Width = 34
           Height = 20
           TabStop = False
           AutoSize = False
           ImeMode = imDisable
-          TabOrder = 9
+          TabOrder = 8
           Visible = False
           OnChange = RcvdRSTEdit1Change
           OnKeyDown = EditKeyDown
