@@ -445,6 +445,8 @@ type
     comboRigB_b248g: TComboBox;
     comboRigB_Antb248g: TComboBox;
     radio2RadioV: TRadioButton;
+    checkUseBandUpDown: TCheckBox;
+    checkUseBandSelect: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1788,6 +1790,8 @@ begin
       Settings._memscan_interval := updownMemScanInterval.Position;
       Settings._use_ptt_command := checkUsePttCommand.Checked;
       Settings._sync_rig_wpm := checkSyncRigWPM.Checked;
+      Settings._use_band_updown := checkUseBandUpDown.Checked;
+      Settings._use_band_select := checkUseBandSelect.Checked;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -2142,6 +2146,8 @@ begin
       updownMemScanInterval.Position := Settings._memscan_interval;
       checkUsePttCommand.Checked := Settings._use_ptt_command;
       checkSyncRigWPM.Checked := Settings._sync_rig_wpm;
+      checkUseBandUpDown.Checked := Settings._use_band_updown;
+      checkUseBandSelect.Checked := Settings._use_band_select;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;

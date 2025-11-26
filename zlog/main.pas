@@ -11163,9 +11163,32 @@ procedure TMainForm.actionChangeBandExecute(Sender: TObject);
 var
    rig: TRig;
    b: TBand;
+   n: Integer;
 begin
    if buttonF2A.Down = True then begin
       WriteStatusLineRed(TMainForm_To_Change_the_band, False);
+      Exit;
+   end;
+
+   if dmZLogGlobal.Settings._use_band_updown = True then begin
+      n := RigControl.CurrentRigNumber;
+      rig := RigControl.Rigs[n];
+      if rig = nil then begin
+         Exit;
+      end;
+
+      rig.ToggleBand(TAction(Sender).Tag = 0);
+
+      if CurrentQSO.Mode = mSSB then begin
+         rig.SetMode(CurrentQSO);
+      end;
+
+      // Antenna Select
+      AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
+
+      RigControl.SetCurrentRig(rig.RigNumber);
+      dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber, rig.CurrentMode);
+
       Exit;
    end;
 
@@ -11179,7 +11202,12 @@ begin
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      rig.SetBand(FCurrentRigSet, CurrentQSO);
+      if dmZLogGlobal.Settings._use_band_select = True then begin
+         rig.SelectBand(CurrentQSO.Band);
+      end
+      else begin
+         rig.SetBand(FCurrentRigSet, CurrentQSO);
+      end;
 
       if CurrentQSO.Mode = mSSB then begin
          rig.SetMode(CurrentQSO);

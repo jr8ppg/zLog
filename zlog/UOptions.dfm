@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 444
@@ -3956,7 +3956,7 @@ object formOptions: TformOptions
       Caption = 'Rig control'
       object groupRcMagicalCalling: TGroupBox
         Left = 6
-        Top = 234
+        Top = 322
         Width = 423
         Height = 167
         Caption = 'Magical Calling'
@@ -4103,7 +4103,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 244
-        Height = 224
+        Height = 261
         Caption = 'General settings'
         TabOrder = 0
         object Label45: TLabel
@@ -4200,6 +4200,22 @@ object formOptions: TformOptions
           Height = 18
           Caption = 'Sync. rig WPM'
           TabOrder = 8
+        end
+        object checkUseBandUpDown: TCheckBox
+          Left = 8
+          Top = 210
+          Width = 171
+          Height = 18
+          Caption = 'Use band up/down commands'
+          TabOrder = 9
+        end
+        object checkUseBandSelect: TCheckBox
+          Left = 8
+          Top = 234
+          Width = 171
+          Height = 18
+          Caption = 'Use band select command'
+          TabOrder = 10
         end
       end
       object groupRcMemoryScan: TGroupBox

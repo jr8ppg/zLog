@@ -45,6 +45,7 @@ type
     procedure SetWPM(wpm: Integer); override;
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
+    procedure ToggleBand(fUp: Boolean); override;
   end;
 
   TTS570 = class(TTS690)
@@ -488,6 +489,7 @@ begin
    FComm.StopBits := sb1BITS;
    FPlayMessageCwSupported := True;
    FSMeterMax := 30;
+   FToggleBandSupported := True;
 end;
 
 destructor TTS2000.Destroy;
@@ -587,6 +589,16 @@ var
 begin
    CMD := AnsiString('KY0;');
    WriteData(CMD);
+end;
+
+procedure TTS2000.ToggleBand(fUp: Boolean);
+begin
+   if fUp = True then begin
+      WriteData('BU;');
+   end
+   else begin
+      WriteData('BD;');
+   end;
 end;
 
 { TTS570 }

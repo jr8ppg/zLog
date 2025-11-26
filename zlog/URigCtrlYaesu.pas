@@ -53,6 +53,8 @@ type
     procedure SetVFO(i : integer); override;
     procedure SetWPM(wpm: Integer); override;
     procedure ControlPTT(fOn: Boolean); override;
+    procedure ToggleBand(fUp: Boolean); override;
+    procedure SelectBand(b: TBand); override;
   end;
 
   TMARKVF = class(TFT1000MP)
@@ -378,6 +380,7 @@ begin
    FComm.StopBits := sb2BITS;
    FComm.DataBits := db8BITS;
    FControlPTTSupported := True;
+   FToggleBandSupported := True;
 end;
 
 destructor TFT2000.Destroy;
@@ -746,6 +749,32 @@ begin
    else begin
       WriteData('TX0;');
    end;
+end;
+
+procedure TFT2000.ToggleBand(fUp: Boolean);
+begin
+   if fUp = True then begin
+      WriteData('BU0;');
+   end
+   else begin
+      WriteData('BD0;');
+   end;
+end;
+
+procedure TFT2000.SelectBand(b: TBand);
+const
+   bandtable: array[b19..b430] of AnsiString = (
+   // b19   b35   b7    b10   b14   b18   b21   b24   b28   b50   b144  b430
+     '00', '01', '03', '04', '05', '06', '07', '08', '09', '10', '15', '16'
+   );
+begin
+   if b > MaxBand then begin
+      Exit;
+   end;
+
+   WriteData('BS' + bandtable[b] + ';');
+
+   Inherited;
 end;
 
 { TMARKVF }

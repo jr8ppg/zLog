@@ -72,6 +72,8 @@ type
     FPlayMessagePhSupported: Boolean;
     FControlPTTSupported: Boolean;
     FFixEdgeSelectSupported: Boolean;
+    FToggleBandSupported: Boolean;
+    FSelectBandSupported: Boolean;
 
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
@@ -130,6 +132,8 @@ type
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
     procedure StopRequest(); virtual;
+    procedure ToggleBand(fUp: Boolean); virtual;
+    procedure SelectBand(b: TBand); virtual;
 
     procedure SetWPM(wpm: Integer); virtual;
     procedure PlayMessageCW(msg: string); virtual;
@@ -164,6 +168,8 @@ type
     property PlayMessagePhSupported: Boolean read FPlayMessagePhSupported write FPlayMessagePhSupported;
     property ControlPTTSupported: Boolean read FControlPTTSupported write FControlPTTSupported;
     property FixEdgeSelectSupported: Boolean read FFixEdgeSelectSupported write FFixEdgeSelectSupported;
+    property ToggleBandSupported: Boolean read FToggleBandSupported write FToggleBandSupported;
+    property SelectBandSupported: Boolean read FSelectBandSupported write FSelectBandSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
     property UsePolling: Boolean read FUsePolling write FUsePolling;
@@ -334,6 +340,8 @@ begin
    FPlayMessagePhSupported := False;
    FControlPTTSupported := False;
    FFixEdgeSelectSupported := False;
+   FToggleBandSupported := False;
+   FSelectBandSupported := False;
 
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;
@@ -562,6 +570,16 @@ begin
    FStopRequest := True;
 end;
 
+procedure TRig.ToggleBand(fUp: Boolean);
+begin
+//
+end;
+
+procedure TRig.SelectBand(b: TBand);
+begin
+   _currentband := b;
+end;
+
 procedure TRig.SetWPM(wpm: Integer);
 begin
 //
@@ -667,7 +685,7 @@ begin
    SetFreq(f, Q.CQ);
 
    // Antenna Select
-   AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[Q.Band]);
+   //AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[Q.Band]);
 end;
 
 procedure TRig.RitClear();
