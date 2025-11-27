@@ -11177,19 +11177,21 @@ begin
          Exit;
       end;
 
-      rig.ToggleBand(TAction(Sender).Tag = 0);
+      if rig.ToggleBandSupported = True then begin
+         rig.ToggleBand(TAction(Sender).Tag = 0);
 
-      if CurrentQSO.Mode = mSSB then begin
-         rig.SetMode(CurrentQSO);
+         if CurrentQSO.Mode = mSSB then begin
+            rig.SetMode(CurrentQSO);
+         end;
+
+         // Antenna Select
+         //AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
+
+         RigControl.SetCurrentRig(rig.RigNumber);
+         dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber, rig.CurrentMode);
+
+         Exit;
       end;
-
-      // Antenna Select
-      AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
-
-      RigControl.SetCurrentRig(rig.RigNumber);
-      dmZLogKeyer.SetTxRigFlag(FCurrentTx + 1, rig.RigNumber, rig.CurrentMode);
-
-      Exit;
    end;
 
    if TAction(Sender).Tag = 0 then begin
@@ -11202,7 +11204,7 @@ begin
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
-      if dmZLogGlobal.Settings._use_band_select = True then begin
+      if (dmZLogGlobal.Settings._use_band_select = True) and (rig.SelectBandSupported = True) then begin
          rig.SelectBand(CurrentQSO.Band);
       end
       else begin

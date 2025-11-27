@@ -381,6 +381,7 @@ begin
    FComm.DataBits := db8BITS;
    FControlPTTSupported := True;
    FToggleBandSupported := True;
+   FSelectBandSupported := True;
 end;
 
 destructor TFT2000.Destroy;
