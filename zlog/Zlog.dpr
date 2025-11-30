@@ -169,7 +169,8 @@ uses
   UzGraylineMap in 'UzGraylineMap.pas',
   UFreqMemDialog in 'UFreqMemDialog.pas' {formFreqMemDialog},
   UStartup in 'UStartup.pas' {formStartup},
-  UJarlWebUpload in 'UJarlWebUpload.pas' {formJarlWebUpload};
+  UJarlWebUpload in 'UJarlWebUpload.pas' {formJarlWebUpload},
+  UQSOListColumnSettings in 'UQSOListColumnSettings.pas' {formQSOListColumnSettings};
 
 {$R *.res}
 

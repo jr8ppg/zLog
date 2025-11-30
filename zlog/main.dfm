@@ -7692,6 +7692,17 @@ object MainForm: TMainForm
       Caption = '&Add new prefix'
       OnClick = mnGridAddNewPXClick
     end
+    object N20: TMenuItem
+      Caption = '-'
+    end
+    object menuResetColumnWidths: TMenuItem
+      Caption = 'Reset column widths'
+      OnClick = menuResetColumnWidthsClick
+    end
+    object menuColumnSettings: TMenuItem
+      Caption = 'Column settings'
+      OnClick = menuColumnSettingsClick
+    end
   end
   object OpMenu: TPopupMenu
     AutoHotkeys = maManual

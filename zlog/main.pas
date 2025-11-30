@@ -694,6 +694,9 @@ type
     FT82: TMenuItem;
     DV2: TMenuItem;
     Other3: TMenuItem;
+    N20: TMenuItem;
+    menuResetColumnWidths: TMenuItem;
+    menuColumnSettings: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1025,6 +1028,8 @@ type
     procedure actionShowGraylineExecute(Sender: TObject);
     procedure SentRSTEdit1Change(Sender: TObject);
     procedure actionFocusRstSentExecute(Sender: TObject);
+    procedure menuResetColumnWidthsClick(Sender: TObject);
+    procedure menuColumnSettingsClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1537,7 +1542,7 @@ implementation
 
 uses
   UAbout, UMenu, UACAGMulti,
-  UALLJAScore,
+  UALLJAScore, UQSOListColumnSettings,
   UJIDXMulti, UJIDXScore, UJIDXScore2, UWPXMulti, UWPXScore,
   UPediScore, UJIDX_DX_Multi, UJIDX_DX_Score,
   UGeneralScore, UFDMulti, UARRLDXMulti,
@@ -7734,6 +7739,25 @@ begin
    if Grid.Row > 0 then begin
       aQSO := TQSO(Grid.Objects[0, Grid.Row]);
       MyContest.MultiForm.SelectAndAddNewPrefix(aQSO.Callsign);
+   end;
+end;
+
+procedure TMainForm.menuResetColumnWidthsClick(Sender: TObject);
+begin
+   InitGridColumnWidth(EditScreen);
+end;
+
+procedure TMainForm.menuColumnSettingsClick(Sender: TObject);
+var
+   f: TformQSOListColumnSettings;
+begin
+   f := TformQSOListColumnSettings.Create(Self);
+   try
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+   finally
+      f.Release();
    end;
 end;
 
