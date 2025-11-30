@@ -87,11 +87,10 @@ type
     ModeEdit: TEdit;          // 8
     PowerEdit: TEdit;         // 9
     BandEdit: TEdit;          // 10
-    PointEdit: TEdit;         // 11
-    OpEdit: TEdit;            // 12
-    MemoEdit: TOvrEdit;       // 13
-    NewMulti1Edit: TEdit;     // 14
-    NewMulti2Edit: TEdit;     // 15
+    OpEdit: TEdit;            // 11
+    MemoEdit: TOvrEdit;       // 12
+    NewMulti1Edit: TEdit;     // 13
+    NewMulti2Edit: TEdit;     // 14
     CurrentBand: TBand;
     CurrentMode: TMode;
     TxLed: TJvLED;
@@ -150,7 +149,6 @@ type
     RcvdRSTEdit1: TEdit;
     BandEdit1: TEdit;
     ModeEdit1: TEdit;
-    PointEdit1: TEdit;
     OpEdit1: TEdit;
     Options2Button: TSpeedButton;
     OpMenu: TPopupMenu;
@@ -163,10 +161,9 @@ type
     CWPlayButton: TSpeedButton;
     Timer1: TTimer;
     InsertQSO1: TMenuItem;
-    N10GHzup1: TMenuItem;
+    N101GHz: TMenuItem;
     Export1: TMenuItem;
     FileExportDialog: TSaveDialog;
-    SerialEdit1: TEdit;
     PacketClusterButton: TSpeedButton;
     CWF1: THemisphereButton;
     CWF2: THemisphereButton;
@@ -635,12 +632,12 @@ type
     SentRSTEdit2HC: TEdit;
     actionFocusRstSent: TAction;
     DV1: TMenuItem;
-    N104GHz1: TMenuItem;
-    N24GHz1: TMenuItem;
-    N48GHz1: TMenuItem;
-    N77GHZ1: TMenuItem;
-    N135GHz1: TMenuItem;
-    N248GHz1: TMenuItem;
+    N104GHz: TMenuItem;
+    N24GHz: TMenuItem;
+    N48GHz: TMenuItem;
+    N77GHZ: TMenuItem;
+    N135GHz: TMenuItem;
+    N248GHz: TMenuItem;
     EditPanel2RV: TPanel;
     EditUpperLeftPanel2RV: TPanel;
     DateEdit2RV: TOvrEdit;
@@ -681,6 +678,22 @@ type
     SentRSTEdit2VA: TEdit;
     SentRSTEdit2VB: TEdit;
     SentRSTEdit2VC: TEdit;
+    SentNrEdit1: TOvrEdit;
+    SentNrEdit2VA: TOvrEdit;
+    SentNrEdit2VB: TOvrEdit;
+    SentNrEdit2VC: TOvrEdit;
+    SentNrEdit2HA: TOvrEdit;
+    SentNrEdit2HB: TOvrEdit;
+    SentNrEdit2HC: TOvrEdit;
+    G104GHz: TMenuItem;
+    G24GHz: TMenuItem;
+    G47GHz: TMenuItem;
+    G77GHz: TMenuItem;
+    G135GHz: TMenuItem;
+    G248GHz: TMenuItem;
+    FT82: TMenuItem;
+    DV2: TMenuItem;
+    Other3: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -744,7 +757,6 @@ type
     procedure menuAboutClick(Sender: TObject);
     procedure HelpZyLOClick(Sender: TObject);
     procedure DateEdit1Change(Sender: TObject);
-    procedure TimeEdit1DblClick(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure menuOptionsClick(Sender: TObject);
     procedure Edit1Click(Sender: TObject);
@@ -1240,12 +1252,12 @@ type
     function GetTimeEdit(): TEdit;        // 1
     function GetCallsignEdit(): TEdit;    // 2
     function GetSentRSTEdit(): TEdit;     // 3
+    function GetSentNumberEdit(): TEdit;  // 3
     function GetRcvdRSTEdit(): TEdit;     // 4
     function GetRcvdNumberEdit(): TEdit;  // 5
     function GetModeEdit(): TEdit;        // 6
     function GetPowerEdit(): TEdit;       // 7
     function GetBandEdit(): TEdit;        // 8
-    function GetPointEdit(): TEdit;       // 9
     function GetOpEdit(): TEdit;          // 10
     function GetMemoEdit(): TEdit;        // 11
     procedure InitQsoEditPanel();
@@ -1261,9 +1273,8 @@ type
     procedure GridAdd(aQSO: TQSO);
     procedure GridWriteQSO(R: Integer; aQSO: TQSO);
     procedure GridClearQSO(R: Integer);
-    procedure SetGridWidth(editor: TBasicEdit);
     function GetGridColmunLeft(col: Integer): Integer;
-    procedure SetEditFields1R(editor: TBasicEdit);
+    procedure SetEditFields1R();
     function GetNextRigID(curid: Integer): Integer;
 
     procedure UpdateBandAndMode();
@@ -1289,7 +1300,7 @@ type
     procedure ScrollGrid();
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
-    procedure AssignControls(nID: Integer; var C, N, B, M, S, O, P: TEdit);
+    procedure AssignControls(nID: Integer; var C, SN, RN, B, M, O, P: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
     procedure ShowSentNumber();
     procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
@@ -1327,9 +1338,13 @@ type
     procedure BandscopeShowAll(fInitial: Boolean);
     procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
+    procedure InitGridColumnWidth(editor: TBasicEdit);
+    procedure InitGridCells();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
     procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
     function Is2Radio(): Boolean;
+    function GetInitNrSent(aQSO: TQSO): string;
+    function DateStr(aQSO: TQSO): string;
   public
     EditScreen : TBasicEdit;
     LastFocus : TEdit;
@@ -1405,17 +1420,16 @@ type
     property CurrentEditPanel: TEditPanel read GetCurrentEditPanel;
     property EditPanel: TEditPanelArray read FEditPanel;
 
-    property SerialEdit: TEdit read GetSerialEdit;
     property DateEdit: TEdit read GetDateEdit;
     property TimeEdit: TEdit read GetTimeEdit;
     property CallsignEdit: TEdit read GetCallsignEdit;
     property SentRSTEdit: TEdit read GetSentRSTEdit;
+    property SentNumberEdit: TEdit read GetSentNumberEdit;
     property RcvdRSTEdit: TEdit read GetRcvdRSTEdit;
     property RcvdNumberEdit: TEdit read GetRcvdNumberEdit;
     property ModeEdit: TEdit read GetModeEdit;
     property PowerEdit: TEdit read GetPowerEdit;
     property BandEdit: TEdit read GetBandEdit;
-    property PointEdit: TEdit read GetPointEdit;
     property OpEdit: TEdit read GetOpEdit;
     property MemoEdit: TEdit read GetMemoEdit;
     procedure AddTaskbar(Handle: THandle);
@@ -1655,14 +1669,14 @@ begin
 
       with CurrentEditPanel do begin
          CallsignEdit.Text := CurrentQSO.Callsign;
+         SentRSTEdit.Text := CurrentQSO.RSTSentStr;
+         SentNumberEdit.Text := CurrentQSO.NrSent;
          RcvdRSTEdit.Text := CurrentQSO.RSTStr;
          RcvdNumberEdit.Text := CurrentQSO.NrRcvd;
          BandEdit.Text := MHzString[CurrentQSO.Band];
          PowerEdit.Text := NewPowerString[CurrentQSO.Power];
-         PointEdit.Text := CurrentQSO.PointStr;
-         SentRSTEdit.Text := CurrentQSO.RSTSentStr;
          TimeEdit.Text := CurrentQSO.TimeStr;
-         DateEdit.Text := CurrentQSO.DateStr;
+         DateEdit.Text := DateSTr(CurrentQSO);
          ModeEdit.Text := ModeString[CurrentQSO.Mode];
       end;
 
@@ -1893,8 +1907,6 @@ begin
       MyContest.SetPoints(CurrentQSO);
    end;
 
-   PointEdit.Text := CurrentQSO.PointStr; // ver 0.23
-
    FZLinkForm.SendBand; // ver 0.41
 
    // シングルＯＰ時は電力符号の設定を行う
@@ -2012,8 +2024,6 @@ begin
       MyContest.SetPoints(CurrentQSO);
    end;
 
-   PointEdit.Text := CurrentQSO.PointStr;
-
    FFunctionKeyPanel.UpdateInfo();
 
    ShowSentNumber();
@@ -2088,76 +2098,78 @@ begin
    with Grid do begin
       Objects[0, R] := aQSO;
 
-      if editor.colSerial >= 0 then
-         Cells[editor.colSerial, R] := aQSO.SerialStr;
+      // 0:status
+      temp := '';
+      if aQSO.Reserve = actLock then temp := 'locked';
+      if aQSO.Invalid = True then temp := 'Invalid';
+      Cells[0, R] := temp;
 
-      if editor.colTime >= 0 then begin
-         if dmZLogGlobal.Settings._displongdatetime = True then begin
-            Cells[editor.colTime, R] := aQSO.DateTimeStr;
-         end
-         else begin
-            Cells[editor.colTime, R] := aQSO.TimeStr;
-         end;
+      // 1:date
+      Cells[1, R] := DateStr(aQSO);
+
+      // 2:time
+      Cells[2, R] := aQSO.TimeStr;
+
+      // 3:callsign
+      Cells[3, R] := aQSO.Callsign;
+
+      // 4:sRST
+      Cells[4, R] := aQSO.RSTSentStr;
+
+      // 5:sent NR
+      if MyContest.SerialType = stNone then begin
+         Cells[5, R] := aQSO.NrSent;
+      end
+      else begin
+         Cells[5, R] := aQSO.SerialStr;
       end;
 
-      if editor.colCall >= 0 then
-         Cells[editor.colCall, R] := aQSO.Callsign;
+      // 6:rRST
+      Cells[6, R] := aQSO.RSTStr;
 
-      if editor.colsentRST >= 0 then
-         Cells[editor.colsentRST, R] := aQSO.RSTSentStr;
+      // 7:rcvd NR
+      Cells[7, R] := aQSO.NrRcvd;
 
-      if editor.colrcvdRST >= 0 then
-         Cells[editor.colrcvdRST, R] := aQSO.RSTStr;
+      // 8:band
+      Cells[8, R] := aQSO.BandStr;
 
-      if editor.colrcvdNumber >= 0 then
-         Cells[editor.colrcvdNumber, R] := aQSO.NrRcvd;
+      // 9:mode
+      Cells[9, R] := aQSO.ModeStr;
 
-      if editor.colBand >= 0 then
-         Cells[editor.colBand, R] := aQSO.BandStr;
-
-      if editor.colMode >= 0 then
-         Cells[editor.colMode, R] := aQSO.ModeStr;
-
-      if editor.colNewPower >= 0 then
-         Cells[editor.colNewPower, R] := aQSO.NewPowerStr;
-
-      if editor.colPoint >= 0 then begin
-         if aQSO.Invalid = True then begin
-            Cells[editor.colPoint, R] := '0';
-         end
-         else begin
-            Cells[editor.colPoint, R] := aQSO.PointStr;
+      // 10:operator
+      temp := IntToStr(aQSO.TX);
+      if dmZlogGlobal.ContestCategory = ccMultiOpSingleTx then begin
+         case aQSO.TX of
+            0:
+               temp := 'R';
+            1:
+               temp := 'M';
          end;
       end;
+      Cells[10, R] := temp + ' ' + aQSO.Operator;
 
-      if editor.colOp >= 0 then begin
-         temp := IntToStr(aQSO.TX);
-         if dmZlogGlobal.ContestCategory = ccMultiOpSingleTx then begin
-            case aQSO.TX of
-               0:
-                  temp := 'R';
-               1:
-                  temp := 'M';
-            end;
-         end;
-         Cells[editor.colOp, R] := temp + ' ' + aQSO.Operator;
+      // 11:memo
+      Cells[11, R] := aQSO.MemoStr;
+
+      // 12:point
+      if aQSO.Invalid = True then begin
+         Cells[12, R] := '0';
+      end
+      else begin
+         Cells[12, R] := aQSO.PointStr;
       end;
-      IntToStr(aQSO.Reserve3);
 
-      if editor.colNewMulti1 >= 0 then
-         Cells[editor.colNewMulti1, R] := editor.GetNewMulti1(aQSO);
+      // 13:new multi1
+      Cells[13, R] := editor.GetNewMulti1(aQSO);
 
-      if editor.colNewMulti2 >= 0 then
-         Cells[editor.colNewMulti2, R] := editor.GetNewMulti2(aQSO);
+      // 14:new multi2
+      Cells[14, R] := editor.GetNewMulti2(aQSO);
 
-      if editor.colMemo >= 0 then
-         Cells[editor.colMemo, R] := aQSO.MemoStr; // + IntToStr(aQSO.Reserve3);
+      // 15:freq.
+      Cells[15, R] := aQSO.Freq;
 
-      if aQSO.Reserve = actLock then
-         Cells[editor.colMemo, R] := 'locked';
-
-      if aQSO.Invalid = True then
-         Cells[editor.colMemo, R] := 'Invalid';
+      // 16:QSOID
+      Cells[16, R] := IntToStr(aQSO.Reserve3);
    end;
 end;
 
@@ -2213,134 +2225,6 @@ begin
    Grid.Refresh;
 end;
 
-procedure TMainForm.SetGridWidth(editor: TBasicEdit);
-var
-   nColWidth: Integer;
-   nRowHeight: Integer;
-   fVisible: Boolean;
-begin
-   with Grid do begin
-      ColCount := editor.GridColCount;
-
-      nColWidth := Canvas.TextWidth('0') + 1;
-      nRowHeight := Canvas.TextHeight('0') + 4;
-
-      DefaultRowHeight := nRowHeight;
-
-      // Serial Number
-      if editor.colSerial >= 0 then begin
-         Cells[editor.colSerial, 0] := 'serial';
-         ColWidths[editor.colSerial] := editor.SerialWid * nColWidth;
-         SerialEdit1.Visible := True;
-      end
-      else begin
-         SerialEdit1.Visible := False;
-      end;
-
-      // Time
-      if editor.colTime >= 0 then begin
-         if dmZLogGlobal.Settings._displongdatetime = True then begin
-            editor.TimeWid := 16;
-         end;
-
-         Cells[editor.colTime, 0] := 'time';
-         ColWidths[editor.colTime] := editor.TimeWid * nColWidth;
-      end;
-
-      // Callsign
-      if editor.colCall >= 0 then begin
-         Cells[editor.colCall, 0] := 'call';
-         ColWidths[editor.colCall] := editor.CallSignWid * nColWidth;
-      end;
-
-      // Sent RST
-      if editor.colsentRST >= 0 then begin
-         Cells[editor.colsentRST, 0] := 'sRST';
-         ColWidths[editor.colsentRST] := editor.sentRSTWid * nColWidth;
-      end;
-
-      // Rcvd RST
-      if editor.colrcvdRST >= 0 then begin
-         Cells[editor.colrcvdRST, 0] := 'rRST';
-         ColWidths[editor.colrcvdRST] := editor.rcvdRSTWid * nColWidth;
-      end;
-
-      // Rcvd NR
-      if editor.colrcvdNumber >= 0 then begin
-         Cells[editor.colrcvdNumber, 0] := 'rcvd';
-         ColWidths[editor.colrcvdNumber] := editor.NumberWid * nColWidth;
-      end;
-
-      // Band
-      if editor.colBand >= 0 then begin
-         Cells[editor.colBand, 0] := 'band';
-         ColWidths[editor.colBand] := editor.BandWid * nColWidth;
-      end;
-
-      // Mode
-      if editor.colMode >= 0 then begin
-         Cells[editor.colMode, 0] := 'mod';
-         ColWidths[editor.colMode] := editor.ModeWid * nColWidth;
-         ModeEdit.Visible := True;
-      end
-      else begin
-         ModeEdit.Visible := False;
-      end;
-
-      // Power
-      if editor.colNewPower >= 0 then begin
-         Cells[editor.colNewPower, 0] := 'pwr';
-         ColWidths[editor.colNewPower] := editor.NewPowerWid * nColWidth;
-         fVisible := True;
-      end
-      else begin
-         fVisible := False;
-      end;
-      if Assigned(PowerEdit) then begin
-         PowerEdit.Visible := fVisible;
-      end;
-
-      // Point
-      if editor.colPoint >= 0 then begin
-         Cells[editor.colPoint, 0] := 'pts';
-         ColWidths[editor.colPoint] := editor.PointWid * nColWidth;
-      end;
-
-      // New Multi1
-      if editor.colNewMulti1 >= 0 then begin
-         Cells[editor.colNewMulti1, 0] := 'multi';
-         ColWidths[editor.colNewMulti1] := editor.NewMulti1Wid * nColWidth;
-      end;
-
-      // New Multi2
-      if editor.colNewMulti2 >= 0 then begin
-         Cells[editor.colNewMulti2, 0] := 'multi2';
-         ColWidths[editor.colNewMulti2] := editor.NewMulti2Wid * nColWidth;
-      end;
-
-      // Operator
-      if editor.colOp >= 0 then begin
-         Cells[editor.colOp, 0] := 'op';
-         ColWidths[editor.colOp] := editor.OpWid * nColWidth;
-         fVisible := True;
-      end
-      else begin
-         fVisible := False;
-      end;
-      if Assigned(OpEdit) then begin
-         OpEdit.Visible := fVisible;
-      end;
-
-      // Memo
-      if editor.colMemo >= 0 then begin
-         Cells[editor.colMemo, 0] := 'memo';
-         ColWidths[editor.colMemo] := editor.MemoWid * nColWidth;
-      end;
-
-      Refresh();
-   end;
-end;
-
 function TMainForm.GetGridColmunLeft(col: Integer): Integer;
 var
    i, j: Integer;
@@ -2355,16 +2239,15 @@ begin
       j := j + Grid.ColWidths[i] + 1;
    end;
 
-   Result := j;
+   Result := j + 2;
 end;
 
-procedure TMainForm.SetEditFields1R(editor: TBasicEdit);
+procedure TMainForm.SetEditFields1R();
 var
    h: Integer;
-
    procedure LayoutEdit(col: Integer; edit: TEdit);
    begin
-      if col >= 0 then begin
+      if Grid.ColWidths[col] >= 0 then begin
          edit.Visible := True;
          edit.Width := Grid.ColWidths[col];
          edit.Height := h;
@@ -2378,49 +2261,63 @@ begin
    h := Grid.RowHeights[0];
    EditPanel1R.Height := h + 10;
 
-   // Serial Number
-   LayoutEdit(editor.colSerial, SerialEdit1);
+   // Date
+   LayoutEdit(1, DateEdit1);
 
    // Time
-   LayoutEdit(editor.colTime, TimeEdit1);
-   DateEdit1.Width := TimeEdit1.Width;
-   DateEdit1.Left := TimeEdit1.Left;
-   DateEdit1.Height := TimeEdit1.Height;
+   LayoutEdit(2, TimeEdit1);
 
    // Callsign
-   LayoutEdit(editor.colCall, CallsignEdit1);
+   LayoutEdit(3, CallsignEdit1);
 
    // Sent RST
-   LayoutEdit(editor.colsentRST, SentRSTEdit1);
+   LayoutEdit(4, SentRSTEdit1);
+
+   // Sent NR
+   if Grid.ColWidths[5] >= 0 then begin
+      // 電力符号使用有無で判定
+      if Pos('$P', dmZLogGlobal.Settings._sentstr) > 0 then begin
+         PowerEdit1.Visible := True;
+         PowerEdit1.Width := 2 * Grid.Canvas.TextWidth('0');
+         PowerEdit1.Height := h;
+
+         SentNrEdit1.Visible := True;
+         SentNrEdit1.Width := Grid.ColWidths[5] - (PowerEdit1.Width + 2);
+         SentNrEdit1.Height := h;
+         SentNrEdit1.Left := GetGridColmunLeft(5);
+
+         PowerEdit1.Left := SentNrEdit1.Left + SentNrEdit1.Width + 1;
+      end
+      else begin
+         PowerEdit1.Visible := False;
+         SentNrEdit1.Visible := True;
+         SentNrEdit1.Width := Grid.ColWidths[5];
+         SentNrEdit1.Height := h;
+         SentNrEdit1.Left := GetGridColmunLeft(5);
+      end;
+   end
+   else begin
+      SentNrEdit1.Visible := False;
+      PowerEdit1.Visible := False;
+   end;
 
    // Rcvd RST
-   LayoutEdit(editor.colrcvdRST, RcvdRSTEdit1);
+   LayoutEdit(6, RcvdRSTEdit1);
 
    // Rcvd NR
-   LayoutEdit(editor.colrcvdNumber, NumberEdit1);
+   LayoutEdit(7, NumberEdit1);
 
    // Band
-   LayoutEdit(editor.colBand, BandEdit1);
+   LayoutEdit(8, BandEdit1);
 
    // Mode
-   LayoutEdit(editor.colMode, ModeEdit1);
-
-   // Mode
-   LayoutEdit(editor.colNewPower, PowerEdit1);
-
-   // Mode
-   LayoutEdit(editor.colPoint, PointEdit1);
+   LayoutEdit(9, ModeEdit1);
 
    // Operator
-   LayoutEdit(editor.colOp, OpEdit1);
+   LayoutEdit(10, OpEdit1);
 
    // Memo
-   LayoutEdit(editor.colMemo, MemoEdit1);
-//   if editor.colMemo >= 0 then begin
-//      MemoEdit.Left := GetGridColmunLeft(editor.colMemo);
-      MemoEdit1.Width := EditPanel1R.Width - MemoEdit1.Left - 3;
-//      MemoEdit.Height := h;
-//   end;
+   LayoutEdit(11, MemoEdit1);
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -2441,6 +2338,8 @@ begin
    FWaitForQsoFinish[2] := False;
 
    FStartCWKeyboard := False;
+
+   InitGrid();
 
    // フォント設定
    Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
@@ -2661,12 +2560,12 @@ begin
    RcvdNumberEdit.Text := '';
    BandEdit.Text := MHzString[CurrentQSO.Band];
    PowerEdit.Text := NewPowerString[CurrentQSO.Power];
-   PointEdit.Text := CurrentQSO.PointStr;
    SentRSTEdit.Text := CurrentQSO.RSTSentStr;
+   SentNumberEdit.Text := dmZLogGlobal.Settings._sentstr;
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    CurrentQSO.UpdateTime;
    TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := CurrentQSO.DateStr;
+   DateEdit.Text := DateStr(CurrentQSO);
 
    if dmZlogGlobal.BackupPath = '' then begin
       Backup1.Enabled := False;
@@ -3607,15 +3506,14 @@ begin
    TimeEdit1.Height := h + 6;
    CallsignEdit1.Height := h + 6;
    SentRSTEdit1.Height := h + 6;
+   SentNrEdit1.Height := h + 6;
    RcvdRSTEdit1.Height := h + 6;
    NumberEdit1.Height := h + 6;
    ModeEdit1.Height := h + 6;
    BandEdit1.Height := h + 6;
-   PointEdit1.Height := h + 6;
    PowerEdit1.Height := h + 6;
    OpEdit1.Height := h + 6;
    MemoEdit1.Height := h + 6;
-   SerialEdit1.Height := h + 6;
    EditPanel1R.Height := h + 6 + 8;
 
    dmZlogGlobal.Settings._mainfontsize := font_size;
@@ -3635,6 +3533,7 @@ begin
          TZLogForm(f).FontSize := font_size;
       end;
    end;
+   InitGridColumnWidth(EditScreen);
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -3801,9 +3700,9 @@ var
    msg: string;
    fNoMulti: Boolean;
    nTxRigID: Integer;
-   C, N, B, M, SE, OP, P: TEdit;
+   C, SN, RN, B, M, OP, P: TEdit;
 begin
-   AssignControls(CurrentRigID, C, N, B, M, SE, OP, P);
+   AssignControls(CurrentRigID, C, SN, RN, B, M, OP, P);
 
    // CQ mode
    if IsCQ() then begin
@@ -3839,7 +3738,7 @@ begin
          nTxRigID := GetTxRigID(FCurrentTx + 1);
          if ((CurrentQSO.Mode = mCW) and (dmZLogKeyer.KeyingPort[nTxRigID] = tkpNone)) or
             (CurrentQSO.Mode <> mCW) then begin
-            CallSpacebarProc(C, N, B);
+            CallSpacebarProc(C, RN, B);
             RcvdNumberEdit.SetFocus();
          end;
       end
@@ -3887,17 +3786,17 @@ procedure TMainForm.SpaceBarProc(nID: Integer);
 var
    Q: TQSO;
    S: string;
-   C, N, B, M, SE, OP, P: TEdit;
+   C, SN, RN, B, M, OP, P: TEdit;
 begin
-   AssignControls(nID, C, N, B, M, SE, OP, P);
+   AssignControls(nID, C, SN, RN, B, M, OP, P);
 
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
       MessageBeep(0);
 
       if dmZLogGlobal.Settings._allowdupe = True then begin
-         CallSpacebarProc(C, N, B);
-         N.SetFocus();
+         CallSpacebarProc(C, RN, B);
+         RN.SetFocus();
       end
       else begin
          C.SelectAll;
@@ -3907,17 +3806,17 @@ begin
       WriteStatusLineRed(S, True);
    end
    else begin { if not dupe }
-      CallSpacebarProc(C, N, B);
-      N.SetFocus();
+      CallSpacebarProc(C, RN, B);
+      RN.SetFocus();
       WriteStatusLine('', False);
    end;
 end;
 
 procedure TMainForm.CallsignEdit1Change(Sender: TObject);
 var
-   C, N, B, M, SE, OP, P: TEdit;
+   C, SN, RN, B, M, OP, P: TEdit;
 begin
-   AssignControls(FCurrentRigSet - 1, C, N, B, M, SE, OP, P);
+   AssignControls(FCurrentRigSet - 1, C, SN, RN, B, M, OP, P);
 
    CurrentQSO.Callsign := C.Text;
 
@@ -4031,7 +3930,7 @@ begin
    menuChangeDate.Enabled := True;
    aQSO := TQSO(Grid.Objects[0, Grid.Selection.Top]);
    for i := Grid.Selection.Top + 1 to Grid.Selection.Bottom do begin
-      if (Grid.Objects[0, i] = nil) or (aQSO.DateStr <> TQSO(Grid.Objects[0, i]).DateStr) then begin
+      if (Grid.Objects[0, i] = nil) or (aQSO.LongDateStr <> TQSO(Grid.Objects[0, i]).LongDateStr) then begin
          menuChangeDate.Enabled := False;
          Break;
       end
@@ -4311,7 +4210,7 @@ var
    nTxID: Integer;
    nTxRigID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE, OP, P: TEdit;
+   C, SN, RN, B, M, OP, P: TEdit;
    mode: TMode;
 begin
    {$IFDEF DEBUG}
@@ -4329,15 +4228,20 @@ begin
       // 確定待ち
       FWaitForQsoFinish[nRxID] := True;
 
-      AssignControls(FKeyPressedRigID[nRxID], C, N, B, M, SE, OP, P);
+      AssignControls(FKeyPressedRigID[nRxID], C, SN, RN, B, M, OP, P);
 
       curQSO.Callsign := C.Text;
-      curQSO.NrRcvd   := N.Text;
+      curQSO.NrRcvd   := RN.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
       curQSO.Operator := OP.Text;
       curQSO.Power    := TextToPower(P.Text);
-      curQSO.Serial   := StrToIntDef(SE.Text, 1);
+      if MyContest.SerialType = stNone then begin
+         curQSO.NrSent   := SN.Text;
+      end
+      else begin
+         curQSO.Serial   := StrToIntDef(SN.Text, 1);
+      end;
 
       // SO2Rモード
       if Is2Radio() = True then begin
@@ -4381,18 +4285,18 @@ begin
                PlayMessage(mode, 1, 4, False);
             end
             else begin
-               CallSpaceBarProc(C, N, B);
+               CallSpaceBarProc(C, RN, B);
                PlayMessage(mode, 1, 2, False);
-               N.SetFocus();
+               RN.SetFocus();
             end;
 
             S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
             WriteStatusLineRed(S, True);
          end
          else begin  // not dupe
-            CallSpaceBarProc(C, N, B);
+            CallSpaceBarProc(C, RN, B);
             PlayMessage(mode, 1, 2, False);
-            N.SetFocus();
+            RN.SetFocus();
          end;
 
          Exit;
@@ -4404,8 +4308,8 @@ begin
             FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), curQSO));
          end;
 
-         CallSpaceBarProc(C, N, B);
-         N.SetFocus();
+         CallSpaceBarProc(C, RN, B);
+         RN.SetFocus();
 
          FCQRepeatPlaying := False;
 
@@ -4421,10 +4325,10 @@ begin
          Exit;
       end;
 
-      if N.Text = '' then begin
+      if RN.Text = '' then begin
          curQSO.UpdateTime;
          TimeEdit.Text := curQSO.TimeStr;
-         DateEdit.Text := curQSO.DateStr;
+         DateEdit.Text := DateStr(curQSO);
       end;
 
       S := dmZlogGlobal.CWMessage(0, 2);
@@ -5141,15 +5045,15 @@ begin
    end;
 
    FEditPanel[nID].TimeEdit.Text := Q.TimeStr;
-   FEditPanel[nID].DateEdit.Text := Q.DateStr;
+   FEditPanel[nID].DateEdit.Text := DateStr(Q);
    FEditPanel[nID].CallsignEdit.Text := Q.Callsign;
    FEditPanel[nID].SentRSTEdit.Text := Q.RSTSentStr;
+   FEditPanel[nID].SentNumberEdit.Text := GetInitNrSent(Q);
    FEditPanel[nID].RcvdRSTEdit.Text := Q.RSTStr;
    FEditPanel[nID].RcvdNumberEdit.Text := Q.NrRcvd;
    FEditPanel[nID].ModeEdit.Text := Q.ModeStr;
    FEditPanel[nID].BandEdit.Text := Q.BandStr;
    FEditPanel[nID].PowerEdit.Text := Q.NewPowerStr;
-   FEditPanel[nID].PointEdit.Text := Q.PointStr;
    FEditPanel[nID].OpEdit.Text := Q.Operator;
    FEditPanel[nID].MemoEdit.Text := '';
 
@@ -6064,12 +5968,12 @@ var
    S: String;
    nID: Integer;
    curQSO: TQSO;
-   C, N, B, M, SE, OP, P: TEdit;
+   C, SN, RN, B, M, OP, P: TEdit;
 begin
    nID := FCurrentTx;   //Integer(Sender); //FKeyPressedRigID;   //Integer(Sender);
    curQSO := TQSO.Create();
 
-   AssignControls(nID, C, N, B, M, SE, OP, P);
+   AssignControls(nID, C, SN, RN, B, M, OP, P);
 
    // .か?があるときは以降の送信は行わない
    if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
@@ -6128,9 +6032,9 @@ begin
       end;
 
       if FTabKeyPressed[nID] then begin
-         CallSpaceBarProc(C, N, B);
+         CallSpaceBarProc(C, RN, B);
          if Is2bsiq() = False then begin
-            N.SetFocus();
+            RN.SetFocus();
          end;
          EditedSinceTABPressed := tabstate_tabpressedbutnotedited; // UzLogCW
       end;
@@ -6145,23 +6049,23 @@ begin
    end;
 end;
 
-procedure TMainForm.AssignControls(nID: Integer; var C, N, B, M, S, O, P: TEdit);
+procedure TMainForm.AssignControls(nID: Integer; var C, SN, RN, B, M, O, P: TEdit);
 begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       C := CallsignEdit1;
-      N := NumberEdit1;
+      SN := SentNrEdit1;
+      RN := NumberEdit1;
       B := BandEdit1;
       M := ModeEdit1;
-      S := SerialEdit1;
       O := OpEdit1;
       P := PowerEdit;
    end
    else begin
       C := FEditPanel[nID].CallsignEdit;
-      N := FEditPanel[nID].RcvdNumberEdit;
+      SN := FEditPanel[nID].SentNumberEdit;
+      RN := FEditPanel[nID].RcvdNumberEdit;
       B := FEditPanel[nID].BandEdit;
       M := FEditPanel[nID].ModeEdit;
-      S := FEditPanel[nID].SerialEdit;
       O := FEditPanel[nID].OpEdit;
       P := FEditPanel[nID].PowerEdit;
    end;
@@ -6258,8 +6162,6 @@ begin
 end;
 
 procedure TMainForm.Timer1Timer(Sender: TObject);
-var
-   S: String;
 begin
    Timer1.Enabled := False;
    try
@@ -6267,10 +6169,8 @@ begin
 
       if not FPostContest then begin
          CurrentQSO.UpdateTime;
-         S := CurrentQSO.TimeStr;
-         if S <> TimeEdit.Text then begin
-            TimeEdit.Text := S;
-         end;
+         DateEdit.Text := DateStr(CurrentQSO);
+         TimeEdit.Text := CurrentQSO.TimeStr;
       end;
 
       // Out of contest period表示
@@ -6528,20 +6428,6 @@ begin
       end;
    end;
    CurrentQSO.Time := Int(T) + Frac(CurrentQSO.Time);
-end;
-
-procedure TMainForm.TimeEdit1DblClick(Sender: TObject);
-begin
-   if (TEdit(Sender).Name = 'TimeEdit1') or (TEdit(Sender).Name = 'TimeEdit2') then begin
-      TimeEdit.Visible := False;
-      DateEdit.Visible := True;
-      // TimeLabel.Caption := 'date';
-   end
-   else begin
-      TimeEdit.Visible := True;
-      DateEdit.Visible := False;
-      // TimeLabel.Caption := 'time';
-   end;
 end;
 
 procedure TMainForm.FormResize(Sender: TObject);
@@ -7378,7 +7264,7 @@ end;
 procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
    if EditScreen <> nil then begin
-      SetEditFields1R(EditScreen);
+      SetEditFields1R();
    end;
 end;
 
@@ -8240,24 +8126,152 @@ begin
 end;
 
 procedure TMainForm.InitGrid();
+begin
+   with Grid do begin
+      ColCount := 18;
+      FixedCols := 0;
+      FixedRows := 1;
+
+      Cols[0].Text := 'status';
+      Cols[1].Text := 'date';
+      Cols[2].Text := 'time';
+      Cols[3].Text := 'callsign';
+      Cols[4].Text := 'sRST';
+      Cols[5].Text := 'sent NR';
+      Cols[6].Text := 'rRST';
+      Cols[7].Text := 'rcvd NR';
+      Cols[8].Text := 'band';
+      Cols[9].Text := 'mode';
+      Cols[10].Text := 'operator';
+      Cols[11].Text := 'memo';
+      Cols[12].Text := 'point';
+      Cols[13].Text := 'multi1';
+      Cols[14].Text := 'multi2';
+      Cols[15].Text := 'freq.';
+      Cols[16].Text := 'QSOID';
+      Cols[17].Text := '';
+   end;
+end;
+
+procedure TMainForm.InitGridColumnWidth(editor: TBasicEdit);
+var
+   nColWidth: Integer;
+   nOpWidth: Integer;
+   nMemoWidth: Integer;
+
+   procedure SetColumnWidth(n: Integer);
+   begin
+      if editor.ColWidths[n] = 0 then begin
+         Grid.ColWidths[n] := -1;
+      end
+      else begin
+         Grid.ColWidths[n] := editor.ColWidths[n] * nColWidth;
+      end;
+   end;
+begin
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      nOpWidth := 0;
+      nMemoWidth := 13;
+   end
+   else begin
+      nOpWidth := 6;
+      nMemoWidth := 7;
+   end;
+
+   with Grid do begin
+      nColWidth := Canvas.TextWidth('0') + 1;
+      DefaultRowHeight := Canvas.TextHeight('0') + 4;
+
+      // 0:status
+      ColWidths[0] := 3 * nColWidth;
+
+      // 1:date
+      if editor.ColWidths[0] = 0 then begin
+         ColWidths[1] := -1;
+      end
+      else begin
+         if (dmZLogGlobal.Settings._displongdatetime = True) or (FPostContest = True) then begin
+            ColWidths[1] := 10 * nColWidth;
+         end
+         else begin
+            ColWidths[1] := 6 * nColWidth;
+         end;
+      end;
+
+      // 2:Time
+      SetColumnWidth(2);
+
+      // 3:Callsign
+      SetColumnWidth(3);
+
+      // 4:Sent RST
+      SetColumnWidth(4);
+
+      // 5:Sent RST
+      SetColumnWidth(5);
+
+      // 6:Rcvd RST
+      SetColumnWidth(6);
+
+      // 7:Rcvd NR
+      SetColumnWidth(7);
+
+      // 8:band
+      SetColumnWidth(8);
+
+      // 9:mode
+      SetColumnWidth(9);
+
+      // 10:operator
+      if (editor.ColWidths[10] = 0) or (nOpWidth = 0) then begin
+         ColWidths[10] := -1;
+      end
+      else begin
+         ColWidths[10] := nOpWidth * nColWidth;
+      end;
+
+      // 11:Memo
+      if editor.ColWidths[11] = 0 then begin
+         ColWidths[11] := -1;
+      end
+      else begin
+         ColWidths[11] := nMemoWidth * nColWidth;
+      end;
+
+      // 12:Point
+      SetColumnWidth(12);
+
+      // 13:New Multi1
+      SetColumnWidth(13);
+
+      // 14:New Multi2
+      SetColumnWidth(14);
+
+      // 15:Freq
+      SetColumnWidth(15);
+
+      // 16:QSOID
+      SetColumnWidth(16);
+
+      // 17:filler
+      ColWidths[17] := -1;
+
+      Refresh();
+   end;
+end;
+
+procedure TMainForm.InitGridCells();
 var
    i, j: Integer;
 begin
-   with Grid do begin
-      ColCount := 10;
-      FixedCols := 0;
-      FixedRows := 1;
-      ColCount := 10;
-      Height := 291;
-      DefaultRowHeight := 17;
-   end;
-
    for i := 1 to Grid.RowCount - 1 do begin
       for j := 0 to Grid.ColCount - 1 do begin
          Grid.Cells[j, i] := '';
+         Grid.Objects[j, i] := nil;
       end;
    end;
 end;
+
 
 procedure TMainForm.OnZLogInit( var Message: TMessage );
 var
@@ -8380,8 +8394,6 @@ begin
 
       RenewBandMenu();
 
-      InitGrid();
-
       InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestBand, strContestName, strCfgFileName);
 
       MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
@@ -8391,8 +8403,8 @@ begin
       Multipliers1.Enabled := True; // menu
       mnCheckCountry.Visible := False; // checkcountry window
 
-      SetGridWidth(EditScreen);
-      SetEditFields1R(EditScreen);
+      InitGridColumnWidth(EditScreen);
+      SetEditFields1R();
       InitSerialPanel();
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)
@@ -8550,6 +8562,7 @@ begin
 
       ModeEdit.Text := CurrentQSO.ModeStr;
       SentRSTEdit.Text := CurrentQSO.RSTSentStr;
+      SentNumberEdit.Text := GetInitNrSent(CurrentQSO);
       RcvdRSTEdit.Text := CurrentQSO.RSTStr;
 
       // マルチオペの場合は最後のOPをセット
@@ -9547,7 +9560,7 @@ begin
    else begin
       EditScreen := TSerialGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
 
-      Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
+//      Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
 
       TSerialGeneralEdit(MainForm.EditScreen).formMulti := TGeneralMulti2(MyContest.MultiForm);
 
@@ -9578,7 +9591,8 @@ begin
 
    EditScreen := TWPXEdit.Create(Self);
 
-   Grid.Cells[EditScreen.colNewMulti1, 0] := 'prefix';
+   Grid.Cols[13].Text := 'prefix';
+   Grid.Cols[14].Text := 'zone';
 
    MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', dmZLogGlobal.ContestMode);
 
@@ -10747,7 +10761,7 @@ procedure TMainForm.actionDecreaseTimeExecute(Sender: TObject);
 begin
    CurrentQSO.DecTime;
    TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := CurrentQSO.DateStr;
+   DateEdit.Text := DateStr(CurrentQSO);
 end;
 
 // #51 時刻を１分進める
@@ -10755,7 +10769,7 @@ procedure TMainForm.actionIncreaseTimeExecute(Sender: TObject);
 begin
    CurrentQSO.IncTime;
    TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := CurrentQSO.DateStr;
+   DateEdit.Text := DateStr(CurrentQSO);
 end;
 
 // #52 QTC送信
@@ -11311,7 +11325,7 @@ procedure TMainForm.actionSetCurTimeExecute(Sender: TObject);
 begin
    CurrentQSO.UpdateTime;
    TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := CurrentQSO.DateStr;
+   DateEdit.Text := DateStr(CurrentQSO);
 end;
 
 // #96 QRU Shift+U
@@ -12499,11 +12513,11 @@ end;
 procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
 var
    nID: Integer;
-   C, N, B, M, SE, OP, P: TEdit;
+   C, S, N, B, M, OP, P: TEdit;
 begin
    nID := no - 1;
 
-   AssignControls(nID, C, N, B, M, SE, OP, P);
+   AssignControls(nID, C, S, N, B, M, OP, P);
 
    CurrentQSO.CallSign := strCallsign;
 
@@ -13003,7 +13017,7 @@ begin
    end;
 
    if EditScreen <> nil then begin
-      SetEditFields1R(EditScreen);
+      SetEditFields1R();
    end;
 
    {$IFDEF DEBUG}
@@ -13107,6 +13121,11 @@ begin
    Result := FEditPanel[CurrentRigID].sentRSTEdit;
 end;
 
+function TMainForm.GetSentNumberEdit(): TEdit;     // 3
+begin
+   Result := FEditPanel[CurrentRigID].SentNumberEdit;
+end;
+
 function TMainForm.GetRcvdRSTEdit(): TEdit;     // 4
 begin
    Result := FEditPanel[CurrentRigID].rcvdRSTEdit;
@@ -13132,11 +13151,6 @@ begin
    Result := FEditPanel[CurrentRigID].BandEdit;
 end;
 
-function TMainForm.GetPointEdit(): TEdit;       // 9
-begin
-   Result := FEditPanel[CurrentRigID].PointEdit;
-end;
-
 function TMainForm.GetOpEdit(): TEdit;          // 10
 begin
    Result := FEditPanel[CurrentRigID].OpEdit;
@@ -13151,18 +13165,16 @@ procedure TMainForm.InitQsoEditPanel();
 begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       // 1R
-      FEditPanel[0].SerialEdit     := SerialEdit1;
       FEditPanel[0].DateEdit       := DateEdit1;
       FEditPanel[0].TimeEdit       := TimeEdit1;
       FEditPanel[0].CallsignEdit   := CallsignEdit1;
       FEditPanel[0].SentRSTEdit    := SentRSTEdit1;
-      FEditPanel[0].SentNumberEdit := nil;
+      FEditPanel[0].SentNumberEdit := SentNrEdit1;
       FEditPanel[0].RcvdRSTEdit    := RcvdRSTEdit1;
       FEditPanel[0].RcvdNumberEdit := NumberEdit1;
       FEditPanel[0].ModeEdit       := ModeEdit1;
       FEditPanel[0].PowerEdit      := PowerEdit1;
       FEditPanel[0].BandEdit       := BandEdit1;
-      FEditPanel[0].PointEdit      := PointEdit1;
       FEditPanel[0].OpEdit         := OpEdit1;
       FEditPanel[0].MemoEdit       := MemoEdit1;
       FEditPanel[0].TxLed          := nil;
@@ -13170,18 +13182,16 @@ begin
       FEditPanel[0].SelShape       := nil;
       FEditPanel[0].Title          := nil;
 
-      FEditPanel[1].SerialEdit     := SerialEdit1;
       FEditPanel[1].DateEdit       := DateEdit1;
       FEditPanel[1].TimeEdit       := TimeEdit1;
       FEditPanel[1].CallsignEdit   := CallsignEdit1;
       FEditPanel[1].SentRSTEdit    := sentRSTEdit1;
-      FEditPanel[1].SentNumberEdit := nil;
+      FEditPanel[1].SentNumberEdit := SentNrEdit1;
       FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit1;
       FEditPanel[1].RcvdNumberEdit := NumberEdit1;
       FEditPanel[1].ModeEdit       := ModeEdit1;
       FEditPanel[1].PowerEdit      := PowerEdit1;
       FEditPanel[1].BandEdit       := BandEdit1;
-      FEditPanel[1].PointEdit      := PointEdit1;
       FEditPanel[1].OpEdit         := OpEdit1;
       FEditPanel[1].MemoEdit       := MemoEdit1;
       FEditPanel[1].TxLed          := nil;
@@ -13189,18 +13199,16 @@ begin
       FEditPanel[1].SelShape       := nil;
       FEditPanel[1].Title          := nil;
 
-      FEditPanel[2].SerialEdit     := SerialEdit1;
       FEditPanel[2].DateEdit       := DateEdit1;
       FEditPanel[2].TimeEdit       := TimeEdit1;
       FEditPanel[2].CallsignEdit   := CallsignEdit1;
       FEditPanel[2].SentRSTEdit    := sentRSTEdit1;
-      FEditPanel[2].SentNumberEdit := nil;
+      FEditPanel[2].SentNumberEdit := SentNrEdit1;
       FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit1;
       FEditPanel[2].RcvdNumberEdit := NumberEdit1;
       FEditPanel[2].ModeEdit       := ModeEdit1;
       FEditPanel[2].PowerEdit      := PowerEdit1;
       FEditPanel[2].BandEdit       := BandEdit1;
-      FEditPanel[2].PointEdit      := PointEdit1;
       FEditPanel[2].OpEdit         := OpEdit1;
       FEditPanel[2].MemoEdit       := MemoEdit1;
       FEditPanel[2].TxLed          := nil;
@@ -13218,13 +13226,12 @@ begin
       FEditPanel[0].TimeEdit       := TimeEdit2RH;
       FEditPanel[0].CallsignEdit   := CallsignEdit2A;
       FEditPanel[0].SentRSTEdit    := SentRSTEdit2HA;
-      FEditPanel[0].SentNumberEdit := nil;
+      FEditPanel[0].SentNumberEdit := SentNrEdit2HA;
       FEditPanel[0].rcvdRSTEdit    := rcvdRSTEdit2A;
       FEditPanel[0].RcvdNumberEdit := NumberEdit2A;
       FEditPanel[0].ModeEdit       := ModeEdit2A;
       FEditPanel[0].PowerEdit      := nil;
       FEditPanel[0].BandEdit       := BandEdit2A;
-      FEditPanel[0].PointEdit      := nil;
       FEditPanel[0].OpEdit         := nil;
       FEditPanel[0].MemoEdit       := nil;
       FEditPanel[0].TxLed          := ledTx2A;
@@ -13236,13 +13243,12 @@ begin
       FEditPanel[1].TimeEdit       := TimeEdit2RH;
       FEditPanel[1].CallsignEdit   := CallsignEdit2B;
       FEditPanel[1].SentRSTEdit    := SentRSTEdit2HB;
-      FEditPanel[1].SentNumberEdit := nil;
+      FEditPanel[1].SentNumberEdit := SentNrEdit2HB;
       FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit2B;
       FEditPanel[1].RcvdNumberEdit := NumberEdit2B;
       FEditPanel[1].ModeEdit       := ModeEdit2B;
       FEditPanel[1].PowerEdit      := nil;
       FEditPanel[1].BandEdit       := BandEdit2B;
-      FEditPanel[1].PointEdit      := nil;
       FEditPanel[1].OpEdit         := nil;
       FEditPanel[1].MemoEdit       := nil;
       FEditPanel[1].TxLed          := ledTx2B;
@@ -13254,13 +13260,12 @@ begin
       FEditPanel[2].TimeEdit       := TimeEdit2RH;
       FEditPanel[2].CallsignEdit   := CallsignEdit2C;
       FEditPanel[2].SentRSTEdit    := SentRSTEdit2HC;
-      FEditPanel[2].SentNumberEdit := nil;
+      FEditPanel[2].SentNumberEdit := SentNrEdit2HC;
       FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit2C;
       FEditPanel[2].RcvdNumberEdit := NumberEdit2C;
       FEditPanel[2].ModeEdit       := ModeEdit2C;
       FEditPanel[2].PowerEdit      := nil;
       FEditPanel[2].BandEdit       := BandEdit2C;
-      FEditPanel[2].PointEdit      := nil;
       FEditPanel[2].OpEdit         := nil;
       FEditPanel[2].MemoEdit       := nil;
       FEditPanel[2].TxLed          := ledTx2C;
@@ -13279,13 +13284,12 @@ begin
       FEditPanel[0].TimeEdit       := TimeEdit2RV;
       FEditPanel[0].CallsignEdit   := CallsignEdit2VA;
       FEditPanel[0].SentRSTEdit    := SentRSTEdit2VA;
-      FEditPanel[0].SentNumberEdit := nil;
+      FEditPanel[0].SentNumberEdit := SentNrEdit2VA;
       FEditPanel[0].RcvdRSTEdit    := rcvdRSTEdit2VA;
       FEditPanel[0].RcvdNumberEdit := NumberEdit2VA;
       FEditPanel[0].ModeEdit       := ModeEdit2VA;
       FEditPanel[0].PowerEdit      := nil;
       FEditPanel[0].BandEdit       := BandEdit2VA;
-      FEditPanel[0].PointEdit      := nil;
       FEditPanel[0].OpEdit         := nil;
       FEditPanel[0].MemoEdit       := nil;
       FEditPanel[0].TxLed          := ledTx2VA;
@@ -13297,13 +13301,12 @@ begin
       FEditPanel[1].TimeEdit       := TimeEdit2RV;
       FEditPanel[1].CallsignEdit   := CallsignEdit2VB;
       FEditPanel[1].SentRSTEdit    := SentRSTEdit2VB;
-      FEditPanel[1].SentNumberEdit := nil;
+      FEditPanel[1].SentNumberEdit := SentNrEdit2VB;
       FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit2VB;
       FEditPanel[1].RcvdNumberEdit := NumberEdit2VB;
       FEditPanel[1].ModeEdit       := ModeEdit2VB;
       FEditPanel[1].PowerEdit      := nil;
       FEditPanel[1].BandEdit       := BandEdit2VB;
-      FEditPanel[1].PointEdit      := nil;
       FEditPanel[1].OpEdit         := nil;
       FEditPanel[1].MemoEdit       := nil;
       FEditPanel[1].TxLed          := ledTx2VB;
@@ -13315,13 +13318,12 @@ begin
       FEditPanel[2].TimeEdit       := TimeEdit2RV;
       FEditPanel[2].CallsignEdit   := CallsignEdit2VC;
       FEditPanel[2].SentRSTEdit    := SentRSTEdit2VC;
-      FEditPanel[2].SentNumberEdit := nil;
+      FEditPanel[2].SentNumberEdit := SentNrEdit2VC;
       FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit2VC;
       FEditPanel[2].RcvdNumberEdit := NumberEdit2VC;
       FEditPanel[2].ModeEdit       := ModeEdit2VC;
       FEditPanel[2].PowerEdit      := nil;
       FEditPanel[2].BandEdit       := BandEdit2VC;
-      FEditPanel[2].PointEdit      := nil;
       FEditPanel[2].OpEdit         := nil;
       FEditPanel[2].MemoEdit       := nil;
       FEditPanel[2].TxLed          := ledTx2VC;
@@ -13598,15 +13600,15 @@ procedure TMainForm.ShowCurrentQSO();
 begin
 //   SerialEdit.Text := CurrentQSO.SerialStr;
    TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := CurrentQSO.DateStr;
+   DateEdit.Text := DateStr(CurrentQSO);
    CallsignEdit.Text := CurrentQSO.Callsign;
    SentRSTEdit.Text := CurrentQSO.RSTSentStr;
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    RcvdNumberEdit.Text := CurrentQSO.NrRcvd;
+   SentNumberEdit.Text := CurrentQSO.NrSent;    // POWERはいらない
    ModeEdit.Text := CurrentQSO.ModeStr;
    BandEdit.Text := CurrentQSO.BandStr;
    PowerEdit.Text := CurrentQSO.NewPowerStr;
-   PointEdit.Text := CurrentQSO.PointStr;
    OpEdit.Text := CurrentQSO.Operator;
    { CallsignEdit.SetFocus; }
 end;
@@ -14229,11 +14231,15 @@ end;
 
 procedure TMainForm.DispSerialNumber(aQSO: TQSO);
 begin
+   if MyContest.SerialType = stNone then begin
+      Exit;
+   end;
+
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-      SerialEdit.Text := aQSO.SerialStr;
+      SentNumberEdit.Text := aQSO.SerialStr;
    end
    else begin
-      FEditPanel[0].SerialEdit.Text := aQSO.SerialStr;
+      FEditPanel[0].SentNumberEdit.Text := aQSO.SerialStr;
    end;
 
    ShowSentNumber();
@@ -15282,6 +15288,29 @@ function TMainForm.Is2Radio(): Boolean;
 begin
    Result := ((dmZLogGlobal.Settings._operate_style = os2RadioH) or
               (dmZLogGlobal.Settings._operate_style = os2RadioV));
+end;
+
+function TMainForm.GetInitNrSent(aQSO: TQSO): string;
+var
+   S: string;
+begin
+   S := dmZLogGlobal.Settings._sentstr;
+   S := StringReplace(S, '$Z', dmZLogGlobal.Settings._cqzone, [rfReplaceAll]);
+   S := StringReplace(S, '$I', dmZLogGlobal.Settings._iaruzone, [rfReplaceAll]);
+   S := StringReplace(S, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
+   S := StringReplace(S, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
+   S := StringReplace(S, '$P', '', [rfReplaceAll]);
+   Result := S;
+end;
+
+function TMainForm.DateStr(aQSO: TQSO): string;
+begin
+   if dmZLogGlobal.Settings._displongdatetime = True then begin
+      Result := aQSO.LongDateStr;
+   end
+   else begin
+      Result := aQSO.ShortDateStr;
+   end;
 end;
 
 { TBandScopeNotifyThread }

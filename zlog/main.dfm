@@ -127,19 +127,6 @@ object MainForm: TMainForm
         OnClick = ModeEdit1Click
         OnKeyDown = EditKeyDown
       end
-      object PointEdit1: TEdit
-        Left = 320
-        Top = 4
-        Width = 70
-        Height = 18
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        TabOrder = 3
-        Text = 'PointEdit1'
-        OnKeyDown = EditKeyDown
-        OnKeyPress = EditKeyPress
-      end
       object OpEdit1: TEdit
         Left = 37
         Top = 4
@@ -152,21 +139,8 @@ object MainForm: TMainForm
         PopupMenu = OpMenu
         ReadOnly = True
         ShowHint = False
-        TabOrder = 4
+        TabOrder = 3
         OnClick = OpEdit1Click
-        OnKeyDown = EditKeyDown
-      end
-      object SerialEdit1: TEdit
-        Left = 32
-        Top = 4
-        Width = 73
-        Height = 18
-        TabStop = False
-        AutoSize = False
-        ImeMode = imDisable
-        TabOrder = 5
-        Visible = False
-        OnChange = SerialEdit1Change
         OnKeyDown = EditKeyDown
       end
       object PowerEdit1: TEdit
@@ -178,7 +152,7 @@ object MainForm: TMainForm
         AutoSize = False
         ImeMode = imDisable
         PopupMenu = NewPowerMenu
-        TabOrder = 6
+        TabOrder = 4
         Visible = False
         OnClick = PowerEdit1Click
         OnKeyDown = EditKeyDown
@@ -193,7 +167,7 @@ object MainForm: TMainForm
         AutoSize = False
         CharCase = ecUpperCase
         ImeMode = imDisable
-        TabOrder = 7
+        TabOrder = 5
         OnChange = CallsignEdit1Change
         OnEnter = EditEnter
         OnExit = EditExit
@@ -212,7 +186,7 @@ object MainForm: TMainForm
         AutoSize = False
         CharCase = ecUpperCase
         ImeMode = imDisable
-        TabOrder = 8
+        TabOrder = 6
         Text = 'NUMBER'
         OnChange = NumberEdit1Change
         OnEnter = EditEnter
@@ -230,7 +204,7 @@ object MainForm: TMainForm
         Height = 18
         TabStop = False
         AutoSize = False
-        TabOrder = 9
+        TabOrder = 7
         OnChange = MemoEdit1Change
         OnEnter = EditEnter
         OnExit = EditExit
@@ -246,10 +220,9 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 10
+        TabOrder = 8
         Text = 'TIME'
         OnChange = TimeEdit1Change
-        OnDblClick = TimeEdit1DblClick
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
         TabOnEnter = False
@@ -262,11 +235,10 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 11
+        TabOrder = 9
         Text = 'date'
         Visible = False
         OnChange = DateEdit1Change
-        OnDblClick = TimeEdit1DblClick
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
         TabOnEnter = False
@@ -279,10 +251,30 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
-        TabOrder = 12
+        TabOrder = 10
         OnChange = SentRSTEdit1Change
         OnKeyDown = EditKeyDown
         OnKeyPress = EditKeyPress
+      end
+      object SentNrEdit1: TOvrEdit
+        Left = 261
+        Top = 4
+        Width = 73
+        Height = 18
+        TabStop = False
+        AutoSelect = False
+        AutoSize = False
+        CharCase = ecUpperCase
+        ImeMode = imDisable
+        TabOrder = 11
+        Text = 'NUMBER'
+        OnChange = NumberEdit1Change
+        OnEnter = EditEnter
+        OnExit = EditExit
+        OnKeyDown = EditKeyDown
+        OnKeyPress = EditKeyPress
+        OnKeyUp = NumberEdit1KeyUp
+        TabOnEnter = False
       end
     end
     object EditPanel2RH: TPanel
@@ -491,6 +483,27 @@ object MainForm: TMainForm
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
         end
+        object SentNrEdit2HC: TOvrEdit
+          Tag = 1
+          Left = 402
+          Top = 4
+          Width = 37
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 9
+          Visible = False
+          OnChange = NumberEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = NumberEdit1KeyUp
+          TabOnEnter = False
+        end
       end
       object EditUpperLeftPanel2RH: TPanel
         Left = 1
@@ -501,7 +514,7 @@ object MainForm: TMainForm
         BevelOuter = bvNone
         TabOrder = 0
         object DateEdit2RH: TOvrEdit
-          Left = 5
+          Left = 2
           Top = 27
           Width = 57
           Height = 20
@@ -512,13 +525,12 @@ object MainForm: TMainForm
           Text = 'date'
           Visible = False
           OnChange = DateEdit1Change
-          OnDblClick = TimeEdit1DblClick
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
           TabOnEnter = False
         end
         object TimeEdit2RH: TOvrEdit
-          Left = 5
+          Left = 2
           Top = 27
           Width = 57
           Height = 20
@@ -528,7 +540,6 @@ object MainForm: TMainForm
           TabOrder = 1
           Text = 'TIME'
           OnChange = TimeEdit1Change
-          OnDblClick = TimeEdit1DblClick
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
           TabOnEnter = False
@@ -716,6 +727,27 @@ object MainForm: TMainForm
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
           end
+          object SentNrEdit2HA: TOvrEdit
+            Tag = 1
+            Left = 68
+            Top = 5
+            Width = 37
+            Height = 20
+            TabStop = False
+            AutoSelect = False
+            AutoSize = False
+            CharCase = ecUpperCase
+            ImeMode = imDisable
+            TabOrder = 6
+            Visible = False
+            OnChange = NumberEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            OnKeyUp = NumberEdit1KeyUp
+            TabOnEnter = False
+          end
         end
         object RigPanelB: TPanel
           Left = 230
@@ -854,6 +886,27 @@ object MainForm: TMainForm
             Visible = False
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
+          end
+          object SentNrEdit2HB: TOvrEdit
+            Tag = 1
+            Left = 42
+            Top = 13
+            Width = 37
+            Height = 20
+            TabStop = False
+            AutoSelect = False
+            AutoSize = False
+            CharCase = ecUpperCase
+            ImeMode = imDisable
+            TabOrder = 6
+            Visible = False
+            OnChange = NumberEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            OnKeyUp = NumberEdit1KeyUp
+            TabOnEnter = False
           end
         end
       end
@@ -1032,7 +1085,6 @@ object MainForm: TMainForm
           Text = 'date'
           Visible = False
           OnChange = DateEdit1Change
-          OnDblClick = TimeEdit1DblClick
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
           TabOnEnter = False
@@ -1048,7 +1100,6 @@ object MainForm: TMainForm
           TabOrder = 1
           Text = 'TIME'
           OnChange = TimeEdit1Change
-          OnDblClick = TimeEdit1DblClick
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
           TabOnEnter = False
@@ -1222,7 +1273,7 @@ object MainForm: TMainForm
           end
           object SentRSTEdit2VA: TEdit
             Tag = 1
-            Left = 395
+            Left = 380
             Top = 5
             Width = 34
             Height = 20
@@ -1233,6 +1284,27 @@ object MainForm: TMainForm
             Visible = False
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
+          end
+          object SentNrEdit2VA: TOvrEdit
+            Tag = 1
+            Left = 420
+            Top = 5
+            Width = 37
+            Height = 20
+            TabStop = False
+            AutoSelect = False
+            AutoSize = False
+            CharCase = ecUpperCase
+            ImeMode = imDisable
+            TabOrder = 6
+            Visible = False
+            OnChange = NumberEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            OnKeyUp = NumberEdit1KeyUp
+            TabOnEnter = False
           end
         end
         object RigPanelVB: TPanel
@@ -1359,8 +1431,8 @@ object MainForm: TMainForm
           end
           object SentRSTEdit2VB: TEdit
             Tag = 2
-            Left = 395
-            Top = 4
+            Left = 380
+            Top = 5
             Width = 34
             Height = 20
             TabStop = False
@@ -1370,6 +1442,27 @@ object MainForm: TMainForm
             Visible = False
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
+          end
+          object SentNrEdit2VB: TOvrEdit
+            Tag = 1
+            Left = 420
+            Top = 5
+            Width = 37
+            Height = 20
+            TabStop = False
+            AutoSelect = False
+            AutoSize = False
+            CharCase = ecUpperCase
+            ImeMode = imDisable
+            TabOrder = 6
+            Visible = False
+            OnChange = NumberEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            OnKeyUp = NumberEdit1KeyUp
+            TabOnEnter = False
           end
         end
       end
@@ -1502,7 +1595,7 @@ object MainForm: TMainForm
         end
         object checkUseRig3V: TCheckBox
           Tag = 1
-          Left = 7
+          Left = 47
           Top = 6
           Width = 18
           Height = 15
@@ -1554,8 +1647,8 @@ object MainForm: TMainForm
         end
         object SentRSTEdit2VC: TEdit
           Tag = 3
-          Left = 31
-          Top = 6
+          Left = 7
+          Top = 4
           Width = 34
           Height = 20
           TabStop = False
@@ -1566,6 +1659,27 @@ object MainForm: TMainForm
           OnChange = RcvdRSTEdit1Change
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
+        end
+        object SentNrEdit2VC: TOvrEdit
+          Tag = 1
+          Left = 12
+          Top = 6
+          Width = 37
+          Height = 20
+          TabStop = False
+          AutoSelect = False
+          AutoSize = False
+          CharCase = ecUpperCase
+          ImeMode = imDisable
+          TabOrder = 9
+          Visible = False
+          OnChange = NumberEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          OnKeyUp = NumberEdit1KeyUp
+          TabOnEnter = False
         end
       end
     end
@@ -7265,37 +7379,37 @@ object MainForm: TMainForm
       Caption = '5600MHz'
       OnClick = BandMenuClick
     end
-    object N10GHzup1: TMenuItem
+    object N101GHz: TMenuItem
       Tag = 15
       Caption = '10.1GHz'
       OnClick = BandMenuClick
     end
-    object N104GHz1: TMenuItem
+    object N104GHz: TMenuItem
       Tag = 16
       Caption = '10.4GHz'
       OnClick = BandMenuClick
     end
-    object N24GHz1: TMenuItem
+    object N24GHz: TMenuItem
       Tag = 17
       Caption = '24GHz'
       OnClick = BandMenuClick
     end
-    object N48GHz1: TMenuItem
+    object N48GHz: TMenuItem
       Tag = 18
       Caption = '47GHz'
       OnClick = BandMenuClick
     end
-    object N77GHZ1: TMenuItem
+    object N77GHZ: TMenuItem
       Tag = 19
       Caption = '77GHZ'
       OnClick = BandMenuClick
     end
-    object N135GHz1: TMenuItem
+    object N135GHz: TMenuItem
       Tag = 20
       Caption = '135GHz'
       OnClick = BandMenuClick
     end
-    object N248GHz1: TMenuItem
+    object N248GHz: TMenuItem
       Tag = 21
       Caption = '248GHz'
       OnClick = BandMenuClick
@@ -7454,8 +7568,26 @@ object MainForm: TMainForm
       end
       object G10GHz: TMenuItem
         Tag = 15
-        Caption = '10 GHz && up'
+        Caption = '10.1 GHz'
         OnClick = GridBandChangeClick
+      end
+      object G104GHz: TMenuItem
+        Caption = '10.4 GHz'
+      end
+      object G24GHz: TMenuItem
+        Caption = '24 GHz'
+      end
+      object G47GHz: TMenuItem
+        Caption = '47 GHz'
+      end
+      object G77GHz: TMenuItem
+        Caption = '77 GHz'
+      end
+      object G135GHz: TMenuItem
+        Caption = '135 GHz'
+      end
+      object G248GHz: TMenuItem
+        Caption = '248 GHz'
       end
     end
     object menuChangeMode: TMenuItem
@@ -7486,8 +7618,20 @@ object MainForm: TMainForm
       end
       object Other2: TMenuItem
         Tag = 5
-        Caption = 'Other'
+        Caption = 'FT4'
         OnClick = GridModeChangeClick
+      end
+      object FT82: TMenuItem
+        Tag = 6
+        Caption = 'FT8'
+      end
+      object DV2: TMenuItem
+        Tag = 8
+        Caption = 'DV'
+      end
+      object Other3: TMenuItem
+        Tag = 7
+        Caption = 'Other'
       end
     end
     object menuChangePower: TMenuItem
@@ -8478,8 +8622,8 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 100
     OnTimer = timerCqRepeatTimer
-    Left = 240
-    Top = 171
+    Left = 312
+    Top = 107
   end
   object FileImportDialog: TOpenDialog
     Filter = 
@@ -8494,8 +8638,8 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 20
     OnTimer = timerOutOfPeriodTimer
-    Left = 304
-    Top = 147
+    Left = 352
+    Top = 107
   end
   object timerShowInfo: TTimer
     Enabled = False

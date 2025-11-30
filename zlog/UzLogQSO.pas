@@ -167,6 +167,8 @@ type
     function GetDateTimeStr(): string;
     function GetTimeStr(): string;
     function GetDateStr(): string;
+    function GetShortDateStr(): string;
+    function GetLongDateStr(): string;
     function GetBandStr(): string;
     function GetBandStr2(): string;
     function GetModeStr(): string;
@@ -245,7 +247,9 @@ type
     property SerialStr: string read GetSerialStr;
     property DateTimeStr: string read GetDateTimeStr;
     property TimeStr: string read GetTimeStr;
-    property DateStr: string read GetDateStr;
+//    property DateStr: string read GetDateStr;
+    property ShortDateStr: string read GetShortDateStr;
+    property LongDateStr: string read GetLongDateStr;
     property BandStr: string read GetBandStr;
     property BandStr2: string read GetBandStr2;
     property ModeStr: string read GetModeStr;
@@ -720,6 +724,21 @@ end;
 
 function TQSO.GetDateStr: string;
 begin
+   if dmZLogGlobal.Settings._displongdatetime = True then begin
+      Result := GetLongDateStr();
+   end
+   else begin
+      Result := GetShortDateStr();
+   end;
+end;
+
+function TQSO.GetShortDateStr(): string;
+begin
+   Result := FormatDateTime('mm/dd', Self.Time);
+end;
+
+function TQSO.GetLongDateStr(): string;
+begin
    Result := FormatDateTime('yyyy/mm/dd', Self.Time);
 end;
 
@@ -918,10 +937,6 @@ begin
       strMemo := AddStr(strMemo, MEMO_DUPE);
    end;
 
-   if FFreq <> '' then begin
-      strMemo := AddStr(strMemo, '(' + FFreq + ')');
-   end;
-
    strMemo := AddStr(strMemo, FMemo);
 
    if FQsyViolation = True then begin
@@ -945,7 +960,7 @@ var
    S: string;
 begin
    if DispDate then begin
-      S := DateStr + ' ';
+      S := ShortDateStr + ' ';
    end
    else begin
       S := '';

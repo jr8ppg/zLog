@@ -9,38 +9,7 @@ uses
 type
   TBasicEdit = class
   public
-    colSerial : Integer;         // 0
-    colTime : Integer;           // 1
-    colCall : Integer;           // 2
-    colsentRST: Integer;         // 3
-    colrcvdRST : Integer;        // 4
-    colrcvdNumber : Integer;     // 5
-    colMode : Integer;           // 6
-    colNewPower : Integer;       // 7
-    colBand : Integer;           // 8
-    colPoint : Integer;          // 9
-    colOp : Integer;             // 10
-    colMemo : Integer;           // 11
-    colNewMulti1 : Integer;      // 12
-    colNewMulti2 : Integer;      // 13
-
-    GridColCount: Integer;
-  public
-    SerialWid : Integer;         // 0
-    TimeWid : Integer;           // 1
-    CallSignWid : Integer;       // 2
-    sentRSTWid: Integer;         // 3
-    rcvdRSTWid : Integer;        // 4
-    NumberWid : Integer;         // 5
-    BandWid : Integer;           // 6
-    ModeWid : Integer;           // 7
-    NewPowerWid : Integer;       // 8
-    PointWid : Integer;          // 9
-    OpWid : Integer;             // 10
-    MemoWid : Integer;           // 11
-    NewMulti1Wid : Integer;      // 12
-    NewMulti2Wid : Integer;      // 13
-
+    ColWidths: array[0..16] of Integer;
     constructor Create(AOwner: TComponent); virtual;
     function GetNewMulti1(aQSO : TQSO) : string; virtual;
     function GetNewMulti2(aQSO: TQSO): string; virtual;
@@ -144,36 +113,23 @@ constructor TBasicEdit.Create(AOwner: TComponent);
 begin
    Inherited Create();
 
-   colSerial := -1;
-   colTime := 1;
-   colCall := -1;
-   colsentRST := -1;
-   colrcvdRST := -1;
-   colrcvdNumber := -1;
-   colMode := -1;
-   colNewPower := -1;
-   colBand := -1;
-   colPoint := -1;
-   colMemo := -1;
-   colSerial := -1;
-   colOp := -1;
-   colNewMulti1 := -1;
-   colNewMulti2 := -1;
-
-   SerialWid := 4;
-   TimeWid := 6;
-   CallSignWid := 12;
-   sentRSTWid := 4;
-   rcvdRSTWid := 4;
-   NumberWid := 10;
-   BandWid := 4;
-   ModeWid := 4;
-   NewPowerWid := 2;
-   PointWid := 3;
-   OpWid := 8;
-   MemoWid := 10;
-   NewMulti1Wid := 3;
-   NewMulti2Wid := 0;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 4;      // Sent RST
+   ColWidths[5] := 10;     // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 3;     // multi1
+   ColWidths[14] := 3;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 function TBasicEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -193,71 +149,25 @@ begin
 end;
 
 constructor TGeneralEdit.Create(AOwner: TComponent; UseMulti2: Boolean; UseSentRST: Boolean);
-var
-   colno: Integer;
 begin
    inherited Create(AOwner);
 
-   colTime := 0;
-   colCall := 1;
-
+   // ‘—M‚m‚q
    if UseSentRST = True then begin
-      colsentRST := 2;
-      colrcvdRST := 3;
-      colrcvdNumber := 4;
-      colBand := 5;
-      colMode := 6;
-      colPoint := 7;
-      colNewMulti1 := 8;
-      NewMulti1Wid := 5;
-      colno := 9;
+      ColWidths[4] := 4;
+      ColWidths[4] := 10;
    end
    else begin
-      colsentRST := -1;
-      colrcvdRST := 2;
-      colrcvdNumber := 3;
-      colBand := 4;
-      colMode := 5;
-      colPoint := 6;
-      colNewMulti1 := 7;
-      NewMulti1Wid := 5;
-      colno := 8;
+      ColWidths[4] := 0;
+      ColWidths[4] := 0;
    end;
 
+   // ƒ}ƒ‹ƒ`‚Q
    if UseMulti2 = True then begin
-      colNewMulti2 := colno;
-      NewMulti2Wid := 5;
-      Inc(colno);
+      ColWidths[14] := 3;
    end
    else begin
-      colNewMulti2 := -1;
-      NewMulti2Wid := 0;
-   end;
-
-   if Pos('$P', dmZlogGlobal.Settings._sentstr) > 0 then begin
-      colNewPower := colno;
-      Inc(colno);
-      colOp := colno;
-      Inc(colno);
-      colMemo := colno;
-      Inc(colno);
-   end
-   else begin
-      colNewPower := -1;
-      colOp := colno;
-      Inc(colno);
-      colMemo := colno;
-      Inc(colno);
-   end;
-   GridColCount := colno;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
+      ColWidths[14] := 0;
    end;
 end;
 
@@ -265,92 +175,69 @@ constructor TPediEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
 
-   colTime := 0;
-   colCall := 1;
-   colsentRST := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := 6;
-   colPoint := 7;
-   colOp := 8;
-   colMemo := 9;
-
-   colNewMulti1 := -1;
-   NewMulti1Wid := 0;
-
-   colNewMulti2 := -1;
-   NewMulti2Wid := 0;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
-   end;
-
-   GridColCount := 10;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 4;      // Sent RST
+   ColWidths[5] := 10;     // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 0;     // point
+   ColWidths[13] := 0;     // multi1
+   ColWidths[14] := 0;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 constructor TARRLDXEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
 
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-   colNewPower := 8;
-   colOp := 9;
-   colMemo := 10;
-
-   GridColCount := 11;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
-   end;
-
-   NumberWid := 3;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 4;      // Sent RST
+   ColWidths[5] := 10;     // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 3;     // multi1
+   ColWidths[14] := 3;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 constructor TWWEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := -1;
-   { colPower := 6; }
-   colPoint := 5;
-   colNewMulti1 := 6;
-   // colNewMulti2 := 7;
-   colOp := 7;
-   colMemo := 8;
-   GridColCount := 9;
-   NumberWid := 3;
-   NewMulti1Wid := 6;
 
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-   end;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 0;      // Sent RST
+   ColWidths[5] := 0;      // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 3;     // multi1
+   ColWidths[14] := 3;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 function TWWEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -380,30 +267,24 @@ end;
 constructor TDXCCEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := -1;
-   { colPower := 6; }
-   colPoint := 5;
-   colNewMulti1 := 6;
-   colOp := 7;
-   colMemo := 8;
-   GridColCount := 9;
 
-   NumberWid := 4;
-   NewMulti1Wid := 5;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-   end;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 4;      // Sent RST
+   ColWidths[5] := 10;     // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 3;     // multi1
+   ColWidths[14] := 3;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 function TDXCCEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -417,67 +298,47 @@ end;
 constructor TWPXEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := -1;
-   { colPower := 6; }
-   colPoint := 6;
-   colNewMulti1 := 7;
-   colOp := 8;
-   colMemo := 9;
 
-   SerialWid := 5;
-   TimeWid := 6;
-   CallSignWid := 12;
-   rcvdRSTWid := 4;
-   NumberWid := 6;
-   BandWid := 4;
-   PointWid := 3;
-   OpWid := 8;
-   MemoWid := 10;
-   NewMulti1Wid := 5;
-
-   GridColCount := 10;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-   end;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 4;      // Sent RST
+   ColWidths[5] := 10;     // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 3;     // multi1
+   ColWidths[14] := 3;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 constructor TJA0Edit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
-   GridColCount := 11;
 
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := 6;
-   colPoint := 7;
-   colNewMulti1 := 8;
-   colOp := 9;
-   colMemo := 10;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 16;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 10;
-   end;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 4;      // Sent RST
+   ColWidths[5] := 10;     // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 3;     // multi1
+   ColWidths[14] := 0;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 function TWPXEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -496,79 +357,22 @@ var
 begin
    inherited Create(AOwner);
 
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-
+   // ‘—M‚m‚q
    if UseSentRST = True then begin
-      colsentRST := 3;
-      colrcvdRST := 4;
-      colrcvdNumber := 5;
-      colBand := 6;
-      colMode := 7;
-      colPoint := 8;
-      colNewMulti1 := 9;
-      NewMulti1Wid := 5;
-      colno := 10;
+      ColWidths[4] := 4;
+      ColWidths[4] := 10;
    end
    else begin
-      colsentRST := -1;
-      colrcvdRST := 3;
-      colrcvdNumber := 4;
-      colBand := 5;
-      colMode := 6;
-      colPoint := 7;
-      colNewMulti1 := 8;
-      NewMulti1Wid := 5;
-      colno := 9;
+      ColWidths[4] := 0;
+      ColWidths[4] := 0;
    end;
 
+   // ƒ}ƒ‹ƒ`‚Q
    if UseMulti2 = True then begin
-      colNewMulti2 := colno;
-      NewMulti2Wid := 5;
-      Inc(colno);
+      ColWidths[14] := 3;
    end
    else begin
-      colNewMulti2 := -1;
-      NewMulti2Wid := 0;
-   end;
-
-   SerialWid := 4;
-   TimeWid := 4;
-   CallSignWid := 8;
-   rcvdRSTWid := 3;
-   NumberWid := 4;
-   BandWid := 3;
-   ModeWid := 3;
-   PointWid := 2;
-   OpWid := 6;
-   MemoWid := 7;
-
-   if Pos('$P', dmZlogGlobal.Settings._sentstr) > 0 then begin
-      colNewPower := colno;
-      Inc(colno);
-      colOp := colno;
-      Inc(colno);
-      colMemo := colno;
-      Inc(colno);
-      GridColCount := colno;
-   end
-   else begin
-      colNewPower := -1;
-      colOp := colno;
-      Inc(colno);
-      colMemo := colno;
-      Inc(colno);
-      GridColCount := colno;
-   end;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
+      ColWidths[14] := 0;
    end;
 end;
 
@@ -592,41 +396,24 @@ end;
 constructor TIOTAEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
-   colSerial := 0;
-   colTime := 1;
-   colCall := 2;
-   colrcvdRST := 3;
-   colrcvdNumber := 4;
-   colBand := 5;
-   colMode := 6;
-   { colPower := 6; }
-   colPoint := 7;
-   colNewMulti1 := 8;
-   colOp := 9;
-   colMemo := 10;
 
-   SerialWid := 4;
-   TimeWid := 6;
-   CallSignWid := 8;
-   rcvdRSTWid := 4;
-   NumberWid := 6;
-   BandWid := 4;
-   ModeWid := 4;
-   PointWid := 4;
-   OpWid := 6;
-   MemoWid := 7;
-   NewMulti1Wid := 6;
-
-   GridColCount := 11;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 11;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 5;
-   end;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 4;      // Sent RST
+   ColWidths[5] := 10;     // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 6;     // multi1
+   ColWidths[14] := 0;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 function TIOTAEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -665,28 +452,23 @@ constructor TALLJAEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOWner);
 
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-   colNewPower := 8;
-   colOp := 9;
-   colMemo := 10;
-
-   GridColCount := 11;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 13;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 7;
-   end;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 0;      // Sent RST
+   ColWidths[5] := 0;      // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 3;     // multi1
+   ColWidths[14] := 0;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 function TALLJAEdit.GetNewMulti1(aQSO: TQSO): string;
@@ -704,33 +486,23 @@ constructor TIARUEdit.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
 
-   colTime := 0;
-   colCall := 1;
-   colrcvdRST := 2;
-   colrcvdNumber := 3;
-   colBand := 4;
-   colMode := 5;
-   colPoint := 6;
-   colNewMulti1 := 7;
-   // colNewPower := 8;
-   colOp := 8;
-   colMemo := 9;
-
-   NumberWid := 4;
-   BandWid := 3;
-   NewMulti1Wid := 4;
-
-   GridColCount := 10;
-   // MainForm.NewPowerEdit.Visible := True;
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      OpWid := 0;
-      MemoWid := 17;
-   end
-   else begin
-      OpWid := 6;
-      MemoWid := 11;
-   end;
+   ColWidths[0] := 3;      // status
+   ColWidths[1] := 6;      // date
+   ColWidths[2] := 6;      // time
+   ColWidths[3] := 12;     // callsign
+   ColWidths[4] := 0;      // Sent RST
+   ColWidths[5] := 0;      // Sent Number
+   ColWidths[6] := 4;      // Rcvd RST
+   ColWidths[7] := 10;     // Rcvd Number
+   ColWidths[8] := 4;      // band
+   ColWidths[9] := 4;      // mode
+   ColWidths[10] := 6;     // op
+   ColWidths[11] := 7;     // memo
+   ColWidths[12] := 4;     // point
+   ColWidths[13] := 4;     // multi1
+   ColWidths[14] := 0;     // multi2
+   ColWidths[15] := 10;    // freq
+   ColWidths[16] := 0;     // QSOID
 end;
 
 function TIARUEdit.GetNewMulti1(aQSO: TQSO): string;
