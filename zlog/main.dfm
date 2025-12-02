@@ -6663,22 +6663,6 @@ object MainForm: TMainForm
       object N2: TMenuItem
         Caption = '-'
       end
-      object FilePrintItem: TMenuItem
-        Caption = '&Print Log (ZPRINT)'
-        Hint = 'Print current file'
-        Visible = False
-        OnClick = FilePrint
-      end
-      object CreateELogJARL1: TMenuItem
-        Caption = 'Create E-Log (JARL 1.0)'
-        Visible = False
-        OnClick = CreateELogJARL1Click
-      end
-      object CreateELogJARL2: TMenuItem
-        Caption = 'Create E-Log (&JARL 2.1)'
-        Visible = False
-        OnClick = CreateELogJARL2Click
-      end
       object CreateJARLELog: TMenuItem
         Caption = 'Create JARL E-Log'
         OnClick = CreateJARLELogClick
@@ -6686,11 +6670,6 @@ object MainForm: TMainForm
       object CreateCabrillo: TMenuItem
         Caption = 'Create Cabrillo'
         OnClick = CreateCabrilloClick
-      end
-      object CreateDupeCheckSheetZPRINT1: TMenuItem
-        Caption = 'Create Dupe Check Sheet (ZLIST)'
-        Visible = False
-        OnClick = CreateDupeCheckSheetZPRINT1Click
       end
       object mnMMTTY: TMenuItem
         Caption = 'Load MMTTY'

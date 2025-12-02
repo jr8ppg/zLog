@@ -106,6 +106,7 @@ type
     FUseSentRST: Boolean;
     FAllowDxNoNumber: Boolean;
     FSingle10G: Boolean;
+    FSameExchange: Boolean;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -222,6 +223,7 @@ type
     property UseSentRST: Boolean read FUseSentRST write FUseSentRST;
     property AllowDxNoNumber: Boolean read FAllowDxNoNumber write FAllowDxNoNumber;
     property Single10G: Boolean read FSingle10G write FSingle10G;
+    property SameExchange: Boolean read FSameExchange write FSameExchange;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -323,6 +325,7 @@ begin
    FUseSentRST := False;
    FAllowDxNoNumber := False;
    FSingle10G := True;
+   FSameExchange := False;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -801,6 +804,10 @@ begin
 
          if strCmd = 'SINGLE10G' then begin
             D.Single10G := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'SAMEEXCHANGE' then begin
+            D.SameExchange := ParseOnOff(strParam);
          end;
       end;
    finally

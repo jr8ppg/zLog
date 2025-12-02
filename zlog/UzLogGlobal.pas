@@ -2398,10 +2398,6 @@ begin
       end;
    end;
 
-   if MyContest <> nil then begin
-      Main.MyContest.SameExchange := Settings._sameexchange;
-   end;
-
    if Settings._zlinkport in [1 .. 6] then begin // zlinkport rs232c
       // ZLinkForm.Transparent := True;
       // no rs232c anymore

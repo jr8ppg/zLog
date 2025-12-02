@@ -24,13 +24,13 @@ uses
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
   OEdit, URigControl, URigCtrlLib, UConsolePad, USpotClass,
-  UMMTTY, UTTYConsole, UELogJarl1, UELogJarl2, UELogJarlEx, UELogCabrillo, UQuickRef, UZAnalyze,
+  UMMTTY, UTTYConsole, UELogJarlEx, UELogCabrillo, UQuickRef, UZAnalyze,
   UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
   UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
-  UQsyInfo, UserDefinedContest, UPluginManager, UQsoEdit, USo2rNeoCp, UInformation,
+  UQsyInfo, UserDefinedContest, UPluginManager, USo2rNeoCp, UInformation,
   UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
   UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo, UGrayline;
 
@@ -106,7 +106,6 @@ type
     FileOpenItem: TMenuItem;
     FileSaveItem: TMenuItem;
     FileSaveAsItem: TMenuItem;
-    FilePrintItem: TMenuItem;
     FileExitItem: TMenuItem;
     StatusLine: TStatusBar;
     OpenDialog: TOpenDialog;
@@ -236,7 +235,6 @@ type
     M1: TMenuItem;
     H1: TMenuItem;
     CheckCall1: TMenuItem;
-    CreateDupeCheckSheetZPRINT1: TMenuItem;
     PluginMenu: TMenuItem;
     View1: TMenuItem;
     menuShowCurrentBandOnly: TMenuItem;
@@ -287,8 +285,6 @@ type
     mnMMTTY: TMenuItem;
     mnTTYConsole: TMenuItem;
     menuQuickReference: TMenuItem;
-    CreateELogJARL1: TMenuItem;
-    CreateELogJARL2: TMenuItem;
     ActionList1: TActionList;
     actionQuickQSY01: TAction;
     actionQuickQSY02: TAction;
@@ -704,8 +700,6 @@ type
     procedure FileOpen(Sender: TObject);
     procedure FileSave(Sender: TObject);
     procedure FileSaveAs(Sender: TObject);
-    procedure FilePrint(Sender: TObject);
-    procedure FilePrintSetup(Sender: TObject);
     procedure FileExit(Sender: TObject);
     procedure HelpContents(Sender: TObject);
     procedure HelpSearch(Sender: TObject);
@@ -721,14 +715,11 @@ type
     procedure ModeEdit1Click(Sender: TObject);
     procedure GridMenuPopup(Sender: TObject);
     procedure DeleteQSO1Click(Sender: TObject);
-    procedure GridKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure GridKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure EditQSOClick(Sender: TObject);
-    procedure EditKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure GridDblClick(Sender: TObject);
-    procedure CallsignEdit1KeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure CallsignEdit1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure LogButtonClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure CWFButtonClick(Sender: TObject);
@@ -778,7 +769,6 @@ type
     procedure OpEdit1Click(Sender: TObject);
     procedure GridClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure CreateDupeCheckSheetZPRINT1Click(Sender: TObject);
     procedure MemoHotKeyEnter(Sender: TObject);
     procedure GridTopLeftChanged(Sender: TObject);
     procedure GridMouseUp(Sender: TObject; Button: TMouseButton;
@@ -805,8 +795,6 @@ type
     procedure SwitchCWBank(Action : Integer);
     procedure menuQuickReferenceClick(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
-    procedure CreateELogJARL1Click(Sender: TObject);
-    procedure CreateELogJARL2Click(Sender: TObject);
 
     procedure OnZLogInit( var Message: TMessage ); message WM_ZLOG_INIT;
     procedure OnZLogSetGridCol( var Message: TMessage ); message WM_ZLOG_SETGRIDCOL;
@@ -1343,7 +1331,7 @@ type
     procedure BandscopeShowAll(fInitial: Boolean);
     procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
-    procedure InitGridColumnWidth(editor: TBasicEdit);
+    procedure InitGridColumnWidth();
     procedure InitGridCells();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
     procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
@@ -1351,7 +1339,6 @@ type
     function GetInitNrSent(aQSO: TQSO): string;
     function DateStr(aQSO: TQSO): string;
   public
-    EditScreen : TBasicEdit;
     LastFocus : TEdit;
 
     function GetNextBand(BB : TBand; Up : Boolean) : TBand;
@@ -2097,9 +2084,7 @@ end;
 procedure TMainForm.GridWriteQSO(R: Integer; aQSO: TQSO);
 var
    temp: string;
-   editor: TBasicEdit;
 begin
-   editor := EditScreen;
    with Grid do begin
       Objects[0, R] := aQSO;
 
@@ -2165,10 +2150,10 @@ begin
       end;
 
       // 13:new multi1
-      Cells[13, R] := editor.GetNewMulti1(aQSO);
+      Cells[13, R] := MyContest.GetNewMulti1(aQSO);
 
       // 14:new multi2
-      Cells[14, R] := editor.GetNewMulti2(aQSO);
+      Cells[14, R] := MyContest.GetNewMulti2(aQSO);
 
       // 15:freq.
       Cells[15, R] := aQSO.Freq;
@@ -2509,7 +2494,6 @@ begin
    comboBandPlan.ItemIndex := 0;
 
    FCurrentRigSet := 1;
-   EditScreen := nil;
    clStatusLine := clWindowText;
    mSec := dmZlogGlobal.Settings.CW._interval;
    S := '';
@@ -2693,44 +2677,6 @@ var
    zFileName, zParams, zDir: array [0 .. 79] of Char;
 begin
    Result := ShellExecute(MainForm.Handle, nil, StrPCopy(zFileName, filename), StrPCopy(zParams, Params), StrPCopy(zDir, DefaultDir), ShowCmd);
-end;
-
-procedure TMainForm.FilePrint(Sender: TObject);
-var
-   R: Integer;
-   S: string;
-begin
-
-   if Log.Saved = False then begin
-      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
-      R := MessageDlg(TMainForm_Confirm_Save_Changes, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
-      case R of
-         mrYes:
-            FileSave(Sender);
-         mrCancel:
-            exit;
-      end;
-   end;
-
-   R := ExecuteFile('zprintw', // CurrentFileName,
-      ExtractFileName(CurrentFileName), ExtractFilePath(ParamStr(0)), SW_SHOW);
-
-   if R > 32 then
-      exit; { successful }
-
-   S := 'Unknown error';
-   case R of
-      0:
-         S := 'Out of memory or resources';
-      ERROR_FILE_NOT_FOUND:
-         S := 'ZPRINTW.EXE not found';
-   end;
-   WriteStatusLine(S, True);
-end;
-
-procedure TMainForm.FilePrintSetup(Sender: TObject);
-begin
-   // PrinterSetup.Execute;
 end;
 
 procedure TMainForm.RestoreWindowStates;
@@ -3538,7 +3484,7 @@ begin
          TZLogForm(f).FontSize := font_size;
       end;
    end;
-   InitGridColumnWidth(EditScreen);
+   InitGridColumnWidth();
 end;
 
 procedure TMainForm.SwitchCWBank(Action: Integer); // 0 : toggle; 1,2 bank#)
@@ -5199,7 +5145,6 @@ begin
       MyContest.Free;
    end;
 
-   EditScreen.Free();
    FTempQSOList.Free();
    FQuickRef.Release();
    FZAnalyze.Release();
@@ -7224,35 +7169,6 @@ begin
    end;
 end;
 
-procedure TMainForm.CreateDupeCheckSheetZPRINT1Click(Sender: TObject);
-var
-   R: Integer;
-   S: string;
-begin
-   if Log.Saved = False then begin
-      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
-      R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
-      case R of
-         mrYes:
-            FileSave(Sender);
-         mrCancel:
-            exit;
-      end;
-   end;
-
-   R := ExecuteFile('zlistw', '/ro ' + ExtractFileName(CurrentFileName), ExtractFilePath(ParamStr(0)), SW_SHOW);
-   if R > 32 then
-      exit; { successful }
-   S := 'Unknown error';
-   case R of
-      0:
-         S := 'Out of memory or resources';
-      ERROR_FILE_NOT_FOUND:
-         S := 'ZLISTW.EXE not found';
-   end;
-   WriteStatusLine(S, True);
-end;
-
 procedure TMainForm.MemoHotKeyEnter(Sender: TObject);
 begin
    MemoEdit.SetFocus;
@@ -7268,9 +7184,7 @@ end;
 
 procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-   if EditScreen <> nil then begin
-      SetEditFields1R();
-   end;
+   SetEditFields1R();
 end;
 
 procedure TMainForm.StatusLineResize(Sender: TObject);
@@ -7744,7 +7658,7 @@ end;
 
 procedure TMainForm.menuResetColumnWidthsClick(Sender: TObject);
 begin
-   InitGridColumnWidth(EditScreen);
+   InitGridColumnWidth();
 end;
 
 procedure TMainForm.menuColumnSettingsClick(Sender: TObject);
@@ -7920,30 +7834,6 @@ end;
 procedure TMainForm.Timer2Timer(Sender: TObject);
 begin
 //   AutoInput(TBSData(BSList2[0]));
-end;
-
-procedure TMainForm.CreateELogJARL1Click(Sender: TObject);
-var
-   f: TformELogJarl1;
-begin
-   f := TformELogJarl1.Create(Self);
-   try
-      f.ShowModal();
-   finally
-      f.Release();
-   end;
-end;
-
-procedure TMainForm.CreateELogJARL2Click(Sender: TObject);
-var
-   f: TformELogJarl2;
-begin
-   f := TformELogJarl2.Create(Self);
-   try
-      f.ShowModal();
-   finally
-      f.Release();
-   end;
 end;
 
 procedure TMainForm.CreateJARLELogClick(Sender: TObject);
@@ -8177,7 +8067,7 @@ begin
    end;
 end;
 
-procedure TMainForm.InitGridColumnWidth(editor: TBasicEdit);
+procedure TMainForm.InitGridColumnWidth();
 var
    nColWidth: Integer;
    nOpWidth: Integer;
@@ -8185,11 +8075,11 @@ var
 
    procedure SetColumnWidth(n: Integer);
    begin
-      if editor.ColWidths[n] = 0 then begin
+      if MyContest.ColWidths[n] = 0 then begin
          Grid.ColWidths[n] := -1;
       end
       else begin
-         Grid.ColWidths[n] := editor.ColWidths[n] * nColWidth;
+         Grid.ColWidths[n] := MyContest.ColWidths[n] * nColWidth;
       end;
    end;
 begin
@@ -8210,7 +8100,7 @@ begin
       ColWidths[0] := 3 * nColWidth;
 
       // 1:date
-      if editor.ColWidths[0] = 0 then begin
+      if MyContest.ColWidths[0] = 0 then begin
          ColWidths[1] := -1;
       end
       else begin
@@ -8247,7 +8137,7 @@ begin
       SetColumnWidth(9);
 
       // 10:operator
-      if (editor.ColWidths[10] = 0) or (nOpWidth = 0) then begin
+      if (MyContest.ColWidths[10] = 0) or (nOpWidth = 0) then begin
          ColWidths[10] := -1;
       end
       else begin
@@ -8255,7 +8145,7 @@ begin
       end;
 
       // 11:Memo
-      if editor.ColWidths[11] = 0 then begin
+      if MyContest.ColWidths[11] = 0 then begin
          ColWidths[11] := -1;
       end
       else begin
@@ -8412,10 +8302,6 @@ begin
          end;
       end;
 
-      if EditScreen <> nil then begin
-         EditScreen.Free;
-      end;
-
       RenewBandMenu();
 
       InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestBand, strContestName, strCfgFileName);
@@ -8427,7 +8313,7 @@ begin
       Multipliers1.Enabled := True; // menu
       mnCheckCountry.Visible := False; // checkcountry window
 
-      InitGridColumnWidth(EditScreen);
+      InitGridColumnWidth();
       SetEditFields1R();
       InitSerialPanel();
 
@@ -9423,8 +9309,6 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU(False);
 
-   EditScreen := TALLJAEdit.Create(Self);
-
    MyContest := TALLJAContest.Create(Self, 'ALL JA コンテスト');
 end;
 
@@ -9432,8 +9316,6 @@ procedure TMainForm.Init6D();
 begin
    HideBandMenuHF();
    HideBandMenuWARC();
-
-   EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TSixDownContest.Create(Self, '6m and DOWNコンテスト');
 end;
@@ -9443,8 +9325,6 @@ begin
 //   BandMenu.Items[Ord(b19)].Visible := False;
    HideBandMenuWARC();
 
-   EditScreen := TACAGEdit.Create(Self);
-
    MyContest := TFDContest.Create(Self, 'フィールドデーコンテスト');
 end;
 
@@ -9452,8 +9332,6 @@ procedure TMainForm.InitACAG();
 begin
 //   BandMenu.Items[Ord(b19)].Visible := False;
    HideBandMenuWARC();
-
-   EditScreen := TACAGEdit.Create(Self);
 
    MyContest := TACAGContest.Create(Self, '全市全郡コンテスト');
 end;
@@ -9463,8 +9341,6 @@ begin
    HideBandMenuHF();
    HideBandMenuWARC();
    HideBandMenuVU();
-
-   EditScreen := TJA0Edit.Create(Self);
 
    MyContest := TJA0ContestZero.Create(Self, 'ALL JA0 コンテスト (JA0)');
 
@@ -9502,8 +9378,6 @@ begin
    HideBandMenuHF();
    HideBandMenuWARC();
    HideBandMenuVU();
-
-   EditScreen := TJA0Edit.Create(Self);
 
    MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)');
 
@@ -9547,8 +9421,6 @@ begin
       MultiButton.Enabled := False; // toolbar
       Multipliers1.Enabled := False; // menu
 
-      EditScreen := TPediEdit.Create(Self);
-
       MyContest := TPedi.Create(Self, 'Pedition mode');
       MyContest.UseUTC := F.UseUTC;
    finally
@@ -9577,21 +9449,6 @@ begin
    else begin
       HideBandMenuWarc();
    end;
-
-   if MyContest.SerialType = stNone then begin
-      EditScreen := TGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
-   end
-   else begin
-      EditScreen := TSerialGeneralEdit.Create(Self, TGeneralContest(MyContest).Config.UseMulti2, TGeneralContest(MyContest).Config.UseSentRST);
-
-//      Grid.Cells[MainForm.EditScreen.colNewMulti1, 0] := 'prefix';
-
-      TSerialGeneralEdit(MainForm.EditScreen).formMulti := TGeneralMulti2(MyContest.MultiForm);
-
-      Log.QsoList[0].Serial := $01; // uses serial number
-      MyContest.SameExchange := False;
-      dmZlogGlobal.Settings._sameexchange := MyContest.SameExchange;
-   end;
 end;
 
 procedure TMainForm.InitCQWW();
@@ -9599,10 +9456,8 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU();
 
-
    mnCheckCountry.Visible := True;
    mnCheckMulti.Caption := 'Check Zone';
-   EditScreen := TWWEdit.Create(Self);
 
    MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', dmZLogGlobal.ContestMode);
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
@@ -9612,8 +9467,6 @@ procedure TMainForm.InitWPX(ContestCategory: TContestCategory);
 begin
    HideBandMenuWARC();
    HideBandMenuVU();
-
-   EditScreen := TWPXEdit.Create(Self);
 
    Grid.Cols[13].Text := 'prefix';
    Grid.Cols[14].Text := 'zone';
@@ -9638,11 +9491,9 @@ begin
    if dmZLogGlobal.MyCountry = 'JA' then begin
       mnCheckCountry.Visible := True;
       mnCheckMulti.Caption := 'Check Zone';
-      EditScreen := TWWEdit.Create(Self);
       MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', dmZLogGlobal.ContestMode);
    end
    else begin
-      EditScreen := TGeneralEdit.Create(Self, False, False);
       MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)', dmZLogGlobal.ContestMode);
    end;
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
@@ -9656,8 +9507,6 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU();
 
-   EditScreen := TWPXEdit.Create(Self);
-
    MyContest := TAPSprint.Create(Self, 'Asia Pacific Sprint');
 end;
 
@@ -9666,8 +9515,6 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU();
 
-   EditScreen := TDXCCEdit.Create(Self);
-
    MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)', dmZLogGlobal.ContestMode);
 end;
 
@@ -9675,8 +9522,6 @@ procedure TMainForm.InitARRL_DX();
 begin
    HideBandMenuWARC();
    HideBandMenuVU();
-
-   EditScreen := TARRLDXEdit.Create(Self);
 
    MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)', dmZLogGlobal.ContestMode);
 end;
@@ -9693,14 +9538,6 @@ begin
 
    MyContest := TARRL10Contest.Create(Self, 'ARRL 10m Contest');
 
-   if dmZLogGlobal.IsUSA() then begin
-      EditScreen := TDXCCEdit.Create(Self);
-      MyContest.SentStr := '$V';
-   end
-   else begin
-      EditScreen := TIOTAEdit.Create(Self);
-      MyContest.SentStr := '$S';
-   end;
 
    FCheckMulti.ListCWandPh := True;
 end;
@@ -9709,8 +9546,6 @@ procedure TMainForm.InitIARU();
 begin
    HideBandMenuVU();
 
-   EditScreen := TIARUEdit.Create(Self);
-
    MyContest := TIARUContest.Create(Self, 'IARU HF Championship');
 end;
 
@@ -9718,8 +9553,6 @@ procedure TMainForm.InitAllAsianDX();
 begin
    HideBandMenuWARC();
    HideBandMenuVU();
-
-   EditScreen := TDXCCEdit.Create(Self);
 
    MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', dmZLogGlobal.ContestMode);
 end;
@@ -9730,8 +9563,6 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU();
 
-   EditScreen := TIOTAEdit.Create(Self);
-
    MyContest := TIOTAContest.Create(Self, 'IOTA Contest');
 end;
 
@@ -9740,8 +9571,6 @@ begin
    BandMenu.Items[Ord(b19)].Visible := False;
    HideBandMenuWARC();
    HideBandMenuVU();
-
-   EditScreen := TWPXEdit.Create(Self);
 
    MyContest := TWAEContest.Create(Self, 'WAEDC Contest', dmZLogGlobal.ContestMode);
 end;
@@ -13040,9 +12869,7 @@ begin
       Grid.ColWidths[Grid.ColCount - 1] := Grid.ColWidths[Grid.ColCount - 1] + i;
    end;
 
-   if EditScreen <> nil then begin
-      SetEditFields1R();
-   end;
+   SetEditFields1R();
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('FormResize():VisibleRowCount=' + IntToStr(MainForm.Grid.VisibleRowCount)));

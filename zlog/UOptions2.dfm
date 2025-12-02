@@ -25,7 +25,6 @@ object formOptions2: TformOptions2
     ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 474
     object tabsheetPreferences: TTabSheet
       Caption = 'Preferences'
       object Label40: TLabel
@@ -595,6 +594,7 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = 'Display exchange on other bands'
         TabOrder = 10
+        Visible = False
       end
       object cbJMode: TCheckBox
         Left = 276
@@ -3651,7 +3651,6 @@ object formOptions2: TformOptions2
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 474
     DesignSize = (
       534
       37)

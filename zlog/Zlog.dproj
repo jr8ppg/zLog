@@ -379,9 +379,6 @@
             <Form>dmZLogGlobal</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="UELogJarl1.pas">
-            <Form>formELogJarl1</Form>
-        </DCCReference>
         <DCCReference Include="UELogJarlEx.pas">
             <Form>formELogJarlEx</Form>
         </DCCReference>
@@ -465,7 +462,6 @@
         <DCCReference Include="UPluginManager.pas">
             <Form>MarketForm</Form>
         </DCCReference>
-        <DCCReference Include="UQsoEdit.pas"/>
         <DCCReference Include="USo2rNeoCp.pas">
             <Form>formSo2rNeoCp</Form>
         </DCCReference>
@@ -522,9 +518,6 @@
         </DCCReference>
         <DCCReference Include="UCountryChecker.pas">
             <Form>formCountryChecker</Form>
-        </DCCReference>
-        <DCCReference Include="UELogJarl2.pas">
-            <Form>formELogJarl2</Form>
         </DCCReference>
         <DCCReference Include="UTelnetSetting.pas"/>
         <DCCReference Include="UzLogForm.pas">
