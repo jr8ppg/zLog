@@ -4931,14 +4931,14 @@ begin
    // 他のzLogに送信
    FZLinkForm.SendQSO(Q); { ZLinkForm checks if Z-Link is ON }
 
-   // WANTEDリスト交信
+   // WANTEDリスト更新
    st := MyContest.MultiForm.ExtractMulti(Q);
    if st <> '' then begin
       for i := 0 to MyContest.WantedList.Count - 1 do begin
-         if st = TWanted(MyContest.WantedList[i]).Multi then begin
+         if st = MyContest.WantedList[i].Multi then begin
             st2 := '';
             for B := b19 to HiBand do
-               if B in TWanted(MyContest.WantedList[i]).Bands then
+               if B in MyContest.WantedList[i].Bands then
                   st2 := st2 + ' ' + BandString[B];
             MessageDlg(st + ' is wanted by' + st2, mtInformation, [mbOK], 0);
          end;
@@ -7184,7 +7184,7 @@ end;
 
 procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-   SetEditFields1R();
+//   SetEditFields1R();
 end;
 
 procedure TMainForm.StatusLineResize(Sender: TObject);
@@ -7664,12 +7664,23 @@ end;
 procedure TMainForm.menuColumnSettingsClick(Sender: TObject);
 var
    f: TformQSOListColumnSettings;
+   i: Integer;
 begin
    f := TformQSOListColumnSettings.Create(Self);
    try
+      for i := 0 to 16 do begin
+         f.ColumnWidths[i] := MyContest.ColWidths[i];
+      end;
+
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
+
+      for i := 0 to 16 do begin
+         MyContest.ColWidths[i] := f.ColumnWidths[i];
+      end;
+
+      InitGridColumnWidth();
    finally
       f.Release();
    end;
@@ -8172,6 +8183,8 @@ begin
 
       Refresh();
    end;
+
+   SetEditFields1R();
 end;
 
 procedure TMainForm.InitGridCells();
@@ -8314,7 +8327,6 @@ begin
       mnCheckCountry.Visible := False; // checkcountry window
 
       InitGridColumnWidth();
-      SetEditFields1R();
       InitSerialPanel();
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)

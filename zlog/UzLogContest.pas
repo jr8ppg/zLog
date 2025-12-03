@@ -5,6 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
+  System.Generics.Collections,
   UzLogGlobal, UzLogConst, UzLogQSO, UBasicMulti, UBasicScore, UQTCForm,
   UserDefinedContest, UWWZone;
 
@@ -40,18 +41,18 @@ type
     // Display exchange on other bands
     FSameExchange: Boolean; // true by default. false when serial number etc
 
+    FMultiForm: TBasicMulti;
+    FScoreForm: TBasicScore;
+    FZoneForm: TWWZone;
+    FWantedList: TList<TWanted>;
+
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
     function GetUseUTC(): Boolean;
     procedure SetUseUTC(v: Boolean);
     function GetUseContestPeriod(): Boolean;
     function GetColWidths(Index: Integer): Integer;
+    procedure SetColWidths(Index: Integer; v: Integer);
   public
-    WantedList : TList;
-
-    MultiForm: TBasicMulti;
-    ScoreForm: TBasicScore;
-    ZoneForm: TWWZone;
-
     constructor Create(AOwner: TComponent; N : string); virtual;
     destructor Destroy; override;
     procedure PostWanted(S : string);
@@ -96,9 +97,12 @@ type
     property AdifContestId: string read FAdifContestId write FAdifContestId;
     property SerialType: TSerialType read FSerialType write FSerialType;
 
-    property ColWidths[Index: Integer]: Integer read GetColWidths;
+    property ColWidths[Index: Integer]: Integer read GetColWidths write SetColWidths;
     property SentStr: string read FSentStr;
     property SameExchange: Boolean read FSameExchange;
+    property MultiForm: TBasicMulti read FMultiForm;
+    property ScoreForm: TBasicScore read FScoreForm;
+    property WantedList: TList<TWanted> read FWantedList;
   end;
 
   TPedi = class(TContest)
@@ -250,10 +254,10 @@ uses
 
 constructor TContest.Create(AOwner: TComponent; N: string);
 begin
-   MultiForm := nil;
-   ScoreForm := nil;
-   ZoneForm := nil;
-   WantedList := TList.Create;
+   FMultiForm := nil;
+   FScoreForm := nil;
+   FZoneForm := nil;
+   FWantedList := TList<TWanted>.Create();
 
    FSameExchange := True;
    FContestName := N;
@@ -306,16 +310,16 @@ destructor TContest.Destroy;
 begin
    inherited;
 
-   WantedList.Free();
+   FWantedList.Free();
 
-   if Assigned(MultiForm) then begin
-      MultiForm.Release();
+   if Assigned(FMultiForm) then begin
+      FMultiForm.Release();
    end;
-   if Assigned(ScoreForm) then begin
-      ScoreForm.Release();
+   if Assigned(FScoreForm) then begin
+      FScoreForm.Release();
    end;
-   if Assigned(ZoneForm) then begin
-      ZoneForm.Release();
+   if Assigned(FZoneForm) then begin
+      FZoneForm.Release();
    end;
 end;
 
@@ -334,8 +338,8 @@ begin
       mm := copy(S, 3, 255);
       mm := TrimLeft(mm);
       mm := TrimRight(mm);
-      for i := 0 to WantedList.Count - 1 do begin
-         W := TWanted(WantedList[i]);
+      for i := 0 to FWantedList.Count - 1 do begin
+         W := FWantedList[i];
          if W.Multi = mm then begin
             W.Bands := W.Bands + [TBand(BB)];
             exit;
@@ -344,7 +348,7 @@ begin
       W := TWanted.Create;
       W.Multi := mm;
       W.Bands := [TBand(BB)];
-      WantedList.Add(W);
+      FWantedList.Add(W);
    end;
 end;
 
@@ -362,14 +366,14 @@ begin
       mm := copy(S, 3, 255);
       mm := TrimLeft(mm);
       mm := TrimRight(mm);
-      for i := 0 to WantedList.Count - 1 do begin
-         W := TWanted(WantedList[i]);
+      for i := 0 to FWantedList.Count - 1 do begin
+         W := FWantedList[i];
          if W.Multi = mm then begin
             W.Bands := W.Bands - [TBand(BB)];
             if W.Bands = [] then begin
                W.Free;
-               WantedList.Delete(i);
-               WantedList.Pack;
+               FWantedList.Delete(i);
+               FWantedList.Pack;
             end;
             exit;
          end;
@@ -382,11 +386,12 @@ var
    W: TWanted;
    i: Integer;
 begin
-   for i := 0 to WantedList.Count - 1 do begin
-      W := TWanted(WantedList[i]);
+   for i := 0 to FWantedList.Count - 1 do begin
+      W := FWantedList[i];
       W.Free;
    end;
-   WantedList.Clear;
+
+   FWantedList.Clear;
 end;
 
 function TContest.QTHString(aQSO: TQSO): string;
@@ -400,28 +405,28 @@ begin
       if Local = False then
          aQSO.Reserve2 := $AA; // some multi form and editscreen uses this flag
 
-      MultiForm.AddNoUpdate(aQSO);
+      FMultiForm.AddNoUpdate(aQSO);
 
       aQSO.Reserve2 := $00;
-      ScoreForm.AddNoUpdate(aQSO);
+      FScoreForm.AddNoUpdate(aQSO);
    end;
 
    aQSO.Reserve := actAdd;
    Log.AddQue(aQSO);
    Log.ProcessQue;
 
-   MultiForm.UpdateData;
-   ScoreForm.UpdateData;
+   FMultiForm.UpdateData;
+   FScoreForm.UpdateData;
 end;
 
 procedure TContest.ShowScore;
 begin
-   FormShowAndRestore(ScoreForm);
+   FormShowAndRestore(FScoreForm);
 end;
 
 procedure TContest.ShowMulti;
 begin
-   FormShowAndRestore(MultiForm);
+   FormShowAndRestore(FMultiForm);
 end;
 
 procedure TContest.Renew;
@@ -433,8 +438,8 @@ begin
 
    RenewScoreAndMulti();
 
-   MultiForm.UpdateData;
-   ScoreForm.UpdateData;
+   FMultiForm.UpdateData;
+   FScoreForm.UpdateData;
 end;
 
 function TContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
@@ -681,8 +686,8 @@ var
    i: Integer;
    aQSO: TQSO;
 begin
-   MultiForm.Reset();
-   ScoreForm.Reset();
+   FMultiForm.Reset();
+   FScoreForm.Reset();
 
    // DUPEçƒåvéZ
    Log.SetDupeFlags;
@@ -699,8 +704,8 @@ begin
       aQSO.NewMulti2 := False;
 
       if aQSO.Invalid = False then begin
-         MultiForm.AddNoUpdate(aQSO);
-         ScoreForm.AddNoUpdate(aQSO);
+         FMultiForm.AddNoUpdate(aQSO);
+         FScoreForm.AddNoUpdate(aQSO);
       end;
    end;
 end;
@@ -770,13 +775,18 @@ begin
    Result := FColWidths[Index];
 end;
 
+procedure TContest.SetColWidths(Index: Integer; v: Integer);
+begin
+   FColWidths[Index] := v;
+end;
+
 { TPedi }
 
 constructor TPedi.Create(AOwner: TComponent; N: string);
 begin
    inherited;
-   MultiForm := TBasicMulti.Create(AOwner);
-   ScoreForm := TPediScore.Create(AOwner);
+   FMultiForm := TBasicMulti.Create(AOwner);
+   FScoreForm := TPediScore.Create(AOwner);
 
    Log.AcceptDifferentMode := True;
 
@@ -831,8 +841,8 @@ end;
 constructor TALLJAContest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
-   MultiForm := TALLJAMulti.Create(AOwner);
-   ScoreForm := TALLJAScore.Create(AOwner, b19, b50);
+   FMultiForm := TALLJAMulti.Create(AOwner);
+   FScoreForm := TALLJAScore.Create(AOwner, b19, b50);
    FSentStr := '$V$P';
    FStartTime := 21;
    FPeriod := 24;
@@ -890,8 +900,8 @@ end;
 constructor TACAGContest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
-   MultiForm := TACAGMulti.Create(AOwner);
-   ScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
+   FMultiForm := TACAGMulti.Create(AOwner);
+   FScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
    FSentStr := '$Q$P';
    FBandLow := b19;
    FBandHigh := HiBand;
@@ -923,8 +933,8 @@ end;
 constructor TFDContest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
-   MultiForm := TFDMulti.Create(AOwner);
-   ScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
+   FMultiForm := TFDMulti.Create(AOwner);
+   FScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
    FSentStr := '$Q$P';
    FUseCoeff := True;
    FBandLow := b19;
@@ -1013,17 +1023,17 @@ end;
 constructor TSixDownContest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
-   MultiForm := TSixDownMulti.Create(AOwner);
-   ScoreForm := TALLJAScore.Create(AOwner, b50, HiBand);
-   TALLJAScore(ScoreForm).PointTable[b2400] := 2;
-   TALLJAScore(ScoreForm).PointTable[b5600] := 2;
-   TALLJAScore(ScoreForm).PointTable[b10g] := 2;
-   TALLJAScore(ScoreForm).PointTable[b104g] := 0;
-   TALLJAScore(ScoreForm).PointTable[b24g] := 2;
-   TALLJAScore(ScoreForm).PointTable[b47g] := 2;
-   TALLJAScore(ScoreForm).PointTable[b77g] := 2;
-   TALLJAScore(ScoreForm).PointTable[b135g] := 2;
-   TALLJAScore(ScoreForm).PointTable[b248g] := 2;
+   FMultiForm := TSixDownMulti.Create(AOwner);
+   FScoreForm := TALLJAScore.Create(AOwner, b50, HiBand);
+   TALLJAScore(FScoreForm).PointTable[b2400] := 2;
+   TALLJAScore(FScoreForm).PointTable[b5600] := 2;
+   TALLJAScore(FScoreForm).PointTable[b10g] := 2;
+   TALLJAScore(FScoreForm).PointTable[b104g] := 0;
+   TALLJAScore(FScoreForm).PointTable[b24g] := 2;
+   TALLJAScore(FScoreForm).PointTable[b47g] := 2;
+   TALLJAScore(FScoreForm).PointTable[b77g] := 2;
+   TALLJAScore(FScoreForm).PointTable[b135g] := 2;
+   TALLJAScore(FScoreForm).PointTable[b248g] := 2;
    FSentStr := '$Q$P';
    FBandLow := b50;
    FBandHigh := HiBand;
@@ -1112,17 +1122,17 @@ constructor TGeneralContest.Create(AOwner: TComponent; N, CFGFileName: string);
 begin
    inherited Create(AOwner, N);
    FUserDatLoaded := False;
-   MultiForm := TGeneralMulti2.Create(AOwner);
-   ScoreForm := TGeneralScore.Create(AOwner);
-   TGeneralScore(ScoreForm).formMulti := TGeneralMulti2(MultiForm);
+   FMultiForm := TGeneralMulti2.Create(AOwner);
+   FScoreForm := TGeneralScore.Create(AOwner);
+   TGeneralScore(FScoreForm).formMulti := TGeneralMulti2(FMultiForm);
 
    FConfig := TUserDefinedContest.Parse(CFGFileName);
-   TGeneralScore(ScoreForm).Config := FConfig;
-   TGeneralMulti2(MultiForm).Config := FConfig;
+   TGeneralScore(FScoreForm).Config := FConfig;
+   TGeneralMulti2(FMultiForm).Config := FConfig;
 
    if FConfig.DatFileName <> '' then begin
-      TGeneralMulti2(MultiForm).LoadDAT(FConfig.DatFileFullPath);
-      if TGeneralMulti2(MultiForm).MultiList.List.Count > 0 then begin
+      TGeneralMulti2(FMultiForm).LoadDAT(FConfig.DatFileFullPath);
+      if TGeneralMulti2(FMultiForm).MultiList.List.Count > 0 then begin
          FUserDatLoaded := True;
       end;
    end
@@ -1212,7 +1222,7 @@ end;
 
 procedure TGeneralContest.SetPoints(aQSO: TQSO);
 begin
-   TGeneralScore(ScoreForm).CalcPoints(aQSO);
+   TGeneralScore(FScoreForm).CalcPoints(aQSO);
 end;
 
 function TGeneralContest.GetNewMulti1(aQSO: TQSO): string;
@@ -1260,12 +1270,12 @@ constructor TCQWPXContest.Create(AOwner: TComponent; N: string; M: TContestMode)
 begin
    inherited Create(AOwner, N);
 
-   MultiForm := TWPXMulti.Create(AOwner);
-   ScoreForm := TWPXScore.Create(AOwner);
-   ZoneForm := nil;
-   MultiForm.Reset();
+   FMultiForm := TWPXMulti.Create(AOwner);
+   FScoreForm := TWPXScore.Create(AOwner);
+   FZoneForm := nil;
+   FMultiForm.Reset();
 
-   TWPXScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
+   TWPXScore(FScoreForm).MultiForm := TWPXMulti(FMultiForm);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -1335,9 +1345,9 @@ constructor TWAEContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited Create(AOwner, N);
 
-   MultiForm := TWAEMulti.Create(AOwner);
-   ScoreForm := TWAEScore.Create(AOwner);
-   ZoneForm := TWWZone.Create(AOwner);
+   FMultiForm := TWAEMulti.Create(AOwner);
+   FScoreForm := TWAEScore.Create(AOwner);
+   FZoneForm := TWWZone.Create(AOwner);
    QTCForm := TQTCForm.Create(AOwner);
 
    UseUTC := True;
@@ -1405,9 +1415,9 @@ constructor TIOTAContest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
 
-   MultiForm := TIOTAMulti.Create(AOwner);
-   ScoreForm := TIARUScore.Create(AOwner);
-   TIARUScore(ScoreForm).InitGrid(b35, b28);
+   FMultiForm := TIOTAMulti.Create(AOwner);
+   FScoreForm := TIARUScore.Create(AOwner);
+   TIARUScore(FScoreForm).InitGrid(b35, b28);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -1447,7 +1457,7 @@ end;
 
 function TIOTAContest.QTHString(aQSO: TQSO): string;
 begin
-   Result := TIOTAMulti(MultiForm).MyIOTA;
+   Result := TIOTAMulti(FMultiForm).MyIOTA;
 end;
 
 function TIOTAContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
@@ -1460,7 +1470,7 @@ begin
    Q.Callsign := strCallsign;
    Q.NrRcvd := strNumber;
 
-   if FMultiFound and (TIOTAMulti(MultiForm).ExtractMulti(Q) = '') then begin // serial number
+   if FMultiFound and (TIOTAMulti(FMultiForm).ExtractMulti(Q) = '') then begin // serial number
       strNumber := '';
    end;
 
@@ -1485,9 +1495,9 @@ constructor TARRL10Contest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
 
-   MultiForm := TARRL10Multi.Create(AOwner);
-   ScoreForm := TARRL10Score.Create(AOwner);
-   ZoneForm := TWWZone.Create(AOwner);
+   FMultiForm := TARRL10Multi.Create(AOwner);
+   FScoreForm := TARRL10Score.Create(AOwner);
+   FZoneForm := TWWZone.Create(AOwner);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -1574,8 +1584,8 @@ end;
 constructor TJA0Contest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
-   MultiForm := TJA0Multi.Create(AOwner);
-   ScoreForm := TJA0Score.Create(AOwner);
+   FMultiForm := TJA0Multi.Create(AOwner);
+   FScoreForm := TJA0Score.Create(AOwner);
 
    Log.QsoList[0].Serial := $01; // uses serial number
    FSerialType := stAll;
@@ -1617,7 +1627,7 @@ constructor TJA0ContestZero.Create(AOwner: TComponent; N: string);
 begin
    inherited;
 
-   TJA0Multi(MultiForm).JA0 := True;
+   TJA0Multi(FMultiForm).JA0 := True;
 
    Log.QsoList[0].Serial := $01; // uses serial number
    FSerialType := stAll;
@@ -1632,11 +1642,11 @@ end;
 constructor TAPSprint.Create(AOwner: TComponent; N: string);
 begin
    inherited;
-   MultiForm := TWPXMulti.Create(AOwner);
-   ScoreForm := TAPSprintScore.Create(AOwner);
-   ZoneForm := TWWZone.Create(AOwner);
+   FMultiForm := TWPXMulti.Create(AOwner);
+   FScoreForm := TAPSprintScore.Create(AOwner);
+   FZoneForm := TWWZone.Create(AOwner);
 
-   TAPSprintScore(ScoreForm).MultiForm := TWPXMulti(MultiForm);
+   TAPSprintScore(FScoreForm).MultiForm := TWPXMulti(FMultiForm);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -1695,11 +1705,11 @@ begin
    inherited Create(AOwner, N);
 
    if fJIDX = False then begin
-      MultiForm := TWWMulti.Create(AOwner);
-      ScoreForm := TWWScore.Create(AOwner);
-      ZoneForm := TWWZone.Create(AOwner);
-      TWWMulti(MultiForm).ZoneForm := ZoneForm;
-      MultiForm.Reset();
+      FMultiForm := TWWMulti.Create(AOwner);
+      FScoreForm := TWWScore.Create(AOwner);
+      FZoneForm := TWWZone.Create(AOwner);
+      TWWMulti(FMultiForm).ZoneForm := FZoneForm;
+      FMultiForm.Reset();
    end;
 
    UseUTC := True;
@@ -1744,7 +1754,7 @@ function TCQWWContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TB
 var
    temp: string;
 begin
-   temp := MultiForm.GuessZone(strCallsign);
+   temp := FMultiForm.GuessZone(strCallsign);
    Result := temp;
 
    DispExchangeOnOtherBands(strCallsign, b);
@@ -1752,8 +1762,8 @@ end;
 
 procedure TCQWWContest.ShowMulti;
 begin
-   MultiForm.Show;
-   ZoneForm.Show;
+   FMultiForm.Show;
+   FZoneForm.Show;
 end;
 
 function TCQWWContest.CheckWinSummary(aQSO: TQSO): string;
@@ -1792,9 +1802,9 @@ constructor TIARUContest.Create(AOwner: TComponent; N: string);
 begin
    inherited;
 
-   MultiForm := TIARUMulti.Create(AOwner);
-   ScoreForm := TIARUScore.Create(AOwner);
-   ZoneForm := TWWZone.Create(AOwner);
+   FMultiForm := TIARUMulti.Create(AOwner);
+   FScoreForm := TIARUScore.Create(AOwner);
+   FZoneForm := TWWZone.Create(AOwner);
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -1837,7 +1847,7 @@ begin
    Result := inherited SpaceBarProc(strCallsign, strNumber, b);
 
    if (FMultiFound = False) and (strNumber = '') then begin
-      temp := MultiForm.GuessZone(strCallsign);
+      temp := FMultiForm.GuessZone(strCallsign);
       Result := temp;
    end;
 end;
@@ -1863,10 +1873,10 @@ end;
 constructor TJIDXContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited Create(AOwner, N, M, True);    //   <-TCQWWContestÇ©ÇÁÇÃåpè≥Ç»ÇÃÇ≈inheritedïsâ¬
-   MultiForm := TJIDXMulti.Create(AOwner);
-   ScoreForm := TJIDXScore2.Create(AOwner);
-   ZoneForm := TWWZone.Create(AOwner);
-   TJIDXMulti(MultiForm).ZoneForm := ZoneForm;
+   FMultiForm := TJIDXMulti.Create(AOwner);
+   FScoreForm := TJIDXScore2.Create(AOwner);
+   FZoneForm := TWWZone.Create(AOwner);
+   TJIDXMulti(FMultiForm).ZoneForm := FZoneForm;
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    FSentStr := '$V';
@@ -1907,7 +1917,7 @@ end;
 
 procedure TJIDXContest.SetPoints(aQSO: TQSO);
 begin
-   TJIDXScore2(ScoreForm).CalcPoints(aQSO);
+   TJIDXScore2(FScoreForm).CalcPoints(aQSO);
 end;
 
 function TJIDXContest.GetNewMulti1(aQSO: TQSO): string;
@@ -1929,8 +1939,8 @@ constructor TJIDXContestDX.Create(AOwner: TComponent; N: string; M: TContestMode
 begin
    inherited Create(AOwner, N);
 
-   MultiForm := TJIDX_DX_Multi.Create(AOwner);
-   ScoreForm := TJIDX_DX_Score.Create(AOwner);
+   FMultiForm := TJIDX_DX_Multi.Create(AOwner);
+   FScoreForm := TJIDX_DX_Score.Create(AOwner);
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    FSentStr := '$V';
@@ -1968,7 +1978,7 @@ end;
 
 procedure TJIDXContestDX.SetPoints(aQSO: TQSO);
 begin
-   TJIDX_DX_Score(ScoreForm).CalcPoints(aQSO);
+   TJIDX_DX_Score(FScoreForm).CalcPoints(aQSO);
 end;
 
 function TJIDXContestDX.GetNewMulti1(aQSO: TQSO): string;
@@ -1986,8 +1996,8 @@ end;
 constructor TARRLDXContestDX.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited Create(AOwner, N);
-   MultiForm := TARRLDXMulti.Create(AOwner);
-   ScoreForm := TARRLDXScore.Create(AOwner);
+   FMultiForm := TARRLDXMulti.Create(AOwner);
+   FScoreForm := TARRLDXScore.Create(AOwner);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2046,10 +2056,10 @@ end;
 constructor TARRLDXContestW.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited Create(AOwner, N);
-   MultiForm := TARRLWMulti.Create(AOwner);
-   TARRLWMulti(MultiForm).ALLASIANFLAG := False;
-   ScoreForm := TARRLDXScore.Create(AOwner);
-   ZoneForm := TWWZone.Create(AOwner);
+   FMultiForm := TARRLWMulti.Create(AOwner);
+   TARRLWMulti(FMultiForm).ALLASIANFLAG := False;
+   FScoreForm := TARRLDXScore.Create(AOwner);
+   FZoneForm := TWWZone.Create(AOwner);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2111,10 +2121,10 @@ constructor TAllAsianContest.Create(AOwner: TComponent; N: string; M: TContestMo
 begin
    inherited Create(AOwner, N);
 
-   MultiForm := TARRLWMulti.Create(AOwner);
-   TARRLWMulti(MultiForm).ALLASIANFLAG := True;
-   ScoreForm := TAllAsianScore.Create(AOwner);
-   ZoneForm := TWWZone.Create(AOwner);
+   FMultiForm := TARRLWMulti.Create(AOwner);
+   TARRLWMulti(FMultiForm).ALLASIANFLAG := True;
+   FScoreForm := TAllAsianScore.Create(AOwner);
+   FZoneForm := TWWZone.Create(AOwner);
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2156,7 +2166,7 @@ end;
 
 procedure TAllAsianContest.SetPoints(aQSO: TQSO);
 begin
-   TAllAsianScore(ScoreForm).CalcPoints(aQSO);
+   TAllAsianScore(FScoreForm).CalcPoints(aQSO);
 end;
 
 function TAllAsianContest.ADIF_ExchangeRX_FieldName: string;

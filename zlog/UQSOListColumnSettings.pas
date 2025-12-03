@@ -69,9 +69,10 @@ type
     FColCheckboxes: array[0..16] of TCheckBox;
     FColWidths: array[0..16] of TUpDown;
     function GetColumnWidths(Index: Integer): Integer;
+    procedure SetColumnWidths(Index: Integer; v: Integer);
   public
     { Public êÈåæ }
-    property ColumnWidths[Index: Integer]: Integer read GetColumnWidths;
+    property ColumnWidths[Index: Integer]: Integer read GetColumnWidths write SetColumnWidths;
   end;
 
 implementation
@@ -123,6 +124,17 @@ begin
    end
    else begin
       Result := 0;
+   end;
+end;
+
+procedure TformQSOListColumnSettings.SetColumnWidths(Index: Integer; v: Integer);
+begin
+   if v = 0 then begin
+      FColCheckboxes[Index].Checked := False;
+   end
+   else begin
+      FColCheckboxes[Index].Checked := True;
+      FColWidths[Index].Position := v;
    end;
 end;
 
