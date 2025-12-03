@@ -64,6 +64,7 @@ const
   WM_ZLOG_SO2R_BLEND = (WM_USER + 126);
   WM_ZLOG_SO2R_SET_RXAUTOSEL = (WM_USER + 127);
   WM_ZLOG_NONCONVERTKEYPRESS = (WM_USER + 128);
+  WM_ZLOG_SETEDITFIELDS = (WM_USER + 129);
   WM_ZLOG_GETCALLSIGN = (WM_USER + 200);
   WM_ZLOG_GETVERSION = (WM_USER + 201);
   WM_ZLOG_SETPTTSTATE = (WM_USER + 202);
@@ -836,6 +837,7 @@ type
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure OnPowerBroadcast( var Message: TMessage ); message WM_POWERBROADCAST;
     procedure OnZLogNonconvertKeyPress( var Message: TMessage ); message WM_ZLOG_NONCONVERTKEYPRESS;
+    procedure OnZLogSetEditFields( var Message: TMessage ); message WM_ZLOG_SETEDITFIELDS;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -1267,7 +1269,9 @@ type
     procedure GridWriteQSO(R: Integer; aQSO: TQSO);
     procedure GridClearQSO(R: Integer);
     function GetGridColmunLeft(col: Integer): Integer;
+    procedure SetEditFields();
     procedure SetEditFields1R();
+    procedure SetEditFields2RV();
     function GetNextRigID(curid: Integer): Integer;
 
     procedure UpdateBandAndMode();
@@ -2232,6 +2236,12 @@ begin
    Result := j + 2;
 end;
 
+procedure TMainForm.SetEditFields();
+begin
+   SetEditFields1R();
+   SetEditFields2RV();
+end;
+
 procedure TMainForm.SetEditFields1R();
 var
    h: Integer;
@@ -2250,6 +2260,8 @@ var
 begin
    h := Grid.RowHeights[0];
    EditPanel1R.Height := h + 10;
+
+   h := Grid.Canvas.TextHeight('A') + 6;
 
    // Date
    LayoutEdit(1, DateEdit1);
@@ -2308,6 +2320,127 @@ begin
 
    // Memo
    LayoutEdit(11, MemoEdit1);
+end;
+
+procedure TMainForm.SetEditFields2RV();
+var
+   h: Integer;
+   w: Integer;
+
+   procedure SetPanelSizeInc();
+   begin
+      EditPanel2RV.Height := h * 3;
+      EditUpperRightPanel2RV.Height := h * 2;
+      RigPanelVC.Height := h;
+   end;
+
+   procedure SetPanelSizeDec();
+   begin
+      RigPanelVC.Height := h;
+      EditUpperRightPanel2RV.Height := h * 2;
+      EditPanel2RV.Height := h * 3;
+   end;
+
+   procedure SetFieldsSize();
+   var
+      h: Integer;
+   begin
+      h := Grid.Canvas.TextHeight('A') + 6;
+
+      CallsignEdit2VA.Height := h;
+      RcvdRSTEdit2VA.Height := h;
+      NumberEdit2VA.Height := h;
+      BandEdit2VA.Height := h;
+      ModeEdit2VA.Height := h;
+      CallsignEdit2VB.Height := h;
+      RcvdRSTEdit2VB.Height := h;
+      NumberEdit2VB.Height := h;
+      BandEdit2VB.Height := h;
+      ModeEdit2VB.Height := h;
+      CallsignEdit2VC.Height := h;
+      RcvdRSTEdit2VC.Height := h;
+      NumberEdit2VC.Height := h;
+      BandEdit2VC.Height := h;
+      ModeEdit2VC.Height := h;
+      DateEdit2RV.Height := h;
+      TimeEdit2RV.Height := h;
+      SerialEdit2VA.Height := h;
+
+      // RIG-A
+      ledTx2VA.Top := (RigPanelVA.Height - ledTx2VA.Height) div 2;
+      labelRigTitle2VA.Top := (RigPanelVA.Height - labelRigTitle2VA.Height) div 2;
+      CallsignEdit2VA.Top := (RigPanelVA.Height - CallsignEdit2VA.Height) div 2;
+      RcvdRSTEdit2VA.Top := CallsignEdit2VA.Top;
+      NumberEdit2VA.Top := CallsignEdit2VA.Top;
+      BandEdit2VA.Top := CallsignEdit2VA.Top;
+      ModeEdit2VA.Top := CallsignEdit2VA.Top;
+      CallsignEdit2VA.Width := w * 8;
+      RcvdRSTEdit2VA.Width := w * 4;
+      NumberEdit2VA.Width := w * 8;
+      BandEdit2VA.Width := w * 5;
+      ModeEdit2VA.Width := w * 5;
+      RcvdRSTEdit2VA.Left := CallsignEdit2VA.Left + CallsignEdit2VA.Width + 3;
+      NumberEdit2VA.Left := RcvdRSTEdit2VA.Left + RcvdRSTEdit2VA.Width + 3;
+      BandEdit2VA.Left := NumberEdit2VA.Left + NumberEdit2VA.Width + 3;
+      ModeEdit2VA.Left := BandEdit2VA.Left + BandEdit2VA.Width + 3;
+
+      // RIG-B
+      ledTx2VB.Top := (RigPanelVB.Height - ledTx2VB.Height) div 2;
+      labelRigTitle2VB.Top := (RigPanelVB.Height - labelRigTitle2VB.Height) div 2;
+      CallsignEdit2VB.Top := (RigPanelVB.Height - CallsignEdit2VB.Height) div 2;
+      RcvdRSTEdit2VB.Top := CallsignEdit2VB.Top;
+      NumberEdit2VB.Top := CallsignEdit2VB.Top;
+      BandEdit2VB.Top := CallsignEdit2VB.Top;
+      ModeEdit2VB.Top := CallsignEdit2VB.Top;
+      CallsignEdit2VB.Width := w * 8;
+      RcvdRSTEdit2VB.Width := w * 4;
+      NumberEdit2VB.Width := w * 8;
+      BandEdit2VB.Width := w * 5;
+      ModeEdit2VB.Width := w * 5;
+      RcvdRSTEdit2VB.Left := CallsignEdit2VB.Left + CallsignEdit2VB.Width + 3;
+      NumberEdit2VB.Left := RcvdRSTEdit2VB.Left + RcvdRSTEdit2VB.Width + 3;
+      BandEdit2VB.Left := NumberEdit2VB.Left + NumberEdit2VB.Width + 3;
+      ModeEdit2VB.Left := BandEdit2VB.Left + BandEdit2VB.Width + 3;
+
+      // RIG-C
+      ledTx2VC.Top := (RigPanelVC.Height - ledTx2VC.Height) div 2;
+      labelRigTitle2VC.Top := (RigPanelVC.Height - labelRigTitle2VC.Height) div 2;
+      checkUseRig3V.Top := (RigPanelVC.Height - checkUseRig3V.Height) div 2;
+      CallsignEdit2VC.Top := (RigPanelVC.Height - CallsignEdit2VC.Height) div 2;
+      RcvdRSTEdit2VC.Top := CallsignEdit2VC.Top;
+      NumberEdit2VC.Top := CallsignEdit2VC.Top;
+      BandEdit2VC.Top := CallsignEdit2VC.Top;
+      ModeEdit2VC.Top := CallsignEdit2VC.Top;
+      checkWithRig1V.Top := (RigPanelVC.Height - checkWithRig1V.Height) div 2;
+      checkWithRig2V.Top := (RigPanelVC.Height - checkWithRig2V.Height) div 2;
+      CallsignEdit2VC.Width := w * 8;
+      RcvdRSTEdit2VC.Width := w * 4;
+      NumberEdit2VC.Width := w * 8;
+      BandEdit2VC.Width := w * 5;
+      ModeEdit2VC.Width := w * 5;
+      RcvdRSTEdit2VC.Left := CallsignEdit2VC.Left + CallsignEdit2VC.Width + 3;
+      NumberEdit2VC.Left := RcvdRSTEdit2VC.Left + RcvdRSTEdit2VC.Width + 3;
+      BandEdit2VC.Left := NumberEdit2VC.Left + NumberEdit2VC.Width + 3;
+      ModeEdit2VC.Left := BandEdit2VC.Left + BandEdit2VC.Width + 3;
+   end;
+begin
+   h := Grid.RowHeights[0];
+   h := h + 10;
+
+   w := Grid.Canvas.TextWidth('A');
+
+   if RigPanelVC.Height < h then begin
+      SetPanelSizeInc();
+      EditPanel2RV.Refresh();
+      SetFieldsSize();
+   end
+   else begin
+      SetFieldsSize();
+      EditPanel2RV.Refresh();
+      SetPanelSizeDec();
+   end;
+
+   EditPanel2RV.Refresh();
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -2570,6 +2703,7 @@ begin
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
+   PostMessage(Handle, WM_ZLOG_SETEDITFIELDS, 0, 0);
    FFunctionKeyPanel.Init();
 
    {$IFDEF WIN32}
@@ -3415,7 +3549,7 @@ procedure TMainForm.IncFontSize();
 var
    j: Integer;
 begin
-   j := EditPanel1R.Font.Size;
+   j := Grid.Font.Size;
    if j < 21 then begin
       Inc(j);
    end
@@ -3430,7 +3564,7 @@ procedure TMainForm.DecFontSize();
 var
    j: Integer;
 begin
-   j := EditPanel1R.Font.Size;
+   j := Grid.Font.Size;
    if j > 9 then begin
       Dec(j);
    end
@@ -3450,22 +3584,28 @@ begin
    Grid.DefaultRowHeight := h + 4;
    Grid.Refresh();
 
+   h := h + 6;
+
+   // 1R
    EditPanel1R.Font.Size := font_size;
    CallsignEdit1.Font.Size := font_size;
    NumberEdit1.Font.Size := font_size;
-   DateEdit1.Height := h + 6;
-   TimeEdit1.Height := h + 6;
-   CallsignEdit1.Height := h + 6;
-   SentRSTEdit1.Height := h + 6;
-   SentNrEdit1.Height := h + 6;
-   RcvdRSTEdit1.Height := h + 6;
-   NumberEdit1.Height := h + 6;
-   ModeEdit1.Height := h + 6;
-   BandEdit1.Height := h + 6;
-   PowerEdit1.Height := h + 6;
-   OpEdit1.Height := h + 6;
-   MemoEdit1.Height := h + 6;
-   EditPanel1R.Height := h + 6 + 8;
+
+   // 2RV
+   EditPanel2RV.Font.Size := font_size;
+   EditUpperLeftPanel2RV.Font.Size := font_size;
+   EditUpperRightPanel2RV.Font.Size := font_size;
+   RigPanelVC.Font.Size := font_size;
+
+   CallsignEdit2VA.Font.Size := font_size;
+   RcvdRSTEdit2VA.Font.Size := font_size;
+   NumberEdit2VA.Font.Size := font_size;
+   CallsignEdit2VB.Font.Size := font_size;
+   RcvdRSTEdit2VB.Font.Size := font_size;
+   NumberEdit2VB.Font.Size := font_size;
+   CallsignEdit2VC.Font.Size := font_size;
+   RcvdRSTEdit2VC.Font.Size := font_size;
+   NumberEdit2VC.Font.Size := font_size;
 
    dmZlogGlobal.Settings._mainfontsize := font_size;
 
@@ -8184,7 +8324,7 @@ begin
       Refresh();
    end;
 
-   SetEditFields1R();
+   PostMessage(Handle, WM_ZLOG_SETEDITFIELDS, 0, 0);
 end;
 
 procedure TMainForm.InitGridCells();
@@ -9313,6 +9453,11 @@ begin
    nRxID := Message.WParam;
    nTxID := Message.LParam;
    OnNonconvertKeyProc(nRxID, nTxID);
+end;
+
+procedure TMainForm.OnZLogSetEditFields( var Message: TMessage );
+begin
+   SetEditFields();
 end;
 
 procedure TMainForm.InitALLJA();
@@ -12881,7 +13026,7 @@ begin
       Grid.ColWidths[Grid.ColCount - 1] := Grid.ColWidths[Grid.ColCount - 1] + i;
    end;
 
-   SetEditFields1R();
+   SetEditFields();
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('FormResize():VisibleRowCount=' + IntToStr(MainForm.Grid.VisibleRowCount)));

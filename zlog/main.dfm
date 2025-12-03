@@ -1069,7 +1069,7 @@ object MainForm: TMainForm
         Left = 1
         Top = 1
         Width = 65
-        Height = 60
+        Height = 58
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
@@ -1123,7 +1123,7 @@ object MainForm: TMainForm
         Left = 66
         Top = 1
         Width = 461
-        Height = 60
+        Height = 58
         Align = alClient
         BevelOuter = bvNone
         ColumnCollection = <
@@ -1153,7 +1153,7 @@ object MainForm: TMainForm
           Left = 0
           Top = 0
           Width = 461
-          Height = 30
+          Height = 29
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
@@ -1162,11 +1162,12 @@ object MainForm: TMainForm
             Left = 0
             Top = 0
             Width = 461
-            Height = 30
+            Height = 29
             Align = alClient
             Brush.Style = bsClear
             Pen.Width = 2
             ExplicitTop = -1
+            ExplicitHeight = 30
           end
           object ledTx2VA: TJvLED
             Left = 6
@@ -1309,9 +1310,9 @@ object MainForm: TMainForm
         end
         object RigPanelVB: TPanel
           Left = 0
-          Top = 30
+          Top = 29
           Width = 461
-          Height = 30
+          Height = 29
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
@@ -1320,11 +1321,12 @@ object MainForm: TMainForm
             Left = 0
             Top = 0
             Width = 461
-            Height = 30
+            Height = 29
             Align = alClient
             Brush.Style = bsClear
             Pen.Width = 2
             ExplicitTop = -1
+            ExplicitHeight = 30
           end
           object ledTx2VB: TJvLED
             Left = 6
@@ -1468,36 +1470,37 @@ object MainForm: TMainForm
       end
       object RigPanelVC: TPanel
         Left = 1
-        Top = 61
+        Top = 59
         Width = 526
-        Height = 28
+        Height = 30
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
         DesignSize = (
           526
-          28)
+          30)
         object RigPanelShape2VC: TShape
           Tag = 3
           Left = 0
           Top = 0
           Width = 526
-          Height = 28
+          Height = 30
           Align = alClient
           Brush.Style = bsClear
           Pen.Width = 2
           ExplicitTop = -1
+          ExplicitHeight = 28
         end
         object ledTx2VC: TJvLED
           Left = 71
-          Top = 5
+          Top = 6
           ColorOff = clSilver
           Status = False
         end
         object labelRigTitle2VC: TLabel
           Tag = 2
           Left = 95
-          Top = 5
+          Top = 6
           Width = 40
           Height = 18
           Caption = 'RIG-C'
@@ -1512,7 +1515,7 @@ object MainForm: TMainForm
         object CallsignEdit2VC: TOvrEdit
           Tag = 3
           Left = 143
-          Top = 4
+          Top = 5
           Width = 80
           Height = 20
           TabStop = False
@@ -1532,7 +1535,7 @@ object MainForm: TMainForm
         object NumberEdit2VC: TOvrEdit
           Tag = 3
           Left = 263
-          Top = 4
+          Top = 5
           Width = 70
           Height = 20
           TabStop = False
@@ -1552,7 +1555,7 @@ object MainForm: TMainForm
         object RcvdRSTEdit2VC: TEdit
           Tag = 3
           Left = 226
-          Top = 4
+          Top = 5
           Width = 34
           Height = 20
           TabStop = False
@@ -1566,7 +1569,7 @@ object MainForm: TMainForm
         object BandEdit2VC: TEdit
           Tag = 3
           Left = 336
-          Top = 4
+          Top = 5
           Width = 50
           Height = 20
           TabStop = False
@@ -1581,7 +1584,7 @@ object MainForm: TMainForm
         object ModeEdit2VC: TEdit
           Tag = 3
           Left = 389
-          Top = 4
+          Top = 5
           Width = 50
           Height = 20
           TabStop = False
@@ -1596,7 +1599,7 @@ object MainForm: TMainForm
         object checkUseRig3V: TCheckBox
           Tag = 1
           Left = 47
-          Top = 6
+          Top = 7
           Width = 18
           Height = 15
           Checked = True
@@ -1612,7 +1615,7 @@ object MainForm: TMainForm
         end
         object checkWithRig1V: TCheckBox
           Left = 445
-          Top = 6
+          Top = 7
           Width = 34
           Height = 15
           TabStop = False
@@ -1630,7 +1633,7 @@ object MainForm: TMainForm
         object checkWithRig2V: TCheckBox
           Tag = 1
           Left = 482
-          Top = 6
+          Top = 7
           Width = 34
           Height = 15
           TabStop = False
@@ -1648,7 +1651,7 @@ object MainForm: TMainForm
         object SentRSTEdit2VC: TEdit
           Tag = 3
           Left = 7
-          Top = 4
+          Top = 5
           Width = 34
           Height = 20
           TabStop = False
@@ -1663,7 +1666,7 @@ object MainForm: TMainForm
         object SentNrEdit2VC: TOvrEdit
           Tag = 1
           Left = 12
-          Top = 6
+          Top = 7
           Width = 37
           Height = 20
           TabStop = False
