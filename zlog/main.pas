@@ -10872,7 +10872,7 @@ begin
 
    P := P + ExtractFileName(CurrentFileName) + '.BAK';
    Log.Backup(P);
-   Log.SaveToFile(P);
+   Log.SaveToFileEx(P);
 end;
 
 // #59 Callsignにフォーカス移動 / Alt+C
