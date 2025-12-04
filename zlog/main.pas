@@ -10784,9 +10784,28 @@ end;
 
 // #52 QTC送信
 procedure TMainForm.actionQTCExecute(Sender: TObject);
+var
+   rig: TRig;
+   Hz: TFrequency;
 begin
    if MyContest.Name <> 'WAEDC Contest' then begin
       Exit;
+   end;
+
+   // 現在のリグを取得
+   rig := RigControl.GetRig(FCurrentRx + 1, CurrentQSO.Band);
+
+   if (rig <> nil) and (RigControl.GetCurrentRig() <> 5) then begin
+      // RIGの周波数を取得
+      Hz := rig.CurrentFreqHz;
+
+      // 周波数が取得できたら(>0)記録する
+      if Hz > 0 then begin
+         CurrentQSO.Freq := rig.CurrentFreqkHzStr;
+      end
+      else begin
+         CurrentQSO.Freq := '';
+      end;
    end;
 
    if CurrentQSO.Callsign = '' then begin
@@ -10800,7 +10819,7 @@ begin
    end
    else begin
       TWAEContest(MyContest).QTCForm.Show;
-      TWAEContest(MyContest).QTCForm.OpenQTC(Main.CurrentQSO);
+      TWAEContest(MyContest).QTCForm.OpenQTC(CurrentQSO);
    end;
 end;
 

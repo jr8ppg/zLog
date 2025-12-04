@@ -689,6 +689,7 @@ function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 procedure SetDupeQso(aQSO: TQSO);
 procedure ResetDupeQso(aQSO: TQSO);
 
+function GetActualFreq(b: TBand; strFreq: string): string;
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
 function TextToPower(text: string): TPower;
@@ -4495,6 +4496,40 @@ procedure ResetDupeQso(aQSO: TQSO);
 begin
    aQSO.Dupe := False;
    aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_DUPE, '', [rfReplaceAll]));
+end;
+
+function GetActualFreq(b: TBand; strFreq: string): string;
+var
+   p: Integer;
+   s: string;
+   f: TFrequency;
+   b2: TBand;
+begin
+   {$IFNDEF ZSERVER}
+   // FreqがBandと一致しない場合はBandからActualを求める
+   f := Trunc(StrToFloatDef(strFreq, 0)) * 1000;
+   b2 := dmZLogGlobal.BandPlan.FreqToBand(f);
+   if (f = 0) or (b <> b2) or (b > b28) then begin
+      Result := CabrilloBandString[b];
+      Exit;
+   end;
+
+   if strFreq = '' then begin
+      Result := CabrilloBandString[b];
+      Exit;
+   end;
+   {$ENDIF}
+
+   s := strFreq;
+
+   p := Pos('.', s);
+   if p = 0 then begin
+      Result := RightStr('     ' + s, 5);
+      Exit;
+   end;
+
+   s := Copy(s, 1, p - 1);
+   Result := RightStr('     ' + s, 5);
 end;
 
 function TextToBand(text: string): TBand;

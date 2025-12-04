@@ -234,6 +234,7 @@ procedure TQTCForm.btnSendClick(Sender: TObject);
 var
    cQ: TQSO;
    S: string;
+   bandstr: string;
 begin
    SpinEdit.Enabled := False;
 
@@ -258,8 +259,10 @@ begin
 
       // QTCñ¢ëóêMÇ»ÇÁMemoóìÇ…QTCìdï∂Çì¸ÇÍÇÈ
       if pos('[QTC', cQ.memo) = 0 then begin
+         bandstr := GetActualFreq(FQTCReqStn.Band, FQTCReqStn.Freq);
+
          cQ.memo := '[QTC' + IntToStr(FQTCSeries) + '/' + IntToStr(SpinEdit.Value) + ' ' + FQTCReqStn.CallSign +
-                    FormatDateTime(' yyyy-mm-dd hhnn ', CurrentTime) + ADIFBandString[FQTCReqStn.Band] + ']' + cQ.memo;
+                    FormatDateTime(' yyyy-mm-dd hhnn ', CurrentTime) + bandstr + ']' + cQ.memo;
       end;
 
       // ÉçÉOÇ…ï€ë∂

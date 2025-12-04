@@ -395,7 +395,6 @@ type
     procedure ProcessUnlock(xQSO: TQSO);
     procedure SetScoreCoeff(E: Extended);
     function GetScoreCoeff(): Extended;
-    function GetActualFreq(b: TBand; strFreq: string): string;
     function GetEndTime(): TDateTime;
     procedure SetPeriod(v: Integer);
     procedure ImportSetQsoId(Q: TQSO);
@@ -2536,40 +2535,6 @@ begin
    end;
 end;
 {$ENDIF}
-
-function TLog.GetActualFreq(b: TBand; strFreq: string): string;
-var
-   p: Integer;
-   s: string;
-   f: TFrequency;
-   b2: TBand;
-begin
-   {$IFNDEF ZSERVER}
-   // FreqÇ™BandÇ∆àÍívÇµÇ»Ç¢èÍçáÇÕBandÇ©ÇÁActualÇãÅÇﬂÇÈ
-   f := Trunc(StrToFloatDef(strFreq, 0)) * 1000;
-   b2 := dmZLogGlobal.BandPlan.FreqToBand(f);
-   if (f = 0) or (b <> b2) or (b > b28) then begin
-      Result := CabrilloBandString[b];
-      Exit;
-   end;
-
-   if strFreq = '' then begin
-      Result := CabrilloBandString[b];
-      Exit;
-   end;
-   {$ENDIF}
-
-   s := strFreq;
-
-   p := Pos('.', s);
-   if p = 0 then begin
-      Result := RightStr('     ' + s, 5);
-      Exit;
-   end;
-
-   s := Copy(s, 1, p - 1);
-   Result := RightStr('     ' + s, 5);
-end;
 
 function TLog.GetEndTime(): TDateTime;
 var
