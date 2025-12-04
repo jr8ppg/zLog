@@ -4541,6 +4541,7 @@ begin
    S := StringReplace(S, ':', '', [rfReplaceAll]);
    S := StringReplace(S, '*', '', [rfReplaceAll]);
    S := StringReplace(S, '@', '', [rfReplaceAll]);
+   S := StringReplace(S, '"', '', [rfReplaceAll]);
 
    // \+1..9, \-1..9
    wpm := FKeyerWPM;
