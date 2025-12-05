@@ -370,6 +370,34 @@ type
   TQSOListArray = array[b19..HiBand] of TQSOList;
   TQSOListArrayByTx = array[0..(MAX_TX - 1)] of TQSOList;
 
+  TCabrilloRecord = class
+  private
+    FRecordType: Integer;  // 0:QSO 1:QTC
+    FDateTime: TDateTime;
+    FSeqNumber: Integer;
+    FRecordText: string;
+  public
+    constructor Create(); overload;
+    constructor Create(ARecordType: Integer; ADateTime: TDateTime; ASeqNumber: Integer; ARecordText: string); overload;
+    property RecordType: Integer read FRecordType;
+    property DateTime: TDateTime read FDateTime;
+    property SeqNumber: Integer read FSeqNumber;
+    property RecordText: string read FRecordText;
+  end;
+
+  TCabrilloComparer = class(TComparer<TCabrilloRecord>)
+  public
+    function Compare(const Left, Right: TCabrilloRecord): Integer; override;
+  end;
+
+  TCabrilloRecordList = class(TObjectList<TCabrilloRecord>)
+    FComparer: TCabrilloComparer;
+  public
+    constructor Create(OwnsObjects: Boolean = True);
+    destructor Destroy(); override;
+    procedure Sort();
+  end;
+
   TLog = class(TObject)
   private
     FSaved : Boolean;
@@ -2690,6 +2718,19 @@ var
    offhour: Integer;
    offsetmin: Integer;
 
+   clist: TCabrilloRecordList;
+   crec: TCabrilloRecord;
+   Index: Integer;
+   qtcgrp: string;
+   qtccall: string;
+   qtcdate: string;
+   qtctime: string;
+   qtcfreq: string;
+   qtcdatetime: TDateTime;
+   SL: TStringList;
+   qtcseqnum: Integer;
+   b: TBand;
+
    function FillRight(S: string; len: integer): string;
    var
       sjis: AnsiString;
@@ -2716,6 +2757,31 @@ var
          sjis := Copy(sjis, Length(sjis) - len + 1, len);
       end;
       Result := String(sjis);
+   end;
+
+   function StrToMyDateTime(const S: string): TDateTime;
+   var
+      FS: TFormatSettings;
+   begin
+      FS := TFormatSettings.Create();
+      FS.DateSeparator := '-';
+      FS.TimeSeparator := ':';
+      FS.ShortDateFormat := 'yyyy-mm-dd';
+      FS.ShortTimeFormat := 'hh:nn';
+      Result := StrToDateTime(Copy(S, 1, 10) + ' ' + Copy(S, 12, 2) + ':' + Copy(S, 14, 2), FS);
+   end;
+
+   function ADIFBandToBand(S: string): TBand;
+   var
+      b: TBand;
+   begin
+      for b := b19 to HiBand do begin
+         if ADIFBandString[b] = S then begin
+            Result := b;
+            Exit;
+         end;
+      end;
+      Result := bUnknown;
    end;
 begin
    AssignFile(F, Filename);
@@ -2766,6 +2832,12 @@ begin
       offhour := offsetmin div 60;
    end;
 
+   SL := TStringList.Create();
+   SL.StrictDelimiter := True;
+   SL.Delimiter := ' ';
+   clist := TCabrilloRecordList.Create();
+   qtcseqnum := 1;
+
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
 
@@ -2809,12 +2881,70 @@ begin
          strText := strText + '0';
       end;
 
+      // QSOレコード
+      crec := TCabrilloRecord.Create(0, utc, 0, strText);
+      clist.Add(crec);
+
+      // QTC
+      Index := Pos('[QTC', Q.Memo);
+      if Index > 0 then begin
+         strText := Copy(Q.Memo, Index + 4, Length(Q.Memo) - 5);
+         SL.DelimitedText := strText;
+         qtcgrp := SL[0];
+         qtccall := SL[1];
+         qtcdate := SL[2];    // UTC
+         qtctime := SL[3];    // UTC
+         qtcfreq := SL[4];
+         qtcdatetime := StrToMyDateTime(qtcdate + ' ' + qtctime);
+
+         // ADIFタイプのバンド表記はCabrilloタイプに直す
+         if Pos('m', qtcfreq) > 0 then begin
+            b := ADIFBandToBand(qtcfreq);
+            if b = bUnknown then begin
+               qtcfreq := CabrilloBandString[Q.Band];
+            end
+            else begin
+               qtcfreq := CabrilloBandString[b];
+            end;
+         end;
+
+         // QTC: ***** ** yyyy-mm-dd nnnn ************* nnn/nn     ************* nnnn ************* nnnn
+         // QTC:  3799 PH 2003-03-23 0711 YB1AQS        001/10     DL8WPX        0330 DL6RAI        1021
+         strText := 'QTC: ';
+         strText := strText  + FillLeft(qtcfreq, 5) + ' ';
+         strText := strText + CabrilloModeString[Q.Mode] + ' ';
+         strText := strText + qtcdate + ' ';
+         strText := strText + qtctime + ' ';
+         strText := strText + FillRight(qtccall, 13) + ' ';
+         strText := strText + FillRight(qtcgrp, 10) + ' ';
+         strText := strText + FillRight(dmZLogGlobal.MyCall, 13) + ' ';
+         strText := strText + FormatDateTime('hhmm', utc) + ' ';
+         strText := strText + FillRight(Q.Callsign, 13) + ' ';
+         strText := strText + FillRight(Q.NrRcvd, 4);
+
+         crec := TCabrilloRecord.Create(1, qtcdatetime, qtcseqnum, strText);
+         clist.Add(crec);
+         Inc(qtcseqnum);
+      end;
+
+   end;
+
+   // 日付>QSO/QTCとなるように並び替え
+   clist.Sort();
+
+   // 全部をファイル書き出し
+   for i := 0 to clist.Count - 1 do begin
+      strText := clist[i].RecordText;
       WriteLn(F, strText);
    end;
 
+   // END表示
    WriteLn(F, 'END-OF-LOG:');
 
    CloseFile(F);
+
+   clist.Free();
+   SL.Free();
 end;
 {$ENDIF}
 
@@ -5287,6 +5417,53 @@ begin
    Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
              ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
              ((Integer(Left.Mode2) - Integer(Right.Mode2)) * 100);
+end;
+
+{ TCabrilloRecord }
+
+constructor TCabrilloRecord.Create();
+begin
+   FRecordType := 0;
+   FDateTime := 0;
+   FSeqNumber := 0;
+   FRecordText := '';
+end;
+
+constructor TCabrilloRecord.Create(ARecordType: Integer; ADateTime: TDateTime; ASeqNumber: Integer; ARecordText: string);
+begin
+   Inherited Create();
+   FRecordType := ARecordType;
+   FDateTime := ADateTime;
+   FSeqNumber := ASeqNumber;
+   FRecordText := ARecordText;
+end;
+
+{ TCabrilloComparer }
+
+function TCabrilloComparer.Compare(const Left, Right: TCabrilloRecord): Integer;
+begin
+   Result := (CompareDateTime(Left.DateTime, Right.DateTime)) +
+             (Left.RecordType - Right.RecordType) * 10 +
+             (Left.FSeqNumber - Right.SeqNumber) * 100;
+end;
+
+{ TCabrilloRecordList }
+
+constructor TCabrilloRecordList.Create(OwnsObjects: Boolean = True);
+begin
+   Inherited Create(OwnsObjects);
+   FComparer := TCabrilloComparer.Create();
+end;
+
+destructor TCabrilloRecordList.Destroy();
+begin
+   Inherited;
+   FComparer.Free();
+end;
+
+procedure TCabrilloRecordList.Sort();
+begin
+   Inherited Sort(FComparer);
 end;
 
 end.
