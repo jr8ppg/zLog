@@ -1304,9 +1304,9 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
+   FColWidths[7] := 6;      // Rcvd Number
    FColWidths[8] := 4;      // band
    FColWidths[9] := 4;      // mode
    FColWidths[10] := 6;     // op
@@ -1377,9 +1377,9 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
+   FColWidths[7] := 6;      // Rcvd Number
    FColWidths[8] := 4;      // band
    FColWidths[9] := 4;      // mode
    FColWidths[10] := 6;     // op
@@ -1393,6 +1393,7 @@ end;
 
 destructor TWAEContest.Destroy();
 begin
+   Inherited;
    QTCForm.Release();
 end;
 

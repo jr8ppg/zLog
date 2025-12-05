@@ -15327,6 +15327,7 @@ begin
    S := StringReplace(S, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
    S := StringReplace(S, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
    S := StringReplace(S, '$P', '', [rfReplaceAll]);
+   S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
    Result := S;
 end;
 
