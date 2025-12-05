@@ -3,8 +3,8 @@ object QTCForm: TQTCForm
   Top = 204
   BorderStyle = bsDialog
   Caption = 'QTC'
-  ClientHeight = 316
-  ClientWidth = 279
+  ClientHeight = 303
+  ClientWidth = 324
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,37 +20,9 @@ object QTCForm: TQTCForm
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
   TextHeight = 12
-  object Label1: TLabel
-    Left = 24
-    Top = 57
-    Width = 233
-    Height = 17
-    AutoSize = False
-    Caption = 'Label1'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Arial'
-    Font.Style = []
-    ParentFont = False
-  end
-  object Label2: TLabel
-    Left = 24
-    Top = 34
-    Width = 233
-    Height = 17
-    AutoSize = False
-    Caption = 'Label2'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Arial'
-    Font.Style = []
-    ParentFont = False
-  end
   object Label3: TLabel
     Left = 24
-    Top = 11
+    Top = 6
     Width = 186
     Height = 17
     AutoSize = False
@@ -64,7 +36,7 @@ object QTCForm: TQTCForm
   end
   object btnSend: TButton
     Left = 8
-    Top = 283
+    Top = 271
     Width = 75
     Height = 25
     Caption = 'Send'
@@ -73,8 +45,8 @@ object QTCForm: TQTCForm
     OnClick = btnSendClick
   end
   object btnBack: TButton
-    Left = 193
-    Top = 283
+    Left = 241
+    Top = 271
     Width = 75
     Height = 25
     Caption = 'Back (BS)'
@@ -83,7 +55,7 @@ object QTCForm: TQTCForm
   end
   object SpinEdit: TSpinEdit
     Left = 216
-    Top = 8
+    Top = 4
     Width = 41
     Height = 26
     Font.Charset = DEFAULT_CHARSET
@@ -101,7 +73,7 @@ object QTCForm: TQTCForm
   object ListBox: TListBox
     Left = 8
     Top = 96
-    Width = 260
+    Width = 308
     Height = 169
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -121,5 +93,55 @@ object QTCForm: TQTCForm
       '10')
     ParentFont = False
     TabOrder = 3
+  end
+  object Panel1: TPanel
+    Left = 8
+    Top = 66
+    Width = 308
+    Height = 28
+    BevelOuter = bvLowered
+    TabOrder = 4
+    object Label1: TLabel
+      Left = 4
+      Top = 6
+      Width = 297
+      Height = 17
+      AutoSize = False
+      Caption = 'Label1'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+  end
+  object Panel2: TPanel
+    Left = 8
+    Top = 34
+    Width = 308
+    Height = 28
+    BevelOuter = bvLowered
+    TabOrder = 5
+    object Label2: TLabel
+      Left = 4
+      Top = 6
+      Width = 297
+      Height = 17
+      AutoSize = False
+      Caption = 'Label2'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+  end
+  object Timer1: TTimer
+    Interval = 50
+    OnTimer = Timer1Timer
+    Left = 144
+    Top = 232
   end
 end
