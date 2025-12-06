@@ -1339,6 +1339,7 @@ type
     procedure InitGridCells();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
     procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
+    function Is1Radio(): Boolean;
     function Is2Radio(): Boolean;
     function GetInitNrSent(aQSO: TQSO): string;
     function DateStr(aQSO: TQSO): string;
@@ -1416,6 +1417,7 @@ type
     property CurrentEditPanel: TEditPanel read GetCurrentEditPanel;
     property EditPanel: TEditPanelArray read FEditPanel;
 
+    property SerialEdit: TEdit read GetSerialEdit;
     property DateEdit: TEdit read GetDateEdit;
     property TimeEdit: TEdit read GetTimeEdit;
     property CallsignEdit: TEdit read GetCallsignEdit;
@@ -6918,9 +6920,12 @@ end;
 procedure TMainForm.EditExit(Sender: TObject);
 begin
    with TEdit(Sender) do begin
-      Font.Color := clBlack;
-      Color := clWhite;
-      Font.Style := Font.Style - [fsBold];
+      if (Is1Radio()) or
+         (Is2Radio() and (Tag = FCurrentRigSet)) then begin
+         Font.Color := clBlack;
+         Color := clWhite;
+         Font.Style := Font.Style - [fsBold];
+      end;
    end;
 
    actionQsoStart.Enabled:= False;
@@ -13376,7 +13381,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 
    procedure SetWhite(id: Integer);
    begin
-      FEditPanel[id].SerialEdit.Color := clWindow;
+//      FEditPanel[id].SerialEdit.Color := clWindow;
 //      FEditPanel[id].DateEdit.Color := clWindow;
 //      FEditPanel[id].TimeEdit.Color := clWindow;
       FEditPanel[id].CallsignEdit.Color := clWindow;
@@ -13391,7 +13396,7 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
 
    procedure SetGlay(id: Integer);
    begin
-      FEditPanel[id].SerialEdit.Color := clBtnFace;
+//      FEditPanel[id].SerialEdit.Color := clBtnFace;
 //      FEditPanel[id].DateEdit.Color := clBtnFace;
 //      FEditPanel[id].TimeEdit.Color := clBtnFace;
       FEditPanel[id].CallsignEdit.Color := clBtnFace;
@@ -13426,6 +13431,8 @@ begin
       Exit;
    end
    else begin
+      FEditPanel[0].SerialEdit.Color := clWindow;
+
       if rig = 1 then begin
          FEditPanel[0].SelShape.Pen.Color := clBlue;
          FEditPanel[1].SelShape.Pen.Color := clBlack;
@@ -13625,7 +13632,9 @@ end;
 
 procedure TMainForm.ShowCurrentQSO();
 begin
-//   SerialEdit.Text := CurrentQSO.SerialStr;
+   if MyContest.SerialType <> stNone then begin
+      SerialEdit.Text := CurrentQSO.SerialStr;
+   end;
    TimeEdit.Text := CurrentQSO.TimeStr;
    DateEdit.Text := DateStr(CurrentQSO);
    CallsignEdit.Text := CurrentQSO.Callsign;
@@ -13694,7 +13703,6 @@ begin
       FEditPanel[2].RcvdNumberEdit.Enabled := True;
       FEditPanel[2].BandEdit.Enabled := True;
       FEditPanel[2].ModeEdit.Enabled := True;
-      FEditPanel[2].SerialEdit.Enabled := True;
       FEditPanel[2].SelShape.Pen.Color := clBlack;
       FEditPanel[2].Title.Font.Color := clBlack;
       FEditPanel[rig - 1].CallsignEdit.SetFocus();
@@ -13710,7 +13718,6 @@ begin
       FEditPanel[2].RcvdNumberEdit.Enabled := False;
       FEditPanel[2].BandEdit.Enabled := False;
       FEditPanel[2].ModeEdit.Enabled := False;
-      FEditPanel[2].SerialEdit.Enabled := False;
       FEditPanel[2].SelShape.Pen.Color := clGray;
       FEditPanel[2].Title.Font.Color := clGray;
    end;
@@ -14264,9 +14271,11 @@ begin
 
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
       SentNumberEdit.Text := aQSO.SerialStr;
+      SerialEdit.Text := aQSO.SerialStr;
    end
    else begin
       FEditPanel[0].SentNumberEdit.Text := aQSO.SerialStr;
+      FEditPanel[0].SerialEdit.Text := aQSO.SerialStr;
    end;
 
    ShowSentNumber();
@@ -15309,6 +15318,11 @@ begin
    else begin
       FBandScopeAllBands.Hide();
    end;
+end;
+
+function TMainForm.Is1Radio(): Boolean;
+begin
+   Result := (dmZLogGlobal.Settings._operate_style = os1Radio);
 end;
 
 function TMainForm.Is2Radio(): Boolean;
