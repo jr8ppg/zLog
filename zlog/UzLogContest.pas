@@ -28,6 +28,7 @@ type
     FBandLow: TBand;
     FBandHigh: TBand;
     FBandPlan: string;
+    FUseWARC: Boolean;
 
     FUseContestPeriod: Boolean;
     FStartTime: Integer;   // ŠJŽnŽžŠÔ 21‚â0‚È‚Ç UTC‚©‚Ç‚¤‚©‚ÍLog.QsoList[0].RSTsent‚Å”»’f‚·‚é
@@ -87,6 +88,7 @@ type
     property MultiFound: Boolean read FMultiFound write FMultiFound;
     property BandLow: TBand read FBandLow;
     property BandHigh: TBand read FBandHigh;
+    property UseWARC: Boolean read FUseWARC;
     property BandPlan: string read FBandPlan;
     property Single10G: Boolean read FSingle10G write FSingle10G;
 
@@ -276,6 +278,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := b50;
+   FUseWARC := False;
 
    FBandPlan := 'JA';
 
@@ -799,6 +802,7 @@ begin
 
    FBandLow := b19;
    FBandHigh := HiBand;
+   FUseWARC := True;
 
    FUseContestPeriod := False;
    FStartTime := -1;

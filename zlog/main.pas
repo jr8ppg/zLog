@@ -9781,18 +9781,33 @@ begin
       BandMenu.Items[Ord(b50)].Visible := False;
       BandMenu.Items[Ord(b50)].Enabled := False;
    end;
+
    BandMenu.Items[Ord(b144)].Visible := False;
    BandMenu.Items[Ord(b430)].Visible := False;
    BandMenu.Items[Ord(b1200)].Visible := False;
    BandMenu.Items[Ord(b2400)].Visible := False;
    BandMenu.Items[Ord(b5600)].Visible := False;
    BandMenu.Items[Ord(b10G)].Visible := False;
+   BandMenu.Items[Ord(b10G)].Visible := False;
+   BandMenu.Items[Ord(b104G)].Visible := False;
+   BandMenu.Items[Ord(b24G)].Visible := False;
+   BandMenu.Items[Ord(b47G)].Visible := False;
+   BandMenu.Items[Ord(b77G)].Visible := False;
+   BandMenu.Items[Ord(b135G)].Visible := False;
+   BandMenu.Items[Ord(b248G)].Visible := False;
+
    BandMenu.Items[Ord(b144)].Enabled := False;
    BandMenu.Items[Ord(b430)].Enabled := False;
    BandMenu.Items[Ord(b1200)].Enabled := False;
    BandMenu.Items[Ord(b2400)].Enabled := False;
    BandMenu.Items[Ord(b5600)].Enabled := False;
    BandMenu.Items[Ord(b10G)].Enabled := False;
+   BandMenu.Items[Ord(b104G)].Enabled := False;
+   BandMenu.Items[Ord(b24G)].Enabled := False;
+   BandMenu.Items[Ord(b47G)].Enabled := False;
+   BandMenu.Items[Ord(b77G)].Enabled := False;
+   BandMenu.Items[Ord(b135G)].Enabled := False;
+   BandMenu.Items[Ord(b248G)].Enabled := False;
 end;
 
 function TMainForm.GetNumOfAvailableBands(): Integer;
