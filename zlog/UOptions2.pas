@@ -20,9 +20,9 @@ type
     Panel1: TPanel;
     buttonOK: TButton;
     buttonCancel: TButton;
-    GroupBox1: TGroupBox;
+    groupCategory: TGroupBox;
     radioSingleOp: TRadioButton;
-    ModeGroup: TRadioGroup;
+    groupMode: TRadioGroup;
     GroupBox2: TGroupBox;
     editMessage2: TEdit;
     editMessage3: TEdit;
@@ -55,13 +55,7 @@ type
     FIFOCheck: TCheckBox;
     AbbrevEdit: TEdit;
     Label12: TLabel;
-    ProvEdit: TEdit;
-    CItyEdit: TEdit;
-    Label14: TLabel;
-    Label18: TLabel;
-    SentEdit: TEdit;
-    Label19: TLabel;
-    GroupBox3: TGroupBox;
+    groupMyActiveBands: TGroupBox;
     act19: TCheckBox;
     act35: TCheckBox;
     act7: TCheckBox;
@@ -105,20 +99,9 @@ type
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
-    CQZoneEdit: TEdit;
-    IARUZoneEdit: TEdit;
-    Label34: TLabel;
-    Label35: TLabel;
-    AllowDupeCheckBox: TCheckBox;
-    SaveEvery: TSpinEdit;
-    Label40: TLabel;
-    Label41: TLabel;
     rbBankA: TRadioButton;
     rbBankB: TRadioButton;
-    cbDispExchange: TCheckBox;
-    cbJMode: TCheckBox;
     tabsheetMisc: TTabSheet;
-    cbSaveWhenNoCW: TCheckBox;
     rgSearchAfter: TRadioGroup;
     spMaxSuperHit: TSpinEdit;
     Label47: TLabel;
@@ -128,7 +111,6 @@ type
     cbUpdateThread: TCheckBox;
     rbRTTY: TRadioButton;
     cbCQSP: TCheckBox;
-    cbAutoEnterSuper: TCheckBox;
     Label52: TLabel;
     Label53: TLabel;
     spSpotExpire: TSpinEdit;
@@ -286,7 +268,7 @@ type
     buttonPartialCheckForeColor: TButton;
     buttonPartialCheckInitColor: TButton;
     buttonPartialCheckBackColor: TButton;
-    GroupBox23: TGroupBox;
+    groupAccessibility: TGroupBox;
     Label89: TLabel;
     editFocusedColor: TEdit;
     buttonFocusedBackColor: TButton;
@@ -296,14 +278,14 @@ type
     checkNotSendLeadingZeros: TCheckBox;
     Label91: TLabel;
     comboTxNo: TComboBox;
-    GroupBox24: TGroupBox;
+    groupOperators: TGroupBox;
     OpListBox: TListBox;
     buttonOpAdd: TButton;
     buttonOpDelete: TButton;
     radioMultiOpMultiTx: TRadioButton;
     radioMultiOpSingleTx: TRadioButton;
     radioMultiOpTwoTx: TRadioButton;
-    GroupBox13: TGroupBox;
+    groupMyQslDefault: TGroupBox;
     radioQslNone: TRadioButton;
     radioPseQsl: TRadioButton;
     radioNoQsl: TRadioButton;
@@ -312,9 +294,8 @@ type
     checkSetFreqAfterModeChange: TCheckBox;
     checkAlwaysChangeMode: TCheckBox;
     checkAcceptDuplicates: TCheckBox;
-    checkDispLongDateTime: TCheckBox;
     checkBsAllBands: TCheckBox;
-    groupPower: TGroupBox;
+    groupPowerDefs: TGroupBox;
     Label111: TLabel;
     Label112: TLabel;
     Label113: TLabel;
@@ -326,8 +307,6 @@ type
     checkSelectLastOperator: TCheckBox;
     checkApplyPowerCodeOnBandChange: TCheckBox;
     buttonOpEdit: TButton;
-    checkOutputOutofPeriod: TCheckBox;
-    checkUseContestPeriod: TCheckBox;
     groupQuickMemo: TGroupBox;
     Label63: TLabel;
     Label64: TLabel;
@@ -348,7 +327,7 @@ type
     comboVoiceDevice: TComboBox;
     Label38: TLabel;
     checkUseKhzQsyCommand: TCheckBox;
-    GroupBox6: TGroupBox;
+    groupMyPosition: TGroupBox;
     editMyLatitude: TEdit;
     editMyLongitude: TEdit;
     Label39: TLabel;
@@ -357,14 +336,11 @@ type
     buttonFreqMemAdd: TButton;
     buttonFreqMemEdit: TButton;
     buttonFreqMemDelete: TButton;
-    checkShowStartupWindow: TCheckBox;
     popupVoiceMenu: TPopupMenu;
     menuVoicePlay: TMenuItem;
     N1: TMenuItem;
     menuVoiceClear: TMenuItem;
     menuVoiceStop: TMenuItem;
-    AgeEdit: TEdit;
-    Label31: TLabel;
     groupBandscopeSpotReliability: TGroupBox;
     Label28: TLabel;
     Label29: TLabel;
@@ -407,7 +383,35 @@ type
     groupReliability: TGroupBox;
     radioReliabilityHigh: TRadioButton;
     radioReliabilityMiddle: TRadioButton;
+    tabsheetMyStation: TTabSheet;
+    groupMyCallsign: TGroupBox;
+    editMyCallsign: TEdit;
+    groupMyParameter: TGroupBox;
+    Label14: TLabel;
+    Label18: TLabel;
+    Label34: TLabel;
+    Label35: TLabel;
+    Label31: TLabel;
+    ProvEdit: TEdit;
+    CItyEdit: TEdit;
+    CQZoneEdit: TEdit;
+    IARUZoneEdit: TEdit;
+    AgeEdit: TEdit;
+    groupPreferences: TGroupBox;
+    checkShowStartupWindow: TCheckBox;
     checkSelectContestOnStartup: TCheckBox;
+    checkUseContestPeriod: TCheckBox;
+    checkOutputOutofPeriod: TCheckBox;
+    cbAutoEnterSuper: TCheckBox;
+    checkDispLongDateTime: TCheckBox;
+    cbSaveWhenNoCW: TCheckBox;
+    Label40: TLabel;
+    Label41: TLabel;
+    SaveEvery: TSpinEdit;
+    cbJMode: TCheckBox;
+    groupExchange: TGroupBox;
+    Label19: TLabel;
+    SentEdit: TEdit;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -611,11 +615,14 @@ begin
          Settings._power[b] := FPowerPerBand[b].Text;
       end;
 
+      // Callsign
+      Settings._mycall := editMyCallsign.Text;
+
       // My position
       Settings._mylatitude := editMyLatitude.Text;
       Settings._mylongitude := editMyLongitude.Text;
 
-      Settings._mode := TContestMode(ModeGroup.ItemIndex);
+      Settings._mode := TContestMode(groupMode.ItemIndex);
 
       // Category
       if radioSingleOp.Checked = True then begin
@@ -720,13 +727,11 @@ begin
       Settings._countdownminute  := editQsyCountDownMinute.Value;
       Settings._countperhour     := editQsyCountPerHour.Value;
 
-      Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
       Settings._use_contest_period := checkUseContestPeriod.Checked;
       Settings.FShowStartupWindow := checkShowStartupWindow.Checked;
       Settings.FSelectContestOnStartup := checkSelectContestOnStartup.Checked;
 
-      Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
       Settings._displongdatetime := checkDispLongDateTime.Checked;
 
@@ -936,6 +941,9 @@ begin
          FPowerPerBand[b].Text := Settings._power[b];
       end;
 
+      // Callsign
+      editMyCallsign.Text := Settings._mycall;
+
       // My position
       editMyLatitude.Text := Settings._mylatitude;
       editMyLongitude.Text := Settings._mylongitude;
@@ -954,7 +962,7 @@ begin
          radioMultiOpTwoTx.Checked := True;
       end;
 
-      ModeGroup.ItemIndex := Integer(Settings._mode);
+      groupMode.ItemIndex := Integer(Settings._mode);
       { OpListBox.Items := OpList; }
 
       for i := 1 to maxbank do begin
@@ -1038,7 +1046,6 @@ begin
       editPowerL.Text := Settings._PowerL;
       editPowerP.Text := Settings._PowerP;
 
-      AllowDupeCheckBox.Checked := Settings._allowdupe;
       checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
       checkUseContestPeriod.Checked := Settings._use_contest_period;
 
@@ -1080,7 +1087,6 @@ begin
       editQsyCountDownMinute.Value  := Settings._countdownminute;
       editQsyCountPerHour.Value     := Settings._countperhour;
 
-      cbDispExchange.Checked := Settings._sameexchange;
       cbAutoEnterSuper.Checked := Settings._entersuperexchange;
       checkDispLongDateTime.Checked := Settings._displongdatetime;
 
