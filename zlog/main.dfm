@@ -6675,26 +6675,41 @@ object MainForm: TMainForm
       object menuCorrectNR: TMenuItem
         Action = actionCorrectSentNr
       end
+      object N11: TMenuItem
+        Caption = '-'
+      end
+      object menuPostContest: TMenuItem
+        AutoCheck = True
+        Caption = 'Post contest mode'
+        GroupIndex = 1
+        OnClick = menuPostContestClick
+      end
       object N2: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object CreateJARLELog: TMenuItem
         Caption = 'Create JARL E-Log'
+        GroupIndex = 1
         OnClick = CreateJARLELogClick
       end
       object CreateCabrillo: TMenuItem
         Caption = 'Create Cabrillo'
+        GroupIndex = 1
         OnClick = CreateCabrilloClick
       end
       object mnMMTTY: TMenuItem
         Caption = 'Load MMTTY'
+        GroupIndex = 1
         OnClick = mnMMTTYClick
       end
       object N4: TMenuItem
         Caption = '-'
+        GroupIndex = 1
       end
       object FileExitItem: TMenuItem
         Caption = 'E&xit'
+        GroupIndex = 1
         Hint = 'Exit this application'
         ShortCut = 32883
         OnClick = FileExit

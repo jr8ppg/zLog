@@ -700,6 +700,8 @@ type
     N21: TMenuItem;
     N22: TMenuItem;
     menuSelectContest: TMenuItem;
+    N11: TMenuItem;
+    menuPostContest: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1028,6 +1030,7 @@ type
     procedure menuColumnSettingsClick(Sender: TObject);
     procedure menuTimeZoneClick(Sender: TObject);
     procedure menuSelectContestClick(Sender: TObject);
+    procedure menuPostContestClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -7454,6 +7457,16 @@ begin
    FFirstOutOfContestPeriod := True;
 end;
 
+// Post contest mode
+procedure TMainForm.menuPostContestClick(Sender: TObject);
+begin
+   FPostContest := menuPostContest.Checked;
+   SetWindowCaption();
+   InitGridColumnWidth();
+   GridRefreshScreen();
+   ShowDateTime();
+end;
+
 // RBN Verify
 procedure TMainForm.menuRbnVerifyClick(Sender: TObject);
 var
@@ -8480,6 +8493,7 @@ begin
       end;
 
       mPXListWPX.Visible := False;
+      menuPostContest.Checked := FPostContest;
 
       // SO2RはSingleOpのみが設定可能
       if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
@@ -8889,6 +8903,7 @@ begin
       end;
    end;
 end;
+
 procedure TMainForm.SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
 var
    i: Integer;
@@ -9961,6 +9976,11 @@ begin
    // 使用中のファイル名
    if CurrentFileName <> '' then begin
       strCap := strCap + ' - ' + ExtractFileName(CurrentFileName);
+   end;
+
+   // Post contest
+   if FPostContest = True then begin
+      strCap := strCap + ' - [POST CONTEST]';
    end;
 
    Caption := strCap;
@@ -15413,7 +15433,7 @@ end;
 
 function TMainForm.DateStr(aQSO: TQSO): string;
 begin
-   if dmZLogGlobal.Settings._displongdatetime = True then begin
+   if (dmZLogGlobal.Settings._displongdatetime = True) or (FPostContest = True) then begin
       Result := aQSO.LongDateStr;
    end
    else begin
