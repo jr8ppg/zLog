@@ -181,12 +181,12 @@ type
     menuAbout: TMenuItem;
     HelpZyLO: TMenuItem;
     N5: TMenuItem;
-    Score1: TMenuItem;
-    Multipliers1: TMenuItem;
-    QSOrate1: TMenuItem;
-    PacketCluster1: TMenuItem;
-    SuperCheck1: TMenuItem;
-    PartialCheck1: TMenuItem;
+    menuShowScore: TMenuItem;
+    menuShowMultipliers: TMenuItem;
+    menuShowQSOrate: TMenuItem;
+    menuShowPacketCluster: TMenuItem;
+    menuShowSuperCheck: TMenuItem;
+    menuShowPartialCheck: TMenuItem;
     menuChangeBand: TMenuItem;
     menuChangeMode: TMenuItem;
     menuChangeOperator: TMenuItem;
@@ -203,7 +203,7 @@ type
     G2400MHz: TMenuItem;
     G5600MHz: TMenuItem;
     G10GHz: TMenuItem;
-    ZLinkmonitor1: TMenuItem;
+    menuShowZLinkMonitor: TMenuItem;
     menuOptions: TMenuItem;
     CWFMenu: TPopupMenu;
     Edit1: TMenuItem;
@@ -211,8 +211,8 @@ type
     N18MHz1: TMenuItem;
     N24MHz1: TMenuItem;
     Backup1: TMenuItem;
-    CWKeyboard1: TMenuItem;
-    ZServer1: TMenuItem;
+    menuShowCWKeyboard: TMenuItem;
+    menuShowZServer: TMenuItem;
     Network1: TMenuItem;
     menuDownloadAllLogs: TMenuItem;
     menuMergeAllLogs: TMenuItem;
@@ -235,7 +235,7 @@ type
     L1: TMenuItem;
     M1: TMenuItem;
     H1: TMenuItem;
-    CheckCall1: TMenuItem;
+    menuShowCheckCall: TMenuItem;
     PluginMenu: TMenuItem;
     View1: TMenuItem;
     menuShowCurrentBandOnly: TMenuItem;
@@ -254,12 +254,12 @@ type
     M2: TMenuItem;
     L2: TMenuItem;
     P2: TMenuItem;
-    RigControl1: TMenuItem;
-    Console1: TMenuItem;
+    menuShowRIgControl: TMenuItem;
+    menuShowConsole: TMenuItem;
     MergeFile1: TMenuItem;
-    RunningFrequencies1: TMenuItem;
-    mnCheckCountry: TMenuItem;
-    mnCheckMulti: TMenuItem;
+    menuShowRunningFrequencies: TMenuItem;
+    menuShowCheckCountry: TMenuItem;
+    menuShowCheckMulti: TMenuItem;
     SSBToolBar: TPanel;
     VoiceStopButton: TSpeedButton;
     VoicePauseButton: TSpeedButton;
@@ -281,10 +281,10 @@ type
     mnGridAddNewPX: TMenuItem;
     mnHideCWPhToolBar: TMenuItem;
     mnHideMenuToolbar: TMenuItem;
-    Scratchsheet1: TMenuItem;
+    menuShowScratchSheet: TMenuItem;
     IncreaseFontSize1: TMenuItem;
     mnMMTTY: TMenuItem;
-    mnTTYConsole: TMenuItem;
+    menuShowTTYConsole: TMenuItem;
     menuQuickReference: TMenuItem;
     ActionList1: TActionList;
     actionQuickQSY01: TAction;
@@ -323,7 +323,7 @@ type
     DecreaseFontSize1: TMenuItem;
     actionIncreaseFontSize: TAction;
     actionDecreaseFontSize: TAction;
-    menuAnalyze: TMenuItem;
+    menuShowAnalyze: TMenuItem;
     actionPageUp: TAction;
     actionPageDown: TAction;
     actionMoveTop: TAction;
@@ -377,7 +377,7 @@ type
     actionRegNewPrefix: TAction;
     actionControlPTT: TAction;
     actionShowSuperCheck2: TAction;
-    N11: TMenuItem;
+    menuShowNPlusOne: TMenuItem;
     actionGetSuperCheck2: TAction;
     SPCMenu: TPopupMenu;
     actionChangeBand: TAction;
@@ -395,7 +395,7 @@ type
     actionQuickMemo1: TAction;
     actionQuickMemo2: TAction;
     actionCwMessagePad: TAction;
-    CWMessagePad1: TMenuItem;
+    menuShowCWMessagePad: TMenuItem;
     actionCorrectSentNr: TAction;
     actionSetLastFreq: TAction;
     menuCorrectNR: TMenuItem;
@@ -443,7 +443,7 @@ type
     menuQSORateSettings: TMenuItem;
     menuSettings: TMenuItem;
     actionShowQsoRateEx: TAction;
-    QSORateEx1: TMenuItem;
+    menuShowQSOrateEx: TMenuItem;
     menuTargetEditor: TMenuItem;
     actionShowQsyInfo: TAction;
     menuShowQSYInfo: TMenuItem;
@@ -529,7 +529,7 @@ type
     menuEditStatus: TMenuItem;
     comboBandPlan: TComboBox;
     actionShowMsgMgr: TAction;
-    ShowMessageManagerSO2R1: TMenuItem;
+    menuShowMessageManagerSO2R: TMenuItem;
     actionChangeBand2: TAction;
     actionChangeMode2: TAction;
     actionChangePower2: TAction;
@@ -620,9 +620,9 @@ type
     N19: TMenuItem;
     menuRbnOptions: TMenuItem;
     actionShowEntityInfo: TAction;
-    actionShowEntityInfo1: TMenuItem;
+    menuShowEntityInfo: TMenuItem;
     actionShowGrayline: TAction;
-    Grayline1: TMenuItem;
+    menuShowGrayline: TMenuItem;
     SentRSTEdit1: TEdit;
     SentRSTEdit2HA: TEdit;
     SentRSTEdit2HB: TEdit;
@@ -694,6 +694,12 @@ type
     N20: TMenuItem;
     menuResetColumnWidths: TMenuItem;
     menuColumnSettings: TMenuItem;
+    popupTimeZone: TPopupMenu;
+    menuTzJST: TMenuItem;
+    menuTzUTC: TMenuItem;
+    N21: TMenuItem;
+    N22: TMenuItem;
+    menuSelectContest: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1020,6 +1026,8 @@ type
     procedure actionFocusRstSentExecute(Sender: TObject);
     procedure menuResetColumnWidthsClick(Sender: TObject);
     procedure menuColumnSettingsClick(Sender: TObject);
+    procedure menuTimeZoneClick(Sender: TObject);
+    procedure menuSelectContestClick(Sender: TObject);
   private
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
@@ -1343,6 +1351,7 @@ type
     function Is2Radio(): Boolean;
     function GetInitNrSent(aQSO: TQSO): string;
     function DateStr(aQSO: TQSO): string;
+    procedure ShowDateTime(Q: TQSO = nil);
   public
     LastFocus : TEdit;
 
@@ -1673,8 +1682,7 @@ begin
          RcvdNumberEdit.Text := CurrentQSO.NrRcvd;
          BandEdit.Text := MHzString[CurrentQSO.Band];
          PowerEdit.Text := NewPowerString[CurrentQSO.Power];
-         TimeEdit.Text := CurrentQSO.TimeStr;
-         DateEdit.Text := DateSTr(CurrentQSO);
+         ShowDateTime();
          ModeEdit.Text := ModeString[CurrentQSO.Mode];
       end;
 
@@ -2688,8 +2696,7 @@ begin
    SentNumberEdit.Text := dmZLogGlobal.Settings._sentstr;
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    CurrentQSO.UpdateTime;
-   TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := DateStr(CurrentQSO);
+   ShowDateTime();
 
    if dmZlogGlobal.BackupPath = '' then begin
       Backup1.Enabled := False;
@@ -2763,12 +2770,18 @@ begin
       FRateDialog.UpdateGraph();
       FRateDialogEx.UpdateGraph();
       dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
-      
+
       if MyContest.ClassType = TGeneralContest then
         zyloContestOpened(MyContest.Name, TGeneralContest(MyContest).Config.FileName)
       else
         zyloContestOpened(MyContest.Name, '');
    end;
+end;
+
+procedure TMainForm.menuSelectContestClick(Sender: TObject);
+begin
+   zyloContestClosed;
+   PostMessage(Handle, WM_ZLOG_INIT, 1, 0);
 end;
 
 procedure TMainForm.FileSave(Sender: TObject);
@@ -3474,6 +3487,14 @@ begin
       ShowCtyChk();
    end;
 
+   if S = 'UTC' then begin
+      menuTzUTC.Click();
+   end;
+
+   if S = 'JST' then begin
+      menuTzJST.Click();
+   end;
+
    // ここまで来て該当が無ければ周波数メモリー呼び出し
    CallFreqMemory(FCurrentRigSet, S);
 end;
@@ -4119,6 +4140,10 @@ begin
       CurrentQSO.Memo := '';
    end;
 
+   // TimeZoneを設定
+   MyContest.UseUTC := (Log.QsoList[0].RSTSent = _USEUTC);
+   menuTzUTC.Checked := MyContest.UseUTC;
+
    // 画面に表示
    ShowCurrentQSO();
 
@@ -4420,8 +4445,7 @@ begin
 
       if RN.Text = '' then begin
          curQSO.UpdateTime;
-         TimeEdit.Text := curQSO.TimeStr;
-         DateEdit.Text := DateStr(curQSO);
+         ShowDateTime(curQSO);
       end;
 
       S := dmZlogGlobal.CWMessage(0, 2);
@@ -6040,7 +6064,12 @@ begin
       end;
    end;
 
-   StatusLine.Panels[3].Text := S;
+   if MyContest.UseUTC = True then begin
+      StatusLine.Panels[3].Text := S + ' UTC';
+   end
+   else begin
+      StatusLine.Panels[3].Text := S + ' JST';
+   end;
    FInformation.Time := S;
 
    // SingleOP以外はTX#を表示する
@@ -6261,8 +6290,7 @@ begin
 
       if not FPostContest then begin
          CurrentQSO.UpdateTime;
-         DateEdit.Text := DateStr(CurrentQSO);
-         TimeEdit.Text := CurrentQSO.TimeStr;
+         ShowDateTime();
       end;
 
       // Out of contest period表示
@@ -6860,6 +6888,21 @@ begin
    end;
 end;
 
+procedure TMainForm.menuTimeZoneClick(Sender: TObject);
+begin
+   if menuTzJST.Checked = True then begin
+      MyContest.UseUTC := False;
+   end
+   else begin
+      MyContest.UseUTC := True;
+   end;
+   Log.ChangeTimeZone();
+   GridRefreshScreen();
+   CurrentQSO.UpdateTime;
+   ShowDateTime();
+   LastFocus.SetFocus();
+end;
+
 procedure TMainForm.menuPluginManagerClick(Sender: TObject);
 begin
    FormShowAndRestore(MarketForm);
@@ -7336,7 +7379,7 @@ procedure TMainForm.StatusLineResize(Sender: TObject);
 var
    rig: TRig;
 begin
-   StatusLine.Panels[3].Width := 60;
+   StatusLine.Panels[3].Width := 100;
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then
@@ -7922,7 +7965,7 @@ begin
       if mnMMTTY.Tag = 0 then begin
          mnMMTTY.Tag := 1;
          mnMMTTY.Caption := 'Exit MMTTY';
-         mnTTYConsole.Visible := True;
+         menuShowTTYConsole.Visible := True;
 
          FTTYConsole := TTTYConsole.Create(Self);
          dmZlogGlobal.ReadWindowState(ini, FTTYConsole);
@@ -7938,7 +7981,7 @@ begin
       else begin
          mnMMTTY.Tag := 0;
          mnMMTTY.Caption := 'Load MMTTY';
-         mnTTYConsole.Visible := False;
+         menuShowTTYConsole.Visible := False;
 
          dmZlogGlobal.WriteWindowState(ini, FTTYConsole);
          ini.UpdateFile();
@@ -8372,7 +8415,8 @@ begin
       fScoreCoeff := 1;
       fNewContest := True;
 
-      if dmZLogGlobal.Settings.FDontShowStartupWindow = False then begin
+      // 開始画面
+      if (dmZLogGlobal.Settings.FShowStartupWindow = True) and (Message.WParam = 0) then begin
          if (dmZLogGlobal.LastContest.FFileName = '') or
             (dmZLogGlobal.LastContest.FMyCall = '') or
             ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) or
@@ -8388,7 +8432,7 @@ begin
             startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
             mr := startup.ShowModal();
             if mr = mrNo then begin // Last contest
-               dmZLogGlobal.Settings.FDontShowStartupWindow := startup.DontShowThisWindow;
+               dmZLogGlobal.Settings.FShowStartupWindow := Not startup.DontShowThisWindow;
                RestoreLastContestInfo(strCfgFileName, fScoreCoeff, strContestName);
             end
             else begin
@@ -8398,22 +8442,41 @@ begin
          end;
       end;
 
-      if fNewContest = True then begin // new contest
-         if menu.ShowModal() = mrCancel then begin
-            Close();
-            Exit;
-         end;
+      // コンテスト選択を行う
+      if (dmZLogGlobal.Settings.FSelectContestOnStartup = True) or (Message.WParam = 1) then begin
+         if fNewContest = True then begin // new contest
+            if menu.ShowModal() = mrCancel then begin
+               Close();
+               Exit;
+            end;
 
-         dmZLogGlobal.ContestCategory := menu.ContestCategory;
-         dmZLogGlobal.ContestBand := menu.BandGroupIndex;
-         dmZLogGlobal.ContestMode := menu.ContestMode;
-         dmZLogGlobal.MyCall := menu.Callsign;
-         dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
-         dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
-         FPostContest := menu.PostContest;
-         strContestName := menu.GeneralName;
-         strCfgFileName := menu.CFGFileName;
-         fScoreCoeff := menu.ScoreCoeff;
+            dmZLogGlobal.ContestCategory := menu.ContestCategory;
+            dmZLogGlobal.ContestBand := menu.BandGroupIndex;
+            dmZLogGlobal.ContestMode := menu.ContestMode;
+            dmZLogGlobal.MyCall := menu.Callsign;
+            dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
+            dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
+            FPostContest := menu.PostContest;
+            strContestName := menu.GeneralName;
+            strCfgFileName := menu.CFGFileName;
+            fScoreCoeff := menu.ScoreCoeff;
+         end;
+      end
+      else begin
+         if fNewContest = True then begin // new contest
+            // 選択を行わない場合はPediモードとする
+            dmZLogGlobal.ContestCategory := ccSingleOp;
+            dmZLogGlobal.ContestBand := 0;
+            dmZLogGlobal.ContestMode := cmMix;
+            dmZLogGlobal.ContestMenuNo := 8;
+            dmZLogGlobal.TXNr := 0;    // TX#
+            FPostContest := False;
+            strContestName := '';
+            strCfgFileName := '';
+            fScoreCoeff := 100;
+            S := CreateTempLogFileName();
+            dmZLogGlobal.SetLogFileName(S);
+         end;
       end;
 
       mPXListWPX.Visible := False;
@@ -8460,16 +8523,17 @@ begin
          end;
       end;
 
+      // バンドメニューを全部表示
       RenewBandMenu();
+
+      MultiButton.Enabled := True; // toolbar
+      menuShowMultipliers.Enabled := True; // menu
+      menuShowCheckCountry.Visible := False; // checkcountry window
 
       InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestBand, strContestName, strCfgFileName);
 
       MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
       MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
-
-      MultiButton.Enabled := True; // toolbar
-      Multipliers1.Enabled := True; // menu
-      mnCheckCountry.Visible := False; // checkcountry window
 
       InitGridColumnWidth();
       InitSerialPanel();
@@ -8596,7 +8660,7 @@ begin
       SetupQTC();
 
       CurrentQSO.UpdateTime;
-      TimeEdit.Text := CurrentQSO.TimeStr;
+      ShowDateTime();
 
       // この時点でコンテストが必要とするバンドはBandMenuで表示されているもの
       // コンテストで必要なバンドかつActiveBandがONの数（＝使用可能）を数える
@@ -9573,21 +9637,12 @@ begin
 end;
 
 procedure TMainForm.InitDxPedi();
-var
-   F: TUTCDialog;
 begin
-   F := TUTCDialog.Create(Self);
-   try
-      F.ShowModal();
+   actionShowMultipliers.Enabled := False;
+   menuShowMultipliers.Enabled := False;
+   MultiButton.Enabled := False;
 
-      MultiButton.Enabled := False; // toolbar
-      Multipliers1.Enabled := False; // menu
-
-      MyContest := TPedi.Create(Self, 'Pedition mode');
-      MyContest.UseUTC := F.UseUTC;
-   finally
-      F.Release();
-   end;
+   MyContest := TPedi.Create(Self, 'Pedition mode');
 end;
 
 procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string);
@@ -9618,8 +9673,8 @@ begin
    HideBandMenuWARC();
    HideBandMenuVU();
 
-   mnCheckCountry.Visible := True;
-   mnCheckMulti.Caption := 'Check Zone';
+   menuShowCheckCountry.Visible := True;
+   menuShowCheckMulti.Caption := 'Check Zone';
 
    MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', dmZLogGlobal.ContestMode);
    FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
@@ -9651,8 +9706,8 @@ begin
    HideBandMenuVU();
 
    if dmZLogGlobal.MyCountry = 'JA' then begin
-      mnCheckCountry.Visible := True;
-      mnCheckMulti.Caption := 'Check Zone';
+      menuShowCheckCountry.Visible := True;
+      menuShowCheckMulti.Caption := 'Check Zone';
       MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', dmZLogGlobal.ContestMode);
    end
    else begin
@@ -10790,16 +10845,14 @@ end;
 procedure TMainForm.actionDecreaseTimeExecute(Sender: TObject);
 begin
    CurrentQSO.DecTime;
-   TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := DateStr(CurrentQSO);
+   ShowDateTime();
 end;
 
 // #51 時刻を１分進める
 procedure TMainForm.actionIncreaseTimeExecute(Sender: TObject);
 begin
    CurrentQSO.IncTime;
-   TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := DateStr(CurrentQSO);
+   ShowDateTime();
 end;
 
 // #52 QTC送信
@@ -11373,8 +11426,7 @@ end;
 procedure TMainForm.actionSetCurTimeExecute(Sender: TObject);
 begin
    CurrentQSO.UpdateTime;
-   TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := DateStr(CurrentQSO);
+   ShowDateTime();
 end;
 
 // #96 QRU Shift+U
@@ -13650,8 +13702,7 @@ begin
    if MyContest.SerialType <> stNone then begin
       SerialEdit.Text := CurrentQSO.SerialStr;
    end;
-   TimeEdit.Text := CurrentQSO.TimeStr;
-   DateEdit.Text := DateStr(CurrentQSO);
+   ShowDateTime();
    CallsignEdit.Text := CurrentQSO.Callsign;
    SentRSTEdit.Text := CurrentQSO.RSTSentStr;
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
@@ -15368,6 +15419,15 @@ begin
    else begin
       Result := aQSO.ShortDateStr;
    end;
+end;
+
+procedure TMainForm.ShowDateTime(Q: TQSO);
+begin
+   if Q = nil then begin
+      Q := CurrentQSO;
+   end;
+   DateEdit.Text := DateStr(Q);
+   TimeEdit.Text := Q.TimeStr;
 end;
 
 { TBandScopeNotifyThread }

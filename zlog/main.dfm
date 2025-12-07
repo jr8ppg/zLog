@@ -57,7 +57,7 @@ object MainForm: TMainForm
       end
       item
         Alignment = taCenter
-        Width = 50
+        Width = 120
       end>
     SizeGrip = False
     UseSystemFont = False
@@ -220,6 +220,7 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
+        PopupMenu = popupTimeZone
         TabOrder = 8
         Text = 'TIME'
         OnChange = TimeEdit1Change
@@ -537,6 +538,7 @@ object MainForm: TMainForm
           TabStop = False
           AutoSize = False
           ImeMode = imDisable
+          PopupMenu = popupTimeZone
           TabOrder = 1
           Text = 'TIME'
           OnChange = TimeEdit1Change
@@ -1097,6 +1099,7 @@ object MainForm: TMainForm
           TabStop = False
           AutoSize = False
           ImeMode = imDisable
+          PopupMenu = popupTimeZone
           TabOrder = 1
           Text = 'TIME'
           OnChange = TimeEdit1Change
@@ -6254,7 +6257,7 @@ object MainForm: TMainForm
         Top = 4
         Width = 25
         Height = 25
-        Hint = 'Multiplier info'
+        Action = actionShowMultipliers
         Caption = 'X'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -6264,7 +6267,6 @@ object MainForm: TMainForm
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
-        OnClick = actionShowMultipliersExecute
       end
       object RateButton: TSpeedButton
         Left = 152
@@ -6617,6 +6619,16 @@ object MainForm: TMainForm
         Hint = 'Open an existing file'
         OnClick = FileOpen
       end
+      object N22: TMenuItem
+        Caption = '-'
+      end
+      object menuSelectContest: TMenuItem
+        Caption = 'Select Contest'
+        OnClick = menuSelectContestClick
+      end
+      object N21: TMenuItem
+        Caption = '-'
+      end
       object FileSaveItem: TMenuItem
         Caption = '&Save'
         Hint = 'Save current file'
@@ -6690,58 +6702,58 @@ object MainForm: TMainForm
     end
     object Windows1: TMenuItem
       Caption = '&Windows'
-      object Score1: TMenuItem
+      object menuShowScore: TMenuItem
         Action = actionShowScore
       end
-      object Multipliers1: TMenuItem
+      object menuShowMultipliers: TMenuItem
         Action = actionShowMultipliers
       end
-      object QSOrate1: TMenuItem
+      object menuShowQSOrate: TMenuItem
         Action = actionShowQsoRate
       end
-      object QSORateEx1: TMenuItem
+      object menuShowQSOrateEx: TMenuItem
         Action = actionShowQsoRateEx
       end
-      object SuperCheck1: TMenuItem
+      object menuShowSuperCheck: TMenuItem
         Action = actionShowSuperCheck
       end
-      object N11: TMenuItem
+      object menuShowNPlusOne: TMenuItem
         Action = actionShowSuperCheck2
       end
-      object PartialCheck1: TMenuItem
+      object menuShowPartialCheck: TMenuItem
         Action = actionShowCheckPartial
       end
-      object CheckCall1: TMenuItem
+      object menuShowCheckCall: TMenuItem
         Action = actionShowCheckCall
       end
-      object mnCheckMulti: TMenuItem
+      object menuShowCheckMulti: TMenuItem
         Action = actionShowCheckMulti
       end
-      object mnCheckCountry: TMenuItem
+      object menuShowCheckCountry: TMenuItem
         Action = actionShowCheckCountry
       end
-      object CWKeyboard1: TMenuItem
+      object menuShowCWKeyboard: TMenuItem
         Action = actionShowCWKeyboard
       end
-      object CWMessagePad1: TMenuItem
+      object menuShowCWMessagePad: TMenuItem
         Action = actionCwMessagePad
       end
-      object RigControl1: TMenuItem
+      object menuShowRIgControl: TMenuItem
         Action = actionShowRigControl
       end
-      object PacketCluster1: TMenuItem
+      object menuShowPacketCluster: TMenuItem
         Action = actionShowPacketCluster
       end
-      object ZLinkmonitor1: TMenuItem
+      object menuShowZLinkMonitor: TMenuItem
         Action = actionShowZlinkMonitor
       end
-      object ZServer1: TMenuItem
+      object menuShowZServer: TMenuItem
         Action = actionShowZServerChat
       end
-      object Console1: TMenuItem
+      object menuShowConsole: TMenuItem
         Action = actionShowConsolePad
       end
-      object Scratchsheet1: TMenuItem
+      object menuShowScratchSheet: TMenuItem
         Action = actionShowScratchSheet
       end
       object menuBandscope: TMenuItem
@@ -6869,14 +6881,14 @@ object MainForm: TMainForm
           OnClick = menuBS00Click
         end
       end
-      object RunningFrequencies1: TMenuItem
+      object menuShowRunningFrequencies: TMenuItem
         Action = actionShowFreqList
       end
-      object mnTTYConsole: TMenuItem
+      object menuShowTTYConsole: TMenuItem
         Action = actionShowTeletypeConsole
         Visible = False
       end
-      object menuAnalyze: TMenuItem
+      object menuShowAnalyze: TMenuItem
         Action = actionShowAnalyze
       end
       object menuShowFunctionKeyPanel: TMenuItem
@@ -6891,7 +6903,7 @@ object MainForm: TMainForm
       object menuShowInformation: TMenuItem
         Action = actionShowInformation
       end
-      object ShowMessageManagerSO2R1: TMenuItem
+      object menuShowMessageManagerSO2R: TMenuItem
         Action = actionShowMsgMgr
       end
       object menuShowCWMonitor: TMenuItem
@@ -6900,10 +6912,10 @@ object MainForm: TMainForm
       object menuQTC: TMenuItem
         Action = actionQTC
       end
-      object actionShowEntityInfo1: TMenuItem
+      object menuShowEntityInfo: TMenuItem
         Action = actionShowEntityInfo
       end
-      object Grayline1: TMenuItem
+      object menuShowGrayline: TMenuItem
         Action = actionShowGrayline
       end
     end
@@ -8640,5 +8652,27 @@ object MainForm: TMainForm
     OnTimer = timerShowInfoTimer
     Left = 320
     Top = 195
+  end
+  object popupTimeZone: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 400
+    Top = 94
+    object menuTzJST: TMenuItem
+      AutoCheck = True
+      Caption = 'JST'
+      Checked = True
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuTimeZoneClick
+    end
+    object menuTzUTC: TMenuItem
+      Tag = 1
+      AutoCheck = True
+      Caption = 'UTC'
+      GroupIndex = 1
+      RadioItem = True
+      OnClick = menuTimeZoneClick
+    end
   end
 end

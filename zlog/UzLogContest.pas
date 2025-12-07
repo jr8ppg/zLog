@@ -793,11 +793,6 @@ begin
 
    Log.AcceptDifferentMode := True;
 
-   if UseUTC then
-      Log.QsoList[0].RSTsent := _USEUTC
-   else
-      Log.QsoList[0].RSTsent := UTCOffset;
-
    FSentStr := '';
 
    FBandLow := b19;
@@ -816,9 +811,9 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 5;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
+   FColWidths[7] := 5;      // Rcvd Number
    FColWidths[8] := 4;      // band
    FColWidths[9] := 4;      // mode
    FColWidths[10] := 6;     // op
@@ -1144,37 +1139,31 @@ begin
       FUserDatLoaded := True;
    end;
 
-   dmZlogGlobal.Settings._sentstr         := FConfig.Sent;
+   dmZlogGlobal.Settings._sentstr   := FConfig.Sent;
 
-   Log.AcceptDifferentMode                := FConfig.AcceptDifferentMode;
-   Log.AllPhone                           := FConfig.AllPhone;
-   Log.CountHigherPoints                  := FConfig.CountHigherPoints;
+   Log.AcceptDifferentMode          := FConfig.AcceptDifferentMode;
+   Log.AllPhone                     := FConfig.AllPhone;
+   Log.CountHigherPoints            := FConfig.CountHigherPoints;
+   UseUTC                           := FConfig.UseUTC;
 
-   if FConfig.UseUTC = True then begin
-      UseUTC := True;
-      Log.QsoList[0].RSTSent := _USEUTC; // JST = 0; UTC = $FFFF
-   end;
-
-   FSerialType := FConfig.SerialContestType;
-
-   FSentStr := dmZlogGlobal.Settings._sentstr;
-
-   FNeedCtyDat := FConfig.UseCtyDat;
-   FUseCoeff   := FConfig.Coeff;
-
-   FBandLow := FConfig.BandLow;
-   FBandHigh := FConfig.BandHigh;
+   FSerialType                      := FConfig.SerialContestType;
+   FSentStr                         := dmZlogGlobal.Settings._sentstr;
+   FNeedCtyDat                      := FConfig.UseCtyDat;
+   FUseCoeff                        := FConfig.Coeff;
+   FBandLow                         := FConfig.BandLow;
+   FBandHigh                        := FConfig.BandHigh;
 
    if FConfig.BandPlan <> '' then begin
       FBandPlan := FConfig.BandPlan;
    end;
 
-   FUseContestPeriod := FConfig.UseContestPeriod;
-   FStartTime := FConfig.StartTime;
-   FPeriod := FConfig.Period;
+   FUseContestPeriod                := FConfig.UseContestPeriod;
+   FStartTime                       := FConfig.StartTime;
+   FPeriod                          := FConfig.Period;
+
    Log.QsoList[0].Serial := $01; // uses serial number
-   FSameExchange := FConfig.SameExchange;
-   AdifContestId := FConfig.ContestId;
+   FSameExchange                    := FConfig.SameExchange;
+   AdifContestId                    := FConfig.ContestId;
 
    FSingle10G := FConfig.Single10G;
 

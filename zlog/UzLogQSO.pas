@@ -204,6 +204,8 @@ type
     function SameQSOID(aQSO: TQSO) : Boolean;
     function SameMode(aQSO: TQSO; IsAllPhone: Boolean): Boolean;
 //    function SameMode2(aMode: TMode) : Boolean;
+    procedure ToUTC();
+    procedure ToJST();
 
     procedure Assign(src: TQSO);
 
@@ -514,6 +516,7 @@ type
     {$ENDIF}
 
     procedure Renumber();
+    procedure ChangeTimeZone();
 
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
@@ -1515,6 +1518,16 @@ begin
    FQslState   := TQslState(src.QslState);
    FInvalid    := src.Invalid;
    FRbnVerified := src.RbnVerified;
+end;
+
+procedure TQSO.ToUTC();
+begin
+   FTime := IncHour(FTime, -9);
+end;
+
+procedure TQSO.ToJST();
+begin
+   FTime := IncHour(FTime, 9);
 end;
 
 { TQSOList }
@@ -3979,7 +3992,9 @@ begin
       Exit;
    end;
 
+   // ヘッダーレコード
    FStartTime := PDateTime(@D.Reserve2)^;
+   FQsoList[0].RSTSent := D.RSTSent;
 
    {$IFDEF DEBUG}
    dwTick := GetTickCount();
@@ -4038,7 +4053,9 @@ begin
    Reset(f);
    Read(f, D);
 
+   // ヘッダーレコード
    FStartTime := PDateTime(@D.Reserve2)^;
+   FQsoList[0].RSTSent := D.RSTSent;
 
    Q := nil;
    GLOBALSERIAL := 0;
@@ -5262,6 +5279,20 @@ begin
          qsoid := dmZLogGlobal.NewQSOID;
       until CheckQSOID(qsoid) = False;
       Q.Reserve3 := qsoid;
+   end;
+end;
+
+procedure TLog.ChangeTimeZone();
+var
+   i: Integer;
+begin
+   for i := 1 to Log.TotalQSO do begin
+      if Log.QsoList[0].RSTSent = _USEUTC then begin
+         Log.QsoList[i].ToUTC();
+      end
+      else begin
+         Log.QsoList[i].ToJST();
+      end;
    end;
 end;
 

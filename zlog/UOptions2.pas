@@ -407,6 +407,7 @@ type
     groupReliability: TGroupBox;
     radioReliabilityHigh: TRadioButton;
     radioReliabilityMiddle: TRadioButton;
+    checkSelectContestOnStartup: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
@@ -722,7 +723,8 @@ begin
       Settings._allowdupe := AllowDupeCheckBox.Checked;
       Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
       Settings._use_contest_period := checkUseContestPeriod.Checked;
-      Settings.FDontShowStartupWindow := not checkShowStartupWindow.Checked;
+      Settings.FShowStartupWindow := checkShowStartupWindow.Checked;
+      Settings.FSelectContestOnStartup := checkSelectContestOnStartup.Checked;
 
       Settings._sameexchange := cbDispExchange.Checked;
       Settings._entersuperexchange := cbAutoEnterSuper.Checked;
@@ -1040,7 +1042,8 @@ begin
       checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
       checkUseContestPeriod.Checked := Settings._use_contest_period;
 
-      checkShowStartupWindow.Checked := not Settings.FDontShowStartupWindow;
+      checkShowStartupWindow.Checked := Settings.FShowStartupWindow;
+      checkSelectContestOnStartup.Checked := Settings.FSelectContestOnStartup;
 
       SaveEvery.Value := Settings._saveevery;
 

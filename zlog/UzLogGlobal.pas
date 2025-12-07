@@ -400,7 +400,10 @@ type
     FGrayLineYcutsize: Integer;
 
     // Startup window
-    FDontShowStartupWindow: Boolean;
+    FShowStartupWindow: Boolean;
+
+    // Select the contest at startup.
+    FSelectContestOnStartup: Boolean;
 
     // Usability
     FUseMultiLineTabs: Boolean;
@@ -1347,7 +1350,10 @@ begin
       Settings.FGrayLineYcutsize := ini.ReadInteger('Grayline', 'ycutsize', 15);
 
       // Startup window
-      Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
+      Settings.FShowStartupWindow := ini.ReadBool('Preferences', 'ShowStartupWindow', True);
+
+      // Select the contest at startup.
+      Settings.FSelectContestOnStartup := ini.ReadBool('Preferences', 'SelectContestOnStartup', True);
 
       // Usability
       Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', True);
@@ -2153,7 +2159,10 @@ begin
       ini.WriteBool('Grayline', 'GrayLineStayOnTop', Settings.FGrayLineStayOnTop);
 
       // Startup window
-      ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
+      ini.WriteBool('Preferences', 'ShowStartupWindow', Settings.FShowStartupWindow);
+
+      // Select the contest at startup.
+      ini.WriteBool('Preferences', 'SelectContestOnStartup', Settings.FSelectContestOnStartup);
 
       // Usability
       ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
