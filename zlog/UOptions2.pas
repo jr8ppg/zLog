@@ -412,15 +412,46 @@ type
     groupExchange: TGroupBox;
     Label19: TLabel;
     SentEdit: TEdit;
-    procedure buttonOKClick(Sender: TObject);
+    groupQsoListColors: TGroupBox;
+    Label32: TLabel;
+    Label68: TLabel;
+    Label33: TLabel;
+    Label43: TLabel;
+    editListColor1: TEdit;
+    buttonListBack1: TButton;
+    buttonListReset1: TButton;
+    editListColor2: TEdit;
+    buttonListBack2: TButton;
+    buttonListReset2: TButton;
+    buttonListFore1: TButton;
+    checkListBold1: TCheckBox;
+    buttonListFore2: TButton;
+    checkListBold2: TCheckBox;
+    editListColor3: TEdit;
+    buttonListBack3: TButton;
+    buttonListReset3: TButton;
+    editListColor4: TEdit;
+    buttonListBack4: TButton;
+    buttonListReset4: TButton;
+    checkUseMultiLineTabs: TCheckBox;
+    groupUsabilityAfterQsoEdit: TGroupBox;
+    Panel2: TPanel;
+    Label44: TLabel;
+    radioOnOkFocusToQsoList: TRadioButton;
+    radioOnOkFocusToNewQso: TRadioButton;
+    Panel3: TPanel;
+    Label45: TLabel;
+    radioOnCancelFocusToQsoList: TRadioButton;
+    radioOnCancelFocusToNewQso: TRadioButton;
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure buttonOKClick(Sender: TObject);
+    procedure buttonCancelClick(Sender: TObject);
     procedure buttonOpAddClick(Sender: TObject);
     procedure buttonOpDeleteClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure buttonCancelClick(Sender: TObject);
     procedure SpeedBarChange(Sender: TObject);
     procedure WeightBarChange(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure vButtonClick(Sender: TObject);
     procedure CQRepEditKeyPress(Sender: TObject; var Key: Char);
     procedure editMessage1Change(Sender: TObject);
@@ -478,6 +509,10 @@ type
     FActiveBands: array[b19..HiBand] of TCheckBox;
     FPowerPerBand: array[b19..HiBand] of TComboBox;
 
+    FQSOListColor: array[1..4] of TEdit;
+    FQSOListBold: array[1..4] of TCheckBox;
+
+
     FTempVoiceFiles : array[1..maxmessage] of string;
     FTempAdditionalVoiceFiles : array[2..3] of string;
     TempCurrentBank : integer;
@@ -508,8 +543,9 @@ type
     procedure InitVoice();
     procedure AddFreqMemList(D: TFreqMemory);
     procedure UpdateFreqMemList(listitem: TListItem);
+    procedure RenewSettings();
+    procedure ImplementSettings();
   public
-    procedure RenewSettings; {Reads controls and updates Settings}
     property EditMode: Integer read FEditMode write FEditMode;
     property EditNumber: Integer read FEditNumber write SetEditNumber;
     property NeedSuperCheckLoad: Boolean read FNeedSuperCheckLoad;
@@ -545,833 +581,8 @@ const
 
 {$R *.DFM}
 
-procedure TformOptions2.radioCategoryClick(Sender: TObject);
-var
-   n: Integer;
-
-   procedure OperatorsEnable(f: Boolean);
-   begin
-      OpListBox.Enabled := f;
-      buttonOpAdd.Enabled := f;
-      buttonOpEdit.Enabled := f;
-      buttonOpDelete.Enabled := f;
-      checkSelectLastOperator.Enabled := f;
-      checkApplyPowerCodeOnBandChange.Enabled := f;
-   end;
-
-   function SelectTxNo(): Integer;
-   begin
-      Result := comboTxNo.Items.IndexOf(IntToStr(dmZLogGlobal.Settings._txnr));
-      if Result = -1 then begin
-         Result := 0;
-      end;
-   end;
-begin
-   n := TRadioButton(Sender).Tag;
-   case n of
-      // Single-Op
-      0: begin
-         comboTxNo.Enabled := False;
-         comboTxNo.Items.CommaText := '0,1';
-         comboTxNo.ItemIndex := SelectTxNo();
-         OperatorsEnable(False);
-      end;
-
-      // Multi-Op/Multi-Tx
-      1: begin
-         comboTxNo.Enabled := True;
-         comboTxNo.Items.CommaText := TXLIST_MM;
-         comboTxNo.ItemIndex := SelectTxNo();
-         OperatorsEnable(True);
-      end;
-
-      // Multi-Op/Single-Tx, Multi-Op/Two-Tx
-      2, 3: begin
-         comboTxNo.Enabled := True;
-         comboTxNo.Items.CommaText := TXLIST_MS;
-         comboTxNo.ItemIndex := SelectTxNo();
-         OperatorsEnable(True);
-      end;
-   end;
-end;
-
-procedure TformOptions2.RenewSettings;
-var
-   r: double;
-   i, j: integer;
-   b: TBand;
-begin
-   with dmZLogGlobal do begin
-      Settings._savewhennocw := cbSaveWhenNoCW.Checked;
-      Settings._jmode := cbJMode.Checked;
-      Settings._searchafter := rgSearchAfter.ItemIndex;
-      Settings._renewbythread := cbUpdateThread.Checked;
-      Settings._displaydatepartialcheck := cbDisplayDatePartialCheck.Checked;
-
-      Settings._maxsuperhit := spMaxSuperHit.Value;
-
-      for b := b19 to HiBand do begin
-         Settings._activebands[b] := FActiveBands[b].Checked;
-         Settings._power[b] := FPowerPerBand[b].Text;
-      end;
-
-      // Callsign
-      Settings._mycall := editMyCallsign.Text;
-
-      // My position
-      Settings._mylatitude := editMyLatitude.Text;
-      Settings._mylongitude := editMyLongitude.Text;
-
-      Settings._mode := TContestMode(groupMode.ItemIndex);
-
-      // Category
-      if radioSingleOp.Checked = True then begin
-         Settings._multiop := ccSingleOp;
-      end
-      else if radioMultiOpMultiTx.Checked = True then begin
-         Settings._multiop := ccMultiOpMultiTx;
-      end
-      else if radioMultiOpSingleTx.Checked = True then begin
-         Settings._multiop := ccMultiOpSingleTx;
-      end
-      else if radioMultiOpTwoTx.Checked = True then begin
-         Settings._multiop := ccMultiOpTwoTx;
-      end;
-
-      // #TXNR
-      Settings._txnr := StrToIntDef(comboTxNo.Text, 0);
-
-      Settings._selectlastoperator := checkSelectLastOperator.Checked;
-      Settings._applypoweronbandchg :=  checkApplyPowerCodeOnBandChange.Checked;
-
-      Settings._prov := ProvEdit.Text;
-      Settings._city := CityEdit.Text;
-      Settings._cqzone := CQZoneEdit.Text;
-      Settings._iaruzone := IARUZoneEdit.Text;
-      Settings._age := AgeEdit.Text;
-      Settings._PowerH := editPowerH.Text;
-      Settings._PowerM := editPowerM.Text;
-      Settings._PowerL := editPowerL.Text;
-      Settings._PowerP := editPowerP.Text;
-
-      {
-        Settings.CW.CWStrBank[1,1] := Edit1.Text;
-        Settings.CW.CWStrBank[1,2] := Edit2.Text;
-        Settings.CW.CWStrBank[1,3] := Edit3.Text;
-        Settings.CW.CWStrBank[1,4] := Edit4.Text;
-        Settings.CW.CWStrBank[1,5] := Edit5.Text;
-        Settings.CW.CWStrBank[1,6] := Edit6.Text;
-        Settings.CW.CWStrBank[1,7] := Edit7.Text;
-        Settings.CW.CWStrBank[1,8] := Edit8.Text;
-
-        Settings.CW.CQStrBank[0] := Edit1.Text;
-      }
-
-      for i := 1 to maxbank do begin
-         for j := 1 to maxmessage do begin
-            Settings.CW.CWStrBank[i, j] := TempCWStrBank[i, j];
-         end;
-      end;
-
-      Settings.CW.AdditionalCQMessages[2] := editCQMessage2.Text;
-      Settings.CW.AdditionalCQMessages[3] := editCQMessage3.Text;
-
-      Settings._bsexpire := spBSExpire.Value;
-      Settings._spotexpire := spSpotExpire.Value;
-
-      r := Settings.CW._cqrepeat;
-      Settings.CW._cqrepeat := StrToFloatDef(CQRepEdit.Text, r);
-
-      Settings.CW._speed := SpeedBar.Position;
-      Settings.CW._weight := WeightBar.Position;
-      Settings.CW._FIFO := FIFOCheck.Checked;
-      Settings.CW._sidetone := SideToneCheck.Checked;
-      Settings.CW._sidetone_volume := VolumeSpinEdit.Value;
-      Settings.CW._tonepitch := ToneSpinEdit.Value;
-      Settings.CW._cqmax := CQmaxSpinEdit.Value;
-
-      Settings.CW._cq_random_repeat := checkUseCQRamdomRepeat.Checked;
-      Settings._switchcqsp := cbCQSP.Checked;
-
-      if length(AbbrevEdit.Text) >= 3 then begin
-         Settings.CW._zero := AbbrevEdit.Text[1];
-         Settings.CW._one := AbbrevEdit.Text[2];
-         Settings.CW._nine := AbbrevEdit.Text[3];
-      end;
-
-      // Send NR? automatically
-      Settings.CW._send_nr_auto := checkSendNrAuto.Checked;
-
-      // Not send leading zeros in serial number
-      Settings.CW._not_send_leading_zeros := checkNotSendLeadingZeros.Checked;
-
-      // Paddle reverse
-      Settings.CW._paddlereverse := checkPaddleReverse.Checked;
-
-      Settings._saveevery        := SaveEvery.Value;
-
-      // QSL Default
-      if radioQslNone.Checked = True then begin
-         Settings._qsl_default   := qsNone;
-      end
-      else if radioPseQsl.Checked = True then begin
-         Settings._qsl_default   := qsPseQsl;
-      end
-      else begin
-         Settings._qsl_default   := qsNoQsl;
-      end;
-
-      // QSY Assist
-      Settings._countdown        := radioQsyCountDown.Checked;
-      Settings._qsycount         := radioQsyCount.Checked;
-      Settings._countdownminute  := editQsyCountDownMinute.Value;
-      Settings._countperhour     := editQsyCountPerHour.Value;
-
-      Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
-      Settings._use_contest_period := checkUseContestPeriod.Checked;
-      Settings.FShowStartupWindow := checkShowStartupWindow.Checked;
-      Settings.FSelectContestOnStartup := checkSelectContestOnStartup.Checked;
-
-      Settings._entersuperexchange := cbAutoEnterSuper.Checked;
-      Settings._displongdatetime := checkDispLongDateTime.Checked;
-
-      // Quick QSY
-      FreqMemList.Assign(FTempFreqMemList);
-
-      Settings.FUseKhzQsyCommand := checkUseKhzQsyCommand.Checked;
-
-      // SuperCheck
-      if radioSuperCheck0.Checked = True then begin
-         Settings.FSuperCheck.FSuperCheckMethod := 0;
-      end
-      else if radioSuperCheck1.Checked = True then begin
-         Settings.FSuperCheck.FSuperCheckMethod := 1;
-      end
-      else begin
-         Settings.FSuperCheck.FSuperCheckMethod := 2;
-      end;
-      Settings.FSuperCheck.FAcceptDuplicates := checkAcceptDuplicates.Checked;
-      Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
-      Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
-
-      // Partial Check
-      Settings.FPartialCheck.FCurrentBandForeColor := editPartialCheckColor.Font.Color;
-      Settings.FPartialCheck.FCurrentBandBackColor := editPartialCheckColor.Color;
-
-      // Accessibility
-      Settings.FAccessibility.FFocusedForeColor := editFocusedColor.Font.Color;
-      Settings.FAccessibility.FFocusedBackColor := editFocusedColor.Color;
-      Settings.FAccessibility.FFocusedBold := checkFocusedBold.Checked;
-
-      // Band Scope
-      Settings._usebandscope[b19]   := checkBS01.Checked;
-      Settings._usebandscope[b35]   := checkBS02.Checked;
-      Settings._usebandscope[b7]    := checkBS03.Checked;
-      Settings._usebandscope[b10]   := checkBS04.Checked;
-      Settings._usebandscope[b14]   := checkBS05.Checked;
-      Settings._usebandscope[b18]   := checkBS06.Checked;
-      Settings._usebandscope[b21]   := checkBS07.Checked;
-      Settings._usebandscope[b24]   := checkBS08.Checked;
-      Settings._usebandscope[b28]   := checkBS09.Checked;
-      Settings._usebandscope[b50]   := checkBS10.Checked;
-      Settings._usebandscope[b144]  := checkBS11.Checked;
-      Settings._usebandscope[b430]  := checkBS12.Checked;
-      Settings._usebandscope[b1200] := checkBS13.Checked;
-      Settings._usebandscope[b2400] := checkBS14.Checked;
-      Settings._usebandscope[b5600] := checkBS15.Checked;
-      Settings._usebandscope[b10g]  := checkBS16.Checked;
-      Settings._usebandscope[b104g]  := checkBS17.Checked;
-      Settings._usebandscope[b24g]  := checkBS18.Checked;
-      Settings._usebandscope[b47g]  := checkBS19.Checked;
-      Settings._usebandscope[b77g]  := checkBS20.Checked;
-      Settings._usebandscope[b135g]  := checkBS21.Checked;
-      Settings._usebandscope[b248g]  := checkBS22.Checked;
-      Settings._usebandscope_current := checkBsCurrent.Checked;
-      Settings._usebandscope_newmulti := checkBsNewMulti.Checked;
-      Settings._usebandscope_allbands := checkBsAllBands.Checked;
-
-      for i := 1 to 15 do begin
-         if FBSColor[i] <> nil then begin
-            Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
-            Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
-         end;
-         if FBSBold[i] = nil then begin
-            Settings._bandscopecolor[i].FBold      := False;
-         end
-         else begin
-            Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
-         end;
-         if FBSUseReliability[i] = nil then begin
-            Settings._bandscopecolor[i].FUseReliability := False;
-         end
-         else begin
-            Settings._bandscopecolor[i].FUseReliability := FBSUseReliability[i].Checked;
-         end;
-         if FBSTransparent[i] = nil then begin
-            Settings._bandscopecolor[i].FTransparent := False;
-         end
-         else begin
-            Settings._bandscopecolor[i].FTransparent := FBSTransparent[i].Checked;
-         end;
-      end;
-
-      // Spot鮮度表示
-      if radioFreshness1.Checked = True then begin
-         Settings._bandscope_freshness_mode := 0;           // Remain time1
-         Settings._bandscope_freshness_icon := 2;
-      end
-      else if radioFreshness2.Checked = True then begin
-         Settings._bandscope_freshness_mode := 1;           // Remain time2
-         Settings._bandscope_freshness_icon := 3;
-      end
-      else if radioFreshness3.Checked = True then begin
-         Settings._bandscope_freshness_mode := 2;           // Remain time3
-         Settings._bandscope_freshness_icon := 2;
-      end
-      else if radioFreshness4.Checked = True then begin
-         Settings._bandscope_freshness_mode := 3;           // Elapsed time
-         Settings._bandscope_freshness_icon := 5;
-      end
-      else begin
-         Settings._bandscope_freshness_mode := 0;
-         Settings._bandscope_freshness_icon := 2;
-      end;
-
-      // BandScope Options
-      Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // 周波数からのモードの推定
-      Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
-      Settings._bandscope_show_ja_spots := checkShowJAspots.Checked;                // JAを表示
-      Settings._bandscope_show_dx_spots := checkShowDXspots.Checked;                // DXを表示
-      Settings._bandscope_use_number_lookup := checkUseNumberLookup.Checked;        // Number Lookup
-      Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
-      Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
-      Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
-      Settings._bandscope_save_current_freq := checkSaveCurrentFreq.Checked;        // S&P時、現在周波数を保存する
-
-      // BandScope Options2
-      Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
-
-      // Reliability
-      Settings._bandscope_initial_reliability_high := radioReliabilityHigh.Checked;
-
-      // Quick Memo
-      for i := 1 to 5 do begin
-         Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
-      end;
-
-      // Voice Memory
-      for i := 1 to maxmessage do begin
-         Settings.FSoundFiles[i] := FTempVoiceFiles[i];
-         Settings.FSoundComments[i] := FVoiceEdit[i].Text;
-      end;
-      for i := 2 to 3 do begin
-         Settings.FAdditionalSoundFiles[i] := FTempAdditionalVoiceFiles[i];
-         Settings.FAdditionalSoundComments[i] := FAdditionalVoiceEdit[i].Text;
-      end;
-   end;
-end;
-
-procedure TformOptions2.buttonOKClick(Sender: TObject);
-begin
-   // 入力された設定を保存
-   RenewSettings;
-
-   // 各種フォルダ作成
-   dmZLogGlobal.CreateFolders();
-
-   ModalResult := mrOK;
-end;
-
-procedure TformOptions2.RenewCWStrBankDisp;
-var
-   i: Integer;
-begin
-   for i := 1 to maxmessage do begin
-      FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
-      if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
-         FEditMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-         if FEditMessage[i].ReadOnly = True then begin
-            FEditMessage[i].Color := clBtnFace; // gray
-         end
-         else begin
-            FEditMessage[i].Color := $00EADEFF; // light pink
-         end;
-      end
-      else begin
-         FEditMessage[i].Color := clWindow;
-         FEditMessage[i].ReadOnly := False;
-      end;
-   end;
-
-   for i := 2 to 3 do begin
-      if dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] = True then begin
-         FEditAdditionalCQMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-         if FEditAdditionalCQMessage[i].ReadOnly = True then begin
-            FEditAdditionalCQMessage[i].Color := clBtnFace; // gray
-         end
-         else begin
-            FEditAdditionalCQMessage[i].Color := $00EADEFF; // light pink
-         end;
-      end
-      else begin
-         FEditAdditionalCQMessage[i].Color := clWindow;
-         FEditAdditionalCQMessage[i].ReadOnly := False;
-      end;
-   end;
-end;
-
-procedure TformOptions2.FormShow(Sender: TObject);
-var
-   i, j: integer;
-   b: TBand;
-begin
-   with dmZlogGlobal do begin
-      cbSaveWhenNoCW.Checked := Settings._savewhennocw;
-      cbJMode.Checked := Settings._jmode;
-
-      rgSearchAfter.ItemIndex := Settings._searchafter;
-      spMaxSuperHit.Value := Settings._maxsuperhit;
-      spBSExpire.Value := Settings._bsexpire;
-      spSpotExpire.Value := Settings._spotexpire;
-      cbUpdateThread.Checked := Settings._renewbythread;
-      cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
-
-      for b := b19 to HiBand do begin
-         FActiveBands[b].Checked := Settings._activebands[b];
-         FPowerPerBand[b].Text := Settings._power[b];
-      end;
-
-      // Callsign
-      editMyCallsign.Text := Settings._mycall;
-
-      // My position
-      editMyLatitude.Text := Settings._mylatitude;
-      editMyLongitude.Text := Settings._mylongitude;
-
-      // Category
-      if ContestCategory = ccSingleOp then begin
-         radioSingleOp.Checked := True;
-      end
-      else if ContestCategory = ccMultiOpMultiTx then begin
-         radioMultiOpMultiTx.Checked := True;
-      end
-      else if ContestCategory = ccMultiOpSingleTx then begin
-         radioMultiOpSingleTx.Checked := True;
-      end
-      else if ContestCategory = ccMultiOpTwoTx then begin
-         radioMultiOpTwoTx.Checked := True;
-      end;
-
-      groupMode.ItemIndex := Integer(Settings._mode);
-      { OpListBox.Items := OpList; }
-
-      for i := 1 to maxbank do begin
-         for j := 1 to maxmessage do begin
-            TempCWStrBank[i, j] := Settings.CW.CWStrBank[i, j];
-         end;
-      end;
-
-      case TempCurrentBank of
-         1:
-            rbBankA.Checked := True;
-         2:
-            rbBankB.Checked := True;
-         3:
-            rbRTTY.Checked := True;
-      end;
-
-      RenewCWStrBankDisp;
-
-      editCQMessage2.Text := Settings.CW.AdditionalCQMessages[2];
-      editCQMessage3.Text := Settings.CW.AdditionalCQMessages[3];
-
-      CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
-      SpeedBar.Position := Settings.CW._speed;
-      SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
-      WeightBar.Position := Settings.CW._weight;
-      WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
-      FIFOCheck.Checked := Settings.CW._FIFO;
-      SideToneCheck.Checked := Settings.CW._sidetone;
-      VolumeSpinEdit.Value := Settings.CW._sidetone_volume;
-      ToneSpinEdit.Value := Settings.CW._tonepitch;
-      CQmaxSpinEdit.Value := Settings.CW._cqmax;
-      AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
-
-      checkSelectLastOperator.Checked := Settings._selectlastoperator;
-      checkApplyPowerCodeOnBandChange.Checked := Settings._applypoweronbandchg;
-
-      ProvEdit.Text := Settings._prov;
-      CityEdit.Text := Settings._city;
-      CQZoneEdit.Text := Settings._cqzone;
-      IARUZoneEdit.Text := Settings._iaruzone;
-      AgeEdit.Text := Settings._age;
-
-      if Settings.ProvCityImported = True then begin
-         ProvEdit.ReadOnly := Settings.ReadOnlyParamImported;
-         CityEdit.ReadOnly := Settings.ReadOnlyParamImported;
-         CQZoneEdit.ReadOnly := Settings.ReadOnlyParamImported;
-         IARUZoneEdit.ReadOnly := Settings.ReadOnlyParamImported;
-         AgeEdit.ReadOnly := Settings.ReadOnlyParamImported;
-
-         if ProvEdit.ReadOnly = True then begin
-            ProvEdit.Color := clBtnFace;
-            CityEdit.Color := clBtnFace;
-            CQZoneEdit.Color := clBtnFace;
-            IARUZoneEdit.Color := clBtnFace;
-            AgeEdit.Color := clBtnFace;
-         end
-         else begin
-            ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
-            CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
-            CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
-            IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
-            AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
-         end;
-      end
-      else begin
-         ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
-         CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
-         CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
-         IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
-         AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
-         ProvEdit.ReadOnly := False;
-         CityEdit.ReadOnly := False;
-         CQZoneEdit.ReadOnly := False;
-         IARUZoneEdit.ReadOnly := False;
-         AgeEdit.ReadOnly := False;
-      end;
-
-      editPowerH.Text := Settings._PowerH;
-      editPowerM.Text := Settings._PowerM;
-      editPowerL.Text := Settings._PowerL;
-      editPowerP.Text := Settings._PowerP;
-
-      checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
-      checkUseContestPeriod.Checked := Settings._use_contest_period;
-
-      checkShowStartupWindow.Checked := Settings.FShowStartupWindow;
-      checkSelectContestOnStartup.Checked := Settings.FSelectContestOnStartup;
-
-      SaveEvery.Value := Settings._saveevery;
-
-      // Sent欄は表示専用
-      SentEdit.Text := Settings._sentstr;
-
-      checkUseCQRamdomRepeat.Checked := Settings.CW._cq_random_repeat;
-      cbCQSP.Checked := Settings._switchcqsp;
-
-      // Send NR? automatically
-      checkSendNrAuto.Checked := Settings.CW._send_nr_auto;
-
-      // Not send leading zeros in serial number
-      checkNotSendLeadingZeros.Checked := Settings.CW._not_send_leading_zeros;
-
-      // Paddle reverse
-      checkPaddleReverse.Checked := Settings.CW._paddlereverse;
-
-      // QSL Default
-      if Settings._qsl_default = qsNone then begin
-         radioQslNone.Checked := True;
-      end
-      else if Settings._qsl_default = qsPseQsl then begin
-         radioPseQsl.Checked := True;
-      end
-      else begin
-         radioNoQsl.Checked := True;
-      end;
-
-      // QSY Assist
-      radioQsyNone.Checked          := True;
-      radioQsyCountDown.Checked     := Settings._countdown;
-      radioQsyCount.Checked         := Settings._qsycount;
-      editQsyCountDownMinute.Value  := Settings._countdownminute;
-      editQsyCountPerHour.Value     := Settings._countperhour;
-
-      cbAutoEnterSuper.Checked := Settings._entersuperexchange;
-      checkDispLongDateTime.Checked := Settings._displongdatetime;
-
-      // Quick QSY
-      FTempFreqMemList.Assign(FreqMemList);
-
-      checkUseKhzQsyCommand.Checked := Settings.FUseKhzQsyCommand;
-
-      // SuperCheck
-      case Settings.FSuperCheck.FSuperCheckMethod of
-         0: radioSuperCheck0.Checked := True;
-         1: radioSuperCheck1.Checked := True;
-         else radioSuperCheck2.Checked := True;
-      end;
-      checkAcceptDuplicates.Checked := Settings.FSuperCheck.FAcceptDuplicates;
-      checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
-      editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
-
-      // Partial Check
-      editPartialCheckColor.Font.Color := Settings.FPartialCheck.FCurrentBandForeColor;
-      editPartialCheckColor.Color := Settings.FPartialCheck.FCurrentBandBackColor;
-
-      // Accessibility
-      editFocusedColor.Font.Color := Settings.FAccessibility.FFocusedForeColor;
-      editFocusedColor.Color := Settings.FAccessibility.FFocusedBackColor;
-      checkFocusedBold.Checked := Settings.FAccessibility.FFocusedBold;
-
-      // Band Scope
-      checkBS01.Checked := Settings._usebandscope[b19];
-      checkBS02.Checked := Settings._usebandscope[b35];
-      checkBS03.Checked := Settings._usebandscope[b7];
-      checkBS04.Checked := Settings._usebandscope[b10];
-      checkBS05.Checked := Settings._usebandscope[b14];
-      checkBS06.Checked := Settings._usebandscope[b18];
-      checkBS07.Checked := Settings._usebandscope[b21];
-      checkBS08.Checked := Settings._usebandscope[b24];
-      checkBS09.Checked := Settings._usebandscope[b28];
-      checkBS10.Checked := Settings._usebandscope[b50];
-      checkBS11.Checked := Settings._usebandscope[b144];
-      checkBS12.Checked := Settings._usebandscope[b430];
-      checkBS13.Checked := Settings._usebandscope[b1200];
-      checkBS14.Checked := Settings._usebandscope[b2400];
-      checkBS15.Checked := Settings._usebandscope[b5600];
-      checkBS16.Checked := Settings._usebandscope[b10g];
-      checkBS17.Checked := Settings._usebandscope[b104g];
-      checkBS18.Checked := Settings._usebandscope[b24g];
-      checkBS19.Checked := Settings._usebandscope[b47g];
-      checkBS20.Checked := Settings._usebandscope[b77g];
-      checkBS21.Checked := Settings._usebandscope[b135g];
-      checkBS22.Checked := Settings._usebandscope[b248g];
-      checkBsCurrent.Checked := Settings._usebandscope_current;
-      checkBsNewMulti.Checked := Settings._usebandscope_newmulti;
-      checkBsAllBands.Checked := Settings._usebandscope_allbands;
-
-      for i := 1 to 15 do begin
-         if FBSColor[i] <> nil then begin
-            FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
-            FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
-         end;
-         if FBSBold[i] <> nil then begin
-            FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
-         end;
-         if FBSUseReliability[i] <> nil then begin
-            FBSUseReliability[i].Checked := Settings._bandscopecolor[i].FUseReliability;
-         end;
-         if FBSTransparent[i] <> nil then begin
-            FBSTransparent[i].Checked := Settings._bandscopecolor[i].FTransparent;
-         end;
-      end;
-
-      // Spot鮮度表示
-      case Settings._bandscope_freshness_mode of
-         0: radioFreshness1.Checked := True;
-         1: radioFreshness2.Checked := True;
-         2: radioFreshness3.Checked := True;
-         3: radioFreshness4.Checked := True;
-         else radioFreshness1.Checked := True;
-      end;
-
-      // BandScope Options
-      checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // 周波数からのモードの推定
-      checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
-      checkShowJAspots.Checked := Settings._bandscope_show_ja_spots;                // JAを表示
-      checkShowDXspots.Checked := Settings._bandscope_show_dx_spots;                // DXを表示
-      checkUseNumberLookup.Checked := Settings._bandscope_use_number_lookup;        // Number Lookup
-      checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
-      checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
-      checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
-      checkSaveCurrentFreq.Checked := Settings._bandscope_save_current_freq;        // S&P時、現在周波数を保存する
-
-      // BandScope Options2
-      checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
-
-      // Reliability
-      radioReliabilityHigh.Checked := Settings._bandscope_initial_reliability_high;
-      radioReliabilityMiddle.Checked := not Settings._bandscope_initial_reliability_high;
-
-      // 1Radio時のみ設定可能とする
-      if Settings._operate_style = os1Radio then begin
-         checkSaveCurrentFreq.Enabled := True;
-      end
-      else begin
-         checkSaveCurrentFreq.Enabled := False;
-      end;
-
-      checkUseEstimatedModeClick(nil);
-      checkUseNumberLookupClick(nil);
-
-      // Quick Memo
-      for i := 1 to 5 do begin
-         FQuickMemoText[i].Text := Settings.FQuickMemoText[i];
-      end;
-
-      // Voice Memory
-      for i := 1 to maxmessage do begin
-         FTempVoiceFiles[i] := Settings.FSoundFiles[i];
-         if FTempVoiceFiles[i] = '' then begin
-            FVoiceButton[i].Caption := 'select';
-         end
-         else begin
-            FVoiceButton[i].Caption := ExtractFileName(FTempVoiceFiles[i]);
-         end;
-         FVoiceEdit[i].Text := Settings.FSoundComments[i];
-      end;
-      for i := 2 to 3 do begin
-         FTempAdditionalVoiceFiles[i] := Settings.FAdditionalSoundFiles[i];
-         if FTempAdditionalVoiceFiles[i] = '' then begin
-            FAdditionalVoiceButton[i].Caption := 'select';
-         end
-         else begin
-            FAdditionalVoiceButton[i].Caption := ExtractFileName(FTempAdditionalVoiceFiles[i]);
-         end;
-         FAdditionalVoiceEdit[i].Text := Settings.FAdditionalSoundComments[i];
-      end;
-   end;
-
-   if comboVoiceDevice.Items.Count > 0 then begin
-      comboVoiceDevice.ItemIndex := 0;
-   end;
-
-   if FEditMode = 0 then begin   // 通常モード
-      tabsheetPreferences.TabVisible := True;
-      tabsheetCategories.TabVisible := True;
-      tabsheetCW.TabVisible := True;
-      tabsheetVoice.TabVisible := True;
-      tabsheetMisc.TabVisible := True;
-      tabsheetQuickFunctions.TabVisible := True;
-      tabsheetBandScope1.TabVisible := True;
-      tabsheetBandScope2.TabVisible := True;
-   end
-   else if FEditMode = 1 then begin // CW
-      PageControl.ActivePage := tabsheetCW;
-
-      tabsheetPreferences.TabVisible := False;
-      tabsheetCategories.TabVisible := False;
-      tabsheetCW.TabVisible := True;
-      tabsheetVoice.TabVisible := False;
-      tabsheetMisc.TabVisible := False;
-      tabsheetQuickFunctions.TabVisible := False;
-      tabsheetBandScope1.TabVisible := False;
-      tabsheetBandScope2.TabVisible := False;
-
-      if FEditNumber > 0 then begin
-         FEditMessage[FEditNumber].SetFocus;
-      end;
-   end
-   else if FEditMode = 2 then begin // Voice
-      PageControl.ActivePage := tabsheetVoice;
-
-      tabsheetPreferences.TabVisible := False;
-      tabsheetCategories.TabVisible := False;
-      tabsheetCW.TabVisible := False;
-      tabsheetVoice.TabVisible := True;
-      tabsheetMisc.TabVisible := False;
-      tabsheetQuickFunctions.TabVisible := False;
-      tabsheetBandScope1.TabVisible := False;
-      tabsheetBandScope2.TabVisible := False;
-
-      if FEditNumber > 0 then begin
-         FVoiceButton[FEditNumber].SetFocus();
-      end;
-   end
-   else if FEditMode = 3 then begin
-      PageControl.ActivePageIndex := FActiveTab;
-   end;
-
-   FNeedSuperCheckLoad := False;
-
-   if radioSingleOp.Checked = True then begin
-      radioCategoryClick(radioSingleOp);
-   end
-   else if radioMultiOpMultiTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpMultiTx);
-   end
-   else if radioMultiOpSingleTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpSingleTx);
-   end
-   else if radioMultiOpTwoTx.Checked = True then begin
-      radioCategoryClick(radioMultiOpTwoTx);
-   end;
-
-   // Quick QSY
-   for i := 0 to FTempFreqMemList.Count - 1 do begin
-      AddFreqMemList(FTempFreqMemList[i]);
-   end;
-   listviewFreqMemory.Selected := nil;
-   buttonFreqMemAdd.Enabled := True;
-   buttonFreqMemEdit.Enabled := False;
-   buttonFreqMemDelete.Enabled := False;
-end;
-
-procedure TformOptions2.buttonOpAddClick(Sender: TObject);
-var
-   F: TformOperatorEdit;
-   obj: TOperatorInfo;
-   op: TOperatorInfo;
-begin
-   F := TformOperatorEdit.Create(Self);
-   try
-      if F.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      obj := TOperatorInfo.Create();
-      F.GetObject(obj);
-
-      op := dmZLogGlobal.OpList.ObjectOf(obj.Callsign);
-      if op = nil then begin
-         OpListBox.Items.AddObject(obj.Callsign, obj);
-         dmZLogGlobal.OpList.Add(obj);
-      end
-      else begin
-         op.Assign(obj);
-         obj.Free();
-      end;
-   finally
-      F.Release();
-   end;
-end;
-
-procedure TformOptions2.buttonOpEditClick(Sender: TObject);
-var
-   F: TformOperatorEdit;
-   obj: TOperatorInfo;
-begin
-   if OpListBox.ItemIndex = -1 then begin
-      Exit;
-   end;
-
-   F := TformOperatorEdit.Create(Self);
-   try
-      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
-
-      F.SetObject(obj);
-
-      if F.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      F.GetObject(obj);
-
-   finally
-      F.Free();
-   end;
-end;
-
-procedure TformOptions2.buttonOpDeleteClick(Sender: TObject);
-var
-   obj: TOperatorInfo;
-   i: Integer;
-begin
-   if OpListBox.ItemIndex = -1 then begin
-      Exit;
-   end;
-   obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
-   OpListBox.Items.Delete(OpListBox.ItemIndex);
-   i := dmZLogGlobal.OpList.IndexOf(obj);
-   if i >= 0 then begin
-      dmZLogGlobal.OpList.Delete(i);
-   end;
-end;
-
 procedure TformOptions2.FormCreate(Sender: TObject);
 var
-   i: integer;
    rc: TRect;
 begin
    FOriginalHeight := ClientHeight;
@@ -1430,6 +641,16 @@ begin
    FPowerPerBand[b77g]  := comboPower77g;
    FPowerPerBand[b135g] := comboPower135g;
    FPowerPerBand[b248g] := comboPower248g;
+
+   // QSO List
+   FQSOListColor[1] := editListColor1;
+   FQSOListColor[2] := editListColor2;
+   FQSOListColor[3] := editListColor3;
+   FQSOListColor[4] := editListColor4;
+   FQSOListBold[1] := checkListBold1;
+   FQSOListBold[2] := checkListBold2;
+   FQSOListBold[3] := nil;
+   FQSOListBold[4] := nil;
 
    // BandScope
    FBSColor[1] := editBSColor1;
@@ -1525,11 +746,6 @@ begin
 
    TempCurrentBank := 1;
 
-   // OpList
-   for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
-      OpListBox.Items.AddObject(dmZlogGlobal.OpList[i].Callsign, dmZlogGlobal.OpList[i]);
-   end;
-
    PageControl.ActivePage := tabsheetPreferences;
 
    FEditMode := 0;
@@ -1538,9 +754,1095 @@ begin
    FNeedSuperCheckLoad := False;
 end;
 
+procedure TformOptions2.FormShow(Sender: TObject);
+var
+   i: Integer;
+begin
+   ImplementSettings();
+
+   //
+   // CFGファイルからパラメーターを取り込んだ場合
+   //
+   if dmZLogGlobal.Settings.ProvCityImported = True then begin
+      ProvEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+      CityEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+      CQZoneEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+      IARUZoneEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+      AgeEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+
+      if ProvEdit.ReadOnly = True then begin
+         ProvEdit.Color := clBtnFace;
+         CityEdit.Color := clBtnFace;
+         CQZoneEdit.Color := clBtnFace;
+         IARUZoneEdit.Color := clBtnFace;
+         AgeEdit.Color := clBtnFace;
+      end
+      else begin
+         ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
+         CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
+         CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
+         IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
+         AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
+      end;
+   end
+   else begin
+      ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
+      CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
+      CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
+      IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
+      AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
+      ProvEdit.ReadOnly := False;
+      CityEdit.ReadOnly := False;
+      CQZoneEdit.ReadOnly := False;
+      IARUZoneEdit.ReadOnly := False;
+      AgeEdit.ReadOnly := False;
+   end;
+
+   //
+   // 画面に反映
+   //
+   if comboVoiceDevice.Items.Count > 0 then begin
+      comboVoiceDevice.ItemIndex := 0;
+   end;
+
+   if FEditMode = 0 then begin   // 通常モード
+      tabsheetPreferences.TabVisible := True;
+      tabsheetCategories.TabVisible := True;
+      tabsheetCW.TabVisible := True;
+      tabsheetVoice.TabVisible := True;
+      tabsheetMisc.TabVisible := True;
+      tabsheetQuickFunctions.TabVisible := True;
+      tabsheetBandScope1.TabVisible := True;
+      tabsheetBandScope2.TabVisible := True;
+   end
+   else if FEditMode = 1 then begin // CW
+      PageControl.ActivePage := tabsheetCW;
+
+      tabsheetPreferences.TabVisible := False;
+      tabsheetCategories.TabVisible := False;
+      tabsheetCW.TabVisible := True;
+      tabsheetVoice.TabVisible := False;
+      tabsheetMisc.TabVisible := False;
+      tabsheetQuickFunctions.TabVisible := False;
+      tabsheetBandScope1.TabVisible := False;
+      tabsheetBandScope2.TabVisible := False;
+
+      if FEditNumber > 0 then begin
+         FEditMessage[FEditNumber].SetFocus;
+      end;
+   end
+   else if FEditMode = 2 then begin // Voice
+      PageControl.ActivePage := tabsheetVoice;
+
+      tabsheetPreferences.TabVisible := False;
+      tabsheetCategories.TabVisible := False;
+      tabsheetCW.TabVisible := False;
+      tabsheetVoice.TabVisible := True;
+      tabsheetMisc.TabVisible := False;
+      tabsheetQuickFunctions.TabVisible := False;
+      tabsheetBandScope1.TabVisible := False;
+      tabsheetBandScope2.TabVisible := False;
+
+      if FEditNumber > 0 then begin
+         FVoiceButton[FEditNumber].SetFocus();
+      end;
+   end
+   else if FEditMode = 3 then begin
+      PageControl.ActivePageIndex := FActiveTab;
+   end;
+
+   FNeedSuperCheckLoad := False;
+
+   if radioSingleOp.Checked = True then begin
+      radioCategoryClick(radioSingleOp);
+   end
+   else if radioMultiOpMultiTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpMultiTx);
+   end
+   else if radioMultiOpSingleTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpSingleTx);
+   end
+   else if radioMultiOpTwoTx.Checked = True then begin
+      radioCategoryClick(radioMultiOpTwoTx);
+   end;
+
+   RenewCWStrBankDisp;
+
+   // OpList
+   for i := 0 to dmZLogGlobal.OpList.Count - 1 do begin
+      OpListBox.Items.AddObject(dmZLogGlobal.OpList[i].Callsign, dmZLogGlobal.OpList[i]);
+   end;
+
+   for i := 0 to FTempFreqMemList.Count - 1 do begin
+      AddFreqMemList(FTempFreqMemList[i]);
+   end;
+
+   // Quick QSY
+   listviewFreqMemory.Selected := nil;
+   buttonFreqMemAdd.Enabled := True;
+   buttonFreqMemEdit.Enabled := False;
+   buttonFreqMemDelete.Enabled := False;
+end;
+
+procedure TformOptions2.FormDestroy(Sender: TObject);
+begin
+   FTempFreqMemList.Free();
+   FVoiceSound.Free();
+end;
+
+procedure TformOptions2.buttonOKClick(Sender: TObject);
+begin
+   // 入力された設定を保存
+   RenewSettings;
+
+   // 各種フォルダ作成
+   dmZLogGlobal.CreateFolders();
+
+   ModalResult := mrOK;
+end;
+
 procedure TformOptions2.buttonCancelClick(Sender: TObject);
 begin
 //   Close;
+end;
+
+procedure TformOptions2.radioCategoryClick(Sender: TObject);
+var
+   n: Integer;
+
+   procedure OperatorsEnable(f: Boolean);
+   begin
+      OpListBox.Enabled := f;
+      buttonOpAdd.Enabled := f;
+      buttonOpEdit.Enabled := f;
+      buttonOpDelete.Enabled := f;
+      checkSelectLastOperator.Enabled := f;
+      checkApplyPowerCodeOnBandChange.Enabled := f;
+   end;
+
+   function SelectTxNo(): Integer;
+   begin
+      Result := comboTxNo.Items.IndexOf(IntToStr(dmZLogGlobal.Settings._txnr));
+      if Result = -1 then begin
+         Result := 0;
+      end;
+   end;
+begin
+   n := TRadioButton(Sender).Tag;
+   case n of
+      // Single-Op
+      0: begin
+         comboTxNo.Enabled := False;
+         comboTxNo.Items.CommaText := '0,1';
+         comboTxNo.ItemIndex := SelectTxNo();
+         OperatorsEnable(False);
+      end;
+
+      // Multi-Op/Multi-Tx
+      1: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := TXLIST_MM;
+         comboTxNo.ItemIndex := SelectTxNo();
+         OperatorsEnable(True);
+      end;
+
+      // Multi-Op/Single-Tx, Multi-Op/Two-Tx
+      2, 3: begin
+         comboTxNo.Enabled := True;
+         comboTxNo.Items.CommaText := TXLIST_MS;
+         comboTxNo.ItemIndex := SelectTxNo();
+         OperatorsEnable(True);
+      end;
+   end;
+end;
+
+procedure TformOptions2.RenewSettings;
+var
+   r: double;
+   i, j: integer;
+   b: TBand;
+begin
+   with dmZLogGlobal do begin
+
+      //
+      // My station
+      //
+
+      // Callsign
+      Settings._mycall := editMyCallsign.Text;
+
+      // My position
+      Settings._mylatitude := editMyLatitude.Text;
+      Settings._mylongitude := editMyLongitude.Text;
+
+      // Parameters
+      Settings._prov := ProvEdit.Text;
+      Settings._city := CityEdit.Text;
+      Settings._cqzone := CQZoneEdit.Text;
+      Settings._iaruzone := IARUZoneEdit.Text;
+      Settings._age := AgeEdit.Text;
+
+      // Active bands
+      for b := b19 to HiBand do begin
+         Settings._activebands[b] := FActiveBands[b].Checked;
+         Settings._power[b] := FPowerPerBand[b].Text;
+      end;
+
+      // QSL Default
+      if radioQslNone.Checked = True then begin
+         Settings._qsl_default   := qsNone;
+      end
+      else if radioPseQsl.Checked = True then begin
+         Settings._qsl_default   := qsPseQsl;
+      end
+      else begin
+         Settings._qsl_default   := qsNoQsl;
+      end;
+
+      //
+      // Preferences
+      //
+
+      // General group
+
+      // Show startup window
+      Settings.FShowStartupWindow := checkShowStartupWindow.Checked;
+
+      // Select contest on startup
+      Settings.FSelectContestOnStartup := checkSelectContestOnStartup.Checked;
+
+      // Use contest period
+      Settings._use_contest_period := checkUseContestPeriod.Checked;
+
+      // Output logs out of period
+      Settings._output_outofperiod := checkOutputOutofPeriod.Checked;
+
+      // Automatically enter exchange from SuperCheck
+      Settings._entersuperexchange := cbAutoEnterSuper.Checked;
+
+      // Display long date time
+      Settings._displongdatetime := checkDispLongDateTime.Checked;
+
+      // Save when not sending CW
+      Settings._savewhennocw := cbSaveWhenNoCW.Checked;
+
+      // J-Mode
+      Settings._jmode := cbJMode.Checked;
+
+      // Save every nn QSOs
+      Settings._saveevery := SaveEvery.Value;
+
+      // Use Multiline Tabs
+      Settings.FUseMultiLineTabs := checkUseMultiLineTabs.Checked;
+
+      // Focus Position After QSO Edit group
+      if radioOnOkFocusToQsoList.Checked = True then begin
+         Settings.FAfterQsoEditOkFocusPos := 0;
+      end
+      else begin
+         Settings.FAfterQsoEditOkFocusPos := 1;
+      end;
+      if radioOnCancelFocusToQsoList.Checked = True then begin
+         Settings.FAfterQsoEditCancelFocusPos := 0;
+      end
+      else begin
+         Settings.FAfterQsoEditCancelFocusPos := 1;
+      end;
+
+      // Power($N) group
+      Settings._PowerH := editPowerH.Text;
+      Settings._PowerM := editPowerM.Text;
+      Settings._PowerL := editPowerL.Text;
+      Settings._PowerP := editPowerP.Text;
+
+      // Accessibility group
+
+      // Focused color
+      Settings.FAccessibility.FFocusedForeColor := editFocusedColor.Font.Color;
+      Settings.FAccessibility.FFocusedBackColor := editFocusedColor.Color;
+      Settings.FAccessibility.FFocusedBold := checkFocusedBold.Checked;
+
+      // QSO List
+      for i := 1 to 2 do begin
+         Settings.FQsoListColors[i].FForeColor := FQSOListColor[i].Font.Color;
+         Settings.FQsoListColors[i].FBackColor := FQSOListColor[i].Color;
+         Settings.FQsoListColors[i].FBold      := FQSOListBold[i].Checked;
+      end;
+
+      //
+      // Contest rules
+      //
+
+      // Exchange
+      // Sent欄は表示専用
+      //Settings._sentstr := SentEdit.Text;
+
+      // Category
+      if radioSingleOp.Checked = True then begin
+         Settings._multiop := ccSingleOp;
+      end
+      else if radioMultiOpMultiTx.Checked = True then begin
+         Settings._multiop := ccMultiOpMultiTx;
+      end
+      else if radioMultiOpSingleTx.Checked = True then begin
+         Settings._multiop := ccMultiOpSingleTx;
+      end
+      else if radioMultiOpTwoTx.Checked = True then begin
+         Settings._multiop := ccMultiOpTwoTx;
+      end;
+
+      // #TXNR
+      Settings._txnr := StrToIntDef(comboTxNo.Text, 0);
+
+      // Mode
+      Settings._mode := TContestMode(groupMode.ItemIndex);
+
+      // QSY Assist
+      Settings._countdown        := radioQsyCountDown.Checked;
+      Settings._qsycount         := radioQsyCount.Checked;
+      Settings._countdownminute  := editQsyCountDownMinute.Value;
+      Settings._countperhour     := editQsyCountPerHour.Value;
+
+      // Operators
+      // OpListはボタンの処理で入っている
+      Settings._selectlastoperator := checkSelectLastOperator.Checked;
+      Settings._applypoweronbandchg :=  checkApplyPowerCodeOnBandChange.Checked;
+
+      //
+      // CW/RTTY
+      //
+
+      // Messages
+      for i := 1 to maxbank do begin
+         for j := 1 to maxmessage do begin
+            Settings.CW.CWStrBank[i, j] := TempCWStrBank[i, j];
+         end;
+      end;
+
+      // TempCurrentBankはCWBankClickでセットされている
+
+      // Additional messages
+      Settings.CW.AdditionalCQMessages[2] := editCQMessage2.Text;
+      Settings.CW.AdditionalCQMessages[3] := editCQMessage3.Text;
+
+      // Speed
+      Settings.CW._speed := SpeedBar.Position;
+
+      // Weight
+      Settings.CW._weight := WeightBar.Position;
+
+      // Que messages
+      Settings.CW._FIFO := FIFOCheck.Checked;
+
+      // Sidetone
+      Settings.CW._sidetone := SideToneCheck.Checked;
+      Settings.CW._sidetone_volume := VolumeSpinEdit.Value;
+      Settings.CW._tonepitch := ToneSpinEdit.Value;
+
+      // Abbreviation (019)
+      if length(AbbrevEdit.Text) >= 3 then begin
+         Settings.CW._zero := AbbrevEdit.Text[1];
+         Settings.CW._one := AbbrevEdit.Text[2];
+         Settings.CW._nine := AbbrevEdit.Text[3];
+      end;
+
+      // CQ rpt. interval (sec)
+      r := Settings.CW._cqrepeat;
+      Settings.CW._cqrepeat := StrToFloatDef(CQRepEdit.Text, r);
+
+      // CQ max
+      Settings.CW._cqmax := CQmaxSpinEdit.Value;
+
+      // Use CQ Random Repeat
+      Settings.CW._cq_random_repeat := checkUseCQRamdomRepeat.Checked;
+
+      // Switch CW bank with CQ/SP mode
+      Settings._switchcqsp := cbCQSP.Checked;
+
+      // Send NR? automatically
+      Settings.CW._send_nr_auto := checkSendNrAuto.Checked;
+
+      // Not send leading zeros in serial number
+      Settings.CW._not_send_leading_zeros := checkNotSendLeadingZeros.Checked;
+
+      // Paddle reverse
+      Settings.CW._paddlereverse := checkPaddleReverse.Checked;
+
+      //
+      // Voice
+      //
+
+      // Voice Memory
+      for i := 1 to maxmessage do begin
+         Settings.FSoundFiles[i] := FTempVoiceFiles[i];
+         Settings.FSoundComments[i] := FVoiceEdit[i].Text;
+      end;
+      for i := 2 to 3 do begin
+         Settings.FAdditionalSoundFiles[i] := FTempAdditionalVoiceFiles[i];
+         Settings.FAdditionalSoundComments[i] := FAdditionalVoiceEdit[i].Text;
+      end;
+
+      //
+      // Misc
+      //
+
+      // Start search after
+      Settings._searchafter := rgSearchAfter.ItemIndex;
+
+      // Max super check search
+      Settings._maxsuperhit := spMaxSuperHit.Value;
+
+      // Delete band scope data after
+      Settings._bsexpire := spBSExpire.Value;
+
+      // Delete spot data after
+      Settings._spotexpire := spSpotExpire.Value;
+
+      // Display date in partial check
+      Settings._displaydatepartialcheck := cbDisplayDatePartialCheck.Checked;
+
+      // Update using a thread
+      Settings._renewbythread := cbUpdateThread.Checked;
+
+      // Super Check group
+
+      // SuperCheck
+      if radioSuperCheck0.Checked = True then begin
+         Settings.FSuperCheck.FSuperCheckMethod := 0;
+      end
+      else if radioSuperCheck1.Checked = True then begin
+         Settings.FSuperCheck.FSuperCheckMethod := 1;
+      end
+      else begin
+         Settings.FSuperCheck.FSuperCheckMethod := 2;
+      end;
+      Settings.FSuperCheck.FAcceptDuplicates := checkAcceptDuplicates.Checked;
+
+      // N+1 group
+
+      // Highlight FullMatch
+      Settings.FSuperCheck.FFullMatchHighlight := checkHighlightFullmatch.Checked;
+      Settings.FSuperCheck.FFullMatchColor := editFullmatchColor.Color;
+
+      // Partial Check group
+      Settings.FPartialCheck.FCurrentBandForeColor := editPartialCheckColor.Font.Color;
+      Settings.FPartialCheck.FCurrentBandBackColor := editPartialCheckColor.Color;
+
+      //
+      // Quick functions
+      //
+
+      // Quick QSY
+      FreqMemList.Assign(FTempFreqMemList);
+      Settings.FUseKhzQsyCommand := checkUseKhzQsyCommand.Checked;
+
+      // Quick Memo
+      for i := 1 to 5 do begin
+         Settings.FQuickMemoText[i] := Trim(FQuickMemoText[i].Text);
+      end;
+
+      //
+      // Band scope
+      //
+
+      // Bands group
+      Settings._usebandscope[b19]   := checkBS01.Checked;
+      Settings._usebandscope[b35]   := checkBS02.Checked;
+      Settings._usebandscope[b7]    := checkBS03.Checked;
+      Settings._usebandscope[b10]   := checkBS04.Checked;
+      Settings._usebandscope[b14]   := checkBS05.Checked;
+      Settings._usebandscope[b18]   := checkBS06.Checked;
+      Settings._usebandscope[b21]   := checkBS07.Checked;
+      Settings._usebandscope[b24]   := checkBS08.Checked;
+      Settings._usebandscope[b28]   := checkBS09.Checked;
+      Settings._usebandscope[b50]   := checkBS10.Checked;
+      Settings._usebandscope[b144]  := checkBS11.Checked;
+      Settings._usebandscope[b430]  := checkBS12.Checked;
+      Settings._usebandscope[b1200] := checkBS13.Checked;
+      Settings._usebandscope[b2400] := checkBS14.Checked;
+      Settings._usebandscope[b5600] := checkBS15.Checked;
+      Settings._usebandscope[b10g]  := checkBS16.Checked;
+      Settings._usebandscope[b104g]  := checkBS17.Checked;
+      Settings._usebandscope[b24g]  := checkBS18.Checked;
+      Settings._usebandscope[b47g]  := checkBS19.Checked;
+      Settings._usebandscope[b77g]  := checkBS20.Checked;
+      Settings._usebandscope[b135g]  := checkBS21.Checked;
+      Settings._usebandscope[b248g]  := checkBS22.Checked;
+      Settings._usebandscope_current := checkBsCurrent.Checked;
+      Settings._usebandscope_newmulti := checkBsNewMulti.Checked;
+      Settings._usebandscope_allbands := checkBsAllBands.Checked;
+
+      // Info. colors group
+      for i := 1 to 15 do begin
+         if FBSColor[i] <> nil then begin
+            Settings._bandscopecolor[i].FForeColor := FBSColor[i].Font.Color;
+            Settings._bandscopecolor[i].FBackColor := FBSColor[i].Color;
+         end;
+         if FBSBold[i] = nil then begin
+            Settings._bandscopecolor[i].FBold      := False;
+         end
+         else begin
+            Settings._bandscopecolor[i].FBold      := FBSBold[i].Checked;
+         end;
+         if FBSUseReliability[i] = nil then begin
+            Settings._bandscopecolor[i].FUseReliability := False;
+         end
+         else begin
+            Settings._bandscopecolor[i].FUseReliability := FBSUseReliability[i].Checked;
+         end;
+         if FBSTransparent[i] = nil then begin
+            Settings._bandscopecolor[i].FTransparent := False;
+         end
+         else begin
+            Settings._bandscopecolor[i].FTransparent := FBSTransparent[i].Checked;
+         end;
+      end;
+
+      // Bandscope options group
+
+      // BandScope Options
+      Settings._bandscope_use_estimated_mode := checkUseEstimatedMode.Checked;      // 周波数からのモードの推定
+      Settings._bandscope_show_only_in_bandplan := checkShowOnlyInBandplan.Checked; // バンド内のみ
+      Settings._bandscope_show_ja_spots := checkShowJAspots.Checked;                // JAを表示
+      Settings._bandscope_show_dx_spots := checkShowDXspots.Checked;                // DXを表示
+      Settings._bandscope_use_number_lookup := checkUseNumberLookup.Checked;        // Number Lookup
+      Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
+      Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
+      Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
+      Settings._bandscope_save_current_freq := checkSaveCurrentFreq.Checked;        // S&P時、現在周波数を保存する
+      Settings._bandscope_use_resume := checkUseResume.Checked;                     // レジューム使う
+
+      // Reliability
+
+      // Initial reliability group
+      Settings._bandscope_initial_reliability_high := radioReliabilityHigh.Checked;
+
+      //
+      // Band scope2
+      //
+
+      // Spot Freshness group
+
+      // Spot鮮度表示
+      if radioFreshness1.Checked = True then begin
+         Settings._bandscope_freshness_mode := 0;           // Remain time1
+         Settings._bandscope_freshness_icon := 2;
+      end
+      else if radioFreshness2.Checked = True then begin
+         Settings._bandscope_freshness_mode := 1;           // Remain time2
+         Settings._bandscope_freshness_icon := 3;
+      end
+      else if radioFreshness3.Checked = True then begin
+         Settings._bandscope_freshness_mode := 2;           // Remain time3
+         Settings._bandscope_freshness_icon := 2;
+      end
+      else if radioFreshness4.Checked = True then begin
+         Settings._bandscope_freshness_mode := 3;           // Elapsed time
+         Settings._bandscope_freshness_icon := 5;
+      end
+      else begin
+         Settings._bandscope_freshness_mode := 0;
+         Settings._bandscope_freshness_icon := 2;
+      end;
+   end;
+end;
+
+procedure TformOptions2.ImplementSettings();
+var
+   i, j: Integer;
+   b: TBand;
+begin
+   with dmZLogGlobal do begin
+
+      //
+      // My station
+      //
+
+      // Callsign
+      editMyCallsign.Text := Settings._mycall;
+
+      // My position
+      editMyLatitude.Text := Settings._mylatitude;
+      editMyLongitude.Text := Settings._mylongitude;
+
+      // Parameters
+      ProvEdit.Text := Settings._prov;
+      CityEdit.Text := Settings._city;
+      CQZoneEdit.Text := Settings._cqzone;
+      IARUZoneEdit.Text := Settings._iaruzone;
+      AgeEdit.Text := Settings._age;
+
+      // Active bands
+      for b := b19 to HiBand do begin
+         FActiveBands[b].Checked := Settings._activebands[b];
+         FPowerPerBand[b].Text := Settings._power[b];
+      end;
+
+      // QSL Default
+      if Settings._qsl_default = qsNone then begin
+         radioQslNone.Checked := True;
+      end
+      else if Settings._qsl_default = qsPseQsl then begin
+         radioPseQsl.Checked := True;
+      end
+      else begin
+         radioNoQsl.Checked := True;
+      end;
+
+      //
+      // Preferences
+      //
+
+      // General group
+
+      // Show startup window
+      checkShowStartupWindow.Checked := Settings.FShowStartupWindow;
+
+      // Select contest on startup
+      checkSelectContestOnStartup.Checked := Settings.FSelectContestOnStartup;
+
+      // Use contest period
+      checkUseContestPeriod.Checked := Settings._use_contest_period;
+
+      // Output logs out of period
+      checkOutputOutofPeriod.Checked := Settings._output_outofperiod;
+
+      // Automatically enter exchange from SuperCheck
+      cbAutoEnterSuper.Checked := Settings._entersuperexchange;
+
+      // Display long date time
+      checkDispLongDateTime.Checked := Settings._displongdatetime;
+
+      // Save when not sending CW
+      cbSaveWhenNoCW.Checked := Settings._savewhennocw;
+
+      // J-Mode
+      cbJMode.Checked := Settings._jmode;
+
+      // Save every nn QSOs
+      SaveEvery.Value := Settings._saveevery;
+
+      // Use Multiline Tabs
+      checkUseMultiLineTabs.Checked := Settings.FUseMultiLineTabs;
+
+      // Focus Position After QSO Edit group
+      if Settings.FAfterQsoEditOkFocusPos = 0 then begin
+         radioOnOkFocusToQsoList.Checked := True;
+      end
+      else begin
+         radioOnOkFocusToNewQso.Checked := True;
+      end;
+      if Settings.FAfterQsoEditCancelFocusPos = 0 then begin
+         radioOnCancelFocusToQsoList.Checked := True;
+      end
+      else begin
+         radioOnCancelFocusToNewQso.Checked := True;
+      end;
+
+      // Power($N) group
+      editPowerH.Text := Settings._PowerH;
+      editPowerM.Text := Settings._PowerM;
+      editPowerL.Text := Settings._PowerL;
+      editPowerP.Text := Settings._PowerP;
+
+      // Accessibility group
+
+      // Focused color
+      editFocusedColor.Font.Color := Settings.FAccessibility.FFocusedForeColor;
+      editFocusedColor.Color := Settings.FAccessibility.FFocusedBackColor;
+      checkFocusedBold.Checked := Settings.FAccessibility.FFocusedBold;
+
+      // QSO List
+      for i := 1 to 2 do begin
+         FQSOListColor[i].Font.Color := Settings.FQsoListColors[i].FForeColor;
+         FQSOListColor[i].Color      := Settings.FQsoListColors[i].FBackColor;
+         FQSOListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
+      end;
+
+      //
+      // Contest rules
+      //
+
+      // Exchange
+      // Sent欄は表示専用
+      SentEdit.Text := Settings._sentstr;
+
+      // Category
+      if ContestCategory = ccSingleOp then begin
+         radioSingleOp.Checked := True;
+      end
+      else if ContestCategory = ccMultiOpMultiTx then begin
+         radioMultiOpMultiTx.Checked := True;
+      end
+      else if ContestCategory = ccMultiOpSingleTx then begin
+         radioMultiOpSingleTx.Checked := True;
+      end
+      else if ContestCategory = ccMultiOpTwoTx then begin
+         radioMultiOpTwoTx.Checked := True;
+      end;
+
+      // #TXNR
+      comboTxNo.Text := IntToStr(Settings._txnr);
+
+      // Mode
+      groupMode.ItemIndex := Integer(Settings._mode);
+
+      // QSY Assist
+      radioQsyNone.Checked          := True;
+      radioQsyCountDown.Checked     := Settings._countdown;
+      radioQsyCount.Checked         := Settings._qsycount;
+      editQsyCountDownMinute.Value  := Settings._countdownminute;
+      editQsyCountPerHour.Value     := Settings._countperhour;
+
+      // Operators
+
+      // Select last operator on startup
+      checkSelectLastOperator.Checked := Settings._selectlastoperator;
+
+      // Apply power code on band change
+      checkApplyPowerCodeOnBandChange.Checked := Settings._applypoweronbandchg;
+
+      //
+      // CW/RTTY
+      //
+
+      // Messages
+      for i := 1 to maxbank do begin
+         for j := 1 to maxmessage do begin
+            TempCWStrBank[i, j] := Settings.CW.CWStrBank[i, j];
+         end;
+      end;
+
+      case TempCurrentBank of
+         1: rbBankA.Checked := True;
+         2: rbBankB.Checked := True;
+         3: rbRTTY.Checked := True;
+      end;
+
+      // Additional messages
+      editCQMessage2.Text := Settings.CW.AdditionalCQMessages[2];
+      editCQMessage3.Text := Settings.CW.AdditionalCQMessages[3];
+
+      // Speed
+      SpeedBar.Position := Settings.CW._speed;
+      SpeedLabel.Caption := IntToStr(Settings.CW._speed) + ' wpm';
+
+      // Weight
+      WeightBar.Position := Settings.CW._weight;
+      WeightLabel.Caption := IntToStr(Settings.CW._weight) + ' %';
+
+      // Que messages
+      FIFOCheck.Checked := Settings.CW._FIFO;
+
+      // Sidetone
+      SideToneCheck.Checked := Settings.CW._sidetone;
+      VolumeSpinEdit.Value := Settings.CW._sidetone_volume;
+      ToneSpinEdit.Value := Settings.CW._tonepitch;
+
+      // Abbreviation (019)
+      AbbrevEdit.Text := Settings.CW._zero + Settings.CW._one + Settings.CW._nine;
+
+      // CQ rpt. interval (sec)
+      CQRepEdit.Text := FloatToStrF(Settings.CW._cqrepeat, ffFixed, 3, 1);
+
+      // CQ max
+      CQmaxSpinEdit.Value := Settings.CW._cqmax;
+
+      // Use CQ Random Repeat
+      checkUseCQRamdomRepeat.Checked := Settings.CW._cq_random_repeat;
+
+      // Switch CW bank with CQ/SP mode
+      cbCQSP.Checked := Settings._switchcqsp;
+
+      // Send NR? automatically
+      checkSendNrAuto.Checked := Settings.CW._send_nr_auto;
+
+      // Not send leading zeros in serial number
+      checkNotSendLeadingZeros.Checked := Settings.CW._not_send_leading_zeros;
+
+      // Paddle reverse
+      checkPaddleReverse.Checked := Settings.CW._paddlereverse;
+
+      //
+      // Voice
+      //
+
+      // Voice Memory
+      for i := 1 to maxmessage do begin
+         FTempVoiceFiles[i] := Settings.FSoundFiles[i];
+         if FTempVoiceFiles[i] = '' then begin
+            FVoiceButton[i].Caption := 'select';
+         end
+         else begin
+            FVoiceButton[i].Caption := ExtractFileName(FTempVoiceFiles[i]);
+         end;
+         FVoiceEdit[i].Text := Settings.FSoundComments[i];
+      end;
+      for i := 2 to 3 do begin
+         FTempAdditionalVoiceFiles[i] := Settings.FAdditionalSoundFiles[i];
+         if FTempAdditionalVoiceFiles[i] = '' then begin
+            FAdditionalVoiceButton[i].Caption := 'select';
+         end
+         else begin
+            FAdditionalVoiceButton[i].Caption := ExtractFileName(FTempAdditionalVoiceFiles[i]);
+         end;
+         FAdditionalVoiceEdit[i].Text := Settings.FAdditionalSoundComments[i];
+      end;
+
+      //
+      // Misc
+      //
+
+      // Start search after
+      rgSearchAfter.ItemIndex := Settings._searchafter;
+
+      // Max super check search
+      spMaxSuperHit.Value := Settings._maxsuperhit;
+
+      // Delete band scope data after
+      spBSExpire.Value := Settings._bsexpire;
+
+      // Delete spot data after
+      spSpotExpire.Value := Settings._spotexpire;
+
+      // Display date in partial check
+      cbDisplayDatePartialCheck.Checked := Settings._displaydatepartialcheck;
+
+      // Update using a thread
+      cbUpdateThread.Checked := Settings._renewbythread;
+
+      // Super Check group
+      case Settings.FSuperCheck.FSuperCheckMethod of
+         0: radioSuperCheck0.Checked := True;
+         1: radioSuperCheck1.Checked := True;
+         else radioSuperCheck2.Checked := True;
+      end;
+      checkAcceptDuplicates.Checked := Settings.FSuperCheck.FAcceptDuplicates;
+
+      // N+1 group
+
+      // Highlight FullMatch
+      checkHighlightFullmatch.Checked := Settings.FSuperCheck.FFullMatchHighlight;
+      editFullmatchColor.Color := Settings.FSuperCheck.FFullMatchColor;
+
+      // Partial Check group
+      editPartialCheckColor.Font.Color := Settings.FPartialCheck.FCurrentBandForeColor;
+      editPartialCheckColor.Color := Settings.FPartialCheck.FCurrentBandBackColor;
+
+      //
+      // Quick functions
+      //
+
+      // Quick QSY
+      FTempFreqMemList.Assign(FreqMemList);
+      checkUseKhzQsyCommand.Checked := Settings.FUseKhzQsyCommand;
+
+      // Quick Memo
+      for i := 1 to 5 do begin
+         FQuickMemoText[i].Text := Settings.FQuickMemoText[i];
+      end;
+
+      //
+      // Band scope
+      //
+
+      // Bands group
+      checkBS01.Checked := Settings._usebandscope[b19];
+      checkBS02.Checked := Settings._usebandscope[b35];
+      checkBS03.Checked := Settings._usebandscope[b7];
+      checkBS04.Checked := Settings._usebandscope[b10];
+      checkBS05.Checked := Settings._usebandscope[b14];
+      checkBS06.Checked := Settings._usebandscope[b18];
+      checkBS07.Checked := Settings._usebandscope[b21];
+      checkBS08.Checked := Settings._usebandscope[b24];
+      checkBS09.Checked := Settings._usebandscope[b28];
+      checkBS10.Checked := Settings._usebandscope[b50];
+      checkBS11.Checked := Settings._usebandscope[b144];
+      checkBS12.Checked := Settings._usebandscope[b430];
+      checkBS13.Checked := Settings._usebandscope[b1200];
+      checkBS14.Checked := Settings._usebandscope[b2400];
+      checkBS15.Checked := Settings._usebandscope[b5600];
+      checkBS16.Checked := Settings._usebandscope[b10g];
+      checkBS17.Checked := Settings._usebandscope[b104g];
+      checkBS18.Checked := Settings._usebandscope[b24g];
+      checkBS19.Checked := Settings._usebandscope[b47g];
+      checkBS20.Checked := Settings._usebandscope[b77g];
+      checkBS21.Checked := Settings._usebandscope[b135g];
+      checkBS22.Checked := Settings._usebandscope[b248g];
+      checkBsCurrent.Checked := Settings._usebandscope_current;
+      checkBsNewMulti.Checked := Settings._usebandscope_newmulti;
+      checkBsAllBands.Checked := Settings._usebandscope_allbands;
+
+      // Info. colors group
+      for i := 1 to 15 do begin
+         if FBSColor[i] <> nil then begin
+            FBSColor[i].Font.Color := Settings._bandscopecolor[i].FForeColor;
+            FBSColor[i].Color      := Settings._bandscopecolor[i].FBackColor;
+         end;
+         if FBSBold[i] <> nil then begin
+            FBSBold[i].Checked     := Settings._bandscopecolor[i].FBold;
+         end;
+         if FBSUseReliability[i] <> nil then begin
+            FBSUseReliability[i].Checked := Settings._bandscopecolor[i].FUseReliability;
+         end;
+         if FBSTransparent[i] <> nil then begin
+            FBSTransparent[i].Checked := Settings._bandscopecolor[i].FTransparent;
+         end;
+      end;
+
+      // Bandscope options group
+
+      // BandScope Options
+      checkUseEstimatedMode.Checked := Settings._bandscope_use_estimated_mode;      // 周波数からのモードの推定
+      checkShowOnlyInBandplan.Checked := Settings._bandscope_show_only_in_bandplan; // バンド内のみ
+      checkShowJAspots.Checked := Settings._bandscope_show_ja_spots;                // JAを表示
+      checkShowDXspots.Checked := Settings._bandscope_show_dx_spots;                // DXを表示
+      checkUseNumberLookup.Checked := Settings._bandscope_use_number_lookup;        // Number Lookup
+      checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
+      checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
+      checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
+      checkSaveCurrentFreq.Checked := Settings._bandscope_save_current_freq;        // S&P時、現在周波数を保存する
+      checkUseResume.Checked := Settings._bandscope_use_resume;                     // レジューム使う
+
+      // Initial reliability group
+      radioReliabilityHigh.Checked := Settings._bandscope_initial_reliability_high;
+      radioReliabilityMiddle.Checked := not Settings._bandscope_initial_reliability_high;
+
+      // 1Radio時のみ設定可能とする
+      if Settings._operate_style = os1Radio then begin
+         checkSaveCurrentFreq.Enabled := True;
+      end
+      else begin
+         checkSaveCurrentFreq.Enabled := False;
+      end;
+
+      checkUseEstimatedModeClick(nil);
+      checkUseNumberLookupClick(nil);
+
+      //
+      // Band scope2
+      //
+
+      // Spot Freshness group
+
+      // Spot鮮度表示
+      case Settings._bandscope_freshness_mode of
+         0: radioFreshness1.Checked := True;
+         1: radioFreshness2.Checked := True;
+         2: radioFreshness3.Checked := True;
+         3: radioFreshness4.Checked := True;
+         else radioFreshness1.Checked := True;
+      end;
+   end;
+end;
+
+procedure TformOptions2.RenewCWStrBankDisp;
+var
+   i: Integer;
+begin
+   for i := 1 to maxmessage do begin
+      FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
+      if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
+         FEditMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+         if FEditMessage[i].ReadOnly = True then begin
+            FEditMessage[i].Color := clBtnFace; // gray
+         end
+         else begin
+            FEditMessage[i].Color := $00EADEFF; // light pink
+         end;
+      end
+      else begin
+         FEditMessage[i].Color := clWindow;
+         FEditMessage[i].ReadOnly := False;
+      end;
+   end;
+
+   for i := 2 to 3 do begin
+      if dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] = True then begin
+         FEditAdditionalCQMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+         if FEditAdditionalCQMessage[i].ReadOnly = True then begin
+            FEditAdditionalCQMessage[i].Color := clBtnFace; // gray
+         end
+         else begin
+            FEditAdditionalCQMessage[i].Color := $00EADEFF; // light pink
+         end;
+      end
+      else begin
+         FEditAdditionalCQMessage[i].Color := clWindow;
+         FEditAdditionalCQMessage[i].ReadOnly := False;
+      end;
+   end;
+end;
+
+procedure TformOptions2.buttonOpAddClick(Sender: TObject);
+var
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
+   op: TOperatorInfo;
+begin
+   F := TformOperatorEdit.Create(Self);
+   try
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      obj := TOperatorInfo.Create();
+      F.GetObject(obj);
+
+      op := dmZLogGlobal.OpList.ObjectOf(obj.Callsign);
+      if op = nil then begin
+         OpListBox.Items.AddObject(obj.Callsign, obj);
+         dmZLogGlobal.OpList.Add(obj);
+      end
+      else begin
+         op.Assign(obj);
+         obj.Free();
+      end;
+   finally
+      F.Release();
+   end;
+end;
+
+procedure TformOptions2.buttonOpEditClick(Sender: TObject);
+var
+   F: TformOperatorEdit;
+   obj: TOperatorInfo;
+begin
+   if OpListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+
+   F := TformOperatorEdit.Create(Self);
+   try
+      obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
+
+      F.SetObject(obj);
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      F.GetObject(obj);
+
+   finally
+      F.Free();
+   end;
+end;
+
+procedure TformOptions2.buttonOpDeleteClick(Sender: TObject);
+var
+   obj: TOperatorInfo;
+   i: Integer;
+begin
+   if OpListBox.ItemIndex = -1 then begin
+      Exit;
+   end;
+   obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
+   OpListBox.Items.Delete(OpListBox.ItemIndex);
+   i := dmZLogGlobal.OpList.IndexOf(obj);
+   if i >= 0 then begin
+      dmZLogGlobal.OpList.Delete(i);
+   end;
 end;
 
 procedure TformOptions2.SpeedBarChange(Sender: TObject);
@@ -1551,12 +1853,6 @@ end;
 procedure TformOptions2.WeightBarChange(Sender: TObject);
 begin
    WeightLabel.Caption := IntToStr(WeightBar.Position) + ' %';
-end;
-
-procedure TformOptions2.FormDestroy(Sender: TObject);
-begin
-   FTempFreqMemList.Free();
-   FVoiceSound.Free();
 end;
 
 procedure TformOptions2.vButtonEnter(Sender: TObject);
