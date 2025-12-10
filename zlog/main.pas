@@ -4020,6 +4020,7 @@ var
    i: Integer;
    aQSO: TQSO;
    C: Integer;
+   fEnable: Boolean;
 begin
    SendSpot1.Enabled := FCommForm.MaybeConnected;
 
@@ -4034,12 +4035,14 @@ begin
    BuildTxNrMenu2(menuChangeTXNr, mnChangeTXNrClick);
 
    if Grid.Row > Log.TotalQSO then begin
-      for i := 0 to GridMenu.Items.Count - 1 do
-         GridMenu.Items[i].Enabled := False;
+      fEnable := False;
    end
    else begin
-      for i := 0 to GridMenu.Items.Count - 1 do
-         GridMenu.Items[i].Enabled := True;
+      fEnable := True;
+   end;
+
+   for i := 0 to GridMenu.Items.Count - 1 - 2 do begin
+      GridMenu.Items[i].Enabled := fEnable;
    end;
 
    // 選択範囲が全て同じ日付かチェックする
@@ -8400,7 +8403,12 @@ begin
    end;
 end;
 
-
+//
+// zLog 初期化処理
+//
+// WPARAM・・・ 0:startup 1:select contest
+// LPARAM・・・ unused
+//
 procedure TMainForm.OnZLogInit( var Message: TMessage );
 var
    menu: TMenuForm;
@@ -8459,7 +8467,9 @@ begin
       if (dmZLogGlobal.Settings.FSelectContestOnStartup = True) or (Message.WParam = 1) then begin
          if fNewContest = True then begin // new contest
             if menu.ShowModal() = mrCancel then begin
-               Close();
+               if Message.WParam = 0 then begin
+                  Close();
+               end;
                Exit;
             end;
 
