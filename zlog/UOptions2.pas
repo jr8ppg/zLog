@@ -868,11 +868,6 @@ begin
 
    RenewCWStrBankDisp;
 
-   // OpList
-   for i := 0 to dmZLogGlobal.OpList.Count - 1 do begin
-      OpListBox.Items.AddObject(dmZLogGlobal.OpList[i].Callsign, dmZLogGlobal.OpList[i]);
-   end;
-
    for i := 0 to FTempFreqMemList.Count - 1 do begin
       AddFreqMemList(FTempFreqMemList[i]);
    end;
@@ -1104,8 +1099,19 @@ begin
       Settings._countperhour     := editQsyCountPerHour.Value;
 
       // Operators
-      // OpListはボタンの処理で入っている
+
+      // OpList
+      dmZLogGlobal.OpList.Clear();
+      for i := 0 to OpListBox.Items.Count - 1 do begin
+         var op := TOperatorInfo.Create();
+         op.Assign(TOperatorInfo(OpListBox.Items.Objects[i]));
+         dmZLogGlobal.OpList.Add(op);
+      end;
+
+      // Select last operator on startup
       Settings._selectlastoperator := checkSelectLastOperator.Checked;
+
+      // Apply power code on band change
       Settings._applypoweronbandchg :=  checkApplyPowerCodeOnBandChange.Checked;
 
       //
@@ -1496,6 +1502,13 @@ begin
 
       // Operators
 
+      // OpList
+      for i := 0 to dmZLogGlobal.OpList.Count - 1 do begin
+         var op := TOperatorInfo.Create();
+         op.Assign(dmZLogGlobal.OpList[i]);
+         OpListBox.Items.AddObject(op.Callsign, op);
+      end;
+
       // Select last operator on startup
       checkSelectLastOperator.Checked := Settings._selectlastoperator;
 
@@ -1792,7 +1805,6 @@ begin
       op := dmZLogGlobal.OpList.ObjectOf(obj.Callsign);
       if op = nil then begin
          OpListBox.Items.AddObject(obj.Callsign, obj);
-         dmZLogGlobal.OpList.Add(obj);
       end
       else begin
          op.Assign(obj);
@@ -1839,10 +1851,6 @@ begin
    end;
    obj := TOperatorInfo(OpListBox.Items.Objects[OpListBox.ItemIndex]);
    OpListBox.Items.Delete(OpListBox.ItemIndex);
-   i := dmZLogGlobal.OpList.IndexOf(obj);
-   if i >= 0 then begin
-      dmZLogGlobal.OpList.Delete(i);
-   end;
 end;
 
 procedure TformOptions2.SpeedBarChange(Sender: TObject);
