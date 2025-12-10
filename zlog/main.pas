@@ -1355,6 +1355,7 @@ type
     function GetInitNrSent(aQSO: TQSO): string;
     function DateStr(aQSO: TQSO): string;
     procedure ShowDateTime(Q: TQSO = nil);
+    procedure SetInitQsoEditPanel();
   public
     LastFocus : TEdit;
 
@@ -7863,6 +7864,7 @@ end;
 procedure TMainForm.menuResetColumnWidthsClick(Sender: TObject);
 begin
    InitGridColumnWidth();
+   SetInitQsoEditPanel();
 end;
 
 procedure TMainForm.menuColumnSettingsClick(Sender: TObject);
@@ -7885,6 +7887,7 @@ begin
       end;
 
       InitGridColumnWidth();
+      SetInitQsoEditPanel();
    finally
       f.Release();
    end;
@@ -8712,13 +8715,9 @@ begin
       end;
       FRateDialogEx.Band := CurrentQSO.Band;
 
-      BandEdit.Text := MHzString[CurrentQSO.Band];
       CurrentQSO.TX := dmZlogGlobal.TXNr;
 
-      ModeEdit.Text := CurrentQSO.ModeStr;
-      SentRSTEdit.Text := CurrentQSO.RSTSentStr;
-      SentNumberEdit.Text := GetInitNrSent(CurrentQSO);
-      RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+      SetInitQsoEditPanel();
 
       // マルチオペの場合は最後のOPをセット
       if (dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) and
@@ -8873,6 +8872,16 @@ begin
       menu.Release();
       startup.Release();
    end;
+end;
+
+procedure TMainForm.SetInitQsoEditPanel();
+begin
+   BandEdit.Text := MHzString[CurrentQSO.Band];
+   ModeEdit.Text := CurrentQSO.ModeStr;
+   SentRSTEdit.Text := CurrentQSO.RSTSentStr;
+   SentNumberEdit.Text := GetInitNrSent(CurrentQSO);
+   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   RcvdNumberEdit.Text := CurrentQSO.NrRcvd;
 end;
 
 procedure TMainForm.RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
