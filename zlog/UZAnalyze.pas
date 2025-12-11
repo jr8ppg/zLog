@@ -35,8 +35,8 @@ const
 
 const
   HTOTAL = 49;
-  VTOTAL = TBand(16);
-  CTOTAL = TBand(17);
+  VTOTAL = TBand(22);
+  CTOTAL = TBand(23);
 type
   TQsoCount = record
     FQso: Integer;
@@ -56,10 +56,10 @@ type
 
   TOpCount = class(TObject)
     FOpName: string;
-    FQsoCountPH: array[b19..b10g] of Integer;
-    FQsoCountCW: array[b19..b10g] of Integer;
-    FMultiCountPH: array[b19..b10g] of Integer;
-    FMultiCountCW: array[b19..b10g] of Integer;
+    FQsoCountPH: array[b19..HiBand] of Integer;
+    FQsoCountCW: array[b19..HiBand] of Integer;
+    FMultiCountPH: array[b19..HiBand] of Integer;
+    FMultiCountCW: array[b19..HiBand] of Integer;
   public
     constructor Create();
   end;
@@ -88,12 +88,12 @@ type
   private
     { Private 宣言 }
     FStartHour: Integer;
-    FCountData: array[1..49] of array[b19..TBand(17)] of TQsoCount;
-    FCountData2: array[1..49] of array[b19..TBand(17)] of TQsoCount2;
+    FCountData: array[1..49] of array[b19..TBand(24)] of TQsoCount;
+    FCountData2: array[1..49] of array[b19..TBand(24)] of TQsoCount2;
     FOpCount: TList<TOpCount>;
     FZADSupport: Boolean;
-    FMultiGet: array[02..114] of array[b19..b10g] of Integer;
-    FMultiGet2: array[b19..b10g] of TList<string>;
+    FMultiGet: array[02..114] of array[b19..HiBand] of Integer;
+    FMultiGet2: array[b19..HiBand] of TList<string>;
     FUseRbnAnalyze: Boolean;
     procedure ShowAll(sl: TStrings);
     procedure InitTimeChart();
@@ -145,7 +145,7 @@ var
 begin
    FOpCount := TList<TOpCount>.Create();
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FMultiGet2[b] := TList<string>.Create();
    end;
 
@@ -170,7 +170,7 @@ begin
    end;
    FOpCount.Free();
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FMultiGet2[b].Free();
    end;
 end;
@@ -674,14 +674,14 @@ begin
    nLastIndex := GetLastHour();
 
    // 見出し（上）
-   strText := '    |';
+   strText := '     |';
    for i := 1 to nLastIndex do begin
       strText := strText + ' ' + HourText(i);
    end;
    strText := strText + '|合計';
    sl.Add(strText);
 
-   strText := '----+';
+   strText := '-----+';
    for i := 1 to nLastIndex do begin
       strText := strText + '---';
    end;
@@ -695,7 +695,7 @@ begin
          Continue;
       end;
 
-      strText := RightStr('    ' + MHzString[b], 4) + '|';
+      strText := RightStr('    ' + MHzString[b], 5) + '|';
 
       for t := 1 to nLastIndex do begin
          if FCountData[t][b].FQso = 0 then begin
@@ -712,7 +712,7 @@ begin
    end;
 
    // 見出し（下）
-   strText := '----+';
+   strText := '-----+';
    for i := 1 to nLastIndex do begin
       strText := strText + '---';
    end;
@@ -720,7 +720,7 @@ begin
    sl.Add(strText);
 
    // 合計行
-   strText := '合計|';
+   strText := '合 計|';
    for t := 1 to nLastIndex do begin
       strText := strText + RightStr('   ' + IntToStr(FCountData[t][VTOTAL].FQso), 3);
    end;
@@ -729,7 +729,7 @@ begin
    sl.Add(strText);
 
    // 累計行
-   strText := '累計|';
+   strText := '累 計|';
    for t := 1 to nLastIndex do begin
       if (t mod 3) = 0 then begin
          if FCountData[t][CTOTAL].FQso < 1000 then begin
@@ -784,10 +784,10 @@ begin
    sl.Add('');
 
    if FCountData[HTOTAL][VTOTAL].FMulti2 = 0 then begin
-      sl.Add('　バンド　　交信局数　　得点　　マルチ');
+      sl.Add(' 　バンド　　交信局数　　得点　　マルチ');
    end
    else begin
-      sl.Add('　バンド　　交信局数　　得点　　マルチ  マルチ2');
+      sl.Add(' 　バンド　　交信局数　　得点　　マルチ  マルチ2');
    end;
 
    for b := b19 to HiBand do begin
@@ -795,7 +795,7 @@ begin
          Continue;
       end;
 
-      strText := ' ' + RightStr('    ' + MHzString[b], 4) + ' MHz    ' +
+      strText := ' ' + RightStr('     ' + MHzString[b], 5) + ' MHz    ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FQso), 5) + '     ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FPts), 5) + '   ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FMulti), 5);
@@ -807,7 +807,7 @@ begin
       sl.Add(strText);
    end;
 
-   strText := '  合　計    ';
+   strText := '   合　計    ';
    if FCountData[HTOTAL][VTOTAL].FMulti2 = 0 then begin
       strText := strText +
                  RightStr('      ' + IntToStr(FCountData[HTOTAL][VTOTAL].FQso), 6) + '    ' +
@@ -1085,7 +1085,7 @@ begin
          Continue;
       end;
 
-      strText := strText + '     ' + RightStr('    ' + MHzString[b], 4);
+      strText := strText + '    ' + RightStr('     ' + MHzString[b], 5);
    end;
 
    strText := strText + '       ALL';
