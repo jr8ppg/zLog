@@ -796,15 +796,15 @@ object formELogJarlEx: TformELogJarlEx
         Caption = #12473#12467#12450#35519#25972
         TabOrder = 25
         object Label22: TLabel
-          Left = 16
+          Left = 189
           Top = 472
           Width = 48
           Height = 12
           Caption = #23616#31278#20418#25968
         end
         object labelTotalScore: TLabel
-          Left = 16
-          Top = 498
+          Left = 189
+          Top = 494
           Width = 58
           Height = 12
           Caption = 'Total score'
@@ -843,6 +843,94 @@ object formELogJarlEx: TformELogJarlEx
           Width = 31
           Height = 12
           Caption = 'Multi2'
+        end
+        object buttonModeCW: TSpeedButton
+          Left = 16
+          Top = 476
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 1
+          Down = True
+          Caption = 'CW'
+          OnClick = buttonModeClick
+        end
+        object buttonModeSSB: TSpeedButton
+          Left = 46
+          Top = 476
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 2
+          Down = True
+          Caption = 'SSB'
+          OnClick = buttonModeClick
+        end
+        object buttonModeFM: TSpeedButton
+          Left = 76
+          Top = 476
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 3
+          Down = True
+          Caption = 'FM'
+          OnClick = buttonModeClick
+        end
+        object buttonModeAM: TSpeedButton
+          Left = 105
+          Top = 476
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 4
+          Down = True
+          Caption = 'AM'
+          OnClick = buttonModeClick
+        end
+        object buttonModeRTTY: TSpeedButton
+          Left = 16
+          Top = 493
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 5
+          Down = True
+          Caption = 'RTTY'
+          OnClick = buttonModeClick
+        end
+        object buttonModeFT4: TSpeedButton
+          Left = 46
+          Top = 493
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 6
+          Down = True
+          Caption = 'FT4'
+          OnClick = buttonModeClick
+        end
+        object buttonModeFT8: TSpeedButton
+          Left = 76
+          Top = 493
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 7
+          Down = True
+          Caption = 'FT8'
+          OnClick = buttonModeClick
+        end
+        object buttonModeDV: TSpeedButton
+          Left = 105
+          Top = 493
+          Width = 30
+          Height = 17
+          AllowAllUp = True
+          GroupIndex = 8
+          Down = True
+          Caption = 'DV'
+          OnClick = buttonModeClick
         end
         object checkBand00: TCheckBox
           Left = 16

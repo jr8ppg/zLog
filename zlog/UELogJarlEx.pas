@@ -7,7 +7,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math, DateUtils,
   Vcl.ComCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
-  UzLogContest;
+  UzLogContest, Vcl.Buttons;
 
 type
   TformELogJarlEx = class(TForm)
@@ -182,6 +182,14 @@ type
     editMulti21: TEdit;
     editPoints21: TEdit;
     editMulti2_21: TEdit;
+    buttonModeCW: TSpeedButton;
+    buttonModeSSB: TSpeedButton;
+    buttonModeFM: TSpeedButton;
+    buttonModeAM: TSpeedButton;
+    buttonModeRTTY: TSpeedButton;
+    buttonModeFT4: TSpeedButton;
+    buttonModeFT8: TSpeedButton;
+    buttonModeDV: TSpeedButton;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -196,6 +204,7 @@ type
     procedure buttonWebUploadClick(Sender: TObject);
     procedure ControlEnter(Sender: TObject);
     procedure ControlExit(Sender: TObject);
+    procedure buttonModeClick(Sender: TObject);
   private
     { Private êÈåæ }
     FScoreBand: array[b19..HiBand] of TCheckBox;
@@ -203,6 +212,7 @@ type
     FScoreMulti1: array[b19..HiBand] of TEdit;
     FScoreMulti2: array[b19..HiBand] of TEdit;
     FScorePoints: array[b19..HiBand] of TEdit;
+    FScoreMode: array[mCW..mDV] of TSpeedButton;
 
     function CreateELogR1(SL: TStringList): Boolean;
     function CreateELogR2(SL: TStringList): Boolean;
@@ -353,6 +363,16 @@ begin
    editFdcoeff.Enabled := MyContest.UseCoeff;
 
    edFDCoefficient.Enabled := MyContest.UseCoeff;
+
+   FScoreMode[mCW] := buttonModeCW;
+   FScoreMode[mSSB] := buttonModeSSB;
+   FScoreMode[mFM] := buttonModeFM;
+   FScoreMode[mAM] := buttonModeAM;
+   FScoreMode[mRTTY] := buttonModeRTTY;
+   FScoreMode[mFT4] := buttonModeFT4;
+   FScoreMode[mFT8] := buttonModeFT8;
+   FScoreMode[mOther] := nil;
+   FScoreMode[mDV] := buttonModeDV;
 
    InitializeFields;
 end;
@@ -586,6 +606,11 @@ begin
    finally
       SL.Free();
    end;
+end;
+
+procedure TformELogJarlEx.buttonModeClick(Sender: TObject);
+begin
+   CalcAll();
 end;
 
 function TformELogJarlEx.CreateELogR2(SL: TStringList): Boolean;
@@ -1046,6 +1071,10 @@ begin
          Continue;
       end;
 
+      if Assigned(FScoreMode[Q.Mode]) and (FScoreMode[Q.Mode].Down = False) then begin
+         Continue;
+      end;
+
 //      if Q.Invalid = True then begin
 //         Continue;
 //      end;
@@ -1184,6 +1213,10 @@ begin
 
       if (dmZLogGlobal.Settings._output_outofperiod = False) and
          (Log.IsOutOfPeriod(Q) = True) then begin
+         Continue;
+      end;
+
+      if Assigned(FScoreMode[Q.Mode]) and (FScoreMode[Q.Mode].Down = False) then begin
          Continue;
       end;
 
@@ -1362,14 +1395,54 @@ end;
 procedure TformELogJarlEx.CalcAll();
 var
    b: TBand;
-   qso, multi1, multi2, points: Integer;
+   qso, multi1, multi2, points: array[b19..HiBand] of Integer;
+   totalqso, totalmulti1, totalmulti2, totalpoints: Integer;
    fdcoeff: Extended;
    fScore: Extended;
+   m: TMode;
+   i: Integer;
+   Q: TQSO;
 begin
-   qso := 0;
-   multi1 := 0;
-   multi2 := 0;
-   points := 0;
+   totalqso := 0;
+   totalmulti1 := 0;
+   totalmulti2 := 0;
+   totalpoints := 0;
+
+   for b := b19 to HiBand do begin
+      qso[b] := 0;
+      multi1[b] := 0;
+      multi2[b] := 0;
+      points[b] := 0;
+   end;
+
+   for i := 1 to Log.TotalQSO do begin
+      Q := Log.QSOList[i];
+
+      b := Q.Band;
+      m := Q.Mode;
+
+      if Assigned(FScoreMode[m]) and (FScoreMode[m].Down = False) then begin
+         Continue;
+      end;
+
+      if Q.Invalid = True then begin
+         Continue;
+      end;
+
+      if Q.Points = 0 then begin
+         Continue;
+      end;
+
+      Inc(qso[b]);
+
+      if Q.NewMulti1 = True then begin
+         Inc(multi1[b]);
+      end;
+      if Q.NewMulti2 = True then begin
+         Inc(multi2[b]);
+      end;
+      Inc(points[b], Q.Points);
+   end;
 
    for b := b19 to HiBand do begin
       if FScoreBand[b] = nil then begin
@@ -1380,19 +1453,24 @@ begin
          Continue;
       end;
 
-      qso := qso + StrToIntDef(FScoreQso[b].Text, 0);
-      multi1 := multi1 + StrToIntDef(FScoreMulti1[b].Text, 0);
-      multi2 := multi2 + StrToIntDef(FScoreMulti2[b].Text, 0);
-      points := points + StrToIntDef(FScorePoints[b].Text, 0);
+      totalqso := totalqso + qso[b];
+      totalmulti1 := totalmulti1 + multi1[b];
+      totalmulti2 := totalmulti2 + multi2[b];
+      totalpoints := totalpoints + points[b];
+
+      FScoreQso[b].Text := IntToStr(qso[b]);
+      FScoreMulti1[b].Text := IntToStr(multi1[b]);
+      FScoreMulti2[b].Text := IntToStr(multi2[b]);
+      FScorePoints[b].Text := IntToStr(points[b]);
    end;
 
-   editQsoTotal.Text := IntToStr(qso);
-   editMulti1Total.Text := IntToStr(multi1);
-   editMulti2Total.Text := IntToStr(multi2);
-   editPointsTotal.Text := IntToStr(points);
+   editQsoTotal.Text := IntToStr(totalqso);
+   editMulti1Total.Text := IntToStr(totalmulti1);
+   editMulti2Total.Text := IntToStr(totalmulti2);
+   editPointsTotal.Text := IntToStr(totalpoints);
 
    fdcoeff := StrToFloatDef(editFdcoeff.Text, 1);
-   fScore := (multi1 + multi2) * points * fdcoeff;
+   fScore := (totalmulti1 + totalmulti2) * totalpoints * fdcoeff;
 
    editTotalScore.Text := FloatToStr(fScore);
 end;
