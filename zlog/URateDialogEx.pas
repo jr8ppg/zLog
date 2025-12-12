@@ -763,9 +763,9 @@ var
 begin
    FGraphStyle := dmZLogGlobal.Settings.FGraphStyle;
    FGraphStartPosition := dmZLogGlobal.Settings.FGraphStartPosition;
-   for b := b19 to HiBand do begin
-      GraphSeries[b].SeriesColor := dmZLogGlobal.Settings.FGraphBarColor[b];
-      GraphSeries[b].Marks.Font.Color := dmZLogGlobal.Settings.FGraphTextColor[b];
+   for b := b19 to bTarget do begin
+      FGraphSeries[b].SeriesColor := dmZLogGlobal.Settings.FGraphBarColor[b];
+      FGraphSeries[b].Marks.Font.Color := dmZLogGlobal.Settings.FGraphTextColor[b];
    end;
    SetGraphStartPositionUI(FGraphStartPosition);
    menuAchievementRate.Checked := dmZLogGlobal.Settings.FZaqAchievement;
@@ -837,7 +837,7 @@ var
 begin
    dmZLogGlobal.Settings.FGraphStyle := GraphStyle;
    dmZLogGlobal.Settings.FGraphStartPosition := GraphStartPosition;
-   for b := b19 to HiBand do begin
+   for b := b19 to bTarget do begin
       dmZLogGlobal.Settings.FGraphBarColor[b] := GraphSeries[b].SeriesColor;
       dmZLogGlobal.Settings.FGraphTextColor[b] := GraphSeries[b].Marks.Font.Color;
    end;

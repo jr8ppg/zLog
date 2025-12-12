@@ -328,8 +328,8 @@ type
     // QSO Rate Graph
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
-    FGraphBarColor: array[b19..HiBand] of TColor;
-    FGraphTextColor: array[b19..HiBand] of TColor;
+    FGraphBarColor: array[b19..bTarget] of TColor;
+    FGraphTextColor: array[b19..bTarget] of TColor;
     FGraphOtherBgColor: array[0..1] of TColor;
     FGraphOtherFgColor: array[0..1] of TColor;
     FZaqAchievement: Boolean;
@@ -1623,7 +1623,7 @@ begin
       // QSO Rate Graph
       Settings.FGraphStyle := TQSORateStyle(ini.ReadInteger('Graph', 'Style', 0));
       Settings.FGraphStartPosition := TQSORateStartPosition(ini.ReadInteger('Graph', 'StartPosition', 1));
-      for b := b19 to HiBand do begin
+      for b := b19 to bTarget do begin
          strKey := MHzString[b];
          Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
          Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
@@ -2306,7 +2306,7 @@ begin
       // QSO Rate Graph
       ini.WriteInteger('Graph', 'Style', Integer(Settings.FGraphStyle));
       ini.WriteInteger('Graph', 'StartPosition', Integer(Settings.FGraphStartPosition));
-      for b := b19 to HiBand do begin
+      for b := b19 to bTarget do begin
          strKey := MHzString[b];
          ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));

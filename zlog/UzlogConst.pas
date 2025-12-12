@@ -258,21 +258,21 @@ type
   TSendRepeatEvent = procedure(Sender: TObject; nLoopCount: Integer) of object;
 
 const
-  default_graph_bar_color: array[b19..HiBand] of TColor = (
+  default_graph_bar_color: array[b19..bTarget] of TColor = (
     $0080FF00, $000000FF, $00FF0000, $00808080,
     $0000FFFF, $00808080, $00FF00FF, $00808080,
     $00FFFF80, $004080FF, $00FF8000, $00C080FF,
     $00FF0080, $00359CF3, $00144CF1, $0080FFFF,
     $0080FFFF, $0080FFFF, $0080FFFF, $0080FFFF,
-    $0080FFFF, $0080FFFF
+    $0080FFFF, $0080FFFF, $006B402B
   );
-  default_graph_text_color: array[b19..HiBand] of TColor = (
+  default_graph_text_color: array[b19..bTarget] of TColor = (
     $00400040, $00FFFFFF, $00FFFFFF, $00FFFFFF,
     $00000000, $00FFFFFF, $00000000, $00FFFFFF,
     $00000000, $00FFFFFF, $00FFFFFF, $00000000,
     $00FFFFFF, $00000000, $00FFFFFF, $00400040,
     $00400040, $00400040, $00400040, $00400040,
-    $00400040, $00400040
+    $00400040, $00400040, $00FFFFFF
   );
 
   default_other_bg_color: array[0..1] of TColor = (

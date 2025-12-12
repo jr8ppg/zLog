@@ -6831,11 +6831,11 @@ var
 begin
    f := TGraphColorDialog.Create(Self);
    try
-      f.Style := FRateDialog.GraphStyle;
-      f.StartPosition := FRateDialog.GraphStartPosition;
-      for b := b19 to HiBand do begin
-         f.BarColor[b] := FRateDialog.GraphSeries[b].SeriesColor;
-         f.TextColor[b] := FRateDialog.GraphSeries[b].Marks.Font.Color;
+      f.Style := FRateDialogEx.GraphStyle;
+      f.StartPosition := FRateDialogEx.GraphStartPosition;
+      for b := b19 to bTarget do begin
+         f.BarColor[b] := FRateDialogEx.GraphSeries[b].SeriesColor;
+         f.TextColor[b] := FRateDialogEx.GraphSeries[b].Marks.Font.Color;
       end;
       for i := 0 to 3 do begin
          f.ZaqBgColor[i] := FRateDialogEx.ZaqBgColor[i];
@@ -6850,17 +6850,19 @@ begin
          Exit;
       end;
 
+      // QSORateに反映
       FRateDialog.GraphStyle := f.Style;
       FRateDialog.GraphStartPosition := f.StartPosition;
       for b := b19 to HiBand do begin
          FRateDialog.GraphSeries[b].SeriesColor := f.BarColor[b];
          FRateDialog.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
       end;
-      FRateDialog.SaveSettings();
+      FRateDialog.Refresh();
 
+      // QSORatExに反映
       FRateDialogEx.GraphStyle := f.Style;
       FRateDialogEx.GraphStartPosition := f.StartPosition;
-      for b := b19 to HiBand do begin
+      for b := b19 to bTarget do begin
          FRateDialogEx.GraphSeries[b].SeriesColor := f.BarColor[b];
          FRateDialogEx.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
       end;
@@ -6872,6 +6874,7 @@ begin
          FRateDialogEx.OtherBgColor[i] := f.OtherBgColor[i];
          FRateDialogEx.OtherFgColor[i] := f.OtherFgColor[i];
       end;
+      FRateDialogEx.SaveSettings();
 
       FRateDialogEx.Refresh();
    finally

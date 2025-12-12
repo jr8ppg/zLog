@@ -145,6 +145,43 @@ type
     buttonZaqFgGrid: TButton;
     buttonZaqResetGrid: TButton;
     buttonZaqBgGrid: TButton;
+    GroupBox8: TGroupBox;
+    Label22: TLabel;
+    editColor23: TEdit;
+    buttonFG23: TButton;
+    buttonReset23: TButton;
+    buttonBG23: TButton;
+    GroupBox9: TGroupBox;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    editColor18: TEdit;
+    buttonFG18: TButton;
+    buttonReset18: TButton;
+    buttonBG18: TButton;
+    editColor19: TEdit;
+    buttonFG19: TButton;
+    buttonReset19: TButton;
+    buttonBG19: TButton;
+    editColor20: TEdit;
+    buttonFG20: TButton;
+    buttonReset20: TButton;
+    buttonBG20: TButton;
+    editColor21: TEdit;
+    buttonFG21: TButton;
+    buttonReset21: TButton;
+    buttonBG21: TButton;
+    editColor22: TEdit;
+    buttonFG22: TButton;
+    buttonReset22: TButton;
+    buttonBG22: TButton;
+    editColor17: TEdit;
+    buttonFG17: TButton;
+    buttonReset17: TButton;
+    buttonBG17: TButton;
+    Label28: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonFGClick(Sender: TObject);
@@ -158,7 +195,7 @@ type
     procedure buttonOtherResetClick(Sender: TObject);
   private
     { Private êÈåæ }
-    FGraphColor: array[b19..b10g] of TEdit;
+    FGraphColor: array[b19..bTarget] of TEdit;
     FOtherColor: array[0..1] of TEdit;
     FZaqColor: array[0..3] of TEdit;
     function GetBarColor(b: TBand): TColor;
@@ -244,6 +281,14 @@ begin
    FGraphColor[b2400]   := editColor14;
    FGraphColor[b5600]   := editColor15;
    FGraphColor[b10g]    := editColor16;
+   FGraphColor[b104g]   := editColor17;
+   FGraphColor[b24g]    := editColor18;
+   FGraphColor[b47g]    := editColor19;
+   FGraphColor[b77g]    := editColor20;
+   FGraphColor[b135g]   := editColor21;
+   FGraphColor[b248g]   := editColor22;
+   FGraphColor[bTarget] := editColor23;
+
    FOtherColor[0]       := editActualColor;
    FOtherColor[1]       := editTargetColor;
    FZaqColor[0]         := editZaqTitleLine;

@@ -11,11 +11,9 @@ object GraphColorDialog: TGraphColorDialog
   Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
@@ -860,7 +858,7 @@ object GraphColorDialog: TGraphColorDialog
         Left = 4
         Top = 199
         Width = 393
-        Height = 82
+        Height = 105
         Caption = 'SHF'
         TabOrder = 2
         object Label14: TLabel
@@ -879,7 +877,16 @@ object GraphColorDialog: TGraphColorDialog
           Height = 12
           Alignment = taRightJustify
           AutoSize = False
-          Caption = '10 GHz && up'
+          Caption = '10.1G'
+        end
+        object Label28: TLabel
+          Left = 6
+          Top = 73
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '10.4G'
         end
         object editColor15: TEdit
           Left = 89
@@ -961,6 +968,46 @@ object GraphColorDialog: TGraphColorDialog
           TabOrder = 6
           OnClick = buttonBGClick
         end
+        object editColor17: TEdit
+          Left = 89
+          Top = 70
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 8
+          Text = 'TEXT'
+        end
+        object buttonFG17: TButton
+          Tag = 16
+          Left = 167
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 9
+          OnClick = buttonFGClick
+        end
+        object buttonReset17: TButton
+          Tag = 16
+          Left = 314
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 10
+          OnClick = buttonResetClick
+        end
+        object buttonBG17: TButton
+          Tag = 16
+          Left = 216
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 11
+          OnClick = buttonBGClick
+        end
       end
     end
     object TabSheet5: TTabSheet
@@ -968,7 +1015,7 @@ object GraphColorDialog: TGraphColorDialog
       ImageIndex = 4
       object GroupBox7: TGroupBox
         Left = 4
-        Top = 4
+        Top = 220
         Width = 393
         Height = 78
         Caption = 'Cumulative graph'
@@ -1067,6 +1114,316 @@ object GraphColorDialog: TGraphColorDialog
           Caption = 'Back...'
           TabOrder = 6
           OnClick = buttonOtherBgClick
+        end
+      end
+      object GroupBox8: TGroupBox
+        Left = 4
+        Top = 164
+        Width = 393
+        Height = 50
+        Caption = 'Other'
+        TabOrder = 1
+        object Label22: TLabel
+          Left = 6
+          Top = 21
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = 'Target'
+        end
+        object editColor23: TEdit
+          Left = 89
+          Top = 18
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'TEXT'
+        end
+        object buttonFG23: TButton
+          Tag = 22
+          Left = 167
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 1
+          OnClick = buttonFGClick
+        end
+        object buttonReset23: TButton
+          Tag = 22
+          Left = 314
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 3
+          OnClick = buttonResetClick
+        end
+        object buttonBG23: TButton
+          Tag = 22
+          Left = 216
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 2
+          OnClick = buttonBGClick
+        end
+      end
+      object GroupBox9: TGroupBox
+        Left = 4
+        Top = 4
+        Width = 393
+        Height = 154
+        Caption = 'SHF2'
+        TabOrder = 2
+        object Label23: TLabel
+          Left = 6
+          Top = 21
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '24G'
+        end
+        object Label24: TLabel
+          Left = 6
+          Top = 47
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '47G'
+        end
+        object Label25: TLabel
+          Left = 6
+          Top = 73
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '77G'
+        end
+        object Label26: TLabel
+          Left = 6
+          Top = 99
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '135G'
+        end
+        object Label27: TLabel
+          Left = 6
+          Top = 125
+          Width = 64
+          Height = 12
+          Alignment = taRightJustify
+          AutoSize = False
+          Caption = '248G'
+        end
+        object editColor18: TEdit
+          Left = 89
+          Top = 18
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = 'TEXT'
+        end
+        object buttonFG18: TButton
+          Tag = 17
+          Left = 167
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 1
+          OnClick = buttonFGClick
+        end
+        object buttonReset18: TButton
+          Tag = 17
+          Left = 314
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 3
+          OnClick = buttonResetClick
+        end
+        object buttonBG18: TButton
+          Tag = 17
+          Left = 216
+          Top = 18
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 2
+          OnClick = buttonBGClick
+        end
+        object editColor19: TEdit
+          Left = 89
+          Top = 44
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 4
+          Text = 'TEXT'
+        end
+        object buttonFG19: TButton
+          Tag = 18
+          Left = 167
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 5
+          OnClick = buttonFGClick
+        end
+        object buttonReset19: TButton
+          Tag = 18
+          Left = 314
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 7
+          OnClick = buttonResetClick
+        end
+        object buttonBG19: TButton
+          Tag = 18
+          Left = 216
+          Top = 44
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 6
+          OnClick = buttonBGClick
+        end
+        object editColor20: TEdit
+          Left = 89
+          Top = 70
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 8
+          Text = 'TEXT'
+        end
+        object buttonFG20: TButton
+          Tag = 19
+          Left = 167
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 9
+          OnClick = buttonFGClick
+        end
+        object buttonReset20: TButton
+          Tag = 19
+          Left = 314
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 11
+          OnClick = buttonResetClick
+        end
+        object buttonBG20: TButton
+          Tag = 19
+          Left = 216
+          Top = 70
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 10
+          OnClick = buttonBGClick
+        end
+        object editColor21: TEdit
+          Left = 89
+          Top = 96
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 12
+          Text = 'TEXT'
+        end
+        object buttonFG21: TButton
+          Tag = 20
+          Left = 167
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 13
+          OnClick = buttonFGClick
+        end
+        object buttonReset21: TButton
+          Tag = 20
+          Left = 314
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 15
+          OnClick = buttonResetClick
+        end
+        object buttonBG21: TButton
+          Tag = 20
+          Left = 216
+          Top = 96
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 14
+          OnClick = buttonBGClick
+        end
+        object editColor22: TEdit
+          Left = 89
+          Top = 122
+          Width = 70
+          Height = 21
+          TabStop = False
+          ReadOnly = True
+          TabOrder = 16
+          Text = 'TEXT'
+        end
+        object buttonFG22: TButton
+          Tag = 21
+          Left = 167
+          Top = 122
+          Width = 45
+          Height = 20
+          Caption = 'Fore...'
+          TabOrder = 17
+          OnClick = buttonFGClick
+        end
+        object buttonReset22: TButton
+          Tag = 21
+          Left = 314
+          Top = 122
+          Width = 45
+          Height = 20
+          Caption = 'Reset'
+          TabOrder = 19
+          OnClick = buttonResetClick
+        end
+        object buttonBG22: TButton
+          Tag = 21
+          Left = 216
+          Top = 122
+          Width = 45
+          Height = 20
+          Caption = 'Back...'
+          TabOrder = 18
+          OnClick = buttonBGClick
         end
       end
     end
