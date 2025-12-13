@@ -1507,6 +1507,7 @@ resourcestring
   TMainForm_Invalid_zone = 'Invalid zone';
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
   TMainForm_EmptyOpList = 'Operator list is empty.';
+  TMainForm_Setup_MyCall_first = 'Please enter your callsign first.';
   TMainForm_Setup_SentNR_first = 'Setup Prov/State code and City code first';
   TMainForm_Setup_SentNR_cqzone = 'Setup CQ Zone number first';
   TMainForm_Setup_SentNR_ituzone = 'Setup ITU Zone number first';
@@ -8431,6 +8432,7 @@ var
    fScoreCoeff: Extended;
    fNewContest: Boolean;
    S: string;
+   fShowOptionsDialog: Boolean;
 begin
    FInitialized := False;
 
@@ -8845,6 +8847,13 @@ begin
       Timer1.Interval := dmZLogGlobal.Settings.FInfoUpdateInterval;
       Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, strCfgFileName);
+      fShowOptionsDialog := False;
+
+      // Callsign入力チェック
+      if (dmZLogGlobal.Settings._mycall = '') then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_MyCall_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         fShowOptionsDialog := True;
+      end;
 
       // Sent NRチェック
       if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '')) or
@@ -8854,18 +8863,22 @@ begin
             dmZLogGlobal.Settings.ReadOnlyParamImported := False;
          end;
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+         fShowOptionsDialog := True;
       end
       else if ((Pos('$A', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._age = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+         fShowOptionsDialog := True;
       end
       else if ((Pos('$Z', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._cqzone = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
+         fShowOptionsDialog := True;
       end
       else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iaruzone = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         fShowOptionsDialog := True;
+      end;
+
+      if fShowOptionsDialog = True then begin
          PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
       end;
 
@@ -9478,7 +9491,7 @@ end;
 
 procedure TMainForm.OnZLogShowOptions( var Message: TMessage );
 begin
-   ShowOptionsDialog(3, 0, 1, 1);
+   ShowOptionsDialog(3, 0, 1, 0);
 end;
 
 procedure TMainForm.OnZLogCqAbortProc( var Message: TMessage );

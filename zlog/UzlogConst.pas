@@ -208,7 +208,7 @@ const
   DefIniPower: array[b19..HiBand] of string = (
     'H', 'H', 'H', 'H', 'H',
     'H', 'H', 'H', 'H', 'H',
-    'M', 'M', 'L', 'L', 'L',
+    'M', 'M', 'L', 'P', 'P',
     'P', 'P', 'P', 'P', 'P',
     'P', 'P'
   );

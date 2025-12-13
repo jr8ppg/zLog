@@ -786,6 +786,7 @@ begin
       end;
    end
    else begin
+      editMyCallsign.Color := ifthen(editMyCallsign.Text = '', $00EADEFF, clWindow);
       ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
       CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
       CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
@@ -806,6 +807,9 @@ begin
    end;
 
    if FEditMode = 0 then begin   // 通常モード
+      PageControl.ActivePage := tabsheetMyStation;
+
+      tabsheetMyStation.TabVisible := True;
       tabsheetPreferences.TabVisible := True;
       tabsheetCategories.TabVisible := True;
       tabsheetCW.TabVisible := True;
@@ -818,6 +822,7 @@ begin
    else if FEditMode = 1 then begin // CW
       PageControl.ActivePage := tabsheetCW;
 
+      tabsheetMyStation.TabVisible := False;
       tabsheetPreferences.TabVisible := False;
       tabsheetCategories.TabVisible := False;
       tabsheetCW.TabVisible := True;
@@ -834,6 +839,7 @@ begin
    else if FEditMode = 2 then begin // Voice
       PageControl.ActivePage := tabsheetVoice;
 
+      tabsheetMyStation.TabVisible := False;
       tabsheetPreferences.TabVisible := False;
       tabsheetCategories.TabVisible := False;
       tabsheetCW.TabVisible := False;
