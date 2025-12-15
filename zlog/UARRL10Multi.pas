@@ -87,7 +87,7 @@ begin
    end;
 
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
-   if IsWVE(C.Country) then begin
+   if IsWVE(C.Country) or IsMexico(C.Country) then begin
       if GetState(aQSO, StateList) <> nil then
          Result := True;
    end
@@ -118,7 +118,7 @@ begin
    if aQSO.Dupe then
       exit;
 
-   if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
+   if IsWVE(C.Country) or IsMM(aQSO.Callsign) or IsMexico(C.Country) then begin
       S := GetState(aQSO, StateList);
       if S = nil then begin
          aQSO.Multi1 := '';
@@ -325,7 +325,7 @@ begin
    Result := '';
 
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
-   if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
+   if IsWVE(C.Country) or IsMM(aQSO.Callsign) or IsMexico(C.Country) then begin
       S := GetState(aQSO, StateList);
       if S <> nil then
          Result := S.StateAbbrev;
@@ -373,7 +373,7 @@ begin
       // NEWマルチチェック
       // W/VE局の場合はSTATEのマルチチェック
       temp := aQSO.CallSign;
-      if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
+      if IsWVE(C.Country) or IsMM(aQSO.Callsign) or IsMexico(C.Country) then begin
          S := GetState(aQSO, StateList);
          if (S <> nil) and (S.Worked[B] = True) then begin
             temp := temp + '  new state : ' + (S.StateName);

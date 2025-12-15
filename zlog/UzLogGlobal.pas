@@ -643,6 +643,7 @@ function ExtractPower(S : string) : string;
 function IsSHF(B : TBand) : boolean; // true if b >= 2400MHz
 function IsMM(S : string) : boolean; // return true if Marine Mobile S is a callsign
 function IsWVE(S : string) : boolean; // returns true if W/VE/KH6/KL7 S is country px NOT callsign
+function IsMexico(S: string): Boolean;
 function GetHour(T : TDateTime) : integer;
 function CurrentTime : TDateTime; {returns in UTC or local time }
 function LowCase(C : Char) : Char;
@@ -3779,6 +3780,16 @@ begin
       Result := True
    else
       Result := false;
+end;
+
+function IsMexico(S: string): Boolean;
+begin
+   if S = 'XE' then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
 end;
 
 function GetLocale: String;
