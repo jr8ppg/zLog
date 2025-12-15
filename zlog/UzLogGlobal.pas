@@ -218,6 +218,7 @@ type
     _pluginpath: string;
     _pluginlist: string;
     _pluginDLLs: string;
+    _bsresumepath: string;
 
     // PTT Control
     // CW
@@ -534,6 +535,8 @@ type
     procedure SetPluginPath(v: string);
     function GetSpcPath(): string;
     procedure SetSpcPath(v: string);
+    function GetBsResumePath(): string;
+    procedure SetBsResumePath(v: string);
     function GetCurrentBandPlan(): TBandPlan;
     procedure FreeCommPortList();
     function GetCommPortList(): TList<TCommPort>;
@@ -619,6 +622,7 @@ public
     property SoundPath: string read GetSoundPath write SetSoundPath;
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
+    property BsResumePath: string read GetBsResumePath write SetBsResumePath;
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
     property PacketClusterList: TTelnetSettingList read FPacketClusterList;
@@ -1319,6 +1323,10 @@ begin
       Settings._pluginpath := AdjustPath(Settings._pluginpath);
       Settings._pluginlist := ini.ReadString('zylo', 'items', '');
       Settings._pluginDLLs := ini.ReadString('zylo', 'DLLs', '');
+
+      // Bandscope resume data path
+      Settings._bsresumepath := ini.ReadString('Preferences', 'BsResumePath', '');
+      Settings._bsresumepath := AdjustPath(Settings._bsresumepath);
 
       //
       // Misc
@@ -2129,6 +2137,9 @@ begin
       ini.WriteString('zylo', 'path', Settings._pluginpath);
       ini.WriteString('zylo', 'items', Settings._pluginlist);
       ini.WriteString('zylo', 'DLLs', Settings._pluginDLLs);
+
+      // Bandscope resume data path
+      ini.WriteString('Preferences', 'BsResumePath', Settings._bsresumepath);
 
       //
       // Misc
@@ -3456,6 +3467,28 @@ begin
    end;
 end;
 
+function TdmZLogGlobal.GetBsResumePath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._bsresumepath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._bsresumepath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetBsResumePath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._bsresumepath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._bsresumepath := v;
+   end;
+end;
+
 procedure TdmZLogGlobal.SelectBandPlan(preset_name: string);
 begin
    if FBandPlans.ContainsKey(preset_name) = False then begin
@@ -3506,6 +3539,12 @@ begin
 
    // Super Check folder
    strPath := SpcPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Bandscope resume data folder
+   strPath := BsResumePath;
    if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;

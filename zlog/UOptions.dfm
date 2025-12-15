@@ -22,11 +22,9 @@ object formOptions: TformOptions
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetRigControl
+    ActivePage = tabsheetPath
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 444
-    ExplicitHeight = 434
     object tabsheetOperateStyle: TTabSheet
       Caption = 'Operate Style'
       ImageIndex = 7
@@ -4532,16 +4530,23 @@ object formOptions: TformOptions
         Height = 13
         Caption = 'Super Check'
       end
+      object Label62: TLabel
+        Left = 8
+        Top = 194
+        Width = 93
+        Height = 13
+        Caption = 'BandScope resume'
+      end
       object editCfgDatFolder: TEdit
-        Left = 88
+        Left = 128
         Top = 41
-        Width = 266
+        Width = 314
         Height = 21
         TabOrder = 2
       end
       object buttonBrowseCFGDATPath: TButton
         Tag = 10
-        Left = 360
+        Left = 448
         Top = 42
         Width = 65
         Height = 20
@@ -4551,15 +4556,15 @@ object formOptions: TformOptions
       end
       object editLogsFolder: TEdit
         Tag = 20
-        Left = 88
+        Left = 128
         Top = 66
-        Width = 266
+        Width = 314
         Height = 21
         TabOrder = 4
       end
       object buttonBrowseLogsPath: TButton
         Tag = 20
-        Left = 360
+        Left = 448
         Top = 67
         Width = 65
         Height = 20
@@ -4569,7 +4574,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseBackupPath: TButton
         Tag = 30
-        Left = 360
+        Left = 448
         Top = 92
         Width = 65
         Height = 20
@@ -4578,15 +4583,15 @@ object formOptions: TformOptions
         OnClick = BrowsePathClick
       end
       object editBackupFolder: TEdit
-        Left = 88
+        Left = 128
         Top = 91
-        Width = 266
+        Width = 314
         Height = 21
         TabOrder = 6
       end
       object buttonBrowseSoundPath: TButton
         Tag = 40
-        Left = 360
+        Left = 448
         Top = 117
         Width = 65
         Height = 20
@@ -4595,15 +4600,15 @@ object formOptions: TformOptions
         OnClick = BrowsePathClick
       end
       object editSoundFolder: TEdit
-        Left = 88
+        Left = 128
         Top = 116
-        Width = 266
+        Width = 314
         Height = 21
         TabOrder = 8
       end
       object buttonBrowsePluginPath: TButton
         Tag = 50
-        Left = 360
+        Left = 448
         Top = 142
         Width = 65
         Height = 20
@@ -4612,21 +4617,21 @@ object formOptions: TformOptions
         OnClick = BrowsePathClick
       end
       object editPluginsFolder: TEdit
-        Left = 88
+        Left = 128
         Top = 141
-        Width = 266
+        Width = 314
         Height = 21
         TabOrder = 10
       end
       object editRootFolder: TEdit
-        Left = 88
+        Left = 128
         Top = 16
-        Width = 266
+        Width = 314
         Height = 21
         TabOrder = 0
       end
       object buttonBrowseRootFolder: TButton
-        Left = 360
+        Left = 448
         Top = 17
         Width = 65
         Height = 20
@@ -4636,7 +4641,7 @@ object formOptions: TformOptions
       end
       object buttonBrowseSpcPath: TButton
         Tag = 60
-        Left = 360
+        Left = 448
         Top = 167
         Width = 65
         Height = 20
@@ -4645,11 +4650,28 @@ object formOptions: TformOptions
         OnClick = BrowsePathClick
       end
       object editSpcFolder: TEdit
-        Left = 88
+        Left = 128
         Top = 166
-        Width = 266
+        Width = 314
         Height = 21
         TabOrder = 12
+      end
+      object buttonBrowseResultPath: TButton
+        Tag = 70
+        Left = 448
+        Top = 192
+        Width = 65
+        Height = 20
+        Caption = 'Browse...'
+        TabOrder = 14
+        OnClick = BrowsePathClick
+      end
+      object editResumeFolder: TEdit
+        Left = 128
+        Top = 191
+        Width = 314
+        Height = 21
+        TabOrder = 15
       end
     end
     object tabsheetFont: TTabSheet
@@ -4689,13 +4711,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = '@HG'#34892#26360#20307
+          FontName = 'Cascadia Code Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 6
+          ItemIndex = 35
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
@@ -4712,8 +4734,6 @@ object formOptions: TformOptions
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 434
-    ExplicitWidth = 444
     DesignSize = (
       534
       37)

@@ -447,6 +447,9 @@ type
     radio2RadioV: TRadioButton;
     checkUseBandUpDown: TCheckBox;
     checkUseBandSelect: TCheckBox;
+    Label62: TLabel;
+    buttonBrowseResultPath: TButton;
+    editResumeFolder: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1107,20 +1110,14 @@ var
    strDir: string;
 begin
    case TButton(Sender).Tag of
-      0:
-         strDir := editRootFolder.Text;
-      10:
-         strDir := editCfgDatFolder.Text;
-      20:
-         strDir := editLogsFolder.Text;
-      30:
-         strDir := editBackupFolder.Text;
-      40:
-         strDir := editSoundFolder.Text;
-      50:
-         strDir := editPluginsFolder.Text;
-      60:
-         strDir := editSpcFolder.Text;
+      0:  strDir := editRootFolder.Text;
+      10: strDir := editCfgDatFolder.Text;
+      20: strDir := editLogsFolder.Text;
+      30: strDir := editBackupFolder.Text;
+      40: strDir := editSoundFolder.Text;
+      50: strDir := editPluginsFolder.Text;
+      60: strDir := editSpcFolder.Text;
+      70: strDir := editResumeFolder.Text;
    end;
 
    if SelectDirectory(SELECT_FOLDER, '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
@@ -1129,34 +1126,31 @@ begin
 
    case TButton(Sender).Tag of
       // Root
-      0:
-         editRootFolder.Text := strDir;
+      0: editRootFolder.Text := strDir;
 
       // CFG/DAT
-      10:
-         editCfgDatFolder.Text := strDir;
+      10: editCfgDatFolder.Text := strDir;
 
       // Logs
-      20:
-         editLogsFolder.Text := strDir;
+      20: editLogsFolder.Text := strDir;
 
       // Backup
-      30:
-         editBackupFolder.Text := strDir;
+      30: editBackupFolder.Text := strDir;
 
       // Sound(Voice)
-      40:
-         editSoundFolder.Text := strDir;
+      40: editSoundFolder.Text := strDir;
 
       // Plugins
-      50:
-         editPluginsFolder.Text := strDir;
+      50: editPluginsFolder.Text := strDir;
 
       // Super Check
       60: begin
          editSpcFolder.Text := strDir;
          FNeedSuperCheckLoad := True;
       end;
+
+      // BS Resume
+      70: editResumeFolder.Text := strDir;
    end;
 end;
 
@@ -1837,7 +1831,7 @@ begin
       end;
 
       Settings.FSuperCheck.FSuperCheckFolder := editSpcFolder.Text;
-
+      Settings._bsresumepath := editResumeFolder.Text;
 
       //
       // Fonts
@@ -2190,6 +2184,7 @@ begin
       editSoundFolder.Text := Settings._soundpath;
       editPluginsFolder.Text := Settings._pluginpath;
       editSpcFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
+      editResumeFolder.Text := Settings._bsresumepath;
 
       //
       // Fonts

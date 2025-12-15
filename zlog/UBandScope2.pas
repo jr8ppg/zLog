@@ -2146,16 +2146,16 @@ begin
    if FUseResume = True then begin
       case FBandScopeStyle of
          bssAllBands: begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
+            FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_allbands.txt';
          end;
          bssNewMulti: begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
+            FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_newmulti.txt';
          end;
          bssCurrentBand: begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
+            FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_currentband.txt';
          end
          else begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+            FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
          end;
       end;
 
