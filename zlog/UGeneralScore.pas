@@ -22,11 +22,11 @@ type
   public
     { Public declarations }
     formMulti: TGeneralMulti2;
-    procedure CalcPoints(var aQSO : TQSO);
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure CalcPoints(aQSO: TQSO);
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     procedure Reset; override;
-    procedure Add(var aQSO : TQSO); override; {calculates points}
+    procedure Add(aQSO: TQSO); override; {calculates points}
     property FontSize: Integer read GetFontSize write SetFontSize;
     property Config: TUserDefinedContest read FConfig write FConfig;
   end;
@@ -257,7 +257,7 @@ begin
    AdjustGridSize(Grid, DispColCount, Grid.RowCount);
 end;
 
-procedure TGeneralScore.CalcPoints(var aQSO: TQSO);
+procedure TGeneralScore.CalcPoints(aQSO: TQSO);
 var
    i: Integer;
    ch: Char;
@@ -305,33 +305,39 @@ begin
    end;
 end;
 
-procedure TGeneralScore.AddNoUpdate(var aQSO: TQSO);
+procedure TGeneralScore.AddNoUpdate(aQSO: TQSO);
 var
    i: Integer;
    tempQSO: TQSO;
 begin
    inherited;
 
-   if aQSO.Dupe then
+   if aQSO.Dupe then begin
       exit;
-
-   CalcPoints(aQSO);
-
-   if Log.CountHigherPoints = true then begin
-      i := Log.DifferentModePointer;
-      If i > 0 then begin
-         if Log.QsoList[i].Points < aQSO.Points then begin
-            tempQSO := Log.QsoList[i];
-            Dec(Points[tempQSO.band], tempQSO.Points);
-            Log.QsoList[i].Points := 0;
-            // NeedRefresh := True;
-         end
-         else
-            aQSO.Points := 0;
-      end;
    end;
 
-   inc(Points[aQSO.band], aQSO.Points);
+   if FValidQso = True then begin
+      CalcPoints(aQSO);
+
+      if Log.CountHigherPoints = true then begin
+         i := Log.DifferentModePointer;
+         If i > 0 then begin
+            if Log.QsoList[i].Points < aQSO.Points then begin
+               tempQSO := Log.QsoList[i];
+               Dec(Points[tempQSO.band], tempQSO.Points);
+               Log.QsoList[i].Points := 0;
+               // NeedRefresh := True;
+            end
+            else
+               aQSO.Points := 0;
+         end;
+      end;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
+   Inc(Points[aQSO.band], aQSO.Points);
 end;
 
 procedure TGeneralScore.Reset;
@@ -339,7 +345,7 @@ begin
    inherited;
 end;
 
-procedure TGeneralScore.Add(var aQSO: TQSO);
+procedure TGeneralScore.Add(aQSO: TQSO);
 begin
    inherited;
 end;

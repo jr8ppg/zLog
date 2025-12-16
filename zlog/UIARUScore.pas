@@ -22,7 +22,7 @@ type
     { Public declarations }
     procedure InitGrid(B0, B1 : TBand);
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
   end;
 
 implementation
@@ -35,7 +35,7 @@ begin
    InitGrid(b19, b28);
 end;
 
-procedure TIARUScore.AddNoUpdate(var aQSO: TQSO);
+procedure TIARUScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
 begin
@@ -46,6 +46,14 @@ begin
    end;
 
    band := aQSO.band;
+
+   if FValidQso = True then begin
+      aQSO.Points := 1;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
    Inc(Points[band], aQSO.Points);
 end;
 

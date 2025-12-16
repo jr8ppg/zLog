@@ -2,10 +2,11 @@ inherited IARUScore: TIARUScore
   Left = 225
   Top = 83
   Caption = 'Score'
-  PixelsPerInch = 96
+  StyleElements = [seFont, seClient, seBorder]
   TextHeight = 12
   inherited Panel1: TPanel
     TabOrder = 1
+    StyleElements = [seFont, seClient, seBorder]
   end
   object Grid: TStringGrid [1]
     Left = 0

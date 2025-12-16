@@ -21,7 +21,7 @@ type
     { Public declarations }
     procedure Renew; override;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO);  override;
     procedure UpdateData; override;
     procedure CalcPoints(var aQSO : TQSO); virtual;
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -90,7 +90,7 @@ begin
    end;
 end;
 
-procedure TJIDX_DX_Score.AddNoUpdate(var aQSO: TQSO);
+procedure TJIDX_DX_Score.AddNoUpdate(aQSO: TQSO);
 begin
    inherited;
 
@@ -98,7 +98,13 @@ begin
       Exit;
    end;
 
-   CalcPoints(aQSO);
+   if FValidQso = True then begin
+      CalcPoints(aQSO);
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
    Inc(Points[aQSO.band], aQSO.Points);
 end;
 

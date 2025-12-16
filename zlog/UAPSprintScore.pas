@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
-  UWPXMulti, UzLogConst, UzLogGlobal, UzLogQSO;
+  UWPXMulti, UzLogConst, UzLogGlobal, UzLogQSO, Vcl.Menus;
 
 type
   TAPSprintScore = class(TBasicScore)
@@ -21,7 +21,7 @@ type
   public
     { Public declarations }
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -55,7 +55,7 @@ begin
    end;
 end;
 
-procedure TAPSprintScore.AddNoUpdate(var aQSO : TQSO);
+procedure TAPSprintScore.AddNoUpdate(aQSO: TQSO);
 begin
    inherited;
 
@@ -63,7 +63,13 @@ begin
       Exit;
    end;
 
-   aQSO.Points := 1;
+   if FValidQso = True then begin
+      aQSO.Points := 1;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
    Inc(Points[aQSO.Band]);
 end;
 

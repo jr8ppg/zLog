@@ -2,9 +2,12 @@ inherited ARRLDXScore: TARRLDXScore
   Left = 699
   Top = 163
   Caption = 'ARRLDXScore'
+  StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
+  inherited Panel1: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+  end
   object Grid: TStringGrid [1]
     Left = 0
     Top = 0

@@ -19,10 +19,10 @@ type
     { Private declarations }
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); overload;
     procedure Renew; override;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO : TQSO);  override;
     procedure UpdateData; override;
     procedure CalcPoints(var aQSO : TQSO);
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -102,7 +102,7 @@ begin
    end;
 end;
 
-procedure TJIDXScore2.AddNoUpdate(var aQSO : TQSO);
+procedure TJIDXScore2.AddNoUpdate(aQSO : TQSO);
 begin
    inherited;
 
@@ -110,7 +110,12 @@ begin
       Exit;
    end;
 
-   CalcPoints(aQSO);
+   if FValidQso = True then begin
+      CalcPoints(aQSO);
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
 
    Inc(Points[aQSO.Band], aQSO.Points);
 end;

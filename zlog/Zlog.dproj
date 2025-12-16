@@ -277,9 +277,6 @@
         <DCCReference Include="UJA0Multi.pas">
             <Form>JA0Multi</Form>
         </DCCReference>
-        <DCCReference Include="UKCJMulti.pas">
-            <Form>KCJMulti</Form>
-        </DCCReference>
         <DCCReference Include="USixDownMulti.pas">
             <Form>SixDownMulti</Form>
         </DCCReference>
@@ -342,15 +339,9 @@
         <DCCReference Include="UNewPrefix.pas">
             <Form>NewPrefix</Form>
         </DCCReference>
-        <DCCReference Include="UKCJZone.pas">
-            <Form>KCJZone</Form>
-        </DCCReference>
         <DCCReference Include="UMultipliers.pas"/>
         <DCCReference Include="UScratchSheet.pas">
             <Form>ScratchSheet</Form>
-        </DCCReference>
-        <DCCReference Include="UKCJScore.pas">
-            <Form>KCJScore</Form>
         </DCCReference>
         <DCCReference Include="UMMTTY.pas"/>
         <DCCReference Include="UTTYConsole.pas">

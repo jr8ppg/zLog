@@ -3,10 +3,13 @@ inherited APSprintScore: TAPSprintScore
   Top = 188
   Caption = 'Score'
   Position = poScreenCenter
+  StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
-  object Grid: TStringGrid
+  inherited Panel1: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+  end
+  object Grid: TStringGrid [1]
     Left = 0
     Top = 0
     Width = 281

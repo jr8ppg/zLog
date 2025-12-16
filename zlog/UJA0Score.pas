@@ -23,7 +23,7 @@ type
   public
     { Public declarations }
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     function IsJA0(aQSO : TQSO) : boolean;
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -71,7 +71,7 @@ begin
    end;
 end;
 
-procedure TJA0Score.AddNoUpdate(var aQSO : TQSO);
+procedure TJA0Score.AddNoUpdate(aQSO: TQSO);
 begin
    inherited;
 
@@ -79,11 +79,16 @@ begin
       Exit;
    end;
 
-   if IsJA0(aQSO) then begin
-      aQSO.Points := 3;
+   if FValidQso = True then begin
+      if IsJA0(aQSO) then begin
+         aQSO.Points := 3;
+      end
+      else begin
+         aQSO.Points := 1;
+      end;
    end
    else begin
-      aQSO.Points := 1;
+      aQSO.Points := 0;
    end;
 
    Inc(Points[aQSO.band], aQSO.Points);

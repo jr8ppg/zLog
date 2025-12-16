@@ -22,6 +22,7 @@ type
     FUseCoeff: Boolean;
   private
     FContestName : string;
+    FContestMode : TContestMode;
     FSerialType: TSerialType;
     FSentStr: string;
     FMultiFound : Boolean; // used in spacebarproc
@@ -53,8 +54,9 @@ type
     function GetUseContestPeriod(): Boolean;
     function GetColWidths(Index: Integer): Integer;
     procedure SetColWidths(Index: Integer; v: Integer);
+    procedure SetContestMode(v: TContestMode);
   public
-    constructor Create(AOwner: TComponent; N : string); virtual;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); virtual;
     destructor Destroy; override;
     procedure PostWanted(S : string);
     procedure DelWanted(S : string);
@@ -81,6 +83,7 @@ type
     function GetNewMulti2(aQSO: TQSO): string; virtual;
 
     property Name: string read FContestName;
+    property Mode: TContestMode read FContestMode write SetContestMode;
     property NeedCtyDat: Boolean read FNeedCtyDat;
     property UseCoeff: Boolean read FUseCoeff;
     property MultiFound: Boolean read FMultiFound write FMultiFound;
@@ -106,14 +109,14 @@ type
   end;
 
   TPedi = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function GetNewMulti1(aQSO: TQSO): string; override;
     function GetNewMulti2(aQSO: TQSO): string; override;
   end;
 
   TALLJAContest = class(TContest)
   public
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function QTHString(aQSO: TQSO): string; override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
     function GetNewMulti1(aQSO: TQSO): string; override;
@@ -121,14 +124,14 @@ type
 
   TACAGContest = class(TContest)
   public
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
   end;
 
   TFDContest = class(TContest)
   private
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; override;
   public
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function QTHString(aQSO: TQSO): string; override;
   end;
 
@@ -136,7 +139,7 @@ type
   private
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; override;
   public
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function QTHString(aQSO: TQSO): string; override;
   end;
 
@@ -144,7 +147,7 @@ type
     FConfig: TUserDefinedContest;
     FUserDatLoaded: Boolean;
   public
-    constructor Create(AOwner: TComponent; N, CFGFileName: string); reintroduce;
+    constructor Create(AOwner: TComponent; N, CFGFileName: string; M: TContestMode); reintroduce;
     destructor Destroy(); override;
     procedure SetPoints(aQSO : TQSO); override;
     function GetNewMulti1(aQSO : TQSO) : string; override;
@@ -169,28 +172,28 @@ type
   end;
 
   TIOTAContest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function QTHString(aQSO: TQSO): string; override;
     function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
     function GetNewMulti1(aQSO: TQSO): string; override;
   end;
 
   TARRL10Contest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
     function GetNewMulti1(aQSO: TQSO): string; override;
   end;
 
   TJA0Contest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
   end;
 
   TJA0ContestZero = class(TJA0Contest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
   end;
 
   TAPSprint = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function GetNewMulti1(aQSO: TQSO): string; override;
   end;
 
@@ -204,7 +207,7 @@ type
   end;
 
   TIARUContest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string); override;
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
     function ADIF_ExchangeRX_FieldName : string; override;
     function GetNewMulti1(aQSO: TQSO): string; override;
@@ -252,7 +255,7 @@ uses
   UARRL10Multi, UARRL10Score, UPediScore, UALLJAMulti, UALLJAScore,
   UACAGMulti, UFDMulti, USixDownMulti, UGeneralMulti2, UGeneralScore;
 
-constructor TContest.Create(AOwner: TComponent; N: string);
+constructor TContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    FMultiForm := nil;
    FScoreForm := nil;
@@ -261,6 +264,7 @@ begin
 
    FSameExchange := True;
    FContestName := N;
+   FContestMode := M;
 
    Log.AcceptDifferentMode := False;
    Log.CountHigherPoints := False;
@@ -720,9 +724,15 @@ begin
    FColWidths[Index] := v;
 end;
 
+procedure TContest.SetContestMode(v: TContestMode);
+begin
+   FContestMode := v;
+   FScoreForm.ContestMode := v;
+end;
+
 { TPedi }
 
-constructor TPedi.Create(AOwner: TComponent; N: string);
+constructor TPedi.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
    FMultiForm := TBasicMulti.Create(AOwner);
@@ -774,11 +784,11 @@ end;
 
 { TALLJAContest }
 
-constructor TALLJAContest.Create(AOwner: TComponent; N: string);
+constructor TALLJAContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
    FMultiForm := TALLJAMulti.Create(AOwner);
-   FScoreForm := TALLJAScore.Create(AOwner, b19, b50);
+   FScoreForm := TALLJAScore.Create(AOwner, b19, b50, M);
    FSentStr := '$V$P';
    FStartTime := 21;
    FPeriod := 24;
@@ -833,11 +843,11 @@ end;
 
 { TACAGContest }
 
-constructor TACAGContest.Create(AOwner: TComponent; N: string);
+constructor TACAGContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
    FMultiForm := TACAGMulti.Create(AOwner);
-   FScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
+   FScoreForm := TALLJAScore.Create(AOwner, b19, HiBand, M);
    FSentStr := '$Q$P';
    FBandLow := b19;
    FBandHigh := HiBand;
@@ -866,11 +876,11 @@ end;
 
 { TFDContest }
 
-constructor TFDContest.Create(AOwner: TComponent; N: string);
+constructor TFDContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
    FMultiForm := TFDMulti.Create(AOwner);
-   FScoreForm := TALLJAScore.Create(AOwner, b19, HiBand);
+   FScoreForm := TALLJAScore.Create(AOwner, b19, HiBand, M);
    FSentStr := '$Q$P';
    FUseCoeff := True;
    FBandLow := b19;
@@ -956,11 +966,11 @@ end;
 
 { TSixDownContest }
 
-constructor TSixDownContest.Create(AOwner: TComponent; N: string);
+constructor TSixDownContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
    FMultiForm := TSixDownMulti.Create(AOwner);
-   FScoreForm := TALLJAScore.Create(AOwner, b50, HiBand);
+   FScoreForm := TALLJAScore.Create(AOwner, b50, HiBand, M);
    TALLJAScore(FScoreForm).PointTable[b2400] := 2;
    TALLJAScore(FScoreForm).PointTable[b5600] := 2;
    TALLJAScore(FScoreForm).PointTable[b10g] := 2;
@@ -1054,9 +1064,9 @@ end;
 
 { TGeneralContest }
 
-constructor TGeneralContest.Create(AOwner: TComponent; N, CFGFileName: string);
+constructor TGeneralContest.Create(AOwner: TComponent; N, CFGFileName: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
    FUserDatLoaded := False;
    FMultiForm := TGeneralMulti2.Create(AOwner);
    FScoreForm := TGeneralScore.Create(AOwner);
@@ -1198,7 +1208,7 @@ end;
 
 constructor TCQWPXContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
 
    FMultiForm := TWPXMulti.Create(AOwner);
    FScoreForm := TWPXScore.Create(AOwner);
@@ -1273,7 +1283,7 @@ end;
 
 constructor TWAEContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
 
    FMultiForm := TWAEMulti.Create(AOwner);
    FScoreForm := TWAEScore.Create(AOwner);
@@ -1342,7 +1352,7 @@ end;
 
 { TIOTAContest }
 
-constructor TIOTAContest.Create(AOwner: TComponent; N: string);
+constructor TIOTAContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
 
@@ -1422,7 +1432,7 @@ end;
 
 { TARRL10Contest }
 
-constructor TARRL10Contest.Create(AOwner: TComponent; N: string);
+constructor TARRL10Contest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
 
@@ -1512,7 +1522,7 @@ end;
 
 { TJA0Contest }
 
-constructor TJA0Contest.Create(AOwner: TComponent; N: string);
+constructor TJA0Contest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
    FMultiForm := TJA0Multi.Create(AOwner);
@@ -1554,7 +1564,7 @@ end;
 
 { TJA0ContestZero }
 
-constructor TJA0ContestZero.Create(AOwner: TComponent; N: string);
+constructor TJA0ContestZero.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
 
@@ -1570,7 +1580,7 @@ end;
 
 { TAPSprint }
 
-constructor TAPSprint.Create(AOwner: TComponent; N: string);
+constructor TAPSprint.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
    FMultiForm := TWPXMulti.Create(AOwner);
@@ -1633,7 +1643,7 @@ end;
 
 constructor TCQWWContest.Create(AOwner: TComponent; N: string; M: TContestMode; fJIDX: Boolean);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
 
    if fJIDX = False then begin
       FMultiForm := TWWMulti.Create(AOwner);
@@ -1729,7 +1739,7 @@ end;
 
 { TIARUContest }
 
-constructor TIARUContest.Create(AOwner: TComponent; N: string);
+constructor TIARUContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
    inherited;
 
@@ -1868,7 +1878,7 @@ end;
 
 constructor TJIDXContestDX.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
 
    FMultiForm := TJIDX_DX_Multi.Create(AOwner);
    FScoreForm := TJIDX_DX_Score.Create(AOwner);
@@ -1926,7 +1936,7 @@ end;
 
 constructor TARRLDXContestDX.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
    FMultiForm := TARRLDXMulti.Create(AOwner);
    FScoreForm := TARRLDXScore.Create(AOwner);
 
@@ -1986,7 +1996,7 @@ end;
 
 constructor TARRLDXContestW.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
    FMultiForm := TARRLWMulti.Create(AOwner);
    TARRLWMulti(FMultiForm).ALLASIANFLAG := False;
    FScoreForm := TARRLDXScore.Create(AOwner);
@@ -2050,7 +2060,7 @@ end;
 
 constructor TAllAsianContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
-   inherited Create(AOwner, N);
+   inherited Create(AOwner, N, M);
 
    FMultiForm := TARRLWMulti.Create(AOwner);
    TARRLWMulti(FMultiForm).ALLASIANFLAG := True;

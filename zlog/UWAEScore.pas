@@ -25,7 +25,7 @@ type
   public
     procedure Reset; override;
     procedure Renew; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
@@ -78,7 +78,7 @@ begin
    end;
 end;
 
-procedure TWAEScore.AddNoUpdate(var aQSO: TQSO);
+procedure TWAEScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
 begin
@@ -93,11 +93,20 @@ begin
    end;
 
    band := aQSO.band;
-   aQSO.Points := 1;
-   Inc(Points[band]);
 
-   if pos('[QTC', aQSO.Memo) > 0 then begin
-      Inc(QTCs[band]);
+   if FValidQso = True then begin
+      aQSO.Points := 1;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
+   Inc(Points[band], aQSO.Points);
+
+   if FValidQso = True then begin
+      if pos('[QTC', aQSO.Memo) > 0 then begin
+         Inc(QTCs[band]);
+      end;
    end;
 end;
 

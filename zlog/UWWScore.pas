@@ -20,10 +20,10 @@ type
     { Private declarations }
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); overload;
     procedure Renew; override;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
@@ -112,19 +112,26 @@ begin
    end;
 end;
 
-procedure TWWScore.AddNoUpdate(var aQSO : TQSO);
+procedure TWWScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
 begin
-   {BasicScore.AddNoUpdate(aQSO);}
-   inherited;
+   Inherited;
 
    if aQSO.Dupe then begin
       exit;
    end;
 
    band := aQSO.band;
-   Inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
+
+   if FValidQso = True then begin
+      {Points calculated in WWMulti.AddNoUpdate}
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
+   Inc(Points[band], aQSO.Points);
 end;
 
 procedure TWWScore.UpdateData;

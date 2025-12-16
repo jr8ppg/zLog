@@ -8,7 +8,6 @@ uses
   UzLogConst, UzLogGlobal, UzLogQSO, Vcl.Menus;
 
 type
-  TBandPointArray = array[b19..HiBand] of Integer;
   TALLJAScore = class(TBasicScore)
     Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
@@ -25,11 +24,11 @@ type
     procedure SetPointTable(Index: TBand; v: Integer);
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent; LowBand: TBand; HighBand: TBand); reintroduce;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    constructor Create(AOwner: TComponent; LowBand: TBand; HighBand: TBand; M: TContestMode); reintroduce;
+    procedure AddNoUpdate(aQSO : TQSO);  override;
     procedure UpdateData; override;
     procedure Reset; override;
-    procedure Add(var aQSO : TQSO); override;
+    procedure Add(aQSO : TQSO); override;
     property FontSize: Integer read GetFontSize write SetFontSize;
     property PointTable[Index: TBand]: Integer read GetPointTable write SetPointTable;
   end;
@@ -38,7 +37,7 @@ implementation
 
 {$R *.DFM}
 
-constructor TALLJAScore.Create(AOwner: TComponent; LowBand: TBand; HighBand: TBand);
+constructor TALLJAScore.Create(AOwner: TComponent; LowBand: TBand; HighBand: TBand; M: TContestMode);
 begin
    Inherited Create(AOwner);
    FLowBand := LowBand;
@@ -59,6 +58,12 @@ begin
    FPointTable[b2400] := 1;
    FPointTable[b5600] := 1;
    FPointTable[b10g] := 1;
+   FPointTable[b104g] := 1;
+   FPointTable[b24g] := 1;
+   FPointTable[b47g] := 1;
+   FPointTable[b77g] := 1;
+   FPointTable[b135g] := 1;
+   FPointTable[b248g] := 1;
 end;
 
 procedure TALLJAScore.FormShow(Sender: TObject);
@@ -75,7 +80,7 @@ begin
    Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
-procedure TALLJAScore.AddNoUpdate(var aQSO: TQSO);
+procedure TALLJAScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
 begin
@@ -86,7 +91,14 @@ begin
    end;
 
    band := aQSO.band;
-   aQSO.points := FPointTable[band];
+
+   if FValidQso = True then begin
+      aQSO.points := FPointTable[band];
+   end
+   else begin
+      aQSO.points := 0;
+   end;
+
    Inc(Points[band], aQSO.points);
 end;
 
@@ -271,7 +283,7 @@ begin
    inherited;
 end;
 
-procedure TALLJAScore.Add(var aQSO: TQSO);
+procedure TALLJAScore.Add(aQSO: TQSO);
 begin
    inherited;
 end;

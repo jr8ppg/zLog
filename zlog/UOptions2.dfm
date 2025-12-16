@@ -1319,11 +1319,10 @@ object formOptions2: TformOptions2
           'Phone/CW'
           'CW'
           'Phone'
-          'Other'
+          'RTTY'
           'ALL')
         TabOrder = 1
         TabStop = True
-        Visible = False
       end
       object groupOperators: TGroupBox
         Left = 312

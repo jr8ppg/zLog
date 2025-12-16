@@ -8,6 +8,8 @@ uses
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm;
 
 type
+  TBandPointArray = array[b19..HiBand] of Integer;
+
   TBasicScore = class(TZLogForm)
     Panel1: TPanel;
     Button1: TButton;
@@ -24,6 +26,8 @@ type
     procedure menuExtraInfoClick(Sender: TObject);
   protected
     FExtraInfo: Integer;
+    FContestMode: TContestMode;
+    FValidQso: Boolean;
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
     procedure AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
@@ -39,11 +43,12 @@ type
     Multi : array[b19..HiBand] of LongInt;
     Multi2 : array[b19..HiBand] of LongInt;
     ShowCWRatio : boolean;
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); overload;
+    constructor Create(AOwner: TComponent; LowBand: TBand; HighBand: TBand; M: TContestMode); overload; virtual; abstract;
     procedure Renew; virtual;
     procedure UpdateData; virtual;
-    procedure AddNoUpdate(var aQSO : TQSO); virtual;
-    procedure Add(var aQSO : TQSO); virtual; {calculates points}
+    procedure AddNoUpdate(aQSO: TQSO); virtual;
+    procedure Add(aQSO: TQSO); virtual; {calculates points}
     procedure Reset; virtual;
     function TotalCWQSOs : integer;
     function TotalQSOs : integer;
@@ -53,6 +58,7 @@ type
     function _TotalPoints : integer;
     function IntToStr3(v: Integer): string;
     property Score: Integer read GetScore;
+    property ContestMode: TContestMode read FContestMode write FContestMode;
   published
     property FontSize;
     property OnChangeFontSize;
@@ -71,6 +77,7 @@ uses
 constructor TBasicScore.Create(AOwner: TComponent);
 begin
    Inherited Create(AOwner);
+   FContestMode := cmMix;
    ShowCWRatio := False;
    Reset;
 
@@ -114,27 +121,78 @@ begin
    dmZLogGlobal.Settings.FLastScoreExtraInfo := FExtraInfo;
 end;
 
-procedure TBasicScore.AddNoUpdate(var aQSO: TQSO);
+procedure TBasicScore.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
 begin
+   FValidQso := False;
+
    B := aQSO.band;
-   inc(QSO[B]);
 
-   if aQSO.mode = mCW then
-      inc(CWQSO[B]);
+   if aQSO.Dupe then begin
+      Exit;
+   end;
 
-   if aQSO.mode = mFM then
-      inc(FMQSO[B]);
+   case FContestMode of
+      cmMix: begin
+         if aQSO.mode in [mSSB, mAM, mFM, mDV] then begin
+            Inc(QSO[B]);
+            FValidQso := True;
+         end;
+         if aQSO.mode = mCW then begin
+            Inc(CWQSO[B]);
+            FValidQso := True;
+         end;
+         if aQSO.mode = mFM then begin
+            Inc(FMQSO[B]);
+            FValidQso := True;
+         end;
+      end;
 
-   if aQSO.NewMulti1 then
-      inc(Multi[B]);
+      cmCw: begin
+         if aQSO.mode = mCW then begin
+            Inc(CWQSO[B]);
+            FValidQso := True;
+         end;
+      end;
 
-   if aQSO.NewMulti2 then
-      inc(Multi2[B]);
+      cmPh: begin
+         if aQSO.mode in [mSSB, mAM, mFM, mDV] then begin
+            Inc(QSO[B]);
+            FValidQso := True;
+         end;
+         if aQSO.mode = mFM then begin
+            Inc(FMQSO[B]);
+            FValidQso := True;
+         end;
+      end;
+
+      cmRtty: begin
+         if aQSO.mode = mRTTY then begin
+            Inc(QSO[B]);
+            FValidQso := True;
+         end;
+      end;
+
+      cmAll: begin
+         Inc(QSO[B]);
+         if aQSO.mode = mFM then begin
+            Inc(FMQSO[B]);
+            FValidQso := True;
+         end;
+      end;
+   end;
+
+   if aQSO.NewMulti1 then begin
+      Inc(Multi[B]);
+   end;
+
+   if aQSO.NewMulti2 then begin
+      Inc(Multi2[B]);
+   end;
 end;
 
-procedure TBasicScore.Add(var aQSO: TQSO);
+procedure TBasicScore.Add(aQSO: TQSO);
 begin
    if aQSO.Invalid = True then begin
       Exit;
@@ -257,7 +315,7 @@ begin
          c := 0;
       end;
       strFormatedText := Copy(strText, i, 1) + strFormatedText;
-      inc(c);
+      Inc(c);
    end;
 
    Result := strFormatedText;

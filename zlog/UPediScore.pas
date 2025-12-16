@@ -21,7 +21,7 @@ type
   public
     { Public declarations }
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure Reset; override;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
@@ -128,7 +128,7 @@ begin
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
 end;
 
-procedure TPediScore.AddNoUpdate(var aQSO: TQSO);
+procedure TPediScore.AddNoUpdate(aQSO: TQSO);
 begin
    aQSO.points := 1;
    Inc(Stats[aQSO.band, aQSO.Mode]);

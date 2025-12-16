@@ -23,7 +23,7 @@ type
     { Public declarations }
     AllAsianDXMode : Boolean;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO);  override;
     procedure UpdateData; override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -61,7 +61,7 @@ begin
    end;
 end;
 
-procedure TWPXScore.AddNoUpdate(var aQSO : TQSO);
+procedure TWPXScore.AddNoUpdate(aQSO: TQSO);
 begin
    inherited; {points are calculated in WPXMulti}
 
@@ -69,16 +69,21 @@ begin
       Exit;
    end;
 
-   if AllAsianDXMode then begin
-      case aQSO.Band of
-         b19: aQSO.Points := 3;
-         b35, b28 : aQSO.Points := 2;
-         b7..b21 : aQSO.Points := 1;
-      end;
+   if FValidQso = True then begin
+      if AllAsianDXMode then begin
+         case aQSO.Band of
+            b19: aQSO.Points := 3;
+            b35, b28 : aQSO.Points := 2;
+            b7..b21 : aQSO.Points := 1;
+         end;
 
-      if aQSO.Power2 = 777 then begin // asia. see uwpxmulti.addnoupdate
-         aQSO.Points := 0;
+         if aQSO.Power2 = 777 then begin // asia. see uwpxmulti.addnoupdate
+            aQSO.Points := 0;
+         end;
       end;
+   end
+   else begin
+      aQSO.Points := 0;
    end;
 
    Inc(Points[aQSO.Band], aQSO.Points);

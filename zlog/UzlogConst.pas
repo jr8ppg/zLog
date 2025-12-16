@@ -12,7 +12,7 @@ type
            b135g, b248g, bTarget, bUnknown);
   TPower = (p001, p002, p005, p010, p020, p025, p050, p100, p200, p500, p1000);
 
-  TContestMode = (cmMix = 0, cmCw, cmPh, cmOther, cmAll);
+  TContestMode = (cmMix = 0, cmCw, cmPh, cmRtty, cmAll);
   TContestCategory = (ccSingleOp = 0, ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx);
   TOperateStyle = (os1Radio = 0, os2RadioH, os2RadioV);
   TOperateMode = (omOriginal = 0, omEnter);
