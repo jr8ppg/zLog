@@ -70,7 +70,6 @@ type
     procedure SetNrSent(aQSO: TQSO); virtual;
     procedure SetPoints(aQSO: TQSO); virtual; {Sets QSO.points according to band/mode}
                                                 {called from ChangeBand/ChangeMode}
-    procedure SetBand(B : TBand); virtual; {JA0}
     function CheckWinSummary(aQSO : TQSO) : string; virtual; // returns summary for checkcall etc.
     function ADIF_ExchangeRX_FieldName : string; virtual;
     function ADIF_ExchangeRX(aQSO : TQSO) : string; virtual;
@@ -491,10 +490,6 @@ begin
 end;
 
 procedure TContest.SetPoints(aQSO: TQSO);
-begin
-end;
-
-procedure TContest.SetBand(B: TBand);
 begin
 end;
 
