@@ -20,16 +20,6 @@ object MenuForm: TMenuForm
     525
     312)
   TextHeight = 13
-  object Label1: TLabel
-    Left = 358
-    Top = 287
-    Width = 80
-    Height = 13
-    Alignment = taRightJustify
-    Anchors = [akRight, akBottom]
-    AutoSize = False
-    Caption = 'Callsign'
-  end
   object Label3: TLabel
     Left = 177
     Top = 258
@@ -47,7 +37,6 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
-    ExplicitTop = 280
   end
   object CancelButton: TButton
     Left = 92
@@ -59,7 +48,6 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 280
   end
   object Button3: TButton
     Left = 172
@@ -70,7 +58,6 @@ object MenuForm: TMenuForm
     Caption = '&Help'
     TabOrder = 2
     Visible = False
-    ExplicitTop = 280
   end
   object ContestGroup: TGroupBox
     Left = 8
@@ -294,7 +281,6 @@ object MenuForm: TMenuForm
       Caption = 'ARRL 10 m'
       TabOrder = 18
       OnClick = rbARRL10Click
-      OnExit = rbARRL10Exit
     end
     object rbWAE: TRadioButton
       Tag = 112
@@ -306,31 +292,6 @@ object MenuForm: TMenuForm
       TabOrder = 19
       OnClick = rbWAEClick
     end
-  end
-  object BandGroup: TRadioGroup
-    Left = 272
-    Top = 8
-    Width = 246
-    Height = 129
-    Caption = 'Band'
-    Columns = 2
-    ItemIndex = 0
-    Items.Strings = (
-      'All band'
-      '1.9 MHz'
-      '3.5 MHz'
-      '7 MHz'
-      '14 MHz'
-      '21 MHz'
-      '28 MHz'
-      '50 MHz'
-      '144 MHz'
-      '430 MHz'
-      '1200 MHz'
-      '2400 MHz'
-      '5600 MHz'
-      '10GHz && up')
-    TabOrder = 4
   end
   object ModeGroup: TRadioGroup
     Left = 424
@@ -345,19 +306,7 @@ object MenuForm: TMenuForm
       'Ph'
       'Other'
       'ALL')
-    TabOrder = 5
-  end
-  object editCallsign: TEdit
-    Left = 444
-    Top = 284
-    Width = 65
-    Height = 18
-    Anchors = [akRight, akBottom]
-    AutoSize = False
-    CharCase = ecUpperCase
-    TabOrder = 6
-    ExplicitLeft = 440
-    ExplicitTop = 283
+    TabOrder = 4
   end
   object CheckBox1: TCheckBox
     Left = 265
@@ -366,9 +315,7 @@ object MenuForm: TMenuForm
     Height = 17
     Anchors = [akRight, akBottom]
     Caption = 'Post-contest'
-    TabOrder = 7
-    ExplicitLeft = 261
-    ExplicitTop = 285
+    TabOrder = 5
   end
   object ScoreCoeffEdit: TEdit
     Left = 240
@@ -377,7 +324,7 @@ object MenuForm: TMenuForm
     Height = 18
     AutoSize = False
     MaxLength = 3
-    TabOrder = 8
+    TabOrder = 6
     Text = '1'
   end
   object GroupBox1: TGroupBox
@@ -386,7 +333,7 @@ object MenuForm: TMenuForm
     Width = 146
     Height = 128
     Caption = 'Category'
-    TabOrder = 9
+    TabOrder = 7
     object Label2: TLabel
       Left = 66
       Top = 100

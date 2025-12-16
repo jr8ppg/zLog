@@ -23,7 +23,6 @@ type
     procedure UpdateData; override;
     procedure AddNoUpdate(var aQSO : TQSO); override;
     procedure Reset; override;
-    procedure SummaryWriteScore(FileName : string); override;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
@@ -44,55 +43,6 @@ procedure TPediScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TR
 begin
    inherited;
    Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
-procedure TPediScore.SummaryWriteScore(FileName: string);
-var
-   f: textfile;
-   b: TBand;
-   M: TMode;
-   TotQSO, TotBandQSO: LongInt;
-   ModeQSO: array [mCW .. LastMode] of Integer;
-begin
-   AssignFile(f, FileName);
-   Append(f);
-
-   write(f, 'MHz     ');
-   for M := mCW to LastMode do begin
-      write(f, FillLeft(ModeString[M], 6));
-   end;
-
-   write(f, '   QSO');
-   writeln(f);
-
-   TotQSO := 0;
-   for M := mCW to LastMode do begin
-      ModeQSO[M] := 0;
-   end;
-
-   for b := b19 to HiBand do begin
-      TotBandQSO := 0;
-      write(f, FillRight(MHzString[b], 8));
-
-      for M := mCW to LastMode do begin
-         write(f, FillLeft(IntToStr(Stats[b, M]), 6));
-         Inc(TotBandQSO, Stats[b, M]);
-         Inc(ModeQSO[M], Stats[b, M]);
-      end;
-      Inc(TotQSO, TotBandQSO);
-
-      write(f, FillLeft(IntToStr(TotBandQSO), 6));
-      writeln(f);
-   end;
-
-   write(f, FillRight('Total', 8));
-
-   for M := mCW to LastMode do begin
-      write(f, FillLeft(IntToStr(ModeQSO[M]), 6));
-   end;
-   writeln(f, FillLeft(IntToStr(TotQSO), 6));
-
-   CloseFile(f);
 end;
 
 procedure TPediScore.UpdateData;

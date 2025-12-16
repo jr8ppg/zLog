@@ -13,14 +13,11 @@ type
       CancelButton: TButton;
       Button3: TButton;
       ContestGroup: TGroupBox;
-      BandGroup: TRadioGroup;
       rbALLJA: TRadioButton;
       rb6D: TRadioButton;
       rbFD: TRadioButton;
       rbACAG: TRadioButton;
       ModeGroup: TRadioGroup;
-      editCallsign: TEdit;
-      Label1: TLabel;
       rbCQWW: TRadioButton;
       rbJIDXJA: TRadioButton;
       rbCQWPX: TRadioButton;
@@ -68,7 +65,6 @@ type
       procedure rbIARUClick(Sender: TObject);
       procedure rbIOTAClick(Sender: TObject);
       procedure rbARRL10Click(Sender: TObject);
-      procedure rbARRL10Exit(Sender: TObject);
       procedure FnugrySingleInstance1AlreadyRunning(Sender: TObject; hPrevInst, hPrevWnd: Integer);
       procedure rbWAEClick(Sender: TObject);
       procedure OKButtonClick(Sender: TObject);
@@ -85,23 +81,18 @@ type
       procedure EnableEveryThing;
 
       function GetContestCategory(): TContestCategory;
-      function GetBandGroupIndex(): Integer;
       function GetContestMode(): TContestMode;
-      function GetCallsign(): string;
       function GetContestNumber(): Integer;
       procedure SetContestNumber(v: Integer);
       function GetTxNumber(): Integer;
       function GetScoreCoeff(): Extended;
       function GetGeneralName(): string;
       function GetPostContest(): Boolean;
-      procedure SelectFirstBand();
       procedure FreeSelectedContest();
    public
       property CFGFileName: string read FCFGFileName;
       property ContestCategory: TContestCategory read GetContestCategory;
-      property BandGroupIndex: Integer read GetBandGroupIndex;
       property ContestMode: TContestMode read GetContestMode;
-      property Callsign: string read GetCallsign;
       property ContestNumber: Integer read GetContestNumber write SetContestNumber;
       property TxNumber: Integer read GetTxNumber;
       property ScoreCoeff: Extended read GetScoreCoeff;
@@ -158,13 +149,6 @@ procedure TMenuForm.FormShow(Sender: TObject);
 var
    parser: TUserDefinedContest;
 begin
-   if dmZlogGlobal.ContestBand = 0 then begin
-      BandGroup.ItemIndex := 0;
-   end
-   else begin
-      BandGroup.ItemIndex := OldBandOrd(TBand(dmZlogGlobal.ContestBand - 1)) + 1;
-   end;
-
    ModeGroup.ItemIndex := Integer(dmZlogGlobal.ContestMode);
 
    case dmZlogGlobal.ContestCategory of
@@ -184,8 +168,6 @@ begin
          radioMultiOpTwoTx.Checked := True;
       end;
    end;
-
-   editCallsign.Text := dmZlogGlobal.MyCall;
 
    EnableEveryThing;
 
@@ -272,12 +254,6 @@ procedure TMenuForm.OKButtonClick(Sender: TObject);
 var
    i: Integer;
 begin
-   if editCallsign.Text = '' then begin
-      Application.MessageBox(PChar(UMenu_PleaseEnterYourCallsign), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-      editCallsign.SetFocus();
-      Exit;
-   end;
-
    dmZLogGlobal.Settings.FLastCFGFileName := FCFGFileName;
 
    dmZLogGlobal.ClearParamImportedFlag();
@@ -315,10 +291,6 @@ procedure TMenuForm.EnableEveryThing;
 var
    i: Integer;
 begin
-   for i := 0 to BandGroup.Items.Count - 1 do begin
-      BandGroup.Controls[i].Enabled := True;
-   end;
-
    radioSingleOp.Enabled := True;
    radioMultiOpMultiTx.Enabled := True;
    radioMultiOpSingleTx.Enabled := True;
@@ -343,15 +315,8 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-//   BandGroup.Controls[1].Enabled := False;
-   for i := 8 to 13 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
 
-// ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
-
-   SelectFirstBand();
 end;
 
 procedure TMenuForm.rbPediClick(Sender: TObject);
@@ -362,11 +327,8 @@ end;
 procedure TMenuForm.rbACAGClick(Sender: TObject);
 begin
    EnableEveryThing;
-//   BandGroup.Controls[1].Enabled := False;
-// ModeGroup.Controls[2].Enabled := False;
-   ModeGroup.Controls[3].Enabled := False;
 
-   SelectFirstBand();
+   ModeGroup.Controls[3].Enabled := False;
 end;
 
 procedure TMenuForm.rb6DClick(Sender: TObject);
@@ -374,25 +336,16 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-   for i := 1 to 6 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
 
-// ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
-
-   SelectFirstBand();
 end;
 
 procedure TMenuForm.rbFDClick(Sender: TObject);
 begin
    EnableEveryThing;
    ScoreCoeffEdit.Enabled := True;
-//   BandGroup.Controls[1].Enabled := False;
-// ModeGroup.Controls[2].Enabled := False;
-   ModeGroup.Controls[3].Enabled := False;
 
-   SelectFirstBand();
+   ModeGroup.Controls[3].Enabled := False;
 end;
 
 procedure TMenuForm.rbJA0inClick(Sender: TObject);
@@ -400,19 +353,6 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-
-   // ALL
-   BandGroup.Controls[0].Enabled := False;
-
-   // 14M
-   BandGroup.Controls[4].Enabled := False;
-
-   // 50M and upper
-   for i := 7 to 13 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
-
-   SelectFirstBand();
 
    ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
@@ -428,12 +368,6 @@ var
 begin
    EnableEveryThing;
 
-   for i := 7 to 13 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
-
-   SelectFirstBand();
-
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 end;
@@ -443,12 +377,6 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-
-   for i := 1 to 13 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
-
-   SelectFirstBand();
 
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
@@ -508,9 +436,6 @@ var
 begin
    EnableEveryThing;
 
-   for i := 7 to 13 do
-      BandGroup.Controls[i].Enabled := False;
-
    ModeGroup.Controls[3].Enabled := False;
 end;
 
@@ -519,11 +444,6 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-   BandGroup.Controls[1].Enabled := False;
-
-   for i := 7 to 13 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
 
    ModeGroup.Controls[3].Enabled := False;
 end;
@@ -533,23 +453,7 @@ var
    i: Integer;
 begin
    EnableEveryThing;
-   for i := 0 to 5 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
-
-   for i := 7 to 13 do begin
-      BandGroup.Controls[i].Enabled := False;
-   end;
-
-   FBandTemp := BandGroup.ItemIndex;
-
-   BandGroup.ItemIndex := 6;
    ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rbARRL10Exit(Sender: TObject);
-begin
-   BandGroup.ItemIndex := FBandTemp;
 end;
 
 procedure TMenuForm.FnugrySingleInstance1AlreadyRunning(Sender: TObject; hPrevInst, hPrevWnd: Integer);
@@ -561,10 +465,6 @@ procedure TMenuForm.rbWAEClick(Sender: TObject);
 var i: Integer;
 begin
    EnableEveryThing;
-   BandGroup.Controls[1].Enabled := False;
-
-   for i := 7 to 13 do
-      BandGroup.Controls[i].Enabled := False;
 
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
@@ -589,37 +489,9 @@ begin
    end;
 end;
 
-// WARCÉoÉìÉhÇçló∂ÇµÇΩî‘çÜÇï‘Ç∑
-// ALL:0  Å® 0
-// 1.9:1     1
-// 3.5:2     2
-// 7  :3     3
-// 10M:      4
-// 14 :4     5  +1
-// 18 :      6
-// 21 :5     7  +2
-// 24 :      8
-// 28 :6     9  +3
-// 50 :7     10
-function TMenuForm.GetBandGroupIndex(): Integer;
-begin
-   case BandGroup.ItemIndex of
-      0 .. 3:  Result := BandGroup.ItemIndex;
-      4:       Result := BandGroup.ItemIndex + 1;
-      5:       Result := BandGroup.ItemIndex + 2;
-      6 .. 13: Result := BandGroup.ItemIndex + 3;
-      else     Result := BandGroup.ItemIndex;
-   end;
-end;
-
 function TMenuForm.GetContestMode(): TContestMode;
 begin
    Result := TContestMode(ModeGroup.ItemIndex);
-end;
-
-function TMenuForm.GetCallsign(): string;
-begin
-   Result := editCallsign.Text;
 end;
 
 function TMenuForm.GetContestNumber(): Integer;
@@ -668,18 +540,6 @@ end;
 function TMenuForm.GetPostContest(): Boolean;
 begin
    Result := CheckBox1.Checked;
-end;
-
-procedure TMenuForm.SelectFirstBand();
-var
-   i: Integer;
-begin
-   for i := 0 to BandGroup.Items.Count - 1 do begin
-      if BandGroup.Controls[i].Enabled = True then begin
-         BandGroup.ItemIndex := i;
-         Exit;
-      end;
-   end;
 end;
 
 procedure TMenuForm.FreeSelectedContest();

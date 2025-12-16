@@ -6650,10 +6650,6 @@ object MainForm: TMainForm
         Caption = '&Export...'
         OnClick = Export1Click
       end
-      object mSummaryFile: TMenuItem
-        Caption = 'Summary File'
-        OnClick = mSummaryFileClick
-      end
       object mPXListWPX: TMenuItem
         Caption = 'Prefix List (WPX)'
         Visible = False

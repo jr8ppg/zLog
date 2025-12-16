@@ -71,7 +71,6 @@ type
     procedure SetPoints(aQSO: TQSO); virtual; {Sets QSO.points according to band/mode}
                                                 {called from ChangeBand/ChangeMode}
     procedure SetBand(B : TBand); virtual; {JA0}
-    procedure WriteSummary(filename : string); // creates summary file
     function CheckWinSummary(aQSO : TQSO) : string; virtual; // returns summary for checkcall etc.
     function ADIF_ExchangeRX_FieldName : string; virtual;
     function ADIF_ExchangeRX(aQSO : TQSO) : string; virtual;
@@ -497,63 +496,6 @@ end;
 
 procedure TContest.SetBand(B: TBand);
 begin
-end;
-
-procedure TContest.WriteSummary(filename: string); // creates summary file
-var
-   f: textfile;
-   S: string;
-begin
-   if Log.Year = 0 then
-      exit;
-
-   AssignFile(f, filename);
-   Rewrite(f);
-
-   S := FillRight('Year:', 12) + IntToStr(Log.Year);
-   WriteLn(f, S);
-   WriteLn(f);
-   WriteLn(f, FContestName);
-   WriteLn(f);
-   S := FillRight('Callsign:', 12) + dmZlogGlobal.MyCall;
-   WriteLn(f, S);
-   WriteLn(f);
-   WriteLn(f, 'Country: ');
-   WriteLn(f);
-   S := FillRight('Category:', 12);
-
-   if dmZlogGlobal.ContestCategory = ccSingleOp then begin
-      S := S + 'Single Operator  ';
-   end
-   else begin
-      S := S + 'Multi Operator  ';
-   end;
-
-   if dmZlogGlobal.ContestBand = 0 then
-      S := S + 'All band'
-   else
-      S := S + MHzString[TBand(Ord(dmZlogGlobal.ContestBand) - 1)];
-
-   S := S + '  ';
-   case dmZlogGlobal.ContestMode of
-      cmMix:
-         S := S + 'Phone/CW';
-      cmCw:
-         S := S + 'CW';
-      cmPh:
-         S := S + 'Phone';
-   end;
-
-   WriteLn(f, S);
-   WriteLn(f);
-   WriteLn(f, 'Band(MHz)      QSOs         Points       Multi.');
-
-   WriteLn(f, 'Total');
-   WriteLn(f, 'Score');
-
-   WriteLn(f);
-
-   CloseFile(f);
 end;
 
 function TContest.CheckWinSummary(aQSO: TQSO): string; // returns summary for checkcall etc.

@@ -25,7 +25,6 @@ type
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
     procedure UpdateData; override;
-    procedure SummaryWriteScore(FileName : string); override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
@@ -152,31 +151,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-procedure TWPXScore.SummaryWriteScore(FileName : string);
-var
-   f : textfile;
-   tqso, tpts : LongInt;
-   b : TBand;
-begin
-   tqso := 0;
-   tpts := 0; {tmulti := 0; }
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs    Points');
-   for b := b19 to b28 do begin
-      if NotWARC(b) then begin
-         writeln(f, FillRight(MHzString[b],8) + FillLeft(IntToStr(QSO[b]),10) + FillLeft(IntToStr(Points[b]),10) );
-         tqso := tqso + QSO[b];
-         tpts := tpts + Points[b];
-      end;
-   end;
-
-   writeln(f, FillRight('Total :',8) + FillLeft(IntToStr(tqso),10) + FillLeft(IntToStr(tpts),10) );
-   writeln(f, 'Total prefixes: ' + IntToStr(FMultiForm.TotalPrefix));
-   writeln(f, 'Total score : ' + IntToStr(tpts * FMultiForm.TotalPrefix));
-   CloseFile(f);
 end;
 
 function TWPXScore.GetFontSize(): Integer;

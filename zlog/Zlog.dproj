@@ -313,9 +313,6 @@
         <DCCReference Include="UARRL10Score.pas">
             <Form>ARRL10Score</Form>
         </DCCReference>
-        <DCCReference Include="USummaryInfo.pas">
-            <Form>SummaryInfo</Form>
-        </DCCReference>
         <DCCReference Include="URigControl.pas">
             <Form>RigControl</Form>
         </DCCReference>

@@ -63,7 +63,6 @@ uses
   UUTCDialog in 'UUTCDialog.pas' {UTCDialog},
   UARRL10Multi in 'UARRL10Multi.pas' {ARRL10Multi},
   UARRL10Score in 'UARRL10Score.pas' {ARRL10Score},
-  USummaryInfo in 'USummaryInfo.pas' {SummaryInfo},
   URigControl in 'URigControl.pas' {RigControl},
   UConsolePad in 'UConsolePad.pas' {ConsolePad},
   UFreqList in 'UFreqList.pas' {FreqList},

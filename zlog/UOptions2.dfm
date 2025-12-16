@@ -1,7 +1,7 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = act19
+  ActiveControl = radioSingleOp
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 571
@@ -23,7 +23,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet

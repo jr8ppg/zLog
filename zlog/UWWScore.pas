@@ -25,7 +25,6 @@ type
     procedure Reset; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
     procedure UpdateData; override;
-    procedure SummaryWriteScore(FileName : string); override;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
@@ -220,34 +219,6 @@ begin
    end;
    h := h + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
    ClientHeight := h;
-end;
-
-procedure TWWScore.SummaryWriteScore(FileName : string);
-var
-   f : textfile;
-   tqso, tpts, tmulti, tmulti2 : LongInt;
-   b : TBand;
-begin
-   tqso := 0; tpts := 0; tmulti := 0; tmulti2 := 0;
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs    Points    Zones  Countries');
-   for b := b19 to b28 do begin
-      if NotWARC(b) then begin
-         writeln(f, FillRight(MHzString[b],8)+FillLeft(IntToStr(QSO[b]),10)+
-                  FillLeft(IntToStr(Points[b]),10)+FillLeft(IntToStr(Multi[b]),10)+
-                  FillLeft(IntToStr(Multi2[b]),10));
-         tqso := tqso + QSO[b];
-         tpts := tpts + Points[b];
-         tmulti := tmulti + Multi[b];
-         tmulti2 := tmulti2 + Multi2[b];
-      end;
-   end;
-   writeln(f, FillRight('Total :',8)+FillLeft(IntToStr(tqso),10)+
-             FillLeft(IntToStr(tpts),10)+FillLeft(IntToStr(tmulti),10)+
-             FIllLeft(IntToStr(tmulti2),10) );
-   writeln(f,'Total score : ' + IntToStr(tpts*(tmulti+tmulti2)));
-   CloseFile(f);
 end;
 
 function TWWScore.GetFontSize(): Integer;

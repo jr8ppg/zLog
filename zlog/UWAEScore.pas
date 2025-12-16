@@ -27,7 +27,6 @@ type
     procedure Renew; override;
     procedure AddNoUpdate(var aQSO : TQSO);  override;
     procedure UpdateData; override;
-    procedure SummaryWriteScore(FileName : string); override;
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
@@ -171,36 +170,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-procedure TWAEScore.SummaryWriteScore(FileName: string);
-var
-   f: textfile;
-   TQSO, tmulti, tqtc: LongInt;
-   B: TBand;
-begin
-   TQSO := 0;
-   tqtc := 0;
-   tmulti := 0;
-
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs     QTCs    Mult(*bonus)');
-
-   for B := b35 to b28 do begin
-      if NotWARC(B) then begin
-         writeln(f, FillRight(MHzString[B], 8) + FillLeft(IntToStr(QSO[B]), 10) + FillLeft(IntToStr(QTCs[B]), 10) +
-           FillLeft(IntToStr(Multi[B] * BandFactor[B]), 10));
-         TQSO := TQSO + QSO[B];
-         tqtc := tqtc + QTCs[B];
-         tmulti := tmulti + Multi[B] * BandFactor[B];
-      end;
-   end;
-
-   writeln(f, FillRight('Total :', 8) + FillLeft(IntToStr(TQSO), 10) + FillLeft(IntToStr(tqtc), 10) + FillLeft(IntToStr(tmulti), 10));
-   writeln(f, 'Total score : ' + IntToStr((TQSO + tqtc) * tmulti));
-
-   CloseFile(f);
 end;
 
 function TWAEScore.GetFontSize(): Integer;

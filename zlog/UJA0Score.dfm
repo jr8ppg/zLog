@@ -2,16 +2,19 @@ inherited JA0Score: TJA0Score
   Left = 714
   Top = 91
   Caption = 'Score'
+  StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
+  inherited Panel1: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+  end
   object Grid: TStringGrid [1]
     Left = 0
     Top = 0
     Width = 281
     Height = 202
     Align = alClient
-    ColCount = 4
+    ColCount = 6
     DefaultDrawing = False
     FixedCols = 0
     RowCount = 15
@@ -27,6 +30,8 @@ inherited JA0Score: TJA0Score
     TabOrder = 1
     OnDrawCell = GridDrawCell
     ColWidths = (
+      64
+      64
       64
       64
       64

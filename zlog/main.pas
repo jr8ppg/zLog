@@ -248,7 +248,6 @@ type
     ZServerIcon: TImage;
     GeneralSaveDialog: TSaveDialog;
     mPXListWPX: TMenuItem;
-    mSummaryFile: TMenuItem;
     menuChangePower: TMenuItem;
     H2: TMenuItem;
     M2: TMenuItem;
@@ -784,7 +783,6 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure StatusLineResize(Sender: TObject);
     procedure mPXListWPXClick(Sender: TObject);
-    procedure mSummaryFileClick(Sender: TObject);
     procedure GridPowerChangeClick(Sender: TObject);
     procedure MergeFile1Click(Sender: TObject);
     procedure StatusLineDrawPanel(StatusBar: TStatusBar;
@@ -1168,8 +1166,8 @@ type
     procedure Init6D();
     procedure InitFD();
     procedure InitACAG();
-    procedure InitALLJA0_JA0(BandGroupIndex: Integer);
-    procedure InitALLJA0_Other(BandGroupIndex: Integer);
+    procedure InitALLJA0_JA0();
+    procedure InitALLJA0_Other();
     procedure InitDxPedi();
     procedure InitUserDefined(ContestName, ConfigFile: string);
     procedure InitCQWW();
@@ -1344,7 +1342,7 @@ type
     procedure AddSuperData(Sp: TSpot; fOnline: Boolean);
     function GetFixEdge(b: TBand; m: TMode): Integer;
     procedure BandscopeShowAll(fInitial: Boolean);
-    procedure InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
+    procedure InitContest(contestno: Integer; category: TContestCategory; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
     procedure InitGridColumnWidth();
     procedure InitGridCells();
@@ -1558,7 +1556,7 @@ uses
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score,
   UIntegerDialog, UNewPrefix, UKCJScore, UJarlMemberInfo,
-  UWAEScore, UWAEMulti, USummaryInfo, UBandPlanEditDialog, UGraphColorDialog,
+  UWAEScore, UWAEMulti, UBandPlanEditDialog, UGraphColorDialog,
   UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
   UCountryChecker, USelectClusterLog, USpcViewer, UOptions3, UStartup;
@@ -7423,21 +7421,6 @@ begin
    end;
 end;
 
-procedure TMainForm.mSummaryFileClick(Sender: TObject);
-begin
-   GeneralSaveDialog.DefaultExt := 'zsm';
-   GeneralSaveDialog.Filter := 'Summary files (*.zsm)|*.zsm';
-   GeneralSaveDialog.Title := 'Save summary file';
-
-   if CurrentFileName <> '' then begin
-      GeneralSaveDialog.InitialDir := ExtractFilePath(CurrentFileName);
-      GeneralSaveDialog.FileName := ChangeFileExt(ExtractFileName(CurrentFileName), '.zsm');
-   end;
-
-   if GeneralSaveDialog.Execute then
-      MyContest.ScoreForm.SaveSummary(GeneralSaveDialog.filename);
-end;
-
 // Correct start time
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
@@ -8160,7 +8143,7 @@ begin
    end;
 end;
 
-procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; contestband: Integer; strContestName: string; strCfgFileName: string);
+procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; strContestName: string; strCfgFileName: string);
 begin
    case contestno of
       // ALL JA
@@ -8185,12 +8168,12 @@ begin
 
       // ALL JA0(JA0)
       4: begin
-         InitALLJA0_JA0(contestband);
+         InitALLJA0_JA0();
       end;
 
       // ALL JA0(other)
       5: begin
-         InitALLJA0_Other(contestband);
+         InitALLJA0_Other();
       end;
 
       // DX pedi
@@ -8482,9 +8465,7 @@ begin
             end;
 
             dmZLogGlobal.ContestCategory := menu.ContestCategory;
-            dmZLogGlobal.ContestBand := menu.BandGroupIndex;
             dmZLogGlobal.ContestMode := menu.ContestMode;
-            dmZLogGlobal.MyCall := menu.Callsign;
             dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
             dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
             FPostContest := menu.PostContest;
@@ -8497,7 +8478,6 @@ begin
          if fNewContest = True then begin // new contest
             // 選択を行わない場合はPediモードとする
             dmZLogGlobal.ContestCategory := ccSingleOp;
-            dmZLogGlobal.ContestBand := 0;
             dmZLogGlobal.ContestMode := cmMix;
             dmZLogGlobal.ContestMenuNo := 8;
             dmZLogGlobal.TXNr := 0;    // TX#
@@ -8536,33 +8516,15 @@ begin
 
       dmZLogGlobal.CreateLog();
 
-      // 0:ALL BAND 1～:SINGLE BAND
-      b := dmZLogGlobal.ContestBand;
-      if b > 0 then begin
-         CurrentQSO.Band := TBand(b - 1);
-
-         BandEdit.Text := CurrentQSO.BandStr;
-
-         for BB := b19 to HiBand do begin
-            BandMenu.Items[ord(BB)].Enabled := False;
-         end;
-
-         BandMenu.Items[b - 1].Enabled := True;
-      end
-      else begin
-         for BB := b19 to HiBand do begin
-            BandMenu.Items[ord(BB)].Enabled := True;
-         end;
-      end;
-
       // バンドメニューを全部表示
       RenewBandMenu();
+      InitBandMenu();
 
       MultiButton.Enabled := True; // toolbar
       menuShowMultipliers.Enabled := True; // menu
       menuShowCheckCountry.Visible := False; // checkcountry window
 
-      InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestBand, strContestName, strCfgFileName);
+      InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, strContestName, strCfgFileName);
 
       MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
       MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
@@ -8683,7 +8645,6 @@ begin
 
       // 設定反映
       dmZlogGlobal.ImplementSettings(False);
-      InitBandMenu();
       SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
 
       RestoreWindowStates;
@@ -8905,7 +8866,6 @@ var
    i: Integer;
 begin
    dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
-   dmZLogGlobal.ContestBand := dmZLogGlobal.LastContest.FContestBand;
    dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
    dmZLogGlobal.MyCall := dmZLogGlobal.LastContest.FMyCall;
    dmZLogGlobal.ContestMenuNo := dmZLogGlobal.LastContest.FContestMenuNo;
@@ -8944,7 +8904,6 @@ var
    i: Integer;
 begin
    dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
-   dmZLogGlobal.LastContest.FContestBand := dmZLogGlobal.ContestBand;
    dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
    dmZLogGlobal.LastContest.FMyCall := dmZLogGlobal.MyCall;
    dmZLogGlobal.LastContest.FContestMenuNo := dmZLogGlobal.ContestMenuNo;
@@ -9612,78 +9571,22 @@ begin
    MyContest := TACAGContest.Create(Self, '全市全郡コンテスト');
 end;
 
-procedure TMainForm.InitALLJA0_JA0(BandGroupIndex: Integer);
+procedure TMainForm.InitALLJA0_JA0();
 begin
-   HideBandMenuHF();
+   BandMenu.Items[Ord(b14)].Visible := False;
    HideBandMenuWARC();
    HideBandMenuVU();
 
    MyContest := TJA0ContestZero.Create(Self, 'ALL JA0 コンテスト (JA0)');
-
-   case BandGroupIndex of
-      // 1.9M
-      1: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b19);
-         ShowBandMenu(b19);
-      end;
-
-      // 3.5M
-      2: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b35);
-         ShowBandMenu(b35);
-      end;
-
-      // 7M
-      3: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b7);
-         ShowBandMenu(b7);
-      end;
-
-      // 21/28M
-      7, 9: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b7);
-         dmZlogGlobal.Settings._band := 0;
-         ShowBandMenu(b21);
-         ShowBandMenu(b28);
-      end;
-   end;
 end;
 
-procedure TMainForm.InitALLJA0_Other(BandGroupIndex: Integer);
+procedure TMainForm.InitALLJA0_Other();
 begin
-   HideBandMenuHF();
+   BandMenu.Items[Ord(b14)].Visible := False;
    HideBandMenuWARC();
    HideBandMenuVU();
 
    MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)');
-
-   case BandGroupIndex of
-      // 1.9M
-      1: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b19);
-         ShowBandMenu(b19);
-      end;
-
-      // 3.5M
-      2: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b35);
-         ShowBandMenu(b35);
-      end;
-
-      // 7M
-      3: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b7);
-         ShowBandMenu(b7);
-      end;
-
-      // 21/28M
-      7, 9: begin
-         TJA0Score(MyContest.ScoreForm).SetBand(b21);
-         dmZlogGlobal.Settings._band := 0;
-         ShowBandMenu(b21);
-         ShowBandMenu(b28);
-      end;
-   end;
 end;
 
 procedure TMainForm.InitDxPedi();

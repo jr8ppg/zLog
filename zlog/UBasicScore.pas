@@ -45,8 +45,6 @@ type
     procedure AddNoUpdate(var aQSO : TQSO); virtual;
     procedure Add(var aQSO : TQSO); virtual; {calculates points}
     procedure Reset; virtual;
-    procedure SaveSummary(FileName : string); virtual;
-    procedure SummaryWriteScore(FileName : string); virtual;
     function TotalCWQSOs : integer;
     function TotalQSOs : integer;
     function QPMStr(B: TBand) : string; // returns QSO,Pts,Mult for JARL E-log
@@ -66,92 +64,9 @@ const
 implementation
 
 uses
-  Main, USummaryInfo;
+  Main;
 
 {$R *.DFM}
-
-procedure TBasicScore.SummaryWriteScore(FileName: string);
-var
-   f: textfile;
-   TQSO, tpts, tmulti: LongInt;
-   B: TBand;
-begin
-   TQSO := 0;
-   tpts := 0;
-   tmulti := 0;
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs    Points    Multis');
-   for B := b19 to HiBand do begin
-      if NotWARC(B) then begin
-         writeln(f, FillRight(MHzString[B], 8) + FillLeft(IntToStr(QSO[B]), 10) + FillLeft(IntToStr(Points[B]), 10) +
-           FillLeft(IntToStr(Multi[B]), 10));
-         TQSO := TQSO + QSO[B];
-         tpts := tpts + Points[B];
-         tmulti := tmulti + Multi[B];
-      end;
-   end;
-   writeln(f, FillRight('Total :', 8) + FillLeft(IntToStr(TQSO), 10) + FillLeft(IntToStr(tpts), 10) + FillLeft(IntToStr(tmulti), 10));
-   writeln(f, 'Total score : ' + IntToStr(tpts * tmulti));
-   CloseFile(f);
-end;
-
-procedure TBasicScore.SaveSummary(FileName: string);
-var
-   f: textfile;
-   DLG: TSummaryInfo;
-begin
-   DLG := TSummaryInfo.Create(Self);
-   try
-      if DLG.ShowModal <> mrOK then begin
-         exit;
-      end;
-
-      AssignFile(f, FileName);
-      Rewrite(f);
-
-      with DLG do begin
-         writeln(f, ContestNameEdit.Text);
-         writeln(f);
-         writeln(f, 'Call sign: ' + CallEdit.Text);
-         writeln(f);
-         writeln(f, 'Category: ' + CategoryEdit.Text);
-         writeln(f);
-         if CountryEdit.Text <> '' then begin
-            writeln(f, 'Country: ' + CountryEdit.Text);
-            writeln(f);
-         end;
-
-         CloseFile(f);
-         SummaryWriteScore(FileName);
-         Append(f);
-
-         writeln(f);
-
-         if MiscMemo.Text <> '' then begin
-            write(f, MiscMemo.Text);
-            writeln(f);
-         end;
-         if RemMemo.Text <> '' then begin
-            writeln(f, 'Remarks:');
-            write(f, RemMemo.Text);
-            writeln(f);
-         end;
-         write(f, DecMemo.Text);
-         writeln(f);
-         writeln(f, 'Name: ' + NameEdit.Text);
-         writeln(f);
-         writeln(f, 'Address:');
-         writeln(f);
-         write(f, AddrMemo.Text);
-         writeln(f);
-      end;
-
-      CloseFile(f);
-   finally
-      DLG.Release();
-   end;
-end;
 
 constructor TBasicScore.Create(AOwner: TComponent);
 begin

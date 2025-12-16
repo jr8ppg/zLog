@@ -105,7 +105,6 @@ type
 
   TSettingsParam = record
     _multiop : TContestCategory;  {multi op/ single op}
-    _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
@@ -498,8 +497,6 @@ type
 
     function GetMyCall(): string;
     procedure SetMyCall(s: string);
-    function GetBand(): Integer;
-    procedure SetBand(b: Integer);
     function GetMode(): TContestMode;
     procedure SetMode(m: TContestMode);
     function GetMultiOp(): TContestCategory;
@@ -557,7 +554,6 @@ public
 
     property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
-    property ContestBand: Integer read GetBand write SetBand;
     property ContestMode: TContestMode read GetMode write SetMode;
     property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
@@ -936,9 +932,6 @@ begin
 
       // Operator
       Settings._multiop := TContestCategory(ini.ReadInteger('Categories', 'Operator2', 0));
-
-      // Band
-      Settings._band := ini.ReadInteger('Categories', 'Band', 0);
 
       // Mode
       Settings._mode := TContestMode(ini.ReadInteger('Categories', 'Mode', 0));
@@ -1797,9 +1790,6 @@ begin
       // Operator
       ini.WriteInteger('Categories', 'Operator2', Integer(Settings._multiop));
 
-      // Band
-      ini.WriteInteger('Categories', 'Band', Settings._band);
-
       // Mode
       ini.WriteInteger('Categories', 'Mode', Integer(Settings._mode));
 
@@ -2415,9 +2405,6 @@ end;
 procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
 begin
    if _OnCreate = False then begin
-      if Settings._band > 0 then begin // single band
-         ContestBand := Settings._band; // resets the bandmenu.items.enabled for the single band entry
-      end;
    end;
 
    if Settings._zlinkport in [1 .. 6] then begin // zlinkport rs232c
@@ -2547,16 +2534,6 @@ procedure TdmZLogGlobal.SetMyCall(s: string);
 begin
    Settings._mycall := s;
    AnalyzeMyCountry();
-end;
-
-function TdmZLogGlobal.GetBand: integer;
-begin
-   Result := Settings._band;
-end;
-
-procedure TdmZLogGlobal.SetBand(b: integer);
-begin
-   Settings._band := b;
 end;
 
 function TdmZLogGlobal.GetMode: TContestMode;
