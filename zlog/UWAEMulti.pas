@@ -14,8 +14,8 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function GetInfo(aQSO : TQSO) : string; override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function GetInfo(aQSO: TQSO): string; override;
     procedure UpdateData; override;
   end;
 
@@ -29,7 +29,7 @@ begin
    // ShowContinent('EU');
 end;
 
-procedure TWAEMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TWAEMulti.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
    C: TCountry;
@@ -45,8 +45,13 @@ begin
    end;
    aQSO.Multi1 := C.Country;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    B := aQSO.Band;
 

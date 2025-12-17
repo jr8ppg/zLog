@@ -44,8 +44,8 @@ type
     procedure Edit1Exit(Sender: TObject);
     procedure Edit1Change(Sender: TObject);
   protected
-    CityList : TCityList;
-    LatestMultiAddition : integer; // Grid.TopRow
+    CityList: TCityList;
+    LatestMultiAddition: integer; // Grid.TopRow
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
@@ -56,12 +56,12 @@ type
   public
     { Public declarations }
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override; {NewMulti}
-    function ValidMulti(aQSO : TQSO) : boolean; override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    procedure Add(aQSO: TQSO); override; {NewMulti}
+    function ValidMulti(aQSO: TQSO): boolean; override;
     procedure Reset; override;
-    procedure CheckMulti(aQSO : TQSO); override;
-    function ExtractMulti(aQSO : TQSO) : string; override;
+    procedure CheckMulti(aQSO: TQSO); override;
+    function ExtractMulti(aQSO: TQSO): string; override;
     procedure SetNumberEditFocus; override;
   end;
 
@@ -72,7 +72,7 @@ uses
 
 {$R *.DFM}
 
-procedure TACAGMulti.Add(var aQSO: TQSO);
+procedure TACAGMulti.Add(aQSO: TQSO);
 begin
    inherited;
 end;
@@ -161,7 +161,7 @@ begin
    Result := str;
 end;
 
-procedure TACAGMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TACAGMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    C: TCity;
@@ -175,6 +175,10 @@ begin
    b := aQSO.Band;
 
    if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
       Exit;
    end;
 

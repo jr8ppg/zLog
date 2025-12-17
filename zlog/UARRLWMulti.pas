@@ -15,12 +15,12 @@ type
     { Private declarations }
   public
     { Public declarations }
-    ALLASIANFLAG : boolean;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
+    ALLASIANFLAG: boolean;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
     function GetInfo(aQSO: TQSO): string; override;
-    procedure ProcessCluster(var Sp : TBaseSpot); override;
+    procedure ProcessCluster(Sp: TBaseSpot); override;
   end;
 
 implementation
@@ -48,7 +48,7 @@ begin
       Result := False;
 end;
 
-procedure TARRLWMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TARRLWMulti.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
    C: TCountry;
@@ -69,7 +69,11 @@ begin
    end;
 
    if aQSO.Dupe then begin
-      exit;
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
    end;
 
    if ALLASIANFLAG = True then begin
@@ -120,7 +124,7 @@ begin
    Reset;
 end;
 
-procedure TARRLWMulti.ProcessCluster(var Sp : TBaseSpot);
+procedure TARRLWMulti.ProcessCluster(Sp: TBaseSpot);
 begin
    Inherited;
 

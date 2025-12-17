@@ -39,6 +39,23 @@ type
   TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean) of object;
   TChangeFontSizeProc = procedure(Sender: TObject; font_size: Integer) of object;
 
+type
+  TContestModeSet = set of TMode;
+
+const
+  ContestModeSet: array[cmMix..cmAll] of TContestModeSet = (
+    ([mCW, mSSB, mFM, mAM, mDV]),
+    ([mCW]),
+    ([mSSB, mFM, mAM, mDV]),
+    ([mRTTY]),
+    ([mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mDV])
+  );
+
+  ContestModeName: array[cmMix..cmAll] of string = (
+    'MIX', 'CW', 'PH', 'RTTY', 'ALL'
+  );
+
+
 const
   // SerialContestType
   _USEUTC = 32767;

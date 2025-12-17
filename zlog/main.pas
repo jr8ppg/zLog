@@ -6701,9 +6701,6 @@ begin
       // Voice初期化
       FMessageManager.Init();
 
-      // QSY Violation
-      RenewScore();
-
       // Band再設定
       UpdateBand(CurrentQSO.Band);
 
@@ -6713,8 +6710,12 @@ begin
       // モードが変わっていたら再計算
       if dmZLogGlobal.ContestMode <> MyContest.Mode then begin
          MyContest.Mode := dmZLogGlobal.ContestMode;
-         Log.SetDupeFlags();
+         dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
+         SetWindowCaption();
       end;
+
+      // QSY Violation
+      RenewScore();
    finally
       f.Release();
 
@@ -8534,6 +8535,7 @@ begin
 
       MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
       MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
+      MyContest.Mode := dmZLogGlobal.ContestMode;
 
       InitGridColumnWidth();
       InitSerialPanel();
@@ -8637,7 +8639,7 @@ begin
       // Sentは各コンテストで設定された値
       dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
 
-      RenewScore();
+//      RenewScore();
 
       // Issues #148 [CW]ボタンは常に表示にする
 //      if menu.ModeGroupIndex = 0 then begin
@@ -8713,6 +8715,8 @@ begin
       // フォントサイズの設定
 //      SetFontSize(dmZlogGlobal.Settings._mainfontsize);
 //      Application.ProcessMessages();
+
+      RenewScore();
 
       Grid.Row := 1;
       Grid.ShowLast(Log.TotalQSO);
@@ -9916,6 +9920,9 @@ begin
           strCap := strCap + ' [' + dmZlogGlobal.Settings._pcname + ']';
       end;
    end;
+
+   // 部門表示
+   strCap := strCap + ' - ' + ContestModeName[MyContest.Mode];
 
    // 使用中のファイル名
    if CurrentFileName <> '' then begin

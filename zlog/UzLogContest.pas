@@ -644,6 +644,7 @@ begin
          Log.IsDupe(aQSO); // called to set log.differentmodepointer
       end;
 
+      aQSO.Points := 0;
       aQSO.NewMulti1 := False;
       aQSO.NewMulti2 := False;
 
@@ -728,6 +729,7 @@ procedure TContest.SetContestMode(v: TContestMode);
 begin
    FContestMode := v;
    FScoreForm.ContestMode := v;
+   FMultiForm.ContestMode := v;
 end;
 
 { TPedi }

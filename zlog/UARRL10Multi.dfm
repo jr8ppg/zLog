@@ -13,19 +13,19 @@ inherited ARRL10Multi: TARRL10Multi
     ExplicitWidth = 368
     inherited RotateLabel1: TRotateLabel
       Left = 316
-      Width = 14
+      Width = 12
       Caption = 'Ph'
       Visible = False
       ExplicitLeft = 316
-      ExplicitWidth = 14
+      ExplicitWidth = 12
     end
     inherited RotateLabel2: TRotateLabel
       Left = 328
-      Width = 14
+      Width = 17
       Caption = 'CW'
       Visible = False
       ExplicitLeft = 328
-      ExplicitWidth = 14
+      ExplicitWidth = 17
     end
     inherited RotateLabel3: TRotateLabel
       Left = 292

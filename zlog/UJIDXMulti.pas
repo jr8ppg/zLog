@@ -14,7 +14,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
   end;
 
 implementation
@@ -30,9 +30,9 @@ begin
    Reset;
 end;
 
-procedure TJIDXMulti.AddNoUpdate(var aQSO : TQSO);
+procedure TJIDXMulti.AddNoUpdate(aQSO: TQSO);
 var
-   str : string;
+   str: string;
    B: TBand;
    i: integer;
    C: TCountry;
@@ -43,7 +43,11 @@ begin
    aQSO.Multi1 := str;
 
    if aQSO.Dupe then begin
-      exit;
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
    end;
 
    B := aQSO.band;

@@ -135,11 +135,11 @@ begin
 
    case FContestMode of
       cmMix: begin
-         if aQSO.mode in [mSSB, mAM, mFM, mDV] then begin
+         if aQSO.mode in ContestModeSet[cmMix] then begin
             Inc(QSO[B]);
             FValidQso := True;
          end;
-         if aQSO.mode = mCW then begin
+         if aQSO.mode in ContestModeSet[cmCW] then begin
             Inc(CWQSO[B]);
             FValidQso := True;
          end;
@@ -150,14 +150,15 @@ begin
       end;
 
       cmCw: begin
-         if aQSO.mode = mCW then begin
+         if aQSO.mode in ContestModeSet[cmCW] then begin
+            Inc(QSO[B]);
             Inc(CWQSO[B]);
             FValidQso := True;
          end;
       end;
 
       cmPh: begin
-         if aQSO.mode in [mSSB, mAM, mFM, mDV] then begin
+         if aQSO.mode in ContestModeSet[cmPh] then begin
             Inc(QSO[B]);
             FValidQso := True;
          end;
@@ -168,7 +169,7 @@ begin
       end;
 
       cmRtty: begin
-         if aQSO.mode = mRTTY then begin
+         if aQSO.mode in ContestModeSet[cmRtty] then begin
             Inc(QSO[B]);
             FValidQso := True;
          end;
@@ -176,9 +177,12 @@ begin
 
       cmAll: begin
          Inc(QSO[B]);
+         FValidQso := True;
+         if aQSO.mode in ContestModeSet[cmCW] then begin
+            Inc(CWQSO[B]);
+         end;
          if aQSO.mode = mFM then begin
             Inc(FMQSO[B]);
-            FValidQso := True;
          end;
       end;
    end;

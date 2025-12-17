@@ -2,10 +2,17 @@ inherited IOTAMulti: TIOTAMulti
   Left = 181
   Top = 225
   Caption = 'IOTA Multipliers'
-  PixelsPerInch = 96
+  StyleElements = [seFont, seClient, seBorder]
   TextHeight = 13
+  inherited Panel1: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+    inherited Edit1: TEdit
+      StyleElements = [seFont, seClient, seBorder]
+    end
+  end
   inherited Panel: TPanel
     Height = 49
+    StyleElements = [seFont, seClient, seBorder]
     ExplicitHeight = 49
     inherited Label1R9: TRotateLabel
       Left = 223

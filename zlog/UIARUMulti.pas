@@ -36,8 +36,8 @@ type
   public
     { Public declarations }
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO : TQSO); override;
+    procedure Add(aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     function GuessZone(strCallsign: string) : string; override;
     procedure UpdateData; override;
@@ -397,7 +397,7 @@ begin
    RenewBandScope;
 end;
 
-procedure TIARUMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TIARUMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    i: Integer;
@@ -413,8 +413,13 @@ begin
    str := aQSO.NrRcvd;
    aQSO.Multi1 := str;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    i := StrToIntDef(str, 0);
 
@@ -488,7 +493,7 @@ begin
    UpdateData;
 end;
 
-procedure TIARUMulti.Add(var aQSO: TQSO);
+procedure TIARUMulti.Add(aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
 

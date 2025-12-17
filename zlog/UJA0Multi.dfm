@@ -1,7 +1,7 @@
 inherited JA0Multi: TJA0Multi
   Caption = 'Multipliers Info'
+  StyleElements = [seFont, seClient, seBorder]
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0

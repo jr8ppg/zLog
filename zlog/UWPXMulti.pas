@@ -14,20 +14,20 @@ type
     procedure GoButtonClick(Sender: TObject);
   private
     { Private declarations }
-    WPXList : TStringList;
+    WPXList: TStringList;
   public
     { Public declarations }
     procedure RefreshGrid; override;
-    procedure SavePXList(filename : string);
-    function TotalPrefix : integer;
+    procedure SavePXList(filename: string);
+    function TotalPrefix: integer;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure ProcessCluster(var Sp : TBaseSpot); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure ProcessCluster(Sp: TBaseSpot); override;
     procedure UpdateData; override;
   end;
 
-function GetWPXPrefix(aQSO : TQSO) : string;
+function GetWPXPrefix(aQSO: TQSO): string;
 
 implementation
 
@@ -188,7 +188,7 @@ begin
    RefreshGrid;
 end;
 
-procedure TWPXMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TWPXMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    C: TCountry;
@@ -200,8 +200,13 @@ begin
    aQSO.Multi1 := str;
    aQSO.Points := 0;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    if WPXList.IndexOf(str) >= 0 then begin
    end
@@ -261,7 +266,7 @@ begin
       Result := false;
 end;
 
-procedure TWPXMulti.ProcessCluster(var Sp: TBaseSpot);
+procedure TWPXMulti.ProcessCluster(Sp: TBaseSpot);
 var
    i: Integer;
    temp, px: string;
@@ -285,7 +290,7 @@ begin
          boo := true;
 
    if boo = false then begin
-      temp := temp + '  new prefix : ' + px;
+      temp := temp + '  new prefix: ' + px;
       Sp.NewCty := true;
    end;
 

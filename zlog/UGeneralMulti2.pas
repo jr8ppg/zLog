@@ -16,20 +16,20 @@ type
     procedure FormShow(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
   protected
-    BandLabelArray : array[0..BANDLABELMAX] of TRotateLabel;
+    BandLabelArray: array[0..BANDLABELMAX] of TRotateLabel;
     procedure UpdateLabelPos(); override;
   private
     { Private declarations }
     FConfig: TUserDefinedContest;
-    function GetPX(aQSO : TQSO) : string;
+    function GetPX(aQSO: TQSO): string;
   public
     { Public declarations }
-    function IsLocal(aQSO : TQSO) : Boolean;
-    procedure LoadDAT(Filename : string);
-    function ExtractMulti(aQSO : TQSO) : string; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : Boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
+    function IsLocal(aQSO: TQSO): Boolean;
+    procedure LoadDAT(Filename: string);
+    function ExtractMulti(aQSO: TQSO): string; override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): Boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
     procedure Reset; override;
     procedure UpdateData; override;
     property Config: TUserDefinedContest read FConfig write FConfig;
@@ -43,10 +43,10 @@ uses Main, UGeneralScore, UzLogExtension;
 
 {$R *.DFM}
 
-function TGeneralMulti2.GetPX(aQSO : TQSO) : string;
+function TGeneralMulti2.GetPX(aQSO: TQSO): string;
 var
    s: string;
-   i, slash : Integer;
+   i, slash: Integer;
 begin
    Result := '';
    s := aQSO.Callsign;
@@ -79,7 +79,7 @@ end;
 
 procedure TGeneralMulti2.UpdateData;
 var
-   i, j : Integer;
+   i, j: Integer;
    CTY: TCity;
    CNT: TCountry;
    B: TBand;
@@ -181,12 +181,12 @@ begin
 end;
 
 
-function TGeneralMulti2.ValidMulti(aQSO : TQSO) : Boolean;
+function TGeneralMulti2.ValidMulti(aQSO: TQSO): Boolean;
 var
-   str : string;
-   i : Integer;
-   C : TCity;
-   boo : Boolean;
+   str: string;
+   i: Integer;
+   C: TCity;
+   boo: Boolean;
 begin
    if ((IsDomestic(aQSO.Callsign) = False) and (FConfig.AllowDxNoNumber = True)) then begin
       Result := True;
@@ -217,10 +217,10 @@ begin
    Result := boo;
 end;
 
-function TGeneralMulti2.ExtractMulti(aQSO : TQSO) : string;
+function TGeneralMulti2.ExtractMulti(aQSO: TQSO): string;
 var
-   str : string;
-   i : Integer;
+   str: string;
+   i: Integer;
 begin
    str := '';
    if zyloRequestMulti(aQSO, str) = True then begin
@@ -280,14 +280,14 @@ begin
    Result := str;
 end;
 
-procedure TGeneralMulti2.AddNoUpdate(var aQSO : TQSO);
+procedure TGeneralMulti2.AddNoUpdate(aQSO: TQSO);
 var
-   str, str2 : string;
-   B : TBand;
+   str, str2: string;
+   B: TBand;
    i: Integer;
-   C : TCity;
-   Cty : TCountry;
-   boo : Boolean;
+   C: TCity;
+   Cty: TCountry;
+   boo: Boolean;
 label aaa;
 begin
    aQSO.NewMulti1 := False;
@@ -308,8 +308,13 @@ begin
 
       aQSO.Multi1 := Cty.Country;
 
-      if aQSO.Dupe then
-         exit;
+      if aQSO.Dupe then begin
+         Exit;
+      end;
+
+      if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+         Exit;
+      end;
 
       LatestMultiAddition := CityList.List.Count + Cty.Index;
 
@@ -341,8 +346,13 @@ aaa:
    str := ExtractMulti(aQSO);
    aQSO.Multi1 := str;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    if aQSO.Multi2 <> '' then begin
       aQSO.NewMulti2 := True;
@@ -379,9 +389,9 @@ aaa:
    end;
 end;
 
-function TGeneralMulti2.IsLocal(aQSO : TQSO) : Boolean;
+function TGeneralMulti2.IsLocal(aQSO: TQSO): Boolean;
 var
-   i : Integer;
+   i: Integer;
 begin
    Result := False;
 
@@ -419,7 +429,7 @@ begin
    end;
 end;
 
-procedure TGeneralMulti2.LoadDAT(Filename : string);
+procedure TGeneralMulti2.LoadDAT(Filename: string);
 begin
    if not zyloRequestTable(Filename, CityList) then
       CityList.LoadFromFile(FileName);
@@ -428,7 +438,7 @@ end;
 
 procedure TGeneralMulti2.FormCreate(Sender: TObject);
 var
-   i : Integer;
+   i: Integer;
 begin
    //inherited;
    LatestMultiAddition := 0;
@@ -465,12 +475,12 @@ begin
    end;
 end;
 
-procedure TGeneralMulti2.CheckMulti(aQSO : TQSO);
+procedure TGeneralMulti2.CheckMulti(aQSO: TQSO);
 var
-   str : string;
+   str: string;
    strSjis: AnsiString;
-   i : Integer;
-   C : TCity;
+   i: Integer;
+   C: TCity;
 begin
    if ValidMulti(aQSO) then
       str := ExtractMulti(aQSO)

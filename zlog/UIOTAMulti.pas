@@ -18,17 +18,17 @@ type
     function GetIsIncrementalSearchPresent(): Boolean; override;
   private
     { Private declarations }
-    IslandList : TIslandList;
+    IslandList: TIslandList;
     procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
-    MyIOTA, MyDXCC : string;
-    function ExtractMulti(aQSO : TQSO) : string; override;
+    MyIOTA, MyDXCC: string;
+    function ExtractMulti(aQSO: TQSO): string; override;
     procedure Reset; override;
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
   end;
 
 implementation
@@ -95,7 +95,7 @@ begin
    end;
 end;
 
-procedure TIOTAMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TIOTAMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    i: Integer;
@@ -116,11 +116,17 @@ begin
 
       aQSO.Multi1 := str;
 
-      if aQSO.Dupe then
-         exit;
+      if aQSO.Dupe then begin
+         Exit;
+      end;
 
-      if str = '' then
-         exit;
+      if str = '' then begin
+         Exit;
+      end;
+
+      if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+         Exit;
+      end;
 
       for i := 0 to IslandList.List.Count - 1 do begin
          C := TIsland(IslandList.List[i]);

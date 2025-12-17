@@ -2,10 +2,11 @@ inherited IARUMulti: TIARUMulti
   Left = 404
   Top = 179
   Caption = 'IARU HF Multipliers'
+  StyleElements = [seFont, seClient, seBorder]
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   inherited Panel: TPanel
+    StyleElements = [seFont, seClient, seBorder]
     inherited RotateLabel1: TRotateLabel
       Left = 145
       ExplicitLeft = 145
@@ -32,6 +33,12 @@ inherited IARUMulti: TIARUMulti
     end
     inherited SortBy: TRadioGroup
       Visible = False
+    end
+  end
+  inherited Panel1: TPanel
+    StyleElements = [seFont, seClient, seBorder]
+    inherited Edit1: TEdit
+      StyleElements = [seFont, seClient, seBorder]
     end
   end
 end

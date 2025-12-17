@@ -69,15 +69,15 @@ type
     procedure SelectBandTab(band: TBand; fInit: Boolean);
   public
     { Public declarations }
-    procedure UpdateBand(B : TBand);
+    procedure UpdateBand(B: TBand);
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    procedure Add(aQSO: TQSO); override;
     procedure Reset; override;
-    function ValidMulti(aQSO : TQSO) : Boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
-    function ExtractMulti(aQSO : TQSO) : string; override;
-    function IsNewMulti(aQSO : TQSO) : Boolean; override;
+    function ValidMulti(aQSO: TQSO): Boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
+    function ExtractMulti(aQSO: TQSO): string; override;
+    function IsNewMulti(aQSO: TQSO): Boolean; override;
     procedure SetNumberEditFocus; override;
   end;
 
@@ -213,9 +213,9 @@ begin
    end;
 end;
 
-procedure TALLJAMulti.UpdateBand(B : TBand);
+procedure TALLJAMulti.UpdateBand(B: TBand);
 var
-   K : TKen;
+   K: TKen;
 begin
    for K := m101 to m48 do begin
       if MultiTable[B, K] then
@@ -290,7 +290,7 @@ begin
    Result := str;
 end;
 
-procedure TALLJAMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TALLJAMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    K: TKen;
@@ -302,6 +302,11 @@ begin
    aQSO.Multi1 := str;
 
    if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      aQSO.Points := 0;
       Exit;
    end;
 
@@ -322,7 +327,7 @@ begin
    LatestMultiAddition := Integer(K);
 end;
 
-procedure TALLJAMulti.Add(var aQSO: TQSO);
+procedure TALLJAMulti.Add(aQSO: TQSO);
 begin
    inherited;
 end;
