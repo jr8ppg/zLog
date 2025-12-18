@@ -352,7 +352,7 @@ var
    i: Integer;
 begin
    for t := 1 to 49 do begin
-      for b := b19 to TBand(17) do begin
+      for b := b19 to TBand(24) do begin
          FCountData[t][b].FQso := 0;
          FCountData[t][b].FCw := 0;
          FCountData[t][b].FMulti := 0;
@@ -364,7 +364,7 @@ begin
    end;
 
    for t := 1 to 49 do begin
-      for b := b19 to TBand(17) do begin
+      for b := b19 to TBand(24) do begin
          for a := 1 to 12 do begin
             FCountData2[t][b].FQso[a] := 0;
             FCountData2[t][b].FCw[a] := 0;
