@@ -20,6 +20,8 @@ type
   protected
     FNeedCtyDat: Boolean;
     FUseCoeff: Boolean;
+    function GetUseWARC(): Boolean; virtual;
+    function GetIsAvailableBand(b: TBand): Boolean; virtual;
   private
     FContestName : string;
     FContestMode : TContestMode;
@@ -89,9 +91,10 @@ type
     property MultiFound: Boolean read FMultiFound write FMultiFound;
     property BandLow: TBand read FBandLow;
     property BandHigh: TBand read FBandHigh;
-    property UseWARC: Boolean read FUseWARC;
+    property UseWARC: Boolean read GetUseWARC;
     property BandPlan: string read FBandPlan;
     property Single10G: Boolean read FSingle10G write FSingle10G;
+    property IsAvailableBand[b: TBand]: Boolean read GetIsAvailableBand;
 
     property UseContestPeriod: Boolean read GetUseContestPeriod write FUseContestPeriod;
     property StartTime: Integer read FStartTime write FStartTime;
@@ -146,6 +149,8 @@ type
   TGeneralContest = class(TContest)
     FConfig: TUserDefinedContest;
     FUserDatLoaded: Boolean;
+    function GetUseWARC(): Boolean; override;
+    function GetIsAvailableBand(b: TBand): Boolean; override;
   public
     constructor Create(AOwner: TComponent; N, CFGFileName: string; M: TContestMode); reintroduce;
     destructor Destroy(); override;
@@ -158,7 +163,7 @@ type
   end;
 
   TCQWPXContest = class(TContest)
-    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
+    constructor Create(AOwner: TComponent; N : string; CC: TContestCategory; M: TContestMode); reintroduce;
     function ADIF_ExtraFieldName : string; override;
     function ADIF_ExtraField(aQSO : TQSO) : string; override;
     function GetNewMulti1(aQSO: TQSO): string; override;
@@ -185,6 +190,7 @@ type
   end;
 
   TJA0Contest = class(TContest)
+    function GetIsAvailableBand(b: TBand): Boolean; override;
     constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
   end;
 
@@ -732,6 +738,36 @@ begin
    FMultiForm.ContestMode := v;
 end;
 
+function TContest.GetUseWARC(): Boolean;
+begin
+   Result := FUseWARC;
+end;
+
+function TContest.GetIsAvailableBand(b: TBand): Boolean;
+begin
+   if b < FBandLow then begin
+      Result := False;
+      Exit;
+   end;
+
+   if b > FBandHigh then begin
+      Result := False;
+      Exit;
+   end;
+
+   if b in [b10, b18, b24] then begin
+      Result := FUseWARC;
+      Exit;
+   end;
+
+   if b = b104g then begin
+      Result := Not FSingle10G;
+      Exit;
+   end;
+
+   Result := True;
+end;
+
 { TPedi }
 
 constructor TPedi.Create(AOwner: TComponent; N: string; M: TContestMode);
@@ -1206,9 +1242,29 @@ begin
    Result := temp;
 end;
 
+function TGeneralContest.GetUseWARC(): Boolean;
+begin
+   Result := FConfig.FUseWarcBand;
+end;
+
+function TGeneralContest.GetIsAvailableBand(b: TBand): Boolean;
+begin
+   if FConfig.PowerTable[b] = '-' then begin
+      Result := False;
+   end
+   else begin
+      Result := True;
+   end;
+
+   if b = b104g then begin
+      Result := Not FConfig.FSingle10G;
+      Exit;
+   end;
+end;
+
 { TCQWPXContest }
 
-constructor TCQWPXContest.Create(AOwner: TComponent; N: string; M: TContestMode);
+constructor TCQWPXContest.Create(AOwner: TComponent; N: string; CC: TContestCategory; M: TContestMode);
 begin
    inherited Create(AOwner, N, M);
 
@@ -1233,6 +1289,13 @@ begin
 
    FStartTime := 0;  // UTC
    FPeriod := 48;
+
+   case CC of
+      ccSingleOp:          SerialType := stAll;
+      ccMultiOpMultiTx:    SerialType := stBand;
+      ccMultiOpSingleTx:   SerialType := stMultiSingle;
+      ccMultiOpTwoTx:      SerialType := stMultiSingle;
+   end;
 
    case M of
       cmMix: AdifContestId := '';
@@ -1300,7 +1363,7 @@ begin
    FSentStr := '$S';
    FNeedCtyDat := True;
 
-   FBandLow := b19;
+   FBandLow := b35;
    FBandHigh := b28;
    FBandPlan := 'DX';
 
@@ -1564,6 +1627,14 @@ begin
    FColWidths[16] := 0;     // QSOID
 end;
 
+function TJA0Contest.GetIsAvailableBand(b: TBand): Boolean;
+begin
+   Result := Inherited;
+   if b = b14 then begin
+      Result := False;
+   end;
+end;
+
 { TJA0ContestZero }
 
 constructor TJA0ContestZero.Create(AOwner: TComponent; N: string; M: TContestMode);
@@ -1599,8 +1670,8 @@ begin
    FSameExchange := False;
    FSentStr := '$S';
 
-   FBandLow := b19;
-   FBandHigh := b28;
+   FBandLow := b7;
+   FBandHigh := b21;
    FBandPlan := 'DX';
 
    FUseContestPeriod := False;

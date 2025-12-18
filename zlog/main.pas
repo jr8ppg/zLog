@@ -1162,25 +1162,6 @@ type
     procedure DeleteCurrentRow;
     Procedure MultipleDelete(A, B : LongInt);
 
-    procedure InitALLJA(M: TContestMode);
-    procedure Init6D(M: TContestMode);
-    procedure InitFD(M: TContestMode);
-    procedure InitACAG(M: TContestMode);
-    procedure InitALLJA0_JA0(M: TContestMode);
-    procedure InitALLJA0_Other(M: TContestMode);
-    procedure InitDxPedi(M: TContestMode);
-    procedure InitUserDefined(ContestName, ConfigFile: string; M: TContestMode);
-    procedure InitCQWW(M: TContestMode);
-    procedure InitWPX(ContestCategory: TContestCategory; M: TContestMode);
-    procedure InitJIDX(M: TContestMode);
-    procedure InitAPSprint(M: TContestMode);
-    procedure InitARRL_W(M: TContestMode);
-    procedure InitARRL_DX(M: TContestMode);
-    procedure InitARRL10m(M: TContestMode);
-    procedure InitIARU(M: TContestMode);
-    procedure InitAllAsianDX(M: TContestMode);
-    procedure InitIOTA(M: TContestMode);
-    procedure InitWAE(M: TContestMode);
     function GetNumOfAvailableBands(): Integer;
     procedure AdjustActiveBands();
     function GetFirstAvailableBand(defband: TBand): TBand;
@@ -1345,7 +1326,6 @@ type
     procedure InitContest(contestno: Integer; category: TContestCategory; mode: TContestMode; strContestName: string; strCfgFileName: string);
     procedure InitGrid();
     procedure InitGridColumnWidth();
-    procedure InitGridCells();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
     procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
     function Is1Radio(): Boolean;
@@ -1378,9 +1358,6 @@ type
 
     procedure ShowBandMenu(b: TBand);
     procedure HideBandMenu(b: TBand);
-    procedure HideBandMenuHF();
-    procedure HideBandMenuWARC();
-    procedure HideBandMenuVU(fInclude50: Boolean = True);
 
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
@@ -1742,6 +1719,7 @@ var
 begin
    for i := 0 to BandMenu.Items.Count - 1 do begin
       BandMenu.Items[i].Visible := True;
+      BandMenu.Items[i].Enabled := True;
    end;
 end;
 
@@ -8151,104 +8129,149 @@ begin
 end;
 
 procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; mode: TContestMode; strContestName: string; strCfgFileName: string);
+var
+   b: TBand;
 begin
+   actionShowMultipliers.Enabled := True;
+   menuShowMultipliers.Enabled := True;
+   MultiButton.Enabled := True;
+   menuShowCheckCountry.Visible := False;
+   menuShowCheckMulti.Caption := 'Check Multi';
+   FCheckCountry.ParentMulti := nil;
+   Grid.Cols[13].Text := 'multi1';
+   Grid.Cols[14].Text := 'multi2';
+   mPXListWPX.Visible := False;
+   FCheckMulti.ListCWandPh := False;
+
    case contestno of
       // ALL JA
       0: begin
-         InitALLJA(mode);
+         MyContest := TALLJAContest.Create(Self, 'ALL JA コンテスト', mode);
       end;
 
       // 6m & DOWN
       1: begin
-         Init6D(mode);
+         MyContest := TSixDownContest.Create(Self, '6m and DOWNコンテスト', mode);
       end;
 
       // FIELD DAY
       2: begin
-         InitFD(mode);
+         MyContest := TFDContest.Create(Self, 'フィールドデーコンテスト', mode);
       end;
 
       // ACAG
       3: begin
-         InitACAG(mode);
+         MyContest := TACAGContest.Create(Self, '全市全郡コンテスト', mode);
       end;
 
       // ALL JA0(JA0)
       4: begin
-         InitALLJA0_JA0(mode);
+         MyContest := TJA0ContestZero.Create(Self, 'ALL JA0 コンテスト (JA0)', mode);
       end;
 
       // ALL JA0(other)
       5: begin
-         InitALLJA0_Other(mode);
+         MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)', mode);
       end;
 
       // DX pedi
       8: begin
-         InitDxPedi(mode);
+         MyContest := TPedi.Create(Self, 'Pedition mode', mode);
+         actionShowMultipliers.Enabled := False;
+         menuShowMultipliers.Enabled := False;
+         MultiButton.Enabled := False;
       end;
 
       // User Defined
       9: begin
-         InitUserDefined(strContestName, strCfgFileName, mode);
+         zyloContestSwitch(strContestName, strCfgFileName);
+         MyContest := TGeneralContest.Create(Self, strContestName, strCfgFileName, mode);
       end;
 
       // CQWW
       10: begin
-         InitCQWW(mode);
+         MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', mode);
+         menuShowCheckCountry.Visible := True;
+         menuShowCheckMulti.Caption := 'Check Zone';
+         FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
       end;
 
       // WPX
       11: begin
-         InitWPX(category, mode);
+         MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', category, mode);
+         Grid.Cols[13].Text := 'prefix';
+         Grid.Cols[14].Text := 'zone';
+         mPXListWPX.Visible := True;
       end;
 
       // JIDX
       // now determines JA/DX from callsign
       7, 12: begin
-         InitJIDX(mode);
+         if dmZLogGlobal.MyCountry = 'JA' then begin
+            menuShowCheckCountry.Visible := True;
+            menuShowCheckMulti.Caption := 'Check Zone';
+            MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', mode);
+         end
+         else begin
+            MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)', mode);
+         end;
+         FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
       end;
 
       // AP Sprint
       13: begin
-         InitAPSprint(mode);
+         MyContest := TAPSprint.Create(Self, 'Asia Pacific Sprint', mode);
       end;
 
       // ARRL DX(W/VE)
       14: begin
-         InitARRL_W(mode);
+         MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)', mode);
       end;
 
       // ARRL(DX)
       15: begin
-         InitARRL_DX(mode);
+         MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)', mode);
       end;
 
       // ARRL 10m
       16: begin
-         InitARRL10m(mode);
+         MyContest := TARRL10Contest.Create(Self, 'ARRL 10m Contest', mode);
+         FCheckMulti.ListCWandPh := True;
       end;
 
       // IARU HF
       17: begin
-         InitIARU(mode);
+         MyContest := TIARUContest.Create(Self, 'IARU HF Championship', mode);
       end;
 
       // All Asian DX(Asia)
       18: begin
-         InitAllAsianDX(mode);
+         MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', mode);
       end;
 
       // IOTA
       19: begin
-         InitIOTA(mode);
+         MyContest := TIOTAContest.Create(Self, 'IOTA Contest', mode);
       end;
 
       // WAEDC(DX)
       20: begin
-         InitWAE(mode);
+         MyContest := TWAEContest.Create(Self, 'WAEDC Contest', mode);
       end;
    end;
+
+   for b := b19 to HiBand do begin
+      if MyContest.IsAvailableBand[b] = False then begin
+         HideBandMenu(b);
+      end;
+   end;
+
+   MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
+   MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
+   MyContest.ScoreForm.CWButton.Visible := True;   // Issue #148 [CW]ボタンは常に表示にする
+   MyContest.ScoreForm.FontSize := Grid.Font.Size;
+   MyContest.MultiForm.FontSize := Grid.Font.Size;
+   MyContest.Mode := dmZLogGlobal.ContestMode;
 end;
 
 procedure TMainForm.InitGrid();
@@ -8388,18 +8411,6 @@ begin
    PostMessage(Handle, WM_ZLOG_SETEDITFIELDS, 0, 0);
 end;
 
-procedure TMainForm.InitGridCells();
-var
-   i, j: Integer;
-begin
-   for i := 1 to Grid.RowCount - 1 do begin
-      for j := 0 to Grid.ColCount - 1 do begin
-         Grid.Cells[j, i] := '';
-         Grid.Objects[j, i] := nil;
-      end;
-   end;
-end;
-
 //
 // zLog 初期化処理
 //
@@ -8411,7 +8422,6 @@ var
    menu: TMenuForm;
    c: Integer;
    i: Integer;
-   b: Integer;
    BB: TBand;
    rigno: Integer;
    Q: TQSO;
@@ -8533,10 +8543,6 @@ begin
 
       InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestMode, strContestName, strCfgFileName);
 
-      MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
-      MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
-      MyContest.Mode := dmZLogGlobal.ContestMode;
-
       InitGridColumnWidth();
       InitSerialPanel();
 
@@ -8639,18 +8645,6 @@ begin
       // Sentは各コンテストで設定された値
       dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
 
-//      RenewScore();
-
-      // Issues #148 [CW]ボタンは常に表示にする
-//      if menu.ModeGroupIndex = 0 then begin
-         MyContest.ScoreForm.CWButton.Visible := True;
-//      end
-//      else begin
-//         MyContest.ScoreForm.CWButton.Visible := False;
-//      end;
-
-      MyContest.ScoreForm.FontSize := Grid.Font.Size;
-
       // 設定反映
       dmZlogGlobal.ImplementSettings(False);
       SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
@@ -8712,17 +8706,11 @@ begin
       CurrentQSO.Serial := Log.GetCurrentSerial(CurrentQSO);
       DispSerialNumber(CurrentQSO);
 
-      // フォントサイズの設定
-//      SetFontSize(dmZlogGlobal.Settings._mainfontsize);
-//      Application.ProcessMessages();
-
       RenewScore();
 
       Grid.Row := 1;
       Grid.ShowLast(Log.TotalQSO);
       GridRefreshScreen();
-
-      MyContest.MultiForm.FontSize := dmZlogGlobal.Settings._mainfontsize;
 
       // QSY Assist
       CountDownStartTime := 0;
@@ -9548,213 +9536,6 @@ begin
    SetEditFields();
 end;
 
-procedure TMainForm.InitALLJA(M: TContestMode);
-begin
-//   BandMenu.Items[Ord(b19)].Visible := False;
-   HideBandMenuWARC();
-   HideBandMenuVU(False);
-
-   MyContest := TALLJAContest.Create(Self, 'ALL JA コンテスト', M);
-end;
-
-procedure TMainForm.Init6D(M: TContestMode);
-begin
-   HideBandMenuHF();
-   HideBandMenuWARC();
-
-   MyContest := TSixDownContest.Create(Self, '6m and DOWNコンテスト', M);
-end;
-
-procedure TMainForm.InitFD(M: TContestMode);
-begin
-//   BandMenu.Items[Ord(b19)].Visible := False;
-   HideBandMenuWARC();
-
-   MyContest := TFDContest.Create(Self, 'フィールドデーコンテスト', M);
-end;
-
-procedure TMainForm.InitACAG(M: TContestMode);
-begin
-//   BandMenu.Items[Ord(b19)].Visible := False;
-   HideBandMenuWARC();
-
-   MyContest := TACAGContest.Create(Self, '全市全郡コンテスト', M);
-end;
-
-procedure TMainForm.InitALLJA0_JA0(M: TContestMode);
-begin
-   BandMenu.Items[Ord(b14)].Visible := False;
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TJA0ContestZero.Create(Self, 'ALL JA0 コンテスト (JA0)', M);
-end;
-
-procedure TMainForm.InitALLJA0_Other(M: TContestMode);
-begin
-   BandMenu.Items[Ord(b14)].Visible := False;
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)', M);
-end;
-
-procedure TMainForm.InitDxPedi(M: TContestMode);
-begin
-   actionShowMultipliers.Enabled := False;
-   menuShowMultipliers.Enabled := False;
-   MultiButton.Enabled := False;
-
-   MyContest := TPedi.Create(Self, 'Pedition mode', M);
-end;
-
-procedure TMainForm.InitUserDefined(ContestName, ConfigFile: string; M: TContestMode);
-var
-   B: TBand;
-begin
-   zyloContestSwitch(ContestName, ConfigFile);
-   MyContest := TGeneralContest.Create(Self, ContestName, ConfigFile, M);
-
-   for B := b19 to High(TGeneralContest(MyContest).Config.PowerTable) do begin
-      if TGeneralContest(MyContest).Config.PowerTable[B] = '-' then begin
-         HideBandMenu(B);
-      end;
-   end;
-
-   if TGeneralContest(MyContest).Config.UseWarcBand = True then begin
-      BandMenu.Items[ord(b10)].Visible := True;
-      BandMenu.Items[ord(b18)].Visible := True;
-      BandMenu.Items[ord(b24)].Visible := True;
-   end
-   else begin
-      HideBandMenuWarc();
-   end;
-end;
-
-procedure TMainForm.InitCQWW(M: TContestMode);
-begin
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   menuShowCheckCountry.Visible := True;
-   menuShowCheckMulti.Caption := 'Check Zone';
-
-   MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', M);
-   FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
-end;
-
-procedure TMainForm.InitWPX(ContestCategory: TContestCategory; M: TContestMode);
-begin
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   Grid.Cols[13].Text := 'prefix';
-   Grid.Cols[14].Text := 'zone';
-
-   MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', M);
-
-   case ContestCategory of
-      ccSingleOp:          MyContest.SerialType := stAll;
-      ccMultiOpMultiTx:    MyContest.SerialType := stBand;
-      ccMultiOpSingleTx:   MyContest.SerialType := stMultiSingle;
-      ccMultiOpTwoTx:      MyContest.SerialType := stMultiSingle;
-   end;
-
-   mPXListWPX.Visible := True;
-end;
-
-procedure TMainForm.InitJIDX(M: TContestMode);
-begin
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   if dmZLogGlobal.MyCountry = 'JA' then begin
-      menuShowCheckCountry.Visible := True;
-      menuShowCheckMulti.Caption := 'Check Zone';
-      MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', M);
-   end
-   else begin
-      MyContest := TJIDXContestDX.Create(Self, 'JIDX Contest (DX)', M);
-   end;
-   FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
-end;
-
-procedure TMainForm.InitAPSprint(M: TContestMode);
-begin
-   BandMenu.Items[Ord(b19)].Visible := False;
-   BandMenu.Items[Ord(b35)].Visible := False;
-   BandMenu.Items[Ord(b28)].Visible := False;
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TAPSprint.Create(Self, 'Asia Pacific Sprint', M);
-end;
-
-procedure TMainForm.InitARRL_W(M: TContestMode);
-begin
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)', dmZLogGlobal.ContestMode);
-end;
-
-procedure TMainForm.InitARRL_DX(M: TContestMode);
-begin
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)', dmZLogGlobal.ContestMode);
-end;
-
-procedure TMainForm.InitARRL10m(M: TContestMode);
-begin
-   BandMenu.Items[Ord(b19)].Visible := False;
-   BandMenu.Items[Ord(b35)].Visible := False;
-   BandMenu.Items[Ord(b7)].Visible := False;
-   BandMenu.Items[Ord(b14)].Visible := False;
-   BandMenu.Items[Ord(b21)].Visible := False;
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TARRL10Contest.Create(Self, 'ARRL 10m Contest', M);
-
-
-   FCheckMulti.ListCWandPh := True;
-end;
-
-procedure TMainForm.InitIARU(M: TContestMode);
-begin
-   HideBandMenuVU();
-
-   MyContest := TIARUContest.Create(Self, 'IARU HF Championship', M);
-end;
-
-procedure TMainForm.InitAllAsianDX(M: TContestMode);
-begin
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', M);
-end;
-
-procedure TMainForm.InitIOTA(M: TContestMode);
-begin
-   BandMenu.Items[Ord(b19)].Visible := False;
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TIOTAContest.Create(Self, 'IOTA Contest', M);
-end;
-
-procedure TMainForm.InitWAE(M: TContestMode);
-begin
-   BandMenu.Items[Ord(b19)].Visible := False;
-   HideBandMenuWARC();
-   HideBandMenuVU();
-
-   MyContest := TWAEContest.Create(Self, 'WAEDC Contest', M);
-end;
-
 procedure TMainForm.ShowBandMenu(b: TBand);
 begin
    BandMenu.Items[Ord(b)].Visible := True;
@@ -9765,67 +9546,6 @@ procedure TMainForm.HideBandMenu(b: TBand);
 begin
    BandMenu.Items[Ord(b)].Visible := False;
    BandMenu.Items[Ord(b)].Enabled := False;
-end;
-
-procedure TMainForm.HideBandMenuHF();
-begin
-   BandMenu.Items[Ord(b19)].Visible := False;
-   BandMenu.Items[Ord(b35)].Visible := False;
-   BandMenu.Items[Ord(b7)].Visible := False;
-   BandMenu.Items[Ord(b14)].Visible := False;
-   BandMenu.Items[Ord(b21)].Visible := False;
-   BandMenu.Items[Ord(b28)].Visible := False;
-   BandMenu.Items[Ord(b19)].Enabled := False;
-   BandMenu.Items[Ord(b35)].Enabled := False;
-   BandMenu.Items[Ord(b7)].Enabled := False;
-   BandMenu.Items[Ord(b14)].Enabled := False;
-   BandMenu.Items[Ord(b21)].Enabled := False;
-   BandMenu.Items[Ord(b28)].Enabled := False;
-end;
-
-procedure TMainForm.HideBandMenuWARC();
-begin
-   BandMenu.Items[Ord(b10)].Visible := False;
-   BandMenu.Items[Ord(b18)].Visible := False;
-   BandMenu.Items[Ord(b24)].Visible := False;
-   BandMenu.Items[Ord(b10)].Enabled := False;
-   BandMenu.Items[Ord(b18)].Enabled := False;
-   BandMenu.Items[Ord(b24)].Enabled := False;
-end;
-
-procedure TMainForm.HideBandMenuVU(fInclude50: Boolean);
-begin
-   if fInclude50 = True then begin
-      BandMenu.Items[Ord(b50)].Visible := False;
-      BandMenu.Items[Ord(b50)].Enabled := False;
-   end;
-
-   BandMenu.Items[Ord(b144)].Visible := False;
-   BandMenu.Items[Ord(b430)].Visible := False;
-   BandMenu.Items[Ord(b1200)].Visible := False;
-   BandMenu.Items[Ord(b2400)].Visible := False;
-   BandMenu.Items[Ord(b5600)].Visible := False;
-   BandMenu.Items[Ord(b10G)].Visible := False;
-   BandMenu.Items[Ord(b10G)].Visible := False;
-   BandMenu.Items[Ord(b104G)].Visible := False;
-   BandMenu.Items[Ord(b24G)].Visible := False;
-   BandMenu.Items[Ord(b47G)].Visible := False;
-   BandMenu.Items[Ord(b77G)].Visible := False;
-   BandMenu.Items[Ord(b135G)].Visible := False;
-   BandMenu.Items[Ord(b248G)].Visible := False;
-
-   BandMenu.Items[Ord(b144)].Enabled := False;
-   BandMenu.Items[Ord(b430)].Enabled := False;
-   BandMenu.Items[Ord(b1200)].Enabled := False;
-   BandMenu.Items[Ord(b2400)].Enabled := False;
-   BandMenu.Items[Ord(b5600)].Enabled := False;
-   BandMenu.Items[Ord(b10G)].Enabled := False;
-   BandMenu.Items[Ord(b104G)].Enabled := False;
-   BandMenu.Items[Ord(b24G)].Enabled := False;
-   BandMenu.Items[Ord(b47G)].Enabled := False;
-   BandMenu.Items[Ord(b77G)].Enabled := False;
-   BandMenu.Items[Ord(b135G)].Enabled := False;
-   BandMenu.Items[Ord(b248G)].Enabled := False;
 end;
 
 function TMainForm.GetNumOfAvailableBands(): Integer;
@@ -9922,11 +9642,11 @@ begin
    end;
 
    // 部門表示
-   strCap := strCap + ' - ' + ContestModeName[MyContest.Mode];
+   strCap := strCap + ' - [' + ContestModeName[MyContest.Mode] + ']';
 
    // 使用中のファイル名
    if CurrentFileName <> '' then begin
-      strCap := strCap + ' - ' + ExtractFileName(CurrentFileName);
+      strCap := strCap + ' - [' + ExtractFileName(CurrentFileName) + ']';
    end;
 
    // Post contest
