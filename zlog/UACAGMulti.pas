@@ -33,6 +33,12 @@ type
     checkJumpLatestMulti: TCheckBox;
     Grid: TStringGrid;
     checkIncremental: TCheckBox;
+    Label104G: TRotateLabel;
+    Label24G: TRotateLabel;
+    Label47G: TRotateLabel;
+    Label77G: TRotateLabel;
+    Label135G: TRotateLabel;
+    Label248G: TRotateLabel;
     procedure FormCreate(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -375,6 +381,12 @@ begin
    Label2400.Left := Label1200.Left + (w * 2);
    Label5600.Left := Label2400.Left + (w * 2);
    Label10g.Left  := Label5600.Left + (w * 2);
+   Label104g.Left  := Label10g.Left + (w * 2);
+   Label24g.Left  := Label104g.Left + (w * 2);
+   Label47g.Left  := Label24g.Left + (w * 2);
+   Label77g.Left  := Label47g.Left + (w * 2);
+   Label135g.Left  := Label77g.Left + (w * 2);
+   Label248g.Left  := Label135g.Left + (w * 2);
 end;
 
 procedure TACAGMulti.OnZLogUpdateLabel( var Message: TMessage );
