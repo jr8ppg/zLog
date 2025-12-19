@@ -24,7 +24,7 @@ object TargetEditor: TTargetEditor
     Align = alClient
     ColCount = 50
     DefaultDrawing = False
-    RowCount = 18
+    RowCount = 24
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -15

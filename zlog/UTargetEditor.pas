@@ -81,7 +81,13 @@ begin
    ScoreGrid.Cells[0, 14] := MHzString[b2400];
    ScoreGrid.Cells[0, 15] := MHzString[b5600];
    ScoreGrid.Cells[0, 16] := MHzString[b10g];
-   ScoreGrid.Cells[0, 17] := 'Total';
+   ScoreGrid.Cells[0, 17] := MHzString[b104g];
+   ScoreGrid.Cells[0, 18] := MHzString[b24g];
+   ScoreGrid.Cells[0, 19] := MHzString[b47g];
+   ScoreGrid.Cells[0, 20] := MHzString[b77g];
+   ScoreGrid.Cells[0, 21] := MHzString[b135g];
+   ScoreGrid.Cells[0, 22] := MHzString[b248g];
+   ScoreGrid.Cells[0, 23] := 'Total';
 
    FTarget := TContestTarget.Create();
 
@@ -112,6 +118,10 @@ begin
 
    for i := 25 to 48 do begin
       ScoreGrid.ColWidths[i] := ifthen(FContestPeriod <= 24, -1, 35);
+   end;
+
+   if MyContest.Single10G = True then begin
+      ScoreGrid.RowHeights[17] := -1;
    end;
 
    TargetToGrid(dmZLogGlobal.Target);
@@ -234,10 +244,10 @@ var
    b: TBand;
    i: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, Ord(b)+1] := IntToStr(ATarget.Bands[b].Hours[i].Target);
-         ScoreGrid.Cells[i, 17]       := IntToStr(ATarget.Total.Hours[i].Target);
+         ScoreGrid.Cells[i, 23]       := IntToStr(ATarget.Total.Hours[i].Target);
       end;
       ScoreGrid.Cells[49, Ord(b)+1]   := IntToStr(ATarget.Bands[b].Total.Target);
    end;
@@ -250,7 +260,7 @@ var
    b: TBand;
    i: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 1 to FContestPeriod do begin
          ATarget.Bands[b].Hours[i].Target := StrToIntDef(ScoreGrid.Cells[i, Ord(b)+1], 0);
       end;
@@ -285,7 +295,7 @@ begin
       end;
       slText.Add(slLine.DelimitedText);
 
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
 
          slLine.Clear();
          slLine.Add(BandString[b]);
@@ -414,7 +424,7 @@ begin
       end
       else begin                       // 目標値
          b := TBand(ARow - 1);
-         if (b >= b19) and (b <= b10g) then begin
+         if (b >= b19) and (b <= HiBand) then begin
             t := FTarget.Bands[b].Hours[ACol].Target;
          end
          else begin
@@ -479,7 +489,7 @@ begin
    ScoreGrid.Cells[49, Ord(b)+1]   := IntToStr(FTarget.Bands[b].Total.Target);
 
    // 合計行に表示（縦計）
-   ScoreGrid.Cells[ACol, 17] := IntToStr(FTarget.Total.Hours[h].Target);
+   ScoreGrid.Cells[ACol, 23] := IntToStr(FTarget.Total.Hours[h].Target);
 
    // 再描画
    ScoreGrid.Refresh();
