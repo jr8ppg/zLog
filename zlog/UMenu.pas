@@ -11,7 +11,6 @@ type
    TMenuForm = class(TForm)
       OKButton: TButton;
       CancelButton: TButton;
-      Button3: TButton;
       ContestGroup: TGroupBox;
       rbALLJA: TRadioButton;
       rb6D: TRadioButton;
@@ -26,7 +25,6 @@ type
       rbGeneral: TRadioButton;
       CFGOpenDialog: TOpenDialog;
       SelectButton: TSpeedButton;
-      CheckBox1: TCheckBox;
       rbARRLDX: TRadioButton;
       rbARRLW: TRadioButton;
       rbAPSprint: TRadioButton;
@@ -71,7 +69,6 @@ type
       procedure FormDestroy(Sender: TObject);
    private
       FSelectContest: array[0..20] of TRadioButton;
-      FBandTemp: Integer; // temporary storage for bandgroup.itemindex
       FCFGFileName: string;
       FSelectDlg: TSelectUserDefinedContest;
       FModernStyle: Boolean;
@@ -87,7 +84,6 @@ type
       function GetTxNumber(): Integer;
       function GetScoreCoeff(): Extended;
       function GetGeneralName(): string;
-      function GetPostContest(): Boolean;
       procedure FreeSelectedContest();
    public
       property CFGFileName: string read FCFGFileName;
@@ -97,7 +93,6 @@ type
       property TxNumber: Integer read GetTxNumber;
       property ScoreCoeff: Extended read GetScoreCoeff;
       property GeneralName: string read GetGeneralName;
-      property PostContest: Boolean read GetPostContest;
    end;
 
 resourcestring
@@ -311,11 +306,8 @@ begin
 end;
 
 procedure TMenuForm.rbALLJAClick(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[3].Enabled := False;
 end;
 
@@ -327,16 +319,12 @@ end;
 procedure TMenuForm.rbACAGClick(Sender: TObject);
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[3].Enabled := False;
 end;
 
 procedure TMenuForm.rb6DClick(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[3].Enabled := False;
 end;
 
@@ -344,16 +332,12 @@ procedure TMenuForm.rbFDClick(Sender: TObject);
 begin
    EnableEveryThing;
    ScoreCoeffEdit.Enabled := True;
-
    ModeGroup.Controls[3].Enabled := False;
 end;
 
 procedure TMenuForm.rbJA0inClick(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[2].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 
@@ -363,21 +347,15 @@ begin
 end;
 
 procedure TMenuForm.rbARRLWClick(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 end;
 
 procedure TMenuForm.rbAPSprintClick(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 
@@ -431,26 +409,18 @@ begin
 end;
 
 procedure TMenuForm.rbIARUClick(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[3].Enabled := False;
 end;
 
 procedure TMenuForm.rbIOTAClick(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[3].Enabled := False;
 end;
 
 procedure TMenuForm.rbARRL10Click(Sender: TObject);
-var
-   i: Integer;
 begin
    EnableEveryThing;
    ModeGroup.Controls[3].Enabled := False;
@@ -462,10 +432,8 @@ begin
 end;
 
 procedure TMenuForm.rbWAEClick(Sender: TObject);
-var i: Integer;
 begin
    EnableEveryThing;
-
    ModeGroup.Controls[0].Enabled := False;
    ModeGroup.Controls[3].Enabled := False;
 end;
@@ -535,11 +503,6 @@ end;
 function TMenuForm.GetGeneralName(): string;
 begin
    Result := rbGeneral.Caption;
-end;
-
-function TMenuForm.GetPostContest(): Boolean;
-begin
-   Result := CheckBox1.Checked;
 end;
 
 procedure TMenuForm.FreeSelectedContest();

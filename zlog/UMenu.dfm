@@ -3,8 +3,8 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 312
-  ClientWidth = 525
+  ClientHeight = 258
+  ClientWidth = 530
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,19 +17,19 @@ object MenuForm: TMenuForm
   OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
-    525
-    312)
+    530
+    258)
   TextHeight = 13
   object Label3: TLabel
-    Left = 177
-    Top = 258
+    Left = 274
+    Top = 162
     Width = 58
     Height = 13
     Caption = 'Score coeff.'
   end
   object OKButton: TButton
-    Left = 12
-    Top = 281
+    Left = 362
+    Top = 225
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -37,10 +37,11 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
+    ExplicitTop = 251
   end
   object CancelButton: TButton
-    Left = 92
-    Top = 281
+    Left = 442
+    Top = 225
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -48,16 +49,7 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-  end
-  object Button3: TButton
-    Left = 172
-    Top = 281
-    Width = 75
-    Height = 25
-    Anchors = [akLeft, akBottom]
-    Caption = '&Help'
-    TabOrder = 2
-    Visible = False
+    ExplicitTop = 251
   end
   object ContestGroup: TGroupBox
     Left = 8
@@ -65,7 +57,7 @@ object MenuForm: TMenuForm
     Width = 257
     Height = 241
     Caption = 'Contest'
-    TabOrder = 3
+    TabOrder = 2
     object SelectButton: TSpeedButton
       Tag = 9999
       Left = 183
@@ -156,7 +148,7 @@ object MenuForm: TMenuForm
     object rbPedi: TRadioButton
       Tag = 200
       Left = 8
-      Top = 192
+      Top = 188
       Width = 73
       Height = 17
       Caption = 'DXpedition'
@@ -177,7 +169,7 @@ object MenuForm: TMenuForm
     object rbGeneral: TRadioButton
       Tag = 959
       Left = 8
-      Top = 208
+      Top = 211
       Width = 169
       Height = 17
       Caption = 'User Defined Contest'
@@ -294,49 +286,40 @@ object MenuForm: TMenuForm
     end
   end
   object ModeGroup: TRadioGroup
-    Left = 424
-    Top = 144
-    Width = 94
-    Height = 128
+    Left = 423
+    Top = 8
+    Width = 99
+    Height = 145
     Caption = 'Mode'
     ItemIndex = 0
     Items.Strings = (
-      'Ph/CW'
+      'PH/CW(MIX)'
       'CW'
-      'Ph'
-      'Other'
+      'PH'
+      'RTTY'
       'ALL')
-    TabOrder = 4
-  end
-  object CheckBox1: TCheckBox
-    Left = 265
-    Top = 286
-    Width = 87
-    Height = 17
-    Anchors = [akRight, akBottom]
-    Caption = 'Post-contest'
-    TabOrder = 5
+    TabOrder = 3
   end
   object ScoreCoeffEdit: TEdit
-    Left = 240
-    Top = 255
+    Left = 337
+    Top = 159
     Width = 25
     Height = 18
     AutoSize = False
     MaxLength = 3
-    TabOrder = 6
+    TabOrder = 4
     Text = '1'
   end
   object GroupBox1: TGroupBox
-    Left = 272
-    Top = 144
+    Left = 271
+    Top = 8
     Width = 146
-    Height = 128
+    Height = 145
     Caption = 'Category'
-    TabOrder = 7
+    TabOrder = 5
     object Label2: TLabel
       Left = 66
-      Top = 100
+      Top = 112
       Width = 21
       Height = 13
       Caption = 'TX#'
@@ -353,7 +336,7 @@ object MenuForm: TMenuForm
     object radioMultiOpMultiTx: TRadioButton
       Tag = 1
       Left = 7
-      Top = 38
+      Top = 42
       Width = 130
       Height = 13
       Caption = 'Multi-Op/Multi-TX'
@@ -363,7 +346,7 @@ object MenuForm: TMenuForm
     object radioMultiOpSingleTx: TRadioButton
       Tag = 2
       Left = 7
-      Top = 58
+      Top = 66
       Width = 130
       Height = 13
       Caption = 'Multi-Op/Single-TX'
@@ -373,7 +356,7 @@ object MenuForm: TMenuForm
     object radioMultiOpTwoTx: TRadioButton
       Tag = 3
       Left = 7
-      Top = 78
+      Top = 90
       Width = 130
       Height = 13
       Caption = 'Multi-Op/Two-TX'
@@ -382,7 +365,7 @@ object MenuForm: TMenuForm
     end
     object comboTxNo: TComboBox
       Left = 92
-      Top = 97
+      Top = 109
       Width = 45
       Height = 21
       Style = csDropDownList

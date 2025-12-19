@@ -8435,6 +8435,7 @@ var
    fShowOptionsDialog: Boolean;
 begin
    FInitialized := False;
+   FPostContest := False;
 
    SuperCheckDataLoad();
 
@@ -8485,7 +8486,6 @@ begin
             dmZLogGlobal.ContestMode := menu.ContestMode;
             dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
             dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
-            FPostContest := menu.PostContest;
             strContestName := menu.GeneralName;
             strCfgFileName := menu.CFGFileName;
             fScoreCoeff := menu.ScoreCoeff;
@@ -8498,7 +8498,6 @@ begin
             dmZLogGlobal.ContestMode := cmMix;
             dmZLogGlobal.ContestMenuNo := 8;
             dmZLogGlobal.TXNr := 0;    // TX#
-            FPostContest := False;
             strContestName := '';
             strCfgFileName := '';
             fScoreCoeff := 100;
