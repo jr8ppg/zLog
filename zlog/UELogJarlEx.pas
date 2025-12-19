@@ -182,14 +182,6 @@ type
     editMulti21: TEdit;
     editPoints21: TEdit;
     editMulti2_21: TEdit;
-    buttonModeCW: TSpeedButton;
-    buttonModeSSB: TSpeedButton;
-    buttonModeFM: TSpeedButton;
-    buttonModeAM: TSpeedButton;
-    buttonModeRTTY: TSpeedButton;
-    buttonModeFT4: TSpeedButton;
-    buttonModeFT8: TSpeedButton;
-    buttonModeDV: TSpeedButton;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -212,7 +204,6 @@ type
     FScoreMulti1: array[b19..HiBand] of TEdit;
     FScoreMulti2: array[b19..HiBand] of TEdit;
     FScorePoints: array[b19..HiBand] of TEdit;
-    FScoreMode: array[mCW..mDV] of TSpeedButton;
 
     function CreateELogR1(SL: TStringList): Boolean;
     function CreateELogR2(SL: TStringList): Boolean;
@@ -363,16 +354,6 @@ begin
    editFdcoeff.Enabled := MyContest.UseCoeff;
 
    edFDCoefficient.Enabled := MyContest.UseCoeff;
-
-   FScoreMode[mCW] := buttonModeCW;
-   FScoreMode[mSSB] := buttonModeSSB;
-   FScoreMode[mFM] := buttonModeFM;
-   FScoreMode[mAM] := buttonModeAM;
-   FScoreMode[mRTTY] := buttonModeRTTY;
-   FScoreMode[mFT4] := buttonModeFT4;
-   FScoreMode[mFT8] := buttonModeFT8;
-   FScoreMode[mOther] := nil;
-   FScoreMode[mDV] := buttonModeDV;
 
    InitializeFields;
 end;
@@ -1071,10 +1052,6 @@ begin
          Continue;
       end;
 
-      if Assigned(FScoreMode[Q.Mode]) and (FScoreMode[Q.Mode].Down = False) then begin
-         Continue;
-      end;
-
 //      if Q.Invalid = True then begin
 //         Continue;
 //      end;
@@ -1213,10 +1190,6 @@ begin
 
       if (dmZLogGlobal.Settings._output_outofperiod = False) and
          (Log.IsOutOfPeriod(Q) = True) then begin
-         Continue;
-      end;
-
-      if Assigned(FScoreMode[Q.Mode]) and (FScoreMode[Q.Mode].Down = False) then begin
          Continue;
       end;
 
@@ -1399,7 +1372,6 @@ var
    totalqso, totalmulti1, totalmulti2, totalpoints: Integer;
    fdcoeff: Extended;
    fScore: Extended;
-   m: TMode;
    i: Integer;
    Q: TQSO;
 begin
@@ -1419,11 +1391,6 @@ begin
       Q := Log.QSOList[i];
 
       b := Q.Band;
-      m := Q.Mode;
-
-      if Assigned(FScoreMode[m]) and (FScoreMode[m].Down = False) then begin
-         Continue;
-      end;
 
       if Q.Invalid = True then begin
          Continue;
