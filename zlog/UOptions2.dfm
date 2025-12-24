@@ -1,7 +1,7 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = radioSingleOp
+  ActiveControl = vEdit1
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 571
@@ -23,7 +23,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetCategories
+    ActivePage = tabsheetVoice
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -1996,9 +1996,9 @@ object formOptions2: TformOptions2
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'
       object GroupBox4: TGroupBox
-        Left = 6
-        Top = 4
-        Width = 423
+        Left = 3
+        Top = 3
+        Width = 511
         Height = 261
         Caption = 'Messages'
         TabOrder = 0
@@ -2059,8 +2059,8 @@ object formOptions2: TformOptions2
           Caption = '#8'
         end
         object memo: TLabel
-          Left = 48
-          Top = 16
+          Left = 74
+          Top = 15
           Width = 28
           Height = 13
           Caption = 'memo'
@@ -2093,11 +2093,227 @@ object formOptions2: TformOptions2
           Height = 13
           Caption = '#12'
         end
-        object vEdit2: TEdit
+        object buttonVoiceAfterCmd1: TSpeedButton
+          Tag = 1
+          Left = 276
+          Top = 32
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceBeforeCmd1: TSpeedButton
+          Tag = 1
+          Left = 32
+          Top = 32
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd2: TSpeedButton
           Tag = 2
           Left = 32
           Top = 50
-          Width = 245
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd3: TSpeedButton
+          Tag = 3
+          Left = 32
+          Top = 68
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd4: TSpeedButton
+          Tag = 4
+          Left = 32
+          Top = 86
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd5: TSpeedButton
+          Tag = 5
+          Left = 32
+          Top = 104
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd6: TSpeedButton
+          Tag = 6
+          Left = 32
+          Top = 122
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd7: TSpeedButton
+          Tag = 7
+          Left = 32
+          Top = 140
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd8: TSpeedButton
+          Tag = 8
+          Left = 32
+          Top = 158
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd9: TSpeedButton
+          Tag = 9
+          Left = 32
+          Top = 176
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd10: TSpeedButton
+          Tag = 10
+          Left = 32
+          Top = 194
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd11: TSpeedButton
+          Tag = 11
+          Left = 32
+          Top = 212
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceBeforeCmd12: TSpeedButton
+          Tag = 12
+          Left = 32
+          Top = 230
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonVoiceBeforeCmdClick
+        end
+        object buttonVoiceAfterCmd2: TSpeedButton
+          Tag = 2
+          Left = 276
+          Top = 50
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd3: TSpeedButton
+          Tag = 3
+          Left = 276
+          Top = 68
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd4: TSpeedButton
+          Tag = 4
+          Left = 276
+          Top = 86
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd5: TSpeedButton
+          Tag = 5
+          Left = 276
+          Top = 104
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd6: TSpeedButton
+          Tag = 6
+          Left = 276
+          Top = 122
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd7: TSpeedButton
+          Tag = 7
+          Left = 276
+          Top = 140
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd8: TSpeedButton
+          Tag = 8
+          Left = 276
+          Top = 158
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd9: TSpeedButton
+          Tag = 9
+          Left = 276
+          Top = 176
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd10: TSpeedButton
+          Tag = 10
+          Left = 276
+          Top = 194
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd11: TSpeedButton
+          Tag = 11
+          Left = 276
+          Top = 212
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object buttonVoiceAfterCmd12: TSpeedButton
+          Tag = 12
+          Left = 276
+          Top = 230
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonVoiceAfterCmdClick
+        end
+        object vEdit2: TEdit
+          Tag = 2
+          Left = 74
+          Top = 50
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2107,9 +2323,9 @@ object formOptions2: TformOptions2
         end
         object vEdit3: TEdit
           Tag = 3
-          Left = 32
+          Left = 74
           Top = 68
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2119,9 +2335,9 @@ object formOptions2: TformOptions2
         end
         object vEdit4: TEdit
           Tag = 4
-          Left = 32
+          Left = 74
           Top = 86
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2131,9 +2347,9 @@ object formOptions2: TformOptions2
         end
         object vEdit5: TEdit
           Tag = 5
-          Left = 32
+          Left = 74
           Top = 104
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2143,9 +2359,9 @@ object formOptions2: TformOptions2
         end
         object vEdit6: TEdit
           Tag = 6
-          Left = 32
+          Left = 74
           Top = 122
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2155,9 +2371,9 @@ object formOptions2: TformOptions2
         end
         object vEdit7: TEdit
           Tag = 7
-          Left = 32
+          Left = 74
           Top = 140
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2167,9 +2383,9 @@ object formOptions2: TformOptions2
         end
         object vEdit8: TEdit
           Tag = 8
-          Left = 32
+          Left = 74
           Top = 158
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2179,9 +2395,9 @@ object formOptions2: TformOptions2
         end
         object vEdit1: TEdit
           Tag = 1
-          Left = 32
+          Left = 74
           Top = 32
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           MaxLength = 255
@@ -2192,9 +2408,9 @@ object formOptions2: TformOptions2
         end
         object vButton1: TButton
           Tag = 1
-          Left = 287
+          Left = 318
           Top = 32
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'vButton1'
           PopupMenu = popupVoiceMenu
@@ -2206,9 +2422,9 @@ object formOptions2: TformOptions2
         end
         object vButton2: TButton
           Tag = 2
-          Left = 287
+          Left = 318
           Top = 50
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2220,9 +2436,9 @@ object formOptions2: TformOptions2
         end
         object vButton3: TButton
           Tag = 3
-          Left = 287
+          Left = 318
           Top = 68
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2234,9 +2450,9 @@ object formOptions2: TformOptions2
         end
         object vButton4: TButton
           Tag = 4
-          Left = 287
+          Left = 318
           Top = 86
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2248,9 +2464,9 @@ object formOptions2: TformOptions2
         end
         object vButton5: TButton
           Tag = 5
-          Left = 287
+          Left = 318
           Top = 104
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2262,9 +2478,9 @@ object formOptions2: TformOptions2
         end
         object vButton6: TButton
           Tag = 6
-          Left = 287
+          Left = 318
           Top = 122
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2276,9 +2492,9 @@ object formOptions2: TformOptions2
         end
         object vButton7: TButton
           Tag = 7
-          Left = 287
+          Left = 318
           Top = 140
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2290,9 +2506,9 @@ object formOptions2: TformOptions2
         end
         object vButton8: TButton
           Tag = 8
-          Left = 287
+          Left = 318
           Top = 158
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2304,9 +2520,9 @@ object formOptions2: TformOptions2
         end
         object vEdit9: TEdit
           Tag = 7
-          Left = 32
+          Left = 74
           Top = 176
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2316,9 +2532,9 @@ object formOptions2: TformOptions2
         end
         object vEdit10: TEdit
           Tag = 8
-          Left = 32
+          Left = 74
           Top = 194
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2328,9 +2544,9 @@ object formOptions2: TformOptions2
         end
         object vButton9: TButton
           Tag = 9
-          Left = 287
+          Left = 318
           Top = 176
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2342,9 +2558,9 @@ object formOptions2: TformOptions2
         end
         object vButton10: TButton
           Tag = 10
-          Left = 287
+          Left = 318
           Top = 194
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2356,9 +2572,9 @@ object formOptions2: TformOptions2
         end
         object vEdit11: TEdit
           Tag = 8
-          Left = 32
+          Left = 74
           Top = 212
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2368,9 +2584,9 @@ object formOptions2: TformOptions2
         end
         object vButton11: TButton
           Tag = 11
-          Left = 287
+          Left = 318
           Top = 212
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2382,9 +2598,9 @@ object formOptions2: TformOptions2
         end
         object vEdit12: TEdit
           Tag = 8
-          Left = 32
+          Left = 74
           Top = 230
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2394,9 +2610,9 @@ object formOptions2: TformOptions2
         end
         object vButton12: TButton
           Tag = 12
-          Left = 287
+          Left = 318
           Top = 230
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
@@ -2408,24 +2624,24 @@ object formOptions2: TformOptions2
         end
       end
       object GroupBox16: TGroupBox
-        Left = 6
-        Top = 352
-        Width = 423
+        Left = 3
+        Top = 364
+        Width = 511
         Height = 50
         Caption = 'Playback test'
         TabOrder = 2
         object buttonPlayVoice: TSpeedButton
-          Left = 310
+          Left = 374
           Top = 16
-          Width = 50
+          Width = 60
           Height = 26
           Caption = 'Play'
           OnClick = buttonPlayVoiceClick
         end
         object buttonStopVoice: TSpeedButton
-          Left = 362
+          Left = 440
           Top = 16
-          Width = 50
+          Width = 60
           Height = 26
           Caption = 'Stop'
           OnClick = buttonStopVoiceClick
@@ -2440,17 +2656,17 @@ object formOptions2: TformOptions2
         object comboVoiceDevice: TComboBox
           Left = 48
           Top = 19
-          Width = 256
+          Width = 320
           Height = 21
           Style = csDropDownList
           TabOrder = 0
         end
       end
       object GroupBox19: TGroupBox
-        Left = 6
+        Left = 3
         Top = 270
-        Width = 423
-        Height = 77
+        Width = 511
+        Height = 79
         Caption = 'Additional CQ Messages'
         TabOrder = 1
         object Label36: TLabel
@@ -2468,17 +2684,52 @@ object formOptions2: TformOptions2
           Caption = 'CQ3'
         end
         object Label82: TLabel
-          Left = 48
+          Left = 74
           Top = 16
           Width = 28
           Height = 13
           Caption = 'memo'
         end
-        object vEdit14: TEdit
+        object buttonAddVoiceBeforeCmd2: TSpeedButton
+          Tag = 2
+          Left = 32
+          Top = 32
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonAddVoiceBeforeCmdClick
+        end
+        object buttonAddVoiceAfterCmd2: TSpeedButton
+          Tag = 2
+          Left = 276
+          Top = 32
+          Width = 40
+          Height = 19
+          Caption = 'After'
+        end
+        object buttonAddVoiceBeforeCmd3: TSpeedButton
           Tag = 3
           Left = 32
           Top = 50
-          Width = 245
+          Width = 40
+          Height = 19
+          Caption = 'Before'
+          OnClick = buttonAddVoiceBeforeCmdClick
+        end
+        object buttonAddVoiceAfterCmd3: TSpeedButton
+          Tag = 3
+          Left = 276
+          Top = 50
+          Width = 40
+          Height = 19
+          Caption = 'After'
+          OnClick = buttonAddVoiceAfterCmdClick
+        end
+        object vEdit14: TEdit
+          Tag = 3
+          Left = 74
+          Top = 50
+          Width = 200
           Height = 17
           AutoSize = False
           PopupMenu = popupVoiceMenu
@@ -2488,9 +2739,9 @@ object formOptions2: TformOptions2
         end
         object vEdit13: TEdit
           Tag = 2
-          Left = 32
+          Left = 74
           Top = 32
-          Width = 245
+          Width = 200
           Height = 17
           AutoSize = False
           MaxLength = 255
@@ -2501,9 +2752,9 @@ object formOptions2: TformOptions2
         end
         object vButton13: TButton
           Tag = 2
-          Left = 287
+          Left = 318
           Top = 32
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'vButton1'
           PopupMenu = popupVoiceMenu
@@ -2515,9 +2766,9 @@ object formOptions2: TformOptions2
         end
         object vButton14: TButton
           Tag = 3
-          Left = 287
+          Left = 318
           Top = 50
-          Width = 125
+          Width = 185
           Height = 19
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu

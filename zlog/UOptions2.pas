@@ -443,6 +443,34 @@ type
     Label45: TLabel;
     radioOnCancelFocusToQsoList: TRadioButton;
     radioOnCancelFocusToNewQso: TRadioButton;
+    buttonVoiceAfterCmd1: TSpeedButton;
+    buttonVoiceBeforeCmd1: TSpeedButton;
+    buttonVoiceBeforeCmd2: TSpeedButton;
+    buttonVoiceBeforeCmd3: TSpeedButton;
+    buttonVoiceBeforeCmd4: TSpeedButton;
+    buttonVoiceBeforeCmd5: TSpeedButton;
+    buttonVoiceBeforeCmd6: TSpeedButton;
+    buttonVoiceBeforeCmd7: TSpeedButton;
+    buttonVoiceBeforeCmd8: TSpeedButton;
+    buttonVoiceBeforeCmd9: TSpeedButton;
+    buttonVoiceBeforeCmd10: TSpeedButton;
+    buttonVoiceBeforeCmd11: TSpeedButton;
+    buttonVoiceBeforeCmd12: TSpeedButton;
+    buttonVoiceAfterCmd2: TSpeedButton;
+    buttonVoiceAfterCmd3: TSpeedButton;
+    buttonVoiceAfterCmd4: TSpeedButton;
+    buttonVoiceAfterCmd5: TSpeedButton;
+    buttonVoiceAfterCmd6: TSpeedButton;
+    buttonVoiceAfterCmd7: TSpeedButton;
+    buttonVoiceAfterCmd8: TSpeedButton;
+    buttonVoiceAfterCmd9: TSpeedButton;
+    buttonVoiceAfterCmd10: TSpeedButton;
+    buttonVoiceAfterCmd11: TSpeedButton;
+    buttonVoiceAfterCmd12: TSpeedButton;
+    buttonAddVoiceBeforeCmd2: TSpeedButton;
+    buttonAddVoiceAfterCmd2: TSpeedButton;
+    buttonAddVoiceBeforeCmd3: TSpeedButton;
+    buttonAddVoiceAfterCmd3: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -500,6 +528,10 @@ type
       var Handled: Boolean);
     procedure vAdditionalButtonContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure buttonVoiceBeforeCmdClick(Sender: TObject);
+    procedure buttonVoiceAfterCmdClick(Sender: TObject);
+    procedure buttonAddVoiceBeforeCmdClick(Sender: TObject);
+    procedure buttonAddVoiceAfterCmdClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -534,9 +566,10 @@ type
 
     FVoiceEdit: array[1..maxmessage] of TEdit;
     FVoiceButton: array[1..maxmessage] of TButton;
-    FVoiceSound: TWaveSound;
     FAdditionalVoiceEdit: array[2..3] of TEdit;
     FAdditionalVoiceButton: array[2..3] of TButton;
+
+    FVoiceSound: TWaveSound;
 
     procedure RenewCWStrBankDisp();
     procedure SetEditNumber(no: Integer);
@@ -1924,6 +1957,13 @@ begin
    popupVoiceMenu.Tag := TEdit(Sender).Tag;
 end;
 
+procedure TformOptions2.buttonAddVoiceBeforeCmdClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TRadioButton(Sender).Tag;
+end;
+
 procedure TformOptions2.vAdditionalButtonClick(Sender: TObject);
 begin
    OpenDialog.InitialDir := dmZLogGlobal.SoundPath;
@@ -1931,6 +1971,13 @@ begin
       FTempAdditionalVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
    end;
+end;
+
+procedure TformOptions2.buttonAddVoiceAfterCmdClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TRadioButton(Sender).Tag;
 end;
 
 procedure TformOptions2.radioQsyAssistClick(Sender: TObject);
@@ -2122,10 +2169,6 @@ begin
    FVoiceButton[10] := vButton10;
    FVoiceButton[11] := vButton11;
    FVoiceButton[12] := vButton12;
-   FAdditionalVoiceEdit[2] := vEdit13;
-   FAdditionalVoiceEdit[3] := vEdit14;
-   FAdditionalVoiceButton[2] := vButton13;
-   FAdditionalVoiceButton[3] := vButton14;
 
    FVoiceSound := TWaveSound.Create();
 
@@ -2365,6 +2408,20 @@ procedure TformOptions2.buttonStopVoiceClick(Sender: TObject);
 begin
    FVoiceSound.Stop();
    FVoiceSound.Close();
+end;
+
+procedure TformOptions2.buttonVoiceBeforeCmdClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TSpeedButton(Sender).Tag;
+end;
+
+procedure TformOptions2.buttonVoiceAfterCmdClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TSpeedButton(Sender).Tag;
 end;
 
 procedure TformOptions2.buttonSpotterListClick(Sender: TObject);
