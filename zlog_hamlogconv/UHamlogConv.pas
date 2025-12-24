@@ -31,7 +31,7 @@ type
     timeRangeFrom: TDateTimePicker;
     timeRangeTo: TDateTimePicker;
     GroupBox4: TGroupBox;
-    CheckBox1: TCheckBox;
+    checkUseNrTailChar: TCheckBox;
     buttonPowerSetting: TButton;
     procedure buttonCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -45,7 +45,8 @@ type
   private
     { Private declarations }
     FHamlog: THamlogData;
-
+    FPowerTable: array[b19..HiBand] of TPower;
+    FPowerStr: string;
     FLastFolder: string;
     FLastHdbName: string;
     FLastHamlogDatabase: string;
@@ -56,6 +57,7 @@ type
     procedure ReadRecordNumRange(Log: TLog);
     function ConvQso(Q: THamlogQso; rcvdnr_no: Integer): TQSO;
     function RcvdNrNo(): Integer;
+    procedure PowerStrToTable();
   public
     { Public declarations }
   end;
@@ -101,9 +103,6 @@ end;
 procedure THamlogConverter.LoadSettings();
 var
    ini: TMemIniFile;
-   num: Integer;
-   i: Integer;
-   strKey: string;
 begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -111,6 +110,9 @@ begin
       Self.Left := ini.ReadInteger('window', 'left', Self.Left);
       Self.Width := ini.ReadInteger('window', 'width', Self.Width);
       Self.Height := ini.ReadInteger('window', 'height', Self.Height);
+
+      FPowerStr := ini.ReadString('POWER', 'default', 'HHHHHHHHHHMMMPPPPPPPPP');
+      PowerStrToTable();
 
       FLastFolder := ini.ReadString('HAMLOG', 'lastfolder', '');
       FLastHdbName := ini.ReadString('HAMLOG', 'lastfilename', '');
@@ -123,8 +125,6 @@ end;
 procedure THamlogConverter.SaveSettings();
 var
    ini: TMemIniFile;
-   i: Integer;
-   strKey: string;
 begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
@@ -132,6 +132,8 @@ begin
       ini.WriteInteger('window', 'left', Self.Left);
       ini.WriteInteger('window', 'width', Self.Width);
       ini.WriteInteger('window', 'height', Self.Height);
+
+      ini.WriteString('POWER', 'default', FPowerStr);
 
       ini.WriteString('HAMLOG', 'lastfolder', FLastFolder);
       ini.WriteString('HAMLOG', 'lastfilename', FLastHdbName);
@@ -190,9 +192,14 @@ var
 begin
    dlg := TformPowerDialog.Create(Self);
    try
+      dlg.Power := FPowerStr;
+
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
+
+      FPowerStr := dlg.Power;
+      PowerStrToTable();
    finally
       dlg.Release();
    end;
@@ -284,6 +291,7 @@ var
    qso: TQSO;
    defrst: Integer;
    band: Integer;
+   S: string;
 
    function ConvMode(S: string): TMode;
    var
@@ -307,11 +315,14 @@ begin
    band := Q.Band;
    if band <= Ord(b5600) then begin
       qso.Band := TBand(band);
+
+      if Q.Freq <> MHzString[qso.Band] then begin
+         qso.Freq := Q.Freq;
+      end;
    end
    else begin
       qso.Band := bUnknown;
    end;
-   qso.Freq := Q.Freq;
 
    if (qso.Mode = mCW) or (qso.Mode = mRTTY) then begin
       defrst := 599;
@@ -330,6 +341,28 @@ begin
       else qso.NrRcvd := '';
    end;
 
+   if checkUseNrTailChar.Checked = True then begin
+      S := Copy(qso.NrRcvd, Length(qso.NrRcvd), 1);
+      if S = 'H' then begin
+         qso.Power := pwrH;
+      end
+      else if S = 'M' then begin
+         qso.Power := pwrM;
+      end
+      else if S = 'L' then begin
+         qso.Power := pwrL;
+      end
+      else if S = 'P' then begin
+         qso.Power := pwrP;
+      end
+      else begin
+         qso.Power := pwrM;
+      end;
+   end
+   else begin
+      qso.Power := FPowerTable[qso.Band];
+   end;
+
    Result := qso;
 end;
 
@@ -346,6 +379,24 @@ begin
    end
    else begin
       Result := 0;
+   end;
+end;
+
+procedure THamlogConverter.PowerStrToTable();
+var
+   b: TBand;
+   p: TPower;
+begin
+   FPowerStr := FPowerStr + Copy('HHHHHHHHHHMMMPPPPPPPPP', Length(FPowerStr) + 1);
+   for b := b19 to HiBand do begin
+      case FPowerStr[Ord(b) + 1] of
+         'H': p := pwrH;
+         'M': p := pwrM;
+         'L': p := pwrL;
+         'P': p := pwrP;
+         else p := pwrM;
+      end;
+      FPowerTable[b] := p;
    end;
 end;
 

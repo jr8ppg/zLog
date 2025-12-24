@@ -192,7 +192,7 @@ object HamlogConverter: THamlogConverter
     Height = 46
     Caption = #38651#21147
     TabOrder = 4
-    object CheckBox1: TCheckBox
+    object checkUseNrTailChar: TCheckBox
       Left = 16
       Top = 19
       Width = 177

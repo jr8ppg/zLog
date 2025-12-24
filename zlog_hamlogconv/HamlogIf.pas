@@ -142,7 +142,7 @@ var
 begin
    // YY/MM/DD
    yy := StrToIntDef(Copy(FDate, 1, 2), 0);
-   if yy >= 90 then begin
+   if yy >= 70 then begin
       yy := yy + 1900;
    end
    else begin
@@ -159,7 +159,7 @@ begin
    Result := EncodeDateTime(yy, mm, dd, h, m, 0, 0);
 
    if IsUTC = True then begin
-      Result := IncHour(Result, -9);
+      Result := IncHour(Result, 9);
    end;
 end;
 
