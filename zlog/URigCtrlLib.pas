@@ -19,7 +19,7 @@ const
 type
   TRigUpdateStatusEvent = procedure(Sender: TObject; rigno: Integer; currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode) of object;
   TRigErrorEvent = procedure(Sender: TObject; msg: string) of object;
-  TAudioInput = (aiMic = 0, aiUsb, aiAcc, aiMicUsb, aiAccUsb);
+  TAudioInput = (aiDontCare = 0, aiMic, aiUsb, aiAcc, aiMicUsb, aiMicAcc);
 
   TRig = class;
 

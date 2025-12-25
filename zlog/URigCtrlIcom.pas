@@ -28,6 +28,14 @@ type
     FMaxWPM: Integer;      // 48
 
     FFreq4Bytes: Boolean;
+
+    FAudioCmd: string;
+    FAudioMic: string;
+    FAudioUsb: string;
+    FAudioAcc: string;
+    FAudioMicUsb: string;
+    FAudioMicAcc: string;
+    procedure SendIcomCommand(command: string);
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
@@ -52,11 +60,18 @@ type
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
     procedure ControlPTT(fOn: Boolean); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
 
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
     property Freq4Bytes: Boolean read FFreq4Bytes write FFreq4Bytes;
+    property AudioCmd: string read FAudioCmd write FAudioCmd;
+    property AudioMic: string read FAudioMic write FAudioMic;
+    property AudioUsb: string read FAudioUsb write FAudioUsb;
+    property AudioAcc: string read FAudioAcc write FAudioAcc;
+    property AudioMicUsb: string read FAudioMicUsb write FAudioMicUsb;
+    property AudioMicAcc: string read FAudioMicAcc write FAudioMicAcc;
   end;
 
   TIcomCommThread = class(TThread)
@@ -110,6 +125,13 @@ begin
    FFreq4Bytes := False;
 
    FControlPTTSupported := True;
+
+   FAudioCmd := '';
+   FAudioMic := '';
+   FAudioUsb := '';
+   FAudioAcc := '';
+   FAudioMicUsb := '';
+   FAudioMicAcc := '';
 end;
 
 destructor TICOM.Destroy;
@@ -803,6 +825,52 @@ begin
    else begin
       ICOMWriteData(AnsiChar($1c) + AnsiChar($00) + AnsiChar($00));
    end;
+end;
+
+procedure TICOM.AudioInputSelect(input: TAudioInput);
+begin
+   inherited;
+
+   if FAudioInputSelectSupported = False then begin
+      Exit;
+   end;
+
+   case input of
+      aiDontCare: SendIcomCommand('');
+      aiMic:      SendIcomCommand(FAudioMic);
+      aiUsb:      SendIcomCommand(FAudioUsb);
+      aiAcc:      SendIcomCommand(FAudioAcc);
+      aiMicUsb:   SendIcomCommand(FAudioMicUsb);
+      aiMicAcc:   SendIcomCommand(FAudioMicAcc);
+   end;
+end;
+
+procedure TICOM.SendIcomCommand(command: string);
+var
+   i: Integer;
+   len: Integer;
+   cmd: AnsiString;
+   ch: AnsiChar;
+   S: string;
+begin
+   if command = '' then begin
+      Exit;
+   end;
+
+   cmd := '';
+   len := Length(command);
+
+   i := 1;
+   repeat
+      S := Copy(S, i, 2);
+
+      ch := AnsiChar(StrToIntDef('$' + S, 0));
+      cmd := cmd + ch;
+
+      Inc(i, 2);
+   until i > len;
+
+   ICOMWriteData(cmd);
 end;
 
 { TIC756 }

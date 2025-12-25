@@ -120,9 +120,11 @@ type
   end;
 
   TFT991 = class(TFT2000)
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetDataMode(fOn:Boolean); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TFT710 = class(TFT991)
@@ -133,6 +135,7 @@ type
   public
     procedure AntSelect(no: Integer); override;
     procedure RitClear; override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TFTDX3000 = class(TFT2000)
@@ -148,6 +151,12 @@ type
   TFTDX101 = class(TFT991)
   public
     procedure AntSelect(no: Integer); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
+  end;
+
+  TFTDX10 = class(TFT991)
+  public
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
 implementation
@@ -1528,6 +1537,12 @@ end;
 
 { TFT991 }
 
+constructor TFT991.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FAudioInputSelectSupported := True;
+end;
+
 //   FT-991対応
 //  基本はFT-2000と同じ。違いは下記。
 //  FT-991の周波数桁数は9桁。なのでmode情報は、1文字後ろへ。
@@ -1651,6 +1666,27 @@ begin
    WriteData('MD0A;');
 end;
 
+procedure TFT991.AudioInputSelect(input: TAudioInput);
+var
+   cmd: AnsiString;
+begin
+   case _currentmode of
+      mSSB: cmd := 'EX108';
+      mFM:  cmd := 'EX074';
+      mAM:  cmd := 'EX045';
+      else  cmd := '';
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData(cmd + '0;');
+      aiUsb:      WriteData(cmd + '1;');
+      aiAcc:      ;
+      aiMicUsb:   ;
+      aiMicAcc:   ;
+   end;
+end;
+
 { TFT710 }
 
 procedure TFT710.AntSelect(no: Integer);
@@ -1729,6 +1765,26 @@ begin
    end;
 end;
 
+//
+// EX
+//        0 1  2  3  4  5  6  7  8  9 10
+// SET    E X P1 P1 P2 P2 P3 P3 P4 P4 P4 ... P4 ;
+// P1: 01-04,06 メニュー大項目
+// P2: 01-05    メニュー中項目
+// P2: 01-26    メニュー小項目
+//
+procedure TFT710.AudioInputSelect(input: TAudioInput);
+begin
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData('EX0101140;');
+      aiUsb:      WriteData('EX0101141;');
+      aiAcc:      WriteData('EX0101142;');   // 710:Rear, FTX-1:bluetooth
+      aiMicUsb:   WriteData('EX0101143;');   // auto
+      aiMicAcc:   ;
+   end;
+end;
+
 { TFTDX3000 }
 
 procedure TFTDX3000.AntSelect(no: Integer);
@@ -1763,6 +1819,50 @@ begin
       1: WriteData('AN01;');
       2: WriteData('AN02;');
       3: WriteData('AN03;');
+   end;
+end;
+
+procedure TFTDX101.AudioInputSelect(input: TAudioInput);
+var
+   cmd: AnsiString;
+begin
+   case _currentmode of
+      mSSB: cmd := 'EX010111';
+      mFM:  cmd := 'EX010310';
+      mAM:  cmd := 'EX010211';
+      else  cmd := '';
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData(cmd + '0;');
+      aiUsb:      WriteData(cmd + '1;');
+      aiAcc:      ;
+      aiMicUsb:   ;
+      aiMicAcc:   ;
+   end;
+end;
+
+{ TFTDX10 }
+
+procedure TFTDX10.AudioInputSelect(input: TAudioInput);
+var
+   cmd: AnsiString;
+begin
+   case _currentmode of
+      mSSB: cmd := 'EX010113';
+      mFM:  cmd := 'EX010312';
+      mAM:  cmd := 'EX010213';
+      else  cmd := '';
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData(cmd + '0;');
+      aiUsb:      WriteData(cmd + '1;');
+      aiAcc:      ;
+      aiMicUsb:   ;
+      aiMicAcc:   ;
    end;
 end;
 

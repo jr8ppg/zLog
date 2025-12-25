@@ -57,12 +57,14 @@ type
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure FixEdgeSelect(no: Integer); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TTS990 = class(TTS2000)
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure AntSelect(no: Integer); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
 implementation
@@ -631,6 +633,7 @@ constructor TTS890.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDrive
 begin
    Inherited;
    FSMeterMax := 70;
+   FAudioInputSelectSupported := True;
 end;
 
 procedure TTS890.FixEdgeSelect(no: Integer);
@@ -643,12 +646,25 @@ begin
    end;
 end;
 
+procedure TTS890.AudioInputSelect(input: TAudioInput);
+begin
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData('MS010;');
+      aiUsb:      WriteData('MS002;');
+      aiAcc:      ;
+      aiMicUsb:   WriteData('MS012;');
+      aiMicAcc:   ;
+   end;
+end;
+
 { TTS990 }
 
 constructor TTS990.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
 begin
    Inherited;
    FSMeterMax := 70;
+   FAudioInputSelectSupported := True;
 end;
 
 procedure TTS990.AntSelect(no: Integer);
@@ -659,6 +675,18 @@ begin
       2: WriteData('AN2;');
       3: WriteData('AN3;');
       4: WriteData('AN4;');
+   end;
+end;
+
+procedure TTS990.AudioInputSelect(input: TAudioInput);
+begin
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData('MS01000;');
+      aiUsb:      WriteData('MS00010;');
+      aiAcc:      WriteData('MS00100;');
+      aiMicUsb:   WriteData('MS01010;');
+      aiMicAcc:   WriteData('MS01100;');
    end;
 end;
 
