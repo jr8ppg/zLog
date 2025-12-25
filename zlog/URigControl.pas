@@ -659,6 +659,12 @@ begin
             TICOM(rig).PlayMessageCwSupported := ICOMLIST[i].PlayCW;
             TICOM(rig).PlayMessagePhSupported := ICOMLIST[i].PlayPh;
             TICOM(rig).FixEdgeSelectSupported := ICOMLIST[i].FixEdgeSel;
+            TICOM(rig).AudioInputSelectSupported := ICOMLIST[i].AudioSel;
+            TICOM(rig).AudioMic := ICOMLIST[i].AudioMic;
+            TICOM(rig).AudioUsb := ICOMLIST[i].AudioUsb;
+            TICOM(rig).AudioAcc := ICOMLIST[i].AudioAcc;
+            TICOM(rig).AudioMicUsb := ICOMLIST[i].AudioMicUsb;
+            TICOM(rig).AudioMicAcc := ICOMLIST[i].AudioMicAcc;
 
             if Pos('IC-731', rname) > 0 then begin
                TICOM(rig).Freq4Bytes := True;
