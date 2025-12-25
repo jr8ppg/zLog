@@ -19,6 +19,7 @@ const
 type
   TRigUpdateStatusEvent = procedure(Sender: TObject; rigno: Integer; currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode) of object;
   TRigErrorEvent = procedure(Sender: TObject; msg: string) of object;
+  TAudioInput = (aiMic = 0, aiUsb, aiAcc, aiMicUsb, aiAccUsb);
 
   TRig = class;
 
@@ -74,6 +75,7 @@ type
     FFixEdgeSelectSupported: Boolean;
     FToggleBandSupported: Boolean;
     FSelectBandSupported: Boolean;
+    FAudioInputSelectSupported: Boolean;
 
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
@@ -139,6 +141,7 @@ type
     procedure PlayMessageCW(msg: string); virtual;
     procedure StopMessageCW(); virtual;
     procedure ControlPTT(fOn: Boolean); virtual;
+    procedure AudioInputSelect(input: TAudioInput); virtual;
 
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
@@ -170,6 +173,7 @@ type
     property FixEdgeSelectSupported: Boolean read FFixEdgeSelectSupported write FFixEdgeSelectSupported;
     property ToggleBandSupported: Boolean read FToggleBandSupported write FToggleBandSupported;
     property SelectBandSupported: Boolean read FSelectBandSupported write FSelectBandSupported;
+    property AudioInputSelectSupported: Boolean read FAudioInputSelectSupported write FAudioInputSelectSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
     property UsePolling: Boolean read FUsePolling write FUsePolling;
@@ -342,6 +346,7 @@ begin
    FFixEdgeSelectSupported := False;
    FToggleBandSupported := False;
    FSelectBandSupported := False;
+   FAudioInputSelectSupported := False;
 
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;
@@ -596,6 +601,11 @@ begin
 end;
 
 procedure TRig.ControlPTT(fOn: Boolean);
+begin
+//
+end;
+
+procedure TRig.AudioInputSelect(input: TAudioInput);
 begin
 //
 end;
