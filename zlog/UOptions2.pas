@@ -8,7 +8,7 @@ uses
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults, WinApi.CommCtrl, System.Math,
   UIntegerDialog, UzLogConst, UzLogSound, UOperatorEdit,
-  UzLogOperatorInfo, UFreqPanel, UFreqMemDialog, UzFreqMemory;
+  UzLogOperatorInfo, UFreqPanel, UFreqMemDialog, UzFreqMemory, UPrePostPlaybackDlg;
 
 type
   TformOptions2 = class(TForm)
@@ -1960,8 +1960,33 @@ end;
 procedure TformOptions2.buttonAddVoiceBeforeCmdClick(Sender: TObject);
 var
    n: Integer;
+   dlg: TformPrePostPlaybackDlg;
 begin
-   n := TRadioButton(Sender).Tag;
+   dlg := TformPrePostPlaybackDlg.Create(Self);
+   n := TSpeedButton(Sender).Tag;
+   try
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+   finally
+      dlg.Release();
+   end;
+end;
+
+procedure TformOptions2.buttonAddVoiceAfterCmdClick(Sender: TObject);
+var
+   n: Integer;
+   dlg: TformPrePostPlaybackDlg;
+begin
+   dlg := TformPrePostPlaybackDlg.Create(Self);
+   n := TSpeedButton(Sender).Tag;
+   try
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+   finally
+      dlg.Release();
+   end;
 end;
 
 procedure TformOptions2.vAdditionalButtonClick(Sender: TObject);
@@ -1971,13 +1996,6 @@ begin
       FTempAdditionalVoiceFiles[TButton(Sender).Tag] := OpenDialog.filename;
       TLabel(Sender).Caption := ExtractFileName(OpenDialog.filename);
    end;
-end;
-
-procedure TformOptions2.buttonAddVoiceAfterCmdClick(Sender: TObject);
-var
-   n: Integer;
-begin
-   n := TRadioButton(Sender).Tag;
 end;
 
 procedure TformOptions2.radioQsyAssistClick(Sender: TObject);
@@ -2413,15 +2431,33 @@ end;
 procedure TformOptions2.buttonVoiceBeforeCmdClick(Sender: TObject);
 var
    n: Integer;
+   dlg: TformPrePostPlaybackDlg;
 begin
+   dlg := TformPrePostPlaybackDlg.Create(Self);
    n := TSpeedButton(Sender).Tag;
+   try
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+   finally
+      dlg.Release();
+   end;
 end;
 
 procedure TformOptions2.buttonVoiceAfterCmdClick(Sender: TObject);
 var
    n: Integer;
+   dlg: TformPrePostPlaybackDlg;
 begin
+   dlg := TformPrePostPlaybackDlg.Create(Self);
    n := TSpeedButton(Sender).Tag;
+   try
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+   finally
+      dlg.Release();
+   end;
 end;
 
 procedure TformOptions2.buttonSpotterListClick(Sender: TObject);

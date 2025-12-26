@@ -2099,7 +2099,7 @@ object formOptions2: TformOptions2
           Top = 32
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceBeforeCmd1: TSpeedButton
@@ -2108,7 +2108,7 @@ object formOptions2: TformOptions2
           Top = 32
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd2: TSpeedButton
@@ -2117,7 +2117,7 @@ object formOptions2: TformOptions2
           Top = 50
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd3: TSpeedButton
@@ -2126,7 +2126,7 @@ object formOptions2: TformOptions2
           Top = 68
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd4: TSpeedButton
@@ -2135,7 +2135,7 @@ object formOptions2: TformOptions2
           Top = 86
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd5: TSpeedButton
@@ -2144,7 +2144,7 @@ object formOptions2: TformOptions2
           Top = 104
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd6: TSpeedButton
@@ -2153,7 +2153,7 @@ object formOptions2: TformOptions2
           Top = 122
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd7: TSpeedButton
@@ -2162,7 +2162,7 @@ object formOptions2: TformOptions2
           Top = 140
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd8: TSpeedButton
@@ -2171,7 +2171,7 @@ object formOptions2: TformOptions2
           Top = 158
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd9: TSpeedButton
@@ -2180,7 +2180,7 @@ object formOptions2: TformOptions2
           Top = 176
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd10: TSpeedButton
@@ -2189,7 +2189,7 @@ object formOptions2: TformOptions2
           Top = 194
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd11: TSpeedButton
@@ -2198,7 +2198,7 @@ object formOptions2: TformOptions2
           Top = 212
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceBeforeCmd12: TSpeedButton
@@ -2207,7 +2207,7 @@ object formOptions2: TformOptions2
           Top = 230
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceAfterCmd2: TSpeedButton
@@ -2216,7 +2216,7 @@ object formOptions2: TformOptions2
           Top = 50
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd3: TSpeedButton
@@ -2225,7 +2225,7 @@ object formOptions2: TformOptions2
           Top = 68
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd4: TSpeedButton
@@ -2234,7 +2234,7 @@ object formOptions2: TformOptions2
           Top = 86
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd5: TSpeedButton
@@ -2243,7 +2243,7 @@ object formOptions2: TformOptions2
           Top = 104
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd6: TSpeedButton
@@ -2252,7 +2252,7 @@ object formOptions2: TformOptions2
           Top = 122
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd7: TSpeedButton
@@ -2261,7 +2261,7 @@ object formOptions2: TformOptions2
           Top = 140
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd8: TSpeedButton
@@ -2270,7 +2270,7 @@ object formOptions2: TformOptions2
           Top = 158
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd9: TSpeedButton
@@ -2279,7 +2279,7 @@ object formOptions2: TformOptions2
           Top = 176
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd10: TSpeedButton
@@ -2288,7 +2288,7 @@ object formOptions2: TformOptions2
           Top = 194
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd11: TSpeedButton
@@ -2297,7 +2297,7 @@ object formOptions2: TformOptions2
           Top = 212
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd12: TSpeedButton
@@ -2306,7 +2306,7 @@ object formOptions2: TformOptions2
           Top = 230
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object vEdit2: TEdit
@@ -2696,7 +2696,7 @@ object formOptions2: TformOptions2
           Top = 32
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonAddVoiceBeforeCmdClick
         end
         object buttonAddVoiceAfterCmd2: TSpeedButton
@@ -2705,7 +2705,7 @@ object formOptions2: TformOptions2
           Top = 32
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
         end
         object buttonAddVoiceBeforeCmd3: TSpeedButton
           Tag = 3
@@ -2713,7 +2713,7 @@ object formOptions2: TformOptions2
           Top = 50
           Width = 40
           Height = 19
-          Caption = 'Before'
+          Caption = 'Pre'
           OnClick = buttonAddVoiceBeforeCmdClick
         end
         object buttonAddVoiceAfterCmd3: TSpeedButton
@@ -2722,7 +2722,7 @@ object formOptions2: TformOptions2
           Top = 50
           Width = 40
           Height = 19
-          Caption = 'After'
+          Caption = 'Post'
           OnClick = buttonAddVoiceAfterCmdClick
         end
         object vEdit14: TEdit
