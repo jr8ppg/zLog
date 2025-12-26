@@ -21,6 +21,7 @@ type
   TSerialType = (stNone = 0, stAll, stBand, stMultiSingle);
 
   TFrequency = Int64;
+  TAudioInput = (aiDontCare = 0, aiMic, aiUsb, aiAcc, aiMicUsb, aiMicAcc);
 
 type
   TPortAction = ( paNone = 0, paPtt, paKey, paAlwaysOn, paAlwaysOff, paHandshake );

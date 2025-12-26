@@ -531,21 +531,21 @@ begin
    if FCurrentOperator = nil then begin
       case i of
          1..12: begin
-            filename := dmZLogGlobal.Settings.FSoundFiles[i];
+            filename := dmZLogGlobal.Settings.FVoiceConfig[i].FSoundFile;
          end;
 
          101: begin
-            filename := dmZLogGlobal.Settings.FSoundFiles[1];
+            filename := dmZLogGlobal.Settings.FVoiceConfig[1].FSoundFile;
             i := 1;
          end;
 
          102: begin
-            filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[2];
+            filename := dmZLogGlobal.Settings.FAdditionalVoiceConfig[2].FSoundFile;
             i := 13;
          end;
 
          103: begin
-            filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[3];
+            filename := dmZLogGlobal.Settings.FAdditionalVoiceConfig[3].FSoundFile;
             i := 14;
          end;
       end;

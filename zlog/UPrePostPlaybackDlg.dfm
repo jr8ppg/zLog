@@ -12,6 +12,9 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
   TextHeight = 13
   object groupAudioInput: TGroupBox
     Left = 4
@@ -31,6 +34,7 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
       TabStop = True
     end
     object radioInputMic: TRadioButton
+      Tag = 1
       Left = 12
       Top = 47
       Width = 75
@@ -39,6 +43,7 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
       TabOrder = 1
     end
     object radioInputUsb: TRadioButton
+      Tag = 2
       Left = 12
       Top = 70
       Width = 75
@@ -47,6 +52,7 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
       TabOrder = 2
     end
     object radioInputAcc: TRadioButton
+      Tag = 3
       Left = 12
       Top = 93
       Width = 75
@@ -55,6 +61,7 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
       TabOrder = 3
     end
     object radioInputMicUsb: TRadioButton
+      Tag = 4
       Left = 12
       Top = 116
       Width = 75
@@ -63,6 +70,7 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
       TabOrder = 4
     end
     object radioInputMicAcc: TRadioButton
+      Tag = 5
       Left = 12
       Top = 139
       Width = 75
@@ -89,6 +97,7 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
       TabStop = True
     end
     object radioCommand163: TRadioButton
+      Tag = 163
       Left = 12
       Top = 47
       Width = 101
@@ -105,7 +114,6 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitTop = 220
     object Button1: TButton
       Left = 118
       Top = 4

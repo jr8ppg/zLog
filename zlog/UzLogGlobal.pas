@@ -85,6 +85,18 @@ type
     FDtr: TPortAction;  // default: KEY
   end;
 
+  TPrePostPlayBack = record
+    FAudioInput: TAudioInput;
+    FCommand: string;
+  end;
+
+  TVoiceConfig = record
+    FSoundFile: string;
+    FSoundComment: string;
+    FPreProcess: TPrePostPlayBack;
+    FPostProcess: TPrePostPlayBack;
+  end;
+
   TRigSetting = record
     FControlPort: Integer; {0 : none 1-4 : com#}
     FControlPortConfig: TPortConfig;
@@ -299,10 +311,8 @@ type
     FQuickMemoText: array[1..5] of string;
 
     // Voice Memory
-    FSoundFiles: array[1..maxmessage] of string;
-    FSoundComments: array[1..maxmessage] of string;
-    FAdditionalSoundFiles: array[2..3] of string;
-    FAdditionalSoundComments: array[2..3] of string;
+    FVoiceConfig: array[1..maxmessage] of TVoiceConfig;
+    FAdditionalVoiceConfig: array[2..3] of TVoiceConfig;
     FUseRigSoundDevice: Boolean;
     FSoundDevice: Integer;
 
@@ -1557,36 +1567,44 @@ begin
       for i := 1 to maxmessage do begin
          s := ini.ReadString('Voice', 'F#' + IntToStr(i), '');
          if s = '' then begin
-            Settings.FSoundFiles[i] := '';
-            Settings.FSoundComments[i] := '';
+            Settings.FVoiceConfig[i].FSoundFile := '';
+            Settings.FVoiceConfig[i].FSoundComment := '';
          end
          else begin
             if FileExists(s) = True then begin
-               Settings.FSoundFiles[i] := s;
-               Settings.FSoundComments[i] := ini.ReadString('Voice', 'C#' + IntToStr(i), '');
+               Settings.FVoiceConfig[i].FSoundFile := s;
+               Settings.FVoiceConfig[i].FSoundComment := ini.ReadString('Voice', 'C#' + IntToStr(i), '');
             end
             else begin
-               Settings.FSoundFiles[i] := '';
-               Settings.FSoundComments[i] := 'file not found';
+               Settings.FVoiceConfig[i].FSoundFile := '';
+               Settings.FVoiceConfig[i].FSoundComment := 'file not found';
             end;
          end;
+         Settings.FVoiceConfig[i].FPreProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'PRE_AI#' + IntToStr(i), 0));
+         Settings.FVoiceConfig[i].FPreProcess.FCommand := ini.ReadString('Voice', 'PRE_CMD#' + IntToStr(i), '');
+         Settings.FVoiceConfig[i].FPostProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'POST_AI#' + IntToStr(i), 0));
+         Settings.FVoiceConfig[i].FPostProcess.FCommand := ini.ReadString('Voice', 'POST_CMD#' + IntToStr(i), '');
       end;
       for i := 2 to 3 do begin
          s := ini.ReadString('Voice', 'CQ_F#' + IntToStr(i), '');
          if s = '' then begin
-            Settings.FAdditionalSoundFiles[i] := '';
-            Settings.FAdditionalSoundComments[i] := '';
+            Settings.FAdditionalVoiceConfig[i].FSoundFile := '';
+            Settings.FAdditionalVoiceConfig[i].FSoundComment := '';
          end
          else begin
             if FileExists(s) = True then begin
-               Settings.FAdditionalSoundFiles[i] := s;
-               Settings.FAdditionalSoundComments[i] := ini.ReadString('Voice', 'CQ_C#' + IntToStr(i), '');
+               Settings.FAdditionalVoiceConfig[i].FSoundFile := s;
+               Settings.FAdditionalVoiceConfig[i].FSoundComment := ini.ReadString('Voice', 'CQ_C#' + IntToStr(i), '');
             end
             else begin
-               Settings.FAdditionalSoundFiles[i] := '';
-               Settings.FAdditionalSoundComments[i] := 'file not found';
+               Settings.FAdditionalVoiceConfig[i].FSoundFile := '';
+               Settings.FAdditionalVoiceConfig[i].FSoundComment := 'file not found';
             end;
          end;
+         Settings.FAdditionalVoiceConfig[i].FPreProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'CQ_PRE_AI#' + IntToStr(i), 0));
+         Settings.FAdditionalVoiceConfig[i].FPreProcess.FCommand := ini.ReadString('Voice', 'CQ_PRE_CMD#' + IntToStr(i), '');
+         Settings.FAdditionalVoiceConfig[i].FPostProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'CQ_POST_AI#' + IntToStr(i), 0));
+         Settings.FAdditionalVoiceConfig[i].FPostProcess.FCommand := ini.ReadString('Voice', 'CQ_POST_CMD#' + IntToStr(i), '');
       end;
 
       // output device
@@ -2269,12 +2287,20 @@ begin
 
       // Voice Memory
       for i := 1 to maxmessage do begin
-         ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FSoundFiles[i]);
-         ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
+         ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FVoiceConfig[i].FSoundFile);
+         ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FVoiceConfig[i].FSoundComment);
+         ini.WriteInteger('Voice', 'PRE_AI#' + IntToStr(i), Integer(Settings.FVoiceConfig[i].FPreProcess.FAudioInput));
+         ini.WriteString('Voice', 'PRE_CMD#' + IntToStr(i), Settings.FVoiceConfig[i].FPreProcess.FCommand);
+         ini.WriteInteger('Voice', 'POST_AI#' + IntToStr(i), Integer(Settings.FVoiceConfig[i].FPostProcess.FAudioInput));
+         ini.WriteString('Voice', 'POST_CMD#' + IntToStr(i), Settings.FVoiceConfig[i].FPostProcess.FCommand);
       end;
       for i := 2 to 3 do begin
-         ini.WriteString('Voice', 'CQ_F#' + IntToStr(i), Settings.FAdditionalSoundFiles[i]);
-         ini.WriteString('Voice', 'CQ_C#' + IntToStr(i), Settings.FAdditionalSoundComments[i]);
+         ini.WriteString('Voice', 'CQ_F#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FSoundFile);
+         ini.WriteString('Voice', 'CQ_C#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FSoundComment);
+         ini.WriteInteger('Voice', 'CQ_PRE_AI#' + IntToStr(i), Integer(Settings.FAdditionalVoiceConfig[i].FPreProcess.FAudioInput));
+         ini.WriteString('Voice', 'CQ_PRE_CMD#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FPreProcess.FCommand);
+         ini.WriteInteger('Voice', 'CQ_POST_AI#' + IntToStr(i), Integer(Settings.FAdditionalVoiceConfig[i].FPostProcess.FAudioInput));
+         ini.WriteString('Voice', 'CQ_POST_CMD#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FPostProcess.FCommand);
       end;
 
       // output device

@@ -1699,18 +1699,18 @@ end;
 
 procedure TMainForm.RenewVoiceToolBar;
 begin
-   VoiceF1.Hint := dmZLogGlobal.Settings.FSoundComments[1];
-   VoiceF2.Hint := dmZLogGlobal.Settings.FSoundComments[2];
-   VoiceF3.Hint := dmZLogGlobal.Settings.FSoundComments[3];
-   VoiceF4.Hint := dmZLogGlobal.Settings.FSoundComments[4];
-   VoiceF5.Hint := dmZLogGlobal.Settings.FSoundComments[5];
-   VoiceF6.Hint := dmZLogGlobal.Settings.FSoundComments[6];
-   VoiceF7.Hint := dmZLogGlobal.Settings.FSoundComments[7];
-   VoiceF8.Hint := dmZLogGlobal.Settings.FSoundComments[8];
-   VoiceF9.Hint := dmZLogGlobal.Settings.FSoundComments[9];
-   VoiceF10.Hint := dmZLogGlobal.Settings.FSoundComments[10];
-   VoiceF11.Hint := dmZLogGlobal.Settings.FSoundComments[11];
-   VoiceF12.Hint := dmZLogGlobal.Settings.FSoundComments[12];
+   VoiceF1.Hint := dmZLogGlobal.Settings.FVoiceConfig[1].FSoundComment;
+   VoiceF2.Hint := dmZLogGlobal.Settings.FVoiceConfig[2].FSoundComment;
+   VoiceF3.Hint := dmZLogGlobal.Settings.FVoiceConfig[3].FSoundComment;
+   VoiceF4.Hint := dmZLogGlobal.Settings.FVoiceConfig[4].FSoundComment;
+   VoiceF5.Hint := dmZLogGlobal.Settings.FVoiceConfig[5].FSoundComment;
+   VoiceF6.Hint := dmZLogGlobal.Settings.FVoiceConfig[6].FSoundComment;
+   VoiceF7.Hint := dmZLogGlobal.Settings.FVoiceConfig[7].FSoundComment;
+   VoiceF8.Hint := dmZLogGlobal.Settings.FVoiceConfig[8].FSoundComment;
+   VoiceF9.Hint := dmZLogGlobal.Settings.FVoiceConfig[9].FSoundComment;
+   VoiceF10.Hint := dmZLogGlobal.Settings.FVoiceConfig[10].FSoundComment;
+   VoiceF11.Hint := dmZLogGlobal.Settings.FVoiceConfig[11].FSoundComment;
+   VoiceF12.Hint := dmZLogGlobal.Settings.FVoiceConfig[12].FSoundComment;
 end;
 
 procedure TMainForm.RenewBandMenu();
