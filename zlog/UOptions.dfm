@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetPath
+    ActivePage = tabsheetHardware1
     Align = alClient
     TabOrder = 0
     object tabsheetOperateStyle: TTabSheet
@@ -605,13 +605,23 @@ object formOptions: TformOptions
         end
         object checkRig2UsePolling: TCheckBox
           Tag = 1
-          Left = 421
+          Left = 425
           Top = 29
           Width = 75
           Height = 17
           Caption = 'Use polling'
           TabOrder = 9
           OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig2: TButton
+          Tag = 2
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
         end
       end
       object groupRig1: TGroupBox
@@ -752,13 +762,23 @@ object formOptions: TformOptions
         end
         object checkRig1UsePolling: TCheckBox
           Tag = 1
-          Left = 421
+          Left = 425
           Top = 29
           Width = 75
           Height = 17
           Caption = 'Use polling'
           TabOrder = 9
           OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig1: TButton
+          Tag = 1
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
         end
       end
       object groupRig4: TGroupBox
@@ -899,13 +919,23 @@ object formOptions: TformOptions
         end
         object checkRig4UsePolling: TCheckBox
           Tag = 1
-          Left = 421
+          Left = 425
           Top = 29
           Width = 75
           Height = 17
           Caption = 'Use polling'
           TabOrder = 9
           OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig4: TButton
+          Tag = 4
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
         end
       end
       object groupRig3: TGroupBox
@@ -1046,13 +1076,23 @@ object formOptions: TformOptions
         end
         object checkRig3UsePolling: TCheckBox
           Tag = 1
-          Left = 421
+          Left = 425
           Top = 29
           Width = 75
           Height = 17
           Caption = 'Use polling'
           TabOrder = 9
           OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig3: TButton
+          Tag = 3
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
         end
       end
     end
@@ -4711,13 +4751,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 321
           MaxMRUCount = 0
-          FontName = 'Cascadia Code Italic'
+          FontName = 'HG'#21109#33521#65420#65439#65434#65406#65438#65437#65405'EB'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 35
+          ItemIndex = 85
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

@@ -127,7 +127,7 @@ begin
 //         FOnNotifyStarted(nil);
 //      end;
       if Assigned(FOnNotifyFinished) then begin
-         FOnNotifyFinished(nil, mSSB, False);
+         FOnNotifyFinished(nil, mSSB, False, -1);
       end;
       Exit;
    end;
@@ -190,7 +190,7 @@ begin
    Timer2.Enabled := False;
 
    if Assigned(FOnNotifyFinished) then begin
-      FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False);
+      FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False, FCurrentVoice);
    end;
 
    {$IFDEF DEBUG}

@@ -1258,17 +1258,13 @@ begin
       for i := 1 to maxmessage do begin
          Settings.FVoiceConfig[i].FSoundFile := FTempVoiceConfig[i].FSoundFile;
          Settings.FVoiceConfig[i].FSoundComment := FVoiceEdit[i].Text;
-         Settings.FVoiceConfig[i].FPreProcess.FAudioInput := FTempVoiceConfig[i].FPreProcess.FAudioInput;
          Settings.FVoiceConfig[i].FPreProcess.FCommand := FTempVoiceConfig[i].FPreProcess.FCommand;
-         Settings.FVoiceConfig[i].FPostProcess.FAudioInput := FTempVoiceConfig[i].FPostProcess.FAudioInput;
          Settings.FVoiceConfig[i].FPostProcess.FCommand := FTempVoiceConfig[i].FPostProcess.FCommand;
       end;
       for i := 2 to 3 do begin
          Settings.FAdditionalVoiceConfig[i].FSoundFile := FTempAdditionalVoiceConfig[i].FSoundFile;
          Settings.FAdditionalVoiceConfig[i].FSoundComment := FAdditionalVoiceEdit[i].Text;
-         Settings.FAdditionalVoiceConfig[i].FPreProcess.FAudioInput := FTempAdditionalVoiceConfig[i].FPreProcess.FAudioInput;
          Settings.FAdditionalVoiceConfig[i].FPreProcess.FCommand := FTempAdditionalVoiceConfig[i].FPreProcess.FCommand;
-         Settings.FAdditionalVoiceConfig[i].FPostProcess.FAudioInput := FTempAdditionalVoiceConfig[i].FPostProcess.FAudioInput;
          Settings.FAdditionalVoiceConfig[i].FPostProcess.FCommand := FTempAdditionalVoiceConfig[i].FPostProcess.FCommand;
       end;
 
@@ -2016,14 +2012,12 @@ begin
    dlg := TformPrePostPlaybackDlg.Create(Self);
    n := TSpeedButton(Sender).Tag;
    try
-      dlg.AudioInput := FTempAdditionalVoiceConfig[n].FPreProcess.FAudioInput;
       dlg.Command := FTempAdditionalVoiceConfig[n].FPreProcess.FCommand;
 
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      FTempAdditionalVoiceConfig[n].FPreProcess.FAudioInput := dlg.AudioInput;
       FTempAdditionalVoiceConfig[n].FPreProcess.FCommand := dlg.Command;
 
       SetAdditionalPreProcessButtonAttr(n);
@@ -2040,14 +2034,12 @@ begin
    dlg := TformPrePostPlaybackDlg.Create(Self);
    n := TSpeedButton(Sender).Tag;
    try
-      dlg.AudioInput := FTempAdditionalVoiceConfig[n].FPostProcess.FAudioInput;
       dlg.Command := FTempAdditionalVoiceConfig[n].FPostProcess.FCommand;
 
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      FTempAdditionalVoiceConfig[n].FPostProcess.FAudioInput := dlg.AudioInput;
       FTempAdditionalVoiceConfig[n].FPostProcess.FCommand := dlg.Command;
 
       SetAdditionalPostProcessButtonAttr(n);
@@ -2505,14 +2497,12 @@ begin
    dlg := TformPrePostPlaybackDlg.Create(Self);
    n := TSpeedButton(Sender).Tag;
    try
-      dlg.AudioInput := FTempVoiceConfig[n].FPreProcess.FAudioInput;
       dlg.Command := FTempVoiceConfig[n].FPreProcess.FCommand;
 
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      FTempVoiceConfig[n].FPreProcess.FAudioInput := dlg.AudioInput;
       FTempVoiceConfig[n].FPreProcess.FCommand := dlg.Command;
 
       SetPreProcessButtonAttr(n);
@@ -2529,14 +2519,12 @@ begin
    dlg := TformPrePostPlaybackDlg.Create(Self);
    n := TSpeedButton(Sender).Tag;
    try
-      dlg.AudioInput := FTempVoiceConfig[n].FPostProcess.FAudioInput;
       dlg.Command := FTempVoiceConfig[n].FPostProcess.FCommand;
 
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      FTempVoiceConfig[n].FPostProcess.FAudioInput := dlg.AudioInput;
       FTempVoiceConfig[n].FPostProcess.FCommand := dlg.Command;
 
       SetPostProcessButtonAttr(n);
@@ -2608,8 +2596,7 @@ end;
 
 procedure TformOptions2.SetPreProcessButtonAttr(i: Integer);
 begin
-   if (FTempVoiceConfig[i].FPreProcess.FAudioInput <> aiDontCare) or
-      (FTempVoiceConfig[i].FPreProcess.FCommand <> '') then begin
+   if (FTempVoiceConfig[i].FPreProcess.FCommand <> '') then begin
       FPreProcessButton[i].Font.Style := [fsBold];
    end
    else begin
@@ -2619,8 +2606,7 @@ end;
 
 procedure TformOptions2.SetPostProcessButtonAttr(i: Integer);
 begin
-   if (FTempVoiceConfig[i].FPostProcess.FAudioInput <> aiDontCare) or
-      (FTempVoiceConfig[i].FPostProcess.FCommand <> '') then begin
+   if (FTempVoiceConfig[i].FPostProcess.FCommand <> '') then begin
       FPostProcessButton[i].Font.Style := [fsBold];
    end
    else begin
@@ -2630,8 +2616,7 @@ end;
 
 procedure TformOptions2.SetAdditionalPreProcessButtonAttr(i: Integer);
 begin
-   if (FTempAdditionalVoiceConfig[i].FPreProcess.FAudioInput <> aiDontCare) or
-      (FTempAdditionalVoiceConfig[i].FPreProcess.FCommand <> '') then begin
+   if (FTempAdditionalVoiceConfig[i].FPreProcess.FCommand <> '') then begin
       FAdditionalPreProcessButton[i].Font.Style := [fsBold];
    end
    else begin
@@ -2641,8 +2626,7 @@ end;
 
 procedure TformOptions2.SetAdditionalPostProcessButtonAttr(i: Integer);
 begin
-   if (FTempAdditionalVoiceConfig[i].FPostProcess.FAudioInput <> aiDontCare) or
-      (FTempAdditionalVoiceConfig[i].FPostProcess.FCommand <> '') then begin
+   if (FTempAdditionalVoiceConfig[i].FPostProcess.FCommand <> '') then begin
       FAdditionalPostProcessButton[i].Font.Style := [fsBold];
    end
    else begin

@@ -255,7 +255,7 @@ begin
          S := StringReplace(S, ':***************', C, [rfReplaceAll]);
          rig.SetWPM(dmZLogKeyer.WPM);
          rig.PlayMessageCW(S);
-         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
       end;
    end
    else begin

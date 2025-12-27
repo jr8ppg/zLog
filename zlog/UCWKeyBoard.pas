@@ -252,7 +252,7 @@ begin
          rig := MainForm.RigControl.Rigs[nID + 1];
          if rig <> nil then begin
             rig.PlayMessageCW(S);
-            dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+            dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
          end;
 
          Clear();
@@ -412,7 +412,7 @@ begin
       rig := MainForm.RigControl.Rigs[nID + 1];
       if rig <> nil then begin
          rig.PlayMessageCW(S);
-         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
       end;
       Clear();
    end
@@ -610,7 +610,7 @@ begin
       rig := MainForm.RigControl.Rigs[nID + 1];
       if rig <> nil then begin
          rig.PlayMessageCW(C);
-         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
       end;
    end
    else begin

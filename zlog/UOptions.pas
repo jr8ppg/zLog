@@ -8,7 +8,7 @@ uses
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults, WinApi.CommCtrl,
   UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit,
-  UzLogOperatorInfo, UTelnetSetting, UParallelPort;
+  UzLogOperatorInfo, UTelnetSetting, UParallelPort, UAudioInputDlg;
 
 type
   TformOptions = class(TForm)
@@ -450,6 +450,10 @@ type
     Label62: TLabel;
     buttonBrowseResultPath: TButton;
     editResumeFolder: TEdit;
+    buttonAudioConfig1: TButton;
+    buttonAudioConfig2: TButton;
+    buttonAudioConfig3: TButton;
+    buttonAudioConfig4: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -490,6 +494,7 @@ type
     procedure checkEnablePttPhClick(Sender: TObject);
     procedure checkUseF2ADataModeClick(Sender: TObject);
     procedure checkUseRigDeviceClick(Sender: TObject);
+    procedure buttonAudioConfigClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
 //    FEditMode: Integer;
@@ -1540,6 +1545,30 @@ begin
    finally
       F.Release();
    end;
+end;
+
+procedure TformOptions.buttonAudioConfigClick(Sender: TObject);
+var
+   r: Integer;
+   F: TformAudioInputDlg;
+begin
+   F := TformAudioInputDlg.Create(Self);
+   try
+      r := TButton(Sender).Tag;
+
+      F.PrePlayback := dmZLogGlobal.Settings.FRigControl[r].FPrePlayback;
+      F.PostPlayback := dmZLogGlobal.Settings.FRigControl[r].FPostPlayback;
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[r].FPrePlayback := F.PrePlayback;
+      dmZLogGlobal.Settings.FRigControl[r].FPostPlayback := F.PostPlayback;
+   finally
+      F.Release();
+   end;
+
 end;
 
 procedure TformOptions.buttonSpotterListClick(Sender: TObject);

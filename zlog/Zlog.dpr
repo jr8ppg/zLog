@@ -164,6 +164,7 @@ uses
   UStartup in 'UStartup.pas' {formStartup},
   UJarlWebUpload in 'UJarlWebUpload.pas' {formJarlWebUpload},
   UQSOListColumnSettings in 'UQSOListColumnSettings.pas' {formQSOListColumnSettings},
+  UAudioInputDlg in 'UAudioInputDlg.pas' {formAudioInputDlg},
   UPrePostPlaybackDlg in 'UPrePostPlaybackDlg.pas' {formPrePostPlaybackDlg};
 
 {$R *.res}

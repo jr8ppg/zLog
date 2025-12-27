@@ -37,7 +37,8 @@ type
   TBandBool = array[b19..HiBand] of boolean;
 
 type
-  TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean) of object;
+  TMessagePlayNotifyEvent = procedure(Sender: TObject; msgno: Integer) of object;
+  TPlayMessageFinishedProc = procedure(Sender: TObject; mode: TMode; fAbort: Boolean; msgno: Integer) of object;
   TChangeFontSizeProc = procedure(Sender: TObject; font_size: Integer) of object;
 
 type

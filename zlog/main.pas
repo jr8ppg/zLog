@@ -1195,9 +1195,9 @@ type
     procedure PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessagePH(no: Integer; fResetTx: Boolean);
     procedure PlayMessageRTTY(no: Integer);
-    procedure OnVoicePlayStarted(Sender: TObject);
+    procedure OnVoicePlayStarted(Sender: TObject; msgno: Integer);
     procedure OnOneCharSentProc(Sender: TObject);
-    procedure OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
+    procedure OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean; msgno: Integer);
     procedure OnPaddle(Sender: TObject);
     procedure InsertBandScope(fShiftKey: Boolean);
     procedure WriteKeymap();
@@ -1269,7 +1269,7 @@ type
     procedure ResetTx(rigset: Integer);
     procedure StopMessage(mode: TMode);
     procedure ControlPTT(fOn: Boolean);
-    procedure VoiceControl(fOn: Boolean);
+    procedure VoiceControl(fOn: Boolean; msgno: Integer);
     procedure TogglePTTfor2bsiq();
     procedure OnNonconvertKeyPress();
     procedure OnNonconvertKeyProc(nRxID: Integer; nTxID: Integer);
@@ -5405,7 +5405,7 @@ begin
       rig := MainForm.RigControl.Rigs[nID + 1];
       if rig <> nil then begin
          rig.StopMessageCW();
-         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, True);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, True, 0);
       end;
    end
    else begin
@@ -5430,7 +5430,7 @@ begin
    // 元々Finishイベントで行っていたがCQループとの
    // 兼ね合いでFinishイベントをやめたのでこちらに変更
    VoiceStopButton.Enabled := False;
-   VoiceControl(False);
+   VoiceControl(False, FMessageManager.CurrentVoice);
 end;
 
 procedure TMainForm.SetCQ(CQ: Boolean);
@@ -6083,7 +6083,7 @@ begin
    // .か?があるときは以降の送信は行わない
    if (Pos('.', C.Text) > 0) or (Pos('?', C.Text) > 0) then begin
       dmZLogKeyer.ClrBuffer();
-      OnPlayMessageFinished(Sender, mCW, True);
+      OnPlayMessageFinished(Sender, mCW, True, 0);
       Exit;
    end;
 
@@ -9975,10 +9975,10 @@ begin
    FTTYConsole.SendStrNow(S);
 end;
 
-procedure TMainForm.OnVoicePlayStarted(Sender: TObject);
+procedure TMainForm.OnVoicePlayStarted(Sender: TObject; msgno: Integer);
 begin
    VoiceStopButton.Enabled := True;
-   VoiceControl(True);
+   VoiceControl(True, msgno);
 end;
 
 procedure TMainForm.OnOneCharSentProc(Sender: TObject);
@@ -9996,7 +9996,7 @@ begin
    end;
 end;
 
-procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean);
+procedure TMainForm.OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean; msgno: Integer);
 var
    tx: Integer;
    rx: Integer;
@@ -10029,7 +10029,7 @@ begin
       else begin
          // PTT-OFF
          if Sender <> nil then begin
-            VoiceControl(False);
+            VoiceControl(False, msgno);
          end;
 
          VoiceStopButton.Enabled := False;
@@ -13433,7 +13433,7 @@ begin
    OutputDebugString(PChar('*** DoCwCommandProc(' + IntToStr(nCommand) + ') ***'));
    {$ENDIF}
 
-   if ActionList1.ActionCount <= nCommand then begin
+   if (nCommand < 0) or (nCommand >= ActionList1.ActionCount) then begin
       {$IFDEF DEBUG}
       OutputDebugString(PChar('*** Command no too large ***'));
       {$ENDIF}
@@ -13639,11 +13639,14 @@ begin
    end;
 end;
 
-procedure TMainForm.VoiceControl(fOn: Boolean);
+procedure TMainForm.VoiceControl(fOn: Boolean; msgno: Integer);
 var
    nID: Integer;
    r: Integer;
    fPhonePTT: Boolean;
+   cmd: string;
+   input: TAudioInput;
+   rig: TRig;
 begin
    nID := GetTxRigID();
    r := nID + 1;
@@ -13651,7 +13654,21 @@ begin
    fPhonePTT := dmZLogGlobal.Settings.FRigControl[r].FPhoneChgPTT;
 
    if fOn = True then begin
+      // #735
+      cmd := dmZLogGlobal.Settings.FVoiceConfig[msgno].FPreProcess.FCommand;
+      if cmd <> '' then begin
+         DoCwCommandProc(nil, StrToIntDef(cmd, -1));
+      end;
+
+      // #340
+      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+      if rig <> nil then begin
+         input := dmZLogGlobal.Settings.FRigControl[rig.RigNumber].FPrePlayback;
+         rig.AudioInputSelect(input);
+      end;
+
       dmZLogKeyer.SetVoiceFlag(1);
+
       if dmZLogGlobal.Settings._pttenabled_ph then begin
          dmZLogKeyer.ControlPTT(nID, True, fPhonePTT);
          Sleep(dmZLogGlobal.Settings._pttbefore_ph);
@@ -13662,7 +13679,21 @@ begin
          Sleep(dmZLogGlobal.Settings._pttafter_ph);
          dmZLogKeyer.ControlPTT(nID, False, fPhonePTT);
       end;
+
       dmZLogKeyer.SetVoiceFlag(0);
+
+      // #340
+      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+      if rig <> nil then begin
+         input := dmZLogGlobal.Settings.FRigControl[rig.RigNumber].FPostPlayback;
+         rig.AudioInputSelect(input);
+      end;
+
+      // #735
+      cmd := dmZLogGlobal.Settings.FVoiceConfig[msgno].FPostProcess.FCommand;
+      if cmd <> '' then begin
+         DoCwCommandProc(nil, StrToIntDef(cmd, -1));
+      end;
    end;
 end;
 
@@ -13781,7 +13812,7 @@ begin
    end
    else begin
       if dmZLogGlobal.Settings._pttenabled_ph = True then begin
-         VoiceControl(fPTT);
+         VoiceControl(fPTT, 0);
       end;
    end;
 end;
@@ -13854,7 +13885,7 @@ begin
          end
          else begin
             FMessageManager.StopVoice();
-            VoiceControl(False);
+            VoiceControl(False, FMessageManager.CurrentVoice);
          end;
       end;
    end
@@ -13868,7 +13899,7 @@ begin
             end
             else begin
                FMessageManager.StopVoice();
-               VoiceControl(False);
+               VoiceControl(False, FMessageManager.CurrentVoice);
             end;
          end;
       end

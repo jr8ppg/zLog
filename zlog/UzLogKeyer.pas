@@ -1881,7 +1881,7 @@ begin
    if (CanSend(FWkTx) = False) then begin
       Finish();
       if Assigned(FOnSendFinishProc) then begin
-         FOnSendFinishProc(Self, mCW, False);
+         FOnSendFinishProc(Self, mCW, False, 0);
       end;
       FSendOK := False;
       Exit;
@@ -2063,7 +2063,7 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
             {$ENDIF}
-            FOnSendFinishProc(Self, mCW, False);
+            FOnSendFinishProc(Self, mCW, False, 0);
          end;
 
          FSendOK := False;
@@ -4200,7 +4200,7 @@ begin
 
    FWkAbort := True;
    if Assigned(FOnSendFinishProc) then begin
-      FOnSendFinishProc(nil, mCW, True);
+      FOnSendFinishProc(nil, mCW, True, 0);
    end;
 end;
 
@@ -4631,7 +4631,7 @@ begin
          if FWkAbort = True then begin
             if FWkSendStatus <> wkssNone then begin
                if Assigned(FOnSendFinishProc) then begin
-                  FOnSendFinishProc(nil, mCW, True);
+                  FOnSendFinishProc(nil, mCW, True, 0);
                end;
             end;
             FWkSendStatus := wkssNone;
@@ -4666,7 +4666,7 @@ begin
                   {$IFDEF DEBUG}
                   OutputDebugString(PChar(' *** FOnSendFinishProc() called in ZComKeying1ReceiveData() ***'));
                   {$ENDIF}
-                  FOnSendFinishProc(Self, mCW, False);
+                  FOnSendFinishProc(Self, mCW, False, 0);
                end;
             end;
 
@@ -4866,7 +4866,7 @@ begin
                {$IFDEF DEBUG}
                OutputDebugString(PChar(' *** FOnSendFinishProc() called in WndMethod() ***'));
                {$ENDIF}
-               FOnSendFinishProc(Self, mCW, False);
+               FOnSendFinishProc(Self, mCW, False, 0);
             end;
 
             WinKeyerClear();

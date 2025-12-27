@@ -86,7 +86,6 @@ type
   end;
 
   TPrePostPlayBack = record
-    FAudioInput: TAudioInput;
     FCommand: string;
   end;
 
@@ -108,6 +107,8 @@ type
     FTransverterOffset: TFrequency;
     FPhoneChgPTT: Boolean;
     FUsePolling: Boolean;
+    FPrePlayback: TAudioInput;
+    FPostPlayback: TAudioInput;
   end;
 
   TRigSet = record
@@ -1127,6 +1128,8 @@ begin
          Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
          Settings.FRigControl[i].FPhoneChgPTT := ini.ReadBool(s, 'PhoneChgPTT', False);
          Settings.FRigControl[i].FUsePolling := ini.ReadBool(s, 'UsePolling', True);
+         Settings.FRigControl[i].FPrePlayback := TAudioInput(ini.ReadInteger(s, 'PrePlayback', 0));
+         Settings.FRigControl[i].FPostPlayback := TAudioInput(ini.ReadInteger(s, 'PostPlayback', 0));
       end;
 
       //
@@ -1580,9 +1583,7 @@ begin
                Settings.FVoiceConfig[i].FSoundComment := 'file not found';
             end;
          end;
-         Settings.FVoiceConfig[i].FPreProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'PRE_AI#' + IntToStr(i), 0));
          Settings.FVoiceConfig[i].FPreProcess.FCommand := ini.ReadString('Voice', 'PRE_CMD#' + IntToStr(i), '');
-         Settings.FVoiceConfig[i].FPostProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'POST_AI#' + IntToStr(i), 0));
          Settings.FVoiceConfig[i].FPostProcess.FCommand := ini.ReadString('Voice', 'POST_CMD#' + IntToStr(i), '');
       end;
       for i := 2 to 3 do begin
@@ -1601,9 +1602,7 @@ begin
                Settings.FAdditionalVoiceConfig[i].FSoundComment := 'file not found';
             end;
          end;
-         Settings.FAdditionalVoiceConfig[i].FPreProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'CQ_PRE_AI#' + IntToStr(i), 0));
          Settings.FAdditionalVoiceConfig[i].FPreProcess.FCommand := ini.ReadString('Voice', 'CQ_PRE_CMD#' + IntToStr(i), '');
-         Settings.FAdditionalVoiceConfig[i].FPostProcess.FAudioInput := TAudioInput(ini.ReadInteger('Voice', 'CQ_POST_AI#' + IntToStr(i), 0));
          Settings.FAdditionalVoiceConfig[i].FPostProcess.FCommand := ini.ReadString('Voice', 'CQ_POST_CMD#' + IntToStr(i), '');
       end;
 
@@ -1960,6 +1959,8 @@ begin
          ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
          ini.WriteBool(s, 'PhoneChgPTT', Settings.FRigControl[i].FPhoneChgPTT);
          ini.WriteBool(s, 'UsePolling', Settings.FRigControl[i].FUsePolling);
+         ini.WriteInteger(s, 'PrePlayback', Integer(Settings.FRigControl[i].FPrePlayback));
+         ini.WriteInteger(s, 'PostPlayback', Integer(Settings.FRigControl[i].FPostPlayback));
       end;
 
       //
@@ -2289,17 +2290,13 @@ begin
       for i := 1 to maxmessage do begin
          ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FVoiceConfig[i].FSoundFile);
          ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FVoiceConfig[i].FSoundComment);
-         ini.WriteInteger('Voice', 'PRE_AI#' + IntToStr(i), Integer(Settings.FVoiceConfig[i].FPreProcess.FAudioInput));
          ini.WriteString('Voice', 'PRE_CMD#' + IntToStr(i), Settings.FVoiceConfig[i].FPreProcess.FCommand);
-         ini.WriteInteger('Voice', 'POST_AI#' + IntToStr(i), Integer(Settings.FVoiceConfig[i].FPostProcess.FAudioInput));
          ini.WriteString('Voice', 'POST_CMD#' + IntToStr(i), Settings.FVoiceConfig[i].FPostProcess.FCommand);
       end;
       for i := 2 to 3 do begin
          ini.WriteString('Voice', 'CQ_F#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FSoundFile);
          ini.WriteString('Voice', 'CQ_C#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FSoundComment);
-         ini.WriteInteger('Voice', 'CQ_PRE_AI#' + IntToStr(i), Integer(Settings.FAdditionalVoiceConfig[i].FPreProcess.FAudioInput));
          ini.WriteString('Voice', 'CQ_PRE_CMD#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FPreProcess.FCommand);
-         ini.WriteInteger('Voice', 'CQ_POST_AI#' + IntToStr(i), Integer(Settings.FAdditionalVoiceConfig[i].FPostProcess.FAudioInput));
          ini.WriteString('Voice', 'CQ_POST_CMD#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FPostProcess.FCommand);
       end;
 

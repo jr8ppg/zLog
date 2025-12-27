@@ -54,7 +54,7 @@ type
     FWaveSound: array[1..maxmessage + 2] of TWaveSound;
     FCurrentOperator: TOperatorInfo;
     FCurrentVoice: Integer;
-    FOnNotifyStarted: TNotifyEvent;
+    FOnNotifyStarted: TMessagePlayNotifyEvent;
     FOnNotifyFinished: TPlayMessageFinishedProc;
 
     FSendText: string;
@@ -86,8 +86,9 @@ type
     function IsPlaying(): Boolean;
     function IsIdle(): Boolean;
 
-    property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
+    property OnNotifyStarted: TMessagePlayNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
     property OnNotifyFinished: TPlayMessageFinishedProc read FOnNotifyFinished write FOnNotifyFinished;
+    property CurrentVoice: Integer read FCurrentVoice;
   end;
 
 
@@ -579,7 +580,7 @@ begin
 //         FOnNotifyStarted(nil);
 //      end;
       if Assigned(FOnNotifyFinished) then begin
-         FOnNotifyFinished(nil, mSSB, False);
+         FOnNotifyFinished(nil, mSSB, False, i);
       end;
       Exit;
    end;
@@ -600,7 +601,7 @@ begin
    FWaveSound[i].Stop();
 
    if Assigned(FOnNotifyStarted) then begin
-      FOnNotifyStarted(FWaveSound[i]);
+      FOnNotifyStarted(FWaveSound[i], i);
    end;
 
    FCurrentVoice := i;
@@ -684,7 +685,7 @@ begin
    Timer2.Enabled := False;
 
    if Assigned(FOnNotifyFinished) then begin
-      FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False);
+      FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False, FCurrentVoice);
    end;
 
    {$IFDEF DEBUG}

@@ -2,9 +2,9 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Pre/Post Playback Processing'
-  ClientHeight = 216
-  ClientWidth = 268
+  Caption = 'Pre/Post playback command'
+  ClientHeight = 125
+  ClientWidth = 201
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,76 +16,13 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
   OnDestroy = FormDestroy
   OnShow = FormShow
   TextHeight = 13
-  object groupAudioInput: TGroupBox
-    Left = 4
-    Top = 4
-    Width = 126
-    Height = 173
-    Caption = 'Audio input'
-    TabOrder = 0
-    object radioInputDontCare: TRadioButton
-      Left = 12
-      Top = 24
-      Width = 74
-      Height = 17
-      Caption = 'D'#39'ont care'
-      Checked = True
-      TabOrder = 0
-      TabStop = True
-    end
-    object radioInputMic: TRadioButton
-      Tag = 1
-      Left = 12
-      Top = 47
-      Width = 75
-      Height = 17
-      Caption = 'MIC'
-      TabOrder = 1
-    end
-    object radioInputUsb: TRadioButton
-      Tag = 2
-      Left = 12
-      Top = 70
-      Width = 75
-      Height = 17
-      Caption = 'USB'
-      TabOrder = 2
-    end
-    object radioInputAcc: TRadioButton
-      Tag = 3
-      Left = 12
-      Top = 93
-      Width = 75
-      Height = 17
-      Caption = 'ACC'
-      TabOrder = 3
-    end
-    object radioInputMicUsb: TRadioButton
-      Tag = 4
-      Left = 12
-      Top = 116
-      Width = 75
-      Height = 17
-      Caption = 'MIC,USB'
-      TabOrder = 4
-    end
-    object radioInputMicAcc: TRadioButton
-      Tag = 5
-      Left = 12
-      Top = 139
-      Width = 75
-      Height = 17
-      Caption = 'MIC,ACC'
-      TabOrder = 5
-    end
-  end
   object groupCommand: TGroupBox
-    Left = 136
-    Top = 4
-    Width = 126
+    Left = 8
+    Top = 8
+    Width = 185
     Height = 77
     Caption = 'Command'
-    TabOrder = 1
+    TabOrder = 0
     object radioCommandNone: TRadioButton
       Left = 12
       Top = 24
@@ -108,31 +45,40 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
   end
   object Panel1: TPanel
     Left = 0
-    Top = 182
-    Width = 268
+    Top = 91
+    Width = 201
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 2
-    object Button1: TButton
-      Left = 118
+    TabOrder = 1
+    ExplicitTop = 182
+    ExplicitWidth = 268
+    DesignSize = (
+      201
+      34)
+    object buttonOK: TButton
+      Left = 52
       Top = 4
       Width = 69
       Height = 25
+      Anchors = [akTop, akRight]
       Caption = 'OK'
       Default = True
       ModalResult = 1
       TabOrder = 0
+      ExplicitLeft = 118
     end
-    object Button2: TButton
-      Left = 193
+    object buttonCancel: TButton
+      Left = 127
       Top = 4
       Width = 69
       Height = 25
+      Anchors = [akTop, akRight]
       Cancel = True
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 193
     end
   end
 end
