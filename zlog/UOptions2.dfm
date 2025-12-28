@@ -2059,7 +2059,7 @@ object formOptions2: TformOptions2
           Caption = '#8'
         end
         object memo: TLabel
-          Left = 74
+          Left = 32
           Top = 15
           Width = 28
           Height = 13
@@ -2095,223 +2095,115 @@ object formOptions2: TformOptions2
         end
         object buttonVoiceAfterCmd1: TSpeedButton
           Tag = 1
-          Left = 276
+          Left = 429
           Top = 32
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
-        end
-        object buttonVoiceBeforeCmd1: TSpeedButton
-          Tag = 1
-          Left = 32
-          Top = 32
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd2: TSpeedButton
-          Tag = 2
-          Left = 32
-          Top = 50
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd3: TSpeedButton
-          Tag = 3
-          Left = 32
-          Top = 68
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd4: TSpeedButton
-          Tag = 4
-          Left = 32
-          Top = 86
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd5: TSpeedButton
-          Tag = 5
-          Left = 32
-          Top = 104
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd6: TSpeedButton
-          Tag = 6
-          Left = 32
-          Top = 122
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd7: TSpeedButton
-          Tag = 7
-          Left = 32
-          Top = 140
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd8: TSpeedButton
-          Tag = 8
-          Left = 32
-          Top = 158
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd9: TSpeedButton
-          Tag = 9
-          Left = 32
-          Top = 176
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd10: TSpeedButton
-          Tag = 10
-          Left = 32
-          Top = 194
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd11: TSpeedButton
-          Tag = 11
-          Left = 32
-          Top = 212
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
-        end
-        object buttonVoiceBeforeCmd12: TSpeedButton
-          Tag = 12
-          Left = 32
-          Top = 230
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonVoiceBeforeCmdClick
         end
         object buttonVoiceAfterCmd2: TSpeedButton
           Tag = 2
-          Left = 276
+          Left = 429
           Top = 50
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd3: TSpeedButton
           Tag = 3
-          Left = 276
+          Left = 429
           Top = 68
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd4: TSpeedButton
           Tag = 4
-          Left = 276
+          Left = 429
           Top = 86
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd5: TSpeedButton
           Tag = 5
-          Left = 276
+          Left = 429
           Top = 104
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd6: TSpeedButton
           Tag = 6
-          Left = 276
+          Left = 429
           Top = 122
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd7: TSpeedButton
           Tag = 7
-          Left = 276
+          Left = 429
           Top = 140
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd8: TSpeedButton
           Tag = 8
-          Left = 276
+          Left = 429
           Top = 158
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd9: TSpeedButton
           Tag = 9
-          Left = 276
+          Left = 429
           Top = 176
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd10: TSpeedButton
           Tag = 10
-          Left = 276
+          Left = 429
           Top = 194
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd11: TSpeedButton
           Tag = 11
-          Left = 276
+          Left = 429
           Top = 212
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd12: TSpeedButton
           Tag = 12
-          Left = 276
+          Left = 429
           Top = 230
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonVoiceAfterCmdClick
         end
         object vEdit2: TEdit
           Tag = 2
-          Left = 74
+          Left = 32
           Top = 50
           Width = 200
           Height = 17
@@ -2323,7 +2215,7 @@ object formOptions2: TformOptions2
         end
         object vEdit3: TEdit
           Tag = 3
-          Left = 74
+          Left = 32
           Top = 68
           Width = 200
           Height = 17
@@ -2335,7 +2227,7 @@ object formOptions2: TformOptions2
         end
         object vEdit4: TEdit
           Tag = 4
-          Left = 74
+          Left = 32
           Top = 86
           Width = 200
           Height = 17
@@ -2347,7 +2239,7 @@ object formOptions2: TformOptions2
         end
         object vEdit5: TEdit
           Tag = 5
-          Left = 74
+          Left = 32
           Top = 104
           Width = 200
           Height = 17
@@ -2359,7 +2251,7 @@ object formOptions2: TformOptions2
         end
         object vEdit6: TEdit
           Tag = 6
-          Left = 74
+          Left = 32
           Top = 122
           Width = 200
           Height = 17
@@ -2371,7 +2263,7 @@ object formOptions2: TformOptions2
         end
         object vEdit7: TEdit
           Tag = 7
-          Left = 74
+          Left = 32
           Top = 140
           Width = 200
           Height = 17
@@ -2383,7 +2275,7 @@ object formOptions2: TformOptions2
         end
         object vEdit8: TEdit
           Tag = 8
-          Left = 74
+          Left = 32
           Top = 158
           Width = 200
           Height = 17
@@ -2395,7 +2287,7 @@ object formOptions2: TformOptions2
         end
         object vEdit1: TEdit
           Tag = 1
-          Left = 74
+          Left = 32
           Top = 32
           Width = 200
           Height = 17
@@ -2408,7 +2300,7 @@ object formOptions2: TformOptions2
         end
         object vButton1: TButton
           Tag = 1
-          Left = 318
+          Left = 238
           Top = 32
           Width = 185
           Height = 19
@@ -2422,7 +2314,7 @@ object formOptions2: TformOptions2
         end
         object vButton2: TButton
           Tag = 2
-          Left = 318
+          Left = 238
           Top = 50
           Width = 185
           Height = 19
@@ -2436,7 +2328,7 @@ object formOptions2: TformOptions2
         end
         object vButton3: TButton
           Tag = 3
-          Left = 318
+          Left = 238
           Top = 68
           Width = 185
           Height = 19
@@ -2450,7 +2342,7 @@ object formOptions2: TformOptions2
         end
         object vButton4: TButton
           Tag = 4
-          Left = 318
+          Left = 238
           Top = 86
           Width = 185
           Height = 19
@@ -2464,7 +2356,7 @@ object formOptions2: TformOptions2
         end
         object vButton5: TButton
           Tag = 5
-          Left = 318
+          Left = 238
           Top = 104
           Width = 185
           Height = 19
@@ -2478,7 +2370,7 @@ object formOptions2: TformOptions2
         end
         object vButton6: TButton
           Tag = 6
-          Left = 318
+          Left = 238
           Top = 122
           Width = 185
           Height = 19
@@ -2492,7 +2384,7 @@ object formOptions2: TformOptions2
         end
         object vButton7: TButton
           Tag = 7
-          Left = 318
+          Left = 238
           Top = 140
           Width = 185
           Height = 19
@@ -2506,7 +2398,7 @@ object formOptions2: TformOptions2
         end
         object vButton8: TButton
           Tag = 8
-          Left = 318
+          Left = 238
           Top = 158
           Width = 185
           Height = 19
@@ -2520,7 +2412,7 @@ object formOptions2: TformOptions2
         end
         object vEdit9: TEdit
           Tag = 7
-          Left = 74
+          Left = 32
           Top = 176
           Width = 200
           Height = 17
@@ -2532,7 +2424,7 @@ object formOptions2: TformOptions2
         end
         object vEdit10: TEdit
           Tag = 8
-          Left = 74
+          Left = 32
           Top = 194
           Width = 200
           Height = 17
@@ -2544,7 +2436,7 @@ object formOptions2: TformOptions2
         end
         object vButton9: TButton
           Tag = 9
-          Left = 318
+          Left = 238
           Top = 176
           Width = 185
           Height = 19
@@ -2558,7 +2450,7 @@ object formOptions2: TformOptions2
         end
         object vButton10: TButton
           Tag = 10
-          Left = 318
+          Left = 238
           Top = 194
           Width = 185
           Height = 19
@@ -2572,7 +2464,7 @@ object formOptions2: TformOptions2
         end
         object vEdit11: TEdit
           Tag = 8
-          Left = 74
+          Left = 32
           Top = 212
           Width = 200
           Height = 17
@@ -2584,7 +2476,7 @@ object formOptions2: TformOptions2
         end
         object vButton11: TButton
           Tag = 11
-          Left = 318
+          Left = 238
           Top = 212
           Width = 185
           Height = 19
@@ -2598,7 +2490,7 @@ object formOptions2: TformOptions2
         end
         object vEdit12: TEdit
           Tag = 8
-          Left = 74
+          Left = 32
           Top = 230
           Width = 200
           Height = 17
@@ -2610,7 +2502,7 @@ object formOptions2: TformOptions2
         end
         object vButton12: TButton
           Tag = 12
-          Left = 318
+          Left = 238
           Top = 230
           Width = 185
           Height = 19
@@ -2684,50 +2576,32 @@ object formOptions2: TformOptions2
           Caption = 'CQ3'
         end
         object Label82: TLabel
-          Left = 74
+          Left = 32
           Top = 16
           Width = 28
           Height = 13
           Caption = 'memo'
         end
-        object buttonAddVoiceBeforeCmd2: TSpeedButton
-          Tag = 2
-          Left = 32
-          Top = 32
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonAddVoiceBeforeCmdClick
-        end
         object buttonAddVoiceAfterCmd2: TSpeedButton
           Tag = 2
-          Left = 276
+          Left = 429
           Top = 32
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
-        end
-        object buttonAddVoiceBeforeCmd3: TSpeedButton
-          Tag = 3
-          Left = 32
-          Top = 50
-          Width = 40
-          Height = 19
-          Caption = 'Pre'
-          OnClick = buttonAddVoiceBeforeCmdClick
+          Caption = 'Pre/Post'
         end
         object buttonAddVoiceAfterCmd3: TSpeedButton
           Tag = 3
-          Left = 276
+          Left = 429
           Top = 50
-          Width = 40
+          Width = 75
           Height = 19
-          Caption = 'Post'
+          Caption = 'Pre/Post'
           OnClick = buttonAddVoiceAfterCmdClick
         end
         object vEdit14: TEdit
           Tag = 3
-          Left = 74
+          Left = 32
           Top = 50
           Width = 200
           Height = 17
@@ -2739,7 +2613,7 @@ object formOptions2: TformOptions2
         end
         object vEdit13: TEdit
           Tag = 2
-          Left = 74
+          Left = 32
           Top = 32
           Width = 200
           Height = 17
@@ -2752,7 +2626,7 @@ object formOptions2: TformOptions2
         end
         object vButton13: TButton
           Tag = 2
-          Left = 318
+          Left = 238
           Top = 32
           Width = 185
           Height = 19
@@ -2766,7 +2640,7 @@ object formOptions2: TformOptions2
         end
         object vButton14: TButton
           Tag = 3
-          Left = 318
+          Left = 238
           Top = 50
           Width = 185
           Height = 19

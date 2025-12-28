@@ -444,18 +444,6 @@ type
     radioOnCancelFocusToQsoList: TRadioButton;
     radioOnCancelFocusToNewQso: TRadioButton;
     buttonVoiceAfterCmd1: TSpeedButton;
-    buttonVoiceBeforeCmd1: TSpeedButton;
-    buttonVoiceBeforeCmd2: TSpeedButton;
-    buttonVoiceBeforeCmd3: TSpeedButton;
-    buttonVoiceBeforeCmd4: TSpeedButton;
-    buttonVoiceBeforeCmd5: TSpeedButton;
-    buttonVoiceBeforeCmd6: TSpeedButton;
-    buttonVoiceBeforeCmd7: TSpeedButton;
-    buttonVoiceBeforeCmd8: TSpeedButton;
-    buttonVoiceBeforeCmd9: TSpeedButton;
-    buttonVoiceBeforeCmd10: TSpeedButton;
-    buttonVoiceBeforeCmd11: TSpeedButton;
-    buttonVoiceBeforeCmd12: TSpeedButton;
     buttonVoiceAfterCmd2: TSpeedButton;
     buttonVoiceAfterCmd3: TSpeedButton;
     buttonVoiceAfterCmd4: TSpeedButton;
@@ -467,9 +455,7 @@ type
     buttonVoiceAfterCmd10: TSpeedButton;
     buttonVoiceAfterCmd11: TSpeedButton;
     buttonVoiceAfterCmd12: TSpeedButton;
-    buttonAddVoiceBeforeCmd2: TSpeedButton;
     buttonAddVoiceAfterCmd2: TSpeedButton;
-    buttonAddVoiceBeforeCmd3: TSpeedButton;
     buttonAddVoiceAfterCmd3: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -528,9 +514,7 @@ type
       var Handled: Boolean);
     procedure vAdditionalButtonContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
-    procedure buttonVoiceBeforeCmdClick(Sender: TObject);
     procedure buttonVoiceAfterCmdClick(Sender: TObject);
-    procedure buttonAddVoiceBeforeCmdClick(Sender: TObject);
     procedure buttonAddVoiceAfterCmdClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
@@ -547,10 +531,8 @@ type
     FTempVoiceConfig: array[1..maxmessage] of TVoiceConfig;
     FTempAdditionalVoiceConfig: array[2..3] of TVoiceConfig;
 
-    FPreProcessButton: array[1..maxmessage] of TSpeedButton;
-    FPostProcessButton: array[1..maxmessage] of TSpeedButton;
-    FAdditionalPreProcessButton: array[2..3] of TSpeedButton;
-    FAdditionalPostProcessButton: array[2..3] of TSpeedButton;
+    FPrePostProcessButton: array[1..maxmessage] of TSpeedButton;
+    FAdditionalPrePostProcessButton: array[2..3] of TSpeedButton;
 
     TempCurrentBank : integer;
     TempCWStrBank : array[1..maxbank,1..maxmessage] of string; // used temporarily while options window is open
@@ -581,10 +563,8 @@ type
     procedure InitVoice();
     procedure AddFreqMemList(D: TFreqMemory);
     procedure UpdateFreqMemList(listitem: TListItem);
-    procedure SetPreProcessButtonAttr(i: Integer);
-    procedure SetPostProcessButtonAttr(i: Integer);
-    procedure SetAdditionalPreProcessButtonAttr(i: Integer);
-    procedure SetAdditionalPostProcessButtonAttr(i: Integer);
+    procedure SetPrePostProcessButtonAttr(i: Integer);
+    procedure SetAdditionalPrePostProcessButtonAttr(i: Integer);
     procedure RenewSettings();
     procedure ImplementSettings();
   public
@@ -782,34 +762,20 @@ begin
    FEditAdditionalCQMessage[2] := editCQMessage2;
    FEditAdditionalCQMessage[3] := editCQMessage3;
 
-   FPreProcessButton[1] := buttonVoiceBeforeCmd1;
-   FPreProcessButton[2] := buttonVoiceBeforeCmd2;
-   FPreProcessButton[3] := buttonVoiceBeforeCmd3;
-   FPreProcessButton[4] := buttonVoiceBeforeCmd4;
-   FPreProcessButton[5] := buttonVoiceBeforeCmd5;
-   FPreProcessButton[6] := buttonVoiceBeforeCmd6;
-   FPreProcessButton[7] := buttonVoiceBeforeCmd7;
-   FPreProcessButton[8] := buttonVoiceBeforeCmd8;
-   FPreProcessButton[9] := buttonVoiceBeforeCmd9;
-   FPreProcessButton[10] := buttonVoiceBeforeCmd10;
-   FPreProcessButton[11] := buttonVoiceBeforeCmd11;
-   FPreProcessButton[12] := buttonVoiceBeforeCmd12;
-   FPostProcessButton[1] := buttonVoiceAfterCmd1;
-   FPostProcessButton[2] := buttonVoiceAfterCmd2;
-   FPostProcessButton[3] := buttonVoiceAfterCmd3;
-   FPostProcessButton[4] := buttonVoiceAfterCmd4;
-   FPostProcessButton[5] := buttonVoiceAfterCmd5;
-   FPostProcessButton[6] := buttonVoiceAfterCmd6;
-   FPostProcessButton[7] := buttonVoiceAfterCmd7;
-   FPostProcessButton[8] := buttonVoiceAfterCmd8;
-   FPostProcessButton[9] := buttonVoiceAfterCmd9;
-   FPostProcessButton[10] := buttonVoiceAfterCmd10;
-   FPostProcessButton[11] := buttonVoiceAfterCmd11;
-   FPostProcessButton[12] := buttonVoiceAfterCmd12;
-   FAdditionalPreProcessButton[2] := buttonAddVoiceBeforeCmd2;
-   FAdditionalPreProcessButton[3] := buttonAddVoiceBeforeCmd3;
-   FAdditionalPostProcessButton[2] := buttonAddVoiceAfterCmd2;
-   FAdditionalPostProcessButton[3] := buttonAddVoiceAfterCmd3;
+   FPrePostProcessButton[1] := buttonVoiceAfterCmd1;
+   FPrePostProcessButton[2] := buttonVoiceAfterCmd2;
+   FPrePostProcessButton[3] := buttonVoiceAfterCmd3;
+   FPrePostProcessButton[4] := buttonVoiceAfterCmd4;
+   FPrePostProcessButton[5] := buttonVoiceAfterCmd5;
+   FPrePostProcessButton[6] := buttonVoiceAfterCmd6;
+   FPrePostProcessButton[7] := buttonVoiceAfterCmd7;
+   FPrePostProcessButton[8] := buttonVoiceAfterCmd8;
+   FPrePostProcessButton[9] := buttonVoiceAfterCmd9;
+   FPrePostProcessButton[10] := buttonVoiceAfterCmd10;
+   FPrePostProcessButton[11] := buttonVoiceAfterCmd11;
+   FPrePostProcessButton[12] := buttonVoiceAfterCmd12;
+   FAdditionalPrePostProcessButton[2] := buttonAddVoiceAfterCmd2;
+   FAdditionalPrePostProcessButton[3] := buttonAddVoiceAfterCmd3;
 
    // Voice Memory
    InitVoice();
@@ -1671,8 +1637,7 @@ begin
          end;
          FVoiceEdit[i].Text := Settings.FVoiceConfig[i].FSoundComment;
 
-         SetPreProcessButtonAttr(i);
-         SetPostProcessButtonAttr(i);
+         SetPrePostProcessButtonAttr(i);
       end;
       for i := 2 to 3 do begin
          FTempAdditionalVoiceConfig[i] := Settings.FAdditionalVoiceConfig[i];
@@ -1684,8 +1649,7 @@ begin
          end;
          FAdditionalVoiceEdit[i].Text := Settings.FAdditionalVoiceConfig[i].FSoundComment;
 
-         SetAdditionalPreProcessButtonAttr(i);
-         SetAdditionalPostProcessButtonAttr(i);
+         SetAdditionalPrePostProcessButtonAttr(i);
       end;
 
       //
@@ -2004,28 +1968,6 @@ begin
    popupVoiceMenu.Tag := TEdit(Sender).Tag;
 end;
 
-procedure TformOptions2.buttonAddVoiceBeforeCmdClick(Sender: TObject);
-var
-   n: Integer;
-   dlg: TformPrePostPlaybackDlg;
-begin
-   dlg := TformPrePostPlaybackDlg.Create(Self);
-   n := TSpeedButton(Sender).Tag;
-   try
-      dlg.Command := FTempAdditionalVoiceConfig[n].FPreProcess.FCommand;
-
-      if dlg.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      FTempAdditionalVoiceConfig[n].FPreProcess.FCommand := dlg.Command;
-
-      SetAdditionalPreProcessButtonAttr(n);
-   finally
-      dlg.Release();
-   end;
-end;
-
 procedure TformOptions2.buttonAddVoiceAfterCmdClick(Sender: TObject);
 var
    n: Integer;
@@ -2042,7 +1984,7 @@ begin
 
       FTempAdditionalVoiceConfig[n].FPostProcess.FCommand := dlg.Command;
 
-      SetAdditionalPostProcessButtonAttr(n);
+      SetAdditionalPrePostProcessButtonAttr(n);
    finally
       dlg.Release();
    end;
@@ -2489,28 +2431,6 @@ begin
    FVoiceSound.Close();
 end;
 
-procedure TformOptions2.buttonVoiceBeforeCmdClick(Sender: TObject);
-var
-   n: Integer;
-   dlg: TformPrePostPlaybackDlg;
-begin
-   dlg := TformPrePostPlaybackDlg.Create(Self);
-   n := TSpeedButton(Sender).Tag;
-   try
-      dlg.Command := FTempVoiceConfig[n].FPreProcess.FCommand;
-
-      if dlg.ShowModal() <> mrOK then begin
-         Exit;
-      end;
-
-      FTempVoiceConfig[n].FPreProcess.FCommand := dlg.Command;
-
-      SetPreProcessButtonAttr(n);
-   finally
-      dlg.Release();
-   end;
-end;
-
 procedure TformOptions2.buttonVoiceAfterCmdClick(Sender: TObject);
 var
    n: Integer;
@@ -2519,15 +2439,29 @@ begin
    dlg := TformPrePostPlaybackDlg.Create(Self);
    n := TSpeedButton(Sender).Tag;
    try
-      dlg.Command := FTempVoiceConfig[n].FPostProcess.FCommand;
+      if FTempVoiceConfig[n].FPostProcess.FCommand <> '' then begin
+         dlg.Command := FTempVoiceConfig[n].FPostProcess.FCommand;
+         dlg.ExecuteAt := eaAfter;
+      end
+      else begin
+         dlg.Command := FTempVoiceConfig[n].FPreProcess.FCommand;
+         dlg.ExecuteAt := eaBefore;
+      end;
 
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      FTempVoiceConfig[n].FPostProcess.FCommand := dlg.Command;
+      if dlg.ExecuteAt = eaBefore then begin
+         FTempVoiceConfig[n].FPreProcess.FCommand := dlg.Command;
+         FTempVoiceConfig[n].FPostProcess.FCommand := '';
+      end
+      else begin
+         FTempVoiceConfig[n].FPreProcess.FCommand := '';
+         FTempVoiceConfig[n].FPostProcess.FCommand := dlg.Command;
+      end;
 
-      SetPostProcessButtonAttr(n);
+      SetPrePostProcessButtonAttr(n);
    finally
       dlg.Release();
    end;
@@ -2594,43 +2528,25 @@ begin
    listitem.SubItems[4] := IntToStr(D.FixEdgeNo);
 end;
 
-procedure TformOptions2.SetPreProcessButtonAttr(i: Integer);
+procedure TformOptions2.SetPrePostProcessButtonAttr(i: Integer);
 begin
-   if (FTempVoiceConfig[i].FPreProcess.FCommand <> '') then begin
-      FPreProcessButton[i].Font.Style := [fsBold];
+   if (FTempVoiceConfig[i].FPreProcess.FCommand <> '') or
+      (FTempVoiceConfig[i].FPostProcess.FCommand <> '') then begin
+      FPrePostProcessButton[i].Font.Style := [fsBold];
    end
    else begin
-      FPreProcessButton[i].Font.Style := [];
+      FPrePostProcessButton[i].Font.Style := [];
    end;
 end;
 
-procedure TformOptions2.SetPostProcessButtonAttr(i: Integer);
+procedure TformOptions2.SetAdditionalPrePostProcessButtonAttr(i: Integer);
 begin
-   if (FTempVoiceConfig[i].FPostProcess.FCommand <> '') then begin
-      FPostProcessButton[i].Font.Style := [fsBold];
+   if (FTempAdditionalVoiceConfig[i].FPreProcess.FCommand <> '') or
+      (FTempAdditionalVoiceConfig[i].FPostProcess.FCommand <> '') then begin
+      FAdditionalPrePostProcessButton[i].Font.Style := [fsBold];
    end
    else begin
-      FPostProcessButton[i].Font.Style := [];
-   end;
-end;
-
-procedure TformOptions2.SetAdditionalPreProcessButtonAttr(i: Integer);
-begin
-   if (FTempAdditionalVoiceConfig[i].FPreProcess.FCommand <> '') then begin
-      FAdditionalPreProcessButton[i].Font.Style := [fsBold];
-   end
-   else begin
-      FAdditionalPreProcessButton[i].Font.Style := [];
-   end;
-end;
-
-procedure TformOptions2.SetAdditionalPostProcessButtonAttr(i: Integer);
-begin
-   if (FTempAdditionalVoiceConfig[i].FPostProcess.FCommand <> '') then begin
-      FAdditionalPostProcessButton[i].Font.Style := [fsBold];
-   end
-   else begin
-      FAdditionalPostProcessButton[i].Font.Style := [];
+      FAdditionalPrePostProcessButton[i].Font.Style := [];
    end;
 end;
 

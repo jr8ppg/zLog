@@ -13655,9 +13655,11 @@ begin
 
    if fOn = True then begin
       // #735
-      cmd := dmZLogGlobal.Settings.FVoiceConfig[msgno].FPreProcess.FCommand;
-      if cmd <> '' then begin
-         DoCwCommandProc(nil, StrToIntDef(cmd, -1));
+      if msgno > 0 then begin
+         cmd := dmZLogGlobal.Settings.FVoiceConfig[msgno].FPreProcess.FCommand;
+         if cmd <> '' then begin
+            DoCwCommandProc(nil, StrToIntDef(cmd, -1));
+         end;
       end;
 
       // #340
@@ -13690,9 +13692,11 @@ begin
       end;
 
       // #735
-      cmd := dmZLogGlobal.Settings.FVoiceConfig[msgno].FPostProcess.FCommand;
-      if cmd <> '' then begin
-         DoCwCommandProc(nil, StrToIntDef(cmd, -1));
+      if msgno > 0 then begin
+         cmd := dmZLogGlobal.Settings.FVoiceConfig[msgno].FPostProcess.FCommand;
+         if cmd <> '' then begin
+            DoCwCommandProc(nil, StrToIntDef(cmd, -1));
+         end;
       end;
    end;
 end;

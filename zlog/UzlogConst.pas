@@ -22,6 +22,7 @@ type
 
   TFrequency = Int64;
   TAudioInput = (aiDontCare = 0, aiMic, aiUsb, aiAcc, aiMicUsb, aiMicAcc);
+  TExecuteAt = (eaBefore = 0, eaAfter);
 
 type
   TPortAction = ( paNone = 0, paPtt, paKey, paAlwaysOn, paAlwaysOff, paHandshake );

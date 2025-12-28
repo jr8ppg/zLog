@@ -3,7 +3,7 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Pre/Post playback command'
-  ClientHeight = 125
+  ClientHeight = 206
   ClientWidth = 201
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -45,12 +45,12 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
   end
   object Panel1: TPanel
     Left = 0
-    Top = 91
+    Top = 172
     Width = 201
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 2
     ExplicitTop = 182
     ExplicitWidth = 268
     DesignSize = (
@@ -79,6 +79,33 @@ object formPrePostPlaybackDlg: TformPrePostPlaybackDlg
       ModalResult = 2
       TabOrder = 1
       ExplicitLeft = 193
+    end
+  end
+  object groupExecuteAt: TGroupBox
+    Left = 8
+    Top = 91
+    Width = 185
+    Height = 77
+    Caption = 'Execute at'
+    TabOrder = 1
+    object radioBeforePlayback: TRadioButton
+      Left = 12
+      Top = 24
+      Width = 113
+      Height = 17
+      Caption = 'Before playback'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object radioAfterPlayback: TRadioButton
+      Tag = 163
+      Left = 12
+      Top = 47
+      Width = 113
+      Height = 17
+      Caption = 'After playback'
+      TabOrder = 1
     end
   end
 end

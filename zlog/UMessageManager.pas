@@ -686,6 +686,7 @@ begin
 
    if Assigned(FOnNotifyFinished) then begin
       FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False, FCurrentVoice);
+      FCurrentVoice := 0;
    end;
 
    {$IFDEF DEBUG}
