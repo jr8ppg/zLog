@@ -660,6 +660,7 @@ begin
             TICOM(rig).PlayMessagePhSupported := ICOMLIST[i].PlayPh;
             TICOM(rig).FixEdgeSelectSupported := ICOMLIST[i].FixEdgeSel;
             TICOM(rig).AudioInputSelectSupported := ICOMLIST[i].AudioSel;
+            TICOM(rig).AudioCmd := ICOMLIST[i].AudioCmd;
             TICOM(rig).AudioMic := ICOMLIST[i].AudioMic;
             TICOM(rig).AudioUsb := ICOMLIST[i].AudioUsb;
             TICOM(rig).AudioAcc := ICOMLIST[i].AudioAcc;

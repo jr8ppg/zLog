@@ -837,11 +837,11 @@ begin
 
    case input of
       aiDontCare: SendIcomCommand('');
-      aiMic:      SendIcomCommand(FAudioMic);
-      aiUsb:      SendIcomCommand(FAudioUsb);
-      aiAcc:      SendIcomCommand(FAudioAcc);
-      aiMicUsb:   SendIcomCommand(FAudioMicUsb);
-      aiMicAcc:   SendIcomCommand(FAudioMicAcc);
+      aiMic:      SendIcomCommand(FAudioCmd + FAudioMic);
+      aiUsb:      SendIcomCommand(FAudioCmd + FAudioUsb);
+      aiAcc:      SendIcomCommand(FAudioCmd + FAudioAcc);
+      aiMicUsb:   SendIcomCommand(FAudioCmd + FAudioMicUsb);
+      aiMicAcc:   SendIcomCommand(FAudioCmd + FAudioMicAcc);
    end;
 end;
 
@@ -862,7 +862,7 @@ begin
 
    i := 1;
    repeat
-      S := Copy(S, i, 2);
+      S := Copy(command, i, 2);
 
       ch := AnsiChar(StrToIntDef('$' + S, 0));
       cmd := cmd + ch;
