@@ -2188,6 +2188,8 @@ begin
    FVoiceButton[10] := vButton10;
    FVoiceButton[11] := vButton11;
    FVoiceButton[12] := vButton12;
+   FAdditionalVoiceButton[2] := vButton13;
+   FAdditionalVoiceButton[3] := vButton14;
 
    FVoiceSound := TWaveSound.Create();
 
