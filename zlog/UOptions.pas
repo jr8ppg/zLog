@@ -293,8 +293,8 @@ type
     GroupBox1: TGroupBox;
     radio1Radio: TRadioButton;
     radio2RadioH: TRadioButton;
-    Label1: TLabel;
-    Label2: TLabel;
+    label1RadioText: TLabel;
+    label2RadioHText: TLabel;
     checkWkAlways9600: TCheckBox;
     groupRcSleepMode: TGroupBox;
     groupRcGeneral: TGroupBox;
@@ -454,6 +454,7 @@ type
     buttonAudioConfig2: TButton;
     buttonAudioConfig3: TButton;
     buttonAudioConfig4: TButton;
+    label2RadioVText: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
