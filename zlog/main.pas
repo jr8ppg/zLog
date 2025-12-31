@@ -19,7 +19,7 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
-  Winapi.MMSystem, JvExControls, JvLED, System.Character,
+  Winapi.MMSystem, JvExControls, JvLED, System.Character, Vcl.Themes,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -1334,6 +1334,7 @@ type
     function DateStr(aQSO: TQSO): string;
     procedure ShowDateTime(Q: TQSO = nil);
     procedure SetInitQsoEditPanel();
+    procedure SetDarkMode();
   public
     LastFocus : TEdit;
 
@@ -1539,6 +1540,548 @@ uses
   UCountryChecker, USelectClusterLog, USpcViewer, UOptions3, UStartup;
 
 {$R *.DFM}
+
+procedure TMainForm.FormCreate(Sender: TObject);
+var
+   i, j, mSec: Integer;
+   S, ss: string;
+   b: TBand;
+begin
+   FInitialized   := False;
+   InitAtomTable(509);
+
+   // ダークモード
+   if dmZLogGlobal.Settings.FUseDarkMode = True then begin
+      SetDarkMode();
+   end;
+
+   // taskbar表示用リスト
+   FTaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskBarList;
+
+   F2bsiqStart := False;
+   FWaitForQsoFinish[0] := False;
+   FWaitForQsoFinish[1] := False;
+   FWaitForQsoFinish[2] := False;
+
+   FStartCWKeyboard := False;
+
+   InitGrid();
+
+   // フォント設定
+   Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   EditPanel1R.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   EditPanel2RH.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+   EditPanel2RV.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
+
+   // QSO Editパネルの初期設定
+   InitQsoEditPanel();
+   UpdateQsoEditPanel(1);
+
+   FRigControl    := TRigControl.Create(Self);
+   FRigControl.OnVFOChanged := DoVFOChange;
+   FRigControl.OnBandChanged := DoBandChange;
+   FPartialCheck  := TPartialCheck.Create(Self);
+   FRateDialog    := TRateDialog.Create(Self);
+   FRateDialogEx  := TRateDialogEx.Create(Self);
+   FSuperCheck    := TSuperCheck.Create(Self);
+   FSuperCheck2   := TSuperCheck2.Create(Self);
+   FCommForm      := TCommForm.Create(Self);
+   FCWKeyBoard    := TCWKeyBoard.Create(Self);
+   FChatForm      := TChatForm.Create(Self);
+   FZServerInquiry := TZServerInquiry.Create(Self);
+   FZLinkForm     := TZLinkForm.Create(Self);
+   FConsolePad    := TConsolePad.Create(Self);
+   FFreqList      := TFreqList.Create(Self);
+   FCheckCall2    := TCheckCall2.Create(Self);
+   FCheckMulti    := TCheckMulti.Create(Self);
+   FCheckCountry  := TCheckCountry.Create(Self);
+   FScratchSheet  := TScratchSheet.Create(Self);
+   FQuickRef      := TQuickRef.Create(Self);
+   FZAnalyze      := TZAnalyze.Create(Self);
+   FCWMessagePad  := TCwMessagePad.Create(Self);
+   FMessageManager := TformMessageManager.Create(Self);
+   FMessageManager.OnNotifyStarted  := OnVoicePlayStarted;
+   FMessageManager.OnNotifyFinished := OnPlayMessageFinished;
+   FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
+   FQsyInfoForm   := TformQsyInfo.Create(Self);
+   FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
+   FInformation   := TformInformation.Create(Self);
+   FTTYConsole    := nil;
+   FWinKeyerTester := TformWinKeyerTester.Create(Self);
+   FFreqTest      := TformFreqTest.Create(Self);
+   FCWMonitor     := TformCWMonitor.Create(Self);
+   FProgress      := TformProgress.Create(Self);
+   FQsoSearch     := TformSearch.Create(Self);
+   FEntityInfo    := TformEntityInfo.Create(Self);
+   FGrayline      := TformGrayline.Create(Self);
+
+   FSuperCheck.OnChangeFontSize := OnChangeFontSize;
+   FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
+   FPartialCheck.OnChangeFontSize := OnChangeFontSize;
+   FCommForm.OnChangeFontSize := OnChangeFontSize;
+//   if MyContest <> nil then begin
+//      MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
+//      MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
+//   end;
+
+   FCWKeyboard.OnChangeFontSize := OnChangeFontSize;
+   FCWMessagePad.OnChangeFontSize := OnChangeFontSize;
+
+   FFreqList.OnChangeFontSize := OnChangeFontSize;
+   FCheckCall2.OnChangeFontSize := OnChangeFontSize;
+   FCheckMulti.OnChangeFontSize := OnChangeFontSize;
+   FCheckCountry.OnChangeFontSize := OnChangeFontSize;
+   FFunctionKeyPanel.OnChangeFontSize := OnChangeFontSize;
+   FChatForm.OnChangeFontSize := OnChangeFontSize;
+
+   FCurrentCQMessageNo := 101;
+   FCQLoopRunning := False;
+   FCQLoopStartRig := 1;
+   FCtrlZCQLoop := False;
+   FCQRepeatPlaying := False;
+
+   for i := 0 to 4 do begin
+      FTabKeyPressed[i] := False;
+      FDownKeyPressed[i] := False;
+      FOtherKeyPressed[i] := False;
+      FKeyPressedRigID[i] := 0;
+   end;
+   FRigSwitchTime := Now();
+   FPastEditMode := False;
+   FQsyViolation := False;
+   FQsyCountPrevHour := '';
+   FPrevTotalQSO := 0;
+
+   // Out of contest period表示
+   FFirstOutOfContestPeriod := True;
+   FOutOfContestPeriod := False;
+   FPrevOutOfContestPeriod := False;
+   panelOutOfPeriod.Height := 0;
+
+   FQsyFromBS := False;
+
+   // バンド別用
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b] := TBandScope2.Create(Self, b);
+      FBandScopeEx[b].Style := bssByBand;
+      FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+      FBandScopeEx[b].Resume();
+   end;
+
+   // 現在バンド用
+   FBandScope := TBandScope2.Create(Self, b19);
+   FBandScope.Style := bssCurrentBand;
+   FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScope.Resume();
+
+   // ニューマルチ用
+   FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
+   FBandScopeNewMulti.Style := bssNewMulti;
+   FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScopeNewMulti.Resume();
+
+   // 全バンド用
+   FBandScopeAllBands := TBandScope2.Create(Self, bUnknown);
+   FBandScopeAllBands.Style := bssAllBands;
+   FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
+   FBandScopeAllBands.Resume();
+
+   FBandScopeMenu[b19] := menuBS00;
+   FBandScopeMenu[b35] := menuBS01;
+   FBandScopeMenu[b7] := menuBS02;
+   FBandScopeMenu[b10] := menuBS03;
+   FBandScopeMenu[b14] := menuBS04;
+   FBandScopeMenu[b18] := menuBS05;
+   FBandScopeMenu[b21] := menuBS06;
+   FBandScopeMenu[b24] := menuBS07;
+   FBandScopeMenu[b28] := menuBS08;
+   FBandScopeMenu[b50] := menuBS09;
+   FBandScopeMenu[b144] := menuBS10;
+   FBandScopeMenu[b430] := menuBS11;
+   FBandScopeMenu[b1200] := menuBS12;
+   FBandScopeMenu[b2400] := menuBS13;
+   FBandScopeMenu[b5600] := menuBS14;
+   FBandScopeMenu[b10g] := menuBS15;
+
+   for b := b19 to b10g do begin
+      FBandScopeMenu[b].Caption := BandString[b];
+   end;
+
+   // Super Check
+   FNPlusOneThread := nil;
+   FSuperCheckDataLoadThread := nil;
+   FSpcDataLoading := False;
+   FSuperChecked := False;
+   FSuperCheckList := nil;
+   for i := 0 to 255 do begin
+      for j := 0 to 255 do begin
+         FTwoLetterMatrix[i, j] := nil;
+      end;
+   end;
+
+   ReadKeymap();
+
+   defaultTextColor := CallsignEdit.Font.Color;
+   OldCallsign := '';
+   OldNumber := '';
+
+   // BandPlan Selector
+   comboBandPlan.Items.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
+   comboBandPlan.ItemIndex := 0;
+
+   FCurrentRigSet := 1;
+   clStatusLine := clWindowText;
+   mSec := dmZlogGlobal.Settings.CW._interval;
+   S := '';
+
+   SaveInBackGround := False;
+   FLastTabPress := Now;
+   FPostContest := False;
+
+   Application.OnIdle := MyIdleEvent;
+   Application.OnMessage := MyMessageEvent;
+//   Application.OnHint := ShowHint;
+
+   for i := 0 to ParamCount do begin
+      S := S + ' ' + ParamStr(i);
+      ss := ParamStr(i);
+      if Pos('/I', UpperCase(ss)) = 1 then begin
+         Delete(ss, 1, 2);
+         j := StrToIntDef(ss, 0);
+         if (j > 0) and (j < 100) then begin
+            mSec := j;
+         end;
+      end;
+   end;
+
+   // initialize keyer
+   dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
+   dmZLogKeyer.OnPaddle := OnPaddle;
+   dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
+   dmZLogKeyer.OnOneCharSentProc := OnOneCharSentProc;
+   dmZLogKeyer.OnSendFinishProc := OnPlayMessageFinished;
+   dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
+   dmZLogKeyer.OnCommand := DoCwCommandProc;
+   dmZLogKeyer.InitializeBGK(mSec);
+
+   RenewCWToolBar;
+   LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
+
+   CurrentQSO := TQSO.Create;
+   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
+   Randomize;
+   GLOBALSERIAL := Random10 * 1000; // for qso id
+
+   with CurrentQSO do begin
+      NrSent := '';
+      mode := mCW;
+      Band := b7;
+
+      Operator := '';
+      TX := dmZlogGlobal.TXNr;
+      Reserve3 := dmZlogGlobal.NewQSOID();
+   end;
+
+   RcvdNumberEdit.Text := '';
+   BandEdit.Text := MHzString[CurrentQSO.Band];
+   PowerEdit.Text := NewPowerString[CurrentQSO.Power];
+   SentRSTEdit.Text := CurrentQSO.RSTSentStr;
+   SentNumberEdit.Text := dmZLogGlobal.Settings._sentstr;
+   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
+   CurrentQSO.UpdateTime;
+   ShowDateTime();
+
+   if dmZlogGlobal.BackupPath = '' then begin
+      Backup1.Enabled := False;
+   end;
+
+   BuildOpListMenu2(OpMenu.Items, OpMenuClick);
+
+   FTempQSOList := TQSOList.Create();
+
+   RestoreWindowsPos();
+
+   dmZLogKeyer.ResetPTT();
+
+   // フォントサイズの設定
+   SetFontSize(dmZlogGlobal.Settings._mainfontsize);
+   PostMessage(Handle, WM_ZLOG_SETEDITFIELDS, 0, 0);
+   FFunctionKeyPanel.Init();
+
+   {$IFDEF WIN32}
+   menuPluginManager.Visible := False;
+   {$ENDIF}
+
+   zyloRuntimeLaunch;
+end;
+
+procedure TMainForm.FormActivate(Sender: TObject);
+begin
+   ActionList1.State := asNormal;
+   if LastFocus.Visible then begin
+      LastFocus.SetFocus;
+   end;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+var
+   ini: TMemIniFile;
+   X, Y, W, H: Integer;
+   B, BB: Boolean;
+   i: Integer;
+begin
+   // パラレルポート初期化
+   if dmZLogGlobal.Settings.FExtAntSelWndClass = '' then begin
+      dmZLogKeyer.ParallelPort.Initialize();
+   end;
+
+   if (TParallelPort.IsParallelPortPresent() = False) then begin
+      for i := 1 to 5 do begin
+         if dmZLogGlobal.Settings.FRigControl[i].FKeyingPort = Integer(tkpParallel) then begin
+            dmZLogGlobal.Settings.FRigControl[i].FKeyingPort := Integer(tkpNone);
+         end;
+      end;
+   end;
+
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZlogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
+      if (W > 0) and (H > 0) then begin
+         if B then begin
+            mnHideCWPhToolBar.Checked := True;
+         end;
+         if BB then begin
+            mnHideMenuToolbar.Checked := True;
+         end;
+         ShowToolBar(mOther);
+
+         Left := X;
+         top := Y;
+         Width := W;
+         Height := H;
+      end;
+
+      if FPostContest then begin
+         MessageDlg(TMainForm_Change_Date, mtInformation, [mbOK], 0); { HELP context 0 }
+      end;
+
+      PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
+
+   //   zyloRuntimeLaunch;
+   finally
+      ini.Free();
+   end;
+end;
+
+procedure TMainForm.FormResize(Sender: TObject);
+begin
+   SetListWidth();
+   buttonCancelOutOfPeriod.Left := panelOutOfPeriod.Width - 26;
+end;
+
+procedure TMainForm.FormDeactivate(Sender: TObject);
+begin
+   ActionList1.State := asSuspended;
+end;
+
+procedure TMainForm.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズDOWN
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := Grid.Font.Size;
+      Dec(font_size);
+      if font_size < 6 then begin
+         font_size := 6;
+      end;
+
+      SetFontSize(font_size);
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         OnChangeFontSize(Self, font_size);
+      end;
+
+      Refresh();
+
+      Handled := True;
+   end;
+end;
+
+procedure TMainForm.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
+  MousePos: TPoint; var Handled: Boolean);
+var
+   font_size: Integer;
+begin
+   // CTRL+UPでフォントサイズUP
+   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
+      font_size := Grid.Font.Size;
+      Inc(font_size);
+      if font_size > 28 then begin
+         font_size := 28;
+      end;
+
+      SetFontSize(font_size);
+
+      // さらにSHIFTキーを押していると他のWindowも変更する
+      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+         OnChangeFontSize(Self, font_size);
+      end;
+
+      Refresh();
+
+      Handled := True;
+   end;
+end;
+
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+var
+   R: Integer;
+   S: string;
+begin
+   if Log = nil then begin
+      Exit;
+   end;
+
+   if Log.Saved = False then begin
+      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
+      R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
+      case R of
+         mrYes: begin
+            CanClose := True;
+            FileSave(Sender);
+         end;
+         mrCancel: begin
+            CanClose := False;
+            exit;
+         end;
+      end;
+   end;
+end;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   FChatForm.RenewOptions();
+   FCommForm.RenewOptions();
+   FCommForm.Disconnect();
+   FRateDialogEx.SaveSettings();
+
+   // F2Aモード解除
+   F2AOff();
+
+   Timer1.Enabled := False;
+   TerminateNPlusOne();
+   TerminateSuperCheckDataLoad();
+   dmZLogKeyer.CloseBGK;
+
+   if FInitialized = True then begin
+      RecordWindowStates;
+   end;
+
+   if MMTTYRunning then begin
+      ExitMMTTY;
+   end;
+
+   // Last Band/Mode
+   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+      dmZLogGlobal.LastBand[0] := CurrentQSO.Band;
+      dmZLogGlobal.LastMode[0] := CurrentQSO.Mode;
+   end
+   else begin
+      dmZLogGlobal.LastBand[0] := TextToBand(FEditPanel[0].BandEdit.Text);
+      dmZLogGlobal.LastMode[0] := TextToMode(FEditPanel[0].ModeEdit.Text);
+      dmZLogGlobal.LastBand[1] := TextToBand(FEditPanel[1].BandEdit.Text);
+      dmZLogGlobal.LastMode[1] := TextToMode(FEditPanel[1].ModeEdit.Text);
+      dmZLogGlobal.LastBand[2] := TextToBand(FEditPanel[2].BandEdit.Text);
+      dmZLogGlobal.LastMode[2] := TextToMode(FEditPanel[2].ModeEdit.Text);
+   end;
+
+   // SO2R
+   dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
+
+   // Last CQ mode
+   dmZLogGlobal.Settings.FLastCQMode := IsCQ();
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+var
+   b: TBand;
+begin
+   FCheckCall2.Release();
+   FPartialCheck.Release();
+   FSuperCheck.Release();
+   FSuperCheck2.Release();
+   FCheckMulti.Release();
+   FCWKeyBoard.Release();
+   FRigControl.Release();
+   FChatForm.Release();
+   FFreqList.Release();
+   FCommForm.Release();
+   FScratchSheet.Release();
+   FRateDialog.Release();
+   FRateDialogEx.Release();
+   FZServerInquiry.Release();
+   FZLinkForm.Release();
+   FConsolePad.Release();
+   FCheckCountry.Release();
+
+   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+      FBandScopeEx[b].Suspend();
+      FBandScopeEx[b].Close();
+      FBandScopeEx[b].Release();
+   end;
+   FBandScope.Suspend();
+   FBandScope.Close();
+   FBandScope.Release();
+
+   FBandScopeNewMulti.Suspend();
+   FBandScopeNewMulti.Close();
+   FBandScopeNewMulti.Release();
+
+   FBandScopeAllBands.Suspend();
+   FBandScopeAllBands.Close();
+   FBandScopeAllBands.Release();
+
+   if MyContest is TWAEContest then begin
+      TWAEContest(MyContest).QTCForm.Release();
+   end;
+
+   if MyContest <> nil then begin
+      MyContest.Free;
+   end;
+
+   FTempQSOList.Free();
+   FQuickRef.Release();
+   FZAnalyze.Release();
+   FCWMessagePad.Release();
+   FMessageManager.Release();
+   FFunctionKeyPanel.Release();
+   FQsyInfoForm.Release();
+   FSo2rNeoCp.Release();
+   FInformation.Release();
+   FWinKeyerTester.Release();
+   FFreqTest.Release();
+   FCWMonitor.Release();
+   FProgress.Release();
+   FQsoSearch.Release();
+   FEntityInfo.Release();
+   FGrayline.Release();
+
+   if Assigned(FTTYConsole) then begin
+      FTTYConsole.Release();
+   end;
+
+   CurrentQSO.Free();
+
+   FTaskbarList := nil;
+
+   SuperCheckFreeData();
+
+   zyloContestClosed;
+   zyloRuntimeFinish;
+end;
 
 procedure TMainForm.ReEvaluateCountDownTimer;
 var
@@ -2432,275 +2975,6 @@ begin
    end;
 
    EditPanel2RV.Refresh();
-end;
-
-procedure TMainForm.FormCreate(Sender: TObject);
-var
-   i, j, mSec: Integer;
-   S, ss: string;
-   b: TBand;
-begin
-   FInitialized   := False;
-   InitAtomTable(509);
-
-   // taskbar表示用リスト
-   FTaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskBarList;
-
-   F2bsiqStart := False;
-   FWaitForQsoFinish[0] := False;
-   FWaitForQsoFinish[1] := False;
-   FWaitForQsoFinish[2] := False;
-
-   FStartCWKeyboard := False;
-
-   InitGrid();
-
-   // フォント設定
-   Grid.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   EditPanel1R.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   EditPanel2RH.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   EditPanel2RV.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-
-   // QSO Editパネルの初期設定
-   InitQsoEditPanel();
-   UpdateQsoEditPanel(1);
-
-   FRigControl    := TRigControl.Create(Self);
-   FRigControl.OnVFOChanged := DoVFOChange;
-   FRigControl.OnBandChanged := DoBandChange;
-   FPartialCheck  := TPartialCheck.Create(Self);
-   FRateDialog    := TRateDialog.Create(Self);
-   FRateDialogEx  := TRateDialogEx.Create(Self);
-   FSuperCheck    := TSuperCheck.Create(Self);
-   FSuperCheck2   := TSuperCheck2.Create(Self);
-   FCommForm      := TCommForm.Create(Self);
-   FCWKeyBoard    := TCWKeyBoard.Create(Self);
-   FChatForm      := TChatForm.Create(Self);
-   FZServerInquiry := TZServerInquiry.Create(Self);
-   FZLinkForm     := TZLinkForm.Create(Self);
-   FConsolePad    := TConsolePad.Create(Self);
-   FFreqList      := TFreqList.Create(Self);
-   FCheckCall2    := TCheckCall2.Create(Self);
-   FCheckMulti    := TCheckMulti.Create(Self);
-   FCheckCountry  := TCheckCountry.Create(Self);
-   FScratchSheet  := TScratchSheet.Create(Self);
-   FQuickRef      := TQuickRef.Create(Self);
-   FZAnalyze      := TZAnalyze.Create(Self);
-   FCWMessagePad  := TCwMessagePad.Create(Self);
-   FMessageManager := TformMessageManager.Create(Self);
-   FMessageManager.OnNotifyStarted  := OnVoicePlayStarted;
-   FMessageManager.OnNotifyFinished := OnPlayMessageFinished;
-   FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
-   FQsyInfoForm   := TformQsyInfo.Create(Self);
-   FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
-   FInformation   := TformInformation.Create(Self);
-   FTTYConsole    := nil;
-   FWinKeyerTester := TformWinKeyerTester.Create(Self);
-   FFreqTest      := TformFreqTest.Create(Self);
-   FCWMonitor     := TformCWMonitor.Create(Self);
-   FProgress      := TformProgress.Create(Self);
-   FQsoSearch     := TformSearch.Create(Self);
-   FEntityInfo    := TformEntityInfo.Create(Self);
-   FGrayline      := TformGrayline.Create(Self);
-
-   FSuperCheck.OnChangeFontSize := OnChangeFontSize;
-   FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
-   FPartialCheck.OnChangeFontSize := OnChangeFontSize;
-   FCommForm.OnChangeFontSize := OnChangeFontSize;
-//   if MyContest <> nil then begin
-//      MyContest.ScoreForm.FontSize := font_size;   // TBasicScore
-//      MyContest.MultiForm.FontSize := font_size;   // TBasicMulti
-//   end;
-
-   FCWKeyboard.OnChangeFontSize := OnChangeFontSize;
-   FCWMessagePad.OnChangeFontSize := OnChangeFontSize;
-
-   FFreqList.OnChangeFontSize := OnChangeFontSize;
-   FCheckCall2.OnChangeFontSize := OnChangeFontSize;
-   FCheckMulti.OnChangeFontSize := OnChangeFontSize;
-   FCheckCountry.OnChangeFontSize := OnChangeFontSize;
-   FFunctionKeyPanel.OnChangeFontSize := OnChangeFontSize;
-   FChatForm.OnChangeFontSize := OnChangeFontSize;
-
-   FCurrentCQMessageNo := 101;
-   FCQLoopRunning := False;
-   FCQLoopStartRig := 1;
-   FCtrlZCQLoop := False;
-   FCQRepeatPlaying := False;
-
-   for i := 0 to 4 do begin
-      FTabKeyPressed[i] := False;
-      FDownKeyPressed[i] := False;
-      FOtherKeyPressed[i] := False;
-      FKeyPressedRigID[i] := 0;
-   end;
-   FRigSwitchTime := Now();
-   FPastEditMode := False;
-   FQsyViolation := False;
-   FQsyCountPrevHour := '';
-   FPrevTotalQSO := 0;
-
-   // Out of contest period表示
-   FFirstOutOfContestPeriod := True;
-   FOutOfContestPeriod := False;
-   FPrevOutOfContestPeriod := False;
-   panelOutOfPeriod.Height := 0;
-
-   FQsyFromBS := False;
-
-   // バンド別用
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[b] := TBandScope2.Create(Self, b);
-      FBandScopeEx[b].Style := bssByBand;
-      FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-      FBandScopeEx[b].Resume();
-   end;
-
-   // 現在バンド用
-   FBandScope := TBandScope2.Create(Self, b19);
-   FBandScope.Style := bssCurrentBand;
-   FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-   FBandScope.Resume();
-
-   // ニューマルチ用
-   FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
-   FBandScopeNewMulti.Style := bssNewMulti;
-   FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-   FBandScopeNewMulti.Resume();
-
-   // 全バンド用
-   FBandScopeAllBands := TBandScope2.Create(Self, bUnknown);
-   FBandScopeAllBands.Style := bssAllBands;
-   FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-   FBandScopeAllBands.Resume();
-
-   FBandScopeMenu[b19] := menuBS00;
-   FBandScopeMenu[b35] := menuBS01;
-   FBandScopeMenu[b7] := menuBS02;
-   FBandScopeMenu[b10] := menuBS03;
-   FBandScopeMenu[b14] := menuBS04;
-   FBandScopeMenu[b18] := menuBS05;
-   FBandScopeMenu[b21] := menuBS06;
-   FBandScopeMenu[b24] := menuBS07;
-   FBandScopeMenu[b28] := menuBS08;
-   FBandScopeMenu[b50] := menuBS09;
-   FBandScopeMenu[b144] := menuBS10;
-   FBandScopeMenu[b430] := menuBS11;
-   FBandScopeMenu[b1200] := menuBS12;
-   FBandScopeMenu[b2400] := menuBS13;
-   FBandScopeMenu[b5600] := menuBS14;
-   FBandScopeMenu[b10g] := menuBS15;
-
-   for b := b19 to b10g do begin
-      FBandScopeMenu[b].Caption := BandString[b];
-   end;
-
-   // Super Check
-   FNPlusOneThread := nil;
-   FSuperCheckDataLoadThread := nil;
-   FSpcDataLoading := False;
-   FSuperChecked := False;
-   FSuperCheckList := nil;
-   for i := 0 to 255 do begin
-      for j := 0 to 255 do begin
-         FTwoLetterMatrix[i, j] := nil;
-      end;
-   end;
-
-   ReadKeymap();
-
-   defaultTextColor := CallsignEdit.Font.Color;
-   OldCallsign := '';
-   OldNumber := '';
-
-   // BandPlan Selector
-   comboBandPlan.Items.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
-   comboBandPlan.ItemIndex := 0;
-
-   FCurrentRigSet := 1;
-   clStatusLine := clWindowText;
-   mSec := dmZlogGlobal.Settings.CW._interval;
-   S := '';
-
-   SaveInBackGround := False;
-   FLastTabPress := Now;
-   FPostContest := False;
-
-   Application.OnIdle := MyIdleEvent;
-   Application.OnMessage := MyMessageEvent;
-//   Application.OnHint := ShowHint;
-
-   for i := 0 to ParamCount do begin
-      S := S + ' ' + ParamStr(i);
-      ss := ParamStr(i);
-      if Pos('/I', UpperCase(ss)) = 1 then begin
-         Delete(ss, 1, 2);
-         j := StrToIntDef(ss, 0);
-         if (j > 0) and (j < 100) then begin
-            mSec := j;
-         end;
-      end;
-   end;
-
-   // initialize keyer
-   dmZLogKeyer.OnCallsignSentProc := CallsignSentProc;
-   dmZLogKeyer.OnPaddle := OnPaddle;
-   dmZLogKeyer.OnSpeedChanged := DoCwSpeedChange;
-   dmZLogKeyer.OnOneCharSentProc := OnOneCharSentProc;
-   dmZLogKeyer.OnSendFinishProc := OnPlayMessageFinished;
-   dmZLogKeyer.OnWkStatusProc := DoWkStatusProc;
-   dmZLogKeyer.OnCommand := DoCwCommandProc;
-   dmZLogKeyer.InitializeBGK(mSec);
-
-   RenewCWToolBar;
-   LastFocus := CallsignEdit; { the place to set focus when ESC is pressed from Grid }
-
-   CurrentQSO := TQSO.Create;
-   CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
-   Randomize;
-   GLOBALSERIAL := Random10 * 1000; // for qso id
-
-   with CurrentQSO do begin
-      NrSent := '';
-      mode := mCW;
-      Band := b7;
-
-      Operator := '';
-      TX := dmZlogGlobal.TXNr;
-      Reserve3 := dmZlogGlobal.NewQSOID();
-   end;
-
-   RcvdNumberEdit.Text := '';
-   BandEdit.Text := MHzString[CurrentQSO.Band];
-   PowerEdit.Text := NewPowerString[CurrentQSO.Power];
-   SentRSTEdit.Text := CurrentQSO.RSTSentStr;
-   SentNumberEdit.Text := dmZLogGlobal.Settings._sentstr;
-   RcvdRSTEdit.Text := CurrentQSO.RSTStr;
-   CurrentQSO.UpdateTime;
-   ShowDateTime();
-
-   if dmZlogGlobal.BackupPath = '' then begin
-      Backup1.Enabled := False;
-   end;
-
-   BuildOpListMenu2(OpMenu.Items, OpMenuClick);
-
-   FTempQSOList := TQSOList.Create();
-
-   RestoreWindowsPos();
-
-   dmZLogKeyer.ResetPTT();
-
-   // フォントサイズの設定
-   SetFontSize(dmZlogGlobal.Settings._mainfontsize);
-   PostMessage(Handle, WM_ZLOG_SETEDITFIELDS, 0, 0);
-   FFunctionKeyPanel.Init();
-
-   {$IFDEF WIN32}
-   menuPluginManager.Visible := False;
-   {$ENDIF}
-
-   zyloRuntimeLaunch;
 end;
 
 procedure TMainForm.ShowHint(Sender: TObject);
@@ -4762,10 +5036,11 @@ begin
       fg := clBlack;
 
       if ARow = 0 then begin
-         Pen.Color := Grid.FixedColor;
+         Pen.Color := dmZLogGlobal.ZGridFixedColor;
          Pen.Style := psSolid;
-         Brush.Color := Grid.FixedColor;
+         Brush.Color := dmZLogGlobal.ZGridFixedColor;
          Brush.Style := bsSolid;
+         Font.Color := dmZLogGlobal.ZNormalTextColor1;
       end
       else begin
          if (gdSelected in State) and (Grid.Focused = True) then begin
@@ -4800,10 +5075,10 @@ begin
          Pen.Style := psSolid;
          Brush.Color := bg;
          Brush.Style := bsSolid;
+         Font.Color := fg;
       end;
       FillRect(Rect);
 
-      Font.Color := fg;
       Font.Size := Grid.Font.Size;
       Font.Name := Grid.Font.Name;
 
@@ -5185,197 +5460,12 @@ begin
    actionToggleCqSp.Execute();
 end;
 
-procedure TMainForm.FormShow(Sender: TObject);
-var
-   ini: TMemIniFile;
-   X, Y, W, H: Integer;
-   B, BB: Boolean;
-   i: Integer;
-begin
-   // パラレルポート初期化
-   if dmZLogGlobal.Settings.FExtAntSelWndClass = '' then begin
-      dmZLogKeyer.ParallelPort.Initialize();
-   end;
-
-   if (TParallelPort.IsParallelPortPresent() = False) then begin
-      for i := 1 to 5 do begin
-         if dmZLogGlobal.Settings.FRigControl[i].FKeyingPort = Integer(tkpParallel) then begin
-            dmZLogGlobal.Settings.FRigControl[i].FKeyingPort := Integer(tkpNone);
-         end;
-      end;
-   end;
-
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      dmZlogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
-      if (W > 0) and (H > 0) then begin
-         if B then begin
-            mnHideCWPhToolBar.Checked := True;
-         end;
-         if BB then begin
-            mnHideMenuToolbar.Checked := True;
-         end;
-         ShowToolBar(mOther);
-
-         Left := X;
-         top := Y;
-         Width := W;
-         Height := H;
-      end;
-
-      if FPostContest then begin
-         MessageDlg(TMainForm_Change_Date, mtInformation, [mbOK], 0); { HELP context 0 }
-      end;
-
-      PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
-
-   //   zyloRuntimeLaunch;
-   finally
-      ini.Free();
-   end;
-end;
-
 procedure TMainForm.CWFButtonClick(Sender: TObject);
 var
    i: Integer;
 begin
    i := THemisphereButton(Sender).Tag;
    PlayMessage(mCW, dmZlogGlobal.Settings.CW.CurrentBank, i, True);
-end;
-
-procedure TMainForm.FormDeactivate(Sender: TObject);
-begin
-   ActionList1.State := asSuspended;
-end;
-
-procedure TMainForm.FormDestroy(Sender: TObject);
-var
-   b: TBand;
-begin
-   FCheckCall2.Release();
-   FPartialCheck.Release();
-   FSuperCheck.Release();
-   FSuperCheck2.Release();
-   FCheckMulti.Release();
-   FCWKeyBoard.Release();
-   FRigControl.Release();
-   FChatForm.Release();
-   FFreqList.Release();
-   FCommForm.Release();
-   FScratchSheet.Release();
-   FRateDialog.Release();
-   FRateDialogEx.Release();
-   FZServerInquiry.Release();
-   FZLinkForm.Release();
-   FConsolePad.Release();
-   FCheckCountry.Release();
-
-   for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[b].Suspend();
-      FBandScopeEx[b].Close();
-      FBandScopeEx[b].Release();
-   end;
-   FBandScope.Suspend();
-   FBandScope.Close();
-   FBandScope.Release();
-
-   FBandScopeNewMulti.Suspend();
-   FBandScopeNewMulti.Close();
-   FBandScopeNewMulti.Release();
-
-   FBandScopeAllBands.Suspend();
-   FBandScopeAllBands.Close();
-   FBandScopeAllBands.Release();
-
-   if MyContest is TWAEContest then begin
-      TWAEContest(MyContest).QTCForm.Release();
-   end;
-
-   if MyContest <> nil then begin
-      MyContest.Free;
-   end;
-
-   FTempQSOList.Free();
-   FQuickRef.Release();
-   FZAnalyze.Release();
-   FCWMessagePad.Release();
-   FMessageManager.Release();
-   FFunctionKeyPanel.Release();
-   FQsyInfoForm.Release();
-   FSo2rNeoCp.Release();
-   FInformation.Release();
-   FWinKeyerTester.Release();
-   FFreqTest.Release();
-   FCWMonitor.Release();
-   FProgress.Release();
-   FQsoSearch.Release();
-   FEntityInfo.Release();
-   FGrayline.Release();
-
-   if Assigned(FTTYConsole) then begin
-      FTTYConsole.Release();
-   end;
-
-   CurrentQSO.Free();
-
-   FTaskbarList := nil;
-
-   SuperCheckFreeData();
-
-   zyloContestClosed;
-   zyloRuntimeFinish;
-end;
-
-procedure TMainForm.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: Boolean);
-var
-   font_size: Integer;
-begin
-   // CTRL+UPでフォントサイズDOWN
-   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
-      font_size := Grid.Font.Size;
-      Dec(font_size);
-      if font_size < 6 then begin
-         font_size := 6;
-      end;
-
-      SetFontSize(font_size);
-
-      // さらにSHIFTキーを押していると他のWindowも変更する
-      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-         OnChangeFontSize(Self, font_size);
-      end;
-
-      Refresh();
-
-      Handled := True;
-   end;
-end;
-
-procedure TMainForm.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
-  MousePos: TPoint; var Handled: Boolean);
-var
-   font_size: Integer;
-begin
-   // CTRL+UPでフォントサイズUP
-   if GetAsyncKeyState(VK_CONTROL) < 0 then begin
-      font_size := Grid.Font.Size;
-      Inc(font_size);
-      if font_size > 28 then begin
-         font_size := 28;
-      end;
-
-      SetFontSize(font_size);
-
-      // さらにSHIFTキーを押していると他のWindowも変更する
-      if GetAsyncKeyState(VK_SHIFT) < 0 then begin
-         OnChangeFontSize(Self, font_size);
-      end;
-
-      Refresh();
-
-      Handled := True;
-   end;
 end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
@@ -5898,75 +5988,6 @@ begin
    end;
 
    CurrentQSO.RSTRcvd := StrToIntDef(RcvdRSTEdit.Text, i);
-end;
-
-procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   FChatForm.RenewOptions();
-   FCommForm.RenewOptions();
-   FCommForm.Disconnect();
-   FRateDialogEx.SaveSettings();
-
-   // F2Aモード解除
-   F2AOff();
-
-   Timer1.Enabled := False;
-   TerminateNPlusOne();
-   TerminateSuperCheckDataLoad();
-   dmZLogKeyer.CloseBGK;
-
-   if FInitialized = True then begin
-      RecordWindowStates;
-   end;
-
-   if MMTTYRunning then begin
-      ExitMMTTY;
-   end;
-
-   // Last Band/Mode
-   if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
-      dmZLogGlobal.LastBand[0] := CurrentQSO.Band;
-      dmZLogGlobal.LastMode[0] := CurrentQSO.Mode;
-   end
-   else begin
-      dmZLogGlobal.LastBand[0] := TextToBand(FEditPanel[0].BandEdit.Text);
-      dmZLogGlobal.LastMode[0] := TextToMode(FEditPanel[0].ModeEdit.Text);
-      dmZLogGlobal.LastBand[1] := TextToBand(FEditPanel[1].BandEdit.Text);
-      dmZLogGlobal.LastMode[1] := TextToMode(FEditPanel[1].ModeEdit.Text);
-      dmZLogGlobal.LastBand[2] := TextToBand(FEditPanel[2].BandEdit.Text);
-      dmZLogGlobal.LastMode[2] := TextToMode(FEditPanel[2].ModeEdit.Text);
-   end;
-
-   // SO2R
-   dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
-
-   // Last CQ mode
-   dmZLogGlobal.Settings.FLastCQMode := IsCQ();
-end;
-
-procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-var
-   R: Integer;
-   S: string;
-begin
-   if Log = nil then begin
-      Exit;
-   end;
-
-   if Log.Saved = False then begin
-      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
-      R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
-      case R of
-         mrYes: begin
-            CanClose := True;
-            FileSave(Sender);
-         end;
-         mrCancel: begin
-            CanClose := False;
-            exit;
-         end;
-      end;
-   end;
 end;
 
 procedure TMainForm.Update10MinTimer;
@@ -6532,12 +6553,6 @@ begin
       end;
    end;
    CurrentQSO.Time := Int(T) + Frac(CurrentQSO.Time);
-end;
-
-procedure TMainForm.FormResize(Sender: TObject);
-begin
-   SetListWidth();
-   buttonCancelOutOfPeriod.Left := panelOutOfPeriod.Width - 26;
 end;
 
 procedure TMainForm.menuHardwareSettingsClick(Sender: TObject);
@@ -7341,14 +7356,6 @@ begin
    end;
 
    FCheckCall2.Renew(aQSO);
-end;
-
-procedure TMainForm.FormActivate(Sender: TObject);
-begin
-   ActionList1.State := asNormal;
-   if LastFocus.Visible then begin
-      LastFocus.SetFocus;
-   end;
 end;
 
 procedure TMainForm.MemoHotKeyEnter(Sender: TObject);
@@ -15153,6 +15160,35 @@ begin
    end;
    DateEdit.Text := DateStr(Q);
    TimeEdit.Text := Q.TimeStr;
+end;
+
+procedure TMainForm.SetDarkMode();
+var
+   LStyle: TCustomStyleServices;
+   Color: TColor;
+begin
+   TStyleManager.SetStyle('Carbon');
+   LStyle := StyleServices(Self);
+
+   // グリッドの固定セル
+   LStyle.GetElementColor(LStyle.GetElementDetails(tgFixedCellNormal), ecFillColor, Color);
+   zLogGridFixedColor[True] := Color;
+
+   // 背景色
+   LStyle.GetElementColor(LStyle.GetElementDetails(tbsBackground{tgCellNormal}), ecFillColor, Color);
+   zLogBackColor[True] := Color;
+
+   // 文字の色１・２
+   LStyle.GetElementColor(LStyle.GetElementDetails(ttlTextLabelNormal), ecTextColor, Color);
+   zLogNormalTextColor1[True] := Color;
+   zLogNormalTextColor2[True] := Color;
+
+   // 文字の色（グレー）
+   LStyle.GetElementColor(LStyle.GetElementDetails(ttlTextLabelDisabled), ecTextColor, Color);
+   zLogGrayedTextColor[True] := Color;
+
+   // 文字の色（Comfirmed multi）
+   zLogConfirmedTextColor[True] := clWhite;
 end;
 
 { TBandScopeNotifyThread }

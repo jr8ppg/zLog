@@ -418,6 +418,7 @@ type
 
     // Usability
     FUseMultiLineTabs: Boolean;
+    FUseDarkMode: Boolean;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
     FQsoListFocusedSelColor: TColor;
@@ -549,6 +550,12 @@ type
     procedure FreeCommPortList();
     function GetCommPortList(): TList<TCommPort>;
     function LoadCommPortList(): TList<TCommPort>;
+    function GetZBackColor(): TColor;
+    function GetZNormalTextColor1(): TColor;
+    function GetZNormalTextColor2(): TColor;
+    function GetZConfirmedTextColor(): TColor;
+    function GetZGrayedTextColor(): TColor;
+    function GetZGridFixedColor(): TColor;
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -634,6 +641,13 @@ public
     property CommPortList: TList<TCommPort> read GetCommPortList;
     property PacketClusterList: TTelnetSettingList read FPacketClusterList;
     property FreqMemList: TFreqMemoryList read FFreqMemList;
+
+    property ZBackColor: TColor read GetZBackColor;
+    property ZNormalTextColor1: TColor read GetZNormalTextColor1;
+    property ZNormalTextColor2: TColor read GetZNormalTextColor2;
+    property ZConfirmedTextColor: TColor read GetZConfirmedTextColor;
+    property ZGrayedTextColor: TColor read GetZGrayedTextColor;
+    property ZGridFixedColor: TColor read GetZGridFixedColor;
 
     procedure SelectBandPlan(preset_name: string);
 
@@ -732,6 +746,15 @@ function GetDisplayScalingFactor(x, y: Integer): double;
 
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
+
+var
+  //                                               light    dark
+  zLogBackColor: array[False..True] of TColor  = ( clWhite, clBlack);
+  zLogNormalTextColor1: array[False..True] of TColor = ( clBlack, clWhite );
+  zLogNormalTextColor2: array[False..True] of TColor = ( clBlue,  clWhite );
+  zLogConfirmedTextColor: array[False..True] of TColor = ( clRed,  clWhite );
+  zLogGrayedTextColor: array[False..True] of TColor = ( clGray,  clWhite );
+  zLogGridFixedColor: array[False..True] of TColor  = ( clBtnFace, clBtnFace );
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -1372,6 +1395,7 @@ begin
 
       // Usability
       Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', True);
+      Settings.FUseDarkMode := ini.ReadBool('Style', 'UseDarkMode', False);
       Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
       Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
       Settings.FQsoListFocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListFocusedSelColor', ''), RGB($E5, $F3, $FF));
@@ -2187,6 +2211,7 @@ begin
 
       // Usability
       ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
+      ini.WriteBool('Style', 'UseDarkMode', Settings.FUseDarkMode);
       ini.WriteInteger('Usability', 'AfterQsoEditOkFocusPos', Settings.FAfterQsoEditOkFocusPos);
       ini.WriteInteger('Usability', 'AfterQsoEditCancelFocusPos', Settings.FAfterQsoEditCancelFocusPos);
       ini.WriteString('Usability', 'QsoListFocusedSelColor', ZColorToString(Settings.FQsoListFocusedSelColor));
@@ -3671,6 +3696,35 @@ begin
    Result := list;
 end;
 
+function TdmZLogGlobal.GetZBackColor(): TColor;
+begin
+   Result := zLogBackColor[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZNormalTextColor1(): TColor;
+begin
+   Result := zLogNormalTextColor1[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZNormalTextColor2(): TColor;
+begin
+   Result := zLogNormalTextColor2[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZConfirmedTextColor(): TColor;
+begin
+   Result := zLogConfirmedTextColor[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZGrayedTextColor(): TColor;
+begin
+   Result := zLogGrayedTextColor[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZGridFixedColor(): TColor;
+begin
+   Result := zLogGridFixedColor[Settings.FUseDarkMode];
+end;
 // ----------------------------------------------------------------------------
 
 { TCommPort }

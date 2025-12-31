@@ -9,12 +9,7 @@ uses
 
 type
   TIARUScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     BLo, BHi : TBand;
@@ -75,6 +70,7 @@ var
 begin
    Inherited;
 
+   Grid.ColCount := 5;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
@@ -226,24 +222,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, DispColCount, Grid.RowCount);
-end;
-
-procedure TIARUScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
-function TIARUScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TIARUScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

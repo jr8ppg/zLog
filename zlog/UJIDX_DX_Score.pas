@@ -9,12 +9,7 @@ uses
 
 type
   TJIDX_DX_Score = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
@@ -24,7 +19,6 @@ type
     procedure AddNoUpdate(aQSO: TQSO);  override;
     procedure UpdateData; override;
     procedure CalcPoints(var aQSO : TQSO); virtual;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -38,12 +32,6 @@ begin
    Grid.Col := 1;
    Grid.Row := 1;
    CWButton.Visible := False;
-end;
-
-procedure TJIDX_DX_Score.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TJIDX_DX_Score.Renew;
@@ -116,6 +104,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 4;
    TotQSO := 0;
    TotPts := 0;
    TotMulti := 0;
@@ -177,18 +166,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-function TJIDX_DX_Score.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TJIDX_DX_Score.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

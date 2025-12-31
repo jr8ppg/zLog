@@ -63,6 +63,8 @@ type
     UpDown16: TUpDown;
     Edit17: TEdit;
     UpDown17: TUpDown;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure FormCreate(Sender: TObject);
   private
     { Private êÈåæ }

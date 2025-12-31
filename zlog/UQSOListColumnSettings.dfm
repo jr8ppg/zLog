@@ -3,7 +3,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
   Top = 0
   BorderStyle = bsDialog
   Caption = 'QSO list column settings'
-  ClientHeight = 476
+  ClientHeight = 481
   ClientWidth = 249
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,14 +16,28 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
   TextHeight = 13
   object GroupBox1: TGroupBox
     Left = 8
-    Top = 10
+    Top = 8
     Width = 233
-    Height = 425
+    Height = 439
     Caption = 'Column settings'
     TabOrder = 0
+    object Label1: TLabel
+      Left = 16
+      Top = 20
+      Width = 64
+      Height = 13
+      Caption = 'Column name'
+    end
+    object Label2: TLabel
+      Left = 152
+      Top = 19
+      Width = 63
+      Height = 13
+      Caption = 'Column width'
+    end
     object CheckBox1: TCheckBox
       Left = 16
-      Top = 24
+      Top = 40
       Width = 110
       Height = 17
       Caption = 'status'
@@ -34,7 +48,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox2: TCheckBox
       Left = 16
-      Top = 47
+      Top = 63
       Width = 110
       Height = 17
       Caption = 'date'
@@ -44,7 +58,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox3: TCheckBox
       Left = 16
-      Top = 70
+      Top = 86
       Width = 110
       Height = 17
       Caption = 'time'
@@ -55,7 +69,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox4: TCheckBox
       Left = 16
-      Top = 93
+      Top = 109
       Width = 110
       Height = 17
       Caption = 'callsign'
@@ -66,7 +80,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox5: TCheckBox
       Left = 16
-      Top = 116
+      Top = 132
       Width = 110
       Height = 17
       Caption = 'Sent RST'
@@ -76,7 +90,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox6: TCheckBox
       Left = 16
-      Top = 139
+      Top = 155
       Width = 110
       Height = 17
       Caption = 'Sent Number'
@@ -86,7 +100,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox7: TCheckBox
       Left = 16
-      Top = 162
+      Top = 178
       Width = 110
       Height = 17
       Caption = 'Rcvd RST'
@@ -97,7 +111,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox8: TCheckBox
       Left = 16
-      Top = 185
+      Top = 201
       Width = 110
       Height = 17
       Caption = 'Rcvd Number'
@@ -108,7 +122,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox9: TCheckBox
       Left = 16
-      Top = 208
+      Top = 224
       Width = 110
       Height = 17
       Caption = 'Band'
@@ -118,7 +132,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox10: TCheckBox
       Left = 16
-      Top = 231
+      Top = 247
       Width = 110
       Height = 17
       Caption = 'Mode'
@@ -128,7 +142,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox11: TCheckBox
       Left = 16
-      Top = 254
+      Top = 270
       Width = 110
       Height = 17
       Caption = 'Operator'
@@ -138,7 +152,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox12: TCheckBox
       Left = 16
-      Top = 277
+      Top = 293
       Width = 110
       Height = 17
       Caption = 'Memo'
@@ -148,7 +162,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox13: TCheckBox
       Left = 16
-      Top = 300
+      Top = 316
       Width = 110
       Height = 17
       Caption = 'Point'
@@ -158,7 +172,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox14: TCheckBox
       Left = 16
-      Top = 323
+      Top = 339
       Width = 110
       Height = 17
       Caption = 'New multi1'
@@ -168,7 +182,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox15: TCheckBox
       Left = 16
-      Top = 346
+      Top = 362
       Width = 110
       Height = 17
       Caption = 'New multi2'
@@ -176,7 +190,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox16: TCheckBox
       Left = 16
-      Top = 369
+      Top = 385
       Width = 110
       Height = 17
       Caption = 'Freq.'
@@ -186,7 +200,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object CheckBox17: TCheckBox
       Left = 16
-      Top = 392
+      Top = 408
       Width = 110
       Height = 17
       Caption = 'QSOID'
@@ -194,10 +208,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit1: TEdit
       Left = 163
-      Top = 22
+      Top = 38
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 1
@@ -205,7 +218,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown1: TUpDown
       Left = 193
-      Top = 22
+      Top = 38
       Width = 16
       Height = 21
       Associate = Edit1
@@ -216,10 +229,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit2: TEdit
       Left = 163
-      Top = 45
+      Top = 61
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 4
@@ -227,7 +239,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown2: TUpDown
       Left = 193
-      Top = 45
+      Top = 61
       Width = 16
       Height = 21
       Associate = Edit2
@@ -238,10 +250,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit3: TEdit
       Left = 163
-      Top = 68
+      Top = 84
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 7
@@ -249,7 +260,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown3: TUpDown
       Left = 193
-      Top = 68
+      Top = 84
       Width = 16
       Height = 21
       Associate = Edit3
@@ -260,10 +271,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit5: TEdit
       Left = 163
-      Top = 114
+      Top = 130
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 13
@@ -271,7 +281,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown5: TUpDown
       Left = 193
-      Top = 114
+      Top = 130
       Width = 16
       Height = 21
       Associate = Edit5
@@ -282,10 +292,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit6: TEdit
       Left = 163
-      Top = 137
+      Top = 153
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 15
@@ -293,7 +302,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown6: TUpDown
       Left = 193
-      Top = 137
+      Top = 153
       Width = 16
       Height = 21
       Associate = Edit6
@@ -304,10 +313,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit7: TEdit
       Left = 163
-      Top = 160
+      Top = 176
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 18
@@ -315,7 +323,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown7: TUpDown
       Left = 193
-      Top = 160
+      Top = 176
       Width = 16
       Height = 21
       Associate = Edit7
@@ -326,10 +334,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit8: TEdit
       Left = 163
-      Top = 183
+      Top = 199
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 21
@@ -337,7 +344,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown8: TUpDown
       Left = 193
-      Top = 183
+      Top = 199
       Width = 16
       Height = 21
       Associate = Edit8
@@ -348,10 +355,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit9: TEdit
       Left = 163
-      Top = 206
+      Top = 222
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 24
@@ -359,7 +365,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown9: TUpDown
       Left = 193
-      Top = 206
+      Top = 222
       Width = 16
       Height = 21
       Associate = Edit9
@@ -370,10 +376,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit10: TEdit
       Left = 163
-      Top = 229
+      Top = 245
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 27
@@ -381,7 +386,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown10: TUpDown
       Left = 193
-      Top = 229
+      Top = 245
       Width = 16
       Height = 21
       Associate = Edit10
@@ -392,10 +397,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit11: TEdit
       Left = 163
-      Top = 252
+      Top = 268
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 30
@@ -403,7 +407,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown11: TUpDown
       Left = 193
-      Top = 252
+      Top = 268
       Width = 16
       Height = 21
       Associate = Edit11
@@ -414,10 +418,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit12: TEdit
       Left = 163
-      Top = 275
+      Top = 291
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 33
@@ -425,7 +428,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown12: TUpDown
       Left = 193
-      Top = 275
+      Top = 291
       Width = 16
       Height = 21
       Associate = Edit12
@@ -436,10 +439,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit13: TEdit
       Left = 163
-      Top = 298
+      Top = 314
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 36
@@ -447,7 +449,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown13: TUpDown
       Left = 193
-      Top = 298
+      Top = 314
       Width = 16
       Height = 21
       Associate = Edit13
@@ -458,10 +460,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit14: TEdit
       Left = 163
-      Top = 321
+      Top = 337
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 39
@@ -469,7 +470,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown14: TUpDown
       Left = 193
-      Top = 321
+      Top = 337
       Width = 16
       Height = 21
       Associate = Edit14
@@ -480,10 +481,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit15: TEdit
       Left = 163
-      Top = 344
+      Top = 360
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 42
@@ -491,7 +491,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown15: TUpDown
       Left = 193
-      Top = 344
+      Top = 360
       Width = 16
       Height = 21
       Associate = Edit15
@@ -502,10 +502,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit16: TEdit
       Left = 163
-      Top = 367
+      Top = 383
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 45
@@ -513,7 +512,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown16: TUpDown
       Left = 193
-      Top = 367
+      Top = 383
       Width = 16
       Height = 21
       Associate = Edit16
@@ -524,10 +523,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit17: TEdit
       Left = 163
-      Top = 390
+      Top = 406
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 48
@@ -535,7 +533,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown17: TUpDown
       Left = 193
-      Top = 390
+      Top = 406
       Width = 16
       Height = 21
       Associate = Edit17
@@ -546,10 +544,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object Edit4: TEdit
       Left = 163
-      Top = 91
+      Top = 107
       Width = 30
       Height = 21
-      Hint = 'Only when using Z-Server network'
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 10
@@ -557,7 +554,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     end
     object UpDown4: TUpDown
       Left = 193
-      Top = 91
+      Top = 107
       Width = 16
       Height = 21
       Associate = Edit4
@@ -569,20 +566,20 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
   end
   object Panel1: TPanel
     Left = 0
-    Top = 439
+    Top = 449
     Width = 249
-    Height = 37
+    Height = 32
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 441
+    ExplicitTop = 452
     DesignSize = (
       249
-      37)
+      32)
     object buttonOK: TButton
-      Left = 66
-      Top = 6
-      Width = 60
+      Left = 55
+      Top = 2
+      Width = 70
       Height = 25
       Anchors = [akLeft, akBottom]
       Caption = 'OK'
@@ -591,9 +588,9 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       TabOrder = 0
     end
     object buttonCancel: TButton
-      Left = 132
-      Top = 6
-      Width = 60
+      Left = 133
+      Top = 2
+      Width = 70
       Height = 25
       Anchors = [akLeft, akBottom]
       Cancel = True

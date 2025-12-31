@@ -232,7 +232,7 @@ begin
 
    with Grid.Canvas do begin
       Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
-      Brush.Color := Grid.Color;
+      Brush.Color := dmZLogGlobal.ZBackColor;
       Brush.Style := bsSolid;
       FillRect(Rect);
 
@@ -241,14 +241,14 @@ begin
       S := Copy(strText, 1, 1);
       if S = '~' then begin
          strText := Copy(strText, 2);
-         Font.Color := clRed;
+         Font.Color := dmZLogGlobal.ZConfirmedTextColor;
       end
       else if S = '!' then begin
          strText := Copy(strText, 2);
-         Font.Color := clGray;
+         Font.Color := dmZLogGlobal.ZGrayedTextColor;
       end
       else begin
-         Font.Color := clBlack;
+         Font.Color := dmZLogGlobal.ZNormalTextColor1;
       end;
 
       TextRect(Rect, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);

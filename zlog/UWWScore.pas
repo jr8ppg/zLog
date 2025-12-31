@@ -9,13 +9,8 @@ uses
 
 type
   TWWScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
@@ -25,7 +20,6 @@ type
     procedure Reset; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 var
@@ -50,32 +44,6 @@ procedure TWWScore.FormShow(Sender: TObject);
 begin
    inherited;
    CWButton.Visible := False;
-end;
-
-procedure TWWScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
-begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Size := FFontSize;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
 end;
 
 procedure TWWScore.Renew;
@@ -144,6 +112,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 5;
    TotQSO := 0;
    TotPts := 0;
    TotMulti := 0;
@@ -226,31 +195,6 @@ begin
    end;
    h := h + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
    ClientHeight := h;
-end;
-
-function TWWScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TWWScore.SetFontSize(v: Integer);
-var
-   i: Integer;
-   h: Integer;
-begin
-   Inherited;
-   Grid.Font.Size := v;
-   Grid.Canvas.Font.size := v;
-
-   h := Abs(Grid.Font.Height) + 6;
-
-   Grid.DefaultRowHeight := h;
-
-   for i := 0 to Grid.RowCount - 1 do begin
-      Grid.RowHeights[i] := h;
-   end;
-
-   UpdateData();
 end;
 
 end.

@@ -10,12 +10,7 @@ uses
 
 type
   TGeneralScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FConfig: TUserDefinedContest;
@@ -27,7 +22,6 @@ type
     procedure UpdateData; override;
     procedure Reset; override;
     procedure Add(aQSO: TQSO); override; {calculates points}
-    property FontSize: Integer read GetFontSize write SetFontSize;
     property Config: TUserDefinedContest read FConfig write FConfig;
   end;
 
@@ -46,12 +40,6 @@ begin
    Grid.row := 1;
 end;
 
-procedure TGeneralScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
 procedure TGeneralScore.UpdateData;
 var
    band: TBand;
@@ -65,6 +53,7 @@ var
 begin
    Inherited;
 
+   Grid.ColCount := 8;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti1 := 0;
@@ -348,18 +337,6 @@ end;
 procedure TGeneralScore.Add(aQSO: TQSO);
 begin
    inherited;
-end;
-
-function TGeneralScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TGeneralScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

@@ -12,12 +12,7 @@ const
 
 type
   TJA0Score = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
@@ -26,7 +21,6 @@ type
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     function IsJA0(aQSO : TQSO) : boolean;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -42,12 +36,6 @@ begin
    Button1.SetFocus;
    Grid.Col := 1;
    Grid.Row := 1;
-end;
-
-procedure TJA0Score.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TJA0Score.Reset;
@@ -104,6 +92,7 @@ var
    strScore: string;
    w: Integer;
 begin
+   Grid.ColCount := 6;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
@@ -209,18 +198,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, DispColCount, Grid.RowCount);
-end;
-
-function TJA0Score.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TJA0Score.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

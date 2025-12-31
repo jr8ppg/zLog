@@ -9,12 +9,7 @@ uses
 
 type
   TPediScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     Stats: array[b19..HiBand, mCW..LastMode] of integer;
@@ -23,7 +18,6 @@ type
     procedure UpdateData; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure Reset; override;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -39,12 +33,6 @@ begin
    CWButton.Visible := False;
 end;
 
-procedure TPediScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
 procedure TPediScore.UpdateData;
 var
    b: TBand;
@@ -57,6 +45,7 @@ var
 const
    disptbl: array[mCW..LastMode] of Integer = (2, 3, 4, 5, 6, 7, 8, 10, 9 );
 begin
+   Grid.ColCount := 11;
    TotQSO := 0;
 
    Grid.Cells[0, 0] := 'MHz';
@@ -144,18 +133,6 @@ begin
          Stats[b, M] := 0;
       end;
    end;
-end;
-
-function TPediScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TPediScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

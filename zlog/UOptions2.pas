@@ -457,6 +457,7 @@ type
     buttonVoiceAfterCmd12: TSpeedButton;
     buttonAddVoiceAfterCmd2: TSpeedButton;
     buttonAddVoiceAfterCmd3: TSpeedButton;
+    checkUseDarkMode: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -516,6 +517,10 @@ type
       var Handled: Boolean);
     procedure buttonVoiceAfterCmdClick(Sender: TObject);
     procedure buttonAddVoiceAfterCmdClick(Sender: TObject);
+    procedure buttonListBackClick(Sender: TObject);
+    procedure buttonListForeClick(Sender: TObject);
+    procedure checkListBoldClick(Sender: TObject);
+    procedure buttonListResetClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -582,6 +587,13 @@ uses
   UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager, USpotterListDlg;
 
 const
+  QsoListDefaultColor: array[1..4] of TColorSetting = (
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
+    ( FForeColor: clBlack; FBackColor: clWhite; FBold: False ),
+    ( FForeColor: clBlack; FBackColor: $FFF3E5; FBold: False ) ,
+    ( FForeColor: clBlack; FBackColor: $E5E5E5; FBold: False )
+  );
+
   BandScopeDefaultColor: array[1..15] of TColorSetting = (
     ( FForeColor: clBlack; FBackColor: clWhite; FBold: True ),
     ( FForeColor: clRed;   FBackColor: clWhite; FBold: True ),
@@ -1072,6 +1084,9 @@ begin
       // Use Multiline Tabs
       Settings.FUseMultiLineTabs := checkUseMultiLineTabs.Checked;
 
+      // Use dark mode
+      Settings.FUseDarkMode := checkUseDarkMode.Checked;
+
       // Focus Position After QSO Edit group
       if radioOnOkFocusToQsoList.Checked = True then begin
          Settings.FAfterQsoEditOkFocusPos := 0;
@@ -1476,6 +1491,9 @@ begin
 
       // Use Multiline Tabs
       checkUseMultiLineTabs.Checked := Settings.FUseMultiLineTabs;
+
+      // Use dark mode
+      checkUseDarkMode.Checked := Settings.FUseDarkMode;
 
       // Focus Position After QSO Edit group
       if Settings.FAfterQsoEditOkFocusPos = 0 then begin
@@ -2098,6 +2116,43 @@ begin
    end;
 end;
 
+procedure TformOptions2.buttonListBackClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FQSOListColor[n].Color;
+   if ColorDialog1.Execute = True then begin
+      FQSOListColor[n].Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions2.buttonListForeClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   ColorDialog1.Color := FQSOListColor[n].Font.Color;
+   if ColorDialog1.Execute = True then begin
+      FQSOListColor[n].Font.Color := ColorDialog1.Color;
+   end;
+end;
+
+procedure TformOptions2.buttonListResetClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TButton(Sender).Tag;
+
+   FQSOListColor[n].Font.Color  := QsoListDefaultColor[n].FForeColor;
+   FQSOListColor[n].Color       := QsoListDefaultColor[n].FBackColor;
+   if Assigned(FQSOListBold[n]) then begin
+      FQSOListBold[n].Checked      := QsoListDefaultColor[n].FBold;
+   end;
+end;
+
 procedure TformOptions2.buttonFullmatchInitColorClick(Sender: TObject);
 begin
    editFullmatchColor.Color := clYellow;
@@ -2386,6 +2441,20 @@ begin
    end
    else begin
       editFocusedColor.Font.Style := editFocusedColor.Font.Style - [fsBold];
+   end;
+end;
+
+procedure TformOptions2.checkListBoldClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TCheckBox(Sender).Tag;
+
+   if TCheckBox(Sender).Checked = True then begin
+      FQSOListColor[n].Font.Style := FQSOListColor[n].Font.Style + [fsBold];
+   end
+   else begin
+      FQSOListColor[n].Font.Style := FQSOListColor[n].Font.Style - [fsBold];
    end;
 end;
 

@@ -9,13 +9,8 @@ uses
 
 type
   TWPXScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FMultiForm: TWPXMulti;
@@ -26,7 +21,6 @@ type
     procedure AddNoUpdate(aQSO: TQSO);  override;
     procedure UpdateData; override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -43,12 +37,6 @@ procedure TWPXScore.FormShow(Sender: TObject);
 begin
    inherited;
    CWButton.Visible := False;
-end;
-
-procedure TWPXScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TWPXScore.Reset;
@@ -97,6 +85,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 3;
    TotQSO := 0;
    TotPts := 0;
    row := 1;
@@ -156,18 +145,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-function TWPXScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TWPXScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

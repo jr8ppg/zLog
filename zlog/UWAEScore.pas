@@ -13,12 +13,7 @@ const
 
 type
   TWAEScore = class(TBasicScore)
-    Grid: TStringGrid;
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     QTCs : array[b19..b28] of integer;
@@ -27,7 +22,6 @@ type
     procedure Renew; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -40,12 +34,6 @@ begin
    Button1.SetFocus;
    Grid.Col := 1;
    Grid.Row := 1;
-end;
-
-procedure TWAEScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TWAEScore.Reset;
@@ -118,6 +106,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 4;
    TotQSO := 0;
    TotMulti := 0;
    TotQTCs := 0;
@@ -179,18 +168,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-function TWAEScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TWAEScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

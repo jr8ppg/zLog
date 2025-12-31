@@ -6,7 +6,7 @@ inherited ALLJAScore: TALLJAScore
   StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
   ExplicitWidth = 216
-  TextHeight = 12
+  TextHeight = 13
   inherited Panel1: TPanel
     Width = 200
     StyleElements = [seFont, seClient, seBorder]
@@ -16,27 +16,8 @@ inherited ALLJAScore: TALLJAScore
       ExplicitLeft = 160
     end
   end
-  object Grid: TStringGrid [1]
-    Left = 0
-    Top = 0
+  inherited Grid: TStringGrid
     Width = 200
-    Height = 202
-    Align = alClient
-    ColCount = 7
-    DefaultDrawing = False
-    FixedCols = 0
-    RowCount = 16
-    FixedRows = 0
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    Options = [goHorzLine]
-    ParentFont = False
-    PopupMenu = popupExtraInfo
-    ScrollBars = ssNone
-    TabOrder = 1
-    OnDrawCell = GridDrawCell
+    ExplicitWidth = 200
   end
 end

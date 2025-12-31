@@ -19,21 +19,25 @@ type
     menuMultiRate: TMenuItem;
     menuPtsPerMulti: TMenuItem;
     menuPtsPerQSO: TMenuItem;
+    Grid: TStringGrid;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure CWButtonClick(Sender: TObject);
     procedure menuExtraInfoClick(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: LongInt; Rect: TRect; State: TGridDrawState);
   protected
     FExtraInfo: Integer;
     FContestMode: TContestMode;
     FValidQso: Boolean;
-    procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
     procedure AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
-    procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
     function GetScore(): Integer;
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
+    procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+    procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
   public
     { Public declarations }
     QSO : array[b19..HiBand] of LongInt;
@@ -411,6 +415,46 @@ begin
    end;
 
    Result := pts * (m1 + m2);
+end;
+
+procedure TBasicScore.GridDrawCell(Sender: TObject; ACol, ARow: LongInt; Rect: TRect; State: TGridDrawState);
+var
+   strText: string;
+begin
+   inherited;
+
+   strText := Grid.Cells[ACol, ARow];
+
+   with Grid.Canvas do begin
+      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
+      Brush.Color := dmZLogGlobal.ZBackColor;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      Font.Size := FFontSize;
+
+      if Copy(strText, 1, 1) = '*' then begin
+         strText := Copy(strText, 2);
+         Font.Color := dmZLogGlobal.ZNormalTextColor2;
+      end
+      else begin
+         Font.Color := dmZLogGlobal.ZNormalTextColor1;
+      end;
+
+      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
+   end;
+end;
+
+function TBasicScore.GetFontSize(): Integer;
+begin
+   Result := Grid.Font.Size;
+end;
+
+procedure TBasicScore.SetFontSize(v: Integer);
+begin
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

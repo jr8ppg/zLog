@@ -9,12 +9,7 @@ uses
 
 type
   TALLJAScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FLowBand: TBand;
@@ -29,7 +24,6 @@ type
     procedure UpdateData; override;
     procedure Reset; override;
     procedure Add(aQSO : TQSO); override;
-    property FontSize: Integer read GetFontSize write SetFontSize;
     property PointTable[Index: TBand]: Integer read GetPointTable write SetPointTable;
   end;
 
@@ -74,12 +68,6 @@ begin
    Grid.Row := 1;
 end;
 
-procedure TALLJAScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
 procedure TALLJAScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
@@ -114,6 +102,7 @@ var
 begin
    Inherited;
 
+   Grid.ColCount := 7;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
@@ -286,18 +275,6 @@ end;
 procedure TALLJAScore.Add(aQSO: TQSO);
 begin
    inherited;
-end;
-
-function TALLJAScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TALLJAScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 function TALLJAScore.GetPointTable(Index: TBand): Integer;

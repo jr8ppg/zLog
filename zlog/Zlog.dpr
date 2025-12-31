@@ -94,12 +94,10 @@ uses
   UzLogSpc in 'UzLogSpc.pas',
   Progress2 in 'Progress2.pas' {formProgress2},
   HelperLib in 'HelperLib.pas',
-  UCwMessageEditor in 'UCwMessageEditor.pas',
   UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
   UTextEditor in 'UTextEditor.pas' {TextEditor},
   USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
   UserDefinedContest in 'UserDefinedContest.pas',
-  UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
   UCFGEdit in 'UCFGEdit.pas' {CFGEdit},
   UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog},
   UzLogSound in 'UzLogSound.pas',
@@ -165,7 +163,10 @@ uses
   UJarlWebUpload in 'UJarlWebUpload.pas' {formJarlWebUpload},
   UQSOListColumnSettings in 'UQSOListColumnSettings.pas' {formQSOListColumnSettings},
   UAudioInputDlg in 'UAudioInputDlg.pas' {formAudioInputDlg},
-  UPrePostPlaybackDlg in 'UPrePostPlaybackDlg.pas' {formPrePostPlaybackDlg};
+  UPrePostPlaybackDlg in 'UPrePostPlaybackDlg.pas' {formPrePostPlaybackDlg},
+  UCwMessageEditor in 'UCwMessageEditor.pas' {CwMessageEditor},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 

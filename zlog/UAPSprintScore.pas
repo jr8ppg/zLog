@@ -9,12 +9,7 @@ uses
 
 type
   TAPSprintScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FMultiForm: TWPXMulti;
@@ -24,7 +19,6 @@ type
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -37,12 +31,6 @@ begin
    Button1.SetFocus;
    Grid.Col := 1;
    Grid.Row := 1;
-end;
-
-procedure TAPSprintScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TAPSprintScore.Reset;
@@ -113,18 +101,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-function TAPSprintScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TAPSprintScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.
