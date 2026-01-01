@@ -14,12 +14,10 @@ object formCWMonitor: TformCWMonitor
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
   DesignSize = (
     224
     49)
-  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 8

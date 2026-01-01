@@ -167,6 +167,7 @@ begin
    Inherited;
    ApplyShortcut();
    InitProgress();
+   ShowProgress();
    Console.SetFocus;
 end;
 
@@ -720,8 +721,8 @@ begin
       Console.SelStart := 0;
       Console.SelLength := Length(Console.Text);
       Console.SelAttributes.Protected := False;
-      Console.SelAttributes.BackColor := clWIndow;
-      Console.SelAttributes.Color := clBlack;
+      Console.SelAttributes.BackColor := dmZLogGlobal.ZBackColor;
+      Console.SelAttributes.Color := dmZLogGlobal.ZNormalTextColor1;
       Console.SelStart := 0;
       Console.SelLength := 0;
       Console.Refresh();
@@ -838,12 +839,12 @@ begin
       if white_w > 0 then begin
          rect.Top := 0;
          rect.Left := w - white_w;
-         rect.Bottom := h - 1;
-         rect.Right := w - 1;
+         rect.Bottom := h;
+         rect.Right := w;
 
-         Brush.Color := clWhite;
+         Brush.Color := dmZLogGlobal.ZBackColor;
          Brush.Style := bsSolid;
-         Pen.Color := clWhite;
+         Pen.Color := dmZLogGlobal.ZBackColor;
          Pen.Style := psSolid;
          FillRect(rect);
       end;
@@ -851,8 +852,8 @@ begin
       if blue_w > 0 then begin
          rect.Top := 0;
          rect.Left := 0;
-         rect.Bottom := h - 1;
-         rect.Right := blue_w - 1;
+         rect.Bottom := h;
+         rect.Right := blue_w;
 
          Brush.Color := clBlue;
          Brush.Style := bsSolid;

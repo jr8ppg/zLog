@@ -1034,10 +1034,10 @@ begin
    FPrevVfo[1] := VfoB;
 
    if dmZLogGlobal.BandPlan.IsInBand(b, m, vfo[currentvfo]) = True then begin
-      FFreqLabel[currentvfo].Font.Color := clBlack;
+      FFreqLabel[currentvfo].Font.Color := dmZLogGlobal.ZNormalTextColor1;
    end
    else begin
-      FFreqLabel[currentvfo].Font.Color := clRed;
+      FFreqLabel[currentvfo].Font.Color := dmZLogGlobal.ZConfirmedTextColor;
    end;
 
    if currentvfo = 0 then begin
@@ -1049,9 +1049,9 @@ begin
       FFreqLabel[1].Font.Style := [fsBold];
    end;
 
-   dispLastFreq.Font.Color := clBlack;
-   dispMode.Font.Color := clBlack;
-   dispVFO.Font.Color := clBlack;
+   dispLastFreq.Font.Color := dmZLogGlobal.ZNormalTextColor1;;
+   dispMode.Font.Color := dmZLogGlobal.ZNormalTextColor1;;
+   dispVFO.Font.Color := dmZLogGlobal.ZNormalTextColor1;;
 
    ShowMemCh();
 end;
@@ -1137,8 +1137,8 @@ begin
    end;
 
    // ONÇÃèÍçáÇÃêF
-   ToggleSwitch1.FrameColor := clBlack;
-   ToggleSwitch1.ThumbColor := clBlack;
+   ToggleSwitch1.FrameColor := dmZLogGlobal.ZNormalTextColor1;
+   ToggleSwitch1.ThumbColor := dmZLogGlobal.ZNormalTextColor1;
    buttonReconnectRigs.Enabled := True;
    buttonJumpLastFreq.Enabled := True;
    buttonMemoryWrite.Enabled := True;
@@ -1146,8 +1146,8 @@ begin
    buttonMemScan.Enabled := True;
    buttongrpFreqMemory.Enabled := True;
 
-   FFreqLabel[0].Font.Color := clBlack;
-   FFreqLabel[1].Font.Color := clBlack;
+   FFreqLabel[0].Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   FFreqLabel[1].Font.Color := dmZLogGlobal.ZNormalTextColor1;
 
    // CWäJén
    dmZLogKeyer.Open();

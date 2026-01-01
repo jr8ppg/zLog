@@ -1335,6 +1335,7 @@ type
     procedure ShowDateTime(Q: TQSO = nil);
     procedure SetInitQsoEditPanel();
     procedure SetDarkMode();
+    procedure SetLightMode();
   public
     LastFocus : TEdit;
 
@@ -6621,9 +6622,12 @@ procedure TMainForm.ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; n
 var
    f: TformOptions2;
    b: TBand;
+   fPrevDarkMode: Boolean;
 begin
    f := TformOptions2.Create(Self);
    try
+      fPrevDarkMode := dmZLogGlobal.Settings.FUseDarkMode;
+
       f.EditMode := nEditMode;
       f.EditNumber := nEditNumer;
       f.EditBank := nEditBank;
@@ -6643,6 +6647,16 @@ begin
       checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZlogGlobal.ImplementSettings(False);
       dmZlogGlobal.SaveCurrentSettings();
+
+      if fPrevDarkMode <> dmZLogGlobal.Settings.FUseDarkMode then begin
+         if dmZLogGlobal.Settings.FUseDarkMode = True then begin
+            SetDarkMode();
+         end
+         else begin
+            SetLightMode();
+         end;
+      end;
+
       InitBandMenu();
 
       RenewCWToolBar;
@@ -15189,6 +15203,11 @@ begin
 
    // 文字の色（Comfirmed multi）
    zLogConfirmedTextColor[True] := clWhite;
+end;
+
+procedure TMainForm.SetLightMode();
+begin
+   TStyleManager.SetStyle('Windows');
 end;
 
 { TBandScopeNotifyThread }
