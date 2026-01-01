@@ -135,6 +135,7 @@ begin
       for ken := m101 to m48 do begin
          MultiTable[band, ken] := False;
          KenLabels[band, ken] := TLabel.Create(Self);
+         KenLabels[band, ken].StyleElements := [seClient, seBorder];
       end;
    end;
 end;
@@ -156,7 +157,7 @@ begin
                   KenLabels[band, ken].Font.Size := FFontSize;
                   KenLabels[band, ken].ParentFont := False;
                   KenLabels[band, ken].Parent := PageControl.Pages[OldBandOrd(band) + 1];
-                  KenLabels[band, ken].Font.Color := clBlack;
+                  KenLabels[band, ken].Font.Color := dmZLogGlobal.ZNormalTextColor1;
                   KenLabels[band, ken].Caption := KenNames[ken];
 
                   w := KenLabels[band, ken].Canvas.TextWidth('X') * 12;
@@ -194,6 +195,14 @@ begin
    RotateLabel5.Left := RotateLabel4.Left + (w * 2);
    RotateLabel6.Left := RotateLabel5.Left + (w * 2);
    RotateLabel7.Left := RotateLabel6.Left + (w * 2);
+
+   RotateLabel1.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel2.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel3.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel4.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel5.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel6.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel7.Font.Color := dmZLogGlobal.ZNormalTextColor1;
 end;
 
 procedure TALLJAMulti.SelectBandTab(band: TBand; fInit: Boolean);
@@ -218,10 +227,12 @@ var
    K: TKen;
 begin
    for K := m101 to m48 do begin
-      if MultiTable[B, K] then
-         KenLabels[B, K].Font.Color := clRed
-      else
-         KenLabels[B, K].Font.Color := clBlack;
+      if MultiTable[B, K] then begin
+         KenLabels[B, K].Font.Color := dmZLogGlobal.ZConfirmedTextColor;
+      end
+      else begin
+         KenLabels[B, K].Font.Color := dmZLogGlobal.ZNormalTextColor1;
+      end;
    end;
 end;
 

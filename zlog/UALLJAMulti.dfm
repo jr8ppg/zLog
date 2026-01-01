@@ -30,8 +30,6 @@ object ALLJAMulti: TALLJAMulti
     ParentFont = False
     TabOrder = 0
     OnChange = PageControlChange
-    ExplicitWidth = 328
-    ExplicitHeight = 300
     object TabALL: TTabSheet
       Tag = 99
       Caption = 'ALL'
@@ -61,8 +59,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel2: TRotateLabel
           Left = 95
           Top = 4
-          Width = 15
-          Height = 14
+          Width = 14
+          Height = 15
           Escapement = 90
           TextStyle = tsNone
           Caption = '3.5'
@@ -76,8 +74,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel3: TRotateLabel
           Left = 107
           Top = 13
-          Width = 6
-          Height = 14
+          Width = 14
+          Height = 6
           Escapement = 90
           TextStyle = tsNone
           Caption = '7'
@@ -91,8 +89,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel4: TRotateLabel
           Left = 119
           Top = 7
-          Width = 12
-          Height = 14
+          Width = 14
+          Height = 12
           Escapement = 90
           TextStyle = tsNone
           Caption = '14'
@@ -106,8 +104,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel5: TRotateLabel
           Left = 131
           Top = 7
-          Width = 12
-          Height = 14
+          Width = 14
+          Height = 12
           Escapement = 90
           TextStyle = tsNone
           Caption = '21'
@@ -121,8 +119,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel6: TRotateLabel
           Left = 143
           Top = 7
-          Width = 12
-          Height = 14
+          Width = 14
+          Height = 12
           Escapement = 90
           TextStyle = tsNone
           Caption = '28'
@@ -136,8 +134,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel7: TRotateLabel
           Left = 155
           Top = 7
-          Width = 12
-          Height = 14
+          Width = 14
+          Height = 12
           Escapement = 90
           TextStyle = tsNone
           Caption = '50'
@@ -151,8 +149,8 @@ object ALLJAMulti: TALLJAMulti
         object RotateLabel1: TRotateLabel
           Left = 82
           Top = 4
-          Width = 15
-          Height = 14
+          Width = 14
+          Height = 15
           Escapement = 90
           TextStyle = tsNone
           Caption = '1.9'
@@ -173,7 +171,6 @@ object ALLJAMulti: TALLJAMulti
           Checked = True
           State = cbChecked
           TabOrder = 0
-          ExplicitLeft = 188
         end
       end
       object Grid: TStringGrid
@@ -197,9 +194,8 @@ object ALLJAMulti: TALLJAMulti
         ParentFont = False
         ScrollBars = ssVertical
         TabOrder = 1
+        StyleElements = [seClient, seBorder]
         OnDrawCell = GridDrawCell
-        ExplicitWidth = 320
-        ExplicitHeight = 247
       end
     end
     object Tab19: TTabSheet
@@ -281,8 +277,6 @@ object ALLJAMulti: TALLJAMulti
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 300
-    ExplicitWidth = 328
     object Button2: TButton
       Left = 8
       Top = 8

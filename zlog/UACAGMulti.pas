@@ -387,6 +387,26 @@ begin
    Label77g.Left  := Label47g.Left + (w * 2);
    Label135g.Left  := Label77g.Left + (w * 2);
    Label248g.Left  := Label135g.Left + (w * 2);
+
+   Label1R9.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label3R5.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label7.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label14.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label21.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label28.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label50.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label144.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label430.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label1200.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label2400.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label5600.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label10g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label104g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label24g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label47g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label77g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label135g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label248g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
 end;
 
 procedure TACAGMulti.OnZLogUpdateLabel( var Message: TMessage );

@@ -323,8 +323,8 @@ object ACAGMulti: TACAGMulti
     object Label77G: TRotateLabel
       Left = 365
       Top = 15
-      Width = 14
-      Height = 20
+      Width = 20
+      Height = 14
       Escapement = 90
       TextStyle = tsNone
       Caption = '77G'
@@ -338,8 +338,8 @@ object ACAGMulti: TACAGMulti
     object Label135G: TRotateLabel
       Left = 376
       Top = 9
-      Width = 14
-      Height = 26
+      Width = 26
+      Height = 14
       Escapement = 90
       TextStyle = tsNone
       Caption = '135G'
@@ -353,8 +353,8 @@ object ACAGMulti: TACAGMulti
     object Label248G: TRotateLabel
       Left = 387
       Top = 9
-      Width = 14
-      Height = 26
+      Width = 26
+      Height = 14
       Escapement = 90
       TextStyle = tsNone
       Caption = '248G'
@@ -397,6 +397,7 @@ object ACAGMulti: TACAGMulti
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 2
+    StyleElements = [seClient, seBorder]
     OnDrawCell = GridDrawCell
   end
 end

@@ -6554,7 +6554,7 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 3
     Visible = False
-    StyleElements = [seFont, seBorder]
+    StyleElements = [seBorder]
     DesignSize = (
       528
       28)
@@ -6572,6 +6572,7 @@ object MainForm: TMainForm
       Font.Name = #65325#65331' '#12468#12471#12483#12463
       Font.Style = [fsBold]
       ParentFont = False
+      StyleElements = []
       OnClick = buttonCancelOutOfPeriodClick
       ExplicitLeft = 502
     end
@@ -6593,7 +6594,7 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 4
     Visible = False
-    StyleElements = [seFont, seBorder]
+    StyleElements = [seBorder]
     object linklabelInfo: TLinkLabel
       Left = 117
       Top = 5
