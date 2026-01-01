@@ -216,9 +216,12 @@ begin
       // グラフ全体
       Title.Caption := '';
       Title.Font.Size := 8;
+      Title.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+
       Legend.Visible := False;
 
       // 縦軸（時間毎の交信局数）の目盛り設定
+      LeftAxis.LabelsFont.Color := dmZLogGlobal.ZNormalTextColor1;
       Axes.Left.Automatic := False;
       Axes.Left.Title.Caption := '';  //'時間毎の交信局数';
       Axes.Left.Title.Font.Size := 8;
@@ -229,6 +232,7 @@ begin
       Axes.Left.MinorTickCount := 0;
 
       // 縦軸（累計）の目盛り設定
+      RightAxis.LabelsFont.Color := dmZLogGlobal.ZNormalTextColor1;
       Axes.Right.Automatic := False;
       Axes.Right.Title.Caption := ''; //'交信局数の累計';
       Axes.Right.Title.Font.Size := 8;
@@ -239,9 +243,12 @@ begin
       Axes.Right.MinorTickCount := 0;
 
       // 横軸目盛りの設定
+      BottomAxis.LabelsFont.Color := dmZLogGlobal.ZNormalTextColor1;
       Axes.Bottom.Title.Caption := '';
       Axes.Bottom.Title.Font.Size := 8;
       Axes.Bottom.MinorTickCount := 0;
+
+      Color := dmZLogGlobal.ZBackColor2;
    end;
 
    for b := Low(FGraphSeries) to High(FGraphSeries) do begin

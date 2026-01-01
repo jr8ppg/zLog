@@ -14430,7 +14430,7 @@ begin
       else begin
          linklabelInfo.Caption := text;
       end;
-
+      linklabelInfo.Font.Color := clBlack;
       linklabelInfo.OnLinkClick := handler;
       linklabelInfo.Left := (panelShowInfo.Width - linklabelInfo.width) div 2;
       timerShowInfo.Tag := 1;
@@ -15177,6 +15177,10 @@ var
    LStyle: TCustomStyleServices;
    Color: TColor;
 begin
+   if CheckWin32Version(10, 0) = False then begin
+      Exit;
+   end;
+
    TStyleManager.SetStyle('Carbon');
    LStyle := StyleServices(Self);
 
@@ -15184,9 +15188,10 @@ begin
    LStyle.GetElementColor(LStyle.GetElementDetails(tgFixedCellNormal), ecFillColor, Color);
    zLogGridFixedColor[True] := Color;
 
-   // 背景色
-   LStyle.GetElementColor(LStyle.GetElementDetails(tbsBackground{tgCellNormal}), ecFillColor, Color);
+   // 背景色１・２
+   LStyle.GetElementColor(LStyle.GetElementDetails(tbsBackground), ecFillColor, Color);
    zLogBackColor[True] := Color;
+   zLogBackColor2[True] := Color;
 
    // 文字の色１・２
    LStyle.GetElementColor(LStyle.GetElementDetails(ttlTextLabelNormal), ecTextColor, Color);

@@ -332,6 +332,7 @@ object MainForm: TMainForm
           Font.Name = 'Arial Black'
           Font.Style = []
           ParentFont = False
+          StyleElements = [seClient, seBorder]
           OnClick = labelRigTitleCClick
         end
         object CallsignEdit2C: TOvrEdit
@@ -630,6 +631,7 @@ object MainForm: TMainForm
             Font.Name = 'Arial Black'
             Font.Style = []
             ParentFont = False
+            StyleElements = [seClient, seBorder]
           end
           object CallsignEdit2A: TOvrEdit
             Tag = 1
@@ -790,6 +792,7 @@ object MainForm: TMainForm
             Font.Name = 'Arial Black'
             Font.Style = []
             ParentFont = False
+            StyleElements = [seClient, seBorder]
           end
           object CallsignEdit2B: TOvrEdit
             Tag = 2
@@ -1190,6 +1193,7 @@ object MainForm: TMainForm
             Font.Name = 'Arial Black'
             Font.Style = []
             ParentFont = False
+            StyleElements = [seClient, seBorder]
           end
           object CallsignEdit2VA: TOvrEdit
             Tag = 1
@@ -1349,6 +1353,7 @@ object MainForm: TMainForm
             Font.Name = 'Arial Black'
             Font.Style = []
             ParentFont = False
+            StyleElements = [seClient, seBorder]
           end
           object CallsignEdit2VB: TOvrEdit
             Tag = 2
@@ -1513,6 +1518,7 @@ object MainForm: TMainForm
           Font.Name = 'Arial Black'
           Font.Style = []
           ParentFont = False
+          StyleElements = [seClient, seBorder]
           OnClick = labelRigTitleCClick
         end
         object CallsignEdit2VC: TOvrEdit
@@ -6601,6 +6607,14 @@ object MainForm: TMainForm
       Width = 150
       Height = 20
       Caption = 'new qso data arrived'
+      Color = clAqua
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
       TabOrder = 0
     end
   end

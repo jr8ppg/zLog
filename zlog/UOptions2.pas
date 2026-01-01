@@ -808,6 +808,10 @@ var
 begin
    ImplementSettings();
 
+   if CheckWin32Version(10, 0) = False then begin
+      checkUseDarkMode.Visible := False;
+   end;
+
    //
    // CFGファイルからパラメーターを取り込んだ場合
    //
@@ -2033,14 +2037,18 @@ begin
       1: begin
          editQsyCountDownMinute.Enabled := True;
          editQsyCountPerHour.Enabled := False;
-         editQsyCountDownMinute.SetFocus();
+         if PageControl.ActivePage = tabsheetCategories then begin
+            editQsyCountDownMinute.SetFocus();
+         end;
       end;
 
       // QSY Count / hr
       2: begin
          editQsyCountDownMinute.Enabled := False;
          editQsyCountPerHour.Enabled := True;
-         editQsyCountPerHour.SetFocus();
+         if PageControl.ActivePage = tabsheetCategories then begin
+            editQsyCountPerHour.SetFocus();
+         end;
       end;
    end;
 end;

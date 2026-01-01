@@ -551,6 +551,7 @@ type
     function GetCommPortList(): TList<TCommPort>;
     function LoadCommPortList(): TList<TCommPort>;
     function GetZBackColor(): TColor;
+    function GetZBackColor2(): TColor;
     function GetZNormalTextColor1(): TColor;
     function GetZNormalTextColor2(): TColor;
     function GetZConfirmedTextColor(): TColor;
@@ -643,6 +644,7 @@ public
     property FreqMemList: TFreqMemoryList read FFreqMemList;
 
     property ZBackColor: TColor read GetZBackColor;
+    property ZBackColor2: TColor read GetZBackColor2;
     property ZNormalTextColor1: TColor read GetZNormalTextColor1;
     property ZNormalTextColor2: TColor read GetZNormalTextColor2;
     property ZConfirmedTextColor: TColor read GetZConfirmedTextColor;
@@ -750,6 +752,7 @@ resourcestring
 var
   //                                               light    dark
   zLogBackColor: array[False..True] of TColor  = ( clWhite, clBlack);
+  zLogBackColor2: array[False..True] of TColor  = ( clBtnFace, clBlack);
   zLogNormalTextColor1: array[False..True] of TColor = ( clBlack, clWhite );
   zLogNormalTextColor2: array[False..True] of TColor = ( clBlue,  clWhite );
   zLogConfirmedTextColor: array[False..True] of TColor = ( clRed,  clWhite );
@@ -3699,6 +3702,11 @@ end;
 function TdmZLogGlobal.GetZBackColor(): TColor;
 begin
    Result := zLogBackColor[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZBackColor2(): TColor;
+begin
+   Result := zLogBackColor2[Settings.FUseDarkMode]
 end;
 
 function TdmZLogGlobal.GetZNormalTextColor1(): TColor;
