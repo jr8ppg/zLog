@@ -202,10 +202,12 @@ object CommForm: TCommForm
       ParentFont = False
       PopupMenu = PopupMenu
       TabOrder = 0
+      StyleElements = [seClient, seBorder]
       OnDblClick = ListBoxDblClick
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitTop = -1
     end
     object Console: TListBox
       Left = 1

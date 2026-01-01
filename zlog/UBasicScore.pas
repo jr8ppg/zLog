@@ -36,7 +36,6 @@ type
     procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
-    procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
   public
     { Public declarations }
@@ -332,32 +331,6 @@ end;
 procedure TBasicScore.menuExtraInfoClick(Sender: TObject);
 begin
    UpdateData();
-end;
-
-procedure TBasicScore.Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
-var
-   strText: string;
-begin
-   strText := Grid.Cells[ACol, ARow];
-
-   with Grid.Canvas do begin
-      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
-      Brush.Color := Grid.Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Size := FFontSize;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
 end;
 
 procedure TBasicScore.AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
