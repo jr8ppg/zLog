@@ -4255,7 +4255,12 @@ object formOptions: TformOptions
           Top = 210
           Width = 233
           Height = 18
+          Hint = 
+            'YAESU FT-2000 and later, and KENWOOD TS-2000 and later (using th' +
+            'e BU/BD commands).'
           Caption = 'Use band up/down commands'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 9
         end
         object checkUseBandSelect: TCheckBox
@@ -4263,7 +4268,10 @@ object formOptions: TformOptions
           Top = 234
           Width = 233
           Height = 18
+          Hint = 'YAESU FT-2000 and later (using the BS command).'
           Caption = 'Use band select command'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 10
         end
       end
@@ -4459,6 +4467,7 @@ object formOptions: TformOptions
               Caption = 'Login'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 3
@@ -4762,13 +4771,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'Fira Code Light'
+          FontName = 'HG'#21109#33521#35282#65422#65439#65391#65420#65439#20307
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 75
+          ItemIndex = 87
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
