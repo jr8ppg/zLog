@@ -3266,28 +3266,28 @@ object formOptions: TformOptions
         object Label38: TLabel
           Left = 151
           Top = 19
-          Width = 75
+          Width = 70
           Height = 13
           Caption = 'Before TX (ms)'
         end
         object Label39: TLabel
           Left = 307
           Top = 19
-          Width = 75
+          Width = 61
           Height = 13
           Caption = 'After TX (ms)'
         end
         object Label18: TLabel
           Left = 307
           Top = 43
-          Width = 75
+          Width = 61
           Height = 13
           Caption = 'After TX (ms)'
         end
         object Label19: TLabel
           Left = 151
           Top = 43
-          Width = 75
+          Width = 70
           Height = 13
           Caption = 'Before TX (ms)'
         end
@@ -4207,7 +4207,7 @@ object formOptions: TformOptions
         object checkIgnoreRigMode: TCheckBox
           Left = 8
           Top = 138
-          Width = 141
+          Width = 233
           Height = 18
           Caption = 'Ignore rig mode'
           TabOrder = 4
@@ -4237,7 +4237,7 @@ object formOptions: TformOptions
         object checkUsePttCommand: TCheckBox
           Left = 8
           Top = 162
-          Width = 141
+          Width = 233
           Height = 18
           Caption = 'Use PTT command'
           TabOrder = 7
@@ -4245,7 +4245,7 @@ object formOptions: TformOptions
         object checkSyncRigWPM: TCheckBox
           Left = 8
           Top = 186
-          Width = 141
+          Width = 233
           Height = 18
           Caption = 'Sync. rig WPM'
           TabOrder = 8
@@ -4253,7 +4253,7 @@ object formOptions: TformOptions
         object checkUseBandUpDown: TCheckBox
           Left = 8
           Top = 210
-          Width = 171
+          Width = 233
           Height = 18
           Caption = 'Use band up/down commands'
           TabOrder = 9
@@ -4261,7 +4261,7 @@ object formOptions: TformOptions
         object checkUseBandSelect: TCheckBox
           Left = 8
           Top = 234
-          Width = 171
+          Width = 233
           Height = 18
           Caption = 'Use band select command'
           TabOrder = 10
@@ -4762,13 +4762,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'Cascadia Mono Regular'
+          FontName = 'Fira Code Light'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 61
+          ItemIndex = 75
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
