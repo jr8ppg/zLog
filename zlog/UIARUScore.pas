@@ -70,7 +70,7 @@ var
 begin
    Inherited;
 
-   Grid.ColCount := 5;
+   Grid.ColCount := 7;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
