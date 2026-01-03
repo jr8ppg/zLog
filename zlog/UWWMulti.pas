@@ -466,6 +466,15 @@ begin
    C := P.Country;
    FMostRecentCty := C;
 
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    aQSO.Multi2 := C.Country;
 
    if C.Worked[B] = False then begin

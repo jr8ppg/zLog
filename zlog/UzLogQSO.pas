@@ -88,7 +88,9 @@ type
     QslState: Byte;        { 1 byte 0:None 1:Pse QSL 2:No QSL }
     Invalid: Boolean;      { 1 byte false:valid true:invalid }
     RbnVerified: Boolean;  { 1 byte false:not verified true:verified }
-    Reserve4: string[100]; { 100 bytes }
+    Continent: string[2];  { 3 bytes }
+    Entity: string[10];    { 11 bytes }
+    Reserve4: string[86];  { 87 bytes }
     // 384bytes
   end;
 
@@ -152,6 +154,8 @@ type
     FQslState: TQslState;
     FInvalid: Boolean;
     FRbnVerified: Boolean;
+    FContinent: string;
+    FEntity: string;
 
     function GetMode2(): TMode;
     function GetPoints(): Integer;
@@ -245,6 +249,8 @@ type
     property QsoId: Integer read GetQsoId;
     property Area: string read GetArea;
     property RbnVerified: Boolean read FRbnVerified write FRbnVerified;
+    property Continent: string read FContinent write FContinent;
+    property Entity: string read FEntity write FEntity;
 
     property SerialStr: string read GetSerialStr;
     property DateTimeStr: string read GetDateTimeStr;
@@ -592,6 +598,8 @@ begin
    FQslState := qsNone;
    FInvalid := False;
    FRbnVerified := False;
+   FContinent := '';
+   FEntity := '';
 end;
 
 procedure TQSO.IncTime;
@@ -1343,6 +1351,8 @@ begin
    FQslState := src.FQslState;
    FInvalid := src.Invalid;
    FRbnVerified := src.RbnVerified;
+   FContinent := src.Continent;
+   FEntity := src.Entity;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;
@@ -1474,6 +1484,8 @@ begin
    Result.QslState   := Byte(FQslState);
    Result.Invalid    := FInvalid;
    Result.RbnVerified := FRbnVerified;
+   Result.Continent  := ShortString(Copy(FContinent, 1, 2));
+   Result.Entity     := ShortString(Copy(FEntity, 1, 10));
 end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
@@ -1518,6 +1530,8 @@ begin
    FQslState   := TQslState(src.QslState);
    FInvalid    := src.Invalid;
    FRbnVerified := src.RbnVerified;
+   FContinent  := string(src.Continent);
+   FEntity     := string(src.Entity);
 end;
 
 procedure TQSO.ToUTC();

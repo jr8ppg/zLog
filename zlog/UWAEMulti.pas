@@ -32,17 +32,30 @@ end;
 procedure TWAEMulti.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
+   P: TPrefix;
    C: TCountry;
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    if C.Continent <> 'EU' then begin
       aQSO.Points := 0;
       aQSO.Multi1 := 'Non-EU';
       exit;
    end;
+
    aQSO.Multi1 := C.Country;
 
    if aQSO.Dupe then begin

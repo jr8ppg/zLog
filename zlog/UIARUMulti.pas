@@ -403,7 +403,6 @@ var
    i: Integer;
    C: TCountry;
    P: TPrefix;
-   _cont: string;
    HQ: boolean;
    M: TIARUZone;
    Index: Integer;
@@ -451,16 +450,18 @@ begin
    P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
 
-   if P = nil then
-      _cont := C.Continent
-   else if P.OvrContinent = '' then
-      _cont := C.Continent
-   else
-      _cont := P.OvrContinent;
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
 
    if (dmZLogGlobal.MyITUZone = str) or (HQ = True) then
       aQSO.Points := 1
-   else if dmZLogGlobal.MyContinent = _cont then
+   else if dmZLogGlobal.MyContinent = aQSO.Continent then
       aQSO.Points := 3
    else
       aQSO.Points := 5;

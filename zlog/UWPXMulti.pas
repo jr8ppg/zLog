@@ -193,7 +193,6 @@ var
    str: string;
    C: TCountry;
    P: TPrefix;
-   _cont: string;
 begin
    aQSO.NewMulti1 := false;
    str := GetWPXPrefix(aQSO);
@@ -223,20 +222,25 @@ begin
    end;
    C := P.Country;
 
-   if P.OvrContinent = '' then
-      _cont := C.Continent
-   else
-      _cont := P.OvrContinent;
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
 
-   if _cont = 'AS' then
+   aQSO.Entity := C.Country;
+
+   if aQSO.Continent = 'AS' then begin
       aQSO.Power2 := 777; // flag for all asian mode (dx side)
+   end;
 
    if C.Country = dmZLogGlobal.MyCountry then begin
       aQSO.Points := 1;
       exit;
    end;
 
-   if dmZLogGlobal.MyContinent = _cont then
+   if dmZLogGlobal.MyContinent = aQSO.Continent then
       if dmZLogGlobal.MyContinent = 'NA' then
          if aQSO.Band in [b19 .. b7] then
             aQSO.Points := 4

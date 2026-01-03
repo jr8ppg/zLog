@@ -35,6 +35,7 @@ var
    str: string;
    B: TBand;
    i: integer;
+   P: TPrefix;
    C: TCountry;
 begin
    aQSO.NewMulti1 := False;
@@ -61,7 +62,18 @@ begin
       end;
    end;
 
-   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    if C.Country = '' then begin // unknown cty. e.g. MM
       Exit;
    end;

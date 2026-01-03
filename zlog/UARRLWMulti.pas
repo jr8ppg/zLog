@@ -59,6 +59,16 @@ begin
 
    P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    aQSO.Multi1 := C.Country;
 
    if C.Index = -1 then begin

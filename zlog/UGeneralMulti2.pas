@@ -287,6 +287,7 @@ var
    i: Integer;
    C: TCity;
    Cty: TCountry;
+   P: TPrefix;
    boo: Boolean;
 label aaa;
 begin
@@ -295,7 +296,17 @@ begin
    aQSO.Power2 := 2; // not local CTY
 
    if FConfig.UseCtyDat then begin
-      Cty := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+      P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+      Cty := P.Country;
+
+      if (P = nil) or (P.OvrContinent = '') then begin
+         aQSO.Continent := Cty.Continent;
+      end
+      else begin
+         aQSO.Continent := P.OvrContinent;
+      end;
+
+      aQSO.Entity := Cty.Country;
 
       aQSO.Power2 := Cty.Index;
 
@@ -304,7 +315,6 @@ begin
 
       if pos(',' + Cty.Country + ',', ',' + FConfig.NoCountryMulti + ',') > 0 then
          goto aaa;
-
 
       aQSO.Multi1 := Cty.Country;
 

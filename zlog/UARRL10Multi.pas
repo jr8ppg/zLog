@@ -102,13 +102,24 @@ end;
 procedure TARRL10Multi.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
+   P: TPrefix;
    C: TCountry;
    S: TState;
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
 
    if aQSO.Mode = mCW then
       B := b35
