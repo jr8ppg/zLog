@@ -419,6 +419,7 @@ type
     // Usability
     FUseMultiLineTabs: Boolean;
     FUseDarkMode: Boolean;
+    FDisableShortCutsQSOEdit: Boolean;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
     FQsoListFocusedSelColor: TColor;
@@ -1399,6 +1400,7 @@ begin
       // Usability
       Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', True);
       Settings.FUseDarkMode := ini.ReadBool('Style', 'UseDarkMode', False);
+      Settings.FDisableShortCutsQSOEdit := ini.ReadBool('Usability', 'DisableShortCutsQSOEdit', False);
       Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
       Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
       Settings.FQsoListFocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListFocusedSelColor', ''), RGB($E5, $F3, $FF));
@@ -2215,6 +2217,7 @@ begin
       // Usability
       ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
       ini.WriteBool('Style', 'UseDarkMode', Settings.FUseDarkMode);
+      ini.WriteBool('Usability', 'DisableShortCutsQSOEdit', Settings.FDisableShortCutsQSOEdit);
       ini.WriteInteger('Usability', 'AfterQsoEditOkFocusPos', Settings.FAfterQsoEditOkFocusPos);
       ini.WriteInteger('Usability', 'AfterQsoEditCancelFocusPos', Settings.FAfterQsoEditCancelFocusPos);
       ini.WriteString('Usability', 'QsoListFocusedSelColor', ZColorToString(Settings.FQsoListFocusedSelColor));

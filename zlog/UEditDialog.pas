@@ -308,7 +308,12 @@ end;
 
 procedure TEditDialog.FormActivate(Sender: TObject);
 begin
-   ActionList1.State := asNormal;
+   if dmZLogGlobal.Settings.FDisableShortCutsQSOEdit = True then begin
+      ActionList1.State := asSuspended;
+   end
+   else begin
+      ActionList1.State := asNormal;
+   end;
 end;
 
 procedure TEditDialog.FormDeactivate(Sender: TObject);

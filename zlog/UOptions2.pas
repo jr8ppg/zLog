@@ -462,6 +462,7 @@ type
     Label46: TLabel;
     ScoreCoeffEdit: TEdit;
     panelContestName: TPanel;
+    checkDisableShortCutsQSOEdit: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1095,6 +1096,9 @@ begin
       // Use dark mode
       Settings.FUseDarkMode := checkUseDarkMode.Checked;
 
+      // Disable shortcuts during QSO editing
+      Settings.FDisableShortCutsQSOEdit := checkDisableShortCutsQSOEdit.Checked;
+
       // Focus Position After QSO Edit group
       if radioOnOkFocusToQsoList.Checked = True then begin
          Settings.FAfterQsoEditOkFocusPos := 0;
@@ -1505,6 +1509,9 @@ begin
 
       // Use dark mode
       checkUseDarkMode.Checked := Settings.FUseDarkMode;
+
+      // Disable shortcuts during QSO editing
+      checkDisableShortCutsQSOEdit.Checked := Settings.FDisableShortCutsQSOEdit;
 
       // Focus Position After QSO Edit group
       if Settings.FAfterQsoEditOkFocusPos = 0 then begin
