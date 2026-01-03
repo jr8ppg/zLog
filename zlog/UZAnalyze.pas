@@ -64,6 +64,15 @@ type
     constructor Create();
   end;
 
+  // NA,SA,EU,AS,AF,OC,AN
+  TContCount = record
+     FQso: array[b19..b28] of Integer;
+     FCw: array[b19..b28] of Integer;
+  end;
+
+type
+  TContinent = (coNA = 0, coSA, coEU, coAS, coAF, coOC, coAN, coOther);
+
 type
   TZAnalyze = class(TForm)
     Memo1: TMemo;
@@ -91,6 +100,10 @@ type
     FCountData: array[1..49] of array[b19..TBand(24)] of TQsoCount;
     FCountData2: array[1..49] of array[b19..TBand(24)] of TQsoCount2;
     FOpCount: TList<TOpCount>;
+    FContCount: array[coNA..coOther] of TContCount;
+    FContTotal: array[coNA..coOther] of Integer;
+    FContBandTotal: array[b19..b28] of Integer;
+    FContBandCwTotal: array[b19..b28] of Integer;
     FZADSupport: Boolean;
     FMultiGet: array[02..114] of array[b19..HiBand] of Integer;
     FMultiGet2: array[b19..HiBand] of TList<string>;
@@ -116,6 +129,7 @@ type
     function CwToStrR(cnt: Integer; len: Integer): string;
     procedure ShowZAD(sl: TStrings);
     procedure ShowZOP(sl: TStrings; fShowCW: Boolean);
+    procedure ShowZCN(sl: TStrings; fShowCW: Boolean);
     procedure ShowRBN(sl: TStrings; fShowCW: Boolean);
     function GetExcludeZeroPoint(): Boolean;
     procedure SetExcludeZeroPoint(v: Boolean);
@@ -124,6 +138,7 @@ type
     function GetShowCW(): Boolean;
     procedure SetShowCW(v: Boolean);
     procedure SetUseRbnAnalyze(v: Boolean);
+    function GetContinent(cont: string): TContinent;
   public
     { Public 宣言 }
     property ExcludeZeroPoints: Boolean read GetExcludeZeroPoint write SetExcludeZeroPoint;
@@ -236,9 +251,15 @@ begin
    fname := ChangeFileExt(fname, '.ZOP');
    Memo1.Lines.SaveToFile(fname);
 
+   // ZCN
+   TabControl1.TabIndex := 6;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ZCN');
+   Memo1.Lines.SaveToFile(fname);
+
    // RBN
    if FUseRbnAnalyze = True then begin
-      TabControl1.TabIndex := 6;
+      TabControl1.TabIndex := 7;
       TabControl1Change(nil);
       fname := ChangeFileExt(fname, '.RBN');
       Memo1.Lines.SaveToFile(fname);
@@ -332,8 +353,13 @@ begin
             ShowZOP(sl, fShowCW);
          end;
 
-         // RBN
+         // ZCN
          6: begin
+            ShowZCN(sl, fShowCW);
+         end;
+
+         // RBN
+         7: begin
             if FUseRbnAnalyze = True then begin
                ShowRBN(sl, fShowCW);
             end;
@@ -350,6 +376,7 @@ var
    b: TBand;
    a: Integer;
    i: Integer;
+   co: TContinent;
 begin
    for t := 1 to 49 do begin
       for b := b19 to TBand(24) do begin
@@ -386,6 +413,16 @@ begin
       FOpCount[i].Free();
       FOpCount.Delete(i);
    end;
+
+   for co := coNA to coOther do begin
+      for b := b19 to b28 do begin
+         FContCount[co].FQso[b] := 0;
+         FContCount[co].FCw[b] := 0;
+         FContBandTotal[b] := 0;
+         FContBandCwTotal[b] := 0;
+      end;
+      FContTotal[co] := 0;
+   end;
 end;
 
 procedure TZAnalyze.TotalTimeChart(qsolist: TQSOList);
@@ -402,6 +439,7 @@ var
    offset_hour: Integer;
    O: TOpCount;
    multi: Integer;
+   co: TContinent;
 
    function FindOperator(opname: string): Integer;
    var
@@ -582,6 +620,20 @@ begin
          Inc(O.FQsoCountPH[b]);
          if qso.NewMulti1 = True then begin
             Inc(O.FMultiCountPH[b]);
+         end;
+      end;
+
+      // Continent別
+      if MyContest.NeedCtyDat = True then begin
+         if  b <= b28 then begin
+            co := GetContinent(qso.Continent);
+            Inc(FContCount[co].FQSO[b]);
+            if qso.Mode = mCW then begin
+               Inc(FContCount[co].FCw[b]);
+            end;
+            Inc(FContTotal[co]);
+            Inc(FContBandTotal[b]);
+            Inc(FContBandCwTotal[b]);
          end;
       end;
    end;
@@ -2026,6 +2078,178 @@ begin
    TT2.Free();
 end;
 
+{
+123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+＜大陸別の交信局数＞　（括弧内は電信の内数）
+
+
+                 1.9      3.5        7       14       21       28       ALL             %
+                                                                                   999.99
+North America    999(999) 999(999)  37(37)   48(48)  150(150) 999(999)  250(250)    21.24
+South America      -        -        3(3)     2(2)     6(6)     -        11(11)      0.93
+Europe             -        -       33(33)  208(208) 294(294)  16(16)   551(551)    46.81
+Asia               1(1)     9(9)    33(33)   70(70)  136(136)  33(33)   282(282)    23.96
+Africa             -        -        -        4(4)     4(4)     -         8(8)       0.68
+Oceania            -        4(4)    11(11)   13(13)   29(29)   18(18)    75(75)      6.37
+Antarctica         -        -        -        -        -        -         -          0.00
+
+Total              1(1)    25(25)  117(117) 345(345) 619(619)  70(70)  1177(1177)
+123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+}
+procedure TZAnalyze.ShowZCN(sl: TStrings; fShowCW: Boolean);
+var
+   strText: string;
+   co: TContinent;
+   b: TBand;
+   c: Integer;
+   c2: Integer;
+   S: string;
+   nAll: Integer;
+   nCw: Integer;
+   TotalAll: Integer;
+const
+   continent_name: array[coNA..coOther] of string = (
+      'North America    ',
+      'South America    ',
+      'Europe           ',
+      'Asia             ',
+      'Africa           ',
+      'Oceania          ',
+      'Antarctica       ',
+      'Unknown          '
+   );
+begin
+   sl.Clear();
+
+   if MyContest.NeedCtyDat = False then begin
+      strText := 'サポートされていないコンテストです';
+      sl.Add(strText);
+      Exit;
+   end;
+
+   // 見だし
+   if fShowCW = True then begin
+      strText := '＜大陸別の交信局数＞　（括弧内は電信の内数）';
+   end
+   else begin
+      strText := '＜大陸別の交信局数＞';
+   end;
+   sl.Add(strText);
+   sl.Add('');
+   sl.Add('');
+
+   // バンド見だし
+   strText := '                 1.9      3.5        7       14       21       28       ALL             %';
+   sl.Add(strText);
+   sl.Add('');
+
+   TotalAll := FContTotal[coNA] + FContTotal[coSA] + FContTotal[coEU] + FContTotal[coAS] +
+               FContTotal[coAF] + FContTotal[coOC] + FContTotal[coAN];
+
+   // 大陸別
+   for co := coNA to coOther do begin
+      strText := continent_name[co];
+
+      // 横計
+      nAll := 0;
+      nCw := 0;
+
+      // バンド別
+      for b := b19 to b28 do begin
+         // WARCバンド除く
+         if (b = b10) or (b = b18) or (b = b24) then begin
+            Continue;
+         end;
+
+         c := FContCount[co].FQso[b];
+
+         if c = 0 then begin
+            S := '  -      ';
+            c2 := 0;
+         end
+         else begin
+            if fShowCW = True then begin
+               c2 := FContCount[co].FCw[b];
+               S := LeftStr(RightStr('   ' + IntToStr(c), 3) + '(' + IntToStr(c2) + ')      ', 9);
+            end
+            else begin
+               c2 := 0;
+               S := LeftStr(RightStr('   ' + IntToStr(c), 3) + '         ', 9);
+            end;
+         end;
+         strText := strText  + S;
+
+         Inc(nAll, c);
+         Inc(nCw, c2);
+      end;
+
+      // 横計
+      if fShowCW = True then begin
+         S := LeftStr(RightStr(DupeString(' ', 4) + IntToStr(nAll), 4) + '(' + IntToStr(nCw) + ')' + DupeString(' ', 10), 10);
+      end
+      else begin
+         S := LeftStr(RightStr(DupeString(' ', 4) + IntToStr(nAll), 4) + DupeString(' ', 10), 10);
+      end;
+      strText := strText  + S;
+
+      // 大陸別％
+      S := Format('%.2f', [FContTotal[co] / TotalAll * 100]);
+      S := RightStr(DupeString(' ', 8) + S, 8);
+      strText := strText + S;
+
+      sl.Add(strText);
+   end;
+
+   sl.Add('');
+
+   // 横計
+   nAll := 0;
+   nCw := 0;
+
+   //Total              1(1)    25(25)  117(117) 345(345) 619(619)  70(70)  1177(1177)
+   strText := 'Total            ';
+
+   // バンド別
+   for b := b19 to b28 do begin
+      // WARCバンド除く
+      if (b = b10) or (b = b18) or (b = b24) then begin
+         Continue;
+      end;
+
+      c := FContBandTotal[b];
+
+      if c = 0 then begin
+         S := '  -      ';
+         c2 := 0;
+      end
+      else begin
+         if fShowCW = True then begin
+            c2 := FContBandCwTotal[b];
+            S := LeftStr(RightStr('   ' + IntToStr(c), 3) + '(' + IntToStr(c2) + ')      ', 9);
+         end
+         else begin
+            c2 := 0;
+            S := LeftStr(RightStr('   ' + IntToStr(c), 3) + '         ', 9);
+         end;
+      end;
+      strText := strText  + S;
+
+      Inc(nAll, c);
+      Inc(nCw, c2);
+   end;
+
+   // 横計
+   if fShowCW = True then begin
+      S := LeftStr(RightStr(DupeString(' ', 4) + IntToStr(nAll), 4) + '(' + IntToStr(nCw) + ')' + DupeString(' ', 10), 10);
+   end
+   else begin
+      S := LeftStr(RightStr(DupeString(' ', 4) + IntToStr(nAll), 4) + DupeString(' ', 10), 10);
+   end;
+   strText := strText  + S;
+
+   sl.Add(strText);
+end;
+
 procedure TZAnalyze.ShowRBN(sl: TStrings; fShowCW: Boolean);
 var
    i: Integer;
@@ -2112,10 +2336,38 @@ procedure TZAnalyze.SetUseRbnAnalyze(v: Boolean);
 begin
    FUseRbnAnalyze := v;
    if v = True then begin
-      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,RBN';
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN,RBN';
    end
    else begin
-      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP';
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN';
+   end;
+end;
+
+function TZAnalyze.GetContinent(cont: string): TContinent;
+begin
+   if cont = 'NA' then begin
+      Result := coNA;
+   end
+   else if cont = 'SA' then begin
+      Result := coSA;
+   end
+   else if cont = 'EU' then begin
+      Result := coEU;
+   end
+   else if cont = 'AS' then begin
+      Result := coAS;
+   end
+   else if cont = 'AF' then begin
+      Result := coAF;
+   end
+   else if cont = 'OC' then begin
+      Result := coOC;
+   end
+   else if cont = 'AN' then begin
+      Result := coAN;
+   end
+   else begin
+      Result := coOther;
    end;
 end;
 
