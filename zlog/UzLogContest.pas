@@ -642,6 +642,8 @@ begin
    // DUPEçƒåvéZ
    Log.SetDupeFlags;
 
+   FMultiForm.BeginUpdate();
+
    // Score&NewMultiçƒåvéZ
    for i := 1 to Log.TotalQSO do begin
       aQSO := Log.QsoList[i];
@@ -659,6 +661,8 @@ begin
          FScoreForm.AddNoUpdate(aQSO);
       end;
    end;
+
+   FMultiForm.EndUpdate();
 end;
 
 function TContest.GetNewMulti1(aQSO: TQSO): string;

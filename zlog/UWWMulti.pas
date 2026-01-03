@@ -70,6 +70,9 @@ type
     procedure RefreshGrid; virtual;
     procedure RefreshZone;
     procedure ProcessSpotData(S: TBaseSpot); override;
+    procedure BeginUpdate(); override;
+    procedure EndUpdate(); override;
+
     property ZoneForm: TWWZone read FZoneForm write FZoneForm;
     property Zone: TZoneArray read FZoneFlag write FZoneFlag;
     property LastCountry: TCountry read FLastCountry;
@@ -352,6 +355,8 @@ begin
       Exit;
    end;
 
+   BeginUpdate();
+
    for i := Grid.TopRow to Grid.TopRow + Grid.VisibleRowCount - 1 do begin
       if (i > Grid.RowCount - 1) then begin
          exit;
@@ -372,6 +377,8 @@ begin
          end;
       end;
    end;
+
+   EndUpdate();
 
    Grid.Refresh();
 end;
@@ -713,6 +720,16 @@ end;
 procedure TWWMulti.ProcessSpotData(S: TBaseSpot);
 begin
    ProcessCluster(S);
+end;
+
+procedure TWWMulti.BeginUpdate();
+begin
+   Grid.BeginUpdate();
+end;
+
+procedure TWWMulti.EndUpdate();
+begin
+   Grid.EndUpdate();
 end;
 
 procedure TWWMulti.SetFontSize(v: Integer);

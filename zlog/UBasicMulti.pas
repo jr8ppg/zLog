@@ -40,6 +40,8 @@ type
     function  IsNewMulti(aQSO : TQSO) : boolean; virtual;
     procedure SetNumberEditFocusJARL;
     procedure SetNumberEditFocus; virtual;
+    procedure BeginUpdate(); virtual;
+    procedure EndUpdate(); virtual;
     // function CheckMultiInfo(aQSO : TQSO) : string; virtual; abstract;
     // called from CheckMultiWindow for each band without QSO to the current stn
     // returns nothing when the multi is worked in that band.
@@ -258,6 +260,16 @@ end;
 function TBasicMulti.GetIsIncrementalSearchPresent(): Boolean;
 begin
    Result := False;
+end;
+
+procedure TBasicMulti.BeginUpdate();
+begin
+//
+end;
+
+procedure TBasicMulti.EndUpdate();
+begin
+//
 end;
 
 end.
