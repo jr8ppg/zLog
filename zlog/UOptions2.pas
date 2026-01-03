@@ -458,6 +458,10 @@ type
     buttonAddVoiceAfterCmd2: TSpeedButton;
     buttonAddVoiceAfterCmd3: TSpeedButton;
     checkUseDarkMode: TCheckBox;
+    GroupBox1: TGroupBox;
+    Label46: TLabel;
+    ScoreCoeffEdit: TEdit;
+    panelContestName: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1153,6 +1157,9 @@ begin
       // Mode
       Settings._mode := TContestMode(groupMode.ItemIndex);
 
+      // Score coeff
+      Log.ScoreCoeff := StrToFloatDef(ScoreCoeffEdit.Text, 1);
+
       // QSY Assist
       Settings._countdown        := radioQsyCountDown.Checked;
       Settings._qsycount         := radioQsyCount.Checked;
@@ -1537,6 +1544,8 @@ begin
       // Contest rules
       //
 
+      panelContestName.Caption := Log.QsoList[0].memo;
+
       // Exchange
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
@@ -1560,6 +1569,9 @@ begin
 
       // Mode
       groupMode.ItemIndex := Integer(Settings._mode);
+
+      // Score coeff
+      ScoreCoeffEdit.Text := FloatToStr(Log.ScoreCoeff);
 
       // QSY Assist
       radioQsyNone.Checked          := True;

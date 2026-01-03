@@ -1,7 +1,7 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = act19
+  ActiveControl = radioSingleOp
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 571
@@ -23,7 +23,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -742,7 +742,7 @@ object formOptions2: TformOptions2
       Caption = 'Preferences'
       object groupPreferences: TGroupBox
         Left = 6
-        Top = 3
+        Top = 4
         Width = 512
         Height = 181
         Caption = 'General'
@@ -1266,8 +1266,8 @@ object formOptions2: TformOptions2
     object tabsheetCategories: TTabSheet
       Caption = 'Contest rule'
       object groupCategory: TGroupBox
-        Left = 14
-        Top = 63
+        Left = 6
+        Top = 94
         Width = 227
         Height = 121
         Caption = 'Category'
@@ -1330,16 +1330,16 @@ object formOptions2: TformOptions2
         end
       end
       object groupMode: TRadioGroup
-        Left = 14
-        Top = 190
+        Left = 6
+        Top = 221
         Width = 227
         Height = 123
         Caption = 'Mode'
         ItemIndex = 0
         Items.Strings = (
-          'Phone/CW'
+          'PHONE/CW(MIX)'
           'CW'
-          'Phone'
+          'PHONE'
           'RTTY'
           'ALL')
         TabOrder = 1
@@ -1419,8 +1419,8 @@ object formOptions2: TformOptions2
         end
       end
       object groupQsyAssist: TGroupBox
-        Left = 14
-        Top = 319
+        Left = 6
+        Top = 350
         Width = 227
         Height = 89
         Caption = 'QSY Assist'
@@ -1492,8 +1492,8 @@ object formOptions2: TformOptions2
         end
       end
       object groupExchange: TGroupBox
-        Left = 14
-        Top = 3
+        Left = 6
+        Top = 35
         Width = 227
         Height = 54
         Caption = 'Exchange'
@@ -1516,6 +1516,44 @@ object formOptions2: TformOptions2
           ReadOnly = True
           TabOrder = 0
         end
+      end
+      object GroupBox1: TGroupBox
+        Left = 6
+        Top = 445
+        Width = 227
+        Height = 53
+        Caption = 'Other rules'
+        TabOrder = 5
+        object Label46: TLabel
+          Left = 11
+          Top = 24
+          Width = 58
+          Height = 13
+          Caption = 'Score coeff.'
+        end
+        object ScoreCoeffEdit: TEdit
+          Left = 120
+          Top = 23
+          Width = 25
+          Height = 18
+          AutoSize = False
+          MaxLength = 3
+          TabOrder = 0
+          Text = '1'
+        end
+      end
+      object panelContestName: TPanel
+        Left = 6
+        Top = 4
+        Width = 289
+        Height = 25
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 6
       end
     end
     object tabsheetCW: TTabSheet
