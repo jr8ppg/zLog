@@ -15,7 +15,6 @@ type
     { Private declarations }
   public
     { Public declarations }
-    ALLASIANFLAG: boolean;
     procedure AddNoUpdate(aQSO: TQSO); override;
     function ValidMulti(aQSO: TQSO): boolean; override;
     procedure CheckMulti(aQSO: TQSO); override;
@@ -86,7 +85,7 @@ begin
       Exit;
    end;
 
-   if ALLASIANFLAG = True then begin
+   if FAllAsia = True then begin
       aQSO.Points := 0;
       // MainForm.Caption := C.Country+';'+MyCOuntry+';';
       if C.Country = dmZLogGlobal.MyCountry then begin
@@ -128,19 +127,13 @@ end;
 
 procedure TARRLWMulti.FormCreate(Sender: TObject);
 begin
-   { inherited; }
-   ALLASIANFLAG := False;
-
+   Inherited;
    Reset;
 end;
 
 procedure TARRLWMulti.ProcessCluster(Sp: TBaseSpot);
 begin
    Inherited;
-
-   if ALLASIANFLAG = True then begin
-      Sp.NewZone := False;
-   end;
 end;
 
 end.

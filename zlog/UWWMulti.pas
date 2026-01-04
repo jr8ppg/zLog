@@ -46,6 +46,7 @@ type
     FMostRecentCty: TCountry;
     FLastCountry: TCountry;
     FGridReverse: array[0..500] of integer; {pointer from grid row to countrylist index}
+    FAllAsia: Boolean;
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
@@ -76,6 +77,7 @@ type
     property ZoneForm: TWWZone read FZoneForm write FZoneForm;
     property Zone: TZoneArray read FZoneFlag write FZoneFlag;
     property LastCountry: TCountry read FLastCountry;
+    property ALLASIANFLAG: Boolean read FAllAsia write FAllAsia;
   end;
 
 implementation
@@ -411,6 +413,7 @@ begin
    FZoneForm := nil;
    FMostRecentCty := nil;
    FLastCountry := nil;
+   FAllAsia := False;
    MainForm.mnGridAddNewPX.Visible := True;
 end;
 
@@ -656,7 +659,7 @@ begin
 
       // NEWマルチチェック
       temp := aQSO.CallSign;
-      if (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
+      if (FAllAsia = False) and (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
          temp := temp + '  new zone: ' + GuessZone(aQSO.Callsign);
          Sp.NewZone := True;
       end;
