@@ -22,7 +22,7 @@ type
     procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
-    MyIOTA, MyDXCC: string;
+    MyDXCC: string;
     function ExtractMulti(aQSO: TQSO): string; override;
     procedure Reset; override;
     procedure UpdateData; override;
@@ -33,7 +33,8 @@ type
 
 implementation
 
-uses Main, UNewIOTARef, UOptions, UIOTACategory;
+uses
+  Main, UNewIOTARef, UOptions;
 
 {$R *.DFM}
 
@@ -109,7 +110,7 @@ begin
 
       if str = '' then
          aQSO.Points := 3
-      else if str = MyIOTA then
+      else if str = dmZLogGlobal.Settings._iota then
          aQSO.Points := 3
       else
          aQSO.Points := 15;
@@ -210,6 +211,9 @@ begin
    end;
 
    M := Main.CurrentQSO.Mode;
+   if (M <> mCW) and (M <> mSSB) then begin
+      M := mCW;
+   end;
 
    for i := 0 to IslandList.List.Count - 1 do begin
       C := TIsland(IslandList.List[i]);
@@ -232,7 +236,6 @@ end;
 procedure TIOTAMulti.FormCreate(Sender: TObject);
 var
    P: TPrefix;
-   dlg: TIOTACategory;
    strCallsign: string;
 begin
    // inherited;
@@ -243,20 +246,6 @@ begin
    strCallsign := UpperCase(dmZLogGlobal.MyCall);
    P := dmZLogGlobal.GetPrefix(strCallsign);
    MyDXCC := P.Country.Country;
-
-   dlg := TIOTACategory.Create(MainForm);
-   try
-      dlg.Label1.Caption := MyDXCC;
-
-      if dlg.ShowModal = mrOK then begin // OK‚µ‚©‚È‚¢‚¯‚Ç...
-         MyIOTA := dlg.GetIOTA;
-      end
-      else begin
-         MyIOTA := '';
-      end;
-   finally
-      dlg.Release();
-   end;
 end;
 
 procedure TIOTAMulti.GoButtonClick2(Sender: TObject);

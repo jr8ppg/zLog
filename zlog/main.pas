@@ -1483,12 +1483,13 @@ resourcestring
   TMainForm_JudgePeriod = 'Do you want to judge whether all QSOs are within the contest period?';
   TMainForm_EmptyOpList = 'Operator list is empty.';
   TMainForm_Setup_MyCall_first = 'Please enter your callsign first.';
-  TMainForm_Setup_SentNR_first = 'Setup Prov/State code and City code first';
-  TMainForm_Setup_SentNR_cqzone = 'Setup CQ Zone number first';
-  TMainForm_Setup_SentNR_ituzone = 'Setup ITU Zone number first';
-  TMainForm_Setup_SentNR_age= 'Setup operator''s age first';
+  TMainForm_Setup_SentNR_first = 'Setup Prov/State code and City code first.';
+  TMainForm_Setup_SentNR_cqzone = 'Setup CQ Zone number first.';
+  TMainForm_Setup_SentNR_ituzone = 'Setup ITU Zone number first.';
+  TMainForm_Setup_SentNR_age= 'Setup operator''s age first.';
+  TMainForm_Setup_SentNR_iota = 'Setup IOTA number first.';
   TMainForm_New_QSO_Arrived = 'New QSO data has arrived. click here to view.';
-  TMainForm_Select_Operator = 'Please select an operator';
+  TMainForm_Select_Operator = 'Please select an operator.';
   TMainForm_JARL_Member_Info = 'JARL Member information.';
   TMainForm_Inquire_JARL_Member_Info = 'Querying QSL transfer status.';
   TMainForm_UserDat_not_loaded = ' not loaded';
@@ -8839,6 +8840,10 @@ begin
       else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iaruzone = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
+      end
+      else if ((Pos('$T', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iota = '')) then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         fShowOptionsDialog := True;
       end;
 
       if fShowOptionsDialog = True then begin
@@ -14066,11 +14071,11 @@ begin
    end;
 
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-      SentNumberEdit.Text := aQSO.SerialStr;
+      SentNumberEdit.Text := GetInitNrSent(aQSO);
       SerialEdit.Text := aQSO.SerialStr;
    end
    else begin
-      FEditPanel[0].SentNumberEdit.Text := aQSO.SerialStr;
+      FEditPanel[0].SentNumberEdit.Text := GetInitNrSent(aQSO);
       FEditPanel[0].SerialEdit.Text := aQSO.SerialStr;
    end;
 
@@ -15139,6 +15144,7 @@ begin
    S := StringReplace(S, '$P', '', [rfReplaceAll]);
    S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
    S := StringReplace(S, '$A', dmZLogGlobal.Settings._age, [rfReplaceAll]);
+   S := StringReplace(S, '$T', dmZLogGlobal.Settings._iota, [rfReplaceAll]);
    Result := S;
 end;
 

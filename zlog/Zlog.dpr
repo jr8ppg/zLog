@@ -58,7 +58,6 @@ uses
   UAgeDialog in 'UAgeDialog.pas' {AgeDialog},
   UIOTAMulti in 'UIOTAMulti.pas' {IOTAMulti},
   UNewIOTARef in 'UNewIOTARef.pas' {NewIOTARef},
-  UIOTACategory in 'UIOTACategory.pas' {IOTACategory},
   UUTCDialog in 'UUTCDialog.pas' {UTCDialog},
   UARRL10Multi in 'UARRL10Multi.pas' {ARRL10Multi},
   UARRL10Score in 'UARRL10Score.pas' {ARRL10Score},

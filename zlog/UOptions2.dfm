@@ -647,7 +647,7 @@ object formOptions2: TformOptions2
         Left = 3
         Top = 146
         Width = 185
-        Height = 158
+        Height = 191
         Caption = 'Parameters'
         TabOrder = 4
         object Label14: TLabel
@@ -684,6 +684,13 @@ object formOptions2: TformOptions2
           Width = 38
           Height = 13
           Caption = 'Age($A)'
+        end
+        object Label50: TLabel
+          Left = 10
+          Top = 153
+          Width = 44
+          Height = 13
+          Caption = 'IOTA($T)'
         end
         object ProvEdit: TEdit
           Left = 112
@@ -735,6 +742,16 @@ object formOptions2: TformOptions2
           MaxLength = 3
           NumbersOnly = True
           TabOrder = 4
+        end
+        object IotaEdit: TEdit
+          Left = 112
+          Top = 150
+          Width = 49
+          Height = 20
+          AutoSize = False
+          CharCase = ecUpperCase
+          MaxLength = 5
+          TabOrder = 5
         end
       end
     end

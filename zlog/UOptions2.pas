@@ -463,6 +463,8 @@ type
     ScoreCoeffEdit: TEdit;
     panelContestName: TPanel;
     checkDisableShortCutsQSOEdit: TCheckBox;
+    IotaEdit: TEdit;
+    Label50: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1039,6 +1041,7 @@ begin
       Settings._cqzone := CQZoneEdit.Text;
       Settings._iaruzone := IARUZoneEdit.Text;
       Settings._age := AgeEdit.Text;
+      Settings._iota := IotaEdit.Text;
 
       // Active bands
       for b := b19 to HiBand do begin
@@ -1453,6 +1456,7 @@ begin
       CQZoneEdit.Text := Settings._cqzone;
       IARUZoneEdit.Text := Settings._iaruzone;
       AgeEdit.Text := Settings._age;
+      IotaEdit.Text := Settings._iota;
 
       // Active bands
       for b := b19 to HiBand do begin

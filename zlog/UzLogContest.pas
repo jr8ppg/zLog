@@ -491,6 +491,12 @@ begin
    if (Pos('$P', dmZlogGlobal.Settings._sentstr) > 0) and (aQSO.NewPowerStr = '') then begin
       Exit;
    end;
+   if (Pos('$A', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._age = '') then begin
+      Exit;
+   end;
+   if (Pos('$T', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iota = '') then begin
+      Exit;
+   end;
 
    S := SetStrNoAbbrev(dmZlogGlobal.Settings._sentstr, aQSO);
 
@@ -1313,15 +1319,15 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 6;      // Sent Number
+   FColWidths[5] := 5;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 6;      // Rcvd Number
+   FColWidths[7] := 5;      // Rcvd Number
    FColWidths[8] := 4;      // band
    FColWidths[9] := 4;      // mode
    FColWidths[10] := 6;     // op
    FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
+   FColWidths[12] := 3;     // point
+   FColWidths[13] := 6;     // multi1
    FColWidths[14] := 3;     // multi2
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
@@ -1434,7 +1440,7 @@ begin
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    Log.QsoList[0].Serial := $01; // uses serial number
    FSerialType := stAll;
-   FSentStr := '$S$Q';
+   FSentStr := '$S$T';
    FNeedCtyDat := True;
 
    FBandLow := b35;
@@ -1467,7 +1473,7 @@ end;
 
 function TIOTAContest.QTHString(aQSO: TQSO): string;
 begin
-   Result := TIOTAMulti(FMultiForm).MyIOTA;
+   Result := dmZLogGlobal.Settings._iota;
 end;
 
 function TIOTAContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
@@ -2168,9 +2174,9 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 5;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
+   FColWidths[7] := 5;      // Rcvd Number
    FColWidths[8] := 4;      // band
    FColWidths[9] := 4;      // mode
    FColWidths[10] := 6;     // op

@@ -84,6 +84,10 @@ begin
    temp := StringReplace(temp, '$O', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$o', S, [rfReplaceAll]);
 
+   S := dmZLogGlobal.Settings._iota;
+   temp := StringReplace(temp, '$T', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$t', S, [rfReplaceAll]);
+
    if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
       S := aQSO.SerialStr;
       temp := StringReplace(temp, '$S', Abbreviate(S), [rfReplaceAll]);
@@ -205,6 +209,7 @@ begin
    temp := StringReplace(temp, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
    temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
+   temp := StringReplace(temp, '$T', dmZLogGlobal.Settings._iota, [rfReplaceAll]);
 
    if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
       temp := StringReplace(temp, '$S', aQSO.SerialStr, [rfReplaceAll]);

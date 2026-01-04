@@ -126,11 +126,12 @@ type
 
     _selectlastoperator: Boolean;
     _applypoweronbandchg: Boolean;
-    _prov : string;
-    _city : string;
-    _cqzone : string;
-    _iaruzone : string;
-    _age : string; // all asian
+    _prov: string;
+    _city: string;
+    _cqzone: string;
+    _iaruzone: string;
+    _age: string; // all asian
+    _iota: string;
     _powerH: string;
     _powerM: string;
     _powerL: string;
@@ -994,6 +995,9 @@ begin
 
       // Age
       Settings._age := ini.ReadString('Profiles', 'Age', '');
+
+      // Iota
+      Settings._iota := ini.ReadString('Profiles', 'Iota', '');
 
       // Power(HMLP)
       Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
@@ -1861,6 +1865,9 @@ begin
 
       // Age
       ini.WriteString('Profiles', 'Age', Settings._age);
+
+      // Iota
+      ini.WriteString('Profiles', 'Iota', Settings._iota);
 
       // Power(HMLP)
       ini.WriteString('Profiles', 'PowerH', Settings._powerH);
@@ -5176,3 +5183,4 @@ begin
 end;
 
 end.
+
