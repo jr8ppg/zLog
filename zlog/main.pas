@@ -277,7 +277,6 @@ type
     VoiceCQ3: THemisphereButton;
     menuBandscope: TMenuItem;
     menuChangeTXNr: TMenuItem;
-    mnGridAddNewPX: TMenuItem;
     mnHideCWPhToolBar: TMenuItem;
     mnHideMenuToolbar: TMenuItem;
     menuShowScratchSheet: TMenuItem;
@@ -789,7 +788,6 @@ type
       Panel: TStatusPanel; const Rect: TRect);
     procedure mnChangeTXNrClick(Sender: TObject);
     procedure GridKeyPress(Sender: TObject; var Key: Char);
-    procedure mnGridAddNewPXClick(Sender: TObject);
     procedure GridSelectCell(Sender: TObject; Col, Row: Integer;
       var CanSelect: Boolean);
     procedure GridSetEditText(Sender: TObject; ACol, ARow: Integer;
@@ -1535,7 +1533,7 @@ uses
   USixDownMulti, UIARUMulti,
   UIARUScore, UAllAsianScore, UIOTAMulti, {UIOTACategory,} UARRL10Multi,
   UARRL10Score,
-  UIntegerDialog, UNewPrefix, UJarlMemberInfo,
+  UIntegerDialog, UJarlMemberInfo,
   UWAEScore, UWAEMulti, UBandPlanEditDialog, UGraphColorDialog,
   UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
@@ -7840,16 +7838,6 @@ begin
    end;
 end;
 
-procedure TMainForm.mnGridAddNewPXClick(Sender: TObject);
-var
-   aQSO: TQSO;
-begin
-   if Grid.Row > 0 then begin
-      aQSO := TQSO(Grid.Objects[0, Grid.Row]);
-      MyContest.MultiForm.SelectAndAddNewPrefix(aQSO.Callsign);
-   end;
-end;
-
 procedure TMainForm.menuResetColumnWidthsClick(Sender: TObject);
 begin
    InitGridColumnWidth();
@@ -10923,7 +10911,7 @@ end;
 // #85 新しいプリフィックスの登録
 procedure TMainForm.actionRegNewPrefixExecute(Sender: TObject);
 begin
-   MyContest.MultiForm.SelectAndAddNewPrefix(CurrentQSO.Callsign);
+   // 廃止
 end;
 
 // #86 PTT制御出力の手動トグル

@@ -616,17 +616,6 @@ begin
            LoadLogFromZServer; }
       end;
 
-      if pos('NEWPX', temp) = 1 then begin
-         Delete(temp, 1, 6);
-
-         i := StrToIntDef(TrimRight(copy(temp, 1, 6)), -1);
-         if i >= 0 then begin
-            Delete(temp, 1, 6);
-            if temp <> '' then
-               MyContest.MultiForm.AddNewPrefix(temp, i);
-         end;
-      end;
-
       if pos('PUTMESSAGE', temp) = 1 then begin
          Delete(temp, 1, 11);
          if pos('!', temp) = 1 then begin

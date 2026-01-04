@@ -72,7 +72,6 @@ uses
   USpotClass in 'USpotClass.pas',
   UIntegerDialog in 'UIntegerDialog.pas' {IntegerDialog},
   URenewThread in 'URenewThread.pas',
-  UNewPrefix in 'UNewPrefix.pas' {NewPrefix},
   UMultipliers in 'UMultipliers.pas',
   UScratchSheet in 'UScratchSheet.pas' {ScratchSheet},
   UMMTTY in 'UMMTTY.pas',

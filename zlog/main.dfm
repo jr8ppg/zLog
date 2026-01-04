@@ -7703,10 +7703,6 @@ object MainForm: TMainForm
       Caption = 'Send &Spot'
       OnClick = SendSpot1Click
     end
-    object mnGridAddNewPX: TMenuItem
-      Caption = '&Add new prefix'
-      OnClick = mnGridAddNewPXClick
-    end
     object N20: TMenuItem
       Caption = '-'
     end

@@ -9,8 +9,6 @@ uses
 
 type
   TARRLWMulti = class(TWWMulti)
-    procedure FormCreate(Sender: TObject);
-  protected
   private
     { Private declarations }
   public
@@ -19,7 +17,6 @@ type
     function ValidMulti(aQSO: TQSO): boolean; override;
     procedure CheckMulti(aQSO: TQSO); override;
     function GetInfo(aQSO: TQSO): string; override;
-    procedure ProcessCluster(Sp: TBaseSpot); override;
   end;
 
 implementation
@@ -123,17 +120,6 @@ begin
       aQSO.NewMulti1 := True;
       // Grid.Cells[0,C.GridIndex] := C.Summary;
    end;
-end;
-
-procedure TARRLWMulti.FormCreate(Sender: TObject);
-begin
-   Inherited;
-   Reset;
-end;
-
-procedure TARRLWMulti.ProcessCluster(Sp: TBaseSpot);
-begin
-   Inherited;
 end;
 
 end.

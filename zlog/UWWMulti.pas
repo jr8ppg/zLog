@@ -28,12 +28,12 @@ type
     Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure GridTopLeftChanged(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure GoButtonClick(Sender: TObject);
     procedure SortByClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
-    procedure GridTopLeftChanged(Sender: TObject);
-    procedure FormResize(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure Edit1Change(Sender: TObject);
     procedure Edit1Enter(Sender: TObject);
     procedure Edit1Exit(Sender: TObject);
@@ -52,9 +52,6 @@ type
     procedure UpdateLabelPos(); virtual;
   public
     { Public declarations }
-
-    procedure AddNewPrefix(PX: string; CtyIndex: integer); override;
-    procedure SelectAndAddNewPrefix(Call: string); override;
     procedure Reset; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure Add(aQSO: TQSO); override; // only calls addnoupdate but no update
@@ -83,107 +80,49 @@ type
 implementation
 
 uses
-  UOptions, Main, UNewPrefix;
+  Main;
 
 {$R *.DFM}
 
-{
-procedure TWWMulti.AddNewPrefixToFile(NewPX: string; CtyIndex: integer);
-var
-   L: TStringList;
-   C: TCountry;
-   cname, s: string;
-   i, j, p: integer;
-label xxx;
+procedure TWWMulti.FormCreate(Sender: TObject);
 begin
-   L := TStringList.Create;
-   try
-      L.LoadFromFile(_DATFileName);
-
-      C := TCountry(CountryList.List[CtyIndex]);
-      cname := TrimRight(C.CountryName);
-      if _DATFileName = 'CTY.DAT' then begin
-         for i := 0 to L.Count - 1 do begin
-            s := L[i];
-            if s[1] <> ' ' then begin
-               p := pos(':', s);
-               if p > 0 then
-                  s := TrimRight(copy(s, 1, p - 1))
-               else
-                  s := '';
-
-               if cname = s then begin
-                  for j := i + 1 to L.Count - 1 do begin
-                     s := TrimRight(L[j]);
-                     if pos(';', s) = length(s) then begin
-                        s := copy(s, 1, length(s) - 1);
-                        s := s + ',' + NewPX + ';';
-                        L[j] := s;
-                        goto xxx;
-                     end;
-                  end;
-               end;
-            end;
-         end;
-      end
-      else begin
-         for i := 0 to L.Count - 1 do begin
-            s := L[i];
-            if s[1] <> ' ' then begin
-               s := copy(s, 1, 26);
-               s := TrimRight(s);
-               if cname = s then begin
-                  for j := i + 1 to L.Count - 1 do begin
-                     s := TrimRight(L[j]);
-                     if pos(';', s) = length(s) then begin
-                        s := copy(s, 1, length(s) - 1);
-                        s := s + ',' + NewPX + ';';
-                        L[j] := s;
-                        goto xxx;
-                     end;
-                  end;
-               end;
-            end;
-         end;
-      end;
-   xxx:
-      L.SaveToFile(_DATFileName);
-   finally
-      L.Free;
-   end;
-end;
-}
-
-procedure TWWMulti.AddNewPrefix(PX: string; CtyIndex: integer);
-var
-   P: TPrefix;
-begin
-   P := TPrefix.Create;
-   P.Prefix := PX;
-   P.Country := dmZLogGlobal.CountryList[CtyIndex];
-   dmZLogGlobal.PrefixList.Add(P);
-
-//   AddNewPrefixToFile(P.Prefix, P.Index);
-   Main.MyContest.Renew;
+   Inherited;
+   FZoneForm := nil;
+   FMostRecentCty := nil;
+   FLastCountry := nil;
+   FAllAsia := False;
+   Reset();
 end;
 
-procedure TWWMulti.SelectAndAddNewPrefix(Call: string);
-var
-   F: TNewPrefix;
+procedure TWWMulti.FormShow(Sender: TObject);
 begin
-   F := TNewPrefix.Create(Self);
-   try
-      F.Init(dmZLogGlobal.CountryList, Call);
-      if F.ShowModal() <> mrOK then begin
-         Exit;
-      end;
+   Inherited;
+   AdjustGridSize(Grid);
+   UpdateData();
+   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
 
-      if (F.Prefix <> '') and (F.CtyIndex >= 0) then begin
-         AddNewPrefix(F.Prefix, F.CtyIndex);
-      end;
-   finally
-      F.Release();
+   if Assigned(FZoneForm) then begin
+      FZoneForm.Show;
    end;
+end;
+
+procedure TWWMulti.FormResize(Sender: TObject);
+begin
+   Inherited;
+   AdjustGridSize(Grid);
+   RefreshGrid;
+end;
+
+procedure TWWMulti.GridTopLeftChanged(Sender: TObject);
+begin
+   //inherited;
+   RefreshGrid;
+end;
+
+procedure TWWMulti.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(Grid, ACol, ARow, Rect);
 end;
 
 procedure TWWMulti.Add(aQSO: TQSO);
@@ -407,23 +346,6 @@ begin
    end;
 end;
 
-procedure TWWMulti.FormCreate(Sender: TObject);
-begin
-   Inherited;
-   FZoneForm := nil;
-   FMostRecentCty := nil;
-   FLastCountry := nil;
-   FAllAsia := False;
-   MainForm.mnGridAddNewPX.Visible := True;
-end;
-
-procedure TWWMulti.FormResize(Sender: TObject);
-begin
-   Inherited;
-   AdjustGridSize(Grid);
-   RefreshGrid;
-end;
-
 procedure TWWMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
@@ -519,18 +441,6 @@ begin
    end
    else begin
       Result := False;
-   end;
-end;
-
-procedure TWWMulti.FormShow(Sender: TObject);
-begin
-   Inherited;
-   AdjustGridSize(Grid);
-   UpdateData();
-   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
-
-   if Assigned(FZoneForm) then begin
-      FZoneForm.Show;
    end;
 end;
 
@@ -750,18 +660,6 @@ begin
    SetGridFontSize(Grid, v);
    UpdateLabelPos();
    UpdateData();
-end;
-
-procedure TWWMulti.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(Grid, ACol, ARow, Rect);
-end;
-
-procedure TWWMulti.GridTopLeftChanged(Sender: TObject);
-begin
-   //inherited;
-   RefreshGrid;
 end;
 
 procedure TWWMulti.UpdateLabelPos();

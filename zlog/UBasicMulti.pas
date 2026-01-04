@@ -35,8 +35,6 @@ type
     procedure RenewBandScope; virtual;
     procedure ProcessSpotData(S: TBaseSpot); virtual;
     procedure AddSpot(aQSO : TQSO); virtual;
-    procedure AddNewPrefix(PX : string; CtyIndex : integer); virtual;
-    procedure SelectAndAddNewPrefix(Call : string); virtual; // for WWMulti and descendants
     function  IsNewMulti(aQSO : TQSO) : boolean; virtual;
     procedure SetNumberEditFocusJARL;
     procedure SetNumberEditFocus; virtual;
@@ -59,12 +57,10 @@ uses
 
 {$R *.DFM}
 
-procedure TBasicMulti.SelectAndAddNewPrefix(Call: string);
+procedure TBasicMulti.FormCreate(Sender: TObject);
 begin
-end;
-
-procedure TBasicMulti.AddNewPrefix(PX: string; CtyIndex: integer);
-begin
+   FFontSize := 9;
+   FContestMode := cmMix;
 end;
 
 procedure TBasicMulti.Renew;
@@ -169,13 +165,6 @@ begin
    // BandScopeデータを交信済みに変更する
    MainForm.BandScopeUpdateSpot(aQSO);
    RenewBandScope;
-end;
-
-procedure TBasicMulti.FormCreate(Sender: TObject);
-begin
-   MainForm.mnGridAddNewPX.Visible := False;
-   FFontSize := 9;
-   FContestMode := cmMix;
 end;
 
 procedure TBasicMulti.SetNumberEditFocusJARL;
