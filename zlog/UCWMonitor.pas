@@ -68,7 +68,7 @@ begin
       Rect.Left := 0;
       Rect.Right := TPaintBox(Sender).Width - 1;
 
-      Brush.Color := dmZLogGlobal.ZBackColor;
+      Brush.Color := dmZLogGlobal.ZBackColor2;
       Brush.Style := bsSolid;
       Pen.Color := dmZLogGlobal.ZGrayedTextColor;
       Pen.Style := psSolid;
