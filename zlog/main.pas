@@ -1294,7 +1294,7 @@ type
     procedure StopCqRepeatTimer();
     function Is2bsiq(): Boolean;
     procedure LogButtonProc(nID: Integer; Q: TQSO);
-    function InputStartTime(fNeedSave: Boolean): Boolean;
+    function InputStartTime(fNeedSave: Boolean; fSetDefault: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
     procedure ShowOutOfContestPeriod(fShow: Boolean);
     procedure ShowOptionsDialog(nEditMode: Integer; nEditNumer: Integer; nEditBank: Integer; nActiveTab: Integer);
@@ -6630,10 +6630,12 @@ var
    f: TformOptions2;
    b: TBand;
    fPrevDarkMode: Boolean;
+   fPrevUseContestPeriod: Boolean;
 begin
    f := TformOptions2.Create(Self);
    try
       fPrevDarkMode := dmZLogGlobal.Settings.FUseDarkMode;
+      fPrevUseContestPeriod := dmZLogGlobal.Settings._use_contest_period;
 
       f.EditMode := nEditMode;
       f.EditNumber := nEditNumer;
@@ -6668,6 +6670,20 @@ begin
       InitSerialPanel();
       LastFocus := CallsignEdit;
       ShowCurrentQSO();
+
+      // モードが変わっていたら再計算
+      if dmZLogGlobal.ContestMode <> MyContest.Mode then begin
+         MyContest.Mode := dmZLogGlobal.ContestMode;
+         dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
+         SetWindowCaption();
+      end;
+
+      // ContestPeriodがfalseからtrue変わっていた場合
+      if dmZLogGlobal.Settings._use_contest_period <> fPrevUseContestPeriod then begin
+         if dmZLogGlobal.Settings._use_contest_period = True then begin
+            InputStartTime(False, True);
+         end;
+      end;
 
       FCheckCall2.ResetListBox();
       FCheckMulti.ResetListBox();
@@ -6715,13 +6731,6 @@ begin
 
       // QSL交換初期値
       CurrentQSO.QslState := dmZLogGlobal.Settings._qsl_default;
-
-      // モードが変わっていたら再計算
-      if dmZLogGlobal.ContestMode <> MyContest.Mode then begin
-         MyContest.Mode := dmZLogGlobal.ContestMode;
-         dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
-         SetWindowCaption();
-      end;
 
       // QSY Violation
       RenewScore();
@@ -7432,7 +7441,7 @@ end;
 // Correct start time
 procedure TMainForm.menuCorrectStartTimeClick(Sender: TObject);
 begin
-   if InputStartTime(False) = False then begin
+   if InputStartTime(False, False) = False then begin
       Exit;
    end;
    Log.Period := MyContest.Period;
@@ -7712,6 +7721,10 @@ begin
 
    if ext = '.CSV' then begin
       i := Log.LoadFromFileAszLogCsv(ff);
+   end;
+
+   if ext = '.ALL' then begin
+      i := Log.LoadFromFileAszLogALL(ff);
    end;
 
    if ext = '.ADI' then begin
@@ -8646,7 +8659,7 @@ begin
 
       // 開始時刻
       if (MyContest.UseContestPeriod = True) and (Log.StartTime = 0) then begin
-         InputStartTime(True);
+         InputStartTime(True, True);
       end;
 
       // コンテスト期間
@@ -14326,7 +14339,7 @@ begin
    StatusLine.Panels[2].Text := strText;
 end;
 
-function TMainForm.InputStartTime(fNeedSave: Boolean): Boolean;
+function TMainForm.InputStartTime(fNeedSave: Boolean; fSetDefault: Boolean): Boolean;
 var
    dlg: TStartTimeDialog;
    dt: TDateTime;
@@ -14355,6 +14368,10 @@ begin
          end
          else begin
             dlg.BaseTime := EncodeDateTime(yy, mm, dd, MyContest.StartTime, 0, 0, 0);
+         end;
+
+         if fSetDefault = True then begin
+            Log.StartTime := dlg.BaseTime;
          end;
       end
       else begin  // 設定済みはファイルより

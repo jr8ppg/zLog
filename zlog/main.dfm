@@ -8649,9 +8649,9 @@ object MainForm: TMainForm
   end
   object FileImportDialog: TOpenDialog
     Filter = 
-      'zLog binary File|*.ZLO|zLog Extended binary File|*.ZLOX|zLog CSV' +
-      '|*.csv|ADIF|*.adi|Cabrillo|*.CBR|CTESTWIN|*.LG8|JARL publiclog|*' +
-      '.txt'
+      'zLog binary File|*.ZLO|zLog Extended binary File|*.ZLOX|zLog ALL' +
+      '|*.ALL|zLog CSV|*.csv|ADIF|*.adi|Cabrillo|*.CBR|CTESTWIN|*.LG8|J' +
+      'ARL publiclog|*.txt'
     Title = 'Import'
     Left = 472
     Top = 144

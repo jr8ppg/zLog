@@ -499,6 +499,7 @@ type
     function LoadFromFileEx(filename: string): Integer;
     {$IFNDEF ZSERVER}
     function LoadFromFileAszLogCsv(Filename: string): Integer;
+    function LoadFromFileAszLogALL(Filename: string): Integer;
     function LoadFromFileAsAdif(Filename: string): Integer;
     function LoadFromFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer): Integer;
     function LoadFromFileAsCtestwin(Filename: string): Integer;
@@ -4286,6 +4287,189 @@ begin
       slFile.Free();
       slLine.Free();
       slText.Free();
+   end;
+end;
+
+{
+1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+zLog for Windows
+2025/10/11 21:01 JK1FCX       59  010103H 59  1207M   1207  -     7    SSB  1  (7122.2)
+2025/10/11 21:01 JA3QBY       59  010103H 59  2509M   2509  -     7    SSB  1  (7122.2)
+0000000001111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990
+1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+}
+function TLog.LoadFromFileAszLogALL(Filename: string): Integer;
+var
+   i: Integer;
+   Q: TQSO;
+   slFile: TStringList;
+   strMsg: string;
+   S: string;
+   S2: string;
+   strLine: string;
+   defrst: Integer;
+   Index: Integer;
+   Index2: Integer;
+begin
+   slFile := TStringList.Create();
+   slFile.StrictDelimiter := True;
+   try
+      if FileExists(Filename) = False then begin
+         Result := 0;
+         Exit;
+      end;
+
+      slFile.LoadFromFile(Filename);
+
+      if slFile.Count = 1 then begin
+         Result := 0;
+         Exit;
+      end;
+
+      // TimeZoneはJSTのみ
+      FQsoList[0].RSTsent := 0;
+
+      i := 0;
+      try
+         for i := 1 to slFile.Count - 1 do begin
+            strLine := slFile[i];
+
+            Q := TQSO.Create();
+
+            // 1項目目　交信年月日（YYYY/MM/DD）
+            // 2項目目　交信時分（HH:MM）
+            S := Copy(strLine, 1, 16) + ':00';
+            Q.Time := StrToDateTime(S);
+
+            // モードによりRST初期値を求める
+            S := Copy(strLine, 72, 4);
+            Q.Mode := StrToModeDef(S, mCW);
+            if (Q.Mode = mCW) or (Q.Mode = mRTTY) then begin
+               defrst := 599;
+            end
+            else begin
+               defrst := 59;
+            end;
+
+            // ３項目目 コールサイン
+            S := Trim(Copy(strline, 18, 12));
+            Q.Callsign := S;
+
+            // ４項目目 相手局へ送ったRST
+            S := Trim(Copy(strline, 31, 3));
+            Q.RSTSent := StrToIntDef(S, defrst);
+
+            // ５項目目 相手局へ送ったNumber
+            S := Trim(Copy(strline, 35, 8));
+            Q.NrSent := S;
+
+            // ６項目目 相手局からもらったレポート
+            S := Trim(Copy(strline, 43, 3));
+            Q.RSTRcvd := StrToIntDef(S, defrst);
+
+            // ７項目目 相手局からもらったNumber
+            S := Trim(Copy(strline, 47, 8));
+            Q.NrRcvd := S;
+
+            // ８項目目 マルチ１
+            S := Trim(Copy(strline, 55, 6));
+            if S = '-' then begin
+               Q.Multi1 := '';
+               Q.NewMulti1 := False;
+            end
+            else begin
+               Q.Multi1 := S;
+               Q.NewMulti1 := True;
+            end;
+
+            // ９項目目 マルチ２
+            S := Trim(Copy(strline, 61, 6));
+            if S = '-' then begin
+               Q.Multi2 := '';
+               Q.NewMulti2 := False;
+            end
+            else begin
+               Q.Multi2 := S;
+               Q.NewMulti2 := True;
+            end;
+
+            // １０項目目 モードは前段で設定済み
+
+            // １１項目目 バンド
+            S := Trim(Copy(strline, 67, 5));
+            Q.Band := StrToBandDef(S, b7);
+
+            // 電力符号 0:P 1:L 2:M 3:H
+            S := RightStr(Q.NrSent, 1);
+            if S = 'P' then Q.Power := TPower(0)
+            else if S = 'L' then Q.Power := TPower(1)
+            else if S = 'M' then Q.Power := TPower(2)
+            else if S = 'H' then Q.Power := TPower(3)
+            else Q.Power := dmZLogGlobal.PowerOfBand[Q.Band];
+
+            // １２項目目 Points
+            S := Trim(Copy(strline, 77, 2));
+            Q.Points := StrToIntDef(S, 0);
+
+            // １３項目目 memo
+            S := Trim(Copy(strline, 80));
+
+            //  MEMO_DUPE = '-DUPE-';
+            //  MEMO_PSE_QSL = 'PSE QSL';
+            //  MEMO_NO_QSL = 'NO QSL';
+            //  MEMO_QSY_VIOLATION = '*QSY Violation*';
+            if Pos(MEMO_DUPE, S) > 0 then begin
+               S := StringReplace(S, MEMO_DUPE + ' ', '', [rfReplaceAll]);
+            end;
+            if Pos(MEMO_QSY_VIOLATION, S) > 0 then begin
+               S := StringReplace(S, MEMO_QSY_VIOLATION + ' ', '', [rfReplaceAll]);
+            end;
+            if Pos(MEMO_PSE_QSL, S) > 0 then begin
+               S := StringReplace(S, MEMO_PSE_QSL + ' ', '', [rfReplaceAll]);
+               Q.QslState := qsPseQsl;
+            end;
+            if Pos(MEMO_NO_QSL, S) > 0 then begin
+               S := StringReplace(S, MEMO_NO_QSL + ' ', '', [rfReplaceAll]);
+               Q.QslState := qsNoQsl;
+            end;
+
+            Index := Pos('(', S);
+            Index2 := Pos(')', S);
+            if (Index > 0) and (Index2 > 0) then begin
+               S2 := Copy(S, Index + 1, Index2 - Index - 1);
+               Q.Freq := S2;
+               Q.Memo := Copy(S, Index2 + 1);
+            end
+            else begin
+               Q.Freq := '';
+               Q.Memo := S;
+            end;
+
+            ImportSetQsoId(Q);
+
+            // 同一QSOが２重に入ってしまった場合の暫定対策
+            if IsContainsSameQSO(Q) = True then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('**** Duplicate QSO detected! [' + Q.Callsign + '] ****'));
+               {$ENDIF}
+               FreeAndNil(Q);
+            end
+            else begin
+               Add(Q, True);
+            end;
+         end;
+
+         ImportFinish(Q);
+      except
+         on E: Exception do begin
+            strMsg := IntToStr(i) + '行目でデータ取り込みエラーが発生しました' + #13#10 + E.Message;
+            MessageBox(0, PChar(strMsg), PChar(Application.Title), MB_OK + MB_ICONEXCLAMATION);
+         end;
+      end;
+
+      Result := TotalQSO;
+   finally
+      slFile.Free();
    end;
 end;
 
