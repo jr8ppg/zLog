@@ -1028,6 +1028,7 @@ type
     procedure menuSelectContestClick(Sender: TObject);
     procedure menuPostContestClick(Sender: TObject);
   private
+    FClosing: Boolean;
     FRigControl: TRigControl;
     FPartialCheck: TPartialCheck;
     FRateDialog: TRateDialog;
@@ -1549,6 +1550,7 @@ var
    b: TBand;
 begin
    FInitialized   := False;
+   FClosing := False;
    InitAtomTable(509);
 
    // ダークモード
@@ -1876,6 +1878,10 @@ end;
 
 procedure TMainForm.FormResize(Sender: TObject);
 begin
+   if FClosing = True then begin
+      Exit;
+   end;
+
    SetListWidth();
    buttonCancelOutOfPeriod.Left := panelOutOfPeriod.Width - 26;
 end;
@@ -1964,6 +1970,7 @@ end;
 
 procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+   FClosing := True;
    FChatForm.RenewOptions();
    FCommForm.RenewOptions();
    FCommForm.Disconnect();
