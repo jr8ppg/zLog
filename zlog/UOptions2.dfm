@@ -1,7 +1,6 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = act19
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 571
@@ -785,6 +784,7 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Show startup window'
           TabOrder = 0
+          Visible = False
         end
         object checkSelectContestOnStartup: TCheckBox
           Left = 10

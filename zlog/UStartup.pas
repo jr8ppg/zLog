@@ -13,7 +13,6 @@ type
     panelLastContestName: TPanel;
     panelLastFileName: TPanel;
     GroupBox1: TGroupBox;
-    checkDontShowThisWindow: TCheckBox;
     buttonLoggingNow: TButton;
     procedure buttonNewContestClick(Sender: TObject);
     procedure buttonLastContestClick(Sender: TObject);
@@ -25,12 +24,10 @@ type
     procedure SetLastContestName(v: string);
     function GetLastFileName(): string;
     procedure SetLastFileName(v: string);
-    function GetDontShowThisWindow(): Boolean;
   public
     { Public êÈåæ }
     property LastContestName: string read GetLastContestName write SetLastContestName;
     property LastFileName: string read GetLastFileName write SetLastFileName;
-    property DontShowThisWindow: Boolean read GetDontShowThisWindow;
   end;
 
 implementation
@@ -82,11 +79,6 @@ end;
 procedure TformStartup.SetLastFileName(v: string);
 begin
    panelLastFileName.Caption := v;
-end;
-
-function TformStartup.GetDontShowThisWindow(): Boolean;
-begin
-   Result := checkDontShowThisWindow.Checked;
 end;
 
 end.

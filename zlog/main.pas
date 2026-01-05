@@ -8474,7 +8474,7 @@ begin
       fSelectContestOnStartup := True;
 
       // 開始画面
-      if (dmZLogGlobal.Settings.FShowStartupWindow = True) and (Message.WParam = 0) then begin
+      if (Message.WParam = 0) then begin
          if (dmZLogGlobal.LastContest.FFileName = '') or
             (dmZLogGlobal.LastContest.FMyCall = '') or
             ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) or
@@ -8490,7 +8490,6 @@ begin
             startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
             mr := startup.ShowModal();
             if mr = mrNo then begin // Last contest
-               dmZLogGlobal.Settings.FShowStartupWindow := Not startup.DontShowThisWindow;
                RestoreLastContestInfo(strCfgFileName, fScoreCoeff, strContestName);
             end
             else if mr = mrAll then begin // Logging now!
