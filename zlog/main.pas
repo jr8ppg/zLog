@@ -8457,6 +8457,7 @@ var
    strCfgFileName: string;
    fScoreCoeff: Extended;
    fNewContest: Boolean;
+   fSelectContestOnStartup: Boolean;
    S: string;
    fShowOptionsDialog: Boolean;
 begin
@@ -8470,6 +8471,7 @@ begin
    try
       fScoreCoeff := 1;
       fNewContest := True;
+      fSelectContestOnStartup := True;
 
       // 開始画面
       if (dmZLogGlobal.Settings.FShowStartupWindow = True) and (Message.WParam = 0) then begin
@@ -8491,7 +8493,11 @@ begin
                dmZLogGlobal.Settings.FShowStartupWindow := Not startup.DontShowThisWindow;
                RestoreLastContestInfo(strCfgFileName, fScoreCoeff, strContestName);
             end
-            else begin
+            else if mr = mrAll then begin // Logging now!
+               fSelectContestOnStartup := False;
+               fNewContest := True;
+            end
+            else begin  // New Contest
                fNewContest := True;
                dmZLogGlobal.FCurrentFileName := '';
             end;
@@ -8499,7 +8505,7 @@ begin
       end;
 
       // コンテスト選択を行う
-      if (dmZLogGlobal.Settings.FSelectContestOnStartup = True) or (Message.WParam = 1) then begin
+      if (fSelectContestOnStartup = True) or (Message.WParam = 1) then begin
          if fNewContest = True then begin // new contest
             if menu.ShowModal() = mrCancel then begin
                if Message.WParam = 0 then begin

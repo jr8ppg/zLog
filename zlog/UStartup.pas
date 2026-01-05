@@ -14,8 +14,11 @@ type
     panelLastFileName: TPanel;
     GroupBox1: TGroupBox;
     checkDontShowThisWindow: TCheckBox;
+    buttonLoggingNow: TButton;
     procedure buttonNewContestClick(Sender: TObject);
     procedure buttonLastContestClick(Sender: TObject);
+    procedure buttonLoggingNowClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
     function GetLastContestName(): string;
@@ -34,9 +37,26 @@ implementation
 
 {$R *.dfm}
 
+procedure TformStartup.FormShow(Sender: TObject);
+begin
+   if LastContestName = '' then begin
+      buttonLastContest.Enabled := False;
+      buttonNewContest.SetFocus;
+   end
+   else begin
+      buttonLastContest.Enabled := True;
+      buttonLastContest.SetFocus();
+   end;
+end;
+
 procedure TformStartup.buttonLastContestClick(Sender: TObject);
 begin
    ModalResult := mrNo;
+end;
+
+procedure TformStartup.buttonLoggingNowClick(Sender: TObject);
+begin
+   ModalResult := mrAll;
 end;
 
 procedure TformStartup.buttonNewContestClick(Sender: TObject);

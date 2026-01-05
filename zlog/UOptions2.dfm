@@ -793,6 +793,7 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Select the contest at startup'
           TabOrder = 1
+          Visible = False
         end
         object checkUseContestPeriod: TCheckBox
           Left = 10
@@ -1232,14 +1233,14 @@ object formOptions2: TformOptions2
           BevelOuter = bvNone
           TabOrder = 0
           object Label44: TLabel
-            Left = 9
+            Left = 3
             Top = 6
             Width = 58
             Height = 13
             Caption = 'On OK Click'
           end
           object radioOnOkFocusToQsoList: TRadioButton
-            Left = 107
+            Left = 117
             Top = 5
             Width = 73
             Height = 17
@@ -1247,7 +1248,7 @@ object formOptions2: TformOptions2
             TabOrder = 0
           end
           object radioOnOkFocusToNewQso: TRadioButton
-            Left = 195
+            Left = 205
             Top = 5
             Width = 73
             Height = 17
@@ -1263,14 +1264,14 @@ object formOptions2: TformOptions2
           BevelOuter = bvNone
           TabOrder = 1
           object Label45: TLabel
-            Left = 9
+            Left = 3
             Top = 6
             Width = 76
             Height = 13
             Caption = 'On Cancel Click'
           end
           object radioOnCancelFocusToQsoList: TRadioButton
-            Left = 107
+            Left = 117
             Top = 5
             Width = 73
             Height = 17
@@ -1278,7 +1279,7 @@ object formOptions2: TformOptions2
             TabOrder = 0
           end
           object radioOnCancelFocusToNewQso: TRadioButton
-            Left = 195
+            Left = 205
             Top = 5
             Width = 73
             Height = 17
