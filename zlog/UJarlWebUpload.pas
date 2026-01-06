@@ -5,10 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.OleCtrls, SHDocVw, MSHTML, Web.HTTPApp, System.Win.Registry;
-
-type
-  TWebUploadContest = ( wuAllja = 0, wu6d, wuFd, wuAcag, wuAacw, wuAaph );
+  Vcl.OleCtrls, SHDocVw, MSHTML, Web.HTTPApp, System.Win.Registry, UzLogConst;
 
 type
   TformJarlWebUpload = class(TForm)
@@ -85,6 +82,9 @@ var
    NameVariant, IndexVariant: OleVariant;
 begin
    doc := WebBrowser1.Document as IHTMLDocument2;
+   if doc = nil then begin
+      Exit;
+   end;
 
    // name ëÆê´Ç≈óvëfÇéÊìæ
    NameVariant := 'elogtext';  // nameëÆê´
@@ -126,6 +126,9 @@ var
    i: Integer;
 begin
    doc := WebBrowser1.Document as IHTMLDocument2;
+   if doc = nil then begin
+      Exit;
+   end;
 
    Inputs := Doc.all.tags('input') as IHTMLElementCollection;
 

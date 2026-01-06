@@ -164,7 +164,8 @@ uses
   UPrePostPlaybackDlg in 'UPrePostPlaybackDlg.pas' {formPrePostPlaybackDlg},
   UCwMessageEditor in 'UCwMessageEditor.pas' {CwMessageEditor},
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  UJarlWebUpload2 in 'UJarlWebUpload2.pas' {formJarlWebUpload2};
 
 {$R *.res}
 

@@ -7,7 +7,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math, DateUtils,
   Vcl.ComCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
-  UzLogContest, Vcl.Buttons;
+  UJarlWebUpload2, UzLogContest, Vcl.Buttons;
 
 type
   TformELogJarlEx = class(TForm)
@@ -220,6 +220,8 @@ type
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
     procedure SetBandUsed(b: TBand);
+    procedure ShowWebUploadDialogIE(logtext: string; contest: TWebUploadContest);
+    procedure ShowWebUploadDialogEdge(logtext: string; contest: TWebUploadContest);
   public
     { Public êÈåæ }
   end;
@@ -711,10 +713,9 @@ end;
 
 procedure TformELogJarlEx.buttonWebUploadClick(Sender: TObject);
 var
-   f: TformJarlWebUpload;
    SL: TStringList;
+   contest: TWebUploadContest;
 begin
-   f := TformJarlWebUpload.Create(Self);
    SL := TStringList.Create();
    try
       if TabControl1.TabIndex = 0 then begin
@@ -728,36 +729,39 @@ begin
          end;
       end;
 
-      f.LogText := SL.Text;
-
       if MyContest is TALLJAContest then begin
-         f.Contest := wuAllJa;
+         contest := wuAllJa;
       end;
 
       if MyContest is TSixDownContest then begin
-         f.Contest := wu6d;
+         contest := wu6d;
       end;
 
       if MyContest is TFDContest then begin
-         f.Contest := wuFd;
+         contest := wuFd;
       end;
 
       if MyContest is TACAGContest then begin
-         f.Contest := wuAcag;
+         contest := wuAcag;
       end;
 
       if MyContest is TAllAsianContest then begin
          if Log.QSOList[1].Mode = mCW then begin
-            f.Contest := wuAacw;
+            contest := wuAacw;
          end
          else begin
-            f.Contest := wuAaph;
+            contest := wuAaph;
          end;
       end;
 
-      f.ShowModal();
+      if dmZLogGlobal.Settings.FUseWebView2 = True then begin
+         ShowWebUploadDialogEdge(SL.Text, contest);
+      end
+      else begin
+         ShowWebUploadDialogIE(SL.Text, contest);
+      end;
+
    finally
-      f.Release();
       SL.Free();
    end;
 end;
@@ -1507,6 +1511,34 @@ begin
          checkFieldExtend.Visible := True;
          buttonWebUpload.Enabled := True;
       end;
+   end;
+end;
+
+procedure TformELogJarlEx.ShowWebUploadDialogIE(logtext: string; contest: TWebUploadContest);
+var
+   f: TformJarlWebUpload;
+begin
+   f := TformJarlWebUpload.Create(Self);
+   try
+      f.LogText := logtext;
+      f.Contest := contest;
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TformELogJarlEx.ShowWebUploadDialogEdge(logtext: string; contest: TWebUploadContest);
+var
+   f: TformJarlWebUpload2;
+begin
+   f := TformJarlWebUpload2.Create(Self);
+   try
+      f.LogText := logtext;
+      f.Contest := contest;
+      f.ShowModal();
+   finally
+      f.Release();
    end;
 end;
 

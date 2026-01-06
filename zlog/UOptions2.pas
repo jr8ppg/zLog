@@ -398,8 +398,6 @@ type
     IARUZoneEdit: TEdit;
     AgeEdit: TEdit;
     groupPreferences: TGroupBox;
-    checkShowStartupWindow: TCheckBox;
-    checkSelectContestOnStartup: TCheckBox;
     checkUseContestPeriod: TCheckBox;
     checkOutputOutofPeriod: TCheckBox;
     cbAutoEnterSuper: TCheckBox;
@@ -465,6 +463,7 @@ type
     checkDisableShortCutsQSOEdit: TCheckBox;
     IotaEdit: TEdit;
     Label50: TLabel;
+    checkUseWebView2: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1066,12 +1065,6 @@ begin
 
       // General group
 
-      // Show startup window
-      Settings.FShowStartupWindow := checkShowStartupWindow.Checked;
-
-      // Select contest on startup
-      Settings.FSelectContestOnStartup := checkSelectContestOnStartup.Checked;
-
       // Use contest period
       Settings._use_contest_period := checkUseContestPeriod.Checked;
 
@@ -1101,6 +1094,9 @@ begin
 
       // Disable shortcuts during QSO editing
       Settings.FDisableShortCutsQSOEdit := checkDisableShortCutsQSOEdit.Checked;
+
+      // Use WebView2(Edge) for WebUpload
+      Settings.FUseWebView2 := checkUseWebView2.Checked;
 
       // Focus Position After QSO Edit group
       if radioOnOkFocusToQsoList.Checked = True then begin
@@ -1481,12 +1477,6 @@ begin
 
       // General group
 
-      // Show startup window
-      checkShowStartupWindow.Checked := Settings.FShowStartupWindow;
-
-      // Select contest on startup
-      checkSelectContestOnStartup.Checked := Settings.FSelectContestOnStartup;
-
       // Use contest period
       checkUseContestPeriod.Checked := Settings._use_contest_period;
 
@@ -1516,6 +1506,9 @@ begin
 
       // Disable shortcuts during QSO editing
       checkDisableShortCutsQSOEdit.Checked := Settings.FDisableShortCutsQSOEdit;
+
+      // Use WebView2(Edge) for WebUpload
+      checkUseWebView2.Checked := Settings.FUseWebView2;
 
       // Focus Position After QSO Edit group
       if Settings.FAfterQsoEditOkFocusPos = 0 then begin

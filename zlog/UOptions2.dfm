@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -764,119 +764,109 @@ object formOptions2: TformOptions2
         Caption = 'General'
         TabOrder = 0
         object Label40: TLabel
-          Left = 268
-          Top = 42
+          Left = 11
+          Top = 157
           Width = 54
           Height = 13
           Caption = 'Save every'
         end
         object Label41: TLabel
-          Left = 377
-          Top = 42
+          Left = 120
+          Top = 157
           Width = 28
           Height = 13
           Caption = 'QSOs'
         end
-        object checkShowStartupWindow: TCheckBox
-          Left = 10
+        object checkUseContestPeriod: TCheckBox
+          Left = 11
           Top = 18
           Width = 160
           Height = 17
-          Caption = 'Show startup window'
+          Caption = 'Use contest period'
           TabOrder = 0
-          Visible = False
         end
-        object checkSelectContestOnStartup: TCheckBox
-          Left = 10
+        object checkOutputOutofPeriod: TCheckBox
+          Left = 11
           Top = 41
           Width = 160
           Height = 17
-          Caption = 'Select the contest at startup'
-          TabOrder = 1
-          Visible = False
-        end
-        object checkUseContestPeriod: TCheckBox
-          Left = 10
-          Top = 64
-          Width = 160
-          Height = 17
-          Caption = 'Use contest period'
-          TabOrder = 2
-        end
-        object checkOutputOutofPeriod: TCheckBox
-          Left = 10
-          Top = 87
-          Width = 160
-          Height = 17
           Caption = 'Output logs out of period'
-          TabOrder = 3
+          TabOrder = 1
         end
         object cbAutoEnterSuper: TCheckBox
-          Left = 10
-          Top = 110
+          Left = 11
+          Top = 64
           Width = 260
           Height = 17
           Caption = 'Automatically enter exchange from SuperCheck'
-          TabOrder = 4
+          TabOrder = 2
         end
         object checkDispLongDateTime: TCheckBox
-          Left = 10
-          Top = 133
+          Left = 11
+          Top = 87
           Width = 193
           Height = 17
           Caption = 'Display long date time'
-          TabOrder = 5
+          TabOrder = 3
         end
         object cbSaveWhenNoCW: TCheckBox
-          Left = 10
-          Top = 156
+          Left = 11
+          Top = 110
           Width = 161
           Height = 17
           Caption = 'Save when not sending CW'
-          TabOrder = 6
+          TabOrder = 4
         end
         object SaveEvery: TSpinEdit
-          Left = 333
-          Top = 39
+          Left = 76
+          Top = 154
           Width = 38
           Height = 22
           AutoSize = False
           MaxValue = 99
           MinValue = 1
-          TabOrder = 7
+          TabOrder = 5
           Value = 3
         end
         object cbJMode: TCheckBox
-          Left = 268
-          Top = 18
+          Left = 11
+          Top = 133
           Width = 97
           Height = 17
           Caption = 'J-mode'
-          TabOrder = 8
+          TabOrder = 6
         end
         object checkUseMultiLineTabs: TCheckBox
+          Left = 268
+          Top = 18
+          Width = 217
+          Height = 17
+          Caption = 'Use multiline tabs'
+          TabOrder = 7
+        end
+        object checkUseDarkMode: TCheckBox
+          Left = 268
+          Top = 41
+          Width = 217
+          Height = 17
+          Caption = 'Use dark mode'
+          TabOrder = 8
+        end
+        object checkDisableShortCutsQSOEdit: TCheckBox
           Left = 268
           Top = 64
           Width = 217
           Height = 17
-          Caption = 'Use multiline tabs'
+          Caption = 'Disable shortcuts during QSO editing'
           TabOrder = 9
         end
-        object checkUseDarkMode: TCheckBox
+        object checkUseWebView2: TCheckBox
           Left = 268
           Top = 87
           Width = 217
           Height = 17
-          Caption = 'Use dark mode'
+          Caption = 'Use WebView2(Edge) for WebUpload'
           TabOrder = 10
-        end
-        object checkDisableShortCutsQSOEdit: TCheckBox
-          Left = 268
-          Top = 110
-          Width = 217
-          Height = 17
-          Caption = 'Disable shortcuts during QSO editing'
-          TabOrder = 11
         end
       end
       object groupAccessibility: TGroupBox
