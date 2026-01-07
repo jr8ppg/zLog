@@ -1489,6 +1489,7 @@ resourcestring
   TMainForm_Setup_SentNR_ituzone = 'Setup ITU Zone number first.';
   TMainForm_Setup_SentNR_age= 'Setup operator''s age first.';
   TMainForm_Setup_SentNR_iota = 'Setup IOTA number first.';
+  TMainForm_Setup_SentNR_handle = 'Setup Handle Name first.';
   TMainForm_New_QSO_Arrived = 'New QSO data has arrived. click here to view.';
   TMainForm_Select_Operator = 'Please select an operator.';
   TMainForm_JARL_Member_Info = 'JARL Member information.';
@@ -8200,6 +8201,11 @@ begin
          MyContest := TJA0Contest.Create(Self, 'ALL JA0 コンテスト (Others)', mode);
       end;
 
+      // NYP
+      6: begin
+         MyContest := TNYP.Create(Self, 'NEW YEAR PARTY', mode);
+      end;
+
       // DX pedi
       8: begin
          MyContest := TPedi.Create(Self, 'Pedition mode', mode);
@@ -8868,6 +8874,10 @@ begin
       end
       else if ((Pos('$T', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iota = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         fShowOptionsDialog := True;
+      end
+      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._handle = '')) then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end;
 
@@ -15174,6 +15184,7 @@ begin
    S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
    S := StringReplace(S, '$A', dmZLogGlobal.Settings._age, [rfReplaceAll]);
    S := StringReplace(S, '$T', dmZLogGlobal.Settings._iota, [rfReplaceAll]);
+   S := StringReplace(S, '$H', dmZLogGlobal.Settings._handle, [rfReplaceAll]);
    Result := S;
 end;
 

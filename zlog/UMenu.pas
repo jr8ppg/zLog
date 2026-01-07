@@ -44,6 +44,7 @@ type
       radioMultiOpTwoTx: TRadioButton;
       comboTxNo: TComboBox;
       Label2: TLabel;
+    rbNYP: TRadioButton;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure rbCQWWClick(Sender: TObject);
@@ -67,6 +68,7 @@ type
       procedure rbWAEClick(Sender: TObject);
       procedure OKButtonClick(Sender: TObject);
       procedure FormDestroy(Sender: TObject);
+    procedure rbNYPClick(Sender: TObject);
    private
       FSelectContest: array[0..20] of TRadioButton;
       FCFGFileName: string;
@@ -111,7 +113,7 @@ begin
    FSelectContest[3] := rbACAG;
    FSelectContest[4] := rbJA0in;
    FSelectContest[5] := rbJA0out;
-   FSelectContest[6] := nil;
+   FSelectContest[6] := rbNYP;
    FSelectContest[7] := rbJIDXDX;
    FSelectContest[8] := rbPedi;
    FSelectContest[9] := rbGeneral;
@@ -344,6 +346,12 @@ begin
    radioSingleOp.Checked := True;
    radioMultiOpMultiTx.Enabled := False;
    comboTxNo.Enabled := False;
+end;
+
+procedure TMenuForm.rbNYPClick(Sender: TObject);
+begin
+   EnableEveryThing;
+   radioSingleOp.Checked := True;
 end;
 
 procedure TMenuForm.rbARRLWClick(Sender: TObject);

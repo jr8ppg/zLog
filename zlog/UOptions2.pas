@@ -468,6 +468,8 @@ type
     radioWebUpload0: TRadioButton;
     radioWebUpload1: TRadioButton;
     radioWebUpload2: TRadioButton;
+    HandleEdit: TEdit;
+    Label54: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1045,6 +1047,7 @@ begin
       Settings._iaruzone := IARUZoneEdit.Text;
       Settings._age := AgeEdit.Text;
       Settings._iota := IotaEdit.Text;
+      Settings._handle := HandleEdit.Text;
 
       // Active bands
       for b := b19 to HiBand do begin
@@ -1465,6 +1468,7 @@ begin
       IARUZoneEdit.Text := Settings._iaruzone;
       AgeEdit.Text := Settings._age;
       IotaEdit.Text := Settings._iota;
+      HandleEdit.Text := Settings._handle;
 
       // Active bands
       for b := b19 to HiBand do begin

@@ -198,6 +198,12 @@ type
     constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
   end;
 
+  TNYP = class(TContest)
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
+    function GetNewMulti1(aQSO: TQSO): string;
+    function GetNewMulti2(aQSO: TQSO): string;
+  end;
+
   TAPSprint = class(TContest)
     constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
     function GetNewMulti1(aQSO: TQSO): string; override;
@@ -1659,6 +1665,60 @@ begin
    FSentStr := '$S';
 
    AdifContestId := 'JA_DOMESTIC';
+end;
+
+{ TNYP }
+
+constructor TNYP.Create(AOwner: TComponent; N: string; M: TContestMode);
+begin
+   inherited;
+   FMultiForm := TBasicMulti.Create(AOwner);
+   FScoreForm := TPediScore.Create(AOwner);
+
+   UseUTC := False;
+   Log.AcceptDifferentMode := True;
+
+   FSameExchange := False;
+   FSentStr := '$H';
+
+   FBandLow := b19;
+   FBandHigh := HiBand;
+   FBandPlan := 'JA';
+   FUseWARC := True;
+
+   FUseContestPeriod := False;
+   FStartTime := -1;
+   FPeriod := 0;
+
+   AdifContestId := 'JA_DOMESTIC';
+
+   FColWidths[0] := 3;      // status
+   FColWidths[1] := 6;      // date
+   FColWidths[2] := 6;      // time
+   FColWidths[3] := 12;     // callsign
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
+   FColWidths[6] := 4;      // Rcvd RST
+   FColWidths[7] := 10;     // Rcvd Number
+   FColWidths[8] := 4;      // band
+   FColWidths[9] := 4;      // mode
+   FColWidths[10] := 0;     // op
+   FColWidths[11] := 7;     // memo
+   FColWidths[12] := 0;     // point
+   FColWidths[13] := 0;     // multi1
+   FColWidths[14] := 0;     // multi2
+   FColWidths[15] := 10;    // freq
+   FColWidths[16] := 0;     // QSOID
+end;
+
+function TNYP.GetNewMulti1(aQSO: TQSO): string;
+begin
+   Result := '';
+end;
+
+function TNYP.GetNewMulti2(aQSO: TQSO): string;
+begin
+   Result := '';
 end;
 
 { TAPSprint }

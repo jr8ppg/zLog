@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetPreferences
+    ActivePage = tabsheetMyStation
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -557,7 +557,7 @@ object formOptions2: TformOptions2
       object groupMyPosition: TGroupBox
         Left = 3
         Top = 66
-        Width = 185
+        Width = 202
         Height = 74
         Caption = 'Positoin'
         TabOrder = 1
@@ -576,14 +576,14 @@ object formOptions2: TformOptions2
           Caption = 'Longitude'
         end
         object editMyLatitude: TEdit
-          Left = 64
+          Left = 112
           Top = 18
           Width = 81
           Height = 21
           TabOrder = 0
         end
         object editMyLongitude: TEdit
-          Left = 64
+          Left = 112
           Top = 45
           Width = 81
           Height = 21
@@ -593,12 +593,12 @@ object formOptions2: TformOptions2
       object groupMyCallsign: TGroupBox
         Left = 3
         Top = 3
-        Width = 185
+        Width = 202
         Height = 57
         Caption = 'Callsign'
         TabOrder = 2
         object editMyCallsign: TEdit
-          Left = 44
+          Left = 52
           Top = 20
           Width = 101
           Height = 21
@@ -645,8 +645,8 @@ object formOptions2: TformOptions2
       object groupMyParameter: TGroupBox
         Left = 3
         Top = 146
-        Width = 185
-        Height = 191
+        Width = 202
+        Height = 211
         Caption = 'Parameters'
         TabOrder = 4
         object Label14: TLabel
@@ -690,6 +690,13 @@ object formOptions2: TformOptions2
           Width = 44
           Height = 13
           Caption = 'IOTA($T)'
+        end
+        object Label54: TLabel
+          Left = 11
+          Top = 177
+          Width = 85
+          Height = 13
+          Caption = 'Handle Name($H)'
         end
         object ProvEdit: TEdit
           Left = 112
@@ -751,6 +758,16 @@ object formOptions2: TformOptions2
           CharCase = ecUpperCase
           MaxLength = 5
           TabOrder = 5
+        end
+        object HandleEdit: TEdit
+          Left = 112
+          Top = 176
+          Width = 81
+          Height = 20
+          AutoSize = False
+          CharCase = ecUpperCase
+          MaxLength = 5
+          TabOrder = 6
         end
       end
     end
@@ -3132,7 +3149,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

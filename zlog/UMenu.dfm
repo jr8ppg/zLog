@@ -4,7 +4,7 @@ object MenuForm: TMenuForm
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
   ClientHeight = 258
-  ClientWidth = 530
+  ClientWidth = 547
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,18 +17,18 @@ object MenuForm: TMenuForm
   OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
-    530
+    547
     258)
   TextHeight = 13
   object Label3: TLabel
-    Left = 274
+    Left = 294
     Top = 162
     Width = 58
     Height = 13
     Caption = 'Score coeff.'
   end
   object OKButton: TButton
-    Left = 362
+    Left = 382
     Top = 225
     Width = 75
     Height = 25
@@ -37,10 +37,9 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
-    ExplicitTop = 251
   end
   object CancelButton: TButton
-    Left = 442
+    Left = 462
     Top = 225
     Width = 75
     Height = 25
@@ -49,12 +48,11 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitTop = 251
   end
   object ContestGroup: TGroupBox
     Left = 8
     Top = 8
-    Width = 257
+    Width = 277
     Height = 241
     Caption = 'Contest'
     TabOrder = 2
@@ -122,7 +120,7 @@ object MenuForm: TMenuForm
       Width = 105
       Height = 17
       Caption = 'CQ WW'
-      TabOrder = 6
+      TabOrder = 7
       OnClick = rbARRLWClick
     end
     object rbJIDXJA: TRadioButton
@@ -132,7 +130,7 @@ object MenuForm: TMenuForm
       Width = 57
       Height = 17
       Caption = 'JIDX'
-      TabOrder = 8
+      TabOrder = 9
       OnClick = rbARRLWClick
     end
     object rbCQWPX: TRadioButton
@@ -142,7 +140,7 @@ object MenuForm: TMenuForm
       Width = 65
       Height = 17
       Caption = 'CQ WPX'
-      TabOrder = 7
+      TabOrder = 8
       OnClick = rbARRLWClick
     end
     object rbPedi: TRadioButton
@@ -152,7 +150,7 @@ object MenuForm: TMenuForm
       Width = 73
       Height = 17
       Caption = 'DXpedition'
-      TabOrder = 13
+      TabOrder = 14
       OnClick = rbPediClick
     end
     object rbJIDXDX: TRadioButton
@@ -162,7 +160,7 @@ object MenuForm: TMenuForm
       Width = 81
       Height = 17
       Caption = 'JIDX (DX)'
-      TabOrder = 9
+      TabOrder = 10
       Visible = False
       OnClick = rbARRLWClick
     end
@@ -179,7 +177,7 @@ object MenuForm: TMenuForm
       Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Font.Style = []
       ParentFont = False
-      TabOrder = 14
+      TabOrder = 15
       OnClick = UserDefClick
       OnEnter = rbGeneralEnter
       OnExit = rbGeneralExit
@@ -191,7 +189,7 @@ object MenuForm: TMenuForm
       Width = 113
       Height = 17
       Caption = 'ARRL DX (DX)'
-      TabOrder = 12
+      TabOrder = 13
       OnClick = rbARRLWClick
     end
     object rbARRLW: TRadioButton
@@ -201,7 +199,7 @@ object MenuForm: TMenuForm
       Width = 113
       Height = 17
       Caption = 'ARRL DX (W/VE)'
-      TabOrder = 11
+      TabOrder = 12
       OnClick = rbARRLWClick
     end
     object rbAPSprint: TRadioButton
@@ -211,7 +209,7 @@ object MenuForm: TMenuForm
       Width = 89
       Height = 17
       Caption = 'AP Sprint'
-      TabOrder = 10
+      TabOrder = 11
       OnClick = rbAPSprintClick
     end
     object rbJA0in: TRadioButton
@@ -241,17 +239,17 @@ object MenuForm: TMenuForm
       Width = 73
       Height = 17
       Caption = 'IARU HF'
-      TabOrder = 15
+      TabOrder = 16
       OnClick = rbIARUClick
     end
     object rbAllAsian: TRadioButton
       Tag = 110
       Left = 136
       Top = 144
-      Width = 113
+      Width = 133
       Height = 17
       Caption = 'All Asian DX (Asia)'
-      TabOrder = 16
+      TabOrder = 17
       OnClick = rbARRLWClick
     end
     object rbIOTA: TRadioButton
@@ -261,7 +259,7 @@ object MenuForm: TMenuForm
       Width = 57
       Height = 17
       Caption = 'IOTA'
-      TabOrder = 17
+      TabOrder = 18
       OnClick = rbIOTAClick
     end
     object rbARRL10: TRadioButton
@@ -271,7 +269,7 @@ object MenuForm: TMenuForm
       Width = 89
       Height = 17
       Caption = 'ARRL 10 m'
-      TabOrder = 18
+      TabOrder = 19
       OnClick = rbARRL10Click
     end
     object rbWAE: TRadioButton
@@ -281,12 +279,22 @@ object MenuForm: TMenuForm
       Width = 113
       Height = 17
       Caption = 'WAEDC (DX)'
-      TabOrder = 19
+      TabOrder = 20
       OnClick = rbWAEClick
+    end
+    object rbNYP: TRadioButton
+      Tag = 6
+      Left = 8
+      Top = 112
+      Width = 122
+      Height = 17
+      Caption = 'NEW YEAR PARTY'
+      TabOrder = 6
+      OnClick = rbNYPClick
     end
   end
   object ModeGroup: TRadioGroup
-    Left = 423
+    Left = 443
     Top = 8
     Width = 99
     Height = 145
@@ -301,7 +309,7 @@ object MenuForm: TMenuForm
     TabOrder = 3
   end
   object ScoreCoeffEdit: TEdit
-    Left = 337
+    Left = 357
     Top = 159
     Width = 25
     Height = 18
@@ -311,7 +319,7 @@ object MenuForm: TMenuForm
     Text = '1'
   end
   object GroupBox1: TGroupBox
-    Left = 271
+    Left = 291
     Top = 8
     Width = 146
     Height = 145

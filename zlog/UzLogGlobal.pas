@@ -132,6 +132,7 @@ type
     _iaruzone: string;
     _age: string; // all asian
     _iota: string;
+    _handle: string;
     _powerH: string;
     _powerM: string;
     _powerL: string;
@@ -999,6 +1000,9 @@ begin
 
       // Iota
       Settings._iota := ini.ReadString('Profiles', 'Iota', '');
+
+      // Handle Name
+      Settings._handle := ini.ReadString('Profiles', 'HandleName', '');
 
       // Power(HMLP)
       Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
@@ -1870,6 +1874,9 @@ begin
 
       // Iota
       ini.WriteString('Profiles', 'Iota', Settings._iota);
+
+      // Handle Name
+      ini.WriteString('Profiles', 'HandleName', Settings._handle);
 
       // Power(HMLP)
       ini.WriteString('Profiles', 'PowerH', Settings._powerH);
