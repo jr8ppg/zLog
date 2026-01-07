@@ -232,7 +232,7 @@ const
 implementation
 
 uses
-  Main;
+  Main, UzLogWebView2;
 
 {$R *.dfm}
 
@@ -715,7 +715,9 @@ procedure TformELogJarlEx.buttonWebUploadClick(Sender: TObject);
 var
    SL: TStringList;
    contest: TWebUploadContest;
+   Checker: TWebView2Checker;
 begin
+   Checker := TWebView2Checker.Create(Self);
    SL := TStringList.Create();
    try
       if TabControl1.TabIndex = 0 then begin
@@ -754,7 +756,8 @@ begin
          end;
       end;
 
-      if dmZLogGlobal.Settings.FUseWebView2 = True then begin
+      if ((dmZLogGlobal.Settings.FBrowserForWebUpload = 0) and (Checker.Check() = True)) or
+         (dmZLogGlobal.Settings.FBrowserForWebUpload = 2) then begin
          ShowWebUploadDialogEdge(SL.Text, contest);
       end
       else begin
@@ -763,6 +766,7 @@ begin
 
    finally
       SL.Free();
+      Checker.Free();
    end;
 end;
 

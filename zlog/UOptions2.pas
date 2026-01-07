@@ -463,7 +463,11 @@ type
     checkDisableShortCutsQSOEdit: TCheckBox;
     IotaEdit: TEdit;
     Label50: TLabel;
-    checkUseWebView2: TCheckBox;
+    Panel4: TPanel;
+    Label51: TLabel;
+    radioWebUpload0: TRadioButton;
+    radioWebUpload1: TRadioButton;
+    radioWebUpload2: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1095,8 +1099,16 @@ begin
       // Disable shortcuts during QSO editing
       Settings.FDisableShortCutsQSOEdit := checkDisableShortCutsQSOEdit.Checked;
 
-      // Use WebView2(Edge) for WebUpload
-      Settings.FUseWebView2 := checkUseWebView2.Checked;
+      // Browser component used for WebUpload
+      if radioWebUpload0.Checked = True then begin
+         Settings.FBrowserForWebUpload := 0;
+      end
+      else if radioWebUpload1.Checked = True then begin
+         Settings.FBrowserForWebUpload := 1;
+      end
+      else if radioWebUpload2.Checked = True then begin
+         Settings.FBrowserForWebUpload := 2;
+      end;
 
       // Focus Position After QSO Edit group
       if radioOnOkFocusToQsoList.Checked = True then begin
@@ -1507,8 +1519,13 @@ begin
       // Disable shortcuts during QSO editing
       checkDisableShortCutsQSOEdit.Checked := Settings.FDisableShortCutsQSOEdit;
 
-      // Use WebView2(Edge) for WebUpload
-      checkUseWebView2.Checked := Settings.FUseWebView2;
+      // Browser component used for WebUpload
+      case Settings.FBrowserForWebUpload of
+         0: radioWebUpload0.Checked := True;
+         1: radioWebUpload1.Checked := True;
+         2: radioWebUpload2.Checked := True;
+         else radioWebUpload0.Checked := True;
+      end;
 
       // Focus Position After QSO Edit group
       if Settings.FAfterQsoEditOkFocusPos = 0 then begin

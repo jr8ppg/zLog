@@ -421,7 +421,7 @@ type
     FUseMultiLineTabs: Boolean;
     FUseDarkMode: Boolean;
     FDisableShortCutsQSOEdit: Boolean;
-    FUseWebView2: Boolean;
+    FBrowserForWebUpload: Integer;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
     FQsoListFocusedSelColor: TColor;
@@ -1406,7 +1406,7 @@ begin
       Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', True);
       Settings.FUseDarkMode := ini.ReadBool('Style', 'UseDarkMode', False);
       Settings.FDisableShortCutsQSOEdit := ini.ReadBool('Usability', 'DisableShortCutsQSOEdit', False);
-      Settings.FUseWebView2 := ini.ReadBool('Usability', 'UseWebView2', False);
+      Settings.FBrowserForWebUpload := ini.ReadInteger('Usability', 'BrowserForWebUpload', 0);
       Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
       Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
       Settings.FQsoListFocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListFocusedSelColor', ''), RGB($E5, $F3, $FF));
@@ -2227,7 +2227,7 @@ begin
       ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
       ini.WriteBool('Style', 'UseDarkMode', Settings.FUseDarkMode);
       ini.WriteBool('Usability', 'DisableShortCutsQSOEdit', Settings.FDisableShortCutsQSOEdit);
-      ini.WriteBool('Usability', 'UseWebView2', Settings.FUseWebView2);
+      ini.WriteInteger('Usability', 'BrowserForWebUpload', Settings.FBrowserForWebUpload);
       ini.WriteInteger('Usability', 'AfterQsoEditOkFocusPos', Settings.FAfterQsoEditOkFocusPos);
       ini.WriteInteger('Usability', 'AfterQsoEditCancelFocusPos', Settings.FAfterQsoEditCancelFocusPos);
       ini.WriteString('Usability', 'QsoListFocusedSelColor', ZColorToString(Settings.FQsoListFocusedSelColor));

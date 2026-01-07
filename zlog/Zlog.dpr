@@ -165,7 +165,8 @@ uses
   UCwMessageEditor in 'UCwMessageEditor.pas' {CwMessageEditor},
   Vcl.Themes,
   Vcl.Styles,
-  UJarlWebUpload2 in 'UJarlWebUpload2.pas' {formJarlWebUpload2};
+  UJarlWebUpload2 in 'UJarlWebUpload2.pas' {formJarlWebUpload2},
+  UzLogWebView2 in 'UzLogWebView2.pas';
 
 {$R *.res}
 

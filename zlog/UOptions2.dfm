@@ -860,13 +860,44 @@ object formOptions2: TformOptions2
           Caption = 'Disable shortcuts during QSO editing'
           TabOrder = 9
         end
-        object checkUseWebView2: TCheckBox
-          Left = 268
-          Top = 87
-          Width = 217
-          Height = 17
-          Caption = 'Use WebView2(Edge) for WebUpload'
+        object Panel4: TPanel
+          Left = 179
+          Top = 148
+          Width = 322
+          Height = 28
+          BevelOuter = bvLowered
           TabOrder = 10
+          object Label51: TLabel
+            Left = 3
+            Top = 7
+            Width = 139
+            Height = 13
+            Caption = 'Browser used for WebUpload'
+          end
+          object radioWebUpload0: TRadioButton
+            Left = 155
+            Top = 5
+            Width = 54
+            Height = 17
+            Caption = 'Auto'
+            TabOrder = 0
+          end
+          object radioWebUpload1: TRadioButton
+            Left = 215
+            Top = 5
+            Width = 48
+            Height = 17
+            Caption = 'IE'
+            TabOrder = 1
+          end
+          object radioWebUpload2: TRadioButton
+            Left = 269
+            Top = 5
+            Width = 48
+            Height = 17
+            Caption = 'Edge'
+            TabOrder = 2
+          end
         end
       end
       object groupAccessibility: TGroupBox
@@ -3101,6 +3132,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

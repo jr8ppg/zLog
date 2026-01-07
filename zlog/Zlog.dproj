@@ -560,6 +560,7 @@
             <Form>formJarlWebUpload2</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UzLogWebView2.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
