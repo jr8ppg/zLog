@@ -8466,6 +8466,21 @@ var
    fSelectContestOnStartup: Boolean;
    S: string;
    fShowOptionsDialog: Boolean;
+
+   procedure StartDXPedi();
+   var
+      S: string;
+   begin
+      dmZLogGlobal.ContestCategory := ccSingleOp;
+      dmZLogGlobal.ContestMode := cmMix;
+      dmZLogGlobal.ContestMenuNo := 8;
+      dmZLogGlobal.TXNr := 0;    // TX#
+      strContestName := '';
+      strCfgFileName := '';
+      fScoreCoeff := 100;
+      S := CreateTempLogFileName();
+      dmZLogGlobal.SetLogFileName(S);
+   end;
 begin
    FInitialized := False;
    FPostContest := False;
@@ -8513,33 +8528,24 @@ begin
       if (fSelectContestOnStartup = True) or (Message.WParam = 1) then begin
          if fNewContest = True then begin // new contest
             if menu.ShowModal() = mrCancel then begin
-               if Message.WParam = 0 then begin
-                  Close();
-               end;
-               Exit;
+               // 選択を行わない場合はPediモードとする
+               StartDXPedi();
+            end
+            else begin
+               dmZLogGlobal.ContestCategory := menu.ContestCategory;
+               dmZLogGlobal.ContestMode := menu.ContestMode;
+               dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
+               dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
+               strContestName := menu.GeneralName;
+               strCfgFileName := menu.CFGFileName;
+               fScoreCoeff := menu.ScoreCoeff;
             end;
-
-            dmZLogGlobal.ContestCategory := menu.ContestCategory;
-            dmZLogGlobal.ContestMode := menu.ContestMode;
-            dmZLogGlobal.ContestMenuNo := menu.ContestNumber;
-            dmZLogGlobal.TXNr := menu.TxNumber;    // TX#
-            strContestName := menu.GeneralName;
-            strCfgFileName := menu.CFGFileName;
-            fScoreCoeff := menu.ScoreCoeff;
          end;
       end
       else begin
          if fNewContest = True then begin // new contest
             // 選択を行わない場合はPediモードとする
-            dmZLogGlobal.ContestCategory := ccSingleOp;
-            dmZLogGlobal.ContestMode := cmMix;
-            dmZLogGlobal.ContestMenuNo := 8;
-            dmZLogGlobal.TXNr := 0;    // TX#
-            strContestName := '';
-            strCfgFileName := '';
-            fScoreCoeff := 100;
-            S := CreateTempLogFileName();
-            dmZLogGlobal.SetLogFileName(S);
+            StartDXPedi();
          end;
       end;
 
