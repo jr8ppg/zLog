@@ -455,6 +455,7 @@ type
     buttonAudioConfig3: TButton;
     buttonAudioConfig4: TButton;
     label2RadioVText: TLabel;
+    checkSo2rDontSwitchSpMode: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1718,6 +1719,7 @@ begin
       Settings._so2r_2bsiq_pluswpm  := spinSo2rAccelerateCW.Value;
       Settings._so2r_ignore_mode_change := checkSo2rIgnoreModeChange.Checked;
       Settings._so2r_cqrestart := checkSo2rCqRestartAfterSetLast.Checked;
+      Settings._so2r_dontswitchspmode := checkSo2rDontSwitchSpMode.Checked;
 
       //
       // Hardware1
@@ -2055,7 +2057,7 @@ begin
       spinSo2rAccelerateCW.Value:= Settings._so2r_2bsiq_pluswpm;
       checkSo2rIgnoreModeChange.Checked := Settings._so2r_ignore_mode_change;
       checkSo2rCqRestartAfterSetLast.Checked := Settings._so2r_cqrestart;
-
+      checkSo2rDontSwitchSpMode.Checked := Settings._so2r_dontswitchspmode;
 
       //
       // Hardware1

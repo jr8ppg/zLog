@@ -9836,7 +9836,7 @@ begin
          m := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
          StopMessage(m);
          FMessageManager.ClearQue();
-         if no > 3 then begin
+         if (dmZLogGlobal.Settings._so2r_dontswitchspmode = False) and (no > 3) then begin
             SetCQ(False);
          end;
       end

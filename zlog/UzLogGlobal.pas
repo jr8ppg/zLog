@@ -216,6 +216,7 @@ type
     _so2r_ignore_mode_change: Boolean;
     _so2r_rigselect_v28: Boolean;
     _so2r_cqrestart: Boolean;
+    _so2r_dontswitchspmode: Boolean;
     _so2r_otrsp_port: Integer;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
@@ -1248,6 +1249,7 @@ begin
       Settings._so2r_ignore_mode_change := ini.ReadBool('SO2R', 'ignore_mode_change', True);
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
       Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
+      Settings._so2r_dontswitchspmode := ini.ReadBool('SO2R', 'dontswitchspmode', False);
       Settings._so2r_otrsp_port  := ini.ReadInteger('SO2R', 'otrsp_port', 0);
 
       // PTT control
@@ -2079,6 +2081,7 @@ begin
       ini.WriteBool('SO2R', 'ignore_mode_change', Settings._so2r_ignore_mode_change);
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
       ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
+      ini.WriteBool('SO2R', 'dontswitchspmode', Settings._so2r_dontswitchspmode);
       ini.WriteInteger('SO2R', 'otrsp_port', Settings._so2r_otrsp_port);
 
       // PTT control

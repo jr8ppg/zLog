@@ -37,14 +37,14 @@ object formOptions: TformOptions
         TabOrder = 2
         object Label115: TLabel
           Left = 14
-          Top = 301
+          Top = 253
           Width = 210
           Height = 13
           Caption = 'Accelerate keying speed  after pressing TAB'
         end
         object Label116: TLabel
           Left = 306
-          Top = 301
+          Top = 253
           Width = 27
           Height = 13
           Caption = 'WPM'
@@ -53,11 +53,11 @@ object formOptions: TformOptions
           Left = 8
           Top = 20
           Width = 501
-          Height = 165
+          Height = 129
           Caption = 'RIG Select'
           TabOrder = 0
           object groupSo2rCom: TGroupBox
-            Left = 187
+            Left = 281
             Top = 11
             Width = 209
             Height = 102
@@ -166,7 +166,7 @@ object formOptions: TformOptions
             OnClick = radioSo2rClick
           end
           object groupSo2rOtrsp: TGroupBox
-            Left = 187
+            Left = 281
             Top = 11
             Width = 182
             Height = 76
@@ -198,8 +198,8 @@ object formOptions: TformOptions
           end
           object radioSo2rParallel: TRadioButton
             Tag = 4
-            Left = 12
-            Top = 108
+            Left = 118
+            Top = 20
             Width = 100
             Height = 17
             Caption = 'Parallel Port'
@@ -208,8 +208,8 @@ object formOptions: TformOptions
           end
           object radioSo2rMk2r: TRadioButton
             Tag = 5
-            Left = 12
-            Top = 130
+            Left = 118
+            Top = 42
             Width = 60
             Height = 17
             Caption = 'MK2R'
@@ -218,9 +218,9 @@ object formOptions: TformOptions
           end
         end
         object groupSo2rCqOption: TGroupBox
-          Left = 9
-          Top = 198
-          Width = 500
+          Left = 8
+          Top = 155
+          Width = 501
           Height = 82
           Caption = 'Auto RIG switch Options'
           TabOrder = 1
@@ -319,7 +319,7 @@ object formOptions: TformOptions
         end
         object spinSo2rAccelerateCW: TSpinEdit
           Left = 264
-          Top = 298
+          Top = 250
           Width = 34
           Height = 22
           MaxValue = 9
@@ -329,19 +329,27 @@ object formOptions: TformOptions
         end
         object checkSo2rIgnoreModeChange: TCheckBox
           Left = 14
-          Top = 324
+          Top = 278
           Width = 246
           Height = 17
           Caption = 'Ignore mode changes from popup menu'
           TabOrder = 3
         end
         object checkSo2rCqRestartAfterSetLast: TCheckBox
-          Left = 264
-          Top = 324
+          Left = 14
+          Top = 301
           Width = 246
           Height = 17
           Caption = 'CQ restart after set last freq.'
           TabOrder = 4
+        end
+        object checkSo2rDontSwitchSpMode: TCheckBox
+          Left = 14
+          Top = 324
+          Width = 246
+          Height = 17
+          Caption = 'Disable switching to SP mode on F key press'
+          TabOrder = 5
         end
       end
       object GroupBox1: TGroupBox
@@ -4467,7 +4475,6 @@ object formOptions: TformOptions
               Caption = 'Login'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 3
@@ -4771,13 +4778,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'HG'#21109#33521#35282#65422#65439#65391#65420#65439#20307
+          FontName = 'Cascadia Code PL SemiLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 87
+          ItemIndex = 42
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
