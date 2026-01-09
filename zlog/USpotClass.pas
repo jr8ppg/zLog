@@ -939,8 +939,9 @@ begin
       MyContest.MultiForm.ProcessCluster(Sp);
    end;
 
-   // NR未入力の場合
-   if (MyContest.SameExchange = True) and (Sp.Number = '') and (fWorkedScrub = False) then begin
+   // NR未入力の場合(シリアルNO以外)
+   if (MyContest.SameExchange = True) and (Sp.Number = '') and (fWorkedScrub = False) and
+      (MyContest.SerialType = stNone) then begin
       // 他のバンドで交信済みならマルチを取得
       if Log.IsOtherBandWorked(Sp.Call, Sp.Band, multi) = True then begin
          Sp.Number := multi;
