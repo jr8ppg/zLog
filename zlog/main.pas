@@ -3013,7 +3013,7 @@ begin
    zyloContestClosed;
 
    { Add code to create a new file }
-   PostMessage(Handle, WM_ZLOG_INIT, 0, 0);
+   PostMessage(Handle, WM_ZLOG_INIT, 1, 0);
 end;
 
 procedure TMainForm.FileOpen(Sender: TObject);
