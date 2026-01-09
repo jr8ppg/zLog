@@ -23,7 +23,7 @@ type
   TFrequency = Int64;
   TAudioInput = (aiDontCare = 0, aiMic, aiUsb, aiAcc, aiMicUsb, aiMicAcc);
   TExecuteAt = (eaBefore = 0, eaAfter);
-  TWebUploadContest = ( wuAllja = 0, wu6d, wuFd, wuAcag, wuAacw, wuAaph, wuNyp );
+  TWebUploadContest = ( wuAllja = 0, wu6d, wuFd, wuAcag, wuAacw, wuAaph, wuNyp, wuOther );
 
 type
   TPortAction = ( paNone = 0, paPtt, paKey, paAlwaysOn, paAlwaysOff, paHandshake );
@@ -59,6 +59,8 @@ const
     'MIX', 'CW', 'PH', 'RTTY', 'ALL'
   );
 
+  ELogWebUploadURL = 'https://contest.jarl.org/upload/';
+  ELogWebUploadURLaa = 'https://contest.jarl.org/upload-aa/';
 
 const
   // SerialContestType

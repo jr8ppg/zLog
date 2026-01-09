@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Vcl.StdCtrls, Vcl.ExtCtrls, System.Win.Registry,
+  Vcl.StdCtrls, Vcl.ExtCtrls,
   Winapi.WebView2, Winapi.ActiveX, Vcl.Edge, System.JSON, UzLogConst;
 
 type
@@ -21,8 +21,6 @@ type
   private
     { Private êÈåæ }
     FWebUploadContest: TWebUploadContest;
-    FUploadURL: string;
-    FUploadURLaa: string;
     FLogText: string;
     procedure PasteLogText();
     procedure SetLogText(v: string);
@@ -40,17 +38,15 @@ implementation
 
 procedure TformJarlWebUpload2.FormCreate(Sender: TObject);
 begin
-   FWebUploadContest := wuAllja;
+   FWebUploadContest := wuOther;
    FLogText := '';
-   FUploadURL := 'https://contest.jarl.org/upload/';
-   FUploadURLaa := 'https://contest.jarl.org/upload-aa/';
 end;
 
 procedure TformJarlWebUpload2.FormShow(Sender: TObject);
 begin
    case FWebUploadContest of
-      wuAllja, wu6d, wuFd, wuAcag, wuNyp: Navigate(FUploadURL);
-      wuAacw, wuAaph: Navigate(FUploadURLaa);
+      wuAllja, wu6d, wuFd, wuAcag, wuNyp: Navigate(ELogWebUploadURL);
+      wuAacw, wuAaph: Navigate(ELogWebUploadURLaa);
    end;
 end;
 

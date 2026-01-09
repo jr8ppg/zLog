@@ -21,8 +21,6 @@ type
   private
     { Private êÈåæ }
     FWebUploadContest: TWebUploadContest;
-    FUploadURL: string;
-    FUploadURLaa: string;
     FLogText: string;
     procedure PasteLogText();
     procedure SetLogText(v: string);
@@ -42,23 +40,21 @@ implementation
 procedure TformJarlWebUpload.FormCreate(Sender: TObject);
 begin
    SetPermissions();
-   FWebUploadContest := wuAllja;
+   FWebUploadContest := wuOther;
    FLogText := '';
-   FUploadURL := 'https://contest.jarl.org/upload/';
-   FUploadURLaa := 'https://contest.jarl.org/upload-aa/';
 end;
 
 procedure TformJarlWebUpload.FormShow(Sender: TObject);
 begin
    case FWebUploadContest of
-      wuAllja, wu6d, wuFd, wuAcag: Navigate(FUploadURL);
-      wuAacw, wuAaph: Navigate(FUploadURLaa);
+      wuAllja, wu6d, wuFd, wuAcag, wuNyp: Navigate(ELogWebUploadURL);
+      wuAacw, wuAaph: Navigate(ELogWebUploadURLaa);
    end;
 end;
 
 procedure TformJarlWebUpload.WebBrowser1DocumentComplete(ASender: TObject; const pDisp: IDispatch; const URL: OleVariant);
 begin
-   if (URL = FUploadURL) or (URL = FUploadURLaa) then begin
+   if (URL = ELogWebUploadURL) or (URL = ELogWebUploadURLaa) then begin
       PasteLogText();
 
       case FWebUploadContest of
@@ -68,6 +64,7 @@ begin
          wuAcag:  CheckOn('contest', 'acag');
          wuAacw:  CheckOn('contest', 'aacw');
          wuAaph:  CheckOn('contest', 'aaph');
+         wuNyp:   CheckOn('contest', 'nyp');
       end;
    end;
 

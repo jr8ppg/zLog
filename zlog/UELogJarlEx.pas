@@ -370,6 +370,7 @@ begin
       (MyContest is TSixDownContest) or
       (MyContest is TFDContest) or
       (MyContest is TACAGContest) or
+      (MyContest is TNYP) or
       (MyContest is TAllAsianContest) then begin
       buttonWebUpload.Visible := True;
       TabControl1.TabIndex := 1; // R2.1
@@ -731,6 +732,8 @@ begin
          end;
       end;
 
+      contest := wuOther;
+
       if MyContest is TALLJAContest then begin
          contest := wuAllJa;
       end;
@@ -745,6 +748,10 @@ begin
 
       if MyContest is TACAGContest then begin
          contest := wuAcag;
+      end;
+
+      if MyContest is TNYP then begin
+         contest := wuNyp;
       end;
 
       if MyContest is TAllAsianContest then begin
