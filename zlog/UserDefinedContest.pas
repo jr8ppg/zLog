@@ -107,6 +107,7 @@ type
     FAllowDxNoNumber: Boolean;
     FSingle10G: Boolean;
     FSameExchange: Boolean;
+    FNrNumericComparison: Boolean;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -224,6 +225,7 @@ type
     property AllowDxNoNumber: Boolean read FAllowDxNoNumber write FAllowDxNoNumber;
     property Single10G: Boolean read FSingle10G write FSingle10G;
     property SameExchange: Boolean read FSameExchange write FSameExchange;
+    property NrNumericComparison: Boolean read FNrNumericComparison write FNrNumericComparison;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -326,6 +328,7 @@ begin
    FAllowDxNoNumber := False;
    FSingle10G := True;
    FSameExchange := False;
+   FNrNumericComparison := False;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -809,6 +812,10 @@ begin
          if strCmd = 'SAMEEXCHANGE' then begin
             D.SameExchange := ParseOnOff(strParam);
          end;
+
+         if strCmd = 'NRNUMCOMPARE' then begin
+            D.NrNumericComparison := ParseOnOff(strParam);
+         end;
       end;
    finally
       SL.Free();
@@ -1050,7 +1057,7 @@ end;
 
 procedure TUserDefinedContest.SetPower(v: string);
 begin
-   v := LeftStr(v + '----------------', 13);
+   v := LeftStr(v + DupeString('-', 19), 19);
    FPower := v;
    EditParam('POWER', v);
 end;

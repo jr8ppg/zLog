@@ -22,6 +22,10 @@ type
     { Private declarations }
     FConfig: TUserDefinedContest;
     function GetPX(aQSO: TQSO): string;
+    function MultiIndexOf(S: string): Integer;
+    function MultiCompare(S1, S2: string): Boolean;
+    function StringCompare(S1, S2: string): Boolean;
+    function NumericCompare(S1, S2: string): Boolean;
   public
     { Public declarations }
     function IsLocal(aQSO: TQSO): Boolean;
@@ -184,8 +188,6 @@ end;
 function TGeneralMulti2.ValidMulti(aQSO: TQSO): Boolean;
 var
    str: string;
-   i: Integer;
-   C: TCity;
    boo: Boolean;
 begin
    if ((IsDomestic(aQSO.Callsign) = False) and (FConfig.AllowDxNoNumber = True)) then begin
@@ -205,16 +207,12 @@ begin
 
    str := ExtractMulti(aQSO);
 
-   boo := false;
-   for i := 0 to CityList.List.Count-1 do begin
-      C := TCity(CityList.List[i]);
-      if pos(','+str+',', ','+C.CityNumber+',') > 0 then begin
-         boo := true;
-         break;
-      end;
+   if MultiIndexOf(str) >= 0 then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
    end;
-
-   Result := boo;
 end;
 
 function TGeneralMulti2.ExtractMulti(aQSO: TQSO): string;
@@ -282,13 +280,13 @@ end;
 
 procedure TGeneralMulti2.AddNoUpdate(aQSO: TQSO);
 var
-   str, str2: string;
+   str: string;
    B: TBand;
-   i: Integer;
    C: TCity;
    Cty: TCountry;
    P: TPrefix;
    boo: Boolean;
+   Index: Integer;
 label aaa;
 begin
    aQSO.NewMulti1 := False;
@@ -368,19 +366,17 @@ aaa:
       aQSO.NewMulti2 := True;
    end;
 
-   for i := 0 to CityList.List.Count-1 do begin
-      C := TCity(CityList.List[i]);
+   Index := MultiIndexOf(str);
+   if Index >= 0 then begin
+      C := TCity(CityList.List[Index]);
 
-      str2 := ','+C.CityNumber+',';         //  for alternative exchange
-      if pos (','+str+',', str2) > 0 then begin
-         if C.Worked[aQSO.band] = False then begin
-            C.Worked[aQSO.band] := True;
-            aQSO.NewMulti1 := True;
-         end;
-
-         LatestMultiAddition := C.Index;
-         exit;
+      if C.Worked[aQSO.band] = False then begin
+         C.Worked[aQSO.band] := True;
+         aQSO.NewMulti1 := True;
       end;
+
+      LatestMultiAddition := C.Index;
+      Exit;
    end;
 
    // no match with CityList
@@ -489,8 +485,8 @@ procedure TGeneralMulti2.CheckMulti(aQSO: TQSO);
 var
    str: string;
    strSjis: AnsiString;
-   i: Integer;
    C: TCity;
+   Index: Integer;
 begin
    if ValidMulti(aQSO) then
       str := ExtractMulti(aQSO)
@@ -500,22 +496,23 @@ begin
    if str = '' then
       exit;
 
-   for i := 0 to CityList.List.Count-1 do begin
-      C := TCity(CityList.List[i]);
-      if pos(','+str+',', ','+C.CityNumber+',') > 0 then begin
-         Grid.TopRow := i;
-         str := C.Summary2;
-         strSjis := AnsiString(str);
+   Index := MultiIndexOf(str);
+   if Index >= 0 then begin
+      C := TCity(CityList.List[Index]);
 
-         if C.Worked[aQSO.Band] then
-            Insert('Worked on this band. ',strSjis, 27)
-         else
-            Insert('Needed on this band. ',strSjis, 27);
+      Grid.TopRow := Index;
+      str := C.Summary2;
+      strSjis := AnsiString(str);
 
-         str := String(strSjis);
-         MainForm.WriteStatusLine(str, false);
-         exit;
-      end;
+      if C.Worked[aQSO.Band] then
+         Insert('Worked on this band. ',strSjis, 27)
+      else
+         Insert('Needed on this band. ',strSjis, 27);
+
+      str := String(strSjis);
+      MainForm.WriteStatusLine(str, False);
+
+      Exit;
    end;
 
    if FConfig.UndefMulti then
@@ -575,6 +572,60 @@ begin
    end;
 
    Result := True;
+end;
+
+function TGeneralMulti2.MultiIndexOf(S: string): Integer;
+var
+   i: Integer;
+   C: TCity;
+begin
+   for i := 0 to CityList.List.Count-1 do begin
+      C := TCity(CityList.List[i]);
+      if MultiCompare(S, C.CityNumber) = True then begin
+         Result := i;
+         Exit;
+      end;
+   end;
+
+   Result := -1;
+end;
+
+function TGeneralMulti2.MultiCompare(S1, S2: string): Boolean;
+begin
+   if FConfig.FNrNumericComparison = True then begin
+      Result := NumericCompare(S1, S2);
+   end
+   else begin
+      Result := StringCompare(S1, S2);
+   end;
+end;
+
+function TGeneralMulti2.StringCompare(S1, S2: string): Boolean;
+begin
+   if Pos(',' + S1 + ',', ',' + S2 + ',') > 0 then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
+end;
+
+function TGeneralMulti2.NumericCompare(S1, S2: string): Boolean;
+var
+   n1, n2: Integer;
+begin
+   n1 := StrToIntDef(S1, -1);
+   n2 := StrToIntDef(S2, -1);
+   if (n1 = -1) or (n2 = -1) then begin
+      Result := StringCompare(S1, S2);
+      Exit;
+   end;
+   if n1 = n2 then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
 end;
 
 end.
