@@ -1155,6 +1155,9 @@ type
     // QSO Search
     FSearchPosition: Integer;
 
+    // New Partial
+    FPartialList: TQSOList;
+
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1335,6 +1338,7 @@ type
     procedure SetInitQsoEditPanel();
     procedure SetDarkMode();
     procedure SetLightMode();
+    procedure ShowDupeMessage(Q: TQSO);
   public
     LastFocus : TEdit;
 
@@ -2472,8 +2476,14 @@ begin
       end;
    end;
 
-   if FPartialCheck.Visible then begin
-      FPartialCheck.UpdateData(CurrentQSO);
+   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+      if FPartialCheck.Visible then begin
+         FPartialCheck.UpdateData(CurrentQSO);
+      end;
+   end
+   else begin
+      Log.UpdatePartialList(CurrentQSO);
+      GridRefreshScreen(False, False);
    end;
 
    if menuShowCurrentBandOnly.Checked then begin
@@ -2568,6 +2578,16 @@ begin
    ShowSentNumber();
 
    SetEnableF2A();
+
+   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+      if FPartialCheck.Visible then begin
+         FPartialCheck.UpdateData(CurrentQSO);
+      end;
+   end
+   else begin
+      Log.UpdatePartialList(CurrentQSO);
+      GridRefreshScreen(False, False);
+   end;
 end;
 
 procedure TMainForm.SetQSOMode(aQSO: TQSO; fUp: Boolean);
@@ -2726,12 +2746,15 @@ procedure TMainForm.GridRefreshScreen(fSelectRow: Boolean; fNewData: Boolean);
 var
    i: Integer;
    L: TQSOList;
+   DupeIndex: Integer;
 begin
    if (FPastEditMode = True) and (fNewData = True) and
       ((Log.TotalQSO - Grid.VisibleRowCount) > Grid.TopRow) then begin
       ShowInfoPanel(TMainForm_New_QSO_Arrived, DoNewDataArrived, True);
       Exit;
    end;
+
+   DupeIndex := 0;
 
    Grid.BeginUpdate();
    try
@@ -2747,14 +2770,28 @@ begin
 
       for i := 1 to L.Count - 1 do begin
          GridWriteQSO(i, L.Items[i]);
+
+         // パーシャルチェックモードで
+         // Dupeフラグが付いているものを
+         // 表示圏内にするためにマーク
+         if L = Log.PartialList then begin
+            if L.Items[i].Dupe = True then begin
+               DupeIndex := i;
+            end;
+         end;
       end;
 
       for i := L.Count to Grid.RowCount - 1 do begin
          GridClearQSO(i);
       end;
 
-      if fSelectRow = False then begin
-         Grid.ShowLast(L.Count - 1);
+      if (L = Log.PartialList) and (DupeIndex > 0) then begin
+         Grid.ShowLast(DupeIndex);
+      end
+      else begin
+         if fSelectRow = False then begin
+            Grid.ShowLast(L.Count - 1);
+         end;
       end;
    finally
       Grid.EndUpdate();
@@ -4075,7 +4112,6 @@ end;
 procedure TMainForm.EnterKeyModeProc(S: string);
 var
    Q: TQSO;
-   msg: string;
    fNoMulti: Boolean;
    nTxRigID: Integer;
    C, SN, RN, B, M, OP, P: TEdit;
@@ -4107,8 +4143,7 @@ begin
             actionPlayMessageA07.Execute();
          end
          else begin
-            msg := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
-            WriteStatusLineRed(msg, True);
+            ShowDupeMessage(Q);
          end;
 
          // CW以外とCWでポート設定無しはナンバー欄へフォーカス
@@ -4163,7 +4198,6 @@ end;
 procedure TMainForm.SpaceBarProc(nID: Integer);
 var
    Q: TQSO;
-   S: string;
    C, SN, RN, B, M, OP, P: TEdit;
 begin
    AssignControls(nID, C, SN, RN, B, M, OP, P);
@@ -4180,8 +4214,7 @@ begin
          C.SelectAll;
       end;
 
-      S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
-      WriteStatusLineRed(S, True);
+      ShowDupeMessage(Q);
    end
    else begin { if not dupe }
       CallSpacebarProc(C, RN, B);
@@ -4200,6 +4233,7 @@ begin
 
    if C.Text = '' then begin
       FEntityInfo.SetData(nil);
+      Log.ClearPartialList();
    end;
 
    // SO2Rなので送受が同じ場合のみコールセットする
@@ -4211,8 +4245,14 @@ begin
       EditedSinceTABPressed := tabstate_tabpressedandedited;
    end;
 
-   if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
-      FPartialCheck.CheckPartial(CurrentQSO);
+   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+      if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
+         FPartialCheck.CheckPartial(CurrentQSO);
+      end;
+   end
+   else begin
+      Log.UpdatePartialList(CurrentQSO);
+      GridRefreshScreen(False, False);
    end;
 
    if FSuperCheck.Visible then begin
@@ -4675,8 +4715,7 @@ begin
                RN.SetFocus();
             end;
 
-            S := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
-            WriteStatusLineRed(S, True);
+            ShowDupeMessage(Q);
          end
          else begin  // not dupe
             CallSpaceBarProc(C, RN, B);
@@ -5050,6 +5089,7 @@ begin
          Brush.Color := dmZLogGlobal.ZGridFixedColor;
          Brush.Style := bsSolid;
          Font.Color := dmZLogGlobal.ZNormalTextColor1;
+         Font.Style := [];
       end
       else begin
          if (gdSelected in State) and (Grid.Focused = True) then begin
@@ -5080,6 +5120,15 @@ begin
                end;
             end;
          end;
+
+         if (Grid.Tag <> 0) and (TQSOList(Grid.Tag) = Log.PartialList) then begin
+            if (Q <> nil) and (Q.Dupe = True) then begin
+               bg := clRed;
+               fg := clWhite;
+               Font.Style := Font.Style + [fsBold];
+            end;
+         end;
+
          Pen.Color := bg;
          Pen.Style := psSolid;
          Brush.Color := bg;
@@ -6130,7 +6179,7 @@ begin
       Q := Log.QuickDupe(curQSO);
       if FTabKeyPressed[nID] and (Q <> nil) then begin
          // ステータスバーにDUPE表示
-         WriteStatusLineRed(Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck), True);
+         ShowDupeMessage(Q);
 
          // ALLOW DUPEしない場合は4番を送出
          if dmZLogGlobal.Settings._allowdupe = False then begin
@@ -14492,7 +14541,10 @@ function TMainForm.GetQsoList(): TQSOList;
 var
    L: TQSOList;
 begin
-   if menuShowCurrentBandOnly.Checked then begin
+   if (dmZLogGlobal.Settings.FUseIncrementalDupeCheck = True) and (Log.PartialList.Count > 0) then begin
+      L := Log.PartialList;
+   end
+   else if menuShowCurrentBandOnly.Checked then begin
       L := Log.BandList[CurrentQSO.Band];
    end
    else if menuShowThisTxOnly.Checked then begin
@@ -15250,6 +15302,16 @@ end;
 procedure TMainForm.SetLightMode();
 begin
    TStyleManager.SetStyle('Windows');
+end;
+
+procedure TMainForm.ShowDupeMessage(Q: TQSO);
+var
+   msg: string;
+begin
+   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+      msg := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
+      WriteStatusLineRed(msg, True);
+   end;
 end;
 
 { TBandScopeNotifyThread }

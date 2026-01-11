@@ -423,6 +423,7 @@ type
     FStartTime: TDateTime;
     FEndTime: TDateTime;
     FPeriod: Integer;
+    FPartialList: TQSOList;
     procedure Delete(i : Integer);
     procedure ProcessDelete(beforeQSO: TQSO);
     procedure ProcessEdit(afterQSO: TQSO; fAdd: Boolean);
@@ -525,6 +526,9 @@ type
     procedure Renumber();
     procedure ChangeTimeZone();
 
+    function UpdatePartialList(CheckQSO: TQSO): Integer;
+    procedure ClearPartialList();
+
     property Saved: Boolean read FSaved write FSaved;
     property AcceptDifferentMode: Boolean read FAcceptDifferentMode write FAcceptDifferentMode;
     property CountHigherPoints: Boolean read FCountHigherPoints write FCountHigherPoints;
@@ -541,6 +545,7 @@ type
     property StartTime: TDateTime read FStartTime write FStartTime;
     property EndTime: TDateTime read GetEndTime;
     property Period: Integer read FPeriod write SetPeriod;
+    property PartialList: TQSOList read FPartialList;
 
     {$IFNDEF ZSERVER}
     property LastCallsign: string read GetLastCallsign;
@@ -1837,6 +1842,8 @@ begin
    FAllPhone := True;
    FQsoIdDic := TDictionary<Integer, TQSO>.Create(120000);
    FStartTime := 0;
+
+   FPartialList := TQSOList.Create();
 end;
 
 destructor TLog.Destroy;
@@ -1860,6 +1867,7 @@ begin
    FQsoList.Free();
    FQueList.Free();
    FQsoIdDic.Free();
+   FPartialList.Free();
 
    Inherited;
 end;
@@ -5492,6 +5500,78 @@ begin
          Log.QsoList[i].ToJST();
       end;
    end;
+end;
+
+function TLog.UpdatePartialList(CheckQSO: TQSO): Integer;
+var
+   i: Integer;
+   Q: TQSO;
+   Q2: TQSO;
+   PartialStr: string;
+begin
+   FPartialList.Clear();
+   PartialStr := CheckQSO.Callsign;
+
+   if dmZLogGlobal.Settings._searchafter >= length(PartialStr) then begin
+      Result := 0;
+      Exit;
+   end;
+
+   if PartialStr = '' then begin
+      Result := 0;
+      Exit;
+   end;
+
+   if PartialStr[1] = ',' then begin
+      Result := 0;
+      Exit;
+   end;
+
+   try
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+
+         if PartialMatch(PartialStr, Q.Callsign) then begin
+            Q2 := TQSO.Create();
+            Q2.Assign(Q);
+
+            // FULL MATCH�̏ꍇ
+            if (PartialStr = Q2.Callsign) and (CheckQSO.Band = Q2.Band) then begin
+               if FAcceptDifferentMode = False then begin
+                  Q2.Dupe := True;
+               end
+               else begin
+                  if FAllPhone = True then begin
+                     if CheckQSO.Mode2 = Q2.Mode2 then begin
+                        Q2.Dupe := True;
+                     end;
+                  end
+                  else begin
+                     if CheckQSO.Mode = Q.Mode then begin
+                        Q2.Dupe := True;
+                     end;
+                  end;
+               end;
+
+            end;
+            FPartialList.Add(Q2);
+         end;
+      end;
+
+      FPartialList.Sort(soTime);
+
+      // DUMMY QSO
+      Q := TQSO.Create();
+      Q.Callsign := 'dummy qso';
+      FPartialList.Insert(0, Q);
+   finally
+      Result := FPartialList.Count - 1;
+   end;
+end;
+
+procedure TLog.ClearPartialList();
+begin
+   FPartialList.Clear();
 end;
 
 { TQSOCallsignComparer }

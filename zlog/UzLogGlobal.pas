@@ -289,6 +289,7 @@ type
 
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
     _displaydatepartialcheck : boolean;
+    FUseIncrementalDupeCheck: Boolean;
 
     _super_check_columns: Integer;
     _super_check2_columns: Integer;
@@ -1394,6 +1395,9 @@ begin
       // Update using a thread
       Settings._renewbythread := ini.ReadBool('Misc', 'UpdateUsingThread', False);
 
+      // Use incremental dupe check
+      Settings.FUseIncrementalDupeCheck := ini.ReadBool('Usability', 'UseIncrementalDupeCheck', True);
+
       // grayline
       Settings.FShowGrayline := ini.ReadBool('Grayline', 'ShowGrayline', True);
       Settings.FShowMeridians := ini.ReadBool('Grayline', 'ShowMeridians', False);
@@ -2219,6 +2223,9 @@ begin
 
       // Update using a thread
       ini.WriteBool('Misc', 'UpdateUsingThread', Settings._renewbythread);
+
+      // Use incremental dupe check
+      ini.WriteBool('Usability', 'UseIncrementalDupeCheck', Settings.FUseIncrementalDupeCheck);
 
       // grayline
       ini.WriteBool('Grayline', 'ShowGrayline', Settings.FShowGrayline);

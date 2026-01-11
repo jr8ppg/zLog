@@ -470,6 +470,7 @@ type
     radioWebUpload2: TRadioButton;
     HandleEdit: TEdit;
     Label54: TLabel;
+    checkUseIncrementalDupeCheck: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1300,6 +1301,9 @@ begin
       // Update using a thread
       Settings._renewbythread := cbUpdateThread.Checked;
 
+      // Use incremental dupe check
+      Settings.FUseIncrementalDupeCheck := checkUseIncrementalDupeCheck.Checked;
+
       // Super Check group
 
       // SuperCheck
@@ -1732,6 +1736,9 @@ begin
 
       // Update using a thread
       cbUpdateThread.Checked := Settings._renewbythread;
+
+      // Use incremental dupe check
+      checkUseIncrementalDupeCheck.Checked := Settings.FUseIncrementalDupeCheck;
 
       // Super Check group
       case Settings.FSuperCheck.FSuperCheckMethod of

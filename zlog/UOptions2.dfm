@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetMisc
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -2885,7 +2885,7 @@ object formOptions2: TformOptions2
         Width = 423
         Height = 52
         Caption = 'Super Check'
-        TabOrder = 6
+        TabOrder = 7
         object radioSuperCheck0: TRadioButton
           Left = 12
           Top = 20
@@ -2931,7 +2931,7 @@ object formOptions2: TformOptions2
         Width = 423
         Height = 50
         Caption = 'N+1'
-        TabOrder = 7
+        TabOrder = 8
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
@@ -2976,7 +2976,7 @@ object formOptions2: TformOptions2
         Width = 423
         Height = 50
         Caption = 'Partial Check'
-        TabOrder = 8
+        TabOrder = 9
         object Label88: TLabel
           Left = 15
           Top = 24
@@ -3023,6 +3023,14 @@ object formOptions2: TformOptions2
           TabOrder = 2
           OnClick = buttonPartialCheckBackColorClick
         end
+      end
+      object checkUseIncrementalDupeCheck: TCheckBox
+        Left = 168
+        Top = 135
+        Width = 217
+        Height = 17
+        Caption = 'Use incremental dupe check'
+        TabOrder = 6
       end
     end
     object tabsheetQuickFunctions: TTabSheet
