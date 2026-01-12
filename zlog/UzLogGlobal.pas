@@ -121,6 +121,7 @@ type
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
+    _mygridloc: string;
     _mylatitude: string;
     _mylongitude: string;
 
@@ -1432,6 +1433,7 @@ begin
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
       Settings._contestmenuno := ini.ReadInteger('Categories', 'Contest', 1);
       Settings._mycall := ini.ReadString('Categories', 'MyCall', '');
+      Settings._mygridloc := ini.ReadString('Categories', 'MyGridLoc', 'PM96EJ');
       Settings._mylatitude := ini.ReadString('Categories', 'MyLatitude', '36.4');
       Settings._mylongitude := ini.ReadString('Categories', 'MyLongitude', '-138.38');
 
@@ -2259,6 +2261,7 @@ begin
       ini.WriteInteger('Categories', 'Contest', Settings._contestmenuno);
       ini.WriteInteger('Categories', 'TXNumber', Settings._txnr);
       ini.WriteString('Categories', 'MyCall', Settings._mycall);
+      ini.WriteString('Categories', 'MyGridLoc', Settings._mygridloc);
       ini.WriteString('Categories', 'MyLatitude', Settings._mylatitude);
       ini.WriteString('Categories', 'MyLongitude', Settings._mylongitude);
 

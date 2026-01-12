@@ -327,7 +327,6 @@ type
     comboVoiceDevice: TComboBox;
     Label38: TLabel;
     checkUseKhzQsyCommand: TCheckBox;
-    groupMyPosition: TGroupBox;
     editMyLatitude: TEdit;
     editMyLongitude: TEdit;
     Label39: TLabel;
@@ -384,7 +383,7 @@ type
     radioReliabilityHigh: TRadioButton;
     radioReliabilityMiddle: TRadioButton;
     tabsheetMyStation: TTabSheet;
-    groupMyCallsign: TGroupBox;
+    groupMyStation: TGroupBox;
     editMyCallsign: TEdit;
     groupMyParameter: TGroupBox;
     Label14: TLabel;
@@ -471,6 +470,11 @@ type
     HandleEdit: TEdit;
     Label54: TLabel;
     checkUseIncrementalDupeCheck: TCheckBox;
+    Label55: TLabel;
+    Label56: TLabel;
+    editMyGridLoc: TEdit;
+    buttonMyGridCalc: TButton;
+    buttonMyPositionCalc: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -534,6 +538,8 @@ type
     procedure buttonListForeClick(Sender: TObject);
     procedure checkListBoldClick(Sender: TObject);
     procedure buttonListResetClick(Sender: TObject);
+    procedure buttonMyGridCalcClick(Sender: TObject);
+    procedure buttonMyPositionCalcClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -597,7 +603,8 @@ implementation
 
 uses
   Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet, UPortConfigDialog,
-  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager, USpotterListDlg;
+  UZlinkTelnetSet, UZLinkForm, URigControl, UPluginManager, USpotterListDlg,
+  UDmsToGridDialog, UGridLocator;
 
 const
   QsoListDefaultColor: array[1..4] of TColorSetting = (
@@ -1038,6 +1045,7 @@ begin
       Settings._mycall := editMyCallsign.Text;
 
       // My position
+      Settings._mygridloc := editMyGridLoc.Text;
       Settings._mylatitude := editMyLatitude.Text;
       Settings._mylongitude := editMyLongitude.Text;
 
@@ -1462,6 +1470,7 @@ begin
       editMyCallsign.Text := Settings._mycall;
 
       // My position
+      editMyGridLoc.Text := Settings._mygridloc;
       editMyLatitude.Text := Settings._mylatitude;
       editMyLongitude.Text := Settings._mylongitude;
 
@@ -2671,6 +2680,40 @@ begin
    else begin
       FAdditionalPrePostProcessButton[i].Font.Style := [];
    end;
+end;
+
+procedure TformOptions2.buttonMyGridCalcClick(Sender: TObject);
+var
+   dlg: TformDmsToGridDialog;
+begin
+   dlg := TformDmsToGridDialog.Create(Self);
+   try
+      if dlg.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      editMyGridLoc.Text := dlg.GridLoc;
+      editMyLatitude.Text := dlg.Latitude;
+      editMyLongitude.Text := dlg.Longitude;
+   finally
+      dlg.Release();
+   end;
+
+end;
+
+procedure TformOptions2.buttonMyPositionCalcClick(Sender: TObject);
+var
+   strGridLoc: string;
+   latitude, longitude: Extended;
+begin
+   strGridLoc := editMyGridLoc.Text;
+   if Length(strGridLoc) <> 6 then begin
+      Exit;
+   end;
+
+   glGridToDeg(strGridLoc, latitude, longitude);
+   editMyLatitude.Text := Format('%.4f', [latitude]);
+   editMyLongitude.Text := Format('%.4f', [longitude * -1]);
 end;
 
 end.

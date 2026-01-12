@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMisc
+    ActivePage = tabsheetMyStation
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -554,58 +554,91 @@ object formOptions2: TformOptions2
             'P')
         end
       end
-      object groupMyPosition: TGroupBox
+      object groupMyStation: TGroupBox
         Left = 3
-        Top = 66
-        Width = 202
-        Height = 74
-        Caption = 'Positoin'
+        Top = 3
+        Width = 236
+        Height = 137
+        Caption = 'Station'
         TabOrder = 1
+        object Label55: TLabel
+          Left = 8
+          Top = 23
+          Width = 74
+          Height = 13
+          Caption = 'Callsign'
+        end
         object Label39: TLabel
           Left = 8
-          Top = 21
-          Width = 38
+          Top = 75
+          Width = 74
           Height = 13
           Caption = 'Latitude'
         end
         object Label42: TLabel
           Left = 8
-          Top = 48
-          Width = 47
+          Top = 101
+          Width = 74
           Height = 13
           Caption = 'Longitude'
         end
-        object editMyLatitude: TEdit
-          Left = 112
-          Top = 18
-          Width = 81
-          Height = 21
-          TabOrder = 0
+        object Label56: TLabel
+          Left = 8
+          Top = 49
+          Width = 74
+          Height = 13
+          Caption = 'GRID Loc.'
         end
-        object editMyLongitude: TEdit
-          Left = 112
-          Top = 45
-          Width = 81
-          Height = 21
-          TabOrder = 1
-        end
-      end
-      object groupMyCallsign: TGroupBox
-        Left = 3
-        Top = 3
-        Width = 202
-        Height = 57
-        Caption = 'Callsign'
-        TabOrder = 2
         object editMyCallsign: TEdit
-          Left = 52
+          Left = 88
           Top = 20
-          Width = 101
+          Width = 81
           Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imClose
           TabOrder = 0
+        end
+        object editMyLatitude: TEdit
+          Left = 88
+          Top = 72
+          Width = 81
+          Height = 21
+          TabOrder = 3
+        end
+        object editMyLongitude: TEdit
+          Left = 88
+          Top = 98
+          Width = 81
+          Height = 21
+          TabOrder = 4
+        end
+        object editMyGridLoc: TEdit
+          Left = 88
+          Top = 46
+          Width = 81
+          Height = 21
+          MaxLength = 6
+          TabOrder = 1
+        end
+        object buttonMyGridCalc: TButton
+          Left = 175
+          Top = 46
+          Width = 53
+          Height = 21
+          Caption = 'Calc.'
+          TabOrder = 2
+          OnClick = buttonMyGridCalcClick
+        end
+        object buttonMyPositionCalc: TButton
+          Left = 175
+          Top = 72
+          Width = 53
+          Height = 47
+          Caption = 'Calc.'
+          TabOrder = 5
+          WordWrap = True
+          OnClick = buttonMyPositionCalcClick
         end
       end
       object groupMyQslDefault: TGroupBox
@@ -614,7 +647,7 @@ object formOptions2: TformOptions2
         Width = 270
         Height = 50
         Caption = 'QSL Default'
-        TabOrder = 3
+        TabOrder = 2
         object radioQslNone: TRadioButton
           Left = 10
           Top = 22
@@ -648,7 +681,7 @@ object formOptions2: TformOptions2
         Width = 202
         Height = 211
         Caption = 'Parameters'
-        TabOrder = 4
+        TabOrder = 3
         object Label14: TLabel
           Left = 10
           Top = 23
@@ -3157,6 +3190,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

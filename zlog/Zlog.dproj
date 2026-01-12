@@ -3,7 +3,7 @@
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>zlog.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -561,6 +561,11 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzLogWebView2.pas"/>
+        <DCCReference Include="UDmsToGridDialog.pas">
+            <Form>formDmsToGridDialog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UGridLocator.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -763,7 +768,7 @@
                     <RDP_Source_Files Name="Item8">UVoiceForm.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item9">UNewPrefix.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item10">UIOTACategory.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item11">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item11">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">UBasicScore.dfm</RDP_Source_Files>
@@ -888,7 +893,8 @@
                     <RDP_Source_Files Name="Item133">UPrePostPlaybackDlg.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item134">UCwMessageEditor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item135">UJarlWebUpload2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item136">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item136">UDmsToGridDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item137">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>
