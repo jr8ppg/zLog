@@ -327,7 +327,7 @@ begin
    FUseSentRST := False;
    FAllowDxNoNumber := False;
    FSingle10G := True;
-   FSameExchange := False;
+   FSameExchange := True;
    FNrNumericComparison := False;
 end;
 
