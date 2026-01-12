@@ -14541,7 +14541,7 @@ function TMainForm.GetQsoList(): TQSOList;
 var
    L: TQSOList;
 begin
-   if (dmZLogGlobal.Settings.FUseIncrementalDupeCheck = True) and (Log.PartialList.Count > 1) then begin
+   if (dmZLogGlobal.Settings.FUseIncrementalDupeCheck = True) and (Log.PartialList.Count > 0) then begin
       L := Log.PartialList;
    end
    else if menuShowCurrentBandOnly.Checked then begin
