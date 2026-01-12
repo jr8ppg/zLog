@@ -5531,6 +5531,10 @@ begin
       for i := 1 to Log.TotalQSO do begin
          Q := Log.QsoList[i];
 
+         if (Q.Dupe = True) or (Q.Invalid = True) then begin
+            Continue;
+         end;
+
          if PartialMatch(PartialStr, Q.Callsign) then begin
             Q2 := TQSO.Create();
             Q2.Assign(Q);
