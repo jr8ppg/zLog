@@ -75,7 +75,7 @@ object MenuForm: TMenuForm
       Checked = True
       TabOrder = 0
       TabStop = True
-      OnClick = rbALLJAClick
+      OnClick = SelectContestClick
     end
     object rb6D: TRadioButton
       Tag = 1
@@ -85,7 +85,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = '6m && Down '
       TabOrder = 1
-      OnClick = rb6DClick
+      OnClick = SelectContestClick
     end
     object rbFD: TRadioButton
       Tag = 2
@@ -95,7 +95,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'Field Day'
       TabOrder = 2
-      OnClick = rbFDClick
+      OnClick = SelectContestClick
     end
     object rbACAG: TRadioButton
       Tag = 3
@@ -111,7 +111,7 @@ object MenuForm: TMenuForm
       Font.Style = []
       ParentFont = False
       TabOrder = 3
-      OnClick = rbACAGClick
+      OnClick = SelectContestClick
     end
     object rbCQWW: TRadioButton
       Tag = 101
@@ -121,7 +121,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'CQ WW'
       TabOrder = 7
-      OnClick = rbARRLWClick
+      OnClick = SelectContestClick
     end
     object rbJIDXJA: TRadioButton
       Tag = 103
@@ -131,7 +131,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'JIDX'
       TabOrder = 9
-      OnClick = rbARRLWClick
+      OnClick = SelectContestClick
     end
     object rbCQWPX: TRadioButton
       Tag = 102
@@ -141,7 +141,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'CQ WPX'
       TabOrder = 8
-      OnClick = rbARRLWClick
+      OnClick = SelectContestClick
     end
     object rbPedi: TRadioButton
       Tag = 200
@@ -151,7 +151,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'DXpedition'
       TabOrder = 14
-      OnClick = rbPediClick
+      OnClick = SelectContestClick
     end
     object rbJIDXDX: TRadioButton
       Tag = 112
@@ -162,7 +162,7 @@ object MenuForm: TMenuForm
       Caption = 'JIDX (DX)'
       TabOrder = 10
       Visible = False
-      OnClick = rbARRLWClick
+      OnClick = SelectContestClick
     end
     object rbGeneral: TRadioButton
       Tag = 959
@@ -178,7 +178,7 @@ object MenuForm: TMenuForm
       Font.Style = []
       ParentFont = False
       TabOrder = 15
-      OnClick = UserDefClick
+      OnClick = SelectContestClick
       OnEnter = rbGeneralEnter
       OnExit = rbGeneralExit
     end
@@ -190,7 +190,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'ARRL DX (DX)'
       TabOrder = 13
-      OnClick = rbARRLWClick
+      OnClick = SelectContestClick
     end
     object rbARRLW: TRadioButton
       Tag = 106
@@ -200,7 +200,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'ARRL DX (W/VE)'
       TabOrder = 12
-      OnClick = rbARRLWClick
+      OnClick = SelectContestClick
     end
     object rbAPSprint: TRadioButton
       Tag = 105
@@ -210,7 +210,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'AP Sprint'
       TabOrder = 11
-      OnClick = rbAPSprintClick
+      OnClick = SelectContestClick
     end
     object rbJA0in: TRadioButton
       Tag = 4
@@ -220,7 +220,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'ALL JA0 (JA0)'
       TabOrder = 4
-      OnClick = rbJA0inClick
+      OnClick = SelectContestClick
     end
     object rbJA0out: TRadioButton
       Tag = 5
@@ -230,7 +230,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'ALL JA0 (others)'
       TabOrder = 5
-      OnClick = rbJA0inClick
+      OnClick = SelectContestClick
     end
     object rbIARU: TRadioButton
       Tag = 109
@@ -240,7 +240,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'IARU HF'
       TabOrder = 16
-      OnClick = rbIARUClick
+      OnClick = SelectContestClick
     end
     object rbAllAsian: TRadioButton
       Tag = 110
@@ -250,7 +250,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'All Asian DX (Asia)'
       TabOrder = 17
-      OnClick = rbARRLWClick
+      OnClick = SelectContestClick
     end
     object rbIOTA: TRadioButton
       Tag = 111
@@ -260,7 +260,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'IOTA'
       TabOrder = 18
-      OnClick = rbIOTAClick
+      OnClick = SelectContestClick
     end
     object rbARRL10: TRadioButton
       Tag = 108
@@ -270,17 +270,17 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'ARRL 10 m'
       TabOrder = 19
-      OnClick = rbARRL10Click
+      OnClick = SelectContestClick
     end
     object rbWAE: TRadioButton
-      Tag = 112
+      Tag = 113
       Left = 136
       Top = 176
       Width = 113
       Height = 17
       Caption = 'WAEDC (DX)'
       TabOrder = 20
-      OnClick = rbWAEClick
+      OnClick = SelectContestClick
     end
     object rbNYP: TRadioButton
       Tag = 6
@@ -290,7 +290,7 @@ object MenuForm: TMenuForm
       Height = 17
       Caption = 'NEW YEAR PARTY'
       TabOrder = 6
-      OnClick = rbNYPClick
+      OnClick = SelectContestClick
     end
   end
   object ModeGroup: TRadioGroup

@@ -47,28 +47,13 @@ type
     rbNYP: TRadioButton;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
-      procedure rbCQWWClick(Sender: TObject);
       procedure rbGeneralEnter(Sender: TObject);
       procedure rbGeneralExit(Sender: TObject);
       procedure SelectButtonClick(Sender: TObject);
-      procedure rbALLJAClick(Sender: TObject);
-      procedure rbPediClick(Sender: TObject);
-      procedure rbACAGClick(Sender: TObject);
-      procedure rb6DClick(Sender: TObject);
-      procedure rbFDClick(Sender: TObject);
-      procedure rbJA0inClick(Sender: TObject);
-      procedure rbARRLWClick(Sender: TObject);
-      procedure rbAPSprintClick(Sender: TObject);
+      procedure SelectContestClick(Sender: TObject);
       procedure OpGroupClick(Sender: TObject);
-      procedure UserDefClick(Sender: TObject);
-      procedure rbIARUClick(Sender: TObject);
-      procedure rbIOTAClick(Sender: TObject);
-      procedure rbARRL10Click(Sender: TObject);
-      procedure FnugrySingleInstance1AlreadyRunning(Sender: TObject; hPrevInst, hPrevWnd: Integer);
-      procedure rbWAEClick(Sender: TObject);
       procedure OKButtonClick(Sender: TObject);
       procedure FormDestroy(Sender: TObject);
-    procedure rbNYPClick(Sender: TObject);
    private
       FSelectContest: array[0..20] of TRadioButton;
       FCFGFileName: string;
@@ -77,7 +62,7 @@ type
       FSelectedContest: TUserDefinedContest;
       FNeedFree: Boolean;
 
-      procedure EnableEveryThing;
+      procedure EnableEveryThing(contestno: Integer);
 
       function GetContestCategory(): TContestCategory;
       function GetContestMode(): TContestMode;
@@ -146,9 +131,9 @@ procedure TMenuForm.FormShow(Sender: TObject);
 var
    parser: TUserDefinedContest;
 begin
-   ModeGroup.ItemIndex := Integer(dmZlogGlobal.ContestMode);
+   ModeGroup.ItemIndex := Integer(dmZLogGlobal.ContestMode);
 
-   case dmZlogGlobal.ContestCategory of
+   case dmZLogGlobal.ContestCategory of
       ccSingleOp: begin
          radioSingleOp.Checked := True;
       end;
@@ -166,9 +151,9 @@ begin
       end;
    end;
 
-   EnableEveryThing;
+   ContestNumber := dmZLogGlobal.ContestMenuNo;
 
-   ContestNumber := dmZlogGlobal.ContestMenuNo;
+   EnableEveryThing(ContestNumber);
 
    if rbGeneral.Checked then begin
       // 前回使用のCFGファイル
@@ -176,7 +161,7 @@ begin
 
       // 無ければCFGDATパスの同名ファイル
       if (FCFGFileName <> '') and (FileExists(FCFGFileName) = False) then begin
-         FCFGFileName := dmZlogGlobal.CfgDatPath + ExtractFileName(FCFGFileName);
+         FCFGFileName := dmZLogGlobal.CfgDatPath + ExtractFileName(FCFGFileName);
 
          // さらに無ければ前回選択コンテストはなし
          if FileExists(FCFGFileName) = False then begin
@@ -202,13 +187,6 @@ begin
    end;
 end;
 
-procedure TMenuForm.rbCQWWClick(Sender: TObject);
-begin
-   if ModeGroup.ItemIndex in [0, 3] then begin
-      ModeGroup.ItemIndex := 1;
-   end;
-end;
-
 procedure TMenuForm.rbGeneralEnter(Sender: TObject);
 begin
 // SelectButton.Enabled := True;
@@ -223,7 +201,7 @@ end;
 
 procedure TMenuForm.SelectButtonClick(Sender: TObject);
 begin
-   FSelectDlg.CfgFolder := dmZlogGlobal.CfgDatPath;
+   FSelectDlg.CfgFolder := dmZLogGlobal.CfgDatPath;
 
    FSelectDlg.InitialContestName := rbGeneral.Caption;
 
@@ -232,8 +210,8 @@ begin
    end;
 
    // フォルダ未設定時は記録する
-   if dmZlogGlobal.CfgDatPath = '' then begin
-      dmZlogGlobal.CfgDatPath := FSelectDlg.CfgFolder;
+   if dmZLogGlobal.CfgDatPath = '' then begin
+      dmZLogGlobal.CfgDatPath := FSelectDlg.CfgFolder;
    end;
 
    FCFGFileName := FSelectDlg.SelectedContest.Fullpath;
@@ -284,7 +262,7 @@ begin
    ModalResult := mrOK;
 end;
 
-procedure TMenuForm.EnableEveryThing;
+procedure TMenuForm.EnableEveryThing(contestno: Integer);
 var
    i: Integer;
 begin
@@ -305,71 +283,86 @@ begin
    SelectButton.Enabled := False;
    ScoreCoeffEdit.Enabled := False;
    OKButton.Enabled := True;
+
+   case contestno of
+      // ALLJA,6D,ACAG,ARRL10,IARU,IOTA
+      0, 1, 3, 108, 109, 111: begin
+         ScoreCoeffEdit.Enabled := False;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 0;
+      end;
+
+      // FD
+      2: begin
+         ScoreCoeffEdit.Enabled := True;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 0;
+      end;
+
+      // ALL JA0
+      4, 5: begin
+         ScoreCoeffEdit.Enabled := False;
+         ModeGroup.Controls[2].Enabled := False;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 0;
+
+         radioSingleOp.Checked := True;
+         radioMultiOpMultiTx.Enabled := False;
+         comboTxNo.Enabled := False;
+      end;
+
+      // NYP
+      6: begin
+         ScoreCoeffEdit.Enabled := False;
+         radioSingleOp.Checked := True;
+         ModeGroup.ItemIndex := 0;
+      end;
+
+      // CQWW,CQWPX,JIDX,ARRLDX(W/VE),ARRLDX(DX),ALLASIA,JIDX(DX)
+      101, 102, 103, 106, 107, 110, 112, 113: begin
+         ScoreCoeffEdit.Enabled := False;
+         ModeGroup.Controls[0].Enabled := False;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 1;
+      end;
+
+      // APSprint
+      105: begin
+         ModeGroup.Controls[0].Enabled := False;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 1;
+         radioSingleOp.Checked := True;
+         radioMultiOpMultiTx.Enabled := False;
+         comboTxNo.Enabled := False;
+      end;
+
+      // PEDI
+      200: begin
+         ScoreCoeffEdit.Enabled := False;
+         ModeGroup.ItemIndex := 0;
+      end;
+
+      // User Defined Contest
+      959: begin
+         if CFGFileName <> '' then begin
+            if UsesCoeff(CFGFileName) then begin
+               ScoreCoeffEdit.Enabled := True;
+            end;
+         end;
+
+         if CFGFileName = '' then begin
+            OKButton.Enabled := False;
+         end;
+
+         SelectButton.Enabled := True;
+         ModeGroup.ItemIndex := 0;
+      end;
+   end;
 end;
 
-procedure TMenuForm.rbALLJAClick(Sender: TObject);
+procedure TMenuForm.SelectContestClick(Sender: TObject);
 begin
-   EnableEveryThing;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rbPediClick(Sender: TObject);
-begin
-   EnableEveryThing;
-end;
-
-procedure TMenuForm.rbACAGClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rb6DClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rbFDClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ScoreCoeffEdit.Enabled := True;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rbJA0inClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[2].Enabled := False;
-   ModeGroup.Controls[3].Enabled := False;
-
-   radioSingleOp.Checked := True;
-   radioMultiOpMultiTx.Enabled := False;
-   comboTxNo.Enabled := False;
-end;
-
-procedure TMenuForm.rbNYPClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   radioSingleOp.Checked := True;
-end;
-
-procedure TMenuForm.rbARRLWClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[0].Enabled := False;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rbAPSprintClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[0].Enabled := False;
-   ModeGroup.Controls[3].Enabled := False;
-
-   radioSingleOp.Checked := True;
-   radioMultiOpMultiTx.Enabled := False;
-   comboTxNo.Enabled := False;
+   EnableEveryThing(TRadioButton(Sender).Tag);
 end;
 
 procedure TMenuForm.OpGroupClick(Sender: TObject);
@@ -397,53 +390,7 @@ begin
       end;
    end;
 
-   comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(dmZlogGlobal.TXNr));
-end;
-
-procedure TMenuForm.UserDefClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   if CFGFileName <> '' then begin
-      if UsesCoeff(CFGFileName) then begin
-         ScoreCoeffEdit.Enabled := True;
-      end;
-   end;
-
-   if CFGFileName = '' then begin
-      OKButton.Enabled := False;
-   end;
-
-   SelectButton.Enabled := True;
-end;
-
-procedure TMenuForm.rbIARUClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rbIOTAClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.rbARRL10Click(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[3].Enabled := False;
-end;
-
-procedure TMenuForm.FnugrySingleInstance1AlreadyRunning(Sender: TObject; hPrevInst, hPrevWnd: Integer);
-begin
-   Close;
-end;
-
-procedure TMenuForm.rbWAEClick(Sender: TObject);
-begin
-   EnableEveryThing;
-   ModeGroup.Controls[0].Enabled := False;
-   ModeGroup.Controls[3].Enabled := False;
+   comboTxNo.ItemIndex := comboTxNo.Items.IndexOf(IntToStr(dmZLogGlobal.TXNr));
 end;
 
 function TMenuForm.GetContestCategory(): TContestCategory;
