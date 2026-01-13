@@ -2706,7 +2706,7 @@ var
    strGridLoc: string;
    latitude, longitude: Extended;
 begin
-   strGridLoc := editMyGridLoc.Text;
+   strGridLoc := UpperCase(editMyGridLoc.Text);
    if Length(strGridLoc) <> 6 then begin
       Exit;
    end;

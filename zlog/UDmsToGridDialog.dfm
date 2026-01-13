@@ -85,6 +85,8 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Top = 22
       Width = 41
       Height = 21
+      MaxLength = 3
+      NumbersOnly = True
       TabOrder = 0
       Text = '138'
     end
@@ -93,6 +95,8 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Top = 22
       Width = 29
       Height = 21
+      MaxLength = 2
+      NumbersOnly = True
       TabOrder = 1
       Text = '10'
     end
@@ -101,6 +105,8 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Top = 22
       Width = 29
       Height = 21
+      MaxLength = 2
+      NumbersOnly = True
       TabOrder = 2
       Text = '10'
     end
@@ -109,6 +115,8 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Top = 49
       Width = 41
       Height = 21
+      MaxLength = 3
+      NumbersOnly = True
       TabOrder = 3
       Text = '138'
     end
@@ -117,6 +125,8 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Top = 49
       Width = 29
       Height = 21
+      MaxLength = 2
+      NumbersOnly = True
       TabOrder = 4
       Text = '10'
     end
@@ -125,6 +135,8 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Top = 49
       Width = 29
       Height = 21
+      MaxLength = 2
+      NumbersOnly = True
       TabOrder = 5
       Text = '10'
     end
