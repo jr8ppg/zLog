@@ -29,7 +29,7 @@ object formOptions2: TformOptions2
       Caption = 'My station'
       ImageIndex = 8
       object groupMyActiveBands: TGroupBox
-        Left = 245
+        Left = 253
         Top = 3
         Width = 270
         Height = 278
@@ -642,7 +642,7 @@ object formOptions2: TformOptions2
         end
       end
       object groupMyQslDefault: TGroupBox
-        Left = 245
+        Left = 253
         Top = 287
         Width = 270
         Height = 50
@@ -678,8 +678,8 @@ object formOptions2: TformOptions2
       object groupMyParameter: TGroupBox
         Left = 3
         Top = 146
-        Width = 202
-        Height = 211
+        Width = 236
+        Height = 235
         Caption = 'Parameters'
         TabOrder = 3
         object Label14: TLabel
@@ -727,9 +727,16 @@ object formOptions2: TformOptions2
         object Label54: TLabel
           Left = 11
           Top = 177
-          Width = 85
+          Width = 78
           Height = 13
-          Caption = 'Handle Name($H)'
+          Caption = 'Handle(CW)($H)'
+        end
+        object Label62: TLabel
+          Left = 11
+          Top = 203
+          Width = 75
+          Height = 13
+          Caption = 'Handle(PH)($H)'
         end
         object ProvEdit: TEdit
           Left = 112
@@ -792,15 +799,25 @@ object formOptions2: TformOptions2
           MaxLength = 5
           TabOrder = 5
         end
-        object HandleEdit: TEdit
+        object HandleCwEdit: TEdit
           Left = 112
           Top = 176
-          Width = 81
+          Width = 116
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
-          MaxLength = 5
+          MaxLength = 20
           TabOrder = 6
+        end
+        object HandlePhEdit: TEdit
+          Left = 112
+          Top = 202
+          Width = 116
+          Height = 20
+          AutoSize = False
+          CharCase = ecUpperCase
+          MaxLength = 20
+          TabOrder = 7
         end
       end
     end
@@ -3190,7 +3207,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

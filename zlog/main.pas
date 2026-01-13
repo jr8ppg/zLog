@@ -1155,9 +1155,6 @@ type
     // QSO Search
     FSearchPosition: Integer;
 
-    // New Partial
-    FPartialList: TQSOList;
-
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -2560,6 +2557,7 @@ begin
          dmZLogKeyer.WinKeyerSetPinCfg(True);
       end;
    end;
+   SentNumberEdit.Text := GetInitNrSent(CurrentQSO);
 
    ShowToolBar(M);
 
@@ -8931,7 +8929,11 @@ begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
-      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._handle = '')) then begin
+      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._handle_cw = '')) then begin
+         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         fShowOptionsDialog := True;
+      end
+      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._handle_ph = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end;
@@ -15242,7 +15244,12 @@ begin
    S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
    S := StringReplace(S, '$A', dmZLogGlobal.Settings._age, [rfReplaceAll]);
    S := StringReplace(S, '$T', dmZLogGlobal.Settings._iota, [rfReplaceAll]);
-   S := StringReplace(S, '$H', dmZLogGlobal.Settings._handle, [rfReplaceAll]);
+   if (aQSO.Mode = mCw) or (aQSO.Mode = mRtty) then begin
+      S := StringReplace(S, '$H', dmZLogGlobal.Settings._handle_cw, [rfReplaceAll]);
+   end
+   else begin
+      S := StringReplace(S, '$H', dmZLogGlobal.Settings._handle_ph, [rfReplaceAll]);
+   end;
    Result := S;
 end;
 

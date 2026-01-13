@@ -133,7 +133,8 @@ type
     _iaruzone: string;
     _age: string; // all asian
     _iota: string;
-    _handle: string;
+    _handle_cw: string;
+    _handle_ph: string;
     _powerH: string;
     _powerM: string;
     _powerL: string;
@@ -1005,7 +1006,8 @@ begin
       Settings._iota := ini.ReadString('Profiles', 'Iota', '');
 
       // Handle Name
-      Settings._handle := ini.ReadString('Profiles', 'HandleName', '');
+      Settings._handle_cw := ini.ReadString('Profiles', 'HandleNameCw', '');
+      Settings._handle_ph := ini.ReadString('Profiles', 'HandleNamePh', '');
 
       // Power(HMLP)
       Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
@@ -1884,7 +1886,8 @@ begin
       ini.WriteString('Profiles', 'Iota', Settings._iota);
 
       // Handle Name
-      ini.WriteString('Profiles', 'HandleName', Settings._handle);
+      ini.WriteString('Profiles', 'HandleNameCw', Settings._handle_cw);
+      ini.WriteString('Profiles', 'HandleNamePh', Settings._handle_ph);
 
       // Power(HMLP)
       ini.WriteString('Profiles', 'PowerH', Settings._powerH);
