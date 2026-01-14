@@ -1516,7 +1516,7 @@ resourcestring
   TMainForm_To_Change_the_mode = 'To change the operating mode, first turn off the F2A mode.';  // 'モードを変更するには、先にF2Aモードをoffにして下さい'
   TMainForm_To_Change_the_band = 'To change the operating band, first turn off the F2A mode.';  // 'バンドを変更するには、先にF2Aモードをoffにして下さい'
   TMainform_rbn_verified = 'Verification results' + #13#10 + '%1 of %2 stations were verified with RBN';
-  TMainform_darmode_changed = 'Dark Mode changes will take effect on the next startup.';  // ダークモードの変更は次の起動時に反映されます。
+  TMainform_darkmode_changed = 'Dark Mode changes will take effect on the next startup.';  // ダークモードの変更は次の起動時に反映されます。
   TMainForm_partial_nomatch = 'NO MATCH!';
 
 var
@@ -6712,7 +6712,7 @@ begin
       dmZlogGlobal.SaveCurrentSettings();
 
       if fPrevDarkMode <> dmZLogGlobal.Settings.FUseDarkMode then begin
-         MessageBox(Handle, PChar(TMainform_darmode_changed), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         MessageBox(Handle, PChar(TMainform_darkmode_changed), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       end;
 
       InitBandMenu();
