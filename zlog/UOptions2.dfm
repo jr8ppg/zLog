@@ -564,28 +564,28 @@ object formOptions2: TformOptions2
         object Label55: TLabel
           Left = 8
           Top = 23
-          Width = 74
+          Width = 36
           Height = 13
           Caption = 'Callsign'
         end
         object Label39: TLabel
           Left = 8
           Top = 75
-          Width = 74
+          Width = 38
           Height = 13
           Caption = 'Latitude'
         end
         object Label42: TLabel
           Left = 8
           Top = 101
-          Width = 74
+          Width = 47
           Height = 13
           Caption = 'Longitude'
         end
         object Label56: TLabel
           Left = 8
           Top = 49
-          Width = 74
+          Width = 51
           Height = 13
           Caption = 'GRID Loc.'
         end
@@ -2932,13 +2932,13 @@ object formOptions2: TformOptions2
       object GroupBox8: TGroupBox
         Left = 6
         Top = 155
-        Width = 423
+        Width = 512
         Height = 52
         Caption = 'Super Check'
         TabOrder = 7
         object radioSuperCheck0: TRadioButton
           Left = 12
-          Top = 20
+          Top = 24
           Width = 41
           Height = 17
           Caption = 'SPC'
@@ -2949,7 +2949,7 @@ object formOptions2: TformOptions2
         end
         object radioSuperCheck1: TRadioButton
           Left = 64
-          Top = 20
+          Top = 24
           Width = 83
           Height = 17
           Caption = 'ZLO/ZLOX'
@@ -2958,7 +2958,7 @@ object formOptions2: TformOptions2
         end
         object radioSuperCheck2: TRadioButton
           Left = 153
-          Top = 20
+          Top = 24
           Width = 96
           Height = 17
           Caption = 'Both'
@@ -2966,9 +2966,9 @@ object formOptions2: TformOptions2
           OnClick = OnNeedSuperCheckLoad
         end
         object checkAcceptDuplicates: TCheckBox
-          Left = 296
-          Top = 20
-          Width = 117
+          Left = 372
+          Top = 24
+          Width = 129
           Height = 17
           Caption = 'Accept duplicates'
           TabOrder = 3
@@ -2978,7 +2978,7 @@ object formOptions2: TformOptions2
       object GroupBox5: TGroupBox
         Left = 6
         Top = 213
-        Width = 423
+        Width = 512
         Height = 50
         Caption = 'N+1'
         TabOrder = 8
@@ -3002,18 +3002,18 @@ object formOptions2: TformOptions2
           StyleElements = [seFont, seBorder]
         end
         object buttonFullmatchSelectColor: TButton
-          Left = 318
+          Left = 327
           Top = 21
-          Width = 45
+          Width = 53
           Height = 20
           Caption = 'Color...'
           TabOrder = 2
           OnClick = buttonFullmatchSelectColorClick
         end
         object buttonFullmatchInitColor: TButton
-          Left = 368
+          Left = 448
           Top = 21
-          Width = 45
+          Width = 53
           Height = 20
           Caption = 'Reset'
           TabOrder = 3
@@ -3023,7 +3023,7 @@ object formOptions2: TformOptions2
       object GroupBox22: TGroupBox
         Left = 6
         Top = 269
-        Width = 423
+        Width = 512
         Height = 50
         Caption = 'Partial Check'
         TabOrder = 9
@@ -3048,16 +3048,16 @@ object formOptions2: TformOptions2
         object buttonPartialCheckForeColor: TButton
           Left = 268
           Top = 20
-          Width = 45
+          Width = 53
           Height = 20
           Caption = 'Fore...'
           TabOrder = 1
           OnClick = buttonPartialCheckForeColorClick
         end
         object buttonPartialCheckInitColor: TButton
-          Left = 368
+          Left = 448
           Top = 20
-          Width = 45
+          Width = 53
           Height = 20
           Caption = 'Reset'
           TabOrder = 3
@@ -3065,9 +3065,9 @@ object formOptions2: TformOptions2
         end
         object buttonPartialCheckBackColor: TButton
           Tag = 1
-          Left = 318
+          Left = 327
           Top = 20
-          Width = 45
+          Width = 53
           Height = 20
           Caption = 'Back...'
           TabOrder = 2
@@ -3207,6 +3207,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0
