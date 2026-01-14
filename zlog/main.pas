@@ -8420,7 +8420,7 @@ begin
       ColWidths[0] := 3 * nColWidth;
 
       // 1:date
-      if MyContest.ColWidths[0] = 0 then begin
+      if MyContest.ColWidths[1] = 0 then begin
          ColWidths[1] := -1;
       end
       else begin
