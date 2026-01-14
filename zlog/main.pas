@@ -1517,6 +1517,7 @@ resourcestring
   TMainForm_To_Change_the_band = 'To change the operating band, first turn off the F2A mode.';  // 'バンドを変更するには、先にF2Aモードをoffにして下さい'
   TMainform_rbn_verified = 'Verification results' + #13#10 + '%1 of %2 stations were verified with RBN';
   TMainform_darmode_changed = 'Dark Mode changes will take effect on the next startup.';  // ダークモードの変更は次の起動時に反映されます。
+  TMainForm_partial_nomatch = 'NO MATCH!';
 
 var
   MainForm: TMainForm;
@@ -2781,6 +2782,11 @@ begin
 
       for i := L.Count to Grid.RowCount - 1 do begin
          GridClearQSO(i);
+      end;
+
+      // Partialモードでリストが空の場合
+      if (L = Log.PartialList) and (L.Count = 1) then begin
+         Grid.Cells[3, 1] := TMainForm_partial_nomatch;
       end;
 
       if (L = Log.PartialList) and (DupeIndex > 0) then begin
