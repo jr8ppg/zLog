@@ -3,11 +3,11 @@ unit URateDialogEx;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, System.Math, System.DateUtils,
-  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
-  VCLTee.Series, UOptions, UzLogGlobal, UzLogQSO, UzLogConst, Vcl.ComCtrls,
-  Vcl.Grids, UQsoTarget, Vcl.Menus;
+  WinApi.Windows, System.SysUtils, System.Classes, Vcl.Graphics, Vcl.Forms,
+  Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, System.Math,
+  System.DateUtils, VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs,
+  VCLTee.Chart, VCLTee.Series, VCLTee.TeCanvas, Vcl.Menus, Vcl.ComCtrls, Vcl.Grids,
+  UOptions, UzLogGlobal, UzLogQSO, UzLogConst, UQsoTarget;
 
 type
   TRateDialogEx = class(TForm)
@@ -1643,9 +1643,9 @@ begin
       for i := 1 to h do begin
          ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual) + '/' +     // 実績値
                                     IntToStr(ATarget.Bands[b].Hours[i].Target);
-         ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual) + '/' +        // 合計
+         ScoreGrid2.Cells[i, 23] := IntToStr(ATarget.Total.Hours[i].Actual) + '/' +        // 合計
                                     IntToStr(ATarget.Total.Hours[i].Target);
-         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Cumulative.Hours[i].Actual) + '/' +   // 累計
+         ScoreGrid2.Cells[i, 24] := IntToStr(ATarget.Cumulative.Hours[i].Actual) + '/' +   // 累計
                                     IntToStr(ATarget.Cumulative.Hours[i].Target);
       end;
 
@@ -1657,7 +1657,7 @@ begin
 
          a := ATarget.Total.Total2(h).Actual;
          t := ATarget.Total.Total2(h).Target;
-         ScoreGrid2.Cells[h + 1, 17] := IntToStr(a - t);       // 合計の差
+         ScoreGrid2.Cells[h + 1, 23] := IntToStr(a - t);       // 合計の差
       end;
 
       // 合計列
@@ -1671,13 +1671,13 @@ begin
    end;
 
    // Total
-   ScoreGrid2.Cells[49, 17]   := IntToStr(ATarget.TotalTotal.Actual);
+   ScoreGrid2.Cells[49, 23]   := IntToStr(ATarget.TotalTotal.Actual);
 
    // Target
-   ScoreGrid2.Cells[50, 17]   := IntToStr(ATarget.TotalTotal.Target);
+   ScoreGrid2.Cells[50, 23]   := IntToStr(ATarget.TotalTotal.Target);
 
    // Diff.
-   ScoreGrid2.Cells[51, 17]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+   ScoreGrid2.Cells[51, 23]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
 
    ScoreGrid2.Refresh();
 end;
