@@ -3034,17 +3034,17 @@ end;
 
 procedure TMainForm.FileNew(Sender: TObject);
 var
-   R: word;
+   R: Integer;
    S: string;
 begin
    if Log.Saved = False then begin
       S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
-      R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
+      R := MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNOCANCEL or MB_ICONEXCLAMATION);
       case R of
-         mrYes:
+         IDYES:
             FileSave(Sender);
-         mrCancel:
-            exit;
+         IDCANCEL:
+            Exit;
       end;
    end;
 
@@ -3058,29 +3058,45 @@ begin
 end;
 
 procedure TMainForm.FileOpen(Sender: TObject);
+var
+   S: string;
+   R: Integer;
 begin
+   if Log.Saved = False then begin
+      S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
+      R := MessageBox(Handle, PChar(S), PChar(Application.Title), MB_YESNOCANCEL or MB_ICONEXCLAMATION);
+      case R of
+         IDYES:
+            FileSave(Sender);
+         IDCANCEL:
+            Exit;
+      end;
+   end;
+
    OpenDialog.Title := 'Open file';
    OpenDialog.InitialDir := dmZlogGlobal.LogPath;
    OpenDialog.FileName := '';
    OpenDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
 
-   if OpenDialog.Execute then begin
-      zyloContestClosed;
-      WriteStatusLine(TMainForm_Loading_now, False);
-      dmZLogGlobal.SetLogFileName(OpenDialog.filename);
-      LoadNewContestFromFile(OpenDialog.filename);
-      WriteStatusLine('', False);
-      SetWindowCaption();
-      RenewScore();
-      FRateDialog.UpdateGraph();
-      FRateDialogEx.UpdateGraph();
-      dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
-
-      if MyContest.ClassType = TGeneralContest then
-        zyloContestOpened(MyContest.Name, TGeneralContest(MyContest).Config.FileName)
-      else
-        zyloContestOpened(MyContest.Name, '');
+   if OpenDialog.Execute = False then begin
+      Exit;
    end;
+
+   zyloContestClosed;
+   WriteStatusLine(TMainForm_Loading_now, False);
+   dmZLogGlobal.SetLogFileName(OpenDialog.filename);
+   LoadNewContestFromFile(OpenDialog.filename);
+   WriteStatusLine('', False);
+   SetWindowCaption();
+   RenewScore();
+   FRateDialog.UpdateGraph();
+   FRateDialogEx.UpdateGraph();
+   dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
+
+   if MyContest.ClassType = TGeneralContest then
+     zyloContestOpened(MyContest.Name, TGeneralContest(MyContest).Config.FileName)
+   else
+     zyloContestOpened(MyContest.Name, '');
 end;
 
 procedure TMainForm.menuSelectContestClick(Sender: TObject);
@@ -8581,8 +8597,15 @@ begin
       if (fSelectContestOnStartup = True) or (Message.WParam = 1) then begin
          if fNewContest = True then begin // new contest
             if menu.ShowModal() = mrCancel then begin
-               // 選択を行わない場合はPediモードとする
-               StartDXPedi();
+               // 選択を行わない場合
+               if Message.WParam = 1 then begin
+                  // コンテストを選択からは何もしない
+                  Exit;
+               end
+               else begin
+                  // 起動時はPediモードとする
+                  StartDXPedi();
+               end;
             end
             else begin
                dmZLogGlobal.ContestCategory := menu.ContestCategory;
