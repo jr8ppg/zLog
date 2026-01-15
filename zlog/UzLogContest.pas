@@ -41,6 +41,7 @@ type
     FAdifContestId: string;
 
     FColWidths: array[0..16] of Integer;
+    FUseNrIme: Boolean;
 
     // Display exchange on other bands
     FSameExchange: Boolean; // true by default. false when serial number etc
@@ -104,6 +105,7 @@ type
     property SerialType: TSerialType read FSerialType write FSerialType;
 
     property ColWidths[Index: Integer]: Integer read GetColWidths write SetColWidths;
+    property UseNrIme: Boolean read FUseNrIme write FUseNrIme;
     property SentStr: string read FSentStr;
     property SameExchange: Boolean read FSameExchange;
     property MultiForm: TBasicMulti read FMultiForm;
@@ -321,6 +323,7 @@ begin
    FColWidths[14] := 3;     // multi2
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
+   FUseNrIme := False;
 end;
 
 destructor TContest.Destroy;
@@ -502,6 +505,14 @@ begin
    end;
    if (Pos('$T', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iota = '') then begin
       Exit;
+   end;
+   if (Pos('$H', dmZlogGlobal.Settings._sentstr) > 0) then begin
+      if ((aQSO.Mode = mCw) or (aQSO.Mode = mRtty)) and (dmZLogGlobal.Settings._handle_cw = '') then begin
+         Exit;
+      end
+      else if (dmZLogGlobal.Settings._handle_ph = '') then begin
+         Exit;
+      end;
    end;
 
    S := SetStrNoAbbrev(dmZlogGlobal.Settings._sentstr, aQSO);
@@ -1206,6 +1217,8 @@ begin
          FColWidths[14] := 0;
       end;
    end;
+
+   FUseNrIme := FConfig.UseNrIme;
 end;
 
 destructor TGeneralContest.Destroy();
@@ -1709,6 +1722,7 @@ begin
    FColWidths[14] := 0;     // multi2
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
+   FUseNrIme := True;
 end;
 
 function TNYP.GetNewMulti1(aQSO: TQSO): string;

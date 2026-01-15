@@ -88,12 +88,7 @@ begin
    temp := StringReplace(temp, '$T', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$t', S, [rfReplaceAll]);
 
-   if (aQSO.Mode = mCW) or (aQSO.Mode = mRTTY) then begin
-      S := dmZLogGlobal.Settings._handle_cw;
-   end
-   else begin
-      S := dmZLogGlobal.Settings._handle_ph;
-   end;
+   S := aQSO.NrSent;
    temp := StringReplace(temp, '$H', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$h', S, [rfReplaceAll]);
 
@@ -220,12 +215,7 @@ begin
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
    temp := StringReplace(temp, '$T', dmZLogGlobal.Settings._iota, [rfReplaceAll]);
 
-   if (aQSO.Mode = mCW) or (aQSO.Mode = mRTTY) then begin
-      temp := StringReplace(temp, '$H', dmZLogGlobal.Settings._handle_cw, [rfReplaceAll]);
-   end
-   else begin
-      temp := StringReplace(temp, '$H', dmZLogGlobal.Settings._handle_ph, [rfReplaceAll]);
-   end;
+   temp := StringReplace(temp, '$H', aQSO.NrSent, [rfReplaceAll]);
 
    if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
       temp := StringReplace(temp, '$S', aQSO.SerialStr, [rfReplaceAll]);

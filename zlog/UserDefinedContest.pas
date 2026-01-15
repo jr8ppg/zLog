@@ -108,6 +108,7 @@ type
     FSingle10G: Boolean;
     FSameExchange: Boolean;
     FNrNumericComparison: Boolean;
+    FUseNrIme: Boolean;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -226,6 +227,7 @@ type
     property Single10G: Boolean read FSingle10G write FSingle10G;
     property SameExchange: Boolean read FSameExchange write FSameExchange;
     property NrNumericComparison: Boolean read FNrNumericComparison write FNrNumericComparison;
+    property UseNrIme: Boolean read FUseNrIme write FUseNrIme;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -329,6 +331,7 @@ begin
    FSingle10G := True;
    FSameExchange := True;
    FNrNumericComparison := False;
+   FUseNrIme := False;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -815,6 +818,10 @@ begin
 
          if strCmd = 'NRNUMCOMPARE' then begin
             D.NrNumericComparison := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'USENRIME' then begin
+            D.UseNrIme := ParseOnOff(strParam);
          end;
       end;
    finally

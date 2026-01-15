@@ -700,6 +700,12 @@ type
     menuSelectContest: TMenuItem;
     N11: TMenuItem;
     menuPostContest: TMenuItem;
+    PowerEdit2HA: TEdit;
+    PowerEdit2HB: TEdit;
+    PowerEdit2HC: TEdit;
+    PowerEdit2VA: TEdit;
+    PowerEdit2VB: TEdit;
+    PowerEdit2VC: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -714,7 +720,7 @@ type
     procedure HelpAbout(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure CallsignEdit1Change(Sender: TObject);
-    procedure NumberEdit1Change(Sender: TObject);
+    procedure RcvdNumberEdit1Change(Sender: TObject);
     procedure BandMenuClick(Sender: TObject);
     procedure BandEdit1Click(Sender: TObject);
     procedure ModeMenuClick(Sender: TObject);
@@ -1027,6 +1033,7 @@ type
     procedure menuTimeZoneClick(Sender: TObject);
     procedure menuSelectContestClick(Sender: TObject);
     procedure menuPostContestClick(Sender: TObject);
+    procedure SentNumberEdit1Change(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -2461,9 +2468,9 @@ begin
       end;
    end;
 
-   if Assigned(PowerEdit) and PowerEdit.Visible then begin
-      PowerEdit.Text := CurrentQSO.NewPowerStr;
-   end;
+   // 電力符号設定
+   PowerEdit.Text := CurrentQSO.NewPowerStr;
+
    if Assigned(OpEdit) and OpEdit.Visible then begin
       OpEdit.Text := CurrentQSO.Operator;
    end;
@@ -4288,7 +4295,12 @@ begin
    end;
 end;
 
-procedure TMainForm.NumberEdit1Change(Sender: TObject);
+procedure TMainForm.SentNumberEdit1Change(Sender: TObject);
+begin
+   CurrentQSO.NrSent := SentNumberEdit.Text;
+end;
+
+procedure TMainForm.RcvdNumberEdit1Change(Sender: TObject);
 begin
    CurrentQSO.NrRcvd := RcvdNumberEdit.Text;
 
@@ -5297,7 +5309,8 @@ begin
    end;
 
    // ここからがLoggingメイン処理
-   MyContest.SetNrSent(Q);
+//   Q.NrSent := FEditPanel[nID].SentNumberEdit.Text;
+//   MyContest.SetNrSent(Q);
 
    repeat
       i := dmZlogGlobal.NewQSOID();
@@ -8227,6 +8240,8 @@ end;
 procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; mode: TContestMode; strContestName: string; strCfgFileName: string);
 var
    b: TBand;
+   i: Integer;
+   imemode: TImeMode;
 begin
    actionShowMultipliers.Enabled := True;
    menuShowMultipliers.Enabled := True;
@@ -8373,6 +8388,18 @@ begin
    MyContest.ScoreForm.FontSize := Grid.Font.Size;
    MyContest.MultiForm.FontSize := Grid.Font.Size;
    MyContest.Mode := dmZLogGlobal.ContestMode;
+
+   if MyContest.UseNrIme = True then begin
+      imemode := imDontCare;
+   end
+   else begin
+      imemode := imDisable;
+   end;
+
+   for i := 0 to 2 do begin
+      FEditPanel[i].SentNumberEdit.ImeMode := imemode;
+      FEditPanel[i].RcvdNumberEdit.ImeMode := imemode;
+   end;
 end;
 
 procedure TMainForm.InitGrid();
@@ -13150,7 +13177,7 @@ begin
       FEditPanel[0].rcvdRSTEdit    := rcvdRSTEdit2A;
       FEditPanel[0].RcvdNumberEdit := NumberEdit2A;
       FEditPanel[0].ModeEdit       := ModeEdit2A;
-      FEditPanel[0].PowerEdit      := nil;
+      FEditPanel[0].PowerEdit      := PowerEdit2HA;
       FEditPanel[0].BandEdit       := BandEdit2A;
       FEditPanel[0].OpEdit         := nil;
       FEditPanel[0].MemoEdit       := nil;
@@ -13167,7 +13194,7 @@ begin
       FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit2B;
       FEditPanel[1].RcvdNumberEdit := NumberEdit2B;
       FEditPanel[1].ModeEdit       := ModeEdit2B;
-      FEditPanel[1].PowerEdit      := nil;
+      FEditPanel[1].PowerEdit      := PowerEdit2HB;
       FEditPanel[1].BandEdit       := BandEdit2B;
       FEditPanel[1].OpEdit         := nil;
       FEditPanel[1].MemoEdit       := nil;
@@ -13184,7 +13211,7 @@ begin
       FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit2C;
       FEditPanel[2].RcvdNumberEdit := NumberEdit2C;
       FEditPanel[2].ModeEdit       := ModeEdit2C;
-      FEditPanel[2].PowerEdit      := nil;
+      FEditPanel[2].PowerEdit      := PowerEdit2HC;
       FEditPanel[2].BandEdit       := BandEdit2C;
       FEditPanel[2].OpEdit         := nil;
       FEditPanel[2].MemoEdit       := nil;
@@ -13208,7 +13235,7 @@ begin
       FEditPanel[0].RcvdRSTEdit    := rcvdRSTEdit2VA;
       FEditPanel[0].RcvdNumberEdit := NumberEdit2VA;
       FEditPanel[0].ModeEdit       := ModeEdit2VA;
-      FEditPanel[0].PowerEdit      := nil;
+      FEditPanel[0].PowerEdit      := PowerEdit2VA;
       FEditPanel[0].BandEdit       := BandEdit2VA;
       FEditPanel[0].OpEdit         := nil;
       FEditPanel[0].MemoEdit       := nil;
@@ -13225,7 +13252,7 @@ begin
       FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit2VB;
       FEditPanel[1].RcvdNumberEdit := NumberEdit2VB;
       FEditPanel[1].ModeEdit       := ModeEdit2VB;
-      FEditPanel[1].PowerEdit      := nil;
+      FEditPanel[1].PowerEdit      := PowerEdit2VB;
       FEditPanel[1].BandEdit       := BandEdit2VB;
       FEditPanel[1].OpEdit         := nil;
       FEditPanel[1].MemoEdit       := nil;
@@ -13242,7 +13269,7 @@ begin
       FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit2VC;
       FEditPanel[2].RcvdNumberEdit := NumberEdit2VC;
       FEditPanel[2].ModeEdit       := ModeEdit2VC;
-      FEditPanel[2].PowerEdit      := nil;
+      FEditPanel[2].PowerEdit      := PowerEdit2VC;
       FEditPanel[2].BandEdit       := BandEdit2VC;
       FEditPanel[2].OpEdit         := nil;
       FEditPanel[2].MemoEdit       := nil;

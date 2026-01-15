@@ -93,6 +93,7 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
+        MaxLength = 4
         TabOrder = 0
         OnChange = RcvdRSTEdit1Change
         OnKeyDown = EditKeyDown
@@ -186,9 +187,10 @@ object MainForm: TMainForm
         AutoSize = False
         CharCase = ecUpperCase
         ImeMode = imDisable
+        MaxLength = 20
         TabOrder = 6
         Text = 'NUMBER'
-        OnChange = NumberEdit1Change
+        OnChange = RcvdNumberEdit1Change
         OnEnter = EditEnter
         OnExit = EditExit
         OnKeyDown = EditKeyDown
@@ -252,6 +254,7 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
+        MaxLength = 4
         TabOrder = 10
         OnChange = SentRSTEdit1Change
         OnKeyDown = EditKeyDown
@@ -267,9 +270,10 @@ object MainForm: TMainForm
         AutoSize = False
         CharCase = ecUpperCase
         ImeMode = imDisable
+        MaxLength = 20
         TabOrder = 11
         Text = 'NUMBER'
-        OnChange = NumberEdit1Change
+        OnChange = SentNumberEdit1Change
         OnEnter = EditEnter
         OnExit = EditExit
         OnKeyDown = EditKeyDown
@@ -366,8 +370,9 @@ object MainForm: TMainForm
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
+          MaxLength = 20
           TabOrder = 2
-          OnChange = NumberEdit1Change
+          OnChange = SentNumberEdit1Change
           OnEnter = EditEnter
           OnExit = EditExit
           OnKeyDown = EditKeyDown
@@ -384,6 +389,7 @@ object MainForm: TMainForm
           TabStop = False
           AutoSize = False
           ImeMode = imDisable
+          MaxLength = 4
           TabOrder = 1
           OnChange = RcvdRSTEdit1Change
           OnKeyDown = EditKeyDown
@@ -479,9 +485,9 @@ object MainForm: TMainForm
           TabStop = False
           AutoSize = False
           ImeMode = imDisable
+          MaxLength = 4
           TabOrder = 8
           Visible = False
-          OnChange = RcvdRSTEdit1Change
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
         end
@@ -498,13 +504,27 @@ object MainForm: TMainForm
           ImeMode = imDisable
           TabOrder = 9
           Visible = False
-          OnChange = NumberEdit1Change
+          OnChange = SentNumberEdit1Change
           OnEnter = EditEnter
           OnExit = EditExit
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
           OnKeyUp = NumberEdit1KeyUp
           TabOnEnter = False
+        end
+        object PowerEdit2HC: TEdit
+          Left = 420
+          Top = 5
+          Width = 25
+          Height = 18
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = NewPowerMenu
+          TabOrder = 10
+          Visible = False
+          OnClick = PowerEdit1Click
+          OnKeyDown = EditKeyDown
         end
       end
       object EditUpperLeftPanel2RH: TPanel
@@ -664,8 +684,9 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 2
-            OnChange = NumberEdit1Change
+            OnChange = RcvdNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
@@ -682,6 +703,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 1
             OnChange = RcvdRSTEdit1Change
             OnKeyDown = EditKeyDown
@@ -726,6 +748,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 5
             Visible = False
             OnKeyDown = EditKeyDown
@@ -742,15 +765,30 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 6
             Visible = False
-            OnChange = NumberEdit1Change
+            OnChange = SentNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
             OnKeyUp = NumberEdit1KeyUp
             TabOnEnter = False
+          end
+          object PowerEdit2HA: TEdit
+            Left = 159
+            Top = 16
+            Width = 25
+            Height = 18
+            TabStop = False
+            AutoSize = False
+            ImeMode = imDisable
+            PopupMenu = NewPowerMenu
+            TabOrder = 7
+            Visible = False
+            OnClick = PowerEdit1Click
+            OnKeyDown = EditKeyDown
           end
         end
         object RigPanelB: TPanel
@@ -825,8 +863,9 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 1
-            OnChange = NumberEdit1Change
+            OnChange = RcvdNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
@@ -843,6 +882,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 2
             OnChange = RcvdRSTEdit1Change
             OnKeyDown = EditKeyDown
@@ -887,6 +927,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 5
             Visible = False
             OnKeyDown = EditKeyDown
@@ -903,15 +944,30 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 6
             Visible = False
-            OnChange = NumberEdit1Change
+            OnChange = SentNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
             OnKeyUp = NumberEdit1KeyUp
             TabOnEnter = False
+          end
+          object PowerEdit2HB: TEdit
+            Left = 163
+            Top = 20
+            Width = 25
+            Height = 18
+            TabStop = False
+            AutoSize = False
+            ImeMode = imDisable
+            PopupMenu = NewPowerMenu
+            TabOrder = 7
+            Visible = False
+            OnClick = PowerEdit1Click
+            OnKeyDown = EditKeyDown
           end
         end
       end
@@ -1226,8 +1282,9 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 2
-            OnChange = NumberEdit1Change
+            OnChange = RcvdNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
@@ -1244,6 +1301,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 1
             OnChange = RcvdRSTEdit1Change
             OnKeyDown = EditKeyDown
@@ -1288,6 +1346,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 5
             Visible = False
             OnKeyDown = EditKeyDown
@@ -1304,15 +1363,30 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 6
             Visible = False
-            OnChange = NumberEdit1Change
+            OnChange = SentNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
             OnKeyUp = NumberEdit1KeyUp
             TabOnEnter = False
+          end
+          object PowerEdit2VA: TEdit
+            Left = 403
+            Top = 10
+            Width = 25
+            Height = 18
+            TabStop = False
+            AutoSize = False
+            ImeMode = imDisable
+            PopupMenu = NewPowerMenu
+            TabOrder = 7
+            Visible = False
+            OnClick = PowerEdit1Click
+            OnKeyDown = EditKeyDown
           end
         end
         object RigPanelVB: TPanel
@@ -1386,8 +1460,9 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 1
-            OnChange = NumberEdit1Change
+            OnChange = RcvdNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
@@ -1404,6 +1479,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 2
             OnChange = RcvdRSTEdit1Change
             OnKeyDown = EditKeyDown
@@ -1448,6 +1524,7 @@ object MainForm: TMainForm
             TabStop = False
             AutoSize = False
             ImeMode = imDisable
+            MaxLength = 4
             TabOrder = 5
             Visible = False
             OnKeyDown = EditKeyDown
@@ -1464,15 +1541,30 @@ object MainForm: TMainForm
             AutoSize = False
             CharCase = ecUpperCase
             ImeMode = imDisable
+            MaxLength = 20
             TabOrder = 6
             Visible = False
-            OnChange = NumberEdit1Change
+            OnChange = SentNumberEdit1Change
             OnEnter = EditEnter
             OnExit = EditExit
             OnKeyDown = EditKeyDown
             OnKeyPress = EditKeyPress
             OnKeyUp = NumberEdit1KeyUp
             TabOnEnter = False
+          end
+          object PowerEdit2VB: TEdit
+            Left = 407
+            Top = 11
+            Width = 25
+            Height = 18
+            TabStop = False
+            AutoSize = False
+            ImeMode = imDisable
+            PopupMenu = NewPowerMenu
+            TabOrder = 7
+            Visible = False
+            OnClick = PowerEdit1Click
+            OnKeyDown = EditKeyDown
           end
         end
       end
@@ -1553,7 +1645,7 @@ object MainForm: TMainForm
           CharCase = ecUpperCase
           ImeMode = imDisable
           TabOrder = 2
-          OnChange = NumberEdit1Change
+          OnChange = RcvdNumberEdit1Change
           OnEnter = EditEnter
           OnExit = EditExit
           OnKeyDown = EditKeyDown
@@ -1685,13 +1777,27 @@ object MainForm: TMainForm
           ImeMode = imDisable
           TabOrder = 9
           Visible = False
-          OnChange = NumberEdit1Change
+          OnChange = SentNumberEdit1Change
           OnEnter = EditEnter
           OnExit = EditExit
           OnKeyDown = EditKeyDown
           OnKeyPress = EditKeyPress
           OnKeyUp = NumberEdit1KeyUp
           TabOnEnter = False
+        end
+        object PowerEdit2VC: TEdit
+          Left = 407
+          Top = 12
+          Width = 25
+          Height = 18
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          PopupMenu = NewPowerMenu
+          TabOrder = 10
+          Visible = False
+          OnClick = PowerEdit1Click
+          OnKeyDown = EditKeyDown
         end
       end
     end

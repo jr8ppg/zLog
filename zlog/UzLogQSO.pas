@@ -593,6 +593,7 @@ begin
    FDupe := False;
    FReserve := 0;
    FTX := 0;
+   FPower := pwrP;
    FPower2 := 500;
    FReserve2 := 0;
    FReserve3 := 0;

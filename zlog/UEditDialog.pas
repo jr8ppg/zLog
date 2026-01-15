@@ -237,6 +237,15 @@ begin
       NewPowerMenu.Items.Add(M);
    end;
 
+   if MyContest.UseNrIme = True then begin
+      NrSentEdit.ImeMode := imDontCare;
+      NrRcvdEdit.ImeMode := imDontCare;
+   end
+   else begin
+      NrSentEdit.ImeMode := imDisable;
+      NrRcvdEdit.ImeMode := imDisable;
+   end;
+
    ApplyShortcut();
 end;
 
