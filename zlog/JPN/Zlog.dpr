@@ -17,6 +17,7 @@ library Zlog;
 {ITE} {DFMFileType} {UARRLDXMulti.dfm}
 {ITE} {DFMFileType} {UARRLDXScore.dfm}
 {ITE} {DFMFileType} {UARRLWMulti.dfm}
+{ITE} {DFMFileType} {UAudioInputDlg.dfm}
 {ITE} {DFMFileType} {UBandPlanEditDialog.dfm}
 {ITE} {DFMFileType} {UBandScope2.dfm}
 {ITE} {DFMFileType} {UBasicMulti.dfm}
@@ -33,13 +34,13 @@ library Zlog;
 {ITE} {DFMFileType} {UConsolePad.dfm}
 {ITE} {DFMFileType} {UCountryChecker.dfm}
 {ITE} {DFMFileType} {UCWKeyBoard.dfm}
+{ITE} {DFMFileType} {UCwMessageEditor.dfm}
 {ITE} {DFMFileType} {UCwMessagePad.dfm}
 {ITE} {DFMFileType} {UCWMonitor.dfm}
 {ITE} {DFMFileType} {UDateDialog.dfm}
+{ITE} {DFMFileType} {UDmsToGridDialog.dfm}
 {ITE} {DFMFileType} {UEditDialog.dfm}
 {ITE} {DFMFileType} {UELogCabrillo.dfm}
-{ITE} {DFMFileType} {UELogJarl1.dfm}
-{ITE} {DFMFileType} {UELogJarl2.dfm}
 {ITE} {DFMFileType} {UELogJarlEx.dfm}
 {ITE} {DFMFileType} {UEntityInfo.dfm}
 {ITE} {DFMFileType} {UExceptionDialog.dfm}
@@ -59,24 +60,20 @@ library Zlog;
 {ITE} {DFMFileType} {UIARUScore.dfm}
 {ITE} {DFMFileType} {UInformation.dfm}
 {ITE} {DFMFileType} {UIntegerDialog.dfm}
-{ITE} {DFMFileType} {UIOTACategory.dfm}
 {ITE} {DFMFileType} {UIOTAMulti.dfm}
 {ITE} {DFMFileType} {UJA0Multi.dfm}
 {ITE} {DFMFileType} {UJA0Score.dfm}
 {ITE} {DFMFileType} {UJarlMemberInfo.dfm}
 {ITE} {DFMFileType} {UJarlWebUpload.dfm}
+{ITE} {DFMFileType} {UJarlWebUpload2.dfm}
 {ITE} {DFMFileType} {UJIDX_DX_Multi.dfm}
 {ITE} {DFMFileType} {UJIDX_DX_Score.dfm}
 {ITE} {DFMFileType} {UJIDXMulti.dfm}
 {ITE} {DFMFileType} {UJIDXScore.dfm}
 {ITE} {DFMFileType} {UJIDXScore2.dfm}
-{ITE} {DFMFileType} {UKCJMulti.dfm}
-{ITE} {DFMFileType} {UKCJScore.dfm}
-{ITE} {DFMFileType} {UKCJZone.dfm}
 {ITE} {DFMFileType} {UMenu.dfm}
 {ITE} {DFMFileType} {UMessageManager.dfm}
 {ITE} {DFMFileType} {UNewIOTARef.dfm}
-{ITE} {DFMFileType} {UNewPrefix.dfm}
 {ITE} {DFMFileType} {UNRDialog.dfm}
 {ITE} {DFMFileType} {UOperatorEdit.dfm}
 {ITE} {DFMFileType} {UOperatorPowerDialog.dfm}
@@ -88,6 +85,8 @@ library Zlog;
 {ITE} {DFMFileType} {UPediScore.dfm}
 {ITE} {DFMFileType} {UPluginManager.dfm}
 {ITE} {DFMFileType} {UPortConfigDialog.dfm}
+{ITE} {DFMFileType} {UPrePostPlaybackDlg.dfm}
+{ITE} {DFMFileType} {UQSOListColumnSettings.dfm}
 {ITE} {DFMFileType} {UQsyInfo.dfm}
 {ITE} {DFMFileType} {UQTCForm.dfm}
 {ITE} {DFMFileType} {UQuickRef.dfm}
@@ -106,14 +105,12 @@ library Zlog;
 {ITE} {DFMFileType} {UStartTimeDialog.dfm}
 {ITE} {DFMFileType} {UStartup.dfm}
 {ITE} {DFMFileType} {UStatusEdit.dfm}
-{ITE} {DFMFileType} {USummaryInfo.dfm}
 {ITE} {DFMFileType} {USuperCheck.dfm}
 {ITE} {DFMFileType} {USuperCheck2.dfm}
 {ITE} {DFMFileType} {UTargetEditor.dfm}
 {ITE} {DFMFileType} {UTextEditor.dfm}
 {ITE} {DFMFileType} {UTTYConsole.dfm}
 {ITE} {DFMFileType} {UUTCDialog.dfm}
-{ITE} {DFMFileType} {UVoiceForm.dfm}
 {ITE} {DFMFileType} {UWAEMulti.dfm}
 {ITE} {DFMFileType} {UWAEScore.dfm}
 {ITE} {DFMFileType} {UWinKeyerTester.dfm}
@@ -130,7 +127,7 @@ library Zlog;
 {ITE} {DFMFileType} {UzLogKeyer.dfm}
 {ITE} {DFMFileType} {UZServerInquiry.dfm}
 {ITE} {RCFileType} {resource.rc}
-{ITE} {RCFileType} {Win64\Release\Zlog_DRC.rc}
+{ITE} {RCFileType} {Win32\Release\Zlog_DRC.rc}
 
 {$R 'main.dfm' 'MainForm:TForm'}
 {$R 'Progress.dfm' 'formProgress:TForm'}
@@ -147,6 +144,7 @@ library Zlog;
 {$R 'UARRLDXMulti.dfm' 'ARRLDXMulti:TForm(ACAGMulti)'}
 {$R 'UARRLDXScore.dfm' 'ARRLDXScore:TForm(BasicScore)'}
 {$R 'UARRLWMulti.dfm' 'ARRLWMulti:TForm(WWMulti)'}
+{$R 'UAudioInputDlg.dfm' 'formAudioInputDlg:TForm'}
 {$R 'UBandPlanEditDialog.dfm' 'BandPlanEditDialog:TForm'}
 {$R 'UBandScope2.dfm' 'BandScope2:TForm'}
 {$R 'UBasicMulti.dfm' 'BasicMulti:TForm(ZLogForm)'}
@@ -163,13 +161,13 @@ library Zlog;
 {$R 'UConsolePad.dfm' 'ConsolePad:TForm'}
 {$R 'UCountryChecker.dfm' 'formCountryChecker:TForm'}
 {$R 'UCWKeyBoard.dfm' 'CWKeyBoard:TForm(ZLogForm)'}
+{$R 'UCwMessageEditor.dfm' 'CwMessageEditor:TForm(TextEditor)'}
 {$R 'UCwMessagePad.dfm' 'CwMessagePad:TForm(ZLogForm)'}
 {$R 'UCWMonitor.dfm' 'formCWMonitor:TForm'}
 {$R 'UDateDialog.dfm' 'DateDialog:TForm'}
+{$R 'UDmsToGridDialog.dfm' 'formDmsToGridDialog:TForm'}
 {$R 'UEditDialog.dfm' 'EditDialog:TForm'}
 {$R 'UELogCabrillo.dfm' 'formELogCabrillo:TForm'}
-{$R 'UELogJarl1.dfm' 'formELogJarl1:TForm'}
-{$R 'UELogJarl2.dfm' 'formELogJarl2:TForm'}
 {$R 'UELogJarlEx.dfm' 'formELogJarlEx:TForm'}
 {$R 'UEntityInfo.dfm' 'formEntityInfo:TForm(ZLogForm)'}
 {$R 'UExceptionDialog.dfm' 'ExceptionDialog:TForm'}
@@ -189,24 +187,20 @@ library Zlog;
 {$R 'UIARUScore.dfm' 'IARUScore:TForm(BasicScore)'}
 {$R 'UInformation.dfm' 'formInformation:TForm'}
 {$R 'UIntegerDialog.dfm' 'IntegerDialog:TForm'}
-{$R 'UIOTACategory.dfm' 'IOTACategory:TForm'}
 {$R 'UIOTAMulti.dfm' 'IOTAMulti:TForm(ACAGMulti)'}
 {$R 'UJA0Multi.dfm' 'JA0Multi:TForm(BasicMulti)'}
 {$R 'UJA0Score.dfm' 'JA0Score:TForm(BasicScore)'}
 {$R 'UJarlMemberInfo.dfm' 'formJarlMemberInfo:TForm'}
 {$R 'UJarlWebUpload.dfm' 'formJarlWebUpload:TForm'}
+{$R 'UJarlWebUpload2.dfm' 'formJarlWebUpload2:TForm'}
 {$R 'UJIDX_DX_Multi.dfm' 'JIDX_DX_Multi:TForm(BasicMulti)'}
 {$R 'UJIDX_DX_Score.dfm' 'JIDX_DX_Score:TForm(BasicScore)'}
 {$R 'UJIDXMulti.dfm' 'JIDXMulti:TForm(WWMulti)'}
 {$R 'UJIDXScore.dfm' 'JIDXScore:TForm(WWScore)'}
 {$R 'UJIDXScore2.dfm' 'JIDXScore2:TForm(BasicScore)'}
-{$R 'UKCJMulti.dfm' 'KCJMulti:TForm(BasicMulti)'}
-{$R 'UKCJScore.dfm' 'KCJScore:TForm(BasicScore)'}
-{$R 'UKCJZone.dfm' 'KCJZone:TForm'}
 {$R 'UMenu.dfm' 'MenuForm:TForm'}
 {$R 'UMessageManager.dfm' 'formMessageManager:TForm'}
 {$R 'UNewIOTARef.dfm' 'NewIOTARef:TForm'}
-{$R 'UNewPrefix.dfm' 'NewPrefix:TForm'}
 {$R 'UNRDialog.dfm' 'NRDialog:TForm'}
 {$R 'UOperatorEdit.dfm' 'formOperatorEdit:TForm'}
 {$R 'UOperatorPowerDialog.dfm' 'OperatorPowerDialog:TForm'}
@@ -218,6 +212,8 @@ library Zlog;
 {$R 'UPediScore.dfm' 'PediScore:TForm(BasicScore)'}
 {$R 'UPluginManager.dfm' 'MarketForm:TForm'}
 {$R 'UPortConfigDialog.dfm' 'formPortConfig:TForm'}
+{$R 'UPrePostPlaybackDlg.dfm' 'formPrePostPlaybackDlg:TForm'}
+{$R 'UQSOListColumnSettings.dfm' 'formQSOListColumnSettings:TForm'}
 {$R 'UQsyInfo.dfm' 'formQsyInfo:TForm'}
 {$R 'UQTCForm.dfm' 'QTCForm:TForm'}
 {$R 'UQuickRef.dfm' 'QuickRef:TForm'}
@@ -236,14 +232,12 @@ library Zlog;
 {$R 'UStartTimeDialog.dfm' 'StartTimeDialog:TForm'}
 {$R 'UStartup.dfm' 'formStartup:TForm'}
 {$R 'UStatusEdit.dfm' 'formStatusEdit:TForm'}
-{$R 'USummaryInfo.dfm' 'SummaryInfo:TForm'}
 {$R 'USuperCheck.dfm' 'SuperCheck:TForm(ZLogForm)'}
 {$R 'USuperCheck2.dfm' 'SuperCheck2:TForm(ZLogForm)'}
 {$R 'UTargetEditor.dfm' 'TargetEditor:TForm'}
 {$R 'UTextEditor.dfm' 'TextEditor:TForm'}
 {$R 'UTTYConsole.dfm' 'TTYConsole:TForm'}
 {$R 'UUTCDialog.dfm' 'UTCDialog:TForm'}
-{$R 'UVoiceForm.dfm' 'VoiceForm:TForm'}
 {$R 'UWAEMulti.dfm' 'WAEMulti:TForm(ARRLWMulti)'}
 {$R 'UWAEScore.dfm' 'WAEScore:TForm(BasicScore)'}
 {$R 'UWinKeyerTester.dfm' 'formWinkeyerTester:TForm'}
@@ -260,7 +254,7 @@ library Zlog;
 {$R 'UzLogKeyer.dfm' 'dmZLogKeyer:TDataModule'}
 {$R 'UZServerInquiry.dfm' 'ZServerInquiry:TForm'}
 {$R 'resource.res' 'resource.rc'}
-{$R 'Win64\Release\Zlog_DRC.res' 'Win64\Release\Zlog_DRC.rc'}
+{$R 'Win32\Release\Zlog_DRC.res' 'Win32\Release\Zlog_DRC.rc'}
 
 {$E JPN}
 

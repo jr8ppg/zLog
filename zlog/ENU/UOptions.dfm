@@ -23,7 +23,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetNetwork
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     object tabsheetOperateStyle: TTabSheet
@@ -31,21 +31,21 @@ object formOptions: TformOptions
       ImageIndex = 7
       object groupSo2rSupport: TGroupBox
         Left = 6
-        Top = 103
-        Width = 423
-        Height = 294
+        Top = 139
+        Width = 517
+        Height = 358
         Caption = 'SO2R options'
         TabOrder = 2
         object Label115: TLabel
-          Left = 13
-          Top = 245
+          Left = 14
+          Top = 253
           Width = 210
           Height = 13
           Caption = 'Accelerate keying speed  after pressing TAB'
         end
         object Label116: TLabel
-          Left = 305
-          Top = 245
+          Left = 306
+          Top = 253
           Width = 27
           Height = 13
           Caption = 'WPM'
@@ -53,12 +53,12 @@ object formOptions: TformOptions
         object GroupBox7: TGroupBox
           Left = 8
           Top = 20
-          Width = 405
-          Height = 128
+          Width = 501
+          Height = 129
           Caption = 'RIG Select'
           TabOrder = 0
           object groupSo2rCom: TGroupBox
-            Left = 187
+            Left = 281
             Top = 11
             Width = 209
             Height = 102
@@ -128,7 +128,7 @@ object formOptions: TformOptions
           object radioSo2rNeo: TRadioButton
             Tag = 2
             Left = 12
-            Top = 60
+            Top = 64
             Width = 100
             Height = 17
             Caption = 'SO2R Neo'
@@ -149,7 +149,7 @@ object formOptions: TformOptions
           object radioSo2rCom: TRadioButton
             Tag = 1
             Left = 12
-            Top = 40
+            Top = 42
             Width = 100
             Height = 17
             Caption = 'COM Port'
@@ -159,7 +159,7 @@ object formOptions: TformOptions
           object radioSo2rOtrsp: TRadioButton
             Tag = 3
             Left = 12
-            Top = 80
+            Top = 86
             Width = 100
             Height = 17
             Caption = 'OTRSP'
@@ -167,7 +167,7 @@ object formOptions: TformOptions
             OnClick = radioSo2rClick
           end
           object groupSo2rOtrsp: TGroupBox
-            Left = 187
+            Left = 281
             Top = 11
             Width = 182
             Height = 76
@@ -199,8 +199,8 @@ object formOptions: TformOptions
           end
           object radioSo2rParallel: TRadioButton
             Tag = 4
-            Left = 12
-            Top = 100
+            Left = 118
+            Top = 20
             Width = 100
             Height = 17
             Caption = 'Parallel Port'
@@ -209,8 +209,8 @@ object formOptions: TformOptions
           end
           object radioSo2rMk2r: TRadioButton
             Tag = 5
-            Left = 108
-            Top = 20
+            Left = 118
+            Top = 42
             Width = 60
             Height = 17
             Caption = 'MK2R'
@@ -220,8 +220,8 @@ object formOptions: TformOptions
         end
         object groupSo2rCqOption: TGroupBox
           Left = 8
-          Top = 154
-          Width = 405
+          Top = 155
+          Width = 501
           Height = 82
           Caption = 'Auto RIG switch Options'
           TabOrder = 1
@@ -319,8 +319,8 @@ object formOptions: TformOptions
           end
         end
         object spinSo2rAccelerateCW: TSpinEdit
-          Left = 263
-          Top = 242
+          Left = 264
+          Top = 250
           Width = 34
           Height = 22
           MaxValue = 9
@@ -329,33 +329,41 @@ object formOptions: TformOptions
           Value = 3
         end
         object checkSo2rIgnoreModeChange: TCheckBox
-          Left = 13
-          Top = 268
+          Left = 14
+          Top = 278
           Width = 246
           Height = 17
           Caption = 'Ignore mode changes from popup menu'
           TabOrder = 3
         end
         object checkSo2rCqRestartAfterSetLast: TCheckBox
-          Left = 263
-          Top = 268
-          Width = 161
+          Left = 14
+          Top = 301
+          Width = 246
           Height = 17
           Caption = 'CQ restart after set last freq.'
           TabOrder = 4
+        end
+        object checkSo2rDontSwitchSpMode: TCheckBox
+          Left = 14
+          Top = 324
+          Width = 246
+          Height = 17
+          Caption = 'Disable switching to SP mode on F key press'
+          TabOrder = 5
         end
       end
       object GroupBox1: TGroupBox
         Left = 6
         Top = 4
-        Width = 329
-        Height = 93
+        Width = 414
+        Height = 129
         Caption = 'Operate style'
         TabOrder = 0
-        object Label1: TLabel
-          Left = 92
+        object label1RadioText: TLabel
+          Left = 93
           Top = 18
-          Width = 222
+          Width = 304
           Height = 30
           AutoSize = False
           Caption = 
@@ -363,10 +371,10 @@ object formOptions: TformOptions
             'ic style.'
           WordWrap = True
         end
-        object Label2: TLabel
-          Left = 92
+        object label2RadioHText: TLabel
+          Left = 93
           Top = 54
-          Width = 222
+          Width = 304
           Height = 30
           AutoSize = False
           Caption = 
@@ -374,8 +382,19 @@ object formOptions: TformOptions
             'are arranged on the left and right.'
           WordWrap = True
         end
+        object label2RadioVText: TLabel
+          Left = 93
+          Top = 89
+          Width = 304
+          Height = 30
+          AutoSize = False
+          Caption = 
+            'Select for Single OP two radio. In this style, the input fields ' +
+            'are arranged on the up and down.'
+          WordWrap = True
+        end
         object radio1Radio: TRadioButton
-          Left = 13
+          Left = 14
           Top = 24
           Width = 58
           Height = 17
@@ -384,6 +403,24 @@ object formOptions: TformOptions
           TabOrder = 0
           TabStop = True
           OnClick = radio1RadioClick
+        end
+        object radio2RadioH: TRadioButton
+          Left = 14
+          Top = 58
+          Width = 73
+          Height = 17
+          Caption = '2Radio (H)'
+          TabOrder = 1
+          OnClick = radio2RadioClick
+        end
+        object radio2RadioV: TRadioButton
+          Left = 14
+          Top = 92
+          Width = 73
+          Height = 17
+          Caption = '2Radio (V)'
+          TabOrder = 2
+          OnClick = radio2RadioClick
         end
         object radio2Radio: TRadioButton
           Left = 13
@@ -396,16 +433,16 @@ object formOptions: TformOptions
         end
       end
       object groupOperateMode: TGroupBox
-        Left = 344
+        Left = 426
         Top = 4
-        Width = 85
-        Height = 93
+        Width = 97
+        Height = 97
         Caption = 'Operate mode'
         TabOrder = 1
         object radioOriginalMode: TRadioButton
           Left = 10
           Top = 24
-          Width = 66
+          Width = 80
           Height = 17
           Caption = 'Original'
           Checked = True
@@ -415,7 +452,7 @@ object formOptions: TformOptions
         object radioEnterMode: TRadioButton
           Left = 10
           Top = 58
-          Width = 66
+          Width = 80
           Height = 17
           Caption = 'Enter key'
           TabOrder = 1
@@ -595,6 +632,26 @@ object formOptions: TformOptions
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
         end
+        object checkRig2UsePolling: TCheckBox
+          Tag = 1
+          Left = 425
+          Top = 29
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig2: TButton
+          Tag = 2
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
+        end
       end
       object groupRig1: TGroupBox
         Left = 6
@@ -731,6 +788,26 @@ object formOptions: TformOptions
           Height = 17
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
+        end
+        object checkRig1UsePolling: TCheckBox
+          Tag = 1
+          Left = 425
+          Top = 29
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig1: TButton
+          Tag = 1
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
         end
       end
       object groupRig4: TGroupBox
@@ -869,6 +946,26 @@ object formOptions: TformOptions
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
         end
+        object checkRig4UsePolling: TCheckBox
+          Tag = 1
+          Left = 425
+          Top = 29
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig4: TButton
+          Tag = 4
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
+        end
       end
       object groupRig3: TGroupBox
         Left = 6
@@ -1006,6 +1103,26 @@ object formOptions: TformOptions
           Caption = 'For Phone, use KEY for PTT'
           TabOrder = 4
         end
+        object checkRig3UsePolling: TCheckBox
+          Tag = 1
+          Left = 425
+          Top = 29
+          Width = 75
+          Height = 17
+          Caption = 'Use polling'
+          TabOrder = 9
+          OnClick = checkRigXvtClick
+        end
+        object buttonAudioConfig3: TButton
+          Tag = 3
+          Left = 425
+          Top = 50
+          Width = 64
+          Height = 22
+          Caption = 'Audio'
+          TabOrder = 10
+          OnClick = buttonAudioConfigClick
+        end
       end
     end
     object tabsheetHardware2: TTabSheet
@@ -1013,8 +1130,8 @@ object formOptions: TformOptions
       ImageIndex = 15
       object groupRigSetA: TGroupBox
         Left = 6
-        Top = 4
-        Width = 200
+        Top = 2
+        Width = 250
         Height = 393
         Caption = 'Assign to the set of RIG-A'
         TabOrder = 0
@@ -1143,6 +1260,48 @@ object formOptions: TformOptions
           Width = 40
           Height = 13
           Caption = 'Antenna'
+        end
+        object Label41: TLabel
+          Left = 9
+          Top = 372
+          Width = 45
+          Height = 13
+          Caption = '10.4 GHz'
+        end
+        object Label47: TLabel
+          Left = 9
+          Top = 393
+          Width = 36
+          Height = 13
+          Caption = '24 GHz'
+        end
+        object Label48: TLabel
+          Left = 9
+          Top = 414
+          Width = 36
+          Height = 13
+          Caption = '47 GHz'
+        end
+        object Label49: TLabel
+          Left = 9
+          Top = 435
+          Width = 36
+          Height = 13
+          Caption = '77 GHz'
+        end
+        object Label52: TLabel
+          Left = 9
+          Top = 456
+          Width = 42
+          Height = 13
+          Caption = '135 GHz'
+        end
+        object Label53: TLabel
+          Left = 9
+          Top = 477
+          Width = 42
+          Height = 13
+          Caption = '248 GHz'
         end
         object comboRigA_b19: TComboBox
           Left = 66
@@ -1782,11 +1941,245 @@ object formOptions: TformOptions
             'ANT9'
             'ANT10')
         end
+        object comboRigA_b104g: TComboBox
+          Tag = 16
+          Left = 66
+          Top = 369
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 32
+          Text = 'None'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_Antb104g: TComboBox
+          Tag = 16
+          Left = 135
+          Top = 369
+          Width = 54
+          Height = 21
+          TabOrder = 33
+          Text = 'None'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigA_b24g: TComboBox
+          Tag = 17
+          Left = 66
+          Top = 390
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 34
+          Text = 'None'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_Antb24g: TComboBox
+          Tag = 17
+          Left = 135
+          Top = 390
+          Width = 54
+          Height = 21
+          TabOrder = 35
+          Text = 'None'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigA_b47g: TComboBox
+          Tag = 18
+          Left = 66
+          Top = 411
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 36
+          Text = 'None'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_Antb47g: TComboBox
+          Tag = 18
+          Left = 135
+          Top = 411
+          Width = 54
+          Height = 21
+          TabOrder = 37
+          Text = 'None'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigA_b77g: TComboBox
+          Tag = 19
+          Left = 66
+          Top = 432
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 38
+          Text = 'None'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_Antb77g: TComboBox
+          Tag = 19
+          Left = 135
+          Top = 432
+          Width = 54
+          Height = 21
+          TabOrder = 39
+          Text = 'None'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigA_b135g: TComboBox
+          Tag = 20
+          Left = 66
+          Top = 453
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 40
+          Text = 'None'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_Antb135g: TComboBox
+          Tag = 20
+          Left = 135
+          Top = 453
+          Width = 54
+          Height = 21
+          TabOrder = 41
+          Text = 'None'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigA_b248g: TComboBox
+          Tag = 21
+          Left = 66
+          Top = 474
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 42
+          Text = 'None'
+          OnChange = comboRigA_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigA_Antb248g: TComboBox
+          Tag = 21
+          Left = 135
+          Top = 474
+          Width = 54
+          Height = 21
+          TabOrder = 43
+          Text = 'None'
+          OnChange = comboRigA_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
       end
       object groupRigSetB: TGroupBox
-        Left = 225
-        Top = 4
-        Width = 200
+        Left = 273
+        Top = 2
+        Width = 250
         Height = 393
         Caption = 'Assign to the set of RIG-B'
         TabOrder = 1
@@ -1915,6 +2308,48 @@ object formOptions: TformOptions
           Width = 19
           Height = 13
           Caption = 'RIG'
+        end
+        object Label54: TLabel
+          Left = 9
+          Top = 371
+          Width = 45
+          Height = 13
+          Caption = '10.4 GHz'
+        end
+        object Label57: TLabel
+          Left = 9
+          Top = 392
+          Width = 36
+          Height = 13
+          Caption = '24 GHz'
+        end
+        object Label58: TLabel
+          Left = 9
+          Top = 413
+          Width = 36
+          Height = 13
+          Caption = '47 GHz'
+        end
+        object Label59: TLabel
+          Left = 9
+          Top = 434
+          Width = 36
+          Height = 13
+          Caption = '77 GHz'
+        end
+        object Label60: TLabel
+          Left = 9
+          Top = 455
+          Width = 42
+          Height = 13
+          Caption = '135 GHz'
+        end
+        object Label61: TLabel
+          Left = 9
+          Top = 476
+          Width = 42
+          Height = 13
+          Caption = '248 GHz'
         end
         object comboRigB_b19: TComboBox
           Left = 66
@@ -2554,6 +2989,240 @@ object formOptions: TformOptions
             'ANT9'
             'ANT10')
         end
+        object comboRigB_b104g: TComboBox
+          Tag = 16
+          Left = 66
+          Top = 368
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 32
+          Text = 'None'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_Antb104g: TComboBox
+          Tag = 16
+          Left = 135
+          Top = 368
+          Width = 54
+          Height = 21
+          TabOrder = 33
+          Text = 'None'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigB_b24g: TComboBox
+          Tag = 17
+          Left = 66
+          Top = 389
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 34
+          Text = 'None'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_Antb24g: TComboBox
+          Tag = 17
+          Left = 135
+          Top = 389
+          Width = 54
+          Height = 21
+          TabOrder = 35
+          Text = 'None'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigB_b47g: TComboBox
+          Tag = 18
+          Left = 66
+          Top = 410
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 36
+          Text = 'None'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_Antb47g: TComboBox
+          Tag = 18
+          Left = 135
+          Top = 410
+          Width = 54
+          Height = 21
+          TabOrder = 37
+          Text = 'None'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigB_b77g: TComboBox
+          Tag = 19
+          Left = 66
+          Top = 431
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 38
+          Text = 'None'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_Antb77g: TComboBox
+          Tag = 19
+          Left = 135
+          Top = 431
+          Width = 54
+          Height = 21
+          TabOrder = 39
+          Text = 'None'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigB_b135g: TComboBox
+          Tag = 20
+          Left = 66
+          Top = 452
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 40
+          Text = 'None'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_Antb135g: TComboBox
+          Tag = 20
+          Left = 135
+          Top = 452
+          Width = 54
+          Height = 21
+          TabOrder = 41
+          Text = 'None'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
+        object comboRigB_b248g: TComboBox
+          Tag = 21
+          Left = 66
+          Top = 473
+          Width = 58
+          Height = 21
+          ItemIndex = 0
+          TabOrder = 42
+          Text = 'None'
+          OnChange = comboRigB_b19Change
+          Items.Strings = (
+            'None'
+            'RIG-1'
+            'RIG-2'
+            'RIG-3'
+            'RIG-4')
+        end
+        object comboRigB_Antb248g: TComboBox
+          Tag = 21
+          Left = 135
+          Top = 473
+          Width = 54
+          Height = 21
+          TabOrder = 43
+          Text = 'None'
+          OnChange = comboRigB_Antb19Change
+          Items.Strings = (
+            'None'
+            'ANT1'
+            'ANT2'
+            'ANT3'
+            'ANT4'
+            'ANT5'
+            'ANT6'
+            'ANT7'
+            'ANT8'
+            'ANT9'
+            'ANT10')
+        end
       end
     end
     object tabsheetHardware3: TTabSheet
@@ -2562,11 +3231,11 @@ object formOptions: TformOptions
       object groupOptCI_V: TGroupBox
         Left = 6
         Top = 4
-        Width = 423
+        Width = 514
         Height = 74
         Caption = 'ICOM CI-V Options'
         TabOrder = 0
-        object Label83: TLabel
+        object Label83: TGroupBox
           Left = 9
           Top = 23
           Width = 27
@@ -2587,7 +3256,7 @@ object formOptions: TformOptions
           Height = 13
           Caption = 'Response timeout(ms)'
         end
-        object comboIcomMode: TComboBox
+        object comboIcomMode: TLabel
           Left = 42
           Top = 20
           Width = 160
@@ -2630,7 +3299,7 @@ object formOptions: TformOptions
       object groupOptCwPtt: TGroupBox
         Left = 6
         Top = 84
-        Width = 423
+        Width = 514
         Height = 68
         Caption = 'PTT control'
         TabOrder = 1
@@ -2672,7 +3341,7 @@ object formOptions: TformOptions
           OnClick = checkEnablePttCwClick
         end
         object editBeforeTxCw: TEdit
-          Left = 225
+          Left = 229
           Top = 16
           Width = 40
           Height = 21
@@ -2680,7 +3349,7 @@ object formOptions: TformOptions
           OnKeyPress = NumberEditKeyPress
         end
         object editAfterTxCw: TEdit
-          Left = 373
+          Left = 385
           Top = 16
           Width = 40
           Height = 21
@@ -2697,7 +3366,7 @@ object formOptions: TformOptions
           OnClick = checkEnablePttPhClick
         end
         object editBeforeTxPh: TEdit
-          Left = 225
+          Left = 229
           Top = 40
           Width = 40
           Height = 21
@@ -2705,7 +3374,7 @@ object formOptions: TformOptions
           OnKeyPress = NumberEditKeyPress
         end
         object editAfterTxPh: TEdit
-          Left = 373
+          Left = 385
           Top = 40
           Width = 40
           Height = 21
@@ -2716,7 +3385,7 @@ object formOptions: TformOptions
       object groupUsif4cw: TGroupBox
         Left = 6
         Top = 159
-        Width = 423
+        Width = 514
         Height = 68
         Caption = 'USBIF4CW options'
         TabOrder = 2
@@ -2748,7 +3417,7 @@ object formOptions: TformOptions
       object groupWinKeyer: TGroupBox
         Left = 6
         Top = 234
-        Width = 423
+        Width = 514
         Height = 68
         Caption = 'WinKeyer Option'
         TabOrder = 3
@@ -2796,15 +3465,15 @@ object formOptions: TformOptions
       end
       object groupSoundDevice: TGroupBox
         Left = 6
-        Top = 309
-        Width = 423
+        Top = 308
+        Width = 514
         Height = 52
         Caption = 'Voice playback device'
         TabOrder = 4
         object comboVoiceDevice: TComboBox
           Left = 140
           Top = 20
-          Width = 273
+          Width = 364
           Height = 21
           Style = csDropDownList
           TabOrder = 1
@@ -2826,8 +3495,8 @@ object formOptions: TformOptions
       object gtoupRig1F2A: TGroupBox
         Left = 6
         Top = 4
-        Width = 423
-        Height = 96
+        Width = 514
+        Height = 120
         Caption = 'RIG-1'
         TabOrder = 0
         object Label13: TLabel
@@ -2879,7 +3548,7 @@ object formOptions: TformOptions
           Tag = 1
           Left = 8
           Top = 45
-          Width = 70
+          Width = 105
           Height = 17
           Caption = 'Use F2A'
           TabOrder = 2
@@ -2951,9 +3620,9 @@ object formOptions: TformOptions
         end
         object checkUseRig1F2ADataMode: TCheckBox
           Tag = 1
-          Left = 136
+          Left = 132
           Top = 45
-          Width = 107
+          Width = 110
           Height = 17
           Caption = 'Use DATAMODE'
           TabOrder = 3
@@ -2962,9 +3631,9 @@ object formOptions: TformOptions
       end
       object gtoupRig2F2A: TGroupBox
         Left = 6
-        Top = 103
-        Width = 423
-        Height = 96
+        Top = 128
+        Width = 514
+        Height = 120
         Caption = 'RIG-2'
         TabOrder = 1
         object Label20: TLabel
@@ -3016,7 +3685,7 @@ object formOptions: TformOptions
           Tag = 2
           Left = 8
           Top = 45
-          Width = 70
+          Width = 105
           Height = 17
           Caption = 'Use F2A'
           TabOrder = 2
@@ -3088,9 +3757,9 @@ object formOptions: TformOptions
         end
         object checkUseRig2F2ADataMode: TCheckBox
           Tag = 2
-          Left = 136
+          Left = 132
           Top = 45
-          Width = 107
+          Width = 110
           Height = 17
           Caption = 'Use DATAMODE'
           TabOrder = 3
@@ -3099,9 +3768,9 @@ object formOptions: TformOptions
       end
       object gtoupRig3F2A: TGroupBox
         Left = 6
-        Top = 202
-        Width = 423
-        Height = 96
+        Top = 253
+        Width = 514
+        Height = 120
         Caption = 'RIG-3'
         TabOrder = 2
         object Label25: TLabel
@@ -3153,7 +3822,7 @@ object formOptions: TformOptions
           Tag = 3
           Left = 8
           Top = 45
-          Width = 70
+          Width = 105
           Height = 17
           Caption = 'Use F2A'
           TabOrder = 2
@@ -3225,9 +3894,9 @@ object formOptions: TformOptions
         end
         object checkUseRig3F2ADataMode: TCheckBox
           Tag = 3
-          Left = 136
+          Left = 132
           Top = 45
-          Width = 107
+          Width = 110
           Height = 17
           Caption = 'Use DATAMODE'
           TabOrder = 3
@@ -3236,9 +3905,9 @@ object formOptions: TformOptions
       end
       object gtoupRig4F2A: TGroupBox
         Left = 6
-        Top = 301
-        Width = 423
-        Height = 96
+        Top = 379
+        Width = 514
+        Height = 120
         Caption = 'RIG-4'
         TabOrder = 3
         object Label34: TLabel
@@ -3290,7 +3959,7 @@ object formOptions: TformOptions
           Tag = 4
           Left = 8
           Top = 45
-          Width = 70
+          Width = 105
           Height = 17
           Caption = 'Use F2A'
           TabOrder = 2
@@ -3362,9 +4031,9 @@ object formOptions: TformOptions
         end
         object checkUseRig4F2ADataMode: TCheckBox
           Tag = 4
-          Left = 136
+          Left = 132
           Top = 45
-          Width = 107
+          Width = 110
           Height = 17
           Caption = 'Use DATAMODE'
           TabOrder = 3
@@ -3377,7 +4046,7 @@ object formOptions: TformOptions
       object groupRcMagicalCalling: TGroupBox
         Left = 6
         Top = 234
-        Width = 423
+        Width = 513
         Height = 167
         Caption = 'Magical Calling'
         TabOrder = 3
@@ -3423,9 +4092,9 @@ object formOptions: TformOptions
           TabOrder = 2
         end
         object GroupBox17: TGroupBox
-          Left = 16
-          Top = 43
-          Width = 163
+          Left = 9
+          Top = 41
+          Width = 200
           Height = 110
           Caption = 'CQ Mode'
           TabOrder = 3
@@ -3455,9 +4124,9 @@ object formOptions: TformOptions
           end
         end
         object GroupBox18: TGroupBox
-          Left = 185
-          Top = 43
-          Width = 168
+          Left = 222
+          Top = 41
+          Width = 200
           Height = 110
           Caption = 'S&&P Mode'
           TabOrder = 4
@@ -3496,9 +4165,9 @@ object formOptions: TformOptions
         end
       end
       object groupRcSleepMode: TGroupBox
-        Left = 256
+        Left = 266
         Top = 4
-        Width = 173
+        Width = 253
         Height = 81
         Caption = 'Supports sleep mode'
         TabOrder = 1
@@ -3522,7 +4191,7 @@ object formOptions: TformOptions
       object groupRcGeneral: TGroupBox
         Left = 6
         Top = 4
-        Width = 244
+        Width = 250
         Height = 224
         Caption = 'General settings'
         TabOrder = 0
@@ -3578,7 +4247,7 @@ object formOptions: TformOptions
         object checkIgnoreRigMode: TCheckBox
           Left = 8
           Top = 138
-          Width = 141
+          Width = 233
           Height = 18
           Caption = 'Ignore rig mode'
           TabOrder = 4
@@ -3608,7 +4277,7 @@ object formOptions: TformOptions
         object checkUsePttCommand: TCheckBox
           Left = 8
           Top = 162
-          Width = 141
+          Width = 233
           Height = 18
           Caption = 'Use PTT command'
           TabOrder = 7
@@ -3616,16 +4285,40 @@ object formOptions: TformOptions
         object checkSyncRigWPM: TCheckBox
           Left = 8
           Top = 186
-          Width = 141
+          Width = 233
           Height = 18
           Caption = 'Sync. rig WPM'
           TabOrder = 8
         end
+        object checkUseBandUpDown: TCheckBox
+          Left = 8
+          Top = 210
+          Width = 233
+          Height = 18
+          Hint = 
+            'YAESU FT-2000 and later, and KENWOOD TS-2000 and later (using th' +
+            'e BU/BD commands).'
+          Caption = 'Use band up/down commands'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 9
+        end
+        object checkUseBandSelect: TCheckBox
+          Left = 8
+          Top = 234
+          Width = 233
+          Height = 18
+          Hint = 'YAESU FT-2000 and later (using the BS command).'
+          Caption = 'Use band select command'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 10
+        end
       end
       object groupRcMemoryScan: TGroupBox
-        Left = 256
+        Left = 266
         Top = 91
-        Width = 172
+        Width = 253
         Height = 52
         Caption = 'Memory scan'
         TabOrder = 2
@@ -3673,7 +4366,7 @@ object formOptions: TformOptions
       object groupNetwork: TGroupBox
         Left = 6
         Top = 4
-        Width = 423
+        Width = 514
         Height = 101
         Caption = 'Z-Link'
         TabOrder = 0
@@ -3730,7 +4423,7 @@ object formOptions: TformOptions
       object groupPacketCluster: TGroupBox
         Left = 6
         Top = 111
-        Width = 423
+        Width = 514
         Height = 282
         Caption = 'Packet Cluster'
         TabOrder = 1
@@ -3784,7 +4477,7 @@ object formOptions: TformOptions
           Caption = 'every'
         end
         object buttonSpotterList: TButton
-          Left = 312
+          Left = 399
           Top = 247
           Width = 102
           Height = 21
@@ -3795,7 +4488,7 @@ object formOptions: TformOptions
         object listviewPacketCluster: TListView
           Left = 14
           Top = 112
-          Width = 400
+          Width = 487
           Height = 129
           Columns = <
             item
@@ -3936,6 +4629,13 @@ object formOptions: TformOptions
         Height = 13
         Caption = 'Super Check'
       end
+      object Label62: TLabel
+        Left = 8
+        Top = 194
+        Width = 93
+        Height = 13
+        Caption = 'BandScope resume'
+      end
       object editCfgDatFolder: TEdit
         Left = 88
         Top = 41
@@ -4055,6 +4755,23 @@ object formOptions: TformOptions
         Height = 21
         TabOrder = 12
       end
+      object buttonBrowseResultPath: TButton
+        Tag = 70
+        Left = 448
+        Top = 192
+        Width = 65
+        Height = 20
+        Caption = 'Browse...'
+        TabOrder = 14
+        OnClick = BrowsePathClick
+      end
+      object editResumeFolder: TEdit
+        Left = 128
+        Top = 191
+        Width = 314
+        Height = 21
+        TabOrder = 15
+      end
     end
     object tabsheetFont: TTabSheet
       Caption = 'Font'
@@ -4062,7 +4779,7 @@ object formOptions: TformOptions
       object GroupBox21: TGroupBox
         Left = 6
         Top = 4
-        Width = 423
+        Width = 514
         Height = 105
         Caption = 'Font'
         TabOrder = 0
@@ -4089,17 +4806,17 @@ object formOptions: TformOptions
         object comboFontBase: TJvFontComboBox
           Left = 84
           Top = 21
-          Width = 321
+          Width = 390
           Height = 22
-          DroppedDownWidth = 321
+          DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'Cascadia Code PL'
+          FontName = 'Cascadia Code PL SemiLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 38
+          ItemIndex = 42
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

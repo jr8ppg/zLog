@@ -9,7 +9,7 @@ object StartTimeDialog: TStartTimeDialog
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = 'Arial'
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter

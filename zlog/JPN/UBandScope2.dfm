@@ -197,8 +197,6 @@ object BandScope2: TBandScope2
     Visible = False
     OnChange = tabctrlBandSelectorChange
     OnChanging = tabctrlBandSelectorChanging
-    ExplicitLeft = 1
-    ExplicitTop = 44
   end
   object BSMenu: TPopupMenu
     Tag = 15

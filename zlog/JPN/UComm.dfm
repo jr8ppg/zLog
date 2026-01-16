@@ -129,9 +129,9 @@ object CommForm: TCommForm
         Layout = tlCenter
       end
       object labelLoginID: TLabel
-        Left = 67
+        Left = 56
         Top = 59
-        Width = 200
+        Width = 211
         Height = 13
         AutoSize = False
         Layout = tlCenter
@@ -202,10 +202,12 @@ object CommForm: TCommForm
       ParentFont = False
       PopupMenu = PopupMenu
       TabOrder = 0
+      StyleElements = [seClient, seBorder]
       OnDblClick = ListBoxDblClick
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
+      ExplicitTop = -1
     end
     object Console: TListBox
       Left = 1

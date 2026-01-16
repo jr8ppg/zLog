@@ -1,50 +1,10 @@
 inherited WPXScore: TWPXScore
   Left = 65
   Caption = 'Score'
+  StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 12
-  object Grid: TStringGrid [1]
-    Left = 0
-    Top = 0
-    Width = 281
-    Height = 202
-    Align = alClient
-    DefaultDrawing = False
-    FixedCols = 0
-    RowCount = 15
-    FixedRows = 0
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = #65325#65331' '#12468#12471#12483#12463
-    Font.Style = []
-    Options = [goHorzLine]
-    ParentFont = False
-    ScrollBars = ssNone
-    TabOrder = 1
-    OnDrawCell = GridDrawCell
-    ColWidths = (
-      64
-      64
-      64
-      64
-      64)
-    RowHeights = (
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24
-      24)
+  TextHeight = 13
+  inherited Panel1: TPanel
+    StyleElements = [seFont, seClient, seBorder]
   end
 end

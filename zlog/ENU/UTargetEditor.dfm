@@ -9,7 +9,7 @@ object TargetEditor: TTargetEditor
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -15
-  Font.Name = 'MS UI Gothic'
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   Position = poOwnerFormCenter
   OnCreate = FormCreate

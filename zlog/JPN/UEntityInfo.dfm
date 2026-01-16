@@ -214,7 +214,7 @@ object formEntityInfo: TformEntityInfo
   end
   object SunTime1: TSunTime
     UseSysTimeZone = False
-    TimeZone = 9
+    TimeZone = 9.000000000000000000
     Latitude.Degrees = 0
     Latitude.Minutes = 0
     Latitude.Seconds = 0

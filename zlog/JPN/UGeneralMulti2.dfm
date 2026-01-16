@@ -5,16 +5,14 @@ inherited GeneralMulti2: TGeneralMulti2
   TextHeight = 13
   inherited Panel1: TPanel
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitTop = 263
-    ExplicitWidth = 361
     inherited buttonGo: TButton
       Left = 289
-      ExplicitLeft = 285
+      ExplicitLeft = 289
     end
     inherited Edit1: TEdit
       Left = 222
       StyleElements = [seFont, seClient, seBorder]
-      ExplicitLeft = 218
+      ExplicitLeft = 222
     end
   end
   inherited Panel: TPanel

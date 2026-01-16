@@ -27,8 +27,6 @@ object SuperCheck: TSuperCheck
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 76
-    ExplicitWidth = 234
     DesignSize = (
       238
       35)
@@ -71,7 +69,6 @@ object SuperCheck: TSuperCheck
       TabOrder = 2
       Value = 1
       OnChange = SpinEditChange
-      ExplicitLeft = 189
     end
   end
   object Grid: TStringGrid
@@ -86,9 +83,8 @@ object SuperCheck: TSuperCheck
     GridLineWidth = 0
     ScrollBars = ssVertical
     TabOrder = 1
+    StyleElements = [seClient, seBorder]
     OnDblClick = GridDblClick
     OnDrawCell = GridDrawCell
-    ExplicitWidth = 234
-    ExplicitHeight = 76
   end
 end
