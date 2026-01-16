@@ -745,6 +745,8 @@ object formOptions2: TformOptions2
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
+          ImeMode = imDisable
+          MaxLength = 20
           TabOrder = 0
         end
         object CItyEdit: TEdit
@@ -754,6 +756,8 @@ object formOptions2: TformOptions2
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
+          ImeMode = imDisable
+          MaxLength = 20
           TabOrder = 1
         end
         object CQZoneEdit: TEdit
@@ -763,7 +767,8 @@ object formOptions2: TformOptions2
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
-          MaxLength = 3
+          ImeMode = imDisable
+          MaxLength = 20
           NumbersOnly = True
           TabOrder = 2
         end
@@ -774,7 +779,8 @@ object formOptions2: TformOptions2
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
-          MaxLength = 6
+          ImeMode = imDisable
+          MaxLength = 20
           NumbersOnly = True
           TabOrder = 3
         end
@@ -785,7 +791,8 @@ object formOptions2: TformOptions2
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
-          MaxLength = 3
+          ImeMode = imDisable
+          MaxLength = 20
           NumbersOnly = True
           TabOrder = 4
         end
@@ -796,7 +803,8 @@ object formOptions2: TformOptions2
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
-          MaxLength = 5
+          ImeMode = imDisable
+          MaxLength = 20
           TabOrder = 5
         end
         object HandleCwEdit: TEdit
@@ -806,6 +814,7 @@ object formOptions2: TformOptions2
           Height = 20
           AutoSize = False
           CharCase = ecUpperCase
+          ImeMode = imDisable
           MaxLength = 20
           TabOrder = 6
         end
@@ -3207,7 +3216,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0
