@@ -826,13 +826,13 @@ begin
    FColWidths[5] := 5;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 5;      // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 0;     // point
-   FColWidths[13] := 0;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[8] := 0;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 0;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -866,14 +866,14 @@ begin
    FColWidths[4] := 0;      // Sent RST
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[7] := 6;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -928,13 +928,13 @@ begin
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -962,13 +962,13 @@ begin
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1060,13 +1060,13 @@ begin
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1192,10 +1192,10 @@ begin
 
       // ƒ}ƒ‹ƒ`‚Q
       if FConfig.UseMulti2 = True then begin
-         FColWidths[14] := 3;
+         FColWidths[8] := 3;
       end
       else begin
-         FColWidths[14] := 0;
+         FColWidths[8] := 0;
       end;
    end
    else begin
@@ -1211,10 +1211,10 @@ begin
 
       // ƒ}ƒ‹ƒ`‚Q
       if FConfig.UseMulti2 = True then begin
-         FColWidths[14] := 3;
+         FColWidths[8] := 3;
       end
       else begin
-         FColWidths[14] := 0;
+         FColWidths[8] := 0;
       end;
    end;
 
@@ -1341,13 +1341,13 @@ begin
    FColWidths[5] := 5;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 5;      // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 3;     // point
-   FColWidths[13] := 6;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[8] := 6;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 3;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1414,13 +1414,13 @@ begin
    FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 6;      // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1479,13 +1479,13 @@ begin
    FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 6;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[8] := 6;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1558,16 +1558,16 @@ begin
       FColWidths[2] := 6;      // time
       FColWidths[3] := 12;     // callsign
       FColWidths[4] := 4;      // Sent RST
-      FColWidths[5] := 10;     // Sent Number
+      FColWidths[5] := 6;      // Sent Number
       FColWidths[6] := 4;      // Rcvd RST
-      FColWidths[7] := 10;     // Rcvd Number
-      FColWidths[8] := 4;      // band
-      FColWidths[9] := 4;      // mode
-      FColWidths[10] := 6;     // op
-      FColWidths[11] := 7;     // memo
-      FColWidths[12] := 4;     // point
-      FColWidths[13] := 3;     // multi1
-      FColWidths[14] := 3;     // multi2
+      FColWidths[7] := 6;      // Rcvd Number
+      FColWidths[8] := 3;      // multi1
+      FColWidths[9] := 3;      // multi2
+      FColWidths[10] := 4;     // band
+      FColWidths[11] := 4;     // mode
+      FColWidths[12] := 6;     // op
+      FColWidths[13] := 7;     // memo
+      FColWidths[14] := 4;     // point
       FColWidths[15] := 10;    // freq
       FColWidths[16] := 0;     // QSOID
    end
@@ -1578,16 +1578,16 @@ begin
       FColWidths[2] := 6;      // time
       FColWidths[3] := 12;     // callsign
       FColWidths[4] := 4;      // Sent RST
-      FColWidths[5] := 10;     // Sent Number
+      FColWidths[5] := 6;      // Sent Number
       FColWidths[6] := 4;      // Rcvd RST
-      FColWidths[7] := 10;     // Rcvd Number
-      FColWidths[8] := 4;      // band
-      FColWidths[9] := 4;      // mode
-      FColWidths[10] := 6;     // op
-      FColWidths[11] := 7;     // memo
-      FColWidths[12] := 4;     // point
-      FColWidths[13] := 6;     // multi1
-      FColWidths[14] := 0;     // multi2
+      FColWidths[7] := 6;      // Rcvd Number
+      FColWidths[8] := 6;      // multi1
+      FColWidths[9] := 0;      // multi2
+      FColWidths[10] := 4;     // band
+      FColWidths[11] := 4;     // mode
+      FColWidths[12] := 6;     // op
+      FColWidths[13] := 7;     // memo
+      FColWidths[14] := 4;     // point
       FColWidths[15] := 10;    // freq
       FColWidths[16] := 0;     // QSOID
    end;
@@ -1642,16 +1642,16 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[7] := 6;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1713,13 +1713,13 @@ begin
    FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 0;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 0;     // point
-   FColWidths[13] := 0;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[8] := 0;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 0;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 0;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
    FUseNrIme := True;
@@ -1769,16 +1769,16 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[7] := 6;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1837,13 +1837,13 @@ begin
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1926,14 +1926,14 @@ begin
    FColWidths[4] := 0;      // Sent RST
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 4;     // multi1
-   FColWidths[14] := 0;     // multi2
+   FColWidths[7] := 6;      // Rcvd Number
+   FColWidths[8] := 4;      // multi1
+   FColWidths[9] := 0;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -2002,13 +2002,13 @@ begin
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -2063,13 +2063,13 @@ begin
    FColWidths[5] := 0;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -2121,16 +2121,16 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[7] := 6;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -2183,16 +2183,16 @@ begin
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
    FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[7] := 6;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -2251,13 +2251,13 @@ begin
    FColWidths[5] := 5;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 5;      // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;

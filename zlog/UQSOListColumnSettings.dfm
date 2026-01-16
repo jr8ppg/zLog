@@ -18,7 +18,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     Left = 8
     Top = 8
     Width = 233
-    Height = 439
+    Height = 437
     Caption = 'Column settings'
     TabOrder = 0
     object Label1: TLabel
@@ -120,32 +120,12 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       State = cbChecked
       TabOrder = 20
     end
-    object CheckBox9: TCheckBox
-      Left = 16
-      Top = 224
-      Width = 110
-      Height = 17
-      Caption = 'Band'
-      Checked = True
-      State = cbChecked
-      TabOrder = 23
-    end
-    object CheckBox10: TCheckBox
-      Left = 16
-      Top = 247
-      Width = 110
-      Height = 17
-      Caption = 'Mode'
-      Checked = True
-      State = cbChecked
-      TabOrder = 26
-    end
     object CheckBox11: TCheckBox
       Left = 16
       Top = 270
       Width = 110
       Height = 17
-      Caption = 'Operator'
+      Caption = 'Band'
       Checked = True
       State = cbChecked
       TabOrder = 29
@@ -155,7 +135,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Top = 293
       Width = 110
       Height = 17
-      Caption = 'Memo'
+      Caption = 'Mode'
       Checked = True
       State = cbChecked
       TabOrder = 32
@@ -165,7 +145,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Top = 316
       Width = 110
       Height = 17
-      Caption = 'Point'
+      Caption = 'Operator'
       Checked = True
       State = cbChecked
       TabOrder = 35
@@ -175,7 +155,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Top = 339
       Width = 110
       Height = 17
-      Caption = 'New multi1'
+      Caption = 'Memo'
       Checked = True
       State = cbChecked
       TabOrder = 38
@@ -185,8 +165,28 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Top = 362
       Width = 110
       Height = 17
-      Caption = 'New multi2'
+      Caption = 'Point'
+      Checked = True
+      State = cbChecked
       TabOrder = 41
+    end
+    object CheckBox9: TCheckBox
+      Left = 16
+      Top = 224
+      Width = 110
+      Height = 17
+      Caption = 'New multi1'
+      Checked = True
+      State = cbChecked
+      TabOrder = 23
+    end
+    object CheckBox10: TCheckBox
+      Left = 16
+      Top = 247
+      Width = 110
+      Height = 17
+      Caption = 'New multi2'
+      TabOrder = 26
     end
     object CheckBox16: TCheckBox
       Left = 16
@@ -353,48 +353,6 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Position = 10
       TabOrder = 22
     end
-    object Edit9: TEdit
-      Left = 163
-      Top = 222
-      Width = 30
-      Height = 21
-      MaxLength = 3
-      NumbersOnly = True
-      TabOrder = 24
-      Text = '4'
-    end
-    object UpDown9: TUpDown
-      Left = 193
-      Top = 222
-      Width = 16
-      Height = 21
-      Associate = Edit9
-      Min = 1
-      Max = 99
-      Position = 4
-      TabOrder = 25
-    end
-    object Edit10: TEdit
-      Left = 163
-      Top = 245
-      Width = 30
-      Height = 21
-      MaxLength = 3
-      NumbersOnly = True
-      TabOrder = 27
-      Text = '4'
-    end
-    object UpDown10: TUpDown
-      Left = 193
-      Top = 245
-      Width = 16
-      Height = 21
-      Associate = Edit10
-      Min = 1
-      Max = 99
-      Position = 4
-      TabOrder = 28
-    end
     object Edit11: TEdit
       Left = 163
       Top = 268
@@ -403,7 +361,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 30
-      Text = '6'
+      Text = '4'
     end
     object UpDown11: TUpDown
       Left = 193
@@ -413,7 +371,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Associate = Edit11
       Min = 1
       Max = 99
-      Position = 6
+      Position = 4
       TabOrder = 31
     end
     object Edit12: TEdit
@@ -424,7 +382,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 33
-      Text = '7'
+      Text = '4'
     end
     object UpDown12: TUpDown
       Left = 193
@@ -434,7 +392,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Associate = Edit12
       Min = 1
       Max = 99
-      Position = 7
+      Position = 4
       TabOrder = 34
     end
     object Edit13: TEdit
@@ -445,7 +403,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 36
-      Text = '4'
+      Text = '6'
     end
     object UpDown13: TUpDown
       Left = 193
@@ -455,7 +413,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Associate = Edit13
       Min = 1
       Max = 99
-      Position = 4
+      Position = 6
       TabOrder = 37
     end
     object Edit14: TEdit
@@ -466,7 +424,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 39
-      Text = '3'
+      Text = '7'
     end
     object UpDown14: TUpDown
       Left = 193
@@ -476,7 +434,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Associate = Edit14
       Min = 1
       Max = 99
-      Position = 3
+      Position = 7
       TabOrder = 40
     end
     object Edit15: TEdit
@@ -487,7 +445,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 42
-      Text = '3'
+      Text = '4'
     end
     object UpDown15: TUpDown
       Left = 193
@@ -497,8 +455,50 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Associate = Edit15
       Min = 1
       Max = 99
-      Position = 3
+      Position = 4
       TabOrder = 43
+    end
+    object Edit9: TEdit
+      Left = 163
+      Top = 222
+      Width = 30
+      Height = 21
+      MaxLength = 3
+      NumbersOnly = True
+      TabOrder = 24
+      Text = '3'
+    end
+    object UpDown9: TUpDown
+      Left = 193
+      Top = 222
+      Width = 16
+      Height = 21
+      Associate = Edit9
+      Min = 1
+      Max = 99
+      Position = 3
+      TabOrder = 25
+    end
+    object Edit10: TEdit
+      Left = 163
+      Top = 245
+      Width = 30
+      Height = 21
+      MaxLength = 3
+      NumbersOnly = True
+      TabOrder = 27
+      Text = '3'
+    end
+    object UpDown10: TUpDown
+      Left = 193
+      Top = 245
+      Width = 16
+      Height = 21
+      Associate = Edit10
+      Min = 1
+      Max = 99
+      Position = 3
+      TabOrder = 28
     end
     object Edit16: TEdit
       Left = 163
@@ -572,7 +572,6 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 452
     DesignSize = (
       249
       32)

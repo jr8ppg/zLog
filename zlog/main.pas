@@ -2693,13 +2693,19 @@ begin
       // 7:rcvd NR
       Cells[7, R] := aQSO.NrRcvd;
 
-      // 8:band
-      Cells[8, R] := aQSO.BandStr;
+      // 8:new multi1
+      Cells[8, R] := MyContest.GetNewMulti1(aQSO);
 
-      // 9:mode
-      Cells[9, R] := aQSO.ModeStr;
+      // 9:new multi2
+      Cells[9, R] := MyContest.GetNewMulti2(aQSO);
 
-      // 10:operator
+      // 10:band
+      Cells[10, R] := aQSO.BandStr;
+
+      // 11:mode
+      Cells[11, R] := aQSO.ModeStr;
+
+      // 12:operator
       temp := IntToStr(aQSO.TX);
       if dmZlogGlobal.ContestCategory = ccMultiOpSingleTx then begin
          case aQSO.TX of
@@ -2709,24 +2715,18 @@ begin
                temp := 'M';
          end;
       end;
-      Cells[10, R] := temp + ' ' + aQSO.Operator;
+      Cells[12, R] := temp + ' ' + aQSO.Operator;
 
-      // 11:memo
-      Cells[11, R] := aQSO.MemoStr;
+      // 13:memo
+      Cells[13, R] := aQSO.MemoStr;
 
-      // 12:point
+      // 14:point
       if aQSO.Invalid = True then begin
-         Cells[12, R] := '0';
+         Cells[14, R] := '0';
       end
       else begin
-         Cells[12, R] := aQSO.PointStr;
+         Cells[14, R] := aQSO.PointStr;
       end;
-
-      // 13:new multi1
-      Cells[13, R] := MyContest.GetNewMulti1(aQSO);
-
-      // 14:new multi2
-      Cells[14, R] := MyContest.GetNewMulti2(aQSO);
 
       // 15:freq.
       Cells[15, R] := aQSO.Freq;
@@ -2901,16 +2901,16 @@ begin
    LayoutEdit(7, NumberEdit1);
 
    // Band
-   LayoutEdit(8, BandEdit1);
+   LayoutEdit(10, BandEdit1);
 
    // Mode
-   LayoutEdit(9, ModeEdit1);
+   LayoutEdit(11, ModeEdit1);
 
    // Operator
-   LayoutEdit(10, OpEdit1);
+   LayoutEdit(12, OpEdit1);
 
    // Memo
-   LayoutEdit(11, MemoEdit1);
+   LayoutEdit(13, MemoEdit1);
 end;
 
 procedure TMainForm.SetEditFields2RV();
@@ -8249,8 +8249,8 @@ begin
    menuShowCheckCountry.Visible := False;
    menuShowCheckMulti.Caption := 'Check Multi';
    FCheckCountry.ParentMulti := nil;
-   Grid.Cols[13].Text := 'multi1';
-   Grid.Cols[14].Text := 'multi2';
+   Grid.Cols[8].Text := 'multi1';
+   Grid.Cols[9].Text := 'multi2';
    mPXListWPX.Visible := False;
    FCheckMulti.ListCWandPh := False;
 
@@ -8417,13 +8417,13 @@ begin
       Cols[5].Text := 'sent NR';
       Cols[6].Text := 'rRST';
       Cols[7].Text := 'rcvd NR';
-      Cols[8].Text := 'band';
-      Cols[9].Text := 'mode';
-      Cols[10].Text := 'operator';
-      Cols[11].Text := 'memo';
-      Cols[12].Text := 'point';
-      Cols[13].Text := 'multi1';
-      Cols[14].Text := 'multi2';
+      Cols[8].Text := 'multi1';
+      Cols[9].Text := 'multi2';
+      Cols[10].Text := 'band';
+      Cols[11].Text := 'mode';
+      Cols[12].Text := 'operator';
+      Cols[13].Text := 'memo';
+      Cols[14].Text := 'point';
       Cols[15].Text := 'freq.';
       Cols[16].Text := 'QSOID';
       Cols[17].Text := '';
@@ -8493,35 +8493,35 @@ begin
       // 7:Rcvd NR
       SetColumnWidth(7);
 
-      // 8:band
+      // 8:New Multi1
       SetColumnWidth(8);
 
-      // 9:mode
+      // 9:New Multi2
       SetColumnWidth(9);
 
-      // 10:operator
-      if (MyContest.ColWidths[10] = 0) or (nOpWidth = 0) then begin
-         ColWidths[10] := -1;
+      // 10:band
+      SetColumnWidth(10);
+
+      // 11:mode
+      SetColumnWidth(11);
+
+      // 12:operator
+      if (MyContest.ColWidths[12] = 0) or (nOpWidth = 0) then begin
+         ColWidths[12] := -1;
       end
       else begin
-         ColWidths[10] := nOpWidth * nColWidth;
+         ColWidths[12] := nOpWidth * nColWidth;
       end;
 
-      // 11:Memo
-      if MyContest.ColWidths[11] = 0 then begin
-         ColWidths[11] := -1;
+      // 13:Memo
+      if MyContest.ColWidths[13] = 0 then begin
+         ColWidths[13] := -1;
       end
       else begin
-         ColWidths[11] := nMemoWidth * nColWidth;
+         ColWidths[13] := nMemoWidth * nColWidth;
       end;
 
-      // 12:Point
-      SetColumnWidth(12);
-
-      // 13:New Multi1
-      SetColumnWidth(13);
-
-      // 14:New Multi2
+      // 14:Point
       SetColumnWidth(14);
 
       // 15:Freq
@@ -15306,6 +15306,7 @@ begin
    else begin
       S := StringReplace(S, '$H', dmZLogGlobal.Settings._handle_ph, [rfReplaceAll]);
    end;
+   S := StringReplace(S, '$N', aQSO.PowerStr, [rfReplaceAll]);
    Result := S;
 end;
 

@@ -20,13 +20,13 @@ type
     CheckBox6: TCheckBox;
     CheckBox7: TCheckBox;
     CheckBox8: TCheckBox;
-    CheckBox9: TCheckBox;
-    CheckBox10: TCheckBox;
     CheckBox11: TCheckBox;
     CheckBox12: TCheckBox;
     CheckBox13: TCheckBox;
     CheckBox14: TCheckBox;
     CheckBox15: TCheckBox;
+    CheckBox9: TCheckBox;
+    CheckBox10: TCheckBox;
     CheckBox16: TCheckBox;
     CheckBox17: TCheckBox;
     Edit1: TEdit;
@@ -45,10 +45,6 @@ type
     UpDown7: TUpDown;
     Edit8: TEdit;
     UpDown8: TUpDown;
-    Edit9: TEdit;
-    UpDown9: TUpDown;
-    Edit10: TEdit;
-    UpDown10: TUpDown;
     Edit11: TEdit;
     UpDown11: TUpDown;
     Edit12: TEdit;
@@ -59,6 +55,10 @@ type
     UpDown14: TUpDown;
     Edit15: TEdit;
     UpDown15: TUpDown;
+    Edit9: TEdit;
+    UpDown9: TUpDown;
+    Edit10: TEdit;
+    UpDown10: TUpDown;
     Edit16: TEdit;
     UpDown16: TUpDown;
     Edit17: TEdit;
