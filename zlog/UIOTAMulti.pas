@@ -100,8 +100,10 @@ procedure TIOTAMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    i: Integer;
-   C: TIsland;
+   island: TIsland;
    f: TNewIOTARef;
+   P: TPrefix;
+   C: TCountry;
 begin
    f := TNewIOTARef.Create(Self);
    try
@@ -129,15 +131,27 @@ begin
          Exit;
       end;
 
+      P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+      C := P.Country;
+
+      if (P = nil) or (P.OvrContinent = '') then begin
+         aQSO.Continent := C.Continent;
+      end
+      else begin
+         aQSO.Continent := P.OvrContinent;
+      end;
+
+      aQSO.Entity := C.Country;
+
       for i := 0 to IslandList.List.Count - 1 do begin
-         C := TIsland(IslandList.List[i]);
-         if str = C.RefNumber then begin
-            if C.Worked[aQSO.band, aQSO.Mode] = False then begin
-               C.Worked[aQSO.band, aQSO.Mode] := True;
+         island := TIsland(IslandList.List[i]);
+         if str = island.RefNumber then begin
+            if island.Worked[aQSO.band, aQSO.Mode] = False then begin
+               island.Worked[aQSO.band, aQSO.Mode] := True;
                aQSO.NewMulti1 := True;
             end;
             LatestMultiAddition := i;
-            exit;
+            Exit;
          end;
       end;
 
@@ -146,10 +160,10 @@ begin
          exit;
       end;
 
-      C := TIsland.Create;
-      C.Name := f.GetName;
-      C.RefNumber := str;
-      C.Worked[aQSO.band, aQSO.Mode] := True;
+      island := TIsland.Create;
+      island.Name := f.GetName;
+      island.RefNumber := str;
+      island.Worked[aQSO.band, aQSO.Mode] := True;
       aQSO.NewMulti1 := True;
 
       // Å´Ç«Ç§çlÇ¶ÇƒÇ‡ÉoÉOÇ¡ÇƒÇ¢ÇÈ

@@ -3,9 +3,10 @@ unit UPediScore;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
-  UzLogCOnst, UzLogGlobal, UzLogQSO, Vcl.Menus;
+  WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Buttons, Vcl.Menus,
+  UBasicScore, UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
 
 type
   TPediScore = class(TBasicScore)
@@ -118,9 +119,24 @@ begin
 end;
 
 procedure TPediScore.AddNoUpdate(aQSO: TQSO);
+var
+   P: TPrefix;
+   C: TCountry;
 begin
    aQSO.points := 1;
    Inc(Stats[aQSO.band, aQSO.Mode]);
+
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
 end;
 
 procedure TPediScore.Reset;
