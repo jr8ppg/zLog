@@ -411,7 +411,6 @@ type
     SentEdit: TEdit;
     groupQsoListColors: TGroupBox;
     Label32: TLabel;
-    Label68: TLabel;
     Label33: TLabel;
     Label43: TLabel;
     editListColor1: TEdit;
@@ -477,6 +476,7 @@ type
     buttonMyPositionCalc: TButton;
     Label62: TLabel;
     HandlePhEdit: TEdit;
+    comboListColorType2: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1159,6 +1159,8 @@ begin
          Settings.FQsoListColors[i].FBold      := FQSOListBold[i].Checked;
       end;
 
+      Settings.FQsoListColorType2 := comboListColorType2.ItemIndex;
+
       //
       // Contest rules
       //
@@ -1581,6 +1583,8 @@ begin
          FQSOListColor[i].Color      := Settings.FQsoListColors[i].FBackColor;
          FQSOListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
       end;
+
+      comboListColorType2.ItemIndex := Settings.FQsoListColorType2;
 
       //
       // Contest rules

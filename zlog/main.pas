@@ -5109,6 +5109,18 @@ var
    w: Integer;
    h: Integer;
    Q: TQSO;
+
+   procedure SelectListColor(n: Integer);
+   begin
+      bg := dmZLogGlobal.Settings.FQsoListColors[n].FBackColor;
+      fg := dmZLogGlobal.Settings.FQsoListColors[n].FForeColor;
+      if dmZLogGlobal.Settings.FQsoListColors[n].FBold = True then begin
+         Font.Style := Font.Style + [fsBold];
+      end
+      else begin
+         Font.Style := Font.Style - [fsBold];
+      end;
+   end;
 begin
    Q := TQSO(Grid.Objects[0, ARow]);
    txt := Grid.Cells[ACol, ARow];
@@ -5124,31 +5136,36 @@ begin
          Font.Style := [];
       end
       else begin
-         if (gdSelected in State) and (Grid.Focused = True) then begin
-            bg := dmZLogGlobal.Settings.FQsoListFocusedSelColor;   // 選択色
-         end
-         else if (gdSelected in State) and (Grid.Focused = False) then begin
-            bg := dmZLogGlobal.Settings.FQsoListUnfocusedSelColor;   // 選択色
-         end
-         else begin
-            if (Q <> nil) and (Q.RbnVerified = True) then begin   // RBN照合済み
-               bg := dmZLogGlobal.Settings.FQsoListColors[2].FBackColor;
-               fg := dmZLogGlobal.Settings.FQsoListColors[2].FForeColor;
-               if dmZLogGlobal.Settings.FQsoListColors[2].FBold = True then begin
-                  Font.Style := Font.Style + [fsBold];
-               end
-               else begin
-                  Font.Style := Font.Style - [fsBold];
-               end;
+         // ゼブラカラーかRBN Verifiedか
+         if dmZLogGlobal.Settings.FQsoListColorType2 = 0 then begin
+            if (gdSelected in State) and (Grid.Focused = True) then begin
+               bg := dmZLogGlobal.Settings.FQsoListFocusedSelColor;   // 選択色
             end
-            else begin  // 通常
-               bg := dmZLogGlobal.Settings.FQsoListColors[1].FBackColor;
-               fg := dmZLogGlobal.Settings.FQsoListColors[1].FForeColor;
-               if dmZLogGlobal.Settings.FQsoListColors[1].FBold = True then begin
-                  Font.Style := Font.Style + [fsBold];
+            else if (gdSelected in State) and (Grid.Focused = False) then begin
+               bg := dmZLogGlobal.Settings.FQsoListUnfocusedSelColor;   // 選択色
+            end
+            else begin
+               if (ARow mod 2) = 0 then begin // 偶数行
+                  SelectListColor(2);
                end
-               else begin
-                  Font.Style := Font.Style - [fsBold];
+               else begin // 奇数行
+                  SelectListColor(1);
+               end;
+            end;
+         end
+         else begin  // RBN Verified
+            if (gdSelected in State) and (Grid.Focused = True) then begin
+               bg := dmZLogGlobal.Settings.FQsoListFocusedSelColor;   // 選択色
+            end
+            else if (gdSelected in State) and (Grid.Focused = False) then begin
+               bg := dmZLogGlobal.Settings.FQsoListUnfocusedSelColor;   // 選択色
+            end
+            else begin
+               if (Q <> nil) and (Q.RbnVerified = True) then begin   // RBN照合済み
+                  SelectListColor(2);
+               end
+               else begin  // 通常
+                  SelectListColor(1);
                end;
             end;
          end;

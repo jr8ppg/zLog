@@ -370,6 +370,7 @@ type
     FRbnCountForRbnVerified: Integer;
     FUseRbnAnalyze: Boolean;
     FQsoListColors: array[1..2] of TColorSetting;
+    FQsoListColorType2: Integer;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -1737,6 +1738,8 @@ begin
       Settings.FQsoListColors[2].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor2', '$ffffff'), clRed);
       Settings.FQsoListColors[2].FBold      := ini.ReadBool('MainQsoList', 'Bold2', False);
 
+      Settings.FQsoListColorType2 := ini.ReadInteger('MainQsoList', 'QsoListColorType2', 0);
+
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
       Settings.FChatFormStayOnTop      := ini.ReadBool('ChatWindow', 'StayOnTop', False);
@@ -2436,6 +2439,8 @@ begin
          ini.WriteString('MainQsoList', 'BackColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FBackColor));
          ini.WriteBool('MainQsoList', 'Bold' + IntToStr(i), Settings.FQsoListColors[i].FBold);
       end;
+
+      ini.WriteInteger('MainQsoList', 'QsoListColorType2', Settings.FQsoListColorType2);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);

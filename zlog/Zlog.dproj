@@ -765,7 +765,7 @@
                     <RDP_Source_Files Name="Item8">UNewPrefix.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item9">UIOTACategory.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item10">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item11">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item11">Win32\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">UBasicScore.dfm</RDP_Source_Files>
@@ -891,7 +891,7 @@
                     <RDP_Source_Files Name="Item134">UCwMessageEditor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item135">UJarlWebUpload2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item136">UDmsToGridDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item137">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item137">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

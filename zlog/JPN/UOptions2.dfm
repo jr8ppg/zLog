@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -1131,14 +1131,7 @@ object formOptions2: TformOptions2
           Top = 23
           Width = 33
           Height = 13
-          Caption = #36890#24120#34920#31034
-        end
-        object Label68: TLabel
-          Left = 8
-          Top = 50
-          Width = 61
-          Height = 13
-          Caption = 'RBN Verified'#34920#31034
+          Caption = #36890#24120#34920#31034'('#22855#25968#34892')'
         end
         object Label33: TLabel
           Left = 8
@@ -1192,7 +1185,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 5
+          TabOrder = 6
           Text = 'TEXT'
           StyleElements = [seFont, seBorder]
         end
@@ -1203,7 +1196,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 7
+          TabOrder = 8
           OnClick = buttonListBackClick
         end
         object buttonListReset2: TButton
@@ -1213,7 +1206,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 9
+          TabOrder = 10
         end
         object buttonListFore1: TButton
           Tag = 1
@@ -1242,7 +1235,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #25991#23383#33394
-          TabOrder = 6
+          TabOrder = 7
           OnClick = buttonListForeClick
         end
         object checkListBold2: TCheckBox
@@ -1252,7 +1245,7 @@ object formOptions2: TformOptions2
           Width = 41
           Height = 17
           Caption = #22826#23383
-          TabOrder = 8
+          TabOrder = 9
         end
         object editListColor3: TEdit
           Left = 145
@@ -1261,7 +1254,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 10
+          TabOrder = 11
           Text = 'TEXT'
           StyleElements = [seFont, seBorder]
         end
@@ -1272,7 +1265,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 11
+          TabOrder = 12
           OnClick = buttonListBackClick
         end
         object buttonListReset3: TButton
@@ -1282,7 +1275,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 12
+          TabOrder = 13
         end
         object editListColor4: TEdit
           Left = 145
@@ -1291,7 +1284,7 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 13
+          TabOrder = 14
           Text = 'TEXT'
           StyleElements = [seFont, seBorder]
         end
@@ -1302,7 +1295,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #32972#26223#33394
-          TabOrder = 14
+          TabOrder = 15
           OnClick = buttonListBackClick
         end
         object buttonListReset4: TButton
@@ -1312,7 +1305,20 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 15
+          TabOrder = 16
+        end
+        object comboListColorType2: TComboBox
+          Left = 8
+          Top = 47
+          Width = 113
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 5
+          Text = #20598#25968#34892
+          Items.Strings = (
+            #20598#25968#34892
+            'RBN Verified')
         end
       end
       object groupUsabilityAfterQsoEdit: TGroupBox
