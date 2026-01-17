@@ -94,6 +94,12 @@ type
     menuEditBlockList: TMenuItem;
     buttonToggleAllCur: TSpeedButton;
     buttonToggleCQonly: TSpeedButton;
+    panelSpotFinder: TPanel;
+    editSpotFilter: TEdit;
+    N5: TMenuItem;
+    menuShowSearchBar: TMenuItem;
+    buttonFilterClear: TButton;
+    buttonFilterAll: TButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -136,6 +142,10 @@ type
     procedure menuEditBlockListClick(Sender: TObject);
     procedure buttonToggleAllCurClick(Sender: TObject);
     procedure buttonToggleCQonlyClick(Sender: TObject);
+    procedure menuShowSearchBarClick(Sender: TObject);
+    procedure editSpotFilterChange(Sender: TObject);
+    procedure buttonFilterAllClick(Sender: TObject);
+    procedure buttonFilterClearClick(Sender: TObject);
   private
     { Private êÈåæ }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -161,6 +171,8 @@ type
 
     FUseResume: Boolean;
     FResumeSpotFile: string;
+
+    FSearchSpotList: TStringList;
 
     procedure AddBSList(D : TBSData);
     procedure AddAndDisplay(D : TBSData);
@@ -192,6 +204,9 @@ type
     function IsBlocked(strCallsign: string; b: TBand): Boolean;
     procedure SelectAllTab();
     procedure SelectBandTab(b: TBand);
+    function IsTargetSpot(D: TBSData): Boolean;
+    function GetFilterText(): string;
+    procedure SetFilterText(v: string);
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -222,6 +237,7 @@ type
     property CurrentBand: TBand read FCurrBand write SetCurrentBand;
     property UseResume: Boolean read FUseResume write FUseResume;
     property Style: TBandScopeStyle read FBandScopeStyle write SetBandScopeStyle;
+    property FilterText: string read GetFilterText write SetFilterText;
   end;
 
   TBandScopeArray = array[b19..b248g] of TBandScope2;
@@ -259,6 +275,7 @@ begin
    buttonShowWorked.Down := True;
    FUseResume := False;
    FResumeSpotFile := '';
+   FSearchSpotList := TStringList.Create();
 
    RenewTab();
 end;
@@ -266,6 +283,12 @@ end;
 destructor TBandScope2.Destroy();
 begin
    Inherited;
+   FSearchSpotList.Free();
+end;
+
+procedure TBandScope2.editSpotFilterChange(Sender: TObject);
+begin
+   FSearchSpotList.CommaText := Trim(editSpotFilter.Text);
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -788,6 +811,12 @@ end;
 
 function TBandScope2.IsShowData(D: TBSData): Boolean;
 begin
+   // find targetÇ©Ç«Ç§Ç©
+   if IsTargetSpot(D) = False then begin
+      Result := False;
+      Exit;
+   end;
+
    // WorkedÇÃóLñ≥Ç≈îªíË
    if (FBandScopeStyle in [bssCurrentBand, bssAllBands, bssByBand]) and
       (buttonShowWorked.Down = False) and (D.Worked = True) then begin
@@ -940,6 +969,11 @@ begin
    finally
       f.Release();
    end;
+end;
+
+procedure TBandScope2.menuShowSearchBarClick(Sender: TObject);
+begin
+   panelSpotFinder.Visible := menuShowSearchBar.Checked;
 end;
 
 procedure TBandScope2.menuBS00Click(Sender: TObject);
@@ -1885,6 +1919,24 @@ begin
    FBSLock.Leave();
 end;
 
+procedure TBandScope2.buttonFilterAllClick(Sender: TObject);
+var
+   i: Integer;
+begin
+   for i := 0 to (Screen.FormCount - 1) do begin
+      if Screen.Forms[i] is TBandScope2 then begin
+         if Screen.Forms[i] <> Self then begin
+            TBandScope2(Screen.Forms[i]).FilterText := Self.FilterText;
+         end;
+      end;
+   end;
+end;
+
+procedure TBandScope2.buttonFilterClearClick(Sender: TObject);
+begin
+   Self.FilterText := '';
+end;
+
 procedure TBandScope2.buttonShowWorkedClick(Sender: TObject);
 begin
    FDisplayMode := GetDisplayMode();
@@ -2083,6 +2135,7 @@ begin
    ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
    ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
    ini.WriteBool(section, 'Open', Visible);
+   ini.WriteBool(section, 'ShowSearchBar', menuShowSearchBar.Checked);
 end;
 
 procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
@@ -2114,6 +2167,7 @@ begin
       0, 1: buttonSortByFreq.Down := True;
       2, 3: buttonSortByTime.Down := True;
    end;
+   menuShowSearchBar.Checked := ini.ReadBool(section, 'ShowSearchBar', True);
 
    FInitialVisible := ini.ReadBool(section, 'Open', False);
    Visible := FInitialVisible;
@@ -2294,6 +2348,35 @@ begin
    FCurrBand := b;
    buttonToggleAllCur.Caption := SHOW_ALLBANDS;
    RewriteBandScope();
+end;
+
+function TBandScope2.IsTargetSpot(D: TBSData): Boolean;
+var
+   i: Integer;
+begin
+   if FSearchSpotList.Count = 0 then begin
+      Result := True;
+      Exit;
+   end;
+
+   for i := 0 to FSearchSpotList.Count - 1 do begin
+      if Pos(FSearchSpotList[i], D.Call) > 0 then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   Result := False;
+end;
+
+function TBandScope2.GetFilterText(): string;
+begin
+   Result := editSpotFilter.Text;
+end;
+
+procedure TBandScope2.SetFilterText(v: string);
+begin
+   editSpotFilter.Text := v;
 end;
 
 initialization

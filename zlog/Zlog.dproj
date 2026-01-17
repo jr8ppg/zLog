@@ -764,8 +764,8 @@
                     <RDP_Source_Files Name="Item7">UVoiceForm.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item8">UNewPrefix.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item9">UIOTACategory.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item10">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item11">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item10">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item11">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">UBasicScore.dfm</RDP_Source_Files>

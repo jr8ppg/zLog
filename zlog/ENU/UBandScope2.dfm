@@ -27,9 +27,9 @@ object BandScope2: TBandScope2
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 38
+    Top = 61
     Width = 247
-    Height = 366
+    Height = 343
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 4
@@ -41,7 +41,7 @@ object BandScope2: TBandScope2
       Left = 4
       Top = 4
       Width = 235
-      Height = 354
+      Height = 331
       Align = alClient
       ColCount = 1
       DefaultColWidth = 188
@@ -65,7 +65,7 @@ object BandScope2: TBandScope2
   end
   object panelStandardOption: TPanel
     Left = 0
-    Top = 0
+    Top = 23
     Width = 247
     Height = 19
     Align = alTop
@@ -129,7 +129,7 @@ object BandScope2: TBandScope2
   end
   object panelAllBandsOption: TPanel
     Left = 0
-    Top = 19
+    Top = 42
     Width = 247
     Height = 19
     Align = alTop
@@ -189,16 +189,57 @@ object BandScope2: TBandScope2
   end
   object tabctrlBandSelector: TTabControl
     Left = 0
-    Top = 38
+    Top = 61
     Width = 247
-    Height = 366
+    Height = 343
     Align = alClient
     TabOrder = 3
     Visible = False
     OnChange = tabctrlBandSelectorChange
     OnChanging = tabctrlBandSelectorChanging
     ExplicitLeft = 1
-    ExplicitTop = 44
+  end
+  object panelSpotFinder: TPanel
+    Left = 0
+    Top = 0
+    Width = 247
+    Height = 23
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 4
+    DesignSize = (
+      247
+      23)
+    object editSpotFilter: TEdit
+      Left = 22
+      Top = 1
+      Width = 203
+      Height = 20
+      Anchors = [akLeft, akTop, akRight]
+      CharCase = ecUpperCase
+      TabOrder = 0
+      TextHint = 'Search spot'
+      OnChange = editSpotFilterChange
+    end
+    object buttonFilterClear: TButton
+      Left = 226
+      Top = 1
+      Width = 20
+      Height = 20
+      Anchors = [akTop, akRight]
+      Caption = 'C'
+      TabOrder = 1
+      OnClick = buttonFilterClearClick
+    end
+    object buttonFilterAll: TButton
+      Left = 1
+      Top = 1
+      Width = 20
+      Height = 20
+      Caption = '<<'
+      TabOrder = 2
+      OnClick = buttonFilterAllClick
+    end
   end
   object BSMenu: TPopupMenu
     Tag = 15
@@ -251,102 +292,129 @@ object BandScope2: TBandScope2
       Caption = 'New multi'
       OnClick = menuBSNewMultiClick
     end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object menuShowSearchBar: TMenuItem
+      AutoCheck = True
+      Caption = 'Show search bar'
+      Checked = True
+      GroupIndex = 1
+      OnClick = menuShowSearchBarClick
+    end
     object N3: TMenuItem
       Caption = '-'
+      GroupIndex = 1
     end
     object menuBS00: TMenuItem
       AutoCheck = True
       Caption = '1.9'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS01: TMenuItem
       Tag = 1
       AutoCheck = True
       Caption = '3.5'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS02: TMenuItem
       Tag = 2
       AutoCheck = True
       Caption = '7'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS03: TMenuItem
       Tag = 3
       AutoCheck = True
       Caption = '10'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS04: TMenuItem
       Tag = 4
       AutoCheck = True
       Caption = '14'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS05: TMenuItem
       Tag = 5
       AutoCheck = True
       Caption = '18'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS06: TMenuItem
       Tag = 6
       AutoCheck = True
       Caption = '21'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS07: TMenuItem
       Tag = 7
       AutoCheck = True
       Caption = '24'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS08: TMenuItem
       Tag = 8
       AutoCheck = True
       Caption = '28'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS09: TMenuItem
       Tag = 9
       AutoCheck = True
       Caption = '50'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS10: TMenuItem
       Tag = 10
       AutoCheck = True
       Caption = '144'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS11: TMenuItem
       Tag = 11
       AutoCheck = True
       Caption = '430'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS12: TMenuItem
       Tag = 12
       AutoCheck = True
       Caption = '1200'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS13: TMenuItem
       Tag = 13
       AutoCheck = True
       Caption = '2400'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS14: TMenuItem
       Tag = 14
       AutoCheck = True
       Caption = '5600'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
     object menuBS15: TMenuItem
       Tag = 15
       AutoCheck = True
       Caption = '10G'
+      GroupIndex = 1
       OnClick = menuBS00Click
     end
   end
