@@ -99,7 +99,7 @@ type
     N5: TMenuItem;
     menuShowSearchBar: TMenuItem;
     buttonFilterClear: TButton;
-    buttonFilterAll: TButton;
+    buttonSpotFilterLink: TSpeedButton;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -144,8 +144,8 @@ type
     procedure buttonToggleCQonlyClick(Sender: TObject);
     procedure menuShowSearchBarClick(Sender: TObject);
     procedure editSpotFilterChange(Sender: TObject);
-    procedure buttonFilterAllClick(Sender: TObject);
     procedure buttonFilterClearClick(Sender: TObject);
+    procedure buttonSpotFilterLinkClick(Sender: TObject);
   private
     { Private êÈåæ }
     FBandScopeMenu: array[b19..b10g] of TMenuItem;
@@ -207,6 +207,9 @@ type
     function IsTargetSpot(D: TBSData): Boolean;
     function GetFilterText(): string;
     procedure SetFilterText(v: string);
+    function GetSpotFilterLink(): Boolean;
+    procedure SetSpotFilterLink(v: Boolean);
+    procedure CopySpotFilterCopy();
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -238,6 +241,7 @@ type
     property UseResume: Boolean read FUseResume write FUseResume;
     property Style: TBandScopeStyle read FBandScopeStyle write SetBandScopeStyle;
     property FilterText: string read GetFilterText write SetFilterText;
+    property SpotFilterLink: Boolean read GetSpotFilterLink write SetSpotFilterLink;
   end;
 
   TBandScopeArray = array[b19..b248g] of TBandScope2;
@@ -289,6 +293,10 @@ end;
 procedure TBandScope2.editSpotFilterChange(Sender: TObject);
 begin
    FSearchSpotList.CommaText := Trim(editSpotFilter.Text);
+
+   if SpotFilterLink = True then begin
+      CopySpotFilterCopy();
+   end;
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -1919,19 +1927,6 @@ begin
    FBSLock.Leave();
 end;
 
-procedure TBandScope2.buttonFilterAllClick(Sender: TObject);
-var
-   i: Integer;
-begin
-   for i := 0 to (Screen.FormCount - 1) do begin
-      if Screen.Forms[i] is TBandScope2 then begin
-         if Screen.Forms[i] <> Self then begin
-            TBandScope2(Screen.Forms[i]).FilterText := Self.FilterText;
-         end;
-      end;
-   end;
-end;
-
 procedure TBandScope2.buttonFilterClearClick(Sender: TObject);
 begin
    Self.FilterText := '';
@@ -1989,6 +1984,19 @@ begin
 
    SetDisplayModeState(False);
    RewriteBandScope();
+end;
+
+procedure TBandScope2.buttonSpotFilterLinkClick(Sender: TObject);
+var
+   i: Integer;
+begin
+   for i := 0 to (Screen.FormCount - 1) do begin
+      if Screen.Forms[i] is TBandScope2 then begin
+         if Screen.Forms[i] <> Self then begin
+            TBandScope2(Screen.Forms[i]).SpotFilterLink := Self.SpotFilterLink;
+         end;
+      end;
+   end;
 end;
 
 procedure TBandScope2.buttonToggleAllCurClick(Sender: TObject);
@@ -2377,6 +2385,29 @@ end;
 procedure TBandScope2.SetFilterText(v: string);
 begin
    editSpotFilter.Text := v;
+end;
+
+function TBandScope2.GetSpotFilterLink(): Boolean;
+begin
+   Result := buttonSpotFilterLink.Down;
+end;
+
+procedure TBandScope2.SetSpotFilterLink(v: Boolean);
+begin
+   buttonSpotFilterLink.Down := v;
+end;
+
+procedure TBandScope2.CopySpotFilterCopy();
+var
+   i: Integer;
+begin
+   for i := 0 to (Screen.FormCount - 1) do begin
+      if Screen.Forms[i] is TBandScope2 then begin
+         if Screen.Forms[i] <> Self then begin
+            TBandScope2(Screen.Forms[i]).FilterText := Self.FilterText;
+         end;
+      end;
+   end;
 end;
 
 initialization

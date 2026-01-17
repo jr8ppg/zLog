@@ -210,6 +210,16 @@ object BandScope2: TBandScope2
     DesignSize = (
       247
       23)
+    object buttonSpotFilterLink: TSpeedButton
+      Left = 1
+      Top = 1
+      Width = 20
+      Height = 20
+      AllowAllUp = True
+      GroupIndex = 7
+      Caption = 'A'
+      OnClick = buttonSpotFilterLinkClick
+    end
     object editSpotFilter: TEdit
       Left = 22
       Top = 1
@@ -230,15 +240,6 @@ object BandScope2: TBandScope2
       Caption = 'C'
       TabOrder = 1
       OnClick = buttonFilterClearClick
-    end
-    object buttonFilterAll: TButton
-      Left = 1
-      Top = 1
-      Width = 20
-      Height = 20
-      Caption = '<<'
-      TabOrder = 2
-      OnClick = buttonFilterAllClick
     end
   end
   object BSMenu: TPopupMenu
