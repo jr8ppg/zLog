@@ -4594,7 +4594,7 @@ object formOptions: TformOptions
         Top = 194
         Width = 93
         Height = 13
-        Caption = 'BandScope resume'
+        Caption = #12524#12472#12517#12540#12512#12487#12540#12479
       end
       object editCfgDatFolder: TEdit
         Left = 128
@@ -4721,7 +4721,7 @@ object formOptions: TformOptions
         Top = 192
         Width = 65
         Height = 20
-        Caption = 'Browse...'
+        Caption = #21442#29031'...'
         TabOrder = 14
         OnClick = BrowsePathClick
       end
