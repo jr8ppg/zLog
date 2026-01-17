@@ -6752,6 +6752,7 @@ begin
       InitQsoEditPanel();
       InitSerialPanel();
       LastFocus := CallsignEdit;
+      CurrentQSO.NrSent := GetInitNrSent(CurrentQSO);
       ShowCurrentQSO();
 
       // モードが変わっていたら再計算
