@@ -21,15 +21,15 @@ type
     Max100: TLabel;
     Panel2: TPanel;
     Chart1: TChart;
-    Series1: TBarSeries;
     SeriesActualTotals: TLineSeries;
     SeriesTargetTotals: TLineSeries;
     Label4: TLabel;
     ShowLastCombo: TComboBox;
     labelHourCaption: TLabel;
     check3D: TCheckBox;
-    Series3: TBarSeries;
+    Series1: TBarSeries;
     Series2: TBarSeries;
+    Series3: TBarSeries;
     Series4: TBarSeries;
     Series5: TBarSeries;
     Series6: TBarSeries;
@@ -43,30 +43,51 @@ type
     Series14: TBarSeries;
     Series15: TBarSeries;
     Series16: TBarSeries;
-    Panel3: TPanel;
-    radioOriginCurrentTime: TRadioButton;
-    radioOriginLastQSO: TRadioButton;
-    radioOriginFirstQSO: TRadioButton;
     Series17: TBarSeries;
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
-    ScoreGrid: TStringGrid;
-    popupScore: TPopupMenu;
-    menuAchievementRate: TMenuItem;
-    menuWinLoss: TMenuItem;
-    TabSheet3: TTabSheet;
-    ScoreGrid2: TStringGrid;
-    N1: TMenuItem;
-    menuDispAlternating: TMenuItem;
-    menuDispOrder: TMenuItem;
-    timerRefresh: TTimer;
     Series18: TBarSeries;
     Series19: TBarSeries;
     Series20: TBarSeries;
     Series21: TBarSeries;
     Series22: TBarSeries;
-    SeriesTarget: TBarSeries;
+    SeriesTarget1: TBarSeries;
+    SeriesTarget2: TBarSeries;
+    SeriesTarget3: TBarSeries;
+    SeriesTarget4: TBarSeries;
+    SeriesTarget5: TBarSeries;
+    SeriesTarget6: TBarSeries;
+    SeriesTarget7: TBarSeries;
+    SeriesTarget8: TBarSeries;
+    SeriesTarget9: TBarSeries;
+    SeriesTarget10: TBarSeries;
+    SeriesTarget11: TBarSeries;
+    SeriesTarget12: TBarSeries;
+    SeriesTarget13: TBarSeries;
+    SeriesTarget14: TBarSeries;
+    SeriesTarget15: TBarSeries;
+    SeriesTarget16: TBarSeries;
+    SeriesTarget17: TBarSeries;
+    SeriesTarget18: TBarSeries;
+    SeriesTarget19: TBarSeries;
+    SeriesTarget20: TBarSeries;
+    SeriesTarget21: TBarSeries;
+    SeriesTarget22: TBarSeries;
+    Panel3: TPanel;
+    radioOriginCurrentTime: TRadioButton;
+    radioOriginLastQSO: TRadioButton;
+    radioOriginFirstQSO: TRadioButton;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
+    ScoreGrid: TStringGrid;
+    ScoreGrid2: TStringGrid;
+    popupScore: TPopupMenu;
+    menuAchievementRate: TMenuItem;
+    menuWinLoss: TMenuItem;
+    N1: TMenuItem;
+    menuDispAlternating: TMenuItem;
+    menuDispOrder: TMenuItem;
+    timerRefresh: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -92,9 +113,12 @@ type
     FLast10QsoRateMax: Double;
     FLast100QsoRateMax: Double;
     FShowLast: Integer;      { Show last x hours. default = 12}
-    FGraphSeries: array[b19..bTarget] of TBarSeries;
+    FGraphSeries: array[b19..b248g] of TBarSeries;
+    FGraphTarget: array[b19..b248g] of TBarSeries;
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
+    FGraphTargetSeriesColor: TColor;
+    FGraphTargetTextColor: TColor;
 
     FOriginTime: TDateTime;      // グラフの基準日時（原点）
     FStartTime: TDateTime;       // グラフの表示開始日時
@@ -109,6 +133,7 @@ type
     FZaqRowFgColor: array[0..35] of TColor;
     FZaq2RowBgColor: array[0..35] of TColor;
     FZaq2RowFgColor: array[0..35] of TColor;
+    FTargetColorByBand: Boolean;
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
     function UpdateGraphByRange(hh: Integer): Integer;
@@ -136,6 +161,15 @@ type
     procedure SetOtherBgColor(n: Integer; c: TColor);
     function GetOtherFgColor(n: Integer): TColor;
     procedure SetOtherFgColor(n: Integer; c: TColor);
+    function GetActualSeriesColor(b: TBand): TColor;
+    procedure SetActualSeriesColor(b: TBand; c: TColor);
+    function GetTargetSeriesColor(b: TBand): TColor;
+    procedure SetTargetSeriesColor(b: TBand; c: TColor);
+    function GetActualTextColor(b: TBand): TColor;
+    procedure SetActualTextColor(b: TBand; c: TColor);
+    function GetTargetTextColor(b: TBand): TColor;
+    procedure SetTargetTextColor(b: TBand; c: TColor);
+    procedure SetTargetColorByBand(v: Boolean);
   public
     { Public declarations }
     procedure InitScoreGrid();
@@ -151,6 +185,13 @@ type
     property ZaqFgColor[n: Integer]: TColor read GetZaqFgColor write SetZaqFgColor;
     property OtherBgColor[n: Integer]: TColor read GetOtherBgColor write SetOtherBgColor;
     property OtherFgColor[n: Integer]: TColor read GetOtherFgColor write SetOtherFgColor;
+    property ActualSeriesColor[b: TBand]: TColor read GetActualSeriesColor write SetActualSeriesColor;
+    property TargetSeriesColor[b: TBand]: TColor read GetTargetSeriesColor write SetTargetSeriesColor;
+    property ActualTextColor[b: TBand]: TColor read GetActualTextColor write SetActualTextColor;
+    property TargetTextColor[b: TBand]: TColor read GetTargetTextColor write SetTargetTextColor;
+    property TargetColorByBand: Boolean read FTargetColorByBand write SetTargetColorByBand;
+    property GraphTargetSeriesColor: TColor read FGraphTargetSeriesColor write FGraphTargetSeriesColor;
+    property GraphTargetTextColor: TColor read FGraphTargetTextColor write FGraphTargetTextColor;
   end;
 
 resourcestring
@@ -207,7 +248,29 @@ begin
    FGraphSeries[b77g] := Series20;
    FGraphSeries[b135g] := Series21;
    FGraphSeries[b248g] := Series22;
-   FGraphSeries[bTarget] := SeriesTarget;
+
+   FGraphTarget[b19] := SeriesTarget1;
+   FGraphTarget[b35] := SeriesTarget2;
+   FGraphTarget[b7] := SeriesTarget3;
+   FGraphTarget[b10] := SeriesTarget4;
+   FGraphTarget[b14] := SeriesTarget5;
+   FGraphTarget[b18] := SeriesTarget6;
+   FGraphTarget[b21] := SeriesTarget7;
+   FGraphTarget[b24] := SeriesTarget8;
+   FGraphTarget[b28] := SeriesTarget9;
+   FGraphTarget[b50] := SeriesTarget10;
+   FGraphTarget[b144] := SeriesTarget11;
+   FGraphTarget[b430] := SeriesTarget12;
+   FGraphTarget[b1200] := SeriesTarget13;
+   FGraphTarget[b2400] := SeriesTarget14;
+   FGraphTarget[b5600] := SeriesTarget15;
+   FGraphTarget[b10g] := SeriesTarget16;
+   FGraphTarget[b104g] := SeriesTarget17;
+   FGraphTarget[b24g] := SeriesTarget18;
+   FGraphTarget[b47g] := SeriesTarget19;
+   FGraphTarget[b77g] := SeriesTarget20;
+   FGraphTarget[b135g] := SeriesTarget21;
+   FGraphTarget[b248g] := SeriesTarget22;
 
    FGraphStyle := rsOriginal;
    FGraphStartPosition := spCurrentTime;
@@ -253,6 +316,13 @@ begin
 
    for b := Low(FGraphSeries) to High(FGraphSeries) do begin
       with FGraphSeries[b] do begin
+         Clear();
+         VertAxis := aLeftAxis;
+         ValueFormat := '#,###';    // 0を出さない
+      end;
+   end;
+   for b := Low(FGraphTarget) to High(FGraphTarget) do begin
+      with FGraphTarget[b] do begin
          Clear();
          VertAxis := aLeftAxis;
          ValueFormat := '#,###';    // 0を出さない
@@ -417,8 +487,9 @@ var
 begin
    timerRefresh.Enabled := False;
    try
-   for b := b19 to bTarget do begin
+   for b := b19 to HiBand do begin
       FGraphSeries[b].Clear();
+      FGraphTarget[b].Clear();
    end;
    SeriesActualTotals.Clear();
    SeriesTargetTotals.Clear();
@@ -542,30 +613,24 @@ begin
       // 横軸目盛ラベル
       Chart1.Axes.Bottom.Items.Add(hindex + 1, ''{Str + 't'});
 
+      for b := b19 to b248g do begin
+         // Actual QSOs
+         FGraphSeries[b].Add(0);
+      end;
+
       // Target QSOs
-      FGraphSeries[b19].Add(0);
-      FGraphSeries[b35].Add(0);
-      FGraphSeries[b7].Add(0);
-      FGraphSeries[b10].Add(0);
-      FGraphSeries[b14].Add(0);
-      FGraphSeries[b18].Add(0);
-      FGraphSeries[b21].Add(0);
-      FGraphSeries[b24].Add(0);
-      FGraphSeries[b28].Add(0);
-      FGraphSeries[b50].Add(0);
-      FGraphSeries[b144].Add(0);
-      FGraphSeries[b430].Add(0);
-      FGraphSeries[b1200].Add(0);
-      FGraphSeries[b2400].Add(0);
-      FGraphSeries[b5600].Add(0);
-      FGraphSeries[b10g].Add(0);
-      FGraphSeries[b104g].Add(0);
-      FGraphSeries[b24g].Add(0);
-      FGraphSeries[b47g].Add(0);
-      FGraphSeries[b77g].Add(0);
-      FGraphSeries[b135g].Add(0);
-      FGraphSeries[b248g].Add(0);
-      FGraphSeries[bTarget].Add(target_hour_count);
+      if FTargetColorByBand = False then begin
+         FGraphTarget[b19].Add(target_hour_count);
+         for b := b35 to b248g do begin
+            FGraphTarget[b].Add(0);
+         end;
+      end
+      else begin
+         for b := b19 to b248g do begin
+            // Target QSOs
+            FGraphTarget[b].Add(dmZLogGlobal.Target.Bands[b].Hours[H + i + 1].Target);
+         end;
+      end;
 
       // 実績値累計
       SeriesActualTotals.Add(actual_total_count);
@@ -630,12 +695,15 @@ begin
 
    // Actual QSOs
    FGraphSeries[b19].Add(hour_count);
-
    for b := b35 to HiBand do begin
       FGraphSeries[b].Add(0);
    end;
 
-   FGraphSeries[bTarget].Add(0);
+   // Target QSOs
+   FGraphTarget[b19].Add(0);
+   for b := b35 to HiBand do begin
+      FGraphTarget[b].Add(0);
+   end;
 
    Result := hour_count;
 end;
@@ -646,8 +714,8 @@ var
    part_count: Integer;
    hour_count: Integer;
 begin
+   // Actual QSOs
    hour_count := 0;
-
    for b := b19 to HiBand do begin
       part_count := dmZLogGlobal.Target.Bands[b].Hours[hh].Actual;
 
@@ -658,7 +726,10 @@ begin
       hour_count := hour_count + part_count;
    end;
 
-   FGraphSeries[bTarget].Add(0);
+   // Target QSOs
+   for b := b19 to HiBand do begin
+      FGraphTarget[b].Add(0);
+   end;
 
    Result := hour_count;
 end;
@@ -667,6 +738,7 @@ function TRateDialogEx.UpdateGraphByRange(hh: Integer): Integer;
 var
    part_count: Integer;
    hour_count: Integer;
+   b: TBand;
 begin
    hour_count := 0;
 
@@ -744,7 +816,11 @@ begin
    FGraphSeries[b77g].Add(0);
    FGraphSeries[b135g].Add(0);
    FGraphSeries[b248g].Add(0);
-   FGraphSeries[bTarget].Add(0);
+
+   // Target QSOs
+   for b := b19 to HiBand do begin
+      FGraphTarget[b].Add(0);
+   end;
 
    // この時間帯の合計
    hour_count := hour_count + part_count;
@@ -770,10 +846,23 @@ var
 begin
    FGraphStyle := dmZLogGlobal.Settings.FGraphStyle;
    FGraphStartPosition := dmZLogGlobal.Settings.FGraphStartPosition;
-   for b := b19 to bTarget do begin
-      FGraphSeries[b].SeriesColor := dmZLogGlobal.Settings.FGraphBarColor[b];
-      FGraphSeries[b].Marks.Font.Color := dmZLogGlobal.Settings.FGraphTextColor[b];
+   FTargetColorByBand := dmZLogGlobal.Settings.FGraphTargetColorByBand;
+   for b := b19 to HiBand do begin
+      ActualSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[b];
+      ActualTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[b];
+
+      if FTargetColorByBand = False then begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[bTarget];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[bTarget];
+      end
+      else begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[b];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[b];
+      end;
    end;
+   FGraphTargetSeriesColor := dmZLogGlobal.Settings.FGraphBarColor[bTarget];
+   FGraphTargetTextColor :=  dmZLogGlobal.Settings.FGraphTextColor[bTarget];
+
    SetGraphStartPositionUI(FGraphStartPosition);
    menuAchievementRate.Checked := dmZLogGlobal.Settings.FZaqAchievement;
    menuWinLoss.Checked := Not menuAchievementRate.Checked;
@@ -844,7 +933,7 @@ var
 begin
    dmZLogGlobal.Settings.FGraphStyle := GraphStyle;
    dmZLogGlobal.Settings.FGraphStartPosition := GraphStartPosition;
-   for b := b19 to bTarget do begin
+   for b := b19 to HiBand do begin
       dmZLogGlobal.Settings.FGraphBarColor[b] := GraphSeries[b].SeriesColor;
       dmZLogGlobal.Settings.FGraphTextColor[b] := GraphSeries[b].Marks.Font.Color;
    end;
@@ -858,6 +947,11 @@ begin
    // 折れ線グラフの色
    dmZLogGlobal.Settings.FGraphOtherBgColor[0] := SeriesActualTotals.SeriesColor;
    dmZLogGlobal.Settings.FGraphOtherBgColor[1] := SeriesTargetTotals.SeriesColor;
+
+   dmZLogGlobal.Settings.FGraphTargetColorByBand := FTargetColorByBand;
+
+   dmZLogGlobal.Settings.FGraphBarColor[bTarget] := FGraphTargetSeriesColor;
+   dmZLogGlobal.Settings.FGraphTextColor[bTarget] := FGraphTargetTextColor;
 end;
 
 procedure TRateDialogEx.Refresh();
@@ -1748,6 +1842,79 @@ begin
       0: SeriesActualTotals.Marks.Color := c;
       1: SeriesTargetTotals.Marks.Color := c;
    end;
+end;
+
+function TRateDialogEx.GetActualSeriesColor(b: TBand): TColor;
+begin
+   Result := FGraphSeries[b].SeriesColor;
+end;
+
+procedure TRateDialogEx.SetActualSeriesColor(b: TBand; c: TColor);
+begin
+   FGraphSeries[b].SeriesColor := c;
+end;
+
+function TRateDialogEx.GetTargetSeriesColor(b: TBand): TColor;
+begin
+   Result := FGraphTarget[b].SeriesColor;
+end;
+
+procedure TRateDialogEx.SetTargetSeriesColor(b: TBand; c: TColor);
+var
+   CC: TColor;
+   RR, GG, BB: Byte;
+begin
+   CC := ColorToRGB(c);
+   RR := GetRValue(CC);
+   GG := GetGValue(CC);
+   BB := GetBValue(CC);
+
+   if FTargetColorByBand = True then begin
+      RR := Trunc(RR * 0.5);
+      GG := Trunc(GG * 0.5);
+      BB := Trunc(BB * 0.5);
+   end;
+
+   FGraphTarget[b].SeriesColor := RGB(RR, GG, BB);
+end;
+
+function TRateDialogEx.GetActualTextColor(b: TBand): TColor;
+begin
+   Result := FGraphSeries[b].Marks.Font.Color;
+end;
+
+procedure TRateDialogEx.SetActualTextColor(b: TBand; c: TColor);
+begin
+   FGraphSeries[b].Marks.Font.Color := c;
+end;
+
+function TRateDialogEx.GetTargetTextColor(b: TBand): TColor;
+begin
+   Result := FGraphTarget[b].Marks.Font.Color;
+end;
+
+procedure TRateDialogEx.SetTargetTextColor(b: TBand; c: TColor);
+begin
+   FGraphTarget[b].Marks.Font.Color := c;
+end;
+
+procedure TRateDialogEx.SetTargetColorByBand(v: Boolean);
+var
+   b: TBand;
+begin
+   FTargetColorByBand := v;
+   for b := b19 to HiBand do begin
+      if FTargetColorByBand = False then begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[bTarget];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[bTarget];
+      end
+      else begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[b];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[b];
+      end;
+   end;
+
+   UpdateGraph();
 end;
 
 end.

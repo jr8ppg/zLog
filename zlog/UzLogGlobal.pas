@@ -349,6 +349,7 @@ type
     FGraphTextColor: array[b19..bTarget] of TColor;
     FGraphOtherBgColor: array[0..1] of TColor;
     FGraphOtherFgColor: array[0..1] of TColor;
+    FGraphTargetColorByBand: Boolean;
     FZaqAchievement: Boolean;
     FZaqBgColor: array[0..3] of TColor;
     FZaqFgColor: array[0..3] of TColor;
@@ -1704,6 +1705,8 @@ begin
          Settings.FGraphOtherFgColor[i] := ZStringToColorDef(ini.ReadString('Graph', 'FgColor' + strKey, ''), default_other_fg_color[i]);
       end;
 
+      Settings.FGraphTargetColorByBand := ini.ReadBool('Graph', 'TargetColorByBand', False);
+
       Settings.FZaqAchievement      := ini.ReadBool('rateex_zaq', 'achievement', True);
 
       for i := 0 to 3 do begin
@@ -2409,6 +2412,8 @@ begin
          ini.WriteString('Graph', 'BgColor' + strKey, ZColorToString(Settings.FGraphOtherBgColor[i]));
          ini.WriteString('Graph', 'FgColor' + strKey, ZColorToString(Settings.FGraphOtherFgColor[i]));
       end;
+
+      ini.WriteBool('Graph', 'TargetColorByBand', Settings.FGraphTargetColorByBand);
 
       ini.WriteBool('rateex_zaq', 'achievement', Settings.FZaqAchievement);
 

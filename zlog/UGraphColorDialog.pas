@@ -182,6 +182,8 @@ type
     buttonReset17: TButton;
     buttonBG17: TButton;
     Label28: TLabel;
+    GroupBox10: TGroupBox;
+    checkTargetColorByBand: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonFGClick(Sender: TObject);
@@ -214,6 +216,8 @@ type
     procedure SetOtherBgColor(n: Integer; c: TColor);
     function GetOtherFgColor(n: Integer): TColor;
     procedure SetOtherFgColor(n: Integer; c: TColor);
+    function GetTargetColorByBand(): Boolean;
+    procedure SetTargetColorByBand(v: Boolean);
   public
     { Public êÈåæ }
     property BarColor[b: TBand]: TColor read GetBarColor write SetBarColor;
@@ -224,6 +228,7 @@ type
     property ZaqFgColor[n: Integer]: TColor read GetZaqFgColor write SetZaqFgColor;
     property OtherBgColor[n: Integer]: TColor read GetOtherBgColor write SetOtherBgColor;
     property OtherFgColor[n: Integer]: TColor read GetOtherFgColor write SetOtherFgColor;
+    property TargetColorByBand: Boolean read GetTargetColorByBand write SetTargetColorByBand;
   end;
 
 implementation
@@ -480,6 +485,16 @@ end;
 procedure TGraphColorDialog.SetOtherFgColor(n: Integer; c: TColor);
 begin
    FOtherColor[n].Font.Color := c;
+end;
+
+function TGraphColorDialog.GetTargetColorByBand(): Boolean;
+begin
+   Result := checkTargetColorByBand.Checked;
+end;
+
+procedure TGraphColorDialog.SetTargetColorByBand(v: Boolean);
+begin
+   checkTargetColorByBand.Checked := v;
 end;
 
 end.

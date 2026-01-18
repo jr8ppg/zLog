@@ -77,7 +77,7 @@ object GraphColorDialog: TGraphColorDialog
         object radioDrawStyle1: TRadioButton
           Left = 16
           Top = 16
-          Width = 65
+          Width = 250
           Height = 25
           Caption = 'Original'
           TabOrder = 0
@@ -85,7 +85,7 @@ object GraphColorDialog: TGraphColorDialog
         object radioDrawStyle2: TRadioButton
           Left = 16
           Top = 43
-          Width = 185
+          Width = 250
           Height = 25
           Caption = 'By Band (1.9M, 3.5M, 7M ... 10G)'
           TabOrder = 1
@@ -93,7 +93,7 @@ object GraphColorDialog: TGraphColorDialog
         object radioDrawStyle3: TRadioButton
           Left = 16
           Top = 70
-          Width = 177
+          Width = 250
           Height = 25
           Caption = 'By Freq. range (HF,VHF,UHF)'
           TabOrder = 2
@@ -109,7 +109,7 @@ object GraphColorDialog: TGraphColorDialog
         object radioDrawStartPos1: TRadioButton
           Left = 16
           Top = 16
-          Width = 73
+          Width = 250
           Height = 25
           Caption = 'First QSO'
           TabOrder = 0
@@ -117,7 +117,7 @@ object GraphColorDialog: TGraphColorDialog
         object radioDrawStartPos2: TRadioButton
           Left = 16
           Top = 43
-          Width = 145
+          Width = 250
           Height = 25
           Caption = 'Current Time - range'
           TabOrder = 1
@@ -125,10 +125,26 @@ object GraphColorDialog: TGraphColorDialog
         object radioDrawStartPos3: TRadioButton
           Left = 16
           Top = 70
-          Width = 137
+          Width = 250
           Height = 25
           Caption = 'Last QSO - range'
           TabOrder = 2
+        end
+      end
+      object GroupBox10: TGroupBox
+        Left = 4
+        Top = 232
+        Width = 389
+        Height = 73
+        Caption = 'Misc.'
+        TabOrder = 2
+        object checkTargetColorByBand: TCheckBox
+          Left = 16
+          Top = 24
+          Width = 250
+          Height = 17
+          Caption = 'Color the target graph by band'
+          TabOrder = 0
         end
       end
     end

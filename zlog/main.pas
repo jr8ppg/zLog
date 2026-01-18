@@ -6958,10 +6958,14 @@ begin
    try
       f.Style := FRateDialogEx.GraphStyle;
       f.StartPosition := FRateDialogEx.GraphStartPosition;
-      for b := b19 to bTarget do begin
-         f.BarColor[b] := FRateDialogEx.GraphSeries[b].SeriesColor;
-         f.TextColor[b] := FRateDialogEx.GraphSeries[b].Marks.Font.Color;
+      for b := b19 to b248g do begin
+         f.BarColor[b] := FRateDialogEx.ActualSeriesColor[b];
+         f.TextColor[b] := FRateDialogEx.ActualTextColor[b];
       end;
+
+      f.BarColor[bTarget] := FRateDialogEx.GraphTargetSeriesColor;
+      f.TextColor[bTarget] := FRateDialogEx.GraphTargetTextColor;
+
       for i := 0 to 3 do begin
          f.ZaqBgColor[i] := FRateDialogEx.ZaqBgColor[i];
          f.ZaqFgColor[i] := FRateDialogEx.ZaqFgColor[i];
@@ -6970,6 +6974,7 @@ begin
          f.OtherBgColor[i] := FRateDialogEx.OtherBgColor[i];
          f.OtherFgColor[i] := FRateDialogEx.OtherFgColor[i];
       end;
+      f.TargetColorByBand := FRateDialogEx.TargetColorByBand;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
@@ -6987,10 +6992,16 @@ begin
       // QSORatExに反映
       FRateDialogEx.GraphStyle := f.Style;
       FRateDialogEx.GraphStartPosition := f.StartPosition;
-      for b := b19 to bTarget do begin
-         FRateDialogEx.GraphSeries[b].SeriesColor := f.BarColor[b];
-         FRateDialogEx.GraphSeries[b].Marks.Font.Color := f.TextColor[b];
+      for b := b19 to b248g do begin
+         FRateDialogEx.ActualSeriesColor[b] := f.BarColor[b];
+         FRateDialogEx.TargetSeriesColor[b] := f.BarColor[b];
+         FRateDialogEx.ActualTextColor[b] := f.TextColor[b];
+         FRateDialogEx.TargetTextColor[b] := f.TextColor[b];
       end;
+
+      FRateDialogEx.GraphTargetSeriesColor := f.BarColor[bTarget];
+      FRateDialogEx.GraphTargetTextColor := f.TextColor[bTarget];
+
       for i := 0 to 3 do begin
          FRateDialogEx.ZaqBgColor[i] := f.ZaqBgColor[i];
          FRateDialogEx.ZaqFgColor[i] := f.ZaqFgColor[i];
@@ -6999,6 +7010,7 @@ begin
          FRateDialogEx.OtherBgColor[i] := f.OtherBgColor[i];
          FRateDialogEx.OtherFgColor[i] := f.OtherFgColor[i];
       end;
+      FRateDialogEx.TargetColorByBand := f.TargetColorByBand;
       FRateDialogEx.SaveSettings();
 
       FRateDialogEx.Refresh();
