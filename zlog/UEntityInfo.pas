@@ -113,7 +113,7 @@ begin
    // ’n‹…‚Ì”¼Œa
    r := 6378.137;
 
-   x1 := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0) * -1;
+   x1 := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0);
    y1 := StrToFloatDef(dmZLogGlobal.Settings._mylatitude, 0);
    x2 := StrToFloatDef(ctydat.Longitude, 0) * -1;
    y2 := StrToFloatDef(ctydat.Latitude, 0);

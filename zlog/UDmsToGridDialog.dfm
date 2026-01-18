@@ -13,6 +13,7 @@ object formDmsToGridDialog: TformDmsToGridDialog
   Font.Style = []
   Position = poOwnerFormCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   TextHeight = 13
   object GroupBox1: TGroupBox
     Left = 8
@@ -85,10 +86,11 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Top = 22
       Width = 41
       Height = 21
-      MaxLength = 3
-      NumbersOnly = True
+      MaxLength = 4
       TabOrder = 0
       Text = '138'
+      OnChange = editLatitudeDChange
+      OnKeyPress = editLatitudeDKeyPress
     end
     object editLatitudeM: TEdit
       Left = 148
@@ -99,6 +101,7 @@ object formDmsToGridDialog: TformDmsToGridDialog
       NumbersOnly = True
       TabOrder = 1
       Text = '10'
+      OnChange = editMChange
     end
     object editLatitudeS: TEdit
       Left = 204
@@ -109,16 +112,18 @@ object formDmsToGridDialog: TformDmsToGridDialog
       NumbersOnly = True
       TabOrder = 2
       Text = '10'
+      OnChange = editSChange
     end
     object editLongitudeD: TEdit
       Left = 80
       Top = 49
       Width = 41
       Height = 21
-      MaxLength = 3
-      NumbersOnly = True
+      MaxLength = 4
       TabOrder = 3
       Text = '138'
+      OnChange = editLongitudeDChange
+      OnKeyPress = editLatitudeDKeyPress
     end
     object editLongitudeM: TEdit
       Left = 148
@@ -129,6 +134,7 @@ object formDmsToGridDialog: TformDmsToGridDialog
       NumbersOnly = True
       TabOrder = 4
       Text = '10'
+      OnChange = editMChange
     end
     object editLongitudeS: TEdit
       Left = 204
@@ -139,6 +145,7 @@ object formDmsToGridDialog: TformDmsToGridDialog
       NumbersOnly = True
       TabOrder = 5
       Text = '10'
+      OnChange = editSChange
     end
   end
   object Panel1: TPanel
@@ -149,8 +156,6 @@ object formDmsToGridDialog: TformDmsToGridDialog
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 127
-    ExplicitWidth = 271
     DesignSize = (
       287
       34)
@@ -164,7 +169,6 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 121
     end
     object buttonCancel: TButton
       Left = 212
@@ -176,7 +180,6 @@ object formDmsToGridDialog: TformDmsToGridDialog
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 196
     end
   end
   object buttonCalc: TButton

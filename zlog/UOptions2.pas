@@ -843,6 +843,9 @@ begin
       CQZoneEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
       IARUZoneEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
       AgeEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+//      IotaEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+//      HandleCwEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
+//      HandlePhEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
 
       if ProvEdit.ReadOnly = True then begin
          ProvEdit.Color := clBtnFace;
@@ -850,6 +853,9 @@ begin
          CQZoneEdit.Color := clBtnFace;
          IARUZoneEdit.Color := clBtnFace;
          AgeEdit.Color := clBtnFace;
+//         IotaEdit.Color := clBtnFace;
+//         HandleCwEdit.Color := clBtnFace;
+//         HandlePhEdit.Color := clBtnFace;
       end
       else begin
          ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
@@ -857,6 +863,9 @@ begin
          CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
          IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
          AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
+//         IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
+//         HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
+//         HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
       end;
    end
    else begin
@@ -866,11 +875,17 @@ begin
       CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
       IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
       AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
+      IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
+      HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
+      HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
       ProvEdit.ReadOnly := False;
       CityEdit.ReadOnly := False;
       CQZoneEdit.ReadOnly := False;
       IARUZoneEdit.ReadOnly := False;
       AgeEdit.ReadOnly := False;
+      IotaEdit.ReadOnly := False;
+      HandleCwEdit.ReadOnly := False;
+      HandlePhEdit.ReadOnly := False;
    end;
 
    //
@@ -2721,7 +2736,7 @@ begin
 
    glGridToDeg(strGridLoc, latitude, longitude);
    editMyLatitude.Text := Format('%.4f', [latitude]);
-   editMyLongitude.Text := Format('%.4f', [longitude * -1]);
+   editMyLongitude.Text := Format('%.4f', [longitude]);
 end;
 
 end.
