@@ -136,7 +136,7 @@ object GraphColorDialog: TGraphColorDialog
         Top = 232
         Width = 389
         Height = 73
-        Caption = 'Misc.'
+        Caption = #12381#12398#20182
         TabOrder = 2
         object checkTargetColorByBand: TCheckBox
           Left = 16
