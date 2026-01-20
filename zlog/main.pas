@@ -2426,7 +2426,13 @@ begin
       (BandMenu.Items[Ord(B)].Enabled = True) and
       (RigControl.IsAvailableBand(B) = True) and
       ((dmZlogGlobal.Settings._dontallowsameband = False) or (RigControl.CheckSameBand(B) = False)) then begin
-      Result := True;
+
+      if (MyContest.UseWarc = False) and ((B = b10) or (B = b18) or (B = b24)) then begin
+         Result := False;
+      end
+      else begin
+         Result := True;
+      end;
    end
    else begin
       Result := False;
