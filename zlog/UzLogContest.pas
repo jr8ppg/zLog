@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
-  System.Generics.Collections,
+  System.Generics.Collections, System.IniFiles,
   UzLogGlobal, UzLogConst, UzLogQSO, UBasicMulti, UBasicScore, UQTCForm,
   UserDefinedContest, UWWZone;
 
@@ -20,8 +20,23 @@ type
   protected
     FNeedCtyDat: Boolean;
     FUseCoeff: Boolean;
+
+    FUseDefaultMessages: Boolean;
+    FCwMessageA: array[1..12] of string;
+    FCwMessageB: array[1..12] of string;
+    FCwMessageCQ: array[1..3] of string;
+    FDefCwMessageA: array[1..12] of string;
+    FDefCwMessageB: array[1..12] of string;
+    FDefCwMessageCQ: array[1..3] of string;
+
     function GetUseWARC(): Boolean; virtual;
     function GetIsAvailableBand(b: TBand): Boolean; virtual;
+    function GetCwMessageA(Index: Integer): string;
+    procedure SetCwMessageA(Index: Integer; v: string);
+    function GetCwMessageB(Index: Integer): string;
+    procedure SetCwMessageB(Index: Integer; v: string);
+    function GetCwMessageCQ(Index: Integer): string;
+    procedure SetCwMessageCQ(Index: Integer; v: string);
   private
     FContestName : string;
     FContestMode : TContestMode;
@@ -85,6 +100,10 @@ type
     function GetNewMulti1(aQSO : TQSO) : string; virtual;
     function GetNewMulti2(aQSO: TQSO): string; virtual;
 
+    procedure LoadCwMessages();
+    procedure SaveCwMessages();
+    procedure ApplyCwMessages();
+
     property Name: string read FContestName;
     property Mode: TContestMode read FContestMode write SetContestMode;
     property NeedCtyDat: Boolean read FNeedCtyDat;
@@ -111,6 +130,10 @@ type
     property MultiForm: TBasicMulti read FMultiForm;
     property ScoreForm: TBasicScore read FScoreForm;
     property WantedList: TList<TWanted> read FWantedList;
+
+    property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
+    property CwMessageB[Index: Integer]: string read GetCwMessageB write SetCwMessageB;
+    property CwMessageCQ[Index: Integer]: string read GetCwMessageCQ write SetCwMessageCQ;
   end;
 
   TPedi = class(TContest)
@@ -270,6 +293,8 @@ uses
   UACAGMulti, UFDMulti, USixDownMulti, UGeneralMulti2, UGeneralScore;
 
 constructor TContest.Create(AOwner: TComponent; N: string; M: TContestMode);
+var
+   i: Integer;
 begin
    FMultiForm := nil;
    FScoreForm := nil;
@@ -324,9 +349,32 @@ begin
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
    FUseNrIme := False;
+
+   FUseDefaultMessages := True;
+   for i := Low(FCwMessageA) to High(FCwMessageA) do begin
+      FCwMessageA[i] := '';
+      FCwMessageB[i] := '';
+      FDefCwMessageA[i] := '';
+      FDefCwMessageB[i] := '';
+   end;
+   for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
+      FCwMessageCQ[i] := '';
+      FDefCwMessageCQ[i] := '';
+   end;
+
+   FDefCwMessageA[1] := 'CQ TEST $M TEST';
+   FDefCwMessageA[2] := '$C 5NN$X';
+   FDefCwMessageA[3] := 'TU $M TEST';
+   FDefCwMessageA[4] := 'QSO B4 TU';
+   FDefCwMessageA[5] := 'NR?';
+   FDefCwMessageA[6] := '$C?';
+   FDefCwMessageA[7] := '$M';
+   FDefCwMessageA[8] := '5NN$X';
 end;
 
 destructor TContest.Destroy;
+var
+   i: Integer;
 begin
    inherited;
 
@@ -795,6 +843,124 @@ begin
    Result := True;
 end;
 
+procedure TContest.LoadCwMessages();
+var
+   ini: TIniFile;
+   i: Integer;
+begin
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_messages.ini');
+   try
+      FUseDefaultMessages := Not ini.SectionExists(FContestName);
+
+      for i := Low(FCwMessageA) to High(FCwMessageA) do begin
+         FCwMessageA[i] := ini.ReadString(FContestName, 'A' + IntToStr(i), '');
+      end;
+      for i := Low(FCwMessageB) to High(FCwMessageB) do begin
+         FCwMessageB[i] := ini.ReadString(FContestName, 'B' + IntToStr(i), '');
+      end;
+      for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
+         FCwMessageCQ[i] := ini.ReadString(FContestName, 'CQ' + IntToStr(i), '');
+      end;
+
+      ApplyCwMessages();
+   finally
+      ini.Free();
+   end;
+end;
+
+procedure TContest.SaveCwMessages();
+var
+   ini: TIniFile;
+   i: Integer;
+begin
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_messages.ini');
+   try
+      for i := Low(FCwMessageA) to High(FCwMessageA) do begin
+         FCwMessageA[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
+         FCwMessageB[i] := dmZLogGlobal.Settings.CW.CWStrBank[2, i];
+      end;
+      for i := 2 to 3 do begin
+         FCwMessageCQ[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[i];
+      end;
+
+      for i := Low(FCwMessageA) to High(FCwMessageA) do begin
+         ini.WriteString(FContestName, 'A' + IntToStr(i), FCwMessageA[i]);
+      end;
+      for i := Low(FCwMessageB) to High(FCwMessageB) do begin
+         ini.WriteString(FContestName, 'B' + IntToStr(i), FCwMessageB[i]);
+      end;
+      for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
+         ini.WriteString(FContestName, 'CQ' + IntToStr(i), FCwMessageCQ[i]);
+      end;
+   finally
+      ini.Free();
+   end;
+end;
+
+procedure TContest.ApplyCwMessages();
+var
+   i: Integer;
+begin
+   for i := Low(FCwMessageA) to High(FCwMessageA) do begin
+      if CwMessageA[i] <> '' then begin
+         dmZLogGlobal.Settings.CW.CWStrBank[1, i] := CwMessageA[i];
+      end;
+      if CwMessageB[i] <> '' then begin
+         dmZLogGlobal.Settings.CW.CWStrBank[2, i] := CwMessageB[i];
+      end;
+   end;
+   for i := 2 to 3 do begin
+      if CwMessageCQ[i] <> '' then begin
+         dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := CwMessageCQ[i];
+      end;
+   end;
+end;
+
+function TContest.GetCwMessageA(Index: Integer): string;
+begin
+   if FUseDefaultMessages = True then begin
+      Result := FDefCwMessageA[Index];
+   end
+   else begin
+      Result := FCwMessageA[Index];
+   end;
+end;
+
+procedure TContest.SetCwMessageA(Index: Integer; v: string);
+begin
+   FCwMessageA[Index] := v;
+end;
+
+function TContest.GetCwMessageB(Index: Integer): string;
+begin
+   if FUseDefaultMessages = True then begin
+      Result := FDefCwMessageB[Index];
+   end
+   else begin
+      Result := FCwMessageB[Index];
+   end;
+end;
+
+procedure TContest.SetCwMessageB(Index: Integer; v: string);
+begin
+   FCwMessageB[Index] := v;
+end;
+
+function TContest.GetCwMessageCQ(Index: Integer): string;
+begin
+   if FUseDefaultMessages = True then begin
+      Result := FDefCwMessageCQ[Index];
+   end
+   else begin
+      Result := FCwMessageCQ[Index];
+   end;
+end;
+
+procedure TContest.SetCwMessageCQ(Index: Integer; v: string);
+begin
+   FCwMessageCQ[Index] := v;
+end;
+
 { TPedi }
 
 constructor TPedi.Create(AOwner: TComponent; N: string; M: TContestMode);
@@ -1130,6 +1296,8 @@ end;
 { TGeneralContest }
 
 constructor TGeneralContest.Create(AOwner: TComponent; N, CFGFileName: string; M: TContestMode);
+var
+   i: Integer;
 begin
    inherited Create(AOwner, N, M);
    FUserDatLoaded := False;
@@ -1219,6 +1387,10 @@ begin
    end;
 
    FUseNrIme := FConfig.UseNrIme;
+
+   for i := 1 to 4 do begin
+      FDefCwMessageA[i] := FConfig.CwMessageA[i];
+   end;
 end;
 
 destructor TGeneralContest.Destroy();

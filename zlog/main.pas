@@ -2021,6 +2021,8 @@ begin
 
    // Last CQ mode
    dmZLogGlobal.Settings.FLastCQMode := IsCQ();
+
+   MyContest.SaveCwMessages();
 end;
 
 procedure TMainForm.FormDestroy(Sender: TObject);
@@ -8436,6 +8438,8 @@ begin
       FEditPanel[i].SentNumberEdit.ImeMode := imemode;
       FEditPanel[i].RcvdNumberEdit.ImeMode := imemode;
    end;
+
+   MyContest.LoadCwMessages();
 end;
 
 procedure TMainForm.InitGrid();
@@ -8714,6 +8718,7 @@ begin
 
       { Open New Contest from main menu }
       if MyContest <> nil then begin
+         MyContest.SaveCwMessages();
          MyContest.Free;
       end;
 
