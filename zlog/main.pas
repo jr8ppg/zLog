@@ -3115,7 +3115,7 @@ end;
 procedure TMainForm.menuSelectContestClick(Sender: TObject);
 begin
    zyloContestClosed;
-   PostMessage(Handle, WM_ZLOG_INIT, 1, 0);
+   PostMessage(Handle, WM_ZLOG_INIT, 2, 0);
 end;
 
 procedure TMainForm.FileSave(Sender: TObject);
@@ -8657,11 +8657,11 @@ begin
       end;
 
       // コンテスト選択を行う
-      if (fSelectContestOnStartup = True) or (Message.WParam = 1) then begin
+      if (fSelectContestOnStartup = True) or (Message.WParam <> 0) then begin
          if fNewContest = True then begin // new contest
             if menu.ShowModal() = mrCancel then begin
                // 選択を行わない場合
-               if Message.WParam = 1 then begin
+               if Message.WParam <> 0 then begin
                   // コンテストを選択からは何もしない
                   Exit;
                end
@@ -8678,6 +8678,11 @@ begin
                strContestName := menu.GeneralName;
                strCfgFileName := menu.CFGFileName;
                fScoreCoeff := menu.ScoreCoeff;
+
+               // New contestからの場合
+               if Message.WParam = 1 then begin
+                  dmZLogGlobal.FCurrentFileName := '';
+               end;
             end;
          end;
       end
