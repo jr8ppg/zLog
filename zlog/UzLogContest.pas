@@ -233,8 +233,8 @@ type
 
   TNYP = class(TContest)
     constructor Create(AOwner: TComponent; N : string; M: TContestMode); override;
-    function GetNewMulti1(aQSO: TQSO): string;
-    function GetNewMulti2(aQSO: TQSO): string;
+    function GetNewMulti1(aQSO: TQSO): string; override;
+    function GetNewMulti2(aQSO: TQSO): string; override;
   end;
 
   TAPSprint = class(TContest)
@@ -381,8 +381,6 @@ begin
 end;
 
 destructor TContest.Destroy;
-var
-   i: Integer;
 begin
    inherited;
 
@@ -856,7 +854,7 @@ var
    ini: TIniFile;
    i: Integer;
 begin
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_messages.ini');
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
    try
       FUseDefaultMessages := Not ini.SectionExists(FContestName);
 
@@ -884,7 +882,7 @@ var
    ini: TIniFile;
    i: Integer;
 begin
-   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_messages.ini');
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
    try
       FProv := dmZLogGlobal.Settings._prov;
       FCity := dmZLogGlobal.Settings._city;
