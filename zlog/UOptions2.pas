@@ -834,59 +834,16 @@ begin
       checkUseDarkMode.Visible := False;
    end;
 
-   //
-   // CFGファイルからパラメーターを取り込んだ場合
-   //
-   if dmZLogGlobal.Settings.ProvCityImported = True then begin
-      ProvEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-      CityEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-      CQZoneEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-      IARUZoneEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-      AgeEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-//      IotaEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-//      HandleCwEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-//      HandlePhEdit.ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-
-      if ProvEdit.ReadOnly = True then begin
-         ProvEdit.Color := clBtnFace;
-         CityEdit.Color := clBtnFace;
-         CQZoneEdit.Color := clBtnFace;
-         IARUZoneEdit.Color := clBtnFace;
-         AgeEdit.Color := clBtnFace;
-//         IotaEdit.Color := clBtnFace;
-//         HandleCwEdit.Color := clBtnFace;
-//         HandlePhEdit.Color := clBtnFace;
-      end
-      else begin
-         ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
-         CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
-         CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
-         IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
-         AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
-//         IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
-//         HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
-//         HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
-      end;
-   end
-   else begin
-      editMyCallsign.Color := ifthen(editMyCallsign.Text = '', $00EADEFF, clWindow);
-      ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
-      CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
-      CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
-      IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
-      AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
-      IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
-      HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
-      HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
-      ProvEdit.ReadOnly := False;
-      CityEdit.ReadOnly := False;
-      CQZoneEdit.ReadOnly := False;
-      IARUZoneEdit.ReadOnly := False;
-      AgeEdit.ReadOnly := False;
-      IotaEdit.ReadOnly := False;
-      HandleCwEdit.ReadOnly := False;
-      HandlePhEdit.ReadOnly := False;
-   end;
+   // 未入力箇所に色を付ける
+   editMyCallsign.Color := ifthen(editMyCallsign.Text = '', $00EADEFF, clWindow);
+   ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
+   CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
+   CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
+   IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
+   AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
+   IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
+   HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
+   HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
 
    //
    // 画面に反映
@@ -1903,35 +1860,6 @@ var
 begin
    for i := 1 to maxmessage do begin
       FEditMessage[i].Text := TempCWStrBank[TempCurrentBank, i];
-      if dmZLogGlobal.Settings.CW.CWStrImported[TempCurrentBank, i] = True then begin
-         FEditMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-         if FEditMessage[i].ReadOnly = True then begin
-            FEditMessage[i].Color := clBtnFace; // gray
-         end
-         else begin
-            FEditMessage[i].Color := $00EADEFF; // light pink
-         end;
-      end
-      else begin
-         FEditMessage[i].Color := clWindow;
-         FEditMessage[i].ReadOnly := False;
-      end;
-   end;
-
-   for i := 2 to 3 do begin
-      if dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] = True then begin
-         FEditAdditionalCQMessage[i].ReadOnly := dmZLogGlobal.Settings.ReadOnlyParamImported;
-         if FEditAdditionalCQMessage[i].ReadOnly = True then begin
-            FEditAdditionalCQMessage[i].Color := clBtnFace; // gray
-         end
-         else begin
-            FEditAdditionalCQMessage[i].Color := $00EADEFF; // light pink
-         end;
-      end
-      else begin
-         FEditAdditionalCQMessage[i].Color := clWindow;
-         FEditAdditionalCQMessage[i].ReadOnly := False;
-      end;
    end;
 end;
 

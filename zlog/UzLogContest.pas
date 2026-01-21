@@ -22,15 +22,21 @@ type
     FUseCoeff: Boolean;
 
     FUseDefaultMessages: Boolean;
+    FProv: string;
+    FCity: string;
     FCwMessageA: array[1..12] of string;
     FCwMessageB: array[1..12] of string;
     FCwMessageCQ: array[1..3] of string;
+    FDefProv: string;
+    FDefCity: string;
     FDefCwMessageA: array[1..12] of string;
     FDefCwMessageB: array[1..12] of string;
     FDefCwMessageCQ: array[1..3] of string;
 
     function GetUseWARC(): Boolean; virtual;
     function GetIsAvailableBand(b: TBand): Boolean; virtual;
+    function GetProv(): string;
+    function GetCity(): string;
     function GetCwMessageA(Index: Integer): string;
     procedure SetCwMessageA(Index: Integer; v: string);
     function GetCwMessageB(Index: Integer): string;
@@ -131,6 +137,8 @@ type
     property ScoreForm: TBasicScore read FScoreForm;
     property WantedList: TList<TWanted> read FWantedList;
 
+    property Prov: string read GetProv write FProv;
+    property City: string read GetCity write FCity;
     property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
     property CwMessageB[Index: Integer]: string read GetCwMessageB write SetCwMessageB;
     property CwMessageCQ[Index: Integer]: string read GetCwMessageCQ write SetCwMessageCQ;
@@ -852,6 +860,9 @@ begin
    try
       FUseDefaultMessages := Not ini.SectionExists(FContestName);
 
+      FProv := ini.ReadString(FContestName, 'Prov', '');
+      FCity := ini.ReadString(FContestName, 'City', '');
+
       for i := Low(FCwMessageA) to High(FCwMessageA) do begin
          FCwMessageA[i] := ini.ReadString(FContestName, 'A' + IntToStr(i), '');
       end;
@@ -875,6 +886,8 @@ var
 begin
    ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_messages.ini');
    try
+      FProv := dmZLogGlobal.Settings._prov;
+      FCity := dmZLogGlobal.Settings._city;
       for i := Low(FCwMessageA) to High(FCwMessageA) do begin
          FCwMessageA[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
          FCwMessageB[i] := dmZLogGlobal.Settings.CW.CWStrBank[2, i];
@@ -882,6 +895,9 @@ begin
       for i := 2 to 3 do begin
          FCwMessageCQ[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[i];
       end;
+
+      ini.WriteString(FContestName, 'Prov', FProv);
+      ini.WriteString(FContestName, 'City', FCity);
 
       for i := Low(FCwMessageA) to High(FCwMessageA) do begin
          ini.WriteString(FContestName, 'A' + IntToStr(i), FCwMessageA[i]);
@@ -901,6 +917,12 @@ procedure TContest.ApplyCwMessages();
 var
    i: Integer;
 begin
+   if FProv <> '' then begin
+      dmZLogGlobal.Settings._prov := FProv;
+   end;
+   if FCity <> '' then begin
+      dmZLogGlobal.Settings._city := FCity;
+   end;
    for i := Low(FCwMessageA) to High(FCwMessageA) do begin
       if CwMessageA[i] <> '' then begin
          dmZLogGlobal.Settings.CW.CWStrBank[1, i] := CwMessageA[i];
@@ -913,6 +935,26 @@ begin
       if CwMessageCQ[i] <> '' then begin
          dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := CwMessageCQ[i];
       end;
+   end;
+end;
+
+function TContest.GetProv(): string;
+begin
+   if FUseDefaultMessages = True then begin
+      Result := FDefProv;
+   end
+   else begin
+      Result := FProv;
+   end;
+end;
+
+function TContest.GetCity(): string;
+begin
+   if FUseDefaultMessages = True then begin
+      Result := FDefCity;
+   end
+   else begin
+      Result := FCity;
    end;
 end;
 
