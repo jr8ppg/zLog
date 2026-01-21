@@ -187,6 +187,7 @@ type
     function GetFreqStr2(): string;
     function GetFreqStr3(): string;
     function GetMemoStr(): string;
+    function GetMemoStr2(): string;
     procedure SetInvalid(v: Boolean);
   public
     constructor Create;
@@ -272,6 +273,7 @@ type
     property FreqStr2: string read GetFreqStr2;
     property FreqStr3: string read GetFreqStr3;
     property MemoStr: string read GetMemoStr;
+    property MemoStr2: string read GetMemoStr;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
     property FileRecordEx: TQSODataEx read GetFileRecordEx write SetFileRecordEx;
@@ -950,6 +952,52 @@ begin
 end;
 
 function TQSO.GetMemoStr(): string;
+var
+   strMemo: string;
+
+   function AddStr(S1, S2: string): string;
+   begin
+      if S1 <> '' then begin
+         Result := S1 + ' ';
+      end;
+      Result := Result + S2;
+   end;
+begin
+   strMemo := '';
+
+   {$IFNDEF ZSERVER}
+   // QSL
+   if dmZLogGlobal.Settings._qsl_default <> FQslState then begin
+      case FQslState of
+         qsNone:   strMemo := AddStr(strMemo, '');
+         qsPseQsl: strMemo := AddStr(strMemo, MEMO_PSE_QSL);
+         qsNoQsl:  strMemo := AddStr(strMemo, MEMO_NO_QSL);
+      end;
+   end;
+   {$ENDIF}
+
+   if FForced = True then begin
+      strMemo := AddStr(strMemo, '*');
+   end;
+
+   if FDupe = True then begin
+      strMemo := AddStr(strMemo, MEMO_DUPE);
+   end;
+
+   if FFreq <> '' then begin
+      strMemo := AddStr(strMemo, '(' + FFreq + ')');
+   end;
+
+   strMemo := AddStr(strMemo, FMemo);
+
+   if FQsyViolation = True then begin
+      strMemo := AddStr(strMemo, MEMO_QSY_VIOLATION);
+   end;
+
+   Result := strMemo;
+end;
+
+function TQSO.GetMemoStr2(): string;
 var
    strMemo: string;
 

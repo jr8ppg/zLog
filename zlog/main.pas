@@ -2726,7 +2726,7 @@ begin
       Cells[12, R] := temp + ' ' + aQSO.Operator;
 
       // 13:memo
-      Cells[13, R] := aQSO.MemoStr;
+      Cells[13, R] := aQSO.MemoStr2;
 
       // 14:point
       if aQSO.Invalid = True then begin
