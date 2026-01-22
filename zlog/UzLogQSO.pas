@@ -273,7 +273,7 @@ type
     property FreqStr2: string read GetFreqStr2;
     property FreqStr3: string read GetFreqStr3;
     property MemoStr: string read GetMemoStr;
-    property MemoStr2: string read GetMemoStr;
+    property MemoStr2: string read GetMemoStr2;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
     property FileRecordEx: TQSODataEx read GetFileRecordEx write SetFileRecordEx;
