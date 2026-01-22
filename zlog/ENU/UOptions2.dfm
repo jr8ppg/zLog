@@ -564,9 +564,9 @@ object formOptions2: TformOptions2
         object Label55: TLabel
           Left = 8
           Top = 23
-          Width = 36
+          Width = 57
           Height = 13
-          Caption = 'Callsign'
+          Caption = 'Callsign($M)'
         end
         object Label39: TLabel
           Left = 8

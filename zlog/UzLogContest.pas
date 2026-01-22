@@ -915,8 +915,12 @@ procedure TContest.ApplyCwMessages();
 var
    i: Integer;
 begin
-   dmZLogGlobal.Settings._prov := Prov;
-   dmZLogGlobal.Settings._city := City;
+   if Prov <> '' then begin
+      dmZLogGlobal.Settings._prov := Prov;
+   end;
+   if City <> '' then begin
+      dmZLogGlobal.Settings._city := City;
+   end;
    for i := Low(FCwMessageA) to High(FCwMessageA) do begin
       dmZLogGlobal.Settings.CW.CWStrBank[1, i] := CwMessageA[i];
       dmZLogGlobal.Settings.CW.CWStrBank[2, i] := CwMessageB[i];
