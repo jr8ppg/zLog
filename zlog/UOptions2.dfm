@@ -2180,6 +2180,42 @@ object formOptions2: TformOptions2
         Caption = 'Paddle Reverse'
         TabOrder = 15
       end
+      object GroupBox3: TGroupBox
+        Left = 6
+        Top = 407
+        Width = 201
+        Height = 79
+        Caption = 'NR'
+        TabOrder = 19
+        object Label74: TLabel
+          Left = 13
+          Top = 22
+          Width = 41
+          Height = 13
+          Caption = 'Prov($V)'
+        end
+        object Label83: TLabel
+          Left = 13
+          Top = 48
+          Width = 37
+          Height = 13
+          Caption = 'City($Q)'
+        end
+        object editCity: TEdit
+          Left = 81
+          Top = 45
+          Width = 49
+          Height = 21
+          TabOrder = 1
+        end
+        object editProv: TEdit
+          Left = 81
+          Top = 19
+          Width = 33
+          Height = 21
+          TabOrder = 0
+        end
+      end
     end
     object tabsheetVoice: TTabSheet
       Caption = 'Voice'

@@ -237,8 +237,8 @@ begin
    if (rbGeneral.Checked = True) and (FModernStyle = True) then begin
       // prov,cityéÊçû
       if FSelectDlg.ImportProvCity = True then begin
-         dmZLogGlobal.Settings._prov := FSelectedContest.Prov;
-         dmZLogGlobal.Settings._city := FSelectedContest.City;
+         dmZLogGlobal.Settings.CW._prov := FSelectedContest.Prov;
+         dmZLogGlobal.Settings.CW._city := FSelectedContest.City;
          dmZLogGlobal.Settings.ProvCityImported := True;
       end;
 

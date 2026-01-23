@@ -64,11 +64,11 @@ begin
    temp := StringReplace(temp, '$F', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$f', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._cqzone;
+   S := dmZLogGlobal.Settings._mycqzone;
    temp := StringReplace(temp, '$Z', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$z', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._iaruzone;
+   S := dmZLogGlobal.Settings._myiaruzone;
    temp := StringReplace(temp, '$I', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$i', S, [rfReplaceAll]);
 
@@ -76,7 +76,7 @@ begin
    temp := StringReplace(temp, '$Q', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$q', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._prov;
+   S := MyContest.Prov;
    temp := StringReplace(temp, '$V', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$v', S, [rfReplaceAll]);
 
@@ -84,7 +84,7 @@ begin
    temp := StringReplace(temp, '$O', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$o', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._iota;
+   S := dmZLogGlobal.Settings._myiota;
    temp := StringReplace(temp, '$T', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$t', S, [rfReplaceAll]);
 
@@ -208,12 +208,12 @@ begin
    temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
    temp := StringReplace(temp, '$R', aQSO.RSTSentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$F', aQSO.NrRcvd, [rfReplaceAll]);
-   temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._cqzone, [rfReplaceAll]);
-   temp := StringReplace(temp, '$I', dmZLogGlobal.Settings._iaruzone, [rfReplaceAll]);
+   temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
+   temp := StringReplace(temp, '$I', dmZLogGlobal.Settings._myiaruzone, [rfReplaceAll]);
    temp := StringReplace(temp, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
-   temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
+   temp := StringReplace(temp, '$V', MyContest.Prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
-   temp := StringReplace(temp, '$T', dmZLogGlobal.Settings._iota, [rfReplaceAll]);
+   temp := StringReplace(temp, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
 
    temp := StringReplace(temp, '$H', aQSO.NrSent, [rfReplaceAll]);
 

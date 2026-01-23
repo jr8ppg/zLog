@@ -477,6 +477,11 @@ type
     Label62: TLabel;
     HandlePhEdit: TEdit;
     comboListColorType2: TComboBox;
+    GroupBox3: TGroupBox;
+    Label74: TLabel;
+    Label83: TLabel;
+    editCity: TEdit;
+    editProv: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1024,14 +1029,14 @@ begin
       Settings._mylongitude := editMyLongitude.Text;
 
       // Parameters
-      Settings._prov := ProvEdit.Text;
-      Settings._city := CityEdit.Text;
-      Settings._cqzone := CQZoneEdit.Text;
-      Settings._iaruzone := IARUZoneEdit.Text;
-      Settings._age := AgeEdit.Text;
-      Settings._iota := IotaEdit.Text;
-      Settings._handle_cw := HandleCwEdit.Text;
-      Settings._handle_ph := HandlePhEdit.Text;
+      Settings._myprov := ProvEdit.Text;
+      Settings._mycity := CityEdit.Text;
+      Settings._mycqzone := CQZoneEdit.Text;
+      Settings._myiaruzone := IARUZoneEdit.Text;
+      Settings._myage := AgeEdit.Text;
+      Settings._myiota := IotaEdit.Text;
+      Settings._myhandle_cw := HandleCwEdit.Text;
+      Settings._myhandle_ph := HandlePhEdit.Text;
 
       // Active bands
       for b := b19 to HiBand do begin
@@ -1246,6 +1251,10 @@ begin
       // Paddle reverse
       Settings.CW._paddlereverse := checkPaddleReverse.Checked;
 
+      // Prov/City
+      Settings.CW._prov := editProv.Text;
+      Settings.CW._city := editCity.Text;
+
       //
       // Voice
       //
@@ -1452,14 +1461,14 @@ begin
       editMyLongitude.Text := Settings._mylongitude;
 
       // Parameters
-      ProvEdit.Text := Settings._prov;
-      CityEdit.Text := Settings._city;
-      CQZoneEdit.Text := Settings._cqzone;
-      IARUZoneEdit.Text := Settings._iaruzone;
-      AgeEdit.Text := Settings._age;
-      IotaEdit.Text := Settings._iota;
-      HandleCwEdit.Text := Settings._handle_cw;
-      HandlePhEdit.Text := Settings._handle_ph;
+      ProvEdit.Text := Settings._myprov;
+      CityEdit.Text := Settings._mycity;
+      CQZoneEdit.Text := Settings._mycqzone;
+      IARUZoneEdit.Text := Settings._myiaruzone;
+      AgeEdit.Text := Settings._myage;
+      IotaEdit.Text := Settings._myiota;
+      HandleCwEdit.Text := Settings._myhandle_cw;
+      HandlePhEdit.Text := Settings._myhandle_ph;
 
       // Active bands
       for b := b19 to HiBand do begin
@@ -1673,6 +1682,10 @@ begin
 
       // Paddle reverse
       checkPaddleReverse.Checked := Settings.CW._paddlereverse;
+
+      // Prov/City
+      editProv.Text := Settings.CW._prov;
+      editCity.Text := Settings.CW._city;
 
       //
       // Voice

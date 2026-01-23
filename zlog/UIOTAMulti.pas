@@ -112,7 +112,7 @@ begin
 
       if str = '' then
          aQSO.Points := 3
-      else if str = dmZLogGlobal.Settings._iota then
+      else if str = dmZLogGlobal.Settings._myiota then
          aQSO.Points := 3
       else
          aQSO.Points := 15;

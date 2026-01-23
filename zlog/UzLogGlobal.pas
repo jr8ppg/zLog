@@ -40,6 +40,9 @@ type
 
     AdditionalCQMessages: array[2..3] of string;
     AdditionalCQMessagesImported: array[2..3] of Boolean;
+
+    _prov: string;
+    _city: string;
   end;
 
   TCommParam = record
@@ -127,14 +130,16 @@ type
 
     _selectlastoperator: Boolean;
     _applypoweronbandchg: Boolean;
-    _prov: string;
-    _city: string;
-    _cqzone: string;
-    _iaruzone: string;
-    _age: string; // all asian
-    _iota: string;
-    _handle_cw: string;
-    _handle_ph: string;
+
+    _myprov: string;
+    _mycity: string;
+    _mycqzone: string;
+    _myiaruzone: string;
+    _myage: string; // all asian
+    _myiota: string;
+    _myhandle_cw: string;
+    _myhandle_ph: string;
+
     _powerH: string;
     _powerM: string;
     _powerL: string;
@@ -894,15 +899,18 @@ end;
 procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
 begin
    // Prov/State($V)
-   Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
+   Settings._myprov := ini.ReadString('Profiles', 'Province/State', '');
 
    // CITY
-   Settings._city := ini.ReadString('Profiles', 'City', '');
+   Settings._mycity := ini.ReadString('Profiles', 'City', '');
 
    Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M TEST');
    Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
    Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
    Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
+
+   Settings.CW._prov := Settings._myprov;
+   Settings.CW._city := Settings._mycity;
 end;
 
 procedure TdmZLogGlobal.LoadIniFile;
@@ -996,20 +1004,20 @@ begin
 //      Settings._city := ini.ReadString('Profiles', 'City', '');
 
       // CQ Zone
-      Settings._cqzone := ini.ReadString('Profiles', 'CQZone', '');
+      Settings._mycqzone := ini.ReadString('Profiles', 'CQZone', '');
 
       // ITU Zone
-      Settings._iaruzone := ini.ReadString('Profiles', 'IARUZone', '');
+      Settings._myiaruzone := ini.ReadString('Profiles', 'IARUZone', '');
 
       // Age
-      Settings._age := ini.ReadString('Profiles', 'Age', '');
+      Settings._myage := ini.ReadString('Profiles', 'Age', '');
 
       // Iota
-      Settings._iota := ini.ReadString('Profiles', 'Iota', '');
+      Settings._myiota := ini.ReadString('Profiles', 'Iota', '');
 
       // Handle Name
-      Settings._handle_cw := ini.ReadString('Profiles', 'HandleNameCw', '');
-      Settings._handle_ph := ini.ReadString('Profiles', 'HandleNamePh', '');
+      Settings._myhandle_cw := ini.ReadString('Profiles', 'HandleNameCw', '');
+      Settings._myhandle_ph := ini.ReadString('Profiles', 'HandleNamePh', '');
 
       // Power(HMLP)
       Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
@@ -1873,27 +1881,27 @@ begin
 
       if Settings.ProvCityImported = False then begin
          // Prov/State($V)
-         ini.WriteString('Profiles', 'Province/State', Settings._prov);
+         ini.WriteString('Profiles', 'Province/State', Settings._myprov);
 
          // CITY
-         ini.WriteString('Profiles', 'City', Settings._city);
+         ini.WriteString('Profiles', 'City', Settings._mycity);
       end;
 
       // CQ Zone
-      ini.WriteString('Profiles', 'CQZone', Settings._cqzone);
+      ini.WriteString('Profiles', 'CQZone', Settings._mycqzone);
 
       // ITU Zone
-      ini.WriteString('Profiles', 'IARUZone', Settings._iaruzone);
+      ini.WriteString('Profiles', 'IARUZone', Settings._myiaruzone);
 
       // Age
-      ini.WriteString('Profiles', 'Age', Settings._age);
+      ini.WriteString('Profiles', 'Age', Settings._myage);
 
       // Iota
-      ini.WriteString('Profiles', 'Iota', Settings._iota);
+      ini.WriteString('Profiles', 'Iota', Settings._myiota);
 
       // Handle Name
-      ini.WriteString('Profiles', 'HandleNameCw', Settings._handle_cw);
-      ini.WriteString('Profiles', 'HandleNamePh', Settings._handle_ph);
+      ini.WriteString('Profiles', 'HandleNameCw', Settings._myhandle_cw);
+      ini.WriteString('Profiles', 'HandleNamePh', Settings._myhandle_ph);
 
       // Power(HMLP)
       ini.WriteString('Profiles', 'PowerH', Settings._powerH);
@@ -2577,14 +2585,14 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
-      Result := Settings._age;
+      Result := Settings._myage;
       Exit;
    end;
 
    // 2023年のAADXルール改正で、マルチOP時は運用者の平均年齢とするため
    // OP別の年齢が設定されていない場合は、全体設定の年齢を使う
    if op.Age = '' then begin
-      Result := Settings._age;
+      Result := Settings._myage;
    end
    else begin
       Result := op.Age;
@@ -3361,17 +3369,17 @@ begin
       if P <> nil then begin
          FMyCountry := P.Country.Country;
 
-         if Settings._cqzone = '' then begin
-            Settings._cqzone := P.Country.CQZone;
+         if Settings._mycqzone = '' then begin
+            Settings._mycqzone := P.Country.CQZone;
          end;
 
-         FMyCQZone := Settings._cqzone;
+         FMyCQZone := Settings._mycqzone;
 
-         if Settings._iaruzone = '' then begin
-            Settings._iaruzone := P.Country.ITUZone;
+         if Settings._myiaruzone = '' then begin
+            Settings._myiaruzone := P.Country.ITUZone;
          end;
 
-         FMyITUZone := Settings._iaruzone;
+         FMyITUZone := Settings._myiaruzone;
 
          if P.OvrContinent = '' then begin
             FMyContinent := P.Country.Continent;

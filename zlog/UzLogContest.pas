@@ -370,6 +370,9 @@ begin
       FDefCwMessageCQ[i] := '';
    end;
 
+   FDefProv := dmZLogGlobal.Settings._myprov;
+   FDefCity := dmZLogGlobal.Settings._mycity;
+
    FDefCwMessageA[1] := 'CQ TEST $M TEST';
    FDefCwMessageA[2] := '$C 5NN$X';
    FDefCwMessageA[3] := 'TU $M TEST';
@@ -470,7 +473,7 @@ end;
 
 function TContest.QTHString(aQSO: TQSO): string;
 begin
-   Result := dmZlogGlobal.Settings._city;
+   Result := dmZlogGlobal.Settings.CW._city;
 end;
 
 procedure TContest.LogQSO(var aQSO: TQSO; Local: Boolean);
@@ -542,29 +545,29 @@ begin
    if (Pos('$Q', dmZlogGlobal.Settings._sentstr) > 0) and (QTHString(aQSO) = '') then begin
       Exit;
    end;
-   if (Pos('$V', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '') then begin
+   if (Pos('$V', dmZlogGlobal.Settings._sentstr) > 0) and (Self.Prov = '') then begin
       Exit;
    end;
-   if (Pos('$Z', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._cqzone = '') then begin
+   if (Pos('$Z', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycqzone = '') then begin
       Exit;
    end;
-   if (Pos('$I', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iaruzone = '') then begin
+   if (Pos('$I', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '') then begin
       Exit;
    end;
    if (Pos('$P', dmZlogGlobal.Settings._sentstr) > 0) and (aQSO.NewPowerStr = '') then begin
       Exit;
    end;
-   if (Pos('$A', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._age = '') then begin
+   if (Pos('$A', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myage = '') then begin
       Exit;
    end;
-   if (Pos('$T', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iota = '') then begin
+   if (Pos('$T', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiota = '') then begin
       Exit;
    end;
    if (Pos('$H', dmZlogGlobal.Settings._sentstr) > 0) then begin
-      if ((aQSO.Mode = mCw) or (aQSO.Mode = mRtty)) and (dmZLogGlobal.Settings._handle_cw = '') then begin
+      if ((aQSO.Mode = mCw) or (aQSO.Mode = mRtty)) and (dmZLogGlobal.Settings._myhandle_cw = '') then begin
          Exit;
       end
-      else if (dmZLogGlobal.Settings._handle_ph = '') then begin
+      else if (dmZLogGlobal.Settings._myhandle_ph = '') then begin
          Exit;
       end;
    end;
@@ -884,8 +887,8 @@ var
 begin
    ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
    try
-      FProv := dmZLogGlobal.Settings._prov;
-      FCity := dmZLogGlobal.Settings._city;
+      FProv := dmZLogGlobal.Settings.CW._prov;
+      FCity := dmZLogGlobal.Settings.CW._city;
       for i := Low(FCwMessageA) to High(FCwMessageA) do begin
          FCwMessageA[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
          FCwMessageB[i] := dmZLogGlobal.Settings.CW.CWStrBank[2, i];
@@ -915,12 +918,9 @@ procedure TContest.ApplyCwMessages();
 var
    i: Integer;
 begin
-   if Prov <> '' then begin
-      dmZLogGlobal.Settings._prov := Prov;
-   end;
-   if City <> '' then begin
-      dmZLogGlobal.Settings._city := City;
-   end;
+   dmZLogGlobal.Settings.CW._prov := Prov;
+   dmZLogGlobal.Settings.CW._city := City;
+
    for i := Low(FCwMessageA) to High(FCwMessageA) do begin
       dmZLogGlobal.Settings.CW.CWStrBank[1, i] := CwMessageA[i];
       dmZLogGlobal.Settings.CW.CWStrBank[2, i] := CwMessageB[i];
@@ -1080,7 +1080,7 @@ end;
 
 function TALLJAContest.QTHString(aQSO: TQSO): string;
 begin
-   Result := dmZlogGlobal.Settings._prov;
+   Result := Self.Prov;
 end;
 
 function TALLJAContest.CheckWinSummary(aQSO: TQSO): string;
@@ -1175,10 +1175,12 @@ end;
 
 function TFDContest.QTHString(aQSO: TQSO): string;
 begin
-   if aQSO.Band <= b1200 then
-      Result := dmZlogGlobal.Settings._prov
-   else
-      Result := dmZlogGlobal.Settings._city;
+   if aQSO.Band <= b1200 then begin
+      REsult := Self.Prov;
+   end
+   else begin
+      Result := Self.City;
+   end;
 end;
 
 function TFDContest.DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string;
@@ -1273,10 +1275,12 @@ end;
 
 function TSixDownContest.QTHString(aQSO: TQSO): string;
 begin
-   if aQSO.Band <= b1200 then
-      Result := dmZlogGlobal.Settings._prov
-   else
-      Result := dmZlogGlobal.Settings._city;
+   if aQSO.Band <= b1200 then begin
+      Result := Self.Prov;
+   end
+   else begin
+      Result := Self.City;
+   end;
 end;
 
 function TSixDownContest.DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string;
@@ -1698,7 +1702,7 @@ end;
 
 function TIOTAContest.QTHString(aQSO: TQSO): string;
 begin
-   Result := dmZLogGlobal.Settings._iota;
+   Result := dmZLogGlobal.Settings._myiota;
 end;
 
 function TIOTAContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;

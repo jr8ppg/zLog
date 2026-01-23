@@ -9006,36 +9006,36 @@ begin
       end;
 
       // Sent NRチェック
-      if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._prov = '')) or
-         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._city = '')) or
-         ((dmZLogGlobal.Settings._prov = '') and (dmZLogGlobal.Settings._city = '')) then begin
+      if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myprov = '')) or
+         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycity = '')) or
+         ((dmZLogGlobal.Settings._myprov = '') and (dmZLogGlobal.Settings._mycity = '')) then begin
          if (MyContest is TGeneralContest) then begin
             dmZLogGlobal.Settings.ReadOnlyParamImported := False;
          end;
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
-      else if ((Pos('$A', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._age = '')) then begin
+      else if ((Pos('$A', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myage = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
-      else if ((Pos('$Z', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._cqzone = '')) then begin
+      else if ((Pos('$Z', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycqzone = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
-      else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iaruzone = '')) then begin
+      else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
-      else if ((Pos('$T', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._iota = '')) then begin
+      else if ((Pos('$T', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiota = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
-      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._handle_cw = '')) then begin
+      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_cw = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
-      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._handle_ph = '')) then begin
+      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_ph = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end;
@@ -9082,8 +9082,8 @@ begin
       dmZLogGlobal.ClearParamImportedFlag();
       if dmZLogGlobal.LastContest.ProvCityImported = True then begin
          dmZLogGlobal.Settings.ProvCityImported := True;
-         dmZLogGlobal.Settings._prov := dmZLogGlobal.LastContest.Prov;
-         dmZLogGlobal.Settings._city := dmZLogGlobal.LastContest.City;
+         dmZLogGlobal.Settings.CW._prov := dmZLogGlobal.LastContest.Prov;
+         dmZLogGlobal.Settings.CW._city := dmZLogGlobal.LastContest.City;
       end;
       for i := 1 to 4 do begin
          if dmZLogGlobal.LastContest.CWStrImported[i] = True then begin
@@ -9115,8 +9115,8 @@ begin
    dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
    dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
    dmZLogGlobal.LastContest.ProvCityImported := dmZLogGlobal.Settings.ProvCityImported;
-   dmZLogGlobal.LastContest.Prov := dmZLogGlobal.Settings._prov;
-   dmZLogGlobal.LastContest.City := dmZLogGlobal.Settings._city;
+   dmZLogGlobal.LastContest.Prov := dmZLogGlobal.Settings.CW._prov;
+   dmZLogGlobal.LastContest.City := dmZLogGlobal.Settings.CW._city;
    for i := 1 to 4 do begin
       dmZLogGlobal.LastContest.CWStr[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
       dmZLogGlobal.LastContest.CWStrImported[i] := dmZLogGlobal.Settings.CW.CWStrImported[1, i];
@@ -15338,19 +15338,19 @@ var
    S: string;
 begin
    S := dmZLogGlobal.Settings._sentstr;
-   S := StringReplace(S, '$Z', dmZLogGlobal.Settings._cqzone, [rfReplaceAll]);
-   S := StringReplace(S, '$I', dmZLogGlobal.Settings._iaruzone, [rfReplaceAll]);
+   S := StringReplace(S, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
+   S := StringReplace(S, '$I', dmZLogGlobal.Settings._myiaruzone, [rfReplaceAll]);
    S := StringReplace(S, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
-   S := StringReplace(S, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
+   S := StringReplace(S, '$V', dmZLogGlobal.Settings.CW._prov, [rfReplaceAll]);
    S := StringReplace(S, '$P', '', [rfReplaceAll]);
    S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
-   S := StringReplace(S, '$A', dmZLogGlobal.Settings._age, [rfReplaceAll]);
-   S := StringReplace(S, '$T', dmZLogGlobal.Settings._iota, [rfReplaceAll]);
+   S := StringReplace(S, '$A', dmZLogGlobal.Settings._myage, [rfReplaceAll]);
+   S := StringReplace(S, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
    if (aQSO.Mode = mCw) or (aQSO.Mode = mRtty) then begin
-      S := StringReplace(S, '$H', dmZLogGlobal.Settings._handle_cw, [rfReplaceAll]);
+      S := StringReplace(S, '$H', dmZLogGlobal.Settings._myhandle_cw, [rfReplaceAll]);
    end
    else begin
-      S := StringReplace(S, '$H', dmZLogGlobal.Settings._handle_ph, [rfReplaceAll]);
+      S := StringReplace(S, '$H', dmZLogGlobal.Settings._myhandle_ph, [rfReplaceAll]);
    end;
    S := StringReplace(S, '$N', aQSO.PowerStr, [rfReplaceAll]);
    Result := S;
