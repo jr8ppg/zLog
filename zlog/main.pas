@@ -26,7 +26,7 @@ uses
   OEdit, URigControl, URigCtrlLib, UConsolePad, USpotClass,
   UMMTTY, UTTYConsole, UELogJarlEx, UELogCabrillo, UQuickRef, UZAnalyze,
   UPartials, URateDialog, URateDialogEx, USuperCheck, USuperCheck2, UComm, UCWKeyBoard, UChat,
-  UZServerInquiry, UZLinkForm, USpotForm, UFreqList, UCheckCall2,
+  UZLinkForm, USpotForm, UFreqList, UCheckCall2,
   UCheckMulti, UCheckCountry, UScratchSheet, UBandScope2, HelperLib,
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
@@ -1045,7 +1045,6 @@ type
     FCommForm: TCommForm;
     FCWKeyBoard: TCWKeyBoard;
     FChatForm: TChatForm;
-    FZServerInquiry: TZServerInquiry;
     FZLinkForm: TZLinkForm;
     FConsolePad: TConsolePad;
     FFreqList: TFreqList;
@@ -1397,7 +1396,6 @@ type
     property PartialCheck: TPartialCheck read FPartialCheck;
     property CommForm: TCommForm read FCommForm;
     property ChatForm: TChatForm read FChatForm;
-    property ZServerInquiry: TZServerInquiry read FZServerInquiry;
     property ZLinkForm: TZLinkForm read FZLinkForm;
     property FreqList: TFreqList read FFreqList;
     property ScratchSheet: TScratchSheet read FScratchSheet;
@@ -1599,7 +1597,6 @@ begin
    FCommForm      := TCommForm.Create(Self);
    FCWKeyBoard    := TCWKeyBoard.Create(Self);
    FChatForm      := TChatForm.Create(Self);
-   FZServerInquiry := TZServerInquiry.Create(Self);
    FZLinkForm     := TZLinkForm.Create(Self);
    FConsolePad    := TConsolePad.Create(Self);
    FFreqList      := TFreqList.Create(Self);
@@ -2038,7 +2035,6 @@ begin
    FScratchSheet.Release();
    FRateDialog.Release();
    FRateDialogEx.Release();
-   FZServerInquiry.Release();
    FZLinkForm.Release();
    FConsolePad.Release();
    FCheckCountry.Release();

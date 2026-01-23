@@ -1140,14 +1140,21 @@ begin
 end;
 
 procedure TZLinkForm.InitProcess();
+var
+   dlg: TZServerInquiry;
 begin
-   SendBand; { tell Z-Server current band }
-   SendOperator;
-   SendPcName();
-   MainForm.ZServerInquiry.ShowModal;
-   MainForm.ZServerIcon.Visible := true;
-   MainForm.EnableNetworkMenus;
-   MainForm.ChatForm.SetConnectStatus(True);
+   dlg := TZServerInquiry.Create(MainForm);
+   try
+      SendBand; { tell Z-Server current band }
+      SendOperator;
+      SendPcName();
+      dlg.ShowModal();
+      MainForm.ZServerIcon.Visible := true;
+      MainForm.EnableNetworkMenus;
+      MainForm.ChatForm.SetConnectStatus(True);
+   finally
+      dlg.Release();
+   end;
 end;
 
 procedure TZLinkForm.GetFile(filename: string; download_folder: string);
