@@ -1426,8 +1426,17 @@ begin
 
    FUseNrIme := FConfig.UseNrIme;
 
+   FProv := FConfig.Prov;
+   FCity := FConfig.City;
+
+   // F1Å`F4éÊçû
    for i := 1 to 4 do begin
       FDefCwMessageA[i] := FConfig.CwMessageA[i];
+   end;
+
+   // CQ2,CQ3éÊÇËçûÇ›
+   for i := 2 to 3 do begin
+      FDefCwMessageCQ[i] := FConfig.CwMessageCQ[i];
    end;
 end;
 

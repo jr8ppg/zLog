@@ -9006,12 +9006,9 @@ begin
       end;
 
       // Sent NRチェック
-      if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myprov = '')) or
-         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycity = '')) or
+      if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.Prov = '')) or
+         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.City = '')) or
          ((dmZLogGlobal.Settings._myprov = '') and (dmZLogGlobal.Settings._mycity = '')) then begin
-         if (MyContest is TGeneralContest) then begin
-            dmZLogGlobal.Settings.ReadOnlyParamImported := False;
-         end;
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end
@@ -9063,8 +9060,6 @@ begin
 end;
 
 procedure TMainForm.RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
-var
-   i: Integer;
 begin
    dmZLogGlobal.ContestCategory := dmZLogGlobal.LastContest.FContestCategory;
    dmZLogGlobal.ContestMode := dmZLogGlobal.LastContest.FContestMode;
@@ -9076,33 +9071,9 @@ begin
    strCfgFileName := dmZLogGlobal.LastContest.FCfgFileName;
    fScoreCoeff := dmZLogGlobal.LastContest.FScoreCoeff;
    dmZLogGlobal.SetLogFileName(dmZLogGlobal.LastContest.FFileName);
-
-   // User Defined Contestの場合
-   if dmZLogGlobal.ContestMenuNo = 9 then  begin
-      dmZLogGlobal.ClearParamImportedFlag();
-      if dmZLogGlobal.LastContest.ProvCityImported = True then begin
-         dmZLogGlobal.Settings.ProvCityImported := True;
-         dmZLogGlobal.Settings.CW._prov := dmZLogGlobal.LastContest.Prov;
-         dmZLogGlobal.Settings.CW._city := dmZLogGlobal.LastContest.City;
-      end;
-      for i := 1 to 4 do begin
-         if dmZLogGlobal.LastContest.CWStrImported[i] = True then begin
-            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := dmZLogGlobal.LastContest.CWStr[i];
-            dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
-         end;
-      end;
-      for i := 2 to 3 do begin
-         if dmZLogGlobal.LastContest.CWAddStrImported[i] = True then begin
-            dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := dmZLogGlobal.LastContest.CWAddStr[i];
-            dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] := True;
-         end;
-      end;
-   end;
 end;
 
 procedure TMainForm.SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
-var
-   i: Integer;
 begin
    dmZLogGlobal.LastContest.FContestCategory := dmZLogGlobal.ContestCategory;
    dmZLogGlobal.LastContest.FContestMode := dmZLogGlobal.ContestMode;
@@ -9114,17 +9085,6 @@ begin
    dmZLogGlobal.LastContest.FCfgFileName := strCfgFileName;
    dmZLogGlobal.LastContest.FScoreCoeff := fScoreCoeff;
    dmZLogGlobal.LastContest.FFileName := dmZLogGlobal.FCurrentFileName;
-   dmZLogGlobal.LastContest.ProvCityImported := dmZLogGlobal.Settings.ProvCityImported;
-   dmZLogGlobal.LastContest.Prov := dmZLogGlobal.Settings.CW._prov;
-   dmZLogGlobal.LastContest.City := dmZLogGlobal.Settings.CW._city;
-   for i := 1 to 4 do begin
-      dmZLogGlobal.LastContest.CWStr[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
-      dmZLogGlobal.LastContest.CWStrImported[i] := dmZLogGlobal.Settings.CW.CWStrImported[1, i];
-   end;
-   for i := 2 to 3 do begin
-      dmZLogGlobal.LastContest.CWAddStr[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[i];
-      dmZLogGlobal.LastContest.CWAddStrImported[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i];
-   end;
 end;
 
 procedure TMainForm.OnZLogSetGridCol( var Message: TMessage );

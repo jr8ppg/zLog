@@ -726,14 +726,14 @@ object formOptions2: TformOptions2
         end
         object Label54: TLabel
           Left = 11
-          Top = 177
+          Top = 179
           Width = 78
           Height = 13
           Caption = #12495#12531#12489#12523'(CW)($H)'
         end
         object Label62: TLabel
           Left = 11
-          Top = 203
+          Top = 205
           Width = 75
           Height = 13
           Caption = #12495#12531#12489#12523'(PH)($H)'
@@ -742,7 +742,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 20
           Width = 33
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
@@ -753,7 +753,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 46
           Width = 49
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
@@ -764,7 +764,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 72
           Width = 33
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
@@ -776,7 +776,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 98
           Width = 49
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
@@ -788,7 +788,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 124
           Width = 33
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
@@ -800,7 +800,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 150
           Width = 49
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
@@ -811,7 +811,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 176
           Width = 116
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
@@ -822,7 +822,7 @@ object formOptions2: TformOptions2
           Left = 112
           Top = 202
           Width = 116
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           MaxLength = 20
@@ -1638,7 +1638,7 @@ object formOptions2: TformOptions2
           Left = 120
           Top = 21
           Width = 57
-          Height = 20
+          Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           Color = clBtnFace
@@ -1662,9 +1662,9 @@ object formOptions2: TformOptions2
         end
         object ScoreCoeffEdit: TEdit
           Left = 120
-          Top = 23
+          Top = 21
           Width = 25
-          Height = 18
+          Height = 21
           AutoSize = False
           MaxLength = 3
           TabOrder = 0
@@ -1757,12 +1757,12 @@ object formOptions2: TformOptions2
         AutoSize = False
         Caption = #38899#37327'(1-100)'
       end
-      object GroupBox2: TGroupBox
-        Left = 6
-        Top = 4
+      object groupCwMessages: TGroupBox
+        Left = 3
+        Top = 3
         Width = 254
-        Height = 321
-        Caption = #12513#12483#12475#12540#12472
+        Height = 346
+        Caption = 'Messages'
         TabOrder = 0
         object Label1: TLabel
           Left = 8
@@ -1773,77 +1773,77 @@ object formOptions2: TformOptions2
         end
         object Label2: TLabel
           Left = 8
-          Top = 64
+          Top = 66
           Width = 13
           Height = 13
           Caption = '#2'
         end
         object Label3: TLabel
           Left = 8
-          Top = 87
+          Top = 91
           Width = 13
           Height = 13
           Caption = '#3'
         end
         object Label4: TLabel
           Left = 8
-          Top = 110
+          Top = 116
           Width = 13
           Height = 13
           Caption = '#4'
         end
         object Label5: TLabel
           Left = 8
-          Top = 133
+          Top = 141
           Width = 13
           Height = 13
           Caption = '#5'
         end
         object Label6: TLabel
           Left = 8
-          Top = 156
+          Top = 166
           Width = 13
           Height = 13
           Caption = '#6'
         end
         object Label7: TLabel
           Left = 8
-          Top = 179
+          Top = 191
           Width = 13
           Height = 13
           Caption = '#7'
         end
         object Label8: TLabel
           Left = 8
-          Top = 202
+          Top = 216
           Width = 13
           Height = 13
           Caption = '#8'
         end
         object Label70: TLabel
           Left = 8
-          Top = 225
+          Top = 241
           Width = 13
           Height = 13
           Caption = '#9'
         end
         object Label71: TLabel
           Left = 8
-          Top = 248
+          Top = 266
           Width = 19
           Height = 13
           Caption = '#10'
         end
         object Label75: TLabel
           Left = 8
-          Top = 271
+          Top = 291
           Width = 19
           Height = 13
           Caption = '#11'
         end
         object Label76: TLabel
           Left = 8
-          Top = 294
+          Top = 316
           Width = 19
           Height = 13
           Caption = '#12'
@@ -1851,9 +1851,9 @@ object formOptions2: TformOptions2
         object editMessage2: TEdit
           Tag = 2
           Left = 32
-          Top = 61
+          Top = 63
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 1
           OnChange = editMessage1Change
@@ -1861,9 +1861,9 @@ object formOptions2: TformOptions2
         object editMessage3: TEdit
           Tag = 3
           Left = 32
-          Top = 84
+          Top = 88
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 2
           OnChange = editMessage1Change
@@ -1871,9 +1871,9 @@ object formOptions2: TformOptions2
         object editMessage4: TEdit
           Tag = 4
           Left = 32
-          Top = 107
+          Top = 113
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 3
           OnChange = editMessage1Change
@@ -1881,9 +1881,9 @@ object formOptions2: TformOptions2
         object editMessage5: TEdit
           Tag = 5
           Left = 32
-          Top = 130
+          Top = 138
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 4
           OnChange = editMessage1Change
@@ -1891,9 +1891,9 @@ object formOptions2: TformOptions2
         object editMessage6: TEdit
           Tag = 6
           Left = 32
-          Top = 153
+          Top = 163
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 5
           OnChange = editMessage1Change
@@ -1901,9 +1901,9 @@ object formOptions2: TformOptions2
         object editMessage7: TEdit
           Tag = 7
           Left = 32
-          Top = 176
+          Top = 188
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 6
           OnChange = editMessage1Change
@@ -1911,9 +1911,9 @@ object formOptions2: TformOptions2
         object editMessage8: TEdit
           Tag = 8
           Left = 32
-          Top = 199
+          Top = 213
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 7
           OnChange = editMessage1Change
@@ -1923,7 +1923,7 @@ object formOptions2: TformOptions2
           Left = 32
           Top = 38
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           MaxLength = 255
           TabOrder = 0
@@ -1932,9 +1932,9 @@ object formOptions2: TformOptions2
         object editMessage9: TEdit
           Tag = 9
           Left = 32
-          Top = 222
+          Top = 238
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 8
           OnChange = editMessage1Change
@@ -1942,9 +1942,9 @@ object formOptions2: TformOptions2
         object editMessage10: TEdit
           Tag = 10
           Left = 32
-          Top = 245
+          Top = 263
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 9
           OnChange = editMessage1Change
@@ -1952,9 +1952,9 @@ object formOptions2: TformOptions2
         object editMessage11: TEdit
           Tag = 11
           Left = 32
-          Top = 268
+          Top = 288
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 10
           OnChange = editMessage1Change
@@ -1962,9 +1962,9 @@ object formOptions2: TformOptions2
         object editMessage12: TEdit
           Tag = 12
           Left = 32
-          Top = 291
+          Top = 313
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 11
           OnChange = editMessage1Change
@@ -2097,16 +2097,16 @@ object formOptions2: TformOptions2
         Caption = 'NR?'#12434#33258#21205#36865#20449
         TabOrder = 13
       end
-      object GroupBox14: TGroupBox
-        Left = 6
-        Top = 331
+      object groupCwAddMessages: TGroupBox
+        Left = 3
+        Top = 355
         Width = 254
-        Height = 70
-        Caption = #36861#21152#12398'CQ'#12513#12483#12475#12540#12472
+        Height = 73
+        Caption = 'Additional CQ Messages'
         TabOrder = 1
         object Label9: TLabel
           Left = 8
-          Top = 24
+          Top = 21
           Width = 21
           Height = 13
           Caption = 'CQ2'
@@ -2121,9 +2121,9 @@ object formOptions2: TformOptions2
         object editCQMessage2: TEdit
           Tag = 13
           Left = 32
-          Top = 21
+          Top = 18
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 0
         end
@@ -2132,7 +2132,7 @@ object formOptions2: TformOptions2
           Left = 32
           Top = 44
           Width = 213
-          Height = 17
+          Height = 21
           AutoSize = False
           TabOrder = 1
         end
@@ -2180,6 +2180,42 @@ object formOptions2: TformOptions2
         Caption = #12497#12489#12523#24038#21491#21453#36578
         TabOrder = 15
       end
+      object groupSentNR: TGroupBox
+        Left = 3
+        Top = 430
+        Width = 254
+        Height = 73
+        Caption = 'NR'
+        TabOrder = 19
+        object Label74: TLabel
+          Left = 13
+          Top = 21
+          Width = 41
+          Height = 13
+          Caption = 'Prov($V)'
+        end
+        object Label83: TLabel
+          Left = 13
+          Top = 47
+          Width = 37
+          Height = 13
+          Caption = 'City($Q)'
+        end
+        object editCity: TEdit
+          Left = 81
+          Top = 44
+          Width = 49
+          Height = 21
+          TabOrder = 1
+        end
+        object editProv: TEdit
+          Left = 81
+          Top = 18
+          Width = 33
+          Height = 21
+          TabOrder = 0
+        end
+      end
     end
     object tabsheetVoice: TTabSheet
       Caption = #12508#12452#12473#12513#12514#12522
@@ -2187,7 +2223,7 @@ object formOptions2: TformOptions2
         Left = 3
         Top = 3
         Width = 511
-        Height = 261
+        Height = 310
         Caption = #12513#12483#12475#12540#12472
         TabOrder = 0
         object Label20: TLabel
@@ -2199,49 +2235,49 @@ object formOptions2: TformOptions2
         end
         object Label21: TLabel
           Left = 8
-          Top = 53
+          Top = 57
           Width = 13
           Height = 13
           Caption = '#2'
         end
         object Label22: TLabel
           Left = 8
-          Top = 71
+          Top = 79
           Width = 13
           Height = 13
           Caption = '#3'
         end
         object Label23: TLabel
           Left = 8
-          Top = 89
+          Top = 101
           Width = 13
           Height = 13
           Caption = '#4'
         end
         object Label24: TLabel
           Left = 8
-          Top = 107
+          Top = 123
           Width = 13
           Height = 13
           Caption = '#5'
         end
         object Label25: TLabel
           Left = 8
-          Top = 125
+          Top = 145
           Width = 13
           Height = 13
           Caption = '#6'
         end
         object Label26: TLabel
           Left = 8
-          Top = 143
+          Top = 167
           Width = 13
           Height = 13
           Caption = '#7'
         end
         object Label27: TLabel
           Left = 8
-          Top = 161
+          Top = 189
           Width = 13
           Height = 13
           Caption = '#8'
@@ -2255,28 +2291,28 @@ object formOptions2: TformOptions2
         end
         object Label72: TLabel
           Left = 8
-          Top = 179
+          Top = 211
           Width = 13
           Height = 13
           Caption = '#9'
         end
         object Label73: TLabel
           Left = 8
-          Top = 197
+          Top = 233
           Width = 19
           Height = 13
           Caption = '#10'
         end
         object Label77: TLabel
           Left = 8
-          Top = 215
+          Top = 255
           Width = 19
           Height = 13
           Caption = '#11'
         end
         object Label78: TLabel
           Left = 8
-          Top = 233
+          Top = 277
           Width = 19
           Height = 13
           Caption = '#12'
@@ -2286,115 +2322,115 @@ object formOptions2: TformOptions2
           Left = 429
           Top = 32
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd2: TSpeedButton
           Tag = 2
           Left = 429
-          Top = 50
+          Top = 54
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd3: TSpeedButton
           Tag = 3
           Left = 429
-          Top = 68
+          Top = 76
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd4: TSpeedButton
           Tag = 4
           Left = 429
-          Top = 86
+          Top = 98
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd5: TSpeedButton
           Tag = 5
           Left = 429
-          Top = 104
+          Top = 120
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd6: TSpeedButton
           Tag = 6
           Left = 429
-          Top = 122
+          Top = 142
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd7: TSpeedButton
           Tag = 7
           Left = 429
-          Top = 140
+          Top = 164
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd8: TSpeedButton
           Tag = 8
           Left = 429
-          Top = 158
+          Top = 186
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd9: TSpeedButton
           Tag = 9
           Left = 429
-          Top = 176
+          Top = 208
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd10: TSpeedButton
           Tag = 10
           Left = 429
-          Top = 194
+          Top = 230
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd11: TSpeedButton
           Tag = 11
           Left = 429
-          Top = 212
+          Top = 252
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object buttonVoiceAfterCmd12: TSpeedButton
           Tag = 12
           Left = 429
-          Top = 230
+          Top = 274
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonVoiceAfterCmdClick
         end
         object vEdit2: TEdit
           Tag = 2
           Left = 32
-          Top = 50
+          Top = 54
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 2
@@ -2404,9 +2440,9 @@ object formOptions2: TformOptions2
         object vEdit3: TEdit
           Tag = 3
           Left = 32
-          Top = 68
+          Top = 76
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 4
@@ -2416,9 +2452,9 @@ object formOptions2: TformOptions2
         object vEdit4: TEdit
           Tag = 4
           Left = 32
-          Top = 86
+          Top = 98
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 6
@@ -2428,9 +2464,9 @@ object formOptions2: TformOptions2
         object vEdit5: TEdit
           Tag = 5
           Left = 32
-          Top = 104
+          Top = 120
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 8
@@ -2440,9 +2476,9 @@ object formOptions2: TformOptions2
         object vEdit6: TEdit
           Tag = 6
           Left = 32
-          Top = 122
+          Top = 142
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 10
@@ -2452,9 +2488,9 @@ object formOptions2: TformOptions2
         object vEdit7: TEdit
           Tag = 7
           Left = 32
-          Top = 140
+          Top = 164
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 12
@@ -2464,9 +2500,9 @@ object formOptions2: TformOptions2
         object vEdit8: TEdit
           Tag = 8
           Left = 32
-          Top = 158
+          Top = 186
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 14
@@ -2478,7 +2514,7 @@ object formOptions2: TformOptions2
           Left = 32
           Top = 32
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           MaxLength = 255
           PopupMenu = popupVoiceMenu
@@ -2491,7 +2527,7 @@ object formOptions2: TformOptions2
           Left = 238
           Top = 32
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'vButton1'
           PopupMenu = popupVoiceMenu
           TabOrder = 1
@@ -2503,9 +2539,9 @@ object formOptions2: TformOptions2
         object vButton2: TButton
           Tag = 2
           Left = 238
-          Top = 50
+          Top = 54
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 3
@@ -2517,9 +2553,9 @@ object formOptions2: TformOptions2
         object vButton3: TButton
           Tag = 3
           Left = 238
-          Top = 68
+          Top = 76
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 5
@@ -2531,9 +2567,9 @@ object formOptions2: TformOptions2
         object vButton4: TButton
           Tag = 4
           Left = 238
-          Top = 86
+          Top = 98
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 7
@@ -2545,9 +2581,9 @@ object formOptions2: TformOptions2
         object vButton5: TButton
           Tag = 5
           Left = 238
-          Top = 104
+          Top = 120
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 9
@@ -2559,9 +2595,9 @@ object formOptions2: TformOptions2
         object vButton6: TButton
           Tag = 6
           Left = 238
-          Top = 122
+          Top = 142
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 11
@@ -2573,9 +2609,9 @@ object formOptions2: TformOptions2
         object vButton7: TButton
           Tag = 7
           Left = 238
-          Top = 140
+          Top = 164
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 13
@@ -2587,9 +2623,9 @@ object formOptions2: TformOptions2
         object vButton8: TButton
           Tag = 8
           Left = 238
-          Top = 158
+          Top = 186
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 15
@@ -2601,9 +2637,9 @@ object formOptions2: TformOptions2
         object vEdit9: TEdit
           Tag = 7
           Left = 32
-          Top = 176
+          Top = 208
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 16
@@ -2613,9 +2649,9 @@ object formOptions2: TformOptions2
         object vEdit10: TEdit
           Tag = 8
           Left = 32
-          Top = 194
+          Top = 230
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 18
@@ -2625,9 +2661,9 @@ object formOptions2: TformOptions2
         object vButton9: TButton
           Tag = 9
           Left = 238
-          Top = 176
+          Top = 208
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 17
@@ -2639,9 +2675,9 @@ object formOptions2: TformOptions2
         object vButton10: TButton
           Tag = 10
           Left = 238
-          Top = 194
+          Top = 230
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 19
@@ -2653,9 +2689,9 @@ object formOptions2: TformOptions2
         object vEdit11: TEdit
           Tag = 8
           Left = 32
-          Top = 212
+          Top = 252
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 20
@@ -2665,9 +2701,9 @@ object formOptions2: TformOptions2
         object vButton11: TButton
           Tag = 11
           Left = 238
-          Top = 212
+          Top = 252
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 21
@@ -2679,9 +2715,9 @@ object formOptions2: TformOptions2
         object vEdit12: TEdit
           Tag = 8
           Left = 32
-          Top = 230
+          Top = 274
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 22
@@ -2691,9 +2727,9 @@ object formOptions2: TformOptions2
         object vButton12: TButton
           Tag = 12
           Left = 238
-          Top = 230
+          Top = 274
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 23
@@ -2705,7 +2741,7 @@ object formOptions2: TformOptions2
       end
       object GroupBox16: TGroupBox
         Left = 3
-        Top = 364
+        Top = 412
         Width = 511
         Height = 50
         Caption = #20877#29983#12486#12473#12488
@@ -2744,21 +2780,21 @@ object formOptions2: TformOptions2
       end
       object GroupBox19: TGroupBox
         Left = 3
-        Top = 270
+        Top = 319
         Width = 511
-        Height = 79
+        Height = 87
         Caption = #36861#21152#12398'CQ'#12513#12483#12475#12540#12472
         TabOrder = 1
         object Label36: TLabel
           Left = 8
-          Top = 34
+          Top = 35
           Width = 21
           Height = 13
           Caption = 'CQ2'
         end
         object Label37: TLabel
           Left = 8
-          Top = 53
+          Top = 57
           Width = 21
           Height = 13
           Caption = 'CQ3'
@@ -2775,24 +2811,24 @@ object formOptions2: TformOptions2
           Left = 429
           Top = 32
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
         end
         object buttonAddVoiceAfterCmd3: TSpeedButton
           Tag = 3
           Left = 429
-          Top = 50
+          Top = 54
           Width = 75
-          Height = 19
+          Height = 21
           Caption = #21069#24460#20966#29702
           OnClick = buttonAddVoiceAfterCmdClick
         end
         object vEdit14: TEdit
           Tag = 3
           Left = 32
-          Top = 50
+          Top = 54
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           PopupMenu = popupVoiceMenu
           TabOrder = 2
@@ -2804,7 +2840,7 @@ object formOptions2: TformOptions2
           Left = 32
           Top = 32
           Width = 200
-          Height = 17
+          Height = 21
           AutoSize = False
           MaxLength = 255
           PopupMenu = popupVoiceMenu
@@ -2817,7 +2853,7 @@ object formOptions2: TformOptions2
           Left = 238
           Top = 32
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'vButton1'
           PopupMenu = popupVoiceMenu
           TabOrder = 1
@@ -2829,9 +2865,9 @@ object formOptions2: TformOptions2
         object vButton14: TButton
           Tag = 3
           Left = 238
-          Top = 50
+          Top = 54
           Width = 185
-          Height = 19
+          Height = 21
           Caption = 'Button4'
           PopupMenu = popupVoiceMenu
           TabOrder = 3

@@ -36,10 +36,7 @@ type
     _send_nr_auto: Boolean;            // Send NR automatically
     _not_send_leading_zeros: Boolean;  // Not send leading zeros in serial number
 
-    CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
-
     AdditionalCQMessages: array[2..3] of string;
-    AdditionalCQMessagesImported: array[2..3] of Boolean;
 
     _prov: string;
     _city: string;
@@ -144,9 +141,6 @@ type
     _powerM: string;
     _powerL: string;
     _powerP: string;
-
-    ProvCityImported: Boolean;
-    ReadOnlyParamImported: Boolean;
 
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
@@ -329,9 +323,6 @@ type
     FSoundDevice: Integer;
 
     // Select User Defined Contest
-    FImpProvCity: Boolean;
-    FImpCwMessage: array[1..4] of Boolean;
-    FImpCQMessage: array[1..3] of Boolean;
     FLastCFGFileName: string;
 
     // スコア表示の追加情報(評価用指数)
@@ -452,13 +443,6 @@ type
     FCfgFileName: string;
     FScoreCoeff: Extended;
     FFileName: string;
-    Prov: string;
-    City: string;
-    ProvCityImported: Boolean;
-    CWStr: array[1..4] of string;
-    CWStrImported: array[1..4] of Boolean;
-    CWAddStr: array[2..3] of string;
-    CWAddStrImported: array[2..3] of Boolean;
   end;
 
   TCommPort = class(TObject)
@@ -579,8 +563,6 @@ public
 
     Settings : TSettingsParam;
     LastContest: TLastContest;
-
-    procedure ClearParamImportedFlag();
 
     procedure SaveCurrentSettings; {saves Settings to zlog.ini}
     procedure ImplementSettings(_OnCreate: boolean);
@@ -795,9 +777,6 @@ var
 begin
    FCurrentFileName := '';
    FLog := nil;
-//   CreateLog();
-
-   ClearParamImportedFlag();
 
    // PacketClusterリスト
    FPacketClusterList := TTelnetSettingList.Create();
@@ -869,31 +848,6 @@ begin
    FLog.Free();
    FPacketClusterList.Free();
    FFreqMemList.Free();
-end;
-
-procedure TdmZLogGlobal.ClearParamImportedFlag();
-var
-   i: Integer;
-   j: Integer;
-   ini: TMemIniFile;
-begin
-   Settings.ProvCityImported := False;
-
-   for i := 1 to maxbank do begin
-      for j := 1 to maxmessage do begin
-         Settings.CW.CWStrImported[i, j] := False;
-      end;
-   end;
-   Settings.CW.AdditionalCQMessagesImported[2] := False;
-   Settings.CW.AdditionalCQMessagesImported[3] := False;
-
-   // 対象項目を再ロード
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      LoadCfgParams(ini);
-   finally
-      ini.Free();
-   end;
 end;
 
 procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
@@ -1447,11 +1401,9 @@ begin
       Settings._mycall := ini.ReadString('Categories', 'MyCall', '');
       Settings._mygridloc := ini.ReadString('Categories', 'MyGridLoc', 'PM96EJ');
       Settings._mylatitude := ini.ReadString('Categories', 'MyLatitude', '36.4');
-      Settings._mylongitude := ini.ReadString('Categories', 'MyLongitude', '-138.38');
+      Settings._mylongitude := ini.ReadString('Categories', 'MyLongitude', '138.38');
 
       Settings.CW._interval := ini.ReadInteger('CW', 'Interval', 1);
-
-//      Settings._specificcwport := ini.ReadInteger('Hardware', 'UseCWPort', 0 { $037A } );
 
       Settings._mainfontsize := ini.ReadInteger('Preferences', 'FontSize', 9);
       Settings._mainrowheight := ini.ReadInteger('Preferences', 'RowHeight', 18);
@@ -1461,8 +1413,6 @@ begin
 
       Settings._super_check_columns := ini.ReadInteger('Windows', 'SuperCheckColumns', 0);
       Settings._super_check2_columns := ini.ReadInteger('Windows', 'SuperCheck2Columns', 0);
-
-      Settings.ReadOnlyParamImported := ini.ReadBool('Categories', 'ReadOnlyParamImported', False);
 
       Settings.FRigShowRitInfo := ini.ReadBool('Rig', 'ShowRitInfo', False);
 
@@ -1670,13 +1620,6 @@ begin
       Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
 
       // Select User Defined Contest
-      Settings.FImpProvCity := ini.ReadBool('UserDefinedContest', 'imp_prov_city', True);
-      Settings.FImpCwMessage[1] := ini.ReadBool('UserDefinedContest', 'imp_f1a', True);
-      Settings.FImpCwMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_f2a', True);
-      Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
-      Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
-      Settings.FImpCQMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_cq2', False);
-      Settings.FImpCQMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_cq3', False);
       Settings.FLastCFGFileName := ini.ReadString('UserDefinedContest', 'last_cfgfilename', '');
 
       // スコア表示の追加情報(評価用指数)
@@ -1780,19 +1723,6 @@ begin
       LastContest.FCfgFileName := ini.ReadString('LastContest', 'CfgFileName', '');
       LastContest.FScoreCoeff := ini.ReadFloat('LastContest', 'ScoreCoeff', 0);
       LastContest.FFileName := ini.ReadString('LastContest', 'FileName', '');
-
-      // user defined contest
-      LastContest.Prov := ini.ReadString('LastContest', 'Prov', '');
-      LastContest.City := ini.ReadString('LastContest', 'City', '');
-      LastContest.ProvCityImported := ini.ReadBool('LastContest', 'ProvCityImported', False);
-      for i := 1 to 4 do begin
-         LastContest.CWStr[i] := ini.ReadString('LastContest', 'CWStr' + IntToStr(i), '');
-         LastContest.CWStrImported[i] := ini.ReadBool('LastContest', 'CWStrImported' + IntToStr(i), False);
-      end;
-      for i := 2 to 3 do begin
-         LastContest.CWAddStr[i] := ini.ReadString('LastContest', 'CWAddStr' + IntToStr(i), '');
-         LastContest.CWAddStrImported[i] := ini.ReadBool('LastContest', 'CWAddStrImported' + IntToStr(i), False);
-      end;
    finally
       ini.Free();
       slParam.Free();
@@ -1879,13 +1809,11 @@ begin
       // Apply power code on band change
       ini.WriteBool('Categories', 'ApplyPowerCodeOnBandChange', Settings._applypoweronbandchg);
 
-      if Settings.ProvCityImported = False then begin
-         // Prov/State($V)
-         ini.WriteString('Profiles', 'Province/State', Settings._myprov);
+      // Prov/State($V)
+      ini.WriteString('Profiles', 'Province/State', Settings._myprov);
 
-         // CITY
-         ini.WriteString('Profiles', 'City', Settings._mycity);
-      end;
+      // CITY
+      ini.WriteString('Profiles', 'City', Settings._mycity);
 
       // CQ Zone
       ini.WriteString('Profiles', 'CQZone', Settings._mycqzone);
@@ -1918,9 +1846,7 @@ begin
 
       // Messages
       for i := 1 to maxmessage do begin
-         if Settings.CW.CWStrImported[1, i] = False then begin
-            ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
-         end;
+         ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
          ini.WriteString('CW', 'F' + IntToStr(i) + 'B', Settings.CW.CWStrBank[2, i]);
          ini.WriteString('RTTY', 'F' + IntToStr(i), Settings.CW.CWStrBank[3, i]);
       end;
@@ -2383,13 +2309,6 @@ begin
       ini.WriteInteger('Voice', 'device', Settings.FSoundDevice);
 
       // Select User Defined Contest
-      ini.WriteBool('UserDefinedContest', 'imp_prov_city', Settings.FImpProvCity);
-      ini.WriteBool('UserDefinedContest', 'imp_f1a', Settings.FImpCwMessage[1]);
-      ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
-      ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
-      ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
-      ini.WriteBool('UserDefinedContest', 'imp_cq2', Settings.FImpCQMessage[2]);
-      ini.WriteBool('UserDefinedContest', 'imp_cq3', Settings.FImpCQMessage[3]);
       ini.WriteString('UserDefinedContest', 'last_cfgfilename', Settings.FLastCFGFileName);
 
       // スコア表示の追加情報(評価用指数)
@@ -2480,21 +2399,6 @@ begin
       ini.WriteString('LastContest', 'CfgFileName', LastContest.FCfgFileName);
       ini.WriteFloat('LastContest', 'ScoreCoeff', LastContest.FScoreCoeff);
       ini.WriteString('LastContest', 'FileName', LastContest.FFileName);
-
-      // user defined contest
-      ini.WriteString('LastContest', 'Prov', LastContest.Prov);
-      ini.WriteString('LastContest', 'City', LastContest.City);
-      ini.WriteBool('LastContest', 'ProvCityImported', LastContest.ProvCityImported);
-      for i := 1 to 4 do begin
-         ini.WriteString('LastContest', 'CWStr' + IntToStr(i), LastContest.CWStr[i]);
-         ini.WriteBool('LastContest', 'CWStrImported' + IntToStr(i), LastContest.CWStrImported[i]);
-      end;
-      for i := 2 to 3 do begin
-         ini.WriteString('LastContest', 'CWAddStr' + IntToStr(i), LastContest.CWAddStr[i]);
-         ini.WriteBool('LastContest', 'CWAddStrImported' + IntToStr(i), LastContest.CWAddStrImported[i]);
-      end;
-
-      ini.WriteBool('Categories', 'ReadOnlyParamImported', Settings.ReadOnlyParamImported);
 
       ini.UpdateFile();
    finally

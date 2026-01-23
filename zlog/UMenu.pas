@@ -231,34 +231,6 @@ var
 begin
    dmZLogGlobal.Settings.FLastCFGFileName := FCFGFileName;
 
-   dmZLogGlobal.ClearParamImportedFlag();
-
-   // User defined Contestで新スタイルの場合
-   if (rbGeneral.Checked = True) and (FModernStyle = True) then begin
-      // prov,city取込
-      if FSelectDlg.ImportProvCity = True then begin
-         dmZLogGlobal.Settings.CW._prov := FSelectedContest.Prov;
-         dmZLogGlobal.Settings.CW._city := FSelectedContest.City;
-         dmZLogGlobal.Settings.ProvCityImported := True;
-      end;
-
-      // f1～f4取込
-      for i := 1 to 4 do begin
-         if FSelectDlg.ImportCwMessage[i] = True then begin
-            dmZLogGlobal.Settings.CW.CWStrBank[1, i] := FSelectedContest.CwMessageA[i];
-            dmZLogGlobal.Settings.CW.CWStrImported[1, i] := True;
-         end;
-      end;
-
-      // CQ2,CQ3取り込み
-      for i := 2 to 3 do begin
-         if FSelectDlg.ImportCQMessage[i] = True then begin
-            dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := FSelectedContest.CwMessageCQ[i];
-            dmZLogGlobal.Settings.CW.AdditionalCQMessagesImported[i] := True;
-         end;
-      end;
-   end;
-
    ModalResult := mrOK;
 end;
 

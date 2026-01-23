@@ -23,7 +23,7 @@ type
     groupCategory: TGroupBox;
     radioSingleOp: TRadioButton;
     groupMode: TRadioGroup;
-    GroupBox2: TGroupBox;
+    groupCwMessages: TGroupBox;
     editMessage2: TEdit;
     editMessage3: TEdit;
     editMessage4: TEdit;
@@ -230,7 +230,7 @@ type
     Label80: TLabel;
     Label81: TLabel;
     checkPaddleReverse: TCheckBox;
-    GroupBox14: TGroupBox;
+    groupCwAddMessages: TGroupBox;
     Label9: TLabel;
     Label10: TLabel;
     editCQMessage2: TEdit;
@@ -477,7 +477,7 @@ type
     Label62: TLabel;
     HandlePhEdit: TEdit;
     comboListColorType2: TComboBox;
-    GroupBox3: TGroupBox;
+    groupSentNR: TGroupBox;
     Label74: TLabel;
     Label83: TLabel;
     editCity: TEdit;
@@ -849,6 +849,10 @@ begin
    IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
    HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
    HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
+
+   // CW/RTTY
+   editProv.Color := ifthen(editProv.Text = '', $00EADEFF, clWindow);
+   editCity.Color := ifthen(editCity.Text = '', $00EADEFF, clWindow);
 
    //
    // 画面に反映
