@@ -50,7 +50,6 @@ library Zlog;
 {ITE} {DFMFileType} {UFreqList.dfm}
 {ITE} {DFMFileType} {UFreqMemDialog.dfm}
 {ITE} {DFMFileType} {UFreqPanel.dfm}
-{ITE} {DFMFileType} {UFreqTest.dfm}
 {ITE} {DFMFileType} {UFunctionKeyPanel.dfm}
 {ITE} {DFMFileType} {UGeneralMulti2.dfm}
 {ITE} {DFMFileType} {UGeneralScore.dfm}
@@ -113,7 +112,6 @@ library Zlog;
 {ITE} {DFMFileType} {UUTCDialog.dfm}
 {ITE} {DFMFileType} {UWAEMulti.dfm}
 {ITE} {DFMFileType} {UWAEScore.dfm}
-{ITE} {DFMFileType} {UWinKeyerTester.dfm}
 {ITE} {DFMFileType} {UWPXMulti.dfm}
 {ITE} {DFMFileType} {UWPXScore.dfm}
 {ITE} {DFMFileType} {UWWMulti.dfm}
@@ -177,7 +175,6 @@ library Zlog;
 {$R 'UFreqList.dfm' 'FreqList:TForm(CheckWin)'}
 {$R 'UFreqMemDialog.dfm' 'formFreqMemDialog:TForm'}
 {$R 'UFreqPanel.dfm' 'formFreqPanel:TForm'}
-{$R 'UFreqTest.dfm' 'formFreqTest:TForm'}
 {$R 'UFunctionKeyPanel.dfm' 'formFunctionKeyPanel:TForm(ZLogForm)'}
 {$R 'UGeneralMulti2.dfm' 'GeneralMulti2:TForm(ACAGMulti)'}
 {$R 'UGeneralScore.dfm' 'GeneralScore:TForm(BasicScore)'}
@@ -240,7 +237,6 @@ library Zlog;
 {$R 'UUTCDialog.dfm' 'UTCDialog:TForm'}
 {$R 'UWAEMulti.dfm' 'WAEMulti:TForm(ARRLWMulti)'}
 {$R 'UWAEScore.dfm' 'WAEScore:TForm(BasicScore)'}
-{$R 'UWinKeyerTester.dfm' 'formWinkeyerTester:TForm'}
 {$R 'UWPXMulti.dfm' 'WPXMulti:TForm(WWMulti)'}
 {$R 'UWPXScore.dfm' 'WPXScore:TForm(BasicScore)'}
 {$R 'UWWMulti.dfm' 'WWMulti:TForm(BasicMulti)'}

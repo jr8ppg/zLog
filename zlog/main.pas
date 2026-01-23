@@ -31,7 +31,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
   UQsyInfo, UserDefinedContest, UPluginManager, USo2rNeoCp, UInformation,
-  UWinKeyerTester, UStatusEdit, UMessageManager, UzLogContest, UFreqTest, UBandPlan,
+  UStatusEdit, UMessageManager, UzLogContest, UBandPlan,
   UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo, UGrayline;
 
 const
@@ -1066,8 +1066,6 @@ type
     FSo2rNeoCp: TformSo2rNeoCp;
     FInformation: TformInformation;
     FTTYConsole: TTTYConsole;
-    FWinKeyerTester: TformWinKeyerTester;
-    FFreqTest: TformFreqTest;
     FCWMonitor: TformCWMonitor;
     FProgress: TformProgress;
     FQsoSearch: TformSearch;
@@ -1620,8 +1618,6 @@ begin
    FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
    FInformation   := TformInformation.Create(Self);
    FTTYConsole    := nil;
-   FWinKeyerTester := TformWinKeyerTester.Create(Self);
-   FFreqTest      := TformFreqTest.Create(Self);
    FCWMonitor     := TformCWMonitor.Create(Self);
    FProgress      := TformProgress.Create(Self);
    FQsoSearch     := TformSearch.Create(Self);
@@ -2081,8 +2077,6 @@ begin
    FQsyInfoForm.Release();
    FSo2rNeoCp.Release();
    FInformation.Release();
-   FWinKeyerTester.Release();
-   FFreqTest.Release();
    FCWMonitor.Release();
    FProgress.Release();
    FQsoSearch.Release();
@@ -3192,8 +3186,6 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FSo2rNeoCp, '', True);
       dmZlogGlobal.ReadWindowState(ini, FInformation);
       dmZlogGlobal.ReadWindowState(ini, FZLinkForm);
-      dmZlogGlobal.ReadWindowState(ini, FWinKeyerTester);
-      dmZlogGlobal.ReadWindowState(ini, FFreqTest);
       dmZlogGlobal.ReadWindowState(ini, FMessageManager);
       dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
       dmZlogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
@@ -3249,8 +3241,6 @@ begin
       dmZlogGlobal.WriteWindowState(ini, FSo2rNeoCp);
       dmZlogGlobal.WriteWindowState(ini, FInformation);
       dmZlogGlobal.WriteWindowState(ini, FZLinkForm);
-      dmZlogGlobal.WriteWindowState(ini, FWinKeyerTester);
-      dmZlogGlobal.WriteWindowState(ini, FFreqTest);
       dmZlogGlobal.WriteWindowState(ini, FMessageManager);
       dmZlogGlobal.WriteWindowState(ini, FCWMonitor);
       dmZlogGlobal.WriteWindowState(ini, FEntityInfo);
@@ -3778,14 +3768,6 @@ begin
    end;
    if S = 'AZ' then begin
       actionAntiZeroin.Execute();
-   end;
-
-   if S = 'WKTEST' then begin
-      FWinKeyerTester.Show();
-   end;
-
-   if S = 'FREQTEST' then begin
-      FFreqTest.Show();
    end;
 
    if S = 'MSGMGR' then begin
