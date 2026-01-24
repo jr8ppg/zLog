@@ -18,7 +18,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, StrUtils,
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
-  System.DateUtils, System.SyncObjs, System.Generics.Collections, System.Zip,
+  System.DateUtils, System.SyncObjs, System.Generics.Defaults, System.Generics.Collections, System.Zip,
   Winapi.MMSystem, JvExControls, JvLED, System.Character, Vcl.Themes,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
@@ -1340,6 +1340,7 @@ type
     procedure SetDarkMode();
     procedure SetLightMode();
     procedure ShowDupeMessage(Q: TQSO);
+    procedure FreeForm(var F: TForm);
   public
     LastFocus : TEdit;
 
@@ -1398,7 +1399,6 @@ type
     property ChatForm: TChatForm read FChatForm;
     property ZLinkForm: TZLinkForm read FZLinkForm;
     property FreqList: TFreqList read FFreqList;
-    property ScratchSheet: TScratchSheet read FScratchSheet;
     property SuperCheckList: TSuperList read FSuperCheckList;
     property MessageManager: TformMessageManager read FMessageManager;
     property CWMonitor: TformCWMonitor read FCWMonitor;
@@ -1437,6 +1437,11 @@ type
     procedure QsoFindNext(S: string);
     procedure QsoFindPrev(S: string);
     procedure QsoFindEnd();
+
+    function ConsolePad(ini: TMemIniFile = nil): TConsolePad;
+    function ScratchSheet(ini: TMemIniFile = nil): TScratchSheet;
+    function QsyInfoForm(ini: TMemIniFile = nil): TformQsyInfo;
+    function QuickRef(ini: TMemIniFile = nil): TQuickRef;
   end;
 
   TBandScopeNotifyThread = class(TThread)
@@ -1617,10 +1622,11 @@ begin
    FEntityInfo    := TformEntityInfo.Create(Self);
    FGrayline      := TformGrayline.Create(Self);
 
-   FConsolePad    := TConsolePad.Create(Self);
-   FQsyInfoForm   := TformQsyInfo.Create(Self);
-   FQuickRef      := TQuickRef.Create(Self);
-   FScratchSheet  := TScratchSheet.Create(Self);
+   // late create
+   FConsolePad    := nil;
+   FQsyInfoForm   := nil;
+   FQuickRef      := nil;
+   FScratchSheet  := nil;
 
    FSuperCheck.OnChangeFontSize := OnChangeFontSize;
    FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
@@ -2033,11 +2039,9 @@ begin
    FChatForm.Release();
    FFreqList.Release();
    FCommForm.Release();
-   FScratchSheet.Release();
    FRateDialog.Release();
    FRateDialogEx.Release();
    FZLinkForm.Release();
-   FConsolePad.Release();
    FCheckCountry.Release();
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
@@ -2066,12 +2070,10 @@ begin
    end;
 
    FTempQSOList.Free();
-   FQuickRef.Release();
    FZAnalyze.Release();
    FCWMessagePad.Release();
    FMessageManager.Release();
    FFunctionKeyPanel.Release();
-   FQsyInfoForm.Release();
    FSo2rNeoCp.Release();
    FInformation.Release();
    FCWMonitor.Release();
@@ -2083,6 +2085,11 @@ begin
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
    end;
+
+   FreeForm(TForm(FConsolePad));
+   FreeForm(TForm(FQsyInfoForm));
+   FreeForm(TForm(FQuickRef));
+   FreeForm(TForm(FScratchSheet));
 
    CurrentQSO.Free();
 
@@ -3170,16 +3177,13 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FCWKeyBoard);
       dmZlogGlobal.ReadWindowState(ini, FRigControl, '', True);
       dmZlogGlobal.ReadWindowState(ini, FChatForm);
-      dmZlogGlobal.ReadWindowState(ini, FConsolePad);
       dmZlogGlobal.ReadWindowState(ini, FFreqList);
       dmZlogGlobal.ReadWindowState(ini, FCommForm);
-      dmZlogGlobal.ReadWindowState(ini, FScratchSheet);
       dmZlogGlobal.ReadWindowState(ini, FRateDialog);
       dmZlogGlobal.ReadWindowState(ini, FRateDialogEx);
       dmZlogGlobal.ReadWindowState(ini, FZAnalyze);
       dmZlogGlobal.ReadWindowState(ini, FCwMessagePad);
       dmZlogGlobal.ReadWindowState(ini, FFunctionKeyPanel);
-      dmZlogGlobal.ReadWindowState(ini, FQsyInfoForm);
       dmZlogGlobal.ReadWindowState(ini, FSo2rNeoCp, '', True);
       dmZlogGlobal.ReadWindowState(ini, FInformation);
       dmZlogGlobal.ReadWindowState(ini, FZLinkForm);
@@ -3187,6 +3191,19 @@ begin
       dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
       dmZlogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
       dmZlogGlobal.ReadWindowState(ini, FGrayline);
+
+      if ini.ReadBool('Windows', 'ConsolePad_Open', False) = True then begin
+         ConsolePad(ini);
+      end;
+      if ini.ReadBool('Windows', 'ScratchSheet_Open', False) = True then begin
+         ScratchSheet(ini);
+      end;
+      if ini.ReadBool('Windows', 'QuickRef_Open', False) = True then begin
+         QuickRef(ini);
+      end;
+      if ini.ReadBool('Windows', 'formQsyInfo_Open', False) = True then begin
+         QsyInfoForm(ini);
+      end;
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].LoadSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -3225,16 +3242,13 @@ begin
       dmZlogGlobal.WriteWindowState(ini, FCWKeyBoard);
       dmZlogGlobal.WriteWindowState(ini, FRigControl);
       dmZlogGlobal.WriteWindowState(ini, FChatForm);
-      dmZlogGlobal.WriteWindowState(ini, FConsolePad);
       dmZlogGlobal.WriteWindowState(ini, FFreqList);
       dmZlogGlobal.WriteWindowState(ini, FCommForm);
-      dmZlogGlobal.WriteWindowState(ini, FScratchSheet);
       dmZlogGlobal.WriteWindowState(ini, FRateDialog);
       dmZlogGlobal.WriteWindowState(ini, FRateDialogEx);
       dmZlogGlobal.WriteWindowState(ini, FZAnalyze);
       dmZlogGlobal.WriteWindowState(ini, FCwMessagePad);
       dmZlogGlobal.WriteWindowState(ini, FFunctionKeyPanel);
-      dmZlogGlobal.WriteWindowState(ini, FQsyInfoForm);
       dmZlogGlobal.WriteWindowState(ini, FSo2rNeoCp);
       dmZlogGlobal.WriteWindowState(ini, FInformation);
       dmZlogGlobal.WriteWindowState(ini, FZLinkForm);
@@ -3242,6 +3256,16 @@ begin
       dmZlogGlobal.WriteWindowState(ini, FCWMonitor);
       dmZlogGlobal.WriteWindowState(ini, FEntityInfo);
       dmZlogGlobal.WriteWindowState(ini, FGrayline);
+
+      if FConsolePad <> nil then begin
+         dmZLogGlobal.WriteWindowState(ini, FConsolePad);
+      end;
+      if FScratchSheet <> nil then begin
+         dmZLogGlobal.WriteWindowState(ini, FScratchSheet);
+      end;
+      if FQsyInfoForm <> nil then begin
+         dmZLogGlobal.WriteWindowState(ini, FQsyInfoForm);
+      end;
 
       for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
          FBandScopeEx[b].SaveSettings(ini, 'BandScope(' + MHzString[b] + ')');
@@ -3451,9 +3475,9 @@ begin
 
    if S = 'OP' then begin
       for j := 1 to OpMenu.Items.Count - 1 do begin
-         FConsolePad.AddLine(FillRight(OpMenu.Items[j].Caption, 15) + FillLeft(IntToStr(Log.OpQSO(temp2)), 5));
+         ConsolePad.AddLine(FillRight(OpMenu.Items[j].Caption, 15) + FillLeft(IntToStr(Log.OpQSO(temp2)), 5));
       end;
-      FConsolePad.AddLine('');
+      ConsolePad.AddLine('');
    end;
 
    if (S = 'DELDUPES') or (S = 'DELDUPE') then begin
@@ -6180,7 +6204,7 @@ begin
       strTxNo := 'TX#' + IntToStr(dmZLogGlobal.TXNr);
    end;
 
-   FQsyInfoForm.SetQsyInfo(fQsyOK, strTxNo, S2);
+   QsyInfoForm.SetQsyInfo(fQsyOK, strTxNo, S2);
 end;
 
 procedure TMainForm.CallsignSentProc(Sender: TObject);
@@ -8129,7 +8153,7 @@ end;
 
 procedure TMainForm.menuQuickReferenceClick(Sender: TObject);
 begin
-   FormShowAndRestore(FQuickRef);
+   FormShowAndRestore(QuickRef);
 end;
 
 procedure TMainForm.menuPortalClick(Sender: TObject);
@@ -9578,8 +9602,9 @@ begin
 
    StatusLine.Panels[0].Text := statustext;
 
-   if fWriteConsole then
-      FConsolePad.AddLine(statustext);
+   if fWriteConsole then begin
+      ConsolePad.AddLine(statustext);
+   end;
 end;
 
 procedure TMainForm.OnZLogMoveLastFreq( var Message: TMessage );
@@ -10851,7 +10876,7 @@ end;
 // #65 Console Pad / Alt+Q
 procedure TMainForm.actionShowConsolePadExecute(Sender: TObject);
 begin
-   FormShowAndRestore(FConsolePad);
+   FormShowAndRestore(ConsolePad);
 end;
 
 // #66 RST欄にフォーカス移動 / Alt+R
@@ -10866,7 +10891,7 @@ end;
 // #67 Scratch Sheet / Alt+S
 procedure TMainForm.actionShowScratchSheetExecute(Sender: TObject);
 begin
-   FormShowAndRestore(FScratchSheet);
+   FormShowAndRestore(ScratchSheet);
 end;
 
 // #68 RIG Control / Alt+T
@@ -11620,7 +11645,7 @@ end;
 // #133 QSY Infomation
 procedure TMainForm.actionShowQsyInfoExecute(Sender: TObject);
 begin
-   FormShowAndRestore(FQsyInfoForm);
+   FormShowAndRestore(QsyInfoForm);
 end;
 
 // #134 SO2R Neo Control Panel
@@ -15360,6 +15385,106 @@ begin
       msg := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
       WriteStatusLineRed(msg, True);
    end;
+end;
+
+procedure TMainForm.FreeForm(var F: TForm);
+begin
+   if Assigned(F) then begin
+      TForm(F).Release();
+      F := nil;
+   end;
+end;
+
+function TMainForm.ConsolePad(ini: TMemIniFile): TConsolePad;
+var
+   ini2: TMemIniFile;
+begin
+   if FConsolePad = nil then begin
+      if ini = nil then begin
+         ini2 := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+      end
+      else begin
+         ini2 := ini;
+      end;
+
+      FConsolePad := TConsolePad.Create(Self);
+      dmZLogGlobal.ReadWindowState(ini2, FConsolePad);
+
+      if ini = nil then begin
+         ini2.Free();
+      end;
+   end;
+
+   Result := FConsolePad;
+end;
+
+function TMainForm.ScratchSheet(ini: TMemIniFile): TScratchSheet;
+var
+   ini2: TMemIniFile;
+begin
+   if FScratchSheet = nil then begin
+      if ini = nil then begin
+         ini2 := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+      end
+      else begin
+         ini2 := ini;
+      end;
+
+      FScratchSheet := TScratchSheet.Create(Self);
+      dmZLogGlobal.ReadWindowState(ini2, FScratchSheet);
+
+      if ini = nil then begin
+         ini2.Free();
+      end;
+   end;
+
+   Result := FScratchSheet;
+end;
+
+function TMainForm.QsyInfoForm(ini: TMemIniFile): TformQsyInfo;
+var
+   ini2: TMemIniFile;
+begin
+   if FQsyInfoForm = nil then begin
+      if ini = nil then begin
+         ini2 := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+      end
+      else begin
+         ini2 := ini;
+      end;
+
+      FQsyInfoForm := TformQsyInfo.Create(Self);
+      dmZLogGlobal.ReadWindowState(ini2, FQsyInfoForm);
+
+      if ini = nil then begin
+         ini2.Free();
+      end;
+   end;
+
+   Result := FQsyInfoForm;
+end;
+
+function TMainForm.QuickRef(ini: TMemIniFile): TQuickRef;
+var
+   ini2: TMemIniFile;
+begin
+   if FQuickRef = nil then begin
+      if ini = nil then begin
+         ini2 := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+      end
+      else begin
+         ini2 := ini;
+      end;
+
+      FQuickRef := TQuickRef.Create(Self);
+      dmZLogGlobal.ReadWindowState(ini2, FQuickRef);
+
+      if ini = nil then begin
+         ini2.Free();
+      end;
+   end;
+
+   Result := FQuickRef;
 end;
 
 { TBandScopeNotifyThread }
