@@ -679,67 +679,53 @@ object formOptions2: TformOptions2
         Left = 3
         Top = 146
         Width = 236
-        Height = 235
+        Height = 191
         Caption = 'Parameters'
         TabOrder = 3
-        object Label14: TLabel
-          Left = 10
-          Top = 23
-          Width = 71
-          Height = 13
-          Caption = 'Prov/State($V)'
-        end
-        object Label18: TLabel
-          Left = 10
-          Top = 49
-          Width = 37
-          Height = 13
-          Caption = 'City($Q)'
-        end
         object Label34: TLabel
-          Left = 10
-          Top = 75
+          Left = 8
+          Top = 23
           Width = 62
           Height = 13
           Caption = 'CQ Zone($Z)'
         end
         object Label35: TLabel
-          Left = 10
-          Top = 101
+          Left = 8
+          Top = 49
           Width = 61
           Height = 13
           Caption = 'ITU Zone($I)'
         end
         object Label31: TLabel
-          Left = 10
-          Top = 127
+          Left = 8
+          Top = 75
           Width = 38
           Height = 13
           Caption = 'Age($A)'
         end
         object Label50: TLabel
-          Left = 10
-          Top = 153
+          Left = 8
+          Top = 101
           Width = 44
           Height = 13
           Caption = 'IOTA($T)'
         end
         object Label54: TLabel
-          Left = 11
-          Top = 179
+          Left = 9
+          Top = 127
           Width = 78
           Height = 13
           Caption = 'Handle(CW)($H)'
         end
         object Label62: TLabel
-          Left = 11
-          Top = 205
+          Left = 9
+          Top = 153
           Width = 75
           Height = 13
           Caption = 'Handle(PH)($H)'
         end
-        object ProvEdit: TEdit
-          Left = 112
+        object CQZoneEdit: TEdit
+          Left = 110
           Top = 20
           Width = 33
           Height = 21
@@ -747,10 +733,11 @@ object formOptions2: TformOptions2
           CharCase = ecUpperCase
           ImeMode = imDisable
           MaxLength = 20
+          NumbersOnly = True
           TabOrder = 0
         end
-        object CItyEdit: TEdit
-          Left = 112
+        object IARUZoneEdit: TEdit
+          Left = 110
           Top = 46
           Width = 49
           Height = 21
@@ -758,10 +745,11 @@ object formOptions2: TformOptions2
           CharCase = ecUpperCase
           ImeMode = imDisable
           MaxLength = 20
+          NumbersOnly = True
           TabOrder = 1
         end
-        object CQZoneEdit: TEdit
-          Left = 112
+        object AgeEdit: TEdit
+          Left = 110
           Top = 72
           Width = 33
           Height = 21
@@ -772,8 +760,8 @@ object formOptions2: TformOptions2
           NumbersOnly = True
           TabOrder = 2
         end
-        object IARUZoneEdit: TEdit
-          Left = 112
+        object IotaEdit: TEdit
+          Left = 110
           Top = 98
           Width = 49
           Height = 21
@@ -781,52 +769,28 @@ object formOptions2: TformOptions2
           CharCase = ecUpperCase
           ImeMode = imDisable
           MaxLength = 20
-          NumbersOnly = True
           TabOrder = 3
         end
-        object AgeEdit: TEdit
-          Left = 112
+        object HandleCwEdit: TEdit
+          Left = 110
           Top = 124
-          Width = 33
+          Width = 116
           Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           ImeMode = imDisable
           MaxLength = 20
-          NumbersOnly = True
           TabOrder = 4
         end
-        object IotaEdit: TEdit
-          Left = 112
+        object HandlePhEdit: TEdit
+          Left = 110
           Top = 150
-          Width = 49
+          Width = 116
           Height = 21
           AutoSize = False
           CharCase = ecUpperCase
-          ImeMode = imDisable
           MaxLength = 20
           TabOrder = 5
-        end
-        object HandleCwEdit: TEdit
-          Left = 112
-          Top = 176
-          Width = 116
-          Height = 21
-          AutoSize = False
-          CharCase = ecUpperCase
-          ImeMode = imDisable
-          MaxLength = 20
-          TabOrder = 6
-        end
-        object HandlePhEdit: TEdit
-          Left = 112
-          Top = 202
-          Width = 116
-          Height = 21
-          AutoSize = False
-          CharCase = ecUpperCase
-          MaxLength = 20
-          TabOrder = 7
         end
       end
     end
@@ -2029,11 +1993,11 @@ object formOptions2: TformOptions2
       Caption = 'Categories'
       object groupCategory: TGroupBox
         Left = 6
-        Top = 94
+        Top = 147
         Width = 227
         Height = 121
         Caption = 'Category'
-        TabOrder = 0
+        TabOrder = 1
         object Label91: TLabel
           Left = 145
           Top = 94
@@ -2093,7 +2057,7 @@ object formOptions2: TformOptions2
       end
       object groupMode: TRadioGroup
         Left = 6
-        Top = 221
+        Top = 274
         Width = 227
         Height = 123
         Caption = 'Mode'
@@ -2104,20 +2068,23 @@ object formOptions2: TformOptions2
           'PHONE'
           'RTTY'
           'ALL')
-        TabOrder = 1
+        TabOrder = 2
         TabStop = True
       end
       object groupOperators: TGroupBox
-        Left = 312
-        Top = 3
-        Width = 203
+        Left = 288
+        Top = 35
+        Width = 227
         Height = 264
         Caption = 'Operators'
-        TabOrder = 2
+        TabOrder = 4
+        DesignSize = (
+          227
+          264)
         object OpListBox: TListBox
           Left = 11
           Top = 19
-          Width = 182
+          Width = 206
           Height = 162
           TabStop = False
           Enabled = False
@@ -2141,10 +2108,11 @@ object formOptions2: TformOptions2
           OnClick = buttonOpAddClick
         end
         object buttonOpDelete: TButton
-          Left = 136
+          Left = 160
           Top = 187
           Width = 57
           Height = 25
+          Anchors = [akTop, akRight]
           Caption = 'Delete'
           TabOrder = 3
           OnClick = buttonOpDeleteClick
@@ -2181,12 +2149,12 @@ object formOptions2: TformOptions2
         end
       end
       object groupQsyAssist: TGroupBox
-        Left = 6
-        Top = 350
+        Left = 288
+        Top = 367
         Width = 227
         Height = 89
         Caption = 'QSY Assist'
-        TabOrder = 3
+        TabOrder = 5
         object Label86: TLabel
           Left = 164
           Top = 40
@@ -2257,9 +2225,9 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 35
         Width = 227
-        Height = 54
+        Height = 106
         Caption = 'Exchange'
-        TabOrder = 4
+        TabOrder = 0
         object Label19: TLabel
           Left = 10
           Top = 24
@@ -2267,16 +2235,46 @@ object formOptions2: TformOptions2
           Height = 13
           Caption = 'Sent($X)'
         end
+        object Label74: TLabel
+          Left = 10
+          Top = 51
+          Width = 41
+          Height = 13
+          Caption = 'Prov($V)'
+        end
+        object Label83: TLabel
+          Left = 10
+          Top = 77
+          Width = 37
+          Height = 13
+          Caption = 'City($Q)'
+        end
         object SentEdit: TEdit
           Left = 120
           Top = 21
-          Width = 57
+          Width = 60
           Height = 21
           AutoSize = False
           CharCase = ecUpperCase
           Color = clBtnFace
           ReadOnly = True
           TabOrder = 0
+        end
+        object editCity: TEdit
+          Left = 120
+          Top = 74
+          Width = 60
+          Height = 21
+          MaxLength = 20
+          TabOrder = 2
+        end
+        object editProv: TEdit
+          Left = 120
+          Top = 48
+          Width = 60
+          Height = 21
+          MaxLength = 20
+          TabOrder = 1
         end
       end
       object Label14: TEdit
@@ -2323,11 +2321,11 @@ object formOptions2: TformOptions2
       end
       object GroupBox1: TGroupBox
         Left = 6
-        Top = 445
+        Top = 403
         Width = 227
         Height = 53
         Caption = 'Other rules'
-        TabOrder = 5
+        TabOrder = 3
         object Label46: TLabel
           Left = 11
           Top = 24
@@ -2349,7 +2347,7 @@ object formOptions2: TformOptions2
       object panelContestName: TPanel
         Left = 6
         Top = 4
-        Width = 289
+        Width = 271
         Height = 25
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -3142,42 +3140,6 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = 'Paddle Reverse'
         TabOrder = 15
-      end
-      object groupSentNR: TGroupBox
-        Left = 3
-        Top = 430
-        Width = 254
-        Height = 73
-        Caption = 'NR'
-        TabOrder = 19
-        object Label74: TLabel
-          Left = 13
-          Top = 21
-          Width = 41
-          Height = 13
-          Caption = 'Prov($V)'
-        end
-        object Label83: TLabel
-          Left = 13
-          Top = 47
-          Width = 37
-          Height = 13
-          Caption = 'City($Q)'
-        end
-        object editCity: TEdit
-          Left = 81
-          Top = 44
-          Width = 49
-          Height = 21
-          TabOrder = 1
-        end
-        object editProv: TEdit
-          Left = 81
-          Top = 18
-          Width = 33
-          Height = 21
-          TabOrder = 0
-        end
       end
     end
     object tabsheetVoice: TTabSheet
@@ -4283,6 +4245,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

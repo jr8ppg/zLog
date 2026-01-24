@@ -852,10 +852,10 @@ end;
 
 procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
 begin
-   // Prov/State($V)
+   // Prov/State($V) -> readonly
    Settings._myprov := ini.ReadString('Profiles', 'Province/State', '');
 
-   // CITY
+   // CITY -> readonly
    Settings._mycity := ini.ReadString('Profiles', 'City', '');
 
    Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M TEST');
@@ -1808,12 +1808,6 @@ begin
 
       // Apply power code on band change
       ini.WriteBool('Categories', 'ApplyPowerCodeOnBandChange', Settings._applypoweronbandchg);
-
-      // Prov/State($V)
-      ini.WriteString('Profiles', 'Province/State', Settings._myprov);
-
-      // CITY
-      ini.WriteString('Profiles', 'City', Settings._mycity);
 
       // CQ Zone
       ini.WriteString('Profiles', 'CQZone', Settings._mycqzone);

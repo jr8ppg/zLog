@@ -1598,20 +1598,16 @@ begin
    FCWKeyBoard    := TCWKeyBoard.Create(Self);
    FChatForm      := TChatForm.Create(Self);
    FZLinkForm     := TZLinkForm.Create(Self);
-   FConsolePad    := TConsolePad.Create(Self);
    FFreqList      := TFreqList.Create(Self);
    FCheckCall2    := TCheckCall2.Create(Self);
    FCheckMulti    := TCheckMulti.Create(Self);
    FCheckCountry  := TCheckCountry.Create(Self);
-   FScratchSheet  := TScratchSheet.Create(Self);
-   FQuickRef      := TQuickRef.Create(Self);
    FZAnalyze      := TZAnalyze.Create(Self);
    FCWMessagePad  := TCwMessagePad.Create(Self);
    FMessageManager := TformMessageManager.Create(Self);
    FMessageManager.OnNotifyStarted  := OnVoicePlayStarted;
    FMessageManager.OnNotifyFinished := OnPlayMessageFinished;
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
-   FQsyInfoForm   := TformQsyInfo.Create(Self);
    FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
    FInformation   := TformInformation.Create(Self);
    FTTYConsole    := nil;
@@ -1620,6 +1616,11 @@ begin
    FQsoSearch     := TformSearch.Create(Self);
    FEntityInfo    := TformEntityInfo.Create(Self);
    FGrayline      := TformGrayline.Create(Self);
+
+   FConsolePad    := TConsolePad.Create(Self);
+   FQsyInfoForm   := TformQsyInfo.Create(Self);
+   FQuickRef      := TQuickRef.Create(Self);
+   FScratchSheet  := TScratchSheet.Create(Self);
 
    FSuperCheck.OnChangeFontSize := OnChangeFontSize;
    FSuperCheck2.OnChangeFontSize := OnChangeFontSize;
@@ -8985,8 +8986,7 @@ begin
 
       // Sent NRチェック
       if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.Prov = '')) or
-         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.City = '')) or
-         ((dmZLogGlobal.Settings._myprov = '') and (dmZLogGlobal.Settings._mycity = '')) then begin
+         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.City = '')) then begin
          MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
          fShowOptionsDialog := True;
       end

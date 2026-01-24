@@ -386,13 +386,9 @@ type
     groupMyStation: TGroupBox;
     editMyCallsign: TEdit;
     groupMyParameter: TGroupBox;
-    Label14: TLabel;
-    Label18: TLabel;
     Label34: TLabel;
     Label35: TLabel;
     Label31: TLabel;
-    ProvEdit: TEdit;
-    CItyEdit: TEdit;
     CQZoneEdit: TEdit;
     IARUZoneEdit: TEdit;
     AgeEdit: TEdit;
@@ -477,7 +473,6 @@ type
     Label62: TLabel;
     HandlePhEdit: TEdit;
     comboListColorType2: TComboBox;
-    groupSentNR: TGroupBox;
     Label74: TLabel;
     Label83: TLabel;
     editCity: TEdit;
@@ -841,8 +836,6 @@ begin
 
    // 未入力箇所に色を付ける
    editMyCallsign.Color := ifthen(editMyCallsign.Text = '', $00EADEFF, clWindow);
-   ProvEdit.Color := ifthen(ProvEdit.Text = '', $00EADEFF, clWindow);
-   CityEdit.Color := ifthen(CityEdit.Text = '', $00EADEFF, clWindow);
    CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
    IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
    AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
@@ -1033,8 +1026,6 @@ begin
       Settings._mylongitude := editMyLongitude.Text;
 
       // Parameters
-      Settings._myprov := ProvEdit.Text;
-      Settings._mycity := CityEdit.Text;
       Settings._mycqzone := CQZoneEdit.Text;
       Settings._myiaruzone := IARUZoneEdit.Text;
       Settings._myage := AgeEdit.Text;
@@ -1150,6 +1141,10 @@ begin
       // Sent欄は表示専用
       //Settings._sentstr := SentEdit.Text;
 
+      // Prov/City
+      Settings.CW._prov := editProv.Text;
+      Settings.CW._city := editCity.Text;
+
       // Category
       if radioSingleOp.Checked = True then begin
          Settings._multiop := ccSingleOp;
@@ -1254,10 +1249,6 @@ begin
 
       // Paddle reverse
       Settings.CW._paddlereverse := checkPaddleReverse.Checked;
-
-      // Prov/City
-      Settings.CW._prov := editProv.Text;
-      Settings.CW._city := editCity.Text;
 
       //
       // Voice
@@ -1465,8 +1456,6 @@ begin
       editMyLongitude.Text := Settings._mylongitude;
 
       // Parameters
-      ProvEdit.Text := Settings._myprov;
-      CityEdit.Text := Settings._mycity;
       CQZoneEdit.Text := Settings._mycqzone;
       IARUZoneEdit.Text := Settings._myiaruzone;
       AgeEdit.Text := Settings._myage;
@@ -1581,6 +1570,10 @@ begin
       // Sent欄は表示専用
       SentEdit.Text := Settings._sentstr;
 
+      // Prov/City
+      editProv.Text := Settings.CW._prov;
+      editCity.Text := Settings.CW._city;
+
       // Category
       if ContestCategory = ccSingleOp then begin
          radioSingleOp.Checked := True;
@@ -1686,10 +1679,6 @@ begin
 
       // Paddle reverse
       checkPaddleReverse.Checked := Settings.CW._paddlereverse;
-
-      // Prov/City
-      editProv.Text := Settings.CW._prov;
-      editCity.Text := Settings.CW._city;
 
       //
       // Voice
