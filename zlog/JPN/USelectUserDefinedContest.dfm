@@ -60,6 +60,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       Caption = 'CFG'#32232#38598
       Enabled = False
       TabOrder = 2
+      Visible = False
       OnClick = buttonCFGEditClick
     end
   end
