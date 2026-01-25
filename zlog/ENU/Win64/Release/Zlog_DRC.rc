@@ -8,29 +8,32 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMainThreadID 64128
-#define UExceptionDialog_RsExceptionThreadID 64129
-#define UExceptionDialog_RsMainThreadCallStack 64130
-#define UExceptionDialog_RsThreadCallStack 64131
-#define UExceptionDialog_RsErrorMessage 64132
-#define UExceptionDialog_RsDetailsIntro 64133
-#define UExceptionDialog_RsUnitVersioningIntro 64134
-#define Main_TMainform_darkmode_changed 64144
+#define UExceptionDialog_RsThread 64128
+#define UExceptionDialog_RsMissingVersionInfo 64129
+#define UExceptionDialog_RsExceptionStack 64130
+#define UExceptionDialog_RsMainThreadID 64131
+#define UExceptionDialog_RsExceptionThreadID 64132
+#define UExceptionDialog_RsMainThreadCallStack 64133
+#define UExceptionDialog_RsThreadCallStack 64134
+#define UExceptionDialog_RsErrorMessage 64135
+#define UExceptionDialog_RsDetailsIntro 64136
+#define UExceptionDialog_RsUnitVersioningIntro 64137
+#define Main_TMainForm_darkmode_changed 64144
 #define Main_TMainForm_partial_nomatch 64145
-#define UExceptionDialog_RsAppError 64146
-#define UExceptionDialog_RsExceptionClass 64147
-#define UExceptionDialog_RsExceptionMessage 64148
-#define UExceptionDialog_RsExceptionAddr 64149
-#define UExceptionDialog_RsStackList 64150
-#define UExceptionDialog_RsModulesList 64151
-#define UExceptionDialog_RsOSVersion 64152
-#define UExceptionDialog_RsProcessor 64153
-#define UExceptionDialog_RsMemory 64154
-#define UExceptionDialog_RsScreenRes 64155
-#define UExceptionDialog_RsActiveControl 64156
-#define UExceptionDialog_RsThread 64157
-#define UExceptionDialog_RsMissingVersionInfo 64158
-#define UExceptionDialog_RsExceptionStack 64159
+#define Main_TMainForm_prev_used_file_notfound 64146
+#define Main_TMainForm_Check_Multi 64147
+#define Main_TMainForm_Check_Zone 64148
+#define UExceptionDialog_RsAppError 64149
+#define UExceptionDialog_RsExceptionClass 64150
+#define UExceptionDialog_RsExceptionMessage 64151
+#define UExceptionDialog_RsExceptionAddr 64152
+#define UExceptionDialog_RsStackList 64153
+#define UExceptionDialog_RsModulesList 64154
+#define UExceptionDialog_RsOSVersion 64155
+#define UExceptionDialog_RsProcessor 64156
+#define UExceptionDialog_RsMemory 64157
+#define UExceptionDialog_RsScreenRes 64158
+#define UExceptionDialog_RsActiveControl 64159
 #define Main_TMainForm_UploadFile 64160
 #define Main_TMainForm_SoundFileFolderNotSet 64161
 #define Main_TMainForm_Compressing 64162
@@ -46,7 +49,7 @@
 #define Main_TMainForm_Assigned_Another_Function 64172
 #define Main_TMainForm_To_Change_the_mode 64173
 #define Main_TMainForm_To_Change_the_band 64174
-#define Main_TMainform_rbn_verified 64175
+#define Main_TMainForm_rbn_verified 64175
 #define Main_TMainForm_EmptyOpList 64176
 #define Main_TMainForm_Setup_MyCall_first 64177
 #define Main_TMainForm_Setup_SentNR_first 64178
@@ -1409,6 +1412,9 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsThread,	L"Thread: %s"
+	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
+	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
 	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
 	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
@@ -1416,8 +1422,11 @@ BEGIN
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
-	Main_TMainform_darkmode_changed,	L"Dark Mode changes will take effect on the next startup."
+	Main_TMainForm_darkmode_changed,	L"Dark Mode changes will take effect on the next startup."
 	Main_TMainForm_partial_nomatch,	L"NO MATCH!"
+	Main_TMainForm_prev_used_file_notfound,	L"The previously used file %s was not found."
+	Main_TMainForm_Check_Multi,	L"Check Multi"
+	Main_TMainForm_Check_Zone,	L"Check Zone"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1429,9 +1438,6 @@ BEGIN
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
-	UExceptionDialog_RsThread,	L"Thread: %s"
-	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
-	UExceptionDialog_RsExceptionStack,	L"Exception stack"
 	Main_TMainForm_UploadFile,	L"Uploading..."
 	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
 	Main_TMainForm_Compressing,	L"Compressing..."
@@ -1447,7 +1453,7 @@ BEGIN
 	Main_TMainForm_Assigned_Another_Function,	L"Ctrl+Q is assigned to another function. Do you want to take it?"
 	Main_TMainForm_To_Change_the_mode,	L"To change the operating mode, first turn off the F2A mode."
 	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
-	Main_TMainform_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
+	Main_TMainForm_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
 	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
 	Main_TMainForm_Setup_MyCall_first,	L"Please enter your callsign first."
 	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State code and City code first."

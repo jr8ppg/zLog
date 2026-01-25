@@ -6324,6 +6324,7 @@ object MainForm: TMainForm
         Top = 4
         Width = 25
         Height = 25
+        Hint = 'Partial check'
         Glyph.Data = {
           42010000424D4201000000000000760000002800000011000000110000000100
           040000000000CC00000000000000000000001000000010000000000000000000
@@ -6369,6 +6370,7 @@ object MainForm: TMainForm
         Top = 4
         Width = 25
         Height = 25
+        Hint = 'Multipliers'
         Action = actionShowMultipliers
         Caption = 'X'
         Font.Charset = DEFAULT_CHARSET
@@ -6425,7 +6427,7 @@ object MainForm: TMainForm
         OnClick = LogButtonClick
       end
       object Options2Button: TSpeedButton
-        Left = 296
+        Left = 297
         Top = 4
         Width = 25
         Height = 25
@@ -6453,6 +6455,7 @@ object MainForm: TMainForm
         Top = 4
         Width = 25
         Height = 25
+        Hint = 'Super check'
         Glyph.Data = {
           42010000424D4201000000000000760000002800000011000000110000000100
           040000000000CC00000000000000000000001000000010000000000000000000
@@ -6829,221 +6832,242 @@ object MainForm: TMainForm
     end
     object Windows1: TMenuItem
       Caption = '&Windows'
-      object menuShowScore: TMenuItem
-        Action = actionShowScore
-      end
-      object menuShowMultipliers: TMenuItem
-        Action = actionShowMultipliers
-      end
-      object menuShowQSOrate: TMenuItem
-        Action = actionShowQsoRate
-      end
-      object menuShowQSOrateEx: TMenuItem
-        Action = actionShowQsoRateEx
-      end
-      object menuShowSuperCheck: TMenuItem
-        Action = actionShowSuperCheck
-      end
-      object menuShowNPlusOne: TMenuItem
-        Action = actionShowSuperCheck2
-      end
-      object menuShowPartialCheck: TMenuItem
-        Action = actionShowCheckPartial
-      end
-      object menuShowCheckCall: TMenuItem
-        Action = actionShowCheckCall
-      end
-      object menuShowCheckMulti: TMenuItem
-        Action = actionShowCheckMulti
-      end
-      object menuShowCheckCountry: TMenuItem
-        Action = actionShowCheckCountry
-      end
-      object menuShowCWKeyboard: TMenuItem
-        Action = actionShowCWKeyboard
-      end
-      object menuShowCWMessagePad: TMenuItem
-        Action = actionCwMessagePad
-      end
-      object menuShowRIgControl: TMenuItem
-        Action = actionShowRigControl
-      end
-      object menuShowPacketCluster: TMenuItem
-        Action = actionShowPacketCluster
-      end
-      object menuShowZLinkMonitor: TMenuItem
-        Action = actionShowZlinkMonitor
-      end
-      object menuShowZServer: TMenuItem
-        Action = actionShowZServerChat
-      end
-      object menuShowConsole: TMenuItem
-        Action = actionShowConsolePad
-      end
-      object menuShowScratchSheet: TMenuItem
-        Action = actionShowScratchSheet
-      end
-      object menuBandscope: TMenuItem
-        AutoLineReduction = maAutomatic
-        Caption = '&Band Scope'
-        OnClick = menuBandscopeClick
-        object menuBSAll: TMenuItem
-          Action = actionShowBandScope
-          Caption = 'Show all windows'
+      object menuBasic: TMenuItem
+        Caption = 'Basic'
+        object menuShowScore: TMenuItem
+          Action = actionShowScore
         end
-        object N16: TMenuItem
-          Caption = '-'
+        object menuShowMultipliers: TMenuItem
+          Action = actionShowMultipliers
         end
-        object menuBSCurrent: TMenuItem
-          AutoCheck = True
-          Caption = 'Current'
-          OnClick = menuBSCurrentClick
+        object menuShowQSOrate: TMenuItem
+          Action = actionShowQsoRate
         end
-        object menuBSAllBands: TMenuItem
-          AutoCheck = True
-          Caption = 'All bands'
-          OnClick = menuBSAllBandsClick
+        object menuShowQSOrateEx: TMenuItem
+          Action = actionShowQsoRateEx
         end
-        object menuBSNewMulti: TMenuItem
-          AutoCheck = True
-          Caption = 'New multi'
-          OnClick = menuBSNewMultiClick
+        object menuShowFunctionKeyPanel: TMenuItem
+          Action = actionFunctionKeyPanel
         end
-        object N15: TMenuItem
-          Caption = '-'
+        object menuShowEntityInfo: TMenuItem
+          Action = actionShowEntityInfo
         end
-        object menuBS00: TMenuItem
-          AutoCheck = True
-          Caption = '1.9'
-          OnClick = menuBS00Click
+        object menuShowGrayline: TMenuItem
+          Action = actionShowGrayline
         end
-        object menuBS01: TMenuItem
-          Tag = 1
-          AutoCheck = True
-          Caption = '3.5'
-          OnClick = menuBS00Click
-        end
-        object menuBS02: TMenuItem
-          Tag = 2
-          AutoCheck = True
-          Caption = '7'
-          OnClick = menuBS00Click
-        end
-        object menuBS03: TMenuItem
-          Tag = 3
-          AutoCheck = True
-          Caption = '10'
-          OnClick = menuBS00Click
-        end
-        object menuBS04: TMenuItem
-          Tag = 4
-          AutoCheck = True
-          Caption = '14'
-          OnClick = menuBS00Click
-        end
-        object menuBS05: TMenuItem
-          Tag = 5
-          AutoCheck = True
-          Caption = '18'
-          OnClick = menuBS00Click
-        end
-        object menuBS06: TMenuItem
-          Tag = 6
-          AutoCheck = True
-          Caption = '21'
-          OnClick = menuBS00Click
-        end
-        object menuBS07: TMenuItem
-          Tag = 7
-          AutoCheck = True
-          Caption = '24.5'
-          OnClick = menuBS00Click
-        end
-        object menuBS08: TMenuItem
-          Tag = 8
-          AutoCheck = True
-          Caption = '28'
-          OnClick = menuBS00Click
-        end
-        object menuBS09: TMenuItem
-          Tag = 9
-          AutoCheck = True
-          Caption = '50'
-          OnClick = menuBS00Click
-        end
-        object menuBS10: TMenuItem
-          Tag = 10
-          AutoCheck = True
-          Caption = '144'
-          OnClick = menuBS00Click
-        end
-        object menuBS11: TMenuItem
-          Tag = 11
-          AutoCheck = True
-          Caption = '430'
-          OnClick = menuBS00Click
-        end
-        object menuBS12: TMenuItem
-          Tag = 12
-          AutoCheck = True
-          Caption = '1200'
-          OnClick = menuBS00Click
-        end
-        object menuBS13: TMenuItem
-          Tag = 13
-          AutoCheck = True
-          Caption = '2400'
-          OnClick = menuBS00Click
-        end
-        object menuBS14: TMenuItem
-          Tag = 14
-          AutoCheck = True
-          Caption = '5600'
-          OnClick = menuBS00Click
-        end
-        object menuBS15: TMenuItem
-          Tag = 15
-          AutoCheck = True
-          Caption = '10G'
-          OnClick = menuBS00Click
+        object menuShowAnalyze: TMenuItem
+          Action = actionShowAnalyze
         end
       end
-      object menuShowRunningFrequencies: TMenuItem
-        Action = actionShowFreqList
+      object menuChecker: TMenuItem
+        Caption = 'Checker'
+        object menuShowPartialCheck: TMenuItem
+          Action = actionShowCheckPartial
+        end
+        object menuShowSuperCheck: TMenuItem
+          Action = actionShowSuperCheck
+        end
+        object menuShowNPlusOne: TMenuItem
+          Action = actionShowSuperCheck2
+        end
+        object menuShowCheckCall: TMenuItem
+          Action = actionShowCheckCall
+        end
+        object menuShowCheckMulti: TMenuItem
+          Action = actionShowCheckMulti
+        end
+        object menuShowCheckCountry: TMenuItem
+          Action = actionShowCheckCountry
+        end
       end
-      object menuShowTTYConsole: TMenuItem
-        Action = actionShowTeletypeConsole
-        Visible = False
+      object menuCW: TMenuItem
+        Caption = 'CW'
+        object menuShowCWKeyboard: TMenuItem
+          Action = actionShowCWKeyboard
+        end
+        object menuShowCWMessagePad: TMenuItem
+          Action = actionCwMessagePad
+        end
+        object menuShowCWMonitor: TMenuItem
+          Action = actionShowCWMonitor
+        end
       end
-      object menuShowAnalyze: TMenuItem
-        Action = actionShowAnalyze
+      object menuAutomation: TMenuItem
+        Caption = 'Automation'
+        object menuShowRIgControl: TMenuItem
+          Action = actionShowRigControl
+        end
+        object menuShowPacketCluster: TMenuItem
+          Action = actionShowPacketCluster
+        end
+        object menuBandscope: TMenuItem
+          AutoLineReduction = maAutomatic
+          Caption = '&Band Scope'
+          OnClick = menuBandscopeClick
+          object menuBSAll: TMenuItem
+            Action = actionShowBandScope
+            Caption = 'Show all windows'
+          end
+          object N16: TMenuItem
+            Caption = '-'
+          end
+          object menuBSCurrent: TMenuItem
+            AutoCheck = True
+            Caption = 'Current'
+            OnClick = menuBSCurrentClick
+          end
+          object menuBSAllBands: TMenuItem
+            AutoCheck = True
+            Caption = 'All bands'
+            OnClick = menuBSAllBandsClick
+          end
+          object menuBSNewMulti: TMenuItem
+            AutoCheck = True
+            Caption = 'New multi'
+            OnClick = menuBSNewMultiClick
+          end
+          object N15: TMenuItem
+            Caption = '-'
+          end
+          object menuBS00: TMenuItem
+            AutoCheck = True
+            Caption = '1.9'
+            OnClick = menuBS00Click
+          end
+          object menuBS01: TMenuItem
+            Tag = 1
+            AutoCheck = True
+            Caption = '3.5'
+            OnClick = menuBS00Click
+          end
+          object menuBS02: TMenuItem
+            Tag = 2
+            AutoCheck = True
+            Caption = '7'
+            OnClick = menuBS00Click
+          end
+          object menuBS03: TMenuItem
+            Tag = 3
+            AutoCheck = True
+            Caption = '10'
+            OnClick = menuBS00Click
+          end
+          object menuBS04: TMenuItem
+            Tag = 4
+            AutoCheck = True
+            Caption = '14'
+            OnClick = menuBS00Click
+          end
+          object menuBS05: TMenuItem
+            Tag = 5
+            AutoCheck = True
+            Caption = '18'
+            OnClick = menuBS00Click
+          end
+          object menuBS06: TMenuItem
+            Tag = 6
+            AutoCheck = True
+            Caption = '21'
+            OnClick = menuBS00Click
+          end
+          object menuBS07: TMenuItem
+            Tag = 7
+            AutoCheck = True
+            Caption = '24.5'
+            OnClick = menuBS00Click
+          end
+          object menuBS08: TMenuItem
+            Tag = 8
+            AutoCheck = True
+            Caption = '28'
+            OnClick = menuBS00Click
+          end
+          object menuBS09: TMenuItem
+            Tag = 9
+            AutoCheck = True
+            Caption = '50'
+            OnClick = menuBS00Click
+          end
+          object menuBS10: TMenuItem
+            Tag = 10
+            AutoCheck = True
+            Caption = '144'
+            OnClick = menuBS00Click
+          end
+          object menuBS11: TMenuItem
+            Tag = 11
+            AutoCheck = True
+            Caption = '430'
+            OnClick = menuBS00Click
+          end
+          object menuBS12: TMenuItem
+            Tag = 12
+            AutoCheck = True
+            Caption = '1200'
+            OnClick = menuBS00Click
+          end
+          object menuBS13: TMenuItem
+            Tag = 13
+            AutoCheck = True
+            Caption = '2400'
+            OnClick = menuBS00Click
+          end
+          object menuBS14: TMenuItem
+            Tag = 14
+            AutoCheck = True
+            Caption = '5600'
+            OnClick = menuBS00Click
+          end
+          object menuBS15: TMenuItem
+            Tag = 15
+            AutoCheck = True
+            Caption = '10G'
+            OnClick = menuBS00Click
+          end
+        end
       end
-      object menuShowFunctionKeyPanel: TMenuItem
-        Action = actionFunctionKeyPanel
+      object menuSO2R: TMenuItem
+        Caption = 'SO2R'
+        object menuShowInformation: TMenuItem
+          Action = actionShowInformation
+        end
+        object menuShowSO2RNeoCp: TMenuItem
+          Action = actionShowSo2rNeoCp
+        end
+        object menuShowMessageManagerSO2R: TMenuItem
+          Action = actionShowMsgMgr
+        end
       end
-      object menuShowQSYInfo: TMenuItem
-        Action = actionShowQsyInfo
+      object menuMultiOP: TMenuItem
+        Caption = 'Multi-OP'
+        object menuShowZLinkMonitor: TMenuItem
+          Action = actionShowZlinkMonitor
+        end
+        object menuShowZServer: TMenuItem
+          Action = actionShowZServerChat
+        end
+        object menuShowRunningFrequencies: TMenuItem
+          Action = actionShowFreqList
+        end
+        object menuShowQSYInfo: TMenuItem
+          Action = actionShowQsyInfo
+        end
       end
-      object menuShowSO2RNeoCp: TMenuItem
-        Action = actionShowSo2rNeoCp
-      end
-      object menuShowInformation: TMenuItem
-        Action = actionShowInformation
-      end
-      object menuShowMessageManagerSO2R: TMenuItem
-        Action = actionShowMsgMgr
-      end
-      object menuShowCWMonitor: TMenuItem
-        Action = actionShowCWMonitor
-      end
-      object menuQTC: TMenuItem
-        Action = actionQTC
-      end
-      object menuShowEntityInfo: TMenuItem
-        Action = actionShowEntityInfo
-      end
-      object menuShowGrayline: TMenuItem
-        Action = actionShowGrayline
+      object menuOthers: TMenuItem
+        Caption = 'Others'
+        object menuQTC: TMenuItem
+          Action = actionQTC
+        end
+        object menuShowTTYConsole: TMenuItem
+          Action = actionShowTeletypeConsole
+          Visible = False
+        end
+        object menuShowConsole: TMenuItem
+          Action = actionShowConsolePad
+        end
+        object menuShowScratchSheet: TMenuItem
+          Action = actionShowScratchSheet
+        end
       end
     end
     object menuSettings: TMenuItem
@@ -7408,16 +7432,14 @@ object MainForm: TMainForm
     end
   end
   object OpenDialog: TOpenDialog
-    DefaultExt = 'ZLO'
-    Filter = 
-      'zLog binary file|*.ZLO|zLog Extended binary file|*.ZLOX|any file' +
-      '|*.*'
+    DefaultExt = 'ZLOX'
+    Filter = 'zLog file|*.ZLO;*.ZLOX|any file|*.*'
     Left = 418
     Top = 207
   end
   object SaveDialog: TSaveDialog
-    DefaultExt = 'zlo'
-    Filter = 'zLog binary file|*.ZLO|zLog Extended binary file|*.ZLOX'
+    DefaultExt = 'ZLOX'
+    Filter = 'zLog Extended binary file|*.ZLOX'
     Left = 376
     Top = 213
   end
@@ -7993,7 +8015,7 @@ object MainForm: TMainForm
       OnExecute = actionPlayMessageAExecute
     end
     object actionCheckMulti: TAction
-      Caption = 'Check Multi'
+      Caption = 'actionCheckMulti'
       OnExecute = actionCheckMultiExecute
     end
     object actionShowCheckPartial: TAction

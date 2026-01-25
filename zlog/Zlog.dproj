@@ -758,10 +758,10 @@
                     <RDP_Source_Files Name="Item7">UVoiceForm.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item8">UNewPrefix.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item9">UIOTACategory.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item10">Win32\Release\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item11">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item12">UWinKeyerTester.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item13">UFreqTest.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item10">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item11">UWinKeyerTester.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item12">UFreqTest.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item13">Win32\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item16">UBasicScore.dfm</RDP_Source_Files>

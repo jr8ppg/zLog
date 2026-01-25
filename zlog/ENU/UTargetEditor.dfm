@@ -15,7 +15,7 @@ object TargetEditor: TTargetEditor
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  TextHeight = 15
+  TextHeight = 16
   object ScoreGrid: TStringGrid
     Left = 0
     Top = 41
@@ -52,7 +52,7 @@ object TargetEditor: TTargetEditor
       Top = 5
       Width = 136
       Height = 33
-      Caption = 'ZLO'#12501#12449#12452#12523#12434#12525#12540#12489
+      Caption = 'zLog'#12501#12449#12452#12523#12434#12525#12540#12489
       TabOrder = 0
       OnClick = buttonLoadZLOClick
     end

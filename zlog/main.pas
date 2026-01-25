@@ -4,7 +4,7 @@
   zLog for Windows 令和Edition
 
   Copyright 1997-2005 by Yohei Yokobayashi.
-  Portions created by JR8PPG are Copyright (C) 2019-2025 JR8PPG.
+  Portions created by JR8PPG are Copyright (C) 2019-2026 JR8PPG.
 
   This software is released under the MIT License.
 }
@@ -706,6 +706,13 @@ type
     PowerEdit2VA: TEdit;
     PowerEdit2VB: TEdit;
     PowerEdit2VC: TEdit;
+    menuBasic: TMenuItem;
+    menuChecker: TMenuItem;
+    menuCW: TMenuItem;
+    menuAutomation: TMenuItem;
+    menuSO2R: TMenuItem;
+    menuMultiOP: TMenuItem;
+    menuOthers: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1523,9 +1530,12 @@ resourcestring
   TMainForm_Assigned_Another_Function = 'Ctrl+Q is assigned to another function. Do you want to take it?';  // 'Ctrl+Qは他の機能にアサインされています。横取りしますか？'
   TMainForm_To_Change_the_mode = 'To change the operating mode, first turn off the F2A mode.';  // 'モードを変更するには、先にF2Aモードをoffにして下さい'
   TMainForm_To_Change_the_band = 'To change the operating band, first turn off the F2A mode.';  // 'バンドを変更するには、先にF2Aモードをoffにして下さい'
-  TMainform_rbn_verified = 'Verification results' + #13#10 + '%1 of %2 stations were verified with RBN';
-  TMainform_darkmode_changed = 'Dark Mode changes will take effect on the next startup.';  // ダークモードの変更は次の起動時に反映されます。
+  TMainForm_rbn_verified = 'Verification results' + #13#10 + '%1 of %2 stations were verified with RBN';
+  TMainForm_darkmode_changed = 'Dark Mode changes will take effect on the next startup.';  // ダークモードの変更は次の起動時に反映されます。
   TMainForm_partial_nomatch = 'NO MATCH!';
+  TMainForm_prev_used_file_notfound = 'The previously used file %s was not found.';
+  TMainForm_Check_Multi = 'Check Multi';
+  TMainForm_Check_Zone = 'Check Zone';
 
 var
   MainForm: TMainForm;
@@ -3089,22 +3099,28 @@ begin
    OpenDialog.Title := 'Open file';
    OpenDialog.InitialDir := dmZlogGlobal.LogPath;
    OpenDialog.FileName := '';
-   OpenDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
+   OpenDialog.FilterIndex := 1;
 
    if OpenDialog.Execute = False then begin
       Exit;
    end;
 
+   S := OpenDialog.filename;
+
+   // ファイルが無い（新ファイル）の場合は強制ZLOX
+   if FileExists(S) = False then begin
+      S := ChangeFileExt(S, '.ZLOX');
+   end;
+
    zyloContestClosed;
    WriteStatusLine(TMainForm_Loading_now, False);
-   dmZLogGlobal.SetLogFileName(OpenDialog.filename);
-   LoadNewContestFromFile(OpenDialog.filename);
+   dmZLogGlobal.SetLogFileName(S);
+   LoadNewContestFromFile(S);
    WriteStatusLine('', False);
    SetWindowCaption();
    RenewScore();
    FRateDialog.UpdateGraph();
    FRateDialogEx.UpdateGraph();
-   dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
 
    if MyContest.ClassType = TGeneralContest then
      zyloContestOpened(MyContest.Name, TGeneralContest(MyContest).Config.FileName)
@@ -3135,7 +3151,7 @@ var
 begin
    SaveDialog.InitialDir := dmZlogGlobal.LogPath;
    SaveDialog.FileName := '';
-   SaveDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
+   SaveDialog.FilterIndex := 1;
 
    if SaveDialog.Execute then begin
 
@@ -3150,8 +3166,6 @@ begin
       Log.SaveToFile(SaveDialog.filename);
       dmZLogGlobal.SetLogFileName(SaveDialog.filename);
       SetWindowCaption();
-      { Add code to save current file under SaveDialog.FileName }
-      dmZLogGlobal.Settings.FLastFileFilterIndex := SaveDialog.FilterIndex;
    end;
 end;
 
@@ -8288,7 +8302,7 @@ begin
    menuShowMultipliers.Enabled := True;
    MultiButton.Enabled := True;
    menuShowCheckCountry.Visible := False;
-   menuShowCheckMulti.Caption := 'Check Multi';
+   actionShowCheckMulti.Caption := TMainForm_Check_Multi;
    FCheckCountry.ParentMulti := nil;
    Grid.Cols[8].Text := 'multi1';
    Grid.Cols[9].Text := 'multi2';
@@ -8349,7 +8363,7 @@ begin
       10: begin
          MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', mode);
          menuShowCheckCountry.Visible := True;
-         menuShowCheckMulti.Caption := 'Check Zone';
+         actionShowCheckMulti.Caption := TMainForm_Check_Zone;
          FCheckCountry.ParentMulti := TWWMulti(MyContest.MultiForm);
       end;
 
@@ -8366,7 +8380,7 @@ begin
       7, 12: begin
          if dmZLogGlobal.MyCountry = 'JA' then begin
             menuShowCheckCountry.Visible := True;
-            menuShowCheckMulti.Caption := 'Check Zone';
+            actionShowCheckMulti.Caption := TMainForm_Check_Zone;
             MyContest := TJIDXContest.Create(Self, 'JIDX Contest (JA)', mode);
          end
          else begin
@@ -8650,7 +8664,15 @@ begin
             startup.LastFileName := ExtractFileName(dmZLogGlobal.LastContest.FFileName);
             mr := startup.ShowModal();
             if mr = mrNo then begin // Last contest
-               RestoreLastContestInfo(strCfgFileName, fScoreCoeff, strContestName);
+               if (dmZLogGlobal.LastContest.FCfgFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FCfgFileName) = False) then begin
+                  S := Format(TMainForm_prev_used_file_notfound, [dmZLogGlobal.LastContest.FCfgFileName]);
+                  MessageBox(Handle, PChar(S), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+                  fNewContest := True;
+                  fSelectContestOnStartup := True;
+               end
+               else begin
+                  RestoreLastContestInfo(strCfgFileName, fScoreCoeff, strContestName);
+               end;
             end
             else if mr = mrAll then begin // Logging now!
                fSelectContestOnStartup := False;
@@ -8791,19 +8813,20 @@ begin
       if CurrentFileName = '' then begin
          OpenDialog.InitialDir := dmZlogGlobal.LogPath;
          OpenDialog.FileName := '';
-         OpenDialog.FilterIndex := dmZLogGlobal.Settings.FLastFileFilterIndex;
+         OpenDialog.FilterIndex := 1;
 
          if OpenDialog.Execute then begin
-            dmZLogGlobal.SetLogFileName(OpenDialog.FileName);
+            S := OpenDialog.FileName;
 
             if FileExists(OpenDialog.FileName) then begin
-               LoadNewContestFromFile(OpenDialog.FileName);
+               dmZLogGlobal.SetLogFileName(S);
+               LoadNewContestFromFile(S);
             end
             else begin
+               S := ChangeFileExt(S, '.ZLOX');
+               dmZLogGlobal.SetLogFileName(S);
                Log.SaveToFile(OpenDialog.FileName);
             end;
-
-            dmZLogGlobal.Settings.FLastFileFilterIndex := OpenDialog.FilterIndex;
          end
          else begin // user hit cancel
             // ファイル名が指定されなかった場合は自動設定する
