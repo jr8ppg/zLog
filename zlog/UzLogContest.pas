@@ -24,23 +24,19 @@ type
     FUseDefaultMessages: Boolean;
     FProv: string;
     FCity: string;
-    FCwMessageA: array[1..12] of string;
-    FCwMessageB: array[1..12] of string;
+    FCwMessage: array[1..maxbank, 1..maxmessage] of string; //bank 3 is for rtty
     FCwMessageCQ: array[1..3] of string;
     FDefProv: string;
     FDefCity: string;
-    FDefCwMessageA: array[1..12] of string;
-    FDefCwMessageB: array[1..12] of string;
+    FDefCwMessage: array[1..maxbank, 1..maxmessage] of string; //bank 3 is for rtty
     FDefCwMessageCQ: array[1..3] of string;
 
     function GetUseWARC(): Boolean; virtual;
     function GetIsAvailableBand(b: TBand): Boolean; virtual;
     function GetProv(): string;
     function GetCity(): string;
-    function GetCwMessageA(Index: Integer): string;
-    procedure SetCwMessageA(Index: Integer; v: string);
-    function GetCwMessageB(Index: Integer): string;
-    procedure SetCwMessageB(Index: Integer; v: string);
+    function GetCwMessage(Bank: Integer; Index: Integer): string;
+    procedure SetCwMessage(Bank: Integer; Index: Integer; v: string);
     function GetCwMessageCQ(Index: Integer): string;
     procedure SetCwMessageCQ(Index: Integer; v: string);
   private
@@ -139,8 +135,7 @@ type
 
     property Prov: string read GetProv write FProv;
     property City: string read GetCity write FCity;
-    property CwMessageA[Index: Integer]: string read GetCwMessageA write SetCwMessageA;
-    property CwMessageB[Index: Integer]: string read GetCwMessageB write SetCwMessageB;
+    property CwMessage[Bank: Integer; Index: Integer]: string read GetCwMessage write SetCwMessage;
     property CwMessageCQ[Index: Integer]: string read GetCwMessageCQ write SetCwMessageCQ;
   end;
 
@@ -359,11 +354,13 @@ begin
    FUseNrIme := False;
 
    FUseDefaultMessages := True;
-   for i := Low(FCwMessageA) to High(FCwMessageA) do begin
-      FCwMessageA[i] := '';
-      FCwMessageB[i] := '';
-      FDefCwMessageA[i] := '';
-      FDefCwMessageB[i] := '';
+   for i := 1 to maxmessage do begin
+      FCwMessage[1, i] := '';
+      FCwMessage[2, i] := '';
+      FCwMessage[3, i] := '';
+      FDefCwMessage[1, i] := '';
+      FDefCwMessage[2, i] := '';
+      FDefCwMessage[3, i] := '';
    end;
    for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
       FCwMessageCQ[i] := '';
@@ -373,14 +370,20 @@ begin
    FDefProv := dmZLogGlobal.Settings._myprov;
    FDefCity := dmZLogGlobal.Settings._mycity;
 
-   FDefCwMessageA[1] := 'CQ TEST $M TEST';
-   FDefCwMessageA[2] := '$C 5NN$X';
-   FDefCwMessageA[3] := 'TU $M TEST';
-   FDefCwMessageA[4] := 'QSO B4 TU';
-   FDefCwMessageA[5] := 'NR?';
-   FDefCwMessageA[6] := '$C?';
-   FDefCwMessageA[7] := '$M';
-   FDefCwMessageA[8] := '5NN$X';
+   FDefCwMessage[1, 1] := 'CQ TEST $M TEST';
+   FDefCwMessage[1, 2] := '$C 5NN$X';
+   FDefCwMessage[1, 3] := 'TU $M TEST';
+   FDefCwMessage[1, 4] := 'QSO B4 TU';
+   FDefCwMessage[1, 5] := 'NR?';
+   FDefCwMessage[1, 6] := '$C?';
+   FDefCwMessage[1, 7] := '$M';
+   FDefCwMessage[1, 8] := '5NN$X';
+
+   FDefCwMessage[3, 1] := 'CQ CQ CQ TEST $M $M $M TEST K';
+   FDefCwMessage[3, 2] := '$C DE $M 599$X 599$X BK';
+   FDefCwMessage[3, 3] := 'TU DE $M TEST';
+   FDefCwMessage[3, 4] := 'QSO B4 TU';
+   FDefCwMessage[3, 5] := 'NR? NR? AGN BK';
 end;
 
 destructor TContest.Destroy;
@@ -864,11 +867,10 @@ begin
       FProv := ini.ReadString(FContestName, 'Prov', '');
       FCity := ini.ReadString(FContestName, 'City', '');
 
-      for i := Low(FCwMessageA) to High(FCwMessageA) do begin
-         FCwMessageA[i] := ini.ReadString(FContestName, 'A' + IntToStr(i), '');
-      end;
-      for i := Low(FCwMessageB) to High(FCwMessageB) do begin
-         FCwMessageB[i] := ini.ReadString(FContestName, 'B' + IntToStr(i), '');
+      for i := 1 to maxmessage do begin
+         FCwMessage[1][i] := ini.ReadString(FContestName, 'A' + IntToStr(i), '');
+         FCwMessage[2][i] := ini.ReadString(FContestName, 'B' + IntToStr(i), '');
+         FCwMessage[3][i] := ini.ReadString(FContestName, 'R' + IntToStr(i), '');
       end;
       for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
          FCwMessageCQ[i] := ini.ReadString(FContestName, 'CQ' + IntToStr(i), '');
@@ -889,25 +891,39 @@ begin
    try
       FProv := dmZLogGlobal.Settings.CW._prov;
       FCity := dmZLogGlobal.Settings.CW._city;
-      for i := Low(FCwMessageA) to High(FCwMessageA) do begin
-         FCwMessageA[i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
-         FCwMessageB[i] := dmZLogGlobal.Settings.CW.CWStrBank[2, i];
+      for i := 1 to maxmessage do begin
+         FCwMessage[1][i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
+         FCwMessage[2][i] := dmZLogGlobal.Settings.CW.CWStrBank[2, i];
+         FCwMessage[3][i] := dmZLogGlobal.Settings.CW.CWStrBank[3, i];
       end;
       for i := 2 to 3 do begin
          FCwMessageCQ[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[i];
       end;
 
+      ini.EraseSection(FContestName);
+
       ini.WriteString(FContestName, 'Prov', FProv);
       ini.WriteString(FContestName, 'City', FCity);
 
-      for i := Low(FCwMessageA) to High(FCwMessageA) do begin
-         ini.WriteString(FContestName, 'A' + IntToStr(i), FCwMessageA[i]);
+      for i := 1 to maxmessage do begin
+         if FCwMessage[1][i] <> '' then begin
+            ini.WriteString(FContestName, 'A' + IntToStr(i), FCwMessage[1][i]);
+         end;
       end;
-      for i := Low(FCwMessageB) to High(FCwMessageB) do begin
-         ini.WriteString(FContestName, 'B' + IntToStr(i), FCwMessageB[i]);
+      for i := 1 to maxmessage do begin
+         if FCwMessage[2][i] <> '' then begin
+            ini.WriteString(FContestName, 'B' + IntToStr(i), FCwMessage[2][i]);
+         end;
+      end;
+      for i := 1 to maxmessage do begin
+         if FCwMessage[3][i] <> '' then begin
+            ini.WriteString(FContestName, 'R' + IntToStr(i), FCwMessage[3][i]);
+         end;
       end;
       for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
-         ini.WriteString(FContestName, 'CQ' + IntToStr(i), FCwMessageCQ[i]);
+         if FCwMessageCQ[i] <> '' then begin
+            ini.WriteString(FContestName, 'CQ' + IntToStr(i), FCwMessageCQ[i]);
+         end;
       end;
    finally
       ini.Free();
@@ -921,9 +937,10 @@ begin
    dmZLogGlobal.Settings.CW._prov := Prov;
    dmZLogGlobal.Settings.CW._city := City;
 
-   for i := Low(FCwMessageA) to High(FCwMessageA) do begin
-      dmZLogGlobal.Settings.CW.CWStrBank[1, i] := CwMessageA[i];
-      dmZLogGlobal.Settings.CW.CWStrBank[2, i] := CwMessageB[i];
+   for i := 1 to maxmessage do begin
+      dmZLogGlobal.Settings.CW.CWStrBank[1, i] := CwMessage[1, i];
+      dmZLogGlobal.Settings.CW.CWStrBank[2, i] := CwMessage[2, i];
+      dmZLogGlobal.Settings.CW.CWStrBank[3, i] := CwMessage[3, i];
    end;
    for i := 2 to 3 do begin
       dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := CwMessageCQ[i];
@@ -950,34 +967,19 @@ begin
    end;
 end;
 
-function TContest.GetCwMessageA(Index: Integer): string;
+function TContest.GetCwMessage(Bank: Integer; Index: Integer): string;
 begin
    if FUseDefaultMessages = True then begin
-      Result := FDefCwMessageA[Index];
+      Result := FDefCwMessage[Bank, Index];
    end
    else begin
-      Result := FCwMessageA[Index];
+      Result := FCwMessage[Bank, Index];
    end;
 end;
 
-procedure TContest.SetCwMessageA(Index: Integer; v: string);
+procedure TContest.SetCwMessage(Bank: Integer; Index: Integer; v: string);
 begin
-   FCwMessageA[Index] := v;
-end;
-
-function TContest.GetCwMessageB(Index: Integer): string;
-begin
-   if FUseDefaultMessages = True then begin
-      Result := FDefCwMessageB[Index];
-   end
-   else begin
-      Result := FCwMessageB[Index];
-   end;
-end;
-
-procedure TContest.SetCwMessageB(Index: Integer; v: string);
-begin
-   FCwMessageB[Index] := v;
+   FCwMessage[Bank, Index] := v;
 end;
 
 function TContest.GetCwMessageCQ(Index: Integer): string;
@@ -1431,7 +1433,7 @@ begin
 
    // F1Å`F4éÊçû
    for i := 1 to 4 do begin
-      FDefCwMessageA[i] := FConfig.CwMessageA[i];
+      FDefCwMessage[1, i] := FConfig.CwMessageA[i];
    end;
 
    // CQ2,CQ3éÊÇËçûÇ›
