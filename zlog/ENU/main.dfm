@@ -7097,8 +7097,8 @@ object MainForm: TMainForm
         OnClick = menuPluginManagerClick
       end
     end
-    object Network1: TMenuItem
-      Caption = '&Network'
+    object menuZServer: TMenuItem
+      Caption = '&Z-Server'
       object menuConnectToZServer: TMenuItem
         Caption = 'Connect to Z-Server'
         OnClick = menuConnectToZServerClick

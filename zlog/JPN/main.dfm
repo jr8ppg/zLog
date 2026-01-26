@@ -7104,22 +7104,22 @@ object MainForm: TMainForm
         OnClick = menuPluginManagerClick
       end
     end
-    object Network1: TMenuItem
-      Caption = #12493#12483#12488#12527#12540#12463'(&N)'
+    object menuZServer: TMenuItem
+      Caption = 'Z-Server(&Z)'
       object menuConnectToZServer: TMenuItem
-        Caption = 'Z-Server'#12395#25509#32154
+        Caption = 'Connect to Z-Server'
         OnClick = menuConnectToZServerClick
       end
       object N6: TMenuItem
         Caption = '-'
       end
       object menuDownloadAllLogs: TMenuItem
-        Caption = 'Z-Server'#12424#12426#12525#12464#12434#12480#12454#12531#12525#12540#12489'('#12525#12464#12399#28040#21435#12373#12428#12414#12377')'
+        Caption = 'Download log from Z-Server (Erase local log)'
         Enabled = False
         OnClick = menuDownloadAllLogsClick
       end
       object menuMergeAllLogs: TMenuItem
-        Caption = 'Z-Server'#12408#12525#12464#12434#12450#12483#12503#12525#12540#12489
+        Caption = 'Merge local log with Z-Server'
         Enabled = False
         OnClick = menuMergeAllLogsClick
       end
@@ -7127,12 +7127,12 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object menuDownloadOplist: TMenuItem
-        Caption = 'Z-Server'#12424#12426#12458#12506#12524#12540#12479#12540#12522#12473#12488#12434#12480#12454#12531#12525#12540#12489
+        Caption = 'Download operator list from Z-Server'
         Enabled = False
         OnClick = menuDownloadOplistClick
       end
       object menuDownloadSounds: TMenuItem
-        Caption = 'Z-Server'#12424#12426#38899#22768#12501#12449#12452#12523#12434#12480#12454#12531#12525#12540#12489
+        Caption = 'Download sound files from Z-Server'
         Enabled = False
         OnClick = menuDownloadSoundsClick
       end
@@ -7140,12 +7140,12 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object menuUploadOplist: TMenuItem
-        Caption = 'Z-Server'#12408#12458#12506#12524#12540#12479#12540#12522#12473#12488#12434#12450#12483#12503#12525#12540#12489
+        Caption = 'Upload oprator list to Z-Server'
         Enabled = False
         OnClick = menuUploadOplistClick
       end
       object menuUploadSounds: TMenuItem
-        Caption = 'Z-Server'#12408#38899#22768#12501#12449#12452#12523#12434#12450#12483#12503#12525#12540#12489
+        Caption = 'Upload sound files to Z-Server'
         Enabled = False
         OnClick = menuUploadSoundsClick
       end

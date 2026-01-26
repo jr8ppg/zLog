@@ -213,7 +213,7 @@ type
     Backup1: TMenuItem;
     menuShowCWKeyboard: TMenuItem;
     menuShowZServer: TMenuItem;
-    Network1: TMenuItem;
+    menuZServer: TMenuItem;
     menuDownloadAllLogs: TMenuItem;
     menuMergeAllLogs: TMenuItem;
     menuConnectToZServer: TMenuItem;

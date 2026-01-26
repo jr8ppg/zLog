@@ -40,21 +40,6 @@ type
     Label7: TLabel;
     Label8: TLabel;
     editMessage1: TEdit;
-    SpeedBar: TTrackBar;
-    Label11: TLabel;
-    SpeedLabel: TLabel;
-    Label13: TLabel;
-    WeightBar: TTrackBar;
-    WeightLabel: TLabel;
-    CQmaxSpinEdit: TSpinEdit;
-    ToneSpinEdit: TSpinEdit;
-    Label15: TLabel;
-    Label16: TLabel;
-    CQRepEdit: TEdit;
-    Label17: TLabel;
-    FIFOCheck: TCheckBox;
-    AbbrevEdit: TEdit;
-    Label12: TLabel;
     groupMyActiveBands: TGroupBox;
     act19: TCheckBox;
     act35: TCheckBox;
@@ -99,8 +84,6 @@ type
     act24: TCheckBox;
     act18: TCheckBox;
     act10: TCheckBox;
-    rbBankA: TRadioButton;
-    rbBankB: TRadioButton;
     tabsheetMisc: TTabSheet;
     rgSearchAfter: TRadioGroup;
     spMaxSuperHit: TSpinEdit;
@@ -109,8 +92,6 @@ type
     Label48: TLabel;
     Label49: TLabel;
     cbUpdateThread: TCheckBox;
-    rbRTTY: TRadioButton;
-    cbCQSP: TCheckBox;
     Label52: TLabel;
     Label53: TLabel;
     spSpotExpire: TSpinEdit;
@@ -185,7 +166,6 @@ type
     checkBSBold3: TCheckBox;
     checkBSBold4: TCheckBox;
     ColorDialog1: TColorDialog;
-    checkSendNrAuto: TCheckBox;
     tabsheetBandScope2: TTabSheet;
     groupBandscopeSpotSource: TGroupBox;
     Label61: TLabel;
@@ -229,17 +209,14 @@ type
     Label79: TLabel;
     Label80: TLabel;
     Label81: TLabel;
-    checkPaddleReverse: TCheckBox;
     groupCwAddMessages: TGroupBox;
     Label9: TLabel;
     Label10: TLabel;
     editCQMessage2: TEdit;
     editCQMessage3: TEdit;
-    SideToneCheck: TCheckBox;
     GroupBox16: TGroupBox;
     buttonPlayVoice: TSpeedButton;
     buttonStopVoice: TSpeedButton;
-    checkUseCQRamdomRepeat: TCheckBox;
     GroupBox19: TGroupBox;
     Label36: TLabel;
     Label37: TLabel;
@@ -252,8 +229,6 @@ type
     checkUseEstimatedMode: TCheckBox;
     checkShowOnlyInBandplan: TCheckBox;
     checkShowJAspots: TCheckBox;
-    Label85: TLabel;
-    VolumeSpinEdit: TSpinEdit;
     groupQsyAssist: TGroupBox;
     radioQsyNone: TRadioButton;
     radioQsyCountDown: TRadioButton;
@@ -275,7 +250,6 @@ type
     buttonFocusedInitColor: TButton;
     checkFocusedBold: TCheckBox;
     buttonFocusedForeColor: TButton;
-    checkNotSendLeadingZeros: TCheckBox;
     Label91: TLabel;
     comboTxNo: TComboBox;
     groupOperators: TGroupBox;
@@ -450,7 +424,7 @@ type
     buttonAddVoiceAfterCmd2: TSpeedButton;
     buttonAddVoiceAfterCmd3: TSpeedButton;
     checkUseDarkMode: TCheckBox;
-    GroupBox1: TGroupBox;
+    groupOtherRules: TGroupBox;
     Label46: TLabel;
     ScoreCoeffEdit: TEdit;
     panelContestName: TPanel;
@@ -477,6 +451,34 @@ type
     Label83: TLabel;
     editCity: TEdit;
     editProv: TEdit;
+    rbBankA: TRadioButton;
+    rbBankB: TRadioButton;
+    rbRTTY: TRadioButton;
+    groupKeyerSettings: TGroupBox;
+    Label11: TLabel;
+    SpeedLabel: TLabel;
+    Label13: TLabel;
+    WeightLabel: TLabel;
+    Label16: TLabel;
+    Label12: TLabel;
+    Label85: TLabel;
+    SpeedBar: TTrackBar;
+    WeightBar: TTrackBar;
+    ToneSpinEdit: TSpinEdit;
+    FIFOCheck: TCheckBox;
+    AbbrevEdit: TEdit;
+    SideToneCheck: TCheckBox;
+    VolumeSpinEdit: TSpinEdit;
+    groupCwSettings: TGroupBox;
+    Label15: TLabel;
+    Label17: TLabel;
+    CQmaxSpinEdit: TSpinEdit;
+    CQRepEdit: TEdit;
+    cbCQSP: TCheckBox;
+    checkSendNrAuto: TCheckBox;
+    checkUseCQRamdomRepeat: TCheckBox;
+    checkNotSendLeadingZeros: TCheckBox;
+    checkPaddleReverse: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -984,7 +986,6 @@ begin
          comboTxNo.Enabled := False;
          comboTxNo.Items.CommaText := '0,1';
          comboTxNo.ItemIndex := SelectTxNo();
-         OperatorsEnable(False);
       end;
 
       // Multi-Op/Multi-Tx
@@ -992,7 +993,6 @@ begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MM;
          comboTxNo.ItemIndex := SelectTxNo();
-         OperatorsEnable(True);
       end;
 
       // Multi-Op/Single-Tx, Multi-Op/Two-Tx
@@ -1000,7 +1000,6 @@ begin
          comboTxNo.Enabled := True;
          comboTxNo.Items.CommaText := TXLIST_MS;
          comboTxNo.ItemIndex := SelectTxNo();
-         OperatorsEnable(True);
       end;
    end;
 end;
