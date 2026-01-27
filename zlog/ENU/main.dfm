@@ -61,6 +61,7 @@ object MainForm: TMainForm
       end>
     SizeGrip = False
     UseSystemFont = False
+    OnContextPopup = StatusLineContextPopup
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
   end
@@ -238,6 +239,7 @@ object MainForm: TMainForm
         TabStop = False
         AutoSize = False
         ImeMode = imDisable
+        PopupMenu = popupDateStyle
         TabOrder = 9
         Text = 'date'
         Visible = False
@@ -7098,7 +7100,7 @@ object MainForm: TMainForm
       end
     end
     object menuZServer: TMenuItem
-      Caption = '&Z-Server'
+      Caption = '&Z-Link'
       object menuConnectToZServer: TMenuItem
         Caption = 'Connect to Z-Server'
         OnClick = menuConnectToZServerClick
@@ -8818,6 +8820,28 @@ object MainForm: TMainForm
       GroupIndex = 1
       RadioItem = True
       OnClick = menuTimeZoneClick
+    end
+  end
+  object popupDateStyle: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 448
+    Top = 90
+    object menuDateStyleShort: TMenuItem
+      AutoCheck = True
+      Caption = 'Short (mm/dd)'
+      Checked = True
+      GroupIndex = 2
+      RadioItem = True
+      OnClick = menuDateStyleClick
+    end
+    object menuDateStyleLong: TMenuItem
+      Tag = 1
+      AutoCheck = True
+      Caption = 'Long (yyyy/mm/dd)'
+      GroupIndex = 2
+      RadioItem = True
+      OnClick = menuDateStyleClick
     end
   end
 end

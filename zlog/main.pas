@@ -19,7 +19,7 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   ShlObj, ComObj, System.Actions, Vcl.ActnList, System.IniFiles, System.Math,
   System.DateUtils, System.SyncObjs, System.Generics.Defaults, System.Generics.Collections, System.Zip,
-  Winapi.MMSystem, JvExControls, JvLED, System.Character, Vcl.Themes,
+  Winapi.MMSystem, JvExControls, JvLED, System.Character, Vcl.Themes, WinApi.CommCtrl,
   UzLogGlobal, UBasicMulti, UBasicScore, UALLJAMulti,
   UOptions, UOptions2, UEditDialog, UGeneralMulti2,
   UzLogCW, Hemibtn, ShellAPI, UITypes, UzLogKeyer,
@@ -713,6 +713,9 @@ type
     menuSO2R: TMenuItem;
     menuMultiOP: TMenuItem;
     menuOthers: TMenuItem;
+    popupDateStyle: TPopupMenu;
+    menuDateStyleShort: TMenuItem;
+    menuDateStyleLong: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1041,6 +1044,9 @@ type
     procedure menuSelectContestClick(Sender: TObject);
     procedure menuPostContestClick(Sender: TObject);
     procedure SentNumberEdit1Change(Sender: TObject);
+    procedure menuDateStyleClick(Sender: TObject);
+    procedure StatusLineContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -7060,6 +7066,14 @@ begin
    end;
 end;
 
+procedure TMainForm.menuDateStyleClick(Sender: TObject);
+begin
+   dmZLogGlobal.Settings._displongdatetime := menuDateStyleLong.Checked;
+   InitGridColumnWidth();
+   GridRefreshScreen();
+   ShowDateTime();
+end;
+
 procedure TMainForm.menuTimeZoneClick(Sender: TObject);
 begin
    if menuTzJST.Checked = True then begin
@@ -7916,6 +7930,49 @@ procedure TMainForm.SaveFileAndBackUp;
 begin
    Log.SaveToFile(CurrentFileName); // this is where the file is saved!!!
    actionBackup.Execute();
+end;
+
+procedure TMainForm.StatusLineContextPopup(Sender: TObject; MousePos: TPoint; var Handled: Boolean);
+var
+   i: Integer;
+   Pt: TPoint;
+   R: TRect;
+begin
+   // MousePosはクライアント座標
+   Pt := MousePos;
+
+   for i := 0 to StatusLine.Panels.Count - 1 do begin
+      // パネルの矩形を取得
+      StatusLine.Perform(SB_GETRECT, i, LPARAM(@R));
+
+      if PtInRect(R, Pt) then begin
+         // i がクリックされたパネルのインデックス
+         case i of
+            // Message
+            0: begin
+
+            end;
+
+            // SentNR
+            1: begin
+
+            end;
+
+            // V1 R1
+            2: begin
+
+            end;
+
+            // Time
+            3: begin
+               Pt := StatusLine.ClientToScreen(MousePos);
+               popupTimeZone.Popup(Pt.X, Pt.Y);
+               Handled := True;
+            end;
+         end;
+         Break;
+      end;
+   end;
 end;
 
 procedure TMainForm.StatusLineDrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel; const Rect: TRect);
