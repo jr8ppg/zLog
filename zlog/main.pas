@@ -9801,17 +9801,29 @@ var
    strCap: string;
    strTxNo: string;
 begin
-   strCap := 'zLog for Windows';
+   strCap := 'zLog';
+
+   // コンテスト名
+   strCap := strCap + ' - ' + MyContest.Name;
 
    // SingleOP以外はTX#を表示する
+   case dmZLogGlobal.ContestCategory of
+      ccSingleOp:          strCap := strCap + ' - SOP';
+      ccMultiOpMultiTx:    strCap := strCap + ' - MOP';
+      ccMultiOpSingleTx:   strCap := strCap + ' - M/S';
+      ccMultiOpTwoTx:      strCap := strCap + ' - 2TX';
+   end;
    if dmZLogGlobal.ContestCategory = ccSingleOp then begin
-      strTxNo := ' ';
+      strTxNo := '';
    end
    else begin
-      strTxNo := ' [TX#' + IntToStr(dmZLogGlobal.TXNr) + ']';
+      strTxNo := '(TX#' + IntToStr(dmZLogGlobal.TXNr) + ')';
    end;
 
    strCap := strCap + strTxNo;
+
+   // 部門表示
+   strCap := strCap + ' - ' + ContestModeName[MyContest.Mode];
 
    // M/Sの場合は RUN/MULTI表示を追加
    if dmZLogGlobal.ContestCategory = ccMultiOpSingleTx then begin
@@ -9826,16 +9838,13 @@ begin
    // Z-LINK利用時はPC名表示を追加
    if dmZlogGlobal.Settings._zlinkport <> 0 then begin
       if dmZlogGlobal.Settings._pcname <> '' then begin
-          strCap := strCap + ' [' + dmZlogGlobal.Settings._pcname + ']';
+          strCap := strCap + ' - [' + dmZlogGlobal.Settings._pcname + ']';
       end;
    end;
 
-   // 部門表示
-   strCap := strCap + ' - [' + ContestModeName[MyContest.Mode] + ']';
-
    // 使用中のファイル名
    if CurrentFileName <> '' then begin
-      strCap := strCap + ' - [' + ExtractFileName(CurrentFileName) + ']';
+      strCap := strCap + ' - ' + ExtractFileName(CurrentFileName);
    end;
 
    // Post contest
