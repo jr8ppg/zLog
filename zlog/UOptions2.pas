@@ -1196,15 +1196,15 @@ begin
       // Messages
       for i := 1 to maxbank do begin
          for j := 1 to maxmessage do begin
-            Settings.CW.CWStrBank[i, j] := TempCWStrBank[i, j];
+            MyContest.CwMessages[i, j] := TempCWStrBank[i, j];
          end;
       end;
 
       // TempCurrentBankはCWBankClickでセットされている
 
       // Additional messages
-      Settings.CW.AdditionalCQMessages[2] := editCQMessage2.Text;
-      Settings.CW.AdditionalCQMessages[3] := editCQMessage3.Text;
+      MyContest.CwMessageCQ[2] := editCQMessage2.Text;
+      MyContest.CwMessageCQ[3] := editCQMessage3.Text;
 
       // Speed
       Settings.CW._speed := SpeedBar.Position;
@@ -1625,7 +1625,7 @@ begin
       // Messages
       for i := 1 to maxbank do begin
          for j := 1 to maxmessage do begin
-            TempCWStrBank[i, j] := Settings.CW.CWStrBank[i, j];
+            TempCWStrBank[i, j] := MyContest.CwMessages[i, j];
          end;
       end;
 
@@ -1636,8 +1636,8 @@ begin
       end;
 
       // Additional messages
-      editCQMessage2.Text := Settings.CW.AdditionalCQMessages[2];
-      editCQMessage3.Text := Settings.CW.AdditionalCQMessages[3];
+      editCQMessage2.Text := MyContest.CwMessageCQ[2];
+      editCQMessage3.Text := MyContest.CwMessageCQ[3];
 
       // Speed
       SpeedBar.Position := Settings.CW._speed;

@@ -2711,19 +2711,39 @@ begin
    case no of
       1, 2, 3, 4, 5, 6,
       7, 8, 9, 10, 11, 12: begin
-         S := Settings.CW.CWStrBank[bank, no];
+         if MyContest = nil then begin
+            S := Settings.CW.CWStrBank[bank, no];
+         end
+         else begin
+            S := MyContest.CwMessages[bank, no];
+         end;
       end;
 
       101: begin
-         S := Settings.CW.CWStrBank[bank, 1];
+         if MyContest = nil then begin
+            S := Settings.CW.CWStrBank[bank, 1];
+         end
+         else begin
+            S := MyContest.CwMessages[bank, 1];
+         end;
       end;
 
       102: begin
-         S := Settings.CW.AdditionalCQMessages[2];
+         if MyContest = nil then begin
+            S := Settings.CW.AdditionalCQMessages[2];
+         end
+         else begin
+            S := MyContest.CwMessageCQ[2];
+         end;
       end;
 
       103: begin
-         S := Settings.CW.AdditionalCQMessages[3];
+         if MyContest = nil then begin
+            S := Settings.CW.AdditionalCQMessages[3];
+         end
+         else begin
+            S := MyContest.CwMessageCQ[3];
+         end;
       end;
 
       else begin
@@ -2762,22 +2782,6 @@ begin
 
    Result := S;
 end;
-
-{
-function TdmZLogGlobal.CWMessage(no: Integer): string;
-var
-   S: string;
-begin
-   if Settings._switchcqsp then begin
-      S := Settings.CW.CWStrBank[Settings.CW.CurrentBank, no];
-   end
-   else begin
-      S := Settings.CW.CWStrBank[1, no];
-   end;
-
-   Result := S;
-end;
-}
 
 procedure TdmZLogGlobal.ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var

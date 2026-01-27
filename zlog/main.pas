@@ -2253,18 +2253,18 @@ begin
    FInformation.WPM := dmZLogKeyer.WPM;
    FInformation.So2rMode := Is2Radio();
    i := dmZlogGlobal.Settings.CW.CurrentBank;
-   CWF1.Hint := dmZlogGlobal.CWMessage(i, 1);
-   CWF2.Hint := dmZlogGlobal.CWMessage(i, 2);
-   CWF3.Hint := dmZlogGlobal.CWMessage(i, 3);
-   CWF4.Hint := dmZlogGlobal.CWMessage(i, 4);
-   CWF5.Hint := dmZlogGlobal.CWMessage(i, 5);
-   CWF6.Hint := dmZlogGlobal.CWMessage(i, 6);
-   CWF7.Hint := dmZlogGlobal.CWMessage(i, 7);
-   CWF8.Hint := dmZlogGlobal.CWMessage(i, 8);
-   CWF9.Hint := dmZlogGlobal.CWMessage(i, 9);
-   CWF10.Hint := dmZlogGlobal.CWMessage(i, 10);
-   CWF11.Hint := dmZlogGlobal.CWMessage(i, 11);
-   CWF12.Hint := dmZlogGlobal.CWMessage(i, 12);
+   CWF1.Hint := dmZLogGlobal.CWMessage(i, 1);
+   CWF2.Hint := dmZLogGlobal.CWMessage(i, 2);
+   CWF3.Hint := dmZLogGlobal.CWMessage(i, 3);
+   CWF4.Hint := dmZLogGlobal.CWMessage(i, 4);
+   CWF5.Hint := dmZLogGlobal.CWMessage(i, 5);
+   CWF6.Hint := dmZLogGlobal.CWMessage(i, 6);
+   CWF7.Hint := dmZLogGlobal.CWMessage(i, 7);
+   CWF8.Hint := dmZLogGlobal.CWMessage(i, 8);
+   CWF9.Hint := dmZLogGlobal.CWMessage(i, 9);
+   CWF10.Hint := dmZLogGlobal.CWMessage(i, 10);
+   CWF11.Hint := dmZLogGlobal.CWMessage(i, 11);
+   CWF12.Hint := dmZLogGlobal.CWMessage(i, 12);
    SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
 end;
 
@@ -4025,18 +4025,18 @@ begin
       WriteStatusLine(TMainForm_Switch_CW_Bank_B, False);
    end;
 
-   CWF1.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 1);
-   CWF2.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 2);
-   CWF3.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 3);
-   CWF4.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 4);
-   CWF5.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 5);
-   CWF6.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 6);
-   CWF7.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 7);
-   CWF8.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 8);
-   CWF9.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 9);
-   CWF10.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 10);
-   CWF11.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 11);
-   CWF12.Hint := dmZlogGlobal.CWMessage(dmZlogGlobal.Settings.CW.CurrentBank, 12);
+   CWF1.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 1);
+   CWF2.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 2);
+   CWF3.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 3);
+   CWF4.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 4);
+   CWF5.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 5);
+   CWF6.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 6);
+   CWF7.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 7);
+   CWF8.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 8);
+   CWF9.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 9);
+   CWF10.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 10);
+   CWF11.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 11);
+   CWF12.Hint := dmZLogGlobal.CWMessage(dmZLogGlobal.Settings.CW.CurrentBank, 12);
    CWF1.FaceColor := back_color;
    CWF2.FaceColor := back_color;
    CWF3.FaceColor := back_color;
@@ -4786,7 +4786,7 @@ begin
       // RTTY
       if mode = mRTTY then begin
          if FTTYConsole <> nil then begin
-            FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZlogGlobal.CWMessage(3, 2), curQSO));
+            FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZLogGlobal.CWMessage(3, 2), curQSO));
          end;
 
          CallSpaceBarProc(C, RN, B);
@@ -4811,7 +4811,7 @@ begin
          ShowDateTime(curQSO);
       end;
 
-      S := dmZlogGlobal.CWMessage(0, 2);
+      S := dmZLogGlobal.CWMessage(0, 2);
 
       if dmZLogKeyer.UseWinKeyer = True then begin
 

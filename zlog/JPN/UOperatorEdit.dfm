@@ -11,12 +11,10 @@ object formOperatorEdit: TformOperatorEdit
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
@@ -26,8 +24,6 @@ object formOperatorEdit: TformOperatorEdit
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 517
-    ExplicitWidth = 391
     DesignSize = (
       373
       34)
@@ -62,10 +58,6 @@ object formOperatorEdit: TformOperatorEdit
     ActivePage = tabsheetCwMessages
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = 84
-    ExplicitWidth = 377
-    ExplicitHeight = 405
     object tabsheetCwMessages: TTabSheet
       Caption = 'CW'
       object groupCwMessages1: TGroupBox
@@ -762,7 +754,6 @@ object formOperatorEdit: TformOperatorEdit
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 391
     object groupOpsInfo: TGroupBox
       Left = 4
       Top = 4

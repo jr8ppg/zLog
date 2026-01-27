@@ -145,11 +145,11 @@ begin
          if (CurrentQSO.Mode = mCW) and (Pos('Play', act.Name) > 0) then begin
             if act.Hint = '' then begin
                if dmZLogGlobal.CurrentOperator = nil then begin
-                  ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
+                  ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.CWMessage(cb, i + 1);
                end
                else begin
                   if dmZLogGlobal.CurrentOperator.CWMessages[cb, i + 1] = '' then begin
-                     ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
+                     ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.CWMessage(cb, i + 1);
                   end
                   else begin
                      ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.CurrentOperator.CWMessages[cb, i + 1];
