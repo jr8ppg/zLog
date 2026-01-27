@@ -59,9 +59,12 @@ object MainForm: TMainForm
         Alignment = taCenter
         Width = 120
       end>
+    ParentShowHint = False
+    ShowHint = False
     SizeGrip = False
     UseSystemFont = False
     OnContextPopup = StatusLineContextPopup
+    OnHint = StatusLineHint
     OnDrawPanel = StatusLineDrawPanel
     OnResize = StatusLineResize
   end
@@ -7881,7 +7884,7 @@ object MainForm: TMainForm
     Left = 376
     Top = 137
     object Edit1: TMenuItem
-      Caption = 'Edit'
+      Caption = #32232#38598
       OnClick = Edit1Click
     end
   end
@@ -8849,6 +8852,17 @@ object MainForm: TMainForm
       GroupIndex = 2
       RadioItem = True
       OnClick = menuDateStyleClick
+    end
+  end
+  object popupNRSettings: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    AutoPopup = False
+    Left = 480
+    Top = 94
+    object menuNRSettings: TMenuItem
+      Caption = #35373#23450
+      OnClick = menuNRSettingsClick
     end
   end
 end

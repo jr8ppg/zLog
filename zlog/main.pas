@@ -716,6 +716,8 @@ type
     popupDateStyle: TPopupMenu;
     menuDateStyleShort: TMenuItem;
     menuDateStyleLong: TMenuItem;
+    popupNRSettings: TPopupMenu;
+    menuNRSettings: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1047,6 +1049,8 @@ type
     procedure menuDateStyleClick(Sender: TObject);
     procedure StatusLineContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure menuNRSettingsClick(Sender: TObject);
+    procedure StatusLineHint(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -7191,6 +7195,11 @@ begin
    FZLinkForm.MergeLogWithZServer;
 end;
 
+procedure TMainForm.menuNRSettingsClick(Sender: TObject);
+begin
+   ShowOptionsDialog(1, 0, 1, 0);
+end;
+
 procedure TMainForm.menuDownloadOplistClick(Sender: TObject);
 begin
    if MessageBox(Handle, PChar(TMainForm_ComfirmDownloadOpList), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
@@ -7955,7 +7964,9 @@ begin
 
             // SentNR
             1: begin
-
+               Pt := StatusLine.ClientToScreen(MousePos);
+               popupNRSettings.Popup(Pt.X, Pt.Y);
+               Handled := True;
             end;
 
             // V1 R1
@@ -7994,6 +8005,50 @@ begin
    x := Rect.Left + 1;
    y := Rect.Top + (((Rect.Bottom - Rect.Top) - h) div 2);
    StatusBar.Canvas.TextOut(x, y, S);
+end;
+
+procedure TMainForm.StatusLineHint(Sender: TObject);
+var
+   i: Integer;
+   Pt: TPoint;
+   R: TRect;
+begin
+   // Ptはスクリーン座標
+   GetCursorPos(Pt);
+   Pt := StatusLine.ScreenToClient(Pt);
+
+   for i := 0 to StatusLine.Panels.Count - 1 do begin
+      // パネルの矩形を取得
+      StatusLine.Perform(SB_GETRECT, i, LPARAM(@R));
+
+      if PtInRect(R, Pt) then begin
+         // i がクリックされたパネルのインデックス
+         case i of
+            // Message
+            0: begin
+               StatusLine.Hint := '';
+            end;
+
+            // SentNR
+            1: begin
+               StatusLine.Hint := 'SentNR: ' + StatusLine.Panels[3].Text;
+            end;
+
+            // V1 R1
+            2: begin
+               StatusLine.Hint := '';
+            end;
+
+            // Time
+            3: begin
+               StatusLine.Hint := '';
+            end;
+         end;
+         Application.ActivateHint(pt);
+
+         Break;
+      end;
+   end;
 end;
 
 procedure TMainForm.mnChangeTXNrClick(Sender: TObject);

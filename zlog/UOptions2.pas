@@ -870,12 +870,12 @@ begin
       tabsheetBandScope2.TabVisible := True;
    end
    else if FEditMode = 1 then begin // CW
-      PageControl.ActivePage := tabsheetCW;
+      PageControl.ActivePage := tabsheetCategories;
 
       tabsheetMyStation.TabVisible := False;
       tabsheetPreferences.TabVisible := False;
-      tabsheetCategories.TabVisible := False;
-      tabsheetCW.TabVisible := True;
+      tabsheetCategories.TabVisible := True;
+      tabsheetCW.TabVisible := False;
       tabsheetVoice.TabVisible := False;
       tabsheetMisc.TabVisible := False;
       tabsheetQuickFunctions.TabVisible := False;
