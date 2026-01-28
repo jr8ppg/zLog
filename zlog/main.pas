@@ -1051,6 +1051,7 @@ type
       var Handled: Boolean);
     procedure menuNRSettingsClick(Sender: TObject);
     procedure StatusLineHint(Sender: TObject);
+    procedure popupDateStylePopup(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -7068,6 +7069,11 @@ begin
    finally
       dlg.Release();
    end;
+end;
+
+procedure TMainForm.popupDateStylePopup(Sender: TObject);
+begin
+   menuDateStyleLong.Checked := dmZLogGlobal.Settings._displongdatetime;
 end;
 
 procedure TMainForm.menuDateStyleClick(Sender: TObject);

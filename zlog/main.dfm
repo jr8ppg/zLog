@@ -8828,6 +8828,7 @@ object MainForm: TMainForm
   object popupDateStyle: TPopupMenu
     AutoHotkeys = maManual
     AutoLineReduction = maManual
+    OnPopup = popupDateStylePopup
     Left = 448
     Top = 90
     object menuDateStyleShort: TMenuItem
