@@ -3597,6 +3597,7 @@ begin
    end;
 end;
 
+// unused
 procedure TLog.SaveToFileAsAdif(Filename: string);
 var
    f: textfile;
@@ -3674,8 +3675,10 @@ begin
          S := S + AdifField('operator', Q.Operator);
       end;
 
-      if Q.Memo <> '' then begin
-         S := S + AdifField('comment', Q.Memo);
+      if dmZLogGlobal.Settings.FExportMemoToAdif = True then begin
+         if Q.Memo <> '' then begin
+            S := S + AdifField('comment', Q.Memo);
+         end;
       end;
 
       temp := Q.FreqStr2;

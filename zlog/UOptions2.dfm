@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetPreferences
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -2401,7 +2401,7 @@ object formOptions2: TformOptions2
           Width = 322
           Height = 28
           BevelOuter = bvLowered
-          TabOrder = 10
+          TabOrder = 11
           object Label51: TLabel
             Left = 3
             Top = 7
@@ -2433,6 +2433,14 @@ object formOptions2: TformOptions2
             Caption = 'Edge'
             TabOrder = 2
           end
+        end
+        object checkExportMemoToAdif: TCheckBox
+          Left = 268
+          Top = 87
+          Width = 217
+          Height = 17
+          Caption = 'Export the Memo field to ADIF'
+          TabOrder = 10
         end
       end
       object groupAccessibility: TGroupBox

@@ -421,6 +421,7 @@ type
     FUseMultiLineTabs: Boolean;
     FUseDarkMode: Boolean;
     FDisableShortCutsQSOEdit: Boolean;
+    FExportMemoToAdif: Boolean;
     FBrowserForWebUpload: Integer;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
@@ -1373,6 +1374,9 @@ begin
       // Select the contest at startup.
       Settings.FSelectContestOnStartup := ini.ReadBool('Preferences', 'SelectContestOnStartup', True);
 
+      // Export Memo field to ADIF
+      Settings.FExportMemoToAdif := ini.ReadBool('Preferences', 'ExportMemoFieldToAdif', False);
+
       // Usability
       Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', True);
       Settings.FUseDarkMode := ini.ReadBool('Style', 'UseDarkMode', False);
@@ -2169,6 +2173,9 @@ begin
 
       // Select the contest at startup.
       ini.WriteBool('Preferences', 'SelectContestOnStartup', Settings.FSelectContestOnStartup);
+
+      // Export Memo field to ADIF
+      ini.WriteBool('Preferences', 'ExportMemoFieldToAdif', Settings.FExportMemoToAdif);
 
       // Usability
       ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);

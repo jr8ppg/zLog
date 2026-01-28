@@ -479,6 +479,7 @@ type
     checkUseCQRamdomRepeat: TCheckBox;
     checkNotSendLeadingZeros: TCheckBox;
     checkPaddleReverse: TCheckBox;
+    checkExportMemoToAdif: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1085,6 +1086,9 @@ begin
       // Disable shortcuts during QSO editing
       Settings.FDisableShortCutsQSOEdit := checkDisableShortCutsQSOEdit.Checked;
 
+      // Export Memo field to ADIF
+      Settings.FExportMemoToAdif := checkExportMemoToAdif.Checked;
+
       // Browser component used for WebUpload
       if radioWebUpload0.Checked = True then begin
          Settings.FBrowserForWebUpload := 0;
@@ -1514,6 +1518,9 @@ begin
 
       // Disable shortcuts during QSO editing
       checkDisableShortCutsQSOEdit.Checked := Settings.FDisableShortCutsQSOEdit;
+
+      // Export Memo field to ADIF
+      checkExportMemoToAdif.Checked := Settings.FExportMemoToAdif;
 
       // Browser component used for WebUpload
       case Settings.FBrowserForWebUpload of

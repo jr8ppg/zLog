@@ -692,8 +692,10 @@ begin
          S := S + AdifField('operator', aQSO.Operator);
       end;
 
-      if aQSO.Memo <> '' then begin
-         S := S + AdifField('comment', aQSO.Memo);
+      if dmZLogGlobal.Settings.FExportMemoToAdif = True then begin
+         if aQSO.Memo <> '' then begin
+            S := S + AdifField('comment', aQSO.Memo);
+         end;
       end;
 
       temp := aQSO.FreqStr2;
