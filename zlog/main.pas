@@ -1349,6 +1349,7 @@ type
     procedure InitGridColumnWidth();
     procedure RestoreLastContestInfo(var strCfgFileName: string; var fScoreCoeff: Extended; var strContestName: string);
     procedure SaveLastContestInfo(strCfgFileName: string; fScoreCoeff: Extended);
+    procedure CheckSentNrParams();
     function Is1Radio(): Boolean;
     function Is2Radio(): Boolean;
     function GetInitNrSent(aQSO: TQSO): string;
@@ -8736,7 +8737,6 @@ var
    fNewContest: Boolean;
    fSelectContestOnStartup: Boolean;
    S: string;
-   fShowOptionsDialog: Boolean;
 
    procedure StartDXPedi();
    var
@@ -9141,54 +9141,67 @@ begin
       Timer1.Interval := dmZLogGlobal.Settings.FInfoUpdateInterval;
       Timer1.Enabled := True;
       zyloContestOpened(MyContest.Name, strCfgFileName);
-      fShowOptionsDialog := False;
-
-      // Callsign入力チェック
-      if (dmZLogGlobal.Settings._mycall = '') then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_MyCall_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end;
 
       // Sent NRチェック
-      if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.Prov = '')) or
-         ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.City = '')) then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end
-      else if ((Pos('$A', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myage = '')) then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end
-      else if ((Pos('$Z', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycqzone = '')) then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end
-      else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '')) then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end
-      else if ((Pos('$T', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiota = '')) then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end
-      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_cw = '')) then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end
-      else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_ph = '')) then begin
-         MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
-         fShowOptionsDialog := True;
-      end;
-
-      if fShowOptionsDialog = True then begin
-         PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, 0, 0);
-      end;
+      CheckSentNrParams();
 
       // save last contest
       SaveLastContestInfo(strCfgFileName, fScoreCoeff);
    finally
       menu.Release();
       startup.Release();
+   end;
+end;
+
+procedure TMainForm.CheckSentNrParams();
+var
+   tabno: Integer;
+   fShowOptionsDialog: Boolean;
+begin
+   fShowOptionsDialog := False;
+   tabno := 0;
+
+   // Callsign入力チェック
+   if (dmZLogGlobal.Settings._mycall = '') then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_MyCall_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, tabno, 0);
+      Exit;
+   end;
+
+   // SentNRチェック
+   if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.Prov = '')) or
+      ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.City = '')) then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      fShowOptionsDialog := True;
+      tabno := 1;
+   end
+   else if ((Pos('$A', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myage = '')) then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      fShowOptionsDialog := True;
+   end
+   else if ((Pos('$Z', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycqzone = '')) then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      fShowOptionsDialog := True;
+   end
+   else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '')) then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      fShowOptionsDialog := True;
+   end
+   else if ((Pos('$T', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiota = '')) then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      fShowOptionsDialog := True;
+   end
+   else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_cw = '')) then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      fShowOptionsDialog := True;
+   end
+   else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_ph = '')) then begin
+      MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      fShowOptionsDialog := True;
+   end;
+
+   if fShowOptionsDialog = True then begin
+      PostMessage(Handle, WM_ZLOG_SHOWOPTIONS, tabno, 0);
    end;
 end;
 
@@ -9755,7 +9768,7 @@ end;
 
 procedure TMainForm.OnZLogShowOptions( var Message: TMessage );
 begin
-   ShowOptionsDialog(3, 0, 1, 0);
+   ShowOptionsDialog(3, 0, 1, Message.WParam);
 end;
 
 procedure TMainForm.OnZLogCqAbortProc( var Message: TMessage );
