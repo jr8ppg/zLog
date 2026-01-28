@@ -176,7 +176,7 @@ begin
   {$ENDIF}
   CoInitialize(nil); // <-- manually call CoInitialize()
   Application.Initialize;
-  Application.Title := 'zLog for Windows';
+  Application.Title := 'zLog';
   Application.CreateForm(TdmZLogGlobal, dmZLogGlobal);
   Application.CreateForm(TdmZLogKeyer, dmZLogKeyer);
   Application.CreateForm(TMainForm, MainForm);
