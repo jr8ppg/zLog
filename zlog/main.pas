@@ -8397,6 +8397,9 @@ begin
          else begin
             ShowInfoPanel('', nil, False);
          end;
+      end
+      else begin
+         ShowInfoPanel('', nil, False);
       end;
    end;
 
