@@ -1821,7 +1821,7 @@ begin
    BandEdit.Text := MHzString[CurrentQSO.Band];
    PowerEdit.Text := NewPowerString[CurrentQSO.Power];
    SentRSTEdit.Text := CurrentQSO.RSTSentStr;
-   SentNumberEdit.Text := dmZLogGlobal.Settings._sentstr;
+   SentNumberEdit.Text := '';
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    CurrentQSO.UpdateTime;
    ShowDateTime();
@@ -1840,7 +1840,6 @@ begin
 
    // フォントサイズの設定
    SetFontSize(dmZlogGlobal.Settings._mainfontsize);
-   PostMessage(Handle, WM_ZLOG_SETEDITFIELDS, 0, 0);
    FFunctionKeyPanel.Init();
 
    {$IFDEF WIN32}
@@ -2864,6 +2863,7 @@ end;
 procedure TMainForm.SetEditFields1R();
 var
    h: Integer;
+   SentStr: string;
    procedure LayoutEdit(col: Integer; edit: TEdit);
    begin
       if Grid.ColWidths[col] >= 0 then begin
@@ -2895,9 +2895,16 @@ begin
    LayoutEdit(4, SentRSTEdit1);
 
    // Sent NR
+   if MyContest = nil then begin
+      SentStr := '';
+   end
+   else begin
+      SentStr := MyContest.SentStr;
+   end;
+
    if Grid.ColWidths[5] >= 0 then begin
       // 電力符号使用有無で判定
-      if Pos('$P', dmZLogGlobal.Settings._sentstr) > 0 then begin
+      if Pos('$P', SentStr) > 0 then begin
          PowerEdit1.Visible := True;
          PowerEdit1.Width := 2 * Grid.Canvas.TextWidth('0');
          PowerEdit1.Height := h;
@@ -6872,6 +6879,9 @@ begin
 
       // QSY Violation
       RenewScore();
+
+      // save last contest
+      SaveLastContestInfo(dmZLogGlobal.LastContest.FCfgFileName, Log.ScoreCoeff);
    finally
       f.Release();
 
@@ -8980,9 +8990,6 @@ begin
 
       SetWindowCaption();
 
-      // Sentは各コンテストで設定された値
-      dmZlogGlobal.Settings._sentstr := MyContest.SentStr;
-
       // 設定反映
       dmZlogGlobal.ImplementSettings(False);
       SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
@@ -9172,33 +9179,33 @@ begin
    end;
 
    // SentNRチェック
-   if ((Pos('$V', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.Prov = '')) or
-      ((Pos('$Q', dmZLogGlobal.Settings._sentstr) > 0) and (MyContest.City = '')) then begin
+   if ((Pos('$V', MyContest.SentStr) > 0) and (MyContest.Prov = '')) or
+      ((Pos('$Q', MyContest.SentStr) > 0) and (MyContest.City = '')) then begin
       MessageBox(Handle, PChar(TMainForm_Setup_SentNR_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       fShowOptionsDialog := True;
       tabno := 1;
    end
-   else if ((Pos('$A', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myage = '')) then begin
+   else if ((Pos('$A', MyContest.SentStr) > 0) and (dmZLogGlobal.Settings._myage = '')) then begin
       MessageBox(Handle, PChar(TMainForm_Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       fShowOptionsDialog := True;
    end
-   else if ((Pos('$Z', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycqzone = '')) then begin
+   else if ((Pos('$Z', MyContest.SentStr) > 0) and (dmZLogGlobal.Settings._mycqzone = '')) then begin
       MessageBox(Handle, PChar(TMainForm_Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       fShowOptionsDialog := True;
    end
-   else if ((Pos('$I', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '')) then begin
+   else if ((Pos('$I', MyContest.SentStr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '')) then begin
       MessageBox(Handle, PChar(TMainForm_Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       fShowOptionsDialog := True;
    end
-   else if ((Pos('$T', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiota = '')) then begin
+   else if ((Pos('$T', MyContest.SentStr) > 0) and (dmZLogGlobal.Settings._myiota = '')) then begin
       MessageBox(Handle, PChar(TMainForm_Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       fShowOptionsDialog := True;
    end
-   else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_cw = '')) then begin
+   else if ((Pos('$H', MyContest.SentStr) > 0) and (dmZLogGlobal.Settings._myhandle_cw = '')) then begin
       MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       fShowOptionsDialog := True;
    end
-   else if ((Pos('$H', dmZLogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myhandle_ph = '')) then begin
+   else if ((Pos('$H', MyContest.SentStr) > 0) and (dmZLogGlobal.Settings._myhandle_ph = '')) then begin
       MessageBox(Handle, PChar(TMainForm_Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       fShowOptionsDialog := True;
    end;
@@ -14634,7 +14641,7 @@ end;
 
 procedure TMainForm.ShowSentNumber();
 begin
-   StatusLine.Panels[1].Text := CurrentQSO.RSTSentStr + ' ' + SetStrNoAbbrev(dmZLogGlobal.Settings._sentstr, CurrentQSO);
+   StatusLine.Panels[1].Text := CurrentQSO.RSTSentStr + ' ' + SetStrNoAbbrev(MyContest.SentStr, CurrentQSO);
 end;
 
 procedure TMainForm.ShowRigControlInfo(strText: string);
@@ -15466,7 +15473,7 @@ function TMainForm.GetInitNrSent(aQSO: TQSO): string;
 var
    S: string;
 begin
-   S := dmZLogGlobal.Settings._sentstr;
+   S := MyContest.SentStr;
    S := StringReplace(S, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
    S := StringReplace(S, '$I', dmZLogGlobal.Settings._myiaruzone, [rfReplaceAll]);
    S := StringReplace(S, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);

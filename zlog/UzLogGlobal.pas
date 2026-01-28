@@ -224,7 +224,6 @@ type
     _zlink_telnet: TCommParam;
 
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
-    _sentstr : string; {exchanges sent $Q$P$O etc. Set at menu select}
 
     _rootpath: string;
     _soundpath : string;
@@ -976,9 +975,6 @@ begin
       Settings._powerM := ini.ReadString('Profiles', 'PowerM', '100');
       Settings._powerL := ini.ReadString('Profiles', 'PowerL', '10');
       Settings._powerP := ini.ReadString('Profiles', 'PowerP', '5');
-
-      // Sent
-//      Settings._sentstr := ini.ReadString('Profiles', 'SentStr', '');
 
       // CFGファイルにもある項目をロード
       LoadCfgParams(ini);
@@ -1828,9 +1824,6 @@ begin
       ini.WriteString('Profiles', 'PowerM', Settings._powerM);
       ini.WriteString('Profiles', 'PowerL', Settings._powerL);
       ini.WriteString('Profiles', 'PowerP', Settings._powerP);
-
-      // Sent
-//      ini.WriteString('Profiles', 'SentStr', Settings._sentstr);
 
       //
       // CW/RTTY

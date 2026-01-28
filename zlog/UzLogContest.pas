@@ -127,7 +127,7 @@ type
 
     property ColWidths[Index: Integer]: Integer read GetColWidths write SetColWidths;
     property UseNrIme: Boolean read FUseNrIme write FUseNrIme;
-    property SentStr: string read FSentStr;
+    property SentStr: string read FSentStr write FSentStr;
     property SameExchange: Boolean read FSameExchange;
     property MultiForm: TBasicMulti read FMultiForm;
     property ScoreForm: TBasicScore read FScoreForm;
@@ -545,28 +545,28 @@ var
    S: string;
 begin
    // セットする値が無いならセットしない
-   if (Pos('$Q', dmZlogGlobal.Settings._sentstr) > 0) and (QTHString(aQSO) = '') then begin
+   if (Pos('$Q', FSentStr) > 0) and (QTHString(aQSO) = '') then begin
       Exit;
    end;
-   if (Pos('$V', dmZlogGlobal.Settings._sentstr) > 0) and (Self.Prov = '') then begin
+   if (Pos('$V', FSentStr) > 0) and (Self.Prov = '') then begin
       Exit;
    end;
-   if (Pos('$Z', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._mycqzone = '') then begin
+   if (Pos('$Z', FSentStr) > 0) and (dmZLogGlobal.Settings._mycqzone = '') then begin
       Exit;
    end;
-   if (Pos('$I', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '') then begin
+   if (Pos('$I', FSentStr) > 0) and (dmZLogGlobal.Settings._myiaruzone = '') then begin
       Exit;
    end;
-   if (Pos('$P', dmZlogGlobal.Settings._sentstr) > 0) and (aQSO.NewPowerStr = '') then begin
+   if (Pos('$P', FSentStr) > 0) and (aQSO.NewPowerStr = '') then begin
       Exit;
    end;
-   if (Pos('$A', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myage = '') then begin
+   if (Pos('$A', FSentStr) > 0) and (dmZLogGlobal.Settings._myage = '') then begin
       Exit;
    end;
-   if (Pos('$T', dmZlogGlobal.Settings._sentstr) > 0) and (dmZLogGlobal.Settings._myiota = '') then begin
+   if (Pos('$T', FSentStr) > 0) and (dmZLogGlobal.Settings._myiota = '') then begin
       Exit;
    end;
-   if (Pos('$H', dmZlogGlobal.Settings._sentstr) > 0) then begin
+   if (Pos('$H', FSentStr) > 0) then begin
       if ((aQSO.Mode = mCw) or (aQSO.Mode = mRtty)) and (dmZLogGlobal.Settings._myhandle_cw = '') then begin
          Exit;
       end
@@ -575,7 +575,7 @@ begin
       end;
    end;
 
-   S := SetStrNoAbbrev(dmZlogGlobal.Settings._sentstr, aQSO);
+   S := SetStrNoAbbrev(FSentStr, aQSO);
 
    S := StringReplace(S, '_', '', [rfReplaceAll]);
 
@@ -866,6 +866,9 @@ begin
    try
       FUseDefaultMessages := Not ini.SectionExists(FContestName);
 
+      if Self is TPedi then begin
+         FSentStr := ini.ReadString(FContestName, 'SentStr', '');
+      end;
       FProv := ini.ReadString(FContestName, 'Prov', '');
       FCity := ini.ReadString(FContestName, 'City', '');
 
@@ -904,6 +907,9 @@ begin
 
       ini.EraseSection(FContestName);
 
+      if Self is TPedi then begin
+         ini.WriteString(FContestName, 'SentStr', FSentStr);
+      end;
       ini.WriteString(FContestName, 'Prov', FProv);
       ini.WriteString(FContestName, 'City', FCity);
 
@@ -1361,7 +1367,7 @@ begin
       FUserDatLoaded := True;
    end;
 
-   dmZlogGlobal.Settings._sentstr   := FConfig.Sent;
+   FSentStr                         := FConfig.Sent;
 
    Log.AcceptDifferentMode          := FConfig.AcceptDifferentMode;
    Log.AllPhone                     := FConfig.AllPhone;
@@ -1369,7 +1375,6 @@ begin
    UseUTC                           := FConfig.UseUTC;
 
    FSerialType                      := FConfig.SerialContestType;
-   FSentStr                         := dmZlogGlobal.Settings._sentstr;
    FNeedCtyDat                      := FConfig.UseCtyDat;
    FUseCoeff                        := FConfig.Coeff;
    FBandLow                         := FConfig.BandLow;

@@ -8,7 +8,8 @@ uses
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults, WinApi.CommCtrl, System.Math,
   UIntegerDialog, UzLogConst, UzLogSound, UOperatorEdit, UzLogGlobal,
-  UzLogOperatorInfo, UFreqPanel, UFreqMemDialog, UzFreqMemory, UPrePostPlaybackDlg;
+  UzLogOperatorInfo, UFreqPanel, UFreqMemDialog, UzFreqMemory, UPrePostPlaybackDlg,
+  UzLogContest;
 
 type
   TformOptions2 = class(TForm)
@@ -934,6 +935,12 @@ begin
    buttonFreqMemAdd.Enabled := True;
    buttonFreqMemEdit.Enabled := False;
    buttonFreqMemDelete.Enabled := False;
+
+   // DXpediのときはSent欄入力可
+   if MyContest is TPedi then begin
+      SentEdit.ReadOnly := False;
+      SentEdit.Color := clWindow;
+   end;
 end;
 
 procedure TformOptions2.FormDestroy(Sender: TObject);
@@ -1142,7 +1149,9 @@ begin
 
       // Exchange
       // Sent欄は表示専用
-      //Settings._sentstr := SentEdit.Text;
+      if MyContest is TPedi then begin
+         MyContest.SentStr := SentEdit.Text;
+      end;
 
       // Prov/City
       Settings.CW._prov := editProv.Text;
@@ -1574,7 +1583,7 @@ begin
 
       // Exchange
       // Sent欄は表示専用
-      SentEdit.Text := Settings._sentstr;
+      SentEdit.Text := MyContest.SentStr;
 
       // Prov/City
       editProv.Text := Settings.CW._prov;

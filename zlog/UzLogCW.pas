@@ -49,8 +49,8 @@ var
 begin
    temp := sendtext;
 
-   temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
-   temp := StringReplace(temp, '$x', LowerCase(dmZLogGlobal.Settings._sentstr), [rfReplaceAll]);
+   temp := StringReplace(temp, '$X', MyContest.SentStr, [rfReplaceAll]);
+   temp := StringReplace(temp, '$x', LowerCase(MyContest.SentStr), [rfReplaceAll]);
 
    S := aQSO.Callsign;
    temp := StringReplace(temp, '$B', S, [rfReplaceAll]);
@@ -205,7 +205,7 @@ begin
    temp := StringReplace(temp, '[BT]', '', [rfReplaceAll]);
 
    temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
-   temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
+   temp := StringReplace(temp, '$X', MyContest.SentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$R', aQSO.RSTSentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$F', aQSO.NrRcvd, [rfReplaceAll]);
    temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
