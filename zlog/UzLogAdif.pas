@@ -202,8 +202,52 @@ begin
 end;
 
 procedure TAdifFile.LoadFromFile(filename: string);
+var
+   L: TStringList;
+   S: string;
+   S2: string;
+   i: Integer;
+   fStart: Boolean;
 begin
-   FFile.LoadFromFile(filename);
+   L := TStringList.Create();
+   try
+      FFile.Clear();
+      L.LoadFromFile(filename);
+
+      fStart := False;
+      S2 := '';
+      for i := 0 to L.Count - 1 do begin
+         S := L[i];
+         if Trim(S) = '' then begin
+            Continue;
+         end;
+
+         if fStart = False then begin
+            FFile.Add(S);
+            if Pos('<EOH>', S) > 0 then begin
+               fStart := True;
+            end;
+         end
+         else begin
+            if Pos('<EOR>', S) = 0 then begin
+               S2 := S2 + S;
+            end
+            else begin
+               S2 := S2 + S;
+               S2 := StringReplace(S2, #13#10, '', [rfReplaceAll]);
+               FFile.Add(S2);
+               S2 := '';
+            end;
+         end;
+      end;
+
+      if S2 <> '' then begin
+         S2 := StringReplace(S2, #13#10, '', [rfReplaceAll]);
+         FFile.Add(S2);
+      end;
+   finally
+      L.Free();
+   end;
 end;
 
 procedure TAdifFile.Parse();
