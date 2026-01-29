@@ -7214,7 +7214,13 @@ end;
 
 procedure TMainForm.menuNRSettingsClick(Sender: TObject);
 begin
-   ShowOptionsDialog(1, 0, 1, 0);
+   if (Pos('$V', MyContest.SentStr) > 0) or
+      (Pos('$Q', MyContest.SentStr) > 0) then begin
+      ShowOptionsDialog(3, 0, 1, 1);
+   end
+   else begin
+      ShowOptionsDialog(3, 0, 1, 0);
+   end;
 end;
 
 procedure TMainForm.menuDownloadOplistClick(Sender: TObject);

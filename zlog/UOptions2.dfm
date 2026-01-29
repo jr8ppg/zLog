@@ -796,14 +796,14 @@ object formOptions2: TformOptions2
       object groupOperators: TGroupBox
         Left = 3
         Top = 342
-        Width = 520
+        Width = 398
         Height = 161
         Caption = 'Operators'
         TabOrder = 4
         object OpListBox: TListBox
           Left = 11
           Top = 19
-          Width = 217
+          Width = 165
           Height = 134
           TabStop = False
           Font.Charset = DEFAULT_CHARSET
@@ -817,7 +817,7 @@ object formOptions2: TformOptions2
           OnDblClick = buttonOpEditClick
         end
         object buttonOpAdd: TButton
-          Left = 238
+          Left = 182
           Top = 19
           Width = 57
           Height = 25
@@ -826,7 +826,7 @@ object formOptions2: TformOptions2
           OnClick = buttonOpAddClick
         end
         object buttonOpDelete: TButton
-          Left = 238
+          Left = 182
           Top = 128
           Width = 57
           Height = 25
@@ -835,34 +835,116 @@ object formOptions2: TformOptions2
           OnClick = buttonOpDeleteClick
         end
         object checkSelectLastOperator: TCheckBox
-          Left = 315
-          Top = 18
-          Width = 182
-          Height = 17
+          Left = 250
+          Top = 15
+          Width = 135
+          Height = 35
           Caption = 'Select last operator on startup'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 4
+          WordWrap = True
         end
         object checkApplyPowerCodeOnBandChange: TCheckBox
-          Left = 315
-          Top = 39
-          Width = 190
-          Height = 17
+          Left = 250
+          Top = 56
+          Width = 135
+          Height = 35
           Hint = 'Apply per-operator power code on band change.'
           Caption = 'Apply power code on band change'
           ParentShowHint = False
           ShowHint = True
           TabOrder = 5
+          WordWrap = True
         end
         object buttonOpEdit: TButton
-          Left = 238
+          Left = 182
           Top = 50
           Width = 57
           Height = 25
           Caption = 'Edit'
           TabOrder = 2
           OnClick = buttonOpEditClick
+        end
+      end
+      object groupPowerDefs: TGroupBox
+        Left = 411
+        Top = 342
+        Width = 112
+        Height = 161
+        Caption = 'Power($N)'
+        TabOrder = 5
+        object Label111: TLabel
+          Left = 16
+          Top = 23
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'H'
+        end
+        object Label112: TLabel
+          Left = 16
+          Top = 50
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'M'
+        end
+        object Label113: TLabel
+          Left = 16
+          Top = 77
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'L'
+        end
+        object Label114: TLabel
+          Left = 16
+          Top = 104
+          Width = 34
+          Height = 13
+          AutoSize = False
+          Caption = 'P'
+        end
+        object editPowerH: TEdit
+          Left = 56
+          Top = 20
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 0
+          Text = '1KW'
+        end
+        object editPowerM: TEdit
+          Left = 56
+          Top = 47
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 1
+          Text = '100'
+        end
+        object editPowerL: TEdit
+          Left = 56
+          Top = 74
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 2
+          Text = '10'
+        end
+        object editPowerP: TEdit
+          Left = 56
+          Top = 101
+          Width = 41
+          Height = 21
+          CharCase = ecUpperCase
+          MaxLength = 4
+          TabOrder = 3
+          Text = '5'
         end
       end
     end
@@ -2295,19 +2377,19 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 4
         Width = 512
-        Height = 181
+        Height = 198
         Caption = 'General'
         TabOrder = 0
         object Label40: TLabel
           Left = 11
-          Top = 157
+          Top = 159
           Width = 54
           Height = 13
           Caption = 'Save every'
         end
         object Label41: TLabel
           Left = 120
-          Top = 157
+          Top = 159
           Width = 28
           Height = 13
           Caption = 'QSOs'
@@ -2354,7 +2436,7 @@ object formOptions2: TformOptions2
         end
         object SaveEvery: TSpinEdit
           Left = 76
-          Top = 154
+          Top = 156
           Width = 38
           Height = 22
           AutoSize = False
@@ -2394,45 +2476,6 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Disable shortcuts during QSO editing'
           TabOrder = 9
-        end
-        object Panel4: TPanel
-          Left = 179
-          Top = 148
-          Width = 322
-          Height = 28
-          BevelOuter = bvLowered
-          TabOrder = 11
-          object Label51: TLabel
-            Left = 3
-            Top = 7
-            Width = 139
-            Height = 13
-            Caption = 'Browser used for WebUpload'
-          end
-          object radioWebUpload0: TRadioButton
-            Left = 155
-            Top = 5
-            Width = 54
-            Height = 17
-            Caption = 'Auto'
-            TabOrder = 0
-          end
-          object radioWebUpload1: TRadioButton
-            Left = 215
-            Top = 5
-            Width = 48
-            Height = 17
-            Caption = 'IE'
-            TabOrder = 1
-          end
-          object radioWebUpload2: TRadioButton
-            Left = 269
-            Top = 5
-            Width = 48
-            Height = 17
-            Caption = 'Edge'
-            TabOrder = 2
-          end
         end
         object checkExportMemoToAdif: TCheckBox
           Left = 268
@@ -2504,86 +2547,6 @@ object formOptions2: TformOptions2
           Caption = 'Fore...'
           TabOrder = 1
           OnClick = buttonFocusedForeColorClick
-        end
-      end
-      object groupPowerDefs: TGroupBox
-        Left = 406
-        Top = 190
-        Width = 112
-        Height = 115
-        Caption = 'Power($N)'
-        TabOrder = 2
-        object Label111: TLabel
-          Left = 16
-          Top = 23
-          Width = 34
-          Height = 13
-          AutoSize = False
-          Caption = 'H'
-        end
-        object Label112: TLabel
-          Left = 16
-          Top = 45
-          Width = 34
-          Height = 13
-          AutoSize = False
-          Caption = 'M'
-        end
-        object Label113: TLabel
-          Left = 16
-          Top = 67
-          Width = 34
-          Height = 13
-          AutoSize = False
-          Caption = 'L'
-        end
-        object Label114: TLabel
-          Left = 16
-          Top = 89
-          Width = 34
-          Height = 13
-          AutoSize = False
-          Caption = 'P'
-        end
-        object editPowerH: TEdit
-          Left = 56
-          Top = 20
-          Width = 41
-          Height = 21
-          CharCase = ecUpperCase
-          MaxLength = 4
-          TabOrder = 0
-          Text = '1KW'
-        end
-        object editPowerM: TEdit
-          Left = 56
-          Top = 42
-          Width = 41
-          Height = 21
-          CharCase = ecUpperCase
-          MaxLength = 4
-          TabOrder = 1
-          Text = '100'
-        end
-        object editPowerL: TEdit
-          Left = 56
-          Top = 64
-          Width = 41
-          Height = 21
-          CharCase = ecUpperCase
-          MaxLength = 4
-          TabOrder = 2
-          Text = '10'
-        end
-        object editPowerP: TEdit
-          Left = 56
-          Top = 86
-          Width = 41
-          Height = 21
-          CharCase = ecUpperCase
-          MaxLength = 4
-          TabOrder = 3
-          Text = '5'
         end
       end
       object groupQsoListColors: TGroupBox
@@ -2790,8 +2753,8 @@ object formOptions2: TformOptions2
       end
       object groupUsabilityAfterQsoEdit: TGroupBox
         Left = 6
-        Top = 190
-        Width = 394
+        Top = 208
+        Width = 334
         Height = 94
         Caption = 'Focus Position After QSO Edit'
         TabOrder = 1
@@ -2856,6 +2819,45 @@ object formOptions2: TformOptions2
             Caption = 'New QSO'
             TabOrder = 1
           end
+        end
+      end
+      object groupWebUpload: TGroupBox
+        Left = 346
+        Top = 208
+        Width = 172
+        Height = 94
+        Caption = 'JARL E-LOG'
+        TabOrder = 2
+        object Label51: TLabel
+          Left = 11
+          Top = 30
+          Width = 139
+          Height = 13
+          Caption = 'Browser used for WebUpload'
+        end
+        object radioWebUpload0: TRadioButton
+          Left = 10
+          Top = 60
+          Width = 54
+          Height = 17
+          Caption = 'Auto'
+          TabOrder = 0
+        end
+        object radioWebUpload1: TRadioButton
+          Left = 63
+          Top = 60
+          Width = 48
+          Height = 17
+          Caption = 'IE'
+          TabOrder = 1
+        end
+        object radioWebUpload2: TRadioButton
+          Left = 112
+          Top = 60
+          Width = 48
+          Height = 17
+          Caption = 'Edge'
+          TabOrder = 2
         end
       end
     end
@@ -3239,6 +3241,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

@@ -432,8 +432,6 @@ type
     checkDisableShortCutsQSOEdit: TCheckBox;
     IotaEdit: TEdit;
     Label50: TLabel;
-    Panel4: TPanel;
-    Label51: TLabel;
     radioWebUpload0: TRadioButton;
     radioWebUpload1: TRadioButton;
     radioWebUpload2: TRadioButton;
@@ -481,6 +479,8 @@ type
     checkNotSendLeadingZeros: TCheckBox;
     checkPaddleReverse: TCheckBox;
     checkExportMemoToAdif: TCheckBox;
+    groupWebUpload: TGroupBox;
+    Label51: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
