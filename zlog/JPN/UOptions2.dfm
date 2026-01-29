@@ -872,7 +872,7 @@ object formOptions2: TformOptions2
         Top = 342
         Width = 112
         Height = 161
-        Caption = 'Power($N)'
+        Caption = #36865#20449#38651#21147'($N)'
         TabOrder = 5
         object Label111: TLabel
           Left = 16
