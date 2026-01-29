@@ -133,6 +133,7 @@ type
     procedure SetRitOffset(offset: Integer); override;
     procedure SetXit(flag: Boolean); override;
   public
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure AntSelect(no: Integer); override;
     procedure RitClear; override;
     procedure AudioInputSelect(input: TAudioInput); override;
@@ -507,10 +508,11 @@ begin
 
       // メーター値読み出し（0-255を0-100にマップする）
       if strCommand = 'RM' then begin
+         strTemp := string(Copy(S, 4, 3));
          case S[3] of
-            '0': FSMeterValue[_currentvfo] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
-            '1': FSMeterValue[0] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
-            '2': FSMeterValue[1] := Round(StrToFloatDef(Copy(S, 4, 3), 0) * (100 / 255));
+            '0': FSMeterValue[_currentvfo] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
+            '1': FSMeterValue[0] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
+            '2': FSMeterValue[1] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
          end;
       end;
 
@@ -1688,6 +1690,12 @@ begin
 end;
 
 { TFT710 }
+
+constructor TFT710.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FComm.StopBits := sb1BITS;
+end;
 
 procedure TFT710.AntSelect(no: Integer);
 begin
