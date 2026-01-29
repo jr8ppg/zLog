@@ -861,8 +861,10 @@ procedure TContest.LoadCwMessages();
 var
    ini: TIniFile;
    i: Integer;
+   SL: TStringList;
 begin
    ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
+   SL := TStringList.Create();
    try
       FUseDefaultMessages := Not ini.SectionExists(FContestName);
 
@@ -881,9 +883,17 @@ begin
          FCwMessageCQ[i] := ini.ReadString(FContestName, 'CQ' + IntToStr(i), '');
       end;
 
+      SL.CommaText := ini.ReadString(FContestName, 'ColumnWidths', '');
+      if SL.Count = 17 then begin
+         for i := 0 to 16 do begin
+            Self.ColWidths[i] := StrToIntDef(SL[i], 0);
+         end;
+      end;
+
       ApplyCwMessages();
    finally
       ini.Free();
+      SL.Free();
    end;
 end;
 
@@ -891,8 +901,10 @@ procedure TContest.SaveCwMessages();
 var
    ini: TIniFile;
    i: Integer;
+   SL: TStringList;
 begin
    ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
+   SL := TStringList.Create();
    try
       FProv := dmZLogGlobal.Settings.CW._prov;
       FCity := dmZLogGlobal.Settings.CW._city;
@@ -933,8 +945,14 @@ begin
             ini.WriteString(FContestName, 'CQ' + IntToStr(i), FCwMessageCQ[i]);
          end;
       end;
+
+      for i := 0 to 16 do begin
+         SL.Add(IntToStr(Self.ColWidths[i]));
+      end;
+      ini.WriteString(FContestName, 'ColumnWidths', SL.CommaText);
    finally
       ini.Free();
+      SL.Free();
    end;
 end;
 

@@ -298,7 +298,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       MaxLength = 3
       NumbersOnly = True
       TabOrder = 15
-      Text = '10'
+      Text = '6'
     end
     object UpDown6: TUpDown
       Left = 193
@@ -308,7 +308,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Associate = Edit6
       Min = 1
       Max = 99
-      Position = 10
+      Position = 6
       TabOrder = 16
     end
     object Edit7: TEdit

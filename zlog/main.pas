@@ -2915,6 +2915,7 @@ begin
          SentNrEdit1.Left := GetGridColmunLeft(5);
 
          PowerEdit1.Left := SentNrEdit1.Left + SentNrEdit1.Width + 1;
+         PowerEdit1.Text := NewPowerString[CurrentQSO.Power];
       end
       else begin
          PowerEdit1.Visible := False;
