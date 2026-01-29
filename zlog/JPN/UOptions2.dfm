@@ -796,14 +796,14 @@ object formOptions2: TformOptions2
       object groupOperators: TGroupBox
         Left = 3
         Top = 342
-        Width = 398
+        Width = 420
         Height = 161
         Caption = #12458#12506#12524#12540#12479#12540
         TabOrder = 4
         object OpListBox: TListBox
           Left = 11
           Top = 19
-          Width = 165
+          Width = 158
           Height = 134
           TabStop = False
           Font.Charset = DEFAULT_CHARSET
@@ -817,50 +817,48 @@ object formOptions2: TformOptions2
           OnDblClick = buttonOpEditClick
         end
         object buttonOpAdd: TButton
-          Left = 182
+          Left = 175
           Top = 19
-          Width = 57
+          Width = 50
           Height = 25
           Caption = #36861#21152
           TabOrder = 1
           OnClick = buttonOpAddClick
         end
         object buttonOpDelete: TButton
-          Left = 182
+          Left = 175
           Top = 128
-          Width = 57
+          Width = 50
           Height = 25
           Caption = #21066#38500
           TabOrder = 3
           OnClick = buttonOpDeleteClick
         end
         object checkSelectLastOperator: TCheckBox
-          Left = 250
-          Top = 15
-          Width = 135
-          Height = 35
+          Left = 231
+          Top = 23
+          Width = 186
+          Height = 17
           Caption = #36215#21205#26178#12289#26368#24460#12398'OP'#12434#36984#25246
           ParentShowHint = False
           ShowHint = True
           TabOrder = 4
-          WordWrap = True
         end
         object checkApplyPowerCodeOnBandChange: TCheckBox
-          Left = 250
-          Top = 56
-          Width = 135
-          Height = 35
+          Left = 231
+          Top = 46
+          Width = 186
+          Height = 17
           Hint = #12496#12531#12489#22793#26356#26178#12289#12458#12506#12524#12540#12479#12540#27598#12398#38651#21147#31526#21495#12434#36969#29992#12375#12414#12377
           Caption = #12496#12531#12489#22793#26356#26178#12289#38651#21147#31526#21495#12434#36969#29992
           ParentShowHint = False
           ShowHint = True
           TabOrder = 5
-          WordWrap = True
         end
         object buttonOpEdit: TButton
-          Left = 182
+          Left = 175
           Top = 50
-          Width = 57
+          Width = 50
           Height = 25
           Caption = #32232#38598
           TabOrder = 2
@@ -868,16 +866,16 @@ object formOptions2: TformOptions2
         end
       end
       object groupPowerDefs: TGroupBox
-        Left = 411
+        Left = 429
         Top = 342
-        Width = 112
+        Width = 94
         Height = 161
         Caption = #36865#20449#38651#21147'($N)'
         TabOrder = 5
         object Label111: TLabel
           Left = 16
           Top = 23
-          Width = 34
+          Width = 25
           Height = 13
           AutoSize = False
           Caption = 'H'
@@ -885,7 +883,7 @@ object formOptions2: TformOptions2
         object Label112: TLabel
           Left = 16
           Top = 50
-          Width = 34
+          Width = 25
           Height = 13
           AutoSize = False
           Caption = 'M'
@@ -893,7 +891,7 @@ object formOptions2: TformOptions2
         object Label113: TLabel
           Left = 16
           Top = 77
-          Width = 34
+          Width = 25
           Height = 13
           AutoSize = False
           Caption = 'L'
@@ -901,13 +899,13 @@ object formOptions2: TformOptions2
         object Label114: TLabel
           Left = 16
           Top = 104
-          Width = 34
+          Width = 25
           Height = 13
           AutoSize = False
           Caption = 'P'
         end
         object editPowerH: TEdit
-          Left = 56
+          Left = 36
           Top = 20
           Width = 41
           Height = 21
@@ -917,7 +915,7 @@ object formOptions2: TformOptions2
           Text = '1KW'
         end
         object editPowerM: TEdit
-          Left = 56
+          Left = 36
           Top = 47
           Width = 41
           Height = 21
@@ -927,7 +925,7 @@ object formOptions2: TformOptions2
           Text = '100'
         end
         object editPowerL: TEdit
-          Left = 56
+          Left = 36
           Top = 74
           Width = 41
           Height = 21
@@ -937,7 +935,7 @@ object formOptions2: TformOptions2
           Text = '10'
         end
         object editPowerP: TEdit
-          Left = 56
+          Left = 36
           Top = 101
           Width = 41
           Height = 21
@@ -3241,7 +3239,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0
