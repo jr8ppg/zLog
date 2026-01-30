@@ -5372,7 +5372,7 @@ begin
 
    // ここからがLoggingメイン処理
 //   Q.NrSent := FEditPanel[nID].SentNumberEdit.Text;
-//   MyContest.SetNrSent(Q);
+   MyContest.SetNrSent(Q);
 
    repeat
       i := dmZlogGlobal.NewQSOID();
