@@ -1922,6 +1922,7 @@ begin
             NoSound();
          end;
          FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
+         FSendChar := True;
       end;
 
       $E: begin { normal space x space factor x eispacefactor(%) }
@@ -1930,6 +1931,7 @@ begin
             NoSound();
          end;
          FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
+         FSendChar := True;
       end;
 
       // dot
@@ -2073,6 +2075,9 @@ begin
       $99: begin { pause }
          FSendChar := False;
          FSendOK := False;
+         if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
+         end;
       end;
 
       $41: begin
@@ -2476,7 +2481,6 @@ begin
    FCodeTable[Ord('Z')][9] := 9;
 
    FCodeTable[Ord(' ')][1] := 0;
-   // FCodeTable[Ord(' ')][2]:=$22;
    FCodeTable[Ord(' ')][2] := 2;
    FCodeTable[Ord(' ')][3] := 9;
 
