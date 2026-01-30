@@ -1,6 +1,7 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
+  ActiveControl = spPartialCloseTime
   BorderStyle = bsDialog
   Caption = #36939#29992#35373#23450
   ClientHeight = 571
@@ -22,7 +23,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetMisc
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -2886,7 +2887,7 @@ object formOptions2: TformOptions2
       end
       object Label52: TLabel
         Left = 168
-        Top = 66
+        Top = 63
         Width = 175
         Height = 13
         AutoSize = False
@@ -2898,6 +2899,20 @@ object formOptions2: TformOptions2
         Width = 16
         Height = 13
         Caption = #20998
+      end
+      object Label14: TLabel
+        Left = 321
+        Top = 156
+        Width = 92
+        Height = 13
+        Caption = #38281#12376#12427#12414#12391#12398#26178#38291
+      end
+      object Label18: TLabel
+        Left = 481
+        Top = 156
+        Width = 34
+        Height = 13
+        Caption = #12511#12522#31186
       end
       object rgSearchAfter: TRadioGroup
         Left = 6
@@ -2963,11 +2978,11 @@ object formOptions2: TformOptions2
       end
       object GroupBox8: TGroupBox
         Left = 6
-        Top = 155
+        Top = 335
         Width = 512
         Height = 52
         Caption = #12473#12540#12497#12540#12481#12455#12483#12463
-        TabOrder = 7
+        TabOrder = 8
         object radioSuperCheck0: TRadioButton
           Left = 12
           Top = 24
@@ -3009,11 +3024,11 @@ object formOptions2: TformOptions2
       end
       object GroupBox5: TGroupBox
         Left = 6
-        Top = 213
+        Top = 393
         Width = 512
         Height = 50
         Caption = 'N+1'
-        TabOrder = 8
+        TabOrder = 9
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
@@ -3054,11 +3069,11 @@ object formOptions2: TformOptions2
       end
       object GroupBox22: TGroupBox
         Left = 6
-        Top = 269
+        Top = 449
         Width = 512
         Height = 50
         Caption = #12497#12540#12471#12515#12523#12481#12455#12483#12463
-        TabOrder = 9
+        TabOrder = 10
         object Label88: TLabel
           Left = 15
           Top = 24
@@ -3113,6 +3128,17 @@ object formOptions2: TformOptions2
         Height = 17
         Caption = #12452#12531#12463#12522#12513#12531#12479#12523#12487#12517#12540#12503#12481#12455#12483#12463#12434#20351#12358
         TabOrder = 6
+      end
+      object spPartialCloseTime: TSpinEdit
+        Left = 419
+        Top = 153
+        Width = 56
+        Height = 22
+        AutoSize = False
+        MaxValue = 9999
+        MinValue = 1
+        TabOrder = 7
+        Value = 5000
       end
     end
     object tabsheetQuickFunctions: TTabSheet
@@ -3239,7 +3265,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

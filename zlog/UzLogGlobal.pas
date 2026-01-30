@@ -290,6 +290,7 @@ type
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
     _displaydatepartialcheck : boolean;
     FUseIncrementalDupeCheck: Boolean;
+    FPartialCloseTime: DWORD;
 
     _super_check_columns: Integer;
     _super_check2_columns: Integer;
@@ -1354,7 +1355,10 @@ begin
       Settings._renewbythread := ini.ReadBool('Misc', 'UpdateUsingThread', False);
 
       // Use incremental dupe check
-      Settings.FUseIncrementalDupeCheck := ini.ReadBool('Usability', 'UseIncrementalDupeCheck', True);
+      Settings.FUseIncrementalDupeCheck := ini.ReadBool('Misc', 'UseIncrementalDupeCheck', True);
+
+      // Delay before closing the Partial window
+      Settings.FPartialCloseTime := ini.ReadInteger('Misc', 'PartialCloseTime', 5000);
 
       // grayline
       Settings.FShowGrayline := ini.ReadBool('Grayline', 'ShowGrayline', True);
@@ -2158,7 +2162,10 @@ begin
       ini.WriteBool('Misc', 'UpdateUsingThread', Settings._renewbythread);
 
       // Use incremental dupe check
-      ini.WriteBool('Usability', 'UseIncrementalDupeCheck', Settings.FUseIncrementalDupeCheck);
+      ini.WriteBool('Misc', 'UseIncrementalDupeCheck', Settings.FUseIncrementalDupeCheck);
+
+      // Delay before closing the Partial window
+      ini.WriteInteger('Misc', 'PartialCloseTime', Settings.FPartialCloseTime);
 
       // grayline
       ini.WriteBool('Grayline', 'ShowGrayline', Settings.FShowGrayline);

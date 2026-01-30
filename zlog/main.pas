@@ -724,6 +724,7 @@ type
     menuBS19: TMenuItem;
     menuBS20: TMenuItem;
     menuBS21: TMenuItem;
+    timerPartialClose: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1058,6 +1059,7 @@ type
     procedure menuNRSettingsClick(Sender: TObject);
     procedure StatusLineHint(Sender: TObject);
     procedure popupDateStylePopup(Sender: TObject);
+    procedure timerPartialCloseTimer(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -4311,6 +4313,7 @@ procedure TMainForm.CallsignEdit1Change(Sender: TObject);
 var
    C, SN, RN, B, M, OP, P: TEdit;
 begin
+   timerPartialClose.Enabled := False;
    AssignControls(FCurrentRigSet - 1, C, SN, RN, B, M, OP, P);
 
    CurrentQSO.Callsign := C.Text;
@@ -4337,6 +4340,10 @@ begin
    else begin
       Log.UpdatePartialList(CurrentQSO);
       GridRefreshScreen(False, False);
+      if dmZLogGlobal.Settings.FPartialCloseTime > 0 then begin
+         timerPartialClose.Interval := dmZLogGlobal.Settings.FPartialCloseTime;
+         timerPartialClose.Enabled := True;
+      end;
    end;
 
    if FSuperCheck.Visible then begin
@@ -5934,6 +5941,13 @@ begin
          panelOutOfPeriod.Height := panelOutOfPeriod.Height + 2;
       end;
    end;
+end;
+
+procedure TMainForm.timerPartialCloseTimer(Sender: TObject);
+begin
+   timerPartialClose.Enabled := False;
+   Log.ClearPartialList();
+   GridRefreshScreen(False, False);
 end;
 
 // 汎用のInfoPanel

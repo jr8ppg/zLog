@@ -1,6 +1,7 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
+  ActiveControl = spPartialCloseTime
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -22,7 +23,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetMisc
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -3849,7 +3850,7 @@ object formOptions2: TformOptions2
       end
       object Label52: TLabel
         Left = 168
-        Top = 66
+        Top = 63
         Width = 175
         Height = 13
         AutoSize = False
@@ -3861,6 +3862,20 @@ object formOptions2: TformOptions2
         Width = 16
         Height = 13
         Caption = 'min'
+      end
+      object Label14: TLabel
+        Left = 321
+        Top = 156
+        Width = 92
+        Height = 13
+        Caption = 'Time before closing'
+      end
+      object Label18: TLabel
+        Left = 481
+        Top = 156
+        Width = 34
+        Height = 13
+        Caption = 'milisec.'
       end
       object rgSearchAfter: TRadioGroup
         Left = 6
@@ -3926,11 +3941,11 @@ object formOptions2: TformOptions2
       end
       object GroupBox8: TGroupBox
         Left = 6
-        Top = 155
+        Top = 335
         Width = 512
         Height = 52
         Caption = 'Super Check'
-        TabOrder = 7
+        TabOrder = 8
         object radioSuperCheck0: TRadioButton
           Left = 12
           Top = 24
@@ -3972,11 +3987,11 @@ object formOptions2: TformOptions2
       end
       object GroupBox5: TGroupBox
         Left = 6
-        Top = 213
+        Top = 393
         Width = 512
         Height = 50
         Caption = 'N+1'
-        TabOrder = 8
+        TabOrder = 9
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
@@ -4017,11 +4032,11 @@ object formOptions2: TformOptions2
       end
       object GroupBox22: TGroupBox
         Left = 6
-        Top = 269
+        Top = 449
         Width = 512
         Height = 50
         Caption = 'Partial Check'
-        TabOrder = 9
+        TabOrder = 10
         object Label88: TLabel
           Left = 15
           Top = 24
@@ -4077,21 +4092,32 @@ object formOptions2: TformOptions2
         Caption = 'Use incremental dupe check'
         TabOrder = 6
       end
-      object GroupBox23: TCheckBox
+      object spPartialCloseTime: TSpinEdit
+        Left = 419
+        Top = 153
+        Width = 56
+        Height = 22
+        AutoSize = False
+        MaxValue = 9999
+        MinValue = 1
+        TabOrder = 7
+        Value = 5000
+      end
+      object GroupBox23: TSpinEdit
         Left = 6
         Top = 325
         Width = 423
         Height = 72
         Caption = 'Accessibility'
         TabOrder = 9
-        object Label89: TCheckBox
+        object Label89: TSpinEdit
           Left = 15
           Top = 23
           Width = 68
           Height = 13
           Caption = 'Focused Color'
         end
-        object editFocusedColor: TCheckBox
+        object editFocusedColor: TSpinEdit
           Left = 145
           Top = 20
           Width = 112
@@ -4101,7 +4127,7 @@ object formOptions2: TformOptions2
           TabOrder = 0
           Text = 'CALLSIGN'
         end
-        object buttonFocusedBackColor: TCheckBox
+        object buttonFocusedBackColor: TSpinEdit
           Tag = 1
           Left = 318
           Top = 21
@@ -4111,7 +4137,7 @@ object formOptions2: TformOptions2
           TabOrder = 2
           OnClick = buttonFocusedBackColorClick
         end
-        object buttonFocusedInitColor: TCheckBox
+        object buttonFocusedInitColor: TSpinEdit
           Left = 368
           Top = 21
           Width = 45
@@ -4120,7 +4146,7 @@ object formOptions2: TformOptions2
           TabOrder = 3
           OnClick = buttonFocusedInitColorClick
         end
-        object checkFocusedBold: TCheckBox
+        object checkFocusedBold: TSpinEdit
           Left = 145
           Top = 46
           Width = 45
@@ -4129,7 +4155,7 @@ object formOptions2: TformOptions2
           TabOrder = 4
           OnClick = checkFocusedBoldClick
         end
-        object buttonFocusedForeColor: TCheckBox
+        object buttonFocusedForeColor: TSpinEdit
           Left = 268
           Top = 21
           Width = 45
@@ -4264,7 +4290,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

@@ -8903,4 +8903,11 @@ object MainForm: TMainForm
       OnClick = menuNRSettingsClick
     end
   end
+  object timerPartialClose: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = timerPartialCloseTimer
+    Left = 288
+    Top = 175
+  end
 end

@@ -481,6 +481,9 @@ type
     checkExportMemoToAdif: TCheckBox;
     groupWebUpload: TGroupBox;
     Label51: TLabel;
+    Label14: TLabel;
+    spPartialCloseTime: TSpinEdit;
+    Label18: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1305,6 +1308,9 @@ begin
       // Use incremental dupe check
       Settings.FUseIncrementalDupeCheck := checkUseIncrementalDupeCheck.Checked;
 
+      // Delay before closing the Partial window
+      Settings.FPartialCloseTime := spPartialCloseTime.Value;
+
       // Super Check group
 
       // SuperCheck
@@ -1749,6 +1755,9 @@ begin
 
       // Use incremental dupe check
       checkUseIncrementalDupeCheck.Checked := Settings.FUseIncrementalDupeCheck;
+
+      // Delay before closing the Partial window
+      spPartialCloseTime.Value := Settings.FPartialCloseTime;
 
       // Super Check group
       case Settings.FSuperCheck.FSuperCheckMethod of
