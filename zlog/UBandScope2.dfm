@@ -413,7 +413,49 @@ object BandScope2: TBandScope2
     object menuBS15: TMenuItem
       Tag = 15
       AutoCheck = True
-      Caption = '10G'
+      Caption = '10.1G'
+      GroupIndex = 1
+      OnClick = menuBS00Click
+    end
+    object menuBS16: TMenuItem
+      Tag = 16
+      AutoCheck = True
+      Caption = '10.4G'
+      GroupIndex = 1
+      OnClick = menuBS00Click
+    end
+    object menuBS17: TMenuItem
+      Tag = 17
+      AutoCheck = True
+      Caption = '24G'
+      GroupIndex = 1
+      OnClick = menuBS00Click
+    end
+    object menuBS18: TMenuItem
+      Tag = 18
+      AutoCheck = True
+      Caption = '47G'
+      GroupIndex = 1
+      OnClick = menuBS00Click
+    end
+    object menuBS19: TMenuItem
+      Tag = 19
+      AutoCheck = True
+      Caption = '77G'
+      GroupIndex = 1
+      OnClick = menuBS00Click
+    end
+    object menuBS20: TMenuItem
+      Tag = 20
+      AutoCheck = True
+      Caption = '135G'
+      GroupIndex = 1
+      OnClick = menuBS00Click
+    end
+    object menuBS21: TMenuItem
+      Tag = 21
+      AutoCheck = True
+      Caption = '248G'
       GroupIndex = 1
       OnClick = menuBS00Click
     end

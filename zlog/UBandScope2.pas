@@ -100,6 +100,12 @@ type
     menuShowSearchBar: TMenuItem;
     buttonFilterClear: TButton;
     buttonSpotFilterLink: TSpeedButton;
+    menuBS16: TMenuItem;
+    menuBS17: TMenuItem;
+    menuBS18: TMenuItem;
+    menuBS19: TMenuItem;
+    menuBS20: TMenuItem;
+    menuBS21: TMenuItem;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -148,7 +154,7 @@ type
     procedure buttonSpotFilterLinkClick(Sender: TObject);
   private
     { Private êÈåæ }
-    FBandScopeMenu: array[b19..b10g] of TMenuItem;
+    FBandScopeMenu: array[b19..b248g] of TMenuItem;
 
     FProcessing: Boolean;
 
@@ -248,9 +254,9 @@ type
 
 var
   CurrentRigFrequency : TFrequency; // in Hertz
-  BSBlockList: array[b19..b10g] of TStringList;
-  BSBLLock: array[b19..b10g] of TCriticalSection;
-  BSBLResumeFile: array[b19..b10g] of string;
+  BSBlockList: array[b19..b248g] of TStringList;
+  BSBLLock: array[b19..b248g] of TCriticalSection;
+  BSBLResumeFile: array[b19..b248g] of string;
 
 resourcestring
   SHOW_ALLBANDS = 'To ALL';
@@ -1116,8 +1122,14 @@ begin
    FBandScopeMenu[b2400] := menuBS13;
    FBandScopeMenu[b5600] := menuBS14;
    FBandScopeMenu[b10g] := menuBS15;
+   FBandScopeMenu[b104g] := menuBS16;
+   FBandScopeMenu[b24g] := menuBS17;
+   FBandScopeMenu[b47g] := menuBS18;
+   FBandScopeMenu[b77g] := menuBS19;
+   FBandScopeMenu[b135g] := menuBS20;
+   FBandScopeMenu[b248g] := menuBS21;
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       FBandScopeMenu[b].Caption := BandString[b];
    end;
 
@@ -2233,7 +2245,7 @@ var
 begin
    tabctrlBandSelector.Tabs.Clear();
    tabctrlBandSelector.Tabs.Add('ALL');
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       if dmZLogGlobal.Settings._usebandscope[b] = True then begin
          tabctrlBandSelector.Tabs.Add(MHzString[b]);
       end;
@@ -2293,7 +2305,7 @@ begin
    menuBSNewMulti.Visible := dmZLogGlobal.Settings._usebandscope_newmulti;
    menuBSNewMulti.Checked := MainForm.BandScopeNewMulti.Visible;
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       FBandScopeMenu[b].Visible := dmZLogGlobal.Settings._usebandscope[b];
       FBandScopeMenu[b].Checked := MainForm.BandScopeEx[b].Visible;
    end;
@@ -2306,7 +2318,7 @@ var
 begin
    S := tabctrlBandSelector.Tabs[TabIndex];
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       if MHzString[b] = S then begin
          Result := b;
          Exit;
@@ -2412,21 +2424,24 @@ end;
 
 initialization
    CurrentRigFrequency := 0;
-   for var b := b19 to b10g do begin
+   for var b := b19 to b248g do begin
       BSBLLock[b] := TCriticalSection.Create();
       BSBlockList[b] := TStringList.Create();
       BSBLResumeFile[b] := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_bl_' + ADIFBandString[b] + '.txt';
       if FileExists(BSBLResumeFile[b]) then begin
          BSBlockList[b].LoadFromFile(BSBLResumeFile[b]);
+         if BSBlockList[b].Count = 0 then begin
+            DeleteFile(BSBLResumeFile[b]);
+         end;
       end;
    end;
 
 finalization
-   for var b := b19 to b10g do begin
+   for var b := b19 to b248g do begin
       FreeAndNil(BSBLLock[b]);
    end;
-   for var b := b19 to b10g do begin
-      if (BSBLResumeFile[b] <> '') then begin
+   for var b := b19 to b248g do begin
+      if (BSBLResumeFile[b] <> '') and (BSBlockList[b].Count > 0) then begin
          BSBlockList[b].SaveToFile(BSBLResumeFile[b]);
       end;
       FreeAndNil(BSBlockList[b]);

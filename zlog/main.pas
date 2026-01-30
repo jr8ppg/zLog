@@ -718,6 +718,12 @@ type
     menuDateStyleLong: TMenuItem;
     popupNRSettings: TPopupMenu;
     menuNRSettings: TMenuItem;
+    menuBS16: TMenuItem;
+    menuBS17: TMenuItem;
+    menuBS18: TMenuItem;
+    menuBS19: TMenuItem;
+    menuBS20: TMenuItem;
+    menuBS21: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1158,7 +1164,7 @@ type
     FLastRitStatus: array[1..3] of Boolean;
     FLastRitOffset: array[1..3] of Integer;
 
-    FBandScopeMenu: array[b19..b10g] of TMenuItem;
+    FBandScopeMenu: array[b19..b248g] of TMenuItem;
 
     FPastEditMode: Boolean;
     FFilterTx: Integer;
@@ -1737,8 +1743,14 @@ begin
    FBandScopeMenu[b2400] := menuBS13;
    FBandScopeMenu[b5600] := menuBS14;
    FBandScopeMenu[b10g] := menuBS15;
+   FBandScopeMenu[b104g] := menuBS16;
+   FBandScopeMenu[b24g] := menuBS17;
+   FBandScopeMenu[b47g] := menuBS18;
+   FBandScopeMenu[b77g] := menuBS19;
+   FBandScopeMenu[b135g] := menuBS20;
+   FBandScopeMenu[b248g] := menuBS21;
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       FBandScopeMenu[b].Caption := BandString[b];
    end;
 
@@ -6967,7 +6979,7 @@ begin
    menuBSNewMulti.Visible := dmZLogGlobal.Settings._usebandscope_newmulti;
    menuBSNewMulti.Checked := FBandScopeNewMulti.Visible;
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       FBandScopeMenu[b].Visible := dmZLogGlobal.Settings._usebandscope[b];
       FBandScopeMenu[b].Checked := FBandScopeEx[b].Visible;
    end;
@@ -9112,7 +9124,7 @@ begin
 
       if Is2Radio() = True then begin
          // 右側のバンドとモードを取得＆設定
-         for BB := b19 to b10g do begin
+         for BB := b19 to b248g do begin
             rigno := dmZLogGlobal.Settings.FRigSet[2].FRig[BB];
             if (rigno <> 0) and (RigControl.Rigs[rigno] <> nil) then begin
                FEditPanel[1].ModeEdit.Text := ModeString[RigControl.Rigs[rigno].CurrentMode];

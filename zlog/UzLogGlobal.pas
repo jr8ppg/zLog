@@ -1467,6 +1467,12 @@ begin
       Settings._usebandscope[b2400] := ini.ReadBool('BandScopeEx', 'BandScope2400MHz', False);
       Settings._usebandscope[b5600] := ini.ReadBool('BandScopeEx', 'BandScope5600MHz', False);
       Settings._usebandscope[b10g]  := ini.ReadBool('BandScopeEx', 'BandScope10GHz', False);
+      Settings._usebandscope[b104g]  := ini.ReadBool('BandScopeEx', 'BandScope10.4GHz', False);
+      Settings._usebandscope[b24g]  := ini.ReadBool('BandScopeEx', 'BandScope24GHz', False);
+      Settings._usebandscope[b47g]  := ini.ReadBool('BandScopeEx', 'BandScope47GHz', False);
+      Settings._usebandscope[b77g]  := ini.ReadBool('BandScopeEx', 'BandScope77GHz', False);
+      Settings._usebandscope[b135g]  := ini.ReadBool('BandScopeEx', 'BandScope135GHz', False);
+      Settings._usebandscope[b248g]  := ini.ReadBool('BandScopeEx', 'BandScope248GHz', False);
       Settings._usebandscope_current := ini.ReadBool('BandScope', 'Current', False);
       Settings._usebandscope_newmulti := ini.ReadBool('BandScope', 'NewMulti', False);
       Settings._usebandscope_allbands := ini.ReadBool('BandScope', 'AllBands', False);
@@ -2243,6 +2249,12 @@ begin
       ini.WriteBool('BandScopeEx', 'BandScope2400MHz', Settings._usebandscope[b2400]);
       ini.WriteBool('BandScopeEx', 'BandScope5600MHz', Settings._usebandscope[b5600]);
       ini.WriteBool('BandScopeEx', 'BandScope10GHz', Settings._usebandscope[b10g]);
+      ini.WriteBool('BandScopeEx', 'BandScope10.4GHz', Settings._usebandscope[b104g]);
+      ini.WriteBool('BandScopeEx', 'BandScope24GHz', Settings._usebandscope[b24g]);
+      ini.WriteBool('BandScopeEx', 'BandScope47GHz', Settings._usebandscope[b47g]);
+      ini.WriteBool('BandScopeEx', 'BandScope77GHz', Settings._usebandscope[b77g]);
+      ini.WriteBool('BandScopeEx', 'BandScope135GHz', Settings._usebandscope[b135g]);
+      ini.WriteBool('BandScopeEx', 'BandScope248GHz', Settings._usebandscope[b248g]);
       ini.WriteBool('BandScope', 'Current', Settings._usebandscope_current);
       ini.WriteBool('BandScope', 'NewMulti', Settings._usebandscope_newmulti);
       ini.WriteBool('BandScope', 'AllBands', Settings._usebandscope_allbands);

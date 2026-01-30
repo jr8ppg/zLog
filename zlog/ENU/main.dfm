@@ -6969,6 +6969,12 @@ object MainForm: TMainForm
             Caption = '18'
             OnClick = menuBS00Click
           end
+          object menuBS10: TMenuItem
+            Tag = 10
+            AutoCheck = True
+            Caption = '144'
+            OnClick = menuBS00Click
+          end
           object menuBS06: TMenuItem
             Tag = 6
             AutoCheck = True
@@ -6991,12 +6997,6 @@ object MainForm: TMainForm
             Tag = 9
             AutoCheck = True
             Caption = '50'
-            OnClick = menuBS00Click
-          end
-          object menuBS10: TMenuItem
-            Tag = 10
-            AutoCheck = True
-            Caption = '144'
             OnClick = menuBS00Click
           end
           object menuBS11: TMenuItem
@@ -7026,7 +7026,43 @@ object MainForm: TMainForm
           object menuBS15: TMenuItem
             Tag = 15
             AutoCheck = True
-            Caption = '10G'
+            Caption = '10.1G'
+            OnClick = menuBS00Click
+          end
+          object menuBS16: TMenuItem
+            Tag = 16
+            AutoCheck = True
+            Caption = '10.4G'
+            OnClick = menuBS00Click
+          end
+          object menuBS17: TMenuItem
+            Tag = 17
+            AutoCheck = True
+            Caption = '24G'
+            OnClick = menuBS00Click
+          end
+          object menuBS18: TMenuItem
+            Tag = 18
+            AutoCheck = True
+            Caption = '47G'
+            OnClick = menuBS00Click
+          end
+          object menuBS19: TMenuItem
+            Tag = 19
+            AutoCheck = True
+            Caption = '77G'
+            OnClick = menuBS00Click
+          end
+          object menuBS20: TMenuItem
+            Tag = 20
+            AutoCheck = True
+            Caption = '135G'
+            OnClick = menuBS00Click
+          end
+          object menuBS21: TMenuItem
+            Tag = 21
+            AutoCheck = True
+            Caption = '248G'
             OnClick = menuBS00Click
           end
         end
