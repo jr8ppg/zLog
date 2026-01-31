@@ -1708,26 +1708,34 @@ begin
       FBandScopeEx[b] := TBandScope2.Create(Self, b);
       FBandScopeEx[b].Style := bssByBand;
       FBandScopeEx[b].UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-      FBandScopeEx[b].Resume();
+      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
+         FBandScopeEx[b].Resume();
+      end;
    end;
 
    // 現在バンド用
    FBandScope := TBandScope2.Create(Self, b19);
    FBandScope.Style := bssCurrentBand;
    FBandScope.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-   FBandScope.Resume();
+   if dmZLogGlobal.Settings._usebandscope_current = True then begin
+      FBandScope.Resume();
+   end;
 
    // ニューマルチ用
    FBandScopeNewMulti := TBandScope2.Create(Self, bUnknown);
    FBandScopeNewMulti.Style := bssNewMulti;
    FBandScopeNewMulti.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-   FBandScopeNewMulti.Resume();
+   if dmZLogGlobal.Settings._usebandscope_newmulti = True then begin
+      FBandScopeNewMulti.Resume();
+   end;
 
    // 全バンド用
    FBandScopeAllBands := TBandScope2.Create(Self, bUnknown);
    FBandScopeAllBands.Style := bssAllBands;
    FBandScopeAllBands.UseResume := dmZLogGlobal.Settings._bandscope_use_resume;
-   FBandScopeAllBands.Resume();
+   if dmZLogGlobal.Settings._usebandscope_allbands = True then begin
+      FBandScopeAllBands.Resume();
+   end;
 
    FBandScopeMenu[b19] := menuBS00;
    FBandScopeMenu[b35] := menuBS01;
@@ -2080,19 +2088,27 @@ begin
    FCheckCountry.Release();
 
    for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
-      FBandScopeEx[b].Suspend();
+      if dmZLogGlobal.Settings._usebandscope[b] = True then begin
+         FBandScopeEx[b].Suspend();
+      end;
       FBandScopeEx[b].Close();
       FBandScopeEx[b].Release();
    end;
-   FBandScope.Suspend();
+   if dmZLogGlobal.Settings._usebandscope_current = True then begin
+      FBandScope.Suspend();
+   end;
    FBandScope.Close();
    FBandScope.Release();
 
-   FBandScopeNewMulti.Suspend();
+   if dmZLogGlobal.Settings._usebandscope_newmulti = True then begin
+      FBandScopeNewMulti.Suspend();
+   end;
    FBandScopeNewMulti.Close();
    FBandScopeNewMulti.Release();
 
-   FBandScopeAllBands.Suspend();
+   if dmZLogGlobal.Settings._usebandscope_allbands = True then begin
+      FBandScopeAllBands.Suspend();
+   end;
    FBandScopeAllBands.Close();
    FBandScopeAllBands.Release();
 
