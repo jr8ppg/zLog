@@ -298,7 +298,7 @@ object MenuForm: TMenuForm
     Top = 8
     Width = 99
     Height = 145
-    Caption = 'Mode'
+    Caption = #12514#12540#12489
     ItemIndex = 0
     Items.Strings = (
       'PH/CW(MIX)'

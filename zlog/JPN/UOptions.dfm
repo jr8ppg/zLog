@@ -4722,7 +4722,7 @@ object formOptions: TformOptions
         Width = 65
         Height = 20
         Caption = #21442#29031'...'
-        TabOrder = 14
+        TabOrder = 15
         OnClick = BrowsePathClick
       end
       object editResumeFolder: TEdit
@@ -4730,7 +4730,7 @@ object formOptions: TformOptions
         Top = 191
         Width = 314
         Height = 21
-        TabOrder = 15
+        TabOrder = 14
       end
     end
     object tabsheetFont: TTabSheet
@@ -4770,13 +4770,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'Cascadia Code PL SemiLight'
+          FontName = 'Cascadia Mono SemiLight Italic'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 42
+          ItemIndex = 65
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

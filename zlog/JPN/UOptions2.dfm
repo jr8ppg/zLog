@@ -1,7 +1,7 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = spPartialCloseTime
+  ActiveControl = editMyCallsign
   BorderStyle = bsDialog
   Caption = #36939#29992#35373#23450
   ClientHeight = 571
@@ -23,7 +23,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMisc
+    ActivePage = tabsheetMyStation
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -1163,14 +1163,14 @@ object formOptions2: TformOptions2
         Top = 440
         Width = 254
         Height = 51
-        Caption = 'Other rules'
+        Caption = #12381#12398#20182#12398#12523#12540#12523
         TabOrder = 3
         object Label46: TLabel
           Left = 11
           Top = 24
           Width = 58
           Height = 13
-          Caption = 'Score coeff.'
+          Caption = #23616#31278#20418#25968
         end
         object ScoreCoeffEdit: TEdit
           Left = 120
@@ -1201,7 +1201,7 @@ object formOptions2: TformOptions2
         Top = 3
         Width = 262
         Height = 346
-        Caption = 'Messages'
+        Caption = 'CW'#36865#20449#12513#12483#12475#12540#12472
         TabOrder = 6
         object Label1: TLabel
           Left = 8
@@ -2636,6 +2636,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = #12522#12475#12483#12488
           TabOrder = 10
+          OnClick = buttonListResetClick
         end
         object buttonListFore1: TButton
           Tag = 1
@@ -2675,6 +2676,7 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = #22826#23383
           TabOrder = 9
+          OnClick = checkListBoldClick
         end
         object editListColor3: TEdit
           Left = 145
@@ -2705,6 +2707,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = #12522#12475#12483#12488
           TabOrder = 13
+          OnClick = buttonListResetClick
         end
         object editListColor4: TEdit
           Left = 145
@@ -2735,6 +2738,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = #12522#12475#12483#12488
           TabOrder = 16
+          OnClick = buttonListResetClick
         end
         object comboListColorType2: TComboBox
           Left = 8

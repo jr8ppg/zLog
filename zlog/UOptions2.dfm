@@ -1201,7 +1201,7 @@ object formOptions2: TformOptions2
         Top = 3
         Width = 262
         Height = 346
-        Caption = 'Messages'
+        Caption = 'CW Messages'
         TabOrder = 6
         object Label1: TLabel
           Left = 8
@@ -2636,6 +2636,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = 'Reset'
           TabOrder = 10
+          OnClick = buttonListResetClick
         end
         object buttonListFore1: TButton
           Tag = 1
@@ -2675,6 +2676,7 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Bold'
           TabOrder = 9
+          OnClick = checkListBoldClick
         end
         object editListColor3: TEdit
           Left = 145
@@ -2705,6 +2707,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = 'Reset'
           TabOrder = 13
+          OnClick = buttonListResetClick
         end
         object editListColor4: TEdit
           Left = 145
@@ -2735,6 +2738,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = 'Reset'
           TabOrder = 16
+          OnClick = buttonListResetClick
         end
         object comboListColorType2: TComboBox
           Left = 8
@@ -3265,7 +3269,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

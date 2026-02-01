@@ -1,7 +1,7 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = spPartialCloseTime
+  ActiveControl = editMyCallsign
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -23,7 +23,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetMisc
+    ActivePage = tabsheetMyStation
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -1876,7 +1876,7 @@ object formOptions2: TformOptions2
         Top = 3
         Width = 262
         Height = 346
-        Caption = 'Messages'
+        Caption = 'CW Messages'
         TabOrder = 6
         object Label1: TLabel
           Left = 8
@@ -3599,6 +3599,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = 'Reset'
           TabOrder = 10
+          OnClick = buttonListResetClick
         end
         object buttonListFore1: TButton
           Tag = 1
@@ -3638,6 +3639,7 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Bold'
           TabOrder = 9
+          OnClick = checkListBoldClick
         end
         object editListColor3: TEdit
           Left = 145
@@ -3668,6 +3670,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = 'Reset'
           TabOrder = 13
+          OnClick = buttonListResetClick
         end
         object editListColor4: TEdit
           Left = 145
@@ -3698,6 +3701,7 @@ object formOptions2: TformOptions2
           Height = 20
           Caption = 'Reset'
           TabOrder = 16
+          OnClick = buttonListResetClick
         end
         object comboListColorType2: TComboBox
           Left = 8
