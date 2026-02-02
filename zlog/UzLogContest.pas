@@ -342,13 +342,13 @@ begin
    FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 4;      // band
-   FColWidths[9] := 4;      // mode
-   FColWidths[10] := 6;     // op
-   FColWidths[11] := 7;     // memo
-   FColWidths[12] := 4;     // point
-   FColWidths[13] := 3;     // multi1
-   FColWidths[14] := 3;     // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
    FUseNrIme := False;
@@ -1416,38 +1416,42 @@ begin
       // ëóêMÇmÇq
       if FConfig.UseSentRST = True then begin
          FColWidths[4] := 4;
-         FColWidths[4] := 10;
+         FColWidths[5] := 10;
       end
       else begin
          FColWidths[4] := 0;
-         FColWidths[4] := 0;
+         FColWidths[5] := 0;
       end;
+      FColWidths[6] := 4;
+      FColWidths[7] := 10;
 
       // É}ÉãÉ`ÇQ
       if FConfig.UseMulti2 = True then begin
-         FColWidths[8] := 3;
+         FColWidths[9] := 3;
       end
       else begin
-         FColWidths[8] := 0;
+         FColWidths[9] := 0;
       end;
    end
    else begin
       // ëóêMÇmÇq
       if FConfig.UseSentRST = True then begin
          FColWidths[4] := 4;
-         FColWidths[4] := 10;
+         FColWidths[5] := 5;
       end
       else begin
          FColWidths[4] := 0;
-         FColWidths[4] := 0;
+         FColWidths[5] := 0;
       end;
+      FColWidths[6] := 4;
+      FColWidths[7] := 5;
 
       // É}ÉãÉ`ÇQ
       if FConfig.UseMulti2 = True then begin
-         FColWidths[8] := 3;
+         FColWidths[9] := 3;
       end
       else begin
-         FColWidths[8] := 0;
+         FColWidths[9] := 0;
       end;
    end;
 
