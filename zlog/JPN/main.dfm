@@ -7119,6 +7119,9 @@ object MainForm: TMainForm
         object menuShowScratchSheet: TMenuItem
           Action = actionShowScratchSheet
         end
+        object menuShowSentNumber: TMenuItem
+          Action = actionShowSentNumber
+        end
       end
     end
     object menuSettings: TMenuItem
@@ -8801,6 +8804,10 @@ object MainForm: TMainForm
     object actionFocusRstSent: TAction
       Caption = 'actionFocusRstSent'
       OnExecute = actionFocusRstSentExecute
+    end
+    object actionShowSentNumber: TAction
+      Caption = #12467#12531#12486#12473#12488#12490#12531#12496#12540
+      OnExecute = actionShowSentNumberExecute
     end
   end
   object SPCMenu: TPopupMenu

@@ -96,6 +96,7 @@ library Zlog;
 {ITE} {DFMFileType} {USearch.dfm}
 {ITE} {DFMFileType} {USelectClusterLog.dfm}
 {ITE} {DFMFileType} {USelectUserDefinedContest.dfm}
+{ITE} {DFMFileType} {USentNumber.dfm}
 {ITE} {DFMFileType} {USixDownMulti.dfm}
 {ITE} {DFMFileType} {USo2rNeoCp.dfm}
 {ITE} {DFMFileType} {USpcViewer.dfm}
@@ -221,6 +222,7 @@ library Zlog;
 {$R 'USearch.dfm' 'formSearch:TForm'}
 {$R 'USelectClusterLog.dfm' 'formSelectClusterLog:TForm'}
 {$R 'USelectUserDefinedContest.dfm' 'SelectUserDefinedContest:TForm'}
+{$R 'USentNumber.dfm' 'formSentNumber:TForm(zLogForm)'}
 {$R 'USixDownMulti.dfm' 'SixDownMulti:TForm(FDMulti)'}
 {$R 'USo2rNeoCp.dfm' 'formSo2rNeoCp:TForm'}
 {$R 'USpcViewer.dfm' 'formSpcViewer:TForm'}

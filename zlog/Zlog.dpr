@@ -166,7 +166,8 @@ uses
   UJarlWebUpload2 in 'UJarlWebUpload2.pas' {formJarlWebUpload2},
   UzLogWebView2 in 'UzLogWebView2.pas',
   UDmsToGridDialog in 'UDmsToGridDialog.pas' {formDmsToGridDialog},
-  UGridLocator in 'UGridLocator.pas';
+  UGridLocator in 'UGridLocator.pas',
+  USentNumber in 'USentNumber.pas' {formSentNumber};
 
 {$R *.res}
 

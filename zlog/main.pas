@@ -32,7 +32,7 @@ uses
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
   UQsyInfo, UserDefinedContest, UPluginManager, USo2rNeoCp, UInformation,
   UStatusEdit, UMessageManager, UzLogContest, UBandPlan,
-  UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo, UGrayline;
+  UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo, UGrayline, USentNumber;
 
 const
   WM_ZLOG_INIT = (WM_USER + 100);
@@ -725,6 +725,8 @@ type
     menuBS20: TMenuItem;
     menuBS21: TMenuItem;
     timerPartialClose: TTimer;
+    actionShowSentNumber: TAction;
+    menuShowSentNumber: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1065,6 +1067,7 @@ type
       var MouseActivate: TMouseActivate);
     procedure GridMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure actionShowSentNumberExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -1101,6 +1104,7 @@ type
     FQsoSearch: TformSearch;
     FEntityInfo: TformEntityInfo;
     FGrayline: TformGrayline;
+    FSentNumber: TformSentNumber;
 
     FInitialized: Boolean;
     FQsoListColumnChanging: Boolean;
@@ -1658,6 +1662,7 @@ begin
    FQsoSearch     := TformSearch.Create(Self);
    FEntityInfo    := TformEntityInfo.Create(Self);
    FGrayline      := TformGrayline.Create(Self);
+   FSentNumber    := TformSentNumber.Create(Self);
 
    // late create
    FConsolePad    := nil;
@@ -2139,6 +2144,7 @@ begin
    FQsoSearch.Release();
    FEntityInfo.Release();
    FGrayline.Release();
+   FSentNumber.Release();
 
    if Assigned(FTTYConsole) then begin
       FTTYConsole.Release();
@@ -3240,28 +3246,29 @@ var
 begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
-      dmZlogGlobal.ReadWindowState(ini, FCheckCall2);
-      dmZlogGlobal.ReadWindowState(ini, FPartialCheck);
-      dmZlogGlobal.ReadWindowState(ini, FSuperCheck);
-      dmZlogGlobal.ReadWindowState(ini, FSuperCheck2);
-      dmZlogGlobal.ReadWindowState(ini, FCheckMulti);
-      dmZlogGlobal.ReadWindowState(ini, FCWKeyBoard);
-      dmZlogGlobal.ReadWindowState(ini, FRigControl, '', True);
-      dmZlogGlobal.ReadWindowState(ini, FChatForm);
-      dmZlogGlobal.ReadWindowState(ini, FFreqList);
-      dmZlogGlobal.ReadWindowState(ini, FCommForm);
-      dmZlogGlobal.ReadWindowState(ini, FRateDialog);
-      dmZlogGlobal.ReadWindowState(ini, FRateDialogEx);
-      dmZlogGlobal.ReadWindowState(ini, FZAnalyze);
-      dmZlogGlobal.ReadWindowState(ini, FCwMessagePad);
-      dmZlogGlobal.ReadWindowState(ini, FFunctionKeyPanel);
-      dmZlogGlobal.ReadWindowState(ini, FSo2rNeoCp, '', True);
-      dmZlogGlobal.ReadWindowState(ini, FInformation);
-      dmZlogGlobal.ReadWindowState(ini, FZLinkForm);
-      dmZlogGlobal.ReadWindowState(ini, FMessageManager);
-      dmZlogGlobal.ReadWindowState(ini, FCWMonitor);
-      dmZlogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
-      dmZlogGlobal.ReadWindowState(ini, FGrayline);
+      dmZLogGlobal.ReadWindowState(ini, FCheckCall2);
+      dmZLogGlobal.ReadWindowState(ini, FPartialCheck);
+      dmZLogGlobal.ReadWindowState(ini, FSuperCheck);
+      dmZLogGlobal.ReadWindowState(ini, FSuperCheck2);
+      dmZLogGlobal.ReadWindowState(ini, FCheckMulti);
+      dmZLogGlobal.ReadWindowState(ini, FCWKeyBoard);
+      dmZLogGlobal.ReadWindowState(ini, FRigControl, '', True);
+      dmZLogGlobal.ReadWindowState(ini, FChatForm);
+      dmZLogGlobal.ReadWindowState(ini, FFreqList);
+      dmZLogGlobal.ReadWindowState(ini, FCommForm);
+      dmZLogGlobal.ReadWindowState(ini, FRateDialog);
+      dmZLogGlobal.ReadWindowState(ini, FRateDialogEx);
+      dmZLogGlobal.ReadWindowState(ini, FZAnalyze);
+      dmZLogGlobal.ReadWindowState(ini, FCwMessagePad);
+      dmZLogGlobal.ReadWindowState(ini, FFunctionKeyPanel);
+      dmZLogGlobal.ReadWindowState(ini, FSo2rNeoCp, '', True);
+      dmZLogGlobal.ReadWindowState(ini, FInformation);
+      dmZLogGlobal.ReadWindowState(ini, FZLinkForm);
+      dmZLogGlobal.ReadWindowState(ini, FMessageManager);
+      dmZLogGlobal.ReadWindowState(ini, FCWMonitor);
+      dmZLogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
+      dmZLogGlobal.ReadWindowState(ini, FGrayline);
+      FSentNumber.LoadSettings(ini);
 
       if ini.ReadBool('Windows', 'ConsolePad_Open', False) = True then begin
          ConsolePad(ini);
@@ -3283,16 +3290,16 @@ begin
       FBandScopeNewMulti.LoadSettings(ini, 'BandScopeNewMulti');
       FBandScopeAllBands.LoadSettings(ini, 'BandScopeAllBands');
 
-      FSuperCheck.Columns := dmZlogGlobal.SuperCheckColumns;
-      FSuperCheck2.Columns := dmZlogGlobal.SuperCheck2Columns;
+      FSuperCheck.Columns := dmZLogGlobal.SuperCheckColumns;
+      FSuperCheck2.Columns := dmZLogGlobal.SuperCheck2Columns;
 
       FZAnalyze.ExcludeZeroPoints := dmZLogGlobal.Settings.FAnalyzeExcludeZeroPoints;
       FZAnalyze.ExcludeZeroHour := dmZLogGlobal.Settings.FAnalyzeExcludeZeroHour;
       FZAnalyze.ShowCW := dmZLogGlobal.Settings.FAnalyzeShowCW;
       FZAnalyze.UseRbnAnalyze := dmZLogGlobal.Settings.FUseRbnAnalyze;
 
-      dmZlogGlobal.ReadWindowState(ini, MyContest.MultiForm, 'MultiForm', False);
-      dmZlogGlobal.ReadWindowState(ini, MyContest.ScoreForm, 'ScoreForm', True);
+      dmZLogGlobal.ReadWindowState(ini, MyContest.MultiForm, 'MultiForm', False);
+      dmZLogGlobal.ReadWindowState(ini, MyContest.ScoreForm, 'ScoreForm', True);
    finally
       ini.Free();
    end;
@@ -3305,28 +3312,29 @@ var
 begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
-      dmZlogGlobal.WriteWindowState(ini, FCheckCall2);
-      dmZlogGlobal.WriteWindowState(ini, FPartialCheck);
-      dmZlogGlobal.WriteWindowState(ini, FSuperCheck);
-      dmZlogGlobal.WriteWindowState(ini, FSuperCheck2);
-      dmZlogGlobal.WriteWindowState(ini, FCheckMulti);
-      dmZlogGlobal.WriteWindowState(ini, FCWKeyBoard);
-      dmZlogGlobal.WriteWindowState(ini, FRigControl);
-      dmZlogGlobal.WriteWindowState(ini, FChatForm);
-      dmZlogGlobal.WriteWindowState(ini, FFreqList);
-      dmZlogGlobal.WriteWindowState(ini, FCommForm);
-      dmZlogGlobal.WriteWindowState(ini, FRateDialog);
-      dmZlogGlobal.WriteWindowState(ini, FRateDialogEx);
-      dmZlogGlobal.WriteWindowState(ini, FZAnalyze);
-      dmZlogGlobal.WriteWindowState(ini, FCwMessagePad);
-      dmZlogGlobal.WriteWindowState(ini, FFunctionKeyPanel);
-      dmZlogGlobal.WriteWindowState(ini, FSo2rNeoCp);
-      dmZlogGlobal.WriteWindowState(ini, FInformation);
-      dmZlogGlobal.WriteWindowState(ini, FZLinkForm);
-      dmZlogGlobal.WriteWindowState(ini, FMessageManager);
-      dmZlogGlobal.WriteWindowState(ini, FCWMonitor);
-      dmZlogGlobal.WriteWindowState(ini, FEntityInfo);
-      dmZlogGlobal.WriteWindowState(ini, FGrayline);
+      dmZLogGlobal.WriteWindowState(ini, FCheckCall2);
+      dmZLogGlobal.WriteWindowState(ini, FPartialCheck);
+      dmZLogGlobal.WriteWindowState(ini, FSuperCheck);
+      dmZLogGlobal.WriteWindowState(ini, FSuperCheck2);
+      dmZLogGlobal.WriteWindowState(ini, FCheckMulti);
+      dmZLogGlobal.WriteWindowState(ini, FCWKeyBoard);
+      dmZLogGlobal.WriteWindowState(ini, FRigControl);
+      dmZLogGlobal.WriteWindowState(ini, FChatForm);
+      dmZLogGlobal.WriteWindowState(ini, FFreqList);
+      dmZLogGlobal.WriteWindowState(ini, FCommForm);
+      dmZLogGlobal.WriteWindowState(ini, FRateDialog);
+      dmZLogGlobal.WriteWindowState(ini, FRateDialogEx);
+      dmZLogGlobal.WriteWindowState(ini, FZAnalyze);
+      dmZLogGlobal.WriteWindowState(ini, FCwMessagePad);
+      dmZLogGlobal.WriteWindowState(ini, FFunctionKeyPanel);
+      dmZLogGlobal.WriteWindowState(ini, FSo2rNeoCp);
+      dmZLogGlobal.WriteWindowState(ini, FInformation);
+      dmZLogGlobal.WriteWindowState(ini, FZLinkForm);
+      dmZLogGlobal.WriteWindowState(ini, FMessageManager);
+      dmZLogGlobal.WriteWindowState(ini, FCWMonitor);
+      dmZLogGlobal.WriteWindowState(ini, FEntityInfo);
+      dmZLogGlobal.WriteWindowState(ini, FGrayline);
+      FSentNumber.SaveSettings(ini);
 
       if FConsolePad <> nil then begin
          dmZLogGlobal.WriteWindowState(ini, FConsolePad);
@@ -3354,8 +3362,8 @@ begin
       dmZLogGlobal.Settings.FAnalyzeShowCW := FZAnalyze.ShowCW;
 
       if MyContest <> nil then begin
-         dmZlogGlobal.WriteWindowState(ini, MyContest.MultiForm, 'MultiForm');
-         dmZlogGlobal.WriteWindowState(ini, MyContest.ScoreForm, 'ScoreForm');
+         dmZLogGlobal.WriteWindowState(ini, MyContest.MultiForm, 'MultiForm');
+         dmZLogGlobal.WriteWindowState(ini, MyContest.ScoreForm, 'ScoreForm');
       end;
 
       ini.UpdateFile();
@@ -3522,11 +3530,11 @@ begin
 
    if (Pos('AUTOBANDSCOPE', S) = 1) or (Pos('AUTOBANDMAP', S) = 1) or (Pos('AUTOBS', S) = 1) then begin
       if Pos('OFF', S) > 0 then begin
-         dmZlogGlobal.Settings._autobandmap := False;
+         dmZLogGlobal.Settings._autobandmap := False;
          WriteStatusLine('Automatic band map OFF', False);
       end
       else begin
-         dmZlogGlobal.Settings._autobandmap := True;
+         dmZLogGlobal.Settings._autobandmap := True;
          WriteStatusLine('Automatic band map ON', False);
       end
    end;
@@ -3661,7 +3669,7 @@ begin
 
    if Pos('TXNR', S) = 1 then begin
       if length(temp) = 4 then
-         WriteStatusLine('TX# = ' + IntToStr(dmZlogGlobal.TXNr), True)
+         WriteStatusLine('TX# = ' + IntToStr(dmZLogGlobal.TXNr), True)
       else begin
          Delete(temp, 1, 4);
          j := StrToIntDef(temp, 0);
@@ -3680,14 +3688,14 @@ begin
 
    if Pos('PCNAME', S) = 1 then begin
       if length(temp) = 6 then
-         WriteStatusLine('PC name is ' + dmZlogGlobal.Settings._pcname, True)
+         WriteStatusLine('PC name is ' + dmZLogGlobal.Settings._pcname, True)
       else begin
          Delete(temp, 1, 7);
          temp := TrimRight(temp);
-         dmZlogGlobal.Settings._pcname := temp;
-         dmZlogGlobal.SaveCurrentSettings();
-         // dmZlogGlobal.Ini.SetString('Z-Link', 'PCName', temp);
-         WriteStatusLine('PC name set to ' + dmZlogGlobal.Settings._pcname, True);
+         dmZLogGlobal.Settings._pcname := temp;
+         dmZLogGlobal.SaveCurrentSettings();
+         // dmZLogGlobal.Ini.SetString('Z-Link', 'PCName', temp);
+         WriteStatusLine('PC name set to ' + dmZLogGlobal.Settings._pcname, True);
       end;
    end;
 
@@ -3748,7 +3756,7 @@ begin
    end;
 
    if (S = 'MOVETOMEMO') then begin
-      dmZlogGlobal.Settings._movetomemo := True;
+      dmZLogGlobal.Settings._movetomemo := True;
    end;
 
    if (S = 'LQ') or (S = 'L') then
@@ -3759,7 +3767,7 @@ begin
    end;
 
    if S = 'CWON' then begin
-      dmZLogKeyer.InitializeBGK(dmZlogGlobal.Settings.CW._interval);
+      dmZLogKeyer.InitializeBGK(dmZLogGlobal.Settings.CW._interval);
       dmZLogGlobal.InitializeCW();
    end;
 
@@ -3793,9 +3801,9 @@ begin
 
    if Pos('QSYCOUNT', S) = 1 then begin
       if Pos('OFF', S) > 0 then
-         dmZlogGlobal.Settings._qsycount := False
+         dmZLogGlobal.Settings._qsycount := False
       else
-         dmZlogGlobal.Settings._qsycount := True;
+         dmZLogGlobal.Settings._qsycount := True;
    end;
 
    if (Pos('HELP', S) = 1) or (S = 'H') then begin
@@ -3804,9 +3812,9 @@ begin
 
    if (Pos('MULTWARN', S) = 1) or (Pos('MULTW', S) = 1) or (Pos('MW', S) = 1) then begin
       if Pos('OFF', S) > 0 then
-         dmZlogGlobal.Settings._multistationwarning := False
+         dmZLogGlobal.Settings._multistationwarning := False
       else
-         dmZlogGlobal.Settings._multistationwarning := True;
+         dmZLogGlobal.Settings._multistationwarning := True;
    end;
 
    if S = 'WRITEKEYMAP' then begin
@@ -3970,8 +3978,8 @@ begin
       end;
    end;
 
-   dmZlogGlobal.TXNr := txnr;
-   CurrentQSO.TX := dmZlogGlobal.TXNr;
+   dmZLogGlobal.TXNr := txnr;
+   CurrentQSO.TX := dmZLogGlobal.TXNr;
 
    SetWindowCaption();
    ReEvaluateCountDownTimer;
@@ -4040,7 +4048,7 @@ begin
    RcvdRSTEdit2VC.Font.Size := font_size;
    NumberEdit2VC.Font.Size := font_size;
 
-   dmZlogGlobal.Settings._mainfontsize := font_size;
+   dmZLogGlobal.Settings._mainfontsize := font_size;
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
 end;
@@ -4065,15 +4073,15 @@ var
    back_color: TColor;
 begin
    if Action = 0 then begin
-      if dmZlogGlobal.Settings.CW.CurrentBank = 1 then
-         dmZlogGlobal.Settings.CW.CurrentBank := 2
+      if dmZLogGlobal.Settings.CW.CurrentBank = 1 then
+         dmZLogGlobal.Settings.CW.CurrentBank := 2
       else
-         dmZlogGlobal.Settings.CW.CurrentBank := 1;
+         dmZLogGlobal.Settings.CW.CurrentBank := 1;
    end
    else
-      dmZlogGlobal.Settings.CW.CurrentBank := Action;
+      dmZLogGlobal.Settings.CW.CurrentBank := Action;
 
-   if dmZlogGlobal.Settings.CW.CurrentBank = 1 then begin
+   if dmZLogGlobal.Settings.CW.CurrentBank = 1 then begin
       back_color := clGreen;
       WriteStatusLine(TMainForm_Switch_CW_Bank_A, False)
    end
@@ -4146,7 +4154,7 @@ begin
       ' ': begin
          // memo欄は入力可
          if TEdit(Sender).Tag = 1000 then begin
-            if dmZlogGlobal.Settings._movetomemo then begin
+            if dmZLogGlobal.Settings._movetomemo then begin
                Key := #0;
                CallsignEdit.SetFocus;
             end;
@@ -4562,7 +4570,7 @@ begin
       CurrentQSO.Callsign := '';
       CurrentQSO.NrRcvd := '';
       CurrentQSO.Time := Date + Time;
-      CurrentQSO.TX := dmZlogGlobal.TXNr;
+      CurrentQSO.TX := dmZLogGlobal.TXNr;
       CurrentQSO.Memo := '';
    end;
 
@@ -5016,8 +5024,8 @@ begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
                // NR?自動送出使う場合
                if (dmZLogKeyer.KeyingPort[nTxRigID] <> tkpNone) and
-                  (dmZlogGlobal.Settings.CW._send_nr_auto = True) then begin
-                  S := dmZlogGlobal.CWMessage(0, 5);
+                  (dmZLogGlobal.Settings.CW._send_nr_auto = True) then begin
+                  S := dmZLogGlobal.CWMessage(0, 5);
                   zLogSendStr2(nTxRigID, S, curQSO);
                end;
 
@@ -5030,7 +5038,7 @@ begin
 
             if (dmZLogKeyer.KeyingPort[nTxRigID] <> tkpNone) then begin
                // TU $M TEST
-               S := dmZlogGlobal.CWMessage(0, 3);
+               S := dmZLogGlobal.CWMessage(0, 3);
 
                {$IFDEF DEBUG}
                OutputDebugString(PChar(S));
@@ -5066,7 +5074,7 @@ begin
 
          mRTTY: begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
-               S := dmZlogGlobal.CWMessage(3, 5);
+               S := dmZLogGlobal.CWMessage(3, 5);
                S := SetStrNoAbbrev(S, curQSO);
                if FTTYConsole <> nil then begin
                   FTTYConsole.SendStrNow(S);
@@ -5078,7 +5086,7 @@ begin
                exit;
             end;
 
-            S := dmZlogGlobal.CWMessage(3, 3);
+            S := dmZLogGlobal.CWMessage(3, 3);
 
             S := SetStrNoAbbrev(S, curQSO);
             if FTTYConsole <> nil then begin
@@ -5365,7 +5373,7 @@ begin
    Q.NewMulti1 := False;
    Q.NewMulti2 := False;
    Q.Invalid := False;
-   Q.TX := dmZlogGlobal.TXNr;
+   Q.TX := dmZLogGlobal.TXNr;
    Q.Forced := False;
    Q.Dupe := False;
    Q.Freq := '';
@@ -5417,7 +5425,7 @@ begin
    MyContest.SetNrSent(Q);
 
    repeat
-      i := dmZlogGlobal.NewQSOID();
+      i := dmZLogGlobal.NewQSOID();
    until Log.CheckQSOID(i) = False;
 
    Q.Reserve3 := i;
@@ -5430,12 +5438,12 @@ begin
       // 周波数が取得できたら(>0)記録する
       if Hz > 0 then begin
          // 周波数を記録
-         if dmZlogGlobal.Settings._recrigfreq = True then begin
+         if dmZLogGlobal.Settings._recrigfreq = True then begin
             Q.Freq := rig.CurrentFreqkHzStr;
          end;
 
          // 自動bandmap
-         if dmZlogGlobal.Settings._autobandmap then begin
+         if dmZLogGlobal.Settings._autobandmap then begin
             BandScopeAddSelfSpot(Q, Hz);
          end;
       end;
@@ -5522,7 +5530,7 @@ begin
 
    // M/S時、本来Multi StationはNEW MULTIしか交信できない
    if (dmZLogGlobal.IsMultiStation() = True) then begin
-      if (Q.NewMulti1 = False) and (Q.NewMulti2 = False) and (dmZlogGlobal.Settings._multistationwarning)
+      if (Q.NewMulti1 = False) and (Q.NewMulti2 = False) and (dmZLogGlobal.Settings._multistationwarning)
       then begin
          MessageDlg(TMainForm_New_Multi_Only, mtError, [mbOK], 0); { HELP context 0 }
       end;
@@ -5540,8 +5548,8 @@ begin
 
    // 自動保存
    if CurrentFileName <> '' then begin
-      if Log.TotalQSO mod dmZlogGlobal.Settings._saveevery = 0 then begin
-         if dmZlogGlobal.Settings._savewhennocw then
+      if Log.TotalQSO mod dmZLogGlobal.Settings._saveevery = 0 then begin
+         if dmZLogGlobal.Settings._savewhennocw then
             SaveInBackGround := True
          else
             SaveFileAndBackUp;
@@ -5568,13 +5576,13 @@ begin
    if Q.Mode = mCW then begin
       if (rig <> nil) and (RigControl.GetCurrentRig() <> 5) then begin
          // RITクリア
-         if (dmZlogGlobal.Settings._ritclear = True) or
-            (dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True) then begin
+         if (dmZLogGlobal.Settings._ritclear = True) or
+            (dmZLogGlobal.Settings.FAntiZeroinAutoCancel = True) then begin
             rig.RitClear;
          end;
 
          // Anti Zeroin
-         if dmZlogGlobal.Settings.FAntiZeroinAutoCancel = True then begin
+         if dmZLogGlobal.Settings.FAntiZeroinAutoCancel = True then begin
             rig.Xit := False;
          end;
       end;
@@ -5660,7 +5668,7 @@ var
    i: Integer;
 begin
    i := THemisphereButton(Sender).Tag;
-   PlayMessage(mCW, dmZlogGlobal.Settings.CW.CurrentBank, i, True);
+   PlayMessage(mCW, dmZLogGlobal.Settings.CW.CurrentBank, i, True);
 end;
 
 procedure TMainForm.SpeedBarChange(Sender: TObject);
@@ -5747,7 +5755,7 @@ begin
 
    FZLinkForm.SendRigStatus();
 
-   if dmZlogGlobal.Settings._switchcqsp then begin
+   if dmZLogGlobal.Settings._switchcqsp then begin
       if CQ then
          SwitchCWBank(1)
       else
@@ -6131,8 +6139,8 @@ end;
 
 procedure TMainForm.SideToneButtonClick(Sender: TObject);
 begin
-   dmZlogGlobal.Settings.CW._sidetone := TSpeedButton(Sender).Down;
-   dmZlogKeyer.UseSideTone := dmZlogGlobal.Settings.CW._sidetone;
+   dmZLogGlobal.Settings.CW._sidetone := TSpeedButton(Sender).Down;
+   dmZlogKeyer.UseSideTone := dmZLogGlobal.Settings.CW._sidetone;
 end;
 
 procedure TMainForm.buttonVoiceOptionClick(Sender: TObject);
@@ -6211,7 +6219,7 @@ begin
    fQsyOK := False;
 
    S2 := '';
-   if dmZlogGlobal.Settings._countdown then begin
+   if dmZLogGlobal.Settings._countdown then begin
       nCountDownMinute := dmZLogGlobal.Settings._countdownminute;
 
       if CountDownStartTime > 0 then begin
@@ -6247,7 +6255,7 @@ begin
       S2 := '';
    end;
 
-   if dmZlogGlobal.Settings._qsycount then begin
+   if dmZLogGlobal.Settings._qsycount then begin
 
       // "時"が変わったらカウンターリセット
       strHour := Copy(S, 1, 2);
@@ -6333,15 +6341,15 @@ begin
 //               dmZLogKeyer.ClrBuffer;
             end;
 
-            if dmZlogGlobal.Settings._switchcqsp then begin
-               if dmZlogGlobal.Settings.CW.CurrentBank = 2 then begin
+            if dmZLogGlobal.Settings._switchcqsp then begin
+               if dmZLogGlobal.Settings.CW.CurrentBank = 2 then begin
                   C.SelectAll;
                   exit;
                end;
             end;
 
             // 4番(QSO B4 TU)送出
-            S := ' ' + dmZlogGlobal.CWMessage(1, 4);
+            S := ' ' + dmZLogGlobal.CWMessage(1, 4);
 //            nID := FCurrentTx;
             FMessageManager.AddQue(0, S, curQSO);
 
@@ -6413,7 +6421,7 @@ begin
 
    strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
 
-   if dmZlogGlobal.Settings._entersuperexchange and (FSpcRcvd_Estimate <> '') then begin
+   if dmZLogGlobal.Settings._entersuperexchange and (FSpcRcvd_Estimate <> '') then begin
       if strNumber = '' then begin
          if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
             strNumber := TrimRight(FSpcRcvd_Estimate);
@@ -6782,8 +6790,8 @@ begin
 
       checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
-      dmZlogGlobal.ImplementSettings(False);
-      dmZlogGlobal.SaveCurrentSettings();
+      dmZLogGlobal.ImplementSettings(False);
+      dmZLogGlobal.SaveCurrentSettings();
       InitBandMenu();
 
       RenewCWToolBar;
@@ -6848,8 +6856,8 @@ begin
 
       checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
-      dmZlogGlobal.ImplementSettings(False);
-      dmZlogGlobal.SaveCurrentSettings();
+      dmZLogGlobal.ImplementSettings(False);
+      dmZLogGlobal.SaveCurrentSettings();
 
       if fPrevDarkMode <> dmZLogGlobal.Settings.FUseDarkMode then begin
          MessageBox(Handle, PChar(TMainform_darkmode_changed), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
@@ -7589,7 +7597,7 @@ var
    e: TEdit;
    pt: TPoint;
 begin
-   if dmZlogGlobal.OpList.Count = 0 then begin
+   if dmZLogGlobal.OpList.Count = 0 then begin
       MessageBox(Handle, PChar(TMainForm_EmptyOpList), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       Exit;
    end;
@@ -7938,7 +7946,7 @@ begin
          B := Q.Band;
          if B < b2400 then begin
             if F.AutoAddPowerCode = True then begin
-               Q.NrSent := strNewNR + dmZlogGlobal.Settings._power[B];
+               Q.NrSent := strNewNR + dmZLogGlobal.Settings._power[B];
             end
             else begin
                Q.NrSent := strNewNR;
@@ -7946,7 +7954,7 @@ begin
          end
          else begin
             if F.AutoAddPowerCode = True then begin
-               Q.NrSent := strNewNR2 + dmZlogGlobal.Settings._power[B];
+               Q.NrSent := strNewNR2 + dmZLogGlobal.Settings._power[B];
             end
             else begin
                Q.NrSent := strNewNR2;
@@ -7969,7 +7977,7 @@ var
    S: string;
    dlg2: TformExportCabrillo;
 begin
-   FileImportDialog.InitialDir := dmZlogGlobal.LogPath;
+   FileImportDialog.InitialDir := dmZLogGlobal.LogPath;
    FileImportDialog.FileName := '';
 
    if FileImportDialog.Execute() = False then begin
@@ -8306,7 +8314,7 @@ var
 begin
    if Log.TotalQSO > 0 then begin
       T := Log.TotalQSO;
-      mytx := dmZlogGlobal.TXNr;
+      mytx := dmZLogGlobal.TXNr;
       boo := False;
       for i := T downto 1 do begin
          if Log.QsoList[i].TX = mytx then begin
@@ -8355,7 +8363,7 @@ begin
          menuShowTTYConsole.Visible := True;
 
          FTTYConsole := TTTYConsole.Create(Self);
-         dmZlogGlobal.ReadWindowState(ini, FTTYConsole);
+         dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
 
          dmZLogKeyer.CloseBGK();
 
@@ -8370,7 +8378,7 @@ begin
          mnMMTTY.Caption := 'Load MMTTY';
          menuShowTTYConsole.Visible := False;
 
-         dmZlogGlobal.WriteWindowState(ini, FTTYConsole);
+         dmZLogGlobal.WriteWindowState(ini, FTTYConsole);
          ini.UpdateFile();
 
          FTTYConsole.Close();
@@ -8379,7 +8387,7 @@ begin
 
          ExitMMTTY;
 
-         dmZLogKeyer.InitializeBGK(dmZlogGlobal.Settings.CW._interval);
+         dmZLogKeyer.InitializeBGK(dmZLogGlobal.Settings.CW._interval);
          dmZLogGlobal.InitializeCW();
       end;
    finally
@@ -9045,7 +9053,7 @@ begin
 
       // ファイル名の指定が無い場合は選択ダイアログを出す
       if CurrentFileName = '' then begin
-         OpenDialog.InitialDir := dmZlogGlobal.LogPath;
+         OpenDialog.InitialDir := dmZLogGlobal.LogPath;
          OpenDialog.FileName := '';
          OpenDialog.FilterIndex := 1;
 
@@ -9094,8 +9102,8 @@ begin
       SetWindowCaption();
 
       // 設定反映
-      dmZlogGlobal.ImplementSettings(False);
-      SideToneButton.Down := dmZlogGlobal.Settings.CW._sidetone;
+      dmZLogGlobal.ImplementSettings(False);
+      SideToneButton.Down := dmZLogGlobal.Settings.CW._sidetone;
 
       RestoreWindowStates;
 
@@ -9131,12 +9139,12 @@ begin
       end;
       FRateDialogEx.Band := CurrentQSO.Band;
 
-      CurrentQSO.TX := dmZlogGlobal.TXNr;
+      CurrentQSO.TX := dmZLogGlobal.TXNr;
 
       SetInitQsoEditPanel();
 
       // マルチオペの場合は最後のOPをセット
-      if (dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) and
+      if (dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx]) and
          (Log.TotalQSO > 0) then begin
          if (dmZLogGlobal.Settings._selectlastoperator = True) then begin
             SelectOperator(Log.QsoList.Last.Operator);
@@ -9464,7 +9472,7 @@ begin
          end;
 
          if n = 0 then begin
-            S := dmZlogGlobal.CWMessage(bank, msgno);
+            S := dmZLogGlobal.CWMessage(bank, msgno);
             S := SetStr(UpperCase(S), CurrentQSO);
          end
          else begin
@@ -9472,7 +9480,7 @@ begin
          end;
       end
       else begin
-         S := dmZlogGlobal.CWMessage(bank, msgno);
+         S := dmZLogGlobal.CWMessage(bank, msgno);
          S := SetStr(UpperCase(S), CurrentQSO);
       end;
 
@@ -9989,7 +9997,7 @@ begin
    c := 0;
    for b := MyContest.BandLow to MyContest.BandHigh do begin
       if (BandMenu.Items[Ord(b)].Enabled = True) and
-         (dmZlogGlobal.Settings._activebands[b] = True) then begin
+         (dmZLogGlobal.Settings._activebands[b] = True) then begin
          Inc(c);
       end;
    end;
@@ -10003,7 +10011,7 @@ var
 begin
    for b := b19 to HiBand do begin
       if (BandMenu.Items[Ord(b)].Visible = True) then begin
-         dmZlogGlobal.Settings._activebands[b] := True;
+         dmZLogGlobal.Settings._activebands[b] := True;
          BandMenu.Items[Ord(b)].Enabled := True;
       end;
    end;
@@ -10015,7 +10023,7 @@ var
 begin
    if defband <> bUnknown then begin
       if (BandMenu.Items[Ord(defband)].Enabled = True) and
-         (dmZlogGlobal.Settings._activebands[defband] = True) then begin
+         (dmZLogGlobal.Settings._activebands[defband] = True) then begin
          Result := defband;
          Exit;
       end;
@@ -10023,7 +10031,7 @@ begin
 
    for b := b19 to HiBand do begin
       if (BandMenu.Items[Ord(b)].Visible = True) and
-         (dmZlogGlobal.Settings._activebands[b] = True) then begin
+         (dmZLogGlobal.Settings._activebands[b] = True) then begin
          BandMenu.Items[Ord(b)].Enabled := True;
          Result := b;
          Exit;
@@ -10071,7 +10079,7 @@ begin
 
    // M/Sの場合は RUN/MULTI表示を追加
    if dmZLogGlobal.ContestCategory = ccMultiOpSingleTx then begin
-      if dmZlogGlobal.TXNr = 0 then begin
+      if dmZLogGlobal.TXNr = 0 then begin
          strCap := strCap + ' - Running station';
       end
       else begin
@@ -10080,9 +10088,9 @@ begin
    end;
 
    // Z-LINK利用時はPC名表示を追加
-   if dmZlogGlobal.Settings._zlinkport <> 0 then begin
-      if dmZlogGlobal.Settings._pcname <> '' then begin
-          strCap := strCap + ' - [' + dmZlogGlobal.Settings._pcname + ']';
+   if dmZLogGlobal.Settings._zlinkport <> 0 then begin
+      if dmZLogGlobal.Settings._pcname <> '' then begin
+          strCap := strCap + ' - [' + dmZLogGlobal.Settings._pcname + ']';
       end;
    end;
 
@@ -10160,7 +10168,7 @@ var
    rig: TRig;
    mode: TMode;
 begin
-   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   cb := dmZLogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
    FTabKeyPressed[FCurrentRigSet - 1] := False;
 
@@ -10190,7 +10198,7 @@ var
    cb: Integer;
    rig: TRig;
 begin
-   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   cb := dmZLogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
    FTabKeyPressed[FCurrentRigSet - 1] := False;
 
@@ -10275,7 +10283,7 @@ begin
    FStartCWKeyboard := False;
 
    if no >= 101 then begin
-      bank := dmZlogGlobal.Settings.CW.CurrentBank;
+      bank := dmZLogGlobal.Settings.CW.CurrentBank;
       S := dmZLogGlobal.CWMessage(bank, FCurrentCQMessageNo);
    end
    else begin
@@ -10408,7 +10416,7 @@ begin
       Exit;
    end;
 
-   S := dmZlogGlobal.CWMessage(3, no);
+   S := dmZLogGlobal.CWMessage(3, no);
 
    if S = '' then begin
       Exit;
@@ -10515,7 +10523,7 @@ begin
          if Is2Radio() = True then begin
             // CQ+SP
             if (Is2bsiq() = False) and (FCQLoopRunning = True) then begin
-//               if (CurrentQSO.CQ = False) and (dmZlogGlobal.Settings._switchcqsp = True) then begin
+//               if (CurrentQSO.CQ = False) and (dmZLogGlobal.Settings._switchcqsp = True) then begin
 //                  PostMessage(Handle, WM_ZLOG_SPACEBAR_PROC, FKeyPressedRigID[tx], 0);
 //               end;
             end;
@@ -10692,7 +10700,7 @@ var
 begin
    no := TAction(Sender).Tag;
    OnPlayMessageA(no);
-//   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+//   cb := dmZLogGlobal.Settings.CW.CurrentBank;
 //   FOtherKeyPressed[FCurrentRigSet - 1] := True;
 //
 //   {$IFDEF DEBUG}
@@ -10748,7 +10756,7 @@ var
 begin
    no := TAction(Sender).Tag;
    OnPlayMessageB(no);
-//   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+//   cb := dmZLogGlobal.Settings.CW.CurrentBank;
 //   FOtherKeyPressed[FCurrentRigSet - 1] := True;
 //
 //   if cb = 1 then
@@ -11032,7 +11040,7 @@ end;
 // #53 パドルリバース
 procedure TMainForm.actionReversePaddleExecute(Sender: TObject);
 begin
-   dmZlogGlobal.ReversePaddle;
+   dmZLogGlobal.ReversePaddle;
 end;
 
 // #54 CW Tune
@@ -11090,7 +11098,7 @@ begin
    OutputDebugString(PChar('---actionBackupExecute---'));
    {$ENDIF}
 
-   P := dmZlogGlobal.BackupPath;
+   P := dmZLogGlobal.BackupPath;
    if DirectoryExists(P) = False then begin
       ForceDirectories(P);
    end;
@@ -11649,7 +11657,7 @@ begin
          B := Q.Band;
          if B < b2400 then begin
             if F.AutoAddPowerCode = True then begin
-               Q.NrSent := strNewNR + dmZlogGlobal.Settings._power[B];
+               Q.NrSent := strNewNR + dmZLogGlobal.Settings._power[B];
             end
             else begin
                Q.NrSent := strNewNR;
@@ -11657,7 +11665,7 @@ begin
          end
          else begin
             if F.AutoAddPowerCode = True then begin
-               Q.NrSent := strNewNR2 + dmZlogGlobal.Settings._power[B];
+               Q.NrSent := strNewNR2 + dmZLogGlobal.Settings._power[B];
             end
             else begin
                Q.NrSent := strNewNR2;
@@ -11744,7 +11752,7 @@ begin
 
    // 設定された文字列を取得
    n := TAction(Sender).Tag;
-   strQuickMemoText := dmZlogGlobal.Settings.FQuickMemoText[n];
+   strQuickMemoText := dmZLogGlobal.Settings.FQuickMemoText[n];
    if strQuickMemoText = '' then begin
       Exit;
    end;
@@ -12184,7 +12192,7 @@ procedure TMainForm.actionToggleTxNrExecute(Sender: TObject);
 var
    txnr: Integer;
 begin
-   txnr := dmZlogGlobal.TXNr;
+   txnr := dmZLogGlobal.TXNr;
    Inc(txnr);
 
    case dmZLogGlobal.ContestCategory of
@@ -12283,7 +12291,7 @@ begin
 
    // フォントサイズ設定
    FQsoSearch.FontName := dmZLogGlobal.Settings.FBaseFontName;
-   FQsoSearch.FontSize := dmZlogGlobal.Settings._mainfontsize;
+   FQsoSearch.FontSize := dmZLogGlobal.Settings._mainfontsize;
 
    // ウインドウ表示
    FQsoSearch.Show();
@@ -12312,7 +12320,7 @@ var
 begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
-      dmZlogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
+      dmZLogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
 
       if (W > 0) and (H > 0) then begin
          pt.X := X;
@@ -12374,6 +12382,12 @@ begin
    if (SentRSTEdit.Visible = True) and (SentRSTEdit.Enabled = True) then begin
       SentRSTEdit.SetFocus();
    end;
+end;
+
+// #172 SentNumber
+procedure TMainForm.actionShowSentNumberExecute(Sender: TObject);
+begin
+   FSentNumber.Show();
 end;
 
 procedure TMainForm.WriteKeymap();
@@ -12560,7 +12574,7 @@ begin
    FirstData := nil;
 
    // 検索対象がserchafter以下 searchafterは0,1,2
-   if dmZlogGlobal.Settings._searchafter >= Length(PartialStr) then begin
+   if dmZLogGlobal.Settings._searchafter >= Length(PartialStr) then begin
       Exit;
    end;
 
@@ -12570,7 +12584,7 @@ begin
    end;
 
    // Max super check search デフォルトは1
-   maxhit := dmZlogGlobal.Settings._maxsuperhit;
+   maxhit := dmZLogGlobal.Settings._maxsuperhit;
 
    // ポータブル除く
    PartialStrOrg := PartialStr;
@@ -12982,7 +12996,7 @@ begin
       P.Delete(i);
    end;
 
-   if dmZlogGlobal.OpList.Count = 0 then begin
+   if dmZLogGlobal.OpList.Count = 0 then begin
       Exit;
    end;
 
@@ -12991,9 +13005,9 @@ begin
    M.OnClick := OnClickHandler;
    P.Add(m);
 
-   for i := 0 to dmZlogGlobal.OpList.Count - 1 do begin
+   for i := 0 to dmZLogGlobal.OpList.Count - 1 do begin
       M := TMenuItem.Create(Self);
-      M.Caption := Trim(dmZlogGlobal.OpList[i].Callsign);
+      M.Caption := Trim(dmZLogGlobal.OpList[i].Callsign);
       M.OnClick := OnClickHandler;
       P.Add(m);
    end;
@@ -13011,7 +13025,7 @@ begin
          P.Delete(i);
       end;
 
-      case dmZlogGlobal.ContestCategory of
+      case dmZLogGlobal.ContestCategory of
          ccSingleOp: begin
             P.Visible := False;
             Exit;
@@ -13050,7 +13064,7 @@ begin
 
    // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
    if (BandMenu.Items[Ord(b)].Enabled = True) and
-      (dmZlogGlobal.Settings._activebands[b] = True) then begin
+      (dmZLogGlobal.Settings._activebands[b] = True) then begin
       FBandScopeAllBands.AddSelfSpot(aQSO.Callsign, aQSO.NrRcvd, b, aQSO.Mode, nFreq);
    end;
 end;
@@ -13073,7 +13087,7 @@ begin
 
    // コンテストが必要とするバンドかつ自分がQRVできるバンドのスポットのみ
    if (BandMenu.Items[Ord(Sp.Band)].Visible = True) and
-      (dmZlogGlobal.Settings._activebands[Sp.Band] = True) then begin
+      (dmZLogGlobal.Settings._activebands[Sp.Band] = True) then begin
       // Currentウインドウ
       FBandScope.AddClusterSpot(Sp);
 
@@ -13266,14 +13280,14 @@ begin
       op := nil;
    end
    else begin
-      op := dmZlogGlobal.OpList.ObjectOf(O);
+      op := dmZLogGlobal.OpList.ObjectOf(O);
    end;
 
    OpEdit.Text := O;
    CurrentQSO.Operator := O;
 
    LastFocus.SetFocus;
-   dmZlogGlobal.SetOpPower(CurrentQSO);
+   dmZLogGlobal.SetOpPower(CurrentQSO);
    PowerEdit.Text := CurrentQSO.NewPowerStr;
    FZLinkForm.SendOperator;
 
@@ -13291,9 +13305,9 @@ end;
 procedure TMainForm.SetEditColor(edit: TEdit; fHighlight: Boolean);
 begin
    with edit do begin
-      if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) and
+      if (dmZLogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) and
          (fHighlight = True) then begin
-         Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
+         Color := dmZLogGlobal.Settings.FSuperCheck.FFullMatchColor;
       end
       else begin
          Color := dmZLogGlobal.Settings.FAccessibility.FFocusedBackColor;
@@ -14356,7 +14370,7 @@ begin
    end;
 
    // J-Modeの処理
-   if (dmZlogGlobal.Settings._jmode) and (Sender = CallsignEdit) then begin
+   if (dmZLogGlobal.Settings._jmode) and (Sender = CallsignEdit) then begin
       if CallsignEdit.Text = '' then begin
          if (Key <> Ord('7')) and (Key <> Ord('8')) then begin
             CallsignEdit.Text := 'J';
@@ -14743,8 +14757,12 @@ begin
 end;
 
 procedure TMainForm.ShowSentNumber();
+var
+   S: string;
 begin
-   StatusLine.Panels[1].Text := CurrentQSO.RSTSentStr + ' ' + SetStrNoAbbrev(MyContest.SentStr, CurrentQSO);
+   S := CurrentQSO.RSTSentStr + ' ' + SetStrNoAbbrev(MyContest.SentStr, CurrentQSO);
+   StatusLine.Panels[1].Text := S;
+   FSentNumber.SentNumber := S;
 end;
 
 procedure TMainForm.ShowRigControlInfo(strText: string);
@@ -15658,7 +15676,7 @@ var
    msg: string;
 begin
    if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
-      msg := Q.PartialSummary(dmZlogGlobal.Settings._displaydatepartialcheck);
+      msg := Q.PartialSummary(dmZLogGlobal.Settings._displaydatepartialcheck);
       WriteStatusLineRed(msg, True);
    end;
 end;
