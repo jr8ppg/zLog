@@ -72,8 +72,11 @@ type
     FColWidths: array[0..16] of TUpDown;
     function GetColumnWidths(Index: Integer): Integer;
     procedure SetColumnWidths(Index: Integer; v: Integer);
+    function GetColumnVisible(Index: Integer): Boolean;
+    procedure SetColumnVisible(Index: Integer; v: Boolean);
   public
     { Public êÈåæ }
+    property ColumnVisible[Index: Integer]: Boolean read GetColumnVisible write SetColumnVisible;
     property ColumnWidths[Index: Integer]: Integer read GetColumnWidths write SetColumnWidths;
   end;
 
@@ -131,13 +134,17 @@ end;
 
 procedure TformQSOListColumnSettings.SetColumnWidths(Index: Integer; v: Integer);
 begin
-   if v = 0 then begin
-      FColCheckboxes[Index].Checked := False;
-   end
-   else begin
-      FColCheckboxes[Index].Checked := True;
-      FColWidths[Index].Position := v;
-   end;
+   FColWidths[Index].Position := v;
+end;
+
+function TformQSOListColumnSettings.GetColumnVisible(Index: Integer): Boolean;
+begin
+   Result := FColCheckboxes[Index].Checked;
+end;
+
+procedure TformQSOListColumnSettings.SetColumnVisible(Index: Integer; v: Boolean);
+begin
+   FColCheckboxes[Index].Checked := v;
 end;
 
 end.

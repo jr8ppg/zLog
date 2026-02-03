@@ -8189,6 +8189,7 @@ begin
    f := TformQSOListColumnSettings.Create(Self);
    try
       for i := 0 to 16 do begin
+         f.ColumnVisible[i] := dmZLogGlobal.QsoListColumnVisible[i];
          f.ColumnWidths[i] := MyContest.ColWidths[i];
       end;
 
@@ -8197,6 +8198,7 @@ begin
       end;
 
       for i := 0 to 16 do begin
+         dmZLogGlobal.QsoListColumnVisible[i] := f.ColumnVisible[i];
          MyContest.ColWidths[i] := f.ColumnWidths[i];
       end;
 
@@ -8676,7 +8678,7 @@ var
 
    procedure SetColumnWidth(n: Integer);
    begin
-      if MyContest.ColWidths[n] = 0 then begin
+      if dmZLogGlobal.QsoListColumnVisible[n] = False then begin
          Grid.ColWidths[n] := -1;
       end
       else begin
@@ -8701,7 +8703,7 @@ begin
       ColWidths[0] := 3 * nColWidth;
 
       // 1:date
-      if MyContest.ColWidths[1] = 0 then begin
+      if dmZLogGlobal.QsoListColumnVisible[1] = False then begin
          ColWidths[1] := -1;
       end
       else begin
@@ -8744,7 +8746,7 @@ begin
       SetColumnWidth(11);
 
       // 12:operator
-      if (MyContest.ColWidths[12] = 0) or (nOpWidth = 0) then begin
+      if (dmZLogGlobal.QsoListColumnVisible[12] = False) or (nOpWidth = 0) then begin
          ColWidths[12] := -1;
       end
       else begin
@@ -8752,7 +8754,7 @@ begin
       end;
 
       // 13:Memo
-      if MyContest.ColWidths[13] = 0 then begin
+      if dmZLogGlobal.QsoListColumnVisible[13] = False then begin
          ColWidths[13] := -1;
       end
       else begin

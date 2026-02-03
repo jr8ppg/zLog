@@ -368,6 +368,7 @@ type
     FUseRbnAnalyze: Boolean;
     FQsoListColors: array[1..2] of TColorSetting;
     FQsoListColorType2: Integer;
+    FQsoListColumnVisible: array[0..16] of Boolean;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -554,6 +555,8 @@ type
     function GetZConfirmedTextColor(): TColor;
     function GetZGrayedTextColor(): TColor;
     function GetZGridFixedColor(): TColor;
+    function GetQsoListColumnVisible(Index: Integer): Boolean;
+    procedure SetQsoListColumnVisible(Index: Integer; v: Boolean);
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -624,6 +627,7 @@ public
     property BandPlans: TDictionary<string, TBandPlan> read FBandPlans;
     property BandPlan: TBandPlan read GetCurrentBandPlan;
     property Target: TContestTarget read FTarget;
+    property QsoListColumnVisible[Index: Integer]: Boolean read GetQsoListColumnVisible write SetQsoListColumnVisible;
 
     property RootPath: string read GetRootPath write SetRootPath;
     property CfgDatPath: string read GetCfgDatPath write SetCfgDatPath;
@@ -1698,6 +1702,11 @@ begin
 
       Settings.FQsoListColorType2 := ini.ReadInteger('MainQsoList', 'QsoListColorType2', 0);
 
+      slParam.CommaText := ini.ReadString('MainQsoList', 'QsoListColumnVisible', '1,1,1,1,0,0,1,1,1,0,1,1,0,1,1,1,1');
+      for i := 0 to 16 do begin
+         Settings.FQsoListColumnVisible[i] := StrToBoolDef(slParam[i], True);
+      end;
+
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
       Settings.FChatFormStayOnTop      := ini.ReadBool('ChatWindow', 'StayOnTop', False);
@@ -2377,6 +2386,18 @@ begin
       end;
 
       ini.WriteInteger('MainQsoList', 'QsoListColorType2', Settings.FQsoListColorType2);
+
+      slParam.Clear();
+      for i := 0 to 16 do begin
+         if Settings.FQsoListColumnVisible[i] = False then begin
+            s := '0';
+         end
+         else begin
+            s := '1';
+         end;
+         slParam.Add(s);
+      end;
+      ini.WriteString('MainQsoList', 'QsoListColumnVisible', slParam.CommaText);
 
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
@@ -3699,6 +3720,17 @@ function TdmZLogGlobal.GetZGridFixedColor(): TColor;
 begin
    Result := zLogGridFixedColor[Settings.FUseDarkMode];
 end;
+
+function TdmZLogGlobal.GetQsoListColumnVisible(Index: Integer): Boolean;
+begin
+   Result := Settings.FQsoListColumnVisible[Index];
+end;
+
+procedure TdmZLogGlobal.SetQsoListColumnVisible(Index: Integer; v: Boolean);
+begin
+   Settings.FQsoListColumnVisible[Index] := v;
+end;
+
 // ----------------------------------------------------------------------------
 
 { TCommPort }
