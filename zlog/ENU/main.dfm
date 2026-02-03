@@ -1007,6 +1007,8 @@ object MainForm: TMainForm
       OnExit = GridExit
       OnKeyDown = GridKeyDown
       OnKeyPress = GridKeyPress
+      OnMouseActivate = GridMouseActivate
+      OnMouseDown = GridMouseDown
       OnMouseUp = GridMouseUp
       OnSelectCell = GridSelectCell
       OnTopLeftChanged = GridTopLeftChanged

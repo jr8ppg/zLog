@@ -1060,6 +1060,11 @@ type
     procedure StatusLineHint(Sender: TObject);
     procedure popupDateStylePopup(Sender: TObject);
     procedure timerPartialCloseTimer(Sender: TObject);
+    procedure GridMouseActivate(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y, HitTest: Integer;
+      var MouseActivate: TMouseActivate);
+    procedure GridMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -1098,6 +1103,8 @@ type
     FGrayline: TformGrayline;
 
     FInitialized: Boolean;
+    FQsoListColumnChanging: Boolean;
+    FQsoListColumnWidthsBack: array[0..16] of Integer;
 
     FPrevTotalQSO: Integer;
     FTempQSOList: TQSOList;
@@ -7623,9 +7630,54 @@ begin
       Grid.LeftCol := 0;
 end;
 
-procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TMainForm.GridMouseActivate(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y, HitTest: Integer;
+  var MouseActivate: TMouseActivate);
+var
+   C, R: Integer;
+   i: Integer;
 begin
-//   SetEditFields1R();
+   C := 0;
+   R := 0;
+   Grid.MouseToCell(X, Y, C, R);
+
+   if R = 0 then begin
+      FQsoListColumnChanging := True;
+      for i := 0 to 16 do begin
+         FQsoListColumnWidthsBack[i] := Grid.ColWidths[i];
+      end;
+   end
+   else begin
+      FQsoListColumnChanging := False;
+   end;
+end;
+
+procedure TMainForm.GridMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+   FQsoListColumnChanging := False;
+end;
+
+procedure TMainForm.GridMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+   C, R: Integer;
+   w: Integer;
+   n: Integer;
+   i: Integer;
+begin
+   C := 0;
+   R := 0;
+   Grid.MouseToCell(X, Y, C, R);
+
+   if (C >= 0) and (C <= 16) and (FQsoListColumnChanging = True) then begin
+      w := Grid.Canvas.TextWidth('0') + 1;
+
+      for i := 0 to 16 do begin
+         if FQsoListColumnWidthsBack[i] <> Grid.ColWidths[i] then begin
+            n := Ceil(Grid.ColWidths[i] / w);
+            MyContest.ColWidths[i] := n;
+         end;
+      end;
+   end;
 end;
 
 procedure TMainForm.StatusLineResize(Sender: TObject);

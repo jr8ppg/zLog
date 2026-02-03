@@ -134,7 +134,9 @@ end;
 
 procedure TformQSOListColumnSettings.SetColumnWidths(Index: Integer; v: Integer);
 begin
-   FColWidths[Index].Position := v;
+   if FColCheckboxes[Index].Checked = True then begin
+      FColWidths[Index].Position := v;
+   end;
 end;
 
 function TformQSOListColumnSettings.GetColumnVisible(Index: Integer): Boolean;
