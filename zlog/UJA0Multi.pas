@@ -54,13 +54,17 @@ procedure TJA0Multi.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
 begin
-   str := GetPrefix(aQSO);
-   aQSO.NewMulti1 := False;
-   aQSO.Multi1 := str;
+   if aQSO.Band > b28 then begin
+      Exit;
+   end;
 
    if aQSO.Dupe then begin
       Exit;
    end;
+
+   str := GetPrefix(aQSO);
+   aQSO.NewMulti1 := False;
+   aQSO.Multi1 := str;
 
    if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
       Exit;
@@ -84,7 +88,7 @@ var
    Band: TBand;
 begin
    Band := Main.CurrentQSO.Band;
-   if Band = bUnknown then begin
+   if (Band = bUnknown) or (Band > b28) then begin
       Exit;
    end;
 

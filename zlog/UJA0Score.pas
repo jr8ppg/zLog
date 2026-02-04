@@ -20,7 +20,8 @@ type
     procedure Reset; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
-    function IsJA0(aQSO : TQSO) : boolean;
+    function IsJA0(aQSO : TQSO): Boolean;
+    function IsJA0Band(b: TBand): Boolean;
   end;
 
 implementation
@@ -59,9 +60,26 @@ begin
    end;
 end;
 
+function TJA0Score.IsJA0Band(b: TBand): Boolean;
+var
+   i: Integer;
+begin
+   for i := Low(JA0Band) to High(JA0Band) do begin
+      if JA0Band[i] = b then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+   Result := False;
+end;
+
 procedure TJA0Score.AddNoUpdate(aQSO: TQSO);
 begin
    inherited;
+
+   if IsJA0Band(aQSO.Band) = False then begin
+      Exit;
+   end;
 
    if aQSO.Dupe then begin
       Exit;
