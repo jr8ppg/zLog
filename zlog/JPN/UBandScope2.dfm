@@ -297,7 +297,7 @@ object BandScope2: TBandScope2
     end
     object menuShowSearchBar: TMenuItem
       AutoCheck = True
-      Caption = #26908#32034#12496#12540#12434#34920#31034
+      Caption = #12473#12509#12483#12488#26908#32034#12496#12540
       Checked = True
       GroupIndex = 1
       OnClick = menuShowSearchBarClick

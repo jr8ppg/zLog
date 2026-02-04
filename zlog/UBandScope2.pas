@@ -216,6 +216,8 @@ type
     function GetSpotFilterLink(): Boolean;
     procedure SetSpotFilterLink(v: Boolean);
     procedure CopySpotFilterCopy();
+    function GetShowSearchBar(): Boolean;
+    procedure SetShowSearchBar(v: Boolean);
   public
     { Public êÈåæ }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -248,6 +250,7 @@ type
     property Style: TBandScopeStyle read FBandScopeStyle write SetBandScopeStyle;
     property FilterText: string read GetFilterText write SetFilterText;
     property SpotFilterLink: Boolean read GetSpotFilterLink write SetSpotFilterLink;
+    property ShowSearchBar: Boolean read GetShowSearchBar write SetShowSearchBar;
   end;
 
   TBandScopeArray = array[b19..b248g] of TBandScope2;
@@ -986,8 +989,19 @@ begin
 end;
 
 procedure TBandScope2.menuShowSearchBarClick(Sender: TObject);
+var
+   i: Integer;
 begin
-   panelSpotFinder.Visible := menuShowSearchBar.Checked;
+   if Self.SpotFilterLink = False then begin
+      ShowSearchBar := menuShowSearchBar.Checked;
+   end
+   else begin
+      for i := 0 to (Screen.FormCount - 1) do begin
+         if Screen.Forms[i] is TBandScope2 then begin
+            TBandScope2(Screen.Forms[i]).ShowSearchBar := menuShowSearchBar.Checked;
+         end;
+      end;
+   end;
 end;
 
 procedure TBandScope2.menuBS00Click(Sender: TObject);
@@ -2170,6 +2184,7 @@ begin
    ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
    ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
    ini.WriteBool(section, 'Open', Visible);
+   ini.WriteBool(section, 'SpotFilterLink', buttonSpotFilterLink.Down);
    ini.WriteBool(section, 'ShowSearchBar', menuShowSearchBar.Checked);
 end;
 
@@ -2202,7 +2217,9 @@ begin
       0, 1: buttonSortByFreq.Down := True;
       2, 3: buttonSortByTime.Down := True;
    end;
-   menuShowSearchBar.Checked := ini.ReadBool(section, 'ShowSearchBar', True);
+   buttonSpotFilterLink.Down := ini.ReadBool(section, 'SpotFilterLink', True);
+   menuShowSearchBar.Checked := ini.ReadBool(section, 'ShowSearchBar', False);
+   panelSpotFinder.Visible := menuShowSearchBar.Checked;
 
    FInitialVisible := ini.ReadBool(section, 'Open', False);
    Visible := FInitialVisible;
@@ -2309,6 +2326,8 @@ begin
       FBandScopeMenu[b].Visible := dmZLogGlobal.Settings._usebandscope[b];
       FBandScopeMenu[b].Checked := MainForm.BandScopeEx[b].Visible;
    end;
+
+   menuShowSearchBar.Checked := panelSpotFinder.Visible;
 end;
 
 function TBandScope2.TabIndexToBand(TabIndex: Integer): TBand;
@@ -2420,6 +2439,16 @@ begin
          end;
       end;
    end;
+end;
+
+function TBandScope2.GetShowSearchBar(): Boolean;
+begin
+   Result := panelSpotFinder.Visible;
+end;
+
+procedure TBandScope2.SetShowSearchBar(v: Boolean);
+begin
+   panelSpotFinder.Visible := v;
 end;
 
 initialization
