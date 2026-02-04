@@ -766,7 +766,7 @@
                     <RDP_Source_Files Name="Item10">UWinKeyerTester.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item11">UFreqTest.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">Win32\Release\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item13">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item13">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item14">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item16">UBasicScore.dfm</RDP_Source_Files>
@@ -891,7 +891,7 @@
                     <RDP_Source_Files Name="Item135">UJarlWebUpload2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item136">UDmsToGridDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item137">USentNumber.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item138">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item138">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

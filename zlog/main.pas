@@ -6868,6 +6868,7 @@ begin
       RenewCWToolBar;
       RenewVoiceToolBar;
 
+      InitGridColumnWidth();
       InitQsoEditPanel();
       InitSerialPanel();
       LastFocus := CallsignEdit;
@@ -8748,11 +8749,11 @@ var
 begin
    if dmZLogGlobal.ContestCategory = ccSingleOp then begin
       nOpWidth := 0;
-      nMemoWidth := 13;
+      nMemoWidth := MyContest.ColWidths[13];
    end
    else begin
-      nOpWidth := 6;
-      nMemoWidth := 7;
+      nOpWidth := MyContest.ColWidths[12];
+      nMemoWidth := MyContest.ColWidths[13];
    end;
 
    with Grid do begin

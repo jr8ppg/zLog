@@ -147,6 +147,7 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Height = 17
       Caption = 'Operator'
       Checked = True
+      Enabled = False
       State = cbChecked
       TabOrder = 35
     end
