@@ -1329,7 +1329,7 @@ type
     procedure EditCurrentRow();
     procedure AssignControls(nID: Integer; var C, SN, RN, B, M, O, P: TEdit);
     procedure CallSpaceBarProc(C, N, B: TEdit);
-    procedure ShowSentNumber();
+    procedure ShowSentNumber(aQSO: TQSO);
     procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
     procedure StartCqRepeatTimer();
     procedure StopCqRepeatTimer();
@@ -2592,7 +2592,7 @@ begin
 
    FRateDialogEx.Band := CurrentQSO.Band;
 
-   ShowSentNumber();
+   ShowSentNumber(CurrentQSO);
 
    SetEnableF2A();
 end;
@@ -2651,7 +2651,7 @@ begin
 
    FFunctionKeyPanel.UpdateInfo();
 
-   ShowSentNumber();
+   ShowSentNumber(CurrentQSO);
 
    SetEnableF2A();
 
@@ -7578,7 +7578,7 @@ begin
    PowerEdit.Text := NewPowerString[TPower(TMenuItem(Sender).Tag)];
    CurrentQSO.Power := TPower(TMenuItem(Sender).Tag);
    LastFocus.SetFocus;
-   ShowSentNumber();
+   ShowSentNumber(CurrentQSO);
 end;
 
 procedure TMainForm.PowerEdit1Click(Sender: TObject);
@@ -7684,6 +7684,7 @@ begin
          if FQsoListColumnWidthsBack[i] <> Grid.ColWidths[i] then begin
             n := Ceil(Grid.ColWidths[i] / w);
             MyContest.ColWidths[i] := n;
+            InitGridColumnWidth();
          end;
       end;
    end;
@@ -8614,8 +8615,8 @@ begin
       // WPX
       11: begin
          MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', category, mode);
-         Grid.Cols[13].Text := 'prefix';
-         Grid.Cols[14].Text := 'zone';
+         Grid.Cols[8].Text := 'prefix';
+         Grid.Cols[9].Text := 'zone';
          mPXListWPX.Visible := True;
       end;
 
@@ -9256,7 +9257,7 @@ begin
       end;
 
       StatusLineResize(nil);
-      ShowSentNumber();
+      ShowSentNumber(CurrentQSO);
 
       // 初期化完了
       FInitialized := True;
@@ -11529,7 +11530,7 @@ begin
       PowerEdit.Text := CurrentQSO.NewPowerStr;
    end;
 
-   ShowSentNumber();
+   ShowSentNumber(CurrentQSO);
 end;
 
 // #92 CWバンク変更 Shift+F
@@ -13298,7 +13299,7 @@ begin
    // Change Voice Files
    FMessageManager.SetOperator(op);
 
-   ShowSentNumber();
+   ShowSentNumber(CurrentQSO);
 
    FFunctionKeyPanel.UpdateInfo();
 end;
@@ -14527,7 +14528,7 @@ begin
       FEditPanel[0].SerialEdit.Text := aQSO.SerialStr;
    end;
 
-   ShowSentNumber();
+   ShowSentNumber(aQSO);
 end;
 
 procedure TMainForm.RenewScore();
@@ -14757,11 +14758,11 @@ begin
    end;
 end;
 
-procedure TMainForm.ShowSentNumber();
+procedure TMainForm.ShowSentNumber(aQSO: TQSO);
 var
    S: string;
 begin
-   S := CurrentQSO.RSTSentStr + ' ' + SetStrNoAbbrev(MyContest.SentStr, CurrentQSO);
+   S := aQSO.RSTSentStr + ' ' + SetStrNoAbbrev(MyContest.SentStr, aQSO);
    StatusLine.Panels[1].Text := S;
    FSentNumber.SentNumber := S;
 end;
