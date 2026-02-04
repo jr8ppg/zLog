@@ -2909,7 +2909,7 @@ var
    SentStr: string;
    procedure LayoutEdit(col: Integer; edit: TEdit);
    begin
-      if Grid.ColWidths[col] >= 0 then begin
+      if dmZLogGlobal.QsoListColumnVisible[col] = True then begin
          edit.Visible := True;
          edit.Width := Grid.ColWidths[col];
          edit.Height := h;
@@ -2945,7 +2945,7 @@ begin
       SentStr := MyContest.SentStr;
    end;
 
-   if Grid.ColWidths[5] >= 0 then begin
+   if dmZLogGlobal.QsoListColumnVisible[5] = True then begin
       // 電力符号使用有無で判定
       if Pos('$P', SentStr) > 0 then begin
          PowerEdit1.Visible := True;
