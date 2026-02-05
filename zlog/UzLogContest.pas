@@ -741,6 +741,16 @@ begin
       aQSO.NewMulti1 := False;
       aQSO.NewMulti2 := False;
 
+      // 所管外バンドならスキップ
+      if (aQSO.Band < FBandLow) or (aQSO.Band > FBandHigh) then begin
+         Continue;
+      end;
+
+      // WARCバンドチェック
+      if (FUseWarc = False) and ((aQSO.Band = b10) or (aQSO.Band = b18) or (aQSO.Band = b24)) then begin
+         Continue;
+      end;
+
       if aQSO.Invalid = False then begin
          FMultiForm.AddNoUpdate(aQSO);
          FScoreForm.AddNoUpdate(aQSO);
