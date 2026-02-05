@@ -464,6 +464,12 @@ begin
    Label2400.Visible := False;
    Label5600.Visible := False;
    Label10G.Visible := False;
+   Label104G.Visible := False;
+   Label24G.Visible := False;
+   Label47G.Visible := False;
+   Label77G.Visible := False;
+   Label135G.Visible := False;
+   Label248G.Visible := False;
 
    for i := 0 to BANDLABELMAX do begin
       BandLabelArray[i] := TRotateLabel.Create(Self);
