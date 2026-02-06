@@ -49,7 +49,7 @@ var
 begin
    temp := sendtext;
 
-   S := MyContest.SentStr;
+   //S := MyContest.SentStr;
    S := aQSO.NrSentStr;
    temp := StringReplace(temp, '$X', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$x', LowerCase(S), [rfReplaceAll]);

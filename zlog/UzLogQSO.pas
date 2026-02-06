@@ -875,7 +875,7 @@ begin
       Result := FNrSent + NewPowerStr;
    end
    else begin
-      Result := IntToStr(Self.FRSTSent);
+      Result := Self.FNrSent;
    end;
 end;
 

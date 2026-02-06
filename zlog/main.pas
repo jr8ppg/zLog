@@ -2750,12 +2750,7 @@ begin
       Cells[4, R] := aQSO.RSTSentStr;
 
       // 5:sent NR
-      if MyContest.SerialType = stNone then begin
-         Cells[5, R] := aQSO.NrSent;
-      end
-      else begin
-         Cells[5, R] := aQSO.SerialStr;
-      end;
+      Cells[5, R] := aQSO.NrSent;
 
       // 6:rRST
       Cells[6, R] := aQSO.RSTStr;
@@ -4793,6 +4788,7 @@ begin
       end
       else begin
          curQSO.Serial   := StrToIntDef(SN.Text, 1);
+         curQSO.NrSent   := SN.Text;
       end;
 
       // SO2Rモード
