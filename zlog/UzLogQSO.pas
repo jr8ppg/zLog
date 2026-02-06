@@ -182,6 +182,7 @@ type
     function GetPointStr(): string;
     function GetRSTStr(): string;
     function GetRSTSentStr(): string;
+    function GetNrSentStr(): string;
     function GetRSTRcvdStr(): string;
     function GetFreqStr(): string;
     function GetFreqStr2(): string;
@@ -268,6 +269,7 @@ type
     property PointStr: string read GetPointStr;
     property RSTStr: string read GetRSTStr;
     property RSTSentStr: string read GetRSTSentStr;
+    property NrSentStr: string read GetNrSentStr;
     property RSTRcvdStr: string read GetRSTRcvdStr;
     property FreqStr: string read GetFreqStr;
     property FreqStr2: string read GetFreqStr2;
@@ -865,6 +867,16 @@ end;
 function TQSO.GetRSTSentStr(): string;
 begin
    Result := IntToStr(Self.FRSTSent);
+end;
+
+function TQSO.GetNrSentStr(): string;
+begin
+   if (MyContest <> nil) and (Pos('$P', MyContest.SentStr) > 0) then begin
+      Result := FNrSent + NewPowerStr;
+   end
+   else begin
+      Result := IntToStr(Self.FRSTSent);
+   end;
 end;
 
 function TQSO.GetRSTRcvdStr(): string;

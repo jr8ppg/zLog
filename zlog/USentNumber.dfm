@@ -58,6 +58,8 @@ object formSentNumber: TformSentNumber
     end
   end
   object PopupMenu1: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 208
     Top = 12
     object menuFont: TMenuItem

@@ -276,7 +276,6 @@ object MainForm: TMainForm
         CharCase = ecUpperCase
         ImeMode = imDisable
         MaxLength = 20
-        ReadOnly = True
         TabOrder = 11
         Text = 'NUMBER'
         OnChange = SentNumberEdit1Change

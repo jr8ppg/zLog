@@ -5421,8 +5421,9 @@ begin
    end;
 
    // ここからがLoggingメイン処理
+   Q.NrSent := Q.NrSentStr;
 //   Q.NrSent := FEditPanel[nID].SentNumberEdit.Text;
-   MyContest.SetNrSent(Q);
+//   MyContest.SetNrSent(Q);
 
    repeat
       i := dmZLogGlobal.NewQSOID();
@@ -5619,6 +5620,8 @@ begin
       Q.RSTRcvd := 59;
    end;
 
+   Q.NrSent := GetInitNrSent(Q);
+
    if dmZLogGlobal.CurrentOperator = nil then begin
       Q.Operator := '';
    end;
@@ -5627,7 +5630,7 @@ begin
    FEditPanel[nID].DateEdit.Text := DateStr(Q);
    FEditPanel[nID].CallsignEdit.Text := Q.Callsign;
    FEditPanel[nID].SentRSTEdit.Text := Q.RSTSentStr;
-   FEditPanel[nID].SentNumberEdit.Text := GetInitNrSent(Q);
+   FEditPanel[nID].SentNumberEdit.Text := Q.NrSent;
    FEditPanel[nID].RcvdRSTEdit.Text := Q.RSTStr;
    FEditPanel[nID].RcvdNumberEdit.Text := Q.NrRcvd;
    FEditPanel[nID].ModeEdit.Text := Q.ModeStr;
