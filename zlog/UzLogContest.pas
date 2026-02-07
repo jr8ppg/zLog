@@ -371,16 +371,16 @@ begin
    FDefCity := dmZLogGlobal.Settings._mycity;
 
    FDefCwMessages[1, 1] := 'CQ TEST $M TEST';
-   FDefCwMessages[1, 2] := '$C 5NN$X';
+   FDefCwMessages[1, 2] := '$C $R$X';
    FDefCwMessages[1, 3] := 'TU $M TEST';
    FDefCwMessages[1, 4] := 'QSO B4 TU';
    FDefCwMessages[1, 5] := 'NR?';
    FDefCwMessages[1, 6] := '$C?';
    FDefCwMessages[1, 7] := '$M';
-   FDefCwMessages[1, 8] := '5NN$X';
+   FDefCwMessages[1, 8] := '$R$X';
 
    FDefCwMessages[3, 1] := 'CQ CQ CQ TEST $M $M $M TEST K';
-   FDefCwMessages[3, 2] := '$C DE $M 599$X 599$X BK';
+   FDefCwMessages[3, 2] := '$C DE $M $R$X $R$X BK';
    FDefCwMessages[3, 3] := 'TU DE $M TEST';
    FDefCwMessages[3, 4] := 'QSO B4 TU';
    FDefCwMessages[3, 5] := 'NR? NR? AGN BK';
@@ -922,14 +922,6 @@ begin
    try
       FProv := dmZLogGlobal.Settings.CW._prov;
       FCity := dmZLogGlobal.Settings.CW._city;
-      for i := 1 to maxmessage do begin
-         FCwMessages[1][i] := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
-         FCwMessages[2][i] := dmZLogGlobal.Settings.CW.CWStrBank[2, i];
-         FCwMessages[3][i] := dmZLogGlobal.Settings.CW.CWStrBank[3, i];
-      end;
-      for i := 2 to 3 do begin
-         FCwMessageCQ[i] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[i];
-      end;
 
       ini.EraseSection(FContestName);
 
@@ -1724,6 +1716,10 @@ begin
    FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
+
+   FDefCwMessages[1, 2] := '$C $R$S$T';
+   FDefCwMessages[1, 8] := '$R$S$T';
+   FDefCwMessages[3, 2] := '$C DE $M $R$S$T $R$S$T BK';
 end;
 
 function TIOTAContest.QTHString(aQSO: TQSO): string;

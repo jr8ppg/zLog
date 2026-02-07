@@ -1371,7 +1371,7 @@ type
     procedure CheckSentNrParams();
     function Is1Radio(): Boolean;
     function Is2Radio(): Boolean;
-    function GetInitNrSent(aQSO: TQSO): string;
+    function GetInitNrSent(aQSO: TQSO; fin: Boolean): string;
     function DateStr(aQSO: TQSO): string;
     procedure ShowDateTime(Q: TQSO = nil);
     procedure SetInitQsoEditPanel();
@@ -2635,7 +2635,7 @@ begin
          dmZLogKeyer.WinKeyerSetPinCfg(True);
       end;
    end;
-   SentNumberEdit.Text := GetInitNrSent(CurrentQSO);
+   SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
 
    ShowToolBar(M);
 
@@ -4788,7 +4788,7 @@ begin
       end
       else begin
          curQSO.Serial   := StrToIntDef(SN.Text, 1);
-         curQSO.NrSent   := SN.Text;
+         curQSO.NrSent   := GetInitNrSent(curQSO, False);
       end;
 
       // SO2Rモード
@@ -4912,6 +4912,7 @@ begin
          CallsignSentProc(nil);
       end;
    finally
+      CurrentQSO.Assign(curQSO);
       curQSO.Free();
       {$IFDEF DEBUG}
       OutputDebugString(PChar('------ <<< Leave OnTabPress ------'));
@@ -5417,7 +5418,20 @@ begin
    end;
 
    // ここからがLoggingメイン処理
-   Q.NrSent := Q.NrSentStr;
+   if MyContest.SerialType = stNone then begin
+      Q.NrSent   := Q.NrSentStr;
+   end
+   else begin
+      if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+         Q.Serial   := StrToIntDef(SentNumberEdit.Text, 1);
+      end
+      else begin
+         Q.Serial   := StrToIntDef(FEditPanel[nID].SentNumberEdit.Text, 1);
+      end;
+      Q.NrSent   := GetInitNrSent(Q, True);
+   end;
+
+//   Q.NrSent := Q.NrSentStr;
 //   Q.NrSent := FEditPanel[nID].SentNumberEdit.Text;
 //   MyContest.SetNrSent(Q);
 
@@ -5590,9 +5604,6 @@ begin
 
    // 次のＱＳＯの準備
 
-   Q.Serial := Log.GetCurrentSerial(Q);
-   DispSerialNumber(Q);
-
    if Not(FPostContest) then
       Q.UpdateTime;
 
@@ -5616,7 +5627,9 @@ begin
       Q.RSTRcvd := 59;
    end;
 
-   Q.NrSent := GetInitNrSent(Q);
+   Q.Serial := Log.GetCurrentSerial(Q);
+   DispSerialNumber(Q);
+   Q.NrSent := GetInitNrSent(Q, False);
 
    if dmZLogGlobal.CurrentOperator = nil then begin
       Q.Operator := '';
@@ -6871,7 +6884,7 @@ begin
       InitQsoEditPanel();
       InitSerialPanel();
       LastFocus := CallsignEdit;
-      CurrentQSO.NrSent := GetInitNrSent(CurrentQSO);
+      CurrentQSO.NrSent := GetInitNrSent(CurrentQSO, False);
       ShowCurrentQSO();
 
       // モードが変わっていたら再計算
@@ -8700,6 +8713,13 @@ begin
       FEditPanel[i].RcvdNumberEdit.ImeMode := imemode;
    end;
 
+   if MyContest.SerialType = stNone then begin
+      SentNumberEdit.NumbersOnly := False;
+   end
+   else begin
+      SentNumberEdit.NumbersOnly := True;
+   end;
+
    MyContest.LoadCwMessages();
 end;
 
@@ -9317,7 +9337,7 @@ begin
    BandEdit.Text := MHzString[CurrentQSO.Band];
    ModeEdit.Text := CurrentQSO.ModeStr;
    SentRSTEdit.Text := CurrentQSO.RSTSentStr;
-   SentNumberEdit.Text := GetInitNrSent(CurrentQSO);
+   SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
    RcvdRSTEdit.Text := CurrentQSO.RSTStr;
    RcvdNumberEdit.Text := CurrentQSO.NrRcvd;
 end;
@@ -14504,11 +14524,11 @@ begin
    end;
 
    if dmZLogGlobal.Settings._so2r_type = so2rNone then begin
-      SentNumberEdit.Text := GetInitNrSent(aQSO);
+      SentNumberEdit.Text := GetInitNrSent(aQSO, False);
       SerialEdit.Text := aQSO.SerialStr;
    end
    else begin
-      FEditPanel[0].SentNumberEdit.Text := GetInitNrSent(aQSO);
+      FEditPanel[0].SentNumberEdit.Text := GetInitNrSent(aQSO, False);
       FEditPanel[0].SerialEdit.Text := aQSO.SerialStr;
    end;
 
@@ -15576,26 +15596,45 @@ begin
               (dmZLogGlobal.Settings._operate_style = os2RadioV));
 end;
 
-function TMainForm.GetInitNrSent(aQSO: TQSO): string;
+function TMainForm.GetInitNrSent(aQSO: TQSO; fin: Boolean): string;
 var
    S: string;
 begin
    S := MyContest.SentStr;
-   S := StringReplace(S, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
-   S := StringReplace(S, '$I', dmZLogGlobal.Settings._myiaruzone, [rfReplaceAll]);
-   S := StringReplace(S, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
-   S := StringReplace(S, '$V', dmZLogGlobal.Settings.CW._prov, [rfReplaceAll]);
-   S := StringReplace(S, '$P', '', [rfReplaceAll]);
-   S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
-   S := StringReplace(S, '$A', dmZLogGlobal.Settings._myage, [rfReplaceAll]);
-   S := StringReplace(S, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
-   if (aQSO.Mode = mCw) or (aQSO.Mode = mRtty) then begin
-      S := StringReplace(S, '$H', dmZLogGlobal.Settings._myhandle_cw, [rfReplaceAll]);
+   if (MyContest.SerialType = stNone) or (fin = True) then begin
+      S := StringReplace(S, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
+      S := StringReplace(S, '$I', dmZLogGlobal.Settings._myiaruzone, [rfReplaceAll]);
+      S := StringReplace(S, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
+      S := StringReplace(S, '$V', dmZLogGlobal.Settings.CW._prov, [rfReplaceAll]);
+      S := StringReplace(S, '$P', '', [rfReplaceAll]);
+      S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
+      S := StringReplace(S, '$A', dmZLogGlobal.Settings._myage, [rfReplaceAll]);
+      if fin = False then begin
+         S := StringReplace(S, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
+      end
+      else begin
+         S := StringReplace(S, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
+      end;
+      if (aQSO.Mode = mCw) or (aQSO.Mode = mRtty) then begin
+         S := StringReplace(S, '$H', dmZLogGlobal.Settings._myhandle_cw, [rfReplaceAll]);
+      end
+      else begin
+         S := StringReplace(S, '$H', dmZLogGlobal.Settings._myhandle_ph, [rfReplaceAll]);
+      end;
+      S := StringReplace(S, '$N', aQSO.PowerStr, [rfReplaceAll]);
    end
    else begin
-      S := StringReplace(S, '$H', dmZLogGlobal.Settings._myhandle_ph, [rfReplaceAll]);
+      S := StringReplace(S, '$Z', '', [rfReplaceAll]);
+      S := StringReplace(S, '$I', '', [rfReplaceAll]);
+      S := StringReplace(S, '$Q', '', [rfReplaceAll]);
+      S := StringReplace(S, '$V', '', [rfReplaceAll]);
+      S := StringReplace(S, '$P', '', [rfReplaceAll]);
+      S := StringReplace(S, '$S', aQSO.SerialStr, [rfReplaceAll]);
+      S := StringReplace(S, '$A', '', [rfReplaceAll]);
+      S := StringReplace(S, '$T', '', [rfReplaceAll]);
+      S := StringReplace(S, '$H', '', [rfReplaceAll]);
+      S := StringReplace(S, '$N', '', [rfReplaceAll]);
    end;
-   S := StringReplace(S, '$N', aQSO.PowerStr, [rfReplaceAll]);
    Result := S;
 end;
 

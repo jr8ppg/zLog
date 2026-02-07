@@ -167,6 +167,7 @@ type
     function GetFileRecordEx(): TQSODataEx;
     procedure SetFileRecordEx(src: TQSODataEx);
 
+    procedure SetSerial(v: Integer);
     function GetSerialStr(): string;
     function GetDateTimeStr(): string;
     function GetTimeStr(): string;
@@ -223,7 +224,7 @@ type
 
     property RSTSent: Integer read FRSTSent write FRSTSent;
     property RSTRcvd: Integer read FRSTRcvd write FRSTRcvd;
-    property Serial: Integer read FSerial write FSerial;
+    property Serial: Integer read FSerial write SetSerial;
     property Mode: TMode read FMode write FMode;
     property Mode2: TMode read GetMode2;
     property Band: TBand read FBand write FBand;
@@ -741,16 +742,19 @@ begin
    {$ENDIF}
 end;
 
+procedure TQSO.SetSerial(v: Integer);
+begin
+   FSerial := v;
+end;
+
 function TQSO.GetSerialStr: string;
 var
    S: string;
 begin
    S := IntToStr(Self.FSerial);
-   case length(S) of
-      1:
-         S := '00' + S;
-      2:
-         S := '0' + S;
+
+   if FSerial < 1000 then begin
+      S := RightStr('0000' + S, 3);
    end;
 
    Result := S;
