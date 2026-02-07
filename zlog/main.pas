@@ -8735,7 +8735,6 @@ procedure TMainForm.InitGridColumnWidth();
 var
    nColWidth: Integer;
    nOpWidth: Integer;
-   nMemoWidth: Integer;
 
    procedure SetColumnWidth(n: Integer);
    begin
@@ -8747,15 +8746,6 @@ var
       end;
    end;
 begin
-   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
-      nOpWidth := 0;
-      nMemoWidth := MyContest.ColWidths[13];
-   end
-   else begin
-      nOpWidth := MyContest.ColWidths[12];
-      nMemoWidth := MyContest.ColWidths[13];
-   end;
-
    with Grid do begin
       nColWidth := Canvas.TextWidth('0') + 1;
       DefaultRowHeight := Canvas.TextHeight('0') + 4;
@@ -8807,7 +8797,7 @@ begin
       SetColumnWidth(11);
 
       // 12:operator
-      if (dmZLogGlobal.QsoListColumnVisible[12] = False) or (nOpWidth = 0) then begin
+      if dmZLogGlobal.ContestCategory = ccSingleOp then begin
          ColWidths[12] := -1;
       end
       else begin
@@ -8815,12 +8805,7 @@ begin
       end;
 
       // 13:Memo
-      if dmZLogGlobal.QsoListColumnVisible[13] = False then begin
-         ColWidths[13] := -1;
-      end
-      else begin
-         ColWidths[13] := nMemoWidth * nColWidth;
-      end;
+      SetColumnWidth(13);
 
       // 14:Point
       SetColumnWidth(14);

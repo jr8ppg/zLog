@@ -872,6 +872,7 @@ var
    ini: TIniFile;
    i: Integer;
    SL: TStringList;
+   w: Integer;
 begin
    ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
    SL := TStringList.Create();
@@ -896,7 +897,10 @@ begin
       SL.CommaText := ini.ReadString(FContestName, 'ColumnWidths', '');
       if SL.Count = 17 then begin
          for i := 0 to 16 do begin
-            Self.ColWidths[i] := StrToIntDef(SL[i], 0);
+            w := StrToIntDef(SL[i], 0);
+            if w > 0 then begin
+               Self.ColWidths[i] := w;
+            end;
          end;
       end;
 
@@ -1064,13 +1068,13 @@ begin
    FColWidths[5] := 5;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 5;      // Rcvd Number
-   FColWidths[8] := 0;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
    FColWidths[13] := 7;     // memo
-   FColWidths[14] := 0;     // point
+   FColWidths[14] := 3;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
 end;
@@ -1101,12 +1105,12 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 6;      // Rcvd Number
    FColWidths[8] := 3;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
@@ -1162,12 +1166,12 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
    FColWidths[8] := 3;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
@@ -1196,12 +1200,12 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
    FColWidths[8] := 3;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
@@ -1296,12 +1300,12 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
    FColWidths[8] := 3;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
@@ -1424,45 +1428,17 @@ begin
 
    if SerialType = stNone then begin
       // ëóêMÇmÇq
-      if FConfig.UseSentRST = True then begin
-         FColWidths[4] := 4;
-         FColWidths[5] := 10;
-      end
-      else begin
-         FColWidths[4] := 0;
-         FColWidths[5] := 0;
-      end;
+      FColWidths[4] := 4;
+      FColWidths[5] := 10;
       FColWidths[6] := 4;
       FColWidths[7] := 10;
-
-      // É}ÉãÉ`ÇQ
-      if FConfig.UseMulti2 = True then begin
-         FColWidths[9] := 3;
-      end
-      else begin
-         FColWidths[9] := 0;
-      end;
    end
    else begin
       // ëóêMÇmÇq
-      if FConfig.UseSentRST = True then begin
-         FColWidths[4] := 4;
-         FColWidths[5] := 5;
-      end
-      else begin
-         FColWidths[4] := 0;
-         FColWidths[5] := 0;
-      end;
+      FColWidths[4] := 4;
+      FColWidths[5] := 5;
       FColWidths[6] := 4;
       FColWidths[7] := 5;
-
-      // É}ÉãÉ`ÇQ
-      if FConfig.UseMulti2 = True then begin
-         FColWidths[9] := 3;
-      end
-      else begin
-         FColWidths[9] := 0;
-      end;
    end;
 
    FUseNrIme := FConfig.UseNrIme;
@@ -1740,7 +1716,7 @@ begin
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
    FColWidths[8] := 6;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
@@ -1842,7 +1818,7 @@ begin
       FColWidths[6] := 4;      // Rcvd RST
       FColWidths[7] := 6;      // Rcvd Number
       FColWidths[8] := 6;      // multi1
-      FColWidths[9] := 0;      // multi2
+      FColWidths[9] := 3;      // multi2
       FColWidths[10] := 4;     // band
       FColWidths[11] := 4;     // mode
       FColWidths[12] := 6;     // op
@@ -1906,7 +1882,7 @@ begin
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 6;      // Rcvd Number
    FColWidths[8] := 3;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
@@ -1973,13 +1949,13 @@ begin
    FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 0;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
-   FColWidths[12] := 0;     // op
+   FColWidths[12] := 6;     // op
    FColWidths[13] := 7;     // memo
-   FColWidths[14] := 0;     // point
+   FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
    FUseNrIme := True;
@@ -2093,8 +2069,8 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
    FColWidths[8] := 3;      // multi1
@@ -2183,12 +2159,12 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 6;      // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 6;      // Rcvd Number
    FColWidths[8] := 4;      // multi1
-   FColWidths[9] := 0;      // multi2
+   FColWidths[9] := 3;      // multi2
    FColWidths[10] := 4;     // band
    FColWidths[11] := 4;     // mode
    FColWidths[12] := 6;     // op
@@ -2258,8 +2234,8 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
    FColWidths[8] := 3;      // multi1
@@ -2319,8 +2295,8 @@ begin
    FColWidths[1] := 6;      // date
    FColWidths[2] := 6;      // time
    FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 0;      // Sent RST
-   FColWidths[5] := 0;      // Sent Number
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
    FColWidths[6] := 4;      // Rcvd RST
    FColWidths[7] := 10;     // Rcvd Number
    FColWidths[8] := 3;      // multi1
