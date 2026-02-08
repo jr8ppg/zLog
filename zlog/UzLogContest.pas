@@ -86,6 +86,8 @@ type
     procedure ShowScore; virtual;
     procedure ShowMulti; virtual;
     procedure Renew; virtual;
+    procedure SetDefaultMessages(); virtual;
+    procedure SetDefaultColumnWidths(); virtual;
 
     function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; virtual; {called when space is pressed when Callsign Edit
                                       is in focus AND the callsign is not DUPE}
@@ -209,6 +211,7 @@ type
     function QTHString(aQSO: TQSO): string; override;
     function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
     function GetNewMulti1(aQSO: TQSO): string; override;
+    procedure SetDefaultMessages(); override;
   end;
 
   TARRL10Contest = class(TContest)
@@ -284,6 +287,39 @@ type
     function GetNewMulti1(aQSO: TQSO): string; override;
   end;
 
+const
+  def_cw_messages: array[1..maxmessage] of string =
+    ( 'CQ TEST $M TEST',
+      '$C $R$X',
+      'TU $M TEST',
+      'QSO B4 TU',
+      'NR?',
+      '$C?',
+      '$M',
+      '$R$X',
+      '',
+      '',
+      '',
+      ''
+    );
+
+  def_rtty_messages: array[1..maxmessage] of string =
+    (
+      'CQ CQ CQ TEST $M $M $M TEST K',
+      '$C DE $M $R$X $R$X BK',
+      'TU DE $M TEST',
+      'QSO B4 TU',
+      'NR? NR? AGN BK',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      ''
+    );
+
+
 implementation
 
 uses
@@ -334,56 +370,14 @@ begin
    AdifContestId := '';
    FSingle10G := True;
 
-   FColWidths[0] := 3;      // status
-   FColWidths[1] := 6;      // date
-   FColWidths[2] := 6;      // time
-   FColWidths[3] := 12;     // callsign
-   FColWidths[4] := 4;      // Sent RST
-   FColWidths[5] := 10;     // Sent Number
-   FColWidths[6] := 4;      // Rcvd RST
-   FColWidths[7] := 10;     // Rcvd Number
-   FColWidths[8] := 3;      // multi1
-   FColWidths[9] := 3;      // multi2
-   FColWidths[10] := 4;     // band
-   FColWidths[11] := 4;     // mode
-   FColWidths[12] := 6;     // op
-   FColWidths[13] := 7;     // memo
-   FColWidths[14] := 4;     // point
-   FColWidths[15] := 10;    // freq
-   FColWidths[16] := 0;     // QSOID
+   SetDefaultColumnWidths();
    FUseNrIme := False;
 
    FUseDefaultMessages := True;
-   for i := 1 to maxmessage do begin
-      FCwMessages[1, i] := '';
-      FCwMessages[2, i] := '';
-      FCwMessages[3, i] := '';
-      FDefCwMessages[1, i] := '';
-      FDefCwMessages[2, i] := '';
-      FDefCwMessages[3, i] := '';
-   end;
-   for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
-      FCwMessageCQ[i] := '';
-      FDefCwMessageCQ[i] := '';
-   end;
+   SetDefaultMessages();
 
    FDefProv := dmZLogGlobal.Settings._myprov;
    FDefCity := dmZLogGlobal.Settings._mycity;
-
-   FDefCwMessages[1, 1] := 'CQ TEST $M TEST';
-   FDefCwMessages[1, 2] := '$C $R$X';
-   FDefCwMessages[1, 3] := 'TU $M TEST';
-   FDefCwMessages[1, 4] := 'QSO B4 TU';
-   FDefCwMessages[1, 5] := 'NR?';
-   FDefCwMessages[1, 6] := '$C?';
-   FDefCwMessages[1, 7] := '$M';
-   FDefCwMessages[1, 8] := '$R$X';
-
-   FDefCwMessages[3, 1] := 'CQ CQ CQ TEST $M $M $M TEST K';
-   FDefCwMessages[3, 2] := '$C DE $M $R$X $R$X BK';
-   FDefCwMessages[3, 3] := 'TU DE $M TEST';
-   FDefCwMessages[3, 4] := 'QSO B4 TU';
-   FDefCwMessages[3, 5] := 'NR? NR? AGN BK';
 end;
 
 destructor TContest.Destroy;
@@ -1027,6 +1021,60 @@ end;
 procedure TContest.SetCwMessageCQ(Index: Integer; v: string);
 begin
    FCwMessageCQ[Index] := v;
+end;
+
+procedure TContest.SetDefaultMessages();
+var
+   i: Integer;
+begin
+   for i := 1 to maxmessage do begin
+      FCwMessages[1, i] := '';
+      FCwMessages[2, i] := '';
+      FCwMessages[3, i] := '';
+      FDefCwMessages[1, i] := '';
+      FDefCwMessages[2, i] := '';
+      FDefCwMessages[3, i] := '';
+   end;
+   for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
+      FCwMessageCQ[i] := '';
+      FDefCwMessageCQ[i] := '';
+   end;
+
+   FDefCwMessages[1, 1] := 'CQ TEST $M TEST';
+   FDefCwMessages[1, 2] := '$C $R$X';
+   FDefCwMessages[1, 3] := 'TU $M TEST';
+   FDefCwMessages[1, 4] := 'QSO B4 TU';
+   FDefCwMessages[1, 5] := 'NR?';
+   FDefCwMessages[1, 6] := '$C?';
+   FDefCwMessages[1, 7] := '$M';
+   FDefCwMessages[1, 8] := '$R$X';
+
+   FDefCwMessages[3, 1] := 'CQ CQ CQ TEST $M $M $M TEST K';
+   FDefCwMessages[3, 2] := '$C DE $M $R$X $R$X BK';
+   FDefCwMessages[3, 3] := 'TU DE $M TEST';
+   FDefCwMessages[3, 4] := 'QSO B4 TU';
+   FDefCwMessages[3, 5] := 'NR? NR? AGN BK';
+end;
+
+procedure TContest.SetDefaultColumnWidths();
+begin
+   FColWidths[0] := 3;      // status
+   FColWidths[1] := 6;      // date
+   FColWidths[2] := 6;      // time
+   FColWidths[3] := 12;     // callsign
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 10;     // Sent Number
+   FColWidths[6] := 4;      // Rcvd RST
+   FColWidths[7] := 10;     // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
+   FColWidths[15] := 10;    // freq
+   FColWidths[16] := 0;     // QSOID
 end;
 
 { TPedi }
@@ -1716,10 +1764,6 @@ begin
    FColWidths[14] := 4;     // point
    FColWidths[15] := 10;    // freq
    FColWidths[16] := 0;     // QSOID
-
-   FDefCwMessages[1, 2] := '$C $R$S$T';
-   FDefCwMessages[1, 8] := '$R$S$T';
-   FDefCwMessages[3, 2] := '$C DE $M $R$S$T $R$S$T BK';
 end;
 
 function TIOTAContest.QTHString(aQSO: TQSO): string;
@@ -1754,6 +1798,15 @@ begin
    if aQSO.NewMulti1 then
       temp := aQSO.Multi1;
    Result := temp;
+end;
+
+procedure TIOTAContest.SetDefaultMessages();
+begin
+   Inherited;
+
+   FDefCwMessages[1, 2] := '$C $R$S$T';
+   FDefCwMessages[1, 8] := '$R$S$T';
+   FDefCwMessages[3, 2] := '$C DE $M $R$S$T $R$S$T BK';
 end;
 
 { TARRL10Contest }

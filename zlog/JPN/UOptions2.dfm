@@ -1160,7 +1160,7 @@ object formOptions2: TformOptions2
       object groupOtherRules: TGroupBox
         Left = 259
         Top = 440
-        Width = 254
+        Width = 262
         Height = 51
         Caption = #12381#12398#20182#12398#12523#12540#12523
         TabOrder = 3
@@ -1172,7 +1172,7 @@ object formOptions2: TformOptions2
           Caption = #23616#31278#20418#25968
         end
         object ScoreCoeffEdit: TEdit
-          Left = 120
+          Left = 121
           Top = 21
           Width = 25
           Height = 21
@@ -1285,6 +1285,14 @@ object formOptions2: TformOptions2
           Width = 19
           Height = 13
           Caption = '#12'
+        end
+        object buttonResetMessage: TSpeedButton
+          Left = 209
+          Top = 18
+          Width = 45
+          Height = 17
+          Caption = #12522#12475#12483#12488
+          OnClick = buttonResetMessageClick
         end
         object editMessage2: TEdit
           Tag = 2
@@ -1409,7 +1417,7 @@ object formOptions2: TformOptions2
         end
         object rbBankA: TRadioButton
           Tag = 1
-          Left = 40
+          Left = 8
           Top = 18
           Width = 57
           Height = 17
@@ -1421,7 +1429,7 @@ object formOptions2: TformOptions2
         end
         object rbBankB: TRadioButton
           Tag = 2
-          Left = 103
+          Left = 71
           Top = 18
           Width = 49
           Height = 17
@@ -1432,7 +1440,7 @@ object formOptions2: TformOptions2
         end
         object rbRTTY: TRadioButton
           Tag = 3
-          Left = 167
+          Left = 135
           Top = 18
           Width = 49
           Height = 17
@@ -3284,7 +3292,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

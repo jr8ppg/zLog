@@ -486,6 +486,7 @@ type
     Label18: TLabel;
     groupBasicSettings: TGroupBox;
     groupDetailSettings: TGroupBox;
+    buttonResetMessage: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -551,6 +552,7 @@ type
     procedure buttonListResetClick(Sender: TObject);
     procedure buttonMyGridCalcClick(Sender: TObject);
     procedure buttonMyPositionCalcClick(Sender: TObject);
+    procedure buttonResetMessageClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -609,6 +611,11 @@ type
     property EditBank: Integer read TempCurrentBank write TempCurrentBank;
     property ActiveTab: Integer read FActiveTab write FActiveTab;
   end;
+
+resourcestring
+  Reset_CWA_messages_to_default = 'Reset CW(Bank-A) messages to their default values. Are you sure?';
+  Reset_CWB_messages_to_default = 'Reset CW(Bank-B) messages to their default values. Are you sure?';
+  Reset_RTTY_messages_to_default = 'Reset RTTY messages to their default values. Are you sure?';
 
 implementation
 
@@ -2535,6 +2542,46 @@ begin
          if n > 0 then begin
             FVoiceButton[n].Caption := 'select';
             FTempVoiceConfig[n].FSoundFile := '';
+         end;
+      end;
+   end;
+end;
+
+procedure TformOptions2.buttonResetMessageClick(Sender: TObject);
+var
+   i: Integer;
+   msg: string;
+begin
+   case TempCurrentBank of
+      1: msg := Reset_CWA_messages_to_default;
+      2: msg := Reset_CWB_messages_to_default;
+      3: msg := Reset_RTTY_messages_to_default;
+      else Exit;
+   end;
+
+   if MessageBox(Handle, PChar(msg), PChar(Application.ExeName), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   case TempCurrentBank of
+      // BANK-A
+      1: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := def_cw_messages[i];
+         end;
+      end;
+
+      // BANK-B
+      2: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := '';
+         end;
+      end;
+
+      // RTTY
+      3: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := def_rtty_messages[i];
          end;
       end;
    end;
