@@ -106,6 +106,7 @@ type
 
     procedure LoadCwMessages();
     procedure SaveCwMessages();
+    procedure SaveColumnWidths();
     procedure ApplyCwMessages();
 
     property Name: string read FContestName;
@@ -944,6 +945,25 @@ begin
          end;
       end;
 
+      for i := 0 to 16 do begin
+         SL.Add(IntToStr(Self.ColWidths[i]));
+      end;
+      ini.WriteString(FContestName, 'ColumnWidths', SL.CommaText);
+   finally
+      ini.Free();
+      SL.Free();
+   end;
+end;
+
+procedure TContest.SaveColumnWidths();
+var
+   ini: TIniFile;
+   i: Integer;
+   SL: TStringList;
+begin
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
+   SL := TStringList.Create();
+   try
       for i := 0 to 16 do begin
          SL.Add(IntToStr(Self.ColWidths[i]));
       end;

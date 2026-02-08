@@ -7704,6 +7704,7 @@ begin
          if FQsoListColumnWidthsBack[i] <> Grid.ColWidths[i] then begin
             n := Ceil(Grid.ColWidths[i] / w);
             MyContest.ColWidths[i] := n;
+            MyContest.SaveColumnWidths();
             InitGridColumnWidth();
          end;
       end;
@@ -8264,6 +8265,7 @@ begin
    end;
 
    MyContest.SetDefaultColumnWidths();
+   MyContest.SaveColumnWidths();
    InitGridColumnWidth();
    SetInitQsoEditPanel();
 end;
@@ -8289,6 +8291,7 @@ begin
          MyContest.ColWidths[i] := f.ColumnWidths[i];
       end;
 
+      MyContest.SaveColumnWidths();
       InitGridColumnWidth();
       SetInitQsoEditPanel();
    finally
