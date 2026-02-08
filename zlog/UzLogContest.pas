@@ -1530,7 +1530,7 @@ function TGeneralContest.GetNewMulti1(aQSO: TQSO): string;
 var
    temp: string;
 begin
-   Result := '';
+   temp := '';
 
    if SerialType = stNone then begin
       if aQSO.NewMulti1 then
@@ -1541,13 +1541,12 @@ begin
    else begin
       if FConfig.PXMulti = 0 then begin
          if aQSO.NewMulti1 then
-            Result := aQSO.Multi1;
+            temp := aQSO.Multi1;
       end
       else begin
          temp := '  ' + aQSO.Multi1;
          if aQSO.NewMulti1 then
             temp[1] := '*';
-         Result := temp;
       end;
    end;
 
@@ -1562,6 +1561,7 @@ begin
       temp := aQSO.Multi2
    else
       temp := '';
+
    Result := temp;
 end;
 
