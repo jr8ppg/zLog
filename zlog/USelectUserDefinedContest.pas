@@ -266,7 +266,7 @@ begin
       D := L[i];
 
       if strFilter <> '' then begin
-         if (Pos(UpperCase(strFilter), UpperCase(D.FileName)) = 0) and (Pos(strFilter, D.ContestName) = 0) then begin
+         if (Pos(UpperCase(strFilter), UpperCase(D.FileName)) = 0) and (Pos(UpperCase(strFilter), UpperCase(D.ContestName)) = 0) then begin
             Continue;
          end;
       end;
