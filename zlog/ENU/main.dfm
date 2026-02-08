@@ -7882,7 +7882,6 @@ object MainForm: TMainForm
     end
     object menuResetColumnWidths: TMenuItem
       Caption = 'Reset column widths'
-      Visible = False
       OnClick = menuResetColumnWidthsClick
     end
     object menuColumnSettings: TMenuItem

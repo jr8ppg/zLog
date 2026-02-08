@@ -8,19 +8,20 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsMemory 64128
-#define UExceptionDialog_RsScreenRes 64129
-#define UExceptionDialog_RsActiveControl 64130
-#define UExceptionDialog_RsThread 64131
-#define UExceptionDialog_RsMissingVersionInfo 64132
-#define UExceptionDialog_RsExceptionStack 64133
-#define UExceptionDialog_RsMainThreadID 64134
-#define UExceptionDialog_RsExceptionThreadID 64135
-#define UExceptionDialog_RsMainThreadCallStack 64136
-#define UExceptionDialog_RsThreadCallStack 64137
-#define UExceptionDialog_RsErrorMessage 64138
-#define UExceptionDialog_RsDetailsIntro 64139
-#define UExceptionDialog_RsUnitVersioningIntro 64140
+#define UExceptionDialog_RsProcessor 64128
+#define UExceptionDialog_RsMemory 64129
+#define UExceptionDialog_RsScreenRes 64130
+#define UExceptionDialog_RsActiveControl 64131
+#define UExceptionDialog_RsThread 64132
+#define UExceptionDialog_RsMissingVersionInfo 64133
+#define UExceptionDialog_RsExceptionStack 64134
+#define UExceptionDialog_RsMainThreadID 64135
+#define UExceptionDialog_RsExceptionThreadID 64136
+#define UExceptionDialog_RsMainThreadCallStack 64137
+#define UExceptionDialog_RsThreadCallStack 64138
+#define UExceptionDialog_RsErrorMessage 64139
+#define UExceptionDialog_RsDetailsIntro 64140
+#define UExceptionDialog_RsUnitVersioningIntro 64141
 #define Main_TMainForm_To_Change_the_mode 64144
 #define Main_TMainForm_To_Change_the_band 64145
 #define Main_TMainForm_rbn_verified 64146
@@ -29,14 +30,14 @@
 #define Main_TMainForm_prev_used_file_notfound 64149
 #define Main_TMainForm_Check_Multi 64150
 #define Main_TMainForm_Check_Zone 64151
-#define UExceptionDialog_RsAppError 64152
-#define UExceptionDialog_RsExceptionClass 64153
-#define UExceptionDialog_RsExceptionMessage 64154
-#define UExceptionDialog_RsExceptionAddr 64155
-#define UExceptionDialog_RsStackList 64156
-#define UExceptionDialog_RsModulesList 64157
-#define UExceptionDialog_RsOSVersion 64158
-#define UExceptionDialog_RsProcessor 64159
+#define Main_TMainForm_Reset_grid_column_widths 64152
+#define UExceptionDialog_RsAppError 64153
+#define UExceptionDialog_RsExceptionClass 64154
+#define UExceptionDialog_RsExceptionMessage 64155
+#define UExceptionDialog_RsExceptionAddr 64156
+#define UExceptionDialog_RsStackList 64157
+#define UExceptionDialog_RsModulesList 64158
+#define UExceptionDialog_RsOSVersion 64159
 #define Main_TMainForm_ComfirmUploadOpList 64160
 #define Main_TMainForm_ComfirmDownloadOpList 64161
 #define Main_TMainForm_DownloadFile 64162
@@ -1415,6 +1416,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
@@ -1436,6 +1438,7 @@ BEGIN
 	Main_TMainForm_prev_used_file_notfound,	L"The previously used file %s was not found."
 	Main_TMainForm_Check_Multi,	L"Check Multi"
 	Main_TMainForm_Check_Zone,	L"Check Zone"
+	Main_TMainForm_Reset_grid_column_widths,	L"Reset Column widths to their default values. Are you sure?"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
@@ -1443,7 +1446,6 @@ BEGIN
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
-	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	Main_TMainForm_ComfirmUploadOpList,	L"Upload the operator list to Z-Server. Are you sure?"
 	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
 	Main_TMainForm_DownloadFile,	L"Downloading..."

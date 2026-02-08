@@ -1567,6 +1567,7 @@ resourcestring
   TMainForm_prev_used_file_notfound = 'The previously used file %s was not found.';
   TMainForm_Check_Multi = 'Check Multi';
   TMainForm_Check_Zone = 'Check Zone';
+  TMainForm_Reset_grid_column_widths = 'Reset Column widths to their default values. Are you sure?';
 
 var
   MainForm: TMainForm;
@@ -8257,6 +8258,11 @@ end;
 
 procedure TMainForm.menuResetColumnWidthsClick(Sender: TObject);
 begin
+   if MessageBox(Handle, PChar(TMainForm_Reset_grid_column_widths), PChar(Application.ExeName), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   MyContest.SetDefaultColumnWidths();
    InitGridColumnWidth();
    SetInitQsoEditPanel();
 end;

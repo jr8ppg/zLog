@@ -7889,7 +7889,6 @@ object MainForm: TMainForm
     end
     object menuResetColumnWidths: TMenuItem
       Caption = #12459#12521#12512#24133#12434#21021#26399#20516#12395#25147#12377
-      Visible = False
       OnClick = menuResetColumnWidthsClick
     end
     object menuColumnSettings: TMenuItem
