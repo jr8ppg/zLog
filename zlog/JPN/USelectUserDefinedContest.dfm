@@ -24,7 +24,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     Height = 44
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 0
+    TabOrder = 1
     DesignSize = (
       784
       44)
@@ -71,7 +71,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     Height = 26
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 2
     DesignSize = (
       784
       26)
@@ -87,6 +87,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       Top = 3
       Width = 427
       Height = 21
+      TabStop = False
       Anchors = [akLeft, akTop, akRight]
       Color = clBtnFace
       ReadOnly = True
@@ -100,6 +101,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       Anchors = [akTop, akRight]
       Caption = #21442#29031'...'
       TabOrder = 2
+      TabStop = False
       OnClick = buttonCfgFolderRefClick
     end
     object editFilterText: TEdit
@@ -163,7 +165,7 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
     ReadOnly = True
     RowSelect = True
     ParentDoubleBuffered = False
-    TabOrder = 2
+    TabOrder = 0
     ViewStyle = vsReport
     OnDblClick = ListView1DblClick
     OnMouseEnter = ListView1MouseEnter
