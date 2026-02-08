@@ -1,7 +1,6 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = editMyCallsign
   BorderStyle = bsDialog
   Caption = #36939#29992#35373#23450
   ClientHeight = 571
@@ -2381,14 +2380,14 @@ object formOptions2: TformOptions2
         TabOrder = 0
         object Label40: TLabel
           Left = 11
-          Top = 159
+          Top = 136
           Width = 54
           Height = 13
           Caption = #33258#21205#20445#23384
         end
         object Label41: TLabel
           Left = 120
-          Top = 159
+          Top = 136
           Width = 28
           Height = 13
           Caption = 'QSO'#27598
@@ -2409,33 +2408,25 @@ object formOptions2: TformOptions2
           Caption = #26178#38291#22806#12398#20132#20449#12418#12525#12464#20986#21147
           TabOrder = 1
         end
-        object cbAutoEnterSuper: TCheckBox
-          Left = 11
-          Top = 64
-          Width = 260
-          Height = 17
-          Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
-          TabOrder = 2
-        end
         object checkDispLongDateTime: TCheckBox
           Left = 11
-          Top = 87
+          Top = 64
           Width = 193
           Height = 17
           Caption = #38263#12356#26085#20184#12391#34920#31034#12377#12427
-          TabOrder = 3
+          TabOrder = 2
         end
         object cbSaveWhenNoCW: TCheckBox
           Left = 11
-          Top = 110
+          Top = 87
           Width = 161
           Height = 17
           Caption = #20445#23384#12399'CW'#38750#36865#20449#26178
-          TabOrder = 4
+          TabOrder = 3
         end
         object SaveEvery: TSpinEdit
           Left = 76
-          Top = 156
+          Top = 133
           Width = 38
           Height = 22
           AutoSize = False
@@ -2446,11 +2437,11 @@ object formOptions2: TformOptions2
         end
         object cbJMode: TCheckBox
           Left = 11
-          Top = 133
+          Top = 110
           Width = 97
           Height = 17
           Caption = 'J'#12514#12540#12489
-          TabOrder = 6
+          TabOrder = 4
         end
         object checkUseMultiLineTabs: TCheckBox
           Left = 268
@@ -2458,7 +2449,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = #12479#12502#12434#35079#25968#34892#34920#31034#12377#12427
-          TabOrder = 7
+          TabOrder = 6
         end
         object checkUseDarkMode: TCheckBox
           Left = 268
@@ -2466,7 +2457,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = #12480#12540#12463#12514#12540#12489#12434#20351#12358
-          TabOrder = 8
+          TabOrder = 7
         end
         object checkDisableShortCutsQSOEdit: TCheckBox
           Left = 268
@@ -2474,7 +2465,7 @@ object formOptions2: TformOptions2
           Width = 225
           Height = 17
           Caption = 'QSO'#32232#38598#26178#12395#12471#12519#12540#12488#12459#12483#12488#12434#20351#29992#12375#12394#12356
-          TabOrder = 9
+          TabOrder = 8
         end
         object checkExportMemoToAdif: TCheckBox
           Left = 268
@@ -2482,7 +2473,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'ADIF'#12395'Memo'#27396#12434#20986#21147#12377#12427
-          TabOrder = 10
+          TabOrder = 9
         end
       end
       object groupAccessibility: TGroupBox
@@ -2526,7 +2517,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = #12522#12475#12483#12488
-          TabOrder = 3
+          TabOrder = 4
           OnClick = buttonFocusedInitColorClick
         end
         object checkFocusedBold: TCheckBox
@@ -2535,7 +2526,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 22
           Caption = #22826#23383
-          TabOrder = 4
+          TabOrder = 3
           OnClick = checkFocusedBoldClick
         end
         object buttonFocusedForeColor: TButton
@@ -2866,127 +2857,13 @@ object formOptions2: TformOptions2
     end
     object tabsheetMisc: TTabSheet
       Caption = #12481#12455#12483#12459#12540
-      object Label47: TLabel
-        Left = 168
-        Top = 14
-        Width = 175
-        Height = 13
-        AutoSize = False
-        Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12398#26908#32034#28145#12373
-      end
-      object Label48: TLabel
-        Left = 168
-        Top = 39
-        Width = 175
-        Height = 13
-        AutoSize = False
-        Caption = #12496#12531#12489#12473#12467#12540#12503#12398#12487#12540#12479#20445#25345#26178#38291
-      end
-      object Label49: TLabel
-        Left = 401
-        Top = 39
-        Width = 16
-        Height = 13
-        Caption = #20998
-      end
-      object Label52: TLabel
-        Left = 168
-        Top = 63
-        Width = 175
-        Height = 13
-        AutoSize = False
-        Caption = #12473#12509#12483#12488#12487#12540#12479#12398#20445#25345#26178#38291
-      end
-      object Label53: TLabel
-        Left = 401
-        Top = 63
-        Width = 16
-        Height = 13
-        Caption = #20998
-      end
-      object Label14: TLabel
-        Left = 321
-        Top = 156
-        Width = 92
-        Height = 13
-        Caption = #38281#12376#12427#12414#12391#12398#26178#38291
-      end
-      object Label18: TLabel
-        Left = 481
-        Top = 156
-        Width = 34
-        Height = 13
-        Caption = #12511#12522#31186
-      end
-      object rgSearchAfter: TRadioGroup
+      object groupSuperCheck: TGroupBox
         Left = 6
-        Top = 4
-        Width = 105
-        Height = 73
-        Caption = #26908#32034#38283#22987
-        ItemIndex = 0
-        Items.Strings = (
-          '1'#25991#23383#20837#21147#24460
-          '2'#25991#23383#20837#21147#24460
-          '3'#25991#23383#20837#21147#24460)
-        TabOrder = 0
-        TabStop = True
-      end
-      object spMaxSuperHit: TSpinEdit
-        Left = 345
-        Top = 12
-        Width = 49
-        Height = 22
-        MaxValue = 99999
-        MinValue = 0
-        TabOrder = 1
-        Value = 1
-      end
-      object spBSExpire: TSpinEdit
-        Left = 345
-        Top = 36
-        Width = 49
-        Height = 22
-        AutoSize = False
-        MaxValue = 99999
-        MinValue = 1
-        TabOrder = 2
-        Value = 60
-      end
-      object cbUpdateThread: TCheckBox
-        Left = 168
-        Top = 112
-        Width = 175
-        Height = 17
-        Caption = #21029#12473#12524#12483#12489#12391#12473#12467#12450#26356#26032
-        TabOrder = 5
-      end
-      object spSpotExpire: TSpinEdit
-        Left = 345
-        Top = 60
-        Width = 49
-        Height = 22
-        AutoSize = False
-        MaxValue = 99999
-        MinValue = 1
-        TabOrder = 3
-        Value = 60
-      end
-      object cbDisplayDatePartialCheck: TCheckBox
-        Left = 168
-        Top = 89
-        Width = 200
-        Height = 17
-        Caption = #12497#12540#12471#12515#12523#12481#12455#12483#12463#20869#12395#26085#20184#12434#34920#31034
-        TabOrder = 4
-      end
-      object GroupBox8: TGroupBox
-        Left = 6
-        Top = 335
+        Top = 205
         Width = 512
         Height = 52
-        Caption = #12473#12540#12497#12540#12481#12455#12483#12463
-        TabOrder = 8
+        Caption = 'Super Check'
+        TabOrder = 1
         object radioSuperCheck0: TRadioButton
           Left = 12
           Top = 24
@@ -3026,13 +2903,13 @@ object formOptions2: TformOptions2
           OnClick = OnNeedSuperCheckLoad
         end
       end
-      object GroupBox5: TGroupBox
+      object groupNplus1: TGroupBox
         Left = 6
-        Top = 393
+        Top = 265
         Width = 512
         Height = 50
         Caption = 'N+1'
-        TabOrder = 9
+        TabOrder = 2
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
@@ -3071,13 +2948,13 @@ object formOptions2: TformOptions2
           OnClick = buttonFullmatchInitColorClick
         end
       end
-      object GroupBox22: TGroupBox
+      object groupPartialCheck: TGroupBox
         Left = 6
-        Top = 449
+        Top = 323
         Width = 512
         Height = 50
         Caption = #12497#12540#12471#12515#12523#12481#12455#12483#12463
-        TabOrder = 10
+        TabOrder = 3
         object Label88: TLabel
           Left = 15
           Top = 24
@@ -3125,24 +3002,162 @@ object formOptions2: TformOptions2
           OnClick = buttonPartialCheckBackColorClick
         end
       end
-      object checkUseIncrementalDupeCheck: TCheckBox
-        Left = 168
-        Top = 135
-        Width = 217
-        Height = 17
-        Caption = #12452#12531#12463#12522#12513#12531#12479#12523#12487#12517#12540#12503#12481#12455#12483#12463#12434#20351#12358
-        TabOrder = 6
+      object groupBasicSettings: TGroupBox
+        Left = 6
+        Top = 6
+        Width = 512
+        Height = 193
+        Caption = #22522#26412#35373#23450
+        TabOrder = 0
+        object Label14: TLabel
+          Left = 55
+          Top = 64
+          Width = 92
+          Height = 13
+          Caption = #38281#12376#12427#12414#12391#12398#26178#38291
+        end
+        object Label18: TLabel
+          Left = 223
+          Top = 64
+          Width = 34
+          Height = 13
+          Caption = #12511#12522#30149
+        end
+        object cbDisplayDatePartialCheck: TCheckBox
+          Left = 11
+          Top = 18
+          Width = 175
+          Height = 17
+          Caption = #12497#12540#12471#12515#12523#12481#12455#12483#12463#20869#12395#26085#20184#12434#34920#31034
+          TabOrder = 0
+        end
+        object checkUseIncrementalDupeCheck: TCheckBox
+          Left = 11
+          Top = 41
+          Width = 217
+          Height = 17
+          Caption = #12452#12531#12463#12522#12513#12531#12479#12523#12487#12517#12540#12503#12481#12455#12483#12463#12434#20351#12358
+          TabOrder = 1
+        end
+        object cbAutoEnterSuper: TCheckBox
+          Left = 11
+          Top = 87
+          Width = 260
+          Height = 17
+          Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12424#12426#12490#12531#12496#12540#33258#21205#20837#21147
+          TabOrder = 3
+        end
+        object spPartialCloseTime: TSpinEdit
+          Left = 161
+          Top = 61
+          Width = 56
+          Height = 22
+          AutoSize = False
+          MaxValue = 9999
+          MinValue = 1
+          TabOrder = 2
+          Value = 5000
+        end
       end
-      object spPartialCloseTime: TSpinEdit
-        Left = 419
-        Top = 153
-        Width = 56
-        Height = 22
-        AutoSize = False
-        MaxValue = 9999
-        MinValue = 1
-        TabOrder = 7
-        Value = 5000
+      object groupDetailSettings: TGroupBox
+        Left = 6
+        Top = 381
+        Width = 512
+        Height = 119
+        Caption = #35443#32048#35373#23450
+        TabOrder = 4
+        object Label47: TLabel
+          Left = 11
+          Top = 18
+          Width = 175
+          Height = 13
+          AutoSize = False
+          Caption = #12473#12540#12497#12540#12481#12455#12483#12463#12398#26908#32034#28145#12373
+        end
+        object Label48: TLabel
+          Left = 11
+          Top = 43
+          Width = 175
+          Height = 13
+          AutoSize = False
+          Caption = #12496#12531#12489#12473#12467#12540#12503#12398#12487#12540#12479#20445#25345#26178#38291
+        end
+        object Label49: TLabel
+          Left = 244
+          Top = 43
+          Width = 16
+          Height = 13
+          Caption = #20998
+        end
+        object Label52: TLabel
+          Left = 11
+          Top = 67
+          Width = 175
+          Height = 13
+          AutoSize = False
+          Caption = #12473#12509#12483#12488#12487#12540#12479#12398#20445#25345#26178#38291
+        end
+        object Label53: TLabel
+          Left = 244
+          Top = 67
+          Width = 16
+          Height = 13
+          Caption = #20998
+        end
+        object cbUpdateThread: TCheckBox
+          Left = 11
+          Top = 92
+          Width = 175
+          Height = 17
+          Caption = #21029#12473#12524#12483#12489#12391#12473#12467#12450#26356#26032
+          TabOrder = 3
+        end
+        object rgSearchAfter: TRadioGroup
+          Left = 396
+          Top = 16
+          Width = 105
+          Height = 89
+          Caption = #26908#32034#38283#22987
+          ItemIndex = 0
+          Items.Strings = (
+            '1'#25991#23383#20837#21147#24460
+            '2'#25991#23383#20837#21147#24460
+            '3'#25991#23383#20837#21147#24460)
+          TabOrder = 4
+          TabStop = True
+        end
+        object spBSExpire: TSpinEdit
+          Left = 188
+          Top = 40
+          Width = 49
+          Height = 22
+          AutoSize = False
+          MaxValue = 99999
+          MinValue = 1
+          TabOrder = 1
+          Value = 60
+        end
+        object spMaxSuperHit: TSpinEdit
+          Left = 188
+          Top = 16
+          Width = 49
+          Height = 22
+          MaxValue = 99999
+          MinValue = 0
+          TabOrder = 0
+          Value = 1
+        end
+        object spSpotExpire: TSpinEdit
+          Left = 188
+          Top = 64
+          Width = 49
+          Height = 22
+          AutoSize = False
+          MaxValue = 99999
+          MinValue = 1
+          TabOrder = 2
+          Value = 60
+        end
       end
     end
     object tabsheetQuickFunctions: TTabSheet
@@ -3269,6 +3284,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

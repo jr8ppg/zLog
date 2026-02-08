@@ -98,7 +98,7 @@ type
     spSpotExpire: TSpinEdit;
     cbDisplayDatePartialCheck: TCheckBox;
     tabsheetQuickFunctions: TTabSheet;
-    GroupBox8: TGroupBox;
+    groupSuperCheck: TGroupBox;
     radioSuperCheck0: TRadioButton;
     radioSuperCheck1: TRadioButton;
     radioSuperCheck2: TRadioButton;
@@ -118,7 +118,7 @@ type
     comboPower2400: TComboBox;
     comboPower5600: TComboBox;
     comboPower101g: TComboBox;
-    GroupBox5: TGroupBox;
+    groupNplus1: TGroupBox;
     checkHighlightFullmatch: TCheckBox;
     editFullmatchColor: TEdit;
     buttonFullmatchSelectColor: TButton;
@@ -238,7 +238,7 @@ type
     editQsyCountDownMinute: TSpinEdit;
     editQsyCountPerHour: TSpinEdit;
     Label87: TLabel;
-    GroupBox22: TGroupBox;
+    groupPartialCheck: TGroupBox;
     Label88: TLabel;
     editPartialCheckColor: TEdit;
     buttonPartialCheckForeColor: TButton;
@@ -484,6 +484,8 @@ type
     Label14: TLabel;
     spPartialCloseTime: TSpinEdit;
     Label18: TLabel;
+    groupBasicSettings: TGroupBox;
+    groupDetailSettings: TGroupBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

@@ -1,7 +1,6 @@
 object formOptions2: TformOptions2
   Left = 532
   Top = 236
-  ActiveControl = editMyCallsign
   BorderStyle = bsDialog
   Caption = 'Options'
   ClientHeight = 471
@@ -3344,14 +3343,14 @@ object formOptions2: TformOptions2
         TabOrder = 0
         object Label40: TLabel
           Left = 11
-          Top = 159
+          Top = 136
           Width = 54
           Height = 13
           Caption = 'Save every'
         end
         object Label41: TLabel
           Left = 120
-          Top = 159
+          Top = 136
           Width = 28
           Height = 13
           Caption = 'QSOs'
@@ -3372,33 +3371,25 @@ object formOptions2: TformOptions2
           Caption = 'Output logs out of period'
           TabOrder = 1
         end
-        object cbAutoEnterSuper: TCheckBox
-          Left = 11
-          Top = 64
-          Width = 260
-          Height = 17
-          Caption = 'Automatically enter exchange from SuperCheck'
-          TabOrder = 2
-        end
         object checkDispLongDateTime: TCheckBox
           Left = 11
-          Top = 87
+          Top = 64
           Width = 193
           Height = 17
           Caption = 'Display long date time'
-          TabOrder = 3
+          TabOrder = 2
         end
         object cbSaveWhenNoCW: TCheckBox
           Left = 11
-          Top = 110
+          Top = 87
           Width = 161
           Height = 17
           Caption = 'Save when not sending CW'
-          TabOrder = 4
+          TabOrder = 3
         end
         object SaveEvery: TSpinEdit
           Left = 76
-          Top = 156
+          Top = 133
           Width = 38
           Height = 22
           AutoSize = False
@@ -3409,11 +3400,11 @@ object formOptions2: TformOptions2
         end
         object cbJMode: TCheckBox
           Left = 11
-          Top = 133
+          Top = 110
           Width = 97
           Height = 17
           Caption = 'J-mode'
-          TabOrder = 6
+          TabOrder = 4
         end
         object checkUseMultiLineTabs: TCheckBox
           Left = 268
@@ -3421,7 +3412,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Use multiline tabs'
-          TabOrder = 7
+          TabOrder = 6
         end
         object checkUseDarkMode: TCheckBox
           Left = 268
@@ -3429,7 +3420,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Use dark mode'
-          TabOrder = 8
+          TabOrder = 7
         end
         object checkDisableShortCutsQSOEdit: TCheckBox
           Left = 268
@@ -3437,7 +3428,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Disable shortcuts during QSO editing'
-          TabOrder = 9
+          TabOrder = 8
         end
         object checkExportMemoToAdif: TCheckBox
           Left = 268
@@ -3445,7 +3436,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Export the Memo field to ADIF'
-          TabOrder = 10
+          TabOrder = 9
         end
       end
       object groupAccessibility: TGroupBox
@@ -3489,7 +3480,7 @@ object formOptions2: TformOptions2
           Width = 53
           Height = 20
           Caption = 'Reset'
-          TabOrder = 3
+          TabOrder = 4
           OnClick = buttonFocusedInitColorClick
         end
         object checkFocusedBold: TCheckBox
@@ -3498,7 +3489,7 @@ object formOptions2: TformOptions2
           Width = 45
           Height = 22
           Caption = 'Bold'
-          TabOrder = 4
+          TabOrder = 3
           OnClick = checkFocusedBoldClick
         end
         object buttonFocusedForeColor: TButton
@@ -3829,127 +3820,13 @@ object formOptions2: TformOptions2
     end
     object tabsheetMisc: TTabSheet
       Caption = 'Checker'
-      object Label47: TLabel
-        Left = 168
-        Top = 14
-        Width = 175
-        Height = 13
-        AutoSize = False
-        Caption = 'Max super check search'
-      end
-      object Label48: TLabel
-        Left = 168
-        Top = 39
-        Width = 175
-        Height = 13
-        AutoSize = False
-        Caption = 'Delete band scope data after'
-      end
-      object Label49: TLabel
-        Left = 401
-        Top = 39
-        Width = 16
-        Height = 13
-        Caption = 'min'
-      end
-      object Label52: TLabel
-        Left = 168
-        Top = 63
-        Width = 175
-        Height = 13
-        AutoSize = False
-        Caption = 'Delete spot data after'
-      end
-      object Label53: TLabel
-        Left = 401
-        Top = 63
-        Width = 16
-        Height = 13
-        Caption = 'min'
-      end
-      object Label14: TLabel
-        Left = 321
-        Top = 156
-        Width = 92
-        Height = 13
-        Caption = 'Time before closing'
-      end
-      object Label18: TLabel
-        Left = 481
-        Top = 156
-        Width = 34
-        Height = 13
-        Caption = 'milisec.'
-      end
-      object rgSearchAfter: TRadioGroup
+      object groupSuperCheck: TGroupBox
         Left = 6
-        Top = 4
-        Width = 105
-        Height = 73
-        Caption = 'Start search after'
-        ItemIndex = 0
-        Items.Strings = (
-          'one char'
-          'two char'
-          'three char')
-        TabOrder = 0
-        TabStop = True
-      end
-      object spMaxSuperHit: TSpinEdit
-        Left = 345
-        Top = 12
-        Width = 49
-        Height = 22
-        MaxValue = 99999
-        MinValue = 0
-        TabOrder = 1
-        Value = 1
-      end
-      object spBSExpire: TSpinEdit
-        Left = 345
-        Top = 36
-        Width = 49
-        Height = 22
-        AutoSize = False
-        MaxValue = 99999
-        MinValue = 1
-        TabOrder = 2
-        Value = 60
-      end
-      object cbUpdateThread: TCheckBox
-        Left = 168
-        Top = 112
-        Width = 175
-        Height = 17
-        Caption = 'Update using a thread'
-        TabOrder = 5
-      end
-      object spSpotExpire: TSpinEdit
-        Left = 345
-        Top = 60
-        Width = 49
-        Height = 22
-        AutoSize = False
-        MaxValue = 99999
-        MinValue = 1
-        TabOrder = 3
-        Value = 60
-      end
-      object cbDisplayDatePartialCheck: TCheckBox
-        Left = 168
-        Top = 89
-        Width = 175
-        Height = 17
-        Caption = 'Display date in partial check'
-        TabOrder = 4
-      end
-      object GroupBox8: TGroupBox
-        Left = 6
-        Top = 335
+        Top = 205
         Width = 512
         Height = 52
         Caption = 'Super Check'
-        TabOrder = 8
+        TabOrder = 1
         object radioSuperCheck0: TRadioButton
           Left = 12
           Top = 24
@@ -3989,13 +3866,13 @@ object formOptions2: TformOptions2
           OnClick = OnNeedSuperCheckLoad
         end
       end
-      object GroupBox5: TGroupBox
+      object groupNplus1: TGroupBox
         Left = 6
-        Top = 393
+        Top = 265
         Width = 512
         Height = 50
         Caption = 'N+1'
-        TabOrder = 9
+        TabOrder = 2
         object checkHighlightFullmatch: TCheckBox
           Left = 12
           Top = 22
@@ -4034,13 +3911,13 @@ object formOptions2: TformOptions2
           OnClick = buttonFullmatchInitColorClick
         end
       end
-      object GroupBox22: TGroupBox
+      object groupPartialCheck: TGroupBox
         Left = 6
-        Top = 449
+        Top = 323
         Width = 512
         Height = 50
         Caption = 'Partial Check'
-        TabOrder = 10
+        TabOrder = 3
         object Label88: TLabel
           Left = 15
           Top = 24
@@ -4088,24 +3965,162 @@ object formOptions2: TformOptions2
           OnClick = buttonPartialCheckBackColorClick
         end
       end
-      object checkUseIncrementalDupeCheck: TCheckBox
-        Left = 168
-        Top = 135
-        Width = 217
-        Height = 17
-        Caption = 'Use incremental dupe check'
-        TabOrder = 6
+      object groupBasicSettings: TGroupBox
+        Left = 6
+        Top = 6
+        Width = 512
+        Height = 193
+        Caption = 'Basic settings'
+        TabOrder = 0
+        object Label14: TLabel
+          Left = 55
+          Top = 64
+          Width = 92
+          Height = 13
+          Caption = 'Time before closing'
+        end
+        object Label18: TLabel
+          Left = 223
+          Top = 64
+          Width = 34
+          Height = 13
+          Caption = 'milisec.'
+        end
+        object cbDisplayDatePartialCheck: TCheckBox
+          Left = 11
+          Top = 18
+          Width = 175
+          Height = 17
+          Caption = 'Display date in partial check'
+          TabOrder = 0
+        end
+        object checkUseIncrementalDupeCheck: TCheckBox
+          Left = 11
+          Top = 41
+          Width = 217
+          Height = 17
+          Caption = 'Use incremental dupe check'
+          TabOrder = 1
+        end
+        object cbAutoEnterSuper: TCheckBox
+          Left = 11
+          Top = 87
+          Width = 260
+          Height = 17
+          Caption = 'Automatically enter exchange from SuperCheck'
+          TabOrder = 3
+        end
+        object spPartialCloseTime: TSpinEdit
+          Left = 161
+          Top = 61
+          Width = 56
+          Height = 22
+          AutoSize = False
+          MaxValue = 9999
+          MinValue = 1
+          TabOrder = 2
+          Value = 5000
+        end
       end
-      object spPartialCloseTime: TSpinEdit
-        Left = 419
-        Top = 153
-        Width = 56
-        Height = 22
-        AutoSize = False
-        MaxValue = 9999
-        MinValue = 1
-        TabOrder = 7
-        Value = 5000
+      object groupDetailSettings: TGroupBox
+        Left = 6
+        Top = 381
+        Width = 512
+        Height = 119
+        Caption = 'Detail settings'
+        TabOrder = 4
+        object Label47: TLabel
+          Left = 11
+          Top = 18
+          Width = 175
+          Height = 13
+          AutoSize = False
+          Caption = 'Max super check search'
+        end
+        object Label48: TLabel
+          Left = 11
+          Top = 43
+          Width = 175
+          Height = 13
+          AutoSize = False
+          Caption = 'Delete band scope data after'
+        end
+        object Label49: TLabel
+          Left = 244
+          Top = 43
+          Width = 16
+          Height = 13
+          Caption = 'min'
+        end
+        object Label52: TLabel
+          Left = 11
+          Top = 67
+          Width = 175
+          Height = 13
+          AutoSize = False
+          Caption = 'Delete spot data after'
+        end
+        object Label53: TLabel
+          Left = 244
+          Top = 67
+          Width = 16
+          Height = 13
+          Caption = 'min'
+        end
+        object cbUpdateThread: TCheckBox
+          Left = 11
+          Top = 92
+          Width = 175
+          Height = 17
+          Caption = 'Update using a thread'
+          TabOrder = 3
+        end
+        object rgSearchAfter: TRadioGroup
+          Left = 396
+          Top = 16
+          Width = 105
+          Height = 89
+          Caption = 'Start search after'
+          ItemIndex = 0
+          Items.Strings = (
+            'one char'
+            'two char'
+            'three char')
+          TabOrder = 4
+          TabStop = True
+        end
+        object spBSExpire: TSpinEdit
+          Left = 188
+          Top = 40
+          Width = 49
+          Height = 22
+          AutoSize = False
+          MaxValue = 99999
+          MinValue = 1
+          TabOrder = 1
+          Value = 60
+        end
+        object spMaxSuperHit: TSpinEdit
+          Left = 188
+          Top = 16
+          Width = 49
+          Height = 22
+          MaxValue = 99999
+          MinValue = 0
+          TabOrder = 0
+          Value = 1
+        end
+        object spSpotExpire: TSpinEdit
+          Left = 188
+          Top = 64
+          Width = 49
+          Height = 22
+          AutoSize = False
+          MaxValue = 99999
+          MinValue = 1
+          TabOrder = 2
+          Value = 60
+        end
       end
       object GroupBox23: TSpinEdit
         Left = 6
@@ -4294,6 +4309,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0
