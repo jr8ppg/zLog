@@ -6887,6 +6887,7 @@ begin
       RenewCWToolBar;
       RenewVoiceToolBar;
 
+      MyContest.SaveCwMessages();
       InitGridColumnWidth();
       InitQsoEditPanel();
       InitSerialPanel();

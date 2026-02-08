@@ -332,8 +332,6 @@ uses
   UACAGMulti, UFDMulti, USixDownMulti, UGeneralMulti2, UGeneralScore;
 
 constructor TContest.Create(AOwner: TComponent; N: string; M: TContestMode);
-var
-   i: Integer;
 begin
    FMultiForm := nil;
    FScoreForm := nil;

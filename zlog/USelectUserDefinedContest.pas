@@ -92,6 +92,10 @@ end;
 
 procedure TSelectUserDefinedContest.buttonOKClick(Sender: TObject);
 begin
+   if ListView1.Selected = nil then begin
+      Exit;
+   end;
+
    FSelectedContest := TUserDefinedContest(ListView1.Selected.Data);
 
    if (Pos('$V', FSelectedContest.Sent) > 0) and (FSelectedContest.Prov = '') then begin
