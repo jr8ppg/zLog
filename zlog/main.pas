@@ -6433,7 +6433,13 @@ begin
 
    strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
 
-   if dmZLogGlobal.Settings._entersuperexchange and (FSpcRcvd_Estimate <> '') then begin
+   // シリアルナンバータイプはNR自動補完無し
+   if (MyContest.SerialType <> stNone) then begin
+      strNumber := '';
+   end;
+
+   // スーパーチェックからのNR自動取込
+   if (MyContest.SerialType = stNone) and (dmZLogGlobal.Settings._entersuperexchange = True) and (FSpcRcvd_Estimate <> '') then begin
       if strNumber = '' then begin
          if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
             strNumber := TrimRight(FSpcRcvd_Estimate);
@@ -8754,7 +8760,6 @@ end;
 procedure TMainForm.InitGridColumnWidth();
 var
    nColWidth: Integer;
-   nOpWidth: Integer;
 
    procedure SetColumnWidth(n: Integer);
    begin
@@ -8821,7 +8826,7 @@ begin
          ColWidths[12] := -1;
       end
       else begin
-         ColWidths[12] := nOpWidth * nColWidth;
+         ColWidths[12] := MyContest.ColWidths[12] * nColWidth;
       end;
 
       // 13:Memo
@@ -11535,6 +11540,10 @@ begin
    end;
 
    ShowSentNumber(CurrentQSO);
+
+   if MyContest is TARRLDXContestDX then begin
+      SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
+   end;
 end;
 
 // #92 CWバンク変更 Shift+F
@@ -12153,6 +12162,10 @@ var
    end;
 begin
    os := dmZLogGlobal.Settings._operate_style;
+   if os = os1Radio then begin
+      Exit;
+   end;
+
    n := FindIndex();
 
    Inc(n);
