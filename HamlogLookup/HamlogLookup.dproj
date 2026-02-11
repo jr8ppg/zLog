@@ -154,16 +154,13 @@
         </DCCReference>
         <DCCReference Include="Progress.pas">
             <Form>formProgress</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SelectZlog.pas">
             <Form>formSelectZLog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="DialogHook.pas"/>
         <DCCReference Include="UOptions.pas">
             <Form>formOptions</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Hamlog50.pas"/>
         <DCCReference Include="HamlogIf.pas"/>
