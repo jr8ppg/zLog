@@ -727,6 +727,9 @@ type
     timerPartialClose: TTimer;
     actionShowSentNumber: TAction;
     menuShowSentNumber: TMenuItem;
+    menuHamlogUtySep: TMenuItem;
+    menuExecHamlogLookup: TMenuItem;
+    menuExecHamlogConverter: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1068,6 +1071,8 @@ type
     procedure GridMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure actionShowSentNumberExecute(Sender: TObject);
+    procedure menuExecHamlogLookupClick(Sender: TObject);
+    procedure menuExecHamlogConverterClick(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -3371,6 +3376,10 @@ end;
 procedure TMainForm.FileMenuClick(Sender: TObject);
 begin
    menuCorrectStartTime.Enabled := MyContest.UseContestPeriod;
+
+   menuExecHamlogLookup.Visible := FileExists(ExtractFilePath(Application.ExeName) + 'HamlogLookup.exe');
+   menuExecHamlogConverter.Visible := FileExists(ExtractFilePath(Application.ExeName) + 'zlog_hamlogconv.exe');
+   menuHamlogUtySep.Visible := menuExecHamlogLookup.Visible or menuExecHamlogConverter.Visible;
 end;
 
 procedure TMainForm.FileExit(Sender: TObject);
@@ -8423,6 +8432,16 @@ begin
    finally
       ini.Free();
    end;
+end;
+
+procedure TMainForm.menuExecHamlogLookupClick(Sender: TObject);
+begin
+   ExecProgram(Handle, 'HamlogLookup.exe');
+end;
+
+procedure TMainForm.menuExecHamlogConverterClick(Sender: TObject);
+begin
+   ExecProgram(Handle, 'zlog_hamlogconv.exe');
 end;
 
 procedure TMainForm.AutoInput(D: TBSData);

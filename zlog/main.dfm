@@ -6827,6 +6827,17 @@ object MainForm: TMainForm
         Caption = 'Load MMTTY'
         OnClick = mnMMTTYClick
       end
+      object menuHamlogUtySep: TMenuItem
+        Caption = '-'
+      end
+      object menuExecHamlogLookup: TMenuItem
+        Caption = 'Launch HAMLOGLookup'
+        OnClick = menuExecHamlogLookupClick
+      end
+      object menuExecHamlogConverter: TMenuItem
+        Caption = 'Launch HAMLOG Converter'
+        OnClick = menuExecHamlogConverterClick
+      end
       object N4: TMenuItem
         Caption = '-'
       end

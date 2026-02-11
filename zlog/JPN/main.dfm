@@ -6832,6 +6832,17 @@ object MainForm: TMainForm
         OnClick = mnMMTTYClick
         GroupIndex = 1
       end
+      object menuHamlogUtySep: TMenuItem
+        Caption = '-'
+      end
+      object menuExecHamlogLookup: TMenuItem
+        Caption = 'HAMLOGLookup'#12398#36215#21205
+        OnClick = menuExecHamlogLookupClick
+      end
+      object menuExecHamlogConverter: TMenuItem
+        Caption = 'HAMLOG Converter'#12398#36215#21205
+        OnClick = menuExecHamlogConverterClick
+      end
       object N4: TMenuItem
         Caption = '-'
         GroupIndex = 1

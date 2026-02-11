@@ -744,6 +744,7 @@ function TrimCRLF(SS : string) : string;
 function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
 procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
 function GetDisplayScalingFactor(x, y: Integer): double;
+procedure ExecProgram(handle: THandle; strExeName: string);
 
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
@@ -5168,6 +5169,31 @@ begin
    else begin
       Result := 1;
    end;
+end;
+
+procedure ExecProgram(handle: THandle; strExeName: string);
+var
+   si: STARTUPINFO;
+   pi: PROCESS_INFORMATION;
+   strCurDir: string;
+   strFullPath: string;
+begin
+   GetStartupInfo(si);
+
+   strCurDir := ExtractFilePath(Application.ExeName);
+   strFullPath := strCurDir + strExeName;
+   if FileExists(strFullPath) = False then begin
+      MessageBox(handle, PChar(strExeName + ' is not exists'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   if CreateProcess(nil, PChar(strFullPath), nil, nil, False, 0, nil, PChar(strCurDir), si, pi) = False then begin
+      Application.MessageBox(PChar('can not execute'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   CloseHandle(pi.hProcess);
+   CloseHandle(pi.hThread);
 end;
 
 end.
