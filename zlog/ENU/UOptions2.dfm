@@ -4394,8 +4394,8 @@ object formOptions2: TformOptions2
           TabOrder = 2
         end
         object checkBs05: TCheckBox
-          Left = 108
-          Top = 18
+          Left = 12
+          Top = 103
           Width = 60
           Height = 17
           Caption = '14 MHz'
@@ -4405,7 +4405,7 @@ object formOptions2: TformOptions2
         end
         object checkBs07: TCheckBox
           Left = 108
-          Top = 60
+          Top = 18
           Width = 60
           Height = 17
           Caption = '21 MHz'
@@ -4414,8 +4414,8 @@ object formOptions2: TformOptions2
           TabOrder = 6
         end
         object checkBs09: TCheckBox
-          Left = 205
-          Top = 18
+          Left = 109
+          Top = 60
           Width = 67
           Height = 17
           Caption = '28 MHz'
@@ -4424,8 +4424,8 @@ object formOptions2: TformOptions2
           TabOrder = 8
         end
         object checkBs10: TCheckBox
-          Left = 205
-          Top = 39
+          Left = 109
+          Top = 81
           Width = 67
           Height = 17
           Caption = '50 MHz'
@@ -4434,8 +4434,8 @@ object formOptions2: TformOptions2
           TabOrder = 9
         end
         object checkBs11: TCheckBox
-          Left = 205
-          Top = 60
+          Left = 109
+          Top = 103
           Width = 67
           Height = 17
           Caption = '144 MHz'
@@ -4445,7 +4445,7 @@ object formOptions2: TformOptions2
         end
         object checkBs12: TCheckBox
           Left = 205
-          Top = 81
+          Top = 125
           Width = 67
           Height = 17
           Caption = '430 MHz'
@@ -4464,7 +4464,7 @@ object formOptions2: TformOptions2
           TabOrder = 12
         end
         object checkBs14: TCheckBox
-          Left = 301
+          Left = 206
           Top = 39
           Width = 67
           Height = 17
@@ -4474,7 +4474,7 @@ object formOptions2: TformOptions2
           TabOrder = 13
         end
         object checkBs15: TCheckBox
-          Left = 301
+          Left = 206
           Top = 60
           Width = 67
           Height = 17
@@ -4484,7 +4484,7 @@ object formOptions2: TformOptions2
           TabOrder = 14
         end
         object checkBs16: TCheckBox
-          Left = 301
+          Left = 206
           Top = 81
           Width = 67
           Height = 17
@@ -4494,7 +4494,7 @@ object formOptions2: TformOptions2
           TabOrder = 15
         end
         object checkBs08: TCheckBox
-          Left = 108
+          Left = 109
           Top = 81
           Width = 60
           Height = 17
@@ -4505,7 +4505,7 @@ object formOptions2: TformOptions2
         end
         object checkBs06: TCheckBox
           Left = 108
-          Top = 39
+          Top = 125
           Width = 60
           Height = 17
           Caption = '18 MHz'
@@ -4524,8 +4524,8 @@ object formOptions2: TformOptions2
           TabOrder = 3
         end
         object checkBsCurrent: TCheckBox
-          Left = 205
-          Top = 104
+          Left = 399
+          Top = 39
           Width = 90
           Height = 17
           Caption = 'Current'
@@ -4534,8 +4534,8 @@ object formOptions2: TformOptions2
           TabOrder = 17
         end
         object checkBsNewMulti: TCheckBox
-          Left = 301
-          Top = 104
+          Left = 399
+          Top = 60
           Width = 112
           Height = 17
           Caption = 'New Multi'
@@ -4544,8 +4544,8 @@ object formOptions2: TformOptions2
           TabOrder = 18
         end
         object checkBsAllBands: TCheckBox
-          Left = 12
-          Top = 104
+          Left = 399
+          Top = 18
           Width = 141
           Height = 17
           Caption = 'All bands'
@@ -4555,7 +4555,7 @@ object formOptions2: TformOptions2
         end
         object checkBs19: TCheckBox
           Left = 303
-          Top = 81
+          Top = 18
           Width = 90
           Height = 17
           Caption = '47 GHz'
@@ -4564,8 +4564,8 @@ object formOptions2: TformOptions2
           TabOrder = 18
         end
         object checkBs20: TCheckBox
-          Left = 400
-          Top = 81
+          Left = 303
+          Top = 39
           Width = 90
           Height = 17
           Caption = '77 GHz'
@@ -4575,7 +4575,7 @@ object formOptions2: TformOptions2
         end
         object checkBs18: TCheckBox
           Left = 206
-          Top = 81
+          Top = 125
           Width = 90
           Height = 17
           Caption = '24 GHz'
@@ -4584,8 +4584,8 @@ object formOptions2: TformOptions2
           TabOrder = 17
         end
         object checkBs17: TCheckBox
-          Left = 109
-          Top = 81
+          Left = 206
+          Top = 103
           Width = 90
           Height = 17
           Caption = '10.4 GHz'
@@ -4594,8 +4594,8 @@ object formOptions2: TformOptions2
           TabOrder = 16
         end
         object checkBs22: TCheckBox
-          Left = 109
-          Top = 103
+          Left = 303
+          Top = 81
           Width = 90
           Height = 17
           Caption = '248 GHz'
@@ -4604,8 +4604,8 @@ object formOptions2: TformOptions2
           TabOrder = 21
         end
         object checkBs21: TCheckBox
-          Left = 12
-          Top = 103
+          Left = 303
+          Top = 60
           Width = 90
           Height = 17
           Caption = '135 GHz'
