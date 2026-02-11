@@ -138,22 +138,18 @@
         </DelphiCompile>
         <DCCReference Include="UHamlogConv.pas">
             <Form>HamlogConverter</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzlogConst.pas"/>
         <DCCReference Include="UzLogGlobal.pas">
             <Form>dmZLogGlobal</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UOptions.pas">
             <Form>Options</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="HelperLib.pas"/>
         <DCCReference Include="UExceptionDialog.pas">
             <Form>ExceptionDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Hamlog50.pas"/>
         <DCCReference Include="UzLogQSO.pas"/>
@@ -161,7 +157,6 @@
         <DCCReference Include="HamlogIf.pas"/>
         <DCCReference Include="UPowerDialog.pas">
             <Form>formPowerDialog</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
