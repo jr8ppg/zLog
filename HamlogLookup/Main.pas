@@ -50,6 +50,7 @@ type
     procedure checkStayOnTopClick(Sender: TObject);
     procedure editCallsignKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure editCallsignChange(Sender: TObject);
   private
     { Private 宣言 }
 
@@ -195,6 +196,31 @@ begin
 
    editCallsign.SetFocus();
    editCallsign.SelectAll();
+end;
+
+// ----------------------------------------------------------------------------
+
+procedure TformHamlogLookup.editCallsignChange(Sender: TObject);
+var
+   strCallsign: string;
+   nLen: Integer;
+begin
+   if FIncremental = False then begin
+      Exit;
+   end;
+
+   strCallsign := editCallsign.Text;
+   nLen := Length(strCallsign);
+
+   // インクリメンタルサーチは３文字から
+   if nLen < 3 then begin
+      Exit;
+   end;
+
+   // 照会
+   HamlogLookup1(editCallsign.Text);
+
+   m_strPrevCallsign := '';
 end;
 
 // ----------------------------------------------------------------------------

@@ -49,6 +49,7 @@ object formHamlogLookup: TformHamlogLookup
       Height = 20
       CharCase = ecUpperCase
       TabOrder = 0
+      OnChange = editCallsignChange
       OnEnter = editCallsignEnter
       OnExit = editCallsignExit
     end
