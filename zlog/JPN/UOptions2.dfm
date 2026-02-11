@@ -2870,7 +2870,7 @@ object formOptions2: TformOptions2
         Top = 205
         Width = 512
         Height = 52
-        Caption = 'Super Check'
+        Caption = #12473#12540#12497#12540#12481#12455#12483#12463
         TabOrder = 1
         object radioSuperCheck0: TRadioButton
           Left = 12

@@ -8,137 +8,141 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsErrorMessage 64128
-#define UExceptionDialog_RsDetailsIntro 64129
-#define UExceptionDialog_RsUnitVersioningIntro 64130
-#define UExceptionDialog_RsExceptionMessage 64144
-#define UExceptionDialog_RsExceptionAddr 64145
-#define UExceptionDialog_RsStackList 64146
-#define UExceptionDialog_RsModulesList 64147
-#define UExceptionDialog_RsOSVersion 64148
-#define UExceptionDialog_RsProcessor 64149
-#define UExceptionDialog_RsMemory 64150
-#define UExceptionDialog_RsScreenRes 64151
-#define UExceptionDialog_RsActiveControl 64152
-#define UExceptionDialog_RsThread 64153
-#define UExceptionDialog_RsMissingVersionInfo 64154
-#define UExceptionDialog_RsExceptionStack 64155
-#define UExceptionDialog_RsMainThreadID 64156
-#define UExceptionDialog_RsExceptionThreadID 64157
-#define UExceptionDialog_RsMainThreadCallStack 64158
-#define UExceptionDialog_RsThreadCallStack 64159
-#define Main_TMainForm_ConfirmRewindSerialNumber 64160
-#define Main_TMainForm_ConfirmContestPeriod 64161
-#define Main_TMainForm_ConfirmOverwrite 64162
-#define Main_TMainForm_ConfirmModeConvert 64163
-#define Main_TMainForm_No_QTC_Message 64164
-#define Main_TMainForm_Assigned_Another_Function 64165
-#define Main_TMainForm_To_Change_the_mode 64166
-#define Main_TMainForm_To_Change_the_band 64167
-#define Main_TMainForm_rbn_verified 64168
-#define Main_TMainForm_darkmode_changed 64169
-#define Main_TMainForm_partial_nomatch 64170
-#define Main_TMainForm_prev_used_file_notfound 64171
-#define Main_TMainForm_Check_Multi 64172
-#define Main_TMainForm_Check_Zone 64173
-#define UExceptionDialog_RsAppError 64174
-#define UExceptionDialog_RsExceptionClass 64175
-#define Main_TMainForm_Setup_SentNR_handle 64176
-#define Main_TMainForm_New_QSO_Arrived 64177
-#define Main_TMainForm_Select_Operator 64178
-#define Main_TMainForm_JARL_Member_Info 64179
-#define Main_TMainForm_Inquire_JARL_Member_Info 64180
-#define Main_TMainForm_UserDat_not_loaded 64181
-#define Main_TMainForm_ComfirmUploadOpList 64182
-#define Main_TMainForm_ComfirmDownloadOpList 64183
-#define Main_TMainForm_DownloadFile 64184
-#define Main_TMainForm_UploadFile 64185
-#define Main_TMainForm_SoundFileFolderNotSet 64186
-#define Main_TMainForm_Compressing 64187
-#define Main_TMainForm_FailedToCompressSoundFiles 64188
-#define Main_TMainForm_FileNotFound 64189
-#define Main_TMainForm_ComfirmUploadSound 64190
-#define Main_TMainForm_ComfirmDownloadSound 64191
-#define Main_TMainForm_Cannot_merge_current_file 64192
-#define Main_TMainForm_Merging_now 64193
-#define Main_TMainForm_Some_qsos_merged 64194
-#define Main_TMainForm_CtyDat_not_loaded 64195
-#define Main_TMainForm_RIT_XIT_Cleared 64196
-#define Main_TMainForm_Anti_zeroin 64197
-#define Main_TMainForm_Set_CQ_Repeat_Int 64198
-#define Main_TMainForm_Invalid_zone 64199
-#define Main_TMainForm_JudgePeriod 64200
-#define Main_TMainForm_EmptyOpList 64201
-#define Main_TMainForm_Setup_MyCall_first 64202
-#define Main_TMainForm_Setup_SentNR_first 64203
-#define Main_TMainForm_Setup_SentNR_cqzone 64204
-#define Main_TMainForm_Setup_SentNR_ituzone 64205
-#define Main_TMainForm_Setup_SentNR_age 64206
-#define Main_TMainForm_Setup_SentNR_iota 64207
-#define Main_TMainForm_Change_TXNO_QSOs 64208
-#define Main_TMainForm_Need_File_Name 64209
-#define Main_TMainForm_QTC_Sent 64210
-#define Main_TMainForm_QTC_no_shortcut_keys 64211
-#define Main_TMainForm_Less_Than_10min 64212
-#define Main_TMainForm_QSY_Count_Exceeded 64213
-#define Main_TMainForm_Loading_now 64214
-#define Main_TMainForm_Switch_CW_Bank_A 64215
-#define Main_TMainForm_Switch_CW_Bank_B 64216
-#define Main_TMainForm_This_QSO_is_locked 64217
-#define Main_TMainForm_Invalid_number 64218
-#define Main_TMainForm_Callsign_not_entered 64219
-#define Main_TMainForm_Dupe_qso 64220
-#define Main_TMainForm_Thankyou_for_your_qso 64221
-#define Main_TMainForm_CW_port_is_no_set 64222
-#define Main_TMainForm_Not_a_new_multi 64223
-#define UCFGEdit_Please_enter_the_city_code 64224
-#define USelectUserDefinedContest_Setup_prov_first 64225
-#define USelectUserDefinedContest_Setup_city_first 64226
-#define UBandPlanEditDialog_Input_Text 64227
-#define UBandPlanEditDialog_Delete_Preset 64228
-#define Main_TMainForm_Enter_Frequency 64229
-#define Main_TMainForm_Comfirm_Delete_Qso 64230
-#define Main_TMainForm_Comfirm_Delete_Qsos 64231
-#define Main_TMainForm_New_Multi_Only 64232
-#define Main_TMainForm_Change_Date 64233
-#define Main_TMainForm_Confirm_Save_Changes 64234
-#define Main_TMainForm_Active_Band_Adjusted 64235
-#define Main_TMainForm_Change_Band_QSOs 64236
-#define Main_TMainForm_Change_Mode_QSOs 64237
-#define Main_TMainForm_Change_Operator_QSOs 64238
-#define Main_TMainForm_Change_Power_QSOs 64239
-#define Web_WebConst_sHTTPItemMethod 64240
-#define Web_WebConst_sInternalApplicationError 64241
-#define URateDialog_HOURCAPTION_SHOWFIRST 64242
-#define URateDialog_HOURCAPTION_SHOWCURRENT 64243
-#define URateDialog_HOURCAPTION_SHOWLAST 64244
-#define URateDialogEx_SCOREGRID_TOTAL 64245
-#define URateDialogEx_SCOREGRID_TARGET 64246
-#define URateDialogEx_SCOREGRID_DIFF 64247
-#define URateDialogEx_SCOREGRID_DIFF2 64248
-#define URateDialogEx_SCOREGRID_CUMULATIVE 64249
-#define URateDialogEx_SCOREGRID_WINLOSS_L 64250
-#define URateDialogEx_SCOREGRID_WINLOSS_S 64251
-#define URateDialogEx_HOURCAPTION_SHOWFIRST 64252
-#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64253
-#define URateDialogEx_HOURCAPTION_SHOWLAST 64254
-#define UCFGEdit_Please_enter_the_prov_code 64255
+#define UExceptionDialog_RsMainThreadID 64128
+#define UExceptionDialog_RsExceptionThreadID 64129
+#define UExceptionDialog_RsMainThreadCallStack 64130
+#define UExceptionDialog_RsThreadCallStack 64131
+#define UExceptionDialog_RsErrorMessage 64132
+#define UExceptionDialog_RsDetailsIntro 64133
+#define UExceptionDialog_RsUnitVersioningIntro 64134
+#define Main_TMainForm_Check_Zone 64144
+#define Main_TMainForm_Reset_grid_column_widths 64145
+#define UExceptionDialog_RsAppError 64146
+#define UExceptionDialog_RsExceptionClass 64147
+#define UExceptionDialog_RsExceptionMessage 64148
+#define UExceptionDialog_RsExceptionAddr 64149
+#define UExceptionDialog_RsStackList 64150
+#define UExceptionDialog_RsModulesList 64151
+#define UExceptionDialog_RsOSVersion 64152
+#define UExceptionDialog_RsProcessor 64153
+#define UExceptionDialog_RsMemory 64154
+#define UExceptionDialog_RsScreenRes 64155
+#define UExceptionDialog_RsActiveControl 64156
+#define UExceptionDialog_RsThread 64157
+#define UExceptionDialog_RsMissingVersionInfo 64158
+#define UExceptionDialog_RsExceptionStack 64159
+#define Main_TMainForm_FileNotFound 64160
+#define Main_TMainForm_ComfirmUploadSound 64161
+#define Main_TMainForm_ComfirmDownloadSound 64162
+#define Main_TMainForm_ConfirmRewindSerialNumber 64163
+#define Main_TMainForm_ConfirmContestPeriod 64164
+#define Main_TMainForm_ConfirmOverwrite 64165
+#define Main_TMainForm_ConfirmModeConvert 64166
+#define Main_TMainForm_No_QTC_Message 64167
+#define Main_TMainForm_Assigned_Another_Function 64168
+#define Main_TMainForm_To_Change_the_mode 64169
+#define Main_TMainForm_To_Change_the_band 64170
+#define Main_TMainForm_rbn_verified 64171
+#define Main_TMainForm_darkmode_changed 64172
+#define Main_TMainForm_partial_nomatch 64173
+#define Main_TMainForm_prev_used_file_notfound 64174
+#define Main_TMainForm_Check_Multi 64175
+#define Main_TMainForm_Setup_SentNR_ituzone 64176
+#define Main_TMainForm_Setup_SentNR_age 64177
+#define Main_TMainForm_Setup_SentNR_iota 64178
+#define Main_TMainForm_Setup_SentNR_handle 64179
+#define Main_TMainForm_New_QSO_Arrived 64180
+#define Main_TMainForm_Select_Operator 64181
+#define Main_TMainForm_JARL_Member_Info 64182
+#define Main_TMainForm_Inquire_JARL_Member_Info 64183
+#define Main_TMainForm_UserDat_not_loaded 64184
+#define Main_TMainForm_ComfirmUploadOpList 64185
+#define Main_TMainForm_ComfirmDownloadOpList 64186
+#define Main_TMainForm_DownloadFile 64187
+#define Main_TMainForm_UploadFile 64188
+#define Main_TMainForm_SoundFileFolderNotSet 64189
+#define Main_TMainForm_Compressing 64190
+#define Main_TMainForm_FailedToCompressSoundFiles 64191
+#define Main_TMainForm_Thankyou_for_your_qso 64192
+#define Main_TMainForm_CW_port_is_no_set 64193
+#define Main_TMainForm_Not_a_new_multi 64194
+#define Main_TMainForm_Cannot_merge_current_file 64195
+#define Main_TMainForm_Merging_now 64196
+#define Main_TMainForm_Some_qsos_merged 64197
+#define Main_TMainForm_CtyDat_not_loaded 64198
+#define Main_TMainForm_RIT_XIT_Cleared 64199
+#define Main_TMainForm_Anti_zeroin 64200
+#define Main_TMainForm_Set_CQ_Repeat_Int 64201
+#define Main_TMainForm_Invalid_zone 64202
+#define Main_TMainForm_JudgePeriod 64203
+#define Main_TMainForm_EmptyOpList 64204
+#define Main_TMainForm_Setup_MyCall_first 64205
+#define Main_TMainForm_Setup_SentNR_first 64206
+#define Main_TMainForm_Setup_SentNR_cqzone 64207
+#define Main_TMainForm_Change_Mode_QSOs 64208
+#define Main_TMainForm_Change_Operator_QSOs 64209
+#define Main_TMainForm_Change_Power_QSOs 64210
+#define Main_TMainForm_Change_TXNO_QSOs 64211
+#define Main_TMainForm_Need_File_Name 64212
+#define Main_TMainForm_QTC_Sent 64213
+#define Main_TMainForm_QTC_no_shortcut_keys 64214
+#define Main_TMainForm_Less_Than_10min 64215
+#define Main_TMainForm_QSY_Count_Exceeded 64216
+#define Main_TMainForm_Loading_now 64217
+#define Main_TMainForm_Switch_CW_Bank_A 64218
+#define Main_TMainForm_Switch_CW_Bank_B 64219
+#define Main_TMainForm_This_QSO_is_locked 64220
+#define Main_TMainForm_Invalid_number 64221
+#define Main_TMainForm_Callsign_not_entered 64222
+#define Main_TMainForm_Dupe_qso 64223
+#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64224
+#define URateDialogEx_HOURCAPTION_SHOWLAST 64225
+#define UCFGEdit_Please_enter_the_prov_code 64226
+#define UCFGEdit_Please_enter_the_city_code 64227
+#define USelectUserDefinedContest_Setup_prov_first 64228
+#define USelectUserDefinedContest_Setup_city_first 64229
+#define UBandPlanEditDialog_Input_Text 64230
+#define UBandPlanEditDialog_Delete_Preset 64231
+#define Main_TMainForm_Enter_Frequency 64232
+#define Main_TMainForm_Comfirm_Delete_Qso 64233
+#define Main_TMainForm_Comfirm_Delete_Qsos 64234
+#define Main_TMainForm_New_Multi_Only 64235
+#define Main_TMainForm_Change_Date 64236
+#define Main_TMainForm_Confirm_Save_Changes 64237
+#define Main_TMainForm_Active_Band_Adjusted 64238
+#define Main_TMainForm_Change_Band_QSOs 64239
+#define Web_WebConst_sHTTPItemEnabled 64240
+#define Web_WebConst_sHTTPItemDefault 64241
+#define Web_WebConst_sHTTPItemProducer 64242
+#define Web_WebConst_sHTTPItemMethod 64243
+#define Web_WebConst_sInternalApplicationError 64244
+#define URateDialog_HOURCAPTION_SHOWFIRST 64245
+#define URateDialog_HOURCAPTION_SHOWCURRENT 64246
+#define URateDialog_HOURCAPTION_SHOWLAST 64247
+#define URateDialogEx_SCOREGRID_TOTAL 64248
+#define URateDialogEx_SCOREGRID_TARGET 64249
+#define URateDialogEx_SCOREGRID_DIFF 64250
+#define URateDialogEx_SCOREGRID_DIFF2 64251
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64252
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64253
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64254
+#define URateDialogEx_HOURCAPTION_SHOWFIRST 64255
 #define System_NetConsts_SMimeDuplicateType 64256
 #define System_NetConsts_SMimeTypeEmpty 64257
 #define System_NetConsts_SMimeValueEmpty 64258
 #define System_NetConsts_SMimeWeightOutOfRange 64259
 #define UzLogGlobal_MSG_INVALID_CHARACTER 64260
 #define UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE 64261
-#define Vcl_EdgeConst_SWebViewFailure 64262
-#define Vcl_EdgeConst_SNoWebView 64263
-#define IEConst_sNotSupportedByEdge 64264
-#define Web_WebConst_sDuplicateActionName 64265
-#define Web_WebConst_sOnlyOneDispatcher 64266
-#define Web_WebConst_sHTTPItemName 64267
-#define Web_WebConst_sHTTPItemURI 64268
-#define Web_WebConst_sHTTPItemEnabled 64269
-#define Web_WebConst_sHTTPItemDefault 64270
-#define Web_WebConst_sHTTPItemProducer 64271
+#define UOptions2_Reset_CWA_messages_to_default 64262
+#define UOptions2_Reset_CWB_messages_to_default 64263
+#define UOptions2_Reset_RTTY_messages_to_default 64264
+#define Vcl_EdgeConst_SWebViewFailure 64265
+#define Vcl_EdgeConst_SNoWebView 64266
+#define IEConst_sNotSupportedByEdge 64267
+#define Web_WebConst_sDuplicateActionName 64268
+#define Web_WebConst_sOnlyOneDispatcher 64269
+#define Web_WebConst_sHTTPItemName 64270
+#define Web_WebConst_sHTTPItemURI 64271
 #define System_NetConsts_SNetHttpUnspecifiedCertificate 64272
 #define System_NetConsts_SNetHttpRejectedCertificate 64273
 #define System_NetConsts_SNetHttpClientUnknownError 64274
@@ -363,102 +367,102 @@
 #define System_Bindings_Consts_sOwnerNotFound 64493
 #define System_Bindings_Consts_sScopeObjNull 64494
 #define System_Bindings_Consts_sUncompiledExpression 64495
-#define UZLinkForm_FileUploadSuccessfully 64496
-#define UZLinkForm_ZServerSettingsNotConfigured 64497
-#define UZLinkForm_ZServerSecureNotConfigured 64498
-#define UZLinkForm_ZServerIsNotSecureMode 64499
-#define UZLinkForm_UnableToLoginToZServer 64500
-#define UQTCForm_QTC_DONE 64501
-#define UQTCForm_QTC_SEND 64502
-#define UQTCForm_QTC_SENT 64503
-#define UComm_UComm_Connect 64504
-#define UComm_UComm_Disconnect 64505
-#define UComm_UComm_Connecting 64506
-#define UComm_UComm_Disconnecting 64507
-#define UComm_UComm_SecondsLeft 64508
-#define UComm_UComm_ExceededLimit 64509
-#define UComm_UComm_SiteChanging 64510
+#define UZLinkForm_ZServerSettingsNotConfigured 64496
+#define UZLinkForm_ZServerSecureNotConfigured 64497
+#define UZLinkForm_ZServerIsNotSecureMode 64498
+#define UZLinkForm_UnableToLoginToZServer 64499
+#define UComm_UComm_Connect 64500
+#define UComm_UComm_Disconnect 64501
+#define UComm_UComm_Connecting 64502
+#define UComm_UComm_Disconnecting 64503
+#define UComm_UComm_SecondsLeft 64504
+#define UComm_UComm_ExceededLimit 64505
+#define UComm_UComm_SiteChanging 64506
+#define UQTCForm_QTC_DONE 64507
+#define UQTCForm_QTC_SEND 64508
+#define UQTCForm_QTC_SENT 64509
+#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64510
 #define UOptions_SELECT_FOLDER 64511
-#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64512
-#define Vcl_Imaging_pnglang_EInvalidNewSize 64513
-#define Vcl_Imaging_pnglang_EInvalidSpec 64514
-#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64515
-#define UBandScope2_SHOW_ALLBANDS 64516
-#define UBandScope2_SHOW_CURRENT 64517
-#define UBandScope2_MENU_BLOCK_THIS_SPOT 64518
-#define UBandScope2_MENU_EDIT_BLOCKLIST 64519
-#define URigControl_RECONNECT_ALL_RIGS 64520
-#define UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink 64521
-#define UZLinkForm_ZServer_connection_failed 64522
-#define UZLinkForm_Connect_ZSERVER 64523
-#define UZLinkForm_Disconnect_ZSERVER 64524
-#define UZLinkForm_FileDownloadFailed 64525
-#define UZLinkForm_FileDownloadSuccessfully 64526
-#define UZLinkForm_NoFilesFoundToUpload 64527
-#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64528
-#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64529
-#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64530
-#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64531
-#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64532
-#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64533
-#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64534
-#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64535
-#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64536
-#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64537
-#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64538
-#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64539
-#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64540
-#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64541
-#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64542
-#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64543
-#define OverbyteIcsCharsetUtils_sKorean 64544
-#define OverbyteIcsCharsetUtils_sKoreanEUC 64545
-#define OverbyteIcsCharsetUtils_sLatin9 64546
-#define OverbyteIcsCharsetUtils_sThaiWindows 64547
-#define OverbyteIcsCharsetUtils_sTurkishISO 64548
-#define OverbyteIcsCharsetUtils_sTurkishWindows 64549
-#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64550
-#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64551
-#define OverbyteIcsCharsetUtils_sVietnameseWindows 64552
-#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64553
-#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64554
-#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64555
-#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64556
-#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64557
-#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64558
-#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64559
-#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64560
-#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64561
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64562
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64563
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64564
-#define OverbyteIcsCharsetUtils_sCyrillicISO 64565
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64566
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64567
-#define OverbyteIcsCharsetUtils_sCyrillicWindows 64568
-#define OverbyteIcsCharsetUtils_sEstonianISO 64569
-#define OverbyteIcsCharsetUtils_sGreekISO 64570
-#define OverbyteIcsCharsetUtils_sGreekWindows 64571
-#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64572
-#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64573
-#define OverbyteIcsCharsetUtils_sHebrewWindows 64574
-#define OverbyteIcsCharsetUtils_sJapaneseJIS 64575
+#define Vcl_OleConst_SInvalidLicense 64512
+#define Vcl_OleConst_SNotLicensed 64513
+#define Vcl_OleConst_sNoRunningObject 64514
+#define UBandScope2_SHOW_ALLBANDS 64515
+#define UBandScope2_SHOW_CURRENT 64516
+#define UBandScope2_MENU_BLOCK_THIS_SPOT 64517
+#define UBandScope2_MENU_EDIT_BLOCKLIST 64518
+#define URigControl_RECONNECT_ALL_RIGS 64519
+#define UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink 64520
+#define UZLinkForm_ZServer_connection_failed 64521
+#define UZLinkForm_Connect_ZSERVER 64522
+#define UZLinkForm_Disconnect_ZSERVER 64523
+#define UZLinkForm_FileDownloadFailed 64524
+#define UZLinkForm_FileDownloadSuccessfully 64525
+#define UZLinkForm_NoFilesFoundToUpload 64526
+#define UZLinkForm_FileUploadSuccessfully 64527
+#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64528
+#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64529
+#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64530
+#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64531
+#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64532
+#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64533
+#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64534
+#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64535
+#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64536
+#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64537
+#define Vcl_Imaging_pnglang_EInvalidNewSize 64538
+#define Vcl_Imaging_pnglang_EInvalidSpec 64539
+#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64540
+#define Vcl_OleConst_SBadPropValue 64541
+#define Vcl_OleConst_SCannotActivate 64542
+#define Vcl_OleConst_SNoWindowHandle 64543
+#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64544
+#define OverbyteIcsCharsetUtils_sVietnameseWindows 64545
+#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64546
+#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64547
+#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64548
+#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64549
+#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64550
+#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64551
+#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64552
+#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64553
+#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64554
+#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64555
+#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64556
+#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64557
+#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64558
+#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64559
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64560
+#define OverbyteIcsCharsetUtils_sCyrillicWindows 64561
+#define OverbyteIcsCharsetUtils_sEstonianISO 64562
+#define OverbyteIcsCharsetUtils_sGreekISO 64563
+#define OverbyteIcsCharsetUtils_sGreekWindows 64564
+#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64565
+#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64566
+#define OverbyteIcsCharsetUtils_sHebrewWindows 64567
+#define OverbyteIcsCharsetUtils_sJapaneseJIS 64568
+#define OverbyteIcsCharsetUtils_sKorean 64569
+#define OverbyteIcsCharsetUtils_sKoreanEUC 64570
+#define OverbyteIcsCharsetUtils_sLatin9 64571
+#define OverbyteIcsCharsetUtils_sThaiWindows 64572
+#define OverbyteIcsCharsetUtils_sTurkishISO 64573
+#define OverbyteIcsCharsetUtils_sTurkishWindows 64574
+#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64575
 #define Vcl_Imaging_JConsts_sChangeJPGSize 64576
 #define Vcl_Imaging_JConsts_sJPEGError 64577
 #define Vcl_Imaging_JConsts_sJPEGImageFile 64578
 #define UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins 64579
-#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64580
-#define Vcl_OleConst_SBadPropValue 64581
-#define Vcl_OleConst_SCannotActivate 64582
-#define Vcl_OleConst_SNoWindowHandle 64583
-#define Vcl_OleConst_SInvalidLicense 64584
-#define Vcl_OleConst_SNotLicensed 64585
-#define Vcl_OleConst_sNoRunningObject 64586
-#define OverbyteIcsCharsetUtils_sArabicISO 64587
-#define OverbyteIcsCharsetUtils_sArabicWindows 64588
-#define OverbyteIcsCharsetUtils_sBalticISO 64589
-#define OverbyteIcsCharsetUtils_sBalticWindows 64590
-#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64591
+#define OverbyteIcsCharsetUtils_sArabicISO 64580
+#define OverbyteIcsCharsetUtils_sArabicWindows 64581
+#define OverbyteIcsCharsetUtils_sBalticISO 64582
+#define OverbyteIcsCharsetUtils_sBalticWindows 64583
+#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64584
+#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64585
+#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64586
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64587
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64588
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64589
+#define OverbyteIcsCharsetUtils_sCyrillicISO 64590
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64591
 #define JclResources_RsProductTypeDatacenterServer 64592
 #define JclResources_RsProductTypeEnterprise 64593
 #define JclResources_RsProductTypeWebEdition 64594
@@ -1405,9 +1409,17 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
+	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
+	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
+	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
 	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
+	Main_TMainForm_Check_Zone,	L"Check Zone"
+	Main_TMainForm_Reset_grid_column_widths,	L"Reset Column widths to their default values. Are you sure?"
+	UExceptionDialog_RsAppError,	L"%s - application error"
+	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
@@ -1420,10 +1432,9 @@ BEGIN
 	UExceptionDialog_RsThread,	L"Thread: %s"
 	UExceptionDialog_RsMissingVersionInfo,	L"(no module version info)"
 	UExceptionDialog_RsExceptionStack,	L"Exception stack"
-	UExceptionDialog_RsMainThreadID,	L"Main thread ID = %d"
-	UExceptionDialog_RsExceptionThreadID,	L"Exception thread ID = %d"
-	UExceptionDialog_RsMainThreadCallStack,	L"Call stack for main thread"
-	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
+	Main_TMainForm_FileNotFound,	L"file not found."
+	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
+	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
 	Main_TMainForm_ConfirmRewindSerialNumber,	L"Do you want to rewind the serial number?"
 	Main_TMainForm_ConfirmContestPeriod,	L"Do you want to change the contest period to ""not used""?"
 	Main_TMainForm_ConfirmOverwrite,	L"[%s] file already exists. overwrite?"
@@ -1437,9 +1448,9 @@ BEGIN
 	Main_TMainForm_partial_nomatch,	L"NO MATCH!"
 	Main_TMainForm_prev_used_file_notfound,	L"The previously used file %s was not found."
 	Main_TMainForm_Check_Multi,	L"Check Multi"
-	Main_TMainForm_Check_Zone,	L"Check Zone"
-	UExceptionDialog_RsAppError,	L"%s - application error"
-	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
+	Main_TMainForm_Setup_SentNR_ituzone,	L"Setup ITU Zone number first."
+	Main_TMainForm_Setup_SentNR_age,	L"Setup operator's age first."
+	Main_TMainForm_Setup_SentNR_iota,	L"Setup IOTA number first."
 	Main_TMainForm_Setup_SentNR_handle,	L"Setup Handle Name first."
 	Main_TMainForm_New_QSO_Arrived,	L"New QSO data has arrived. click here to view."
 	Main_TMainForm_Select_Operator,	L"Please select an operator."
@@ -1453,9 +1464,9 @@ BEGIN
 	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
 	Main_TMainForm_Compressing,	L"Compressing..."
 	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
-	Main_TMainForm_FileNotFound,	L"file not found."
-	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
-	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
+	Main_TMainForm_Thankyou_for_your_qso,	L"Thank you for the QSO with JA1ZLO"
+	Main_TMainForm_CW_port_is_no_set,	L"CW port is not set"
+	Main_TMainForm_Not_a_new_multi,	L"NOT a new multiplier. (This is a multi stn)"
 	Main_TMainForm_Cannot_merge_current_file,	L"Cannot merge current file"
 	Main_TMainForm_Merging_now,	L"Merging..."
 	Main_TMainForm_Some_qsos_merged,	L"%s QSO(s) merged."
@@ -1469,9 +1480,9 @@ BEGIN
 	Main_TMainForm_Setup_MyCall_first,	L"Please enter your callsign first."
 	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State code and City code first."
 	Main_TMainForm_Setup_SentNR_cqzone,	L"Setup CQ Zone number first."
-	Main_TMainForm_Setup_SentNR_ituzone,	L"Setup ITU Zone number first."
-	Main_TMainForm_Setup_SentNR_age,	L"Setup operator's age first."
-	Main_TMainForm_Setup_SentNR_iota,	L"Setup IOTA number first."
+	Main_TMainForm_Change_Mode_QSOs,	L"Are you sure to change the mode for these QSO's?"
+	Main_TMainForm_Change_Operator_QSOs,	L"Are you sure to change the operator names for these QSO's?"
+	Main_TMainForm_Change_Power_QSOs,	L"Are you sure to change the power for these QSO's?"
 	Main_TMainForm_Change_TXNO_QSOs,	L"Are you sure to change the TX# for these QSO's?"
 	Main_TMainForm_Need_File_Name,	L"Data will NOT be saved until you enter the file name"
 	Main_TMainForm_QTC_Sent,	L"QTC can be sent by pressing %s"
@@ -1485,9 +1496,9 @@ BEGIN
 	Main_TMainForm_Invalid_number,	L"Invalid number"
 	Main_TMainForm_Callsign_not_entered,	L"Callsign not entered"
 	Main_TMainForm_Dupe_qso,	L"Dupe"
-	Main_TMainForm_Thankyou_for_your_qso,	L"Thank you for the QSO with JA1ZLO"
-	Main_TMainForm_CW_port_is_no_set,	L"CW port is not set"
-	Main_TMainForm_Not_a_new_multi,	L"NOT a new multiplier. (This is a multi stn)"
+	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"Show current"
+	URateDialogEx_HOURCAPTION_SHOWLAST,	L"Show last"
+	UCFGEdit_Please_enter_the_prov_code,	L"Please enter the Prov/State code"
 	UCFGEdit_Please_enter_the_city_code,	L"Please enter the City code"
 	USelectUserDefinedContest_Setup_prov_first,	L"Setup Prov/State code first"
 	USelectUserDefinedContest_Setup_city_first,	L"Setup City code first"
@@ -1501,9 +1512,9 @@ BEGIN
 	Main_TMainForm_Confirm_Save_Changes,	L"Save changes to %s ?"
 	Main_TMainForm_Active_Band_Adjusted,	L"Active Bands adjusted to the required bands"
 	Main_TMainForm_Change_Band_QSOs,	L"Are you sure to change the band for these QSO's?"
-	Main_TMainForm_Change_Mode_QSOs,	L"Are you sure to change the mode for these QSO's?"
-	Main_TMainForm_Change_Operator_QSOs,	L"Are you sure to change the operator names for these QSO's?"
-	Main_TMainForm_Change_Power_QSOs,	L"Are you sure to change the power for these QSO's?"
+	Web_WebConst_sHTTPItemEnabled,	L"Enabled"
+	Web_WebConst_sHTTPItemDefault,	L"Default"
+	Web_WebConst_sHTTPItemProducer,	L"Producer"
 	Web_WebConst_sHTTPItemMethod,	L"\x30E1\x30BD\x30C3\x30C9"
 	Web_WebConst_sInternalApplicationError,	L"<html><body><h1>Internal Application Error</h1>\r\n<p>%0:s\r\n<p><hr width=""100%%""><i>%1:s</i></body></html>"
 	URateDialog_HOURCAPTION_SHOWFIRST,	L"Show first"
@@ -1517,15 +1528,15 @@ BEGIN
 	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
 	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
 	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"Show first"
-	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"Show current"
-	URateDialogEx_HOURCAPTION_SHOWLAST,	L"Show last"
-	UCFGEdit_Please_enter_the_prov_code,	L"Please enter the Prov/State code"
 	System_NetConsts_SMimeDuplicateType,	L"\x62E1\x5F35\x5B50\x3068 MIME \x30BF\x30A4\x30D7\x306E\x30DA\x30A2\x304C\x65E2\x306B\x5B58\x5728\x3057\x307E\x3059"
 	System_NetConsts_SMimeTypeEmpty,	L"MIME \x30BF\x30A4\x30D7\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeValueEmpty,	L"\x5024\x306E\x540D\x524D\x304C\x5165\x529B\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SMimeWeightOutOfRange,	L"\x54C1\x8CEA\x306E\x91CD\x307F\x304C\x7BC4\x56F2\x5916\x3067\x3059"
 	UzLogGlobal_MSG_INVALID_CHARACTER,	L"Invalid character [%s]"
 	UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE,	L"The command is already in use."
+	UOptions2_Reset_CWA_messages_to_default,	L"Reset CW(Bank-A) messages to their default values. Are you sure?"
+	UOptions2_Reset_CWB_messages_to_default,	L"Reset CW(Bank-B) messages to their default values. Are you sure?"
+	UOptions2_Reset_RTTY_messages_to_default,	L"Reset RTTY messages to their default values. Are you sure?"
 	Vcl_EdgeConst_SWebViewFailure,	L"Edge \x30D6\x30E9\x30A6\x30B6 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F"
 	Vcl_EdgeConst_SNoWebView,	L"\x57FA\x790E\x3068\x3059\x308B WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x304C\x521D\x671F\x5316\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	IEConst_sNotSupportedByEdge,	L"\x64CD\x4F5C\x306F Edge WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3067\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
@@ -1533,9 +1544,6 @@ BEGIN
 	Web_WebConst_sOnlyOneDispatcher,	L"WebDispatcher \x306F 1 \x3064\x306E\x30D5\x30A9\x30FC\x30E0/\x30C7\x30FC\x30BF \x30E2\x30B8\x30E5\x30FC\x30EB\x306B 1 \x3064\x3057\x304B\x7F6E\x3051\x307E\x305B\x3093"
 	Web_WebConst_sHTTPItemName,	L"Name"
 	Web_WebConst_sHTTPItemURI,	L"PathInfo"
-	Web_WebConst_sHTTPItemEnabled,	L"Enabled"
-	Web_WebConst_sHTTPItemDefault,	L"Default"
-	Web_WebConst_sHTTPItemProducer,	L"Producer"
 	System_NetConsts_SNetHttpUnspecifiedCertificate,	L"\x30AF\x30E9\x30A4\x30A2\x30F3\x30C8\x304B\x3089\x306E\x8A3C\x660E\x66F8\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_NetConsts_SNetHttpRejectedCertificate,	L"\x30AF\x30E9\x30A4\x30A2\x30F3\x30C8\x306B\x3088\x308A\x8A3C\x660E\x66F8\x304C\x62D2\x5426\x3055\x308C\x307E\x3057\x305F"
 	System_NetConsts_SNetHttpClientUnknownError,	L"\x4E0D\x660E\x306A\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x305F\x305F\x3081\x8981\x6C42\x306E\x5B9F\x884C\x304C\x7D42\x4E86\x3057\x307E\x3057\x305F"
@@ -1760,14 +1768,10 @@ BEGIN
 	System_Bindings_Consts_sOwnerNotFound,	L"Owner \x306B Nil \x3092\x6307\x5B9A\x3067\x304D\x307E\x305B\x3093\x3002"
 	System_Bindings_Consts_sScopeObjNull,	L"\x30B9\x30B3\x30FC\x30D7 \x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x306F Nil \x306B\x3067\x304D\x307E\x305B\x3093\x3002"
 	System_Bindings_Consts_sUncompiledExpression,	L"\x5F0F\x304C\x307E\x3060\x30B3\x30F3\x30D1\x30A4\x30EB\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
-	UZLinkForm_FileUploadSuccessfully,	L"File upload completed successfully."
 	UZLinkForm_ZServerSettingsNotConfigured,	L"Z-Server settings are not configured."
 	UZLinkForm_ZServerSecureNotConfigured,	L"Z-Server secure settings are not configured."
 	UZLinkForm_ZServerIsNotSecureMode,	L"Z-Server is not in SECURE mode."
 	UZLinkForm_UnableToLoginToZServer,	L"Unable to login to Z-Server."
-	UQTCForm_QTC_DONE,	L"Done"
-	UQTCForm_QTC_SEND,	L"Send"
-	UQTCForm_QTC_SENT,	L" Sent"
 	UComm_UComm_Connect,	L"Connect"
 	UComm_UComm_Disconnect,	L"Disconnect"
 	UComm_UComm_Connecting,	L"Connecting..."
@@ -1775,11 +1779,14 @@ BEGIN
 	UComm_UComm_SecondsLeft,	L"%s seconds left to reconnect"
 	UComm_UComm_ExceededLimit,	L"reconnection attempts exceeded limit"
 	UComm_UComm_SiteChanging,	L"You are already connected to the %s. Do you want to disconnect?"
+	UQTCForm_QTC_DONE,	L"Done"
+	UQTCForm_QTC_SEND,	L"Send"
+	UQTCForm_QTC_SENT,	L" Sent"
+	UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN,	L"Please enter the operator's callsign"
 	UOptions_SELECT_FOLDER,	L"Select folder"
-	Vcl_Imaging_pnglang_EPNGHeaderNotPresentText,	L"This operation is not valid because the current image contains no valid header."
-	Vcl_Imaging_pnglang_EInvalidNewSize,	L"The new size provided for image resizing is invalid."
-	Vcl_Imaging_pnglang_EInvalidSpec,	L"The ""Portable Network Graphics"" could not be created because invalid image type parameters have being provided."
-	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_OleConst_SInvalidLicense,	L"License information for %s is invalid"
+	Vcl_OleConst_SNotLicensed,	L"License information for %s not found. You cannot use this control in design mode"
+	Vcl_OleConst_sNoRunningObject,	L"Unable to retrieve a pointer to a running object registered with OLE for %s/%s"
 	UBandScope2_SHOW_ALLBANDS,	L"To ALL"
 	UBandScope2_SHOW_CURRENT,	L"To Current"
 	UBandScope2_MENU_BLOCK_THIS_SPOT,	L"Block this spot"
@@ -1792,13 +1799,7 @@ BEGIN
 	UZLinkForm_FileDownloadFailed,	L"File download failed. (%s)"
 	UZLinkForm_FileDownloadSuccessfully,	L"File download completed successfully."
 	UZLinkForm_NoFilesFoundToUpload,	L"No files found to upload."
-	Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText,	L"\x8AAD\x307F\x53D6\x3089\x308C\x305F\x30D5\x30A1\x30A4\x30EB\x306F\x6709\x52B9\x306A ""Portable Network Graphics"" \x753B\x50CF\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x7121\x52B9\x306A\x30D8\x30C3\x30C0\x30FC\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059\x3002 \x3053\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x7834\x640D\x3057\x3066\x3044\x308B\x53EF\x80FD\x6027\x304C\x3042\x308A\x307E\x3059\x3002\x53D6\x5F97\x3092\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
-	Vcl_Imaging_pnglang_EPNGIHDRNotFirstText,	L"This ""Portable Network Graphics"" image is not supported or it might be invalid.\r\n(IHDR chunk is not the first)"
-	Vcl_Imaging_pnglang_EPNGSizeExceedsText,	L"This ""Portable Network Graphics"" image is not supported because either it's width or height exceeds the maximum size, which is 65535 pixels length."
-	Vcl_Imaging_pnglang_EPNGUnknownPalEntryText,	L"There is no such palette entry."
-	Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText,	L"This ""Portable Network Graphics"" image contains an unknown critical part which could not be decoded."
-	Vcl_Imaging_pnglang_EPNGUnknownCompressionText,	L"This ""Portable Network Graphics"" image is encoded with an unknown compression scheme which could not be decoded."
-	Vcl_Imaging_pnglang_EPNGUnknownInterlaceText,	L"This ""Portable Network Graphics"" image uses an unknown interlace scheme which could not be decoded."
+	UZLinkForm_FileUploadSuccessfully,	L"File upload completed successfully."
 	Vcl_Imaging_pnglang_EPNGUnknownColorTypeText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x672A\x77E5\x306E\x30AB\x30E9\x30FC\x578B\x3092\x4F7F\x7528\x3057\x3066\x304A\x308A\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	Vcl_Imaging_pnglang_EPNGCannotAssignChunkText,	L"The chunks must be compatible to be assigned."
 	Vcl_Imaging_pnglang_EPNGUnexpectedEndText,	L"This ""Portable Network Graphics"" image is invalid because the decoder found an unexpected end of the file."
@@ -1808,13 +1809,13 @@ BEGIN
 	Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText,	L"PNG \x753B\x50CF\x306F\x30EA\x30BD\x30FC\x30B9 ID \x304B\x3089\x8AAD\x307F\x8FBC\x3081\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	Vcl_Imaging_pnglang_EPNGOutMemoryText,	L"Some operation could not be performed because the system is out of resources. Close some windows and try again."
 	Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText,	L"Setting bit transparency color is not allowed for png images containing alpha value for each pixel (COLOR_RGBALPHA and COLOR_GRAYSCALEALPHA)"
-	OverbyteIcsCharsetUtils_sKorean,	L"Korean"
-	OverbyteIcsCharsetUtils_sKoreanEUC,	L"Korean (EUC)"
-	OverbyteIcsCharsetUtils_sLatin9,	L"Latin 9 (ISO)"
-	OverbyteIcsCharsetUtils_sThaiWindows,	L"Thai (Windows)"
-	OverbyteIcsCharsetUtils_sTurkishISO,	L"Turkish (ISO)"
-	OverbyteIcsCharsetUtils_sTurkishWindows,	L"Turkish (Windows)"
-	OverbyteIcsCharsetUtils_sUnicodeUTF7,	L"Unicode (UTF-7)"
+	Vcl_Imaging_pnglang_EPNGHeaderNotPresentText,	L"This operation is not valid because the current image contains no valid header."
+	Vcl_Imaging_pnglang_EInvalidNewSize,	L"The new size provided for image resizing is invalid."
+	Vcl_Imaging_pnglang_EInvalidSpec,	L"The ""Portable Network Graphics"" could not be created because invalid image type parameters have being provided."
+	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
+	Vcl_OleConst_SCannotActivate,	L"OLE control activation failed"
+	Vcl_OleConst_SNoWindowHandle,	L"Could not obtain OLE control window handle"
 	OverbyteIcsCharsetUtils_sUnicodeUTF8,	L"Unicode (UTF-8)"
 	OverbyteIcsCharsetUtils_sVietnameseWindows,	L"Vietnamese (Windows)"
 	OverbyteIcsCharsetUtils_sWesternEuropeanISO,	L"Western European (ISO)"
@@ -1824,13 +1825,13 @@ BEGIN
 	Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText,	L"This ""Portable Network Graphics"" image is invalid because it has missing image parts."
 	Vcl_Imaging_pnglang_EPNGZLIBErrorText,	L"Could not decompress the image because it contains invalid compressed data.\r\n Description: "
 	Vcl_Imaging_pnglang_EPNGInvalidPaletteText,	L"The ""Portable Network Graphics"" image contains an invalid palette."
-	OverbyteIcsCharsetUtils_sCentralEuropeanWindows,	L"Central European (Windows)"
-	OverbyteIcsCharsetUtils_sChineseTraditionalBig5,	L"Chinese Traditional (Big5)"
-	OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030,	L"Chinese Simplified (GB18030)"
-	OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312,	L"Chinese Simplified (GB2312)"
-	OverbyteIcsCharsetUtils_sChineseSimplifiedHZ,	L"Chinese Simplified (HZ)"
-	OverbyteIcsCharsetUtils_sCyrillicISO,	L"Cyrillic (ISO)"
-	OverbyteIcsCharsetUtils_sCyrillicKOI8R,	L"Cyrillic (KOI8-R)"
+	Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText,	L"\x8AAD\x307F\x53D6\x3089\x308C\x305F\x30D5\x30A1\x30A4\x30EB\x306F\x6709\x52B9\x306A ""Portable Network Graphics"" \x753B\x50CF\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x7121\x52B9\x306A\x30D8\x30C3\x30C0\x30FC\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059\x3002 \x3053\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x7834\x640D\x3057\x3066\x3044\x308B\x53EF\x80FD\x6027\x304C\x3042\x308A\x307E\x3059\x3002\x53D6\x5F97\x3092\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
+	Vcl_Imaging_pnglang_EPNGIHDRNotFirstText,	L"This ""Portable Network Graphics"" image is not supported or it might be invalid.\r\n(IHDR chunk is not the first)"
+	Vcl_Imaging_pnglang_EPNGSizeExceedsText,	L"This ""Portable Network Graphics"" image is not supported because either it's width or height exceeds the maximum size, which is 65535 pixels length."
+	Vcl_Imaging_pnglang_EPNGUnknownPalEntryText,	L"There is no such palette entry."
+	Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText,	L"This ""Portable Network Graphics"" image contains an unknown critical part which could not be decoded."
+	Vcl_Imaging_pnglang_EPNGUnknownCompressionText,	L"This ""Portable Network Graphics"" image is encoded with an unknown compression scheme which could not be decoded."
+	Vcl_Imaging_pnglang_EPNGUnknownInterlaceText,	L"This ""Portable Network Graphics"" image uses an unknown interlace scheme which could not be decoded."
 	OverbyteIcsCharsetUtils_sCyrillicKOI8U,	L"Cyrillic (KOI8-U)"
 	OverbyteIcsCharsetUtils_sCyrillicWindows,	L"Cyrillic (Windows)"
 	OverbyteIcsCharsetUtils_sEstonianISO,	L"Estonian (ISO)"
@@ -1840,22 +1841,29 @@ BEGIN
 	OverbyteIcsCharsetUtils_sHebrewISOVisual,	L"Hebrew (ISO-Visual)"
 	OverbyteIcsCharsetUtils_sHebrewWindows,	L"Hebrew (Windows)"
 	OverbyteIcsCharsetUtils_sJapaneseJIS,	L"Japanese (JIS)"
+	OverbyteIcsCharsetUtils_sKorean,	L"Korean"
+	OverbyteIcsCharsetUtils_sKoreanEUC,	L"Korean (EUC)"
+	OverbyteIcsCharsetUtils_sLatin9,	L"Latin 9 (ISO)"
+	OverbyteIcsCharsetUtils_sThaiWindows,	L"Thai (Windows)"
+	OverbyteIcsCharsetUtils_sTurkishISO,	L"Turkish (ISO)"
+	OverbyteIcsCharsetUtils_sTurkishWindows,	L"Turkish (Windows)"
+	OverbyteIcsCharsetUtils_sUnicodeUTF7,	L"Unicode (UTF-7)"
 	Vcl_Imaging_JConsts_sChangeJPGSize,	L"Cannot change the size of a JPEG image"
 	Vcl_Imaging_JConsts_sJPEGError,	L"JPEG error #%d"
 	Vcl_Imaging_JConsts_sJPEGImageFile,	L"JPEG Image File"
 	UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins,	L"Do you want the higher bands to have the same settings?"
-	UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN,	L"Please enter the operator's callsign"
-	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
-	Vcl_OleConst_SCannotActivate,	L"OLE control activation failed"
-	Vcl_OleConst_SNoWindowHandle,	L"Could not obtain OLE control window handle"
-	Vcl_OleConst_SInvalidLicense,	L"License information for %s is invalid"
-	Vcl_OleConst_SNotLicensed,	L"License information for %s not found. You cannot use this control in design mode"
-	Vcl_OleConst_sNoRunningObject,	L"Unable to retrieve a pointer to a running object registered with OLE for %s/%s"
 	OverbyteIcsCharsetUtils_sArabicISO,	L"Arabic (ISO)"
 	OverbyteIcsCharsetUtils_sArabicWindows,	L"Arabic (Windows)"
 	OverbyteIcsCharsetUtils_sBalticISO,	L"Baltic (ISO)"
 	OverbyteIcsCharsetUtils_sBalticWindows,	L"Baltic (Windows)"
 	OverbyteIcsCharsetUtils_sCentralEuropeanISO,	L"Central European (ISO)"
+	OverbyteIcsCharsetUtils_sCentralEuropeanWindows,	L"Central European (Windows)"
+	OverbyteIcsCharsetUtils_sChineseTraditionalBig5,	L"Chinese Traditional (Big5)"
+	OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030,	L"Chinese Simplified (GB18030)"
+	OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312,	L"Chinese Simplified (GB2312)"
+	OverbyteIcsCharsetUtils_sChineseSimplifiedHZ,	L"Chinese Simplified (HZ)"
+	OverbyteIcsCharsetUtils_sCyrillicISO,	L"Cyrillic (ISO)"
+	OverbyteIcsCharsetUtils_sCyrillicKOI8R,	L"Cyrillic (KOI8-R)"
 	JclResources_RsProductTypeDatacenterServer,	L"Datacenter Server"
 	JclResources_RsProductTypeEnterprise,	L"Enterprise"
 	JclResources_RsProductTypeWebEdition,	L"Web Edition"
@@ -2817,15 +2825,11 @@ END
 /* D:\JEDI\jvcl\resources\JvColorCombo.res */
 /* D:\github\zLog_v3000\zlog\UIntegerDialog.DFM */
 /* D:\github\zLog_v3000\zlog\UOperatorPowerDialog.dfm */
-/* D:\github\zLog_v3000\zlog\UOperatorEdit.dfm */
-/* D:\github\zLog_v3000\zlog\UAudioInputDlg.dfm */
 /* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\LibV33OpenSSL32.RES */
 /* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\ICSCerts.RES */
 /* D:\Users\Owner\Documents\Embarcadero\Studio\23.0\CatalogRepository\ICS_VCL-12\source\RootCaCertsBundle.RES */
 /* D:\github\zLog_v3000\zlog\UzLogForm.dfm */
 /* D:\github\zLog_v3000\zlog\USuperCheck2.DFM */
-/* D:\github\zLog_v3000\zlog\UBasicMulti.DFM */
-/* D:\github\zLog_v3000\zlog\UBasicScore.DFM */
 /* D:\github\zLog_v3000\zlog\UChat.DFM */
 /* D:\github\zLog_v3000\zlog\UZServerInquiry.DFM */
 /* c:\program files (x86)\embarcadero\studio\23.0\lib\Win32\release\WinXCtrls.res */
@@ -2837,6 +2841,9 @@ END
 /* D:\github\zLog_v3000\zlog\UConsolePad.DFM */
 /* D:\github\zLog_v3000\zlog\UScratchSheet.DFM */
 /* D:\github\zLog_v3000\zlog\UZLinkForm.DFM */
+/* D:\github\zLog_v3000\zlog\UComm.DFM */
+/* D:\github\zLog_v3000\zlog\UBasicMulti.DFM */
+/* D:\github\zLog_v3000\zlog\UBasicScore.DFM */
 /* D:\github\zLog_v3000\zlog\UQTCForm.DFM */
 /* D:\github\zLog_v3000\zlog\UWWZone.DFM */
 /* D:\github\zLog_v3000\zlog\UACAGMulti.DFM */
@@ -2870,7 +2877,8 @@ END
 /* D:\github\zLog_v3000\zlog\USixDownMulti.DFM */
 /* D:\github\zLog_v3000\zlog\UGeneralScore.DFM */
 /* D:\github\zLog_v3000\zlog\UGeneralMulti2.DFM */
-/* D:\github\zLog_v3000\zlog\UComm.DFM */
+/* D:\github\zLog_v3000\zlog\UOperatorEdit.dfm */
+/* D:\github\zLog_v3000\zlog\UAudioInputDlg.dfm */
 /* D:\github\zLog_v3000\zlog\UClusterTelnetSet.DFM */
 /* D:\github\zLog_v3000\zlog\UClusterCOMSet.DFM */
 /* D:\github\zLog_v3000\zlog\UPortConfigDialog.dfm */
@@ -2919,6 +2927,7 @@ END
 /* D:\github\zLog_v3000\zlog\USearch.dfm */
 /* D:\github\zLog_v3000\zlog\UEntityInfo.dfm */
 /* D:\github\zLog_v3000\zlog\UGrayline.dfm */
+/* D:\github\zLog_v3000\zlog\USentNumber.dfm */
 /* D:\github\zLog_v3000\zlog\UAbout.DFM */
 /* D:\github\zLog_v3000\zlog\UCFGEdit.dfm */
 /* D:\github\zLog_v3000\zlog\USelectUserDefinedContest.dfm */
