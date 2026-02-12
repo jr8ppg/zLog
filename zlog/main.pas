@@ -1813,9 +1813,10 @@ begin
    FLastTabPress := Now;
    FPostContest := False;
 
-   Application.OnIdle := MyIdleEvent;
-   Application.OnMessage := MyMessageEvent;
-//   Application.OnHint := ShowHint;
+// OnZLogInitに移動
+//   Application.OnIdle := MyIdleEvent;
+//   Application.OnMessage := MyMessageEvent;
+////   Application.OnHint := ShowHint;
 
    for i := 0 to ParamCount do begin
       S := S + ' ' + ParamStr(i);
@@ -9308,6 +9309,10 @@ begin
 
       // save last contest
       SaveLastContestInfo(strCfgFileName, fScoreCoeff);
+
+      Application.OnIdle := MyIdleEvent;
+      Application.OnMessage := MyMessageEvent;
+//   Application.OnHint := ShowHint;
    finally
       menu.Release();
       startup.Release();
