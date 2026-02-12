@@ -869,6 +869,21 @@ begin
       radio2RadioClick(radio2RadioV);
    end;
 
+   comboRigControlChange(FRigControlPort[1]);
+   comboRigControlChange(FRigControlPort[2]);
+   comboRigControlChange(FRigControlPort[3]);
+   comboRigControlChange(FRigControlPort[4]);
+
+   comboCwPttPortChange(FKeyingPort[1]);
+   comboCwPttPortChange(FKeyingPort[2]);
+   comboCwPttPortChange(FKeyingPort[3]);
+   comboCwPttPortChange(FKeyingPort[4]);
+
+   checkRigXvtClick(FRigXvtConfig[1]);
+   checkRigXvtClick(FRigXvtConfig[2]);
+   checkRigXvtClick(FRigXvtConfig[3]);
+   checkRigXvtClick(FRigXvtConfig[4]);
+
    checkUseRigDeviceClick(nil);
    checkUseF2AClick(FUseF2A[1]);
    checkUseF2AClick(FUseF2A[2]);
@@ -1232,15 +1247,17 @@ end;
 
 procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
-   Index: Integer;
+   KeyIndex: Integer;
+   RigIndex: Integer;
    rigno: Integer;
    combo: TComboBox;
 begin
    combo := TComboBox(Sender);
-   Index := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
+   KeyIndex := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
    rigno := TComboBox(Sender).Tag;
 
-   if (Index = 0) or (Index = 21) then begin
+   // 0:none, 21:USBIF4CW
+   if (KeyIndex = 0) or (KeyIndex = 21) or (KeyIndex = 22) then begin
       if rigno = 1 then begin
          checkUseWinKeyer.Enabled := False;
          checkUseWinKeyer.Checked := False;
@@ -1253,12 +1270,18 @@ begin
       FKeyingPortConfig[rigno].Enabled := False;
    end
    else begin
+      RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
+      if KeyIndex = RigIndex then begin
+         FKeyingPortConfig[rigno].Enabled := False;
+      end
+      else begin
+         FKeyingPortConfig[rigno].Enabled := True;
+      end;
       checkUseWinKeyer.Enabled := True;
       checkWk9600.Enabled := True;
       checkWkOutportSelect.Enabled := True;
       checkWkIgnoreSpeedPot.Enabled := True;
       checkWkAlways9600.Enabled := True;
-      FKeyingPortConfig[rigno].Enabled := True;
    end;
 end;
 
