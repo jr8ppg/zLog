@@ -1,4 +1,4 @@
-object formPortConfig: TformPortConfig
+object formPortConfig2: TformPortConfig2
   Left = 0
   Top = 0
   BorderStyle = bsDialog
@@ -24,34 +24,22 @@ object formPortConfig: TformPortConfig
     Height = 97
     Caption = 'COM99'
     TabOrder = 0
-    object Label1: TLabel
+    object radioRtsKeyDtrPtt: TRadioButton
       Left = 16
-      Top = 32
-      Width = 22
-      Height = 13
-      Caption = 'RTS'
-    end
-    object Label2: TLabel
-      Left = 16
-      Top = 61
-      Width = 23
-      Height = 13
-      Caption = 'DTR'
-    end
-    object comboRts: TComboBox
-      Left = 64
       Top = 29
-      Width = 97
-      Height = 21
-      Style = csDropDownList
+      Width = 133
+      Height = 17
+      Caption = 'RTS=KEY, DTR=PTT'
+      Checked = True
       TabOrder = 0
+      TabStop = True
     end
-    object comboDtr: TComboBox
-      Left = 64
+    object radioRtsPttDtrKey: TRadioButton
+      Left = 16
       Top = 58
-      Width = 97
-      Height = 21
-      Style = csDropDownList
+      Width = 133
+      Height = 17
+      Caption = 'RTS=PTT, DTR=KEY'
       TabOrder = 1
     end
   end

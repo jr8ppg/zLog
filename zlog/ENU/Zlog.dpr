@@ -84,6 +84,7 @@ library Zlog;
 {ITE} {DFMFileType} {UPediScore.dfm}
 {ITE} {DFMFileType} {UPluginManager.dfm}
 {ITE} {DFMFileType} {UPortConfigDialog.dfm}
+{ITE} {DFMFileType} {UPortConfigDialog2.dfm}
 {ITE} {DFMFileType} {UPrePostPlaybackDlg.dfm}
 {ITE} {DFMFileType} {UQSOListColumnSettings.dfm}
 {ITE} {DFMFileType} {UQsyInfo.dfm}
@@ -210,6 +211,7 @@ library Zlog;
 {$R 'UPediScore.dfm' 'PediScore:TForm(BasicScore)'}
 {$R 'UPluginManager.dfm' 'MarketForm:TForm'}
 {$R 'UPortConfigDialog.dfm' 'formPortConfig:TForm'}
+{$R 'UPortConfigDialog2.dfm' 'formPortConfig2:TForm'}
 {$R 'UPrePostPlaybackDlg.dfm' 'formPrePostPlaybackDlg:TForm'}
 {$R 'UQSOListColumnSettings.dfm' 'formQSOListColumnSettings:TForm'}
 {$R 'UQsyInfo.dfm' 'formQsyInfo:TForm'}

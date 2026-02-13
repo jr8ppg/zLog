@@ -544,6 +544,8 @@ type
     procedure PacketClusterListViewToList();
     procedure AddPacketClusterList(setting: TTelnetSetting);
     procedure ListViewClear();
+    procedure RigPortConfig1(rigno: Integer);
+    procedure RigPortConfig2(rigno: Integer);
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -587,7 +589,7 @@ implementation
 
 uses
   Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet, UPortConfigDialog,
-  UZlinkTelnetSet, UZLinkForm, URigControl, USpotterListDlg;
+  UPortConfigDialog2, UZlinkTelnetSet, UZLinkForm, URigControl, USpotterListDlg;
 
 {$R *.DFM}
 
@@ -1503,10 +1505,10 @@ end;
 
 procedure TformOptions.buttonPortConfigCWClick(Sender: TObject);
 var
-   f: TformPortConfig;
+   f: TformPortConfig2;
    r: Integer;
 begin
-   f := TformPortConfig.Create(Self);
+   f := TformPortConfig2.Create(Self);
    try
       r := TButton(sender).Tag;
 
@@ -1525,21 +1527,54 @@ end;
 
 procedure TformOptions.buttonPortConfigRigClick(Sender: TObject);
 var
+   rigno: Integer;
+   KeyIndex, RigIndex: Integer;
+begin
+   rigno := TButton(Sender).Tag;
+
+   KeyIndex := TCommPort(FKeyingPort[rigno].Items.Objects[FKeyingPort[rigno].ItemIndex]).Number;
+   RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
+   if KeyIndex = RigIndex then begin
+      RigPortConfig2(rigno);
+   end
+   else begin
+      RigPortConfig1(rigno);
+   end;
+end;
+
+procedure TformOptions.RigPortConfig1(rigno: Integer);
+var
    f: TformPortConfig;
-   r: Integer;
 begin
    f := TformPortConfig.Create(Self);
    try
-      r := TButton(sender).Tag;
-
-      f.PortName := FRigControlPort[r].Text;
-      f.PortConfig := dmZLogGlobal.Settings.FRigControl[r].FControlPortConfig;
+      f.PortName := FRigControlPort[rigno].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      dmZLogGlobal.Settings.FRigControl[r].FControlPortConfig := f.PortConfig;
+      dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig := f.PortConfig;
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TformOptions.RigPortConfig2(rigno: Integer);
+var
+   f: TformPortConfig2;
+begin
+   f := TformPortConfig2.Create(Self);
+   try
+      f.PortName := FRigControlPort[rigno].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig := f.PortConfig;
    finally
       f.Release();
    end;

@@ -135,7 +135,7 @@ uses
   UDateDialog in 'UDateDialog.pas' {DateDialog},
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
   UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
-  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
+  UPortConfigDialog2 in 'UPortConfigDialog2.pas' {formPortConfig2},
   UOptions in 'UOptions.pas' {formOptions},
   UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo},
   UCountryChecker in 'UCountryChecker.pas' {formCountryChecker},
@@ -167,7 +167,8 @@ uses
   UzLogWebView2 in 'UzLogWebView2.pas',
   UDmsToGridDialog in 'UDmsToGridDialog.pas' {formDmsToGridDialog},
   UGridLocator in 'UGridLocator.pas',
-  USentNumber in 'USentNumber.pas' {formSentNumber};
+  USentNumber in 'USentNumber.pas' {formSentNumber},
+  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig};
 
 {$R *.res}
 

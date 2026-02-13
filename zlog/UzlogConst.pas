@@ -30,6 +30,7 @@ type
 
 resourcestring
   PortActionList = 'None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake';
+  RigPortActionList = 'None,AlwaysOn,AlwaysOff,Handshake';
 
 const
   HiBand = b248g;

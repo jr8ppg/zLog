@@ -477,8 +477,8 @@
         <DCCReference Include="UELogCabrillo.pas">
             <Form>formELogCabrillo</Form>
         </DCCReference>
-        <DCCReference Include="UPortConfigDialog.pas">
-            <Form>formPortConfig</Form>
+        <DCCReference Include="UPortConfigDialog2.pas">
+            <Form>formPortConfig2</Form>
         </DCCReference>
         <DCCReference Include="UOptions.pas">
             <Form>formOptions</Form>
@@ -559,6 +559,10 @@
         <DCCReference Include="UGridLocator.pas"/>
         <DCCReference Include="USentNumber.pas">
             <Form>formSentNumber</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UPortConfigDialog.pas">
+            <Form>formPortConfig</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <RcItem Include="resource\r0.bmp">
@@ -867,7 +871,7 @@
                     <RDP_Source_Files Name="Item112">UDateDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item113">UCWMonitor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item114">UELogCabrillo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item115">UPortConfigDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item115">UPortConfigDialog2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item116">UOptions.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item117">UJarlMemberInfo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item118">UCountryChecker.dfm</RDP_Source_Files>
@@ -890,7 +894,8 @@
                     <RDP_Source_Files Name="Item135">UJarlWebUpload2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item136">UDmsToGridDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item137">USentNumber.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item138">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item138">UPortConfigDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item139">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

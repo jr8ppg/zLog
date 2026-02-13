@@ -474,7 +474,7 @@
 #define JclResources_RsWin32Error 64600
 #define JclResources_RsELibraryNotFound 64601
 #define JclResources_RsEFunctionNotFound 64602
-#define UzLogConst_PortActionList 64603
+#define UzLogConst_RigPortActionList 64603
 #define Data_DBConsts_SBcdOverflow 64604
 #define Data_DBConsts_SInvalidBcdValue 64605
 #define Data_DBConsts_SCouldNotParseTimeStamp 64606
@@ -1875,7 +1875,7 @@ BEGIN
 	JclResources_RsWin32Error,	L"Win32 error: %s (%u)%s%s"
 	JclResources_RsELibraryNotFound,	L"Library not found: %s"
 	JclResources_RsEFunctionNotFound,	L"Function not found: %s.%s"
-	UzLogConst_PortActionList,	L"None,PTT,KEY,AlwaysOn,AlwaysOff,Handshake"
+	UzLogConst_RigPortActionList,	L"None,AlwaysOn,AlwaysOff,Handshake"
 	Data_DBConsts_SBcdOverflow,	L"BCD \x30AA\x30FC\x30D0\x30FC\x30D5\x30ED\x30FC"
 	Data_DBConsts_SInvalidBcdValue,	L"%s \x306F BCD \x5024\x3068\x3057\x3066\x306F\x9069\x5207\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
 	Data_DBConsts_SCouldNotParseTimeStamp,	L"SQL \x30BF\x30A4\x30E0\x30B9\x30BF\x30F3\x30D7\x6587\x5B57\x5217\x304C\x89E3\x6790\x3067\x304D\x307E\x305B\x3093"
@@ -2882,6 +2882,7 @@ END
 /* D:\github\zLog_v3000\zlog\UClusterTelnetSet.DFM */
 /* D:\github\zLog_v3000\zlog\UClusterCOMSet.DFM */
 /* D:\github\zLog_v3000\zlog\UPortConfigDialog.dfm */
+/* D:\github\zLog_v3000\zlog\UPortConfigDialog2.dfm */
 /* D:\github\zLog_v3000\zlog\UZlinkTelnetSet.DFM */
 /* D:\github\zLog_v3000\zlog\USpotterListDlg.dfm */
 /* D:\github\zLog_v3000\zlog\UOptions.DFM */
