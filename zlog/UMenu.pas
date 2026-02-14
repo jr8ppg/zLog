@@ -255,56 +255,33 @@ begin
    SelectButton.Enabled := False;
    ScoreCoeffEdit.Enabled := False;
    OKButton.Enabled := True;
+   ModeGroup.ItemIndex := 0;
 
    case contestno of
       // ALLJA,6D,ACAG,ARRL10,IARU,IOTA
       0, 1, 3, 108, 109, 111: begin
          ScoreCoeffEdit.Enabled := False;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 0;
       end;
 
       // FD
       2: begin
          ScoreCoeffEdit.Enabled := True;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 0;
       end;
 
       // ALL JA0
       4, 5: begin
          ScoreCoeffEdit.Enabled := False;
-         ModeGroup.Controls[2].Enabled := False;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 0;
-
-         radioSingleOp.Checked := True;
-         radioMultiOpMultiTx.Enabled := False;
-         comboTxNo.Enabled := False;
       end;
 
       // NYP
       6: begin
          ScoreCoeffEdit.Enabled := False;
-         radioSingleOp.Checked := True;
-         ModeGroup.ItemIndex := 0;
       end;
 
-      // CQWW,CQWPX,JIDX,ARRLDX(W/VE),ARRLDX(DX),ALLASIA,JIDX(DX)
-      101, 102, 103, 106, 107, 110, 112, 113: begin
+      // CQWW,CQWPX,JIDX,APSprint,ARRLDX(W/VE),ARRLDX(DX),ALLASIA,JIDX(DX)
+      101, 102, 103, 105, 106, 107, 110, 112, 113: begin
          ScoreCoeffEdit.Enabled := False;
-         ModeGroup.Controls[0].Enabled := False;
          ModeGroup.ItemIndex := 1;
-      end;
-
-      // APSprint
-      105: begin
-         ModeGroup.Controls[0].Enabled := False;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 1;
-         radioSingleOp.Checked := True;
-         radioMultiOpMultiTx.Enabled := False;
-         comboTxNo.Enabled := False;
       end;
 
       // PEDI

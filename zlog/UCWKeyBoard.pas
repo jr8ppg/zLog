@@ -937,7 +937,7 @@ end;
 
 function TCWKeyBoard.IsAvailableChar(C: Char): Boolean;
 begin
-   if (CharInSet(C, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
+   if (CharInSet(C, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '(', ')', ' ', #13])) then begin
       Result := True;
    end
    else begin

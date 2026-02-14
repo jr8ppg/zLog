@@ -338,7 +338,9 @@ object MenuForm: TMenuForm
       Width = 130
       Height = 13
       Caption = 'Single-Op'
+      Checked = True
       TabOrder = 0
+      TabStop = True
       OnClick = OpGroupClick
     end
     object radioMultiOpMultiTx: TRadioButton

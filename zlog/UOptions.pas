@@ -546,6 +546,7 @@ type
     procedure ListViewClear();
     procedure RigPortConfig1(rigno: Integer);
     procedure RigPortConfig2(rigno: Integer);
+    procedure GetConfigIndex(rigno: Integer; var RigIndex, KeyIndex: Integer);
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -1255,14 +1256,9 @@ var
    combo: TComboBox;
 begin
    combo := TComboBox(Sender);
-   rigno := TComboBox(Sender).Tag;
-   KeyIndex := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
-   if rigno < 5 then begin
-      RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
-   end
-   else begin
-      RigIndex := 0;
-   end;
+   rigno := combo.Tag;
+
+   GetConfigIndex(rigno, RigIndex, KeyIndex);
 
    // 0:none, 21:USBIF4CW
    if (KeyIndex = 0) or (KeyIndex = 21) or (KeyIndex = 22) then begin
@@ -1305,18 +1301,27 @@ end;
 
 procedure TformOptions.comboRigControlChange(Sender: TObject);
 var
-   r: Integer;
+   rigno: Integer;
    cp: TCommPort;
    combo: TComboBox;
+   KeyIndex, RigIndex: Integer;
 begin
    combo := TComboBox(Sender);
-   r := combo.Tag;
+   rigno := combo.Tag;
+
+   GetConfigIndex(rigno, RigIndex, KeyIndex);
+
    cp := TCommPort(combo.items.Objects[combo.ItemIndex]);
    if (cp <> nil) and ((cp.Number >= 1) and (cp.Number <= 20)) then begin
-      FRigControlPortConfig[r].Enabled := True;
+      if KeyIndex = RigIndex then begin
+         FRigControlPortConfig[rigno].Enabled := False;
+      end
+      else begin
+         FRigControlPortConfig[rigno].Enabled := True;
+      end;
    end
    else begin
-      FRigControlPortConfig[r].Enabled := False;
+      FRigControlPortConfig[rigno].Enabled := False;
    end;
 end;
 
@@ -1593,6 +1598,28 @@ begin
       dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig := f.PortConfig;
    finally
       f.Release();
+   end;
+end;
+
+procedure TformOptions.GetConfigIndex(rigno: Integer; var RigIndex, KeyIndex: Integer);
+begin
+   if FKeyingPort[rigno].ItemIndex = -1 then begin
+      KeyIndex := 0;
+   end
+   else begin
+      KeyIndex := TCommPort(FKeyingPort[rigno].Items.Objects[FKeyingPort[rigno].ItemIndex]).Number;
+   end;
+
+   if rigno < 5 then begin
+      if FRigControlPort[rigno].ItemIndex = -1 then begin
+         RigIndex := 0;
+      end
+      else begin
+         RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
+      end;
+   end
+   else begin
+      RigIndex := 0;
    end;
 end;
 
