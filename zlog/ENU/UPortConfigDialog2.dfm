@@ -24,22 +24,24 @@ object formPortConfig2: TformPortConfig2
     Height = 97
     Caption = 'COM99'
     TabOrder = 0
-    object radioRtsKeyDtrPtt: TRadioButton
+    object radioRtsPttDtrKey: TRadioButton
       Left = 16
       Top = 29
       Width = 133
       Height = 17
-      Caption = 'RTS=KEY, DTR=PTT'
+      Caption = 'Key=DTR, PTT=RTS'
       Checked = True
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
       TabOrder = 0
       TabStop = True
     end
-    object radioRtsPttDtrKey: TRadioButton
+    object radioRtsKeyDtrPtt: TRadioButton
       Left = 16
       Top = 58
       Width = 133
       Height = 17
-      Caption = 'RTS=PTT, DTR=KEY'
+      Caption = 'Key=RTS, PTT=DTR'
       TabOrder = 1
     end
   end
