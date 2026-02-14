@@ -3121,7 +3121,7 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 4
         Width = 512
-        Height = 242
+        Height = 369
         Caption = 'Keyer settings'
         TabOrder = 0
         object Label11: TLabel
@@ -3141,14 +3141,14 @@ object formOptions2: TformOptions2
         end
         object Label13: TLabel
           Left = 77
-          Top = 49
+          Top = 61
           Width = 34
           Height = 13
           Caption = 'Weight'
         end
         object WeightLabel: TLabel
           Left = 190
-          Top = 64
+          Top = 76
           Width = 48
           Height = 13
           AutoSize = False
@@ -3156,7 +3156,7 @@ object formOptions2: TformOptions2
         end
         object Label16: TLabel
           Left = 53
-          Top = 146
+          Top = 158
           Width = 90
           Height = 13
           AutoSize = False
@@ -3164,7 +3164,7 @@ object formOptions2: TformOptions2
         end
         object Label12: TLabel
           Left = 26
-          Top = 201
+          Top = 213
           Width = 117
           Height = 13
           AutoSize = False
@@ -3172,7 +3172,7 @@ object formOptions2: TformOptions2
         end
         object Label85: TLabel
           Left = 53
-          Top = 173
+          Top = 185
           Width = 90
           Height = 13
           AutoSize = False
@@ -3182,7 +3182,7 @@ object formOptions2: TformOptions2
           Left = 18
           Top = 31
           Width = 166
-          Height = 17
+          Height = 28
           Max = 50
           Min = 5
           PageSize = 1
@@ -3193,9 +3193,9 @@ object formOptions2: TformOptions2
         end
         object WeightBar: TTrackBar
           Left = 18
-          Top = 60
+          Top = 72
           Width = 166
-          Height = 17
+          Height = 28
           Max = 100
           Frequency = 10
           TabOrder = 1
@@ -3203,7 +3203,7 @@ object formOptions2: TformOptions2
         end
         object ToneSpinEdit: TSpinEdit
           Left = 162
-          Top = 143
+          Top = 155
           Width = 46
           Height = 22
           Increment = 10
@@ -3214,7 +3214,7 @@ object formOptions2: TformOptions2
         end
         object FIFOCheck: TCheckBox
           Left = 26
-          Top = 99
+          Top = 111
           Width = 204
           Height = 17
           Caption = 'Que messages'
@@ -3224,7 +3224,7 @@ object formOptions2: TformOptions2
         end
         object AbbrevEdit: TEdit
           Left = 162
-          Top = 198
+          Top = 210
           Width = 41
           Height = 21
           CharCase = ecUpperCase
@@ -3234,7 +3234,7 @@ object formOptions2: TformOptions2
         end
         object SideToneCheck: TCheckBox
           Left = 26
-          Top = 122
+          Top = 134
           Width = 204
           Height = 17
           Caption = 'Use Side Tone'
@@ -3242,7 +3242,7 @@ object formOptions2: TformOptions2
         end
         object VolumeSpinEdit: TSpinEdit
           Left = 162
-          Top = 170
+          Top = 182
           Width = 46
           Height = 22
           MaxValue = 100
@@ -3250,12 +3250,48 @@ object formOptions2: TformOptions2
           TabOrder = 5
           Value = 100
         end
+        object checkPaddleReverse: TCheckBox
+          Left = 26
+          Top = 313
+          Width = 230
+          Height = 17
+          Caption = 'Paddle Reverse'
+          TabOrder = 10
+        end
+        object cbCQSP: TCheckBox
+          Left = 26
+          Top = 244
+          Width = 230
+          Height = 17
+          Hint = 
+            'This option will switch the CW message sent when TAB or ; key is' +
+            ' pressed to that in the current message bank. '
+          Caption = 'Switch CW bank with CQ/SP mode'
+          TabOrder = 7
+          WordWrap = True
+        end
+        object checkNotSendLeadingZeros: TCheckBox
+          Left = 26
+          Top = 290
+          Width = 230
+          Height = 17
+          Caption = 'Not send leading zeros in serial numbers'
+          TabOrder = 9
+        end
+        object checkSendNrAuto: TCheckBox
+          Left = 26
+          Top = 267
+          Width = 230
+          Height = 17
+          Caption = 'Send NR? automatically'
+          TabOrder = 8
+        end
       end
       object groupCwSettings: TGroupBox
         Left = 6
-        Top = 252
+        Top = 384
         Width = 512
-        Height = 209
+        Height = 113
         Caption = 'Auto CQ settings'
         TabOrder = 1
         object Label15: TLabel
@@ -3281,7 +3317,7 @@ object formOptions2: TformOptions2
           Height = 22
           MaxValue = 999
           MinValue = 0
-          TabOrder = 0
+          TabOrder = 1
           Value = 15
         end
         object CQRepEdit: TEdit
@@ -3289,29 +3325,9 @@ object formOptions2: TformOptions2
           Top = 23
           Width = 41
           Height = 21
-          TabOrder = 1
+          TabOrder = 0
           Text = '2.0'
           OnKeyPress = CQRepEditKeyPress
-        end
-        object cbCQSP: TCheckBox
-          Left = 20
-          Top = 101
-          Width = 230
-          Height = 17
-          Hint = 
-            'This option will switch the CW message sent when TAB or ; key is' +
-            ' pressed to that in the current message bank. '
-          Caption = 'Switch CW bank with CQ/SP mode'
-          TabOrder = 3
-          WordWrap = True
-        end
-        object checkSendNrAuto: TCheckBox
-          Left = 20
-          Top = 124
-          Width = 230
-          Height = 17
-          Caption = 'Send NR? automatically'
-          TabOrder = 4
         end
         object checkUseCQRamdomRepeat: TCheckBox
           Left = 20
@@ -3321,22 +3337,6 @@ object formOptions2: TformOptions2
           Caption = 'Use CQ Random Repeat'
           TabOrder = 2
           WordWrap = True
-        end
-        object checkNotSendLeadingZeros: TCheckBox
-          Left = 20
-          Top = 147
-          Width = 230
-          Height = 17
-          Caption = 'Not send leading zeros in serial numbers'
-          TabOrder = 5
-        end
-        object checkPaddleReverse: TCheckBox
-          Left = 20
-          Top = 170
-          Width = 230
-          Height = 17
-          Caption = 'Paddle Reverse'
-          TabOrder = 6
         end
       end
     end
@@ -4317,6 +4317,7 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
+          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0
