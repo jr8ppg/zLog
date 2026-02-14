@@ -2294,6 +2294,8 @@ begin
    FVoiceButton[10] := vButton10;
    FVoiceButton[11] := vButton11;
    FVoiceButton[12] := vButton12;
+   FAdditionalVoiceEdit[2] := vEdit13;
+   FAdditionalVoiceEdit[3] := vEdit14;
    FAdditionalVoiceButton[2] := vButton13;
    FAdditionalVoiceButton[3] := vButton14;
 
