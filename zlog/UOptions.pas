@@ -1270,15 +1270,17 @@ begin
       end;
       checkUseWinKeyer.Checked := False;
       FKeyingPortConfig[rigno].Enabled := False;
+      FRigControlPortConfig[rigno].Enabled := True;
    end
    else begin
       RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
       if KeyIndex = RigIndex then begin
-         FKeyingPortConfig[rigno].Enabled := False;
+         FRigControlPortConfig[rigno].Enabled := False;
       end
       else begin
-         FKeyingPortConfig[rigno].Enabled := True;
+         FRigControlPortConfig[rigno].Enabled := True;
       end;
+      FKeyingPortConfig[rigno].Enabled := True;
       checkUseWinKeyer.Enabled := True;
       checkWk9600.Enabled := True;
       checkWkOutportSelect.Enabled := True;
