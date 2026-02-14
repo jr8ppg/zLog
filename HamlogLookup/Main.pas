@@ -59,6 +59,7 @@ type
     FPastYears: Integer;
     FScanInterval: Integer;
     FIncremental: Boolean;
+    FInitZLogLink: Boolean;
 
     // zLog
     m_zLogV28: Boolean;
@@ -146,6 +147,8 @@ end;
 procedure TformHamlogLookup.FormActivate(Sender: TObject);
 begin
    editCallsign.SetFocus();
+   checkZlog.Checked := FInitZLogLink;
+   checkZlogClick(checkZlog);
 end;
 
 // ----------------------------------------------------------------------------
@@ -735,7 +738,7 @@ begin
    // zLogÇÃÉRÉìÉgÉçÅ[ÉãÇí≤Ç◊ÇÈ
    hZlogWnd := FindZlogWindow();
    if (hZlogWnd = 0) then begin
-      Application.MessageBox('zLog for WindowsÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒ', PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Application.MessageBox('zLog óﬂòaEdition V3Ç™å©Ç¬Ç©ÇËÇ‹ÇπÇÒ', PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       Result := 0;
       Exit;
    end;
@@ -887,6 +890,8 @@ begin
       FDisplayMax := ini.ReadInteger('SETTINGS', 'DisplayMax', 10);
       FPastYears := ini.ReadInteger('SETTINGS', 'PastYears', 3);
       FIncremental := ini.ReadBool('SETTINGS', 'Incremental', False);
+
+      FInitZLogLink := ini.ReadBool('SETTINGS', 'ZLOG_LINK', False);
    finally
       ini.Free();
    end;
@@ -905,6 +910,7 @@ begin
       ini.WriteInteger('SETTINGS', 'W', Width);
       ini.WriteInteger('SETTINGS', 'H', Height);
       ini.WriteInteger('SETTINGS', 'ScanInterval', FScanInterval);
+      ini.WriteBool('SETTINGS', 'ZLOG_LINK', checkZlog.Checked);
       ini.WriteBool('SETTINGS', 'STAY_ON_TOP', checkStayOnTop.Checked);
       ini.WriteString('SETTINGS', 'HamlogDatabase', FHamlogDatabaseName);
       ini.WriteInteger('SETTINGS', 'DisplayMax', FDisplayMax);
