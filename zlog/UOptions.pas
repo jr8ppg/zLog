@@ -1270,7 +1270,9 @@ begin
       end;
       checkUseWinKeyer.Checked := False;
       FKeyingPortConfig[rigno].Enabled := False;
-      FRigControlPortConfig[rigno].Enabled := True;
+      if rigno < 5 then begin
+         FRigControlPortConfig[rigno].Enabled := True;
+      end;
    end
    else begin
       RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;

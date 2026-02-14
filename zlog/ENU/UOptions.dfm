@@ -4810,13 +4810,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'Courier New TUR'
+          FontName = '@'#65325#65331' '#12468#12471#12483#12463
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 73
+          ItemIndex = 12
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True
