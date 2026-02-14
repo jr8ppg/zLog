@@ -4789,6 +4789,7 @@ begin
       AssignControls(FKeyPressedRigID[nRxID], C, SN, RN, B, M, OP, P);
 
       curQSO.Callsign := C.Text;
+      curQso.RSTSent  := CurrentQSO.RSTSent;
       curQSO.NrRcvd   := RN.Text;
       curQSO.Band     := TextToBand(B.Text);
       curQSO.Mode     := TextToMode(M.Text);
@@ -4923,7 +4924,9 @@ begin
          CallsignSentProc(nil);
       end;
    finally
-      CurrentQSO.Assign(curQSO);
+      CurrentQSO.Time := curQSO.Time;
+      CurrentQSO.Serial := curQSO.Serial;
+      CurrentQSO.NrSent := curQSO.NrSent;
       curQSO.Free();
       {$IFDEF DEBUG}
       OutputDebugString(PChar('------ <<< Leave OnTabPress ------'));
