@@ -15,6 +15,9 @@ uses
   System.Generics.Collections, System.DateUtils,
   UOptions, Hamlog50, HamlogIf;
 
+const
+  WM_HAMLOGLOOKUP_INIT = (WM_USER + 1);
+
 type
   TformHamlogLookup = class(TForm)
     editCallsign: TEdit;
@@ -51,6 +54,7 @@ type
     procedure editCallsignKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure editCallsignChange(Sender: TObject);
+    procedure OnHamlogLookupInit( var Message: TMessage ); message WM_HAMLOGLOOKUP_INIT;
   private
     { Private êÈåæ }
 
@@ -139,16 +143,13 @@ end;
 
 procedure TformHamlogLookup.FormShow(Sender: TObject);
 begin
-   HamlogOpen();
+   PostMessage(Handle, WM_HAMLOGLOOKUP_INIT, 0, 0);
 end;
 
 // ----------------------------------------------------------------------------
 
 procedure TformHamlogLookup.FormActivate(Sender: TObject);
 begin
-   editCallsign.SetFocus();
-   checkZlog.Checked := FInitZLogLink;
-   checkZlogClick(checkZlog);
 end;
 
 // ----------------------------------------------------------------------------
@@ -240,6 +241,8 @@ begin
    buttonQuery.Default := False;
 end;
 
+// ----------------------------------------------------------------------------
+
 procedure TformHamlogLookup.editCallsignKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -290,6 +293,16 @@ begin
    finally
       SetCaption();
    end;
+end;
+
+// ----------------------------------------------------------------------------
+
+procedure TformHamlogLookup.OnHamlogLookupInit( var Message: TMessage );
+begin
+   HamlogOpen();
+   editCallsign.SetFocus();
+   checkZlog.Checked := FInitZLogLink;
+   checkZlogClick(checkZlog);
 end;
 
 // ----------------------------------------------------------------------------
@@ -346,6 +359,8 @@ begin
       ListView1.Items.EndUpdate();
    end;
 end;
+
+// ----------------------------------------------------------------------------
 
 function TformHamlogLookup.FindQso(strCallsign: string): THamlogQsoList;
 var
@@ -544,9 +559,10 @@ var
 begin
    dlg := TformOptions.Create(Self);
    try
+      FInitZLogLink := checkZlog.Checked;
+      checkZlog.Checked := False;
       FHamlog.Close();
       FHamlogOpend := False;
-      checkZlog.Checked := False;
 
       dlg.DatabaseName := FHamlogDatabaseName;
       dlg.DisplayCount := FDisplayMax;
@@ -563,10 +579,9 @@ begin
       FIncremental := dlg.Incremental;
 
       SaveSettings();
-
-      HamlogOpen();
    finally
       dlg.Release();
+      PostMessage(Handle, WM_HAMLOGLOOKUP_INIT, 0, 0);
    end;
 end;
 

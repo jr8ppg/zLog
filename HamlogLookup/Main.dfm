@@ -167,10 +167,12 @@ object formHamlogLookup: TformHamlogLookup
     Enabled = False
     Interval = 500
     OnTimer = timerLogSyncTimer
-    Left = 688
+    Left = 44
+    Top = 72
   end
   object MainMenu1: TMainMenu
-    Left = 716
+    Left = 72
+    Top = 72
     object F1: TMenuItem
       Caption = #12501#12449#12452#12523'(&F)'
       object menuOptions: TMenuItem
