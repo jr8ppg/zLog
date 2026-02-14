@@ -294,7 +294,6 @@ begin
       101, 102, 103, 106, 107, 110, 112, 113: begin
          ScoreCoeffEdit.Enabled := False;
          ModeGroup.Controls[0].Enabled := False;
-         ModeGroup.Controls[3].Enabled := False;
          ModeGroup.ItemIndex := 1;
       end;
 
