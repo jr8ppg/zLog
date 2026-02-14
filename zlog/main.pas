@@ -3139,6 +3139,7 @@ begin
    Grid.Row := 1;
    Grid.Col := 1;
 
+   RecordWindowStates();
    zyloContestClosed;
 
    { Add code to create a new file }
@@ -3177,7 +3178,9 @@ begin
       S := ChangeFileExt(S, '.ZLOX');
    end;
 
+   RecordWindowStates();
    zyloContestClosed;
+
    WriteStatusLine(TMainForm_Loading_now, False);
    dmZLogGlobal.SetLogFileName(S);
    LoadNewContestFromFile(S);
@@ -3195,6 +3198,7 @@ end;
 
 procedure TMainForm.menuSelectContestClick(Sender: TObject);
 begin
+   RecordWindowStates();
    zyloContestClosed;
    PostMessage(Handle, WM_ZLOG_INIT, 2, 0);
 end;
