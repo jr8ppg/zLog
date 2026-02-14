@@ -22,7 +22,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetHardware1
+    ActivePage = tabsheetOperateStyle
     Align = alClient
     TabOrder = 0
     object tabsheetOperateStyle: TTabSheet
@@ -4778,13 +4778,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = '@'#65325#65331' '#12468#12471#12483#12463
+          FontName = '@PlemolJP'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 12
+          ItemIndex = 15
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

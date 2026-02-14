@@ -1255,8 +1255,14 @@ var
    combo: TComboBox;
 begin
    combo := TComboBox(Sender);
-   KeyIndex := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
    rigno := TComboBox(Sender).Tag;
+   KeyIndex := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
+   if rigno < 5 then begin
+      RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
+   end
+   else begin
+      RigIndex := 0;
+   end;
 
    // 0:none, 21:USBIF4CW
    if (KeyIndex = 0) or (KeyIndex = 21) or (KeyIndex = 22) then begin
@@ -1270,17 +1276,23 @@ begin
       end;
       checkUseWinKeyer.Checked := False;
       FKeyingPortConfig[rigno].Enabled := False;
-      if rigno < 5 then begin
-         FRigControlPortConfig[rigno].Enabled := True;
+      if (rigno < 5) then begin
+         if (RigIndex >= 1) and (RigIndex <= 20) then begin
+            FRigControlPortConfig[rigno].Enabled := True;
+         end
+         else begin
+            FRigControlPortConfig[rigno].Enabled := False;
+         end;
       end;
    end
    else begin
-      RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
-      if KeyIndex = RigIndex then begin
-         FRigControlPortConfig[rigno].Enabled := False;
-      end
-      else begin
-         FRigControlPortConfig[rigno].Enabled := True;
+      if (rigno < 5) then begin
+         if KeyIndex = RigIndex then begin
+            FRigControlPortConfig[rigno].Enabled := False;
+         end
+         else begin
+            FRigControlPortConfig[rigno].Enabled := True;
+         end;
       end;
       FKeyingPortConfig[rigno].Enabled := True;
       checkUseWinKeyer.Enabled := True;
