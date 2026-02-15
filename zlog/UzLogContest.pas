@@ -879,9 +879,9 @@ begin
       FCity := ini.ReadString(FContestName, 'City', '');
 
       for i := 1 to maxmessage do begin
-         FCwMessages[1][i] := ini.ReadString(FContestName, 'A' + IntToStr(i), '');
+         FCwMessages[1][i] := ini.ReadString(FContestName, 'A' + IntToStr(i), def_cw_messages[i]);
          FCwMessages[2][i] := ini.ReadString(FContestName, 'B' + IntToStr(i), '');
-         FCwMessages[3][i] := ini.ReadString(FContestName, 'R' + IntToStr(i), '');
+         FCwMessages[3][i] := ini.ReadString(FContestName, 'R' + IntToStr(i), def_rtty_messages[i]);
       end;
       for i := Low(FCwMessageCQ) to High(FCwMessageCQ) do begin
          FCwMessageCQ[i] := ini.ReadString(FContestName, 'CQ' + IntToStr(i), '');
