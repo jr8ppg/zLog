@@ -98,7 +98,7 @@ type
     SelShape: TShape;
     Title: TLabel;
   end;
-  TEditPanelArray = array[0..2] of TEditPanel;
+  TEditPanelArray = array[0..3] of TEditPanel;
 
 type
   TMainForm = class(TForm)
@@ -1178,10 +1178,10 @@ type
 
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
-    FLastFreq: array[1..3] of TFrequency;
-    FLastMode: array[1..3] of TMode;
-    FLastRitStatus: array[1..3] of Boolean;
-    FLastRitOffset: array[1..3] of Integer;
+    FLastFreq: array[1..4] of TFrequency;
+    FLastMode: array[1..4] of TMode;
+    FLastRitStatus: array[1..4] of Boolean;
+    FLastRitOffset: array[1..4] of Integer;
 
     FBandScopeMenu: array[b19..b248g] of TMenuItem;
 
@@ -10257,6 +10257,7 @@ procedure TMainForm.OnPlayMessageB(no: Integer);
 var
    cb: Integer;
    rig: TRig;
+   mode: TMode;
 begin
    cb := dmZLogGlobal.Settings.CW.CurrentBank;
    FOtherKeyPressed[FCurrentRigSet - 1] := True;
@@ -10278,6 +10279,11 @@ begin
             actionAntiZeroin.Execute();
          end;
       end;
+   end;
+
+   mode := TextToMode(FEditPanel[FCurrentRx].ModeEdit.Text);
+   if mode = mOther then begin
+      mode := CurrentQSO.Mode;
    end;
 
    PlayMessage(CurrentQSO.Mode, cb, no, True);
@@ -13532,6 +13538,23 @@ begin
       FEditPanel[2].TxLed          := nil;
       FEditPanel[2].SelShape       := nil;
       FEditPanel[2].Title          := nil;
+
+      FEditPanel[3].DateEdit       := DateEdit1;
+      FEditPanel[3].TimeEdit       := TimeEdit1;
+      FEditPanel[3].CallsignEdit   := CallsignEdit1;
+      FEditPanel[3].SentRSTEdit    := sentRSTEdit1;
+      FEditPanel[3].SentNumberEdit := SentNrEdit1;
+      FEditPanel[3].RcvdRSTEdit    := rcvdRSTEdit1;
+      FEditPanel[3].RcvdNumberEdit := NumberEdit1;
+      FEditPanel[3].ModeEdit       := ModeEdit1;
+      FEditPanel[3].PowerEdit      := PowerEdit1;
+      FEditPanel[3].BandEdit       := BandEdit1;
+      FEditPanel[3].OpEdit         := OpEdit1;
+      FEditPanel[3].MemoEdit       := MemoEdit1;
+      FEditPanel[3].TxLed          := nil;
+      FEditPanel[3].TxLed          := nil;
+      FEditPanel[3].SelShape       := nil;
+      FEditPanel[3].Title          := nil;
 
       EditPanel1R.Visible := True;
       EditPanel2RH.Visible := False;
