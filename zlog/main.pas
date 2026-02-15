@@ -2685,7 +2685,7 @@ const
    uptable: array[mCW..LastMode] of TMode = (mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mDV, mCW, mOther);
    dwtable: array[mCW..LastMode] of TMode = (mOther, mCW, mSSB, mFM, mAM, mRTTY, mFT4, mDV, mFT8);
 begin
-   if dmZLogGlobal.ContestMode = cmAll then begin
+   if (dmZLogGlobal.ContestMode = cmAll) or (dmZLogGlobal.ContestMode = cmRtty) then begin
       maxmode := mRTTY;
    end
    else begin
@@ -9070,6 +9070,11 @@ begin
          // PH
          cmPh: begin
             CurrentQSO.Mode := mSSB;
+         end;
+
+         // RTTY
+         cmRtty: begin
+            CurrentQSO.Mode := mRTTY;
          end;
 
          // Other
