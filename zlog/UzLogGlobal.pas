@@ -1122,8 +1122,8 @@ begin
       for i := 1 to 5 do begin
          s := 'RigControl#' + IntToStr(i);
          Settings.FRigControl[i].FControlPort   := ini.ReadInteger(s, 'ControlPort', 0);
-         Settings.FRigControl[i].FControlPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'control_port_rts', Integer(paNone)));
-         Settings.FRigControl[i].FControlPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'control_port_dtr', Integer(paNone)));
+         Settings.FRigControl[i].FControlPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'control_port_rts', Integer(paAlwaysOff)));
+         Settings.FRigControl[i].FControlPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'control_port_dtr', Integer(paAlwaysOff)));
          Settings.FRigControl[i].FSpeed         := ini.ReadInteger(s, 'Speed', 0);
          Settings.FRigControl[i].FRigName       := ini.ReadString(s, 'RigName', '');
          Settings.FRigControl[i].FUseTransverter := ini.ReadBool(s, 'UseTransverter', False);
