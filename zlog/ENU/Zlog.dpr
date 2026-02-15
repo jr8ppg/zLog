@@ -237,7 +237,7 @@ library Zlog;
 {$R 'USuperCheck2.dfm' 'SuperCheck2:TForm(ZLogForm)'}
 {$R 'UTargetEditor.dfm' 'TargetEditor:TForm'}
 {$R 'UTextEditor.dfm' 'TextEditor:TForm'}
-{$R 'UTTYConsole.dfm' 'TTYConsole:TForm'}
+{$R 'UTTYConsole.dfm' 'TTYConsole:TForm(ZLogForm)'}
 {$R 'UUTCDialog.dfm' 'UTCDialog:TForm'}
 {$R 'UWAEMulti.dfm' 'WAEMulti:TForm(ARRLWMulti)'}
 {$R 'UWAEScore.dfm' 'WAEScore:TForm(BasicScore)'}

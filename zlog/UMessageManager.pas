@@ -149,6 +149,7 @@ procedure TformMessageManager.AddQue(nID: Integer; S: string; aQSO: TQSO);
 var
    msg: TPlayMessage;
    strCallsign: string;
+   mode: TMode;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Enter - TformMessageManager.AddQue(' + IntToStr(nID) + ',''' + S + ''');'));
@@ -162,15 +163,17 @@ begin
          S := SetStrNoAbbrev(S, aQSO);
       end;
       strCallsign := aQSO.Callsign;
+      mode := aQSO.Mode;
    end
    else begin
       //S := '';
       strCallsign := '';
+      mode := mCW;
    end;
 
    msg := TPlayMessage.Create();
    msg.FRigID := nID;
-   msg.FMode := mCW;
+   msg.FMode := mode;
    msg.FText := S;
    msg.FCallsign := strCallsign;
 
@@ -346,7 +349,7 @@ begin
             end;
 
             mRTTY: begin
-
+               MainForm.TTYConsole.SendStrNow(msg2.FText);
             end;
 
             else begin

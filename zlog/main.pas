@@ -281,7 +281,7 @@ type
     mnHideMenuToolbar: TMenuItem;
     menuShowScratchSheet: TMenuItem;
     IncreaseFontSize1: TMenuItem;
-    mnMMTTY: TMenuItem;
+    menuMMTTY: TMenuItem;
     menuShowTTYConsole: TMenuItem;
     menuQuickReference: TMenuItem;
     ActionList1: TActionList;
@@ -730,6 +730,7 @@ type
     menuHamlogUtySep: TMenuItem;
     menuExecHamlogLookup: TMenuItem;
     menuExecHamlogConverter: TMenuItem;
+    menuMMTTYSep: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -826,7 +827,7 @@ type
       var Value: String);
     procedure mnHideCWPhToolBarClick(Sender: TObject);
     procedure mnHideMenuToolbarClick(Sender: TObject);
-    procedure mnMMTTYClick(Sender: TObject);
+    procedure menuMMTTYClick(Sender: TObject);
     procedure SwitchCWBank(Action : Integer);
     procedure menuQuickReferenceClick(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
@@ -1445,6 +1446,7 @@ type
     property SuperCheckList: TSuperList read FSuperCheckList;
     property MessageManager: TformMessageManager read FMessageManager;
     property CWMonitor: TformCWMonitor read FCWMonitor;
+    property TTYConsole: TTTYConsole read FTTYConsole;
 
     property CurrentRigID: Integer read GetCurrentRigID;
     property CurrentTX: Integer read FCurrentTX;
@@ -1573,6 +1575,8 @@ resourcestring
   TMainForm_Check_Multi = 'Check Multi';
   TMainForm_Check_Zone = 'Check Zone';
   TMainForm_Reset_grid_column_widths = 'Reset Column widths to their default values. Are you sure?';
+  TMainForm_Load_MMTTY = 'Load MMTTY';
+  TMainForm_Unload_MMTTY = 'Unload MMTTY';
 
 var
   MainForm: TMainForm;
@@ -3381,7 +3385,6 @@ end;
 procedure TMainForm.FileMenuClick(Sender: TObject);
 begin
    menuCorrectStartTime.Enabled := MyContest.UseContestPeriod;
-
    menuExecHamlogLookup.Visible := FileExists(ExtractFilePath(Application.ExeName) + 'HamlogLookup.exe');
    menuExecHamlogConverter.Visible := FileExists(ExtractFilePath(Application.ExeName) + 'zlog_hamlogconv.exe');
    menuHamlogUtySep.Visible := menuExecHamlogLookup.Visible or menuExecHamlogConverter.Visible;
@@ -3557,8 +3560,8 @@ begin
 
    if S = 'MMTTY' then begin
       if Not Assigned(FTTYConsole) then begin
-         mnMMTTY.Tag := 0;
-         mnMMTTY.Click();
+         menuMMTTY.Tag := 0;
+         menuMMTTY.Click();
       end;
    end;
 
@@ -3576,8 +3579,8 @@ begin
 
    if S = 'EXITMMTTY' then begin
       if Assigned(FTTYConsole) then begin
-         mnMMTTY.Tag := 1;
-         mnMMTTY.Click();
+         menuMMTTY.Tag := 1;
+         menuMMTTY.Click();
       end;
    end;
 
@@ -8398,31 +8401,33 @@ begin
    end;
 end;
 
-procedure TMainForm.mnMMTTYClick(Sender: TObject);
+procedure TMainForm.menuMMTTYClick(Sender: TObject);
 var
    ini: TMemIniFile;
 begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
-      if mnMMTTY.Tag = 0 then begin
-         mnMMTTY.Tag := 1;
-         mnMMTTY.Caption := 'Exit MMTTY';
+      if menuMMTTY.Tag = 0 then begin
+         menuMMTTY.Tag := 1;
+         menuMMTTY.Caption := TMainForm_Unload_MMTTY;
          menuShowTTYConsole.Visible := True;
 
          FTTYConsole := TTTYConsole.Create(Self);
+         FTTYConsole.OnSendFinishProc := OnPlayMessageFinished;
+         FTTYConsole.OnChangeFontSize := OnChangeFontSize;
          dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
 
          dmZLogKeyer.CloseBGK();
 
-         FTTYConsole.SetTTYMode(ttyMMTTY);
+         FTTYConsole.TTYMode := ttyMMTTY;
          InitializeMMTTY(Handle);
 
          FormShowAndRestore(FTTYConsole);
          FTTYConsole.SetFocus;
       end
       else begin
-         mnMMTTY.Tag := 0;
-         mnMMTTY.Caption := 'Load MMTTY';
+         menuMMTTY.Tag := 0;
+         menuMMTTY.Caption := TMainForm_Load_MMTTY;
          menuShowTTYConsole.Visible := False;
 
          dmZLogGlobal.WriteWindowState(ini, FTTYConsole);
@@ -8524,7 +8529,7 @@ begin
       end;
    end;
 
-   fPlaying := dmZlogKeyer.IsPlaying;
+   fPlaying := dmZLogKeyer.IsPlaying;
 
    if fPlaying then begin
       if CurrentQSO.Mode = mCW then begin
@@ -8556,13 +8561,6 @@ begin
             FRateDialogEx.UpdateGraph();
          end;
          FPrevTotalQSO := Log.TotalQSO;
-      end;
-   end;
-
-   if CurrentQSO.Mode = mRTTY then begin
-      if FTTYConsole <> nil then begin
-         if FTTYConsole.Sending = False then begin
-         end;
       end;
    end;
 
@@ -9551,6 +9549,11 @@ begin
       // TODO: ここを1shotにすればOK
       FMessageManager.AddQue(0, S, nil);
    end
+   else if mode = mRTTY then begin
+      S := dmZLogGlobal.CWMessage(3, msgno);
+//      S := SetStrNoAbbrev(S, CurrentQSO);
+      FMessageManager.AddQue(0, S, CurrentQSO);
+   end
    else begin
       // Voice再生(1shot)
       FMessageManager.AddQue(0, msgno);
@@ -10528,6 +10531,9 @@ begin
       //      FSo2rNeoCp.CanRxSel := False;
             PostMessage(FSo2rNeoCp.Handle, WM_ZLOG_SO2RNEO_CANRXSEL, Integer(False), 0);
          end;
+      end
+      else if mode = mRTTY then begin
+         //
       end
       else begin
          // PTT-OFF

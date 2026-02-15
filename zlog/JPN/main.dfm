@@ -6827,10 +6827,12 @@ object MainForm: TMainForm
         OnClick = CreateCabrilloClick
         GroupIndex = 1
       end
-      object mnMMTTY: TMenuItem
+      object menuMMTTYSep: TMenuItem
+        Caption = '-'
+      end
+      object menuMMTTY: TMenuItem
         Caption = 'MMTTY'#12398#12525#12540#12489
-        OnClick = mnMMTTYClick
-        GroupIndex = 1
+        OnClick = menuMMTTYClick
       end
       object menuHamlogUtySep: TMenuItem
         Caption = '-'
@@ -8367,7 +8369,7 @@ object MainForm: TMainForm
       OnExecute = actionShowFreqListExecute
     end
     object actionShowTeletypeConsole: TAction
-      Caption = 'Teletype Console'
+      Caption = 'RTTY'#12467#12531#12477#12540#12523
       OnExecute = actionShowTeletypeConsoleExecute
     end
     object actionShowAnalyze: TAction

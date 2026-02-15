@@ -3,75 +3,175 @@ unit UTTYConsole;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, ExtCtrls, Menus, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW;
+  WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
+  UzLogForm, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW;
 
-const ttyMMTTY = 0;
-      ttyPSK31 = 1;
+const
+  ttyMMTTY = 0;
+  ttyPSK31 = 1;
 
 type
-  TTTYConsole = class(TForm)
-    Panel1: TPanel;
+  TTTYConsole = class(TZLogForm)
+    panelLeft: TPanel;
     CallsignList: TListBox;
     Splitter1: TSplitter;
     Timer1: TTimer;
     RXLog: TConsole2;
     MainMenu1: TMainMenu;
-    mnConsole: TMenuItem;
-    ClearRXlog1: TMenuItem;
-    ClearTXlog1: TMenuItem;
-    ClearCallsignlist1: TMenuItem;
-    Cleareverything1: TMenuItem;
-    mnStayOnTop: TMenuItem;
+    menuConsole: TMenuItem;
+    menuClearRxLog: TMenuItem;
+    menuClearTxLog: TMenuItem;
+    menuClearCallsignlist: TMenuItem;
+    menuClearEverything: TMenuItem;
+    menuStayOnTop: TMenuItem;
     TXLog: TMemo;
-    procedure TXLogKeyPress(Sender: TObject; var Key: Char);
-    procedure Timer1Timer(Sender: TObject);
+    N1: TMenuItem;
+    panelTx: TPanel;
+    panelRx: TPanel;
+    panelTxHeader: TPanel;
+    Label1: TLabel;
+    panelRxHeader: TPanel;
+    Label2: TLabel;
+    panelLeftHeader: TPanel;
+    Label3: TLabel;
     procedure FormCreate(Sender: TObject);
-    procedure TXLogKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure StayOnTopClick(Sender: TObject);
-    procedure ClearRXlog1Click(Sender: TObject);
-    procedure ClearTXlog1Click(Sender: TObject);
-    procedure ClearCallsignlist1Click(Sender: TObject);
-    procedure Cleareverything1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Timer1Timer(Sender: TObject);
+    procedure TXLogKeyPress(Sender: TObject; var Key: Char);
+    procedure TXLogKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure menuStayOnTopClick(Sender: TObject);
+    procedure menuClearRxLogClick(Sender: TObject);
+    procedure menuClearTxLogClick(Sender: TObject);
+    procedure menuClearCallsignlistClick(Sender: TObject);
+    procedure menuClearEverythingClick(Sender: TObject);
     procedure CallsignListClick(Sender: TObject);
     procedure CallsignListDblClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
-  public
-    TTYMode : integer;
-    TTYSendBuffer: string;
-    TTYLineBuffer: string; // line buffer for rx data
-    procedure SetTTYMode(i : integer);
+    FTTYMode: Integer;
+    FTTYSendBuffer: string;
+    FTTYLineBuffer: string; // line buffer for rx data
+    FNeedFinishEvent: Boolean;
+    FOnSendFinishProc: TPlayMessageFinishedProc;
+    procedure SetTTYMode(i: Integer);
+    function Sending(): Boolean;
     procedure RXChar(C: AnsiChar);
     procedure TXChar(C: AnsiChar);
-    procedure SendStrNow(S: String);
-    function Sending : boolean;
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
+  public
     { Public declarations }
+    procedure SendStrNow(S: String);
+
+    property TTYMode: Integer read FTTYMode write SetTTYMode;
+    property FontSize: Integer read GetFontSize write SetFontSize;
+    property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
   end;
 
 implementation
 
-uses Main, UOptions;
+uses
+  Main;
 
 {$R *.DFM}
 
-procedure TTTYConsole.SetTTYMode(i: integer);
+procedure TTTYConsole.FormCreate(Sender: TObject);
 begin
-   if (i >= 2) or (i < 0) then
-      TTYMode := 0
-   else
-      TTYMode := i;
+   RXLog.ClrScr;
+   FTTYMode := 0;
+   FTTYSendBuffer := '';
+   FTTYLineBuffer := '';
+   FNeedFinishEvent := False;
+end;
 
-   if TTYMode = 0 then
+procedure TTTYConsole.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MainForm.DelTaskbar(Handle);
+end;
+
+procedure TTTYConsole.FormShow(Sender: TObject);
+begin
+   MainForm.AddTaskbar(Handle);
+   RXLog.ClrScr();
+   TXLog.Clear();
+   CallsignList.Clear();
+end;
+
+procedure TTTYConsole.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+   i: integer;
+   S: string;
+begin
+   case Key of
+      VK_ESCAPE:
+         MainForm.SetLastFocus();
+
+      VK_F1 .. VK_F8, VK_F11, VK_F12: begin
+         i := Key - VK_F1 + 1;
+         S := dmZLogGlobal.CWMessage(3, i);
+         S := SetStrNoAbbrev(S, Main.CurrentQSO);
+         SendStrNow(S);
+      end;
+   end;
+end;
+
+procedure TTTYConsole.Timer1Timer(Sender: TObject);
+var
+   i: integer;
+begin
+   Timer1.Enabled := False;
+   try
+      case FTTYMode of
+         ttyMMTTY: begin
+            if MMTTYBuffer = '' then
+               exit;
+
+            // RXLog.Text := RXLog.Text + MMTTYBuffer;
+            for i := 1 to length(MMTTYBuffer) do
+               RXChar(AnsiChar(MMTTYBuffer[i]));
+
+            MMTTYBuffer := '';
+
+            if (FNeedFinishEvent = True) then begin
+               if Sending() = False then begin
+                  // fire event
+                  if Assigned(FOnSendFinishProc) then begin
+                     FOnSendFinishProc(Self, mRTTY, False, 0);
+                  end;
+
+                  FNeedFinishEvent := False;
+               end;
+            end;
+         end;
+
+         ttyPSK31: begin
+            Exit;
+         end;
+      end;
+   finally
+      Timer1.Enabled := True;
+   end;
+end;
+
+procedure TTTYConsole.SetTTYMode(i: Integer);
+begin
+   if (i >= 2) or (i < 0) then begin
+      FTTYMode := 0;
+   end
+   else begin
+      FTTYMode := i;
+   end;
+
+   if FTTYMode = 0 then begin
       Caption := 'RTTY Console';
+   end;
 
-   if TTYMode = 1 then
+   if FTTYMode = 1 then begin
       Caption := 'PSK31 Console';
+   end;
 end;
 
 procedure TTTYConsole.RXChar(C: AnsiChar);
@@ -98,7 +198,7 @@ begin
 
    if (C = ' ') or (C = _CR) then begin
 
-      L.DelimitedText := TTYLineBuffer;
+      L.DelimitedText := FTTYLineBuffer;
 
       for i := 0 to L.Count - 1 do begin
          S := L.Strings[i];
@@ -161,9 +261,9 @@ begin
 //      end;
 
    xxxx:
-      i := pos('599', TTYLineBuffer);
+      i := Pos('599', FTTYLineBuffer);
       if i > 0 then begin
-         S := TTYLineBuffer;
+         S := FTTYLineBuffer;
          Delete(S, 1, i + 2);
          S := TrimLeft(S);
          // Caption := Caption + '*' + S;
@@ -190,10 +290,10 @@ begin
    end;
 
    if C = _CR then begin
-      TTYLineBuffer := '';
+      FTTYLineBuffer := '';
    end
    else begin
-      TTYLineBuffer := TTYLineBuffer + Char(C);
+      FTTYLineBuffer := FTTYLineBuffer + Char(C);
    end;
 
    L.Free();
@@ -201,24 +301,22 @@ end;
 
 procedure TTTYConsole.TXChar(C: AnsiChar);
 begin
-   // Clipboard.AsText := C;
-   // TXLog.PasteFromClipboard;
    TXLog.Text := TXLog.Text + Char(C);
 end;
 
 procedure TTTYConsole.TXLogKeyPress(Sender: TObject; var Key: Char);
 begin
-   case TTYMode of
+   case FTTYMode of
       ttyMMTTY: begin
          if Key = Chr($08) then begin
-            if TTYSendBuffer = '' then begin
+            if FTTYSendBuffer = '' then begin
                if MMTTY_TX then
                   mm_SendStr('X', False);
                Key := 'X';
                exit;
             end
             else begin
-               TTYSendBuffer := copy(TTYSendBuffer, 1, length(TTYSendBuffer) - 1);
+               FTTYSendBuffer := copy(FTTYSendBuffer, 1, length(FTTYSendBuffer) - 1);
                exit;
             end;
          end;
@@ -226,7 +324,7 @@ begin
          if MMTTY_TX then
             UMMTTY.mm_SendStr(Key, False)
          else begin
-            TTYSendBuffer := TTYSendBuffer + Key;
+            FTTYSendBuffer := FTTYSendBuffer + Key;
          end;
       end;
 
@@ -237,8 +335,9 @@ end;
 
 procedure TTTYConsole.SendStrNow(S: String);
 begin
-   case TTYMode of
+   case FTTYMode of
       ttyMMTTY: begin
+         FNeedFinishEvent := True;
          UMMTTY.mm_SendStr(_CR + _LF + S + _CR + _LF, True);
          TXLog.Lines.Add(S);
       end;
@@ -248,48 +347,9 @@ begin
    end;
 end;
 
-procedure TTTYConsole.Timer1Timer(Sender: TObject);
-var
-   i: integer;
-begin
-   Timer1.Enabled := False;
-   try
-      case TTYMode of
-         ttyMMTTY: begin
-            if MMTTYBuffer = '' then
-               exit;
-
-            // RXLog.Text := RXLog.Text + MMTTYBuffer;
-            for i := 1 to length(MMTTYBuffer) do
-               RXChar(AnsiChar(MMTTYBuffer[i]));
-
-            MMTTYBuffer := '';
-         end;
-
-         ttyPSK31:
-            exit;
-      end;
-   finally
-      Timer1.Enabled := True;
-   end;
-end;
-
-procedure TTTYConsole.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   MainForm.DelTaskbar(Handle);
-end;
-
-procedure TTTYConsole.FormCreate(Sender: TObject);
-begin
-   RXLog.ClrScr;
-   TTYSendBuffer := '';
-   TTYLineBuffer := '';
-   TTYMode := 0;
-end;
-
 procedure TTTYConsole.TXLogKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-   case TTYMode of
+   case FTTYMode of
       ttyMMTTY: begin
          case Key of
             VK_RIGHT, VK_LEFT, VK_UP, VK_DOWN, VK_DELETE:
@@ -299,7 +359,7 @@ begin
                if MMTTY_TX then
                   UMMTTY.mm_SendStr(_CR + _LF, False)
                else begin
-                  TTYSendBuffer := TTYSendBuffer + _CR + _LF;
+                  FTTYSendBuffer := FTTYSendBuffer + _CR + _LF;
                end;
             end;
 
@@ -307,9 +367,9 @@ begin
                if MMTTY_TX then
                   mm_RX
                else begin
-                  if TTYSendBuffer <> '' then begin
-                     mm_SendStr(TTYSendBuffer, False);
-                     TTYSendBuffer := '';
+                  if FTTYSendBuffer <> '' then begin
+                     mm_SendStr(FTTYSendBuffer, False);
+                     FTTYSendBuffer := '';
                   end
                   else
                      mm_TX;
@@ -323,58 +383,35 @@ begin
    end;
 end;
 
-procedure TTTYConsole.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-var
-   i: integer;
-   S: string;
+procedure TTTYConsole.menuStayOnTopClick(Sender: TObject);
 begin
-   case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
-
-      VK_F1 .. VK_F8, VK_F11, VK_F12: begin
-         i := Key - VK_F1 + 1;
-         S := dmZLogGlobal.CWMessage(3, i);
-         S := SetStrNoAbbrev(S, Main.CurrentQSO);
-         SendStrNow(S);
-      end;
-   end;
-end;
-
-procedure TTTYConsole.FormShow(Sender: TObject);
-begin
-   MainForm.AddTaskbar(Handle);
-end;
-
-procedure TTTYConsole.StayOnTopClick(Sender: TObject);
-begin
-   mnStayOnTop.Checked := not(mnStayOnTop.Checked);
-   if mnStayOnTop.Checked then begin
+   menuStayOnTop.Checked := not(menuStayOnTop.Checked);
+   if menuStayOnTop.Checked then begin
       FormStyle := fsStayOnTop;
-      mnStayOnTop.Checked := True;
+      menuStayOnTop.Checked := True;
    end
    else begin
       FormStyle := fsNormal;
-      mnStayOnTop.Checked := False;
+      menuStayOnTop.Checked := False;
    end;
 end;
 
-procedure TTTYConsole.ClearRXlog1Click(Sender: TObject);
+procedure TTTYConsole.menuClearRxLogClick(Sender: TObject);
 begin
    RXLog.ClrScr;
 end;
 
-procedure TTTYConsole.ClearTXlog1Click(Sender: TObject);
+procedure TTTYConsole.menuClearTxLogClick(Sender: TObject);
 begin
    TXLog.Clear;
 end;
 
-procedure TTTYConsole.ClearCallsignlist1Click(Sender: TObject);
+procedure TTTYConsole.menuClearCallsignlistClick(Sender: TObject);
 begin
    CallsignList.Clear;
 end;
 
-procedure TTTYConsole.Cleareverything1Click(Sender: TObject);
+procedure TTTYConsole.menuClearEverythingClick(Sender: TObject);
 begin
    CallsignList.Clear;
    RXLog.ClrScr;
@@ -398,10 +435,10 @@ begin
    end;
 end;
 
-function TTTYConsole.Sending: boolean;
+function TTTYConsole.Sending(): Boolean;
 begin
    Result := False;
-   case TTYMode of
+   case FTTYMode of
       ttyMMTTY: begin
          Result := MMTTY_TX;
       end;
@@ -409,6 +446,19 @@ begin
       ttyPSK31:
          Result := False;
    end;
+end;
+
+function TTTYConsole.GetFontSize(): Integer;
+begin
+   Result := Inherited;
+end;
+
+procedure TTTYConsole.SetFontSize(v: Integer);
+begin
+   Inherited;
+   RXLog.Font.Size := v;
+   TXLog.Font.Size := v;
+   Callsignlist.Font.Size := v;
 end;
 
 end.

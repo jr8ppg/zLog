@@ -6823,9 +6823,12 @@ object MainForm: TMainForm
         Caption = 'Create Cabrillo'
         OnClick = CreateCabrilloClick
       end
-      object mnMMTTY: TMenuItem
+      object menuMMTTYSep: TMenuItem
+        Caption = '-'
+      end
+      object menuMMTTY: TMenuItem
         Caption = 'Load MMTTY'
-        OnClick = mnMMTTYClick
+        OnClick = menuMMTTYClick
       end
       object menuHamlogUtySep: TMenuItem
         Caption = '-'

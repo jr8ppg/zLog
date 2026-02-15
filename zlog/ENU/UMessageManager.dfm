@@ -35,7 +35,6 @@ object formMessageManager: TformMessageManager
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 0
-    ExplicitHeight = 91
   end
   object Timer2: TTimer
     Enabled = False
