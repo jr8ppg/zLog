@@ -1074,6 +1074,9 @@ begin
             fStart := True;
          end
          else begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('wait for start char => $' + IntToHex(Ord(CH), 2)));
+            {$ENDIF}
             Continue;
          end;
       end;

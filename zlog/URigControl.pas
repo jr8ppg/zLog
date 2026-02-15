@@ -974,7 +974,8 @@ end;
 
 procedure TRigControl.OnErrorProc(Sender: TObject; msg: string);
 begin
-   MainForm.WriteStatusLineRed(msg, True);
+//   MainForm.WriteStatusLineRed(msg, True);
+//   dmZLogGlobal.WriteErrorLog(msg)
 end;
 
 procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
