@@ -3289,6 +3289,7 @@ begin
       end;
    end;
 
+{
    // RIG1がCOMポートで
    if (FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) then begin
       // RIG1 = RIG2 なら RIG1
@@ -3304,6 +3305,22 @@ begin
       // RIG2 = RIG3 なら RIG2
       if (FKeyingPort[1] = FKeyingPort[2]) then begin
          FComKeying[2] := FComKeying[1];
+      end;
+   end;
+}
+
+   // RIG1のポートとRIG2,RIG3,RIG4,RIG5のいずれかのポートがRIG1のポートと同じなら、そのRIGはRIG1のポートを採用
+   // RIG2のポートとRIG3,RIG4,RIG5のいずれかのポートがRIG2のポートと同じなら、そのRIGはRIG2のポートを採用
+   // RIG3のポートとRIG4,RIG5のいずれかのポートがRIG3のポートと同じなら、そのRIGはRIG3のポートを採用
+   // RIG4のポートとRIG5がRIG4のポートと同じなら、RIG5はRIG4のポートを採用
+   for i := 0 to 3 do begin
+      if (FKeyingPort[i] in [tkpSerial1 .. tkpSerial20]) then begin
+         for var j := i + 1 to 4 do begin
+            // RIG1 = RIG2 なら RIG1
+            if (FKeyingPort[i] = FKeyingPort[j]) then begin
+               FComKeying[j] := FComKeying[i];
+            end;
+         end;
       end;
    end;
 

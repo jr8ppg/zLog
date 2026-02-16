@@ -98,7 +98,7 @@ type
     SelShape: TShape;
     Title: TLabel;
   end;
-  TEditPanelArray = array[0..3] of TEditPanel;
+  TEditPanelArray = array[0..4] of TEditPanel;
 
 type
   TMainForm = class(TForm)
@@ -1178,10 +1178,10 @@ type
 
     // バンドスコープからのJUMP用
     FPrev2bsiqMode: Boolean;
-    FLastFreq: array[1..4] of TFrequency;
-    FLastMode: array[1..4] of TMode;
-    FLastRitStatus: array[1..4] of Boolean;
-    FLastRitOffset: array[1..4] of Integer;
+    FLastFreq: array[1..5] of TFrequency;
+    FLastMode: array[1..5] of TMode;
+    FLastRitStatus: array[1..5] of Boolean;
+    FLastRitOffset: array[1..5] of Integer;
 
     FBandScopeMenu: array[b19..b248g] of TMenuItem;
 
@@ -13488,73 +13488,24 @@ procedure TMainForm.InitQsoEditPanel();
 begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       // 1R
-      FEditPanel[0].DateEdit       := DateEdit1;
-      FEditPanel[0].TimeEdit       := TimeEdit1;
-      FEditPanel[0].CallsignEdit   := CallsignEdit1;
-      FEditPanel[0].SentRSTEdit    := SentRSTEdit1;
-      FEditPanel[0].SentNumberEdit := SentNrEdit1;
-      FEditPanel[0].RcvdRSTEdit    := RcvdRSTEdit1;
-      FEditPanel[0].RcvdNumberEdit := NumberEdit1;
-      FEditPanel[0].ModeEdit       := ModeEdit1;
-      FEditPanel[0].PowerEdit      := PowerEdit1;
-      FEditPanel[0].BandEdit       := BandEdit1;
-      FEditPanel[0].OpEdit         := OpEdit1;
-      FEditPanel[0].MemoEdit       := MemoEdit1;
-      FEditPanel[0].TxLed          := nil;
-      FEditPanel[0].TxLed          := nil;
-      FEditPanel[0].SelShape       := nil;
-      FEditPanel[0].Title          := nil;
-
-      FEditPanel[1].DateEdit       := DateEdit1;
-      FEditPanel[1].TimeEdit       := TimeEdit1;
-      FEditPanel[1].CallsignEdit   := CallsignEdit1;
-      FEditPanel[1].SentRSTEdit    := sentRSTEdit1;
-      FEditPanel[1].SentNumberEdit := SentNrEdit1;
-      FEditPanel[1].RcvdRSTEdit    := rcvdRSTEdit1;
-      FEditPanel[1].RcvdNumberEdit := NumberEdit1;
-      FEditPanel[1].ModeEdit       := ModeEdit1;
-      FEditPanel[1].PowerEdit      := PowerEdit1;
-      FEditPanel[1].BandEdit       := BandEdit1;
-      FEditPanel[1].OpEdit         := OpEdit1;
-      FEditPanel[1].MemoEdit       := MemoEdit1;
-      FEditPanel[1].TxLed          := nil;
-      FEditPanel[1].TxLed          := nil;
-      FEditPanel[1].SelShape       := nil;
-      FEditPanel[1].Title          := nil;
-
-      FEditPanel[2].DateEdit       := DateEdit1;
-      FEditPanel[2].TimeEdit       := TimeEdit1;
-      FEditPanel[2].CallsignEdit   := CallsignEdit1;
-      FEditPanel[2].SentRSTEdit    := sentRSTEdit1;
-      FEditPanel[2].SentNumberEdit := SentNrEdit1;
-      FEditPanel[2].RcvdRSTEdit    := rcvdRSTEdit1;
-      FEditPanel[2].RcvdNumberEdit := NumberEdit1;
-      FEditPanel[2].ModeEdit       := ModeEdit1;
-      FEditPanel[2].PowerEdit      := PowerEdit1;
-      FEditPanel[2].BandEdit       := BandEdit1;
-      FEditPanel[2].OpEdit         := OpEdit1;
-      FEditPanel[2].MemoEdit       := MemoEdit1;
-      FEditPanel[2].TxLed          := nil;
-      FEditPanel[2].TxLed          := nil;
-      FEditPanel[2].SelShape       := nil;
-      FEditPanel[2].Title          := nil;
-
-      FEditPanel[3].DateEdit       := DateEdit1;
-      FEditPanel[3].TimeEdit       := TimeEdit1;
-      FEditPanel[3].CallsignEdit   := CallsignEdit1;
-      FEditPanel[3].SentRSTEdit    := sentRSTEdit1;
-      FEditPanel[3].SentNumberEdit := SentNrEdit1;
-      FEditPanel[3].RcvdRSTEdit    := rcvdRSTEdit1;
-      FEditPanel[3].RcvdNumberEdit := NumberEdit1;
-      FEditPanel[3].ModeEdit       := ModeEdit1;
-      FEditPanel[3].PowerEdit      := PowerEdit1;
-      FEditPanel[3].BandEdit       := BandEdit1;
-      FEditPanel[3].OpEdit         := OpEdit1;
-      FEditPanel[3].MemoEdit       := MemoEdit1;
-      FEditPanel[3].TxLed          := nil;
-      FEditPanel[3].TxLed          := nil;
-      FEditPanel[3].SelShape       := nil;
-      FEditPanel[3].Title          := nil;
+      for var i := 0 to 4 do begin
+         FEditPanel[i].DateEdit       := DateEdit1;
+         FEditPanel[i].TimeEdit       := TimeEdit1;
+         FEditPanel[i].CallsignEdit   := CallsignEdit1;
+         FEditPanel[i].SentRSTEdit    := SentRSTEdit1;
+         FEditPanel[i].SentNumberEdit := SentNrEdit1;
+         FEditPanel[i].RcvdRSTEdit    := RcvdRSTEdit1;
+         FEditPanel[i].RcvdNumberEdit := NumberEdit1;
+         FEditPanel[i].ModeEdit       := ModeEdit1;
+         FEditPanel[i].PowerEdit      := PowerEdit1;
+         FEditPanel[i].BandEdit       := BandEdit1;
+         FEditPanel[i].OpEdit         := OpEdit1;
+         FEditPanel[i].MemoEdit       := MemoEdit1;
+         FEditPanel[i].TxLed          := nil;
+         FEditPanel[i].TxLed          := nil;
+         FEditPanel[i].SelShape       := nil;
+         FEditPanel[i].Title          := nil;
+      end;
 
       EditPanel1R.Visible := True;
       EditPanel2RH.Visible := False;
@@ -14056,10 +14007,12 @@ var
 
    function ToggleRigID(id: Integer): Integer;
    begin
-      Inc(id);
-      if id >= RigControl.MaxRig then begin
-         id := 0;
-      end;
+      repeat
+         Inc(id);
+         if id >= RigControl.MaxRig then begin
+            id := 0;
+         end;
+      until RigControl.Rigs[id + 1] <> nil;
       Result := id;
    end;
 begin

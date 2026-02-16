@@ -705,14 +705,14 @@ begin
 
    // ç≈ëÂRIGêîÇÃê›íË
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
-      FMaxRig := 2;
+      FMaxRig := 5;
 
-      for i := 4 downto 1 do begin
-         if FRigs[i] <> nil then begin
-            FMaxRig := i;
-            Break;
-         end;
-      end;
+//      for i := 4 downto 1 do begin
+//         if FRigs[i] <> nil then begin
+//            FMaxRig := i;
+//            Break;
+//         end;
+//      end;
    end
    else begin
       if (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
