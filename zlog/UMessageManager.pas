@@ -349,7 +349,9 @@ begin
             end;
 
             mRTTY: begin
-               MainForm.TTYConsole.SendStrNow(msg2.FText);
+               if MainForm.TTYConsole <> nil then begin
+                  MainForm.TTYConsole.SendStrNow(msg2.FText);
+               end;
             end;
 
             else begin
