@@ -680,6 +680,11 @@ begin
          rig.OnUpdateStatus := OnUpdateStatusProc;
          rig.OnError := OnErrorProc;
          rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
+      end
+      else begin
+         if dmZLogGlobal.Settings.FRigControl[rignum].FKeyingPort <> 0 then begin
+            rig := TVirtualRig.Create(rignum);
+         end;
       end;
    finally
       Result := rig;
@@ -752,6 +757,10 @@ begin
 
       // Initialize & Start
       FRigs[i].Initialize();
+   end;
+
+   if FRigs[rig] = nil then begin
+      rig := 5;
    end;
 
    SetCurrentRig(rig);

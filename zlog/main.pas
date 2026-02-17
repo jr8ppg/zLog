@@ -14007,6 +14007,20 @@ var
 
    function ToggleRigID(id: Integer): Integer;
    begin
+      if (RigControl.Rigs[1] = nil) and
+         (RigControl.Rigs[2] = nil) and
+         (RigControl.Rigs[3] = nil) and
+         (RigControl.Rigs[4] = nil) and
+         (RigControl.Rigs[5] = nil) and
+         (dmZLogGlobal.Settings.FRigControl[1].FKeyingPort = 0) and
+         (dmZLogGlobal.Settings.FRigControl[2].FKeyingPort = 0) and
+         (dmZLogGlobal.Settings.FRigControl[3].FKeyingPort = 0) and
+         (dmZLogGlobal.Settings.FRigControl[4].FKeyingPort = 0) and
+         (dmZLogGlobal.Settings.FRigControl[5].FKeyingPort = 0) then begin
+         Result := 4;
+         Exit;
+      end;
+
       repeat
          Inc(id);
          if id >= RigControl.MaxRig then begin
@@ -14620,25 +14634,6 @@ var
 begin
    if nTxRigSet = -1 then begin
       nTxRigSet := FCurrentTx + 1;
-   end;
-
-   // 1Radioで1台もControlが無い場合、
-   // RIG-1から順にチェックして、KeyingPortが設定されているRIGを返す
-   if (dmZLogGlobal.Settings._operate_style = os1Radio) and
-      (dmZLogGlobal.Settings.FRigControl[1].FControlPort = 0) and
-      (dmZLogGlobal.Settings.FRigControl[2].FControlPort = 0) and
-      (dmZLogGlobal.Settings.FRigControl[3].FControlPort = 0) and
-      (dmZLogGlobal.Settings.FRigControl[4].FControlPort = 0) then begin
-      for i := 1 to 5 do begin
-         if (dmZLogGlobal.Settings.FRigControl[i].FKeyingPort > 0) then begin
-            Result := i - 1;
-            Exit;
-         end;
-      end;
-
-      // 設定が無ければRIG-1を返す
-      Result := 0;
-      Exit;
    end;
 
    b := TextToBand(FEditPanel[FCurrentTx].BandEdit.Text);

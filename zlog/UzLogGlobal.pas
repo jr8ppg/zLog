@@ -5041,7 +5041,7 @@ begin
          S := StringReplace(S, 'COM', '', [rfReplaceAll]);
 
          portnum := StrToIntDef(S, 0);
-         if (portnum >= 1) and (portnum <= 20) then begin
+         if (portnum >= 1) and (portnum <= 99) then begin
             P^ := portnum;
             Inc(P);
             Inc(c);
