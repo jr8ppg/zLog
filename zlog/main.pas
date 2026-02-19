@@ -11291,6 +11291,11 @@ begin
    mode := TextToMode(FEditPanel[nID].ModeEdit.Text);
    StopMessage(mode);
 
+   // 電源OFFなら終了
+   if RigControl.IsPowerOn() = False then begin
+      Exit;
+   end;
+
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
 
@@ -13745,6 +13750,7 @@ begin
       dmZLogKeyer.SetTxRigFlag(rigset, rig.RigNumber, rig.CurrentMode);
       dmZLogKeyer.SetRxRigFlag(rigset, rig.RigNumber);
       RigControl.LastFreq := FLastFreq[rigset];
+      WriteStatusLine(RigControl.RigName + ' active', True);
    end;
 
    UpdateBandAndMode();

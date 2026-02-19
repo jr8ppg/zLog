@@ -133,6 +133,7 @@ type
 
     procedure SetImportTo(no: Integer);
     function GetImportTo(): Integer;
+    function GetRigName(): string;
 
     procedure SetMemScanRigNo(no: Integer);
     function GetMemScanRigNo(): Integer;
@@ -165,6 +166,7 @@ type
 
     procedure ForcePowerOff();
     procedure ForcePowerOn();
+    function IsPowerOn(): Boolean;
 
     procedure ToggleMemScan();
     procedure MemScanOff();
@@ -172,6 +174,7 @@ type
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
     property ImportRigNo: Integer read GetImportTo write SetImportTo;
+    property RigName: string read GetRigName;
   end;
 
 resourcestring
@@ -1542,6 +1545,16 @@ begin
    else begin
       Result := 0;
    end;
+end;
+
+function TRigControl.IsPowerOn(): Boolean;
+begin
+   Result := (ToggleSwitch1.State = tssOn);
+end;
+
+function TRigCOntrol.GetRigName(): string;
+begin
+   Result := RigLabel.Caption;
 end;
 
 end.
