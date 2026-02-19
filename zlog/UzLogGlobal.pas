@@ -415,9 +415,6 @@ type
     // Startup window
     FShowStartupWindow: Boolean;
 
-    // Select the contest at startup.
-    FSelectContestOnStartup: Boolean;
-
     // Usability
     FUseMultiLineTabs: Boolean;
     FUseDarkMode: Boolean;
@@ -1376,9 +1373,6 @@ begin
       // Startup window
       Settings.FShowStartupWindow := ini.ReadBool('Preferences', 'ShowStartupWindow', True);
 
-      // Select the contest at startup.
-      Settings.FSelectContestOnStartup := ini.ReadBool('Preferences', 'SelectContestOnStartup', True);
-
       // Export Memo field to ADIF
       Settings.FExportMemoToAdif := ini.ReadBool('Preferences', 'ExportMemoFieldToAdif', False);
 
@@ -2186,9 +2180,6 @@ begin
 
       // Startup window
       ini.WriteBool('Preferences', 'ShowStartupWindow', Settings.FShowStartupWindow);
-
-      // Select the contest at startup.
-      ini.WriteBool('Preferences', 'SelectContestOnStartup', Settings.FSelectContestOnStartup);
 
       // Export Memo field to ADIF
       ini.WriteBool('Preferences', 'ExportMemoFieldToAdif', Settings.FExportMemoToAdif);

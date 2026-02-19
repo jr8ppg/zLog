@@ -2483,6 +2483,14 @@ object formOptions2: TformOptions2
           Caption = 'ADIF'#12395'Memo'#27396#12434#20986#21147#12377#12427
           TabOrder = 9
         end
+        object checkShowStartupWindow: TCheckBox
+          Left = 268
+          Top = 110
+          Width = 217
+          Height = 17
+          Caption = #38283#22987#12454#12452#12531#12489#12454#12434#20351#29992#12377#12427
+          TabOrder = 10
+        end
       end
       object groupAccessibility: TGroupBox
         Left = 6
@@ -3292,7 +3300,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

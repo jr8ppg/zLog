@@ -8936,7 +8936,7 @@ begin
       fSelectContestOnStartup := True;
 
       // 開始画面
-      if (Message.WParam = 0) then begin
+      if (Message.WParam = 0) and (dmZLogGlobal.Settings.FShowStartupWindow = True) then begin
          if (dmZLogGlobal.LastContest.FFileName = '') or
             (dmZLogGlobal.LastContest.FMyCall = '') or
             ((dmZLogGlobal.LastContest.FFileName <> '') and (FileExists(dmZLogGlobal.LastContest.FFileName) = False)) or

@@ -3446,6 +3446,14 @@ object formOptions2: TformOptions2
           Caption = 'Export the Memo field to ADIF'
           TabOrder = 9
         end
+        object checkShowStartupWindow: TCheckBox
+          Left = 268
+          Top = 110
+          Width = 217
+          Height = 17
+          Caption = 'Show startup window'
+          TabOrder = 10
+        end
       end
       object groupAccessibility: TGroupBox
         Left = 6
@@ -4317,7 +4325,6 @@ object formOptions2: TformOptions2
               Caption = 'FixEdge'
             end>
           GridLines = True
-          Items.ItemData = {050000000000000000}
           ReadOnly = True
           RowSelect = True
           TabOrder = 0

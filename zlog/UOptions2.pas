@@ -487,6 +487,7 @@ type
     groupBasicSettings: TGroupBox;
     groupDetailSettings: TGroupBox;
     buttonResetMessage: TSpeedButton;
+    checkShowStartupWindow: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1108,6 +1109,9 @@ begin
       // Export Memo field to ADIF
       Settings.FExportMemoToAdif := checkExportMemoToAdif.Checked;
 
+      // Show show startup window
+      Settings.FShowStartupWindow := checkShowStartupWindow.Checked;
+
       // Browser component used for WebUpload
       if radioWebUpload0.Checked = True then begin
          Settings.FBrowserForWebUpload := 0;
@@ -1545,6 +1549,9 @@ begin
 
       // Export Memo field to ADIF
       checkExportMemoToAdif.Checked := Settings.FExportMemoToAdif;
+
+      // Show show startup window
+      checkShowStartupWindow.Checked := Settings.FShowStartupWindow;
 
       // Browser component used for WebUpload
       case Settings.FBrowserForWebUpload of
