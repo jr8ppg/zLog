@@ -4778,13 +4778,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = '@PlemolJP'
+          FontName = 'PlemolJP Thin'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 15
+          ItemIndex = 117
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

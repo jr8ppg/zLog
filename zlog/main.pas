@@ -14635,7 +14635,6 @@ end;
 function TMainForm.GetTxRigID(nTxRigSet: Integer): Integer;
 var
    rig: TRig;
-   i: Integer;
    b: TBand;
 begin
    if nTxRigSet = -1 then begin

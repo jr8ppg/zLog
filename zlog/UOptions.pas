@@ -547,6 +547,7 @@ type
     procedure RigPortConfig1(rigno: Integer);
     procedure RigPortConfig2(rigno: Integer);
     procedure GetConfigIndex(rigno: Integer; var RigIndex, KeyIndex: Integer);
+    procedure SetRigControlPortConfigButton(rigno: Integer; RigIndex: Integer);
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -1272,14 +1273,7 @@ begin
       end;
       checkUseWinKeyer.Checked := False;
       FKeyingPortConfig[rigno].Enabled := False;
-      if (rigno < 5) then begin
-         if (RigIndex >= 1) and (RigIndex <= 20) then begin
-            FRigControlPortConfig[rigno].Enabled := True;
-         end
-         else begin
-            FRigControlPortConfig[rigno].Enabled := False;
-         end;
-      end;
+      SetRigControlPortConfigButton(rigno, RigIndex);
    end
    else begin
       if (rigno < 5) then begin
@@ -1287,7 +1281,7 @@ begin
             FRigControlPortConfig[rigno].Enabled := False;
          end
          else begin
-            FRigControlPortConfig[rigno].Enabled := True;
+            SetRigControlPortConfigButton(rigno, RigIndex);
          end;
       end;
       FKeyingPortConfig[rigno].Enabled := True;
@@ -1317,7 +1311,7 @@ begin
          FRigControlPortConfig[rigno].Enabled := False;
       end
       else begin
-         FRigControlPortConfig[rigno].Enabled := True;
+         SetRigControlPortConfigButton(rigno, RigIndex);
       end;
    end
    else begin
@@ -1620,6 +1614,20 @@ begin
    end
    else begin
       RigIndex := 0;
+   end;
+end;
+
+procedure TformOptions.SetRigControlPortConfigButton(rigno: Integer; RigIndex: Integer);
+begin
+   if (rigno >= 5) then begin
+      Exit;
+   end;
+
+   if (RigIndex >= 1) and (RigIndex <= 20) then begin
+      FRigControlPortConfig[rigno].Enabled := True;
+   end
+   else begin
+      FRigControlPortConfig[rigno].Enabled := False;
    end;
 end;
 
