@@ -3319,6 +3319,7 @@ begin
             // RIG1 = RIG2 なら RIG1
             if (FKeyingPort[i] = FKeyingPort[j]) then begin
                FComKeying[j] := FComKeying[i];
+               FKeyingPortConfig[j] := FKeyingPortConfig[i];
             end;
          end;
       end;

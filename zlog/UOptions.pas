@@ -1252,9 +1252,13 @@ end;
 procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
    KeyIndex: Integer;
+   KeyIndexTo: Integer;
    RigIndex: Integer;
    rigno: Integer;
    combo: TComboBox;
+   i: Integer;
+   j: Integer;
+   sameport_checked: array[1..5] of Boolean;
 begin
    combo := TComboBox(Sender);
    rigno := combo.Tag;
@@ -1290,6 +1294,51 @@ begin
       checkWkOutportSelect.Enabled := True;
       checkWkIgnoreSpeedPot.Enabled := True;
       checkWkAlways9600.Enabled := True;
+   end;
+
+   // 上から順に見て同じポートなら設定ボタンはdisableにする
+   for i := 1 to 5 do begin
+      sameport_checked[i] := False;
+   end;
+
+   for i := 1 to 4 do begin
+      if FKeyingPort[i].ItemIndex = -1 then begin
+         Continue;
+      end;
+
+      if sameport_checked[i] = False then begin
+         KeyIndex := TCommPort(FKeyingPort[i].Items.Objects[FKeyingPort[i].ItemIndex]).Number;
+         if (KeyIndex = 0) or (KeyIndex = 21) or (KeyIndex = 22) then begin
+            FKeyingPortConfig[i].Enabled := False;
+         end
+         else begin
+            FKeyingPortConfig[i].Enabled := True;
+         end;
+      end;
+
+      for j := i + 1 to 5 do begin
+         if sameport_checked[j] = True then begin
+            Continue;
+         end;
+         if FKeyingPort[j].ItemIndex = -1 then begin
+            Continue;
+         end;
+
+         KeyIndexTo := TCommPort(FKeyingPort[j].Items.Objects[FKeyingPort[j].ItemIndex]).Number;
+
+         if (KeyIndex = KeyIndexTo) and (sameport_checked[j] = False) then begin
+            FKeyingPortConfig[j].Enabled := False;
+            sameport_checked[j] := True;
+         end
+         else begin
+            if (KeyIndexTo = 0) or (KeyIndexTo = 21) or (KeyIndexTo = 22) then begin
+               FKeyingPortConfig[j].Enabled := False;
+            end
+            else begin
+               FKeyingPortConfig[j].Enabled := True;
+            end;
+         end;
+      end;
    end;
 end;
 
