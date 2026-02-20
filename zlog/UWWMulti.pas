@@ -413,17 +413,33 @@ begin
    else
       _cont := P.OvrContinent;
 
-   if dmZLogGlobal.MyCountry = C.Country then
-      aQSO.points := 0
-   else begin
-      if dmZLogGlobal.MyContinent = _cont then begin
-         if dmZLogGlobal.MyContinent = 'NA' then
-            aQSO.points := 2
-         else
-            aQSO.points := 1;
+   if aQSO.Mode = mRTTY then begin
+      if dmZLogGlobal.MyContinent <> _cont then begin
+         aQSO.points := 3;
       end
       else begin
-         aQSO.points := 3;
+         if dmZLogGlobal.MyCountry = C.Country then begin
+            aQSO.points := 1;
+         end
+         else begin
+            aQSO.points := 2;
+         end;
+      end;
+   end
+   else begin
+      if dmZLogGlobal.MyCountry = C.Country then begin
+         aQSO.points := 0;
+      end
+      else begin
+         if dmZLogGlobal.MyContinent = _cont then begin
+            if dmZLogGlobal.MyContinent = 'NA' then
+               aQSO.points := 2
+            else
+               aQSO.points := 1;
+         end
+         else begin
+            aQSO.points := 3;
+         end;
       end;
    end;
 end;
