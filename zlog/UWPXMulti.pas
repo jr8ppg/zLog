@@ -235,26 +235,63 @@ begin
       aQSO.Power2 := 777; // flag for all asian mode (dx side)
    end;
 
-   if C.Country = dmZLogGlobal.MyCountry then begin
-      aQSO.Points := 1;
-      exit;
+   if aQSO.Mode = mRTTY then begin
+      if dmZLogGlobal.MyContinent <> aQSO.Continent then begin // 異なる大陸
+         if aQSO.Band in [b14, b21, b28] then begin
+            aQSO.Points := 3;
+         end;
+         if aQSO.Band in [b35, b7] then begin
+            aQSO.Points := 6;
+         end;
+      end
+      else begin  // 同一大陸
+         if C.Country = dmZLogGlobal.MyCountry then begin   // 同一カントリー
+            if aQSO.Band in [b14, b21, b28] then begin
+               aQSO.Points := 1;
+            end;
+            if aQSO.Band in [b35, b7] then begin
+               aQSO.Points := 2;
+            end;
+         end
+         else begin  // 異なるカントリー
+            if aQSO.Band in [b14, b21, b28] then begin
+               aQSO.Points := 2;
+            end;
+            if aQSO.Band in [b35, b7] then begin
+               aQSO.Points := 4;
+            end;
+         end;
+      end;
+   end
+   else begin
+      if C.Country = dmZLogGlobal.MyCountry then begin
+         aQSO.Points := 1;
+         Exit;
+      end;
+
+      if dmZLogGlobal.MyContinent = aQSO.Continent then begin
+         if dmZLogGlobal.MyContinent = 'NA' then begin
+            if aQSO.Band in [b19 .. b7] then begin
+               aQSO.Points := 4;
+            end
+            else begin
+               aQSO.Points := 2;
+            end;
+         end
+         else if aQSO.Band in [b19 .. b7] then begin
+            aQSO.Points := 2;
+         end
+         else begin
+            aQSO.Points := 1;
+         end;
+      end
+      else if aQSO.Band in [b19 .. b7] then begin
+         aQSO.Points := 6;
+      end
+      else begin
+         aQSO.Points := 3;
+      end;
    end;
-
-   if dmZLogGlobal.MyContinent = aQSO.Continent then
-      if dmZLogGlobal.MyContinent = 'NA' then
-         if aQSO.Band in [b19 .. b7] then
-            aQSO.Points := 4
-         else
-            aQSO.Points := 2
-      else if aQSO.Band in [b19 .. b7] then
-         aQSO.Points := 2
-      else
-         aQSO.Points := 1
-   else if aQSO.Band in [b19 .. b7] then
-      aQSO.Points := 6
-   else
-      aQSO.Points := 3;
-
 end;
 
 function TWPXMulti.ValidMulti(aQSO: TQSO): Boolean;
