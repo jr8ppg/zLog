@@ -12117,6 +12117,11 @@ begin
    FCQLoopCount := 999;
    dmZLogKeyer.ClrBuffer();
 
+   // 電源OFFなら終了
+   if RigControl.IsPowerOn() = False then begin
+      Exit;
+   end;
+
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
 
@@ -12150,6 +12155,11 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('--- #147 ToggleRx ---'));
    {$ENDIF}
+
+   // 電源OFFなら終了
+   if RigControl.IsPowerOn() = False then begin
+      Exit;
+   end;
 
    // メモリースキャン中なら中止する
    RigControl.MemScanOff();
