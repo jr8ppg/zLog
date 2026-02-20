@@ -65,7 +65,9 @@ type
       procedure EnableEveryThing(contestno: Integer);
 
       function GetContestCategory(): TContestCategory;
+      procedure SetContestCategory(v: TContestCategory);
       function GetContestMode(): TContestMode;
+      procedure SetContestMode(v: TContestMode);
       function GetContestNumber(): Integer;
       procedure SetContestNumber(v: Integer);
       function GetTxNumber(): Integer;
@@ -74,8 +76,8 @@ type
       procedure FreeSelectedContest();
    public
       property CFGFileName: string read FCFGFileName;
-      property ContestCategory: TContestCategory read GetContestCategory;
-      property ContestMode: TContestMode read GetContestMode;
+      property ContestCategory: TContestCategory read GetContestCategory write SetContestCategory;
+      property ContestMode: TContestMode read GetContestMode write SetContestMode;
       property ContestNumber: Integer read GetContestNumber write SetContestNumber;
       property TxNumber: Integer read GetTxNumber;
       property ScoreCoeff: Extended read GetScoreCoeff;
@@ -130,6 +132,7 @@ end;
 procedure TMenuForm.FormShow(Sender: TObject);
 var
    parser: TUserDefinedContest;
+   i: Integer;
 begin
    ModeGroup.ItemIndex := Integer(dmZLogGlobal.ContestMode);
 
@@ -151,9 +154,11 @@ begin
       end;
    end;
 
-   ContestNumber := dmZLogGlobal.ContestMenuNo;
-
-   EnableEveryThing(ContestNumber);
+   for i := 0 to High(FSelectContest) do begin
+      if FSelectContest[i].Checked = True then begin
+         EnableEveryThing(FSelectContest[i].Tag);
+      end;
+   end;
 
    if rbGeneral.Checked then begin
       // 前回使用のCFGファイル
@@ -226,8 +231,6 @@ begin
 end;
 
 procedure TMenuForm.OKButtonClick(Sender: TObject);
-var
-   i: Integer;
 begin
    dmZLogGlobal.Settings.FLastCFGFileName := FCFGFileName;
 
@@ -255,33 +258,56 @@ begin
    SelectButton.Enabled := False;
    ScoreCoeffEdit.Enabled := False;
    OKButton.Enabled := True;
-   ModeGroup.ItemIndex := 0;
 
    case contestno of
       // ALLJA,6D,ACAG,ARRL10,IARU,IOTA
       0, 1, 3, 108, 109, 111: begin
          ScoreCoeffEdit.Enabled := False;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 0;
       end;
 
       // FD
       2: begin
          ScoreCoeffEdit.Enabled := True;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 0;
       end;
 
       // ALL JA0
       4, 5: begin
          ScoreCoeffEdit.Enabled := False;
+         ModeGroup.Controls[2].Enabled := False;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 0;
+
+         radioSingleOp.Checked := True;
+         radioMultiOpMultiTx.Enabled := False;
+         comboTxNo.Enabled := False;
       end;
 
       // NYP
       6: begin
          ScoreCoeffEdit.Enabled := False;
+         radioSingleOp.Checked := True;
+         ModeGroup.ItemIndex := 0;
       end;
 
-      // CQWW,CQWPX,JIDX,APSprint,ARRLDX(W/VE),ARRLDX(DX),ALLASIA,JIDX(DX)
-      101, 102, 103, 105, 106, 107, 110, 112, 113: begin
+      // CQWW,CQWPX,JIDX,ARRLDX(W/VE),ARRLDX(DX),ALLASIA,JIDX(DX)
+      101, 102, 103, 106, 107, 110, 112, 113: begin
          ScoreCoeffEdit.Enabled := False;
+         ModeGroup.Controls[0].Enabled := False;
          ModeGroup.ItemIndex := 1;
+      end;
+
+      // APSprint
+      105: begin
+         ModeGroup.Controls[0].Enabled := False;
+         ModeGroup.Controls[3].Enabled := False;
+         ModeGroup.ItemIndex := 1;
+         radioSingleOp.Checked := True;
+         radioMultiOpMultiTx.Enabled := False;
+         comboTxNo.Enabled := False;
       end;
 
       // PEDI
@@ -310,7 +336,9 @@ end;
 
 procedure TMenuForm.SelectContestClick(Sender: TObject);
 begin
-   EnableEveryThing(TRadioButton(Sender).Tag);
+   if Visible = True then begin
+      EnableEveryThing(TRadioButton(Sender).Tag);
+   end;
 end;
 
 procedure TMenuForm.OpGroupClick(Sender: TObject);
@@ -360,9 +388,25 @@ begin
    end;
 end;
 
+procedure TMenuForm.SetContestCategory(v: TContestCategory);
+begin
+   case v of
+      ccSingleOp: radioSingleOp.Checked := True;
+      ccMultiOpMultiTx: radioMultiOpMultiTx.Checked := True;
+      ccMultiOpSingleTx: radioMultiOpSingleTx.Checked := True;
+      ccMultiOpTwoTx: radioMultiOpTwoTx.Checked := True;
+      else radioSingleOp.Checked := True;
+   end;
+end;
+
 function TMenuForm.GetContestMode(): TContestMode;
 begin
    Result := TContestMode(ModeGroup.ItemIndex);
+end;
+
+procedure TMenuForm.SetContestMode(v: TContestMode);
+begin
+   ModeGroup.ItemIndex := Integer(v);
 end;
 
 function TMenuForm.GetContestNumber(): Integer;
@@ -381,7 +425,7 @@ end;
 procedure TMenuForm.SetContestNumber(v: Integer);
 begin
    TRadioButton(FSelectContest[v]).Checked := True;
-   TRadioButton(FSelectContest[v]).OnClick(FSelectContest[v]);
+//   TRadioButton(FSelectContest[v]).OnClick(FSelectContest[v]);
 end;
 
 function TMenuForm.GetTxNumber(): Integer;
@@ -418,3 +462,4 @@ begin
 end;
 
 end.
+

@@ -8976,6 +8976,9 @@ begin
       // コンテスト選択を行う
       if (fSelectContestOnStartup = True) or (Message.WParam <> 0) then begin
          if fNewContest = True then begin // new contest
+            menu.ContestNumber := dmZLogGlobal.ContestMenuNo;
+            menu.ContestCategory := dmZLogGlobal.ContestCategory;
+            menu.ContestMode := dmZLogGlobal.ContestMode;
             if menu.ShowModal() = mrCancel then begin
                // 選択を行わない場合
                if Message.WParam <> 0 then begin
@@ -10286,7 +10289,7 @@ begin
       mode := CurrentQSO.Mode;
    end;
 
-   PlayMessage(CurrentQSO.Mode, cb, no, True);
+   PlayMessage(mode, cb, no, True);
 end;
 
 procedure TMainForm.PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
