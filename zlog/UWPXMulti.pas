@@ -14,20 +14,20 @@ type
     procedure GoButtonClick(Sender: TObject);
   private
     { Private declarations }
-    WPXList : TStringList;
+    WPXList: TStringList;
   public
     { Public declarations }
     procedure RefreshGrid; override;
-    procedure SavePXList(filename : string);
-    function TotalPrefix : integer;
+    procedure SavePXList(filename: string);
+    function TotalPrefix: integer;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure ProcessCluster(var Sp : TBaseSpot); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure ProcessCluster(Sp: TBaseSpot); override;
     procedure UpdateData; override;
   end;
 
-function GetWPXPrefix(aQSO : TQSO) : string;
+function GetWPXPrefix(aQSO: TQSO): string;
 
 implementation
 
@@ -188,20 +188,24 @@ begin
    RefreshGrid;
 end;
 
-procedure TWPXMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TWPXMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    C: TCountry;
    P: TPrefix;
-   _cont: string;
 begin
    aQSO.NewMulti1 := false;
    str := GetWPXPrefix(aQSO);
    aQSO.Multi1 := str;
    aQSO.Points := 0;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    if WPXList.IndexOf(str) >= 0 then begin
    end
@@ -218,34 +222,76 @@ begin
    end;
    C := P.Country;
 
-   if P.OvrContinent = '' then
-      _cont := C.Continent
-   else
-      _cont := P.OvrContinent;
-
-   if _cont = 'AS' then
-      aQSO.Power2 := 777; // flag for all asian mode (dx side)
-
-   if C.Country = dmZLogGlobal.MyCountry then begin
-      aQSO.Points := 1;
-      exit;
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
    end;
 
-   if dmZLogGlobal.MyContinent = _cont then
-      if dmZLogGlobal.MyContinent = 'NA' then
-         if aQSO.Band in [b19 .. b7] then
-            aQSO.Points := 4
-         else
-            aQSO.Points := 2
-      else if aQSO.Band in [b19 .. b7] then
-         aQSO.Points := 2
-      else
-         aQSO.Points := 1
-   else if aQSO.Band in [b19 .. b7] then
-      aQSO.Points := 6
-   else
-      aQSO.Points := 3;
+   aQSO.Entity := C.Country;
 
+   if aQSO.Continent = 'AS' then begin
+      aQSO.Power2 := 777; // flag for all asian mode (dx side)
+   end;
+
+   if aQSO.Mode = mRTTY then begin
+      if dmZLogGlobal.MyContinent <> aQSO.Continent then begin // 異なる大陸
+         if aQSO.Band in [b14, b21, b28] then begin
+            aQSO.Points := 3;
+         end;
+         if aQSO.Band in [b35, b7] then begin
+            aQSO.Points := 6;
+         end;
+      end
+      else begin  // 同一大陸
+         if C.Country = dmZLogGlobal.MyCountry then begin   // 同一カントリー
+            if aQSO.Band in [b14, b21, b28] then begin
+               aQSO.Points := 1;
+            end;
+            if aQSO.Band in [b35, b7] then begin
+               aQSO.Points := 2;
+            end;
+         end
+         else begin  // 異なるカントリー
+            if aQSO.Band in [b14, b21, b28] then begin
+               aQSO.Points := 2;
+            end;
+            if aQSO.Band in [b35, b7] then begin
+               aQSO.Points := 4;
+            end;
+         end;
+      end;
+   end
+   else begin
+      if C.Country = dmZLogGlobal.MyCountry then begin
+         aQSO.Points := 1;
+         Exit;
+      end;
+
+      if dmZLogGlobal.MyContinent = aQSO.Continent then begin
+         if dmZLogGlobal.MyContinent = 'NA' then begin
+            if aQSO.Band in [b19 .. b7] then begin
+               aQSO.Points := 4;
+            end
+            else begin
+               aQSO.Points := 2;
+            end;
+         end
+         else if aQSO.Band in [b19 .. b7] then begin
+            aQSO.Points := 2;
+         end
+         else begin
+            aQSO.Points := 1;
+         end;
+      end
+      else if aQSO.Band in [b19 .. b7] then begin
+         aQSO.Points := 6;
+      end
+      else begin
+         aQSO.Points := 3;
+      end;
+   end;
 end;
 
 function TWPXMulti.ValidMulti(aQSO: TQSO): Boolean;
@@ -261,7 +307,7 @@ begin
       Result := false;
 end;
 
-procedure TWPXMulti.ProcessCluster(var Sp: TBaseSpot);
+procedure TWPXMulti.ProcessCluster(Sp: TBaseSpot);
 var
    i: Integer;
    temp, px: string;
@@ -285,7 +331,7 @@ begin
          boo := true;
 
    if boo = false then begin
-      temp := temp + '  new prefix : ' + px;
+      temp := temp + '  new prefix: ' + px;
       Sp.NewCty := true;
    end;
 

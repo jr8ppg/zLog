@@ -173,7 +173,7 @@ begin
    // Ž©•ª‚ÌˆÊ’u
    if menuShowMyLocation.Checked = True then begin
       if dmZLogGlobal.Settings._mylongitude <> '' then begin
-         mylongitude := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0) * -1;
+         mylongitude := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0);
          FGrayline.DrawLongitude(bmp, mylongitude);
       end;
    end;

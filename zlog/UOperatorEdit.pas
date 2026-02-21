@@ -151,7 +151,7 @@ resourcestring
 implementation
 
 uses
-  UzLogGlobal;
+  UzLogGlobal, Main;
 
 {$R *.dfm}
 
@@ -369,17 +369,17 @@ var
 begin
    for i := 1 to maxmessage do begin
       if FCwMessageAEdit[i].Text = '' then begin
-         FCwMessageAEdit[i].Text := dmZLogGlobal.Settings.CW.CWStrBank[1, i];
+         FCwMessageAEdit[i].Text := dmZLogGlobal.CwMessage(1, i);
       end;
       if FCwMessageBEdit[i].Text = '' then begin
-         FCwMessageBEdit[i].Text := dmZLogGlobal.Settings.CW.CWStrBank[2, i];
+         FCwMessageBEdit[i].Text := dmZLogGlobal.CwMessage(2, i);
       end;
    end;
    if FAdditionalCwMessageEdit[2].Text = '' then begin
-      FAdditionalCwMessageEdit[2].Text := dmZLogGlobal.Settings.CW.AdditionalCQMessages[2];
+      FAdditionalCwMessageEdit[2].Text := MyContest.CwMessageCQ[2];
    end;
    if FAdditionalCwMessageEdit[3].Text = '' then begin
-      FAdditionalCwMessageEdit[3].Text := dmZLogGlobal.Settings.CW.AdditionalCQMessages[3];
+      FAdditionalCwMessageEdit[3].Text := MyContest.CwMessageCQ[3];
    end;
 end;
 

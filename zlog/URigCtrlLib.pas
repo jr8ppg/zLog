@@ -49,9 +49,12 @@ type
     _currentvfo : integer; // 0 : VFO A; 1 : VFO B
     FPollingTimer: TTimer;
     FPollingInterval: Integer;
+    FUsePolling: Boolean;
+    FInitialPolling: Boolean;
+    FPollingCount: Integer;
     FComm : TCommPortDriver; // points to the right CommPortDriver
-    ModeWidth : array[mCW..mOther] of Integer; // used in icom
-    FFreqMem : array[b19..b10g, mCW..mOther] of TFrequency;
+    ModeWidth : array[mCW..LastMode] of Integer; // used in icom
+    FFreqMem : array[b19..HiBand, mCW..LastMode] of TFrequency;
     _freqoffset: TFrequency; // freq offset for transverters in Hz
     _rignumber : Integer;
     FRitCtrlSupported: Boolean;
@@ -60,6 +63,8 @@ type
     FRit: Boolean;
     FXit: Boolean;
     FRitOffset: Integer;
+    FSMeterValue: array[0..1] of Integer;
+    FSMeterMax: Integer;
 
     FStopRequest: Boolean;
 
@@ -67,6 +72,9 @@ type
     FPlayMessagePhSupported: Boolean;
     FControlPTTSupported: Boolean;
     FFixEdgeSelectSupported: Boolean;
+    FToggleBandSupported: Boolean;
+    FSelectBandSupported: Boolean;
+    FAudioInputSelectSupported: Boolean;
 
     FOnUpdateStatus: TRigUpdateStatusEvent;
     FOnError: TRigErrorEvent;
@@ -91,6 +99,7 @@ type
     procedure SetCurrentFreq(Index: Integer; freq: TFrequency);
     function GetFreqMem(b: TBand; m: TMode): TFrequency;
     procedure SetFreqMem(b: TBand; m: TMode; freq: TFrequency);
+    function GetSMeter(vfo: Integer): Integer;
   public
     constructor Create(RigNum : Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); virtual;
     destructor Destroy; override;
@@ -124,11 +133,14 @@ type
     procedure SetStopBits(i : byte);
     procedure SetBaudRate(i : integer);
     procedure StopRequest(); virtual;
+    procedure ToggleBand(fUp: Boolean); virtual;
+    procedure SelectBand(b: TBand); virtual;
 
     procedure SetWPM(wpm: Integer); virtual;
     procedure PlayMessageCW(msg: string); virtual;
     procedure StopMessageCW(); virtual;
     procedure ControlPTT(fOn: Boolean); virtual;
+    procedure AudioInputSelect(input: TAudioInput); virtual;
 
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
@@ -143,6 +155,7 @@ type
     property FreqOffset: TFrequency read _freqoffset write _freqoffset;
     property CurrentFreq[Index: Integer]: TFrequency read GetCurrentFreq write SetCurrentFreq;
     property FreqMem[b: TBand; m: TMode]: TFrequency read GetFreqMem write SetFreqMem;
+    property SMeter[Index: Integer]: Integer read GetSMeter;
 //    property PollingInterval: Integer read FPollingInterval write FPollingInterval;
     property IgnoreMode: Boolean read FIgnoreRigMode write FIgnoreRigMode;
 
@@ -157,8 +170,12 @@ type
     property PlayMessagePhSupported: Boolean read FPlayMessagePhSupported write FPlayMessagePhSupported;
     property ControlPTTSupported: Boolean read FControlPTTSupported write FControlPTTSupported;
     property FixEdgeSelectSupported: Boolean read FFixEdgeSelectSupported write FFixEdgeSelectSupported;
+    property ToggleBandSupported: Boolean read FToggleBandSupported write FToggleBandSupported;
+    property SelectBandSupported: Boolean read FSelectBandSupported write FSelectBandSupported;
+    property AudioInputSelectSupported: Boolean read FAudioInputSelectSupported write FAudioInputSelectSupported;
 
     property PortConfig: TPortConfig read FPortConfig write FPortConfig;
+    property UsePolling: Boolean read FUsePolling write FUsePolling;
 
     property UseMemChScan: Boolean read FUseMemChScan write FUseMemChScan;
     property MemCh: TMemChArray read FMemCh;
@@ -238,7 +255,7 @@ var
    i: Integer;
 begin
    // inherited
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeWidth[M] := -1;
    end;
 
@@ -252,7 +269,14 @@ begin
 
    FComm := AComm;
    FPollingTimer := ATimer;
+   FUsePolling := True;
+   FInitialPolling := False;
+   FPollingCount := 0;
    prtnr := APort;
+
+   FSMeterValue[0] := 0;
+   FSMeterValue[1] := 0;
+   FSMeterMax := 0;
 
 //   if _rignumber = 1 then begin
 //      prtnr := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
@@ -297,8 +321,8 @@ begin
    FIgnoreRigMode := False;
 
    // LastMode := mCW;
-   for B := b19 to b10g do begin
-      for M := mCW to mOther do begin
+   for B := b19 to HiBand do begin
+      for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
    end;
@@ -319,6 +343,9 @@ begin
    FPlayMessagePhSupported := False;
    FControlPTTSupported := False;
    FFixEdgeSelectSupported := False;
+   FToggleBandSupported := False;
+   FSelectBandSupported := False;
+   FAudioInputSelectSupported := False;
 
    FPortConfig.FRts := paNone;
    FPortConfig.FDtr := paNone;
@@ -547,6 +574,16 @@ begin
    FStopRequest := True;
 end;
 
+procedure TRig.ToggleBand(fUp: Boolean);
+begin
+//
+end;
+
+procedure TRig.SelectBand(b: TBand);
+begin
+   _currentband := b;
+end;
+
 procedure TRig.SetWPM(wpm: Integer);
 begin
 //
@@ -563,6 +600,11 @@ begin
 end;
 
 procedure TRig.ControlPTT(fOn: Boolean);
+begin
+//
+end;
+
+procedure TRig.AudioInputSelect(input: TAudioInput);
 begin
 //
 end;
@@ -652,7 +694,7 @@ begin
    SetFreq(f, Q.CQ);
 
    // Antenna Select
-   AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[Q.Band]);
+   //AntSelect(dmZLogGlobal.Settings.FRigSet[rigset].FAnt[Q.Band]);
 end;
 
 procedure TRig.RitClear();
@@ -695,6 +737,11 @@ begin
    msg := StringReplace(msg, '[BK]', 'b', [rfReplaceAll]);
    msg := StringReplace(msg, '[BT]', 't', [rfReplaceAll]);
    Result := msg;
+end;
+
+function TRig.GetSMeter(vfo: Integer): Integer;
+begin
+   Result := FSMeterValue[vfo];
 end;
 
 { TJST145 }
@@ -889,7 +936,7 @@ var
    B: TBand;
 begin
    FOmniRig := AOmniRig;
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeWidth[M] := -1;
    end;
 
@@ -913,8 +960,8 @@ begin
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
 
-   for B := b19 to b10g do begin
-      for M := mCW to mOther do begin
+   for B := b19 to HiBand do begin
+      for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
    end;
@@ -1065,14 +1112,14 @@ var
    M: TMode;
    B: TBand;
 begin
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeWidth[M] := -1;
    end;
 
    FFILO := False; // used for YAESU
    _freqoffset := 0;
    _minband := b19;
-   _maxband := b10g;
+   _maxband := HiBand;
    Name := '';
    _rignumber := RigNum;
    TerminatorCode := ';';
@@ -1089,8 +1136,8 @@ begin
    _currentfreq[1] := 0;
    _currentvfo := 0; // VFO A
 
-   for B := b19 to b10g do begin
-      for M := mCW to mOther do begin
+   for B := b19 to HiBand do begin
+      for M := mCW to LastMode do begin
          FreqMem[B, M] := 0;
       end;
    end;

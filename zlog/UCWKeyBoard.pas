@@ -167,6 +167,7 @@ begin
    Inherited;
    ApplyShortcut();
    InitProgress();
+   ShowProgress();
    Console.SetFocus;
 end;
 
@@ -252,7 +253,7 @@ begin
          rig := MainForm.RigControl.Rigs[nID + 1];
          if rig <> nil then begin
             rig.PlayMessageCW(S);
-            dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+            dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
          end;
 
          Clear();
@@ -412,7 +413,7 @@ begin
       rig := MainForm.RigControl.Rigs[nID + 1];
       if rig <> nil then begin
          rig.PlayMessageCW(S);
-         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
       end;
       Clear();
    end
@@ -610,7 +611,7 @@ begin
       rig := MainForm.RigControl.Rigs[nID + 1];
       if rig <> nil then begin
          rig.PlayMessageCW(C);
-         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
       end;
    end
    else begin
@@ -720,8 +721,8 @@ begin
       Console.SelStart := 0;
       Console.SelLength := Length(Console.Text);
       Console.SelAttributes.Protected := False;
-      Console.SelAttributes.BackColor := clWIndow;
-      Console.SelAttributes.Color := clBlack;
+      Console.SelAttributes.BackColor := dmZLogGlobal.ZBackColor;
+      Console.SelAttributes.Color := dmZLogGlobal.ZNormalTextColor1;
       Console.SelStart := 0;
       Console.SelLength := 0;
       Console.Refresh();
@@ -838,12 +839,12 @@ begin
       if white_w > 0 then begin
          rect.Top := 0;
          rect.Left := w - white_w;
-         rect.Bottom := h - 1;
-         rect.Right := w - 1;
+         rect.Bottom := h;
+         rect.Right := w;
 
-         Brush.Color := clWhite;
+         Brush.Color := dmZLogGlobal.ZBackColor;
          Brush.Style := bsSolid;
-         Pen.Color := clWhite;
+         Pen.Color := dmZLogGlobal.ZBackColor;
          Pen.Style := psSolid;
          FillRect(rect);
       end;
@@ -851,8 +852,8 @@ begin
       if blue_w > 0 then begin
          rect.Top := 0;
          rect.Left := 0;
-         rect.Bottom := h - 1;
-         rect.Right := blue_w - 1;
+         rect.Bottom := h;
+         rect.Right := blue_w;
 
          Brush.Color := clBlue;
          Brush.Style := bsSolid;
@@ -936,7 +937,7 @@ end;
 
 function TCWKeyBoard.IsAvailableChar(C: Char): Boolean;
 begin
-   if (CharInSet(C, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '.', '(', ')', ' ', #13])) then begin
+   if (CharInSet(C, ['A'..'Z', '0'..'9', '?', '/', '-', '=', 'a', 'b', 't', 'k', 's', 'v', '~', '_', '(', ')', ' ', #13])) then begin
       Result := True;
    end
    else begin

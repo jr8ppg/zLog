@@ -237,6 +237,15 @@ begin
       NewPowerMenu.Items.Add(M);
    end;
 
+   if MyContest.UseNrIme = True then begin
+      NrSentEdit.ImeMode := imDontCare;
+      NrRcvdEdit.ImeMode := imDontCare;
+   end
+   else begin
+      NrSentEdit.ImeMode := imDisable;
+      NrRcvdEdit.ImeMode := imDisable;
+   end;
+
    ApplyShortcut();
 end;
 
@@ -282,15 +291,6 @@ begin
       end;
    end;
 
-//   SerialEdit.Visible := MainForm.SerialEdit1.Visible;
-//   SerialLabel.Visible := SerialEdit.Visible;
-
-//   ModeEdit.Visible := MainForm.ModeEdit1.Visible;
-//   ModeLabel.Visible := ModeEdit.Visible;
-
-//   NewPowerEdit.Visible := MainForm.PowerEdit1.Visible;
-//   PowerLabel.Visible := NewPowerEdit.Visible;
-
    case dmZLogGlobal.ContestCategory of
       ccSingleOp: begin
          comboTxNo.Enabled := False;
@@ -308,7 +308,12 @@ end;
 
 procedure TEditDialog.FormActivate(Sender: TObject);
 begin
-   ActionList1.State := asNormal;
+   if dmZLogGlobal.Settings.FDisableShortCutsQSOEdit = True then begin
+      ActionList1.State := asSuspended;
+   end
+   else begin
+      ActionList1.State := asNormal;
+   end;
 end;
 
 procedure TEditDialog.FormDeactivate(Sender: TObject);
@@ -602,12 +607,7 @@ begin
    SentRSTEdit.Text := workQSO.RSTSentStr;
 
    // NR Sent
-   if MyContest.SerialType = stNone then begin
-      NrSentEdit.Text := workQSO.NrSent;
-   end
-   else begin
-      NrSentEdit.Text := workQSO.SerialStr;
-   end;
+   NrSentEdit.Text := workQSO.NrSent;
 
    // MY RST
    RcvdRSTEdit.Text := workQSO.RSTStr;

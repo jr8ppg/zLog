@@ -36,8 +36,6 @@ type
     procedure SetRit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
     procedure SetXit(flag: Boolean); override;
-  private
-    FVFO: Integer;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
@@ -55,6 +53,8 @@ type
     procedure SetVFO(i : integer); override;
     procedure SetWPM(wpm: Integer); override;
     procedure ControlPTT(fOn: Boolean); override;
+    procedure ToggleBand(fUp: Boolean); override;
+    procedure SelectBand(b: TBand); override;
   end;
 
   TMARKVF = class(TFT1000MP)
@@ -120,9 +120,11 @@ type
   end;
 
   TFT991 = class(TFT2000)
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetDataMode(fOn:Boolean); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TFT710 = class(TFT991)
@@ -131,8 +133,10 @@ type
     procedure SetRitOffset(offset: Integer); override;
     procedure SetXit(flag: Boolean); override;
   public
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure AntSelect(no: Integer); override;
     procedure RitClear; override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TFTDX3000 = class(TFT2000)
@@ -148,6 +152,12 @@ type
   TFTDX101 = class(TFT991)
   public
     procedure AntSelect(no: Integer); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
+  end;
+
+  TFTDX10 = class(TFT991)
+  public
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
 implementation
@@ -379,8 +389,9 @@ begin
    TerminatorCode := ';';
    FComm.StopBits := sb2BITS;
    FComm.DataBits := db8BITS;
-   FVFO := 0;
    FControlPTTSupported := True;
+   FToggleBandSupported := True;
+   FSelectBandSupported := True;
 end;
 
 destructor TFT2000.Destroy;
@@ -409,73 +420,123 @@ end;
 // 00000 00001111 11111 12 2222222223
 // 12345 67890123 45678 90 1234567890
 // IF001 07131790 +0000 10 140000;
+// 12345678901
+// FA07131790;
+// FB07131790;
+// RM00000;
 procedure TFT2000.ExecuteCommand(S: AnsiString);
 var
    M: TMode;
    i: Integer;
    strTemp: string;
+   strCommand: string;
+   vfo: Integer;
 begin
    try
-      if Length(S) <> 27 then begin
-         Exit;
-      end;
+      strCommand := string(Copy(S, 1, 2));
 
-      // Memory Channel
-      // 3-5
-
-      // モード
-      strTemp := string(S[21]);
-      case StrToIntDef(strTemp, 99) of
-         1, 2: M := mSSB;
-         3, 7: M := mCW;
-         4:    M := mFM;
-         5:    M := mAM;
-         6, 9: M := mRTTY;
-         else  M := mOther;
-      end;
-
-      // 周波数(Hz)
-      strTemp := string(Copy(S, 6, 8));
-      i := StrToIntDef(strTemp, 0);
-      _currentfreq[FVFO] := i;
-
-      if _currentvfo = FVFO then begin
-         if FIgnoreRigMode = False then begin
-            _currentmode := M;
+      if (strCommand = 'IF') or (strCommand = 'OI') then begin
+         if Length(S) <> 27 then begin
+            Exit;
          end;
 
-         UpdateFreqMem(FVFO, i, M);
+         if (strCommand = 'IF') then begin
+            vfo := 0;
+         end
+         else begin
+            vfo := 1;
+         end;
+
+         // Memory Channel
+         // 3-5
+
+         // モード
+         strTemp := string(S[21]);
+         case StrToIntDef(strTemp, 99) of
+            1, 2: M := mSSB;
+            3, 7: M := mCW;
+            4:    M := mFM;
+            5:    M := mAM;
+            6, 9: M := mRTTY;
+            else  M := mOther;
+         end;
+
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 6, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[vfo] := i;
+
+         if _currentvfo = vfo then begin
+            if FIgnoreRigMode = False then begin
+               _currentmode := M;
+            end;
+
+            UpdateFreqMem(vfo, i, M);
+         end;
+
+         // RITはVFO Aのみ
+         if vfo = 0 then begin
+            // RIT/XIT offset
+            strTemp := string(Copy(S, 14, 5));
+            FRitOffset := StrToIntDef(strTemp, 0);
+
+            // RIT Status
+            strTemp := string(Copy(S, 19, 1));
+            FRit := StrToBoolDef(strTemp, False);
+
+            // XIT Status
+            strTemp := string(Copy(S, 20, 1));
+            FXit := StrToBoolDef(strTemp, False);
+         end;
+
+         Inc(FPollingCount);
       end;
 
-      // RITはVFO Aのみ
-      if FVFO = 0 then begin
-         // RIT/XIT offset
-         strTemp := string(Copy(S, 14, 5));
-         FRitOffset := StrToIntDef(strTemp, 0);
+      if strCommand = 'FA' then begin
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[0] := i;
+      end;
 
-         // RIT Status
-         strTemp := string(Copy(S, 19, 1));
-         FRit := StrToBoolDef(strTemp, False);
+      if strCommand = 'FB' then begin
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[1] := i;
+      end;
 
-         // XIT Status
-         strTemp := string(Copy(S, 20, 1));
-         FXit := StrToBoolDef(strTemp, False);
+      // メーター値読み出し（0-255を0-100にマップする）
+      if strCommand = 'RM' then begin
+         strTemp := string(Copy(S, 4, 3));
+         case S[3] of
+            '0': FSMeterValue[_currentvfo] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
+            '1': FSMeterValue[0] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
+            '2': FSMeterValue[1] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
+         end;
       end;
 
       if Selected then begin
          UpdateStatus;
       end;
-
-      Inc(FVFO);
-      FVFO := FVFO and 1;
    finally
-      FPollingTimer.Enabled := True;
+      if (FUsePolling = True) or (FInitialPolling = False) then begin
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
 procedure TFT2000.Initialize();
 begin
    Inherited;
+
+   if FUsePolling = True then begin
+      WriteData('AI0;');
+   end
+   else begin
+      WriteData('AI1;');
+   end;
+
    FPollingTimer.Enabled := True;
 end;
 
@@ -487,16 +548,25 @@ end;
 // TerminatorCodeを受信するまで待って、
 // 到着するとExecuteCommand実行
 procedure TFT2000.ParseBufferString;
+var
+   Index: Integer;
+   cmd: AnsiString;
 begin
-   {$IFDEF DEBUG}
-   OutputDebugString(PChar('***FT-2000 [' + string(BufferString) + ']'));
-   {$ENDIF}
+   while True do begin
+      Index := Pos(TerminatorCode, BufferString);
+      if Index = 0 then begin
+         Exit;
+      end;
 
-   if AnsiStrings.RightStr(BufferString, 1) <> TerminatorCode then begin
-      Exit;
+      cmd := Copy(BufferString, 1, Index);
+      BufferString := Copy(BufferString, Index + 1);
+
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('***FT-2000 COMMAND=[' + string(cmd) + ']'));
+      {$ENDIF}
+
+      ExecuteCommand(cmd);
    end;
-
-   ExecuteCommand(BufferString);
 
    Reset();
 end;
@@ -530,11 +600,12 @@ begin
       Exit;
    end;
 
-   if FVFO = 0 then begin
+   if (FPollingCount = 0) or ((FPollingCount and 1) = 0) then begin
       WriteData('IF;');
    end
    else begin
       WriteData('OI;');
+      FInitialPolling := True;
    end;
 end;
 
@@ -690,6 +761,32 @@ begin
    else begin
       WriteData('TX0;');
    end;
+end;
+
+procedure TFT2000.ToggleBand(fUp: Boolean);
+begin
+   if fUp = True then begin
+      WriteData('BU0;');
+   end
+   else begin
+      WriteData('BD0;');
+   end;
+end;
+
+procedure TFT2000.SelectBand(b: TBand);
+const
+   bandtable: array[b19..b430] of AnsiString = (
+   // b19   b35   b7    b10   b14   b18   b21   b24   b28   b50   b144  b430
+     '00', '01', '03', '04', '05', '06', '07', '08', '09', '10', '15', '16'
+   );
+begin
+   if b > MaxBand then begin
+      Exit;
+   end;
+
+   WriteData('BS' + bandtable[b] + ';');
+
+   Inherited;
 end;
 
 { TMARKVF }
@@ -1442,6 +1539,12 @@ end;
 
 { TFT991 }
 
+constructor TFT991.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FAudioInputSelectSupported := True;
+end;
+
 //   FT-991対応
 //  基本はFT-2000と同じ。違いは下記。
 //  FT-991の周波数桁数は9桁。なのでmode情報は、1文字後ろへ。
@@ -1455,56 +1558,84 @@ var
    M: TMode;
    i: Integer;
    strTemp: string;
+   strCommand: string;
+   vfo: Integer;
 begin
    try
-      if Length(S) <> 28 then begin   //全長28文字
-         Exit;
-      end;
+      strCommand := string(Copy(S, 1, 2));
 
-      // モード
-      strTemp := string(S[22]);      //22文字目
-      case StrToIntDef(strTemp, 99) of
-         1, 2: M := mSSB;
-         3, 7: M := mCW;
-         4, $A, $B: M := mFM;
-         5, $D: M := mAM;
-         6, 9: M := mRTTY;
-         else  M := mOther;
-      end;
-
-      // 周波数(Hz)
-      strTemp := string(Copy(S, 6, 9));        // 6桁目から9文字
-      i := StrToIntDef(strTemp, 0);
-      _currentfreq[FVFO] := i;
-
-      if _currentvfo = FVFO then begin
-         if FIgnoreRigMode = False then begin
-            _currentmode := M;
+      if (strCommand = 'IF') or (strCommand = 'OI') then begin
+         if Length(S) <> 28 then begin   //全長28文字
+            Exit;
          end;
 
-         UpdateFreqMem(FVFO, i, M);
+         if (strCommand = 'IF') then begin
+            vfo := 0;
+         end
+         else begin
+            vfo := 1;
+         end;
+
+         // モード
+         strTemp := string(S[22]);      //22文字目
+         case StrToIntDef(strTemp, 99) of
+            1, 2: M := mSSB;
+            3, 7: M := mCW;
+            4, $A, $B: M := mFM;
+            5, $D: M := mAM;
+            6, 9: M := mRTTY;
+            $E: M := mDV;
+            else  M := mOther;
+         end;
+
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 6, 9));        // 6桁目から9文字
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[vfo] := i;
+
+         if _currentvfo = vfo then begin
+            if FIgnoreRigMode = False then begin
+               _currentmode := M;
+            end;
+
+            UpdateFreqMem(vfo, i, M);
+         end;
+
+         // RIT/XIT offset
+         strTemp := string(Copy(S, 15, 5));
+         FRitOffset := StrToIntDef(strTemp, 0);
+
+         // RIT Status
+         strTemp := string(Copy(S, 20, 1));
+         FRit := StrToBoolDef(strTemp, False);
+
+         // XIT Status
+         strTemp := string(Copy(S, 21, 1));
+         FXit := StrToBoolDef(strTemp, False);
       end;
 
-      // RIT/XIT offset
-      strTemp := string(Copy(S, 15, 5));
-      FRitOffset := StrToIntDef(strTemp, 0);
+      if strCommand = 'FA' then begin
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[0] := i;
+      end;
 
-      // RIT Status
-      strTemp := string(Copy(S, 20, 1));
-      FRit := StrToBoolDef(strTemp, False);
-
-      // XIT Status
-      strTemp := string(Copy(S, 21, 1));
-      FXit := StrToBoolDef(strTemp, False);
+      if strCommand = 'FB' then begin
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 3, 8));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[1] := i;
+      end;
 
       if Selected then begin
          UpdateStatus;
       end;
-
-      Inc(FVFO);
-      FVFO := FVFO and 1;
    finally
-      FPollingTimer.Enabled := True;
+      if (FUsePolling = True) or (FInitialPolling = False) then begin
+         Inc(FPollingCount);
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -1537,7 +1668,34 @@ begin
    WriteData('MD0A;');
 end;
 
+procedure TFT991.AudioInputSelect(input: TAudioInput);
+var
+   cmd: AnsiString;
+begin
+   case _currentmode of
+      mSSB: cmd := 'EX108';
+      mFM:  cmd := 'EX074';
+      mAM:  cmd := 'EX045';
+      else  cmd := '';
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData(cmd + '0;');
+      aiUsb:      WriteData(cmd + '1;');
+      aiAcc:      ;
+      aiMicUsb:   ;
+      aiMicAcc:   ;
+   end;
+end;
+
 { TFT710 }
+
+constructor TFT710.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FComm.StopBits := sb1BITS;
+end;
 
 procedure TFT710.AntSelect(no: Integer);
 begin
@@ -1615,6 +1773,26 @@ begin
    end;
 end;
 
+//
+// EX
+//        0 1  2  3  4  5  6  7  8  9 10
+// SET    E X P1 P1 P2 P2 P3 P3 P4 P4 P4 ... P4 ;
+// P1: 01-04,06 メニュー大項目
+// P2: 01-05    メニュー中項目
+// P2: 01-26    メニュー小項目
+//
+procedure TFT710.AudioInputSelect(input: TAudioInput);
+begin
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData('EX0101140;');
+      aiUsb:      WriteData('EX0101141;');
+      aiAcc:      WriteData('EX0101142;');   // 710:Rear, FTX-1:bluetooth
+      aiMicUsb:   WriteData('EX0101143;');   // auto
+      aiMicAcc:   ;
+   end;
+end;
+
 { TFTDX3000 }
 
 procedure TFTDX3000.AntSelect(no: Integer);
@@ -1649,6 +1827,50 @@ begin
       1: WriteData('AN01;');
       2: WriteData('AN02;');
       3: WriteData('AN03;');
+   end;
+end;
+
+procedure TFTDX101.AudioInputSelect(input: TAudioInput);
+var
+   cmd: AnsiString;
+begin
+   case _currentmode of
+      mSSB: cmd := 'EX010111';
+      mFM:  cmd := 'EX010310';
+      mAM:  cmd := 'EX010211';
+      else  cmd := '';
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData(cmd + '0;');
+      aiUsb:      WriteData(cmd + '1;');
+      aiAcc:      ;
+      aiMicUsb:   ;
+      aiMicAcc:   ;
+   end;
+end;
+
+{ TFTDX10 }
+
+procedure TFTDX10.AudioInputSelect(input: TAudioInput);
+var
+   cmd: AnsiString;
+begin
+   case _currentmode of
+      mSSB: cmd := 'EX010113';
+      mFM:  cmd := 'EX010312';
+      mAM:  cmd := 'EX010213';
+      else  cmd := '';
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData(cmd + '0;');
+      aiUsb:      WriteData(cmd + '1;');
+      aiAcc:      ;
+      aiMicUsb:   ;
+      aiMicAcc:   ;
    end;
 end;
 

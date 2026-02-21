@@ -23,6 +23,7 @@ type
     procedure AntSelect(no: Integer); override;
     procedure ExecuteCommand(S: AnsiString); override;
     procedure Initialize(); override;
+    procedure PollingProcess; override;
     procedure InquireStatus; override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
@@ -39,17 +40,12 @@ type
     procedure SetRitOffset(offset: Integer); override;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
+    destructor Destroy; override;
     procedure Initialize(); override;
     procedure SetWPM(wpm: Integer); override;
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
-  end;
-
-  TTS2000P = class(TTS2000)
-    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
-    destructor Destroy; override;
-    procedure Initialize(); override;
-    procedure PollingProcess; override;
+    procedure ToggleBand(fUp: Boolean); override;
   end;
 
   TTS570 = class(TTS690)
@@ -59,12 +55,16 @@ type
 
   TTS890 = class(TTS2000)
   public
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure FixEdgeSelect(no: Integer); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TTS990 = class(TTS2000)
   public
+    constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure AntSelect(no: Integer); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
 implementation
@@ -79,6 +79,7 @@ begin
    _CWR := False;
    FFineStep := False;
    FControlPTTSupported := True;
+   FSMeterMax := 15;
 end;
 
 destructor TTS690.Destroy;
@@ -105,163 +106,167 @@ var
    M: TMode;
    b: TBand;
 begin
-   // RigControl.label1.caption := S;
-   if length(S) < 2 then begin
-      Exit;
-   end;
+   try
+      // RigControl.label1.caption := S;
+      if length(S) < 2 then begin
+         Exit;
+      end;
 
-   Command := S[1] + S[2];
+      Command := S[1] + S[2];
 
-   if (Command = 'FA') or (Command = 'FB') then begin
-      if Command = 'FA' then
-         aa := 0
-      else
-         aa := 1;
+      if (Command = 'FA') or (Command = 'FB') then begin
+         if Command = 'FA' then
+            aa := 0
+         else
+            aa := 1;
 
-      strTemp := string(Copy(S, 3, 11));
-      i := StrToIntDef(strTemp, 0);
-      _currentfreq[aa] := i;
-//      i := i + _freqoffset; // transverter
+         strTemp := string(Copy(S, 3, 11));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[aa] := i;
+   //      i := i + _freqoffset; // transverter
 
-      if _currentvfo = aa then begin
+         if _currentvfo = aa then begin
+            UpdateFreqMem(aa, _currentfreq[aa], _currentmode);
+         end;
+      end;
+
+      if (Command = 'FT') or (Command = 'FR') then begin // 2.1j
+         if S[3] = '0' then
+            aa := 0
+         else if S[3] = '1' then
+            aa := 1
+         else
+            Exit;
+
+         _currentvfo := aa;
+
          UpdateFreqMem(aa, _currentfreq[aa], _currentmode);
       end;
 
-      if Selected then
-         UpdateStatus;
-   end;
+      if Command = 'IF' then begin
+         if length(S) < 38 then
+            Exit;
 
-   if (Command = 'FT') or (Command = 'FR') then begin // 2.1j
-      if S[3] = '0' then
-         aa := 0
-      else if S[3] = '1' then
-         aa := 1
-      else
-         Exit;
+         case S[31] of
+            '0':
+               _currentvfo := 0;
+            '1':
+               _currentvfo := 1;
+            // '2' : memory
+         end;
 
-      _currentvfo := aa;
+         strTemp := string(copy(S, 3, 11));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[_currentvfo] := i;
+         i := i + _freqoffset; // transverter
 
-      UpdateFreqMem(aa, _currentfreq[aa], _currentmode);
+         b := dmZLogGlobal.BandPlan.FreqToBand(i);
+         if b <> bUnknown then begin
+            _currentband := b;
+         end;
 
-      if Selected then
-         UpdateStatus;
-   end;
+         case S[30] of
+            '1', '2': begin
+               M := mSSB;
+            end;
 
-   if Command = 'IF' then begin
-      if length(S) < 38 then
-         Exit;
+            '3': begin
+               M := mCW;
+               _CWR := False;
+            end;
 
-      case S[31] of
-         '0':
-            _currentvfo := 0;
-         '1':
-            _currentvfo := 1;
-         // '2' : memory
+            '7': begin
+               M := mCW;
+               _CWR := True;
+            end;
+
+            '4': begin
+               M := mFM;
+            end;
+
+            '5': begin
+               M := mAM;
+            end;
+
+            '6', '8': begin
+               M := mRTTY;
+            end;
+
+            else begin
+               M := mOther;
+            end;
+         end;
+
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
+
+         FreqMem[_currentband, M] := _currentfreq[_currentvfo];
+
+         // RIT/XIT offset
+         strTemp := string(Copy(S, 19, 5));
+         FRitOffset := StrToIntDef(strTemp, 0);
+
+         // RIT Status
+         strTemp := string(Copy(S, 24, 1));
+         FRit := StrToBoolDef(strTemp, False);
+
+         // XIT Status
+         strTemp := string(Copy(S, 25, 1));
+         FXit := StrToBoolDef(strTemp, False);
+
+         Inc(FPollingCount);
       end;
 
-      strTemp := string(copy(S, 3, 11));
-      i := StrToIntDef(strTemp, 0);
-      _currentfreq[_currentvfo] := i;
-      i := i + _freqoffset; // transverter
+      if Command = 'MD' then begin
+         case S[3] of
+            '1', '2':
+               M := mSSB;
+            '3': begin
+                  M := mCW;
+                  _CWR := False;
+               end;
+            '7': begin
+                  M := mCW;
+                  _CWR := True;
+               end;
+            '4':
+               M := mFM;
+            '5':
+               M := mAM;
+            '6', '8':
+               M := mRTTY;
+            else
+               M := mOther;
+         end;
 
-      b := dmZLogGlobal.BandPlan.FreqToBand(i);
-      if b <> bUnknown then begin
-         _currentband := b;
+         if FIgnoreRigMode = False then begin
+            _currentmode := M;
+         end;
+
+         FreqMem[_currentband, M] := _currentfreq[_currentvfo];
       end;
 
-      case S[30] of
-         '1', '2': begin
-            M := mSSB;
-         end;
-
-         '3': begin
-            M := mCW;
-            _CWR := False;
-         end;
-
-         '7': begin
-            M := mCW;
-            _CWR := True;
-         end;
-
-         '4': begin
-            M := mFM;
-         end;
-
-         '5': begin
-            M := mAM;
-         end;
-
-         '6', '8': begin
-            M := mRTTY;
-         end;
-
+      if Command = 'FS' then begin
+         if S[3] = '1' then begin
+            FFineStep := True;
+         end
          else begin
-            M := mOther;
+            FFineStep := False;
          end;
       end;
 
-      if FIgnoreRigMode = False then begin
-         _currentmode := M;
+      // Sメーター値読み出し（0-30を0-100にマップする）
+      if Command = 'SM' then begin
+         FSMeterValue[_currentvfo] := Round(StrToFloatDef(Copy(string(S), 4, 3), 0) * (100 / FSMeterMax));
       end;
-
-      FreqMem[_currentband, M] := _currentfreq[_currentvfo];
-
-      // RIT/XIT offset
-      strTemp := string(Copy(S, 19, 5));
-      FRitOffset := StrToIntDef(strTemp, 0);
-
-      // RIT Status
-      strTemp := string(Copy(S, 24, 1));
-      FRit := StrToBoolDef(strTemp, False);
-
-      // XIT Status
-      strTemp := string(Copy(S, 25, 1));
-      FXit := StrToBoolDef(strTemp, False);
 
       if Selected then begin
          UpdateStatus;
       end;
-   end;
-
-   if Command = 'MD' then begin
-      case S[3] of
-         '1', '2':
-            M := mSSB;
-         '3': begin
-               M := mCW;
-               _CWR := False;
-            end;
-         '7': begin
-               M := mCW;
-               _CWR := True;
-            end;
-         '4':
-            M := mFM;
-         '5':
-            M := mAM;
-         '6', '8':
-            M := mRTTY;
-         else
-            M := mOther;
-      end;
-
-      if FIgnoreRigMode = False then begin
-         _currentmode := M;
-      end;
-
-      FreqMem[_currentband, M] := _currentfreq[_currentvfo];
-
-      if Selected then
-         UpdateStatus;
-   end;
-
-   if Command = 'FS' then begin
-      if S[3] = '1' then begin
-         FFineStep := True;
-      end
-      else begin
-         FFineStep := False;
+   finally
+      if (FUsePolling = True) or (FInitialPolling = False) then begin
+         FPollingTimer.Enabled := True;
       end;
    end;
 end;
@@ -269,7 +274,31 @@ end;
 procedure TTS690.Initialize();
 begin
    Inherited;
-   WriteData('AI1;');
+
+   if FUsePolling = True then begin
+      WriteData('AI0;');
+   end
+   else begin
+      WriteData('AI1;');
+   end;
+
+   FPollingTimer.Enabled := True;
+end;
+
+procedure TTS690.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
+   if FPollingCount = 0 then begin
+      WriteData('IF;');
+   end
+   else begin
+      WriteData('IF;');
+      FInitialPolling := True;
+   end;
 end;
 
 procedure TTS690.InquireStatus;
@@ -461,9 +490,11 @@ begin
    TerminatorCode := ';';
    FComm.StopBits := sb1BITS;
    FPlayMessageCwSupported := True;
+   FSMeterMax := 30;
+   FToggleBandSupported := True;
 end;
 
-destructor TTS2000P.Destroy;
+destructor TTS2000.Destroy;
 begin
    WriteData('AI0;');
    inherited;
@@ -472,9 +503,17 @@ end;
 procedure TTS2000.Initialize();
 begin
    Inherited;
-   WriteData('TC 1;');
-   WriteData('AI2;');
-   WriteData('IF;');
+
+   if FUsePolling = True then begin
+      WriteData('TC 1;');
+      WriteData('AI0;');
+   end
+   else begin
+      WriteData('TC 1;');
+      WriteData('AI2;');
+   end;
+
+   FPollingTimer.Enabled := True;
 end;
 
 procedure TTS2000.SetRitOffset(offset: Integer);
@@ -554,27 +593,14 @@ begin
    WriteData(CMD);
 end;
 
-{ TS2000(Polling) }
-
-constructor TTS2000P.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+procedure TTS2000.ToggleBand(fUp: Boolean);
 begin
-   Inherited;
-end;
-
-procedure TTS2000P.Initialize();
-begin
-   Inherited;
-   FPollingTimer.Enabled := True;
-end;
-
-procedure TTS2000P.PollingProcess;
-begin
-   FPollingTimer.Enabled := False;
-   if FStopRequest = True then begin
-      Exit;
+   if fUp = True then begin
+      WriteData('BU;');
+   end
+   else begin
+      WriteData('BD;');
    end;
-
-   WriteData('IF;');
 end;
 
 { TTS570 }
@@ -584,17 +610,31 @@ begin
    Inherited;
    TerminatorCode := ';';
    FComm.StopBits := sb1BITS;
+   FSMeterMax := 15;
 end;
 
 procedure TTS570.Initialize();
 begin
    Inherited;
-   WriteData('TC 1;');
-   WriteData('AI2;');
-   WriteData('IF;');
+
+   if FUsePolling = True then begin
+      WriteData('AI0;');
+   end
+   else begin
+      WriteData('AI2;');
+   end;
+
+   FPollingTimer.Enabled := True;
 end;
 
 { TTS890 }
+
+constructor TTS890.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FSMeterMax := 70;
+   FAudioInputSelectSupported := True;
+end;
 
 procedure TTS890.FixEdgeSelect(no: Integer);
 begin
@@ -606,7 +646,26 @@ begin
    end;
 end;
 
+procedure TTS890.AudioInputSelect(input: TAudioInput);
+begin
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData('MS010;');
+      aiUsb:      WriteData('MS002;');
+      aiAcc:      ;
+      aiMicUsb:   WriteData('MS012;');
+      aiMicAcc:   ;
+   end;
+end;
+
 { TTS990 }
+
+constructor TTS990.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
+begin
+   Inherited;
+   FSMeterMax := 70;
+   FAudioInputSelectSupported := True;
+end;
 
 procedure TTS990.AntSelect(no: Integer);
 begin
@@ -616,6 +675,18 @@ begin
       2: WriteData('AN2;');
       3: WriteData('AN3;');
       4: WriteData('AN4;');
+   end;
+end;
+
+procedure TTS990.AudioInputSelect(input: TAudioInput);
+begin
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData('MS01000;');
+      aiUsb:      WriteData('MS00010;');
+      aiAcc:      WriteData('MS00100;');
+      aiMicUsb:   WriteData('MS01010;');
+      aiMicAcc:   WriteData('MS01100;');
    end;
 end;
 

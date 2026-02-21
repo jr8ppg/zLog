@@ -5,10 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.OleCtrls, SHDocVw, MSHTML, Web.HTTPApp, System.Win.Registry;
-
-type
-  TWebUploadContest = ( wuAllja = 0, wu6d, wuFd, wuAcag, wuAacw, wuAaph );
+  Vcl.OleCtrls, SHDocVw, MSHTML, Web.HTTPApp, System.Win.Registry, UzLogConst;
 
 type
   TformJarlWebUpload = class(TForm)
@@ -24,8 +21,6 @@ type
   private
     { Private êÈåæ }
     FWebUploadContest: TWebUploadContest;
-    FUploadURL: string;
-    FUploadURLaa: string;
     FLogText: string;
     procedure PasteLogText();
     procedure SetLogText(v: string);
@@ -45,23 +40,21 @@ implementation
 procedure TformJarlWebUpload.FormCreate(Sender: TObject);
 begin
    SetPermissions();
-   FWebUploadContest := wuAllja;
+   FWebUploadContest := wuOther;
    FLogText := '';
-   FUploadURL := 'https://contest.jarl.org/upload/';
-   FUploadURLaa := 'https://contest.jarl.org/upload-aa/';
 end;
 
 procedure TformJarlWebUpload.FormShow(Sender: TObject);
 begin
    case FWebUploadContest of
-      wuAllja, wu6d, wuFd, wuAcag: Navigate(FUploadURL);
-      wuAacw, wuAaph: Navigate(FUploadURLaa);
+      wuAllja, wu6d, wuFd, wuAcag, wuNyp: Navigate(ELogWebUploadURL);
+      wuAacw, wuAaph: Navigate(ELogWebUploadURLaa);
    end;
 end;
 
 procedure TformJarlWebUpload.WebBrowser1DocumentComplete(ASender: TObject; const pDisp: IDispatch; const URL: OleVariant);
 begin
-   if (URL = FUploadURL) or (URL = FUploadURLaa) then begin
+   if (URL = ELogWebUploadURL) or (URL = ELogWebUploadURLaa) then begin
       PasteLogText();
 
       case FWebUploadContest of
@@ -71,6 +64,7 @@ begin
          wuAcag:  CheckOn('contest', 'acag');
          wuAacw:  CheckOn('contest', 'aacw');
          wuAaph:  CheckOn('contest', 'aaph');
+         wuNyp:   CheckOn('contest', 'nyp');
       end;
    end;
 
@@ -85,6 +79,9 @@ var
    NameVariant, IndexVariant: OleVariant;
 begin
    doc := WebBrowser1.Document as IHTMLDocument2;
+   if doc = nil then begin
+      Exit;
+   end;
 
    // name ëÆê´Ç≈óvëfÇéÊìæ
    NameVariant := 'elogtext';  // nameëÆê´
@@ -126,6 +123,9 @@ var
    i: Integer;
 begin
    doc := WebBrowser1.Document as IHTMLDocument2;
+   if doc = nil then begin
+      Exit;
+   end;
 
    Inputs := Doc.all.tags('input') as IHTMLElementCollection;
 

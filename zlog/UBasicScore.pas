@@ -8,6 +8,8 @@ uses
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogForm;
 
 type
+  TBandPointArray = array[b19..HiBand] of Integer;
+
   TBasicScore = class(TZLogForm)
     Panel1: TPanel;
     Button1: TButton;
@@ -17,19 +19,24 @@ type
     menuMultiRate: TMenuItem;
     menuPtsPerMulti: TMenuItem;
     menuPtsPerQSO: TMenuItem;
+    Grid: TStringGrid;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
     procedure CWButtonClick(Sender: TObject);
     procedure menuExtraInfoClick(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: LongInt; Rect: TRect; State: TGridDrawState);
   protected
     FExtraInfo: Integer;
-    procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
+    FContestMode: TContestMode;
+    FValidQso: Boolean;
     procedure AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
-    procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
     function GetScore(): Integer;
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
+    procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
   public
     { Public declarations }
     QSO : array[b19..HiBand] of LongInt;
@@ -39,14 +46,13 @@ type
     Multi : array[b19..HiBand] of LongInt;
     Multi2 : array[b19..HiBand] of LongInt;
     ShowCWRatio : boolean;
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); overload;
+    constructor Create(AOwner: TComponent; LowBand: TBand; HighBand: TBand; M: TContestMode); overload; virtual; abstract;
     procedure Renew; virtual;
     procedure UpdateData; virtual;
-    procedure AddNoUpdate(var aQSO : TQSO); virtual;
-    procedure Add(var aQSO : TQSO); virtual; {calculates points}
+    procedure AddNoUpdate(aQSO: TQSO); virtual;
+    procedure Add(aQSO: TQSO); virtual; {calculates points}
     procedure Reset; virtual;
-    procedure SaveSummary(FileName : string); virtual;
-    procedure SummaryWriteScore(FileName : string); virtual;
     function TotalCWQSOs : integer;
     function TotalQSOs : integer;
     function QPMStr(B: TBand) : string; // returns QSO,Pts,Mult for JARL E-log
@@ -55,6 +61,7 @@ type
     function _TotalPoints : integer;
     function IntToStr3(v: Integer): string;
     property Score: Integer read GetScore;
+    property ContestMode: TContestMode read FContestMode write FContestMode;
   published
     property FontSize;
     property OnChangeFontSize;
@@ -66,96 +73,14 @@ const
 implementation
 
 uses
-  Main, USummaryInfo;
+  Main;
 
 {$R *.DFM}
-
-procedure TBasicScore.SummaryWriteScore(FileName: string);
-var
-   f: textfile;
-   TQSO, tpts, tmulti: LongInt;
-   B: TBand;
-begin
-   TQSO := 0;
-   tpts := 0;
-   tmulti := 0;
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs    Points    Multis');
-   for B := b19 to HiBand do begin
-      if NotWARC(B) then begin
-         writeln(f, FillRight(MHzString[B], 8) + FillLeft(IntToStr(QSO[B]), 10) + FillLeft(IntToStr(Points[B]), 10) +
-           FillLeft(IntToStr(Multi[B]), 10));
-         TQSO := TQSO + QSO[B];
-         tpts := tpts + Points[B];
-         tmulti := tmulti + Multi[B];
-      end;
-   end;
-   writeln(f, FillRight('Total :', 8) + FillLeft(IntToStr(TQSO), 10) + FillLeft(IntToStr(tpts), 10) + FillLeft(IntToStr(tmulti), 10));
-   writeln(f, 'Total score : ' + IntToStr(tpts * tmulti));
-   CloseFile(f);
-end;
-
-procedure TBasicScore.SaveSummary(FileName: string);
-var
-   f: textfile;
-   DLG: TSummaryInfo;
-begin
-   DLG := TSummaryInfo.Create(Self);
-   try
-      if DLG.ShowModal <> mrOK then begin
-         exit;
-      end;
-
-      AssignFile(f, FileName);
-      Rewrite(f);
-
-      with DLG do begin
-         writeln(f, ContestNameEdit.Text);
-         writeln(f);
-         writeln(f, 'Call sign: ' + CallEdit.Text);
-         writeln(f);
-         writeln(f, 'Category: ' + CategoryEdit.Text);
-         writeln(f);
-         if CountryEdit.Text <> '' then begin
-            writeln(f, 'Country: ' + CountryEdit.Text);
-            writeln(f);
-         end;
-
-         CloseFile(f);
-         SummaryWriteScore(FileName);
-         Append(f);
-
-         writeln(f);
-
-         if MiscMemo.Text <> '' then begin
-            write(f, MiscMemo.Text);
-            writeln(f);
-         end;
-         if RemMemo.Text <> '' then begin
-            writeln(f, 'Remarks:');
-            write(f, RemMemo.Text);
-            writeln(f);
-         end;
-         write(f, DecMemo.Text);
-         writeln(f);
-         writeln(f, 'Name: ' + NameEdit.Text);
-         writeln(f);
-         writeln(f, 'Address:');
-         writeln(f);
-         write(f, AddrMemo.Text);
-         writeln(f);
-      end;
-
-      CloseFile(f);
-   finally
-      DLG.Release();
-   end;
-end;
 
 constructor TBasicScore.Create(AOwner: TComponent);
 begin
    Inherited Create(AOwner);
+   FContestMode := cmMix;
    ShowCWRatio := False;
    Reset;
 
@@ -199,27 +124,82 @@ begin
    dmZLogGlobal.Settings.FLastScoreExtraInfo := FExtraInfo;
 end;
 
-procedure TBasicScore.AddNoUpdate(var aQSO: TQSO);
+procedure TBasicScore.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
 begin
+   FValidQso := False;
+
    B := aQSO.band;
-   inc(QSO[B]);
 
-   if aQSO.mode = mCW then
-      inc(CWQSO[B]);
+   if aQSO.Dupe then begin
+      Exit;
+   end;
 
-   if aQSO.mode = mFM then
-      inc(FMQSO[B]);
+   case FContestMode of
+      cmMix: begin
+         if aQSO.mode in ContestModeSet[cmMix] then begin
+            Inc(QSO[B]);
+            FValidQso := True;
+         end;
+         if aQSO.mode in ContestModeSet[cmCW] then begin
+            Inc(CWQSO[B]);
+            FValidQso := True;
+         end;
+         if aQSO.mode = mFM then begin
+            Inc(FMQSO[B]);
+            FValidQso := True;
+         end;
+      end;
 
-   if aQSO.NewMulti1 then
-      inc(Multi[B]);
+      cmCw: begin
+         if aQSO.mode in ContestModeSet[cmCW] then begin
+            Inc(QSO[B]);
+            Inc(CWQSO[B]);
+            FValidQso := True;
+         end;
+      end;
 
-   if aQSO.NewMulti2 then
-      inc(Multi2[B]);
+      cmPh: begin
+         if aQSO.mode in ContestModeSet[cmPh] then begin
+            Inc(QSO[B]);
+            FValidQso := True;
+         end;
+         if aQSO.mode = mFM then begin
+            Inc(FMQSO[B]);
+            FValidQso := True;
+         end;
+      end;
+
+      cmRtty: begin
+         if aQSO.mode in ContestModeSet[cmRtty] then begin
+            Inc(QSO[B]);
+            FValidQso := True;
+         end;
+      end;
+
+      cmAll: begin
+         Inc(QSO[B]);
+         FValidQso := True;
+         if aQSO.mode in ContestModeSet[cmCW] then begin
+            Inc(CWQSO[B]);
+         end;
+         if aQSO.mode = mFM then begin
+            Inc(FMQSO[B]);
+         end;
+      end;
+   end;
+
+   if aQSO.NewMulti1 then begin
+      Inc(Multi[B]);
+   end;
+
+   if aQSO.NewMulti2 then begin
+      Inc(Multi2[B]);
+   end;
 end;
 
-procedure TBasicScore.Add(var aQSO: TQSO);
+procedure TBasicScore.Add(aQSO: TQSO);
 begin
    if aQSO.Invalid = True then begin
       Exit;
@@ -342,7 +322,7 @@ begin
          c := 0;
       end;
       strFormatedText := Copy(strText, i, 1) + strFormatedText;
-      inc(c);
+      Inc(c);
    end;
 
    Result := strFormatedText;
@@ -351,32 +331,6 @@ end;
 procedure TBasicScore.menuExtraInfoClick(Sender: TObject);
 begin
    UpdateData();
-end;
-
-procedure TBasicScore.Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
-var
-   strText: string;
-begin
-   strText := Grid.Cells[ACol, ARow];
-
-   with Grid.Canvas do begin
-      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
-      Brush.Color := Grid.Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Size := FFontSize;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
 end;
 
 procedure TBasicScore.AdjustGridSize(Grid: TStringGrid; ColCount, RowCount: Integer);
@@ -434,6 +388,46 @@ begin
    end;
 
    Result := pts * (m1 + m2);
+end;
+
+procedure TBasicScore.GridDrawCell(Sender: TObject; ACol, ARow: LongInt; Rect: TRect; State: TGridDrawState);
+var
+   strText: string;
+begin
+   inherited;
+
+   strText := Grid.Cells[ACol, ARow];
+
+   with Grid.Canvas do begin
+      Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
+      Brush.Color := dmZLogGlobal.ZBackColor;
+      Brush.Style := bsSolid;
+      FillRect(Rect);
+
+      Font.Size := FFontSize;
+
+      if Copy(strText, 1, 1) = '*' then begin
+         strText := Copy(strText, 2);
+         Font.Color := dmZLogGlobal.ZNormalTextColor2;
+      end
+      else begin
+         Font.Color := dmZLogGlobal.ZNormalTextColor1;
+      end;
+
+      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
+   end;
+end;
+
+function TBasicScore.GetFontSize(): Integer;
+begin
+   Result := Grid.Font.Size;
+end;
+
+procedure TBasicScore.SetFontSize(v: Integer);
+begin
+   Inherited;
+   SetGridFontSize(Grid, v);
+   UpdateData();
 end;
 
 end.

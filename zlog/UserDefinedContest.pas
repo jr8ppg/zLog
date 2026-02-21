@@ -13,10 +13,13 @@ const
   PX_WPX    = 1;
   PX_NORMAL = 2;
 
-  band_without_warc_table: array[1..13] of TBand = ( b19, b35, b7, b14, b21, b28, b50, b144, b430, b1200, b2400, b5600, b10g );
+  band_without_warc_table: array[1..19] of TBand = (
+    b19, b35, b7, b14, b21, b28, b50, b144, b430, b1200, b2400, b5600, b10g,
+    b104g, b24g, b47g, b77g, b135g, b248g
+  );
 
 type
-  TPointsTable = array[b19..HiBand, mCW..mOther] of Integer;
+  TPointsTable = array[b19..HiBand, mCW..LastMode] of Integer;
   PTPointsTable = ^TPointsTable;
   TPowerTable = array[b19..HiBand] of string;
   TSerialTable = array[b19..HiBand] of Integer;
@@ -102,6 +105,10 @@ type
 
     FUseSentRST: Boolean;
     FAllowDxNoNumber: Boolean;
+    FSingle10G: Boolean;
+    FSameExchange: Boolean;
+    FNrNumericComparison: Boolean;
+    FUseNrIme: Boolean;
   private
     procedure SetFullPath(v: string);
     function GetCwMessageA(Index: Integer): string;
@@ -217,6 +224,10 @@ type
 
     property UseSentRST: Boolean read FUseSentRST write FUseSentRST;
     property AllowDxNoNumber: Boolean read FAllowDxNoNumber write FAllowDxNoNumber;
+    property Single10G: Boolean read FSingle10G write FSingle10G;
+    property SameExchange: Boolean read FSameExchange write FSameExchange;
+    property NrNumericComparison: Boolean read FNrNumericComparison write FNrNumericComparison;
+    property UseNrIme: Boolean read FUseNrIme write FUseNrIme;
   end;
 
   TUserDefinedContestList = class(TObjectList<TUserDefinedContest>)
@@ -317,6 +328,10 @@ begin
    FContestId := '';
    FUseSentRST := False;
    FAllowDxNoNumber := False;
+   FSingle10G := True;
+   FSameExchange := True;
+   FNrNumericComparison := False;
+   FUseNrIme := False;
 end;
 
 constructor TUserDefinedContest.Create(strFullPath: string);
@@ -347,7 +362,7 @@ var
    M: TMode;
 begin
    for B := b19 to HiBand do begin
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          PT[B, M] := 1;
       end;
    end;
@@ -516,6 +531,42 @@ begin
             if Length(strParam) >= 8 then begin
                D.FLocalPointsTable[B, mAM]  := StrToIntDef(strParam[7] + strParam[8], 1);
             end;
+         end;
+
+         // EXPT1.9,EXPT3.5,EXPT7 ... EXPT10G
+         if Pos('EXPT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 5, 3);
+            B := GetBand(strTmp);
+
+            // mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mDV, mOther
+            SL.CommaText := UpperCase(strParam) + ',,,,,,,,,';
+            D.FPointsTable[B, mCW]    := StrToIntDef(SL[0], 1);
+            D.FPointsTable[B, mSSB]   := StrToIntDef(SL[1], 1);
+            D.FPointsTable[B, mFM]    := StrToIntDef(SL[2], 1);
+            D.FPointsTable[B, mAM]    := StrToIntDef(SL[3], 1);
+            D.FPointsTable[B, mRTTY]  := StrToIntDef(SL[4], 1);
+            D.FPointsTable[B, mFT4]   := StrToIntDef(SL[5], 1);
+            D.FPointsTable[B, mFT8]   := StrToIntDef(SL[6], 1);
+            D.FPointsTable[B, mDV]    := StrToIntDef(SL[7], 1);
+            D.FPointsTable[B, mOther] := StrToIntDef(SL[8], 1);
+         end;
+
+         // EXLPT1.9,EXLPT3.5,EXLPT7 ... EXLPT10G
+         if Pos('EXLPT', strCmd) = 1 then begin
+            strTmp := Copy(strCmd, 6, 3);
+            B := GetBand(strTmp);
+
+            // mCW, mSSB, mFM, mAM, mRTTY, mFT4, mFT8, mDV, mOther
+            SL.CommaText := UpperCase(strParam) + ',,,,,,,,,';
+            D.FLocalPointsTable[B, mCW]    := StrToIntDef(SL[0], 1);
+            D.FLocalPointsTable[B, mSSB]   := StrToIntDef(SL[1], 1);
+            D.FLocalPointsTable[B, mFM]    := StrToIntDef(SL[2], 1);
+            D.FLocalPointsTable[B, mAM]    := StrToIntDef(SL[3], 1);
+            D.FLocalPointsTable[B, mRTTY]  := StrToIntDef(SL[4], 1);
+            D.FLocalPointsTable[B, mFT4]   := StrToIntDef(SL[5], 1);
+            D.FLocalPointsTable[B, mFT8]   := StrToIntDef(SL[6], 1);
+            D.FLocalPointsTable[B, mDV]    := StrToIntDef(SL[7], 1);
+            D.FLocalPointsTable[B, mOther] := StrToIntDef(SL[8], 1);
          end;
 
          if strCmd = 'SAMECTYPT' then begin
@@ -756,6 +807,22 @@ begin
                D.FSpecialCallMatch := scmFull;
             end;
          end;
+
+         if strCmd = 'SINGLE10G' then begin
+            D.Single10G := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'SAMEEXCHANGE' then begin
+            D.SameExchange := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'NRNUMCOMPARE' then begin
+            D.NrNumericComparison := ParseOnOff(strParam);
+         end;
+
+         if strCmd = 'USENRIME' then begin
+            D.UseNrIme := ParseOnOff(strParam);
+         end;
       end;
    finally
       SL.Free();
@@ -847,6 +914,24 @@ begin
    end
    else if strBand = '10G' then begin
       B := b10g;
+   end
+   else if strBand = '104' then begin
+      B := b104g;
+   end
+   else if strBand = '24G' then begin
+      B := b24g;
+   end
+   else if strBand = '47G' then begin
+      B := b47g;
+   end
+   else if strBand = '77G' then begin
+      B := b77g;
+   end
+   else if strBand = '135' then begin
+      B := b135g;
+   end
+   else if strBand = '248' then begin
+      B := b248g;
    end
    else begin
       B := b19;
@@ -979,7 +1064,7 @@ end;
 
 procedure TUserDefinedContest.SetPower(v: string);
 begin
-   v := LeftStr(v + '----------------', 13);
+   v := LeftStr(v + DupeString('-', 19), 19);
    FPower := v;
    EditParam('POWER', v);
 end;
@@ -1092,7 +1177,7 @@ function TUserDefinedContest.GetBandLow(): TBand;
 var
    i: Integer;
 begin
-   for i := 1 to 13 do begin
+   for i := 1 to High(band_without_warc_table) do begin
       if FPower[i] <> '-' then begin
          Result := band_without_warc_table[i];
          Exit;
@@ -1105,7 +1190,7 @@ function TUserDefinedContest.GetBandHigh(): TBand;
 var
    i: Integer;
 begin
-   for i := 13 downto 1 do begin
+   for i := High(band_without_warc_table) downto 1 do begin
       if FPower[i] <> '-' then begin
          Result := band_without_warc_table[i];
          Exit;

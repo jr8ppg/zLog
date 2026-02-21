@@ -428,14 +428,118 @@ object RateDialogEx: TRateDialogEx
           YValues.Name = 'Bar'
           YValues.Order = loNone
         end
-        object Series17: TBarSeries
+        object Series18: TBarSeries
           HoverElement = []
-          Marks.Font.Color = clWhite
+          BarBrush.Color = -1
+          Marks.Font.Color = clRed
           Marks.Transparent = True
           Marks.Arrow.Visible = False
-          Marks.BackColor = clWhite
+          Marks.BackColor = clRed
           Marks.Callout.Arrow.Visible = False
-          Marks.Color = clWhite
+          Marks.Color = clRed
+          SeriesColor = 8454143
+          Title = 'Series17'
+          BarWidthPercent = 75
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object Series19: TBarSeries
+          HoverElement = []
+          BarBrush.Color = -1
+          Marks.Font.Color = clRed
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clRed
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clRed
+          SeriesColor = 8454143
+          Title = 'Series18'
+          BarWidthPercent = 75
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object Series20: TBarSeries
+          HoverElement = []
+          BarBrush.Color = -1
+          Marks.Font.Color = clRed
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clRed
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clRed
+          SeriesColor = 8454143
+          Title = 'Series19'
+          BarWidthPercent = 75
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object Series21: TBarSeries
+          HoverElement = []
+          BarBrush.Color = -1
+          Marks.Font.Color = clRed
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clRed
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clRed
+          SeriesColor = 8454143
+          Title = 'Series20'
+          BarWidthPercent = 75
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object Series22: TBarSeries
+          HoverElement = []
+          BarBrush.Color = -1
+          Marks.Font.Color = clRed
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clRed
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clRed
+          SeriesColor = 8454143
+          Title = 'Series21'
+          BarWidthPercent = 75
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget1: TBarSeries
+          HoverElement = []
+          BarBrush.Color = -1
+          Marks.Font.Color = clRed
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clRed
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clRed
+          SeriesColor = 8454143
+          Title = 'Series22'
+          BarWidthPercent = 75
           MarksLocation = mlCenter
           MarksOnBar = True
           MultiBar = mbStacked
@@ -474,6 +578,380 @@ object RateDialogEx: TRateDialogEx
           YValues.Name = 'Y'
           YValues.Order = loNone
         end
+        object Series17: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget1'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget2: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget2'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget3: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget3'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget4: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget4'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget5: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget5'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget6: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget6'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget7: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget7'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget8: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget8'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget9: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget9'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget10: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget10'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget11: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget11'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget12: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget12'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget13: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget13'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget14: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget14'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget15: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget15'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget16: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget16'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget17: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget17'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget18: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget18'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget19: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget19'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget20: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget20'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget21: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget21'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+        object SeriesTarget22: TBarSeries
+          HoverElement = []
+          Marks.Font.Color = clWhite
+          Marks.Transparent = True
+          Marks.Arrow.Visible = False
+          Marks.BackColor = clWhite
+          Marks.Callout.Arrow.Visible = False
+          Marks.Color = clWhite
+          Title = 'SeriesTarget22'
+          MarksLocation = mlCenter
+          MarksOnBar = True
+          MultiBar = mbStacked
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
       end
     end
     object TabSheet2: TTabSheet
@@ -487,7 +965,7 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         ColCount = 51
         DefaultDrawing = False
-        RowCount = 36
+        RowCount = 45
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
@@ -513,7 +991,7 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         ColCount = 52
         DefaultDrawing = False
-        RowCount = 19
+        RowCount = 25
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15

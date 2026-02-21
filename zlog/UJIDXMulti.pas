@@ -14,7 +14,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
   end;
 
 implementation
@@ -30,11 +30,12 @@ begin
    Reset;
 end;
 
-procedure TJIDXMulti.AddNoUpdate(var aQSO : TQSO);
+procedure TJIDXMulti.AddNoUpdate(aQSO: TQSO);
 var
-   str : string;
+   str: string;
    B: TBand;
    i: integer;
+   P: TPrefix;
    C: TCountry;
 begin
    aQSO.NewMulti1 := False;
@@ -43,7 +44,11 @@ begin
    aQSO.Multi1 := str;
 
    if aQSO.Dupe then begin
-      exit;
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
    end;
 
    B := aQSO.band;
@@ -57,7 +62,18 @@ begin
       end;
    end;
 
-   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    if C.Country = '' then begin // unknown cty. e.g. MM
       Exit;
    end;

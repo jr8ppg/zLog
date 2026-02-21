@@ -9,13 +9,8 @@ uses
 
 type
   TWPXScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FMultiForm: TWPXMulti;
@@ -23,11 +18,9 @@ type
     { Public declarations }
     AllAsianDXMode : Boolean;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO);  override;
     procedure UpdateData; override;
-    procedure SummaryWriteScore(FileName : string); override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -46,12 +39,6 @@ begin
    CWButton.Visible := False;
 end;
 
-procedure TWPXScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
 procedure TWPXScore.Reset;
 var
    band : TBand;
@@ -62,7 +49,7 @@ begin
    end;
 end;
 
-procedure TWPXScore.AddNoUpdate(var aQSO : TQSO);
+procedure TWPXScore.AddNoUpdate(aQSO: TQSO);
 begin
    inherited; {points are calculated in WPXMulti}
 
@@ -70,16 +57,21 @@ begin
       Exit;
    end;
 
-   if AllAsianDXMode then begin
-      case aQSO.Band of
-         b19: aQSO.Points := 3;
-         b35, b28 : aQSO.Points := 2;
-         b7..b21 : aQSO.Points := 1;
-      end;
+   if FValidQso = True then begin
+      if AllAsianDXMode then begin
+         case aQSO.Band of
+            b19: aQSO.Points := 3;
+            b35, b28 : aQSO.Points := 2;
+            b7..b21 : aQSO.Points := 1;
+         end;
 
-      if aQSO.Power2 = 777 then begin // asia. see uwpxmulti.addnoupdate
-         aQSO.Points := 0;
+         if aQSO.Power2 = 777 then begin // asia. see uwpxmulti.addnoupdate
+            aQSO.Points := 0;
+         end;
       end;
+   end
+   else begin
+      aQSO.Points := 0;
    end;
 
    Inc(Points[aQSO.Band], aQSO.Points);
@@ -93,6 +85,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 3;
    TotQSO := 0;
    TotPts := 0;
    row := 1;
@@ -152,43 +145,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-procedure TWPXScore.SummaryWriteScore(FileName : string);
-var
-   f : textfile;
-   tqso, tpts : LongInt;
-   b : TBand;
-begin
-   tqso := 0;
-   tpts := 0; {tmulti := 0; }
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs    Points');
-   for b := b19 to b28 do begin
-      if NotWARC(b) then begin
-         writeln(f, FillRight(MHzString[b],8) + FillLeft(IntToStr(QSO[b]),10) + FillLeft(IntToStr(Points[b]),10) );
-         tqso := tqso + QSO[b];
-         tpts := tpts + Points[b];
-      end;
-   end;
-
-   writeln(f, FillRight('Total :',8) + FillLeft(IntToStr(tqso),10) + FillLeft(IntToStr(tpts),10) );
-   writeln(f, 'Total prefixes: ' + IntToStr(FMultiForm.TotalPrefix));
-   writeln(f, 'Total score : ' + IntToStr(tpts * FMultiForm.TotalPrefix));
-   CloseFile(f);
-end;
-
-function TWPXScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TWPXScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

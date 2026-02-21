@@ -36,8 +36,8 @@ type
   public
     { Public declarations }
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO : TQSO); override;
+    procedure Add(aQSO : TQSO); override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     function GuessZone(strCallsign: string) : string; override;
     procedure UpdateData; override;
@@ -397,13 +397,12 @@ begin
    RenewBandScope;
 end;
 
-procedure TIARUMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TIARUMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    i: Integer;
    C: TCountry;
    P: TPrefix;
-   _cont: string;
    HQ: boolean;
    M: TIARUZone;
    Index: Integer;
@@ -413,8 +412,13 @@ begin
    str := aQSO.NrRcvd;
    aQSO.Multi1 := str;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    i := StrToIntDef(str, 0);
 
@@ -446,16 +450,18 @@ begin
    P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
 
-   if P = nil then
-      _cont := C.Continent
-   else if P.OvrContinent = '' then
-      _cont := C.Continent
-   else
-      _cont := P.OvrContinent;
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
 
    if (dmZLogGlobal.MyITUZone = str) or (HQ = True) then
       aQSO.Points := 1
-   else if dmZLogGlobal.MyContinent = _cont then
+   else if dmZLogGlobal.MyContinent = aQSO.Continent then
       aQSO.Points := 3
    else
       aQSO.Points := 5;
@@ -488,7 +494,7 @@ begin
    UpdateData;
 end;
 
-procedure TIARUMulti.Add(var aQSO: TQSO);
+procedure TIARUMulti.Add(aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
 

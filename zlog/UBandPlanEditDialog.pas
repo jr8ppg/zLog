@@ -100,6 +100,36 @@ type
     popupPreset: TPopupMenu;
     menuAddPreset: TMenuItem;
     menuDeletePreset: TMenuItem;
+    labelBand17: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    editLower17: TEdit;
+    editUpper17: TEdit;
+    labelBand18: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    editLower18: TEdit;
+    editUpper18: TEdit;
+    labelBand19: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    editLower19: TEdit;
+    editUpper19: TEdit;
+    labelBand20: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    editLower20: TEdit;
+    editUpper20: TEdit;
+    labelBand21: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    editLower21: TEdit;
+    editUpper21: TEdit;
+    labelBand22: TLabel;
+    Label49: TLabel;
+    Label50: TLabel;
+    editLower22: TEdit;
+    editUpper22: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure tabctrlModeChange(Sender: TObject);
@@ -114,7 +144,7 @@ type
       var Handled: Boolean);
   private
     { Private êÈåæ }
-    FTmpLimit: array [mCW..mOther] of TFreqLimitArray;
+    FTmpLimit: array [mCW..LastMode] of TFreqLimitArray;
     FLabelArray: array[b19..HiBand] of TLabel;
     FLowerEditArray: array[b19..HiBand] of TEdit;
     FUpperEditArray: array[b19..HiBand] of TEdit;
@@ -160,6 +190,12 @@ begin
    FLabelArray[b2400]   := labelBand14;
    FLabelArray[b5600]   := labelBand15;
    FLabelArray[b10g]    := labelBand16;
+   FLabelArray[b104g]   := labelBand17;
+   FLabelArray[b24g]    := labelBand18;
+   FLabelArray[b47g]    := labelBand19;
+   FLabelArray[b77g]    := labelBand20;
+   FLabelArray[b135g]   := labelBand21;
+   FLabelArray[b248g]   := labelBand22;
 
    for b := b19 to HiBand do begin
       FLabelArray[b].Caption := BandString[b];
@@ -181,6 +217,12 @@ begin
    FLowerEditArray[b2400]  := editLower14;
    FLowerEditArray[b5600]  := editLower15;
    FLowerEditArray[b10g]   := editLower16;
+   FLowerEditArray[b104g]  := editLower17;
+   FLowerEditArray[b24g]   := editLower18;
+   FLowerEditArray[b47g]   := editLower19;
+   FLowerEditArray[b77g]   := editLower20;
+   FLowerEditArray[b135g]  := editLower21;
+   FLowerEditArray[b248g]  := editLower22;
 
    FUpperEditArray[b19]    := editUpper01;
    FUpperEditArray[b35]    := editUpper02;
@@ -198,6 +240,12 @@ begin
    FUpperEditArray[b2400]  := editUpper14;
    FUpperEditArray[b5600]  := editUpper15;
    FUpperEditArray[b10g]   := editUpper16;
+   FUpperEditArray[b104g]   := editUpper17;
+   FUpperEditArray[b24g]   := editUpper18;
+   FUpperEditArray[b47g]   := editUpper19;
+   FUpperEditArray[b77g]   := editUpper20;
+   FUpperEditArray[b135g]   := editUpper21;
+   FUpperEditArray[b248g]   := editUpper22;
 
    tabctrlPreset.Tabs.CommaText := dmZLogGlobal.Settings.FBandPlanPresetList;
 end;
@@ -289,7 +337,7 @@ var
 begin
    if dmZLogGlobal.BandPlans.ContainsKey(preset) = True then begin
       bandplan := dmZLogGlobal.BandPlans[preset];
-      for mm := mCW to mOther do begin
+      for mm := mCW to LastMode do begin
          FTmpLimit[mm] := bandplan.Limit[mm];
       end;
    end
@@ -318,7 +366,7 @@ begin
 
    if dmZLogGlobal.BandPlans.ContainsKey(preset) = True then begin
       bandplan := dmZLogGlobal.BandPlans[preset];
-      for mm := mCW to mOther do begin
+      for mm := mCW to LastMode do begin
          bandplan.Limit[mm] := FTmpLimit[mm];
       end;
    end;

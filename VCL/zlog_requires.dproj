@@ -130,6 +130,7 @@
         <DCCReference Include="OEDIT.PAS"/>
         <DCCReference Include="CONSOLE2.PAS"/>
         <DCCReference Include="SunTime.pas"/>
+        <DCCReference Include="RLed.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -180,8 +181,9 @@
                     <VersionInfoKeys Name="Comments"/>
                 </VersionInfoKeys>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
+                    <Excluded_Packages Name="D:\github\zLog_v2940\VCL\Win32\Release\zlog_requires.bpl">(名称未設定)</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp290.bpl">Microsoft Office XP オートメーション サーバー ラッパー コンポーネントのサンプル</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>

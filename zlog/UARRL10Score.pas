@@ -9,17 +9,12 @@ uses
 
 type
   TARRL10Score = class(TBasicScore)
-    Grid: TStringGrid;
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
     { Public declarations }
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO : TQSO);  override;
   end;
 
 implementation
@@ -57,47 +52,35 @@ begin
    AdjustGridSize(Grid, 2, Grid.RowCount);
 end;
 
-procedure TARRL10Score.AddNoUpdate(var aQSO: TQSO);
+procedure TARRL10Score.AddNoUpdate(aQSO: TQSO);
 var
    i: Integer;
 begin
-   { BasicScore.AddNoUpdate(aQSO); }
-   inherited;
+   Inherited;
 
    aQSO.Points := 0;
-   if aQSO.Dupe then
-      exit;
 
-   if aQSO.Mode = mCW then begin
-      i := length(aQSO.Callsign) - 1;
-      if (pos('/N', aQSO.Callsign) = i) or (pos('/T', aQSO.Callsign) = i) then
-         aQSO.Points := 8 // novice or technician cw qso : 8pts
-      else
-         aQSO.Points := 4;
+   if aQSO.Dupe then begin
+      exit;
+   end;
+
+   if FValidQso = True then begin
+      if aQSO.Mode = mCW then begin
+         i := length(aQSO.Callsign) - 1;
+         if (pos('/N', aQSO.Callsign) = i) or (pos('/T', aQSO.Callsign) = i) then
+            aQSO.Points := 8 // novice or technician cw qso : 8pts
+         else
+            aQSO.Points := 4;
+      end
+      else if aQSO.Mode in [mSSB, mFM, mAM] then begin
+         aQSO.Points := 2;
+      end;
    end
-   else if aQSO.Mode in [mSSB, mFM, mAM] then begin
-      aQSO.Points := 2;
+   else begin
+      aQSO.Points := 0;
    end;
 
    inc(Points[b28], aQSO.Points);
-end;
-
-procedure TARRL10Score.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
-function TARRL10Score.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TARRL10Score.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

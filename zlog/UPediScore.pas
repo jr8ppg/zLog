@@ -3,28 +3,22 @@ unit UPediScore;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons,
-  UzLogCOnst, UzLogGlobal, UzLogQSO, Vcl.Menus;
+  WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Buttons, Vcl.Menus,
+  UBasicScore, UzLogConst, UzLogGlobal, UzLogQSO, UMultipliers;
 
 type
   TPediScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
-    Stats: array[b19..HiBand, mCW..mOther] of integer;
+    Stats: array[b19..HiBand, mCW..LastMode] of integer;
   public
     { Public declarations }
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure Reset; override;
-    procedure SummaryWriteScore(FileName : string); override;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -40,69 +34,19 @@ begin
    CWButton.Visible := False;
 end;
 
-procedure TPediScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
-procedure TPediScore.SummaryWriteScore(FileName: string);
-var
-   f: textfile;
-   b: TBand;
-   M: TMode;
-   TotQSO, TotBandQSO: LongInt;
-   ModeQSO: array [mCW .. mOther] of Integer;
-begin
-   AssignFile(f, FileName);
-   Append(f);
-
-   write(f, 'MHz     ');
-   for M := mCW to mOther do begin
-      write(f, FillLeft(ModeString[M], 6));
-   end;
-
-   write(f, '   QSO');
-   writeln(f);
-
-   TotQSO := 0;
-   for M := mCW to mOther do begin
-      ModeQSO[M] := 0;
-   end;
-
-   for b := b19 to HiBand do begin
-      TotBandQSO := 0;
-      write(f, FillRight(MHzString[b], 8));
-
-      for M := mCW to mOther do begin
-         write(f, FillLeft(IntToStr(Stats[b, M]), 6));
-         Inc(TotBandQSO, Stats[b, M]);
-         Inc(ModeQSO[M], Stats[b, M]);
-      end;
-      Inc(TotQSO, TotBandQSO);
-
-      write(f, FillLeft(IntToStr(TotBandQSO), 6));
-      writeln(f);
-   end;
-
-   write(f, FillRight('Total', 8));
-
-   for M := mCW to mOther do begin
-      write(f, FillLeft(IntToStr(ModeQSO[M]), 6));
-   end;
-   writeln(f, FillLeft(IntToStr(TotQSO), 6));
-
-   CloseFile(f);
-end;
-
 procedure TPediScore.UpdateData;
 var
    b: TBand;
    M: TMode;
    TotQSO, TotBandQSO: LongInt;
-   ModeQSO: array [mCW .. mOther] of Integer;
+   ModeQSO: array [mCW .. LastMode] of Integer;
    w: Integer;
+   C: Integer;
+   R: Integer;
+const
+   disptbl: array[mCW..LastMode] of Integer = (2, 3, 4, 5, 6, 7, 8, 10, 9 );
 begin
+   Grid.ColCount := 11;
    TotQSO := 0;
 
    Grid.Cells[0, 0] := 'MHz';
@@ -114,18 +58,25 @@ begin
    Grid.Cells[6, 0] := 'RTTY';
    Grid.Cells[7, 0] := 'FT4';
    Grid.Cells[8, 0] := 'FT8';
-   Grid.Cells[9, 0] := 'Other';
+   Grid.Cells[9, 0] := 'DV';
+   Grid.Cells[10, 0] := 'Other';
 
-   for M := mCW to mOther do begin
+   for M := mCW to LastMode do begin
       ModeQSO[M] := 0;
    end;
 
+   R := 1;
    for b := b19 to HiBand do begin
+      if dmZLogGlobal.Settings._activebands[b] = False then begin
+         Continue;
+      end;
+
       TotBandQSO := 0;
 
-      Grid.Cells[0, ord(b) + 1] := '*' + MHzString[b];
-      for M := mCW to mOther do begin
-         Grid.Cells[ord(M) + 2, ord(b) + 1] := IntToStr3(Stats[b, M]);
+      Grid.Cells[0, R] := '*' + MHzString[b];
+      for M := mCW to LastMode do begin
+         C := disptbl[M];
+         Grid.Cells[C, R] := IntToStr3(Stats[b, M]);
 
          Inc(TotBandQSO, Stats[b, M]);
          Inc(ModeQSO[M], Stats[b, M]);
@@ -133,18 +84,21 @@ begin
 
       Inc(TotQSO, TotBandQSO);
 
-      Grid.Cells[1, ord(b) + 1] := IntToStr3(TotBandQSO);
+      Grid.Cells[1, R] := IntToStr3(TotBandQSO);
+
+      Inc(R);
    end;
 
-   Grid.Cells[0, ord(HiBand) + 2] := 'Total';
-   Grid.Cells[1, ord(HiBand) + 2] := IntToStr3(TotQSO);
+   Grid.Cells[0, R] := 'Total';
+   Grid.Cells[1, R] := IntToStr3(TotQSO);
 
-   for M := mCW to mOther do begin
-      Grid.Cells[ord(M) + 2, ord(HiBand) + 2] := IntToStr3(ModeQSO[M]);
+   for M := mCW to LastMode do begin
+      C := disptbl[M];
+      Grid.Cells[C, R] := IntToStr3(ModeQSO[M]);
    end;
 
-   Grid.ColCount := 10;
-   Grid.RowCount := 18;
+   Grid.ColCount := 11;
+   Grid.RowCount := R + 1;
 
    // カラム幅をセット
    w := Grid.Canvas.TextWidth('9');
@@ -158,15 +112,31 @@ begin
    Grid.ColWidths[7] := w * 7;
    Grid.ColWidths[8] := w * 7;
    Grid.ColWidths[9] := w * 7;
+   Grid.ColWidths[10] := w * 7;
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
 end;
 
-procedure TPediScore.AddNoUpdate(var aQSO: TQSO);
+procedure TPediScore.AddNoUpdate(aQSO: TQSO);
+var
+   P: TPrefix;
+   C: TCountry;
 begin
    aQSO.points := 1;
    Inc(Stats[aQSO.band, aQSO.Mode]);
+
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
 end;
 
 procedure TPediScore.Reset;
@@ -175,22 +145,10 @@ var
    M: TMode;
 begin
    for b := b19 to HiBand do begin
-      for M := mCW to mOther do begin
+      for M := mCW to LastMode do begin
          Stats[b, M] := 0;
       end;
    end;
-end;
-
-function TPediScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TPediScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

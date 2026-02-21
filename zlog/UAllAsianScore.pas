@@ -13,15 +13,15 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
-    procedure CalcPoints(var aQSO : TQSO);
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    procedure CalcPoints(aQSO : TQSO);
   end;
 
 implementation
 
 {$R *.DFM}
 
-procedure TAllAsianScore.CalcPoints(var aQSO: TQSO);
+procedure TAllAsianScore.CalcPoints(aQSO: TQSO);
 begin
    case aQSO.Band of
       b19:
@@ -33,7 +33,7 @@ begin
    end;
 end;
 
-procedure TAllAsianScore.AddNoUpdate(var aQSO: TQSO);
+procedure TAllAsianScore.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
 begin

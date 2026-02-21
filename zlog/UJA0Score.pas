@@ -7,25 +7,21 @@ uses
   UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
   UzLogConst, UzLogGlobal, UzLogQSO, Vcl.Menus;
 
+const
+  JA0Band: array[0..4] of TBand = ( b19, b35, b7, b21, b28 );
+
 type
   TJA0Score = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
     { Public declarations }
-    JA0Band : TBand;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
-    function IsJA0(aQSO : TQSO) : boolean;
-    procedure SetBand(B : TBand);
-    property FontSize: Integer read GetFontSize write SetFontSize;
+    function IsJA0(aQSO : TQSO): Boolean;
+    function IsJA0Band(b: TBand): Boolean;
   end;
 
 implementation
@@ -41,12 +37,6 @@ begin
    Button1.SetFocus;
    Grid.Col := 1;
    Grid.Row := 1;
-end;
-
-procedure TJA0Score.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TJA0Score.Reset;
@@ -70,91 +60,162 @@ begin
    end;
 end;
 
-procedure TJA0Score.AddNoUpdate(var aQSO : TQSO);
+function TJA0Score.IsJA0Band(b: TBand): Boolean;
+var
+   i: Integer;
+begin
+   for i := Low(JA0Band) to High(JA0Band) do begin
+      if JA0Band[i] = b then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+   Result := False;
+end;
+
+procedure TJA0Score.AddNoUpdate(aQSO: TQSO);
 begin
    inherited;
+
+   if IsJA0Band(aQSO.Band) = False then begin
+      Exit;
+   end;
 
    if aQSO.Dupe then begin
       Exit;
    end;
 
-   if IsJA0(aQSO) then begin
-      aQSO.Points := 3;
+   if FValidQso = True then begin
+      if IsJA0(aQSO) then begin
+         aQSO.Points := 3;
+      end
+      else begin
+         aQSO.Points := 1;
+      end;
    end
    else begin
-      aQSO.Points := 1;
+      aQSO.Points := 0;
    end;
 
    Inc(Points[aQSO.band], aQSO.Points);
 end;
 
 procedure TJA0Score.UpdateData;
+var
+   band: TBand;
+   TotQSO, TotPoints, TotMulti: Integer;
+   row: Integer;
+   i: Integer;
+   DispColCount: Integer;
+   strScore: string;
+   w: Integer;
 begin
+   Grid.ColCount := 6;
+   TotQSO := 0;
+   TotPoints := 0;
+   TotMulti := 0;
+   row := 1;
+
    // 見出し行
    Grid.Cells[0,0] := 'MHz';
    Grid.Cells[1,0] := 'QSO';
    Grid.Cells[2,0] := 'Points';
    Grid.Cells[3,0] := 'Multi';
 
-   if (JA0Band = b21) or (JA0Band = b28) then begin
-      Grid.Cells[1, 1] := IntToStr3(QSO[b21]);
-      Grid.Cells[2, 1] := IntToStr3(Points[b21]);
-      Grid.Cells[3, 1] := IntToStr3(Multi[b21]);
-      Grid.Cells[1, 2] := IntToStr3(QSO[b28]);
-      Grid.Cells[2, 2] := IntToStr3(Points[b28]);
-      Grid.Cells[3, 2] := IntToStr3(Multi[b28]);
-      Grid.Cells[3, 3] := IntToStr3((Points[b21] + Points[b28]) * (Multi[b21] + Multi[b28]));
+   if ShowCWRatio then begin
+      Grid.Cells[4,0] := 'CW Q''s';
+      Grid.Cells[5,0] := 'CW %';
+      DispColCount := 6;
    end
    else begin
-      Grid.Cells[1, 1] := IntToStr3(QSO[JA0Band]);
-      Grid.Cells[2, 1] := IntToStr3(Points[JA0Band]);
-      Grid.Cells[3, 1] := IntToStr3(Multi[JA0Band]);
-      Grid.Cells[1, 2] := '';
-      Grid.Cells[2, 2] := '';
-      Grid.Cells[3, 2] := IntToStr3(Points[JA0Band] * Multi[JA0Band]);
-      Grid.Cells[3, 3] := '';
+      Grid.Cells[4,0] := '';
+      Grid.Cells[5,0] := '';
+      DispColCount := 4;
    end;
-end;
 
-procedure TJA0Score.SetBand(B : TBand);
-var
-   w: Integer;
-begin
-   JA0Band := B;
-   if (B = b21) or (B = b28) then begin
-      Grid.RowCount := 4;
-      Grid.Cells[0, 1] := MHzString[b21];
-      Grid.Cells[0, 2] := MHzString[b28];
-      Grid.Cells[0, 3] := 'Score';
+   // バンド別スコア行
+   for i := Low(JA0Band) to High(JA0Band) do begin
+      band := JA0Band[i];
+
+      // QRVできないバンドは除外
+      if dmZLogGlobal.Settings._activebands[band] = False then begin
+         Continue;
+      end;
+
+      TotPoints := TotPoints + Points[band];
+      TotMulti := TotMulti + Multi[band];
+      TotQSO := TotQSO + QSO[band];
+
+      // バンド別スコア
+      Grid.Cells[0, row] := '*' + MHzString[band];
+      Grid.Cells[1, row] := IntToStr3(QSO[band]);
+      Grid.Cells[2, row] := IntToStr3(Points[band]);
+      Grid.Cells[3, row] := IntToStr3(Multi[band]);
+
+      // CW率
+      if ShowCWRatio then begin
+         Grid.Cells[4, row] := IntToStr3(CWQSO[band]);
+         if QSO[band] > 0 then begin
+            Grid.Cells[5, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
+         end
+         else begin
+            Grid.Cells[5, row] := '-';
+         end;
+      end
+      else begin
+         Grid.Cells[4, row] := '';
+         Grid.Cells[5, row] := '';
+      end;
+
+      Inc(row);
+   end;
+
+   // 合計行
+   Grid.Cells[0, row] := 'Total';
+   Grid.Cells[1, row] := IntToStr3(TotQSO);
+   Grid.Cells[2, row] := IntToStr3(TotPoints);
+   Grid.Cells[3, row] := IntToStr3(TotMulti);
+
+   // CW率
+   if ShowCWRatio then begin
+      Grid.Cells[4, row] := IntToStr3(TotalCWQSOs);
+      if TotPoints > 0 then begin
+         Grid.Cells[5, row] := FloatToStrF(100 * (TotalCWQSOs / TotalQSOs), ffFixed, 1000, 1);
+      end
+      else begin
+         Grid.Cells[5, row] := '-';
+      end;
    end
    else begin
-      Grid.RowCount := 3;
-      Grid.Cells[0, 1] := MHzString[JA0Band];
-      Grid.Cells[0, 2] := 'Score';
-      Grid.Cells[0, 3] := '';
+      Grid.Cells[4, row] := '';
+      Grid.Cells[5, row] := '';
    end;
+   Inc(row);
+
+   // スコア行
+   strScore := IntToStr3(TotPoints * TotMulti);
+   Grid.Cells[0, row] := 'Score';
+   Grid.Cells[1, row] := '';
+   Grid.Cells[2, row] := '';
+   Grid.Cells[3, row] := strScore;
+   Grid.Cells[4, row] := '';
+   Grid.Cells[5, row] := '';
+   Inc(row);
+
+   // 行数をセット
+   Grid.RowCount := row;
 
    // カラム幅をセット
    w := Grid.Canvas.TextWidth('9');
-   Grid.ColWidths[0] := w * 8;
-   Grid.ColWidths[1] := w * 8;
-   Grid.ColWidths[2] := w * 9;
-   Grid.ColWidths[3] := w * Max(8, Length(Grid.Cells[3, 2])+1);
+   Grid.ColWidths[0] := w * 6;
+   Grid.ColWidths[1] := w * 7;
+   Grid.ColWidths[2] := w * 7;
+   Grid.ColWidths[3] := w * Max(8, Length(strScore)+1);
+   Grid.ColWidths[4] := w * 7;
+   Grid.ColWidths[5] := w * 7;
 
    // グリッドサイズ調整
-   AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-function TJA0Score.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TJA0Score.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
+   AdjustGridSize(Grid, DispColCount, Grid.RowCount);
 end;
 
 end.

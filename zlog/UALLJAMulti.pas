@@ -69,15 +69,15 @@ type
     procedure SelectBandTab(band: TBand; fInit: Boolean);
   public
     { Public declarations }
-    procedure UpdateBand(B : TBand);
+    procedure UpdateBand(B: TBand);
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    procedure Add(aQSO: TQSO); override;
     procedure Reset; override;
-    function ValidMulti(aQSO : TQSO) : Boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
-    function ExtractMulti(aQSO : TQSO) : string; override;
-    function IsNewMulti(aQSO : TQSO) : Boolean; override;
+    function ValidMulti(aQSO: TQSO): Boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
+    function ExtractMulti(aQSO: TQSO): string; override;
+    function IsNewMulti(aQSO: TQSO): Boolean; override;
     procedure SetNumberEditFocus; override;
   end;
 
@@ -135,6 +135,7 @@ begin
       for ken := m101 to m48 do begin
          MultiTable[band, ken] := False;
          KenLabels[band, ken] := TLabel.Create(Self);
+         KenLabels[band, ken].StyleElements := [seClient, seBorder];
       end;
    end;
 end;
@@ -156,7 +157,7 @@ begin
                   KenLabels[band, ken].Font.Size := FFontSize;
                   KenLabels[band, ken].ParentFont := False;
                   KenLabels[band, ken].Parent := PageControl.Pages[OldBandOrd(band) + 1];
-                  KenLabels[band, ken].Font.Color := clBlack;
+                  KenLabels[band, ken].Font.Color := dmZLogGlobal.ZNormalTextColor1;
                   KenLabels[band, ken].Caption := KenNames[ken];
 
                   w := KenLabels[band, ken].Canvas.TextWidth('X') * 12;
@@ -194,6 +195,14 @@ begin
    RotateLabel5.Left := RotateLabel4.Left + (w * 2);
    RotateLabel6.Left := RotateLabel5.Left + (w * 2);
    RotateLabel7.Left := RotateLabel6.Left + (w * 2);
+
+   RotateLabel1.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel2.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel3.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel4.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel5.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel6.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   RotateLabel7.Font.Color := dmZLogGlobal.ZNormalTextColor1;
 end;
 
 procedure TALLJAMulti.SelectBandTab(band: TBand; fInit: Boolean);
@@ -213,15 +222,17 @@ begin
    end;
 end;
 
-procedure TALLJAMulti.UpdateBand(B : TBand);
+procedure TALLJAMulti.UpdateBand(B: TBand);
 var
-   K : TKen;
+   K: TKen;
 begin
    for K := m101 to m48 do begin
-      if MultiTable[B, K] then
-         KenLabels[B, K].Font.Color := clRed
-      else
-         KenLabels[B, K].Font.Color := clBlack;
+      if MultiTable[B, K] then begin
+         KenLabels[B, K].Font.Color := dmZLogGlobal.ZConfirmedTextColor;
+      end
+      else begin
+         KenLabels[B, K].Font.Color := dmZLogGlobal.ZNormalTextColor1;
+      end;
    end;
 end;
 
@@ -290,7 +301,7 @@ begin
    Result := str;
 end;
 
-procedure TALLJAMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TALLJAMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    K: TKen;
@@ -302,6 +313,11 @@ begin
    aQSO.Multi1 := str;
 
    if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      aQSO.Points := 0;
       Exit;
    end;
 
@@ -322,7 +338,7 @@ begin
    LatestMultiAddition := Integer(K);
 end;
 
-procedure TALLJAMulti.Add(var aQSO: TQSO);
+procedure TALLJAMulti.Add(aQSO: TQSO);
 begin
    inherited;
 end;

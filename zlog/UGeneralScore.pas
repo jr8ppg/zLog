@@ -10,24 +10,18 @@ uses
 
 type
   TGeneralScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FConfig: TUserDefinedContest;
   public
     { Public declarations }
     formMulti: TGeneralMulti2;
-    procedure CalcPoints(var aQSO : TQSO);
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure CalcPoints(aQSO: TQSO);
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     procedure Reset; override;
-    procedure Add(var aQSO : TQSO); override; {calculates points}
-    property FontSize: Integer read GetFontSize write SetFontSize;
+    procedure Add(aQSO: TQSO); override; {calculates points}
     property Config: TUserDefinedContest read FConfig write FConfig;
   end;
 
@@ -46,12 +40,6 @@ begin
    Grid.row := 1;
 end;
 
-procedure TGeneralScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
 procedure TGeneralScore.UpdateData;
 var
    band: TBand;
@@ -65,6 +53,7 @@ var
 begin
    Inherited;
 
+   Grid.ColCount := 8;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti1 := 0;
@@ -96,6 +85,11 @@ begin
       TotPoints := TotPoints + Points[band];
       TotMulti1 := TotMulti1 + Multi[band];
       TotMulti2 := TotMulti2 + Multi2[band];
+
+      // 10G
+      if (band = b104g) and (FConfig.Single10G = True) then begin
+         Continue;
+      end;
 
       if (MainForm.BandMenu.Items[Ord(band)].Visible = True) and
          (dmZlogGlobal.Settings._activebands[band] = True) then begin
@@ -252,17 +246,19 @@ begin
    AdjustGridSize(Grid, DispColCount, Grid.RowCount);
 end;
 
-procedure TGeneralScore.CalcPoints(var aQSO: TQSO);
+procedure TGeneralScore.CalcPoints(aQSO: TQSO);
 var
    i: Integer;
    ch: Char;
    C: TCountry;
+   b: TBand;
 begin
    if zyloRequestScore(aQSO) = True then begin
       Exit;
    end;
 
-   aQSO.Points := FConfig.PointsTable[aQSO.band, aQSO.Mode];
+   b := aQSO.Band;
+   aQSO.Points := FConfig.PointsTable[b, aQSO.Mode];
 
    if FConfig.UseCtyDat then begin
       if FConfig.SameCTYPoints or FConfig.SameCONTPoints then begin
@@ -270,15 +266,16 @@ begin
          if (i < dmZLogGlobal.CountryList.Count) and (i >= 0) then begin
             C := TCountry(dmZLogGlobal.CountryList.List[i]);
             if FConfig.SameCTYPoints and (C.Country = dmZLogGlobal.MyCountry) then
-               aQSO.Points := FConfig.SameCTYPointsTable[aQSO.band, aQSO.Mode]
+               aQSO.Points := FConfig.SameCTYPointsTable[b, aQSO.Mode]
             else if FConfig.SameCONTPoints and (C.Continent = dmZLogGlobal.MyContinent) then
-               aQSO.Points := FConfig.SameCONTPointsTable[aQSO.band, aQSO.Mode];
+               aQSO.Points := FConfig.SameCONTPointsTable[b, aQSO.Mode];
          end;
       end;
    end;
 
-   if formMulti.IsLocal(aQSO) then
-      aQSO.Points := FConfig.LocalPointsTable[aQSO.band, aQSO.Mode];
+   if formMulti.IsLocal(aQSO) then begin
+      aQSO.Points := FConfig.LocalPointsTable[b, aQSO.Mode];
+   end;
 
    if FConfig.AlphabetPoints then begin
       aQSO.Points := 0;
@@ -292,38 +289,44 @@ begin
 
    if FConfig.SpecialCalls <> '' then begin
       if FConfig.IsSpecialCallMatch(aQSO.Callsign) = True then begin
-         aQSO.Points := FConfig.SpecialCallPointsTable[aQSO.band, aQSO.Mode];
+         aQSO.Points := FConfig.SpecialCallPointsTable[b, aQSO.Mode];
       end;
    end;
 end;
 
-procedure TGeneralScore.AddNoUpdate(var aQSO: TQSO);
+procedure TGeneralScore.AddNoUpdate(aQSO: TQSO);
 var
    i: Integer;
    tempQSO: TQSO;
 begin
    inherited;
 
-   if aQSO.Dupe then
+   if aQSO.Dupe then begin
       exit;
-
-   CalcPoints(aQSO);
-
-   if Log.CountHigherPoints = true then begin
-      i := Log.DifferentModePointer;
-      If i > 0 then begin
-         if Log.QsoList[i].Points < aQSO.Points then begin
-            tempQSO := Log.QsoList[i];
-            Dec(Points[tempQSO.band], tempQSO.Points);
-            Log.QsoList[i].Points := 0;
-            // NeedRefresh := True;
-         end
-         else
-            aQSO.Points := 0;
-      end;
    end;
 
-   inc(Points[aQSO.band], aQSO.Points);
+   if FValidQso = True then begin
+      CalcPoints(aQSO);
+
+      if Log.CountHigherPoints = true then begin
+         i := Log.DifferentModePointer;
+         If i > 0 then begin
+            if Log.QsoList[i].Points < aQSO.Points then begin
+               tempQSO := Log.QsoList[i];
+               Dec(Points[tempQSO.band], tempQSO.Points);
+               Log.QsoList[i].Points := 0;
+               // NeedRefresh := True;
+            end
+            else
+               aQSO.Points := 0;
+         end;
+      end;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
+   Inc(Points[aQSO.band], aQSO.Points);
 end;
 
 procedure TGeneralScore.Reset;
@@ -331,21 +334,9 @@ begin
    inherited;
 end;
 
-procedure TGeneralScore.Add(var aQSO: TQSO);
+procedure TGeneralScore.Add(aQSO: TQSO);
 begin
    inherited;
-end;
-
-function TGeneralScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TGeneralScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

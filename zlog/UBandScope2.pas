@@ -94,6 +94,18 @@ type
     menuEditBlockList: TMenuItem;
     buttonToggleAllCur: TSpeedButton;
     buttonToggleCQonly: TSpeedButton;
+    panelSpotFinder: TPanel;
+    editSpotFilter: TEdit;
+    N5: TMenuItem;
+    menuShowSearchBar: TMenuItem;
+    buttonFilterClear: TButton;
+    buttonSpotFilterLink: TSpeedButton;
+    menuBS16: TMenuItem;
+    menuBS17: TMenuItem;
+    menuBS18: TMenuItem;
+    menuBS19: TMenuItem;
+    menuBS20: TMenuItem;
+    menuBS21: TMenuItem;
     procedure menuDeleteSpotClick(Sender: TObject);
     procedure menuDeleteAllWorkedStationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -136,9 +148,13 @@ type
     procedure menuEditBlockListClick(Sender: TObject);
     procedure buttonToggleAllCurClick(Sender: TObject);
     procedure buttonToggleCQonlyClick(Sender: TObject);
+    procedure menuShowSearchBarClick(Sender: TObject);
+    procedure editSpotFilterChange(Sender: TObject);
+    procedure buttonFilterClearClick(Sender: TObject);
+    procedure buttonSpotFilterLinkClick(Sender: TObject);
   private
     { Private 宣言 }
-    FBandScopeMenu: array[b19..b10g] of TMenuItem;
+    FBandScopeMenu: array[b19..b248g] of TMenuItem;
 
     FProcessing: Boolean;
 
@@ -161,6 +177,8 @@ type
 
     FUseResume: Boolean;
     FResumeSpotFile: string;
+
+    FSearchSpotList: TStringList;
 
     procedure AddBSList(D : TBSData);
     procedure AddAndDisplay(D : TBSData);
@@ -192,6 +210,14 @@ type
     function IsBlocked(strCallsign: string; b: TBand): Boolean;
     procedure SelectAllTab();
     procedure SelectBandTab(b: TBand);
+    function IsTargetSpot(D: TBSData): Boolean;
+    function GetFilterText(): string;
+    procedure SetFilterText(v: string);
+    function GetSpotFilterLink(): Boolean;
+    procedure SetSpotFilterLink(v: Boolean);
+    procedure CopySpotFilterCopy();
+    function GetShowSearchBar(): Boolean;
+    procedure SetShowSearchBar(v: Boolean);
   public
     { Public 宣言 }
     constructor Create(AOwner: TComponent; b: TBand); reintroduce;
@@ -222,15 +248,18 @@ type
     property CurrentBand: TBand read FCurrBand write SetCurrentBand;
     property UseResume: Boolean read FUseResume write FUseResume;
     property Style: TBandScopeStyle read FBandScopeStyle write SetBandScopeStyle;
+    property FilterText: string read GetFilterText write SetFilterText;
+    property SpotFilterLink: Boolean read GetSpotFilterLink write SetSpotFilterLink;
+    property ShowSearchBar: Boolean read GetShowSearchBar write SetShowSearchBar;
   end;
 
-  TBandScopeArray = array[b19..b10g] of TBandScope2;
+  TBandScopeArray = array[b19..b248g] of TBandScope2;
 
 var
   CurrentRigFrequency : TFrequency; // in Hertz
-  BSBlockList: array[b19..b10g] of TStringList;
-  BSBLLock: array[b19..b10g] of TCriticalSection;
-  BSBLResumeFile: array[b19..b10g] of string;
+  BSBlockList: array[b19..b248g] of TStringList;
+  BSBLLock: array[b19..b248g] of TCriticalSection;
+  BSBLResumeFile: array[b19..b248g] of string;
 
 resourcestring
   SHOW_ALLBANDS = 'To ALL';
@@ -259,6 +288,7 @@ begin
    buttonShowWorked.Down := True;
    FUseResume := False;
    FResumeSpotFile := '';
+   FSearchSpotList := TStringList.Create();
 
    RenewTab();
 end;
@@ -266,6 +296,16 @@ end;
 destructor TBandScope2.Destroy();
 begin
    Inherited;
+   FSearchSpotList.Free();
+end;
+
+procedure TBandScope2.editSpotFilterChange(Sender: TObject);
+begin
+   FSearchSpotList.CommaText := Trim(editSpotFilter.Text);
+
+   if SpotFilterLink = True then begin
+      CopySpotFilterCopy();
+   end;
 end;
 
 procedure TBandScope2.AddBSList(D: TBSData);
@@ -788,6 +828,12 @@ end;
 
 function TBandScope2.IsShowData(D: TBSData): Boolean;
 begin
+   // find targetかどうか
+   if IsTargetSpot(D) = False then begin
+      Result := False;
+      Exit;
+   end;
+
    // Workedの有無で判定
    if (FBandScopeStyle in [bssCurrentBand, bssAllBands, bssByBand]) and
       (buttonShowWorked.Down = False) and (D.Worked = True) then begin
@@ -942,6 +988,22 @@ begin
    end;
 end;
 
+procedure TBandScope2.menuShowSearchBarClick(Sender: TObject);
+var
+   i: Integer;
+begin
+   if Self.SpotFilterLink = False then begin
+      ShowSearchBar := menuShowSearchBar.Checked;
+   end
+   else begin
+      for i := 0 to (Screen.FormCount - 1) do begin
+         if Screen.Forms[i] is TBandScope2 then begin
+            TBandScope2(Screen.Forms[i]).ShowSearchBar := menuShowSearchBar.Checked;
+         end;
+      end;
+   end;
+end;
+
 procedure TBandScope2.menuBS00Click(Sender: TObject);
 var
    b: TBand;
@@ -1074,8 +1136,14 @@ begin
    FBandScopeMenu[b2400] := menuBS13;
    FBandScopeMenu[b5600] := menuBS14;
    FBandScopeMenu[b10g] := menuBS15;
+   FBandScopeMenu[b104g] := menuBS16;
+   FBandScopeMenu[b24g] := menuBS17;
+   FBandScopeMenu[b47g] := menuBS18;
+   FBandScopeMenu[b77g] := menuBS19;
+   FBandScopeMenu[b135g] := menuBS20;
+   FBandScopeMenu[b248g] := menuBS21;
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       FBandScopeMenu[b].Caption := BandString[b];
    end;
 
@@ -1362,7 +1430,7 @@ begin
 
          {$IFDEF DEBUG}
 //         strText := strText + ' (' + IntToStr(sec) + ')';
-         if D.Mode <= mOther then begin
+         if D.Mode <= LastMode then begin
             strText := strText + ' (' + ModeString[D.Mode][1] + ')';
 
             case D.SpotQuality of
@@ -1761,6 +1829,21 @@ begin
       buttonToggleAllCur.Visible := False;
    end;
 
+   // Resumeファイル名
+   case FBandScopeStyle of
+      bssAllBands: begin
+         FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_allbands.txt';
+      end;
+      bssNewMulti: begin
+         FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_newmulti.txt';
+      end;
+      bssCurrentBand: begin
+         FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_currentband.txt';
+      end
+      else begin
+         FResumeSpotFile := dmZLogGlobal.BsResumePath + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
+      end;
+   end;
 end;
 
 procedure TBandScope2.SetCaption();
@@ -1885,6 +1968,11 @@ begin
    FBSLock.Leave();
 end;
 
+procedure TBandScope2.buttonFilterClearClick(Sender: TObject);
+begin
+   Self.FilterText := '';
+end;
+
 procedure TBandScope2.buttonShowWorkedClick(Sender: TObject);
 begin
    FDisplayMode := GetDisplayMode();
@@ -1937,6 +2025,19 @@ begin
 
    SetDisplayModeState(False);
    RewriteBandScope();
+end;
+
+procedure TBandScope2.buttonSpotFilterLinkClick(Sender: TObject);
+var
+   i: Integer;
+begin
+   for i := 0 to (Screen.FormCount - 1) do begin
+      if Screen.Forms[i] is TBandScope2 then begin
+         if Screen.Forms[i] <> Self then begin
+            TBandScope2(Screen.Forms[i]).SpotFilterLink := Self.SpotFilterLink;
+         end;
+      end;
+   end;
 end;
 
 procedure TBandScope2.buttonToggleAllCurClick(Sender: TObject);
@@ -2083,6 +2184,8 @@ begin
    ini.WriteInteger(section, 'FreqSortOrder', buttonSortByFreq.ImageIndex);
    ini.WriteInteger(section, 'TimeSortOrder', buttonSortByTime.ImageIndex);
    ini.WriteBool(section, 'Open', Visible);
+   ini.WriteBool(section, 'SpotFilterLink', buttonSpotFilterLink.Down);
+   ini.WriteBool(section, 'ShowSearchBar', menuShowSearchBar.Checked);
 end;
 
 procedure TBandScope2.LoadSettings(ini: TMemIniFile; section: string);
@@ -2114,6 +2217,9 @@ begin
       0, 1: buttonSortByFreq.Down := True;
       2, 3: buttonSortByTime.Down := True;
    end;
+   buttonSpotFilterLink.Down := ini.ReadBool(section, 'SpotFilterLink', True);
+   menuShowSearchBar.Checked := ini.ReadBool(section, 'ShowSearchBar', False);
+   panelSpotFinder.Visible := menuShowSearchBar.Checked;
 
    FInitialVisible := ini.ReadBool(section, 'Open', False);
    Visible := FInitialVisible;
@@ -2144,21 +2250,6 @@ end;
 procedure TBandScope2.Resume();
 begin
    if FUseResume = True then begin
-      case FBandScopeStyle of
-         bssAllBands: begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_allbands.txt';
-         end;
-         bssNewMulti: begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_newmulti.txt';
-         end;
-         bssCurrentBand: begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_currentband.txt';
-         end
-         else begin
-            FResumeSpotFile := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_' + ADIFBandString[FCurrBand] + '.txt';
-         end;
-      end;
-
       if FileExists(FResumeSpotFile) then begin
          FBSList.LoadFromFile(FResumeSpotFile);
       end;
@@ -2171,7 +2262,7 @@ var
 begin
    tabctrlBandSelector.Tabs.Clear();
    tabctrlBandSelector.Tabs.Add('ALL');
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       if dmZLogGlobal.Settings._usebandscope[b] = True then begin
          tabctrlBandSelector.Tabs.Add(MHzString[b]);
       end;
@@ -2231,10 +2322,12 @@ begin
    menuBSNewMulti.Visible := dmZLogGlobal.Settings._usebandscope_newmulti;
    menuBSNewMulti.Checked := MainForm.BandScopeNewMulti.Visible;
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       FBandScopeMenu[b].Visible := dmZLogGlobal.Settings._usebandscope[b];
       FBandScopeMenu[b].Checked := MainForm.BandScopeEx[b].Visible;
    end;
+
+   menuShowSearchBar.Checked := panelSpotFinder.Visible;
 end;
 
 function TBandScope2.TabIndexToBand(TabIndex: Integer): TBand;
@@ -2244,7 +2337,7 @@ var
 begin
    S := tabctrlBandSelector.Tabs[TabIndex];
 
-   for b := b19 to b10g do begin
+   for b := b19 to b248g do begin
       if MHzString[b] = S then begin
          Result := b;
          Exit;
@@ -2296,23 +2389,88 @@ begin
    RewriteBandScope();
 end;
 
+function TBandScope2.IsTargetSpot(D: TBSData): Boolean;
+var
+   i: Integer;
+begin
+   if FSearchSpotList.Count = 0 then begin
+      Result := True;
+      Exit;
+   end;
+
+   for i := 0 to FSearchSpotList.Count - 1 do begin
+      if Pos(FSearchSpotList[i], D.Call) > 0 then begin
+         Result := True;
+         Exit;
+      end;
+   end;
+
+   Result := False;
+end;
+
+function TBandScope2.GetFilterText(): string;
+begin
+   Result := editSpotFilter.Text;
+end;
+
+procedure TBandScope2.SetFilterText(v: string);
+begin
+   editSpotFilter.Text := v;
+end;
+
+function TBandScope2.GetSpotFilterLink(): Boolean;
+begin
+   Result := buttonSpotFilterLink.Down;
+end;
+
+procedure TBandScope2.SetSpotFilterLink(v: Boolean);
+begin
+   buttonSpotFilterLink.Down := v;
+end;
+
+procedure TBandScope2.CopySpotFilterCopy();
+var
+   i: Integer;
+begin
+   for i := 0 to (Screen.FormCount - 1) do begin
+      if Screen.Forms[i] is TBandScope2 then begin
+         if Screen.Forms[i] <> Self then begin
+            TBandScope2(Screen.Forms[i]).FilterText := Self.FilterText;
+         end;
+      end;
+   end;
+end;
+
+function TBandScope2.GetShowSearchBar(): Boolean;
+begin
+   Result := panelSpotFinder.Visible;
+end;
+
+procedure TBandScope2.SetShowSearchBar(v: Boolean);
+begin
+   panelSpotFinder.Visible := v;
+end;
+
 initialization
    CurrentRigFrequency := 0;
-   for var b := b19 to b10g do begin
+   for var b := b19 to b248g do begin
       BSBLLock[b] := TCriticalSection.Create();
       BSBlockList[b] := TStringList.Create();
       BSBLResumeFile[b] := ExtractFilePath(Application.ExeName) + 'zlog_bandscope_bl_' + ADIFBandString[b] + '.txt';
       if FileExists(BSBLResumeFile[b]) then begin
          BSBlockList[b].LoadFromFile(BSBLResumeFile[b]);
+         if BSBlockList[b].Count = 0 then begin
+            DeleteFile(BSBLResumeFile[b]);
+         end;
       end;
    end;
 
 finalization
-   for var b := b19 to b10g do begin
+   for var b := b19 to b248g do begin
       FreeAndNil(BSBLLock[b]);
    end;
-   for var b := b19 to b10g do begin
-      if (BSBLResumeFile[b] <> '') then begin
+   for var b := b19 to b248g do begin
+      if (BSBLResumeFile[b] <> '') and (BSBlockList[b].Count > 0) then begin
          BSBlockList[b].SaveToFile(BSBLResumeFile[b]);
       end;
       FreeAndNil(BSBlockList[b]);

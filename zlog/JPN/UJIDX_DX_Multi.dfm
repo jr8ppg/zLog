@@ -2,8 +2,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
   Left = -31
   Top = 248
   Caption = 'Multipliers'
+  StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object TabControl: TTabControl
     Left = 0
@@ -33,7 +33,6 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       Top = 57
       Width = 57
       Height = 201
-      OnClickCheck = CheckListBoxClickCheck
       Align = alClient
       BorderStyle = bsNone
       Color = clBtnFace
@@ -97,6 +96,7 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
         '50 Minami-torishima')
       ParentFont = False
       TabOrder = 0
+      OnClickCheck = CheckListBoxClickCheck
     end
     object Panel1: TPanel
       Left = 4
@@ -109,8 +109,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel2: TRotateLabel
         Left = 152
         Top = 9
-        Width = 14
-        Height = 15
+        Width = 15
+        Height = 14
         Escapement = 90
         TextStyle = tsNone
         Caption = '3.5'
@@ -125,8 +125,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel1: TRotateLabel
         Left = 138
         Top = 9
-        Width = 14
-        Height = 15
+        Width = 15
+        Height = 14
         Escapement = 90
         TextStyle = tsNone
         Caption = '1.9'
@@ -141,8 +141,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel3: TRotateLabel
         Left = 166
         Top = 9
-        Width = 14
-        Height = 15
+        Width = 15
+        Height = 14
         Escapement = 90
         TextStyle = tsNone
         Caption = '7   '
@@ -157,8 +157,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel4: TRotateLabel
         Left = 181
         Top = 12
-        Width = 14
-        Height = 12
+        Width = 12
+        Height = 14
         Escapement = 90
         TextStyle = tsNone
         Caption = '14'
@@ -173,8 +173,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel5: TRotateLabel
         Left = 195
         Top = 12
-        Width = 14
-        Height = 12
+        Width = 12
+        Height = 14
         Escapement = 90
         TextStyle = tsNone
         Caption = '21'
@@ -189,8 +189,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       object RotateLabel6: TRotateLabel
         Left = 209
         Top = 12
-        Width = 14
-        Height = 12
+        Width = 12
+        Height = 14
         Escapement = 90
         TextStyle = tsNone
         Caption = '28'

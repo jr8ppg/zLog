@@ -44,6 +44,7 @@ contains
   Cologrid in 'cologrid\Cologrid.pas',
   OEDIT in 'OEDIT.PAS',
   CONSOLE2 in 'CONSOLE2.PAS',
-  SunTime in 'SunTime.pas';
+  SunTime in 'SunTime.pas',
+  RLed in 'RLed.pas';
 
 end.

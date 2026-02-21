@@ -152,8 +152,8 @@ var
 begin
    txt := Grid.Cells[ACol, ARow];
    with Grid.Canvas do begin
-      fg := clBlack;
-      bg := clWhite;
+      fg := dmZLogGlobal.ZNormalTextColor1;
+      bg := dmZLogGlobal.ZBackColor;
 
       Pen.Color := bg;
       Pen.Style := psSolid;

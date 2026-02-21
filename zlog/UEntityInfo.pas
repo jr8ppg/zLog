@@ -87,11 +87,11 @@ var
 begin
    rect.Top := 0;
    rect.Left := 0;
-   rect.Right := 199;
-   rect.Bottom := 199;
-   FBitmap.Canvas.Pen.Color := clWhite;
+   rect.Right := 200;
+   rect.Bottom := 200;
+   FBitmap.Canvas.Pen.Color := dmZLogGlobal.ZBackColor;
    FBitmap.Canvas.Pen.Style := psSolid;
-   FBitmap.Canvas.Brush.Color := clWhite;
+   FBitmap.Canvas.Brush.Color := dmZLogGlobal.ZBackColor;
    FBitmap.Canvas.Brush.Style := bsSolid;
    FBitmap.Canvas.FillRect(rect);
    panelCountryName.Caption := '';
@@ -113,7 +113,7 @@ begin
    // ínãÖÇÃîºåa
    r := 6378.137;
 
-   x1 := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0) * -1;
+   x1 := StrToFloatDef(dmZLogGlobal.Settings._mylongitude, 0);
    y1 := StrToFloatDef(dmZLogGlobal.Settings._mylatitude, 0);
    x2 := StrToFloatDef(ctydat.Longitude, 0) * -1;
    y2 := StrToFloatDef(ctydat.Latitude, 0);
@@ -187,15 +187,16 @@ begin
    ey := cy + Round(cl * Cos(rad));
 
    // äOòg
-   FBitmap.Canvas.Pen.Color := clBlack;
+   FBitmap.Canvas.Pen.Color := dmZLogGlobal.ZNormalTextColor1;
    FBitmap.Canvas.Pen.Width := 1;
    FBitmap.Canvas.Brush.Style := bsClear;
    FBitmap.Canvas.Ellipse(cx - (cl + 2), cy - (cl + 2), cx + (cl + 2), cy + (cl + 2));
 
    // ï˚à ï\é¶
-   FBitmap.Canvas.Brush.Color := clWhite;
+   FBitmap.Canvas.Brush.Color := dmZLogGlobal.ZBackColor;
    FBitmap.Canvas.Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
    FBitmap.Canvas.Font.Size := 12;
+   FBitmap.Canvas.Font.Color := dmZLogGlobal.ZNormalTextColor1;
    w := FBitmap.Canvas.TextWidth('X');
    h := FBitmap.Canvas.TextHeight('X');
 
@@ -225,7 +226,7 @@ begin
 
    // ê^ÇÒíÜÇÃä€
    FBitmap.Canvas.Pen.Width := 1;
-   FBitmap.Canvas.Brush.Color := clBlack;
+   FBitmap.Canvas.Brush.Color := dmZLogGlobal.ZBackColor;
    FBitmap.Canvas.Ellipse(cx - 4, cy - 4, cx + 4, cy + 4);
 
    // ï˚å¸

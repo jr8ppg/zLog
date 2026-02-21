@@ -18,22 +18,23 @@ type
     function GetIsIncrementalSearchPresent(): Boolean; override;
   private
     { Private declarations }
-    IslandList : TIslandList;
+    IslandList: TIslandList;
     procedure GoForwardMatch(strCode: string);
   public
     { Public declarations }
-    MyIOTA, MyDXCC : string;
-    function ExtractMulti(aQSO : TQSO) : string; override;
+    MyDXCC: string;
+    function ExtractMulti(aQSO: TQSO): string; override;
     procedure Reset; override;
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
   end;
 
 implementation
 
-uses Main, UNewIOTARef, UOptions, UIOTACategory;
+uses
+  Main, UNewIOTARef, UOptions;
 
 {$R *.DFM}
 
@@ -95,12 +96,14 @@ begin
    end;
 end;
 
-procedure TIOTAMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TIOTAMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    i: Integer;
-   C: TIsland;
+   island: TIsland;
    f: TNewIOTARef;
+   P: TPrefix;
+   C: TCountry;
 begin
    f := TNewIOTARef.Create(Self);
    try
@@ -109,28 +112,46 @@ begin
 
       if str = '' then
          aQSO.Points := 3
-      else if str = MyIOTA then
+      else if str = dmZLogGlobal.Settings._myiota then
          aQSO.Points := 3
       else
          aQSO.Points := 15;
 
       aQSO.Multi1 := str;
 
-      if aQSO.Dupe then
-         exit;
+      if aQSO.Dupe then begin
+         Exit;
+      end;
 
-      if str = '' then
-         exit;
+      if str = '' then begin
+         Exit;
+      end;
+
+      if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+         Exit;
+      end;
+
+      P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+      C := P.Country;
+
+      if (P = nil) or (P.OvrContinent = '') then begin
+         aQSO.Continent := C.Continent;
+      end
+      else begin
+         aQSO.Continent := P.OvrContinent;
+      end;
+
+      aQSO.Entity := C.Country;
 
       for i := 0 to IslandList.List.Count - 1 do begin
-         C := TIsland(IslandList.List[i]);
-         if str = C.RefNumber then begin
-            if C.Worked[aQSO.band, aQSO.Mode] = False then begin
-               C.Worked[aQSO.band, aQSO.Mode] := True;
+         island := TIsland(IslandList.List[i]);
+         if str = island.RefNumber then begin
+            if island.Worked[aQSO.band, aQSO.Mode] = False then begin
+               island.Worked[aQSO.band, aQSO.Mode] := True;
                aQSO.NewMulti1 := True;
             end;
             LatestMultiAddition := i;
-            exit;
+            Exit;
          end;
       end;
 
@@ -139,10 +160,10 @@ begin
          exit;
       end;
 
-      C := TIsland.Create;
-      C.Name := f.GetName;
-      C.RefNumber := str;
-      C.Worked[aQSO.band, aQSO.Mode] := True;
+      island := TIsland.Create;
+      island.Name := f.GetName;
+      island.RefNumber := str;
+      island.Worked[aQSO.band, aQSO.Mode] := True;
       aQSO.NewMulti1 := True;
 
       // Å´Ç«Ç§çlÇ¶ÇƒÇ‡ÉoÉOÇ¡ÇƒÇ¢ÇÈ
@@ -204,6 +225,9 @@ begin
    end;
 
    M := Main.CurrentQSO.Mode;
+   if (M <> mCW) and (M <> mSSB) then begin
+      M := mCW;
+   end;
 
    for i := 0 to IslandList.List.Count - 1 do begin
       C := TIsland(IslandList.List[i]);
@@ -226,7 +250,6 @@ end;
 procedure TIOTAMulti.FormCreate(Sender: TObject);
 var
    P: TPrefix;
-   dlg: TIOTACategory;
    strCallsign: string;
 begin
    // inherited;
@@ -237,20 +260,6 @@ begin
    strCallsign := UpperCase(dmZLogGlobal.MyCall);
    P := dmZLogGlobal.GetPrefix(strCallsign);
    MyDXCC := P.Country.Country;
-
-   dlg := TIOTACategory.Create(MainForm);
-   try
-      dlg.Label1.Caption := MyDXCC;
-
-      if dlg.ShowModal = mrOK then begin // OKÇµÇ©Ç»Ç¢ÇØÇ«...
-         MyIOTA := dlg.GetIOTA;
-      end
-      else begin
-         MyIOTA := '';
-      end;
-   finally
-      dlg.Release();
-   end;
 end;
 
 procedure TIOTAMulti.GoButtonClick2(Sender: TObject);

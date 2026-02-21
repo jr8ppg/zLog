@@ -8,7 +8,7 @@ uses
   Dialogs, Menus, FileCtrl, JvExStdCtrls, JvCombobox, JvColorCombo,
   Generics.Collections, Generics.Defaults, WinApi.CommCtrl,
   UIntegerDialog, UzLogConst, UzLogGlobal, UzLogSound, UOperatorEdit,
-  UzLogOperatorInfo, UTelnetSetting, UParallelPort;
+  UzLogOperatorInfo, UTelnetSetting, UParallelPort, UAudioInputDlg;
 
 type
   TformOptions = class(TForm)
@@ -79,9 +79,7 @@ type
     Label103: TLabel;
     tabsheetHardware3: TTabSheet;
     groupOptCI_V: TGroupBox;
-    Label83: TLabel;
     Label84: TLabel;
-    comboIcomMode: TComboBox;
     comboIcomMethod: TComboBox;
     groupOptCwPtt: TGroupBox;
     Label38: TLabel;
@@ -294,9 +292,9 @@ type
     spinSo2rAccelerateCW: TSpinEdit;
     GroupBox1: TGroupBox;
     radio1Radio: TRadioButton;
-    radio2Radio: TRadioButton;
-    Label1: TLabel;
-    Label2: TLabel;
+    radio2RadioH: TRadioButton;
+    label1RadioText: TLabel;
+    label2RadioHText: TLabel;
     checkWkAlways9600: TCheckBox;
     groupRcSleepMode: TGroupBox;
     groupRcGeneral: TGroupBox;
@@ -406,6 +404,58 @@ type
     radioSo2rParallel: TRadioButton;
     checkUseCanSend: TCheckBox;
     radioSo2rMk2r: TRadioButton;
+    checkRig1UsePolling: TCheckBox;
+    checkRig2UsePolling: TCheckBox;
+    checkRig3UsePolling: TCheckBox;
+    checkRig4UsePolling: TCheckBox;
+    Label41: TLabel;
+    comboRigA_b104g: TComboBox;
+    comboRigA_Antb104g: TComboBox;
+    Label47: TLabel;
+    comboRigA_b24g: TComboBox;
+    comboRigA_Antb24g: TComboBox;
+    Label48: TLabel;
+    comboRigA_b47g: TComboBox;
+    comboRigA_Antb47g: TComboBox;
+    Label49: TLabel;
+    comboRigA_b77g: TComboBox;
+    comboRigA_Antb77g: TComboBox;
+    Label52: TLabel;
+    comboRigA_b135g: TComboBox;
+    comboRigA_Antb135g: TComboBox;
+    Label53: TLabel;
+    comboRigA_b248g: TComboBox;
+    comboRigA_Antb248g: TComboBox;
+    Label54: TLabel;
+    comboRigB_b104g: TComboBox;
+    comboRigB_Antb104g: TComboBox;
+    Label57: TLabel;
+    comboRigB_b24g: TComboBox;
+    comboRigB_Antb24g: TComboBox;
+    Label58: TLabel;
+    comboRigB_b47g: TComboBox;
+    comboRigB_Antb47g: TComboBox;
+    Label59: TLabel;
+    comboRigB_b77g: TComboBox;
+    comboRigB_Antb77g: TComboBox;
+    Label60: TLabel;
+    comboRigB_b135g: TComboBox;
+    comboRigB_Antb135g: TComboBox;
+    Label61: TLabel;
+    comboRigB_b248g: TComboBox;
+    comboRigB_Antb248g: TComboBox;
+    radio2RadioV: TRadioButton;
+    checkUseBandUpDown: TCheckBox;
+    checkUseBandSelect: TCheckBox;
+    Label62: TLabel;
+    buttonBrowseResultPath: TButton;
+    editResumeFolder: TEdit;
+    buttonAudioConfig1: TButton;
+    buttonAudioConfig2: TButton;
+    buttonAudioConfig3: TButton;
+    buttonAudioConfig4: TButton;
+    label2RadioVText: TLabel;
+    checkSo2rDontSwitchSpMode: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -418,7 +468,6 @@ type
     procedure checkRig1AXvtClick(Sender: TObject);
     procedure comboRig1NameChange(Sender: TObject);
     procedure comboRig3NameChange(Sender: TObject);
-    procedure comboIcomModeChange(Sender: TObject);
     procedure comboCwPttPortChange(Sender: TObject);
     procedure checkUseWinKeyerClick(Sender: TObject);
     procedure radioSo2rClick(Sender: TObject);
@@ -447,6 +496,7 @@ type
     procedure checkEnablePttPhClick(Sender: TObject);
     procedure checkUseF2ADataModeClick(Sender: TObject);
     procedure checkUseRigDeviceClick(Sender: TObject);
+    procedure buttonAudioConfigClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
 //    FEditMode: Integer;
@@ -458,10 +508,10 @@ type
 
     FNeedSuperCheckLoad: Boolean;
 
-    FRigSetA_rig: array[b19..b10g] of TComboBox;
-    FRigSetA_ant: array[b19..b10g] of TComboBox;
-    FRigSetB_rig: array[b19..b10g] of TComboBox;
-    FRigSetB_ant: array[b19..b10g] of TComboBox;
+    FRigSetA_rig: array[b19..HiBand] of TComboBox;
+    FRigSetA_ant: array[b19..HiBand] of TComboBox;
+    FRigSetB_rig: array[b19..HiBand] of TComboBox;
+    FRigSetB_ant: array[b19..HiBand] of TComboBox;
 
     FRigConfig: array[1..5] of TGroupBox;
     FRigControlPort: array[1..5] of TComboBox;
@@ -473,6 +523,7 @@ type
     FRigXvt: array[1..5] of TCheckBox;
     FRigXvtConfig: array[1..5] of TButton;
     FRigPhoneChgPTT: array[1..5] of TCheckBox;
+    FRigUsePolling: array[1..5] of TCheckBox;
 
     FSoundDevice: array[1..4] of TComboBox;
     FF2AVolume: array[1..4] of TSpinEdit;
@@ -493,6 +544,10 @@ type
     procedure PacketClusterListViewToList();
     procedure AddPacketClusterList(setting: TTelnetSetting);
     procedure ListViewClear();
+    procedure RigPortConfig1(rigno: Integer);
+    procedure RigPortConfig2(rigno: Integer);
+    procedure GetConfigIndex(rigno: Integer; var RigIndex, KeyIndex: Integer);
+    procedure SetRigControlPortConfigButton(rigno: Integer; RigIndex: Integer);
   public
     procedure RenewSettings();
     procedure ImplementSettings();
@@ -536,7 +591,7 @@ implementation
 
 uses
   Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet, UPortConfigDialog,
-  UZlinkTelnetSet, UZLinkForm, URigControl, USpotterListDlg;
+  UPortConfigDialog2, UZlinkTelnetSet, UZLinkForm, URigControl, USpotterListDlg;
 
 {$R *.DFM}
 
@@ -610,6 +665,11 @@ begin
    FRigPhoneChgPTT[3] := checkRig3ChangePTT;
    FRigPhoneChgPTT[4] := checkRig4ChangePTT;
    FRigPhoneChgPTT[5] := nil;
+   FRigUsePolling[1] := checkRig1UsePolling;
+   FRigUsePolling[2] := checkRig2UsePolling;
+   FRigUsePolling[3] := checkRig3UsePolling;
+   FRigUsePolling[4] := checkRig4UsePolling;
+   FRigUsePolling[5] := nil;
 
    // Set of RIG
    FRigSetA_rig[b19]    := comboRigA_b19;
@@ -628,6 +688,12 @@ begin
    FRigSetA_rig[b2400]  := comboRigA_b2400;
    FRigSetA_rig[b5600]  := comboRigA_b5600;
    FRigSetA_rig[b10g]   := comboRigA_b10g;
+   FRigSetA_rig[b104g]  := comboRigA_b104g;
+   FRigSetA_rig[b24g]   := comboRigA_b24g;
+   FRigSetA_rig[b47g]   := comboRigA_b47g;
+   FRigSetA_rig[b77g]   := comboRigA_b77g;
+   FRigSetA_rig[b135g]  := comboRigA_b135g;
+   FRigSetA_rig[b248g]  := comboRigA_b248g;
 
    FRigSetA_ant[b19]    := comboRigA_Antb19;
    FRigSetA_ant[b35]    := comboRigA_Antb35;
@@ -645,6 +711,12 @@ begin
    FRigSetA_ant[b2400]  := comboRigA_Antb2400;
    FRigSetA_ant[b5600]  := comboRigA_Antb5600;
    FRigSetA_ant[b10g]   := comboRigA_Antb10g;
+   FRigSetA_ant[b104g]  := comboRigA_Antb104g;
+   FRigSetA_ant[b24g]   := comboRigA_Antb24g;
+   FRigSetA_ant[b47g]   := comboRigA_Antb47g;
+   FRigSetA_ant[b77g]   := comboRigA_Antb77g;
+   FRigSetA_ant[b135g]  := comboRigA_Antb135g;
+   FRigSetA_ant[b248g]  := comboRigA_Antb248g;
 
    FRigSetB_rig[b19]    := comboRigB_b19;
    FRigSetB_rig[b35]    := comboRigB_b35;
@@ -662,6 +734,12 @@ begin
    FRigSetB_rig[b2400]  := comboRigB_b2400;
    FRigSetB_rig[b5600]  := comboRigB_b5600;
    FRigSetB_rig[b10g]   := comboRigB_b10g;
+   FRigSetB_rig[b104g]  := comboRigB_b104g;
+   FRigSetB_rig[b24g]   := comboRigB_b24g;
+   FRigSetB_rig[b47g]   := comboRigB_b47g;
+   FRigSetB_rig[b77g]   := comboRigB_b77g;
+   FRigSetB_rig[b135g]  := comboRigB_b135g;
+   FRigSetB_rig[b248g]  := comboRigB_b248g;
 
    FRigSetB_ant[b19]    := comboRigB_Antb19;
    FRigSetB_ant[b35]    := comboRigB_Antb35;
@@ -679,6 +757,12 @@ begin
    FRigSetB_ant[b2400]  := comboRigB_Antb2400;
    FRigSetB_ant[b5600]  := comboRigB_Antb5600;
    FRigSetB_ant[b10g]   := comboRigB_Antb10g;
+   FRigSetB_ant[b104g]  := comboRigB_Antb104g;
+   FRigSetB_ant[b24g]   := comboRigB_Antb24g;
+   FRigSetB_ant[b47g]   := comboRigB_Antb47g;
+   FRigSetB_ant[b77g]   := comboRigB_Antb77g;
+   FRigSetB_ant[b135g]  := comboRigB_Antb135g;
+   FRigSetB_ant[b248g]  := comboRigB_Antb248g;
 
    PageControl.ActivePage := tabsheetOperateStyle;
 
@@ -782,9 +866,27 @@ begin
    if radio1Radio.Checked = True then begin
       radio1RadioClick(radio1Radio);
    end
+   else if radio2RadioH.Checked = True then begin
+      radio2RadioClick(radio2RadioH);
+   end
    else begin
-      radio2RadioClick(radio2Radio);
+      radio2RadioClick(radio2RadioV);
    end;
+
+   comboRigControlChange(FRigControlPort[1]);
+   comboRigControlChange(FRigControlPort[2]);
+   comboRigControlChange(FRigControlPort[3]);
+   comboRigControlChange(FRigControlPort[4]);
+
+   comboCwPttPortChange(FKeyingPort[1]);
+   comboCwPttPortChange(FKeyingPort[2]);
+   comboCwPttPortChange(FKeyingPort[3]);
+   comboCwPttPortChange(FKeyingPort[4]);
+
+   checkRigXvtClick(FRigXvtConfig[1]);
+   checkRigXvtClick(FRigXvtConfig[2]);
+   checkRigXvtClick(FRigXvtConfig[3]);
+   checkRigXvtClick(FRigXvtConfig[4]);
 
    checkUseRigDeviceClick(nil);
    checkUseF2AClick(FUseF2A[1]);
@@ -1034,20 +1136,14 @@ var
    strDir: string;
 begin
    case TButton(Sender).Tag of
-      0:
-         strDir := editRootFolder.Text;
-      10:
-         strDir := editCfgDatFolder.Text;
-      20:
-         strDir := editLogsFolder.Text;
-      30:
-         strDir := editBackupFolder.Text;
-      40:
-         strDir := editSoundFolder.Text;
-      50:
-         strDir := editPluginsFolder.Text;
-      60:
-         strDir := editSpcFolder.Text;
+      0:  strDir := editRootFolder.Text;
+      10: strDir := editCfgDatFolder.Text;
+      20: strDir := editLogsFolder.Text;
+      30: strDir := editBackupFolder.Text;
+      40: strDir := editSoundFolder.Text;
+      50: strDir := editPluginsFolder.Text;
+      60: strDir := editSpcFolder.Text;
+      70: strDir := editResumeFolder.Text;
    end;
 
    if SelectDirectory(SELECT_FOLDER, '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
@@ -1056,34 +1152,31 @@ begin
 
    case TButton(Sender).Tag of
       // Root
-      0:
-         editRootFolder.Text := strDir;
+      0: editRootFolder.Text := strDir;
 
       // CFG/DAT
-      10:
-         editCfgDatFolder.Text := strDir;
+      10: editCfgDatFolder.Text := strDir;
 
       // Logs
-      20:
-         editLogsFolder.Text := strDir;
+      20: editLogsFolder.Text := strDir;
 
       // Backup
-      30:
-         editBackupFolder.Text := strDir;
+      30: editBackupFolder.Text := strDir;
 
       // Sound(Voice)
-      40:
-         editSoundFolder.Text := strDir;
+      40: editSoundFolder.Text := strDir;
 
       // Plugins
-      50:
-         editPluginsFolder.Text := strDir;
+      50: editPluginsFolder.Text := strDir;
 
       // Super Check
       60: begin
          editSpcFolder.Text := strDir;
          FNeedSuperCheckLoad := True;
       end;
+
+      // BS Resume
+      70: editResumeFolder.Text := strDir;
    end;
 end;
 
@@ -1158,15 +1251,22 @@ end;
 
 procedure TformOptions.comboCwPttPortChange(Sender: TObject);
 var
-   Index: Integer;
+   KeyIndex: Integer;
+   KeyIndexTo: Integer;
+   RigIndex: Integer;
    rigno: Integer;
    combo: TComboBox;
+   i: Integer;
+   j: Integer;
+   sameport_checked: array[1..5] of Boolean;
 begin
    combo := TComboBox(Sender);
-   Index := TCommPort(combo.Items.Objects[combo.ItemIndex]).Number;
-   rigno := TComboBox(Sender).Tag;
+   rigno := combo.Tag;
 
-   if (Index = 0) or (Index = 21) then begin
+   GetConfigIndex(rigno, RigIndex, KeyIndex);
+
+   // 0:none, 21:USBIF4CW
+   if (KeyIndex = 0) or (KeyIndex = 21) or (KeyIndex = 22) then begin
       if rigno = 1 then begin
          checkUseWinKeyer.Enabled := False;
          checkUseWinKeyer.Checked := False;
@@ -1177,42 +1277,94 @@ begin
       end;
       checkUseWinKeyer.Checked := False;
       FKeyingPortConfig[rigno].Enabled := False;
+      SetRigControlPortConfigButton(rigno, RigIndex);
    end
    else begin
+      if (rigno < 5) then begin
+         if KeyIndex = RigIndex then begin
+            FRigControlPortConfig[rigno].Enabled := False;
+         end
+         else begin
+            SetRigControlPortConfigButton(rigno, RigIndex);
+         end;
+      end;
+      FKeyingPortConfig[rigno].Enabled := True;
       checkUseWinKeyer.Enabled := True;
       checkWk9600.Enabled := True;
       checkWkOutportSelect.Enabled := True;
       checkWkIgnoreSpeedPot.Enabled := True;
       checkWkAlways9600.Enabled := True;
-      FKeyingPortConfig[rigno].Enabled := True;
    end;
-end;
 
-procedure TformOptions.comboIcomModeChange(Sender: TObject);
-begin
-   if comboIcomMode.ItemIndex = 0 then begin
-      comboIcomMethod.Enabled := False;
-      comboIcomMethod.ItemIndex := 0;
-   end
-   else begin
-      comboIcomMethod.Enabled := True;
+   // 上から順に見て同じポートなら設定ボタンはdisableにする
+   for i := 1 to 5 do begin
+      sameport_checked[i] := False;
+   end;
+
+   for i := 1 to 4 do begin
+      if FKeyingPort[i].ItemIndex = -1 then begin
+         Continue;
+      end;
+
+      if sameport_checked[i] = False then begin
+         KeyIndex := TCommPort(FKeyingPort[i].Items.Objects[FKeyingPort[i].ItemIndex]).Number;
+         if (KeyIndex = 0) or (KeyIndex = 21) or (KeyIndex = 22) then begin
+            FKeyingPortConfig[i].Enabled := False;
+         end
+         else begin
+            FKeyingPortConfig[i].Enabled := True;
+         end;
+      end;
+
+      for j := i + 1 to 5 do begin
+         if sameport_checked[j] = True then begin
+            Continue;
+         end;
+         if FKeyingPort[j].ItemIndex = -1 then begin
+            Continue;
+         end;
+
+         KeyIndexTo := TCommPort(FKeyingPort[j].Items.Objects[FKeyingPort[j].ItemIndex]).Number;
+
+         if (KeyIndex = KeyIndexTo) and (sameport_checked[j] = False) then begin
+            FKeyingPortConfig[j].Enabled := False;
+            sameport_checked[j] := True;
+         end
+         else begin
+            if (KeyIndexTo = 0) or (KeyIndexTo = 21) or (KeyIndexTo = 22) then begin
+               FKeyingPortConfig[j].Enabled := False;
+            end
+            else begin
+               FKeyingPortConfig[j].Enabled := True;
+            end;
+         end;
+      end;
    end;
 end;
 
 procedure TformOptions.comboRigControlChange(Sender: TObject);
 var
-   r: Integer;
+   rigno: Integer;
    cp: TCommPort;
    combo: TComboBox;
+   KeyIndex, RigIndex: Integer;
 begin
    combo := TComboBox(Sender);
-   r := combo.Tag;
+   rigno := combo.Tag;
+
+   GetConfigIndex(rigno, RigIndex, KeyIndex);
+
    cp := TCommPort(combo.items.Objects[combo.ItemIndex]);
    if (cp <> nil) and ((cp.Number >= 1) and (cp.Number <= 20)) then begin
-      FRigControlPortConfig[r].Enabled := True;
+      if KeyIndex = RigIndex then begin
+         FRigControlPortConfig[rigno].Enabled := False;
+      end
+      else begin
+         SetRigControlPortConfigButton(rigno, RigIndex);
+      end;
    end
    else begin
-      FRigControlPortConfig[r].Enabled := False;
+      FRigControlPortConfig[rigno].Enabled := False;
    end;
 end;
 
@@ -1282,7 +1434,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetA_rig[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1295,7 +1447,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetA_ant[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1308,7 +1460,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetB_rig[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1321,7 +1473,7 @@ begin
       Exit;
    end;
 
-   for b := TBand(TComboBox(Sender).Tag + 1) to b10g do begin
+   for b := TBand(TComboBox(Sender).Tag + 1) to HiBand do begin
       FRigSetB_ant[b].ItemIndex := TComboBox(Sender).ItemIndex;
    end;
 end;
@@ -1417,10 +1569,10 @@ end;
 
 procedure TformOptions.buttonPortConfigCWClick(Sender: TObject);
 var
-   f: TformPortConfig;
+   f: TformPortConfig2;
    r: Integer;
 begin
-   f := TformPortConfig.Create(Self);
+   f := TformPortConfig2.Create(Self);
    try
       r := TButton(sender).Tag;
 
@@ -1439,23 +1591,92 @@ end;
 
 procedure TformOptions.buttonPortConfigRigClick(Sender: TObject);
 var
+   rigno: Integer;
+   KeyIndex, RigIndex: Integer;
+begin
+   rigno := TButton(Sender).Tag;
+
+   KeyIndex := TCommPort(FKeyingPort[rigno].Items.Objects[FKeyingPort[rigno].ItemIndex]).Number;
+   RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
+   if KeyIndex = RigIndex then begin
+      RigPortConfig2(rigno);
+   end
+   else begin
+      RigPortConfig1(rigno);
+   end;
+end;
+
+procedure TformOptions.RigPortConfig1(rigno: Integer);
+var
    f: TformPortConfig;
-   r: Integer;
 begin
    f := TformPortConfig.Create(Self);
    try
-      r := TButton(sender).Tag;
-
-      f.PortName := FRigControlPort[r].Text;
-      f.PortConfig := dmZLogGlobal.Settings.FRigControl[r].FControlPortConfig;
+      f.PortName := FRigControlPort[rigno].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      dmZLogGlobal.Settings.FRigControl[r].FControlPortConfig := f.PortConfig;
+      dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig := f.PortConfig;
    finally
       f.Release();
+   end;
+end;
+
+procedure TformOptions.RigPortConfig2(rigno: Integer);
+var
+   f: TformPortConfig2;
+begin
+   f := TformPortConfig2.Create(Self);
+   try
+      f.PortName := FRigControlPort[rigno].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[rigno].FControlPortConfig := f.PortConfig;
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TformOptions.GetConfigIndex(rigno: Integer; var RigIndex, KeyIndex: Integer);
+begin
+   if FKeyingPort[rigno].ItemIndex = -1 then begin
+      KeyIndex := 0;
+   end
+   else begin
+      KeyIndex := TCommPort(FKeyingPort[rigno].Items.Objects[FKeyingPort[rigno].ItemIndex]).Number;
+   end;
+
+   if rigno < 5 then begin
+      if FRigControlPort[rigno].ItemIndex = -1 then begin
+         RigIndex := 0;
+      end
+      else begin
+         RigIndex := TCommPort(FRigControlPort[rigno].Items.Objects[FRigControlPort[rigno].ItemIndex]).Number;
+      end;
+   end
+   else begin
+      RigIndex := 0;
+   end;
+end;
+
+procedure TformOptions.SetRigControlPortConfigButton(rigno: Integer; RigIndex: Integer);
+begin
+   if (rigno >= 5) then begin
+      Exit;
+   end;
+
+   if (RigIndex >= 1) and (RigIndex <= 20) then begin
+      FRigControlPortConfig[rigno].Enabled := True;
+   end
+   else begin
+      FRigControlPortConfig[rigno].Enabled := False;
    end;
 end;
 
@@ -1484,6 +1705,30 @@ begin
    finally
       F.Release();
    end;
+end;
+
+procedure TformOptions.buttonAudioConfigClick(Sender: TObject);
+var
+   r: Integer;
+   F: TformAudioInputDlg;
+begin
+   F := TformAudioInputDlg.Create(Self);
+   try
+      r := TButton(Sender).Tag;
+
+      F.PrePlayback := dmZLogGlobal.Settings.FRigControl[r].FPrePlayback;
+      F.PostPlayback := dmZLogGlobal.Settings.FRigControl[r].FPostPlayback;
+
+      if F.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[r].FPrePlayback := F.PrePlayback;
+      dmZLogGlobal.Settings.FRigControl[r].FPostPlayback := F.PostPlayback;
+   finally
+      F.Release();
+   end;
+
 end;
 
 procedure TformOptions.buttonSpotterListClick(Sender: TObject);
@@ -1558,6 +1803,10 @@ var
          if Assigned(FRigPhoneChgPTT[no]) then begin
             Settings.FRigControl[no].FPhoneChgPTT := FRigPhoneChgPTT[no].Checked;
          end;
+
+         if Assigned(FRigUsePolling[no]) then begin
+            Settings.FRigControl[no].FUsePolling := FRigUsePolling[no].Checked;
+         end;
       end;
    end;
 begin
@@ -1568,8 +1817,11 @@ begin
       if radio1Radio.Checked = True then begin
          Settings._operate_style := os1Radio;
       end
+      else if radio2RadioH.Checked = True then begin
+         Settings._operate_style := os2RadioH;
+      end
       else begin
-         Settings._operate_style := os2Radio;
+         Settings._operate_style := os2RadioV;
       end;
 
       //
@@ -1625,6 +1877,7 @@ begin
       Settings._so2r_2bsiq_pluswpm  := spinSo2rAccelerateCW.Value;
       Settings._so2r_ignore_mode_change := checkSo2rIgnoreModeChange.Checked;
       Settings._so2r_cqrestart := checkSo2rCqRestartAfterSetLast.Checked;
+      Settings._so2r_dontswitchspmode := checkSo2rDontSwitchSpMode.Checked;
 
       //
       // Hardware1
@@ -1642,7 +1895,7 @@ begin
       //
 
       // Set of RIG
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          Settings.FRigSet[1].FRig[b] := FRigSetA_rig[b].ItemIndex;
          Settings.FRigSet[1].FAnt[b] := FRigSetA_ant[b].ItemIndex;
          Settings.FRigSet[2].FRig[b] := FRigSetB_rig[b].ItemIndex;
@@ -1654,13 +1907,6 @@ begin
       //
 
       // ICOM CI-V options
-      if comboIcomMode.ItemIndex = 0 then begin
-         Settings._use_transceive_mode := True;
-      end
-      else begin
-         Settings._use_transceive_mode := False;
-      end;
-
       if comboIcomMethod.ItemIndex = 0 then begin
          Settings._icom_polling_freq_and_mode := True;
       end
@@ -1728,6 +1974,8 @@ begin
       Settings._memscan_interval := updownMemScanInterval.Position;
       Settings._use_ptt_command := checkUsePttCommand.Checked;
       Settings._sync_rig_wpm := checkSyncRigWPM.Checked;
+      Settings._use_band_updown := checkUseBandUpDown.Checked;
+      Settings._use_band_select := checkUseBandSelect.Checked;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -1773,7 +2021,7 @@ begin
       end;
 
       Settings.FSuperCheck.FSuperCheckFolder := editSpcFolder.Text;
-
+      Settings._bsresumepath := editResumeFolder.Text;
 
       //
       // Fonts
@@ -1835,6 +2083,10 @@ var
          if Assigned(FRigPhoneChgPTT[no]) then begin
             FRigPhoneChgPTT[no].Checked := Settings.FRigControl[no].FPhoneChgPTT;
          end;
+
+         if Assigned(FRigUsePolling[no]) then begin
+            FRigUsePolling[no].Checked := Settings.FRigControl[no].FUsePolling;
+         end;
       end;
    end;
 begin
@@ -1847,8 +2099,12 @@ begin
             radio1Radio.Checked := True;
          end;
 
-         os2Radio: begin
-            radio2Radio.Checked := True;
+         os2RadioH: begin
+            radio2RadioH.Checked := True;
+         end;
+
+         os2RadioV: begin
+            radio2RadioV.Checked := True;
          end;
 
          else begin
@@ -1959,7 +2215,7 @@ begin
       spinSo2rAccelerateCW.Value:= Settings._so2r_2bsiq_pluswpm;
       checkSo2rIgnoreModeChange.Checked := Settings._so2r_ignore_mode_change;
       checkSo2rCqRestartAfterSetLast.Checked := Settings._so2r_cqrestart;
-
+      checkSo2rDontSwitchSpMode.Checked := Settings._so2r_dontswitchspmode;
 
       //
       // Hardware1
@@ -1978,7 +2234,7 @@ begin
       //
 
       // Set of RIG
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          FRigSetA_rig[b].ItemIndex := Settings.FRigSet[1].FRig[b];
          FRigSetA_ant[b].ItemIndex := Settings.FRigSet[1].FAnt[b];
          FRigSetB_rig[b].ItemIndex := Settings.FRigSet[2].FRig[b];
@@ -1990,21 +2246,12 @@ begin
       //
 
       // ICOM CI-V options
-      if Settings._use_transceive_mode = True then begin
-         comboIcomMode.ItemIndex := 0;
-      end
-      else begin
-         comboIcomMode.ItemIndex := 1;
-      end;
-
       if Settings._icom_polling_freq_and_mode = True then begin
          comboIcomMethod.ItemIndex := 0;
       end
       else begin
          comboIcomMethod.ItemIndex := 1;
       end;
-
-      comboIcomModeChange(nil);
 
       editIcomResponseTimout.Text := IntToStr(Settings._icom_response_timeout);
 
@@ -2083,6 +2330,8 @@ begin
       updownMemScanInterval.Position := Settings._memscan_interval;
       checkUsePttCommand.Checked := Settings._use_ptt_command;
       checkSyncRigWPM.Checked := Settings._sync_rig_wpm;
+      checkUseBandUpDown.Checked := Settings._use_band_updown;
+      checkUseBandSelect.Checked := Settings._use_band_select;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;
@@ -2125,6 +2374,7 @@ begin
       editSoundFolder.Text := Settings._soundpath;
       editPluginsFolder.Text := Settings._pluginpath;
       editSpcFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
+      editResumeFolder.Text := Settings._bsresumepath;
 
       //
       // Fonts
@@ -2278,7 +2528,7 @@ procedure TformOptions.Assign1Radio();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FRigSetA_rig[b].ItemIndex := 1;
       FRigSetA_rig[b].Enabled := False;
       FRigSetB_rig[b].ItemIndex := 2;
@@ -2290,7 +2540,7 @@ procedure TformOptions.Assign2Radio();
 var
    b: TBand;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FRigSetA_rig[b].Enabled := True;
       FRigSetB_rig[b].Enabled := True;
    end;

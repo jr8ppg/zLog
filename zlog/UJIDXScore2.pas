@@ -9,23 +9,17 @@ uses
 
 type
   TJIDXScore2 = class(TBasicScore)
-    Grid: TStringGrid;
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); overload;
     procedure Renew; override;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO : TQSO);  override;
     procedure UpdateData; override;
     procedure CalcPoints(var aQSO : TQSO);
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -47,12 +41,6 @@ procedure TJIDXScore2.FormShow(Sender: TObject);
 begin
    inherited;
    CWButton.Visible := False;
-end;
-
-procedure TJIDXScore2.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TJIDXScore2.Renew;
@@ -102,7 +90,7 @@ begin
    end;
 end;
 
-procedure TJIDXScore2.AddNoUpdate(var aQSO : TQSO);
+procedure TJIDXScore2.AddNoUpdate(aQSO : TQSO);
 begin
    inherited;
 
@@ -110,7 +98,12 @@ begin
       Exit;
    end;
 
-   CalcPoints(aQSO);
+   if FValidQso = True then begin
+      CalcPoints(aQSO);
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
 
    Inc(Points[aQSO.Band], aQSO.Points);
 end;
@@ -123,6 +116,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 5;
    TotQSO := 0;
    TotPts := 0;
    TotMulti := 0;
@@ -190,18 +184,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-function TJIDXScore2.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TJIDXScore2.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

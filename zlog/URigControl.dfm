@@ -2,10 +2,10 @@ object RigControl: TRigControl
   Left = 666
   Top = 35
   Caption = 'Rig Control'
-  ClientHeight = 171
+  ClientHeight = 179
   ClientWidth = 384
   Color = clBtnFace
-  Constraints.MinHeight = 210
+  Constraints.MinHeight = 218
   Constraints.MinWidth = 400
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -25,17 +25,17 @@ object RigControl: TRigControl
     Left = 0
     Top = 24
     Width = 384
-    Height = 75
+    Height = 83
     Align = alClient
     TabOrder = 0
     DesignSize = (
       384
-      75)
+      83)
     object buttonJumpLastFreq: TSpeedButton
       Left = 315
       Top = 18
       Width = 62
-      Height = 54
+      Height = 56
       Anchors = [akTop, akRight]
       Caption = 'Jump to '#13#10'Last Freq.'
       OnClick = buttonJumpLastFreqClick
@@ -57,7 +57,7 @@ object RigControl: TRigControl
     end
     object Label3: TLabel
       Left = 8
-      Top = 51
+      Top = 53
       Width = 34
       Height = 15
       Caption = 'VFO B'
@@ -68,6 +68,36 @@ object RigControl: TRigControl
       Width = 72
       Height = 15
       Caption = 'Current Freq.'
+    end
+    object ledSMeter1: TRLed
+      Left = 50
+      Top = 41
+      Width = 143
+      Height = 8
+      ColorLow = clLime
+      ColorHi = clRed
+      Orientation = trHorizontal
+      MaxValue = 100
+      BackColor = clBtnFace
+      BarSize = 14
+      Position = 0
+      BreakPos = 40
+      HoldTime = 500
+    end
+    object ledSMeter2: TRLed
+      Left = 50
+      Top = 74
+      Width = 143
+      Height = 8
+      ColorLow = clLime
+      ColorHi = clRed
+      Orientation = trHorizontal
+      MaxValue = 100
+      BackColor = clBtnFace
+      BarSize = 14
+      Position = 0
+      BreakPos = 40
+      HoldTime = 500
     end
     object Panel1: TPanel
       Left = 50
@@ -95,7 +125,7 @@ object RigControl: TRigControl
     end
     object Panel2: TPanel
       Left = 50
-      Top = 47
+      Top = 49
       Width = 143
       Height = 25
       Anchors = [akLeft, akTop, akRight]
@@ -143,7 +173,7 @@ object RigControl: TRigControl
     end
     object Panel4: TPanel
       Left = 200
-      Top = 47
+      Top = 49
       Width = 54
       Height = 25
       Anchors = [akTop, akRight]
@@ -167,7 +197,7 @@ object RigControl: TRigControl
     end
     object Panel5: TPanel
       Left = 255
-      Top = 47
+      Top = 49
       Width = 54
       Height = 25
       Anchors = [akTop, akRight]
@@ -248,7 +278,7 @@ object RigControl: TRigControl
   end
   object buttongrpFreqMemory: TButtonGroup
     Left = 0
-    Top = 147
+    Top = 155
     Width = 384
     Height = 24
     Align = alBottom
@@ -284,7 +314,7 @@ object RigControl: TRigControl
   end
   object panelMemScan: TPanel
     Left = 0
-    Top = 99
+    Top = 107
     Width = 384
     Height = 24
     Align = alBottom
@@ -397,7 +427,7 @@ object RigControl: TRigControl
   end
   object panelSpotImport: TPanel
     Left = 0
-    Top = 123
+    Top = 131
     Width = 384
     Height = 24
     Align = alBottom

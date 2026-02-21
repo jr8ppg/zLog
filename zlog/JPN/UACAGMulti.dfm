@@ -55,7 +55,7 @@ object ACAGMulti: TACAGMulti
     object StayOnTop: TCheckBox
       Left = 8
       Top = 13
-      Width = 81
+      Width = 80
       Height = 17
       Anchors = [akLeft, akBottom]
       Caption = #25163#21069#12395#34920#31034
@@ -63,9 +63,9 @@ object ACAGMulti: TACAGMulti
       OnClick = StayOnTopClick
     end
     object checkIncremental: TCheckBox
-      Left = 90
+      Left = 92
       Top = 13
-      Width = 130
+      Width = 135
       Height = 17
       Anchors = [akLeft, akBottom]
       Caption = #12452#12531#12463#12522#12513#12531#12479#12523#12469#12540#12481
@@ -262,12 +262,102 @@ object ACAGMulti: TACAGMulti
     end
     object Label10g: TRotateLabel
       Left = 319
-      Top = 9
+      Top = 6
       Width = 14
-      Height = 26
+      Height = 29
       Escapement = 90
       TextStyle = tsNone
-      Caption = '10G+'
+      Caption = '10.1G'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label104G: TRotateLabel
+      Left = 331
+      Top = 6
+      Width = 14
+      Height = 29
+      Escapement = 90
+      TextStyle = tsNone
+      Caption = '10.4G'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label24G: TRotateLabel
+      Left = 343
+      Top = 15
+      Width = 14
+      Height = 20
+      Escapement = 90
+      TextStyle = tsNone
+      Caption = '24G'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label47G: TRotateLabel
+      Left = 354
+      Top = 15
+      Width = 14
+      Height = 20
+      Escapement = 90
+      TextStyle = tsNone
+      Caption = '47G'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label77G: TRotateLabel
+      Left = 365
+      Top = 15
+      Width = 20
+      Height = 14
+      Escapement = 90
+      TextStyle = tsNone
+      Caption = '77G'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label135G: TRotateLabel
+      Left = 376
+      Top = 9
+      Width = 26
+      Height = 14
+      Escapement = 90
+      TextStyle = tsNone
+      Caption = '135G'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label248G: TRotateLabel
+      Left = 387
+      Top = 9
+      Width = 26
+      Height = 14
+      Escapement = 90
+      TextStyle = tsNone
+      Caption = '248G'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -278,7 +368,7 @@ object ACAGMulti: TACAGMulti
     object checkJumpLatestMulti: TCheckBox
       Left = 8
       Top = 13
-      Width = 142
+      Width = 150
       Height = 17
       Caption = #26368#24460#12398#12510#12523#12481#12408#12472#12515#12531#12503
       Checked = True
@@ -307,6 +397,7 @@ object ACAGMulti: TACAGMulti
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 2
+    StyleElements = [seClient, seBorder]
     OnDrawCell = GridDrawCell
   end
 end

@@ -15,13 +15,11 @@ object formQsyInfo: TformQsyInfo
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnResize = FormResize
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
@@ -39,18 +37,19 @@ object formQsyInfo: TformQsyInfo
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
+    StyleElements = []
     object Label1: TLabel
       Left = 0
       Top = 0
       Width = 157
-      Height = 26
+      Height = 73
       Align = alClient
       Alignment = taCenter
       AutoSize = False
       Layout = tlCenter
       WordWrap = True
+      StyleElements = []
       ExplicitTop = 6
-      ExplicitHeight = 73
     end
   end
   object Panel2: TPanel
@@ -70,6 +69,7 @@ object formQsyInfo: TformQsyInfo
     ParentFont = False
     ShowCaption = False
     TabOrder = 1
+    StyleElements = []
     object Label2: TLabel
       Left = 0
       Top = 0
@@ -80,6 +80,7 @@ object formQsyInfo: TformQsyInfo
       AutoSize = False
       Layout = tlCenter
       WordWrap = True
+      StyleElements = []
       ExplicitHeight = 35
     end
   end

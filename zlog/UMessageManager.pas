@@ -35,17 +35,11 @@ type
   TformMessageManager = class(TForm)
     Memo1: TMemo;
     Timer2: TTimer;
-    Label1: TLabel;
-    PaintBox1: TPaintBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer;
-      Rect: TRect; State: TGridDrawState);
-    procedure FormResize(Sender: TObject);
-    procedure PaintBox1Paint(Sender: TObject);
   private
     { Private 宣言 }
     FMessageQueue: TList<TPlayMessage>;
@@ -54,7 +48,7 @@ type
     FWaveSound: array[1..maxmessage + 2] of TWaveSound;
     FCurrentOperator: TOperatorInfo;
     FCurrentVoice: Integer;
-    FOnNotifyStarted: TNotifyEvent;
+    FOnNotifyStarted: TMessagePlayNotifyEvent;
     FOnNotifyFinished: TPlayMessageFinishedProc;
 
     FSendText: string;
@@ -74,9 +68,6 @@ type
     procedure ClearQue2();
     procedure StopCW();
     procedure ClearText();
-    procedure SetSendingText(rigno: Integer; s: string);
-    procedure ClearSendingText();
-    procedure OneCharSentProc();
 
     // Voice
     procedure Init();
@@ -86,8 +77,9 @@ type
     function IsPlaying(): Boolean;
     function IsIdle(): Boolean;
 
-    property OnNotifyStarted: TNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
+    property OnNotifyStarted: TMessagePlayNotifyEvent read FOnNotifyStarted write FOnNotifyStarted;
     property OnNotifyFinished: TPlayMessageFinishedProc read FOnNotifyFinished write FOnNotifyFinished;
+    property CurrentVoice: Integer read FCurrentVoice;
   end;
 
 
@@ -141,12 +133,6 @@ begin
    end;
 end;
 
-procedure TformMessageManager.FormResize(Sender: TObject);
-begin
-//   Grid.ColWidths[0] := Grid.Width - 4;
-//   Grid.RowHeights[0] := Grid.Height - 4;
-end;
-
 procedure TformMessageManager.AddQue(nCmd: Integer; wp: WPARAM; lp: LPARAM);
 var
    msg: TPlayMessage;
@@ -163,6 +149,7 @@ procedure TformMessageManager.AddQue(nID: Integer; S: string; aQSO: TQSO);
 var
    msg: TPlayMessage;
    strCallsign: string;
+   mode: TMode;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('>>> Enter - TformMessageManager.AddQue(' + IntToStr(nID) + ',''' + S + ''');'));
@@ -176,15 +163,17 @@ begin
          S := SetStrNoAbbrev(S, aQSO);
       end;
       strCallsign := aQSO.Callsign;
+      mode := aQSO.Mode;
    end
    else begin
       //S := '';
       strCallsign := '';
+      mode := mCW;
    end;
 
    msg := TPlayMessage.Create();
    msg.FRigID := nID;
-   msg.FMode := mCW;
+   msg.FMode := mode;
    msg.FText := S;
    msg.FCallsign := strCallsign;
 
@@ -360,7 +349,9 @@ begin
             end;
 
             mRTTY: begin
-
+               if MainForm.TTYConsole <> nil then begin
+                  MainForm.TTYConsole.SendStrNow(msg2.FText);
+               end;
             end;
 
             else begin
@@ -368,10 +359,6 @@ begin
          end;
 
          FMessageQueue.Pack();
-
-//         if FMessageQueue.Count > 0 then begin
-//            FMessageQueue.Delete(0);
-//         end;
       end
       else if msg2.FCmd = WM_ZLOG_AFTER_DELAY then begin
          Sleep(dmZLogGlobal.Settings._so2r_rigsw_after_delay);
@@ -381,10 +368,6 @@ begin
          end;
 
          FMessageQueue.Pack();
-
-//         if FMessageQueue.Count > 0 then begin
-//            FMessageQueue.Delete(0);
-//         end;
 
          ContinueQue();
       end
@@ -400,10 +383,6 @@ begin
          end;
 
          FMessageQueue.Pack();
-
-//         if FMessageQueue.Count > 0 then begin
-//            FMessageQueue.Delete(0);
-//         end;
 
          ContinueQue();
       end;
@@ -434,9 +413,6 @@ end;
 
 procedure TformMessageManager.ClearText();
 begin
-//   if FMessageQueue.Count > 0 then begin
-//      FMessageQueue.Delete(0);
-//   end;
    if Memo1.Lines.Count > 0 then begin
       Memo1.Lines.Delete(0);
    end;
@@ -531,21 +507,21 @@ begin
    if FCurrentOperator = nil then begin
       case i of
          1..12: begin
-            filename := dmZLogGlobal.Settings.FSoundFiles[i];
+            filename := dmZLogGlobal.Settings.FVoiceConfig[i].FSoundFile;
          end;
 
          101: begin
-            filename := dmZLogGlobal.Settings.FSoundFiles[1];
+            filename := dmZLogGlobal.Settings.FVoiceConfig[1].FSoundFile;
             i := 1;
          end;
 
          102: begin
-            filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[2];
+            filename := dmZLogGlobal.Settings.FAdditionalVoiceConfig[2].FSoundFile;
             i := 13;
          end;
 
          103: begin
-            filename := dmZLogGlobal.Settings.FAdditionalSoundFiles[3];
+            filename := dmZLogGlobal.Settings.FAdditionalVoiceConfig[3].FSoundFile;
             i := 14;
          end;
       end;
@@ -579,7 +555,7 @@ begin
 //         FOnNotifyStarted(nil);
 //      end;
       if Assigned(FOnNotifyFinished) then begin
-         FOnNotifyFinished(nil, mSSB, False);
+         FOnNotifyFinished(nil, mSSB, False, i);
       end;
       Exit;
    end;
@@ -600,7 +576,7 @@ begin
    FWaveSound[i].Stop();
 
    if Assigned(FOnNotifyStarted) then begin
-      FOnNotifyStarted(FWaveSound[i]);
+      FOnNotifyStarted(FWaveSound[i], i);
    end;
 
    FCurrentVoice := i;
@@ -619,38 +595,6 @@ begin
    if Assigned(FOnNotifyFinished) then begin
       // Stop時のFinishイベントは不要
       //FOnNotifyFinished(nil, mSSB, True);
-   end;
-end;
-
-procedure TformMessageManager.GridDrawCell(Sender: TObject; ACol,
-  ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   S: string;
-begin
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := clBtnFace;
-      Brush.Style := bsSolid;
-      Pen.Color := clBtnFace;
-      Pen.Style := psSolid;
-      FillRect(Rect);
-      Rectangle(Rect);
-
-      if FSendText = '' then begin
-         Exit;
-      end;
-
-      Font.Color := clBlack;
-      TextRect(Rect, FSendText, [tfLeft, tfVerticalCenter, tfSingleLine]);
-
-      if FSendIndex > 0 then begin
-         S := Copy(FSendText, 1, FSendIndex);
-         Brush.Color := clBlue;
-         Brush.Style := bsSolid;
-         Pen.Style := psClear;
-         Font.Color := clWhite;
-//         Font.style := Font.Style + [fsUnderline];
-         TextRect(Rect, S, [tfLeft, tfVerticalCenter, tfSingleLine]);
-      end;
    end;
 end;
 
@@ -684,72 +628,13 @@ begin
    Timer2.Enabled := False;
 
    if Assigned(FOnNotifyFinished) then begin
-      FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False);
+      FOnNotifyFinished(FWaveSound[FCurrentVoice], mSSB, False, FCurrentVoice);
+      FCurrentVoice := 0;
    end;
 
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---Voice Play finished!! ---'));
    {$ENDIF}
-end;
-
-procedure TformMessageManager.SetSendingText(rigno: Integer; s: string);
-begin
-//   editSendingNow.Text := '[' + IntToStr(rigno) + ']' + s;
-   FSendText := s;
-   FSendIndex := 1;
-   PaintBox1.Refresh();
-end;
-
-procedure TformMessageManager.ClearSendingText();
-begin
-   FSendText := '';
-   FSendIndex := 1;
-   PaintBox1.Refresh();
-end;
-
-procedure TformMessageManager.OneCharSentProc();
-begin
-   Inc(FSendIndex);
-   PaintBox1.Refresh();
-end;
-
-procedure TformMessageManager.PaintBox1Paint(Sender: TObject);
-var
-   S: string;
-   Rect: TRect;
-begin
-   with TPaintBox(Sender).Canvas do begin
-      Rect.Top := 0;
-      Rect.Bottom := TPaintBox(Sender).Height - 2;
-      Rect.Left := 0;
-      Rect.Right := TPaintBox(Sender).Width - 1;
-
-      Brush.Color := clBtnFace;
-      Brush.Style := bsSolid;
-      Pen.Color := clGray;
-      Pen.Style := psSolid;
-      FillRect(Rect);
-      Rectangle(Rect);
-
-      if FSendText = '' then begin
-         Exit;
-      end;
-
-      Rect.Left := 2;
-      Rect.Right := Rect.Right - 2;
-      Font.Color := clBlack;
-      TextRect(Rect, FSendText, [tfLeft, tfVerticalCenter, tfSingleLine]);
-
-      if FSendIndex > 0 then begin
-         S := Copy(FSendText, 1, FSendIndex);
-         Brush.Color := clBlue;
-         Brush.Style := bsSolid;
-         Pen.Style := psClear;
-         Font.Color := clWhite;
-//         Font.style := Font.Style + [fsUnderline];
-         TextRect(Rect, S, [tfLeft, tfVerticalCenter, tfSingleLine]);
-      end;
-   end;
 end;
 
 end.

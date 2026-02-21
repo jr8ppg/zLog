@@ -102,7 +102,7 @@ object CWKeyBoard: TCWKeyBoard
     Width = 334
     Height = 69
     Align = alClient
-    Font.Charset = DEFAULT_CHARSET
+    Font.Charset = SHIFTJIS_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
     Font.Name = #65325#65331' '#12468#12471#12483#12463

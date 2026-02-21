@@ -35,9 +35,9 @@ implementation
 
 procedure TformPortConfig.FormCreate(Sender: TObject);
 begin
-   comboRts.Items.CommaText := PortActionList;
+   comboRts.Items.CommaText := RigPortActionList;
    comboRts.ItemIndex := 0;
-   comboDtr.Items.CommaText := PortActionList;
+   comboDtr.Items.CommaText := RigPortActionList;
    comboDtr.ItemIndex := 0;
 end;
 
@@ -52,18 +52,22 @@ begin
 end;
 
 function TformPortConfig.GetPortConfig(): TPortConfig;
+const
+   RigPortAction: array[0..3] of TPortAction = ( paNone, paAlwaysOn, paAlwaysOff, paHandshake );
 var
    pc: TPortConfig;
 begin
-   pc.FRts := TPortAction(comboRts.ItemIndex);
-   pc.FDtr := TPortAction(comboDtr.ItemIndex);
+   pc.FRts := RigPortAction[comboRts.ItemIndex];
+   pc.FDtr := RigPortAction[comboDtr.ItemIndex];
    Result := pc;
 end;
 
 procedure TformPortConfig.SetPortConfig(v: TPortConfig);
+const
+   RevRigPortOption: array[paNone..paHandshake] of Integer = ( 0, 0, 0, 1, 2, 3 );
 begin
-   comboRts.ItemIndex := Integer(v.FRts);
-   comboDtr.ItemIndex := Integer(v.FDtr);
+   comboRts.ItemIndex := RevRigPortOption[v.FRts];
+   comboDtr.ItemIndex := RevRigPortOption[v.FDtr];
 end;
 
 end.

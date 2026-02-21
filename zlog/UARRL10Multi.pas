@@ -15,26 +15,26 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   protected
-    LatestMultiAddition : integer; // grid top
+    LatestMultiAddition: integer; // grid top
     procedure UpdateLabelPos(); override;
   private
     { Private declarations }
-    StateList : TStateList;
+    StateList: TStateList;
   public
     { Public declarations }
     procedure UpdateData; override;
-    procedure Add(var aQSO : TQSO); override;
+    procedure Add(aQSO: TQSO); override;
     procedure SortDefault; override;
     procedure SortZone; override;
     procedure Reset; override;
     procedure RefreshGrid; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
     function GetInfo(aQSO: TQSO): string; override;
-    function ExtractMulti(aQSO : TQSO) : string; override;
-    procedure ProcessCluster(var Sp : TBaseSpot); override;
-    procedure ProcessSpotData(var S : TBaseSpot); override;
+    function ExtractMulti(aQSO: TQSO): string; override;
+    procedure ProcessCluster(Sp: TBaseSpot); override;
+    procedure ProcessSpotData(S: TBaseSpot); override;
   end;
 
 implementation
@@ -58,7 +58,7 @@ begin
    if S = nil then
       str := 'Invalid state'
    else begin
-      str := S.StateAbbrev + ' ' + S.StateName + ' Worked in : ';
+      str := S.StateAbbrev + ' ' + S.StateName + ' Worked in: ';
       if S.Worked[b19] then
          str := str + 'Ph ';
       if S.Worked[b35] then
@@ -87,7 +87,7 @@ begin
    end;
 
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
-   if IsWVE(C.Country) then begin
+   if IsWVE(C.Country) or IsMexico(C.Country) then begin
       if GetState(aQSO, StateList) <> nil then
          Result := True;
    end
@@ -99,26 +99,42 @@ begin
    end;
 end;
 
-procedure TARRL10Multi.AddNoUpdate(var aQSO: TQSO);
+procedure TARRL10Multi.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
+   P: TPrefix;
    C: TCountry;
    S: TState;
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
 
    if aQSO.Mode = mCW then
       B := b35
    else
       B := b19;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
 
-   if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
+
+   if IsWVE(C.Country) or IsMM(aQSO.Callsign) or IsMexico(C.Country) then begin
       S := GetState(aQSO, StateList);
       if S = nil then begin
          aQSO.Multi1 := '';
@@ -230,7 +246,7 @@ begin
    RenewBandScope;
 end;
 
-procedure TARRL10Multi.Add(var aQSO: TQSO);
+procedure TARRL10Multi.Add(aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
    Grid.TopRow := LatestMultiAddition;
@@ -325,7 +341,7 @@ begin
    Result := '';
 
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
-   if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
+   if IsWVE(C.Country) or IsMM(aQSO.Callsign) or IsMexico(C.Country) then begin
       S := GetState(aQSO, StateList);
       if S <> nil then
          Result := S.StateAbbrev;
@@ -345,11 +361,11 @@ begin
    Label2.Left := Label1.Left + (w * 3);
 end;
 
-procedure TARRL10Multi.ProcessCluster(var Sp : TBaseSpot);
+procedure TARRL10Multi.ProcessCluster(Sp: TBaseSpot);
 var
    C: TCountry;
-   temp : string;
-   aQSO : TQSO;
+   temp: string;
+   aQSO: TQSO;
    S: TState;
    B: TBand;
 begin
@@ -373,16 +389,16 @@ begin
       // NEWマルチチェック
       // W/VE局の場合はSTATEのマルチチェック
       temp := aQSO.CallSign;
-      if IsWVE(C.Country) or IsMM(aQSO.Callsign) then begin
+      if IsWVE(C.Country) or IsMM(aQSO.Callsign) or IsMexico(C.Country) then begin
          S := GetState(aQSO, StateList);
          if (S <> nil) and (S.Worked[B] = True) then begin
-            temp := temp + '  new state : ' + (S.StateName);
+            temp := temp + '  new state: ' + (S.StateName);
             Sp.NewCty := True;
          end;
       end
       else begin
          if (C.Worked[B] = false) then begin
-            temp := temp + '  new country : ' + (C.Country);
+            temp := temp + '  new country: ' + (C.Country);
             Sp.NewCty := True;
          end;
       end;
@@ -396,7 +412,7 @@ begin
    end;
 end;
 
-procedure TARRL10Multi.ProcessSpotData(var S : TBaseSpot);
+procedure TARRL10Multi.ProcessSpotData(S: TBaseSpot);
 begin
    ProcessCluster(S);
 end;

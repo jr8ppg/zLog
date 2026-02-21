@@ -37,8 +37,8 @@ type
   public
     { Public declarations }
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO : TQSO); override;
+    procedure Add(aQSO : TQSO); override;
     procedure Reset; override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
     procedure CheckMulti(aQSO : TQSO); override;
@@ -148,7 +148,7 @@ begin
    end;
 end;
 
-procedure TJIDX_DX_Multi.AddNoUpdate(var aQSO: TQSO);
+procedure TJIDX_DX_Multi.AddNoUpdate(aQSO: TQSO);
 var
    str, temp: string;
    M: integer;
@@ -158,11 +158,17 @@ begin
    str := aQSO.NrRcvd;
    aQSO.Multi1 := str;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
 
-   if not(NotWARC(aQSO.Band)) then
-      exit;
+   if not(NotWARC(aQSO.Band)) then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    M := StrToIntDef(str, 0);
    if not(M in [1 .. 50]) then
@@ -192,7 +198,7 @@ begin
    end;
 end;
 
-procedure TJIDX_DX_Multi.Add(var aQSO: TQSO);
+procedure TJIDX_DX_Multi.Add(aQSO: TQSO);
 begin
    inherited;
 end;

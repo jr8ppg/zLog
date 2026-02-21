@@ -13,22 +13,15 @@ const
 
 type
   TWAEScore = class(TBasicScore)
-    Grid: TStringGrid;
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     QTCs : array[b19..b28] of integer;
   public
     procedure Reset; override;
     procedure Renew; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
-    procedure SummaryWriteScore(FileName : string); override;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -41,12 +34,6 @@ begin
    Button1.SetFocus;
    Grid.Col := 1;
    Grid.Row := 1;
-end;
-
-procedure TWAEScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
 end;
 
 procedure TWAEScore.Reset;
@@ -79,7 +66,7 @@ begin
    end;
 end;
 
-procedure TWAEScore.AddNoUpdate(var aQSO: TQSO);
+procedure TWAEScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
 begin
@@ -94,11 +81,20 @@ begin
    end;
 
    band := aQSO.band;
-   aQSO.Points := 1;
-   Inc(Points[band]);
 
-   if pos('[QTC', aQSO.Memo) > 0 then begin
-      Inc(QTCs[band]);
+   if FValidQso = True then begin
+      aQSO.Points := 1;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
+   Inc(Points[band], aQSO.Points);
+
+   if FValidQso = True then begin
+      if pos('[QTC', aQSO.Memo) > 0 then begin
+         Inc(QTCs[band]);
+      end;
    end;
 end;
 
@@ -110,6 +106,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 4;
    TotQSO := 0;
    TotMulti := 0;
    TotQTCs := 0;
@@ -171,48 +168,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-procedure TWAEScore.SummaryWriteScore(FileName: string);
-var
-   f: textfile;
-   TQSO, tmulti, tqtc: LongInt;
-   B: TBand;
-begin
-   TQSO := 0;
-   tqtc := 0;
-   tmulti := 0;
-
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs     QTCs    Mult(*bonus)');
-
-   for B := b35 to b28 do begin
-      if NotWARC(B) then begin
-         writeln(f, FillRight(MHzString[B], 8) + FillLeft(IntToStr(QSO[B]), 10) + FillLeft(IntToStr(QTCs[B]), 10) +
-           FillLeft(IntToStr(Multi[B] * BandFactor[B]), 10));
-         TQSO := TQSO + QSO[B];
-         tqtc := tqtc + QTCs[B];
-         tmulti := tmulti + Multi[B] * BandFactor[B];
-      end;
-   end;
-
-   writeln(f, FillRight('Total :', 8) + FillLeft(IntToStr(TQSO), 10) + FillLeft(IntToStr(tqtc), 10) + FillLeft(IntToStr(tmulti), 10));
-   writeln(f, 'Total score : ' + IntToStr((TQSO + tqtc) * tmulti));
-
-   CloseFile(f);
-end;
-
-function TWAEScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TWAEScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

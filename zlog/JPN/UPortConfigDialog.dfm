@@ -11,13 +11,11 @@ object formPortConfig: TformPortConfig
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   DesignSize = (
     274
     110)
-  PixelsPerInch = 96
   TextHeight = 13
   object groupPortConfig: TGroupBox
     Left = 4

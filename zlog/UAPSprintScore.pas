@@ -5,26 +5,20 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UBasicScore, Grids, StdCtrls, ExtCtrls, Buttons, Math,
-  UWPXMulti, UzLogConst, UzLogGlobal, UzLogQSO;
+  UWPXMulti, UzLogConst, UzLogGlobal, UzLogQSO, Vcl.Menus;
 
 type
   TAPSprintScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FMultiForm: TWPXMulti;
   public
     { Public declarations }
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
     property MultiForm: TWPXMulti read FMultiForm write FMultiForm;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 implementation
@@ -39,12 +33,6 @@ begin
    Grid.Row := 1;
 end;
 
-procedure TAPSprintScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
 procedure TAPSprintScore.Reset;
 var
    band : TBand;
@@ -55,7 +43,7 @@ begin
    end;
 end;
 
-procedure TAPSprintScore.AddNoUpdate(var aQSO : TQSO);
+procedure TAPSprintScore.AddNoUpdate(aQSO: TQSO);
 begin
    inherited;
 
@@ -63,7 +51,13 @@ begin
       Exit;
    end;
 
-   aQSO.Points := 1;
+   if FValidQso = True then begin
+      aQSO.Points := 1;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
    Inc(Points[aQSO.Band]);
 end;
 
@@ -107,18 +101,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, Grid.ColCount, Grid.RowCount);
-end;
-
-function TAPSprintScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TAPSprintScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

@@ -10,10 +10,8 @@ object VoiceForm: TVoiceForm
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 12
   object Timer2: TTimer
     Enabled = False

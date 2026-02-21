@@ -3,8 +3,8 @@ object formELogJarlEx: TformELogJarlEx
   Top = 10
   BorderStyle = bsDialog
   Caption = 'JARL E-Log'
-  ClientHeight = 711
-  ClientWidth = 875
+  ClientHeight = 721
+  ClientWidth = 874
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,8 +18,8 @@ object formELogJarlEx: TformELogJarlEx
   TextHeight = 12
   object Panel1: TPanel
     Left = 0
-    Top = 680
-    Width = 875
+    Top = 690
+    Width = 874
     Height = 31
     Align = alBottom
     BevelOuter = bvNone
@@ -73,8 +73,8 @@ object formELogJarlEx: TformELogJarlEx
   object TabControl1: TTabControl
     Left = 0
     Top = 0
-    Width = 875
-    Height = 680
+    Width = 874
+    Height = 690
     Align = alClient
     TabOrder = 0
     Tabs.Strings = (
@@ -85,8 +85,8 @@ object formELogJarlEx: TformELogJarlEx
     object ScrollBox1: TScrollBox
       Left = 4
       Top = 24
-      Width = 867
-      Height = 652
+      Width = 866
+      Height = 662
       Align = alClient
       TabOrder = 0
       UseWheelForScrolling = True
@@ -105,7 +105,7 @@ object formELogJarlEx: TformELogJarlEx
       end
       object labelAge: TLabel
         Left = 240
-        Top = 450
+        Top = 446
         Width = 151
         Height = 12
         Caption = #24180#40802'(XS,CS,SOSV,SOJR'#24517#38920')'
@@ -124,22 +124,22 @@ object formELogJarlEx: TformELogJarlEx
         Caption = #21442#21152#31278#30446#21517#31216
       end
       object labelClubName: TLabel
-        Left = 240
-        Top = 517
+        Left = 245
+        Top = 535
         Width = 79
         Height = 12
         Caption = #30331#37682#12463#12521#12502#21517#31216
       end
       object labelEquipment: TLabel
-        Left = 16
-        Top = 405
-        Width = 398
+        Left = 241
+        Top = 401
+        Width = 120
         Height = 12
-        Caption = #20351#29992#12375#12383#35373#20633#65288#12522#12464#21517#31216#65288#33258#20316#12398#22580#21512#12399#32066#27573#31649#21517#31216#12539#20491#25968#65289#12289#31354#20013#32218#65289' '#65288'5'#34892#12414#12391#65289
+        Caption = #20351#29992#12375#12383#35373#20633#65288'5'#34892#12414#12391#65289
       end
       object Label21: TLabel
-        Left = 359
-        Top = 620
+        Left = 364
+        Top = 638
         Width = 24
         Height = 12
         Caption = #26085#20184
@@ -151,8 +151,8 @@ object formELogJarlEx: TformELogJarlEx
         ParentFont = False
       end
       object Label23: TLabel
-        Left = 616
-        Top = 620
+        Left = 621
+        Top = 638
         Width = 24
         Height = 12
         Caption = #32626#21517
@@ -219,15 +219,15 @@ object formELogJarlEx: TformELogJarlEx
         Caption = #38651#35441#30058#21495
       end
       object labelLicense: TLabel
-        Left = 16
-        Top = 478
+        Left = 21
+        Top = 509
         Width = 144
         Height = 12
         Caption = #23616#20813#35377#32773#12398#28961#32218#24467#20107#32773#36039#26684
       end
       object labelLicenseDate: TLabel
         Left = 240
-        Top = 426
+        Top = 422
         Width = 119
         Height = 12
         Caption = #23616#20813#35377#24180#26376#26085'(PN'#24517#38920')'
@@ -240,7 +240,7 @@ object formELogJarlEx: TformELogJarlEx
       end
       object labelMultiOpList: TLabel
         Left = 16
-        Top = 405
+        Top = 401
         Width = 187
         Height = 12
         Caption = #12510#12523#12481#12458#12506#31278#30446#36939#29992#32773#65288#19968#20154#19968#34892#12391#65289
@@ -318,21 +318,21 @@ object formELogJarlEx: TformELogJarlEx
       end
       object Label16: TLabel
         Left = 16
-        Top = 337
+        Top = 333
         Width = 82
         Height = 12
         Caption = #24847#35211#65288'10'#34892#12414#12391#65289
       end
       object Label17: TLabel
         Left = 16
-        Top = 379
+        Top = 375
         Width = 448
         Height = 12
         Caption = #12510#12523#12481#12458#12506#12289#12466#12473#12488#12458#12506#12398#22580#21512#12398#36939#29992#32773#12398#12467#12540#12523#12469#12452#12531#65288#27663#21517#65289#12362#12424#12403#28961#32218#24467#20107#32773#12398#36039#26684' '
       end
       object Label18: TLabel
-        Left = 16
-        Top = 517
+        Left = 21
+        Top = 535
         Width = 79
         Height = 12
         Caption = #30331#37682#12463#12521#12502#30058#21495
@@ -381,7 +381,7 @@ object formELogJarlEx: TformELogJarlEx
       end
       object mComments: TMemo
         Left = 16
-        Top = 353
+        Top = 349
         Width = 465
         Height = 47
         Font.Charset = DEFAULT_CHARSET
@@ -394,10 +394,11 @@ object formELogJarlEx: TformELogJarlEx
         TabOrder = 14
       end
       object memoEquipment: TMemo
-        Left = 16
-        Top = 421
-        Width = 465
-        Height = 47
+        Left = 240
+        Top = 417
+        Width = 241
+        Height = 83
+        Hint = #12522#12464#21517#31216#65288#33258#20316#12398#22580#21512#12399#32066#27573#31649#21517#31216#12539#20491#25968#65289#12289#31354#20013#32218
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -405,14 +406,16 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         MaxLength = 800
         ParentFont = False
+        ParentShowHint = False
         ScrollBars = ssVertical
-        TabOrder = 15
+        ShowHint = True
+        TabOrder = 16
       end
       object memoMultiOpList: TMemo
         Left = 16
-        Top = 421
+        Top = 417
         Width = 213
-        Height = 86
+        Height = 83
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -420,11 +423,11 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         ParentFont = False
         ScrollBars = ssVertical
-        TabOrder = 16
+        TabOrder = 15
       end
       object comboAge: TComboBox
         Left = 405
-        Top = 447
+        Top = 443
         Width = 61
         Height = 20
         DropDownCount = 10
@@ -466,7 +469,7 @@ object formELogJarlEx: TformELogJarlEx
       end
       object datetimeLicenseDate: TDateTimePicker
         Left = 365
-        Top = 421
+        Top = 417
         Width = 101
         Height = 20
         Date = 36526.000000000000000000
@@ -517,8 +520,8 @@ object formELogJarlEx: TformELogJarlEx
         TabOrder = 2
       end
       object edClubID: TEdit
-        Left = 101
-        Top = 513
+        Left = 106
+        Top = 531
         Width = 121
         Height = 21
         Font.Charset = DEFAULT_CHARSET
@@ -530,9 +533,9 @@ object formELogJarlEx: TformELogJarlEx
         TabOrder = 20
       end
       object edClubName: TEdit
-        Left = 332
-        Top = 513
-        Width = 373
+        Left = 337
+        Top = 531
+        Width = 480
         Height = 21
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -558,8 +561,8 @@ object formELogJarlEx: TformELogJarlEx
         OnExit = ControlExit
       end
       object edDate: TEdit
-        Left = 443
-        Top = 616
+        Left = 448
+        Top = 634
         Width = 121
         Height = 21
         Font.Charset = DEFAULT_CHARSET
@@ -605,9 +608,9 @@ object formELogJarlEx: TformELogJarlEx
         OnExit = ControlExit
       end
       object edLicense: TEdit
-        Left = 172
-        Top = 474
-        Width = 189
+        Left = 171
+        Top = 505
+        Width = 241
         Height = 21
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -693,8 +696,8 @@ object formELogJarlEx: TformELogJarlEx
         OnExit = ControlExit
       end
       object edSignature: TEdit
-        Left = 704
-        Top = 616
+        Left = 709
+        Top = 634
         Width = 121
         Height = 21
         Font.Charset = DEFAULT_CHARSET
@@ -721,8 +724,8 @@ object formELogJarlEx: TformELogJarlEx
         TabOrder = 7
       end
       object GroupBox1: TGroupBox
-        Left = 16
-        Top = 538
+        Left = 21
+        Top = 556
         Width = 809
         Height = 68
         Font.Charset = DEFAULT_CHARSET
@@ -787,28 +790,28 @@ object formELogJarlEx: TformELogJarlEx
       end
       object groupScoreAdjust: TGroupBox
         Left = 495
-        Top = 16
+        Top = 4
         Width = 330
-        Height = 454
+        Height = 521
         Caption = #12473#12467#12450#35519#25972
         TabOrder = 25
         object Label22: TLabel
           Left = 16
-          Top = 398
+          Top = 472
           Width = 48
           Height = 12
           Caption = #23616#31278#20418#25968
         end
         object labelTotalScore: TLabel
           Left = 16
-          Top = 424
+          Top = 494
           Width = 58
           Height = 12
           Caption = 'Total score'
         end
         object Label19: TLabel
           Left = 16
-          Top = 370
+          Top = 450
           Width = 49
           Height = 12
           Caption = 'Sub Total'
@@ -885,7 +888,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand01: TCheckBox
           Tag = 1
           Left = 16
-          Top = 57
+          Top = 53
           Width = 81
           Height = 17
           Caption = '3.5MHz'
@@ -897,7 +900,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso01: TEdit
           Tag = 1
           Left = 112
-          Top = 55
+          Top = 51
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -908,7 +911,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti01: TEdit
           Tag = 1
           Left = 159
-          Top = 55
+          Top = 51
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -919,7 +922,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints01: TEdit
           Tag = 1
           Left = 253
-          Top = 55
+          Top = 51
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -930,7 +933,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand02: TCheckBox
           Tag = 2
           Left = 16
-          Top = 83
+          Top = 75
           Width = 81
           Height = 17
           Caption = '7MHz'
@@ -942,7 +945,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso02: TEdit
           Tag = 2
           Left = 112
-          Top = 81
+          Top = 73
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -953,7 +956,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti02: TEdit
           Tag = 2
           Left = 159
-          Top = 81
+          Top = 73
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -964,7 +967,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints02: TEdit
           Tag = 2
           Left = 253
-          Top = 81
+          Top = 73
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -975,7 +978,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand04: TCheckBox
           Tag = 4
           Left = 16
-          Top = 109
+          Top = 97
           Width = 81
           Height = 17
           Caption = '14MHz'
@@ -987,7 +990,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso04: TEdit
           Tag = 4
           Left = 112
-          Top = 107
+          Top = 95
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -998,7 +1001,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti04: TEdit
           Tag = 4
           Left = 159
-          Top = 107
+          Top = 95
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1009,7 +1012,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints04: TEdit
           Tag = 4
           Left = 253
-          Top = 107
+          Top = 95
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1020,7 +1023,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand06: TCheckBox
           Tag = 6
           Left = 16
-          Top = 135
+          Top = 119
           Width = 81
           Height = 17
           Caption = '21MHz'
@@ -1032,7 +1035,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso06: TEdit
           Tag = 6
           Left = 112
-          Top = 133
+          Top = 117
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1043,7 +1046,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti06: TEdit
           Tag = 6
           Left = 159
-          Top = 133
+          Top = 117
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1054,7 +1057,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints06: TEdit
           Tag = 6
           Left = 253
-          Top = 133
+          Top = 117
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1065,7 +1068,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand08: TCheckBox
           Tag = 8
           Left = 16
-          Top = 161
+          Top = 141
           Width = 81
           Height = 17
           Caption = '28MHz'
@@ -1077,7 +1080,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso08: TEdit
           Tag = 8
           Left = 112
-          Top = 159
+          Top = 139
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1088,7 +1091,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti08: TEdit
           Tag = 8
           Left = 159
-          Top = 159
+          Top = 139
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1099,7 +1102,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints08: TEdit
           Tag = 8
           Left = 253
-          Top = 159
+          Top = 139
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1110,7 +1113,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand09: TCheckBox
           Tag = 9
           Left = 16
-          Top = 187
+          Top = 163
           Width = 81
           Height = 17
           Caption = '50MHz'
@@ -1122,7 +1125,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso09: TEdit
           Tag = 9
           Left = 112
-          Top = 185
+          Top = 161
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1133,7 +1136,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti09: TEdit
           Tag = 9
           Left = 159
-          Top = 185
+          Top = 161
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1144,7 +1147,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints09: TEdit
           Tag = 9
           Left = 253
-          Top = 185
+          Top = 161
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1155,7 +1158,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand10: TCheckBox
           Tag = 10
           Left = 16
-          Top = 213
+          Top = 185
           Width = 81
           Height = 17
           Caption = '144MHz'
@@ -1167,7 +1170,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso10: TEdit
           Tag = 10
           Left = 112
-          Top = 211
+          Top = 183
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1178,7 +1181,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti10: TEdit
           Tag = 10
           Left = 159
-          Top = 211
+          Top = 183
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1189,7 +1192,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints10: TEdit
           Tag = 10
           Left = 253
-          Top = 211
+          Top = 183
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1200,7 +1203,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand11: TCheckBox
           Tag = 11
           Left = 16
-          Top = 239
+          Top = 207
           Width = 81
           Height = 17
           Caption = '430MHz'
@@ -1212,7 +1215,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso11: TEdit
           Tag = 11
           Left = 112
-          Top = 237
+          Top = 205
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1223,7 +1226,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti11: TEdit
           Tag = 11
           Left = 159
-          Top = 237
+          Top = 205
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1234,7 +1237,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints11: TEdit
           Tag = 11
           Left = 253
-          Top = 237
+          Top = 205
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1245,7 +1248,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand12: TCheckBox
           Tag = 12
           Left = 16
-          Top = 265
+          Top = 229
           Width = 81
           Height = 17
           Caption = '1200MHz'
@@ -1257,7 +1260,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso12: TEdit
           Tag = 12
           Left = 112
-          Top = 263
+          Top = 227
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1268,7 +1271,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti12: TEdit
           Tag = 12
           Left = 159
-          Top = 263
+          Top = 227
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1279,7 +1282,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints12: TEdit
           Tag = 12
           Left = 253
-          Top = 263
+          Top = 227
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1290,7 +1293,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand13: TCheckBox
           Tag = 13
           Left = 16
-          Top = 291
+          Top = 251
           Width = 81
           Height = 17
           Caption = '2400MHz'
@@ -1302,7 +1305,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso13: TEdit
           Tag = 13
           Left = 112
-          Top = 289
+          Top = 249
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1313,7 +1316,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti13: TEdit
           Tag = 13
           Left = 159
-          Top = 289
+          Top = 249
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1324,7 +1327,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints13: TEdit
           Tag = 13
           Left = 253
-          Top = 289
+          Top = 249
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1335,7 +1338,7 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand14: TCheckBox
           Tag = 14
           Left = 16
-          Top = 317
+          Top = 273
           Width = 81
           Height = 17
           Caption = '5600MHz'
@@ -1347,7 +1350,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso14: TEdit
           Tag = 14
           Left = 112
-          Top = 315
+          Top = 271
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1358,7 +1361,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti14: TEdit
           Tag = 14
           Left = 159
-          Top = 315
+          Top = 271
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1369,7 +1372,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints14: TEdit
           Tag = 14
           Left = 253
-          Top = 315
+          Top = 271
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1380,10 +1383,10 @@ object formELogJarlEx: TformELogJarlEx
         object checkBand15: TCheckBox
           Tag = 15
           Left = 16
-          Top = 343
+          Top = 295
           Width = 81
           Height = 17
-          Caption = '10G && Up'
+          Caption = '10.1GHz'
           Checked = True
           State = cbChecked
           TabOrder = 60
@@ -1392,7 +1395,7 @@ object formELogJarlEx: TformELogJarlEx
         object editQso15: TEdit
           Tag = 15
           Left = 112
-          Top = 341
+          Top = 293
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1403,7 +1406,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti15: TEdit
           Tag = 15
           Left = 159
-          Top = 341
+          Top = 293
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1414,7 +1417,7 @@ object formELogJarlEx: TformELogJarlEx
         object editPoints15: TEdit
           Tag = 15
           Left = 253
-          Top = 341
+          Top = 293
           Width = 59
           Height = 20
           Alignment = taRightJustify
@@ -1424,55 +1427,52 @@ object formELogJarlEx: TformELogJarlEx
         end
         object editFDCOEFF: TEdit
           Left = 253
-          Top = 395
+          Top = 469
           Width = 59
           Height = 20
           Alignment = taRightJustify
           ReadOnly = True
-          TabOrder = 69
+          TabOrder = 99
         end
         object editTotalScore: TEdit
           Left = 253
-          Top = 421
+          Top = 491
           Width = 59
           Height = 20
           Alignment = taRightJustify
           NumbersOnly = True
           ReadOnly = True
-          TabOrder = 70
+          TabOrder = 100
         end
         object editQsoTotal: TEdit
-          Tag = 15
           Left = 112
-          Top = 367
+          Top = 447
           Width = 41
           Height = 20
           Alignment = taRightJustify
           NumbersOnly = True
           ReadOnly = True
-          TabOrder = 65
+          TabOrder = 95
         end
         object editMulti1Total: TEdit
-          Tag = 15
           Left = 159
-          Top = 367
+          Top = 447
           Width = 41
           Height = 20
           Alignment = taRightJustify
           NumbersOnly = True
           ReadOnly = True
-          TabOrder = 66
+          TabOrder = 96
         end
         object editPointsTotal: TEdit
-          Tag = 15
           Left = 253
-          Top = 367
+          Top = 447
           Width = 59
           Height = 20
           Alignment = taRightJustify
           NumbersOnly = True
           ReadOnly = True
-          TabOrder = 68
+          TabOrder = 98
         end
         object editMulti2_00: TEdit
           Left = 206
@@ -1487,7 +1487,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_01: TEdit
           Tag = 1
           Left = 206
-          Top = 55
+          Top = 51
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1498,7 +1498,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_02: TEdit
           Tag = 2
           Left = 206
-          Top = 81
+          Top = 73
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1509,7 +1509,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_04: TEdit
           Tag = 4
           Left = 206
-          Top = 107
+          Top = 95
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1520,7 +1520,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_06: TEdit
           Tag = 6
           Left = 206
-          Top = 133
+          Top = 117
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1531,7 +1531,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_08: TEdit
           Tag = 8
           Left = 206
-          Top = 159
+          Top = 139
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1542,7 +1542,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_09: TEdit
           Tag = 9
           Left = 206
-          Top = 185
+          Top = 161
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1553,7 +1553,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_10: TEdit
           Tag = 10
           Left = 206
-          Top = 211
+          Top = 183
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1564,7 +1564,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_11: TEdit
           Tag = 11
           Left = 206
-          Top = 237
+          Top = 205
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1575,7 +1575,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_12: TEdit
           Tag = 12
           Left = 206
-          Top = 263
+          Top = 227
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1586,7 +1586,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_13: TEdit
           Tag = 13
           Left = 206
-          Top = 289
+          Top = 249
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1597,7 +1597,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_14: TEdit
           Tag = 14
           Left = 206
-          Top = 315
+          Top = 271
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1608,7 +1608,7 @@ object formELogJarlEx: TformELogJarlEx
         object editMulti2_15: TEdit
           Tag = 15
           Left = 206
-          Top = 341
+          Top = 293
           Width = 41
           Height = 20
           Alignment = taRightJustify
@@ -1617,15 +1617,350 @@ object formELogJarlEx: TformELogJarlEx
           TabOrder = 63
         end
         object editMulti2Total: TEdit
-          Tag = 15
           Left = 206
-          Top = 367
+          Top = 447
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 97
+        end
+        object checkBand16: TCheckBox
+          Tag = 16
+          Left = 16
+          Top = 317
+          Width = 81
+          Height = 17
+          Caption = '10.4GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 65
+          OnClick = checkBandClick
+        end
+        object editQso16: TEdit
+          Tag = 16
+          Left = 112
+          Top = 315
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 66
+        end
+        object editMulti16: TEdit
+          Tag = 16
+          Left = 159
+          Top = 315
           Width = 41
           Height = 20
           Alignment = taRightJustify
           NumbersOnly = True
           ReadOnly = True
           TabOrder = 67
+        end
+        object editPoints16: TEdit
+          Tag = 16
+          Left = 253
+          Top = 315
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 69
+        end
+        object editMulti2_16: TEdit
+          Tag = 16
+          Left = 206
+          Top = 315
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 68
+        end
+        object checkBand17: TCheckBox
+          Tag = 17
+          Left = 16
+          Top = 339
+          Width = 81
+          Height = 17
+          Caption = '24GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 70
+          OnClick = checkBandClick
+        end
+        object editQso17: TEdit
+          Tag = 17
+          Left = 112
+          Top = 337
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 71
+        end
+        object editMulti17: TEdit
+          Tag = 17
+          Left = 159
+          Top = 337
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 72
+        end
+        object editPoints17: TEdit
+          Tag = 17
+          Left = 253
+          Top = 337
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 74
+        end
+        object editMulti2_17: TEdit
+          Tag = 17
+          Left = 206
+          Top = 337
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 73
+        end
+        object checkBand18: TCheckBox
+          Tag = 18
+          Left = 16
+          Top = 361
+          Width = 81
+          Height = 17
+          Caption = '47GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 75
+          OnClick = checkBandClick
+        end
+        object editQso18: TEdit
+          Tag = 18
+          Left = 112
+          Top = 359
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 76
+        end
+        object editMulti18: TEdit
+          Tag = 18
+          Left = 159
+          Top = 359
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 77
+        end
+        object editPoints18: TEdit
+          Tag = 18
+          Left = 253
+          Top = 359
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 79
+        end
+        object editMulti2_18: TEdit
+          Tag = 18
+          Left = 206
+          Top = 359
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 78
+        end
+        object checkBand19: TCheckBox
+          Tag = 19
+          Left = 16
+          Top = 383
+          Width = 81
+          Height = 17
+          Caption = '77GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 80
+          OnClick = checkBandClick
+        end
+        object editQso19: TEdit
+          Tag = 19
+          Left = 112
+          Top = 381
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 81
+        end
+        object editMulti19: TEdit
+          Tag = 19
+          Left = 159
+          Top = 381
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 82
+        end
+        object editPoints19: TEdit
+          Tag = 19
+          Left = 253
+          Top = 381
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 84
+        end
+        object editMulti2_19: TEdit
+          Tag = 19
+          Left = 206
+          Top = 381
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 83
+        end
+        object checkBand20: TCheckBox
+          Tag = 20
+          Left = 16
+          Top = 405
+          Width = 81
+          Height = 17
+          Caption = '135GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 85
+          OnClick = checkBandClick
+        end
+        object editQso20: TEdit
+          Tag = 20
+          Left = 112
+          Top = 403
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 86
+        end
+        object editMulti20: TEdit
+          Tag = 20
+          Left = 159
+          Top = 403
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 87
+        end
+        object editPoints20: TEdit
+          Tag = 20
+          Left = 253
+          Top = 403
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 89
+        end
+        object editMulti2_20: TEdit
+          Tag = 20
+          Left = 206
+          Top = 403
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 88
+        end
+        object checkBand21: TCheckBox
+          Tag = 21
+          Left = 16
+          Top = 427
+          Width = 81
+          Height = 17
+          Caption = '248GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 90
+          OnClick = checkBandClick
+        end
+        object editQso21: TEdit
+          Tag = 21
+          Left = 112
+          Top = 425
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 91
+        end
+        object editMulti21: TEdit
+          Tag = 21
+          Left = 159
+          Top = 425
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 92
+        end
+        object editPoints21: TEdit
+          Tag = 21
+          Left = 253
+          Top = 425
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 94
+        end
+        object editMulti2_21: TEdit
+          Tag = 21
+          Left = 206
+          Top = 425
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 93
         end
       end
     end
@@ -1635,7 +1970,7 @@ object formELogJarlEx: TformELogJarlEx
     Filter = 'JARL E-log files (*.em)|*.em|'#20840#12390#12398#12501#12449#12452#12523'|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Save E-Log file'
-    Left = 105
-    Top = 636
+    Left = 153
+    Top = 684
   end
 end

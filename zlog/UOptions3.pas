@@ -18,44 +18,12 @@ type
     buttonCancel: TButton;
     ColorDialog1: TColorDialog;
     tabsheetRbnOptions: TTabSheet;
-    groupQsoListColors: TGroupBox;
-    Label61: TLabel;
-    editListColor1: TEdit;
-    buttonListBack1: TButton;
-    buttonListReset1: TButton;
-    Label68: TLabel;
-    editListColor2: TEdit;
-    buttonListBack2: TButton;
-    buttonListReset2: TButton;
     groupGeneral: TGroupBox;
     checkUseSpcData: TCheckBox;
-    buttonListFore1: TButton;
-    checkListBold1: TCheckBox;
-    buttonListFore2: TButton;
-    checkListBold2: TCheckBox;
     Label1: TLabel;
     spNumOfRbnCount: TSpinEdit;
     Label2: TLabel;
     tabsheetWindowStyle: TTabSheet;
-    groupUsabilityGeneral: TGroupBox;
-    checkUseMultiLineTabs: TCheckBox;
-    groupUsabilityAfterQsoEdit: TGroupBox;
-    Panel2: TPanel;
-    radioOnOkFocusToQsoList: TRadioButton;
-    radioOnOkFocusToNewQso: TRadioButton;
-    Panel3: TPanel;
-    radioOnCancelFocusToQsoList: TRadioButton;
-    radioOnCancelFocusToNewQso: TRadioButton;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    editListColor3: TEdit;
-    buttonListBack3: TButton;
-    buttonListReset3: TButton;
-    Label6: TLabel;
-    editListColor4: TEdit;
-    buttonListBack4: TButton;
-    buttonListReset4: TButton;
     ColorDialog2: TColorDialog;
     checkUseRbnAnalyze: TCheckBox;
     procedure FormCreate(Sender: TObject);
@@ -63,14 +31,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure buttonCancelClick(Sender: TObject);
-    procedure buttonListForeClick(Sender: TObject);
-    procedure buttonListBackClick(Sender: TObject);
-    procedure checkListBoldClick(Sender: TObject);
-    procedure buttonListResetClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
-    FListColor: array[1..4] of TEdit;
-    FListBold: array[1..4] of TCheckBox;
   public
     procedure RenewSettings;
   end;
@@ -105,52 +67,16 @@ begin
       ClientHeight := FOriginalHeight;
    end;
 
-   // QSO List
-   FListColor[1] := editListColor1;
-   FListColor[2] := editListColor2;
-   FListColor[3] := editListColor3;
-   FListColor[4] := editListColor4;
-   FListBold[1] := checkListBold1;
-   FListBold[2] := checkListBold2;
-   FListBold[3] := nil;
-   FListBold[4] := nil;
-
    PageControl.ActivePage := tabsheetRbnOptions;
 end;
 
 procedure TformOptions3.FormShow(Sender: TObject);
-var
-   i: integer;
 begin
    with dmZlogGlobal do begin
       // RBN
       checkUseSpcData.Checked := Settings.FClusterUseForSuperCheck;
       spNumOfRbnCount.Value := Settings.FRbnCountForRbnVerified;
       checkUseRbnAnalyze.Checked := Settings.FUseRbnAnalyze;
-
-      for i := 1 to 2 do begin
-         FListColor[i].Font.Color := Settings.FQsoListColors[i].FForeColor;
-         FListColor[i].Color      := Settings.FQsoListColors[i].FBackColor;
-         FListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
-      end;
-
-      // Usability
-      checkUseMultiLineTabs.Checked := Settings.FUseMultiLineTabs;
-      FListColor[3].Color := Settings.FQsoListFocusedSelColor;
-      FListColor[4].Color := Settings.FQsoListUnfocusedSelColor;
-
-      if Settings.FAfterQsoEditOkFocusPos = 0 then begin
-         radioOnOkFocusToQsoList.Checked := True;
-      end
-      else begin
-         radioOnOkFocusToNewQso.Checked := True;
-      end;
-      if Settings.FAfterQsoEditCancelFocusPos = 0 then begin
-         radioOnCancelFocusToQsoList.Checked := True;
-      end
-      else begin
-         radioOnCancelFocusToNewQso.Checked := True;
-      end;
    end;
 
    PageControl.ActivePageIndex := 0;
@@ -175,89 +101,12 @@ begin
 end;
 
 procedure TformOptions3.RenewSettings;
-var
-   i: integer;
 begin
    with dmZLogGlobal do begin
       // RBN
       Settings.FClusterUseForSuperCheck := checkUseSpcData.Checked;
       Settings.FRbnCountForRbnVerified := spNumOfRbnCount.Value;
       Settings.FUseRbnAnalyze := checkUseRbnAnalyze.Checked;
-
-      for i := 1 to 2 do begin
-         Settings.FQsoListColors[i].FForeColor := FListColor[i].Font.Color;
-         Settings.FQsoListColors[i].FBackColor := FListColor[i].Color;
-         Settings.FQsoListColors[i].FBold      := FListBold[i].Checked;
-      end;
-
-      // Usability
-      Settings.FUseMultiLineTabs := checkUseMultiLineTabs.Checked;
-      Settings.FQsoListFocusedSelColor := FListColor[3].Color;
-      Settings.FQsoListUnfocusedSelColor := FListColor[4].Color;
-
-      if radioOnOkFocusToQsoList.Checked = True then begin
-         Settings.FAfterQsoEditOkFocusPos := 0;
-      end
-      else begin
-         Settings.FAfterQsoEditOkFocusPos := 1;
-      end;
-      if radioOnCancelFocusToQsoList.Checked = True then begin
-         Settings.FAfterQsoEditCancelFocusPos := 0;
-      end
-      else begin
-         Settings.FAfterQsoEditCancelFocusPos := 1;
-      end;
-   end;
-end;
-
-procedure TformOptions3.buttonListForeClick(Sender: TObject);
-var
-   n: Integer;
-begin
-   n := TButton(Sender).Tag;
-
-   ColorDialog1.Color := FListColor[n].Font.Color;
-   if ColorDialog1.Execute = True then begin
-      FListColor[n].Font.Color := ColorDialog1.Color;
-   end;
-end;
-
-procedure TformOptions3.buttonListBackClick(Sender: TObject);
-var
-   n: Integer;
-begin
-   n := TButton(Sender).Tag;
-
-   ColorDialog1.Color := FListColor[n].Color;
-   if ColorDialog1.Execute = True then begin
-      FListColor[n].Color := ColorDialog1.Color;
-   end;
-end;
-
-procedure TformOptions3.checkListBoldClick(Sender: TObject);
-var
-   n: Integer;
-begin
-   n := TCheckBox(Sender).Tag;
-
-   if TCheckBox(Sender).Checked = True then begin
-      FListColor[n].Font.Style := FListColor[n].Font.Style + [fsBold];
-   end
-   else begin
-      FListColor[n].Font.Style := FListColor[n].Font.Style - [fsBold];
-   end;
-end;
-
-procedure TformOptions3.buttonListResetClick(Sender: TObject);
-var
-   n: Integer;
-begin
-   n := TButton(Sender).Tag;
-
-   FListColor[n].Font.Color  := QsoListDefaultColor[n].FForeColor;
-   FListColor[n].Color       := QsoListDefaultColor[n].FBackColor;
-   if Assigned(FListBold[n]) then begin
-      FListBold[n].Checked      := QsoListDefaultColor[n].FBold;
    end;
 end;
 

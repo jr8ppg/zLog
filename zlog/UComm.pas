@@ -964,10 +964,10 @@ begin
       else begin
          if SP.Worked then begin
             if odSelected in State then begin
-               Font.Color := clWhite;
+               Font.Color := dmZLogGlobal.ZConfirmedTextColor;
             end
             else begin
-               Font.Color := clBlack;
+               Font.Color := dmZLogGlobal.ZNormalTextColor1;
             end;
          end
          else begin

@@ -36,10 +36,10 @@ type
     _send_nr_auto: Boolean;            // Send NR automatically
     _not_send_leading_zeros: Boolean;  // Not send leading zeros in serial number
 
-    CWStrImported: array[1..maxbank, 1..maxmessage] of Boolean;
-
     AdditionalCQMessages: array[2..3] of string;
-    AdditionalCQMessagesImported: array[2..3] of Boolean;
+
+    _prov: string;
+    _city: string;
   end;
 
   TCommParam = record
@@ -85,6 +85,17 @@ type
     FDtr: TPortAction;  // default: KEY
   end;
 
+  TPrePostPlayBack = record
+    FCommand: string;
+  end;
+
+  TVoiceConfig = record
+    FSoundFile: string;
+    FSoundComment: string;
+    FPreProcess: TPrePostPlayBack;
+    FPostProcess: TPrePostPlayBack;
+  end;
+
   TRigSetting = record
     FControlPort: Integer; {0 : none 1-4 : com#}
     FControlPortConfig: TPortConfig;
@@ -95,36 +106,41 @@ type
     FUseTransverter: Boolean;
     FTransverterOffset: TFrequency;
     FPhoneChgPTT: Boolean;
+    FUsePolling: Boolean;
+    FPrePlayback: TAudioInput;
+    FPostPlayback: TAudioInput;
   end;
 
   TRigSet = record
-    FRig: array[b19..b10g] of Integer;
-    FAnt: array[b19..b10g] of Integer;
+    FRig: array[b19..HiBand] of Integer;
+    FAnt: array[b19..HiBand] of Integer;
   end;
 
   TSettingsParam = record
     _multiop : TContestCategory;  {multi op/ single op}
-    _band : integer; {0 = all band; 1 = 1.9MHz 2 = 3.5MHz ...}
     _mode : TContestMode; {0 = Ph/CW; 1 = CW; 2=Ph; 3 = Other}
     _contestmenuno : integer; {selected contest in the menu}
     _mycall : string;
+    _mygridloc: string;
     _mylatitude: string;
     _mylongitude: string;
 
     _selectlastoperator: Boolean;
     _applypoweronbandchg: Boolean;
-    _prov : string;
-    _city : string;
-    _cqzone : string;
-    _iaruzone : string;
-    _age : string; // all asian
+
+    _myprov: string;
+    _mycity: string;
+    _mycqzone: string;
+    _myiaruzone: string;
+    _myage: string; // all asian
+    _myiota: string;
+    _myhandle_cw: string;
+    _myhandle_ph: string;
+
     _powerH: string;
     _powerM: string;
     _powerL: string;
     _powerP: string;
-
-    ProvCityImported: Boolean;
-    ReadOnlyParamImported: Boolean;
 
     _activebands: array[b19..HiBand] of Boolean;
     _power: array[b19..HiBand] of string;
@@ -155,7 +171,6 @@ type
     FRigShowRitInfo: Boolean;
     FExtAntSelWndClass: string;
 
-    _use_transceive_mode: Boolean;              // ICOM only
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
@@ -202,13 +217,13 @@ type
     _so2r_ignore_mode_change: Boolean;
     _so2r_rigselect_v28: Boolean;
     _so2r_cqrestart: Boolean;
+    _so2r_dontswitchspmode: Boolean;
     _so2r_otrsp_port: Integer;
 
     _zlinkport : integer; {0 : none 1-4 : com# 5: telnet}
     _zlink_telnet: TCommParam;
 
     _multistationwarning : boolean; // true by default. turn off not new mult warning dialog
-    _sentstr : string; {exchanges sent $Q$P$O etc. Set at menu select}
 
     _rootpath: string;
     _soundpath : string;
@@ -218,6 +233,7 @@ type
     _pluginpath: string;
     _pluginlist: string;
     _pluginDLLs: string;
+    _bsresumepath: string;
 
     // PTT Control
     // CW
@@ -258,6 +274,8 @@ type
     _ignore_rig_mode: Boolean;
     _use_ptt_command: Boolean;
     _sync_rig_wpm: Boolean;
+    _use_band_updown: Boolean;
+    _use_band_select: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -271,6 +289,8 @@ type
 
     _switchcqsp : boolean; // switch cq/sp modes by shift+F
     _displaydatepartialcheck : boolean;
+    FUseIncrementalDupeCheck: Boolean;
+    FPartialCloseTime: DWORD;
 
     _super_check_columns: Integer;
     _super_check2_columns: Integer;
@@ -297,17 +317,12 @@ type
     FQuickMemoText: array[1..5] of string;
 
     // Voice Memory
-    FSoundFiles: array[1..maxmessage] of string;
-    FSoundComments: array[1..maxmessage] of string;
-    FAdditionalSoundFiles: array[2..3] of string;
-    FAdditionalSoundComments: array[2..3] of string;
+    FVoiceConfig: array[1..maxmessage] of TVoiceConfig;
+    FAdditionalVoiceConfig: array[2..3] of TVoiceConfig;
     FUseRigSoundDevice: Boolean;
     FSoundDevice: Integer;
 
     // Select User Defined Contest
-    FImpProvCity: Boolean;
-    FImpCwMessage: array[1..4] of Boolean;
-    FImpCQMessage: array[1..3] of Boolean;
     FLastCFGFileName: string;
 
     // スコア表示の追加情報(評価用指数)
@@ -326,10 +341,11 @@ type
     // QSO Rate Graph
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
-    FGraphBarColor: array[b19..HiBand] of TColor;
-    FGraphTextColor: array[b19..HiBand] of TColor;
+    FGraphBarColor: array[b19..bTarget] of TColor;
+    FGraphTextColor: array[b19..bTarget] of TColor;
     FGraphOtherBgColor: array[0..1] of TColor;
     FGraphOtherFgColor: array[0..1] of TColor;
+    FGraphTargetColorByBand: Boolean;
     FZaqAchievement: Boolean;
     FZaqBgColor: array[0..3] of TColor;
     FZaqFgColor: array[0..3] of TColor;
@@ -351,6 +367,8 @@ type
     FRbnCountForRbnVerified: Integer;
     FUseRbnAnalyze: Boolean;
     FQsoListColors: array[1..2] of TColorSetting;
+    FQsoListColorType2: Integer;
+    FQsoListColumnVisible: array[0..16] of Boolean;
 
     // Z-Server Messages(ChatForm)
     FChatFormPopupNewMsg: Boolean;
@@ -371,9 +389,6 @@ type
 
     // Guard Time after RIG Switch
     FRigSwitchGuardTime: Integer;
-
-    // Last FileFilter Index 1:ZLO 2:ZLOX
-    FLastFileFilterIndex: Integer;
 
     // Base FontFace Name
     FBaseFontName: string;
@@ -398,10 +413,14 @@ type
     FGrayLineYcutsize: Integer;
 
     // Startup window
-    FDontShowStartupWindow: Boolean;
+    FShowStartupWindow: Boolean;
 
     // Usability
     FUseMultiLineTabs: Boolean;
+    FUseDarkMode: Boolean;
+    FDisableShortCutsQSOEdit: Boolean;
+    FExportMemoToAdif: Boolean;
+    FBrowserForWebUpload: Integer;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
     FQsoListFocusedSelColor: TColor;
@@ -420,13 +439,6 @@ type
     FCfgFileName: string;
     FScoreCoeff: Extended;
     FFileName: string;
-    Prov: string;
-    City: string;
-    ProvCityImported: Boolean;
-    CWStr: array[1..4] of string;
-    CWStrImported: array[1..4] of Boolean;
-    CWAddStr: array[2..3] of string;
-    CWAddStrImported: array[2..3] of Boolean;
   end;
 
   TCommPort = class(TObject)
@@ -492,8 +504,6 @@ type
 
     function GetMyCall(): string;
     procedure SetMyCall(s: string);
-    function GetBand(): Integer;
-    procedure SetBand(b: Integer);
     function GetMode(): TContestMode;
     procedure SetMode(m: TContestMode);
     function GetMultiOp(): TContestCategory;
@@ -529,10 +539,21 @@ type
     procedure SetPluginPath(v: string);
     function GetSpcPath(): string;
     procedure SetSpcPath(v: string);
+    function GetBsResumePath(): string;
+    procedure SetBsResumePath(v: string);
     function GetCurrentBandPlan(): TBandPlan;
     procedure FreeCommPortList();
     function GetCommPortList(): TList<TCommPort>;
     function LoadCommPortList(): TList<TCommPort>;
+    function GetZBackColor(): TColor;
+    function GetZBackColor2(): TColor;
+    function GetZNormalTextColor1(): TColor;
+    function GetZNormalTextColor2(): TColor;
+    function GetZConfirmedTextColor(): TColor;
+    function GetZGrayedTextColor(): TColor;
+    function GetZGridFixedColor(): TColor;
+    function GetQsoListColumnVisible(Index: Integer): Boolean;
+    procedure SetQsoListColumnVisible(Index: Integer; v: Boolean);
 public
     { Public 宣言 }
     FCurrentFileName : string;
@@ -541,15 +562,12 @@ public
     Settings : TSettingsParam;
     LastContest: TLastContest;
 
-    procedure ClearParamImportedFlag();
-
     procedure SaveCurrentSettings; {saves Settings to zlog.ini}
     procedure ImplementSettings(_OnCreate: boolean);
     procedure InitializeCW();
 
     property OpList: TOperatorInfoList read FOpList;
     property MyCall: string read GetMyCall write SetMyCall;
-    property ContestBand: Integer read GetBand write SetBand;
     property ContestMode: TContestMode read GetMode write SetMode;
     property ContestCategory: TContestCategory read GetMultiOp write SetMultiOp;
     property ContestMenuNo: Integer read GetContestMenuNo write SetContestMenuNo;
@@ -606,6 +624,7 @@ public
     property BandPlans: TDictionary<string, TBandPlan> read FBandPlans;
     property BandPlan: TBandPlan read GetCurrentBandPlan;
     property Target: TContestTarget read FTarget;
+    property QsoListColumnVisible[Index: Integer]: Boolean read GetQsoListColumnVisible write SetQsoListColumnVisible;
 
     property RootPath: string read GetRootPath write SetRootPath;
     property CfgDatPath: string read GetCfgDatPath write SetCfgDatPath;
@@ -614,10 +633,19 @@ public
     property SoundPath: string read GetSoundPath write SetSoundPath;
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
+    property BsResumePath: string read GetBsResumePath write SetBsResumePath;
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
     property PacketClusterList: TTelnetSettingList read FPacketClusterList;
     property FreqMemList: TFreqMemoryList read FFreqMemList;
+
+    property ZBackColor: TColor read GetZBackColor;
+    property ZBackColor2: TColor read GetZBackColor2;
+    property ZNormalTextColor1: TColor read GetZNormalTextColor1;
+    property ZNormalTextColor2: TColor read GetZNormalTextColor2;
+    property ZConfirmedTextColor: TColor read GetZConfirmedTextColor;
+    property ZGrayedTextColor: TColor read GetZGrayedTextColor;
+    property ZGridFixedColor: TColor read GetZGridFixedColor;
 
     procedure SelectBandPlan(preset_name: string);
 
@@ -638,6 +666,7 @@ function ExtractPower(S : string) : string;
 function IsSHF(B : TBand) : boolean; // true if b >= 2400MHz
 function IsMM(S : string) : boolean; // return true if Marine Mobile S is a callsign
 function IsWVE(S : string) : boolean; // returns true if W/VE/KH6/KL7 S is country px NOT callsign
+function IsMexico(S: string): Boolean;
 function GetHour(T : TDateTime) : integer;
 function CurrentTime : TDateTime; {returns in UTC or local time }
 function LowCase(C : Char) : Char;
@@ -687,6 +716,7 @@ function CheckDiskFreeSpace(strPath: string; nNeed_MegaByte: Integer): Boolean;
 procedure SetDupeQso(aQSO: TQSO);
 procedure ResetDupeQso(aQSO: TQSO);
 
+function GetActualFreq(b: TBand; strFreq: string): string;
 function TextToBand(text: string): TBand;
 function TextToMode(text: string): TMode;
 function TextToPower(text: string): TPower;
@@ -711,9 +741,20 @@ function TrimCRLF(SS : string) : string;
 function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
 procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
 function GetDisplayScalingFactor(x, y: Integer): double;
+procedure ExecProgram(handle: THandle; strExeName: string);
 
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
+
+var
+  //                                               light    dark
+  zLogBackColor: array[False..True] of TColor  = ( clWhite, clBlack);
+  zLogBackColor2: array[False..True] of TColor  = ( clBtnFace, clBlack);
+  zLogNormalTextColor1: array[False..True] of TColor = ( clBlack, clWhite );
+  zLogNormalTextColor2: array[False..True] of TColor = ( clBlue,  clWhite );
+  zLogConfirmedTextColor: array[False..True] of TColor = ( clRed,  clWhite );
+  zLogGrayedTextColor: array[False..True] of TColor = ( clGray,  clWhite );
+  zLogGridFixedColor: array[False..True] of TColor  = ( clBtnFace, clBtnFace );
 
 var
   dmZLogGlobal: TdmZLogGlobal;
@@ -736,9 +777,6 @@ var
 begin
    FCurrentFileName := '';
    FLog := nil;
-//   CreateLog();
-
-   ClearParamImportedFlag();
 
    // PacketClusterリスト
    FPacketClusterList := TTelnetSettingList.Create();
@@ -812,43 +850,21 @@ begin
    FFreqMemList.Free();
 end;
 
-procedure TdmZLogGlobal.ClearParamImportedFlag();
-var
-   i: Integer;
-   j: Integer;
-   ini: TMemIniFile;
-begin
-   Settings.ProvCityImported := False;
-
-   for i := 1 to maxbank do begin
-      for j := 1 to maxmessage do begin
-         Settings.CW.CWStrImported[i, j] := False;
-      end;
-   end;
-   Settings.CW.AdditionalCQMessagesImported[2] := False;
-   Settings.CW.AdditionalCQMessagesImported[3] := False;
-
-   // 対象項目を再ロード
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      LoadCfgParams(ini);
-   finally
-      ini.Free();
-   end;
-end;
-
 procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
 begin
-   // Prov/State($V)
-   Settings._prov := ini.ReadString('Profiles', 'Province/State', '');
+   // Prov/State($V) -> readonly
+   Settings._myprov := ini.ReadString('Profiles', 'Province/State', '');
 
-   // CITY
-   Settings._city := ini.ReadString('Profiles', 'City', '');
+   // CITY -> readonly
+   Settings._mycity := ini.ReadString('Profiles', 'City', '');
 
    Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M TEST');
    Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
    Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
    Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
+
+   Settings.CW._prov := Settings._myprov;
+   Settings.CW._city := Settings._mycity;
 end;
 
 procedure TdmZLogGlobal.LoadIniFile;
@@ -873,39 +889,10 @@ begin
       //
 
       // Active bands
-      Settings._activebands[b19] := ini.ReadBool('Profiles', 'Active1.9MHz', True);
-      Settings._activebands[b35] := ini.ReadBool('Profiles', 'Active3.5MHz', True);
-      Settings._activebands[b7] := ini.ReadBool('Profiles', 'Active7MHz', True);
-      Settings._activebands[b10] := ini.ReadBool('Profiles', 'Active10MHz', True);
-      Settings._activebands[b14] := ini.ReadBool('Profiles', 'Active14MHz', True);
-      Settings._activebands[b18] := ini.ReadBool('Profiles', 'Active18MHz', True);
-      Settings._activebands[b21] := ini.ReadBool('Profiles', 'Active21MHz', True);
-      Settings._activebands[b24] := ini.ReadBool('Profiles', 'Active24MHz', True);
-      Settings._activebands[b28] := ini.ReadBool('Profiles', 'Active28MHz', True);
-      Settings._activebands[b50] := ini.ReadBool('Profiles', 'Active50MHz', True);
-      Settings._activebands[b144] := ini.ReadBool('Profiles', 'Active144MHz', True);
-      Settings._activebands[b430] := ini.ReadBool('Profiles', 'Active430MHz', True);
-      Settings._activebands[b1200] := ini.ReadBool('Profiles', 'Active1200MHz', True);
-      Settings._activebands[b2400] := ini.ReadBool('Profiles', 'Active2400MHz', True);
-      Settings._activebands[b5600] := ini.ReadBool('Profiles', 'Active5600MHz', True);
-      Settings._activebands[b10g] := ini.ReadBool('Profiles', 'Active10GHz', True);
-
-      Settings._power[b19]    := ini.ReadString('Profiles', 'Power1.9MHz', 'H');
-      Settings._power[b35]    := ini.ReadString('Profiles', 'Power3.5MHz', 'H');
-      Settings._power[b7]     := ini.ReadString('Profiles', 'Power7MHz', 'H');
-      Settings._power[b10]    := ini.ReadString('Profiles', 'Power10MHz', 'H');
-      Settings._power[b14]    := ini.ReadString('Profiles', 'Power14MHz', 'H');
-      Settings._power[b18]    := ini.ReadString('Profiles', 'Power18MHz', 'H');
-      Settings._power[b21]    := ini.ReadString('Profiles', 'Power21MHz', 'H');
-      Settings._power[b24]    := ini.ReadString('Profiles', 'Power24MHz', 'H');
-      Settings._power[b28]    := ini.ReadString('Profiles', 'Power28MHz', 'H');
-      Settings._power[b50]    := ini.ReadString('Profiles', 'Power50MHz', 'H');
-      Settings._power[b144]   := ini.ReadString('Profiles', 'Power144MHz', 'H');
-      Settings._power[b430]   := ini.ReadString('Profiles', 'Power430MHz', 'H');
-      Settings._power[b1200]  := ini.ReadString('Profiles', 'Power1200MHz', 'H');
-      Settings._power[b2400]  := ini.ReadString('Profiles', 'Power2400MHz', 'H');
-      Settings._power[b5600]  := ini.ReadString('Profiles', 'Power5600MHz', 'H');
-      Settings._power[b10g]   := ini.ReadString('Profiles', 'Power10GHz', 'H');
+      for b := b19 to HiBand do begin
+         Settings._activebands[b] := ini.ReadBool('Profiles', 'Active' + BandIniString[b], DefIniUseBand[b]);
+         Settings._power[b] := ini.ReadString('Profiles', 'Power' + BandIniString[b], DefIniPower[b]);
+      end;
 
       // Automatically enter exchange from SuperCheck
       Settings._entersuperexchange := ini.ReadBool('Preferences', 'AutoEnterSuper', False);
@@ -955,9 +942,6 @@ begin
       // Operator
       Settings._multiop := TContestCategory(ini.ReadInteger('Categories', 'Operator2', 0));
 
-      // Band
-      Settings._band := ini.ReadInteger('Categories', 'Band', 0);
-
       // Mode
       Settings._mode := TContestMode(ini.ReadInteger('Categories', 'Mode', 0));
 
@@ -974,22 +958,26 @@ begin
 //      Settings._city := ini.ReadString('Profiles', 'City', '');
 
       // CQ Zone
-      Settings._cqzone := ini.ReadString('Profiles', 'CQZone', '');
+      Settings._mycqzone := ini.ReadString('Profiles', 'CQZone', '');
 
       // ITU Zone
-      Settings._iaruzone := ini.ReadString('Profiles', 'IARUZone', '');
+      Settings._myiaruzone := ini.ReadString('Profiles', 'IARUZone', '');
 
       // Age
-      Settings._age := ini.ReadString('Profiles', 'Age', '');
+      Settings._myage := ini.ReadString('Profiles', 'Age', '');
+
+      // Iota
+      Settings._myiota := ini.ReadString('Profiles', 'Iota', '');
+
+      // Handle Name
+      Settings._myhandle_cw := ini.ReadString('Profiles', 'HandleNameCw', '');
+      Settings._myhandle_ph := ini.ReadString('Profiles', 'HandleNamePh', '');
 
       // Power(HMLP)
       Settings._powerH := ini.ReadString('Profiles', 'PowerH', '1KW');
       Settings._powerM := ini.ReadString('Profiles', 'PowerM', '100');
       Settings._powerL := ini.ReadString('Profiles', 'PowerL', '10');
       Settings._powerP := ini.ReadString('Profiles', 'PowerP', '5');
-
-      // Sent
-//      Settings._sentstr := ini.ReadString('Profiles', 'SentStr', '');
 
       // CFGファイルにもある項目をロード
       LoadCfgParams(ini);
@@ -1131,8 +1119,8 @@ begin
       for i := 1 to 5 do begin
          s := 'RigControl#' + IntToStr(i);
          Settings.FRigControl[i].FControlPort   := ini.ReadInteger(s, 'ControlPort', 0);
-         Settings.FRigControl[i].FControlPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'control_port_rts', Integer(paNone)));
-         Settings.FRigControl[i].FControlPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'control_port_dtr', Integer(paNone)));
+         Settings.FRigControl[i].FControlPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'control_port_rts', Integer(paAlwaysOff)));
+         Settings.FRigControl[i].FControlPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'control_port_dtr', Integer(paAlwaysOff)));
          Settings.FRigControl[i].FSpeed         := ini.ReadInteger(s, 'Speed', 0);
          Settings.FRigControl[i].FRigName       := ini.ReadString(s, 'RigName', '');
          Settings.FRigControl[i].FUseTransverter := ini.ReadBool(s, 'UseTransverter', False);
@@ -1141,6 +1129,9 @@ begin
          Settings.FRigControl[i].FKeyingPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'keying_port_rts', Integer(paPtt)));
          Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
          Settings.FRigControl[i].FPhoneChgPTT := ini.ReadBool(s, 'PhoneChgPTT', False);
+         Settings.FRigControl[i].FUsePolling := ini.ReadBool(s, 'UsePolling', True);
+         Settings.FRigControl[i].FPrePlayback := TAudioInput(ini.ReadInteger(s, 'PrePlayback', 0));
+         Settings.FRigControl[i].FPostPlayback := TAudioInput(ini.ReadInteger(s, 'PostPlayback', 0));
       end;
 
       //
@@ -1152,9 +1143,6 @@ begin
          Settings.FRigSet[2].FRig[b] := ini.ReadInteger('RigSetB', 'Rig_' + MHzString[b], 0);
          Settings.FRigSet[2].FAnt[b] := ini.ReadInteger('RigSetB', 'Ant_' + MHzString[b], 0);
       end;
-
-      // USE TRANSCEIVE MODE(ICOM only)
-      Settings._use_transceive_mode := ini.ReadBool('Hardware', 'UseTransceiveMode', True);
 
       // Get band and mode when polling(ICOM only)
       Settings._icom_polling_freq_and_mode := ini.ReadBool('Hardware', 'PollingFreqAndMode', False);
@@ -1226,6 +1214,7 @@ begin
       Settings._so2r_ignore_mode_change := ini.ReadBool('SO2R', 'ignore_mode_change', True);
       Settings._so2r_rigselect_v28 := ini.ReadBool('SO2R', 'rigselect_v28', False);
       Settings._so2r_cqrestart := ini.ReadBool('SO2R', 'cq_restart', True);
+      Settings._so2r_dontswitchspmode := ini.ReadBool('SO2R', 'dontswitchspmode', False);
       Settings._so2r_otrsp_port  := ini.ReadInteger('SO2R', 'otrsp_port', 0);
 
       // PTT control
@@ -1278,6 +1267,12 @@ begin
       // Sync. rig wpm
       Settings._sync_rig_wpm := ini.ReadBool('Rig', 'SyncRigWpm', False);
 
+      // Use band up/down commands
+      Settings._use_band_updown := ini.ReadBool('Rig', 'UseBandUpDown', False);
+
+      // Use band select command
+      Settings._use_band_select := ini.ReadBool('Rig', 'UseBandSelect', False);
+
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
 
@@ -1297,9 +1292,6 @@ begin
 
       // Guard Time
       Settings.FRigSwitchGuardTime     := ini.ReadInteger('Rig', 'RigSwitchGuardTime', 100);
-
-      // Last FileFilter Index
-      Settings.FLastFileFilterIndex    := ini.ReadInteger('Preferences', 'LastFileFilterIndex', 2);
 
       // Base FontFace Name
       Settings.FBaseFontName           := ini.ReadString('Preferences', 'BaseFontName', 'ＭＳ ゴシック');
@@ -1338,6 +1330,10 @@ begin
       Settings._pluginlist := ini.ReadString('zylo', 'items', '');
       Settings._pluginDLLs := ini.ReadString('zylo', 'DLLs', '');
 
+      // Bandscope resume data path
+      Settings._bsresumepath := ini.ReadString('Preferences', 'BsResumePath', '');
+      Settings._bsresumepath := AdjustPath(Settings._bsresumepath);
+
       //
       // Misc
       //
@@ -1360,6 +1356,12 @@ begin
       // Update using a thread
       Settings._renewbythread := ini.ReadBool('Misc', 'UpdateUsingThread', False);
 
+      // Use incremental dupe check
+      Settings.FUseIncrementalDupeCheck := ini.ReadBool('Misc', 'UseIncrementalDupeCheck', True);
+
+      // Delay before closing the Partial window
+      Settings.FPartialCloseTime := ini.ReadInteger('Misc', 'PartialCloseTime', 5000);
+
       // grayline
       Settings.FShowGrayline := ini.ReadBool('Grayline', 'ShowGrayline', True);
       Settings.FShowMeridians := ini.ReadBool('Grayline', 'ShowMeridians', False);
@@ -1369,10 +1371,16 @@ begin
       Settings.FGrayLineYcutsize := ini.ReadInteger('Grayline', 'ycutsize', 15);
 
       // Startup window
-      Settings.FDontShowStartupWindow := ini.ReadBool('Preferences', 'DontShowStartupWindow', False);
+      Settings.FShowStartupWindow := ini.ReadBool('Preferences', 'ShowStartupWindow', True);
+
+      // Export Memo field to ADIF
+      Settings.FExportMemoToAdif := ini.ReadBool('Preferences', 'ExportMemoFieldToAdif', False);
 
       // Usability
       Settings.FUseMultiLineTabs := ini.ReadBool('Style', 'UseMultiLineTabs', True);
+      Settings.FUseDarkMode := ini.ReadBool('Style', 'UseDarkMode', False);
+      Settings.FDisableShortCutsQSOEdit := ini.ReadBool('Usability', 'DisableShortCutsQSOEdit', False);
+      Settings.FBrowserForWebUpload := ini.ReadInteger('Usability', 'BrowserForWebUpload', 0);
       Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
       Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
       Settings.FQsoListFocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListFocusedSelColor', ''), RGB($E5, $F3, $FF));
@@ -1388,12 +1396,11 @@ begin
       Settings._txnr := ini.ReadInteger('Categories', 'TXNumber', 0);
       Settings._contestmenuno := ini.ReadInteger('Categories', 'Contest', 1);
       Settings._mycall := ini.ReadString('Categories', 'MyCall', '');
+      Settings._mygridloc := ini.ReadString('Categories', 'MyGridLoc', 'PM96EJ');
       Settings._mylatitude := ini.ReadString('Categories', 'MyLatitude', '36.4');
-      Settings._mylongitude := ini.ReadString('Categories', 'MyLongitude', '-138.38');
+      Settings._mylongitude := ini.ReadString('Categories', 'MyLongitude', '138.38');
 
       Settings.CW._interval := ini.ReadInteger('CW', 'Interval', 1);
-
-//      Settings._specificcwport := ini.ReadInteger('Hardware', 'UseCWPort', 0 { $037A } );
 
       Settings._mainfontsize := ini.ReadInteger('Preferences', 'FontSize', 9);
       Settings._mainrowheight := ini.ReadInteger('Preferences', 'RowHeight', 18);
@@ -1403,8 +1410,6 @@ begin
 
       Settings._super_check_columns := ini.ReadInteger('Windows', 'SuperCheckColumns', 0);
       Settings._super_check2_columns := ini.ReadInteger('Windows', 'SuperCheck2Columns', 0);
-
-      Settings.ReadOnlyParamImported := ini.ReadBool('Categories', 'ReadOnlyParamImported', False);
 
       Settings.FRigShowRitInfo := ini.ReadBool('Rig', 'ShowRitInfo', False);
 
@@ -1465,6 +1470,12 @@ begin
       Settings._usebandscope[b2400] := ini.ReadBool('BandScopeEx', 'BandScope2400MHz', False);
       Settings._usebandscope[b5600] := ini.ReadBool('BandScopeEx', 'BandScope5600MHz', False);
       Settings._usebandscope[b10g]  := ini.ReadBool('BandScopeEx', 'BandScope10GHz', False);
+      Settings._usebandscope[b104g]  := ini.ReadBool('BandScopeEx', 'BandScope10.4GHz', False);
+      Settings._usebandscope[b24g]  := ini.ReadBool('BandScopeEx', 'BandScope24GHz', False);
+      Settings._usebandscope[b47g]  := ini.ReadBool('BandScopeEx', 'BandScope47GHz', False);
+      Settings._usebandscope[b77g]  := ini.ReadBool('BandScopeEx', 'BandScope77GHz', False);
+      Settings._usebandscope[b135g]  := ini.ReadBool('BandScopeEx', 'BandScope135GHz', False);
+      Settings._usebandscope[b248g]  := ini.ReadBool('BandScopeEx', 'BandScope248GHz', False);
       Settings._usebandscope_current := ini.ReadBool('BandScope', 'Current', False);
       Settings._usebandscope_newmulti := ini.ReadBool('BandScope', 'NewMulti', False);
       Settings._usebandscope_allbands := ini.ReadBool('BandScope', 'AllBands', False);
@@ -1571,36 +1582,40 @@ begin
       for i := 1 to maxmessage do begin
          s := ini.ReadString('Voice', 'F#' + IntToStr(i), '');
          if s = '' then begin
-            Settings.FSoundFiles[i] := '';
-            Settings.FSoundComments[i] := '';
+            Settings.FVoiceConfig[i].FSoundFile := '';
+            Settings.FVoiceConfig[i].FSoundComment := '';
          end
          else begin
             if FileExists(s) = True then begin
-               Settings.FSoundFiles[i] := s;
-               Settings.FSoundComments[i] := ini.ReadString('Voice', 'C#' + IntToStr(i), '');
+               Settings.FVoiceConfig[i].FSoundFile := s;
+               Settings.FVoiceConfig[i].FSoundComment := ini.ReadString('Voice', 'C#' + IntToStr(i), '');
             end
             else begin
-               Settings.FSoundFiles[i] := '';
-               Settings.FSoundComments[i] := 'file not found';
+               Settings.FVoiceConfig[i].FSoundFile := '';
+               Settings.FVoiceConfig[i].FSoundComment := 'file not found';
             end;
          end;
+         Settings.FVoiceConfig[i].FPreProcess.FCommand := ini.ReadString('Voice', 'PRE_CMD#' + IntToStr(i), '');
+         Settings.FVoiceConfig[i].FPostProcess.FCommand := ini.ReadString('Voice', 'POST_CMD#' + IntToStr(i), '');
       end;
       for i := 2 to 3 do begin
          s := ini.ReadString('Voice', 'CQ_F#' + IntToStr(i), '');
          if s = '' then begin
-            Settings.FAdditionalSoundFiles[i] := '';
-            Settings.FAdditionalSoundComments[i] := '';
+            Settings.FAdditionalVoiceConfig[i].FSoundFile := '';
+            Settings.FAdditionalVoiceConfig[i].FSoundComment := '';
          end
          else begin
             if FileExists(s) = True then begin
-               Settings.FAdditionalSoundFiles[i] := s;
-               Settings.FAdditionalSoundComments[i] := ini.ReadString('Voice', 'CQ_C#' + IntToStr(i), '');
+               Settings.FAdditionalVoiceConfig[i].FSoundFile := s;
+               Settings.FAdditionalVoiceConfig[i].FSoundComment := ini.ReadString('Voice', 'CQ_C#' + IntToStr(i), '');
             end
             else begin
-               Settings.FAdditionalSoundFiles[i] := '';
-               Settings.FAdditionalSoundComments[i] := 'file not found';
+               Settings.FAdditionalVoiceConfig[i].FSoundFile := '';
+               Settings.FAdditionalVoiceConfig[i].FSoundComment := 'file not found';
             end;
          end;
+         Settings.FAdditionalVoiceConfig[i].FPreProcess.FCommand := ini.ReadString('Voice', 'CQ_PRE_CMD#' + IntToStr(i), '');
+         Settings.FAdditionalVoiceConfig[i].FPostProcess.FCommand := ini.ReadString('Voice', 'CQ_POST_CMD#' + IntToStr(i), '');
       end;
 
       // output device
@@ -1608,13 +1623,6 @@ begin
       Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
 
       // Select User Defined Contest
-      Settings.FImpProvCity := ini.ReadBool('UserDefinedContest', 'imp_prov_city', True);
-      Settings.FImpCwMessage[1] := ini.ReadBool('UserDefinedContest', 'imp_f1a', True);
-      Settings.FImpCwMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_f2a', True);
-      Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
-      Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
-      Settings.FImpCQMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_cq2', False);
-      Settings.FImpCQMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_cq3', False);
       Settings.FLastCFGFileName := ini.ReadString('UserDefinedContest', 'last_cfgfilename', '');
 
       // スコア表示の追加情報(評価用指数)
@@ -1639,7 +1647,7 @@ begin
       // QSO Rate Graph
       Settings.FGraphStyle := TQSORateStyle(ini.ReadInteger('Graph', 'Style', 0));
       Settings.FGraphStartPosition := TQSORateStartPosition(ini.ReadInteger('Graph', 'StartPosition', 1));
-      for b := b19 to HiBand do begin
+      for b := b19 to bTarget do begin
          strKey := MHzString[b];
          Settings.FGraphBarColor[b]  := ZStringToColorDef(ini.ReadString('Graph', strKey + '_BarColor',  ''), default_graph_bar_color[b]);
          Settings.FGraphTextColor[b] := ZStringToColorDef(ini.ReadString('Graph', strKey + '_TextColor', ''), default_graph_text_color[b]);
@@ -1650,6 +1658,8 @@ begin
          Settings.FGraphOtherBgColor[i] := ZStringToColorDef(ini.ReadString('Graph', 'BgColor' + strKey, ''), default_other_bg_color[i]);
          Settings.FGraphOtherFgColor[i] := ZStringToColorDef(ini.ReadString('Graph', 'FgColor' + strKey, ''), default_other_fg_color[i]);
       end;
+
+      Settings.FGraphTargetColorByBand := ini.ReadBool('Graph', 'TargetColorByBand', False);
 
       Settings.FZaqAchievement      := ini.ReadBool('rateex_zaq', 'achievement', True);
 
@@ -1685,6 +1695,13 @@ begin
       Settings.FQsoListColors[2].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor2', '$ffffff'), clRed);
       Settings.FQsoListColors[2].FBold      := ini.ReadBool('MainQsoList', 'Bold2', False);
 
+      Settings.FQsoListColorType2 := ini.ReadInteger('MainQsoList', 'QsoListColorType2', 0);
+
+      slParam.CommaText := ini.ReadString('MainQsoList', 'QsoListColumnVisible', '1,1,1,1,0,0,1,1,1,0,1,1,0,1,1,1,0');
+      for i := 0 to 16 do begin
+         Settings.FQsoListColumnVisible[i] := StrToBoolDef(slParam[i], True);
+      end;
+
       // Z-Server Messages(ChatForm)
       Settings.FChatFormPopupNewMsg    := ini.ReadBool('ChatWindow', 'PopupNewMsg', False);
       Settings.FChatFormStayOnTop      := ini.ReadBool('ChatWindow', 'StayOnTop', False);
@@ -1714,19 +1731,6 @@ begin
       LastContest.FCfgFileName := ini.ReadString('LastContest', 'CfgFileName', '');
       LastContest.FScoreCoeff := ini.ReadFloat('LastContest', 'ScoreCoeff', 0);
       LastContest.FFileName := ini.ReadString('LastContest', 'FileName', '');
-
-      // user defined contest
-      LastContest.Prov := ini.ReadString('LastContest', 'Prov', '');
-      LastContest.City := ini.ReadString('LastContest', 'City', '');
-      LastContest.ProvCityImported := ini.ReadBool('LastContest', 'ProvCityImported', False);
-      for i := 1 to 4 do begin
-         LastContest.CWStr[i] := ini.ReadString('LastContest', 'CWStr' + IntToStr(i), '');
-         LastContest.CWStrImported[i] := ini.ReadBool('LastContest', 'CWStrImported' + IntToStr(i), False);
-      end;
-      for i := 2 to 3 do begin
-         LastContest.CWAddStr[i] := ini.ReadString('LastContest', 'CWAddStr' + IntToStr(i), '');
-         LastContest.CWAddStrImported[i] := ini.ReadBool('LastContest', 'CWAddStrImported' + IntToStr(i), False);
-      end;
    finally
       ini.Free();
       slParam.Free();
@@ -1751,39 +1755,10 @@ begin
       //
 
       // Active bands
-      ini.WriteBool('Profiles', 'Active1.9MHz', Settings._activebands[b19]);
-      ini.WriteBool('Profiles', 'Active3.5MHz', Settings._activebands[b35]);
-      ini.WriteBool('Profiles', 'Active7MHz', Settings._activebands[b7]);
-      ini.WriteBool('Profiles', 'Active10MHz', Settings._activebands[b10]);
-      ini.WriteBool('Profiles', 'Active14MHz', Settings._activebands[b14]);
-      ini.WriteBool('Profiles', 'Active18MHz', Settings._activebands[b18]);
-      ini.WriteBool('Profiles', 'Active21MHz', Settings._activebands[b21]);
-      ini.WriteBool('Profiles', 'Active24MHz', Settings._activebands[b24]);
-      ini.WriteBool('Profiles', 'Active28MHz', Settings._activebands[b28]);
-      ini.WriteBool('Profiles', 'Active50MHz', Settings._activebands[b50]);
-      ini.WriteBool('Profiles', 'Active144MHz', Settings._activebands[b144]);
-      ini.WriteBool('Profiles', 'Active430MHz', Settings._activebands[b430]);
-      ini.WriteBool('Profiles', 'Active1200MHz', Settings._activebands[b1200]);
-      ini.WriteBool('Profiles', 'Active2400MHz', Settings._activebands[b2400]);
-      ini.WriteBool('Profiles', 'Active5600MHz', Settings._activebands[b5600]);
-      ini.WriteBool('Profiles', 'Active10GHz', Settings._activebands[b10g]);
-
-      ini.WriteString('Profiles', 'Power1.9MHz',   Settings._power[b19]);
-      ini.WriteString('Profiles', 'Power3.5MHz',   Settings._power[b35]);
-      ini.WriteString('Profiles', 'Power7MHz',     Settings._power[b7]);
-      ini.WriteString('Profiles', 'Power10MHz',    Settings._power[b10]);
-      ini.WriteString('Profiles', 'Power14MHz',    Settings._power[b14]);
-      ini.WriteString('Profiles', 'Power18MHz',    Settings._power[b18]);
-      ini.WriteString('Profiles', 'Power21MHz',    Settings._power[b21]);
-      ini.WriteString('Profiles', 'Power24MHz',    Settings._power[b24]);
-      ini.WriteString('Profiles', 'Power28MHz',    Settings._power[b28]);
-      ini.WriteString('Profiles', 'Power50MHz',    Settings._power[b50]);
-      ini.WriteString('Profiles', 'Power144MHz',   Settings._power[b144]);
-      ini.WriteString('Profiles', 'Power430MHz',   Settings._power[b430]);
-      ini.WriteString('Profiles', 'Power1200MHz',  Settings._power[b1200]);
-      ini.WriteString('Profiles', 'Power2400MHz',  Settings._power[b2400]);
-      ini.WriteString('Profiles', 'Power5600MHz',  Settings._power[b5600]);
-      ini.WriteString('Profiles', 'Power10GHz',    Settings._power[b10g]);
+      for b := b19 to HiBand do begin
+         ini.WriteBool('Profiles', 'Active' + BandIniString[b],  Settings._activebands[b]);
+         ini.WriteString('Profiles', 'Power' + BandIniString[b], Settings._power[b]);
+      end;
 
       // Automatically enter exchange from SuperCheck
       ini.WriteBool('Preferences', 'AutoEnterSuper', Settings._entersuperexchange);
@@ -1833,9 +1808,6 @@ begin
       // Operator
       ini.WriteInteger('Categories', 'Operator2', Integer(Settings._multiop));
 
-      // Band
-      ini.WriteInteger('Categories', 'Band', Settings._band);
-
       // Mode
       ini.WriteInteger('Categories', 'Mode', Integer(Settings._mode));
 
@@ -1845,22 +1817,21 @@ begin
       // Apply power code on band change
       ini.WriteBool('Categories', 'ApplyPowerCodeOnBandChange', Settings._applypoweronbandchg);
 
-      if Settings.ProvCityImported = False then begin
-         // Prov/State($V)
-         ini.WriteString('Profiles', 'Province/State', Settings._prov);
-
-         // CITY
-         ini.WriteString('Profiles', 'City', Settings._city);
-      end;
-
       // CQ Zone
-      ini.WriteString('Profiles', 'CQZone', Settings._cqzone);
+      ini.WriteString('Profiles', 'CQZone', Settings._mycqzone);
 
       // ITU Zone
-      ini.WriteString('Profiles', 'IARUZone', Settings._iaruzone);
+      ini.WriteString('Profiles', 'IARUZone', Settings._myiaruzone);
 
       // Age
-      ini.WriteString('Profiles', 'Age', Settings._age);
+      ini.WriteString('Profiles', 'Age', Settings._myage);
+
+      // Iota
+      ini.WriteString('Profiles', 'Iota', Settings._myiota);
+
+      // Handle Name
+      ini.WriteString('Profiles', 'HandleNameCw', Settings._myhandle_cw);
+      ini.WriteString('Profiles', 'HandleNamePh', Settings._myhandle_ph);
 
       // Power(HMLP)
       ini.WriteString('Profiles', 'PowerH', Settings._powerH);
@@ -1868,18 +1839,13 @@ begin
       ini.WriteString('Profiles', 'PowerL', Settings._powerL);
       ini.WriteString('Profiles', 'PowerP', Settings._powerP);
 
-      // Sent
-//      ini.WriteString('Profiles', 'SentStr', Settings._sentstr);
-
       //
       // CW/RTTY
       //
 
       // Messages
       for i := 1 to maxmessage do begin
-         if Settings.CW.CWStrImported[1, i] = False then begin
-            ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
-         end;
+         ini.WriteString('CW', 'F' + IntToStr(i), Settings.CW.CWStrBank[1, i]);
          ini.WriteString('CW', 'F' + IntToStr(i) + 'B', Settings.CW.CWStrBank[2, i]);
          ini.WriteString('RTTY', 'F' + IntToStr(i), Settings.CW.CWStrBank[3, i]);
       end;
@@ -1987,6 +1953,9 @@ begin
          ini.WriteInteger(s, 'keying_port_rts', Integer(Settings.FRigControl[i].FKeyingPortConfig.FRts));
          ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
          ini.WriteBool(s, 'PhoneChgPTT', Settings.FRigControl[i].FPhoneChgPTT);
+         ini.WriteBool(s, 'UsePolling', Settings.FRigControl[i].FUsePolling);
+         ini.WriteInteger(s, 'PrePlayback', Integer(Settings.FRigControl[i].FPrePlayback));
+         ini.WriteInteger(s, 'PostPlayback', Integer(Settings.FRigControl[i].FPostPlayback));
       end;
 
       //
@@ -1998,9 +1967,6 @@ begin
          ini.WriteInteger('RigSetB', 'Rig_' + MHzString[b], Settings.FRigSet[2].FRig[b]);
          ini.WriteInteger('RigSetB', 'Ant_' + MHzString[b], Settings.FRigSet[2].FAnt[b]);
       end;
-
-      // USE TRANSCEIVE MODE(ICOM only)
-      ini.WriteBool('Hardware', 'UseTransceiveMode', Settings._use_transceive_mode);
 
       // Get band and mode when polling(ICOM only)
       ini.WriteBool('Hardware', 'PollingFreqAndMode', Settings._icom_polling_freq_and_mode);
@@ -2063,6 +2029,7 @@ begin
       ini.WriteBool('SO2R', 'ignore_mode_change', Settings._so2r_ignore_mode_change);
       ini.WriteBool('SO2R', 'rigselect_v28', Settings._so2r_rigselect_v28);
       ini.WriteBool('SO2R', 'cq_restart', Settings._so2r_cqrestart);
+      ini.WriteBool('SO2R', 'dontswitchspmode', Settings._so2r_dontswitchspmode);
       ini.WriteInteger('SO2R', 'otrsp_port', Settings._so2r_otrsp_port);
 
       // PTT control
@@ -2115,6 +2082,12 @@ begin
       // Sync. rig wpm
       ini.WriteBool('Rig', 'SyncRigWpm', Settings._sync_rig_wpm);
 
+      // Use band up/down commands
+      ini.WriteBool('Rig', 'UseBandUpDown', Settings._use_band_updown);
+
+      // Use band select command
+      ini.ReadBool('Rig', 'UseBandSelect', Settings._use_band_select);
+
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);
 
@@ -2134,9 +2107,6 @@ begin
 
       // Guard Time
       ini.WriteInteger('Rig', 'RigSwitchGuardTime', Settings.FRigSwitchGuardTime);
-
-      // Last FileFilter Index
-      ini.WriteInteger('Preferences', 'LastFileFilterIndex', Settings.FLastFileFilterIndex);
 
       // Base FontFace Name
       ini.WriteString('Preferences', 'BaseFontName', Settings.FBaseFontName);
@@ -2170,6 +2140,9 @@ begin
       ini.WriteString('zylo', 'items', Settings._pluginlist);
       ini.WriteString('zylo', 'DLLs', Settings._pluginDLLs);
 
+      // Bandscope resume data path
+      ini.WriteString('Preferences', 'BsResumePath', Settings._bsresumepath);
+
       //
       // Misc
       //
@@ -2192,6 +2165,12 @@ begin
       // Update using a thread
       ini.WriteBool('Misc', 'UpdateUsingThread', Settings._renewbythread);
 
+      // Use incremental dupe check
+      ini.WriteBool('Misc', 'UseIncrementalDupeCheck', Settings.FUseIncrementalDupeCheck);
+
+      // Delay before closing the Partial window
+      ini.WriteInteger('Misc', 'PartialCloseTime', Settings.FPartialCloseTime);
+
       // grayline
       ini.WriteBool('Grayline', 'ShowGrayline', Settings.FShowGrayline);
       ini.WriteBool('Grayline', 'ShowMeridians', Settings.FShowMeridians);
@@ -2200,10 +2179,16 @@ begin
       ini.WriteBool('Grayline', 'GrayLineStayOnTop', Settings.FGrayLineStayOnTop);
 
       // Startup window
-      ini.WriteBool('Preferences', 'DontShowStartupWindow', Settings.FDontShowStartupWindow);
+      ini.WriteBool('Preferences', 'ShowStartupWindow', Settings.FShowStartupWindow);
+
+      // Export Memo field to ADIF
+      ini.WriteBool('Preferences', 'ExportMemoFieldToAdif', Settings.FExportMemoToAdif);
 
       // Usability
       ini.WriteBool('Style', 'UseMultiLineTabs', Settings.FUseMultiLineTabs);
+      ini.WriteBool('Style', 'UseDarkMode', Settings.FUseDarkMode);
+      ini.WriteBool('Usability', 'DisableShortCutsQSOEdit', Settings.FDisableShortCutsQSOEdit);
+      ini.WriteInteger('Usability', 'BrowserForWebUpload', Settings.FBrowserForWebUpload);
       ini.WriteInteger('Usability', 'AfterQsoEditOkFocusPos', Settings.FAfterQsoEditOkFocusPos);
       ini.WriteInteger('Usability', 'AfterQsoEditCancelFocusPos', Settings.FAfterQsoEditCancelFocusPos);
       ini.WriteString('Usability', 'QsoListFocusedSelColor', ZColorToString(Settings.FQsoListFocusedSelColor));
@@ -2218,6 +2203,7 @@ begin
       ini.WriteInteger('Categories', 'Contest', Settings._contestmenuno);
       ini.WriteInteger('Categories', 'TXNumber', Settings._txnr);
       ini.WriteString('Categories', 'MyCall', Settings._mycall);
+      ini.WriteString('Categories', 'MyGridLoc', Settings._mygridloc);
       ini.WriteString('Categories', 'MyLatitude', Settings._mylatitude);
       ini.WriteString('Categories', 'MyLongitude', Settings._mylongitude);
 
@@ -2271,6 +2257,12 @@ begin
       ini.WriteBool('BandScopeEx', 'BandScope2400MHz', Settings._usebandscope[b2400]);
       ini.WriteBool('BandScopeEx', 'BandScope5600MHz', Settings._usebandscope[b5600]);
       ini.WriteBool('BandScopeEx', 'BandScope10GHz', Settings._usebandscope[b10g]);
+      ini.WriteBool('BandScopeEx', 'BandScope10.4GHz', Settings._usebandscope[b104g]);
+      ini.WriteBool('BandScopeEx', 'BandScope24GHz', Settings._usebandscope[b24g]);
+      ini.WriteBool('BandScopeEx', 'BandScope47GHz', Settings._usebandscope[b47g]);
+      ini.WriteBool('BandScopeEx', 'BandScope77GHz', Settings._usebandscope[b77g]);
+      ini.WriteBool('BandScopeEx', 'BandScope135GHz', Settings._usebandscope[b135g]);
+      ini.WriteBool('BandScopeEx', 'BandScope248GHz', Settings._usebandscope[b248g]);
       ini.WriteBool('BandScope', 'Current', Settings._usebandscope_current);
       ini.WriteBool('BandScope', 'NewMulti', Settings._usebandscope_newmulti);
       ini.WriteBool('BandScope', 'AllBands', Settings._usebandscope_allbands);
@@ -2305,12 +2297,16 @@ begin
 
       // Voice Memory
       for i := 1 to maxmessage do begin
-         ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FSoundFiles[i]);
-         ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FSoundComments[i]);
+         ini.WriteString('Voice', 'F#' + IntToStr(i), Settings.FVoiceConfig[i].FSoundFile);
+         ini.WriteString('Voice', 'C#' + IntToStr(i), Settings.FVoiceConfig[i].FSoundComment);
+         ini.WriteString('Voice', 'PRE_CMD#' + IntToStr(i), Settings.FVoiceConfig[i].FPreProcess.FCommand);
+         ini.WriteString('Voice', 'POST_CMD#' + IntToStr(i), Settings.FVoiceConfig[i].FPostProcess.FCommand);
       end;
       for i := 2 to 3 do begin
-         ini.WriteString('Voice', 'CQ_F#' + IntToStr(i), Settings.FAdditionalSoundFiles[i]);
-         ini.WriteString('Voice', 'CQ_C#' + IntToStr(i), Settings.FAdditionalSoundComments[i]);
+         ini.WriteString('Voice', 'CQ_F#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FSoundFile);
+         ini.WriteString('Voice', 'CQ_C#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FSoundComment);
+         ini.WriteString('Voice', 'CQ_PRE_CMD#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FPreProcess.FCommand);
+         ini.WriteString('Voice', 'CQ_POST_CMD#' + IntToStr(i), Settings.FAdditionalVoiceConfig[i].FPostProcess.FCommand);
       end;
 
       // output device
@@ -2318,13 +2314,6 @@ begin
       ini.WriteInteger('Voice', 'device', Settings.FSoundDevice);
 
       // Select User Defined Contest
-      ini.WriteBool('UserDefinedContest', 'imp_prov_city', Settings.FImpProvCity);
-      ini.WriteBool('UserDefinedContest', 'imp_f1a', Settings.FImpCwMessage[1]);
-      ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
-      ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
-      ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
-      ini.WriteBool('UserDefinedContest', 'imp_cq2', Settings.FImpCQMessage[2]);
-      ini.WriteBool('UserDefinedContest', 'imp_cq3', Settings.FImpCQMessage[3]);
       ini.WriteString('UserDefinedContest', 'last_cfgfilename', Settings.FLastCFGFileName);
 
       // スコア表示の追加情報(評価用指数)
@@ -2344,7 +2333,7 @@ begin
       // QSO Rate Graph
       ini.WriteInteger('Graph', 'Style', Integer(Settings.FGraphStyle));
       ini.WriteInteger('Graph', 'StartPosition', Integer(Settings.FGraphStartPosition));
-      for b := b19 to HiBand do begin
+      for b := b19 to bTarget do begin
          strKey := MHzString[b];
          ini.WriteString('Graph', strKey + '_BarColor', ZColorToString(Settings.FGraphBarColor[b]));
          ini.WriteString('Graph', strKey + '_TextColor', ZColorToString(Settings.FGraphTextColor[b]));
@@ -2355,6 +2344,8 @@ begin
          ini.WriteString('Graph', 'BgColor' + strKey, ZColorToString(Settings.FGraphOtherBgColor[i]));
          ini.WriteString('Graph', 'FgColor' + strKey, ZColorToString(Settings.FGraphOtherFgColor[i]));
       end;
+
+      ini.WriteBool('Graph', 'TargetColorByBand', Settings.FGraphTargetColorByBand);
 
       ini.WriteBool('rateex_zaq', 'achievement', Settings.FZaqAchievement);
 
@@ -2386,6 +2377,20 @@ begin
          ini.WriteBool('MainQsoList', 'Bold' + IntToStr(i), Settings.FQsoListColors[i].FBold);
       end;
 
+      ini.WriteInteger('MainQsoList', 'QsoListColorType2', Settings.FQsoListColorType2);
+
+      slParam.Clear();
+      for i := 0 to 16 do begin
+         if Settings.FQsoListColumnVisible[i] = False then begin
+            s := '0';
+         end
+         else begin
+            s := '1';
+         end;
+         slParam.Add(s);
+      end;
+      ini.WriteString('MainQsoList', 'QsoListColumnVisible', slParam.CommaText);
+
       // Z-Server Messages(ChatForm)
       ini.WriteBool('ChatWindow', 'PopupNewMsg', Settings.FChatFormPopupNewMsg);
       ini.WriteBool('ChatWindow', 'StayOnTop', Settings.FChatFormStayOnTop);
@@ -2412,21 +2417,6 @@ begin
       ini.WriteFloat('LastContest', 'ScoreCoeff', LastContest.FScoreCoeff);
       ini.WriteString('LastContest', 'FileName', LastContest.FFileName);
 
-      // user defined contest
-      ini.WriteString('LastContest', 'Prov', LastContest.Prov);
-      ini.WriteString('LastContest', 'City', LastContest.City);
-      ini.WriteBool('LastContest', 'ProvCityImported', LastContest.ProvCityImported);
-      for i := 1 to 4 do begin
-         ini.WriteString('LastContest', 'CWStr' + IntToStr(i), LastContest.CWStr[i]);
-         ini.WriteBool('LastContest', 'CWStrImported' + IntToStr(i), LastContest.CWStrImported[i]);
-      end;
-      for i := 2 to 3 do begin
-         ini.WriteString('LastContest', 'CWAddStr' + IntToStr(i), LastContest.CWAddStr[i]);
-         ini.WriteBool('LastContest', 'CWAddStrImported' + IntToStr(i), LastContest.CWAddStrImported[i]);
-      end;
-
-      ini.WriteBool('Categories', 'ReadOnlyParamImported', Settings.ReadOnlyParamImported);
-
       ini.UpdateFile();
    finally
       ini.Free();
@@ -2441,13 +2431,6 @@ end;
 procedure TdmZLogGlobal.ImplementSettings(_OnCreate: boolean);
 begin
    if _OnCreate = False then begin
-      if Settings._band > 0 then begin // single band
-         ContestBand := Settings._band; // resets the bandmenu.items.enabled for the single band entry
-      end;
-   end;
-
-   if MyContest <> nil then begin
-      Main.MyContest.SameExchange := Settings._sameexchange;
    end;
 
    if Settings._zlinkport in [1 .. 6] then begin // zlinkport rs232c
@@ -2523,14 +2506,14 @@ var
 begin
    op := FOpList.ObjectOf(aQSO.Operator);
    if op = nil then begin
-      Result := Settings._age;
+      Result := Settings._myage;
       Exit;
    end;
 
    // 2023年のAADXルール改正で、マルチOP時は運用者の平均年齢とするため
    // OP別の年齢が設定されていない場合は、全体設定の年齢を使う
    if op.Age = '' then begin
-      Result := Settings._age;
+      Result := Settings._myage;
    end
    else begin
       Result := op.Age;
@@ -2577,16 +2560,6 @@ procedure TdmZLogGlobal.SetMyCall(s: string);
 begin
    Settings._mycall := s;
    AnalyzeMyCountry();
-end;
-
-function TdmZLogGlobal.GetBand: integer;
-begin
-   Result := Settings._band;
-end;
-
-procedure TdmZLogGlobal.SetBand(b: integer);
-begin
-   Settings._band := b;
 end;
 
 function TdmZLogGlobal.GetMode: TContestMode;
@@ -2770,19 +2743,39 @@ begin
    case no of
       1, 2, 3, 4, 5, 6,
       7, 8, 9, 10, 11, 12: begin
-         S := Settings.CW.CWStrBank[bank, no];
+         if MyContest = nil then begin
+            S := Settings.CW.CWStrBank[bank, no];
+         end
+         else begin
+            S := MyContest.CwMessages[bank, no];
+         end;
       end;
 
       101: begin
-         S := Settings.CW.CWStrBank[bank, 1];
+         if MyContest = nil then begin
+            S := Settings.CW.CWStrBank[bank, 1];
+         end
+         else begin
+            S := MyContest.CwMessages[bank, 1];
+         end;
       end;
 
       102: begin
-         S := Settings.CW.AdditionalCQMessages[2];
+         if MyContest = nil then begin
+            S := Settings.CW.AdditionalCQMessages[2];
+         end
+         else begin
+            S := MyContest.CwMessageCQ[2];
+         end;
       end;
 
       103: begin
-         S := Settings.CW.AdditionalCQMessages[3];
+         if MyContest = nil then begin
+            S := Settings.CW.AdditionalCQMessages[3];
+         end
+         else begin
+            S := MyContest.CwMessageCQ[3];
+         end;
       end;
 
       else begin
@@ -2821,22 +2814,6 @@ begin
 
    Result := S;
 end;
-
-{
-function TdmZLogGlobal.CWMessage(no: Integer): string;
-var
-   S: string;
-begin
-   if Settings._switchcqsp then begin
-      S := Settings.CW.CWStrBank[Settings.CW.CurrentBank, no];
-   end
-   else begin
-      S := Settings.CW.CWStrBank[1, no];
-   end;
-
-   Result := S;
-end;
-}
 
 procedure TdmZLogGlobal.ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string; fPositionOnly: Boolean );
 var
@@ -3317,17 +3294,17 @@ begin
       if P <> nil then begin
          FMyCountry := P.Country.Country;
 
-         if Settings._cqzone = '' then begin
-            Settings._cqzone := P.Country.CQZone;
+         if Settings._mycqzone = '' then begin
+            Settings._mycqzone := P.Country.CQZone;
          end;
 
-         FMyCQZone := Settings._cqzone;
+         FMyCQZone := Settings._mycqzone;
 
-         if Settings._iaruzone = '' then begin
-            Settings._iaruzone := P.Country.ITUZone;
+         if Settings._myiaruzone = '' then begin
+            Settings._myiaruzone := P.Country.ITUZone;
          end;
 
-         FMyITUZone := Settings._iaruzone;
+         FMyITUZone := Settings._myiaruzone;
 
          if P.OvrContinent = '' then begin
             FMyContinent := P.Country.Continent;
@@ -3497,6 +3474,28 @@ begin
    end;
 end;
 
+function TdmZLogGlobal.GetBsResumePath(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._bsresumepath);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._bsresumepath;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetBsResumePath(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._bsresumepath := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._bsresumepath := v;
+   end;
+end;
+
 procedure TdmZLogGlobal.SelectBandPlan(preset_name: string);
 begin
    if FBandPlans.ContainsKey(preset_name) = False then begin
@@ -3547,6 +3546,12 @@ begin
 
    // Super Check folder
    strPath := SpcPath;
+   if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
+      ForceDirectories(strPath);
+   end;
+
+   // Bandscope resume data folder
+   strPath := BsResumePath;
    if (strPath <> '') and (DirectoryExists(strPath) = False) then begin
       ForceDirectories(strPath);
    end;
@@ -3671,6 +3676,51 @@ begin
    Comparer.Free();
 
    Result := list;
+end;
+
+function TdmZLogGlobal.GetZBackColor(): TColor;
+begin
+   Result := zLogBackColor[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZBackColor2(): TColor;
+begin
+   Result := zLogBackColor2[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZNormalTextColor1(): TColor;
+begin
+   Result := zLogNormalTextColor1[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZNormalTextColor2(): TColor;
+begin
+   Result := zLogNormalTextColor2[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZConfirmedTextColor(): TColor;
+begin
+   Result := zLogConfirmedTextColor[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZGrayedTextColor(): TColor;
+begin
+   Result := zLogGrayedTextColor[Settings.FUseDarkMode]
+end;
+
+function TdmZLogGlobal.GetZGridFixedColor(): TColor;
+begin
+   Result := zLogGridFixedColor[Settings.FUseDarkMode];
+end;
+
+function TdmZLogGlobal.GetQsoListColumnVisible(Index: Integer): Boolean;
+begin
+   Result := Settings.FQsoListColumnVisible[Index];
+end;
+
+procedure TdmZLogGlobal.SetQsoListColumnVisible(Index: Integer; v: Boolean);
+begin
+   Settings.FQsoListColumnVisible[Index] := v;
 end;
 
 // ----------------------------------------------------------------------------
@@ -3821,6 +3871,16 @@ begin
       Result := True
    else
       Result := false;
+end;
+
+function IsMexico(S: string): Boolean;
+begin
+   if S = 'XE' then begin
+      Result := True;
+   end
+   else begin
+      Result := False;
+   end;
 end;
 
 function GetLocale: String;
@@ -4549,6 +4609,40 @@ begin
    aQSO.Memo := Trim(StringReplace(aQSO.Memo, MEMO_DUPE, '', [rfReplaceAll]));
 end;
 
+function GetActualFreq(b: TBand; strFreq: string): string;
+var
+   p: Integer;
+   s: string;
+   f: TFrequency;
+   b2: TBand;
+begin
+   {$IFNDEF ZSERVER}
+   // FreqがBandと一致しない場合はBandからActualを求める
+   f := Trunc(StrToFloatDef(strFreq, 0)) * 1000;
+   b2 := dmZLogGlobal.BandPlan.FreqToBand(f);
+   if (f = 0) or (b <> b2) or (b > b28) then begin
+      Result := CabrilloBandString[b];
+      Exit;
+   end;
+
+   if strFreq = '' then begin
+      Result := CabrilloBandString[b];
+      Exit;
+   end;
+   {$ENDIF}
+
+   s := strFreq;
+
+   p := Pos('.', s);
+   if p = 0 then begin
+      Result := RightStr('     ' + s, 5);
+      Exit;
+   end;
+
+   s := Copy(s, 1, p - 1);
+   Result := RightStr('     ' + s, 5);
+end;
+
 function TextToBand(text: string): TBand;
 var
    b: TBand;
@@ -4938,7 +5032,7 @@ begin
          S := StringReplace(S, 'COM', '', [rfReplaceAll]);
 
          portnum := StrToIntDef(S, 0);
-         if (portnum >= 1) and (portnum <= 20) then begin
+         if (portnum >= 1) and (portnum <= 99) then begin
             P^ := portnum;
             Inc(P);
             Inc(c);
@@ -5068,4 +5162,30 @@ begin
    end;
 end;
 
+procedure ExecProgram(handle: THandle; strExeName: string);
+var
+   si: STARTUPINFO;
+   pi: PROCESS_INFORMATION;
+   strCurDir: string;
+   strFullPath: string;
+begin
+   GetStartupInfo(si);
+
+   strCurDir := ExtractFilePath(Application.ExeName);
+   strFullPath := strCurDir + strExeName;
+   if FileExists(strFullPath) = False then begin
+      MessageBox(handle, PChar(strExeName + ' is not exists'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   if CreateProcess(nil, PChar(strFullPath), nil, nil, False, 0, nil, PChar(strCurDir), si, pi) = False then begin
+      Application.MessageBox(PChar('can not execute'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      Exit;
+   end;
+
+   CloseHandle(pi.hProcess);
+   CloseHandle(pi.hThread);
+end;
+
 end.
+

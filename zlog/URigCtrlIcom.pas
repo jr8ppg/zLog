@@ -19,10 +19,7 @@ type
   private
     FMyAddr: Byte;
     FRigAddr: Byte;
-    FUseTransceiveMode: Boolean;
     FGetBandAndMode: Boolean;
-    FPollingCount: Integer;
-    FInitialPolling: Boolean;
 
     FCommThread: TIcomCommThread;
     FCommandList: TList<AnsiString>;
@@ -31,6 +28,14 @@ type
     FMaxWPM: Integer;      // 48
 
     FFreq4Bytes: Boolean;
+
+    FAudioCmd: string;
+    FAudioMic: string;
+    FAudioUsb: string;
+    FAudioAcc: string;
+    FAudioMicUsb: string;
+    FAudioMicAcc: string;
+    procedure SendIcomCommand(command: string);
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
@@ -55,12 +60,18 @@ type
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
     procedure ControlPTT(fOn: Boolean); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
 
-    property UseTransceiveMode: Boolean read FUseTransceiveMode write FUseTransceiveMode;
     property GetBandAndModeFlag: Boolean read FGetBandAndMode write FGetBandAndMode;
     property MyAddr: Byte read FMyAddr write FMyAddr;
     property RigAddr: Byte read FRigAddr write FRigAddr;
     property Freq4Bytes: Boolean read FFreq4Bytes write FFreq4Bytes;
+    property AudioCmd: string read FAudioCmd write FAudioCmd;
+    property AudioMic: string read FAudioMic write FAudioMic;
+    property AudioUsb: string read FAudioUsb write FAudioUsb;
+    property AudioAcc: string read FAudioAcc write FAudioAcc;
+    property AudioMicUsb: string read FAudioMicUsb write FAudioMicUsb;
+    property AudioMicAcc: string read FAudioMicAcc write FAudioMicAcc;
   end;
 
   TIcomCommThread = class(TThread)
@@ -95,9 +106,7 @@ implementation
 constructor TICOM.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
 begin
    Inherited;
-   FPollingCount := 0;
-   FInitialPolling := False;
-   FUseTransceiveMode := True;
+   FUsePolling := False;
    FComm.StopBits := sb1BITS;
    FComm.HwFlow := hfNONE;
    FComm.SwFlow := sfNONE;
@@ -116,6 +125,13 @@ begin
    FFreq4Bytes := False;
 
    FControlPTTSupported := True;
+
+   FAudioCmd := '';
+   FAudioMic := '';
+   FAudioUsb := '';
+   FAudioAcc := '';
+   FAudioMicUsb := '';
+   FAudioMicAcc := '';
 end;
 
 destructor TICOM.Destroy;
@@ -219,7 +235,7 @@ begin
       case Command of
          // MODE
          $01, $04: begin
-            temp := Ord(ss[2]);
+            temp := (Ord(ss[2]) mod 16) + (Ord(ss[2]) div 16) * 10;
             case temp of
                0, 1:
                   M := mSSB;
@@ -231,6 +247,8 @@ begin
                   M := mAM;
                4, 8:
                   M := mRTTY;
+               17:
+                  M := mDV;
                else
                   M := mOther;
             end;
@@ -334,6 +352,18 @@ begin
                else begin
                   FRIt := False;
                end;
+            end;
+         end;
+
+         // 各種情報
+         $15: begin
+            // Sメーターレベル
+            if Ord(ss[2]) = $02 then begin
+               i1 := Ord(ss[3]) and $0f;
+               i2 := (Ord(ss[3]) and $f0) shr 4;
+               i3 := Ord(ss[4]) and $0f;
+               i4 := (Ord(ss[4]) and $f0) shr 4;
+               FSMeterValue[_currentvfo] := Round(((i4 * 1000) + (i3 * 100) + (i2 * 10) + i1) * (100 / 255));
             end;
          end;
       end;
@@ -532,6 +562,8 @@ begin
             para := 2;
          mRTTY:
             para := 4;
+         mDV:
+            para := $17;
          else
             Exit;
       end;
@@ -683,12 +715,12 @@ begin
    end;
 
    // トランシーブモード使わない時はポーリング再開
-   if (FUseTransceiveMode = False) then begin
+   if (FUsePolling = True) then begin
       FPollingTimer.Enabled := True;
    end;
 
    // トランシーブモード使う場合は１回か２回ポーリングする
-   if (FUseTransceiveMode = True) then begin
+   if (FUsePolling = False) then begin
       if FRitCtrlSupported = False then begin
          if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
             ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
@@ -793,6 +825,52 @@ begin
    else begin
       ICOMWriteData(AnsiChar($1c) + AnsiChar($00) + AnsiChar($00));
    end;
+end;
+
+procedure TICOM.AudioInputSelect(input: TAudioInput);
+begin
+   inherited;
+
+   if FAudioInputSelectSupported = False then begin
+      Exit;
+   end;
+
+   case input of
+      aiDontCare: SendIcomCommand('');
+      aiMic:      SendIcomCommand(FAudioCmd + FAudioMic);
+      aiUsb:      SendIcomCommand(FAudioCmd + FAudioUsb);
+      aiAcc:      SendIcomCommand(FAudioCmd + FAudioAcc);
+      aiMicUsb:   SendIcomCommand(FAudioCmd + FAudioMicUsb);
+      aiMicAcc:   SendIcomCommand(FAudioCmd + FAudioMicAcc);
+   end;
+end;
+
+procedure TICOM.SendIcomCommand(command: string);
+var
+   i: Integer;
+   len: Integer;
+   cmd: AnsiString;
+   ch: AnsiChar;
+   S: string;
+begin
+   if command = '' then begin
+      Exit;
+   end;
+
+   cmd := '';
+   len := Length(command);
+
+   i := 1;
+   repeat
+      S := Copy(command, i, 2);
+
+      ch := AnsiChar(StrToIntDef('$' + S, 0));
+      cmd := cmd + ch;
+
+      Inc(i, 2);
+   until i > len;
+
+   ICOMWriteData(cmd);
 end;
 
 { TIC756 }
@@ -996,6 +1074,9 @@ begin
             fStart := True;
          end
          else begin
+            {$IFDEF DEBUG}
+            OutputDebugString(PChar('wait for start char => $' + IntToHex(Ord(CH), 2)));
+            {$ENDIF}
             Continue;
          end;
       end;

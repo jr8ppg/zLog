@@ -27,6 +27,9 @@ implementation
 
 {$R *.dfm}
 
+uses
+  UzLogGlobal;
+
 procedure TformCWMonitor.FormCreate(Sender: TObject);
 begin
    FSendText := '';
@@ -65,9 +68,9 @@ begin
       Rect.Left := 0;
       Rect.Right := TPaintBox(Sender).Width - 1;
 
-      Brush.Color := clBtnFace;
+      Brush.Color := dmZLogGlobal.ZBackColor2;
       Brush.Style := bsSolid;
-      Pen.Color := clGray;
+      Pen.Color := dmZLogGlobal.ZGrayedTextColor;
       Pen.Style := psSolid;
       FillRect(Rect);
       Rectangle(Rect);
@@ -78,7 +81,7 @@ begin
 
       Rect.Left := 2;
       Rect.Right := Rect.Right - 2;
-      Font.Color := clBlack;
+      Font.Color := dmZLogGlobal.ZNormalTextColor1;
       TextRect(Rect, FSendText, [tfLeft, tfVerticalCenter, tfSingleLine]);
 
       if FSendIndex > 0 then begin

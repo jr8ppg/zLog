@@ -108,14 +108,14 @@ object ChatForm: TChatForm
     object checkPopup: TCheckBox
       Left = 4
       Top = 4
-      Width = 155
+      Width = 156
       Height = 17
       Caption = #26032#12513#12483#12475#12540#12472#12391#12509#12483#12503#12450#12483#12503
       TabOrder = 0
       OnClick = comboPromptTypeChange
     end
     object Button2: TButton
-      Left = 304
+      Left = 308
       Top = 4
       Width = 67
       Height = 18
@@ -126,18 +126,18 @@ object ChatForm: TChatForm
       ExplicitLeft = 300
     end
     object checkStayOnTop: TCheckBox
-      Left = 165
+      Left = 164
       Top = 4
-      Width = 95
+      Width = 94
       Height = 17
       Caption = #26368#21069#38754#12395#34920#31034
       TabOrder = 2
       OnClick = checkStayOnTopClick
     end
     object checkRecord: TCheckBox
-      Left = 260
+      Left = 258
       Top = 4
-      Width = 40
+      Width = 45
       Height = 17
       Caption = #35352#37682
       Checked = True

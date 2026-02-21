@@ -22,7 +22,7 @@ type
     StateList: TStateList;
     function ExtractMulti(aQSO : TQSO) : string; override;
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO : TQSO); override;
     procedure CheckMulti(aQSO : TQSO); override;
     procedure Reset; override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
@@ -136,14 +136,19 @@ begin
    MainForm.WriteStatusLine(str, False);
 end;
 
-procedure TARRLDXMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TARRLDXMulti.AddNoUpdate(aQSO: TQSO);
 var
    S: TState;
 begin
    aQSO.NewMulti1 := False;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    S := GetState(aQSO, StateList);
    if S <> nil then begin

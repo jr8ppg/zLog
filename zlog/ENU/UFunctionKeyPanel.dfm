@@ -75,8 +75,6 @@ object formFunctionKeyPanel: TformFunctionKeyPanel
         OnClick = ButtonGroup1Items11Click
       end>
     TabOrder = 0
-    ExplicitWidth = 726
-    ExplicitHeight = 54
   end
   object Timer1: TTimer
     Interval = 100

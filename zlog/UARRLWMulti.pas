@@ -9,18 +9,14 @@ uses
 
 type
   TARRLWMulti = class(TWWMulti)
-    procedure FormCreate(Sender: TObject);
-  protected
   private
     { Private declarations }
   public
     { Public declarations }
-    ALLASIANFLAG : boolean;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
     function GetInfo(aQSO: TQSO): string; override;
-    procedure ProcessCluster(var Sp : TBaseSpot); override;
   end;
 
 implementation
@@ -48,7 +44,7 @@ begin
       Result := False;
 end;
 
-procedure TARRLWMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TARRLWMulti.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
    C: TCountry;
@@ -59,6 +55,16 @@ begin
 
    P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
    C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    aQSO.Multi1 := C.Country;
 
    if C.Index = -1 then begin
@@ -69,10 +75,14 @@ begin
    end;
 
    if aQSO.Dupe then begin
-      exit;
+      Exit;
    end;
 
-   if ALLASIANFLAG = True then begin
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
+
+   if FAllAsia = True then begin
       aQSO.Points := 0;
       // MainForm.Caption := C.Country+';'+MyCOuntry+';';
       if C.Country = dmZLogGlobal.MyCountry then begin
@@ -109,23 +119,6 @@ begin
       C.Worked[B] := True;
       aQSO.NewMulti1 := True;
       // Grid.Cells[0,C.GridIndex] := C.Summary;
-   end;
-end;
-
-procedure TARRLWMulti.FormCreate(Sender: TObject);
-begin
-   { inherited; }
-   ALLASIANFLAG := False;
-
-   Reset;
-end;
-
-procedure TARRLWMulti.ProcessCluster(var Sp : TBaseSpot);
-begin
-   Inherited;
-
-   if ALLASIANFLAG = True then begin
-      Sp.NewZone := False;
    end;
 end;
 

@@ -3,8 +3,10 @@ unit UQTCForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Spin,
+  WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Samples.Spin,
+  System.Generics.Collections,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogCW, UZLinkForm, UzLogKeyer;
 
 type
@@ -16,6 +18,9 @@ type
     Label2: TLabel;
     Label3: TLabel;
     ListBox: TListBox;
+    Timer1: TTimer;
+    Panel1: TPanel;
+    Panel2: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
@@ -24,14 +29,14 @@ type
     procedure btnSendClick(Sender: TObject);
     procedure btnBackClick(Sender: TObject);
     procedure SpinEditChange(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
     FQTCToBeSent: Integer;
     FPastQTC: Integer;
-    FQTCList: TList;
+    FQTCList: TList<TQSO>;
     FQTCReqStn: TQSO;
     FQTCSeries: Integer;
-    procedure WaitForSent();
     function BuildQTCInitString(): string;
   public
     { Public declarations }
@@ -54,7 +59,7 @@ procedure TQTCForm.FormCreate(Sender: TObject);
 begin
    Label1.Caption := '';
    Label2.Caption := '';
-   FQTCList := TList.Create;
+   FQTCList := TList<TQSO>.Create();
 end;
 
 procedure TQTCForm.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -69,7 +74,7 @@ begin
    if FQTCToBeSent - 1 < SpinEdit.Value then // didn't send all QTC. [QTC??/?? CALLSIGN date time band]
    begin
       for i := 0 to FQTCToBeSent - 2 do begin
-         Q := TQSO(FQTCList[i]);
+         Q := FQTCList[i];
          S := Q.memo;
          j := pos('[QTC', S);
          if j > 0 then begin
@@ -157,6 +162,7 @@ begin
       // QTCしたQSOか？
       j := pos('[QTC', QQ.memo);
       if j = 0 then begin  // QTCまだ
+         // 自分には送らない
          if CoreCall(QQ.CallSign) <> CoreCall(Q.CallSign) then begin
             if FQTCList.Count < 10 then begin
                FQTCList.Add(QQ);
@@ -206,21 +212,15 @@ begin
    // 送信リストをセット
    ListBox.Clear;
    for i := 0 to FQTCList.Count - 1 do begin
-      ListBox.Items.Add(TQSO(FQTCList[i]).QTCStr);
+      ListBox.Items.Add(FQTCList[i].QTCStr);
    end;
 
    // 過去に送った数を表示
    if FPastQTC > 0 then begin
-      Label2.Caption := IntToStr(FPastQTC) + ' QTCs have been sent to ' + Q.CallSign + ' already';
+      Label2.Caption := IntToStr(FPastQTC) + ' QTCs have been sent to ' + Q.CallSign + ' already.';
    end
    else begin
       Label2.Caption := '';
-   end;
-
-   // 既にいくつか送信している場合は減らす
-   SpinEdit.Value := FQTCList.Count - FPastQTC;
-   for i := SpinEdit.Value to FQTCList.Count - 1 do begin
-      ListBox.Items[i] := '';
    end;
 
    // 送信するものがある場合
@@ -234,6 +234,7 @@ procedure TQTCForm.btnSendClick(Sender: TObject);
 var
    cQ: TQSO;
    S: string;
+   bandstr: string;
 begin
    SpinEdit.Enabled := False;
 
@@ -247,19 +248,19 @@ begin
    if FQTCToBeSent = 0 then begin   // ない
       if FQTCReqStn.Mode = mCW then begin
          S := '   ' + FQTCReqStn.CallSign + ' ' + BuildQTCInitString();
-         zLogSendStr(MainForm.CurrentRigID, S + '"');
-
-         WaitForSent();
+         zLogSendStr(MainForm.CurrentRigID, S);
       end;
    end
    else begin
       ListBox.Selected[FQTCToBeSent - 1] := True;
-      cQ := TQSO(FQTCList[FQTCToBeSent - 1]);
+      cQ := FQTCList[FQTCToBeSent - 1];
 
       // QTC未送信ならMemo欄にQTC電文を入れる
       if pos('[QTC', cQ.memo) = 0 then begin
+         bandstr := GetActualFreq(FQTCReqStn.Band, FQTCReqStn.Freq);
+
          cQ.memo := '[QTC' + IntToStr(FQTCSeries) + '/' + IntToStr(SpinEdit.Value) + ' ' + FQTCReqStn.CallSign +
-                    FormatDateTime(' yyyy-mm-dd hhnn ', CurrentTime) + ADIFBandString[FQTCReqStn.Band] + ']' + cQ.memo;
+                    FormatDateTime(' yyyy-mm-dd hhnn ', CurrentTime) + bandstr + ']' + cQ.memo;
       end;
 
       // ログに保存
@@ -267,9 +268,7 @@ begin
 
       if FQTCReqStn.Mode = mCW then begin
          S := cQ.QTCStr;
-         zLogSendStr(MainForm.CurrentRigID, S + '"');
-
-         WaitForSent();
+         zLogSendStr(MainForm.CurrentRigID, S);
       end;
    end;
 
@@ -284,7 +283,7 @@ begin
    end;
 
    Label1.Caption := '[QTC ' + IntToStr(FQTCSeries) + '/' + IntToStr(SpinEdit.Value) + '-' + IntToStr(FQTCToBeSent) + '] ' +
-                     TQSO(FQTCList[FQTCToBeSent - 1]).QTCStr;
+                     FQTCList[FQTCToBeSent - 1].QTCStr;
 end;
 
 procedure TQTCForm.btnBackClick(Sender: TObject);
@@ -301,7 +300,7 @@ begin
    end
    else begin
       Label1.Caption := '[QTC ' + IntToStr(FQTCSeries) + '/' + IntToStr(FQTCToBeSent) + '] ' +
-                        TQSO(FQTCList[FQTCToBeSent - 1]).QTCStr;
+                        FQTCList[FQTCToBeSent - 1].QTCStr;
    end;
 end;
 
@@ -320,27 +319,22 @@ begin
 
    ListBox.Clear();
    for i := 0 to SpinEdit.Value - 1 do begin
-      ListBox.Items.Add(TQSO(FQTCList[i]).QTCStr);
+      ListBox.Items.Add(FQTCList[i].QTCStr);
    end;
 
    Label1.Caption := FQTCReqStn.CallSign + ' ' + BuildQTCInitString();
 end;
 
-procedure TQTCForm.WaitForSent();
+procedure TQTCForm.Timer1Timer(Sender: TObject);
 begin
-   // ボタン禁止
-   btnSend.Enabled := False;
-   btnBack.Enabled := False;
-
-   // 送信が終わるまで待ち合わせ
-   dmZlogKeyer.UserFlag := True;
-   repeat
-      Application.ProcessMessages;
-   until dmZlogKeyer.UserFlag = False;
-
-   // ボタン状態戻す
-   btnSend.Enabled := True;
-   btnBack.Enabled := True;
+   if dmZLogKeyer.IsPlaying = True then begin
+      btnSend.Enabled := False;
+      btnBack.Enabled := False;
+   end
+   else begin
+      btnSend.Enabled := True;
+      btnBack.Enabled := True;
+   end;
 end;
 
 function TQTCForm.BuildQTCInitString(): string;

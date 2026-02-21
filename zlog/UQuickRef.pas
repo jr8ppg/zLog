@@ -37,22 +37,8 @@ uses Main;
 {$R *.dfm}
 
 procedure TQuickRef.FormCreate(Sender: TObject);
-var
-   ini: TMemIniFile;
 begin
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      dmZlogGlobal.ReadWindowState(ini, Self);
-
-      if FileExists('ZLOGHELP.TXT') then begin
-         Memo.Lines.LoadFromFile('ZLOGHELP.TXT');
-      end
-      else begin
-         Memo.Lines.Clear;
-      end;
-   finally
-      ini.Free();
-   end;
+//
 end;
 
 procedure TQuickRef.comboFontChange(Sender: TObject);
@@ -67,16 +53,8 @@ begin
 end;
 
 procedure TQuickRef.FormDestroy(Sender: TObject);
-var
-   ini: TMemIniFile;
 begin
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      dmZlogGlobal.WriteWindowState(ini, Self);
-      ini.UpdateFile();
-   finally
-      ini.Free();
-   end;
+//
 end;
 
 procedure TQuickRef.FormShow(Sender: TObject);
@@ -85,6 +63,14 @@ begin
    Memo.Font.Size := dmZLogGlobal.Settings.FQuickRefFontSize;
    Memo.Font.Name := dmZLogGlobal.Settings.FQuickRefFontFace;
    comboFont.FontName := dmZLogGlobal.Settings.FQuickRefFontFace;
+
+   if FileExists('ZLOGHELP.TXT') then begin
+      Memo.Lines.LoadFromFile('ZLOGHELP.TXT');
+   end
+   else begin
+      Memo.Lines.Clear;
+   end;
+
    Memo.SetFocus();
 end;
 

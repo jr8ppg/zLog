@@ -28,12 +28,12 @@ type
     Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure GridTopLeftChanged(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure GoButtonClick(Sender: TObject);
     procedure SortByClick(Sender: TObject);
     procedure StayOnTopClick(Sender: TObject);
-    procedure GridTopLeftChanged(Sender: TObject);
-    procedure FormResize(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure Edit1Change(Sender: TObject);
     procedure Edit1Enter(Sender: TObject);
     procedure Edit1Exit(Sender: TObject);
@@ -46,142 +46,86 @@ type
     FMostRecentCty: TCountry;
     FLastCountry: TCountry;
     FGridReverse: array[0..500] of integer; {pointer from grid row to countrylist index}
+    FAllAsia: Boolean;
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
   public
     { Public declarations }
-
-    procedure AddNewPrefix(PX : string; CtyIndex : integer); override;
-    procedure SelectAndAddNewPrefix(Call : string); override;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override; // only calls addnoupdate but no update
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    procedure Add(aQSO: TQSO); override; // only calls addnoupdate but no update
     procedure UpdateData; override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    function GuessZone(strCallsign: string) : string; override;
-    function GetInfo(aQSO : TQSO): string; override;
-    procedure ProcessCluster(var Sp : TBaseSpot); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    function GuessZone(strCallsign: string): string; override;
+    function GetInfo(aQSO: TQSO): string; override;
+    procedure ProcessCluster(Sp: TBaseSpot); override;
     procedure SortZone; virtual;
     procedure SortContinent; virtual;
     procedure SortDefault; virtual;
     procedure ShowContinent(CT: string);
-    procedure CheckMulti(aQSO : TQSO); override;
+    procedure CheckMulti(aQSO: TQSO); override;
     procedure RefreshGrid; virtual;
     procedure RefreshZone;
-    procedure ProcessSpotData(var S : TBaseSpot); override;
+    procedure ProcessSpotData(S: TBaseSpot); override;
+    procedure BeginUpdate(); override;
+    procedure EndUpdate(); override;
+
     property ZoneForm: TWWZone read FZoneForm write FZoneForm;
     property Zone: TZoneArray read FZoneFlag write FZoneFlag;
     property LastCountry: TCountry read FLastCountry;
+    property ALLASIANFLAG: Boolean read FAllAsia write FAllAsia;
   end;
 
 implementation
 
 uses
-  UOptions, Main, UNewPrefix;
+  Main;
 
 {$R *.DFM}
 
-{
-procedure TWWMulti.AddNewPrefixToFile(NewPX : string; CtyIndex : integer);
-var
-   L : TStringList;
-   C : TCountry;
-   cname, s : string;
-   i, j, p : integer;
-label xxx;
+procedure TWWMulti.FormCreate(Sender: TObject);
 begin
-   L := TStringList.Create;
-   try
-      L.LoadFromFile(_DATFileName);
-
-      C := TCountry(CountryList.List[CtyIndex]);
-      cname := TrimRight(C.CountryName);
-      if _DATFileName = 'CTY.DAT' then begin
-         for i := 0 to L.Count - 1 do begin
-            s := L[i];
-            if s[1] <> ' ' then begin
-               p := pos(':', s);
-               if p > 0 then
-                  s := TrimRight(copy(s, 1, p - 1))
-               else
-                  s := '';
-
-               if cname = s then begin
-                  for j := i + 1 to L.Count - 1 do begin
-                     s := TrimRight(L[j]);
-                     if pos(';', s) = length(s) then begin
-                        s := copy(s, 1, length(s) - 1);
-                        s := s + ',' + NewPX + ';';
-                        L[j] := s;
-                        goto xxx;
-                     end;
-                  end;
-               end;
-            end;
-         end;
-      end
-      else begin
-         for i := 0 to L.Count - 1 do begin
-            s := L[i];
-            if s[1] <> ' ' then begin
-               s := copy(s, 1, 26);
-               s := TrimRight(s);
-               if cname = s then begin
-                  for j := i + 1 to L.Count - 1 do begin
-                     s := TrimRight(L[j]);
-                     if pos(';', s) = length(s) then begin
-                        s := copy(s, 1, length(s) - 1);
-                        s := s + ',' + NewPX + ';';
-                        L[j] := s;
-                        goto xxx;
-                     end;
-                  end;
-               end;
-            end;
-         end;
-      end;
-   xxx:
-      L.SaveToFile(_DATFileName);
-   finally
-      L.Free;
-   end;
-end;
-}
-
-procedure TWWMulti.AddNewPrefix(PX : string; CtyIndex : integer);
-var
-   P : TPrefix;
-begin
-   P := TPrefix.Create;
-   P.Prefix := PX;
-   P.Country := dmZLogGlobal.CountryList[CtyIndex];
-   dmZLogGlobal.PrefixList.Add(P);
-
-//   AddNewPrefixToFile(P.Prefix, P.Index);
-   Main.MyContest.Renew;
+   Inherited;
+   FZoneForm := nil;
+   FMostRecentCty := nil;
+   FLastCountry := nil;
+   FAllAsia := False;
+   Reset();
 end;
 
-procedure TWWMulti.SelectAndAddNewPrefix(Call : string);
-var
-   F: TNewPrefix;
+procedure TWWMulti.FormShow(Sender: TObject);
 begin
-   F := TNewPrefix.Create(Self);
-   try
-      F.Init(dmZLogGlobal.CountryList, Call);
-      if F.ShowModal() <> mrOK then begin
-         Exit;
-      end;
+   Inherited;
+   AdjustGridSize(Grid);
+   UpdateData();
+   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
 
-      if (F.Prefix <> '') and (F.CtyIndex >= 0) then begin
-         AddNewPrefix(F.Prefix, F.CtyIndex);
-      end;
-   finally
-      F.Release();
+   if Assigned(FZoneForm) then begin
+      FZoneForm.Show;
    end;
 end;
 
-procedure TWWMulti.Add(var aQSO : TQSO);
+procedure TWWMulti.FormResize(Sender: TObject);
+begin
+   Inherited;
+   AdjustGridSize(Grid);
+   RefreshGrid;
+end;
+
+procedure TWWMulti.GridTopLeftChanged(Sender: TObject);
+begin
+   //inherited;
+   RefreshGrid;
+end;
+
+procedure TWWMulti.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   inherited;
+   Draw_GridCell(Grid, ACol, ARow, Rect);
+end;
+
+procedure TWWMulti.Add(aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
 
@@ -198,8 +142,8 @@ end;
 procedure TWWMulti.UpdateData;
 begin
    case SortBy.ItemIndex of
-      0 : SortDefault;
-      1 : SortZone;
+      0: SortDefault;
+      1: SortZone;
    end;
 
    RefreshGrid;
@@ -248,7 +192,7 @@ end;
 procedure TWWMulti.SortContinent;
 var
    i, j, x: integer;
-   cont : array[0..5] of string;
+   cont: array[0..5] of string;
 begin
    cont[0] := 'AS';
    cont[1] := 'AF';
@@ -274,7 +218,7 @@ end;
 procedure TWWMulti.ShowContinent(CT: string);
 var
    i, j, x: integer;
-   cont : array[0..5] of string[3];
+   cont: array[0..5] of string[3];
 begin
    cont[0] := 'AS';
    cont[1] := 'AF';
@@ -312,8 +256,8 @@ end;
 
 procedure TWWMulti.Reset;
 var
-   B : TBand;
-   i : integer;
+   B: TBand;
+   i: integer;
 begin
    if Assigned(FZoneForm) then begin
       FZoneForm.Reset;
@@ -334,8 +278,8 @@ begin
    end;
 
    case SortBy.ItemIndex of
-      0 : SortDefault;
-      1 : SortZone;
+      0: SortDefault;
+      1: SortZone;
    end;
 
    Grid.RowCount := dmZLogGlobal.CountryList.Count;
@@ -343,7 +287,7 @@ end;
 
 procedure TWWMulti.RefreshGrid;
 var
-   i , k : integer;
+   i , k: integer;
    C: TCountry;
    B: TBand;
 begin
@@ -351,6 +295,8 @@ begin
    if B = bUnknown then begin
       Exit;
    end;
+
+   BeginUpdate();
 
    for i := Grid.TopRow to Grid.TopRow + Grid.VisibleRowCount - 1 do begin
       if (i > Grid.RowCount - 1) then begin
@@ -373,13 +319,15 @@ begin
       end;
    end;
 
+   EndUpdate();
+
    Grid.Refresh();
 end;
 
 procedure TWWMulti.RefreshZone;
 var
-   i : integer;
-   B : TBand;
+   i: integer;
+   B: TBand;
 begin
    if Not Assigned(FZoneForm) then begin
       Exit;
@@ -398,23 +346,7 @@ begin
    end;
 end;
 
-procedure TWWMulti.FormCreate(Sender: TObject);
-begin
-   Inherited;
-   FZoneForm := nil;
-   FMostRecentCty := nil;
-   FLastCountry := nil;
-   MainForm.mnGridAddNewPX.Visible := True;
-end;
-
-procedure TWWMulti.FormResize(Sender: TObject);
-begin
-   Inherited;
-   AdjustGridSize(Grid);
-   RefreshGrid;
-end;
-
-procedure TWWMulti.AddNoUpdate(var aQSO : TQSO);
+procedure TWWMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    B: TBand;
@@ -429,8 +361,13 @@ begin
    aQSO.Multi1 := str;
    aQSO.Multi2 := '';
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    B := aQSO.band;
    i := StrToIntDef(str, 0);
@@ -454,6 +391,15 @@ begin
    C := P.Country;
    FMostRecentCty := C;
 
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    aQSO.Multi2 := C.Country;
 
    if C.Worked[B] = False then begin
@@ -467,25 +413,41 @@ begin
    else
       _cont := P.OvrContinent;
 
-   if dmZLogGlobal.MyCountry = C.Country then
-      aQSO.points := 0
-   else begin
-      if dmZLogGlobal.MyContinent = _cont then begin
-         if dmZLogGlobal.MyContinent = 'NA' then
-            aQSO.points := 2
-         else
-            aQSO.points := 1;
+   if aQSO.Mode = mRTTY then begin
+      if dmZLogGlobal.MyContinent <> _cont then begin
+         aQSO.points := 3;
       end
       else begin
-         aQSO.points := 3;
+         if dmZLogGlobal.MyCountry = C.Country then begin
+            aQSO.points := 1;
+         end
+         else begin
+            aQSO.points := 2;
+         end;
+      end;
+   end
+   else begin
+      if dmZLogGlobal.MyCountry = C.Country then begin
+         aQSO.points := 0;
+      end
+      else begin
+         if dmZLogGlobal.MyContinent = _cont then begin
+            if dmZLogGlobal.MyContinent = 'NA' then
+               aQSO.points := 2
+            else
+               aQSO.points := 1;
+         end
+         else begin
+            aQSO.points := 3;
+         end;
       end;
    end;
 end;
 
-function TWWMulti.ValidMulti(aQSO : TQSO) : boolean;
+function TWWMulti.ValidMulti(aQSO: TQSO): boolean;
 var
-   str : string;
-   i : integer;
+   str: string;
+   i: integer;
 begin
    str := aQSO.NrRcvd;
    i := StrToIntDef(str, 0);
@@ -498,29 +460,17 @@ begin
    end;
 end;
 
-procedure TWWMulti.FormShow(Sender: TObject);
-begin
-   Inherited;
-   AdjustGridSize(Grid);
-   UpdateData();
-   PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
-
-   if Assigned(FZoneForm) then begin
-      FZoneForm.Show;
-   end;
-end;
-
-function TWWMulti.GuessZone(strCallsign: string) : string;
+function TWWMulti.GuessZone(strCallsign: string): string;
 begin
    Result := dmZLogGlobal.GuessCQZone(strCallsign);
 end;
 
-function TWWMulti.GetInfo(aQSO : TQSO) : string;
+function TWWMulti.GetInfo(aQSO: TQSO): string;
 var
-   temp, temp2 : string;
-   B : TBand;
-   i : integer;
-   C : TCountry;
+   temp, temp2: string;
+   B: TBand;
+   i: integer;
+   C: TCountry;
 begin
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    if C.CountryName = 'Unknown' then begin
@@ -550,7 +500,7 @@ begin
 
    temp := temp + temp2 + ' ';
 
-   temp := temp + 'needed on : ';
+   temp := temp + 'needed on: ';
    for B := b19 to b28 do
       if NotWARC(B) then
          if C.Worked[B]=False then
@@ -609,12 +559,12 @@ begin
    buttonGo.Default := False;
 end;
 
-procedure TWWMulti.ProcessCluster(var Sp : TBaseSpot);
+procedure TWWMulti.ProcessCluster(Sp: TBaseSpot);
 var
    Z: integer;
    C: TCountry;
-   temp : string;
-   aQSO : TQSO;
+   temp: string;
+   aQSO: TQSO;
 begin
    aQSO := TQSO.Create;
    try
@@ -635,13 +585,13 @@ begin
 
       // NEWマルチチェック
       temp := aQSO.CallSign;
-      if (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
-         temp := temp + '  new zone : ' + GuessZone(aQSO.Callsign);
+      if (FAllAsia = False) and (Z > 0) and (Zone[aQSO.band, Z] = False) then begin {and not singlebander on other band}
+         temp := temp + '  new zone: ' + GuessZone(aQSO.Callsign);
          Sp.NewZone := True;
       end;
 
       if (C.Worked[aQSO.Band] = false) then begin
-         temp := temp + '  new country : ' + (C.Country);
+         temp := temp + '  new country: ' + (C.Country);
          Sp.NewCty := True;
       end;
 
@@ -659,31 +609,31 @@ begin
    Inherited;
 
    case SortBy.ItemIndex of
-      0 : SortDefault;
-      1 : SortZone;
-      2 : SortContinent;
+      0: SortDefault;
+      1: SortZone;
+      2: SortContinent;
    end;
 
    RefreshGrid;
 end;
 
-procedure TWWMulti.CheckMulti(aQSO : TQSO);
+procedure TWWMulti.CheckMulti(aQSO: TQSO);
 var
-   str : string;
-   i : integer;
-   B : TBand;
+   str: string;
+   i: integer;
+   B: TBand;
 begin
    str := aQSO.NrRcvd;
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
-      str := 'Zone '+IntToStr(i)+ ' : ';
+      str := 'Zone '+IntToStr(i)+ ': ';
       if Zone[aQSO.Band, i] then
          str := str + 'Worked on this band. '
       else
          str := str + 'Needed on this band. ';
 
-      str := str + 'Worked on : ';
+      str := str + 'Worked on: ';
       for B := b19 to b28 do begin
          if Zone[B, i] then begin
             str := str + MHzString[B] + ' ';
@@ -705,9 +655,19 @@ begin
       FormStyle := fsNormal;
 end;
 
-procedure TWWMulti.ProcessSpotData(var S : TBaseSpot);
+procedure TWWMulti.ProcessSpotData(S: TBaseSpot);
 begin
    ProcessCluster(S);
+end;
+
+procedure TWWMulti.BeginUpdate();
+begin
+   Grid.BeginUpdate();
+end;
+
+procedure TWWMulti.EndUpdate();
+begin
+   Grid.EndUpdate();
 end;
 
 procedure TWWMulti.SetFontSize(v: Integer);
@@ -716,18 +676,6 @@ begin
    SetGridFontSize(Grid, v);
    UpdateLabelPos();
    UpdateData();
-end;
-
-procedure TWWMulti.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(Grid, ACol, ARow, Rect);
-end;
-
-procedure TWWMulti.GridTopLeftChanged(Sender: TObject);
-begin
-   //inherited;
-   RefreshGrid;
 end;
 
 procedure TWWMulti.UpdateLabelPos();

@@ -11,6 +11,7 @@ type
   TBasicMulti = class(TZLogForm)
     procedure FormCreate(Sender: TObject);
   protected
+    FContestMode: TContestMode;
     procedure AdjustGridSize(Grid: TStringGrid);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
@@ -21,28 +22,29 @@ type
     { Public declarations }
     procedure Renew; virtual;
     procedure UpdateData; virtual;
-    function ExtractMulti(aQSO : TQSO) : string; virtual;
-    procedure AddNoUpdate(var aQSO : TQSO); virtual;
-    procedure Add(var aQSO : TQSO); virtual; {NewMulti}
+    function ExtractMulti(aQSO: TQSO) : string; virtual;
+    procedure AddNoUpdate(aQSO: TQSO); virtual;
+    procedure Add(aQSO: TQSO); virtual; {NewMulti}
     function ValidMulti(aQSO : TQSO) : boolean; virtual;
     procedure Reset; virtual;
     procedure CheckMulti(aQSO : TQSO); virtual;
-    procedure ProcessCluster(var Sp : TBaseSpot); virtual;
+    procedure ProcessCluster(Sp : TBaseSpot); virtual;
     function GuessZone(strCallsign: string) : string; virtual;
     function GetInfo(aQSO : TQSO): string; virtual;
     procedure RenewCluster; virtual;
     procedure RenewBandScope; virtual;
-    procedure ProcessSpotData(var S : TBaseSpot); virtual;
+    procedure ProcessSpotData(S: TBaseSpot); virtual;
     procedure AddSpot(aQSO : TQSO); virtual;
-    procedure AddNewPrefix(PX : string; CtyIndex : integer); virtual;
-    procedure SelectAndAddNewPrefix(Call : string); virtual; // for WWMulti and descendants
     function  IsNewMulti(aQSO : TQSO) : boolean; virtual;
     procedure SetNumberEditFocusJARL;
     procedure SetNumberEditFocus; virtual;
+    procedure BeginUpdate(); virtual;
+    procedure EndUpdate(); virtual;
     // function CheckMultiInfo(aQSO : TQSO) : string; virtual; abstract;
     // called from CheckMultiWindow for each band without QSO to the current stn
     // returns nothing when the multi is worked in that band.
     property IsIncrementalSearchPresent: Boolean read GetIsIncrementalSearchPresent;
+    property ContestMode: TContestMode read FContestMode write FContestMode;
   published
     property FontSize;
     property OnChangeFontSize;
@@ -55,12 +57,10 @@ uses
 
 {$R *.DFM}
 
-procedure TBasicMulti.SelectAndAddNewPrefix(Call: string);
+procedure TBasicMulti.FormCreate(Sender: TObject);
 begin
-end;
-
-procedure TBasicMulti.AddNewPrefix(PX: string; CtyIndex: integer);
-begin
+   FFontSize := 9;
+   FContestMode := cmMix;
 end;
 
 procedure TBasicMulti.Renew;
@@ -71,7 +71,7 @@ procedure TBasicMulti.UpdateData;
 begin
 end;
 
-procedure TBasicMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TBasicMulti.AddNoUpdate(aQSO: TQSO);
 begin
 end;
 
@@ -80,7 +80,7 @@ begin
    Result := aQSO.NrRcvd;
 end;
 
-procedure TBasicMulti.Add(var aQSO: TQSO);
+procedure TBasicMulti.Add(aQSO: TQSO);
 begin
    AddNoUpdate(aQSO);
    UpdateData;
@@ -105,7 +105,7 @@ procedure TBasicMulti.Reset;
 begin
 end;
 
-procedure TBasicMulti.ProcessCluster(var Sp: TBaseSpot);
+procedure TBasicMulti.ProcessCluster(Sp: TBaseSpot);
 begin
 end;
 
@@ -119,7 +119,7 @@ begin
    Result := '';
 end;
 
-procedure TBasicMulti.ProcessSpotData(var S: TBaseSpot);
+procedure TBasicMulti.ProcessSpotData(S: TBaseSpot);
 var
    aQSO: TQSO;
 begin
@@ -167,35 +167,29 @@ begin
    RenewBandScope;
 end;
 
-procedure TBasicMulti.FormCreate(Sender: TObject);
-begin
-   MainForm.mnGridAddNewPX.Visible := False;
-   FFontSize := 9;
-end;
-
 procedure TBasicMulti.SetNumberEditFocusJARL;
 var
    S: string;
 begin
-   MainForm.NumberEdit.SetFocus;
-   S := MainForm.NumberEdit.Text;
+   MainForm.RcvdNumberEdit.SetFocus;
+   S := MainForm.RcvdNumberEdit.Text;
    if S = '' then
       exit;
 
    if CharInSet(S[length(S)], ['A' .. 'Z']) then begin
-      MainForm.NumberEdit.SelStart := length(S) - 1;
-      MainForm.NumberEdit.SelLength := 1;
+      MainForm.RcvdNumberEdit.SelStart := length(S) - 1;
+      MainForm.RcvdNumberEdit.SelLength := 1;
    end
    else begin
-      MainForm.NumberEdit.SelStart := length(S);
-      MainForm.NumberEdit.SelLength := 0;
+      MainForm.RcvdNumberEdit.SelStart := length(S);
+      MainForm.RcvdNumberEdit.SelLength := 0;
    end;
 end;
 
 procedure TBasicMulti.SetNumberEditFocus;
 begin
-   MainForm.NumberEdit.SetFocus;
-   MainForm.NumberEdit.SelectAll;
+   MainForm.RcvdNumberEdit.SetFocus;
+   MainForm.RcvdNumberEdit.SelectAll;
 end;
 
 procedure TBasicMulti.AdjustGridSize(Grid: TStringGrid);
@@ -229,7 +223,7 @@ begin
 
    with Grid.Canvas do begin
       Font.Name := 'ÇlÇr ÉSÉVÉbÉN';
-      Brush.Color := Grid.Color;
+      Brush.Color := dmZLogGlobal.ZBackColor;
       Brush.Style := bsSolid;
       FillRect(Rect);
 
@@ -238,14 +232,14 @@ begin
       S := Copy(strText, 1, 1);
       if S = '~' then begin
          strText := Copy(strText, 2);
-         Font.Color := clRed;
+         Font.Color := dmZLogGlobal.ZConfirmedTextColor;
       end
       else if S = '!' then begin
          strText := Copy(strText, 2);
-         Font.Color := clGray;
+         Font.Color := dmZLogGlobal.ZGrayedTextColor;
       end
       else begin
-         Font.Color := clBlack;
+         Font.Color := dmZLogGlobal.ZNormalTextColor1;
       end;
 
       TextRect(Rect, strText, [tfLeft,tfVerticalCenter,tfSingleLine]);
@@ -255,6 +249,16 @@ end;
 function TBasicMulti.GetIsIncrementalSearchPresent(): Boolean;
 begin
    Result := False;
+end;
+
+procedure TBasicMulti.BeginUpdate();
+begin
+//
+end;
+
+procedure TBasicMulti.EndUpdate();
+begin
+//
 end;
 
 end.

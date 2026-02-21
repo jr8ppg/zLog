@@ -9,12 +9,7 @@ uses
 
 type
   TIARUScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormCreate(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     BLo, BHi : TBand;
@@ -22,7 +17,7 @@ type
     { Public declarations }
     procedure InitGrid(B0, B1 : TBand);
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
   end;
 
 implementation
@@ -35,7 +30,7 @@ begin
    InitGrid(b19, b28);
 end;
 
-procedure TIARUScore.AddNoUpdate(var aQSO: TQSO);
+procedure TIARUScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
 begin
@@ -46,6 +41,14 @@ begin
    end;
 
    band := aQSO.band;
+
+   if FValidQso = True then begin
+      aQSO.Points := 1;
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
    Inc(Points[band], aQSO.Points);
 end;
 
@@ -67,6 +70,7 @@ var
 begin
    Inherited;
 
+   Grid.ColCount := 7;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
@@ -218,24 +222,6 @@ begin
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, DispColCount, Grid.RowCount);
-end;
-
-procedure TIARUScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-begin
-   inherited;
-   Draw_GridCell(TStringGrid(Sender), ACol, ARow, Rect);
-end;
-
-function TIARUScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TIARUScore.SetFontSize(v: Integer);
-begin
-   Inherited;
-   SetGridFontSize(Grid, v);
-   UpdateData();
 end;
 
 end.

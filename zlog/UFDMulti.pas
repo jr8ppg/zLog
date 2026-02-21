@@ -11,15 +11,15 @@ type
   TFDMulti = class(TACAGMulti)
     procedure FormCreate(Sender: TObject);
   protected
-    sband : TBand; // b35 by default. b50 @ 6m&D
+    sband: TBand; // b35 by default. b50 @ 6m&D
   private
     { Private declarations }
   public
     { Public declarations }
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function ValidMulti(aQSO : TQSO) : boolean; override;
-    procedure CheckMulti(aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function ValidMulti(aQSO: TQSO): boolean; override;
+    procedure CheckMulti(aQSO: TQSO); override;
     procedure UpdateData; override;
   end;
 
@@ -117,23 +117,31 @@ begin
    Result := boo;
 end;
 
-procedure TFDMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TFDMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    C: TCity;
+   b: TBand;
 begin
    aQSO.NewMulti1 := false;
    str := aQSO.NrRcvd;
    Delete(str, length(str), 1);
    aQSO.Multi1 := str;
 
-   if aQSO.Dupe then
-      exit;
+   b := aQSO.Band;
+
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    C := CityList.GetCity(str);
    if C <> nil then begin
-      if C.Worked[aQSO.Band] = false then begin
-         C.Worked[aQSO.Band] := true;
+      if C.Worked[b] = false then begin
+         C.Worked[b] := true;
          aQSO.NewMulti1 := true;
       end;
       LatestMultiAddition := C.Index;

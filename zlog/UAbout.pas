@@ -5,7 +5,8 @@ interface
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   Buttons, ExtCtrls, ShellApi,
-  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, JclFileUtils;
+  UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, JclFileUtils,
+  Vcl.Imaging.pngimage;
 
 type
   TAboutBox = class(TForm)

@@ -72,7 +72,7 @@ object QuickRef: TQuickRef
       DroppedDownWidth = 187
       MaxMRUCount = 0
       FontName = #65325#65331' '#65328#12468#12471#12483#12463
-      ItemIndex = 271
+      ItemIndex = 355
       Sorted = True
       TabOrder = 0
       OnChange = comboFontChange

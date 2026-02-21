@@ -7,7 +7,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, IniFiles, UITypes, Math, DateUtils,
   Vcl.ComCtrls,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogExtension, UJarlWebUpload,
-  UzLogContest;
+  UJarlWebUpload2, UzLogContest, Vcl.Buttons;
 
 type
   TformELogJarlEx = class(TForm)
@@ -152,6 +152,36 @@ type
     ScrollBox1: TScrollBox;
     checkFieldExtend: TCheckBox;
     Label3: TLabel;
+    checkBand16: TCheckBox;
+    editQso16: TEdit;
+    editMulti16: TEdit;
+    editPoints16: TEdit;
+    editMulti2_16: TEdit;
+    checkBand17: TCheckBox;
+    editQso17: TEdit;
+    editMulti17: TEdit;
+    editPoints17: TEdit;
+    editMulti2_17: TEdit;
+    checkBand18: TCheckBox;
+    editQso18: TEdit;
+    editMulti18: TEdit;
+    editPoints18: TEdit;
+    editMulti2_18: TEdit;
+    checkBand19: TCheckBox;
+    editQso19: TEdit;
+    editMulti19: TEdit;
+    editPoints19: TEdit;
+    editMulti2_19: TEdit;
+    checkBand20: TCheckBox;
+    editQso20: TEdit;
+    editMulti20: TEdit;
+    editPoints20: TEdit;
+    editMulti2_20: TEdit;
+    checkBand21: TCheckBox;
+    editQso21: TEdit;
+    editMulti21: TEdit;
+    editPoints21: TEdit;
+    editMulti2_21: TEdit;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -166,6 +196,7 @@ type
     procedure buttonWebUploadClick(Sender: TObject);
     procedure ControlEnter(Sender: TObject);
     procedure ControlExit(Sender: TObject);
+    procedure buttonModeClick(Sender: TObject);
   private
     { Private 宣言 }
     FScoreBand: array[b19..HiBand] of TCheckBox;
@@ -189,6 +220,8 @@ type
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
     procedure SetBandUsed(b: TBand);
+    procedure ShowWebUploadDialogIE(logtext: string; contest: TWebUploadContest);
+    procedure ShowWebUploadDialogEdge(logtext: string; contest: TWebUploadContest);
   public
     { Public 宣言 }
   end;
@@ -199,7 +232,7 @@ const
 implementation
 
 uses
-  Main;
+  Main, UzLogWebView2;
 
 {$R *.dfm}
 
@@ -221,6 +254,13 @@ begin
    FScoreBand[b2400] := checkBand13;
    FScoreBand[b5600] := checkBand14;
    FScoreBand[b10g]  := checkBand15;
+   FScoreBand[b104g]  := checkBand16;
+   FScoreBand[b24g]  := checkBand17;
+   FScoreBand[b47g]  := checkBand18;
+   FScoreBand[b77g]  := checkBand19;
+   FScoreBand[b135g]  := checkBand20;
+   FScoreBand[b248g]  := checkBand21;
+
    FScoreQso[b19]    := editQso00;
    FScoreQso[b35]    := editQso01;
    FScoreQso[b7]     := editQso02;
@@ -237,6 +277,13 @@ begin
    FScoreQso[b2400]  := editQso13;
    FScoreQso[b5600]  := editQso14;
    FScoreQso[b10g]   := editQso15;
+   FScoreQso[b104g]   := editQso16;
+   FScoreQso[b24g]   := editQso17;
+   FScoreQso[b47g]   := editQso18;
+   FScoreQso[b77g]   := editQso19;
+   FScoreQso[b135g]   := editQso20;
+   FScoreQso[b248g]   := editQso21;
+
    FScoreMulti1[b19]  := editMulti00;
    FScoreMulti1[b35]  := editMulti01;
    FScoreMulti1[b7]   := editMulti02;
@@ -253,6 +300,13 @@ begin
    FScoreMulti1[b2400] := editMulti13;
    FScoreMulti1[b5600] := editMulti14;
    FScoreMulti1[b10g] := editMulti15;
+   FScoreMulti1[b104g] := editMulti16;
+   FScoreMulti1[b24g] := editMulti17;
+   FScoreMulti1[b47g] := editMulti18;
+   FScoreMulti1[b77g] := editMulti19;
+   FScoreMulti1[b135g] := editMulti20;
+   FScoreMulti1[b248g] := editMulti21;
+
    FScoreMulti2[b19]  := editMulti2_00;
    FScoreMulti2[b35]  := editMulti2_01;
    FScoreMulti2[b7]   := editMulti2_02;
@@ -269,6 +323,13 @@ begin
    FScoreMulti2[b2400] := editMulti2_13;
    FScoreMulti2[b5600] := editMulti2_14;
    FScoreMulti2[b10g] := editMulti2_15;
+   FScoreMulti2[b104g] := editMulti2_16;
+   FScoreMulti2[b24g] := editMulti2_17;
+   FScoreMulti2[b47g] := editMulti2_18;
+   FScoreMulti2[b77g] := editMulti2_19;
+   FScoreMulti2[b135g] := editMulti2_20;
+   FScoreMulti2[b248g] := editMulti2_21;
+
    FScorePoints[b19] := editPoints00;
    FScorePoints[b35] := editPoints01;
    FScorePoints[b7]  := editPoints02;
@@ -285,6 +346,12 @@ begin
    FScorePoints[b2400] := editPoints13;
    FScorePoints[b5600] := editPoints14;
    FScorePoints[b10g] := editPoints15;
+   FScorePoints[b104g] := editPoints16;
+   FScorePoints[b24g] := editPoints17;
+   FScorePoints[b47g] := editPoints18;
+   FScorePoints[b77g] := editPoints19;
+   FScorePoints[b135g] := editPoints20;
+   FScorePoints[b248g] := editPoints21;
 
    editFdcoeff.Enabled := MyContest.UseCoeff;
 
@@ -303,6 +370,7 @@ begin
       (MyContest is TSixDownContest) or
       (MyContest is TFDContest) or
       (MyContest is TACAGContest) or
+      (MyContest is TNYP) or
       (MyContest is TAllAsianContest) then begin
       buttonWebUpload.Visible := True;
       TabControl1.TabIndex := 1; // R2.1
@@ -524,6 +592,11 @@ begin
    end;
 end;
 
+procedure TformELogJarlEx.buttonModeClick(Sender: TObject);
+begin
+   CalcAll();
+end;
+
 function TformELogJarlEx.CreateELogR2(SL: TStringList): Boolean;
 begin
    // 入力チェック
@@ -641,10 +714,11 @@ end;
 
 procedure TformELogJarlEx.buttonWebUploadClick(Sender: TObject);
 var
-   f: TformJarlWebUpload;
    SL: TStringList;
+   contest: TWebUploadContest;
+   Checker: TWebView2Checker;
 begin
-   f := TformJarlWebUpload.Create(Self);
+   Checker := TWebView2Checker.Create(Self);
    SL := TStringList.Create();
    try
       if TabControl1.TabIndex = 0 then begin
@@ -658,37 +732,48 @@ begin
          end;
       end;
 
-      f.LogText := SL.Text;
+      contest := wuOther;
 
       if MyContest is TALLJAContest then begin
-         f.Contest := wuAllJa;
+         contest := wuAllJa;
       end;
 
       if MyContest is TSixDownContest then begin
-         f.Contest := wu6d;
+         contest := wu6d;
       end;
 
       if MyContest is TFDContest then begin
-         f.Contest := wuFd;
+         contest := wuFd;
       end;
 
       if MyContest is TACAGContest then begin
-         f.Contest := wuAcag;
+         contest := wuAcag;
+      end;
+
+      if MyContest is TNYP then begin
+         contest := wuNyp;
       end;
 
       if MyContest is TAllAsianContest then begin
          if Log.QSOList[1].Mode = mCW then begin
-            f.Contest := wuAacw;
+            contest := wuAacw;
          end
          else begin
-            f.Contest := wuAaph;
+            contest := wuAaph;
          end;
       end;
 
-      f.ShowModal();
+      if ((dmZLogGlobal.Settings.FBrowserForWebUpload = 0) and (Checker.Check() = True)) or
+         (dmZLogGlobal.Settings.FBrowserForWebUpload = 2) then begin
+         ShowWebUploadDialogEdge(SL.Text, contest);
+      end
+      else begin
+         ShowWebUploadDialogIE(SL.Text, contest);
+      end;
+
    finally
-      f.Release();
       SL.Free();
+      Checker.Free();
    end;
 end;
 
@@ -842,6 +927,50 @@ begin
    end;
 end;
 
+{
+https://www.jarl.org/Japanese/1_Tanoshimo/1-1_Contest/e-log_R1.0.htm
+
+<SUMMARYSHEET VERSION=R1.0>
+<CONTESTNAME>コンテストの名称</CONTESTNAME>
+<CATEGORYCODE>参加部門種目コードナンバー</CATEGORYCODE>
+<CATEGORYNAME>参加部門種目名称</CATEGORYNAME>
+<CALLSIGN>コールサイン</CALLSIGN>
+<OPCALLSIGN>運用者のコールサイン</OPCALLSIGN>
+<SCORE BAND=1.9MHz> 1.9MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=3.5MHz> 3.5MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=7MHz> 7MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=14MHz> 14MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=21MHz> 21MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=28MHz> 28MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=50MHz> 50MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=144MHz> 144MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=430MHz> 430MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=1200MHz> 1200MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=2400MHz> 2400MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=5600MHz> 5600MHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=10.1GHz> 10.1GHzの交信局数,得点,マルチプライヤー</SCORE>
+<SCORE BAND=TOTAL>合計の交信局数,得点,マルチプライヤー</SCORE>
+<FDCOEFF>フィールドデーコンテストの場合の局種係数</FDCOEFF>
+<TOTALSCORE>総得点</TOTALSCORE>
+<ADDRESS>連絡先住所</ADDRESS>
+<TEL>電話番号</TEL>
+<NAME>局免許者の氏名(社団の名称)</NAME>
+<EMAIL>E-mailアドレス</EMAIL>
+<LICENSECLASS>局免許者の無線従事者資格</LICENSECLASS>
+<POWER>コンテスト中使用した最大空中線電力(W)</POWER>
+<POWERTYPE>定格出力or実測出力</POWERTYPE>
+<OPPLACE>運用地</OPPLACE>
+<POWERSUPPLY>使用電源</POWERSUPPLY>
+<EQUIPMENT>使用した設備</EQUIPMENT>
+<COMMENTS>意見</COMMENTS>
+<MULTIOPLIST>運用者のコールサイン(氏名)および無線従事者の資格</MULTIOPLIST>
+<REGCLUBNUMBER>登録クラブ番号</REGCLUBNUMBER>
+<REGCLUBNAME>登録クラブ名称</REGCLUBNAME>
+<OATH>宣誓文</OATH>
+<DATE>日付</DATE>
+<SIGNATURE>署名</SIGNATURE>
+</SUMMARYSHEET>
+}
 procedure TformELogJarlEx.WriteSummarySheetR1(SL: TStringList);
 var
    fFdCoeff: Extended;
@@ -862,8 +991,8 @@ begin
          multi1 := StrToIntDef(FScoreMulti1[b].Text, 0);
          multi2 := StrToIntDef(FScoreMulti2[b].Text, 0);
          S := FScoreQso[b].Text + ',' + FScorePoints[b].Text + ',' + IntToStr(multi1 + multi2);
-         if b = b10G then begin
-            SL.Add('<SCORE BAND=10.1GHz>' + S + '</SCORE>')
+         if b >= b10G then begin
+            SL.Add('<SCORE BAND=' + MHzString[B] + 'Hz>' + S + '</SCORE>');
          end
          else begin
             SL.Add('<SCORE BAND=' + MHzString[B] + 'MHz>' + S + '</SCORE>');
@@ -902,6 +1031,11 @@ begin
    SL.Add('<POWERSUPPLY>' + edPowerSupply.Text + '</POWERSUPPLY>');
    SL.Add('<EQUIPMENT>' + memoEquipment.Text + '</EQUIPMENT>');
    SL.Add('<COMMENTS>' + mComments.Text + '</COMMENTS>');
+
+   if memoMultiOpList.Text <> '' then begin
+      SL.Add('<MULTIOPLIST>' + memoMultiOpList.Lines.CommaText + '</MULTIOPLIST>');
+   end;
+
    SL.Add('<REGCLUBNUMBER>' + edClubID.Text + '</REGCLUBNUMBER>');
    SL.Add('<REGCLUBNAME>' + edClubName.Text + '</REGCLUBNAME>');
 
@@ -1249,14 +1383,48 @@ end;
 procedure TformELogJarlEx.CalcAll();
 var
    b: TBand;
-   qso, multi1, multi2, points: Integer;
+   qso, multi1, multi2, points: array[b19..HiBand] of Integer;
+   totalqso, totalmulti1, totalmulti2, totalpoints: Integer;
    fdcoeff: Extended;
    fScore: Extended;
+   i: Integer;
+   Q: TQSO;
 begin
-   qso := 0;
-   multi1 := 0;
-   multi2 := 0;
-   points := 0;
+   totalqso := 0;
+   totalmulti1 := 0;
+   totalmulti2 := 0;
+   totalpoints := 0;
+
+   for b := b19 to HiBand do begin
+      qso[b] := 0;
+      multi1[b] := 0;
+      multi2[b] := 0;
+      points[b] := 0;
+   end;
+
+   for i := 1 to Log.TotalQSO do begin
+      Q := Log.QSOList[i];
+
+      b := Q.Band;
+
+      if Q.Invalid = True then begin
+         Continue;
+      end;
+
+      if Q.Points = 0 then begin
+         Continue;
+      end;
+
+      Inc(qso[b]);
+
+      if Q.NewMulti1 = True then begin
+         Inc(multi1[b]);
+      end;
+      if Q.NewMulti2 = True then begin
+         Inc(multi2[b]);
+      end;
+      Inc(points[b], Q.Points);
+   end;
 
    for b := b19 to HiBand do begin
       if FScoreBand[b] = nil then begin
@@ -1267,19 +1435,24 @@ begin
          Continue;
       end;
 
-      qso := qso + StrToIntDef(FScoreQso[b].Text, 0);
-      multi1 := multi1 + StrToIntDef(FScoreMulti1[b].Text, 0);
-      multi2 := multi2 + StrToIntDef(FScoreMulti2[b].Text, 0);
-      points := points + StrToIntDef(FScorePoints[b].Text, 0);
+      totalqso := totalqso + qso[b];
+      totalmulti1 := totalmulti1 + multi1[b];
+      totalmulti2 := totalmulti2 + multi2[b];
+      totalpoints := totalpoints + points[b];
+
+      FScoreQso[b].Text := IntToStr(qso[b]);
+      FScoreMulti1[b].Text := IntToStr(multi1[b]);
+      FScoreMulti2[b].Text := IntToStr(multi2[b]);
+      FScorePoints[b].Text := IntToStr(points[b]);
    end;
 
-   editQsoTotal.Text := IntToStr(qso);
-   editMulti1Total.Text := IntToStr(multi1);
-   editMulti2Total.Text := IntToStr(multi2);
-   editPointsTotal.Text := IntToStr(points);
+   editQsoTotal.Text := IntToStr(totalqso);
+   editMulti1Total.Text := IntToStr(totalmulti1);
+   editMulti2Total.Text := IntToStr(totalmulti2);
+   editPointsTotal.Text := IntToStr(totalpoints);
 
    fdcoeff := StrToFloatDef(editFdcoeff.Text, 1);
-   fScore := (multi1 + multi2) * points * fdcoeff;
+   fScore := (totalmulti1 + totalmulti2) * totalpoints * fdcoeff;
 
    editTotalScore.Text := FloatToStr(fScore);
 end;
@@ -1319,8 +1492,6 @@ begin
          labelEquipment.Visible := True;
          memoEquipment.Visible := True;
          rPowerType.Visible := True;
-         labelMultiOpList.Visible := False;
-         memoMultiOpList.Visible := False;
          labelLicenseDate.Visible := False;
          datetimeLicenseDate.Visible := False;
          labelAge.Visible := False;
@@ -1340,8 +1511,6 @@ begin
          labelEquipment.Visible := False;
          memoEquipment.Visible := False;
          rPowerType.Visible := False;
-         labelMultiOpList.Visible := True;
-         memoMultiOpList.Visible := True;
          labelLicenseDate.Visible := True;
          datetimeLicenseDate.Visible := True;
          labelAge.Visible := True;
@@ -1353,6 +1522,34 @@ begin
          checkFieldExtend.Visible := True;
          buttonWebUpload.Enabled := True;
       end;
+   end;
+end;
+
+procedure TformELogJarlEx.ShowWebUploadDialogIE(logtext: string; contest: TWebUploadContest);
+var
+   f: TformJarlWebUpload;
+begin
+   f := TformJarlWebUpload.Create(Self);
+   try
+      f.LogText := logtext;
+      f.Contest := contest;
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
+end;
+
+procedure TformELogJarlEx.ShowWebUploadDialogEdge(logtext: string; contest: TWebUploadContest);
+var
+   f: TformJarlWebUpload2;
+begin
+   f := TformJarlWebUpload2.Create(Self);
+   try
+      f.LogText := logtext;
+      f.Contest := contest;
+      f.ShowModal();
+   finally
+      f.Release();
    end;
 end;
 

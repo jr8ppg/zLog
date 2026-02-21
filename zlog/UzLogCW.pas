@@ -49,8 +49,10 @@ var
 begin
    temp := sendtext;
 
-   temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
-   temp := StringReplace(temp, '$x', LowerCase(dmZLogGlobal.Settings._sentstr), [rfReplaceAll]);
+   //S := MyContest.SentStr;
+   S := aQSO.NrSentStr;
+   temp := StringReplace(temp, '$X', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$x', LowerCase(S), [rfReplaceAll]);
 
    S := aQSO.Callsign;
    temp := StringReplace(temp, '$B', S, [rfReplaceAll]);
@@ -64,11 +66,11 @@ begin
    temp := StringReplace(temp, '$F', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$f', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._cqzone;
+   S := dmZLogGlobal.Settings._mycqzone;
    temp := StringReplace(temp, '$Z', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$z', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._iaruzone;
+   S := dmZLogGlobal.Settings._myiaruzone;
    temp := StringReplace(temp, '$I', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$i', S, [rfReplaceAll]);
 
@@ -76,13 +78,21 @@ begin
    temp := StringReplace(temp, '$Q', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$q', S, [rfReplaceAll]);
 
-   S := dmZLogGlobal.Settings._prov;
+   S := MyContest.Prov;
    temp := StringReplace(temp, '$V', Abbreviate(S), [rfReplaceAll]);
    temp := StringReplace(temp, '$v', S, [rfReplaceAll]);
 
    S := aQSO.Operator;
    temp := StringReplace(temp, '$O', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$o', S, [rfReplaceAll]);
+
+   S := dmZLogGlobal.Settings._myiota;
+   temp := StringReplace(temp, '$T', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$t', S, [rfReplaceAll]);
+
+   S := aQSO.NrSent;
+   temp := StringReplace(temp, '$H', S, [rfReplaceAll]);
+   temp := StringReplace(temp, '$h', S, [rfReplaceAll]);
 
    if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
       S := aQSO.SerialStr;
@@ -197,14 +207,17 @@ begin
    temp := StringReplace(temp, '[BT]', '', [rfReplaceAll]);
 
    temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
-   temp := StringReplace(temp, '$X', dmZLogGlobal.Settings._sentstr, [rfReplaceAll]);
+   temp := StringReplace(temp, '$X', MyContest.SentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$R', aQSO.RSTSentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$F', aQSO.NrRcvd, [rfReplaceAll]);
-   temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._cqzone, [rfReplaceAll]);
-   temp := StringReplace(temp, '$I', dmZLogGlobal.Settings._iaruzone, [rfReplaceAll]);
+   temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
+   temp := StringReplace(temp, '$I', dmZLogGlobal.Settings._myiaruzone, [rfReplaceAll]);
    temp := StringReplace(temp, '$Q', MyContest.QTHString(aQSO), [rfReplaceAll]);
-   temp := StringReplace(temp, '$V', dmZLogGlobal.Settings._prov, [rfReplaceAll]);
+   temp := StringReplace(temp, '$V', MyContest.Prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
+   temp := StringReplace(temp, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
+
+   temp := StringReplace(temp, '$H', aQSO.NrSent, [rfReplaceAll]);
 
    if dmZLogGlobal.Settings.CW._not_send_leading_zeros = False then begin
       temp := StringReplace(temp, '$S', aQSO.SerialStr, [rfReplaceAll]);
@@ -255,7 +268,7 @@ begin
          S := StringReplace(S, ':***************', C, [rfReplaceAll]);
          rig.SetWPM(dmZLogKeyer.WPM);
          rig.PlayMessageCW(S);
-         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False);
+         dmZLogKeyer.OnSendFinishProc(dmZLogKeyer, mCW, False, 0);
       end;
    end
    else begin

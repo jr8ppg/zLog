@@ -72,6 +72,7 @@ procedure TOperatorInfo.Assign(src: TOperatorInfo);
 var
    i: Integer;
 begin
+   FCallsign := src.Callsign;
    FPower := src.Power;
    FAge := src.Age;
 

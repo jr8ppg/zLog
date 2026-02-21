@@ -13,7 +13,7 @@ object BasicScore: TBasicScore
   KeyPreview = True
   Scaled = False
   OnCreate = FormCreate
-  TextHeight = 12
+  TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 202
@@ -57,6 +57,29 @@ object BasicScore: TBasicScore
       TabOrder = 1
       OnClick = StayOnTopClick
     end
+  end
+  object Grid: TStringGrid
+    Left = 0
+    Top = 0
+    Width = 281
+    Height = 202
+    Align = alClient
+    ColCount = 7
+    DefaultDrawing = False
+    FixedCols = 0
+    RowCount = 16
+    FixedRows = 0
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = #65325#65331' '#12468#12471#12483#12463
+    Font.Style = []
+    Options = [goHorzLine]
+    ParentFont = False
+    PopupMenu = popupExtraInfo
+    ScrollBars = ssNone
+    TabOrder = 1
+    OnDrawCell = GridDrawCell
   end
   object popupExtraInfo: TPopupMenu
     AutoHotkeys = maManual

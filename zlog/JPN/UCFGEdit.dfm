@@ -410,7 +410,7 @@ object CFGEdit: TCFGEdit
     object checkUseContestPeriod: TCheckBox
       Left = 16
       Top = 49
-      Width = 160
+      Width = 129
       Height = 17
       Caption = #12467#12531#12486#12473#12488#26399#38291#12434#20351#29992#12377#12427
       TabOrder = 1

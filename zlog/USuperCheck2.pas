@@ -138,16 +138,19 @@ begin
    diffpos := 0;
    txt := Grid.Cells[ACol, ARow];
    with Grid.Canvas do begin
-      fg := clBlack;
-      bg := clWhite;
+      fg := dmZLogGlobal.ZNormalTextColor1;
+      bg := dmZLogGlobal.ZBackColor;
 
       Pen.Color := bg;
       Pen.Style := psSolid;
+
+      Font.Color := fg;
 
       if (txt <> '') then begin
          if txt[1] = '*' then begin
             if (dmZlogGlobal.Settings.FSuperCheck.FFullMatchHighlight = True) then begin
                Brush.Color := dmZlogGlobal.Settings.FSuperCheck.FFullMatchColor;
+               Font.Color := clBlack;
                MainForm.HighlightCallsign(True);
             end
             else begin
@@ -179,7 +182,6 @@ begin
       Brush.Style := bsSolid;
       FillRect(Rect);
 
-      Font.Color := fg;
       Font.Size := Grid.Font.Size;
       Font.Name := Grid.Font.Name;
       TextRect(Rect, txt, [tfLeft, tfVerticalCenter]);
@@ -190,7 +192,7 @@ begin
          Pen.Color := clRed;
          Pen.Width := 2;
          Pen.Style := psSolid;
-         x := w * (diffpos - 1);
+         x := Rect.Left + (w * (diffpos - 1));
          y := Rect.Bottom;
          MoveTo(x, y);
          LineTo(x + w - 1, y);

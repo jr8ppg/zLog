@@ -2,8 +2,8 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
   Left = -31
   Top = 248
   Caption = 'Multipliers'
+  StyleElements = [seFont, seClient, seBorder]
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object TabControl: TTabControl
     Left = 0
@@ -33,7 +33,6 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
       Top = 57
       Width = 57
       Height = 201
-      OnClickCheck = CheckListBoxClickCheck
       Align = alClient
       BorderStyle = bsNone
       Color = clBtnFace
@@ -97,6 +96,7 @@ inherited JIDX_DX_Multi: TJIDX_DX_Multi
         '50 Minami-torishima')
       ParentFont = False
       TabOrder = 0
+      OnClickCheck = CheckListBoxClickCheck
     end
     object Panel1: TPanel
       Left = 4

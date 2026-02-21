@@ -14,8 +14,8 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    function GetInfo(aQSO : TQSO) : string; override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    function GetInfo(aQSO: TQSO): string; override;
     procedure UpdateData; override;
   end;
 
@@ -29,24 +29,42 @@ begin
    // ShowContinent('EU');
 end;
 
-procedure TWAEMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TWAEMulti.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
+   P: TPrefix;
    C: TCountry;
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
 
-   C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
+   P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+   C := P.Country;
+
+   if (P = nil) or (P.OvrContinent = '') then begin
+      aQSO.Continent := C.Continent;
+   end
+   else begin
+      aQSO.Continent := P.OvrContinent;
+   end;
+
+   aQSO.Entity := C.Country;
+
    if C.Continent <> 'EU' then begin
       aQSO.Points := 0;
       aQSO.Multi1 := 'Non-EU';
       exit;
    end;
+
    aQSO.Multi1 := C.Country;
 
-   if aQSO.Dupe then
-      exit;
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    B := aQSO.Band;
 

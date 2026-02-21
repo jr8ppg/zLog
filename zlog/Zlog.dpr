@@ -51,7 +51,6 @@ uses
   UAPSprintScore in 'UAPSprintScore.pas' {APSprintScore},
   UJA0Score in 'UJA0Score.pas' {JA0Score},
   UJA0Multi in 'UJA0Multi.pas' {JA0Multi},
-  UKCJMulti in 'UKCJMulti.pas' {KCJMulti},
   USixDownMulti in 'USixDownMulti.pas' {SixDownMulti},
   UIARUMulti in 'UIARUMulti.pas' {IARUMulti},
   UIARUScore in 'UIARUScore.pas' {IARUScore},
@@ -59,11 +58,9 @@ uses
   UAgeDialog in 'UAgeDialog.pas' {AgeDialog},
   UIOTAMulti in 'UIOTAMulti.pas' {IOTAMulti},
   UNewIOTARef in 'UNewIOTARef.pas' {NewIOTARef},
-  UIOTACategory in 'UIOTACategory.pas' {IOTACategory},
   UUTCDialog in 'UUTCDialog.pas' {UTCDialog},
   UARRL10Multi in 'UARRL10Multi.pas' {ARRL10Multi},
   UARRL10Score in 'UARRL10Score.pas' {ARRL10Score},
-  USummaryInfo in 'USummaryInfo.pas' {SummaryInfo},
   URigControl in 'URigControl.pas' {RigControl},
   UConsolePad in 'UConsolePad.pas' {ConsolePad},
   UFreqList in 'UFreqList.pas' {FreqList},
@@ -74,11 +71,8 @@ uses
   USpotClass in 'USpotClass.pas',
   UIntegerDialog in 'UIntegerDialog.pas' {IntegerDialog},
   URenewThread in 'URenewThread.pas',
-  UNewPrefix in 'UNewPrefix.pas' {NewPrefix},
-  UKCJZone in 'UKCJZone.pas' {KCJZone},
   UMultipliers in 'UMultipliers.pas',
   UScratchSheet in 'UScratchSheet.pas' {ScratchSheet},
-  UKCJScore in 'UKCJScore.pas' {KCJScore},
   UMMTTY in 'UMMTTY.pas',
   UTTYConsole in 'UTTYConsole.pas' {TTYConsole},
   UQTCForm in 'UQTCForm.pas' {QTCForm},
@@ -88,7 +82,6 @@ uses
   UBandScope2 in 'UBandScope2.pas' {BandScope2},
   OmniRig_TLB in 'OmniRig\OmniRig_TLB.pas',
   UzLogGlobal in 'UzLogGlobal.pas' {dmZLogGlobal: TDataModule},
-  UELogJarl1 in 'UELogJarl1.pas' {formELogJarl1},
   UELogJarlEx in 'UELogJarlEx.pas' {formELogJarlEx},
   UzLogKeyer in 'UzLogKeyer.pas' {dmZLogKeyer: TDataModule},
   DialogHook in 'DialogHook.pas',
@@ -99,12 +92,10 @@ uses
   UzLogSpc in 'UzLogSpc.pas',
   Progress2 in 'Progress2.pas' {formProgress2},
   HelperLib in 'HelperLib.pas',
-  UCwMessageEditor in 'UCwMessageEditor.pas',
   UCwMessagePad in 'UCwMessagePad.pas' {CwMessagePad},
   UTextEditor in 'UTextEditor.pas' {TextEditor},
   USelectUserDefinedContest in 'USelectUserDefinedContest.pas' {SelectUserDefinedContest},
   UserDefinedContest in 'UserDefinedContest.pas',
-  UVoiceForm in 'UVoiceForm.pas' {VoiceForm},
   UCFGEdit in 'UCFGEdit.pas' {CFGEdit},
   UExceptionDialog in 'UExceptionDialog.pas' {ExceptionDialog},
   UzLogSound in 'UzLogSound.pas',
@@ -127,16 +118,13 @@ uses
   UExportHamlog in 'UExportHamlog.pas' {formExportHamlog},
   UPackageLoader in 'UPackageLoader.pas' {PackageLoader},
   UPluginManager in 'UPluginManager.pas' {MarketForm},
-  UQsoEdit in 'UQsoEdit.pas',
   USo2rNeoCp in 'USo2rNeoCp.pas' {formSo2rNeoCp},
   UInformation in 'UInformation.pas' {formInformation},
-  UWinKeyerTester in 'UWinKeyerTester.pas' {formWinkeyerTester},
   UStatusEdit in 'UStatusEdit.pas' {formStatusEdit},
   UzLogContest in 'UzLogContest.pas',
   UMessageManager in 'UMessageManager.pas' {formMessageManager},
   UExportCabrillo in 'UExportCabrillo.pas' {formExportCabrillo},
   USpotterListDlg in 'USpotterListDlg.pas' {formSpotterListDlg},
-  UFreqTest in 'UFreqTest.pas' {formFreqTest},
   URigCtrlLib in 'URigCtrlLib.pas',
   URigCtrlIcom in 'URigCtrlIcom.pas',
   URigCtrlKenwood in 'URigCtrlKenwood.pas',
@@ -147,11 +135,10 @@ uses
   UDateDialog in 'UDateDialog.pas' {DateDialog},
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
   UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
-  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
+  UPortConfigDialog2 in 'UPortConfigDialog2.pas' {formPortConfig2},
   UOptions in 'UOptions.pas' {formOptions},
   UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo},
   UCountryChecker in 'UCountryChecker.pas' {formCountryChecker},
-  UELogJarl2 in 'UELogJarl2.pas' {formELogJarl2},
   UTelnetSetting in 'UTelnetSetting.pas',
   UzLogForm in 'UzLogForm.pas' {ZLogForm},
   UzFreqMemory in 'UzFreqMemory.pas',
@@ -169,7 +156,19 @@ uses
   UzGraylineMap in 'UzGraylineMap.pas',
   UFreqMemDialog in 'UFreqMemDialog.pas' {formFreqMemDialog},
   UStartup in 'UStartup.pas' {formStartup},
-  UJarlWebUpload in 'UJarlWebUpload.pas' {formJarlWebUpload};
+  UJarlWebUpload in 'UJarlWebUpload.pas' {formJarlWebUpload},
+  UQSOListColumnSettings in 'UQSOListColumnSettings.pas' {formQSOListColumnSettings},
+  UAudioInputDlg in 'UAudioInputDlg.pas' {formAudioInputDlg},
+  UPrePostPlaybackDlg in 'UPrePostPlaybackDlg.pas' {formPrePostPlaybackDlg},
+  UCwMessageEditor in 'UCwMessageEditor.pas' {CwMessageEditor},
+  Vcl.Themes,
+  Vcl.Styles,
+  UJarlWebUpload2 in 'UJarlWebUpload2.pas' {formJarlWebUpload2},
+  UzLogWebView2 in 'UzLogWebView2.pas',
+  UDmsToGridDialog in 'UDmsToGridDialog.pas' {formDmsToGridDialog},
+  UGridLocator in 'UGridLocator.pas',
+  USentNumber in 'USentNumber.pas' {formSentNumber},
+  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig};
 
 {$R *.res}
 
@@ -179,7 +178,7 @@ begin
   {$ENDIF}
   CoInitialize(nil); // <-- manually call CoInitialize()
   Application.Initialize;
-  Application.Title := 'zLog for Windows';
+  Application.Title := 'zLog';
   Application.CreateForm(TdmZLogGlobal, dmZLogGlobal);
   Application.CreateForm(TdmZLogKeyer, dmZLogKeyer);
   Application.CreateForm(TMainForm, MainForm);

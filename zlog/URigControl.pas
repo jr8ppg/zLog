@@ -9,7 +9,7 @@ uses
   Vcl.ButtonGroup, Vcl.Menus, System.IniFiles,
   UzLogConst, UzLogGlobal, UzLogQSO, UzLogKeyer, CPDrv, OmniRig_TLB,
   URigCtrlLib, URigCtrlIcom, URigCtrlKenwood, URigCtrlYaesu, URigCtrlElecraft,
-  JvExControls, JvLED;
+  JvExControls, JvLED, RLed;
 
 type
   TRigControl = class(TForm)
@@ -66,6 +66,8 @@ type
     labelScanMemChNo: TLabel;
     buttonOmniRig: TSpeedButton;
     buttonReconnectRigs: TSpeedButton;
+    ledSMeter1: TRLed;
+    ledSMeter2: TRLed;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -131,6 +133,7 @@ type
 
     procedure SetImportTo(no: Integer);
     function GetImportTo(): Integer;
+    function GetRigName(): string;
 
     procedure SetMemScanRigNo(no: Integer);
     function GetMemScanRigNo(): Integer;
@@ -163,6 +166,7 @@ type
 
     procedure ForcePowerOff();
     procedure ForcePowerOn();
+    function IsPowerOn(): Boolean;
 
     procedure ToggleMemScan();
     procedure MemScanOff();
@@ -170,6 +174,7 @@ type
 
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
     property ImportRigNo: Integer read GetImportTo write SetImportTo;
+    property RigName: string read GetRigName;
   end;
 
 resourcestring
@@ -183,8 +188,6 @@ uses
 {$R *.DFM}
 
 procedure TRigControl.FormCreate(Sender: TObject);
-var
-   B: TBand;
 begin
    RigLabel.Caption := '';
    FCurrentRig := nil;
@@ -367,7 +370,7 @@ begin
       ss := 'SP ' + ss + ' ';
    end;
 
-   S := S + ss + ' [' + dmZlogGlobal.Settings._pcname + ']';
+   S := S + ss + ' [' + dmZLogGlobal.Settings._pcname + ']';
 
    Result := S;
 end;
@@ -467,10 +470,11 @@ var
    Comm: TCommPortDriver;
    Timer: TTimer;
    Port: Integer;
+   UsePolling: Boolean;
 begin
    rig := nil;
    try
-      if dmZlogGlobal.RigNameStr[rignum] = 'Omni-Rig' then begin
+      if dmZLogGlobal.RigNameStr[rignum] = 'Omni-Rig' then begin
          rig := TOmni.Create(rignum, FOmniRig);
          rig.MinBand := b19;
          rig.MaxBand := b1200;
@@ -493,29 +497,33 @@ begin
          buttonOmniRig.Enabled := True;
       end;
 
-      if dmZlogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
-         rname := dmZlogGlobal.RigNameStr[rignum];
+      if dmZLogGlobal.Settings.FRigControl[rignum].FControlPort in [1 .. 20] then begin
+         rname := dmZLogGlobal.RigNameStr[rignum];
          if rname = 'None' then begin
             Exit;
          end;
 
          if rignum = 1 then begin
-            Port := dmZlogGlobal.Settings.FRigControl[1].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[1].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[1].FUsePolling;
             Comm := ZCom1;
             Timer := PollingTimer1;
          end
          else if rignum = 2 then begin
-            Port := dmZlogGlobal.Settings.FRigControl[2].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[2].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[2].FUsePolling;
             Comm := ZCom2;
             Timer := PollingTimer2;
          end
          else if rignum = 3 then begin
-            Port := dmZlogGlobal.Settings.FRigControl[3].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[3].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[3].FUsePolling;
             Comm := ZCom3;
             Timer := PollingTimer3;
          end
          else begin
-            Port := dmZlogGlobal.Settings.FRigControl[4].FControlPort;
+            Port := dmZLogGlobal.Settings.FRigControl[4].FControlPort;
+            UsePolling := dmZLogGlobal.Settings.FRigControl[4].FUsePolling;
             Comm := ZCom4;
             Timer := PollingTimer4;
          end;
@@ -548,10 +556,6 @@ begin
 
          if rname = 'TS-2000' then begin
             rig := TTS2000.Create(rignum, Port, Comm, Timer, b19, b2400);
-         end;
-
-         if rname = 'TS-2000/P' then begin
-            rig := TTS2000P.Create(rignum, Port, Comm, Timer, b19, b2400);
          end;
 
          if rname = 'FT-2000' then begin
@@ -596,6 +600,10 @@ begin
 
          if rname = 'FT-991' then begin
             rig:= TFT991.Create(rignum, Port, Comm, Timer, b19, b430);
+         end;
+
+         if rname = 'FTDX-10' then begin
+            rig:= TFTDX10.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
          if rname = 'FTDX-3000' then begin
@@ -646,7 +654,6 @@ begin
             else begin
                rig := TICOM.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end;
-            TICOM(rig).UseTransceiveMode := dmZLogGlobal.Settings._use_transceive_mode;
             TICOM(rig).GetBandAndModeFlag := dmZLogGlobal.Settings._icom_polling_freq_and_mode;
 
             TICOM(rig).RigAddr := ICOMLIST[i].addr;
@@ -655,11 +662,20 @@ begin
             TICOM(rig).PlayMessageCwSupported := ICOMLIST[i].PlayCW;
             TICOM(rig).PlayMessagePhSupported := ICOMLIST[i].PlayPh;
             TICOM(rig).FixEdgeSelectSupported := ICOMLIST[i].FixEdgeSel;
+            TICOM(rig).AudioInputSelectSupported := ICOMLIST[i].AudioSel;
+            TICOM(rig).AudioCmd := ICOMLIST[i].AudioCmd;
+            TICOM(rig).AudioMic := ICOMLIST[i].AudioMic;
+            TICOM(rig).AudioUsb := ICOMLIST[i].AudioUsb;
+            TICOM(rig).AudioAcc := ICOMLIST[i].AudioAcc;
+            TICOM(rig).AudioMicUsb := ICOMLIST[i].AudioMicUsb;
+            TICOM(rig).AudioMicAcc := ICOMLIST[i].AudioMicAcc;
 
             if Pos('IC-731', rname) > 0 then begin
                TICOM(rig).Freq4Bytes := True;
             end;
          end;
+
+         rig.UsePolling := UsePolling;
       end;
 
       if Assigned(rig) then begin
@@ -667,6 +683,11 @@ begin
          rig.OnUpdateStatus := OnUpdateStatusProc;
          rig.OnError := OnErrorProc;
          rig.IgnoreMode := dmZLogGlobal.Settings._ignore_rig_mode;
+      end
+      else begin
+         if dmZLogGlobal.Settings.FRigControl[rignum].FKeyingPort <> 0 then begin
+            rig := TVirtualRig.Create(rignum);
+         end;
       end;
    finally
       Result := rig;
@@ -692,14 +713,14 @@ begin
 
    // 最大RIG数の設定
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
-      FMaxRig := 2;
+      FMaxRig := 5;
 
-      for i := 4 downto 1 do begin
-         if FRigs[i] <> nil then begin
-            FMaxRig := i;
-            Break;
-         end;
-      end;
+//      for i := 4 downto 1 do begin
+//         if FRigs[i] <> nil then begin
+//            FMaxRig := i;
+//            Break;
+//         end;
+//      end;
    end
    else begin
       if (dmZLogGlobal.Settings._so2r_use_rig3 = False) then begin
@@ -713,61 +734,36 @@ begin
    // RIGコントロールのCOMポートと、CWキーイングのポートが同じなら
    // CWキーイングのCPDrvをRIGコントロールの物にすり替える
    for i := 1 to 4 do begin
-      if (FRigs[i] <> nil) and (dmZlogGlobal.Settings.FRigControl[i].FControlPort = dmZlogGlobal.Settings.FRigControl[i].FKeyingPort) then begin
+      if FRigs[i] = nil then begin
+         Continue;
+      end;
+
+      // RIGとCWが同じポートの場合はCW側の設定を使う
+      if (dmZLogGlobal.Settings.FRigControl[i].FControlPort = dmZLogGlobal.Settings.FRigControl[i].FKeyingPort) then begin
          FPollingTimer[i].Enabled := False;
          dmZLogKeyer.SetCommPortDriver(i - 1, FRigs[i].CommPortDriver);
          FPollingTimer[i].Enabled := True;
+         FRigs[i].PortConfig := dmZLogGlobal.Settings.FRigControl[i].FKeyingPortConfig;
       end
       else begin
-         dmZLogKeyer.ResetCommPortDriver(i - 1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[i].FKeyingPort));
-      end;
-   end;
-
-(*
-   if ((FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort)) and
-      ((FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort)) then begin
-      PollingTimer1.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
-      PollingTimer1.Enabled := True;
-
-      PollingTimer2.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
-      PollingTimer2.Enabled := True;
-   end
-   else if (FRigs[1] <> nil) and (dmZlogGlobal.Settings.FRigControl[1].FControlPort = dmZlogGlobal.Settings.FRigControl[1].FKeyingPort) then begin
-      PollingTimer1.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(0, FRigs[1].CommPortDriver);
-      PollingTimer1.Enabled := True;
-
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
-   end
-   else if (FRigs[2] <> nil) and (dmZlogGlobal.Settings.FRigControl[2].FControlPort = dmZlogGlobal.Settings.FRigControl[2].FKeyingPort) then begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
-
-      PollingTimer2.Enabled := False;
-      dmZLogKeyer.SetCommPortDriver(1, FRigs[2].CommPortDriver);
-      PollingTimer2.Enabled := True;
-   end
-   else begin
-      dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
-      dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
-   end;
-*)
-
-   for i := 1 to 4 do begin
-      if FRigs[i] <> nil then begin
-         if dmZlogGlobal.Settings.FRigControl[i].FUseTransverter then begin
-            FRigs[i].FreqOffset := 1000 * dmZlogGlobal.Settings.FRigControl[i].FTransverterOffset;
-         end
-         else begin
-            FRigs[i].FreqOffset := 0;
-         end;
-
+         dmZLogKeyer.ResetCommPortDriver(i - 1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[i].FKeyingPort));
          FRigs[i].PortConfig := dmZLogGlobal.Settings.FRigControl[i].FControlPortConfig;
-
-         // Initialize & Start
-         FRigs[i].Initialize();
       end;
+
+      // XVT設定
+      if dmZLogGlobal.Settings.FRigControl[i].FUseTransverter then begin
+         FRigs[i].FreqOffset := 1000 * dmZLogGlobal.Settings.FRigControl[i].FTransverterOffset;
+      end
+      else begin
+         FRigs[i].FreqOffset := 0;
+      end;
+
+      // Initialize & Start
+      FRigs[i].Initialize();
+   end;
+
+   if FRigs[rig] = nil then begin
+      rig := 5;
    end;
 
    SetCurrentRig(rig);
@@ -864,7 +860,7 @@ begin
       PM_SSB_U, PM_SSB_L:
          R.CurrentMode := mSSB;
       PM_DIG_U, PM_DIG_L:
-         R.CurrentMode := mOther;
+         R.CurrentMode := mDV;
       PM_AM:
          R.CurrentMode := mAM;
       PM_FM:
@@ -982,11 +978,16 @@ begin
          Caption := 'Rig Control ' + S;
       end;
    end;
+
+   // S-Meter
+   ledSMeter1.Position := TRig(Sender).SMeter[0];
+   ledSMeter2.Position := TRig(Sender).SMeter[1];
 end;
 
 procedure TRigControl.OnErrorProc(Sender: TObject; msg: string);
 begin
-   MainForm.WriteStatusLineRed(msg, True);
+//   MainForm.WriteStatusLineRed(msg, True);
+//   dmZLogGlobal.WriteErrorLog(msg)
 end;
 
 procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
@@ -1017,10 +1018,10 @@ begin
    FPrevVfo[1] := VfoB;
 
    if dmZLogGlobal.BandPlan.IsInBand(b, m, vfo[currentvfo]) = True then begin
-      FFreqLabel[currentvfo].Font.Color := clBlack;
+      FFreqLabel[currentvfo].Font.Color := dmZLogGlobal.ZNormalTextColor1;
    end
    else begin
-      FFreqLabel[currentvfo].Font.Color := clRed;
+      FFreqLabel[currentvfo].Font.Color := dmZLogGlobal.ZConfirmedTextColor;
    end;
 
    if currentvfo = 0 then begin
@@ -1032,9 +1033,9 @@ begin
       FFreqLabel[1].Font.Style := [fsBold];
    end;
 
-   dispLastFreq.Font.Color := clBlack;
-   dispMode.Font.Color := clBlack;
-   dispVFO.Font.Color := clBlack;
+   dispLastFreq.Font.Color := dmZLogGlobal.ZNormalTextColor1;;
+   dispMode.Font.Color := dmZLogGlobal.ZNormalTextColor1;;
+   dispVFO.Font.Color := dmZLogGlobal.ZNormalTextColor1;;
 
    ShowMemCh();
 end;
@@ -1120,8 +1121,8 @@ begin
    end;
 
    // ONの場合の色
-   ToggleSwitch1.FrameColor := clBlack;
-   ToggleSwitch1.ThumbColor := clBlack;
+   ToggleSwitch1.FrameColor := dmZLogGlobal.ZNormalTextColor1;
+   ToggleSwitch1.ThumbColor := dmZLogGlobal.ZNormalTextColor1;
    buttonReconnectRigs.Enabled := True;
    buttonJumpLastFreq.Enabled := True;
    buttonMemoryWrite.Enabled := True;
@@ -1129,8 +1130,8 @@ begin
    buttonMemScan.Enabled := True;
    buttongrpFreqMemory.Enabled := True;
 
-   FFreqLabel[0].Font.Color := clBlack;
-   FFreqLabel[1].Font.Color := clBlack;
+   FFreqLabel[0].Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   FFreqLabel[1].Font.Color := dmZLogGlobal.ZNormalTextColor1;
 
    // CW開始
    dmZLogKeyer.Open();
@@ -1141,11 +1142,11 @@ begin
    // CW停止
    dmZLogKeyer.ClrBuffer();
    dmZLogKeyer.Close();
-   dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZlogGlobal.Settings.FRigControl[1].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZlogGlobal.Settings.FRigControl[2].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZlogGlobal.Settings.FRigControl[3].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(3, TKeyingPort(dmZlogGlobal.Settings.FRigControl[4].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(4, TKeyingPort(dmZlogGlobal.Settings.FRigControl[5].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZLogGlobal.Settings.FRigControl[1].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[2].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZLogGlobal.Settings.FRigControl[3].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(3, TKeyingPort(dmZLogGlobal.Settings.FRigControl[4].FKeyingPort));
+   dmZLogKeyer.ResetCommPortDriver(4, TKeyingPort(dmZLogGlobal.Settings.FRigControl[5].FKeyingPort));
 
    // リグコン停止
    Stop();
@@ -1265,6 +1266,7 @@ var
    scanrigset: Integer;
    b: TBand;
 begin
+   scanrigset := 1;
    if FCurrentRig = nil then begin
       Exit;
    end;
@@ -1543,6 +1545,16 @@ begin
    else begin
       Result := 0;
    end;
+end;
+
+function TRigControl.IsPowerOn(): Boolean;
+begin
+   Result := (ToggleSwitch1.State = tssOn);
+end;
+
+function TRigCOntrol.GetRigName(): string;
+begin
+   Result := RigLabel.Caption;
 end;
 
 end.

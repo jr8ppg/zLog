@@ -3,11 +3,11 @@ unit URateDialogEx;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, System.Math, System.DateUtils,
-  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
-  VCLTee.Series, UOptions, UzLogGlobal, UzLogQSO, UzLogConst, Vcl.ComCtrls,
-  Vcl.Grids, UQsoTarget, Vcl.Menus;
+  WinApi.Windows, System.SysUtils, System.Classes, Vcl.Graphics, Vcl.Forms,
+  Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, System.Math,
+  System.DateUtils, VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs,
+  VCLTee.Chart, VCLTee.Series, VCLTee.TeCanvas, Vcl.Menus, Vcl.ComCtrls, Vcl.Grids,
+  UOptions, UzLogGlobal, UzLogQSO, UzLogConst, UQsoTarget;
 
 type
   TRateDialogEx = class(TForm)
@@ -21,15 +21,15 @@ type
     Max100: TLabel;
     Panel2: TPanel;
     Chart1: TChart;
-    Series1: TBarSeries;
     SeriesActualTotals: TLineSeries;
     SeriesTargetTotals: TLineSeries;
     Label4: TLabel;
     ShowLastCombo: TComboBox;
     labelHourCaption: TLabel;
     check3D: TCheckBox;
-    Series3: TBarSeries;
+    Series1: TBarSeries;
     Series2: TBarSeries;
+    Series3: TBarSeries;
     Series4: TBarSeries;
     Series5: TBarSeries;
     Series6: TBarSeries;
@@ -43,20 +43,47 @@ type
     Series14: TBarSeries;
     Series15: TBarSeries;
     Series16: TBarSeries;
+    Series17: TBarSeries;
+    Series18: TBarSeries;
+    Series19: TBarSeries;
+    Series20: TBarSeries;
+    Series21: TBarSeries;
+    Series22: TBarSeries;
+    SeriesTarget1: TBarSeries;
+    SeriesTarget2: TBarSeries;
+    SeriesTarget3: TBarSeries;
+    SeriesTarget4: TBarSeries;
+    SeriesTarget5: TBarSeries;
+    SeriesTarget6: TBarSeries;
+    SeriesTarget7: TBarSeries;
+    SeriesTarget8: TBarSeries;
+    SeriesTarget9: TBarSeries;
+    SeriesTarget10: TBarSeries;
+    SeriesTarget11: TBarSeries;
+    SeriesTarget12: TBarSeries;
+    SeriesTarget13: TBarSeries;
+    SeriesTarget14: TBarSeries;
+    SeriesTarget15: TBarSeries;
+    SeriesTarget16: TBarSeries;
+    SeriesTarget17: TBarSeries;
+    SeriesTarget18: TBarSeries;
+    SeriesTarget19: TBarSeries;
+    SeriesTarget20: TBarSeries;
+    SeriesTarget21: TBarSeries;
+    SeriesTarget22: TBarSeries;
     Panel3: TPanel;
     radioOriginCurrentTime: TRadioButton;
     radioOriginLastQSO: TRadioButton;
     radioOriginFirstQSO: TRadioButton;
-    Series17: TBarSeries;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
     ScoreGrid: TStringGrid;
+    ScoreGrid2: TStringGrid;
     popupScore: TPopupMenu;
     menuAchievementRate: TMenuItem;
     menuWinLoss: TMenuItem;
-    TabSheet3: TTabSheet;
-    ScoreGrid2: TStringGrid;
     N1: TMenuItem;
     menuDispAlternating: TMenuItem;
     menuDispOrder: TMenuItem;
@@ -86,9 +113,12 @@ type
     FLast10QsoRateMax: Double;
     FLast100QsoRateMax: Double;
     FShowLast: Integer;      { Show last x hours. default = 12}
-    FGraphSeries: array[b19..bTarget] of TBarSeries;
+    FGraphSeries: array[b19..b248g] of TBarSeries;
+    FGraphTarget: array[b19..b248g] of TBarSeries;
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
+    FGraphTargetSeriesColor: TColor;
+    FGraphTargetTextColor: TColor;
 
     FOriginTime: TDateTime;      // グラフの基準日時（原点）
     FStartTime: TDateTime;       // グラフの表示開始日時
@@ -103,6 +133,7 @@ type
     FZaqRowFgColor: array[0..35] of TColor;
     FZaq2RowBgColor: array[0..35] of TColor;
     FZaq2RowFgColor: array[0..35] of TColor;
+    FTargetColorByBand: Boolean;
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
     function UpdateGraphByRange(hh: Integer): Integer;
@@ -130,6 +161,15 @@ type
     procedure SetOtherBgColor(n: Integer; c: TColor);
     function GetOtherFgColor(n: Integer): TColor;
     procedure SetOtherFgColor(n: Integer; c: TColor);
+    function GetActualSeriesColor(b: TBand): TColor;
+    procedure SetActualSeriesColor(b: TBand; c: TColor);
+    function GetTargetSeriesColor(b: TBand): TColor;
+    procedure SetTargetSeriesColor(b: TBand; c: TColor);
+    function GetActualTextColor(b: TBand): TColor;
+    procedure SetActualTextColor(b: TBand; c: TColor);
+    function GetTargetTextColor(b: TBand): TColor;
+    procedure SetTargetTextColor(b: TBand; c: TColor);
+    procedure SetTargetColorByBand(v: Boolean);
   public
     { Public declarations }
     procedure InitScoreGrid();
@@ -145,6 +185,13 @@ type
     property ZaqFgColor[n: Integer]: TColor read GetZaqFgColor write SetZaqFgColor;
     property OtherBgColor[n: Integer]: TColor read GetOtherBgColor write SetOtherBgColor;
     property OtherFgColor[n: Integer]: TColor read GetOtherFgColor write SetOtherFgColor;
+    property ActualSeriesColor[b: TBand]: TColor read GetActualSeriesColor write SetActualSeriesColor;
+    property TargetSeriesColor[b: TBand]: TColor read GetTargetSeriesColor write SetTargetSeriesColor;
+    property ActualTextColor[b: TBand]: TColor read GetActualTextColor write SetActualTextColor;
+    property TargetTextColor[b: TBand]: TColor read GetTargetTextColor write SetTargetTextColor;
+    property TargetColorByBand: Boolean read FTargetColorByBand write SetTargetColorByBand;
+    property GraphTargetSeriesColor: TColor read FGraphTargetSeriesColor write FGraphTargetSeriesColor;
+    property GraphTargetTextColor: TColor read FGraphTargetTextColor write FGraphTargetTextColor;
   end;
 
 resourcestring
@@ -195,7 +242,35 @@ begin
    FGraphSeries[b2400] := Series14;
    FGraphSeries[b5600] := Series15;
    FGraphSeries[b10g] := Series16;
-   FGraphSeries[bTarget] := Series17;
+   FGraphSeries[b104g] := Series17;
+   FGraphSeries[b24g] := Series18;
+   FGraphSeries[b47g] := Series19;
+   FGraphSeries[b77g] := Series20;
+   FGraphSeries[b135g] := Series21;
+   FGraphSeries[b248g] := Series22;
+
+   FGraphTarget[b19] := SeriesTarget1;
+   FGraphTarget[b35] := SeriesTarget2;
+   FGraphTarget[b7] := SeriesTarget3;
+   FGraphTarget[b10] := SeriesTarget4;
+   FGraphTarget[b14] := SeriesTarget5;
+   FGraphTarget[b18] := SeriesTarget6;
+   FGraphTarget[b21] := SeriesTarget7;
+   FGraphTarget[b24] := SeriesTarget8;
+   FGraphTarget[b28] := SeriesTarget9;
+   FGraphTarget[b50] := SeriesTarget10;
+   FGraphTarget[b144] := SeriesTarget11;
+   FGraphTarget[b430] := SeriesTarget12;
+   FGraphTarget[b1200] := SeriesTarget13;
+   FGraphTarget[b2400] := SeriesTarget14;
+   FGraphTarget[b5600] := SeriesTarget15;
+   FGraphTarget[b10g] := SeriesTarget16;
+   FGraphTarget[b104g] := SeriesTarget17;
+   FGraphTarget[b24g] := SeriesTarget18;
+   FGraphTarget[b47g] := SeriesTarget19;
+   FGraphTarget[b77g] := SeriesTarget20;
+   FGraphTarget[b135g] := SeriesTarget21;
+   FGraphTarget[b248g] := SeriesTarget22;
 
    FGraphStyle := rsOriginal;
    FGraphStartPosition := spCurrentTime;
@@ -204,9 +279,12 @@ begin
       // グラフ全体
       Title.Caption := '';
       Title.Font.Size := 8;
+      Title.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+
       Legend.Visible := False;
 
       // 縦軸（時間毎の交信局数）の目盛り設定
+      LeftAxis.LabelsFont.Color := dmZLogGlobal.ZNormalTextColor1;
       Axes.Left.Automatic := False;
       Axes.Left.Title.Caption := '';  //'時間毎の交信局数';
       Axes.Left.Title.Font.Size := 8;
@@ -217,6 +295,7 @@ begin
       Axes.Left.MinorTickCount := 0;
 
       // 縦軸（累計）の目盛り設定
+      RightAxis.LabelsFont.Color := dmZLogGlobal.ZNormalTextColor1;
       Axes.Right.Automatic := False;
       Axes.Right.Title.Caption := ''; //'交信局数の累計';
       Axes.Right.Title.Font.Size := 8;
@@ -227,13 +306,23 @@ begin
       Axes.Right.MinorTickCount := 0;
 
       // 横軸目盛りの設定
+      BottomAxis.LabelsFont.Color := dmZLogGlobal.ZNormalTextColor1;
       Axes.Bottom.Title.Caption := '';
       Axes.Bottom.Title.Font.Size := 8;
       Axes.Bottom.MinorTickCount := 0;
+
+      Color := dmZLogGlobal.ZBackColor2;
    end;
 
    for b := Low(FGraphSeries) to High(FGraphSeries) do begin
       with FGraphSeries[b] do begin
+         Clear();
+         VertAxis := aLeftAxis;
+         ValueFormat := '#,###';    // 0を出さない
+      end;
+   end;
+   for b := Low(FGraphTarget) to High(FGraphTarget) do begin
+      with FGraphTarget[b] do begin
          Clear();
          VertAxis := aLeftAxis;
          ValueFormat := '#,###';    // 0を出さない
@@ -398,8 +487,9 @@ var
 begin
    timerRefresh.Enabled := False;
    try
-   for b := b19 to bTarget do begin
+   for b := b19 to HiBand do begin
       FGraphSeries[b].Clear();
+      FGraphTarget[b].Clear();
    end;
    SeriesActualTotals.Clear();
    SeriesTargetTotals.Clear();
@@ -523,24 +613,24 @@ begin
       // 横軸目盛ラベル
       Chart1.Axes.Bottom.Items.Add(hindex + 1, ''{Str + 't'});
 
+      for b := b19 to b248g do begin
+         // Actual QSOs
+         FGraphSeries[b].Add(0);
+      end;
+
       // Target QSOs
-      FGraphSeries[b19].Add(0);
-      FGraphSeries[b35].Add(0);
-      FGraphSeries[b7].Add(0);
-      FGraphSeries[b10].Add(0);
-      FGraphSeries[b14].Add(0);
-      FGraphSeries[b18].Add(0);
-      FGraphSeries[b21].Add(0);
-      FGraphSeries[b24].Add(0);
-      FGraphSeries[b28].Add(0);
-      FGraphSeries[b50].Add(0);
-      FGraphSeries[b144].Add(0);
-      FGraphSeries[b430].Add(0);
-      FGraphSeries[b1200].Add(0);
-      FGraphSeries[b2400].Add(0);
-      FGraphSeries[b5600].Add(0);
-      FGraphSeries[b10g].Add(0);
-      FGraphSeries[bTarget].Add(target_hour_count);
+      if FTargetColorByBand = False then begin
+         FGraphTarget[b19].Add(target_hour_count);
+         for b := b35 to b248g do begin
+            FGraphTarget[b].Add(0);
+         end;
+      end
+      else begin
+         for b := b19 to b248g do begin
+            // Target QSOs
+            FGraphTarget[b].Add(dmZLogGlobal.Target.Bands[b].Hours[H + i + 1].Target);
+         end;
+      end;
 
       // 実績値累計
       SeriesActualTotals.Add(actual_total_count);
@@ -596,7 +686,7 @@ var
 begin
    hour_count := 0;
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       part_count := dmZLogGlobal.Target.Bands[b].Hours[hh].Actual;
 
       // この時間帯の合計
@@ -605,12 +695,15 @@ begin
 
    // Actual QSOs
    FGraphSeries[b19].Add(hour_count);
-
-   for b := b35 to b10g do begin
+   for b := b35 to HiBand do begin
       FGraphSeries[b].Add(0);
    end;
 
-   FGraphSeries[bTarget].Add(0);
+   // Target QSOs
+   FGraphTarget[b19].Add(0);
+   for b := b35 to HiBand do begin
+      FGraphTarget[b].Add(0);
+   end;
 
    Result := hour_count;
 end;
@@ -621,9 +714,9 @@ var
    part_count: Integer;
    hour_count: Integer;
 begin
+   // Actual QSOs
    hour_count := 0;
-
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       part_count := dmZLogGlobal.Target.Bands[b].Hours[hh].Actual;
 
       // グラフデータの追加
@@ -633,7 +726,10 @@ begin
       hour_count := hour_count + part_count;
    end;
 
-   FGraphSeries[bTarget].Add(0);
+   // Target QSOs
+   for b := b19 to HiBand do begin
+      FGraphTarget[b].Add(0);
+   end;
 
    Result := hour_count;
 end;
@@ -642,6 +738,7 @@ function TRateDialogEx.UpdateGraphByRange(hh: Integer): Integer;
 var
    part_count: Integer;
    hour_count: Integer;
+   b: TBand;
 begin
    hour_count := 0;
 
@@ -702,12 +799,28 @@ begin
 
    // SHF
    part_count := dmZLogGlobal.Target.Bands[b5600].Hours[hh].Actual +
-                 dmZLogGlobal.Target.Bands[b10g].Hours[hh].Actual;
+                 dmZLogGlobal.Target.Bands[b10g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b104g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b24g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b47g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b77g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b135g].Hours[hh].Actual +
+                 dmZLogGlobal.Target.Bands[b248g].Hours[hh].Actual;
 
    // グラフデータの追加
    FGraphSeries[b5600].Add(part_count);
    FGraphSeries[b10g].Add(0);
-   FGraphSeries[bTarget].Add(0);
+   FGraphSeries[b104g].Add(0);
+   FGraphSeries[b24g].Add(0);
+   FGraphSeries[b47g].Add(0);
+   FGraphSeries[b77g].Add(0);
+   FGraphSeries[b135g].Add(0);
+   FGraphSeries[b248g].Add(0);
+
+   // Target QSOs
+   for b := b19 to HiBand do begin
+      FGraphTarget[b].Add(0);
+   end;
 
    // この時間帯の合計
    hour_count := hour_count + part_count;
@@ -733,10 +846,23 @@ var
 begin
    FGraphStyle := dmZLogGlobal.Settings.FGraphStyle;
    FGraphStartPosition := dmZLogGlobal.Settings.FGraphStartPosition;
+   FTargetColorByBand := dmZLogGlobal.Settings.FGraphTargetColorByBand;
    for b := b19 to HiBand do begin
-      GraphSeries[b].SeriesColor := dmZLogGlobal.Settings.FGraphBarColor[b];
-      GraphSeries[b].Marks.Font.Color := dmZLogGlobal.Settings.FGraphTextColor[b];
+      ActualSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[b];
+      ActualTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[b];
+
+      if FTargetColorByBand = False then begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[bTarget];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[bTarget];
+      end
+      else begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[b];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[b];
+      end;
    end;
+   FGraphTargetSeriesColor := dmZLogGlobal.Settings.FGraphBarColor[bTarget];
+   FGraphTargetTextColor :=  dmZLogGlobal.Settings.FGraphTextColor[bTarget];
+
    SetGraphStartPositionUI(FGraphStartPosition);
    menuAchievementRate.Checked := dmZLogGlobal.Settings.FZaqAchievement;
    menuWinLoss.Checked := Not menuAchievementRate.Checked;
@@ -821,6 +947,11 @@ begin
    // 折れ線グラフの色
    dmZLogGlobal.Settings.FGraphOtherBgColor[0] := SeriesActualTotals.SeriesColor;
    dmZLogGlobal.Settings.FGraphOtherBgColor[1] := SeriesTargetTotals.SeriesColor;
+
+   dmZLogGlobal.Settings.FGraphTargetColorByBand := FTargetColorByBand;
+
+   dmZLogGlobal.Settings.FGraphBarColor[bTarget] := FGraphTargetSeriesColor;
+   dmZLogGlobal.Settings.FGraphTextColor[bTarget] := FGraphTargetTextColor;
 end;
 
 procedure TRateDialogEx.Refresh();
@@ -1258,9 +1389,21 @@ begin
    ScoreGrid.Cells[0, 30] := '';
    ScoreGrid.Cells[0, 31] := MHzString[b10g];
    ScoreGrid.Cells[0, 32] := '';
-   ScoreGrid.Cells[0, 33] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 33] := MHzString[b104g];
    ScoreGrid.Cells[0, 34] := '';
-   ScoreGrid.Cells[0, 35] := '%';
+   ScoreGrid.Cells[0, 35] := MHzString[b24g];
+   ScoreGrid.Cells[0, 36] := '';
+   ScoreGrid.Cells[0, 37] := MHzString[b47g];
+   ScoreGrid.Cells[0, 38] := '';
+   ScoreGrid.Cells[0, 39] := MHzString[b77g];
+   ScoreGrid.Cells[0, 40] := '';
+   ScoreGrid.Cells[0, 41] := MHzString[b135g];
+   ScoreGrid.Cells[0, 42] := '';
+   ScoreGrid.Cells[0, 43] := MHzString[b248g];
+   ScoreGrid.Cells[0, 44] := '';
+   ScoreGrid.Cells[0, 45] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 46] := '';
+   ScoreGrid.Cells[0, 47] := '%';
 
    for i := 1 to 24 do begin
       ScoreGrid.ColWidths[i] := 42;
@@ -1275,7 +1418,7 @@ begin
    ScoreGrid.Cells[50, 0] := '%';
    ScoreGrid.ColWidths[50] := 50;
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       R := Ord(b) * 2;
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid.RowHeights[R + 1] := 24;
@@ -1310,27 +1453,39 @@ begin
    ScoreGrid.Cells[0, 14] := MHzString[b2400];
    ScoreGrid.Cells[0, 15] := MHzString[b5600];
    ScoreGrid.Cells[0, 16] := MHzString[b10g];
-   ScoreGrid.Cells[0, 17] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 17] := MHzString[b104g];
+   ScoreGrid.Cells[0, 18] := MHzString[b24g];
+   ScoreGrid.Cells[0, 19] := MHzString[b47g];
+   ScoreGrid.Cells[0, 20] := MHzString[b77g];
+   ScoreGrid.Cells[0, 21] := MHzString[b135g];
+   ScoreGrid.Cells[0, 22] := MHzString[b248g];
+   ScoreGrid.Cells[0, 23] := SCOREGRID_TOTAL;
 
-   ScoreGrid.Cells[0, 18] := MHzString[b19];
-   ScoreGrid.Cells[0, 19] := MHzString[b35];
-   ScoreGrid.Cells[0, 20] := MHzString[b7];
-   ScoreGrid.Cells[0, 21] := MHzString[b10];
-   ScoreGrid.Cells[0, 22] := MHzString[b14];
-   ScoreGrid.Cells[0, 23] := MHzString[b18];
-   ScoreGrid.Cells[0, 24] := MHzString[b21];
-   ScoreGrid.Cells[0, 25] := MHzString[b24];
-   ScoreGrid.Cells[0, 26] := MHzString[b28];
-   ScoreGrid.Cells[0, 27] := MHzString[b50];
-   ScoreGrid.Cells[0, 28] := MHzString[b144];
-   ScoreGrid.Cells[0, 29] := MHzString[b430];
-   ScoreGrid.Cells[0, 30] := MHzString[b1200];
-   ScoreGrid.Cells[0, 31] := MHzString[b2400];
-   ScoreGrid.Cells[0, 32] := MHzString[b5600];
-   ScoreGrid.Cells[0, 33] := MHzString[b10g];
+   ScoreGrid.Cells[0, 24] := MHzString[b19];
+   ScoreGrid.Cells[0, 25] := MHzString[b35];
+   ScoreGrid.Cells[0, 26] := MHzString[b7];
+   ScoreGrid.Cells[0, 27] := MHzString[b10];
+   ScoreGrid.Cells[0, 28] := MHzString[b14];
+   ScoreGrid.Cells[0, 29] := MHzString[b18];
+   ScoreGrid.Cells[0, 30] := MHzString[b21];
+   ScoreGrid.Cells[0, 31] := MHzString[b24];
+   ScoreGrid.Cells[0, 32] := MHzString[b28];
+   ScoreGrid.Cells[0, 33] := MHzString[b50];
+   ScoreGrid.Cells[0, 34] := MHzString[b144];
+   ScoreGrid.Cells[0, 35] := MHzString[b430];
+   ScoreGrid.Cells[0, 36] := MHzString[b1200];
+   ScoreGrid.Cells[0, 37] := MHzString[b2400];
+   ScoreGrid.Cells[0, 38] := MHzString[b5600];
+   ScoreGrid.Cells[0, 39] := MHzString[b10g];
+   ScoreGrid.Cells[0, 40] := MHzString[b104g];
+   ScoreGrid.Cells[0, 41] := MHzString[b24g];
+   ScoreGrid.Cells[0, 42] := MHzString[b47g];
+   ScoreGrid.Cells[0, 43] := MHzString[b77g];
+   ScoreGrid.Cells[0, 44] := MHzString[b135g];
+   ScoreGrid.Cells[0, 45] := MHzString[b248g];
 
-   ScoreGrid.Cells[0, 34] := SCOREGRID_TOTAL;
-   ScoreGrid.Cells[0, 35] := '%';
+   ScoreGrid.Cells[0, 46] := SCOREGRID_TOTAL;
+   ScoreGrid.Cells[0, 47] := '%';
 
    for i := 1 to 24 do begin
       ScoreGrid.ColWidths[i] := 42;
@@ -1347,7 +1502,7 @@ begin
 
    // 使用しないバンド非表示(actual)
    R := 1;
-   for b := b19 to b10g do begin
+   for b := b19 to Hiband do begin
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid.RowHeights[R] := 24;
       end
@@ -1361,7 +1516,7 @@ begin
    Inc(R);
 
    // 使用しないバンド非表示(target)
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid.RowHeights[R] := 24;
       end
@@ -1396,8 +1551,14 @@ begin
    ScoreGrid2.Cells[0, 14] := MHzString[b2400];
    ScoreGrid2.Cells[0, 15] := MHzString[b5600];
    ScoreGrid2.Cells[0, 16] := MHzString[b10g];
-   ScoreGrid2.Cells[0, 17] := SCOREGRID_TOTAL;
-   ScoreGrid2.Cells[0, 18] := SCOREGRID_CUMULATIVE;
+   ScoreGrid2.Cells[0, 17] := MHzString[b104g];
+   ScoreGrid2.Cells[0, 18] := MHzString[b24g];
+   ScoreGrid2.Cells[0, 19] := MHzString[b47g];
+   ScoreGrid2.Cells[0, 20] := MHzString[b77g];
+   ScoreGrid2.Cells[0, 21] := MHzString[b135g];
+   ScoreGrid2.Cells[0, 22] := MHzString[b248g];
+   ScoreGrid2.Cells[0, 23] := SCOREGRID_TOTAL;
+   ScoreGrid2.Cells[0, 24] := SCOREGRID_CUMULATIVE;
 
    // 列見出し
    for i := 1 to 24 do begin
@@ -1418,7 +1579,7 @@ begin
    ScoreGrid2.ColWidths[51] := 50;
 
    // 行高さ
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       R := Ord(b);
       if dmZLogGlobal.Settings._activebands[b] = True then begin
          ScoreGrid2.RowHeights[R + 1] := 24;
@@ -1435,7 +1596,7 @@ var
    i: Integer;
    R: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       R := (Ord(b) * 2) + 1;
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R + 0] := IntToStr(ATarget.Bands[b].Hours[i].Target);
@@ -1486,7 +1647,7 @@ begin
    R := 1;
 
    // まずはactual
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
       end;
@@ -1510,7 +1671,7 @@ begin
    Inc(R);
 
    // target
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R] := IntToStr(ATarget.Bands[b].Hours[i].Target);
       end;
@@ -1565,7 +1726,7 @@ var
    t: Integer;
    h: Integer;
 begin
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       // 行位置
       R := Ord(b) + 1;
 
@@ -1576,9 +1737,9 @@ begin
       for i := 1 to h do begin
          ScoreGrid2.Cells[i, R]  := IntToStr(ATarget.Bands[b].Hours[i].Actual) + '/' +     // 実績値
                                     IntToStr(ATarget.Bands[b].Hours[i].Target);
-         ScoreGrid2.Cells[i, 17] := IntToStr(ATarget.Total.Hours[i].Actual) + '/' +        // 合計
+         ScoreGrid2.Cells[i, 23] := IntToStr(ATarget.Total.Hours[i].Actual) + '/' +        // 合計
                                     IntToStr(ATarget.Total.Hours[i].Target);
-         ScoreGrid2.Cells[i, 18] := IntToStr(ATarget.Cumulative.Hours[i].Actual) + '/' +   // 累計
+         ScoreGrid2.Cells[i, 24] := IntToStr(ATarget.Cumulative.Hours[i].Actual) + '/' +   // 累計
                                     IntToStr(ATarget.Cumulative.Hours[i].Target);
       end;
 
@@ -1590,7 +1751,7 @@ begin
 
          a := ATarget.Total.Total2(h).Actual;
          t := ATarget.Total.Total2(h).Target;
-         ScoreGrid2.Cells[h + 1, 17] := IntToStr(a - t);       // 合計の差
+         ScoreGrid2.Cells[h + 1, 23] := IntToStr(a - t);       // 合計の差
       end;
 
       // 合計列
@@ -1604,13 +1765,13 @@ begin
    end;
 
    // Total
-   ScoreGrid2.Cells[49, 17]   := IntToStr(ATarget.TotalTotal.Actual);
+   ScoreGrid2.Cells[49, 23]   := IntToStr(ATarget.TotalTotal.Actual);
 
    // Target
-   ScoreGrid2.Cells[50, 17]   := IntToStr(ATarget.TotalTotal.Target);
+   ScoreGrid2.Cells[50, 23]   := IntToStr(ATarget.TotalTotal.Target);
 
    // Diff.
-   ScoreGrid2.Cells[51, 17]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+   ScoreGrid2.Cells[51, 23]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
 
    ScoreGrid2.Refresh();
 end;
@@ -1681,6 +1842,79 @@ begin
       0: SeriesActualTotals.Marks.Color := c;
       1: SeriesTargetTotals.Marks.Color := c;
    end;
+end;
+
+function TRateDialogEx.GetActualSeriesColor(b: TBand): TColor;
+begin
+   Result := FGraphSeries[b].SeriesColor;
+end;
+
+procedure TRateDialogEx.SetActualSeriesColor(b: TBand; c: TColor);
+begin
+   FGraphSeries[b].SeriesColor := c;
+end;
+
+function TRateDialogEx.GetTargetSeriesColor(b: TBand): TColor;
+begin
+   Result := FGraphTarget[b].SeriesColor;
+end;
+
+procedure TRateDialogEx.SetTargetSeriesColor(b: TBand; c: TColor);
+var
+   CC: TColor;
+   RR, GG, BB: Byte;
+begin
+   CC := ColorToRGB(c);
+   RR := GetRValue(CC);
+   GG := GetGValue(CC);
+   BB := GetBValue(CC);
+
+   if FTargetColorByBand = True then begin
+      RR := Trunc(RR * 0.5);
+      GG := Trunc(GG * 0.5);
+      BB := Trunc(BB * 0.5);
+   end;
+
+   FGraphTarget[b].SeriesColor := RGB(RR, GG, BB);
+end;
+
+function TRateDialogEx.GetActualTextColor(b: TBand): TColor;
+begin
+   Result := FGraphSeries[b].Marks.Font.Color;
+end;
+
+procedure TRateDialogEx.SetActualTextColor(b: TBand; c: TColor);
+begin
+   FGraphSeries[b].Marks.Font.Color := c;
+end;
+
+function TRateDialogEx.GetTargetTextColor(b: TBand): TColor;
+begin
+   Result := FGraphTarget[b].Marks.Font.Color;
+end;
+
+procedure TRateDialogEx.SetTargetTextColor(b: TBand; c: TColor);
+begin
+   FGraphTarget[b].Marks.Font.Color := c;
+end;
+
+procedure TRateDialogEx.SetTargetColorByBand(v: Boolean);
+var
+   b: TBand;
+begin
+   FTargetColorByBand := v;
+   for b := b19 to HiBand do begin
+      if FTargetColorByBand = False then begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[bTarget];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[bTarget];
+      end
+      else begin
+         TargetSeriesColor[b] := dmZLogGlobal.Settings.FGraphBarColor[b];
+         TargetTextColor[b] := dmZLogGlobal.Settings.FGraphTextColor[b];
+      end;
+   end;
+
+   UpdateGraph();
 end;
 
 end.

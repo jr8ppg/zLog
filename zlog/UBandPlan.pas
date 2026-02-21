@@ -16,7 +16,7 @@ type
   TBandPlan = class(TObject)
   private
     FPresetName: string;
-    FLimit: array [mCW..mOther] of TFreqLimitArray;
+    FLimit: array [mCW..LastMode] of TFreqLimitArray;
     function GetLimit(m: TMode): TFreqLimitArray;
     procedure SetLimit(m: TMode; v: TFreqLimitArray);
     function GetFileName(): string;
@@ -56,7 +56,13 @@ const
       ( Lower:  1294000000; Upper:  1294500000 ),
       ( Lower:  2424000000; Upper:  2424500000 ),
       ( Lower:  5760000000; Upper:  5762000000 ),
-      ( Lower: 10240000000; Upper: 10242000000 )
+      ( Lower: 10240000000; Upper: 10242000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     ),
     // DX
     (
@@ -75,7 +81,13 @@ const
       ( Lower:  1294000000; Upper:  1294500000 ),
       ( Lower:  2424000000; Upper:  2424500000 ),
       ( Lower:  5760000000; Upper:  5762000000 ),
-      ( Lower: 10240000000; Upper: 10242000000 )
+      ( Lower: 10240000000; Upper: 10242000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     )
   );
 
@@ -98,7 +110,13 @@ const
       ( Lower:  1294000000; Upper:  1294500000 ),
       ( Lower:  2424000000; Upper:  2424500000 ),
       ( Lower:  5760000000; Upper:  5762000000 ),
-      ( Lower: 10240000000; Upper: 10242000000 )
+      ( Lower: 10240000000; Upper: 10242000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     ),
     // DX
     (
@@ -117,7 +135,13 @@ const
       ( Lower:  1294000000; Upper:  1294500000 ),
       ( Lower:  2424000000; Upper:  2424500000 ),
       ( Lower:  5760000000; Upper:  5762000000 ),
-      ( Lower: 10240000000; Upper: 10242000000 )
+      ( Lower: 10240000000; Upper: 10242000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     )
   );
 
@@ -140,7 +164,13 @@ const
       ( Lower:  1294900000; Upper:  1295800000 ),
       ( Lower:  2425000000; Upper:  2450000000 ),
       ( Lower:  5757000000; Upper:  5760000000 ),
-      ( Lower: 10237000000; Upper: 10240000000 )
+      ( Lower: 10237000000; Upper: 10245000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     ),
     // DX
     (
@@ -159,7 +189,13 @@ const
       ( Lower:  1294900000; Upper:  1295800000 ),
       ( Lower:  2427000000; Upper:  2450000000 ),
       ( Lower:  5757000000; Upper:  5760000000 ),
-      ( Lower: 10237000000; Upper: 10240000000 )
+      ( Lower: 10237000000; Upper: 10245000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     )
   );
 
@@ -182,7 +218,13 @@ const
       ( Lower:  1294900000; Upper:  1295800000 ),
       ( Lower:  2427000000; Upper:  2450000000 ),
       ( Lower:  5757000000; Upper:  5760000000 ),
-      ( Lower: 10237000000; Upper: 10240000000 )
+      ( Lower: 10237000000; Upper: 10245000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     ),
     // DX
     (
@@ -201,7 +243,13 @@ const
       ( Lower:  1294900000; Upper:  1295800000 ),
       ( Lower:  2427000000; Upper:  2450000000 ),
       ( Lower:  5757000000; Upper:  5760000000 ),
-      ( Lower: 10237000000; Upper: 10240000000 )
+      ( Lower: 10237000000; Upper: 10245000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     )
   );
 
@@ -224,7 +272,13 @@ const
       ( Lower:  1293000000; Upper:  1294000000 ),
       ( Lower:  2424000000; Upper:  2424500000 ),
       ( Lower:  5760000000; Upper:  5762000000 ),
-      ( Lower: 10240000000; Upper: 10242000000 )
+      ( Lower: 10237000000; Upper: 10245000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     ),
     // DX
     (
@@ -243,7 +297,13 @@ const
       ( Lower:  1293000000; Upper:  1294000000 ),
       ( Lower:  2424000000; Upper:  2424500000 ),
       ( Lower:  5760000000; Upper:  5762000000 ),
-      ( Lower: 10240000000; Upper: 10242000000 )
+      ( Lower: 10237000000; Upper: 10245000000 ),
+      ( Lower: 10450000000; Upper: 10500000000 ),
+      ( Lower: 24000000000; Upper: 24050000000 ),
+      ( Lower: 47000000000; Upper: 47200000000 ),
+      ( Lower: 77500000000; Upper: 78000000000 ),
+      ( Lower:134000000000; Upper:136000000000 ),
+      ( Lower:248000000000; Upper:250000000000 )
     )
   );
 
@@ -266,10 +326,22 @@ const
       ( Lower:           0; Upper:           0 ),
       ( Lower:           0; Upper:           0 ),
       ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
       ( Lower:           0; Upper:           0 )
     ),
     // DX
     (
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
+      ( Lower:           0; Upper:           0 ),
       ( Lower:           0; Upper:           0 ),
       ( Lower:           0; Upper:           0 ),
       ( Lower:           0; Upper:           0 ),
@@ -290,6 +362,9 @@ const
   );
 
 implementation
+
+uses
+  Main;
 
 { TBandPlan }
 
@@ -341,7 +416,7 @@ begin
    SL := TStringList.Create();
    ini := TMemIniFile.Create(filename);
    try
-      for m := mCW to mOther do begin
+      for m := mCW to LastMode do begin
          for b := b19 to b10g do begin
             strSection := ModeString[m];
             strKey := MHzString[b];
@@ -371,7 +446,7 @@ begin
    SL := TStringList.Create();
    ini := TMemIniFile.Create(filename);
    try
-      for m := mCW to mOther do begin
+      for m := mCW to LastMode do begin
          for b := b19 to b10g do begin
             strSection := ModeString[m];
             strKey := MHzString[b];
@@ -407,7 +482,7 @@ var
    m: TMode;
    l, u: TFrequency;
 begin
-   for m := mCW to mOther do begin
+   for m := mCW to LastMode do begin
       l := FLimit[m][b].Lower;
       u := FLimit[m][b].Upper;
       if (l <= 0) or (u <= 0) then begin
@@ -506,8 +581,20 @@ begin
          b := b2400;
       5600000..5899999:
          b := b5600;
-      10000000..90000000:
+      10000000..10449999:
          b := b10g;
+      10450000..10499999:
+         if MyContest.Single10G then b := b10g else b := b104g;
+      24000000..24049999:
+         b := b24g;
+      47000000..47199999:
+         b := b47g;
+      77500000..77999999:
+         b := b77g;
+      134000000..135999999:
+         b := b135g;
+      248000000..249999999:
+         b := b248g;
       else
          b := bUnknown;
    end;

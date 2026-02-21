@@ -4,6 +4,7 @@ inherited WWMulti: TWWMulti
   Caption = 'CQ WW Country Multipliers'
   ClientHeight = 282
   ClientWidth = 360
+  Font.Height = -12
   StyleElements = [seFont, seClient, seBorder]
   OnResize = FormResize
   OnShow = FormShow
@@ -14,12 +15,12 @@ inherited WWMulti: TWWMulti
     Left = 0
     Top = 0
     Width = 360
-    Height = 41
+    Height = 53
     Align = alTop
     TabOrder = 0
     object RotateLabel1: TRotateLabel
       Left = 252
-      Top = 20
+      Top = 32
       Width = 14
       Height = 15
       Escapement = 90
@@ -34,7 +35,7 @@ inherited WWMulti: TWWMulti
     end
     object RotateLabel2: TRotateLabel
       Left = 264
-      Top = 20
+      Top = 32
       Width = 14
       Height = 15
       Escapement = 90
@@ -49,7 +50,7 @@ inherited WWMulti: TWWMulti
     end
     object RotateLabel3: TRotateLabel
       Left = 276
-      Top = 29
+      Top = 41
       Width = 14
       Height = 6
       Escapement = 90
@@ -64,7 +65,7 @@ inherited WWMulti: TWWMulti
     end
     object RotateLabel4: TRotateLabel
       Left = 287
-      Top = 23
+      Top = 35
       Width = 14
       Height = 12
       Escapement = 90
@@ -79,7 +80,7 @@ inherited WWMulti: TWWMulti
     end
     object RotateLabel5: TRotateLabel
       Left = 299
-      Top = 23
+      Top = 35
       Width = 14
       Height = 12
       Escapement = 90
@@ -94,7 +95,7 @@ inherited WWMulti: TWWMulti
     end
     object RotateLabel6: TRotateLabel
       Left = 311
-      Top = 23
+      Top = 35
       Width = 14
       Height = 12
       Escapement = 90
@@ -110,9 +111,9 @@ inherited WWMulti: TWWMulti
     object SortBy: TRadioGroup
       Left = 8
       Top = 3
-      Width = 209
-      Height = 30
-      Caption = 'Sort by'
+      Width = 229
+      Height = 44
+      Caption = #20006#12403#38918
       Columns = 3
       ItemIndex = 0
       Items.Strings = (
@@ -162,16 +163,16 @@ inherited WWMulti: TWWMulti
       Top = 13
       Width = 81
       Height = 17
-      Caption = 'Stay on top'
+      Caption = #25163#21069#12395#34920#31034
       TabOrder = 2
       OnClick = StayOnTopClick
     end
   end
   object Grid: TStringGrid
     Left = 0
-    Top = 41
+    Top = 53
     Width = 360
-    Height = 200
+    Height = 188
     Align = alClient
     ColCount = 1
     DefaultColWidth = 500

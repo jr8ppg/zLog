@@ -9,24 +9,17 @@ uses
 
 type
   TWWScore = class(TBasicScore)
-    Grid: TStringGrid;
     procedure FormShow(Sender: TObject);
-    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
-  protected
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner: TComponent); overload;
     procedure Renew; override;
     procedure Reset; override;
-    procedure AddNoUpdate(var aQSO : TQSO);  override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
-    procedure SummaryWriteScore(FileName : string); override;
-    property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
 var
@@ -51,32 +44,6 @@ procedure TWWScore.FormShow(Sender: TObject);
 begin
    inherited;
    CWButton.Visible := False;
-end;
-
-procedure TWWScore.GridDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-   strText: string;
-begin
-   inherited;
-   strText := TStringGrid(Sender).Cells[ACol, ARow];
-
-   with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
-      Brush.Style := bsSolid;
-      FillRect(Rect);
-
-      Font.Size := FFontSize;
-
-      if Copy(strText, 1, 1) = '*' then begin
-         strText := Copy(strText, 2);
-         Font.Color := clBlue;
-      end
-      else begin
-         Font.Color := clBlack;
-      end;
-
-      TextRect(Rect, strText, [tfRight,tfVerticalCenter,tfSingleLine]);
-   end;
 end;
 
 procedure TWWScore.Renew;
@@ -113,19 +80,26 @@ begin
    end;
 end;
 
-procedure TWWScore.AddNoUpdate(var aQSO : TQSO);
+procedure TWWScore.AddNoUpdate(aQSO: TQSO);
 var
    band: TBand;
 begin
-   {BasicScore.AddNoUpdate(aQSO);}
-   inherited;
+   Inherited;
 
    if aQSO.Dupe then begin
       exit;
    end;
 
    band := aQSO.band;
-   Inc(Points[band], aQSO.Points); {Points calculated in WWMulti.AddNoUpdate}
+
+   if FValidQso = True then begin
+      {Points calculated in WWMulti.AddNoUpdate}
+   end
+   else begin
+      aQSO.Points := 0;
+   end;
+
+   Inc(Points[band], aQSO.Points);
 end;
 
 procedure TWWScore.UpdateData;
@@ -138,6 +112,7 @@ var
    w: Integer;
    strScore: string;
 begin
+   Grid.ColCount := 5;
    TotQSO := 0;
    TotPts := 0;
    TotMulti := 0;
@@ -220,59 +195,6 @@ begin
    end;
    h := h + (Grid.RowCount * Grid.GridLineWidth) + Panel1.Height + 4;
    ClientHeight := h;
-end;
-
-procedure TWWScore.SummaryWriteScore(FileName : string);
-var
-   f : textfile;
-   tqso, tpts, tmulti, tmulti2 : LongInt;
-   b : TBand;
-begin
-   tqso := 0; tpts := 0; tmulti := 0; tmulti2 := 0;
-   AssignFile(f, FileName);
-   Append(f);
-   writeln(f, 'MHz           QSOs    Points    Zones  Countries');
-   for b := b19 to b28 do begin
-      if NotWARC(b) then begin
-         writeln(f, FillRight(MHzString[b],8)+FillLeft(IntToStr(QSO[b]),10)+
-                  FillLeft(IntToStr(Points[b]),10)+FillLeft(IntToStr(Multi[b]),10)+
-                  FillLeft(IntToStr(Multi2[b]),10));
-         tqso := tqso + QSO[b];
-         tpts := tpts + Points[b];
-         tmulti := tmulti + Multi[b];
-         tmulti2 := tmulti2 + Multi2[b];
-      end;
-   end;
-   writeln(f, FillRight('Total :',8)+FillLeft(IntToStr(tqso),10)+
-             FillLeft(IntToStr(tpts),10)+FillLeft(IntToStr(tmulti),10)+
-             FIllLeft(IntToStr(tmulti2),10) );
-   writeln(f,'Total score : ' + IntToStr(tpts*(tmulti+tmulti2)));
-   CloseFile(f);
-end;
-
-function TWWScore.GetFontSize(): Integer;
-begin
-   Result := Grid.Font.Size;
-end;
-
-procedure TWWScore.SetFontSize(v: Integer);
-var
-   i: Integer;
-   h: Integer;
-begin
-   Inherited;
-   Grid.Font.Size := v;
-   Grid.Canvas.Font.size := v;
-
-   h := Abs(Grid.Font.Height) + 6;
-
-   Grid.DefaultRowHeight := h;
-
-   for i := 0 to Grid.RowCount - 1 do begin
-      Grid.RowHeights[i] := h;
-   end;
-
-   UpdateData();
 end;
 
 end.

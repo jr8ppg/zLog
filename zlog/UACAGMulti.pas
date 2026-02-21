@@ -33,6 +33,12 @@ type
     checkJumpLatestMulti: TCheckBox;
     Grid: TStringGrid;
     checkIncremental: TCheckBox;
+    Label104G: TRotateLabel;
+    Label24G: TRotateLabel;
+    Label47G: TRotateLabel;
+    Label77G: TRotateLabel;
+    Label135G: TRotateLabel;
+    Label248G: TRotateLabel;
     procedure FormCreate(Sender: TObject);
     procedure GoButtonClick2(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -44,8 +50,8 @@ type
     procedure Edit1Exit(Sender: TObject);
     procedure Edit1Change(Sender: TObject);
   protected
-    CityList : TCityList;
-    LatestMultiAddition : integer; // Grid.TopRow
+    CityList: TCityList;
+    LatestMultiAddition: integer; // Grid.TopRow
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
@@ -56,12 +62,12 @@ type
   public
     { Public declarations }
     procedure UpdateData; override;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
-    procedure Add(var aQSO : TQSO); override; {NewMulti}
-    function ValidMulti(aQSO : TQSO) : boolean; override;
+    procedure AddNoUpdate(aQSO: TQSO); override;
+    procedure Add(aQSO: TQSO); override; {NewMulti}
+    function ValidMulti(aQSO: TQSO): boolean; override;
     procedure Reset; override;
-    procedure CheckMulti(aQSO : TQSO); override;
-    function ExtractMulti(aQSO : TQSO) : string; override;
+    procedure CheckMulti(aQSO: TQSO); override;
+    function ExtractMulti(aQSO: TQSO): string; override;
     procedure SetNumberEditFocus; override;
   end;
 
@@ -72,7 +78,7 @@ uses
 
 {$R *.DFM}
 
-procedure TACAGMulti.Add(var aQSO: TQSO);
+procedure TACAGMulti.Add(aQSO: TQSO);
 begin
    inherited;
 end;
@@ -161,24 +167,31 @@ begin
    Result := str;
 end;
 
-procedure TACAGMulti.AddNoUpdate(var aQSO: TQSO);
+procedure TACAGMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
    C: TCity;
+   b: TBand;
 begin
    aQSO.NewMulti1 := False;
    str := aQSO.NrRcvd;
    Delete(str, length(str), 1);
    aQSO.Multi1 := str;
 
+   b := aQSO.Band;
+
    if aQSO.Dupe then begin
+      Exit;
+   end;
+
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
       Exit;
    end;
 
    C := CityList.GetCity(str);
    if C <> nil then begin
-      if C.Worked[aQSO.Band] = False then begin
-         C.Worked[aQSO.Band] := True;
+      if C.Worked[b] = False then begin
+         C.Worked[b] := True;
          aQSO.NewMulti1 := True;
       end;
       LatestMultiAddition := C.Index;
@@ -368,6 +381,32 @@ begin
    Label2400.Left := Label1200.Left + (w * 2);
    Label5600.Left := Label2400.Left + (w * 2);
    Label10g.Left  := Label5600.Left + (w * 2);
+   Label104g.Left  := Label10g.Left + (w * 2);
+   Label24g.Left  := Label104g.Left + (w * 2);
+   Label47g.Left  := Label24g.Left + (w * 2);
+   Label77g.Left  := Label47g.Left + (w * 2);
+   Label135g.Left  := Label77g.Left + (w * 2);
+   Label248g.Left  := Label135g.Left + (w * 2);
+
+   Label1R9.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label3R5.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label7.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label14.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label21.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label28.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label50.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label144.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label430.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label1200.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label2400.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label5600.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label10g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label104g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label24g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label47g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label77g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label135g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
+   Label248g.Font.Color := dmZLogGlobal.ZNormalTextColor1;
 end;
 
 procedure TACAGMulti.OnZLogUpdateLabel( var Message: TMessage );

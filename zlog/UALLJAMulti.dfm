@@ -30,8 +30,6 @@ object ALLJAMulti: TALLJAMulti
     ParentFont = False
     TabOrder = 0
     OnChange = PageControlChange
-    ExplicitWidth = 328
-    ExplicitHeight = 300
     object TabALL: TTabSheet
       Tag = 99
       Caption = 'ALL'
@@ -55,7 +53,6 @@ object ALLJAMulti: TALLJAMulti
         Font.Style = []
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 320
         DesignSize = (
           324
           25)
@@ -174,7 +171,6 @@ object ALLJAMulti: TALLJAMulti
           Checked = True
           State = cbChecked
           TabOrder = 0
-          ExplicitLeft = 188
         end
       end
       object Grid: TStringGrid
@@ -198,9 +194,8 @@ object ALLJAMulti: TALLJAMulti
         ParentFont = False
         ScrollBars = ssVertical
         TabOrder = 1
+        StyleElements = [seClient, seBorder]
         OnDrawCell = GridDrawCell
-        ExplicitWidth = 320
-        ExplicitHeight = 247
       end
     end
     object Tab19: TTabSheet
@@ -282,8 +277,6 @@ object ALLJAMulti: TALLJAMulti
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 300
-    ExplicitWidth = 328
     object Button2: TButton
       Left = 8
       Top = 8

@@ -26,7 +26,7 @@ type
     // function TotalPrefix : integer;
     function ValidMulti(aQSO : TQSO) : boolean; reintroduce;
     function GetPrefix(aQSO : TQSO) : string;
-    procedure AddNoUpdate(var aQSO : TQSO); override;
+    procedure AddNoUpdate(aQSO : TQSO); override;
     procedure Reset; override;
     procedure UpdateData; override;
   end;
@@ -50,16 +50,25 @@ begin
       Result := False;
 end;
 
-procedure TJA0Multi.AddNoUpdate(var aQSO: TQSO);
+procedure TJA0Multi.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
 begin
+   if aQSO.Band > b28 then begin
+      Exit;
+   end;
+
+   if aQSO.Dupe then begin
+      Exit;
+   end;
+
    str := GetPrefix(aQSO);
    aQSO.NewMulti1 := False;
    aQSO.Multi1 := str;
 
-   if aQSO.Dupe then
-      exit;
+   if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
+      Exit;
+   end;
 
    { if (str = '') or (PXList.IndexOf(str) >= 0) then
      exit; }
@@ -79,7 +88,7 @@ var
    Band: TBand;
 begin
    Band := Main.CurrentQSO.Band;
-   if Band = bUnknown then begin
+   if (Band = bUnknown) or (Band > b28) then begin
       Exit;
    end;
 

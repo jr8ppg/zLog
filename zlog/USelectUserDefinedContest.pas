@@ -23,16 +23,8 @@ type
     editCfgFolder: TEdit;
     buttonCfgFolderRef: TButton;
     ListView1: TListView;
-    checkImportProvCity: TCheckBox;
-    checkImportCwMessage1: TCheckBox;
-    checkImportCwMessage2: TCheckBox;
-    checkImportCwMessage3: TCheckBox;
-    checkImportCwMessage4: TCheckBox;
     buttonCFGEdit: TButton;
-    checkImportCQMessage2: TCheckBox;
-    checkImportCQMessage3: TCheckBox;
     editFilterText: TEdit;
-    checkAllowTempChanges: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonCfgFolderRefClick(Sender: TObject);
@@ -54,16 +46,10 @@ type
     procedure ShowCfgFiles(L: TUserDefinedContestList; strFilter: string);
     function GetCfgFolder(): string;
     procedure SetCfgFolder(v: string);
-    function GetImportProvCity(): Boolean;
-    function GetImportCwMessage(Index: Integer): Boolean;
-    function GetImportCQMessage(Index: Integer): Boolean;
   public
     { Public éŒ¾ }
     property CfgFolder: string read GetCfgFolder write SetCfgFolder;
     property SelectedContest: TUserDefinedContest read FSelectedContest;
-    property ImportProvCity: Boolean read GetImportProvCity;
-    property ImportCwMessage[Index: Integer]: Boolean read GetImportCwMessage;
-    property ImportCQMessage[Index: Integer]: Boolean read GetImportCQMessage;
     property InitialContestName: string read FInitialContestName write FInitialContestName;
   end;
 
@@ -81,28 +67,12 @@ uses
 procedure TSelectUserDefinedContest.FormCreate(Sender: TObject);
 begin
    FCfgList := nil;
-   checkImportProvCity.Checked := dmZLogGlobal.Settings.FImpProvCity;
-   checkImportCwMessage1.Checked := dmZLogGlobal.Settings.FImpCwMessage[1];
-   checkImportCwMessage2.Checked := dmZLogGlobal.Settings.FImpCwMessage[2];
-   checkImportCwMessage3.Checked := dmZLogGlobal.Settings.FImpCwMessage[3];
-   checkImportCwMessage4.Checked := dmZLogGlobal.Settings.FImpCwMessage[4];
-   checkImportCQMessage2.Checked := dmZLogGlobal.Settings.FImpCQMessage[2];
-   checkImportCQMessage3.Checked := dmZLogGlobal.Settings.FImpCQMessage[3];
-   checkAllowTempChanges.Checked := Not dmZLogGlobal.Settings.ReadOnlyParamImported;
    editFilterText.Text := '';
 end;
 
 procedure TSelectUserDefinedContest.FormDestroy(Sender: TObject);
 begin
    FCfgList.Free();
-   dmZLogGlobal.Settings.FImpProvCity := checkImportProvCity.Checked;
-   dmZLogGlobal.Settings.FImpCwMessage[1] := checkImportCwMessage1.Checked;
-   dmZLogGlobal.Settings.FImpCwMessage[2] := checkImportCwMessage2.Checked;
-   dmZLogGlobal.Settings.FImpCwMessage[3] := checkImportCwMessage3.Checked;
-   dmZLogGlobal.Settings.FImpCwMessage[4] := checkImportCwMessage4.Checked;
-   dmZLogGlobal.Settings.FImpCQMessage[2] := checkImportCQMessage2.Checked;
-   dmZLogGlobal.Settings.FImpCQMessage[3] := checkImportCQMessage3.Checked;
-   dmZLogGlobal.Settings.ReadOnlyParamImported := Not checkAllowTempChanges.Checked;
 end;
 
 procedure TSelectUserDefinedContest.FormShow(Sender: TObject);
@@ -122,6 +92,10 @@ end;
 
 procedure TSelectUserDefinedContest.buttonOKClick(Sender: TObject);
 begin
+   if ListView1.Selected = nil then begin
+      Exit;
+   end;
+
    FSelectedContest := TUserDefinedContest(ListView1.Selected.Data);
 
    if (Pos('$V', FSelectedContest.Sent) > 0) and (FSelectedContest.Prov = '') then begin
@@ -292,7 +266,7 @@ begin
       D := L[i];
 
       if strFilter <> '' then begin
-         if (Pos(UpperCase(strFilter), UpperCase(D.FileName)) = 0) and (Pos(strFilter, D.ContestName) = 0) then begin
+         if (Pos(UpperCase(strFilter), UpperCase(D.FileName)) = 0) and (Pos(UpperCase(strFilter), UpperCase(D.ContestName)) = 0) then begin
             Continue;
          end;
       end;
@@ -327,31 +301,6 @@ end;
 procedure TSelectUserDefinedContest.SetCfgFolder(v: string);
 begin
    editCfgFolder.Text := v;
-end;
-
-function TSelectUserDefinedContest.GetImportProvCity(): Boolean;
-begin
-   Result := checkImportProvCity.Checked;
-end;
-
-function TSelectUserDefinedContest.GetImportCwMessage(Index: Integer): Boolean;
-begin
-   case Index of
-      1: Result := checkImportCwMessage1.Checked;
-      2: Result := checkImportCwMessage2.Checked;
-      3: Result := checkImportCwMessage3.Checked;
-      4: Result := checkImportCwMessage4.Checked;
-      else Result := False;
-   end;
-end;
-
-function TSelectUserDefinedContest.GetImportCQMessage(Index: Integer): Boolean;
-begin
-   case Index of
-      2: Result := checkImportCQMessage2.Checked;
-      3: Result := checkImportCQMessage3.Checked;
-      else Result := False;
-   end;
 end;
 
 procedure TSelectUserDefinedContest.OnZLogShowCfgEdit( var Message: TMessage );

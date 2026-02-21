@@ -1881,7 +1881,7 @@ begin
    if (CanSend(FWkTx) = False) then begin
       Finish();
       if Assigned(FOnSendFinishProc) then begin
-         FOnSendFinishProc(Self, mCW, False);
+         FOnSendFinishProc(Self, mCW, False, 0);
       end;
       FSendOK := False;
       Exit;
@@ -1922,6 +1922,7 @@ begin
             NoSound();
          end;
          FKeyingCounter := Trunc(FBlank3Count * FSpaceFactor / 100);
+         FSendChar := True;
       end;
 
       $E: begin { normal space x space factor x eispacefactor(%) }
@@ -1930,6 +1931,7 @@ begin
             NoSound();
          end;
          FKeyingCounter := Trunc(FBlank3Count * (FSpaceFactor / 100) * (FEISpaceFactor / 100));
+         FSendChar := True;
       end;
 
       // dot
@@ -2063,7 +2065,7 @@ begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
             {$ENDIF}
-            FOnSendFinishProc(Self, mCW, False);
+            FOnSendFinishProc(Self, mCW, False, 0);
          end;
 
          FSendOK := False;
@@ -2073,6 +2075,9 @@ begin
       $99: begin { pause }
          FSendChar := False;
          FSendOK := False;
+         if Assigned(FOnOneCharSentProc) then begin
+            FOnOneCharSentProc(Self);
+         end;
       end;
 
       $41: begin
@@ -2476,7 +2481,6 @@ begin
    FCodeTable[Ord('Z')][9] := 9;
 
    FCodeTable[Ord(' ')][1] := 0;
-   // FCodeTable[Ord(' ')][2]:=$22;
    FCodeTable[Ord(' ')][2] := 2;
    FCodeTable[Ord(' ')][3] := 9;
 
@@ -3285,6 +3289,7 @@ begin
       end;
    end;
 
+{
    // RIG1がCOMポートで
    if (FKeyingPort[0] in [tkpSerial1 .. tkpSerial20]) then begin
       // RIG1 = RIG2 なら RIG1
@@ -3300,6 +3305,23 @@ begin
       // RIG2 = RIG3 なら RIG2
       if (FKeyingPort[1] = FKeyingPort[2]) then begin
          FComKeying[2] := FComKeying[1];
+      end;
+   end;
+}
+
+   // RIG1のポートとRIG2,RIG3,RIG4,RIG5のいずれかのポートがRIG1のポートと同じなら、そのRIGはRIG1のポートを採用
+   // RIG2のポートとRIG3,RIG4,RIG5のいずれかのポートがRIG2のポートと同じなら、そのRIGはRIG2のポートを採用
+   // RIG3のポートとRIG4,RIG5のいずれかのポートがRIG3のポートと同じなら、そのRIGはRIG3のポートを採用
+   // RIG4のポートとRIG5がRIG4のポートと同じなら、RIG5はRIG4のポートを採用
+   for i := 0 to 3 do begin
+      if (FKeyingPort[i] in [tkpSerial1 .. tkpSerial20]) then begin
+         for var j := i + 1 to 4 do begin
+            // RIG1 = RIG2 なら RIG1
+            if (FKeyingPort[i] = FKeyingPort[j]) then begin
+               FComKeying[j] := FComKeying[i];
+               FKeyingPortConfig[j] := FKeyingPortConfig[i];
+            end;
+         end;
       end;
    end;
 
@@ -4200,7 +4222,7 @@ begin
 
    FWkAbort := True;
    if Assigned(FOnSendFinishProc) then begin
-      FOnSendFinishProc(nil, mCW, True);
+      FOnSendFinishProc(nil, mCW, True, 0);
    end;
 end;
 
@@ -4541,6 +4563,7 @@ begin
    S := StringReplace(S, ':', '', [rfReplaceAll]);
    S := StringReplace(S, '*', '', [rfReplaceAll]);
    S := StringReplace(S, '@', '', [rfReplaceAll]);
+   S := StringReplace(S, '"', '', [rfReplaceAll]);
 
    // \+1..9, \-1..9
    wpm := FKeyerWPM;
@@ -4630,7 +4653,7 @@ begin
          if FWkAbort = True then begin
             if FWkSendStatus <> wkssNone then begin
                if Assigned(FOnSendFinishProc) then begin
-                  FOnSendFinishProc(nil, mCW, True);
+                  FOnSendFinishProc(nil, mCW, True, 0);
                end;
             end;
             FWkSendStatus := wkssNone;
@@ -4665,7 +4688,7 @@ begin
                   {$IFDEF DEBUG}
                   OutputDebugString(PChar(' *** FOnSendFinishProc() called in ZComKeying1ReceiveData() ***'));
                   {$ENDIF}
-                  FOnSendFinishProc(Self, mCW, False);
+                  FOnSendFinishProc(Self, mCW, False, 0);
                end;
             end;
 
@@ -4865,7 +4888,7 @@ begin
                {$IFDEF DEBUG}
                OutputDebugString(PChar(' *** FOnSendFinishProc() called in WndMethod() ***'));
                {$ENDIF}
-               FOnSendFinishProc(Self, mCW, False);
+               FOnSendFinishProc(Self, mCW, False, 0);
             end;
 
             WinKeyerClear();

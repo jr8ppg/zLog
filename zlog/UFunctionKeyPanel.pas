@@ -117,14 +117,20 @@ var
    s: string;
    cb: Integer;
 const
-   title_prefix: array[1..2] of string = ('[A]', '[B]' );
+   title_prefix: array[1..3] of string = ('[A]', '[B]', '[R]' );
 begin
-   cb := dmZlogGlobal.Settings.CW.CurrentBank;
+   if CurrentQSO.Mode = mRTTY then begin
+      cb := 3;
+   end
+   else begin
+      cb := dmZLogGlobal.Settings.CW.CurrentBank;
+   end;
+
    if FPrevShift = True then begin
       if cb = 1 then begin
          cb := 2;
       end
-      else begin
+      else if cb = 2 then begin
          cb := 1;
       end;
    end;
@@ -142,14 +148,14 @@ begin
          ButtonGroup1.Items[i].Caption := '';
       end
       else begin
-         if (CurrentQSO.Mode = mCW) and (Pos('Play', act.Name) > 0) then begin
+         if ((CurrentQSO.Mode = mCW) or (CurrentQSO.Mode = mRTTY)) and (Pos('Play', act.Name) > 0) then begin
             if act.Hint = '' then begin
                if dmZLogGlobal.CurrentOperator = nil then begin
-                  ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
+                  ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.CWMessage(cb, i + 1);
                end
                else begin
                   if dmZLogGlobal.CurrentOperator.CWMessages[cb, i + 1] = '' then begin
-                     ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.Settings.CW.CWStrBank[cb, i + 1];
+                     ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.CWMessage(cb, i + 1);
                   end
                   else begin
                      ButtonGroup1.Items[i].Caption := s + ':' + dmZLogGlobal.CurrentOperator.CWMessages[cb, i + 1];

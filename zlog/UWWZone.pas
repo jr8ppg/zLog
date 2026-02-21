@@ -107,7 +107,7 @@ begin
    strText := TStringGrid(Sender).Cells[ACol, ARow];
 
    with TStringGrid(Sender).Canvas do begin
-      Brush.Color := TStringGrid(Sender).Color;
+      Brush.Color := dmZLogGlobal.ZBackColor;
       Brush.Style := bsSolid;
       FillRect(Rect);
 
@@ -115,10 +115,10 @@ begin
       Font.Size := 10;
 
       if Copy(strText, 1, 1) = '*' then begin
-         Font.Color := clRed;
+         Font.Color := dmZLogGlobal.ZConfirmedTextColor;
       end
       else begin
-         Font.Color := clBlack;
+         Font.Color := dmZLogGlobal.ZNormalTextColor1;
       end;
 
       if ACol = 0 then begin
