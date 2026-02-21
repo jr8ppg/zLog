@@ -298,7 +298,7 @@ const
       '$C?',
       '$M',
       '$R$X',
-      '',
+      'TU',
       '',
       '',
       ''
@@ -2403,7 +2403,7 @@ begin
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
    FSentStr := '$N';
-   FNeedCtyDat := False;
+   FNeedCtyDat := True;
 
    FBandLow := b19;
    FBandHigh := b28;
