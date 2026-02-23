@@ -2,7 +2,7 @@ object formAudioInputDlg: TformAudioInputDlg
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Audio input'
+  Caption = 'RIG Audio Input Settings'
   ClientHeight = 219
   ClientWidth = 297
   Color = clBtnFace
@@ -21,7 +21,7 @@ object formAudioInputDlg: TformAudioInputDlg
     Top = 8
     Width = 140
     Height = 173
-    Caption = 'Input device (Playback)'
+    Caption = 'Input port (Playback)'
     TabOrder = 0
     object radioPreInputDontCare: TRadioButton
       Left = 12
@@ -87,7 +87,6 @@ object formAudioInputDlg: TformAudioInputDlg
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 271
     DesignSize = (
       297
       34)
@@ -101,7 +100,6 @@ object formAudioInputDlg: TformAudioInputDlg
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 121
     end
     object buttonCancel: TButton
       Left = 222
@@ -113,7 +111,6 @@ object formAudioInputDlg: TformAudioInputDlg
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 196
     end
   end
   object GroupBox1: TGroupBox
@@ -121,7 +118,7 @@ object formAudioInputDlg: TformAudioInputDlg
     Top = 8
     Width = 140
     Height = 173
-    Caption = 'Input device (Normal)'
+    Caption = 'Input port (Normal)'
     TabOrder = 2
     object radioPostInputDontCare: TRadioButton
       Left = 12

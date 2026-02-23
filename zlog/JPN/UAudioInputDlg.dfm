@@ -2,7 +2,7 @@ object formAudioInputDlg: TformAudioInputDlg
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = #38899#22768#20837#21147#35373#23450
+  Caption = 'RIG'#12398#38899#22768#20837#21147#35373#23450
   ClientHeight = 219
   ClientWidth = 297
   Color = clBtnFace
@@ -21,7 +21,7 @@ object formAudioInputDlg: TformAudioInputDlg
     Top = 8
     Width = 140
     Height = 173
-    Caption = #20877#29983#20013#12398#20837#21147#12487#12496#12452#12473
+    Caption = #20877#29983#20013#12398#20837#21147#31471#23376
     TabOrder = 0
     object radioPreInputDontCare: TRadioButton
       Left = 12
@@ -87,7 +87,6 @@ object formAudioInputDlg: TformAudioInputDlg
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 271
     DesignSize = (
       297
       34)
@@ -101,7 +100,6 @@ object formAudioInputDlg: TformAudioInputDlg
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 121
     end
     object buttonCancel: TButton
       Left = 222
@@ -113,7 +111,6 @@ object formAudioInputDlg: TformAudioInputDlg
       Caption = #12461#12515#12531#12475#12523
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 196
     end
   end
   object GroupBox1: TGroupBox
@@ -121,7 +118,7 @@ object formAudioInputDlg: TformAudioInputDlg
     Top = 8
     Width = 140
     Height = 173
-    Caption = #36890#24120#12398#20837#21147#12487#12496#12452#12473
+    Caption = #36890#24120#26178#12398#20837#21147#31471#23376
     TabOrder = 2
     object radioPostInputDontCare: TRadioButton
       Left = 12
