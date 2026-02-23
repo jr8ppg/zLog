@@ -1697,7 +1697,7 @@ begin
 
       Settings.FQsoListColorType2 := ini.ReadInteger('MainQsoList', 'QsoListColorType2', 0);
 
-      slParam.CommaText := ini.ReadString('MainQsoList', 'QsoListColumnVisible', '1,1,1,1,0,0,1,1,1,0,1,1,0,1,1,1,0');
+      slParam.CommaText := ini.ReadString('MainQsoList', 'QsoListColumnVisible', '1,1,1,1,0,0,1,1,1,0,1,1,1,1,1,1,0');
       for i := 0 to 16 do begin
          Settings.FQsoListColumnVisible[i] := StrToBoolDef(slParam[i], True);
       end;
