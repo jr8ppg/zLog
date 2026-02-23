@@ -613,6 +613,8 @@ type
     procedure SetAdditionalPrePostProcessButtonAttr(i: Integer);
     procedure RenewSettings();
     procedure ImplementSettings();
+    function ValidateRequiredFields(): Boolean;
+    procedure SetEmptyFieldsColor();
   public
     property EditMode: Integer read FEditMode write FEditMode;
     property EditNumber: Integer read FEditNumber write SetEditNumber;
@@ -620,6 +622,9 @@ type
     property EditBank: Integer read TempCurrentBank write TempCurrentBank;
     property ActiveTab: Integer read FActiveTab write FActiveTab;
   end;
+
+const
+  EmptyFieldColor = $00EADEFF;
 
 resourcestring
   Load_CWA_MyMessages = 'Load CW(Bank-A) messages from My Messages(zlog.ini). Are you sure?';
@@ -631,6 +636,14 @@ resourcestring
   Reset_CWA_messages_to_default = 'Reset CW(Bank-A) messages to their default values. Are you sure?';
   Reset_CWB_messages_to_default = 'Reset CW(Bank-B) messages to their default values. Are you sure?';
   Reset_RTTY_messages_to_default = 'Reset RTTY messages to their default values. Are you sure?';
+  Setup_MyCall = 'Please enter your callsign.';
+  Setup_SentNR_prov = 'Please enter Prov code.';
+  Setup_SentNR_city = 'Please enter City code.';
+  Setup_SentNR_cqzone = 'Please enter CQ Zone number.';
+  Setup_SentNR_ituzone = 'Please enter ITU Zone number.';
+  Setup_SentNR_age= 'Please enter operator''s age.';
+  Setup_SentNR_iota = 'Please enter IOTA number.';
+  Setup_SentNR_handle = 'Please enter your Handle Name.';
 
 implementation
 
@@ -866,17 +879,7 @@ begin
    end;
 
    // 未入力箇所に色を付ける
-   editMyCallsign.Color := ifthen(editMyCallsign.Text = '', $00EADEFF, clWindow);
-   CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
-   IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
-   AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
-   IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
-   HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
-   HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
-
-   // CW/RTTY
-   editProv.Color := ifthen(editProv.Text = '', $00EADEFF, clWindow);
-   editCity.Color := ifthen(editCity.Text = '', $00EADEFF, clWindow);
+   SetEmptyFieldsColor();
 
    //
    // 画面に反映
@@ -978,6 +981,12 @@ end;
 
 procedure TformOptions2.buttonOKClick(Sender: TObject);
 begin
+   // 入力チェック
+   if ValidateRequiredFields() = False then begin
+      SetEmptyFieldsColor();
+      Exit;
+   end;
+
    // 入力された設定を保存
    RenewSettings;
 
@@ -2819,6 +2828,100 @@ begin
    glGridToDeg(strGridLoc, latitude, longitude);
    editMyLatitude.Text := Format('%.4f', [latitude]);
    editMyLongitude.Text := Format('%.4f', [longitude]);
+end;
+
+function TformOptions2.ValidateRequiredFields(): Boolean;
+begin
+   // Callsign入力チェック
+   if (editMyCallsign.Text = '') then begin
+      MessageBox(Handle, PChar(Setup_MyCall), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      editMyCallsign.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   // SentNRチェック
+   if ((Pos('$V', MyContest.SentStr) > 0) and (editProv.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_prov), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 1;
+      editProv.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$Q', MyContest.SentStr) > 0) and (editCity.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_city), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 1;
+      editCity.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$A', MyContest.SentStr) > 0) and (AgeEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      AgeEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$Z', MyContest.SentStr) > 0) and (CQZoneEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      CQZoneEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$I', MyContest.SentStr) > 0) and (IARUZoneEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      IARUZoneEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$T', MyContest.SentStr) > 0) and (IotaEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      IotaEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$H', MyContest.SentStr) > 0) and (HandleCwEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      HandleCwEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$H', MyContest.SentStr) > 0) and (HandlePhEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      HandlePhEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   Result := True;
+end;
+
+procedure TformOptions2.SetEmptyFieldsColor();
+begin
+   editMyCallsign.Color := ifthen(editMyCallsign.Text = '', EmptyFieldColor, clWindow);
+   CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', EmptyFieldColor, clWindow);
+   IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', EmptyFieldColor, clWindow);
+   AgeEdit.Color := ifthen(AgeEdit.Text = '', EmptyFieldColor, clWindow);
+   IotaEdit.Color := ifthen(IotaEdit.Text = '', EmptyFieldColor, clWindow);
+   HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', EmptyFieldColor, clWindow);
+   HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', EmptyFieldColor, clWindow);
+
+   // CW/RTTY
+   editProv.Color := ifthen(editProv.Text = '', EmptyFieldColor, clWindow);
+   editCity.Color := ifthen(editCity.Text = '', EmptyFieldColor, clWindow);
 end;
 
 end.
