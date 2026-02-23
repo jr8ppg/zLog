@@ -975,20 +975,9 @@ begin
 end;
 
 procedure TContest.ApplyCwMessages();
-var
-   i: Integer;
 begin
    dmZLogGlobal.Settings.CW._prov := Prov;
    dmZLogGlobal.Settings.CW._city := City;
-
-   for i := 1 to maxmessage do begin
-      dmZLogGlobal.Settings.CW.CWStrBank[1, i] := CwMessages[1, i];
-      dmZLogGlobal.Settings.CW.CWStrBank[2, i] := CwMessages[2, i];
-      dmZLogGlobal.Settings.CW.CWStrBank[3, i] := CwMessages[3, i];
-   end;
-   for i := 2 to 3 do begin
-      dmZLogGlobal.Settings.CW.AdditionalCQMessages[i] := CwMessageCQ[i];
-   end;
 end;
 
 function TContest.GetProv(): string;

@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -1961,13 +1961,13 @@ object formOptions2: TformOptions2
           Height = 13
           Caption = '#12'
         end
-        object buttonResetMessage: TSpeedButton
-          Left = 209
+        object buttonShowCwMessagesMenu: TSpeedButton
+          Left = 200
           Top = 18
-          Width = 45
+          Width = 54
           Height = 17
-          Caption = 'Reset'
-          OnClick = buttonResetMessageClick
+          Caption = 'Menu'
+          OnClick = buttonShowCwMessagesMenuClick
         end
         object editMessage2: TEdit
           Tag = 2
@@ -5486,6 +5486,25 @@ object formOptions2: TformOptions2
     object menuVoiceClear: TMenuItem
       Caption = 'Clear'
       OnClick = menuVoiceClearClick
+    end
+  end
+  object popupCWMessages: TPopupMenu
+    Left = 464
+    Top = 512
+    object menuLoadFromMyMessages: TMenuItem
+      Caption = 'Load from MyMessages(zlog.ini)'
+      OnClick = menuLoadFromMyMessagesClick
+    end
+    object menuSaveToMyMessages: TMenuItem
+      Caption = 'Save to MyMessages(zlog.ini)'
+      OnClick = menuSaveToMyMessagesClick
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object menuResetMessages: TMenuItem
+      Caption = 'Reset'
+      OnClick = menuResetMessagesClick
     end
   end
 end

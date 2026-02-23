@@ -486,8 +486,13 @@ type
     Label18: TLabel;
     groupBasicSettings: TGroupBox;
     groupDetailSettings: TGroupBox;
-    buttonResetMessage: TSpeedButton;
+    buttonShowCwMessagesMenu: TSpeedButton;
     checkShowStartupWindow: TCheckBox;
+    popupCWMessages: TPopupMenu;
+    menuLoadFromMyMessages: TMenuItem;
+    menuSaveToMyMessages: TMenuItem;
+    N2: TMenuItem;
+    menuResetMessages: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -553,7 +558,10 @@ type
     procedure buttonListResetClick(Sender: TObject);
     procedure buttonMyGridCalcClick(Sender: TObject);
     procedure buttonMyPositionCalcClick(Sender: TObject);
-    procedure buttonResetMessageClick(Sender: TObject);
+    procedure buttonShowCwMessagesMenuClick(Sender: TObject);
+    procedure menuResetMessagesClick(Sender: TObject);
+    procedure menuLoadFromMyMessagesClick(Sender: TObject);
+    procedure menuSaveToMyMessagesClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -614,6 +622,12 @@ type
   end;
 
 resourcestring
+  Load_CWA_MyMessages = 'Load CW(Bank-A) messages from My Messages(zlog.ini). Are you sure?';
+  Load_CWB_MyMessages = 'Load CW(Bank-B) messages from My Messages(zlog.ini). Are you sure?';
+  Load_RTTY_MyMessages = 'Load RTTY messages from My Messages(zlog.ini). Are you sure?';
+  Save_CWA_MyMessages = 'Save CW(Bank-A) messages to My Messages(zlog.ini). Are you sure?';
+  Save_CWB_MyMessages = 'Save CW(Bank-B) messages to My Messages(zlog.ini). Are you sure?';
+  Save_RTTY_MyMessages = 'Save RTTY messages to My Messages(zlog.ini). Are you sure?';
   Reset_CWA_messages_to_default = 'Reset CW(Bank-A) messages to their default values. Are you sure?';
   Reset_CWB_messages_to_default = 'Reset CW(Bank-B) messages to their default values. Are you sure?';
   Reset_RTTY_messages_to_default = 'Reset RTTY messages to their default values. Are you sure?';
@@ -2327,6 +2341,88 @@ begin
    buttonFreqMemDelete.Enabled := Selected;
 end;
 
+procedure TformOptions2.menuLoadFromMyMessagesClick(Sender: TObject);
+var
+   i: Integer;
+   msg: string;
+begin
+   case TempCurrentBank of
+      1: msg := Load_CWA_MyMessages;
+      2: msg := Load_CWB_MyMessages;
+      3: msg := Load_RTTY_MyMessages;
+      else Exit;
+   end;
+
+   if MessageBox(Handle, PChar(msg), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for i := 1 to maxmessage do begin
+      FEditMessage[i].Text := dmZLogGlobal.Settings.CW.CWStrBank[TempCurrentBank, i];
+   end;
+end;
+
+procedure TformOptions2.menuSaveToMyMessagesClick(Sender: TObject);
+var
+   i: Integer;
+   msg: string;
+begin
+   case TempCurrentBank of
+      1: msg := Save_CWA_MyMessages;
+      2: msg := Save_CWB_MyMessages;
+      3: msg := Save_RTTY_MyMessages;
+      else Exit;
+   end;
+
+   if MessageBox(Handle, PChar(msg), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for i := 1 to maxmessage do begin
+      dmZLogGlobal.Settings.CW.CWStrBank[TempCurrentBank, i] := FEditMessage[i].Text;
+   end;
+end;
+
+procedure TformOptions2.menuResetMessagesClick(Sender: TObject);
+var
+   i: Integer;
+   msg: string;
+begin
+   case TempCurrentBank of
+      1: msg := Reset_CWA_messages_to_default;
+      2: msg := Reset_CWB_messages_to_default;
+      3: msg := Reset_RTTY_messages_to_default;
+      else Exit;
+   end;
+
+   if MessageBox(Handle, PChar(msg), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   case TempCurrentBank of
+      // BANK-A
+      1: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := def_cw_messages[i];
+         end;
+      end;
+
+      // BANK-B
+      2: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := '';
+         end;
+      end;
+
+      // RTTY
+      3: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := def_rtty_messages[i];
+         end;
+      end;
+   end;
+end;
+
 procedure TformOptions2.menuVoiceClearClick(Sender: TObject);
 var
    n: Integer;
@@ -2556,44 +2652,14 @@ begin
    end;
 end;
 
-procedure TformOptions2.buttonResetMessageClick(Sender: TObject);
+procedure TformOptions2.buttonShowCwMessagesMenuClick(Sender: TObject);
 var
-   i: Integer;
-   msg: string;
+   pt: TPoint;
 begin
-   case TempCurrentBank of
-      1: msg := Reset_CWA_messages_to_default;
-      2: msg := Reset_CWB_messages_to_default;
-      3: msg := Reset_RTTY_messages_to_default;
-      else Exit;
-   end;
-
-   if MessageBox(Handle, PChar(msg), PChar(Application.ExeName), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
-      Exit;
-   end;
-
-   case TempCurrentBank of
-      // BANK-A
-      1: begin
-         for i := 1 to maxmessage do begin
-            FEditMessage[i].Text := def_cw_messages[i];
-         end;
-      end;
-
-      // BANK-B
-      2: begin
-         for i := 1 to maxmessage do begin
-            FEditMessage[i].Text := '';
-         end;
-      end;
-
-      // RTTY
-      3: begin
-         for i := 1 to maxmessage do begin
-            FEditMessage[i].Text := def_rtty_messages[i];
-         end;
-      end;
-   end;
+   pt.x := buttonShowCwMessagesMenu.Left;
+   pt.y := buttonShowCwMessagesMenu.Top + buttonShowCwMessagesMenu.Height;
+   pt := groupCwMessages.ClientToScreen(pt);
+   popupCwMessages.Popup(pt.x, pt.y);
 end;
 
 procedure TformOptions2.buttonStopVoiceClick(Sender: TObject);
