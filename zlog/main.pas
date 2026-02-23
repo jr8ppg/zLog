@@ -8811,7 +8811,7 @@ begin
       DefaultRowHeight := Canvas.TextHeight('0') + 4;
 
       // 0:status
-      ColWidths[0] := 3 * nColWidth;
+      SetColumnWidth(0);
 
       // 1:date
       if dmZLogGlobal.QsoListColumnVisible[1] = False then begin

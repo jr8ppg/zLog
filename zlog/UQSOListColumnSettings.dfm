@@ -42,7 +42,6 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Height = 17
       Caption = 'status'
       Checked = True
-      Enabled = False
       State = cbChecked
       TabOrder = 0
     end
@@ -116,7 +115,6 @@ object formQSOListColumnSettings: TformQSOListColumnSettings
       Height = 17
       Caption = 'Rcvd Number'
       Checked = True
-      Enabled = False
       State = cbChecked
       TabOrder = 20
     end
