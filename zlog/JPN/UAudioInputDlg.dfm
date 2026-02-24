@@ -22,7 +22,7 @@ object formAudioInputDlg: TformAudioInputDlg
     Width = 140
     Height = 173
     Caption = #20877#29983#20013#12398#20837#21147#31471#23376
-    TabOrder = 0
+    TabOrder = 1
     object radioPreInputDontCare: TRadioButton
       Left = 12
       Top = 24
@@ -86,7 +86,7 @@ object formAudioInputDlg: TformAudioInputDlg
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 2
     DesignSize = (
       297
       34)
@@ -119,7 +119,7 @@ object formAudioInputDlg: TformAudioInputDlg
     Width = 140
     Height = 173
     Caption = #36890#24120#26178#12398#20837#21147#31471#23376
-    TabOrder = 2
+    TabOrder = 0
     object radioPostInputDontCare: TRadioButton
       Left = 12
       Top = 24
