@@ -143,7 +143,7 @@ type
     procedure ExecuteCommand(S: AnsiString); override;
     procedure SetMode(Q: TQSO); override;
     procedure SelectBand(b: TBand); override;
-    procedure AudioInputSelect(input: TAudioInput);
+    procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TFTDX3000 = class(TFT2000)
@@ -1672,7 +1672,7 @@ end;
 //
 procedure TFT991.SetDataMode(fOn:Boolean);
 begin
-   WriteData('MD' + AnsiChar(Ord('0') + _currentvfo) + 'A;');
+   WriteData(AnsiString('MD') + AnsiChar(Ord('0') + _currentvfo) + AnsiString('A;'));
 end;
 
 procedure TFT991.AudioInputSelect(input: TAudioInput);
@@ -1857,6 +1857,7 @@ begin
             '5', 'D': M := mAM;
             '6', '9': M := mRTTY;
             'H', 'I': M := mDV;
+            '8', 'C': M := mFT8;
             else  M := mOther;
          end;
 
@@ -1963,7 +1964,7 @@ begin
       Exit;
    end;
 
-   WriteData('BS' + AnsiChar(Ord('0') + _currentvfo) + bandtable[b] + ';');
+   WriteData(AnsiString('BS') + AnsiChar(Ord('0') + _currentvfo) + bandtable[b] + AnsiChar(';'));
 
    Inherited;
 end;
