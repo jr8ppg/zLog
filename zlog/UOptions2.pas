@@ -1174,10 +1174,12 @@ begin
       Settings.FAccessibility.FFocusedBold := checkFocusedBold.Checked;
 
       // QSO List
-      for i := 1 to 2 do begin
+      for i := 1 to 4 do begin
          Settings.FQsoListColors[i].FForeColor := FQSOListColor[i].Font.Color;
          Settings.FQsoListColors[i].FBackColor := FQSOListColor[i].Color;
-         Settings.FQsoListColors[i].FBold      := FQSOListBold[i].Checked;
+         if Assigned(FQSOListBold[i]) then begin
+            Settings.FQsoListColors[i].FBold      := FQSOListBold[i].Checked;
+         end;
       end;
 
       Settings.FQsoListColorType2 := comboListColorType2.ItemIndex;
@@ -1612,10 +1614,12 @@ begin
       checkFocusedBold.Checked := Settings.FAccessibility.FFocusedBold;
 
       // QSO List
-      for i := 1 to 2 do begin
+      for i := 1 to 4 do begin
          FQSOListColor[i].Font.Color := Settings.FQsoListColors[i].FForeColor;
          FQSOListColor[i].Color      := Settings.FQsoListColors[i].FBackColor;
-         FQSOListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
+         if Assigned(FQSOListBold[i]) then begin
+            FQSOListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
+         end;
       end;
 
       comboListColorType2.ItemIndex := Settings.FQsoListColorType2;

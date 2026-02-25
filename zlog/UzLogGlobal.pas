@@ -366,7 +366,7 @@ type
     FClusterUseForSuperCheck: Boolean;
     FRbnCountForRbnVerified: Integer;
     FUseRbnAnalyze: Boolean;
-    FQsoListColors: array[1..2] of TColorSetting;
+    FQsoListColors: array[1..4] of TColorSetting;
     FQsoListColorType2: Integer;
     FQsoListColumnVisible: array[0..16] of Boolean;
 
@@ -423,8 +423,6 @@ type
     FBrowserForWebUpload: Integer;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
-    FQsoListFocusedSelColor: TColor;
-    FQsoListUnfocusedSelColor: TColor;
   end;
 
   TLastContest = record
@@ -1383,8 +1381,6 @@ begin
       Settings.FBrowserForWebUpload := ini.ReadInteger('Usability', 'BrowserForWebUpload', 0);
       Settings.FAfterQsoEditOkFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditOkFocusPos', 0);
       Settings.FAfterQsoEditCancelFocusPos := ini.ReadInteger('Usability', 'AfterQsoEditCancelFocusPos', 0);
-      Settings.FQsoListFocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListFocusedSelColor', ''), RGB($E5, $F3, $FF));
-      Settings.FQsoListUnfocusedSelColor := ZStringToColorDef(ini.ReadString('Usability', 'QsoListUnfocusedSelColor', ''), RGB($E5, $E5, $E5));
 
       //
       // ここから隠し設定
@@ -1694,6 +1690,14 @@ begin
       Settings.FQsoListColors[2].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor2', '$000000'), clRed);
       Settings.FQsoListColors[2].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor2', '$ffffff'), clRed);
       Settings.FQsoListColors[2].FBold      := ini.ReadBool('MainQsoList', 'Bold2', False);
+
+      Settings.FQsoListColors[3].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor3', '$000000'), clBlack);
+      Settings.FQsoListColors[3].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor3', '$FFF3E5'), $FFF3E5);
+      Settings.FQsoListColors[3].FBold      := ini.ReadBool('MainQsoList', 'Bold3', False);
+
+      Settings.FQsoListColors[4].FForeColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'ForeColor4', '$000000'), clBlack);
+      Settings.FQsoListColors[4].FBackColor := ZStringToColorDef(ini.ReadString('MainQsoList', 'BackColor4', '$E5E5E5'), $E5E5E5);
+      Settings.FQsoListColors[4].FBold      := ini.ReadBool('MainQsoList', 'Bold4', False);
 
       Settings.FQsoListColorType2 := ini.ReadInteger('MainQsoList', 'QsoListColorType2', 0);
 
@@ -2191,8 +2195,6 @@ begin
       ini.WriteInteger('Usability', 'BrowserForWebUpload', Settings.FBrowserForWebUpload);
       ini.WriteInteger('Usability', 'AfterQsoEditOkFocusPos', Settings.FAfterQsoEditOkFocusPos);
       ini.WriteInteger('Usability', 'AfterQsoEditCancelFocusPos', Settings.FAfterQsoEditCancelFocusPos);
-      ini.WriteString('Usability', 'QsoListFocusedSelColor', ZColorToString(Settings.FQsoListFocusedSelColor));
-      ini.WriteString('Usability', 'QsoListUnfocusedSelColor', ZColorToString(Settings.FQsoListUnfocusedSelColor));
 
       //
       // ここから隠し設定
@@ -2371,7 +2373,7 @@ begin
       ini.WriteBool('RBN', 'UseForSuperCheck', Settings.FClusterUseForSuperCheck);
       ini.WriteInteger('RBN', 'RbnCountForRbnVerified', Settings.FRbnCountForRbnVerified);
       ini.WriteBool('RBN', 'UseRbnAnalyze', Settings.FUseRbnAnalyze);
-      for i := 1 to 2 do begin
+      for i := 1 to 4 do begin
          ini.WriteString('MainQsoList', 'ForeColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FForeColor));
          ini.WriteString('MainQsoList', 'BackColor' + IntToStr(i), ZColorToString(Settings.FQsoListColors[i].FBackColor));
          ini.WriteBool('MainQsoList', 'Bold' + IntToStr(i), Settings.FQsoListColors[i].FBold);

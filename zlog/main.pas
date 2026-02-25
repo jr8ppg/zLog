@@ -5252,10 +5252,10 @@ begin
          // ゼブラカラーかRBN Verifiedか
          if dmZLogGlobal.Settings.FQsoListColorType2 = 0 then begin
             if (gdSelected in State) and (Grid.Focused = True) then begin
-               bg := dmZLogGlobal.Settings.FQsoListFocusedSelColor;   // 選択色
+               bg := dmZLogGlobal.Settings.FQsoListColors[3].FBackColor;   // 選択色
             end
             else if (gdSelected in State) and (Grid.Focused = False) then begin
-               bg := dmZLogGlobal.Settings.FQsoListUnfocusedSelColor;   // 選択色
+               bg := dmZLogGlobal.Settings.FQsoListColors[4].FBackColor;   // 選択色
             end
             else begin
                if (ARow mod 2) = 0 then begin // 偶数行
@@ -5268,10 +5268,10 @@ begin
          end
          else begin  // RBN Verified
             if (gdSelected in State) and (Grid.Focused = True) then begin
-               bg := dmZLogGlobal.Settings.FQsoListFocusedSelColor;   // 選択色
+               bg := dmZLogGlobal.Settings.FQsoListColors[3].FBackColor;   // 選択色
             end
             else if (gdSelected in State) and (Grid.Focused = False) then begin
-               bg := dmZLogGlobal.Settings.FQsoListUnfocusedSelColor;   // 選択色
+               bg := dmZLogGlobal.Settings.FQsoListColors[4].FBackColor;   // 選択色
             end
             else begin
                if (Q <> nil) and (Q.RbnVerified = True) then begin   // RBN照合済み
