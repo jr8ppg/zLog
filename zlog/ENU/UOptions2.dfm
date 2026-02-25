@@ -5489,6 +5489,8 @@ object formOptions2: TformOptions2
     end
   end
   object popupCWMessages: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
     Left = 464
     Top = 512
     object menuLoadFromMyMessages: TMenuItem
