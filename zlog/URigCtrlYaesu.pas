@@ -139,6 +139,13 @@ type
     procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
+  TFTX1 = class(TFT710)
+    procedure ExecuteCommand(S: AnsiString); override;
+    procedure SetMode(Q: TQSO); override;
+    procedure SelectBand(b: TBand); override;
+    procedure AudioInputSelect(input: TAudioInput); override;
+  end;
+
   TFTDX3000 = class(TFT2000)
   public
     procedure AntSelect(no: Integer); override;
@@ -1616,14 +1623,14 @@ begin
 
       if strCommand = 'FA' then begin
          // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 8));
+         strTemp := string(Copy(S, 3, 9));
          i := StrToIntDef(strTemp, 0);
          _currentfreq[0] := i;
       end;
 
       if strCommand = 'FB' then begin
          // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 8));
+         strTemp := string(Copy(S, 3, 9));
          i := StrToIntDef(strTemp, 0);
          _currentfreq[1] := i;
       end;
@@ -1665,7 +1672,7 @@ end;
 //
 procedure TFT991.SetDataMode(fOn:Boolean);
 begin
-   WriteData('MD0A;');
+   WriteData(AnsiString('MD') + AnsiChar(Ord('0') + _currentvfo) + AnsiString('A;'));
 end;
 
 procedure TFT991.AudioInputSelect(input: TAudioInput);
@@ -1782,13 +1789,216 @@ end;
 // P2: 01-26    メニュー小項目
 //
 procedure TFT710.AudioInputSelect(input: TAudioInput);
+const
+   //                                       mCW,  mSSB, mFM,  mAM,  mRTTY, mFT4, mFT8, mOther, mDV);
+   p2tbl: array[mCW..mDV] of AnsiString = ( '00', '01', '03', '02', '00', '00', '00', '00', '00' );
+   p3tbl: array[mCW..mDV] of AnsiString = ( '00', '14', '13', '14', '00', '00', '00', '00', '00' );
+var
+   m: TMode;
+   p2, p3: AnsiString;
 begin
+   m := _currentmode;
+   p2 := p2tbl[m];
+   p3 := p3tbl[m];
+   if p2 = '00' then begin
+      Exit;
+   end;
+
    case input of
       aiDontCare: ;
-      aiMic:      WriteData('EX0101140;');
-      aiUsb:      WriteData('EX0101141;');
-      aiAcc:      WriteData('EX0101142;');   // 710:Rear, FTX-1:bluetooth
-      aiMicUsb:   WriteData('EX0101143;');   // auto
+      aiMic:      WriteData('EX01' + p2 + p3 + '0;');
+      aiUsb:      WriteData('EX01' + p2 + p3 + '1;');
+      aiAcc:      WriteData('EX01' + p2 + p3 + '2;');   // 710:Rear, FTX-1:bluetooth
+      aiMicUsb:   WriteData('EX01' + p2 + p3 + '3;');   // auto
+      aiMicAcc:   ;
+   end;
+end;
+
+{ TFTX1 }
+
+// FTX-1対応
+//  基本はFT-710と同じ。違いは下記。
+//  P1の桁数が５桁に拡大されている
+//
+// 00 00000 001111111 11122 22 2222223
+// 12 34567 890123456 78901 23 4567890
+// IF 00001 007131790 +0000 10 140000;
+
+procedure TFTX1.ExecuteCommand(S: AnsiString);
+var
+   M: TMode;
+   i: Integer;
+   strTemp: string;
+   strCommand: string;
+   vfo: Integer;
+   ch: Char;
+begin
+   try
+      strCommand := string(Copy(S, 1, 2));
+
+      if (strCommand = 'IF') or (strCommand = 'OI') then begin
+         if Length(S) <> 30 then begin   // 全長30文字
+            Exit;
+         end;
+
+         if (strCommand = 'IF') then begin
+            vfo := 0;
+         end
+         else begin
+            vfo := 1;
+         end;
+
+         // モード
+         ch := Char(S[24]);      // 24文字目
+         case ch of
+            '1', '2': M := mSSB;
+            '3', '7': M := mCW;
+            '4', 'A', 'B', 'F': M := mFM;
+            '5', 'D': M := mAM;
+            '6', '9': M := mRTTY;
+            'H', 'I': M := mDV;
+            '8', 'C': M := mFT8;
+            else  M := mOther;
+         end;
+
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 8, 9));        // 8桁目から9文字
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[vfo] := i;
+
+         if _currentvfo = vfo then begin
+            if FIgnoreRigMode = False then begin
+               _currentmode := M;
+            end;
+
+            UpdateFreqMem(vfo, i, M);
+         end;
+
+         // RIT/XIT offset
+         strTemp := string(Copy(S, 17, 5));
+         FRitOffset := StrToIntDef(strTemp, 0);
+
+         // RIT Status
+         strTemp := string(Copy(S, 22, 1));
+         FRit := StrToBoolDef(strTemp, False);
+
+         // XIT Status
+         strTemp := string(Copy(S, 23, 1));
+         FXit := StrToBoolDef(strTemp, False);
+      end;
+
+      if strCommand = 'FA' then begin
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 3, 9));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[0] := i;
+      end;
+
+      if strCommand = 'FB' then begin
+         // 周波数(Hz)
+         strTemp := string(Copy(S, 3, 9));
+         i := StrToIntDef(strTemp, 0);
+         _currentfreq[1] := i;
+      end;
+
+      if Selected then begin
+         UpdateStatus;
+      end;
+   finally
+      if (FUsePolling = True) or (FInitialPolling = False) then begin
+         Inc(FPollingCount);
+         FPollingTimer.Enabled := True;
+      end;
+   end;
+end;
+
+//
+// OPERATING MODE
+//        0 1  2  3  4  5  6  7  8  9 10 11
+// SET    M D P1 P2 ;
+// READ   M D P1 ;
+// ANSWER M D P1 P2 ;
+// P1: 0:MAIN 1:SUB
+// P2: 1:LSB 2:USB 3:CW-U 4:FM 5:AM 6:RTTY-L 7:CW-L 8:DATA-L 9:RTTY-U
+//     A:DATA-FM B:FM-N C:DATA-U D:AM-N E:PSK F:DATA-FM-N H:C4FM-DN I:C4FM-VW
+//
+procedure TFTX1.SetMode(Q: TQSO);
+var
+   m: AnsiChar;
+begin
+   Inherited SetMode(Q);
+
+   case Q.Mode of
+      mCW: m := '3';
+
+      mSSB: begin
+         if Q.Band <= b7 then begin
+            m := '1';
+         end
+         else begin
+            m := '2';
+         end;
+      end;
+
+      mFM: m := '4';
+      mAM: m := '5';
+      mRTTY: m := '6';
+      mDV: m := 'H';
+      mFT4, mFT8: m := 'C';
+      else begin
+         Exit;
+      end;
+   end;
+
+   WriteData(AnsiString('MD') + AnsiChar(Ord('0') + _currentvfo) + AnsiChar(m) + AnsiChar(';'));
+end;
+
+procedure TFTX1.SelectBand(b: TBand);
+const
+   bandtable: array[b19..b430] of AnsiString = (
+   // b19   b35   b7    b10   b14   b18   b21   b24   b28   b50   b144  b430
+     '00', '01', '03', '04', '05', '06', '07', '08', '09', '10', '13', '14'
+   );
+begin
+   if b > MaxBand then begin
+      Exit;
+   end;
+
+   WriteData(AnsiString('BS') + AnsiChar(Ord('0') + _currentvfo) + bandtable[b] + AnsiChar(';'));
+
+   Inherited;
+end;
+
+//
+// EX
+//        0 1  2  3  4  5  6  7  8  9 10
+// SET    E X P1 P1 P2 P2 P3 P3 P4 P4 P4 ... P4 ;
+// P1: 01-04,06 メニュー大項目
+// P2: 01-05    メニュー中項目
+// P2: 01-26    メニュー小項目
+//
+procedure TFTX1.AudioInputSelect(input: TAudioInput);
+const
+   //                                       mCW,  mSSB, mFM,  mAM,  mRTTY, mFT4, mFT8, mOther, mDV);
+   p2tbl: array[mCW..mDV] of AnsiString = ( '00', '01', '03', '02', '00', '00', '00', '00', '00' );
+   p3tbl: array[mCW..mDV] of AnsiString = ( '00', '13', '12', '13', '00', '00', '00', '00', '00' );
+var
+   m: TMode;
+   p2, p3: AnsiString;
+begin
+   m := _currentmode;
+   p2 := p2tbl[m];
+   p3 := p3tbl[m];
+   if p2 = '00' then begin
+      Exit;
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData('EX01' + p2 + p3 + '0;');
+      aiUsb:      WriteData('EX01' + p2 + p3 + '1;');
+      aiAcc:      WriteData('EX01' + p2 + p3 + '2;');   // 710:Rear, FTX-1:bluetooth
+      aiMicUsb:   WriteData('EX01' + p2 + p3 + '3;');   // auto
       aiMicAcc:   ;
    end;
 end;

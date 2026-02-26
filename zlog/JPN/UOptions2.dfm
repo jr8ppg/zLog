@@ -1286,13 +1286,13 @@ object formOptions2: TformOptions2
           Height = 13
           Caption = '#12'
         end
-        object buttonResetMessage: TSpeedButton
-          Left = 209
+        object buttonShowCwMessagesMenu: TSpeedButton
+          Left = 200
           Top = 18
-          Width = 45
+          Width = 54
           Height = 17
-          Caption = #12522#12475#12483#12488
-          OnClick = buttonResetMessageClick
+          Caption = #12513#12491#12517#12540
+          OnClick = buttonShowCwMessagesMenuClick
         end
         object editMessage2: TEdit
           Tag = 2
@@ -4421,6 +4421,27 @@ object formOptions2: TformOptions2
     object menuVoiceClear: TMenuItem
       Caption = #12463#12522#12450
       OnClick = menuVoiceClearClick
+    end
+  end
+  object popupCWMessages: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    Left = 464
+    Top = 512
+    object menuLoadFromMyMessages: TMenuItem
+      Caption = #12510#12452#12513#12483#12475#12540#12472#12434#35501#36796'(zlog.ini)'
+      OnClick = menuLoadFromMyMessagesClick
+    end
+    object menuSaveToMyMessages: TMenuItem
+      Caption = #12510#12452#12513#12483#12475#12540#12472#12395#20445#23384'(zlog.ini)'
+      OnClick = menuSaveToMyMessagesClick
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object menuResetMessages: TMenuItem
+      Caption = #21021#26399#20516#12395#25147#12377
+      OnClick = menuResetMessagesClick
     end
   end
 end

@@ -2,9 +2,9 @@ object formAudioInputDlg: TformAudioInputDlg
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = #38899#22768#20837#21147#35373#23450
+  Caption = 'RIG'#12398#38899#22768#20837#21147#35373#23450
   ClientHeight = 219
-  ClientWidth = 271
+  ClientWidth = 297
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,18 +17,18 @@ object formAudioInputDlg: TformAudioInputDlg
   OnShow = FormShow
   TextHeight = 13
   object groupAudioInput: TGroupBox
-    Left = 8
+    Left = 152
     Top = 8
-    Width = 126
+    Width = 140
     Height = 173
-    Caption = #20877#29983#21069
-    TabOrder = 0
+    Caption = #20877#29983#20013#12398#20837#21147#31471#23376
+    TabOrder = 1
     object radioPreInputDontCare: TRadioButton
       Left = 12
       Top = 24
-      Width = 74
+      Width = 120
       Height = 17
-      Caption = #20309#12418#12375#12394#12356
+      Caption = #20999#12426#26367#12360#28961#12375
       Checked = True
       TabOrder = 0
       TabStop = True
@@ -37,7 +37,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 1
       Left = 12
       Top = 47
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'MIC'
       TabOrder = 1
@@ -46,7 +46,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 2
       Left = 12
       Top = 70
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'USB'
       TabOrder = 2
@@ -55,7 +55,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 3
       Left = 12
       Top = 93
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'ACC'
       TabOrder = 3
@@ -64,7 +64,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 4
       Left = 12
       Top = 116
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'MIC,USB'
       TabOrder = 4
@@ -73,7 +73,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 5
       Left = 12
       Top = 139
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'MIC,ACC'
       TabOrder = 5
@@ -82,18 +82,16 @@ object formAudioInputDlg: TformAudioInputDlg
   object Panel1: TPanel
     Left = 0
     Top = 185
-    Width = 271
+    Width = 297
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
-    ExplicitTop = 182
-    ExplicitWidth = 268
+    TabOrder = 2
     DesignSize = (
-      271
+      297
       34)
     object buttonOK: TButton
-      Left = 121
+      Left = 147
       Top = 4
       Width = 69
       Height = 25
@@ -102,10 +100,9 @@ object formAudioInputDlg: TformAudioInputDlg
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 118
     end
     object buttonCancel: TButton
-      Left = 196
+      Left = 222
       Top = 4
       Width = 69
       Height = 25
@@ -114,22 +111,21 @@ object formAudioInputDlg: TformAudioInputDlg
       Caption = #12461#12515#12531#12475#12523
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 193
     end
   end
   object GroupBox1: TGroupBox
-    Left = 138
+    Left = 6
     Top = 8
-    Width = 126
+    Width = 140
     Height = 173
-    Caption = #20877#29983#24460
-    TabOrder = 2
+    Caption = #36890#24120#26178#12398#20837#21147#31471#23376
+    TabOrder = 0
     object radioPostInputDontCare: TRadioButton
       Left = 12
       Top = 24
-      Width = 74
+      Width = 120
       Height = 17
-      Caption = #20309#12418#12375#12394#12356
+      Caption = #20999#12426#26367#12360#28961#12375
       Checked = True
       TabOrder = 0
       TabStop = True
@@ -138,7 +134,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 1
       Left = 12
       Top = 47
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'MIC'
       TabOrder = 1
@@ -147,7 +143,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 2
       Left = 12
       Top = 70
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'USB'
       TabOrder = 2
@@ -156,7 +152,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 3
       Left = 12
       Top = 93
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'ACC'
       TabOrder = 3
@@ -165,7 +161,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 4
       Left = 12
       Top = 116
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'MIC,USB'
       TabOrder = 4
@@ -174,7 +170,7 @@ object formAudioInputDlg: TformAudioInputDlg
       Tag = 5
       Left = 12
       Top = 139
-      Width = 75
+      Width = 120
       Height = 17
       Caption = 'MIC,ACC'
       TabOrder = 5

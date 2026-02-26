@@ -486,8 +486,13 @@ type
     Label18: TLabel;
     groupBasicSettings: TGroupBox;
     groupDetailSettings: TGroupBox;
-    buttonResetMessage: TSpeedButton;
+    buttonShowCwMessagesMenu: TSpeedButton;
     checkShowStartupWindow: TCheckBox;
+    popupCWMessages: TPopupMenu;
+    menuLoadFromMyMessages: TMenuItem;
+    menuSaveToMyMessages: TMenuItem;
+    N2: TMenuItem;
+    menuResetMessages: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -553,7 +558,10 @@ type
     procedure buttonListResetClick(Sender: TObject);
     procedure buttonMyGridCalcClick(Sender: TObject);
     procedure buttonMyPositionCalcClick(Sender: TObject);
-    procedure buttonResetMessageClick(Sender: TObject);
+    procedure buttonShowCwMessagesMenuClick(Sender: TObject);
+    procedure menuResetMessagesClick(Sender: TObject);
+    procedure menuLoadFromMyMessagesClick(Sender: TObject);
+    procedure menuSaveToMyMessagesClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -605,6 +613,8 @@ type
     procedure SetAdditionalPrePostProcessButtonAttr(i: Integer);
     procedure RenewSettings();
     procedure ImplementSettings();
+    function ValidateRequiredFields(): Boolean;
+    procedure SetEmptyFieldsColor();
   public
     property EditMode: Integer read FEditMode write FEditMode;
     property EditNumber: Integer read FEditNumber write SetEditNumber;
@@ -613,10 +623,27 @@ type
     property ActiveTab: Integer read FActiveTab write FActiveTab;
   end;
 
+const
+  EmptyFieldColor = $00EADEFF;
+
 resourcestring
+  Load_CWA_MyMessages = 'Load CW(Bank-A) messages from My Messages(zlog.ini). Are you sure?';
+  Load_CWB_MyMessages = 'Load CW(Bank-B) messages from My Messages(zlog.ini). Are you sure?';
+  Load_RTTY_MyMessages = 'Load RTTY messages from My Messages(zlog.ini). Are you sure?';
+  Save_CWA_MyMessages = 'Save CW(Bank-A) messages to My Messages(zlog.ini). Are you sure?';
+  Save_CWB_MyMessages = 'Save CW(Bank-B) messages to My Messages(zlog.ini). Are you sure?';
+  Save_RTTY_MyMessages = 'Save RTTY messages to My Messages(zlog.ini). Are you sure?';
   Reset_CWA_messages_to_default = 'Reset CW(Bank-A) messages to their default values. Are you sure?';
   Reset_CWB_messages_to_default = 'Reset CW(Bank-B) messages to their default values. Are you sure?';
   Reset_RTTY_messages_to_default = 'Reset RTTY messages to their default values. Are you sure?';
+  Setup_MyCall = 'Please enter your callsign.';
+  Setup_SentNR_prov = 'Please enter Prov code.';
+  Setup_SentNR_city = 'Please enter City code.';
+  Setup_SentNR_cqzone = 'Please enter CQ Zone number.';
+  Setup_SentNR_ituzone = 'Please enter ITU Zone number.';
+  Setup_SentNR_age= 'Please enter operator''s age.';
+  Setup_SentNR_iota = 'Please enter IOTA number.';
+  Setup_SentNR_handle = 'Please enter your Handle Name.';
 
 implementation
 
@@ -852,17 +879,7 @@ begin
    end;
 
    // 未入力箇所に色を付ける
-   editMyCallsign.Color := ifthen(editMyCallsign.Text = '', $00EADEFF, clWindow);
-   CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', $00EADEFF, clWindow);
-   IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', $00EADEFF, clWindow);
-   AgeEdit.Color := ifthen(AgeEdit.Text = '', $00EADEFF, clWindow);
-   IotaEdit.Color := ifthen(IotaEdit.Text = '', $00EADEFF, clWindow);
-   HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', $00EADEFF, clWindow);
-   HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', $00EADEFF, clWindow);
-
-   // CW/RTTY
-   editProv.Color := ifthen(editProv.Text = '', $00EADEFF, clWindow);
-   editCity.Color := ifthen(editCity.Text = '', $00EADEFF, clWindow);
+   SetEmptyFieldsColor();
 
    //
    // 画面に反映
@@ -964,6 +981,12 @@ end;
 
 procedure TformOptions2.buttonOKClick(Sender: TObject);
 begin
+   // 入力チェック
+   if ValidateRequiredFields() = False then begin
+      SetEmptyFieldsColor();
+      Exit;
+   end;
+
    // 入力された設定を保存
    RenewSettings;
 
@@ -1151,10 +1174,12 @@ begin
       Settings.FAccessibility.FFocusedBold := checkFocusedBold.Checked;
 
       // QSO List
-      for i := 1 to 2 do begin
+      for i := 1 to 4 do begin
          Settings.FQsoListColors[i].FForeColor := FQSOListColor[i].Font.Color;
          Settings.FQsoListColors[i].FBackColor := FQSOListColor[i].Color;
-         Settings.FQsoListColors[i].FBold      := FQSOListBold[i].Checked;
+         if Assigned(FQSOListBold[i]) then begin
+            Settings.FQsoListColors[i].FBold      := FQSOListBold[i].Checked;
+         end;
       end;
 
       Settings.FQsoListColorType2 := comboListColorType2.ItemIndex;
@@ -1589,10 +1614,12 @@ begin
       checkFocusedBold.Checked := Settings.FAccessibility.FFocusedBold;
 
       // QSO List
-      for i := 1 to 2 do begin
+      for i := 1 to 4 do begin
          FQSOListColor[i].Font.Color := Settings.FQsoListColors[i].FForeColor;
          FQSOListColor[i].Color      := Settings.FQsoListColors[i].FBackColor;
-         FQSOListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
+         if Assigned(FQSOListBold[i]) then begin
+            FQSOListBold[i].Checked     := Settings.FQsoListColors[i].FBold;
+         end;
       end;
 
       comboListColorType2.ItemIndex := Settings.FQsoListColorType2;
@@ -2327,6 +2354,88 @@ begin
    buttonFreqMemDelete.Enabled := Selected;
 end;
 
+procedure TformOptions2.menuLoadFromMyMessagesClick(Sender: TObject);
+var
+   i: Integer;
+   msg: string;
+begin
+   case TempCurrentBank of
+      1: msg := Load_CWA_MyMessages;
+      2: msg := Load_CWB_MyMessages;
+      3: msg := Load_RTTY_MyMessages;
+      else Exit;
+   end;
+
+   if MessageBox(Handle, PChar(msg), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for i := 1 to maxmessage do begin
+      FEditMessage[i].Text := dmZLogGlobal.Settings.CW.CWStrBank[TempCurrentBank, i];
+   end;
+end;
+
+procedure TformOptions2.menuSaveToMyMessagesClick(Sender: TObject);
+var
+   i: Integer;
+   msg: string;
+begin
+   case TempCurrentBank of
+      1: msg := Save_CWA_MyMessages;
+      2: msg := Save_CWB_MyMessages;
+      3: msg := Save_RTTY_MyMessages;
+      else Exit;
+   end;
+
+   if MessageBox(Handle, PChar(msg), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   for i := 1 to maxmessage do begin
+      dmZLogGlobal.Settings.CW.CWStrBank[TempCurrentBank, i] := FEditMessage[i].Text;
+   end;
+end;
+
+procedure TformOptions2.menuResetMessagesClick(Sender: TObject);
+var
+   i: Integer;
+   msg: string;
+begin
+   case TempCurrentBank of
+      1: msg := Reset_CWA_messages_to_default;
+      2: msg := Reset_CWB_messages_to_default;
+      3: msg := Reset_RTTY_messages_to_default;
+      else Exit;
+   end;
+
+   if MessageBox(Handle, PChar(msg), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   case TempCurrentBank of
+      // BANK-A
+      1: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := def_cw_messages[i];
+         end;
+      end;
+
+      // BANK-B
+      2: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := '';
+         end;
+      end;
+
+      // RTTY
+      3: begin
+         for i := 1 to maxmessage do begin
+            FEditMessage[i].Text := def_rtty_messages[i];
+         end;
+      end;
+   end;
+end;
+
 procedure TformOptions2.menuVoiceClearClick(Sender: TObject);
 var
    n: Integer;
@@ -2556,44 +2665,14 @@ begin
    end;
 end;
 
-procedure TformOptions2.buttonResetMessageClick(Sender: TObject);
+procedure TformOptions2.buttonShowCwMessagesMenuClick(Sender: TObject);
 var
-   i: Integer;
-   msg: string;
+   pt: TPoint;
 begin
-   case TempCurrentBank of
-      1: msg := Reset_CWA_messages_to_default;
-      2: msg := Reset_CWB_messages_to_default;
-      3: msg := Reset_RTTY_messages_to_default;
-      else Exit;
-   end;
-
-   if MessageBox(Handle, PChar(msg), PChar(Application.ExeName), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
-      Exit;
-   end;
-
-   case TempCurrentBank of
-      // BANK-A
-      1: begin
-         for i := 1 to maxmessage do begin
-            FEditMessage[i].Text := def_cw_messages[i];
-         end;
-      end;
-
-      // BANK-B
-      2: begin
-         for i := 1 to maxmessage do begin
-            FEditMessage[i].Text := '';
-         end;
-      end;
-
-      // RTTY
-      3: begin
-         for i := 1 to maxmessage do begin
-            FEditMessage[i].Text := def_rtty_messages[i];
-         end;
-      end;
-   end;
+   pt.x := buttonShowCwMessagesMenu.Left;
+   pt.y := buttonShowCwMessagesMenu.Top + buttonShowCwMessagesMenu.Height;
+   pt := groupCwMessages.ClientToScreen(pt);
+   popupCwMessages.Popup(pt.x, pt.y);
 end;
 
 procedure TformOptions2.buttonStopVoiceClick(Sender: TObject);
@@ -2753,6 +2832,100 @@ begin
    glGridToDeg(strGridLoc, latitude, longitude);
    editMyLatitude.Text := Format('%.4f', [latitude]);
    editMyLongitude.Text := Format('%.4f', [longitude]);
+end;
+
+function TformOptions2.ValidateRequiredFields(): Boolean;
+begin
+   // Callsign入力チェック
+   if (editMyCallsign.Text = '') then begin
+      MessageBox(Handle, PChar(Setup_MyCall), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      editMyCallsign.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   // SentNRチェック
+   if ((Pos('$V', MyContest.SentStr) > 0) and (editProv.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_prov), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 1;
+      editProv.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$Q', MyContest.SentStr) > 0) and (editCity.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_city), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 1;
+      editCity.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$A', MyContest.SentStr) > 0) and (AgeEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_age), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      AgeEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$Z', MyContest.SentStr) > 0) and (CQZoneEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_cqzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      CQZoneEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$I', MyContest.SentStr) > 0) and (IARUZoneEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_ituzone), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      IARUZoneEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$T', MyContest.SentStr) > 0) and (IotaEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_iota), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      IotaEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$H', MyContest.SentStr) > 0) and (HandleCwEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      HandleCwEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   if ((Pos('$H', MyContest.SentStr) > 0) and (HandlePhEdit.Text = '')) then begin
+      MessageBox(Handle, PChar(Setup_SentNR_handle), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+      PageControl.ActivePageIndex := 0;
+      HandlePhEdit.SetFocus();
+      Result := False;
+      Exit;
+   end;
+
+   Result := True;
+end;
+
+procedure TformOptions2.SetEmptyFieldsColor();
+begin
+   editMyCallsign.Color := ifthen(editMyCallsign.Text = '', EmptyFieldColor, clWindow);
+   CQZoneEdit.Color := ifthen(CQZoneEdit.Text = '', EmptyFieldColor, clWindow);
+   IARUZoneEdit.Color := ifthen(IARUZoneEdit.Text = '', EmptyFieldColor, clWindow);
+   AgeEdit.Color := ifthen(AgeEdit.Text = '', EmptyFieldColor, clWindow);
+   IotaEdit.Color := ifthen(IotaEdit.Text = '', EmptyFieldColor, clWindow);
+   HandleCwEdit.Color := ifthen(HandleCwEdit.Text = '', EmptyFieldColor, clWindow);
+   HandlePhEdit.Color := ifthen(HandlePhEdit.Text = '', EmptyFieldColor, clWindow);
+
+   // CW/RTTY
+   editProv.Color := ifthen(editProv.Text = '', EmptyFieldColor, clWindow);
+   editCity.Color := ifthen(editCity.Text = '', EmptyFieldColor, clWindow);
 end;
 
 end.
