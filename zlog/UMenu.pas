@@ -45,6 +45,7 @@ type
       comboTxNo: TComboBox;
       Label2: TLabel;
     rbNYP: TRadioButton;
+    rbJarlRtty: TRadioButton;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure rbGeneralEnter(Sender: TObject);
@@ -55,7 +56,7 @@ type
       procedure OKButtonClick(Sender: TObject);
       procedure FormDestroy(Sender: TObject);
    private
-      FSelectContest: array[0..20] of TRadioButton;
+      FSelectContest: array[0..21] of TRadioButton;
       FCFGFileName: string;
       FSelectDlg: TSelectUserDefinedContest;
       FModernStyle: Boolean;
@@ -115,6 +116,7 @@ begin
    FSelectContest[18] := rbAllAsian;
    FSelectContest[19] := rbIOTA;
    FSelectContest[20] := rbWAE;
+   FSelectContest[21] := rbJarlRtty;
 
    FSelectDlg := TSelectUserDefinedContest.Create(Self);
    FModernStyle := True;
@@ -308,6 +310,15 @@ begin
          radioSingleOp.Checked := True;
          radioMultiOpMultiTx.Enabled := False;
          comboTxNo.Enabled := False;
+      end;
+
+      // JARL World Wide RTTY
+      114: begin
+         ModeGroup.Controls[0].Enabled := False;
+         ModeGroup.Controls[1].Enabled := False;
+         ModeGroup.Controls[2].Enabled := False;
+         ModeGroup.Controls[4].Enabled := False;
+         ModeGroup.ItemIndex := 3;
       end;
 
       // PEDI

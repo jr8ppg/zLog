@@ -8727,6 +8727,11 @@ begin
       20: begin
          MyContest := TWAEContest.Create(Self, 'WAEDC Contest', mode);
       end;
+
+      // JARL World Wide RTTY
+      21: begin
+         MyContest := TJarlWorldWideRTTY.Create(Self, 'JARL World Wide RTTY', mode);
+      end;
    end;
 
    for b := b19 to HiBand do begin

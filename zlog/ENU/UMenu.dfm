@@ -3,8 +3,8 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 312
-  ClientWidth = 547
+  ClientHeight = 266
+  ClientWidth = 562
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,8 +17,8 @@ object MenuForm: TMenuForm
   OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
-    547
-    312)
+    562
+    266)
   TextHeight = 13
   object Label1: TMenuForm
     Left = 358
@@ -31,33 +31,39 @@ object MenuForm: TMenuForm
     Caption = 'Callsign'
   end
   object Label3: TLabel
-    Left = 294
+    Left = 308
     Top = 258
     Width = 58
     Height = 13
+    Anchors = [akTop, akRight]
     Caption = 'Score coeff.'
+    ExplicitLeft = 294
   end
   object OKButton: TButton
-    Left = 382
-    Top = 281
+    Left = 401
+    Top = 233
     Width = 75
     Height = 25
-    Anchors = [akLeft, akBottom]
+    Anchors = [akRight, akBottom]
     Caption = 'OK'
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
+    ExplicitLeft = 387
+    ExplicitTop = 243
   end
   object CancelButton: TButton
-    Left = 462
-    Top = 281
+    Left = 481
+    Top = 233
     Width = 75
     Height = 25
-    Anchors = [akLeft, akBottom]
+    Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
+    ExplicitLeft = 467
+    ExplicitTop = 243
   end
   object Button3: TButton
     Left = 172
@@ -73,19 +79,27 @@ object MenuForm: TMenuForm
   object ContestGroup: TGroupBox
     Left = 8
     Top = 8
-    Width = 277
-    Height = 241
+    Width = 291
+    Height = 250
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Caption = 'Contest'
     TabOrder = 3
+    ExplicitWidth = 277
+    ExplicitHeight = 260
+    DesignSize = (
+      291
+      250)
     object SelectButton: TSpeedButton
       Tag = 9999
       Left = 183
-      Top = 208
+      Top = 218
       Width = 66
       Height = 23
+      Anchors = [akLeft, akBottom]
       Caption = 'Select...'
       Enabled = False
       OnClick = SelectButtonClick
+      ExplicitTop = 228
     end
     object rbALLJA: TRadioButton
       Left = 8
@@ -188,9 +202,10 @@ object MenuForm: TMenuForm
     object rbGeneral: TRadioButton
       Tag = 959
       Left = 8
-      Top = 208
+      Top = 221
       Width = 169
       Height = 17
+      Anchors = [akLeft, akBottom]
       Caption = 'User Defined Contest'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -202,6 +217,7 @@ object MenuForm: TMenuForm
       OnClick = SelectContestClick
       OnEnter = rbGeneralEnter
       OnExit = rbGeneralExit
+      ExplicitTop = 231
     end
     object rbARRLDX: TRadioButton
       Tag = 107
@@ -314,6 +330,16 @@ object MenuForm: TMenuForm
       TabOrder = 6
       OnClick = SelectContestClick
     end
+    object rbJarlRtty: TRadioButton
+      Tag = 114
+      Left = 136
+      Top = 192
+      Width = 141
+      Height = 17
+      Caption = 'JARL World Wide RTTY'
+      TabOrder = 21
+      OnClick = SelectContestClick
+    end
   end
   object BandGroup: TRadioButton
     Left = 272
@@ -341,10 +367,11 @@ object MenuForm: TMenuForm
     TabOrder = 4
   end
   object ModeGroup: TRadioGroup
-    Left = 443
+    Left = 457
     Top = 144
     Width = 94
     Height = 128
+    Anchors = [akTop, akRight]
     Caption = 'Mode'
     ItemIndex = 0
     Items.Strings = (
@@ -354,6 +381,7 @@ object MenuForm: TMenuForm
       'Other'
       'ALL')
     TabOrder = 5
+    ExplicitLeft = 443
   end
   object editCallsign: TRadioGroup
     Left = 444
@@ -379,22 +407,26 @@ object MenuForm: TMenuForm
     ExplicitTop = 285
   end
   object ScoreCoeffEdit: TEdit
-    Left = 357
+    Left = 371
     Top = 255
     Width = 25
     Height = 18
+    Anchors = [akTop, akRight]
     AutoSize = False
     MaxLength = 3
     TabOrder = 8
     Text = '1'
+    ExplicitLeft = 357
   end
   object GroupBox1: TGroupBox
-    Left = 291
+    Left = 305
     Top = 144
     Width = 146
     Height = 128
+    Anchors = [akTop, akRight]
     Caption = 'Category'
     TabOrder = 9
+    ExplicitLeft = 291
     object Label2: TLabel
       Left = 66
       Top = 100

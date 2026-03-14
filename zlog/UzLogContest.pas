@@ -288,6 +288,13 @@ type
     function GetNewMulti1(aQSO: TQSO): string; override;
   end;
 
+  TJarlWorldWideRTTY = class(TContest)
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
+    function ADIF_ExchangeRX_FieldName : string; override;
+    function GetNewMulti1(aQSO: TQSO): string; override;
+    function GetNewMulti2(aQSO: TQSO): string; override;
+  end;
+
 const
   def_cw_messages: array[1..maxmessage] of string =
     ( 'CQ TEST $M TEST',
@@ -330,7 +337,8 @@ uses
   UARRLWMulti, UAllAsianScore, UJIDX_DX_Multi, UJIDX_DX_Score,
   UWPXMulti, UWPXScore, UWAEMulti, UWAEScore, UIARUMulti, UIARUScore,
   UARRL10Multi, UARRL10Score, UPediScore, UALLJAMulti, UALLJAScore,
-  UACAGMulti, UFDMulti, USixDownMulti, UGeneralMulti2, UGeneralScore;
+  UACAGMulti, UFDMulti, USixDownMulti, UGeneralMulti2, UGeneralScore,
+  UJarlWorldWideRTTYScore, UJarlWorldWideRTTYMulti;
 
 constructor TContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
@@ -2568,6 +2576,74 @@ function TAllAsianContest.GetNewMulti1(aQSO: TQSO): string;
 begin
    if aQSO.NewMulti1 then
       Result := aQSO.Multi1
+   else
+      Result := '';
+end;
+
+{ TJarlWorldWideRTTY }
+
+constructor TJarlWorldWideRTTY.Create(AOwner: TComponent; N: string; M: TContestMode);
+begin
+   inherited Create(AOwner, N, M);
+
+   FMultiForm := TJarlWorldWideRTTYMulti.Create(AOwner);
+   FScoreForm := TJarlWorldWideRTTYScore.Create(AOwner);
+
+   UseUTC := True;
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   FSentStr := '$A';
+
+   FBandLow := b35;
+   FBandHigh := b28;
+   FBandPlan := 'DX';
+
+   FNeedCtyDat := True;
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := 'JARTS-WW-RTTY';
+      cmCw: AdifContestId := 'JARTS-WW-RTTY';
+      cmPh: AdifContestId := 'JARTS-WW-RTTY';
+      else AdifContestId := 'JARTS-WW-RTTY';
+   end;
+
+   FColWidths[0] := 3;      // status
+   FColWidths[1] := 6;      // date
+   FColWidths[2] := 6;      // time
+   FColWidths[3] := 12;     // callsign
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 5;      // Sent Number
+   FColWidths[6] := 4;      // Rcvd RST
+   FColWidths[7] := 5;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
+   FColWidths[15] := 10;    // freq
+   FColWidths[16] := 0;     // QSOID
+end;
+
+function TJarlWorldWideRTTY.ADIF_ExchangeRX_FieldName: string;
+begin
+   Result := 'age';
+end;
+
+function TJarlWorldWideRTTY.GetNewMulti1(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti1 then
+      Result := aQSO.Multi1
+   else
+      Result := '';
+end;
+
+function TJarlWorldWideRTTY.GetNewMulti2(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti2 then
+      Result := aQSO.Multi2
    else
       Result := '';
 end;
