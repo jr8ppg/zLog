@@ -51,9 +51,9 @@ object EditDialog: TEditDialog
     end
   end
   object GroupBox2: TGroupBox
-    Left = 379
-    Top = 66
-    Width = 385
+    Left = 403
+    Top = 65
+    Width = 361
     Height = 63
     Caption = 'QSO Flags'
     TabOrder = 3
@@ -93,8 +93,8 @@ object EditDialog: TEditDialog
       TabOrder = 3
     end
     object checkInvalid: TCheckBox
-      Left = 308
-      Top = 16
+      Left = 16
+      Top = 39
       Width = 51
       Height = 17
       Caption = 'Invalid'
@@ -102,7 +102,7 @@ object EditDialog: TEditDialog
       OnClick = checkInvalidClick
     end
     object checkRbnVerified: TCheckBox
-      Left = 16
+      Left = 84
       Top = 39
       Width = 93
       Height = 17
@@ -114,10 +114,17 @@ object EditDialog: TEditDialog
   object groupFrequency: TGroupBox
     Left = 229
     Top = 66
-    Width = 144
+    Width = 168
     Height = 44
     Caption = 'Frequency'
     TabOrder = 2
+    object Label4: TLabel
+      Left = 136
+      Top = 19
+      Width = 19
+      Height = 13
+      Caption = 'kHz'
+    end
     object comboFrequency: TComboBox
       Tag = 1
       Left = 14

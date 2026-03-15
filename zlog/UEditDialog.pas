@@ -115,6 +115,7 @@ type
     SentRSTEdit: TEdit;
     Label3: TLabel;
     comboFrequency: TComboBox;
+    Label4: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -695,6 +696,14 @@ var
    dlg: TformFreqPanel;
    pt: TPoint;
    no: Integer;
+   kHz: Extended;
+const
+   band_to_khz: array[b19..b248g] of TFrequency =
+   (
+        1800,      3500,      7000,     10100,     14000,     18000,     21000,     24800,     28000,     50000,    144000,
+      430000,   1294000,   2424000,   5760000,  10240000,  10450000,  24000000,  47000000,  77500000, 134000000, 248000000
+   );
+
 begin
    dlg := TformFreqPanel.Create(Self);
    try
@@ -708,13 +717,22 @@ begin
       if (dlg.Left + dlg.Width) > (Self.Left + Self.Width) then dlg.Left := (Self.Left + Self.Width) - dlg.Width;
       if (dlg.Top + dlg.Height) > (Self.Top + Self.Height) then dlg.Top := (Self.Top + Self.Height) - dlg.Height;
 
-      dlg.Freq := StrToIntDef(TComboBox(Sender).Text, 0);
+      // kHz -> Hz
+      kHz := StrToFloatDef(TComboBox(Sender).Text, 0);
+      if kHz = 0 then begin
+         kHz := band_to_khz[workQSO.Band] * 1000;
+      end
+      else begin
+         kHz := kHz * 1000;
+      end;
+      dlg.Freq := Trunc(kHz);
 
       if dlg.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      comboFrequency.Text := IntToStr(dlg.Freq);  // dlg.Freq;
+      // Hz -> kHz
+      comboFrequency.Text := FloatToStrF(dlg.Freq / 1000.0, ffFixed, 12, 1);
 
    finally
       dlg.Release();
