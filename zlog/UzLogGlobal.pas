@@ -1366,7 +1366,7 @@ begin
       Settings.FShowEquator := ini.ReadBool('Grayline', 'ShowEquator', False);
       Settings.FShowMyLocation := ini.ReadBool('Grayline', 'ShowMyLocation', False);
       Settings.FGrayLineStayOnTop := ini.ReadBool('Grayline', 'GrayLineStayOnTop', False);
-      Settings.FGrayLineYcutsize := ini.ReadInteger('Grayline', 'ycutsize', 15);
+      Settings.FGrayLineYcutsize := ini.ReadInteger('Grayline', 'ycutsize', 0);
 
       // Startup window
       Settings.FShowStartupWindow := ini.ReadBool('Preferences', 'ShowStartupWindow', True);
