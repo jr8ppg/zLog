@@ -1438,7 +1438,6 @@ begin
    FUserDatLoaded := False;
    FMultiForm := TGeneralMulti2.Create(AOwner);
    FScoreForm := TGeneralScore.Create(AOwner);
-   TGeneralScore(FScoreForm).formMulti := TGeneralMulti2(FMultiForm);
 
    FConfig := TUserDefinedContest.Parse(CFGFileName);
    TGeneralScore(FScoreForm).Config := FConfig;

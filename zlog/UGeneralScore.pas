@@ -16,7 +16,6 @@ type
     FConfig: TUserDefinedContest;
   public
     { Public declarations }
-    formMulti: TGeneralMulti2;
     procedure CalcPoints(aQSO: TQSO);
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
@@ -273,7 +272,7 @@ begin
       end;
    end;
 
-   if formMulti.IsLocal(aQSO) then begin
+   if FConfig.IsLocal(aQSO) then begin
       aQSO.Points := FConfig.LocalPointsTable[b, aQSO.Mode];
    end;
 
