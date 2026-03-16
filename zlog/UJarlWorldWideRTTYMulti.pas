@@ -275,11 +275,13 @@ var
       for i := 1 to Length(str) do begin
          ch := str[i];
          if (fNumber = False) and (CharInSet(ch, ['0'..'9']) = True) then begin
+            area := str[i];
             fNumber := True;
          end;
          if (fNumber = True) and (CharInSet(ch, ['0'..'9']) = False) then begin
             // この時点のi-1までがコールエリア
             area := str[i - 1];
+            fNumber := False;
             Break;
          end;
       end;
