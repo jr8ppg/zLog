@@ -13,7 +13,6 @@ const
 type
   TJarlWorldWideRTTYMulti2 = class(TBasicMulti)
     Panel: TPanel;
-    RotateLabel1: TRotateLabel;
     RotateLabel2: TRotateLabel;
     RotateLabel3: TRotateLabel;
     RotateLabel4: TRotateLabel;
@@ -73,16 +72,16 @@ begin
    FCallAreaList.Add(TCountry.Create('Japan(Area 7):25:45:AS:::9:JA7:JA'));
    FCallAreaList.Add(TCountry.Create('Japan(Area 8):25:45:AS:::9:JA8:JA'));
    FCallAreaList.Add(TCountry.Create('Japan(Area 9):25:45:AS:::9:JA9:JA'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 0):04:07:NA:::0:K0:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 1):05:08:NA:::0:K1:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 2):05:08:NA:::0:K2:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 3):05:08:NA:::0:K3:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 4):05:08:NA:::0:K4:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 5):04:07:NA:::0:K5:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 6):03:06:NA:::0:K6:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 7):03:06:NA:::0:K7:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 8):04:06:NA:::0:K8:K'));
-   FCallAreaList.Add(TCountry.Create('United States of America(Area 9):04:06:NA:::0:K9:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 0):04:07:NA:::0:K0:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 1):05:08:NA:::0:K1:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 2):05:08:NA:::0:K2:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 3):05:08:NA:::0:K3:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 4):05:08:NA:::0:K4:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 5):04:07:NA:::0:K5:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 6):03:06:NA:::0:K6:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 7):03:06:NA:::0:K7:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 8):04:06:NA:::0:K8:K'));
+   FCallAreaList.Add(TCountry.Create('United States(Area 9):04:06:NA:::0:K9:K'));
    FCallAreaList.Add(TCountry.Create('Canada (Area 0):05:09:NA:::0:VE0:VE'));
    FCallAreaList.Add(TCountry.Create('Canada (Area 1):05:09:NA:::0:VE1:VE'));
    FCallAreaList.Add(TCountry.Create('Canada (Area 2):05:04:NA:::0:VE2:VE'));
@@ -271,8 +270,7 @@ var
 begin
    w := Grid.Canvas.TextWidth('X');
    l := (w * 42) - 2;
-   RotateLabel1.Left := l;
-   RotateLabel2.Left := RotateLabel1.Left + (w * 2);
+   RotateLabel2.Left := l;
    RotateLabel3.Left := RotateLabel2.Left + (w * 2);
    RotateLabel4.Left := RotateLabel3.Left + (w * 2);
    RotateLabel5.Left := RotateLabel4.Left + (w * 2);

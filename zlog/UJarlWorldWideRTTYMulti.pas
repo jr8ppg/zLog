@@ -17,7 +17,6 @@ type
     Panel1: TPanel;
     buttonGo: TButton;
     Edit1: TEdit;
-    RotateLabel1: TRotateLabel;
     RotateLabel2: TRotateLabel;
     RotateLabel3: TRotateLabel;
     RotateLabel4: TRotateLabel;
@@ -513,8 +512,7 @@ var
 begin
    w := Grid.Canvas.TextWidth('X');
    l := (w * 42) - 2;
-   RotateLabel1.Left := l;
-   RotateLabel2.Left := RotateLabel1.Left + (w * 2);
+   RotateLabel2.Left := l;
    RotateLabel3.Left := RotateLabel2.Left + (w * 2);
    RotateLabel4.Left := RotateLabel3.Left + (w * 2);
    RotateLabel5.Left := RotateLabel4.Left + (w * 2);

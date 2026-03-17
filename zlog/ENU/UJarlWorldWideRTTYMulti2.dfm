@@ -18,22 +18,6 @@ inherited JarlWorldWideRTTYMulti2: TJarlWorldWideRTTYMulti2
     Height = 37
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 314
-    object RotateLabel1: TRotateLabel
-      Left = 252
-      Top = 15
-      Width = 14
-      Height = 15
-      Escapement = 90
-      TextStyle = tsNone
-      Caption = '1.9'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Arial'
-      Font.Style = []
-      ParentFont = False
-    end
     object RotateLabel2: TRotateLabel
       Left = 264
       Top = 15
@@ -133,7 +117,6 @@ inherited JarlWorldWideRTTYMulti2: TJarlWorldWideRTTYMulti2
     TabOrder = 1
     OnDrawCell = GridDrawCell
     OnTopLeftChanged = GridTopLeftChanged
-    ExplicitWidth = 314
   end
   object Panel1: TPanel
     Left = 0
@@ -142,7 +125,6 @@ inherited JarlWorldWideRTTYMulti2: TJarlWorldWideRTTYMulti2
     Height = 41
     Align = alBottom
     TabOrder = 2
-    ExplicitWidth = 314
     DesignSize = (
       413
       41)
@@ -155,7 +137,6 @@ inherited JarlWorldWideRTTYMulti2: TJarlWorldWideRTTYMulti2
       Caption = 'Go'
       TabOrder = 0
       OnClick = GoButtonClick
-      ExplicitLeft = 247
     end
     object Edit1: TEdit
       Left = 278
@@ -170,7 +151,6 @@ inherited JarlWorldWideRTTYMulti2: TJarlWorldWideRTTYMulti2
       OnChange = Edit1Change
       OnEnter = Edit1Enter
       OnExit = Edit1Exit
-      ExplicitLeft = 179
     end
     object StayOnTop: TCheckBox
       Left = 8

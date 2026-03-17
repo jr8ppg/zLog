@@ -20,21 +20,6 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
     Height = 37
     Align = alTop
     TabOrder = 0
-    object RotateLabel1: TRotateLabel
-      Left = 252
-      Top = 15
-      Width = 14
-      Height = 15
-      Escapement = 90
-      TextStyle = tsNone
-      Caption = '1.9'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Arial'
-      Font.Style = []
-      ParentFont = False
-    end
     object RotateLabel2: TRotateLabel
       Left = 264
       Top = 15
