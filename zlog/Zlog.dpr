@@ -32,7 +32,6 @@ uses
   UJIDXScore in 'UJIDXScore.pas' {JIDXScore},
   UJIDXScore2 in 'UJIDXScore2.pas' {JIDXScore2},
   UZlinkTelnetSet in 'UZlinkTelnetSet.pas' {formZLinkTelnetSet},
-  UJarlWorldWideRTTYMulti in 'UJarlWorldWideRTTYMulti.pas' {JarlWorldWideRTTYMulti},
   UWPXMulti in 'UWPXMulti.pas' {WPXMulti},
   UWPXScore in 'UWPXScore.pas' {WPXScore},
   UPediScore in 'UPediScore.pas' {PediScore},
@@ -170,7 +169,9 @@ uses
   UGridLocator in 'UGridLocator.pas',
   USentNumber in 'USentNumber.pas' {formSentNumber},
   UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
-  UJarlWorldWideRTTYScore in 'UJarlWorldWideRTTYScore.pas' {JarlWorldWideRTTYScore};
+  UJarlWorldWideRTTYScore in 'UJarlWorldWideRTTYScore.pas' {JarlWorldWideRTTYScore},
+  UJarlWorldWideRTTYMulti2 in 'UJarlWorldWideRTTYMulti2.pas' {JarlWorldWideRTTYMulti2},
+  UJarlWorldWideRTTYMulti in 'UJarlWorldWideRTTYMulti.pas' {JarlWorldWideRTTYMulti};
 
 {$R *.res}
 

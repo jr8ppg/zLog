@@ -1,25 +1,24 @@
-inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
-  Left = 153
-  Top = 98
-  Caption = 'Entity multipliers'
-  ClientHeight = 282
-  ClientWidth = 360
+inherited JarlWorldWideRTTYMulti2: TJarlWorldWideRTTYMulti2
+  Left = 322
+  Top = 81
+  Caption = 'Call area multipliers'
+  ClientWidth = 413
   Font.Height = -12
   Font.Name = 'Arial'
   StyleElements = [seFont, seClient, seBorder]
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
-  ExplicitWidth = 376
-  ExplicitHeight = 321
+  ExplicitWidth = 429
   TextHeight = 15
   object Panel: TPanel
     Left = 0
     Top = 0
-    Width = 360
+    Width = 413
     Height = 37
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 314
     object RotateLabel1: TRotateLabel
       Left = 252
       Top = 15
@@ -111,55 +110,11 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
       ParentFont = False
     end
   end
-  object Panel1: TPanel
-    Left = 0
-    Top = 241
-    Width = 360
-    Height = 41
-    Align = alBottom
-    TabOrder = 1
-    DesignSize = (
-      360
-      41)
-    object buttonGo: TButton
-      Left = 293
-      Top = 11
-      Width = 57
-      Height = 21
-      Anchors = [akTop, akRight]
-      Caption = 'Go'
-      TabOrder = 0
-      OnClick = GoButtonClick
-    end
-    object Edit1: TEdit
-      Left = 225
-      Top = 11
-      Width = 61
-      Height = 21
-      Anchors = [akTop, akRight]
-      AutoSize = False
-      CharCase = ecUpperCase
-      ImeMode = imClose
-      TabOrder = 1
-      OnChange = Edit1Change
-      OnEnter = Edit1Enter
-      OnExit = Edit1Exit
-    end
-    object StayOnTop: TCheckBox
-      Left = 8
-      Top = 13
-      Width = 81
-      Height = 17
-      Caption = 'Stay on top'
-      TabOrder = 2
-      OnClick = StayOnTopClick
-    end
-  end
   object Grid: TStringGrid
     Left = 0
     Top = 37
-    Width = 360
-    Height = 204
+    Width = 413
+    Height = 184
     Align = alClient
     ColCount = 1
     DefaultColWidth = 500
@@ -175,8 +130,56 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
     Options = []
     ParentFont = False
     ScrollBars = ssVertical
-    TabOrder = 2
+    TabOrder = 1
     OnDrawCell = GridDrawCell
     OnTopLeftChanged = GridTopLeftChanged
+    ExplicitWidth = 314
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 221
+    Width = 413
+    Height = 41
+    Align = alBottom
+    TabOrder = 2
+    ExplicitWidth = 314
+    DesignSize = (
+      413
+      41)
+    object buttonGo: TButton
+      Left = 346
+      Top = 11
+      Width = 57
+      Height = 21
+      Anchors = [akTop, akRight]
+      Caption = 'Go'
+      TabOrder = 0
+      OnClick = GoButtonClick
+      ExplicitLeft = 247
+    end
+    object Edit1: TEdit
+      Left = 278
+      Top = 11
+      Width = 61
+      Height = 21
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      CharCase = ecUpperCase
+      ImeMode = imClose
+      TabOrder = 1
+      OnChange = Edit1Change
+      OnEnter = Edit1Enter
+      OnExit = Edit1Exit
+      ExplicitLeft = 179
+    end
+    object StayOnTop: TCheckBox
+      Left = 8
+      Top = 13
+      Width = 81
+      Height = 17
+      Caption = 'Stay on top'
+      TabOrder = 2
+      OnClick = StayOnTopClick
+    end
   end
 end

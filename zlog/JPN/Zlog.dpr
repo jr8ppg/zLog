@@ -66,6 +66,7 @@ library Zlog;
 {ITE} {DFMFileType} {UJarlWebUpload.dfm}
 {ITE} {DFMFileType} {UJarlWebUpload2.dfm}
 {ITE} {DFMFileType} {UJarlWorldWideRTTYMulti.dfm}
+{ITE} {DFMFileType} {UJarlWorldWideRTTYMulti2.dfm}
 {ITE} {DFMFileType} {UJarlWorldWideRTTYScore.dfm}
 {ITE} {DFMFileType} {UJIDX_DX_Multi.dfm}
 {ITE} {DFMFileType} {UJIDX_DX_Score.dfm}
@@ -194,7 +195,8 @@ library Zlog;
 {$R 'UJarlMemberInfo.dfm' 'formJarlMemberInfo:TForm'}
 {$R 'UJarlWebUpload.dfm' 'formJarlWebUpload:TForm'}
 {$R 'UJarlWebUpload2.dfm' 'formJarlWebUpload2:TForm'}
-{$R 'UJarlWorldWideRTTYMulti.dfm' 'JarlWorldWideRTTYMulti:TForm(WWMulti)'}
+{$R 'UJarlWorldWideRTTYMulti.dfm' 'JarlWorldWideRTTYMulti:TForm(BasicMulti)'}
+{$R 'UJarlWorldWideRTTYMulti2.dfm' 'JarlWorldWideRTTYMulti2:TForm(BasicMulti)'}
 {$R 'UJarlWorldWideRTTYScore.dfm' 'JarlWorldWideRTTYScore:TForm(BasicScore)'}
 {$R 'UJIDX_DX_Multi.dfm' 'JIDX_DX_Multi:TForm(BasicMulti)'}
 {$R 'UJIDX_DX_Score.dfm' 'JIDX_DX_Score:TForm(BasicScore)'}

@@ -8,6 +8,10 @@ inherited GeneralMulti2: TGeneralMulti2
   inherited Panel1: TPanel
     Width = 361
     StyleElements = [seFont, seClient, seBorder]
+    ExplicitWidth = 361
+    DesignSize = (
+      361
+      41)
     inherited buttonGo: TButton
       Left = 285
       ExplicitLeft = 289
@@ -21,6 +25,7 @@ inherited GeneralMulti2: TGeneralMulti2
   inherited Panel: TPanel
     Width = 361
     StyleElements = [seFont, seClient, seBorder]
+    ExplicitWidth = 361
     inherited Label1R9: TRotateLabel
       Left = 197
       ExplicitLeft = 197
@@ -100,5 +105,6 @@ inherited GeneralMulti2: TGeneralMulti2
   end
   inherited Grid: TStringGrid
     Width = 361
+    ExplicitWidth = 361
   end
 end
