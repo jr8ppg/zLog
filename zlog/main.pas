@@ -15693,7 +15693,9 @@ begin
       S := StringReplace(S, '$T', '', [rfReplaceAll]);
       S := StringReplace(S, '$H', '', [rfReplaceAll]);
       S := StringReplace(S, '$N', '', [rfReplaceAll]);
+      aQSO.TimeUtc := '';
    end;
+   S := StringReplace(S, '$D', aQSO.TimeUtc, [rfReplaceAll]);
    Result := S;
 end;
 

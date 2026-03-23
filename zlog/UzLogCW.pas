@@ -129,6 +129,10 @@ begin
    temp := StringReplace(temp, '$G', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$g', S, [rfReplaceAll]);
 
+   S := aQSO.TimeUtc;
+   temp := StringReplace(temp, '$D', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$d', S, [rfReplaceAll]);
+
    if aQSO.mode = mRTTY then begin
       S := aQSO.Callsign;
    end
@@ -232,6 +236,7 @@ begin
    temp := StringReplace(temp, '$L', Log.LastCallSign, [rfReplaceAll]);
    temp := StringReplace(temp, '$U', Log.LastNumber, [rfReplaceAll]);
    temp := StringReplace(temp, '$G', dmZLogGlobal.GetGreetingsCode(), [rfReplaceAll]);
+   temp := StringReplace(temp, '$D', aQSO.TimeUtc, [rfReplaceAll]);
 
    temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
 

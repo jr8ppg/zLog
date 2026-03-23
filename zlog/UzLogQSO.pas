@@ -157,6 +157,8 @@ type
     FContinent: string;
     FEntity: string;
 
+    FTimeUtc: string;   // $D
+
     function GetMode2(): TMode;
     function GetPoints(): Integer;
     function GetQsoId(): Integer;
@@ -191,6 +193,7 @@ type
     function GetMemoStr(): string;
     function GetMemoStr2(): string;
     procedure SetInvalid(v: Boolean);
+    function GetTimeUtc(): string;
   public
     constructor Create;
     procedure IncTime;
@@ -277,6 +280,8 @@ type
     property FreqStr3: string read GetFreqStr3;
     property MemoStr: string read GetMemoStr;
     property MemoStr2: string read GetMemoStr2;
+
+    property TimeUtc: string read GetTimeUtc write FTimeUtc;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
     property FileRecordEx: TQSODataEx read GetFileRecordEx write SetFileRecordEx;
@@ -612,6 +617,7 @@ begin
    FRbnVerified := False;
    FContinent := '';
    FEntity := '';
+   FTimeUtc := '';
 end;
 
 procedure TQSO.IncTime;
@@ -1062,6 +1068,15 @@ begin
       FMulti1 := '';
       FMulti2 := '';
    end;
+end;
+
+function TQSO.GetTimeUtc(): string;
+begin
+   if FTimeUtc = '' then begin
+      FTimeUtc := FormatDateTime('hhnn', GetUTC());
+   end;
+
+   Result := FTimeUtc;
 end;
 
 function TQSO.PartialSummary(DispDate: Boolean): string;
