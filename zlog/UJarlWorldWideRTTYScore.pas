@@ -18,6 +18,8 @@ type
     procedure InitGrid(B0, B1 : TBand);
     procedure UpdateData; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
+  published
+    property UseMulti2;
   end;
 
 implementation
@@ -67,10 +69,16 @@ var
    DispColCount: Integer;
    strExtraInfo: string;
    w: Integer;
+   COL: Integer;
 begin
    Inherited;
 
-   Grid.ColCount := 8;
+   if FUseMulti2 = False then begin
+      Grid.ColCount := 7;
+   end
+   else begin
+      Grid.ColCount := 8;
+   end;
    TotQSO := 0;
    TotPoints := 0;
    TotMulti := 0;
@@ -78,22 +86,37 @@ begin
    row := 1;
 
    // 見出し行
-   Grid.Cells[0,0] := 'MHz';
-   Grid.Cells[1,0] := 'QSOs';
-   Grid.Cells[2,0] := 'Points';
-   Grid.Cells[3,0] := 'Multi1';
-   Grid.Cells[4,0] := 'Multi2';
-   Grid.Cells[5,0] := EXTRAINFO_CAPTION[FExtraInfo];
+   COL := 0;
+   Grid.Cells[COL,0] := 'MHz';
+   Inc(COL);
+   Grid.Cells[COL,0] := 'QSOs';
+   Inc(COL);
+   Grid.Cells[COL,0] := 'Points';
+   Inc(COL);
+   Grid.Cells[COL,0] := 'Multi1';
+   Inc(COL);
+
+   if FUseMulti2 = True then begin
+      Grid.Cells[COL,0] := 'Multi2';
+      Inc(COL);
+   end;
+
+   Grid.Cells[COL,0] := EXTRAINFO_CAPTION[FExtraInfo];
+   Inc(COL);
 
    if ShowCWRatio then begin
-      Grid.Cells[6, 0] := 'CW Q''s';
-      Grid.Cells[7, 0] := 'CW %';
-      DispColCount := 8;
+      Grid.Cells[COL, 0] := 'CW Q''s';
+      Inc(COL);
+      Grid.Cells[COL, 0] := 'CW %';
+      Inc(COL);
+      DispColCount := COL;
    end
    else begin
-      Grid.Cells[6,0] := '';
-      Grid.Cells[7,0] := '';
-      DispColCount := 6;
+      Grid.Cells[COL,0] := '';
+      Inc(COL);
+      Grid.Cells[COL,0] := '';
+      Inc(COL);
+      DispColCount := COL - 2;
    end;
 
    // バンド別スコア行
@@ -114,11 +137,20 @@ begin
       TotQSO := TotQSO + QSO[band];
 
       // バンド別スコア
-      Grid.Cells[0, row] := '*' + MHzString[band];
-      Grid.Cells[1, row] := IntToStr(QSO[band]);
-      Grid.Cells[2, row] := IntToStr(Points[band]);
-      Grid.Cells[3, row] := IntToStr(Multi[band]);
-      Grid.Cells[4, row] := IntToStr(Multi2[band]);
+      COL := 0;
+      Grid.Cells[COL, row] := '*' + MHzString[band];
+      Inc(COL);
+      Grid.Cells[COL, row] := IntToStr(QSO[band]);
+      Inc(COL);
+      Grid.Cells[COL, row] := IntToStr(Points[band]);
+      Inc(COL);
+      Grid.Cells[COL, row] := IntToStr(Multi[band]);
+      Inc(COL);
+
+      if FUseMulti2 = True then begin
+         Grid.Cells[COL, row] := IntToStr(Multi2[band]);
+         Inc(COL);
+      end;
 
       strExtraInfo := '';
       case FExtraInfo of
@@ -140,27 +172,40 @@ begin
             end;
          end;
       end;
-      Grid.Cells[5, row] := strExtraInfo;
+      Grid.Cells[COL, row] := strExtraInfo;
+      Inc(COL);
 
       if ShowCWRatio then begin
-         Grid.Cells[6, row] := IntToStr(CWQSO[band]);
+         Grid.Cells[COL, row] := IntToStr(CWQSO[band]);
+         Inc(COL);
+
          if QSO[band] > 0 then begin
-            Grid.Cells[7, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
+            Grid.Cells[COL, row] := FloatToStrF(100 * (CWQSO[band] / QSO[band]), ffFixed, 1000, 1);
+            Inc(COL);
          end
          else begin
-            Grid.Cells[7, row] := '-';
+            Grid.Cells[COL, row] := '-';
+            Inc(COL);
          end;
       end;
 
-      inc(row);
+      Inc(row);
    end;
 
    // 合計行
-   Grid.Cells[0, row] := 'Total';
-   Grid.Cells[1, row] := IntToStr3(TotQSO);
-   Grid.Cells[2, row] := IntToStr3(TotPoints);
-   Grid.Cells[3, row] := IntToStr3(TotMulti);
-   Grid.Cells[4, row] := IntToStr3(TotMulti2);
+   COL := 0;
+   Grid.Cells[COL, row] := 'Total';
+   Inc(COL);
+   Grid.Cells[COL, row] := IntToStr3(TotQSO);
+   Inc(COL);
+   Grid.Cells[COL, row] := IntToStr3(TotPoints);
+   Inc(COL);
+   Grid.Cells[COL, row] := IntToStr3(TotMulti);
+   Inc(COL);
+   if FUseMulti2 = True then begin
+      Grid.Cells[COL, row] := IntToStr3(TotMulti2);
+      Inc(COL);
+   end;
 
    // Multi率
    strExtraInfo := '';
@@ -183,34 +228,51 @@ begin
          end;
       end;
    end;
-   Grid.Cells[5, row] := strExtraInfo;
+   Grid.Cells[COL, row] := strExtraInfo;
+   Inc(COL);
 
    // CW率
    if ShowCWRatio then begin
-      Grid.Cells[6, row] := IntToStr3(TotalCWQSOs);
+      Grid.Cells[COL, row] := IntToStr3(TotalCWQSOs);
+      Inc(COL);
       if TotPoints > 0 then begin
-         Grid.Cells[7, row] := FloatToStrF(100 * (TotalCWQSOs / TotalQSOs), ffFixed, 1000, 1);
+         Grid.Cells[COL, row] := FloatToStrF(100 * (TotalCWQSOs / TotalQSOs), ffFixed, 1000, 1);
+         Inc(COL);
       end
       else begin
-         Grid.Cells[7, row] := '-';
+         Grid.Cells[COL, row] := '-';
+         Inc(COL);
       end;
    end
    else begin
-      Grid.Cells[5, row] := '';
-      Grid.Cells[6, row] := '';
+      Grid.Cells[COL, row] := '';
+      Inc(COL);
+      Grid.Cells[COL, row] := '';
+      Inc(COL);
    end;
    Inc(row);
 
    // スコア行
    strScore := IntToStr3(TotPoints * (TotMulti + TotMulti2));
-   Grid.Cells[0, row] := 'Score';
-   Grid.Cells[1, row] := '';
-   Grid.Cells[2, row] := '';
-   Grid.Cells[3, row] := strScore;
-   Grid.Cells[4, row] := '';
-   Grid.Cells[5, row] := '';
-   Grid.Cells[6, row] := '';
-   Grid.Cells[7, row] := '';
+   COL := 0;
+   Grid.Cells[COL, row] := 'Score';      // MHz
+   Inc(COL);
+   Grid.Cells[COL, row] := '';           // QSOs
+   Inc(COL);
+   Grid.Cells[COL, row] := '';           // Points
+   Inc(COL);
+   Grid.Cells[COL, row] := strScore;     // Multi1
+   Inc(COL);
+   if FUseMulti2 = True then begin
+      Grid.Cells[COL, row] := '';           // Multi2
+      Inc(COL);
+   end;
+   Grid.Cells[COL, row] := '';           // Extra Info.
+   Inc(COL);
+   Grid.Cells[COL, row] := '';           // CW Q
+   Inc(COL);
+   Grid.Cells[COL, row] := '';           // CW %
+   Inc(COL);
    Inc(row);
 
    // 行数をセット
@@ -218,14 +280,25 @@ begin
 
    // カラム幅をセット
    w := Grid.Canvas.TextWidth('9');
-   Grid.ColWidths[0] := w * 6;
-   Grid.ColWidths[1] := w * 7;
-   Grid.ColWidths[2] := w * 7;
-   Grid.ColWidths[3] := w * Max(8, Length(strScore)+1);
-   Grid.ColWidths[4] := w * 7;
-   Grid.ColWidths[5] := w * 7;
-   Grid.ColWidths[6] := w * 7;
-   Grid.ColWidths[7] := w * 7;
+   COL := 0;
+   Grid.ColWidths[COL] := w * 6;            // MHz
+   Inc(COL);
+   Grid.ColWidths[COL] := w * 7;            // QSOs
+   Inc(COL);
+   Grid.ColWidths[COL] := w * 7;            // Points
+   Inc(COL);
+   Grid.ColWidths[COL] := w * Max(8, Length(strScore) + 1);   // Multi1
+   Inc(COL);
+   if FUseMulti2 = True then begin
+      Grid.ColWidths[COL] := w * 7;            // Multi2
+      Inc(COL);
+   end;
+   Grid.ColWidths[COL] := w * 7;            // Extra Info.
+   Inc(COL);
+   Grid.ColWidths[COL] := w * 7;            // CW Q
+   Inc(COL);
+   Grid.ColWidths[COL] := w * 7;            // CW %
+   Inc(COL);
 
    // グリッドサイズ調整
    AdjustGridSize(Grid, DispColCount, Grid.RowCount);

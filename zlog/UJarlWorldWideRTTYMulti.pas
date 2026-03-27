@@ -5,8 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids, StrUtils,
-  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers,
-  UJarlWorldWideRTTYMulti2;
+  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers;
 
 const
   WM_ZLOG_UPDATELABEL = (WM_USER + 100);
@@ -37,8 +36,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
-    FCallAreaForm: TJarlWorldWideRTTYMulti2;
-    FMulti2List: TStringList;
+    FCountryList: TCountryList;
     procedure GoForwardMatch(strCode: string);
   protected
     FMostRecentCty: TCountry;
@@ -78,20 +76,80 @@ uses
 {$R *.DFM}
 
 procedure TJarlWorldWideRTTYMulti.FormCreate(Sender: TObject);
+var
+   i: Integer;
+   cty: TCountry;
 begin
    Inherited;
-   FCallAreaForm := TJarlWorldWideRTTYMulti2.Create(Self);
    FMostRecentCty := nil;
    FLastCountry := nil;
-   FMulti2List := TStringList.Create();
-   FMulti2List.Sorted := True;
+   FCountryList := TCountryList.Create();
+
+   for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
+      cty := TCountry.Create();
+      cty.Assign(dmZLogGlobal.CountryList[i]);
+
+      if cty.Country = 'K' then begin
+         FCountryList.Add(TCountry.Create('United States(Area 0):04:07:NA:::0:K0:K0'));
+         FCountryList.Add(TCountry.Create('United States(Area 1):05:08:NA:::0:K1:K1'));
+         FCountryList.Add(TCountry.Create('United States(Area 2):05:08:NA:::0:K2:K2'));
+         FCountryList.Add(TCountry.Create('United States(Area 3):05:08:NA:::0:K3:K3'));
+         FCountryList.Add(TCountry.Create('United States(Area 4):05:08:NA:::0:K4:K4'));
+         FCountryList.Add(TCountry.Create('United States(Area 5):04:07:NA:::0:K5:K5'));
+         FCountryList.Add(TCountry.Create('United States(Area 6):03:06:NA:::0:K6:K6'));
+         FCountryList.Add(TCountry.Create('United States(Area 7):03:06:NA:::0:K7:K7'));
+         FCountryList.Add(TCountry.Create('United States(Area 8):04:06:NA:::0:K8:K8'));
+         FCountryList.Add(TCountry.Create('United States(Area 9):04:06:NA:::0:K9:K9'));
+         cty.Free();
+      end
+      else if cty.Country = 'JA' then begin
+         FCountryList.Add(TCountry.Create('Japan(Area 0):25:45:AS:::9:JA0:JA0'));
+         FCountryList.Add(TCountry.Create('Japan(Area 1):25:45:AS:::9:JA1:JA1'));
+         FCountryList.Add(TCountry.Create('Japan(Area 2):25:45:AS:::9:JA2:JA2'));
+         FCountryList.Add(TCountry.Create('Japan(Area 3):25:45:AS:::9:JA3:JA3'));
+         FCountryList.Add(TCountry.Create('Japan(Area 4):25:45:AS:::9:JA4:JA4'));
+         FCountryList.Add(TCountry.Create('Japan(Area 5):25:45:AS:::9:JA5:JA5'));
+         FCountryList.Add(TCountry.Create('Japan(Area 6):25:45:AS:::9:JA6:JA6'));
+         FCountryList.Add(TCountry.Create('Japan(Area 7):25:45:AS:::9:JA7:JA7'));
+         FCountryList.Add(TCountry.Create('Japan(Area 8):25:45:AS:::9:JA8:JA8'));
+         FCountryList.Add(TCountry.Create('Japan(Area 9):25:45:AS:::9:JA9:JA9'));
+         cty.Free();
+      end
+      else if cty.Country = 'VE' then begin
+         FCountryList.Add(TCountry.Create('Canada (Area 0):05:09:NA:::0:VE0:VE0'));
+         FCountryList.Add(TCountry.Create('Canada (Area 1):05:09:NA:::0:VE1:VE1'));
+         FCountryList.Add(TCountry.Create('Canada (Area 2):05:04:NA:::0:VE2:VE2'));
+         FCountryList.Add(TCountry.Create('Canada (Area 3):04:04:NA:::0:VE3:VE3'));
+         FCountryList.Add(TCountry.Create('Canada (Area 4):04:03:NA:::0:VE4:VE4'));
+         FCountryList.Add(TCountry.Create('Canada (Area 5):04:03:NA:::0:VE5:VE5'));
+         FCountryList.Add(TCountry.Create('Canada (Area 6):04:02:NA:::0:VE6:VE6'));
+         FCountryList.Add(TCountry.Create('Canada (Area 7):03:02:NA:::0:VE7:VE7'));
+         FCountryList.Add(TCountry.Create('Canada (Area 8):01:03:NA:::0:VE8:VE8'));
+         FCountryList.Add(TCountry.Create('Canada (Area 9):05:09:NA:::0:VE9:VE9'));
+         cty.Free();
+      end
+      else if cty.Country = 'VK' then begin
+         FCountryList.Add(TCountry.Create('Australia (Area 1):30:59:OC:::0:VK1:VK1'));
+         FCountryList.Add(TCountry.Create('Australia (Area 2):30:59:OC:::0:VK2:VK2'));
+         FCountryList.Add(TCountry.Create('Australia (Area 3):30:59:OC:::0:VK3:VK3'));
+         FCountryList.Add(TCountry.Create('Australia (Area 4):30:55:OC:::0:VK4:VK4'));
+         FCountryList.Add(TCountry.Create('Australia (Area 5):30:59:OC:::0:VK5:VK5'));
+         FCountryList.Add(TCountry.Create('Australia (Area 6):29:58:OC:::0:VK6:VK6'));
+         FCountryList.Add(TCountry.Create('Australia (Area 7):30:59:OC:::0:VK7:VK7'));
+         FCountryList.Add(TCountry.Create('Australia (Area 8):29:55:OC:::0:VK8:VK8'));
+         cty.Free();
+      end
+      else begin
+         FCountryList.Add(cty);
+      end;
+   end;
+
    Reset();
 end;
 
 procedure TJarlWorldWideRTTYMulti.FormShow(Sender: TObject);
 begin
    Inherited;
-   FCallAreaForm.Show();
    AdjustGridSize(Grid);
    UpdateData();
    PostMessage(Handle, WM_ZLOG_UPDATELABEL, 0, 0);
@@ -107,8 +165,7 @@ end;
 procedure TJarlWorldWideRTTYMulti.FormDestroy(Sender: TObject);
 begin
    inherited;
-   FMulti2List.Free();
-   FCallAreaForm.Release();
+   FCountryList.Free();
 end;
 
 procedure TJarlWorldWideRTTYMulti.GridTopLeftChanged(Sender: TObject);
@@ -146,36 +203,23 @@ procedure TJarlWorldWideRTTYMulti.SortDefault();
 var
    i: integer;
 begin
-   if dmZLogGlobal.CountryList.Count = 0 then begin
-      exit;
+   if FCountryList.Count = 0 then begin
+      Exit;
    end;
 
-   for i := 0 to dmZLogGlobal.CountryList.Count-1 do begin
-      TCountry(dmZLogGlobal.CountryList.List[i]).GridIndex := i;
+   for i := 0 to FCountryList.Count - 1 do begin
+      TCountry(FCountryList.List[i]).GridIndex := i;
       FGridReverse[i] := i;
    end;
 end;
 
 procedure TJarlWorldWideRTTYMulti.Reset;
-var
-   B: TBand;
-   i: integer;
 begin
-   FMulti2List.Clear;
-
-   if dmZLogGlobal.CountryList.Count = 0 then exit;
-
-   for i := 0 to dmZLogGlobal.CountryList.Count-1 do begin
-      for B := b19 to HiBand do begin
-         TCountry(dmZLogGlobal.CountryList.List[i]).Worked[B] := false;
-      end;
-   end;
+   FCountryList.Reset();
 
    SortDefault();
 
-   Grid.RowCount := dmZLogGlobal.CountryList.Count;
-
-   FCallAreaForm.Reset();
+   Grid.RowCount := FCountryList.Count;
 end;
 
 procedure TJarlWorldWideRTTYMulti.RefreshGrid;
@@ -197,8 +241,8 @@ begin
       end
       else begin
          k := FGridReverse[i];
-         C := TCountry(dmZLogGlobal.CountryList.List[k]);
-         if (k >= 0) and (k < dmZLogGlobal.CountryList.Count) then begin
+         C := FCountryList[k];
+         if (k >= 0) and (k < FCountryList.Count) then begin
             if C.Worked[B] = True then begin
                Grid.Cells[0, i] := '~' + C.Summary;
             end
@@ -215,16 +259,16 @@ begin
    EndUpdate();
 
    Grid.Refresh();
-
-   FCallAreaForm.RefreshGrid();
 end;
 
 procedure TJarlWorldWideRTTYMulti.AddNoUpdate(aQSO: TQSO);
 var
    strCallArea: string;
    C: TCountry;
+   C2: TCountry;
    P: TPrefix;
    B: TBand;
+   i: Integer;
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
@@ -247,35 +291,39 @@ begin
       aQSO.Points := 0;
       Exit;
    end;
+
    C := P.Country;
+   C2 := nil;
 
    // JA/W/VE/VKはエンティティマルチなし
    if IsJAWVEVK(C.Country) = True then begin
-      aQSO.Multi1 := '';
-      aQSO.NewMulti1 := False;
-
       //・各バンドで交信したJA/W/VE/VK の本土内局のコールエリア数
       strCallArea := GetCallArea(aQSO, C.Country);
-      aQSO.Multi2 := strCallArea;
 
-      // コールエリアリストに無ければ追加してNewMultiとする
-      if strCallArea <> '' then begin
-         if FMulti2List.IndexOf(strCallArea) = -1 then begin
-            FMulti2List.Add(strCallArea);
-            aQSO.NewMulti2 := True;
+      for i := 0 to FCountryList.Count - 1 do begin
+         if FCountryList[i].Country = strCallArea then begin
+            C2 := FCountryList[i];
+            aQSO.Multi1 := strCallArea;
+            Break;
          end;
       end;
    end
    else begin  // JA/W/VE/VK以外
-      aQSO.Multi1 := C.Country;
+      for i := 0 to FCountryList.Count - 1 do begin
+         if FCountryList[i].Country = P.Country.Country then begin
+            C2 := FCountryList[i];
+            aQSO.Multi1 := C.Country;
+            Break;
+         end;
+      end;
+   end;
+
+   if C2 <> nil then begin
       B := aQSO.Band;
-      if C.Worked[B] = False then begin
-         C.Worked[B] := True;
+      if C2.Worked[B] = False then begin
+         C2.Worked[B] := True;
          aQSO.NewMulti1 := True;
       end;
-
-      aQSO.Multi2 := '';
-      aQSO.NewMulti2 := False;
    end;
 
    // Continentチェック
@@ -302,8 +350,6 @@ begin
       aQSO.NewMulti1 := False;
       aQSO.NewMulti2 := False;
    end;
-
-   FCallAreaForm.AddNoUpdate(aQSO);
 end;
 
 // NRは年齢なので特にチェックしない
@@ -336,18 +382,18 @@ begin
    temp := C.Country + ' ' + C.Continent + ' ';
 
    temp2 := '';
-   if C.Worked[aQSO.Band] = false then
+   if C.Worked[aQSO.Band] = False then
       temp2 := 'CTY';
 
    if temp2 <> '' then
-      temp2 := 'NEW '+temp2;
+      temp2 := 'NEW ' + temp2;
 
    temp := temp + temp2 + ' ';
 
    temp := temp + 'needed on: ';
    for B := b19 to b28 do
       if NotWARC(B) then
-         if C.Worked[B]=False then
+         if C.Worked[B] = False then
             temp := temp + MHzString[B] + ' ';
 
    FLastCountry := C;
@@ -380,8 +426,8 @@ var
    end;
 begin
    l := Length(strCode);
-   for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
-      if (strCode = Copy(TCountry(dmZLogGlobal.CountryList.List[i]).Country, 1, l)) then begin
+   for i := 0 to FCountryList.Count - 1 do begin
+      if (strCode = Copy(TCountry(FCountryList.List[i]).Country, 1, l)) then begin
          Grid.TopRow := GetRowIndex(i);
          Break;
       end;
@@ -437,19 +483,30 @@ begin
          callarea := GetCallArea(aQSO, C.Country);
 
          fFound := False;
-         for i := 0 to FMulti2List.Count - 1 do begin
-            if callarea = FMulti2List[i] then begin
+         for i := 0 to FCountryList.Count - 1 do begin
+            if callarea = FCountryList[i].Country then begin
                fFound := True;
+               C := FCountryList[i];
+               Break;
             end;
          end;
 
-         if fFound = False then begin
+         if (fFound = True) and (C.Worked[aQSO.Band] = False) then begin
             temp := temp + '  new callarea: ' + callarea;
             Sp.NewCty := True;
          end;
       end
       else begin
-         if (C.Worked[aQSO.Band] = False) then begin
+         fFound := False;
+         for i := 0 to FCountryList.Count - 1 do begin
+            if FCountryList[i].Country = C.Country then begin
+               fFound := True;
+               C := FCountryList[i];
+               Break;
+            end;
+         end;
+
+         if (fFound = True) and (C.Worked[aQSO.Band] = False) then begin
             temp := temp + '  new country: ' + (C.Country);
             Sp.NewCty := True;
          end;

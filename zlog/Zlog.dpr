@@ -170,7 +170,6 @@ uses
   USentNumber in 'USentNumber.pas' {formSentNumber},
   UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
   UJarlWorldWideRTTYScore in 'UJarlWorldWideRTTYScore.pas' {JarlWorldWideRTTYScore},
-  UJarlWorldWideRTTYMulti2 in 'UJarlWorldWideRTTYMulti2.pas' {JarlWorldWideRTTYMulti2},
   UJarlWorldWideRTTYMulti in 'UJarlWorldWideRTTYMulti.pas' {JarlWorldWideRTTYMulti};
 
 {$R *.res}

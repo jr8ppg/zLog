@@ -27,6 +27,7 @@ type
     procedure menuExtraInfoClick(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: LongInt; Rect: TRect; State: TGridDrawState);
   protected
+    FUseMulti2: Boolean;
     FExtraInfo: Integer;
     FContestMode: TContestMode;
     FValidQso: Boolean;
@@ -62,6 +63,7 @@ type
     function IntToStr3(v: Integer): string;
     property Score: Integer read GetScore;
     property ContestMode: TContestMode read FContestMode write FContestMode;
+    property UseMulti2: Boolean read FUseMulti2 write FUseMulti2;
   published
     property FontSize;
     property OnChangeFontSize;
@@ -80,6 +82,7 @@ uses
 constructor TBasicScore.Create(AOwner: TComponent);
 begin
    Inherited Create(AOwner);
+   FUseMulti2 := False;
    FContestMode := cmMix;
    ShowCWRatio := False;
    Reset;

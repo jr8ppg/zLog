@@ -31,6 +31,7 @@ type
   public
     constructor Create(); overload;
     constructor Create(strText: string); overload;
+    procedure Assign(src: TCountry);
 
     function Summary : string;
     function SummaryWAE : string;
@@ -472,6 +473,26 @@ constructor TCountry.Create(strText: string);
 begin
    Inherited Create();
    Parse(strText);
+end;
+
+procedure TCountry.Assign(src: TCountry);
+var
+   b: TBand;
+begin
+   FName := src.FName;
+   FCQZone := src.FCQZone;
+   FITUZone := src.FITUZone;
+   FContinent := src.FContinent;
+   FLatitude := src.FLatitude;
+   FLongitude := src.FLongitude;
+   FUTCOffset := src.FUTCOffset;
+   FCode := src.FCode;
+   FPrefixes := src.FPrefixes;
+   for b := b19 to HiBand do begin
+      FWorked[b] := src.FWorked[b];
+   end;
+   FIndex := src.FIndex;
+   FGridIndex := src.FGridIndex;
 end;
 
 procedure TCountry.Parse(strText: string);
