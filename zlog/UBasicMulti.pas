@@ -10,8 +10,11 @@ uses
 type
   TBasicMulti = class(TZLogForm)
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   protected
     FContestMode: TContestMode;
+    FMulti2Kind: TMultiKind;
+    FMulti2List: TStringList;
     procedure AdjustGridSize(Grid: TStringGrid);
     procedure SetGridFontSize(Grid: TStringGrid; font_size: Integer);
     procedure Draw_GridCell(Grid: TStringGrid; ACol, ARow: Integer; Rect: TRect);
@@ -45,6 +48,7 @@ type
     // returns nothing when the multi is worked in that band.
     property IsIncrementalSearchPresent: Boolean read GetIsIncrementalSearchPresent;
     property ContestMode: TContestMode read FContestMode write FContestMode;
+    property Multi2Kind: TMultiKind read FMulti2Kind write FMulti2Kind;
   published
     property FontSize;
     property OnChangeFontSize;
@@ -61,6 +65,15 @@ procedure TBasicMulti.FormCreate(Sender: TObject);
 begin
    FFontSize := 9;
    FContestMode := cmMix;
+   FMulti2Kind := mkNone;
+   FMulti2List := TStringList.Create();
+   FMulti2List.Sorted := True;
+end;
+
+procedure TBasicMulti.FormDestroy(Sender: TObject);
+begin
+   inherited;
+   FMulti2List.Free();
 end;
 
 procedure TBasicMulti.Renew;

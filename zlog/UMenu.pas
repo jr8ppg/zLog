@@ -46,6 +46,7 @@ type
       Label2: TLabel;
     rbNYP: TRadioButton;
     rbJarlRtty: TRadioButton;
+    rbBartgRtty: TRadioButton;
       procedure FormCreate(Sender: TObject);
       procedure FormShow(Sender: TObject);
       procedure rbGeneralEnter(Sender: TObject);
@@ -56,7 +57,7 @@ type
       procedure OKButtonClick(Sender: TObject);
       procedure FormDestroy(Sender: TObject);
    private
-      FSelectContest: array[0..21] of TRadioButton;
+      FSelectContest: array[0..22] of TRadioButton;
       FCFGFileName: string;
       FSelectDlg: TSelectUserDefinedContest;
       FModernStyle: Boolean;
@@ -117,6 +118,7 @@ begin
    FSelectContest[19] := rbIOTA;
    FSelectContest[20] := rbWAE;
    FSelectContest[21] := rbJarlRtty;
+   FSelectContest[22] := rbBartgRtty;
 
    FSelectDlg := TSelectUserDefinedContest.Create(Self);
    FModernStyle := True;
@@ -312,8 +314,8 @@ begin
          comboTxNo.Enabled := False;
       end;
 
-      // JARL World Wide RTTY
-      114: begin
+      // JARL World Wide RTTY, BARTG HF RTTY
+      114, 115: begin
          ModeGroup.Controls[0].Enabled := False;
          ModeGroup.Controls[1].Enabled := False;
          ModeGroup.Controls[2].Enabled := False;

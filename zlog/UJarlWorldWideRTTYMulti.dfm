@@ -6,6 +6,7 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
   ClientWidth = 360
   Font.Height = -12
   Font.Name = 'Arial'
+  StyleElements = [seFont, seClient, seBorder]
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
@@ -22,8 +23,8 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
     object RotateLabel2: TRotateLabel
       Left = 264
       Top = 15
-      Width = 15
-      Height = 14
+      Width = 14
+      Height = 15
       Escapement = 90
       TextStyle = tsNone
       Caption = '3.5'
@@ -37,8 +38,8 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
     object RotateLabel3: TRotateLabel
       Left = 276
       Top = 24
-      Width = 6
-      Height = 14
+      Width = 14
+      Height = 6
       Escapement = 90
       TextStyle = tsNone
       Caption = '7'
@@ -52,8 +53,8 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
     object RotateLabel4: TRotateLabel
       Left = 287
       Top = 18
-      Width = 12
-      Height = 14
+      Width = 14
+      Height = 12
       Escapement = 90
       TextStyle = tsNone
       Caption = '14'
@@ -67,8 +68,8 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
     object RotateLabel5: TRotateLabel
       Left = 299
       Top = 18
-      Width = 12
-      Height = 14
+      Width = 14
+      Height = 12
       Escapement = 90
       TextStyle = tsNone
       Caption = '21'
@@ -82,8 +83,8 @@ inherited JarlWorldWideRTTYMulti: TJarlWorldWideRTTYMulti
     object RotateLabel6: TRotateLabel
       Left = 311
       Top = 18
-      Width = 12
-      Height = 14
+      Width = 14
+      Height = 12
       Escapement = 90
       TextStyle = tsNone
       Caption = '28'

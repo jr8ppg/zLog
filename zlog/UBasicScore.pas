@@ -130,6 +130,7 @@ end;
 procedure TBasicScore.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
+   SL: TStringList;
 begin
    FValidQso := False;
 
@@ -193,13 +194,19 @@ begin
       end;
    end;
 
+   SL := TStringList.Create();
+
    if aQSO.NewMulti1 then begin
-      Inc(Multi[B]);
+      SL.CommaText := aQSO.Multi1;
+      Inc(Multi[B], SL.Count);
    end;
 
    if aQSO.NewMulti2 then begin
-      Inc(Multi2[B]);
+      SL.CommaText := aQSO.Multi2;
+      Inc(Multi2[B], SL.Count);
    end;
+
+   SL.Free();
 end;
 
 procedure TBasicScore.Add(aQSO: TQSO);

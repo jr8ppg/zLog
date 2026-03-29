@@ -3,7 +3,7 @@ object MenuForm: TMenuForm
   Top = 64
   BorderStyle = bsDialog
   Caption = 'zLog Menu'
-  ClientHeight = 266
+  ClientHeight = 303
   ClientWidth = 562
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object MenuForm: TMenuForm
   OnShow = FormShow
   DesignSize = (
     562
-    266)
+    303)
   TextHeight = 13
   object Label1: TMenuForm
     Left = 358
@@ -41,7 +41,7 @@ object MenuForm: TMenuForm
   end
   object OKButton: TButton
     Left = 401
-    Top = 233
+    Top = 270
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -49,12 +49,11 @@ object MenuForm: TMenuForm
     Default = True
     TabOrder = 0
     OnClick = OKButtonClick
-    ExplicitLeft = 387
-    ExplicitTop = 243
+    ExplicitTop = 233
   end
   object CancelButton: TButton
     Left = 481
-    Top = 233
+    Top = 270
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -62,8 +61,7 @@ object MenuForm: TMenuForm
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 1
-    ExplicitLeft = 467
-    ExplicitTop = 243
+    ExplicitTop = 233
   end
   object Button3: TButton
     Left = 172
@@ -80,19 +78,18 @@ object MenuForm: TMenuForm
     Left = 8
     Top = 8
     Width = 291
-    Height = 250
+    Height = 287
     Anchors = [akLeft, akTop, akRight, akBottom]
     Caption = 'Contest'
     TabOrder = 3
-    ExplicitWidth = 277
-    ExplicitHeight = 260
+    ExplicitHeight = 250
     DesignSize = (
       291
-      250)
+      287)
     object SelectButton: TSpeedButton
       Tag = 9999
       Left = 183
-      Top = 218
+      Top = 255
       Width = 66
       Height = 23
       Anchors = [akLeft, akBottom]
@@ -202,7 +199,7 @@ object MenuForm: TMenuForm
     object rbGeneral: TRadioButton
       Tag = 959
       Left = 8
-      Top = 221
+      Top = 258
       Width = 169
       Height = 17
       Anchors = [akLeft, akBottom]
@@ -217,7 +214,7 @@ object MenuForm: TMenuForm
       OnClick = SelectContestClick
       OnEnter = rbGeneralEnter
       OnExit = rbGeneralExit
-      ExplicitTop = 231
+      ExplicitTop = 221
     end
     object rbARRLDX: TRadioButton
       Tag = 107
@@ -340,6 +337,16 @@ object MenuForm: TMenuForm
       TabOrder = 21
       OnClick = SelectContestClick
     end
+    object rbBartgRtty: TRadioButton
+      Tag = 115
+      Left = 136
+      Top = 208
+      Width = 141
+      Height = 17
+      Caption = 'BARTG HF RTTY'
+      TabOrder = 22
+      OnClick = SelectContestClick
+    end
   end
   object BandGroup: TRadioButton
     Left = 272
@@ -381,7 +388,6 @@ object MenuForm: TMenuForm
       'Other'
       'ALL')
     TabOrder = 5
-    ExplicitLeft = 443
   end
   object editCallsign: TRadioGroup
     Left = 444
@@ -416,7 +422,6 @@ object MenuForm: TMenuForm
     MaxLength = 3
     TabOrder = 8
     Text = '1'
-    ExplicitLeft = 357
   end
   object GroupBox1: TGroupBox
     Left = 305
@@ -426,7 +431,6 @@ object MenuForm: TMenuForm
     Anchors = [akTop, akRight]
     Caption = 'Category'
     TabOrder = 9
-    ExplicitLeft = 291
     object Label2: TLabel
       Left = 66
       Top = 100

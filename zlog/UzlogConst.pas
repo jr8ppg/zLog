@@ -24,6 +24,7 @@ type
   TAudioInput = (aiDontCare = 0, aiMic, aiUsb, aiAcc, aiMicUsb, aiMicAcc);
   TExecuteAt = (eaBefore = 0, eaAfter);
   TWebUploadContest = ( wuAllja = 0, wu6d, wuFd, wuAcag, wuAacw, wuAaph, wuNyp, wuOther );
+  TMultiKind = ( mkNone = 0, mkContinent );
 
 type
   TPortAction = ( paNone = 0, paPtt, paKey, paAlwaysOn, paAlwaysOff, paHandshake );

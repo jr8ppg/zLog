@@ -13,5 +13,6 @@ object BasicMulti: TBasicMulti
   KeyPreview = True
   Scaled = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   TextHeight = 13
 end

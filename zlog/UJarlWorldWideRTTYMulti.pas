@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids, StrUtils,
-  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers;
+  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers,
+  UzLogContest;
 
 const
   WM_ZLOG_UPDATELABEL = (WM_USER + 100);
@@ -37,6 +38,9 @@ type
   private
     { Private declarations }
     FCountryList: TCountryList;
+    FPtSameCont: Integer;
+    FPtDiffCont: Integer;
+    FBartgRule: Boolean;
     procedure GoForwardMatch(strCode: string);
   protected
     FMostRecentCty: TCountry;
@@ -47,6 +51,8 @@ type
     procedure UpdateLabelPos(); virtual;
   public
     { Public declarations }
+    constructor Create(AOwner: TComponent); overload; override;
+    constructor Create(AOwner: TComponent; ABartgRule: Boolean); reintroduce; overload;
     procedure Reset; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure Add(aQSO: TQSO); override; // only calls addnoupdate but no update
@@ -63,6 +69,10 @@ type
     procedure EndUpdate(); override;
 
     property LastCountry: TCountry read FLastCountry;
+    property PtSameCont: Integer read FPtSameCont write FPtSameCont;
+    property PtDiffCont: Integer read FPtDiffCont write FPtDiffCont;
+  published
+    property Multi2Kind;
   end;
 
 function IsJAWVEVK(cty: string): Boolean;
@@ -75,73 +85,117 @@ uses
 
 {$R *.DFM}
 
+constructor TJarlWorldWideRTTYMulti.Create(AOwner: TComponent);
+begin
+   Inherited Create(AOwner);
+   FBartgRule := False;
+end;
+
+constructor TJarlWorldWideRTTYMulti.Create(AOwner: TComponent; ABartgRule: Boolean);
+begin
+   Inherited Create(AOwner);
+   FBartgRule := ABartgRule;
+end;
+
 procedure TJarlWorldWideRTTYMulti.FormCreate(Sender: TObject);
 var
    i: Integer;
    cty: TCountry;
+
+
+   procedure AddCallAreaJA();
+   begin
+      FCountryList.Add(TCountry.Create('Japan(Area 0):25:45:AS:::9:JA0:JA0'));
+      FCountryList.Add(TCountry.Create('Japan(Area 1):25:45:AS:::9:JA1:JA1'));
+      FCountryList.Add(TCountry.Create('Japan(Area 2):25:45:AS:::9:JA2:JA2'));
+      FCountryList.Add(TCountry.Create('Japan(Area 3):25:45:AS:::9:JA3:JA3'));
+      FCountryList.Add(TCountry.Create('Japan(Area 4):25:45:AS:::9:JA4:JA4'));
+      FCountryList.Add(TCountry.Create('Japan(Area 5):25:45:AS:::9:JA5:JA5'));
+      FCountryList.Add(TCountry.Create('Japan(Area 6):25:45:AS:::9:JA6:JA6'));
+      FCountryList.Add(TCountry.Create('Japan(Area 7):25:45:AS:::9:JA7:JA7'));
+      FCountryList.Add(TCountry.Create('Japan(Area 8):25:45:AS:::9:JA8:JA8'));
+      FCountryList.Add(TCountry.Create('Japan(Area 9):25:45:AS:::9:JA9:JA9'));
+   end;
+   procedure AddCallAreaK();
+   begin
+      FCountryList.Add(TCountry.Create('United States(Area 0):04:07:NA:::0:K0:K0'));
+      FCountryList.Add(TCountry.Create('United States(Area 1):05:08:NA:::0:K1:K1'));
+      FCountryList.Add(TCountry.Create('United States(Area 2):05:08:NA:::0:K2:K2'));
+      FCountryList.Add(TCountry.Create('United States(Area 3):05:08:NA:::0:K3:K3'));
+      FCountryList.Add(TCountry.Create('United States(Area 4):05:08:NA:::0:K4:K4'));
+      FCountryList.Add(TCountry.Create('United States(Area 5):04:07:NA:::0:K5:K5'));
+      FCountryList.Add(TCountry.Create('United States(Area 6):03:06:NA:::0:K6:K6'));
+      FCountryList.Add(TCountry.Create('United States(Area 7):03:06:NA:::0:K7:K7'));
+      FCountryList.Add(TCountry.Create('United States(Area 8):04:06:NA:::0:K8:K8'));
+      FCountryList.Add(TCountry.Create('United States(Area 9):04:06:NA:::0:K9:K9'));
+   end;
+   procedure AddCallAreaVE();
+   begin
+      FCountryList.Add(TCountry.Create('Canada (Area 0):05:09:NA:::0:VE0:VE0'));
+      FCountryList.Add(TCountry.Create('Canada (Area 1):05:09:NA:::0:VE1:VE1'));
+      FCountryList.Add(TCountry.Create('Canada (Area 2):05:04:NA:::0:VE2:VE2'));
+      FCountryList.Add(TCountry.Create('Canada (Area 3):04:04:NA:::0:VE3:VE3'));
+      FCountryList.Add(TCountry.Create('Canada (Area 4):04:03:NA:::0:VE4:VE4'));
+      FCountryList.Add(TCountry.Create('Canada (Area 5):04:03:NA:::0:VE5:VE5'));
+      FCountryList.Add(TCountry.Create('Canada (Area 6):04:02:NA:::0:VE6:VE6'));
+      FCountryList.Add(TCountry.Create('Canada (Area 7):03:02:NA:::0:VE7:VE7'));
+      FCountryList.Add(TCountry.Create('Canada (Area 8):01:03:NA:::0:VE8:VE8'));
+      FCountryList.Add(TCountry.Create('Canada (Area 9):05:09:NA:::0:VE9:VE9'));
+   end;
+   procedure AddCallAreaVK();
+   begin
+      FCountryList.Add(TCountry.Create('Australia (Area 1):30:59:OC:::0:VK1:VK1'));
+      FCountryList.Add(TCountry.Create('Australia (Area 2):30:59:OC:::0:VK2:VK2'));
+      FCountryList.Add(TCountry.Create('Australia (Area 3):30:59:OC:::0:VK3:VK3'));
+      FCountryList.Add(TCountry.Create('Australia (Area 4):30:55:OC:::0:VK4:VK4'));
+      FCountryList.Add(TCountry.Create('Australia (Area 5):30:59:OC:::0:VK5:VK5'));
+      FCountryList.Add(TCountry.Create('Australia (Area 6):29:58:OC:::0:VK6:VK6'));
+      FCountryList.Add(TCountry.Create('Australia (Area 7):30:59:OC:::0:VK7:VK7'));
+      FCountryList.Add(TCountry.Create('Australia (Area 8):29:55:OC:::0:VK8:VK8'));
+   end;
 begin
    Inherited;
    FMostRecentCty := nil;
    FLastCountry := nil;
    FCountryList := TCountryList.Create();
+   FPtSameCont := 2;
+   FPtDiffCont := 3;
 
    for i := 0 to dmZLogGlobal.CountryList.Count - 1 do begin
       cty := TCountry.Create();
       cty.Assign(dmZLogGlobal.CountryList[i]);
 
-      if cty.Country = 'K' then begin
-         FCountryList.Add(TCountry.Create('United States(Area 0):04:07:NA:::0:K0:K0'));
-         FCountryList.Add(TCountry.Create('United States(Area 1):05:08:NA:::0:K1:K1'));
-         FCountryList.Add(TCountry.Create('United States(Area 2):05:08:NA:::0:K2:K2'));
-         FCountryList.Add(TCountry.Create('United States(Area 3):05:08:NA:::0:K3:K3'));
-         FCountryList.Add(TCountry.Create('United States(Area 4):05:08:NA:::0:K4:K4'));
-         FCountryList.Add(TCountry.Create('United States(Area 5):04:07:NA:::0:K5:K5'));
-         FCountryList.Add(TCountry.Create('United States(Area 6):03:06:NA:::0:K6:K6'));
-         FCountryList.Add(TCountry.Create('United States(Area 7):03:06:NA:::0:K7:K7'));
-         FCountryList.Add(TCountry.Create('United States(Area 8):04:06:NA:::0:K8:K8'));
-         FCountryList.Add(TCountry.Create('United States(Area 9):04:06:NA:::0:K9:K9'));
-         cty.Free();
-      end
-      else if cty.Country = 'JA' then begin
-         FCountryList.Add(TCountry.Create('Japan(Area 0):25:45:AS:::9:JA0:JA0'));
-         FCountryList.Add(TCountry.Create('Japan(Area 1):25:45:AS:::9:JA1:JA1'));
-         FCountryList.Add(TCountry.Create('Japan(Area 2):25:45:AS:::9:JA2:JA2'));
-         FCountryList.Add(TCountry.Create('Japan(Area 3):25:45:AS:::9:JA3:JA3'));
-         FCountryList.Add(TCountry.Create('Japan(Area 4):25:45:AS:::9:JA4:JA4'));
-         FCountryList.Add(TCountry.Create('Japan(Area 5):25:45:AS:::9:JA5:JA5'));
-         FCountryList.Add(TCountry.Create('Japan(Area 6):25:45:AS:::9:JA6:JA6'));
-         FCountryList.Add(TCountry.Create('Japan(Area 7):25:45:AS:::9:JA7:JA7'));
-         FCountryList.Add(TCountry.Create('Japan(Area 8):25:45:AS:::9:JA8:JA8'));
-         FCountryList.Add(TCountry.Create('Japan(Area 9):25:45:AS:::9:JA9:JA9'));
-         cty.Free();
-      end
-      else if cty.Country = 'VE' then begin
-         FCountryList.Add(TCountry.Create('Canada (Area 0):05:09:NA:::0:VE0:VE0'));
-         FCountryList.Add(TCountry.Create('Canada (Area 1):05:09:NA:::0:VE1:VE1'));
-         FCountryList.Add(TCountry.Create('Canada (Area 2):05:04:NA:::0:VE2:VE2'));
-         FCountryList.Add(TCountry.Create('Canada (Area 3):04:04:NA:::0:VE3:VE3'));
-         FCountryList.Add(TCountry.Create('Canada (Area 4):04:03:NA:::0:VE4:VE4'));
-         FCountryList.Add(TCountry.Create('Canada (Area 5):04:03:NA:::0:VE5:VE5'));
-         FCountryList.Add(TCountry.Create('Canada (Area 6):04:02:NA:::0:VE6:VE6'));
-         FCountryList.Add(TCountry.Create('Canada (Area 7):03:02:NA:::0:VE7:VE7'));
-         FCountryList.Add(TCountry.Create('Canada (Area 8):01:03:NA:::0:VE8:VE8'));
-         FCountryList.Add(TCountry.Create('Canada (Area 9):05:09:NA:::0:VE9:VE9'));
-         cty.Free();
-      end
-      else if cty.Country = 'VK' then begin
-         FCountryList.Add(TCountry.Create('Australia (Area 1):30:59:OC:::0:VK1:VK1'));
-         FCountryList.Add(TCountry.Create('Australia (Area 2):30:59:OC:::0:VK2:VK2'));
-         FCountryList.Add(TCountry.Create('Australia (Area 3):30:59:OC:::0:VK3:VK3'));
-         FCountryList.Add(TCountry.Create('Australia (Area 4):30:55:OC:::0:VK4:VK4'));
-         FCountryList.Add(TCountry.Create('Australia (Area 5):30:59:OC:::0:VK5:VK5'));
-         FCountryList.Add(TCountry.Create('Australia (Area 6):29:58:OC:::0:VK6:VK6'));
-         FCountryList.Add(TCountry.Create('Australia (Area 7):30:59:OC:::0:VK7:VK7'));
-         FCountryList.Add(TCountry.Create('Australia (Area 8):29:55:OC:::0:VK8:VK8'));
-         cty.Free();
+      if FBartgRule = False then begin
+         if cty.Country = 'K' then begin
+            AddCallAreaK();
+            cty.Free();
+         end
+         else if cty.Country = 'JA' then begin
+            AddCallAreaJA();
+            cty.Free();
+         end
+         else if cty.Country = 'VE' then begin
+            AddCallAreaVE();
+            cty.Free();
+         end
+         else if cty.Country = 'VK' then begin
+            AddCallAreaVK();
+            cty.Free();
+         end
+         else begin
+            FCountryList.Add(cty);
+         end;
       end
       else begin
          FCountryList.Add(cty);
       end;
+   end;
+
+   if FBartgRule = True then begin
+      AddCallAreaK();
+      AddCallAreaJA();
+      AddCallAreaVE();
+      AddCallAreaVK();
    end;
 
    Reset();
@@ -264,6 +318,7 @@ end;
 procedure TJarlWorldWideRTTYMulti.AddNoUpdate(aQSO: TQSO);
 var
    strCallArea: string;
+   strEntity: string;
    C: TCountry;
    C2: TCountry;
    P: TPrefix;
@@ -295,37 +350,6 @@ begin
    C := P.Country;
    C2 := nil;
 
-   // JA/W/VE/VKはエンティティマルチなし
-   if IsJAWVEVK(C.Country) = True then begin
-      //・各バンドで交信したJA/W/VE/VK の本土内局のコールエリア数
-      strCallArea := GetCallArea(aQSO, C.Country);
-
-      for i := 0 to FCountryList.Count - 1 do begin
-         if FCountryList[i].Country = strCallArea then begin
-            C2 := FCountryList[i];
-            aQSO.Multi1 := strCallArea;
-            Break;
-         end;
-      end;
-   end
-   else begin  // JA/W/VE/VK以外
-      for i := 0 to FCountryList.Count - 1 do begin
-         if FCountryList[i].Country = P.Country.Country then begin
-            C2 := FCountryList[i];
-            aQSO.Multi1 := C.Country;
-            Break;
-         end;
-      end;
-   end;
-
-   if C2 <> nil then begin
-      B := aQSO.Band;
-      if C2.Worked[B] = False then begin
-         C2.Worked[B] := True;
-         aQSO.NewMulti1 := True;
-      end;
-   end;
-
    // Continentチェック
    if P.OvrContinent = '' then begin
       aQSO.Continent := C.Continent;
@@ -334,13 +358,102 @@ begin
       aQSO.Continent := P.OvrContinent;
    end;
 
+   // Entityチェック
    aQSO.Entity := C.Country;
 
+   // BARTGはEntityとCallAreaの両方をカウント
+   if FBartgRule = True then begin
+      strEntity := C.Country;
+      strCallArea := GetCallArea(aQSO, C.Country);
+      B := aQSO.Band;
+
+      for i := 0 to FCountryList.Count - 1 do begin
+         // Entity
+         if FCountryList[i].Country = strEntity then begin
+            C2 := FCountryList[i];
+            if C2.Worked[B] = False then begin
+               if aQSO.Multi1 = '' then begin
+                  aQSO.Multi1 := strEntity;
+               end
+               else begin
+                  aQSO.Multi1 := aQSO.Multi1 + ',' + strEntity;
+               end;
+
+               C2.Worked[B] := True;
+               aQSO.NewMulti1 := True;
+            end;
+         end;
+
+         // Call area
+         if strCallArea <> '' then begin
+            if FCountryList[i].Country = strCallArea then begin
+               C2 := FCountryList[i];
+               if C2.Worked[B] = False then begin
+                  if aQSO.Multi1 = '' then begin
+                     aQSO.Multi1 := strCallArea;
+                  end
+                  else begin
+                     aQSO.Multi1 := aQSO.Multi1 + ',' + strCallArea;
+                  end;
+
+                  C2.Worked[B] := True;
+                  aQSO.NewMulti1 := True;
+               end;
+            end;
+         end;
+      end;
+   end
+   else begin
+      // JA/W/VE/VKはエンティティマルチなし
+      if IsJAWVEVK(C.Country) = True then begin
+         //・各バンドで交信したJA/W/VE/VK の本土内局のコールエリア数
+         strCallArea := GetCallArea(aQSO, C.Country);
+
+         for i := 0 to FCountryList.Count - 1 do begin
+            if FCountryList[i].Country = strCallArea then begin
+               C2 := FCountryList[i];
+               aQSO.Multi1 := strCallArea;
+               Break;
+            end;
+         end;
+      end
+      else begin  // JA/W/VE/VK以外
+         for i := 0 to FCountryList.Count - 1 do begin
+            if FCountryList[i].Country = P.Country.Country then begin
+               C2 := FCountryList[i];
+               aQSO.Multi1 := C.Country;
+               Break;
+            end;
+         end;
+      end;
+
+      if C2 <> nil then begin
+         B := aQSO.Band;
+         if C2.Worked[B] = False then begin
+            C2.Worked[B] := True;
+            aQSO.NewMulti1 := True;
+         end;
+      end;
+   end;
+
+   // Multi2
+   if FMulti2Kind = mkContinent then begin
+      if aQSO.Continent <> '' then begin
+         i := FMulti2List.IndexOf(aQSO.Continent);
+         if i = -1 then begin
+            aQSO.NewMulti2 := True;
+            aQSO.Multi2 := aQSO.Continent;
+            FMulti2List.Add(aQSO.Continent);
+         end;
+      end;
+   end;
+
+   // Point
    if dmZLogGlobal.MyContinent <> aQSO.Continent then begin // 異なる大陸
-      aQSO.Points := 3;
+      aQSO.Points := FPtDiffCont;
    end
    else begin  // 同一大陸
-      aQSO.Points := 2;
+      aQSO.Points := FPtSameCont;
    end;
 
    // (3)公海上のMM(Maritime Mobile）局
@@ -368,6 +481,7 @@ var
    temp, temp2: string;
    B: TBand;
    C: TCountry;
+   CTY: string;
 begin
    C := dmZLogGlobal.GetPrefix(aQSO.Callsign).Country;
    if C.CountryName = 'Unknown' then begin
@@ -376,7 +490,15 @@ begin
       Exit;
    end;
 
-   GoForwardMatch(C.Country);
+   // JA/W/VE/VKはエンティティマルチなし
+   if IsJAWVEVK(C.Country) = True then begin
+      CTY := GetCallArea(aQSO, C.Country);
+   end
+   else begin  // JA/W/VE/VK以外
+      CTY := C.Country;
+   end;
+
+   GoForwardMatch(CTY);
 
    temp := '';
    temp := C.Country + ' ' + C.Continent + ' ';
@@ -525,7 +647,6 @@ procedure TJarlWorldWideRTTYMulti.CheckMulti(aQSO: TQSO);
 var
    str: string;
    i: integer;
-   B: TBand;
 begin
    str := aQSO.NrRcvd;
    i := StrToIntDef(str, 0);

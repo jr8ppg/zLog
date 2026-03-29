@@ -295,6 +295,14 @@ type
     function GetNewMulti2(aQSO: TQSO): string; override;
   end;
 
+  TBartgHfRTTY = class(TContest)
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
+    function ADIF_ExtraFieldName() : string; override;
+    function ADIF_ExtraField(aQSO: TQSO): string; override;
+    function GetNewMulti1(aQSO: TQSO): string; override;
+    function GetNewMulti2(aQSO: TQSO): string; override;
+  end;
+
 const
   def_cw_messages: array[1..maxmessage] of string =
     ( 'CQ TEST $M TEST',
@@ -2586,6 +2594,8 @@ begin
    inherited Create(AOwner, N, M);
 
    FMultiForm := TJarlWorldWideRTTYMulti.Create(AOwner);
+   TJarlWorldWideRTTYMulti(FMultiForm).PtSameCont := 2;
+   TJarlWorldWideRTTYMulti(FMultiForm).PtDiffCont := 3;
    FScoreForm := TJarlWorldWideRTTYScore.Create(AOwner);
 
    UseUTC := True;
@@ -2640,6 +2650,85 @@ begin
 end;
 
 function TJarlWorldWideRTTY.GetNewMulti2(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti2 then
+      Result := aQSO.Multi2
+   else
+      Result := '';
+end;
+
+{ TBartgHfRTTY }
+
+constructor TBartgHfRTTY.Create(AOwner: TComponent; N: string; M: TContestMode);
+begin
+   inherited Create(AOwner, N, M);
+
+   FMultiForm := TJarlWorldWideRTTYMulti.Create(AOwner, True);
+   FMultiForm.Multi2Kind := mkContinent;
+   TJarlWorldWideRTTYMulti(FMultiForm).PtSameCont := 1;
+   TJarlWorldWideRTTYMulti(FMultiForm).PtDiffCont := 1;
+   FScoreForm := TJarlWorldWideRTTYScore.Create(AOwner);
+   FScoreForm.UseMulti2 := True;
+
+   UseUTC := True;
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].Serial := $01; // uses serial number
+   FSerialType := stAll;
+   FSentStr := '$S$D';
+
+   FBandLow := b35;
+   FBandHigh := b28;
+   FBandPlan := 'DX';
+
+   FNeedCtyDat := True;
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := 'BARTG-RTTY';
+      cmCw: AdifContestId := 'BARTG-RTTY';
+      cmPh: AdifContestId := 'BARTG-RTTY';
+      else AdifContestId := 'BARTG-RTTY';
+   end;
+
+   FColWidths[0] := 3;      // status
+   FColWidths[1] := 6;      // date
+   FColWidths[2] := 6;      // time
+   FColWidths[3] := 12;     // callsign
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 8;      // Sent Number
+   FColWidths[6] := 8;      // Rcvd RST
+   FColWidths[7] := 5;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
+   FColWidths[15] := 10;    // freq
+   FColWidths[16] := 0;     // QSOID
+end;
+
+function TBartgHfRTTY.ADIF_ExtraFieldName(): string;
+begin
+   Result := 'CONT';
+end;
+
+function TBartgHfRTTY.ADIF_ExtraField(aQSO: TQSO): string;
+begin
+   Result := aQSO.Continent;
+end;
+
+function TBartgHfRTTY.GetNewMulti1(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti1 then
+      Result := aQSO.Multi1
+   else
+      Result := '';
+end;
+
+function TBartgHfRTTY.GetNewMulti2(aQSO: TQSO): string;
 begin
    if aQSO.NewMulti2 then
       Result := aQSO.Multi2

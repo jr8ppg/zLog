@@ -5443,11 +5443,13 @@ begin
       Q.NrSent   := Q.NrSentStr;
    end
    else begin
-      if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
-         Q.Serial   := StrToIntDef(SentNumberEdit.Text, 1);
-      end
-      else begin
-         Q.Serial   := StrToIntDef(FEditPanel[nID].SentNumberEdit.Text, 1);
+      if MyContest.SentStr = '$S' then begin
+         if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+            Q.Serial   := StrToIntDef(SentNumberEdit.Text, 1);
+         end
+         else begin
+            Q.Serial   := StrToIntDef(FEditPanel[nID].SentNumberEdit.Text, 1);
+         end;
       end;
       Q.NrSent   := GetInitNrSent(Q, True);
    end;
@@ -8731,6 +8733,11 @@ begin
       // JARL World Wide RTTY
       21: begin
          MyContest := TJarlWorldWideRTTY.Create(Self, 'JARL World Wide RTTY', mode);
+      end;
+
+      // BARTG HF RTTY
+      22: begin
+         MyContest := TBartgHfRTTY.Create(Self, 'BARTG HF RTTY', mode);
       end;
    end;
 
