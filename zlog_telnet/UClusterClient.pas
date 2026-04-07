@@ -937,6 +937,7 @@ begin
 
       dlg.ReConnectMax := FReConnectMax;
       dlg.RetryIntervalSec := FRetryIntervalSec;
+      dlg.UseForceReconnect := FUseForceReconnect;
       dlg.ForceReconnectIntervalMin := FForceReconnectIntervalMin;
 
       dlg.PacketClusterList := FPacketClusterList;
@@ -954,6 +955,7 @@ begin
 
       FReConnectMax := dlg.ReConnectMax;
       FRetryIntervalSec := dlg.RetryIntervalSec;
+      FUseForceReconnect := dlg.UseForceReconnect;
       FForceReconnectIntervalMin := dlg.ForceReconnectIntervalMin;
 
       FZServerClientName := dlg.ZServerClientName;
