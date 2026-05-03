@@ -2611,10 +2611,10 @@ begin
    FPeriod := 48;
 
    case M of
-      cmMix: AdifContestId := 'JARTS-WW-RTTY';
-      cmCw: AdifContestId := 'JARTS-WW-RTTY';
-      cmPh: AdifContestId := 'JARTS-WW-RTTY';
-      else AdifContestId := 'JARTS-WW-RTTY';
+      cmMix: AdifContestId := 'JARL-WW-RTTY';
+      cmCw: AdifContestId := 'JARL-WW-RTTY';
+      cmPh: AdifContestId := 'JARL-WW-RTTY';
+      else AdifContestId := 'JARL-WW-RTTY';
    end;
 
    FColWidths[0] := 3;      // status
