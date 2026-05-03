@@ -165,6 +165,7 @@ end;
 procedure TCWKeyBoard.FormShow(Sender: TObject);
 begin
    Inherited;
+   SpinEdit1.Value := dmZLogGlobal.Settings.CW._cwk_clear_delay;
    ApplyShortcut();
    InitProgress();
    ShowProgress();
@@ -304,6 +305,7 @@ end;
 procedure TCWKeyBoard.SpinEdit1Change(Sender: TObject);
 begin
    inherited;
+   dmZLogGlobal.Settings.CW._cwk_clear_delay := SpinEdit1.Value;
    Console.SetFocus();
 end;
 
@@ -804,18 +806,22 @@ var
    sec: Integer;
 begin
    sec := SpinEdit1.Value;
+   if sec = 0 then begin
+      Exit;
+   end
+   else begin
+      // 60 milisecが安定している
+      Timer1.Interval := 60;
 
-   // 60 milisecが安定している
-   Timer1.Interval := 60;
+      // 60 milisecで指定秒数でのカウント数
+      FCountMax := Trunc(sec * 1000 / Timer1.Interval);
+      FCounter := FCountMax;
 
-   // 60 milisecで指定秒数でのカウント数
-   FCountMax := Trunc(sec * 1000 / Timer1.Interval);
-   FCounter := FCountMax;
+      ShowProgress();
 
-   ShowProgress();
-
-   FTickCount := GetTickCount();
-   Timer1.Enabled := True;
+      FTickCount := GetTickCount();
+      Timer1.Enabled := True;
+   end;
 end;
 
 procedure TCWKeyBoard.ShowProgress();

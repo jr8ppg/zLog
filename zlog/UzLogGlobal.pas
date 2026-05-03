@@ -40,6 +40,8 @@ type
 
     _prov: string;
     _city: string;
+
+    _cwk_clear_delay: Integer;
   end;
 
   TCommParam = record
@@ -1069,6 +1071,9 @@ begin
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := ini.ReadBool('CW', 'not_send_leading_zeros', False);
 
+      // CW Keyboard Clear Delay
+      Settings.CW._cwk_clear_delay:= ini.ReadInteger('CW', 'cwk_clear_delay', 2);
+
       //
       // Hardware
       //
@@ -1904,7 +1909,10 @@ begin
       ini.WriteBool('CW', 'send_nr_auto', Settings.CW._send_nr_auto);
 
       // Not send leading zeros in serial number
-      ini.ReadBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
+      ini.WriteBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
+
+      // CW Keyboard Clear Delay
+      ini.WriteInteger('CW', 'cwk_clear_delay', Settings.CW._cwk_clear_delay);
 
       //
       // Hardware

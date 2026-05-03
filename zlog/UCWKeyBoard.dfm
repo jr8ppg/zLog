@@ -54,13 +54,12 @@ object CWKeyBoard: TCWKeyBoard
       ExplicitLeft = 192
     end
     object Label2: TLabel
-      Left = 303
+      Left = 310
       Top = 8
       Width = 20
       Height = 13
       Anchors = [akTop, akRight]
       Caption = 'sec.'
-      ExplicitLeft = 348
     end
     object buttonOK: TButton
       Left = 6
@@ -83,12 +82,12 @@ object CWKeyBoard: TCWKeyBoard
     object SpinEdit1: TSpinEdit
       Left = 262
       Top = 4
-      Width = 33
+      Width = 43
       Height = 22
       Anchors = [akTop, akRight]
       AutoSize = False
-      MaxValue = 9
-      MinValue = 1
+      MaxValue = 99
+      MinValue = 0
       TabOrder = 2
       Value = 2
       OnChange = SpinEdit1Change
