@@ -313,7 +313,9 @@ begin
       FRetryIntervalSec := ini.ReadInteger('cluster', 'RetryIntervalSec', 180);
       FUseForceReconnect  := ini.ReadBool('cluster', 'ForceReconnect', False);
       FForceReconnectIntervalMin := ini.ReadInteger('cluster', 'ForceReconnectInterval', 6 * 60);
-
+      {$IFDEF DEBUG}
+      FForceReconnectIntervalMin := ini.ReadInteger('cluster', 'ForceReconnectInterval', 2);
+      {$ENDIF}
       // Z-Server
       FZServerClientName := ini.ReadString('zserver', 'clientname', '');
       FZServerHostName := ini.ReadString('zserver', 'hostname', '');
@@ -775,9 +777,13 @@ begin
             Application.ProcessMessages();
             Sleep(10);
          end;
+         while (ZServer.State <> wsClosed) do begin
+            Application.ProcessMessages();
+            Sleep(10);
+         end;
       end;
 
-      if Telnet.IsConnected = False then begin
+      if (Telnet.IsConnected = False) then begin
          buttonConnect.Click;
       end;
    end;
@@ -957,6 +963,9 @@ begin
       FRetryIntervalSec := dlg.RetryIntervalSec;
       FUseForceReconnect := dlg.UseForceReconnect;
       FForceReconnectIntervalMin := dlg.ForceReconnectIntervalMin;
+      {$IFDEF DEBUG}
+      FForceReconnectIntervalMin := 2;
+      {$ENDIF}
 
       FZServerClientName := dlg.ZServerClientName;
       FZServerHostname := dlg.ZServerHost;
@@ -1190,6 +1199,7 @@ begin
    ZServer.SslEnable := FZServerSecure;         // SSLŽg—p—L–³
    ZServer.Addr := FZServerHostName;
    ZServer.Port := FZServerPortNumber;
+   ZServer.LocalPort := '0';
    ZServer.Connect();
 end;
 
