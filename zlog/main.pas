@@ -3050,9 +3050,9 @@ var
       NumberEdit2VA.Top := CallsignEdit2VA.Top;
       BandEdit2VA.Top := CallsignEdit2VA.Top;
       ModeEdit2VA.Top := CallsignEdit2VA.Top;
-      CallsignEdit2VA.Width := w * 8;
+      CallsignEdit2VA.Width := w * 12;
       RcvdRSTEdit2VA.Width := w * 4;
-      NumberEdit2VA.Width := w * 8;
+      NumberEdit2VA.Width := w * 9;
       BandEdit2VA.Width := w * 5;
       ModeEdit2VA.Width := w * 5;
       RcvdRSTEdit2VA.Left := CallsignEdit2VA.Left + CallsignEdit2VA.Width + 3;
@@ -3068,9 +3068,9 @@ var
       NumberEdit2VB.Top := CallsignEdit2VB.Top;
       BandEdit2VB.Top := CallsignEdit2VB.Top;
       ModeEdit2VB.Top := CallsignEdit2VB.Top;
-      CallsignEdit2VB.Width := w * 8;
+      CallsignEdit2VB.Width := w * 12;
       RcvdRSTEdit2VB.Width := w * 4;
-      NumberEdit2VB.Width := w * 8;
+      NumberEdit2VB.Width := w * 9;
       BandEdit2VB.Width := w * 5;
       ModeEdit2VB.Width := w * 5;
       RcvdRSTEdit2VB.Left := CallsignEdit2VB.Left + CallsignEdit2VB.Width + 3;
@@ -3089,9 +3089,9 @@ var
       ModeEdit2VC.Top := CallsignEdit2VC.Top;
       checkWithRig1V.Top := (RigPanelVC.Height - checkWithRig1V.Height) div 2;
       checkWithRig2V.Top := (RigPanelVC.Height - checkWithRig2V.Height) div 2;
-      CallsignEdit2VC.Width := w * 8;
+      CallsignEdit2VC.Width := w * 12;
       RcvdRSTEdit2VC.Width := w * 4;
-      NumberEdit2VC.Width := w * 8;
+      NumberEdit2VC.Width := w * 9;
       BandEdit2VC.Width := w * 5;
       ModeEdit2VC.Width := w * 5;
       RcvdRSTEdit2VC.Left := CallsignEdit2VC.Left + CallsignEdit2VC.Width + 3;
