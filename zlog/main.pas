@@ -6690,7 +6690,11 @@ begin
       else begin
          Log.SaveToFileAszLogCsv(f);
       end;
-   end
+   end;
+
+   if ext = '.SPC' then begin
+      Log.SaveToFileAsSpc(f);
+   end;
 
    { Add code to save current file under SaveDialog.FileName }
 end;

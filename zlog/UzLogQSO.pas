@@ -481,6 +481,7 @@ type
     procedure SaveToFileAsHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
     procedure SaveToFileAsHamSupport(Filename: string);
     procedure SaveToFileAsAdif(Filename: string);
+    procedure SaveToFileAsSpc(Filename: string);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -3728,6 +3729,37 @@ begin
    end;
 
    CloseFile(f);
+end;
+
+procedure TLog.SaveToFileAsSpc(Filename: string);
+var
+   S: string;
+   i: Integer;
+   Q: TQSO;
+   L: TStringList;
+begin
+   L := TStringList.Create();
+   try
+      L.Sorted := True;
+      L.Duplicates := dupIgnore;
+
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+
+         S := Q.Callsign;
+         if Q.NrRcvd <> '' then begin
+            S := S + DupeString(' ', 11);
+            S := Copy(S, 1, 11);
+            S := S + Q.NrRcvd;
+         end;
+
+         L.Add(S);
+      end;
+
+      L.SaveToFile(Filename);
+   finally
+      L.Free();
+   end;
 end;
 
 {$ENDIF}

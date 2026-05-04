@@ -7925,7 +7925,8 @@ object MainForm: TMainForm
   object FileExportDialog: TSaveDialog
     Filter = 
       'ALL bands|*.all|zLog DOS compatible text|*.txt|TX#|*.tx|ADIF|*.a' +
-      'di|Cabrillo|*.CBR|zLog CSV|*.csv|HAMLOG|*.csv|HAM'#20132#20449#12469#12509#12540#12488'|*.csv'
+      'di|Cabrillo|*.CBR|zLog CSV|*.csv|HAMLOG|*.csv|HAM Support|*.csv|' +
+      'Super Check|*.SPC'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Export'
     OnTypeChange = FileExportDialogTypeChange
