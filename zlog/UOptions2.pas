@@ -977,6 +977,10 @@ procedure TformOptions2.FormDestroy(Sender: TObject);
 begin
    FTempFreqMemList.Free();
    FVoiceSound.Free();
+
+   for var i := 0 to OpListbox.Items.Count - 1 do begin
+      TOperatorInfo(OpListbox.Items.Objects[i]).Free();
+   end;
 end;
 
 procedure TformOptions2.buttonOKClick(Sender: TObject);

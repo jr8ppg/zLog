@@ -2083,7 +2083,12 @@ begin
    end;
 
    // SO2R
-   dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
+   if (dmZLogGlobal.Settings._operate_style = os2RadioH) then begin
+      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked;
+   end;
+   if (dmZLogGlobal.Settings._operate_style = os2RadioV) then begin
+      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3V.Checked;
+   end;
 
    // Last CQ mode
    dmZLogGlobal.Settings.FLastCQMode := IsCQ();
@@ -6823,14 +6828,11 @@ begin
       // KeyingとRigControlを一旦終了
       FRigControl.ForcePowerOff();
       CancelCqRepeat();
-      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
-      checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZLogGlobal.ImplementSettings(False);
       dmZLogGlobal.SaveCurrentSettings();
       InitBandMenu();
@@ -6895,8 +6897,6 @@ begin
          Exit;
       end;
 
-      checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
-      checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZLogGlobal.ImplementSettings(False);
       dmZLogGlobal.SaveCurrentSettings();
 
@@ -13390,13 +13390,18 @@ begin
       op := dmZLogGlobal.OpList.ObjectOf(O);
    end;
 
-   OpEdit.Text := O;
-   CurrentQSO.Operator := O;
+   if OpEdit <> nil then begin
+      OpEdit.Text := O;
+      CurrentQSO.Operator := O;
+      FZLinkForm.SendOperator;
+   end;
 
    LastFocus.SetFocus;
    dmZLogGlobal.SetOpPower(CurrentQSO);
-   PowerEdit.Text := CurrentQSO.NewPowerStr;
-   FZLinkForm.SendOperator;
+
+   if PowerEdit <> nil then begin
+      PowerEdit.Text := CurrentQSO.NewPowerStr;
+   end;
 
    // Set current operator
    dmZLogGlobal.CurrentOperator := op;
