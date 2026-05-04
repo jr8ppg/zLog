@@ -1411,10 +1411,6 @@ begin
          Continue;
       end;
 
-      if Q.Points = 0 then begin
-         Continue;
-      end;
-
       Inc(qso[b]);
 
       if Q.NewMulti1 = True then begin

@@ -136,10 +136,6 @@ begin
 
    B := aQSO.band;
 
-   if aQSO.Dupe then begin
-      Exit;
-   end;
-
    case FContestMode of
       cmMix: begin
          if aQSO.mode in ContestModeSet[cmMix] then begin
