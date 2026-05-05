@@ -1385,6 +1385,8 @@ type
     procedure SetLightMode();
     procedure ShowDupeMessage(Q: TQSO);
     procedure FreeForm(var F: TForm);
+    procedure OpenPartialCheck();
+    procedure ClosePartialCheck();
   public
     LastFocus : TEdit;
 
@@ -2569,7 +2571,7 @@ begin
 
    if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
       if FPartialCheck.Visible then begin
-         FPartialCheck.UpdateData(CurrentQSO);
+         FPartialCheck.UpdateDataEx(CurrentQSO, Log.PartialList);
       end;
    end
    else begin
@@ -2673,7 +2675,7 @@ begin
 
    if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
       if FPartialCheck.Visible then begin
-         FPartialCheck.UpdateData(CurrentQSO);
+         FPartialCheck.UpdateDataEx(CurrentQSO, Log.PartialList);
       end;
    end
    else begin
@@ -4337,6 +4339,10 @@ var
 begin
    AssignControls(nID, C, SN, RN, B, M, OP, P);
 
+   // パーシャルチェック
+   OpenPartialCheck();
+
+   // デュープチェック
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
       MessageBeep(0);
@@ -4369,7 +4375,7 @@ begin
 
    if C.Text = '' then begin
       FEntityInfo.SetData(nil);
-      Log.ClearPartialList();
+      ClosePartialCheck();
    end;
 
    // SO2Rなので送受が同じ場合のみコールセットする
@@ -4381,19 +4387,8 @@ begin
       EditedSinceTABPressed := tabstate_tabpressedandedited;
    end;
 
-   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
-      if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
-         FPartialCheck.CheckPartial(CurrentQSO);
-      end;
-   end
-   else begin
-      Log.UpdatePartialList(CurrentQSO);
-      GridRefreshScreen(False, False);
-      if dmZLogGlobal.Settings.FPartialCloseTime > 0 then begin
-         timerPartialClose.Interval := dmZLogGlobal.Settings.FPartialCloseTime;
-         timerPartialClose.Enabled := True;
-      end;
-   end;
+   // 通常パーシャル／インクリメンタルデュープチェック
+   OpenPartialCheck();
 
    if FSuperCheck.Visible then begin
       CheckSuper(CurrentQSO);
@@ -5391,6 +5386,9 @@ begin
       Exit;
    end;
 
+   // パーシャルチェッククローズ
+   ClosePartialCheck();
+
    // 初期値セット
    Q.Points := 0;
    Q.NewMulti1 := False;
@@ -6016,9 +6014,7 @@ end;
 
 procedure TMainForm.timerPartialCloseTimer(Sender: TObject);
 begin
-   timerPartialClose.Enabled := False;
-   Log.ClearPartialList();
-   GridRefreshScreen(False, False);
+   ClosePartialCheck();
 end;
 
 // 汎用のInfoPanel
@@ -7612,7 +7608,7 @@ end;
 
 procedure TMainForm.NumberEdit1KeyUp(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
-   if FPartialCheck.Visible and not(FPartialCheck._CheckCall) then
+   if FPartialCheck.Visible and not(FPartialCheck.CheckCall) then
       FPartialCheck.CheckPartialNumber(CurrentQSO);
 
    if FCheckMulti.Visible then
@@ -11279,6 +11275,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actoinClearCallAndNumAftFocusExecute---'));
    {$ENDIF}
+   ClosePartialCheck();
    CallsignEdit.Clear();
    RcvdNumberEdit.Clear();
    if Assigned(MemoEdit) then MemoEdit.Clear();
@@ -14735,7 +14732,7 @@ begin
 
       GridWriteQSO(R, aQSO);
 
-      if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
+      if FPartialCheck.Visible and FPartialCheck.CheckCall then begin
          FPartialCheck.CheckPartial(CurrentQSO);
       end;
 
@@ -15881,6 +15878,35 @@ begin
    end;
 
    Result := FQuickRef;
+end;
+
+procedure TMainForm.OpenPartialCheck();
+begin
+   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+      if FPartialCheck.Visible and FPartialCheck.CheckCall then begin
+         FPartialCheck.CheckPartial(CurrentQSO);
+      end;
+   end
+   else begin
+      Log.UpdatePartialList(CurrentQSO);
+      GridRefreshScreen(False, False);
+
+      if FPartialCheck.Visible and FPartialCheck.CheckCall then begin
+         FPartialCheck.CheckPartialEx(CurrentQSO, Log.PartialList);
+      end;
+
+      if dmZLogGlobal.Settings.FPartialCloseTime > 0 then begin
+         timerPartialClose.Interval := dmZLogGlobal.Settings.FPartialCloseTime;
+         timerPartialClose.Enabled := True;
+      end;
+   end;
+end;
+
+procedure TMainForm.ClosePartialCheck();
+begin
+   timerPartialClose.Enabled := False;
+   Log.ClearPartialList();
+   GridRefreshScreen(False, False);
 end;
 
 { TBandScopeNotifyThread }

@@ -38,8 +38,12 @@ type
       var Height: Integer);
   private
     { Private declarations }
-    FTempQSO : TQSO;
-    FDispMax : word;
+    FTempQSO: TQSO;
+    FDispMax: Integer;
+    FCheckCall: Boolean;
+    FAllBand: Boolean;
+    FHitNumber: Integer;
+    FHitCall: string;
     procedure RenewListBox(QSOList : TQSOList);
     function SortBy: TSortMethod;
   protected
@@ -48,14 +52,15 @@ type
     procedure UpdateFontSize(v: Integer); override;
   public
     { Public declarations }
-    _CheckCall : boolean;
-    AllBand : boolean;
-    HitNumber : integer;
-    HitCall : string;
-    procedure CheckPartial(aQSO : TQSO);
-    procedure CheckPartialNumber(aQSO : TQSO);
-    procedure UpdateData(aQSO : TQSO); // calls either checkpartial or checkpartialnumber
-                                   // depending on _CheckCall value;
+    procedure CheckPartial(aQSO: TQSO);
+    procedure CheckPartialEx(aQSO: TQSO; L: TQSOList);
+    procedure CheckPartialNumber(aQSO: TQSO);
+    procedure UpdateData(aQSO: TQSO);
+    procedure UpdateDataEx(aQSO: TQSO; L: TQSOList);
+    property CheckCall: Boolean read FCheckCall;
+    property HitNumber: Integer read FHitNumber;
+    property HitCall: string read FHitCall;
+
     property FontSize: Integer read GetFontSize write SetFontSize;
   end;
 
@@ -70,8 +75,8 @@ procedure TPartialCheck.FormCreate(Sender: TObject);
 begin
    Inherited;
    ListBox.Font.Name := dmZLogGlobal.Settings.FBaseFontName;
-   AllBand := True;
-   _CheckCall := True;
+   FAllBand := True;
+   FCheckCall := True;
    FDispMax := 200;
    ShowMaxEdit.Value := FDispMax;
 end;
@@ -107,7 +112,7 @@ label
 begin
    TempList := TQSOList.Create(False);
    try
-      _CheckCall := False;
+      FCheckCall := False;
       _count := 0;
       FTempQSO := aQSO;
 
@@ -116,7 +121,7 @@ begin
       if PartialStr <> '' then begin
          for i := 1 to Log.TotalQSO do begin
             if Pos(PartialStr, Log.QsoList[i].NrRcvd) > 0 then begin
-               if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
+               if FAllBand or (not(FAllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
                   TempList.Add(Log.QsoList[i]);
                   if _count >= FDispMax then
                      goto disp
@@ -178,17 +183,18 @@ end;
 procedure TPartialCheck.CheckPartial(aQSO: TQSO);
 var
    PartialStr: string;
-   i: LongInt;
+   i: Integer;
    _count: Integer;
    TempList: TQSOList;
 label
    disp;
 begin
-   HitNumber := 0;
-   HitCall := '';
-   _CheckCall := True;
+   FHitNumber := 0;
+   FHitCall := '';
+   FCheckCall := True;
    _count := 0;
    FTempQSO := aQSO;
+
    // ListBox.Items.Clear;
    PartialStr := aQSO.Callsign;
    if dmZlogGlobal.Settings._searchafter >= length(PartialStr) then begin
@@ -205,7 +211,7 @@ begin
          for i := 1 to Log.TotalQSO do
             // if Pos(PartialStr, TQSO(Log.List[i]).QSO.Callsign) > 0 then
             if PartialMatch(PartialStr, Log.QsoList[i].Callsign) then
-               if AllBand or (not(AllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
+               if FAllBand or (not(FAllBand) and (aQSO.Band = Log.QsoList[i].Band)) then begin
                   // ListBox.Items.Add(TQSO(Log.List[i]).PartialSummary);
                   TempList.Add(Log.QsoList[i]);
                   if _count >= FDispMax then
@@ -227,13 +233,66 @@ begin
          exit;
       end;
 
-      HitNumber := TempList.Count;
+      FHitNumber := TempList.Count;
 
       TempList.Sort(SortBy);
 
       RenewListBox(TempList);
 
-      HitCall := TempList.Items[0].Callsign;
+      FHitCall := TempList.Items[0].Callsign;
+   finally
+      TempList.Free;
+   end;
+end;
+
+procedure TPartialCheck.CheckPartialEx(aQSO: TQSO; L: TQSOList);
+var
+   Q: TQSO;
+   PartialStr: string;
+   i: Integer;
+   _count: Integer;
+   TempList: TQSOList;
+begin
+   FHitNumber := 0;
+   FHitCall := '';
+   FCheckCall := True;
+
+   FTempQSO := aQSO;
+
+   if L.Count = 0 then begin
+      ListBox.Items.Clear;
+      Exit;
+   end;
+
+   TempList := TQSOList.Create(False);
+   try
+      _count := 0;
+      for i := 1 to L.Count - 1 do begin
+         Q := L[i];
+
+         if FAllBand or (not(FAllBand) and (Q.Band = aQSO.Band)) then begin
+            TempList.Add(Q);
+            if _count >= FDispMax then begin
+               Break;
+            end
+            else begin
+               inc(_count);
+            end;
+         end;
+      end;
+
+      if TempList.Count = 0 then begin
+         ListBox.Clear;
+         exit;
+      end;
+
+      FHitNumber := TempList.Count;
+
+      TempList.Sort(SortBy);
+
+      RenewListBox(TempList);
+
+      FHitCall := TempList.Items[0].Callsign;
    finally
       TempList.Free;
    end;
@@ -241,11 +300,15 @@ end;
 
 procedure TPartialCheck.CheckBox1Click(Sender: TObject);
 begin
-   AllBand := CheckBox1.Checked;
-   if _CheckCall then
-      CheckPartial(FTempQSO)
-   else
+   FAllBand := CheckBox1.Checked;
+   if FCheckCall then begin
+      if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+         CheckPartial(FTempQSO);
+      end;
+   end
+   else begin
       CheckPartialNumber(FTempQSO);
+   end;
 end;
 
 procedure TPartialCheck.MoreButtonClick(Sender: TObject);
@@ -267,10 +330,29 @@ end;
 
 procedure TPartialCheck.UpdateData(aQSO: TQSO);
 begin
-   if _CheckCall then
-      CheckPartial(aQSO)
-   else
+   if FCheckCall then begin
+      if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+         CheckPartial(aQSO);
+      end;
+   end
+   else begin
       CheckPartialNumber(aQSO);
+   end;
+end;
+
+procedure TPartialCheck.UpdateDataEx(aQSO: TQSO; L: TQSOList);
+begin
+   if FCheckCall then begin
+      if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+         CheckPartial(aQSO);
+      end
+      else begin
+         CheckPartialEx(aQSO, L);
+      end;
+   end
+   else begin
+      CheckPartialNumber(aQSO);
+   end;
 end;
 
 procedure TPartialCheck.rbSortClick(Sender: TObject);

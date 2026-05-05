@@ -24,8 +24,6 @@ object PartialCheck: TPartialCheck
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 184
-    ExplicitWidth = 304
     object Label1: TLabel
       Left = 212
       Top = 18
@@ -101,8 +99,6 @@ object PartialCheck: TPartialCheck
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 304
-    ExplicitHeight = 184
     object Panel: TPanel
       Left = 0
       Top = 159
@@ -111,8 +107,6 @@ object PartialCheck: TPartialCheck
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitTop = 158
-      ExplicitWidth = 304
       DesignSize = (
         308
         26)
@@ -167,8 +161,6 @@ object PartialCheck: TPartialCheck
       OnDblClick = ListBoxDblClick
       OnDrawItem = ListBoxDrawItem
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitWidth = 304
-      ExplicitHeight = 158
     end
   end
   object ImageList1: TImageList
