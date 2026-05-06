@@ -49,10 +49,13 @@ var
 begin
    temp := sendtext;
 
-   //S := MyContest.SentStr;
-   S := aQSO.NrSentStr;
+   S := MyContest.SentStr;
    temp := StringReplace(temp, '$X', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$x', LowerCase(S), [rfReplaceAll]);
+
+   S := aQSO.NrSentStr;
+   temp := StringReplace(temp, '$Y', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$y', S, [rfReplaceAll]);
 
    S := aQSO.Callsign;
    temp := StringReplace(temp, '$B', S, [rfReplaceAll]);
@@ -210,8 +213,9 @@ begin
    temp := StringReplace(temp, '[BK]', '', [rfReplaceAll]);
    temp := StringReplace(temp, '[BT]', '', [rfReplaceAll]);
 
-   temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
    temp := StringReplace(temp, '$X', MyContest.SentStr, [rfReplaceAll]);
+   temp := StringReplace(temp, '$Y', aQSO.NrSentStr, [rfReplaceAll]);
+   temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
    temp := StringReplace(temp, '$R', aQSO.RSTSentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$F', aQSO.NrRcvd, [rfReplaceAll]);
    temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
