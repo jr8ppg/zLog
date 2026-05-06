@@ -1028,6 +1028,7 @@ end;
 
 procedure TContest.SetCwMessages(Bank: Integer; Index: Integer; v: string);
 begin
+   FUseDefaultMessages := False;
    FCwMessages[Bank, Index] := v;
 end;
 
