@@ -493,6 +493,11 @@ type
     menuSaveToMyMessages: TMenuItem;
     N2: TMenuItem;
     menuResetMessages: TMenuItem;
+    panelLookupServerOption: TPanel;
+    radioLookupServerAuto: TRadioButton;
+    radioLookupServerProv: TRadioButton;
+    radioLookupServerCity: TRadioButton;
+    radioLookupServerNone: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -562,6 +567,7 @@ type
     procedure menuResetMessagesClick(Sender: TObject);
     procedure menuLoadFromMyMessagesClick(Sender: TObject);
     procedure menuSaveToMyMessagesClick(Sender: TObject);
+    procedure checkUseLookupServerClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -1456,6 +1462,23 @@ begin
       Settings._bandscope_show_dx_spots := checkShowDXspots.Checked;                // DXを表示
       Settings._bandscope_use_number_lookup := checkUseNumberLookup.Checked;        // Number Lookup
       Settings._bandscope_use_lookup_server := checkUseLookupServer.Checked;        // Lookup Server
+
+      if radioLookupServerAuto.Checked = True then begin
+         Settings._bandscope_lookup_server_option := 0;
+      end
+      else if radioLookupServerProv.Checked = True then begin
+         Settings._bandscope_lookup_server_option := 1;
+      end
+      else if radioLookupServerCity.Checked = True then begin
+         Settings._bandscope_lookup_server_option := 2;
+      end
+      else if radioLookupServerNone.Checked = True then begin
+         Settings._bandscope_lookup_server_option := 3;
+      end
+      else begin
+         Settings._bandscope_lookup_server_option := 0;
+      end;
+
       Settings._bandscope_setfreq_after_mode_change := checkSetFreqAfterModeChange.Checked;  // モード変更後周波数セット
       Settings._bandscope_always_change_mode := checkAlwaysChangeMode.Checked;      // 常にモード変更
       Settings._bandscope_save_current_freq := checkSaveCurrentFreq.Checked;        // S&P時、現在周波数を保存する
@@ -1894,6 +1917,15 @@ begin
       checkShowDXspots.Checked := Settings._bandscope_show_dx_spots;                // DXを表示
       checkUseNumberLookup.Checked := Settings._bandscope_use_number_lookup;        // Number Lookup
       checkUseLookupServer.Checked := Settings._bandscope_use_lookup_server;        // Lookup Server
+
+      case Settings._bandscope_lookup_server_option of
+         0: radioLookupServerAuto.Checked := True;
+         1: radioLookupServerProv.Checked := True;
+         2: radioLookupServerCity.Checked := True;
+         3: radioLookupServerNone.Checked := True;
+         else radioLookupServerAuto.Checked := True;
+      end;
+
       checkSetFreqAfterModeChange.Checked := Settings._bandscope_setfreq_after_mode_change;  // モード変更後周波数セット
       checkAlwaysChangeMode.Checked := Settings._bandscope_always_change_mode;      // 常にモード変更
       checkSaveCurrentFreq.Checked := Settings._bandscope_save_current_freq;        // S&P時、現在周波数を保存する
@@ -2173,12 +2205,25 @@ begin
    checkSetFreqAfterModeChange.Enabled := f;
 end;
 
+procedure TformOptions2.checkUseLookupServerClick(Sender: TObject);
+var
+   f: Boolean;
+begin
+   f := checkUseLookupServer.Checked and checkUseNumberLookup.Checked;
+   panelLookupServerOption.Enabled := f;
+   radioLookupServerAuto.Enabled := f;
+   radioLookupServerProv.Enabled := f;
+   radioLookupServerCity.Enabled := f;
+   radioLookupServerNone.Enabled := f;
+end;
+
 procedure TformOptions2.checkUseNumberLookupClick(Sender: TObject);
 var
    f: Boolean;
 begin
    f := checkUseNumberLookup.Checked;
    checkUseLookupServer.Enabled := f;
+   checkUseLookupServerClick(nil);
 end;
 
 procedure TformOptions2.SetEditNumber(no: Integer);

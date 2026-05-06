@@ -160,6 +160,7 @@ type
     _bandscope_show_dx_spots: Boolean;
     _bandscope_use_number_lookup: Boolean;
     _bandscope_use_lookup_server: Boolean;
+    _bandscope_lookup_server_option: Integer;
     _bandscope_use_resume: Boolean;
     _bandscope_setfreq_after_mode_change: Boolean;
     _bandscope_always_change_mode: Boolean;
@@ -1566,6 +1567,7 @@ begin
       Settings._bandscope_show_dx_spots := ini.ReadBool('BandScopeOptions', 'show_dx_spots', False);
       Settings._bandscope_use_number_lookup := ini.ReadBool('BandScopeOptions', 'use_number_lookup', True);
       Settings._bandscope_use_lookup_server := ini.ReadBool('BandScopeOptions', 'use_lookup_server', False);
+      Settings._bandscope_lookup_server_option := ini.ReadInteger('BandScopeOptions', 'lookup_server_option', 0);
       Settings._bandscope_use_resume := ini.ReadBool('BandScopeOptions', 'use_resume', False);
       Settings._bandscope_setfreq_after_mode_change := ini.ReadBool('BandScopeOptions', 'setfreq_after_mode_change', False);
       Settings._bandscope_always_change_mode := ini.ReadBool('BandScopeOptions', 'always_change_mode', True);
@@ -2294,6 +2296,7 @@ begin
       ini.WriteBool('BandScopeOptions', 'show_dx_spots', Settings._bandscope_show_dx_spots);
       ini.WriteBool('BandScopeOptions', 'use_number_lookup', Settings._bandscope_use_number_lookup);
       ini.WriteBool('BandScopeOptions', 'use_lookup_server', Settings._bandscope_use_lookup_server);
+      ini.WriteInteger('BandScopeOptions', 'lookup_server_option', Settings._bandscope_lookup_server_option);
       ini.WriteBool('BandScopeOptions', 'use_resume', Settings._bandscope_use_resume);
       ini.WriteBool('BandScopeOptions', 'setfreq_after_mode_change', Settings._bandscope_setfreq_after_mode_change);
       ini.WriteBool('BandScopeOptions', 'always_change_mode', Settings._bandscope_always_change_mode);

@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -3845,7 +3845,7 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 295
         Width = 512
-        Height = 146
+        Height = 158
         Caption = #12496#12531#12489#12473#12467#12540#12503#12458#12503#12471#12519#12531
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
@@ -3854,7 +3854,7 @@ object formOptions2: TformOptions2
           Width = 190
           Height = 17
           Caption = #21608#27874#25968#12424#12426#25512#23450#12375#12383#12514#12540#12489#12434#20351#12358
-          TabOrder = 5
+          TabOrder = 6
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -3874,12 +3874,13 @@ object formOptions2: TformOptions2
           TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
-          Left = 12
+          Left = 23
           Top = 86
           Width = 165
           Height = 17
           Caption = 'Lookup Server'#12434#20351#12358
           TabOrder = 4
+          OnClick = checkUseLookupServerClick
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 266
@@ -3887,7 +3888,7 @@ object formOptions2: TformOptions2
           Width = 157
           Height = 17
           Caption = #21608#27874#25968#12378#12428#12434#25233#21046
-          TabOrder = 7
+          TabOrder = 8
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 266
@@ -3895,7 +3896,7 @@ object formOptions2: TformOptions2
           Width = 176
           Height = 17
           Caption = 'LSB/USB'#12514#12540#12489#35492#12426#12434#25233#21046
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkSaveCurrentFreq: TCheckBox
           Left = 255
@@ -3903,7 +3904,7 @@ object formOptions2: TformOptions2
           Width = 204
           Height = 17
           Caption = 'SPOT'#12395'QSY'#12377#12427#30452#21069#12398#21608#27874#25968#12434#35352#25014
-          TabOrder = 8
+          TabOrder = 9
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowDXspots: TCheckBox
@@ -3925,23 +3926,66 @@ object formOptions2: TformOptions2
         end
         object checkUseResume: TCheckBox
           Left = 12
-          Top = 109
+          Top = 132
           Width = 145
           Height = 17
           Caption = #12524#12472#12517#12540#12512#27231#33021#12434#20351#12358
-          TabOrder = 9
+          TabOrder = 10
+        end
+        object panelLookupServerOption: TPanel
+          Left = 25
+          Top = 104
+          Width = 221
+          Height = 25
+          BevelOuter = bvNone
+          ParentColor = True
+          TabOrder = 5
+          object radioLookupServerAuto: TRadioButton
+            Left = 8
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = #33258#21205
+            Checked = True
+            TabOrder = 0
+            TabStop = True
+          end
+          object radioLookupServerProv: TRadioButton
+            Left = 60
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = #30476
+            TabOrder = 1
+          end
+          object radioLookupServerCity: TRadioButton
+            Left = 100
+            Top = 4
+            Width = 60
+            Height = 17
+            Caption = #24066#21306#37089
+            TabOrder = 2
+          end
+          object radioLookupServerNone: TRadioButton
+            Left = 163
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = #12394#12375
+            TabOrder = 3
+          end
         end
       end
       object groupReliability: TGroupBox
         Left = 6
-        Top = 445
+        Top = 458
         Width = 165
-        Height = 58
+        Height = 42
         Caption = #20449#38972#24230#21021#26399#20516
         TabOrder = 3
         object radioReliabilityHigh: TRadioButton
           Left = 12
-          Top = 26
+          Top = 18
           Width = 74
           Height = 17
           Caption = #39640#65288'High'#65289
@@ -3949,7 +3993,7 @@ object formOptions2: TformOptions2
         end
         object radioReliabilityMiddle: TRadioButton
           Left = 84
-          Top = 26
+          Top = 18
           Width = 74
           Height = 17
           Caption = #20013#65288'Middle'#65289

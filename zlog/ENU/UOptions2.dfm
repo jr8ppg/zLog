@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetBandScope1
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -4870,7 +4870,7 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 281
         Width = 423
-        Height = 112
+        Height = 158
         Caption = 'BandScope Options'
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
@@ -4879,7 +4879,7 @@ object formOptions2: TformOptions2
           Width = 190
           Height = 17
           Caption = 'Use estimated mode by freq.'
-          TabOrder = 5
+          TabOrder = 6
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -4899,12 +4899,13 @@ object formOptions2: TformOptions2
           TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
-          Left = 12
+          Left = 23
           Top = 86
           Width = 165
           Height = 17
           Caption = 'Use lookup server'
           TabOrder = 4
+          OnClick = checkUseLookupServerClick
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 226
@@ -4912,7 +4913,7 @@ object formOptions2: TformOptions2
           Width = 157
           Height = 17
           Caption = 'Suppress freq. deviation'
-          TabOrder = 7
+          TabOrder = 8
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 226
@@ -4920,7 +4921,7 @@ object formOptions2: TformOptions2
           Width = 176
           Height = 17
           Caption = 'Suppress LSB/USB mode error'
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
@@ -4928,7 +4929,7 @@ object formOptions2: TformOptions2
           Width = 204
           Height = 17
           Caption = 'Save the freq. before QSY to Spot'
-          TabOrder = 8
+          TabOrder = 9
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowDXspots: TCheckBox
@@ -4950,23 +4951,66 @@ object formOptions2: TformOptions2
         end
         object checkUseResume: TCheckBox
           Left = 12
-          Top = 109
+          Top = 132
           Width = 145
           Height = 17
           Caption = 'Use resume'
-          TabOrder = 9
+          TabOrder = 10
+        end
+        object panelLookupServerOption: TPanel
+          Left = 25
+          Top = 104
+          Width = 221
+          Height = 25
+          BevelOuter = bvNone
+          ParentColor = True
+          TabOrder = 5
+          object radioLookupServerAuto: TRadioButton
+            Left = 8
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'Auto'
+            Checked = True
+            TabOrder = 0
+            TabStop = True
+          end
+          object radioLookupServerProv: TRadioButton
+            Left = 60
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'Prov'
+            TabOrder = 1
+          end
+          object radioLookupServerCity: TRadioButton
+            Left = 110
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'City'
+            TabOrder = 2
+          end
+          object radioLookupServerNone: TRadioButton
+            Left = 163
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'None'
+            TabOrder = 3
+          end
         end
       end
       object groupReliability: TGroupBox
         Left = 6
-        Top = 445
+        Top = 458
         Width = 165
-        Height = 58
+        Height = 42
         Caption = 'Initial reliability'
         TabOrder = 3
         object radioReliabilityHigh: TRadioButton
           Left = 12
-          Top = 26
+          Top = 18
           Width = 74
           Height = 17
           Caption = 'High'
@@ -4974,7 +5018,7 @@ object formOptions2: TformOptions2
         end
         object radioReliabilityMiddle: TRadioButton
           Left = 84
-          Top = 26
+          Top = 18
           Width = 74
           Height = 17
           Caption = 'Middle'
