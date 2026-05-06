@@ -106,8 +106,9 @@ type
 
     procedure LoadCwMessages();
     procedure SaveCwMessages();
+    procedure LoadMyMessagesAll();
+    procedure LoadMyMessages(bank: Integer);
     procedure SaveColumnWidths();
-    procedure ApplyCwMessages();
 
     property Name: string read FContestName;
     property Mode: TContestMode read FContestMode write SetContestMode;
@@ -136,6 +137,7 @@ type
     property ScoreForm: TBasicScore read FScoreForm;
     property WantedList: TList<TWanted> read FWantedList;
 
+    property UseDefaultMessages: Boolean read FUseDefaultMessages;
     property Prov: string read GetProv write FProv;
     property City: string read GetCity write FCity;
     property CwMessages[Bank: Integer; Index: Integer]: string read GetCwMessages write SetCwMessages;
@@ -913,7 +915,8 @@ begin
          end;
       end;
 
-      ApplyCwMessages();
+      dmZLogGlobal.Settings.CW._prov := Prov;
+      dmZLogGlobal.Settings.CW._city := City;
    finally
       ini.Free();
       SL.Free();
@@ -971,6 +974,27 @@ begin
    end;
 end;
 
+procedure TContest.LoadMyMessagesAll();
+begin
+   LoadMyMessages(1);
+   LoadMyMessages(2);
+   LoadMyMessages(3);
+   FCwMessageCQ[2] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[2];
+   FCwMessageCQ[3] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[3];
+   FProv := dmZLogGlobal.Settings._myprov;
+   FCity := dmZLogGlobal.Settings._mycity;
+end;
+
+procedure TContest.LoadMyMessages(bank: Integer);
+var
+   i: Integer;
+begin
+   FUseDefaultMessages := False;
+   for i := 1 to maxmessage do begin
+      FCwMessages[bank][i] := dmZLogGlobal.Settings.CW.CWStrBank[bank, i];
+   end;
+end;
+
 procedure TContest.SaveColumnWidths();
 var
    ini: TIniFile;
@@ -988,12 +1012,6 @@ begin
       ini.Free();
       SL.Free();
    end;
-end;
-
-procedure TContest.ApplyCwMessages();
-begin
-   dmZLogGlobal.Settings.CW._prov := Prov;
-   dmZLogGlobal.Settings.CW._city := City;
 end;
 
 function TContest.GetProv(): string;

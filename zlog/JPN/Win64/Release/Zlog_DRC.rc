@@ -8,20 +8,21 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsProcessor 64112
-#define UExceptionDialog_RsMemory 64113
-#define UExceptionDialog_RsScreenRes 64114
-#define UExceptionDialog_RsActiveControl 64115
-#define UExceptionDialog_RsThread 64116
-#define UExceptionDialog_RsMissingVersionInfo 64117
-#define UExceptionDialog_RsExceptionStack 64118
-#define UExceptionDialog_RsMainThreadID 64119
-#define UExceptionDialog_RsExceptionThreadID 64120
-#define UExceptionDialog_RsMainThreadCallStack 64121
-#define UExceptionDialog_RsThreadCallStack 64122
-#define UExceptionDialog_RsErrorMessage 64123
-#define UExceptionDialog_RsDetailsIntro 64124
-#define UExceptionDialog_RsUnitVersioningIntro 64125
+#define UExceptionDialog_RsOSVersion 64112
+#define UExceptionDialog_RsProcessor 64113
+#define UExceptionDialog_RsMemory 64114
+#define UExceptionDialog_RsScreenRes 64115
+#define UExceptionDialog_RsActiveControl 64116
+#define UExceptionDialog_RsThread 64117
+#define UExceptionDialog_RsMissingVersionInfo 64118
+#define UExceptionDialog_RsExceptionStack 64119
+#define UExceptionDialog_RsMainThreadID 64120
+#define UExceptionDialog_RsExceptionThreadID 64121
+#define UExceptionDialog_RsMainThreadCallStack 64122
+#define UExceptionDialog_RsThreadCallStack 64123
+#define UExceptionDialog_RsErrorMessage 64124
+#define UExceptionDialog_RsDetailsIntro 64125
+#define UExceptionDialog_RsUnitVersioningIntro 64126
 #define Main_TMainForm_rbn_verified 64128
 #define Main_TMainForm_darkmode_changed 64129
 #define Main_TMainForm_partial_nomatch 64130
@@ -31,13 +32,13 @@
 #define Main_TMainForm_Reset_grid_column_widths 64134
 #define Main_TMainForm_Load_MMTTY 64135
 #define Main_TMainForm_Unload_MMTTY 64136
-#define UExceptionDialog_RsAppError 64137
-#define UExceptionDialog_RsExceptionClass 64138
-#define UExceptionDialog_RsExceptionMessage 64139
-#define UExceptionDialog_RsExceptionAddr 64140
-#define UExceptionDialog_RsStackList 64141
-#define UExceptionDialog_RsModulesList 64142
-#define UExceptionDialog_RsOSVersion 64143
+#define Main_TMainForm_NoCwMessages 64137
+#define UExceptionDialog_RsAppError 64138
+#define UExceptionDialog_RsExceptionClass 64139
+#define UExceptionDialog_RsExceptionMessage 64140
+#define UExceptionDialog_RsExceptionAddr 64141
+#define UExceptionDialog_RsStackList 64142
+#define UExceptionDialog_RsModulesList 64143
 #define Main_TMainForm_DownloadFile 64144
 #define Main_TMainForm_UploadFile 64145
 #define Main_TMainForm_SoundFileFolderNotSet 64146
@@ -1432,6 +1433,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
@@ -1455,13 +1457,13 @@ BEGIN
 	Main_TMainForm_Reset_grid_column_widths,	L"\x4EA4\x4FE1\x30EA\x30B9\x30C8\x306E\x30AB\x30E9\x30E0\x5E45\x3092\x521D\x671F\x5024\x306B\x623B\x3057\x307E\x3059\x3002\x3088\x308D\x3057\x3044\x3067\x3059\x304B\xFF1F"
 	Main_TMainForm_Load_MMTTY,	L"MMTTY\x306E\x30ED\x30FC\x30C9"
 	Main_TMainForm_Unload_MMTTY,	L"MMTTY\x306E\x30A2\x30F3\x30ED\x30FC\x30C9"
+	Main_TMainForm_NoCwMessages,	L"CW\x30E1\x30C3\x30BB\x30FC\x30B8\x306E\x8A2D\x5B9A\x304C\x3042\x308A\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x30DE\x30A4\x30E1\x30C3\x30BB\x30FC\x30B8\xFF08zlog.ini\xFF09\x3092\x30ED\x30FC\x30C9\x3057\x307E\x3059\x304B\xFF1F"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
 	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
-	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	Main_TMainForm_DownloadFile,	L"\x30D5\x30A1\x30A4\x30EB\x3092\x30C0\x30A6\x30F3\x30ED\x30FC\x30C9\x4E2D\x30FB\x30FB\x30FB"
 	Main_TMainForm_UploadFile,	L"\x30D5\x30A1\x30A4\x30EB\x3092\x30A2\x30C3\x30D7\x30ED\x30FC\x30C9\x4E2D\x30FB\x30FB\x30FB"
 	Main_TMainForm_SoundFileFolderNotSet,	L"\x30B5\x30A6\x30F3\x30C9\x30D5\x30A1\x30A4\x30EB\x30D5\x30A9\x30EB\x30C0\x304C\x8A2D\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"

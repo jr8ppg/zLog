@@ -1579,6 +1579,7 @@ resourcestring
   TMainForm_Reset_grid_column_widths = 'Reset Column widths to their default values. Are you sure?';
   TMainForm_Load_MMTTY = 'Load MMTTY';
   TMainForm_Unload_MMTTY = 'Unload MMTTY';
+  TMainForm_NoCwMessages = 'No CW message settings were found. Do you want to load MyMessages (zlog.ini)?';
 
 var
   MainForm: TMainForm;
@@ -9064,6 +9065,14 @@ begin
 
       InitGridColumnWidth();
       InitSerialPanel();
+
+      // zlog_cwparams.iniに設定が無かった
+      if MyContest.UseDefaultMessages = True then begin
+         // CWメッセージの設定がありませんでした。マイメッセージ（zlog.ini）をロードしますか？
+         if MessageBox(Handle, PChar(TMainForm_NoCwMessages), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON1 or MB_ICONEXCLAMATION) = IDYES then begin
+            MyContest.LoadMyMessagesAll();
+         end;
+      end;
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)
       case dmZLogGlobal.ContestMode of

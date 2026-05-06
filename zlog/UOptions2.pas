@@ -1639,8 +1639,8 @@ begin
       SentEdit.Text := MyContest.SentStr;
 
       // Prov/City
-      editProv.Text := Settings.CW._prov;
-      editCity.Text := Settings.CW._city;
+      editProv.Text := MyContest.Prov;
+      editCity.Text := MyContest.City;
 
       // Category
       if ContestCategory = ccSingleOp then begin
