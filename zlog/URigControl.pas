@@ -962,7 +962,7 @@ begin
          S := FOmniRig.Rig2.RigType;
       end;
 
-      RigLabel.Caption := 'RIG-' + IntToStr(MainForm.RigControl.CurrentRigNumber) + ':Omni-Rig(' + S + ')';
+      RigLabel.Caption := 'RIG-' + IntToStr(FCurrentRigNumber) + ':Omni-Rig(' + S + ')';
    end;
 
    // DEBUG:RITèÓïÒï\é¶
@@ -1187,6 +1187,7 @@ end;
 
 procedure TRigControl.ForcePowerOn();
 begin
+   FCurrentRigNumber := 1;
    ToggleSwitch1.State := tssOn;
 end;
 
