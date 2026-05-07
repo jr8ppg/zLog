@@ -475,6 +475,14 @@ begin
 
             // 同一コール同一バンド
             if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
+               // 上書き禁止GROUP
+               if ((BS.SpotGroup = 1) and (dmZLogGlobal.Settings._bandscopecolor[7].FNotOverwrite = True)) or
+                  ((BS.SpotGroup = 2) and (dmZLogGlobal.Settings._bandscopecolor[8].FNotOverwrite = True)) or
+                  ((BS.SpotGroup = 3) and (dmZLogGlobal.Settings._bandscopecolor[9].FNotOverwrite = True)) then begin
+                  D.Free();
+                  D := nil;
+                  Continue;
+               end;
 
                // 信頼度が上がる場合
                if BS.SpotReliability < D.SpotReliability then begin

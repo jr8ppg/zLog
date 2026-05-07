@@ -498,6 +498,9 @@ type
     radioLookupServerProv: TRadioButton;
     radioLookupServerCity: TRadioButton;
     radioLookupServerNone: TRadioButton;
+    checkNotOverwrite7: TCheckBox;
+    checkNotOverwrite8: TCheckBox;
+    checkNotOverwrite9: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -595,6 +598,7 @@ type
     FBSBold: array[1..15] of TCheckBox;
     FBSUseReliability: array[1..15] of TCheckBox;
     FBSTransparent: array[1..15] of TCheckBox;
+    FBSNotOverwrite: array[1..15] of TCheckBox;
 
     FNeedSuperCheckLoad: Boolean;
 
@@ -803,6 +807,21 @@ begin
    FBSUseReliability[13] := nil;
    FBSUseReliability[14] := nil;
    FBSUseReliability[15] := nil;
+   FBSNotOverwrite[1] := nil;
+   FBSNotOverwrite[2] := nil;
+   FBSNotOverwrite[3] := nil;
+   FBSNotOverwrite[4] := nil;
+   FBSNotOverwrite[5] := nil;
+   FBSNotOverwrite[6] := nil;
+   FBSNotOverwrite[7] := checkNotOverwrite7;
+   FBSNotOverwrite[8] := checkNotOverwrite8;
+   FBSNotOverwrite[9] := checkNotOverwrite9;
+   FBSNotOverwrite[10] := nil;
+   FBSNotOverwrite[11] := nil;
+   FBSNotOverwrite[12] := nil;
+   FBSNotOverwrite[13] := nil;
+   FBSNotOverwrite[14] := nil;
+   FBSNotOverwrite[15] := nil;
    FBSTransparent[1] := nil;
    FBSTransparent[2] := nil;
    FBSTransparent[3] := nil;
@@ -1445,6 +1464,12 @@ begin
          else begin
             Settings._bandscopecolor[i].FUseReliability := FBSUseReliability[i].Checked;
          end;
+         if FBSNotOverwrite[i] = nil then begin
+            Settings._bandscopecolor[i].FNotOverwrite := False;
+         end
+         else begin
+            Settings._bandscopecolor[i].FNotOverwrite := FBSNotOverwrite[i].Checked;
+         end;
          if FBSTransparent[i] = nil then begin
             Settings._bandscopecolor[i].FTransparent := False;
          end
@@ -1903,6 +1928,9 @@ begin
          if FBSUseReliability[i] <> nil then begin
             FBSUseReliability[i].Checked := Settings._bandscopecolor[i].FUseReliability;
          end;
+         if FBSNotOverwrite[i] <> nil then begin
+            FBSNotOverwrite[i].Checked := Settings._bandscopecolor[i].FNotOverwrite;
+         end;
          if FBSTransparent[i] <> nil then begin
             FBSTransparent[i].Checked := Settings._bandscopecolor[i].FTransparent;
          end;
@@ -2343,6 +2371,9 @@ begin
    end;
    if FBSUseReliability[n] <> nil then begin
       FBSUseReliability[n].Checked := False;
+   end;
+   if FBSNotOverwrite[n] <> nil then begin
+      FBSNotOverwrite[n].Checked := False;
    end;
    if FBSTransparent[n] <> nil then begin
       FBSTransparent[n].Checked := False;
