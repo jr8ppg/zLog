@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetBandScope2
+    ActivePage = tabsheetMyStation
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -2457,7 +2457,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Use multiline tabs'
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkUseDarkMode: TCheckBox
           Left = 268
@@ -2465,7 +2465,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Use dark mode'
-          TabOrder = 7
+          TabOrder = 8
         end
         object checkDisableShortCutsQSOEdit: TCheckBox
           Left = 268
@@ -2473,7 +2473,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Disable shortcuts during QSO editing'
-          TabOrder = 8
+          TabOrder = 9
         end
         object checkExportMemoToAdif: TCheckBox
           Left = 268
@@ -2481,7 +2481,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Export the Memo field to ADIF'
-          TabOrder = 9
+          TabOrder = 10
         end
         object checkShowStartupWindow: TCheckBox
           Left = 268
@@ -2489,7 +2489,16 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Show startup window'
-          TabOrder = 10
+          TabOrder = 11
+        end
+        object checkShowAvailableBands: TCheckBox
+          Left = 11
+          Top = 161
+          Width = 252
+          Height = 28
+          Caption = 'Show available bands for user defined contests'
+          TabOrder = 6
+          WordWrap = True
         end
       end
       object groupAccessibility: TGroupBox

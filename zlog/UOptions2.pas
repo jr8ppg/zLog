@@ -501,6 +501,7 @@ type
     checkNotOverwrite7: TCheckBox;
     checkNotOverwrite8: TCheckBox;
     checkNotOverwrite9: TCheckBox;
+    checkShowAvailableBands: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1164,6 +1165,9 @@ begin
       // Show show startup window
       Settings.FShowStartupWindow := checkShowStartupWindow.Checked;
 
+      // Show available bands for user defined contests
+      Settings.FShowAvailableBandsForUserDefinedContest := checkShowAvailableBands.Checked;
+
       // Browser component used for WebUpload
       if radioWebUpload0.Checked = True then begin
          Settings.FBrowserForWebUpload := 0;
@@ -1629,6 +1633,9 @@ begin
 
       // Show show startup window
       checkShowStartupWindow.Checked := Settings.FShowStartupWindow;
+
+      // Show available bands for user defined contests
+      checkShowAvailableBands.Checked := Settings.FShowAvailableBandsForUserDefinedContest;
 
       // Browser component used for WebUpload
       case Settings.FBrowserForWebUpload of

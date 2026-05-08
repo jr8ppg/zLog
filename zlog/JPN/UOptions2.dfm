@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetBandScope2
+    ActivePage = tabsheetMyStation
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -2457,7 +2457,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = #12479#12502#12434#35079#25968#34892#34920#31034#12377#12427
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkUseDarkMode: TCheckBox
           Left = 268
@@ -2465,7 +2465,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = #12480#12540#12463#12514#12540#12489#12434#20351#12358
-          TabOrder = 7
+          TabOrder = 8
         end
         object checkDisableShortCutsQSOEdit: TCheckBox
           Left = 268
@@ -2473,7 +2473,7 @@ object formOptions2: TformOptions2
           Width = 225
           Height = 17
           Caption = 'QSO'#32232#38598#26178#12395#12471#12519#12540#12488#12459#12483#12488#12434#20351#29992#12375#12394#12356
-          TabOrder = 8
+          TabOrder = 9
         end
         object checkExportMemoToAdif: TCheckBox
           Left = 268
@@ -2481,7 +2481,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'ADIF'#12395'Memo'#27396#12434#20986#21147#12377#12427
-          TabOrder = 9
+          TabOrder = 10
         end
         object checkShowStartupWindow: TCheckBox
           Left = 268
@@ -2489,7 +2489,16 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = #38283#22987#12454#12452#12531#12489#12454#12434#20351#29992#12377#12427
-          TabOrder = 10
+          TabOrder = 11
+        end
+        object checkShowAvailableBands: TCheckBox
+          Left = 11
+          Top = 161
+          Width = 252
+          Height = 28
+          Caption = #12518#12540#12470#12540#23450#32681#12467#12531#12486#12473#12488#12391#12399#21033#29992#21487#33021#12496#12531#12489#12434#34920#31034#12377#12427
+          TabOrder = 6
+          WordWrap = True
         end
       end
       object groupAccessibility: TGroupBox

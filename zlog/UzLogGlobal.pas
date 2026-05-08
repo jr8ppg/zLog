@@ -419,6 +419,9 @@ type
     // Startup window
     FShowStartupWindow: Boolean;
 
+    // Show available bands for user defined contest
+    FShowAvailableBandsForUserDefinedContest: Boolean;
+
     // Usability
     FUseMultiLineTabs: Boolean;
     FUseDarkMode: Boolean;
@@ -1378,6 +1381,9 @@ begin
       // Startup window
       Settings.FShowStartupWindow := ini.ReadBool('Preferences', 'ShowStartupWindow', True);
 
+      // Show available bands for user defined contests
+      Settings.FShowAvailableBandsForUserDefinedContest := ini.ReadBool('Preferences', 'ShowAvailableBandsForUserDefinedContest', False);
+
       // Export Memo field to ADIF
       Settings.FExportMemoToAdif := ini.ReadBool('Preferences', 'ExportMemoFieldToAdif', False);
 
@@ -2210,6 +2216,9 @@ begin
 
       // Startup window
       ini.WriteBool('Preferences', 'ShowStartupWindow', Settings.FShowStartupWindow);
+
+      // Show available bands for user defined contests
+      ini.WriteBool('Preferences', 'ShowAvailableBandsForUserDefinedContest', Settings.FShowAvailableBandsForUserDefinedContest);
 
       // Export Memo field to ADIF
       ini.WriteBool('Preferences', 'ExportMemoFieldToAdif', Settings.FExportMemoToAdif);

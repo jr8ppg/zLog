@@ -250,7 +250,7 @@ begin
    FContestName := '';
    FProv := '';
    FCity := '';
-   FPower := '';
+   FPower := DupeString('-', 19);
    FCoeff := True;
    for i := 1 to 8 do begin
       FCwMessageA[i] := '';
@@ -317,6 +317,7 @@ begin
 
    for B := b19 to HiBand do begin
       FSerialArray[B] := 1;
+      FPowerTable[B] := '-';
    end;
 
    FBandPlan := '';

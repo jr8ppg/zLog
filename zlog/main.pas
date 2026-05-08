@@ -8742,12 +8742,6 @@ begin
       end;
    end;
 
-   for b := b19 to HiBand do begin
-      if MyContest.IsAvailableBand[b] = False then begin
-         HideBandMenu(b);
-      end;
-   end;
-
    MyContest.ScoreForm.OnChangeFontSize := OnChangeFontSize;
    MyContest.MultiForm.OnChangeFontSize := OnChangeFontSize;
    MyContest.ScoreForm.CWButton.Visible := True;   // Issue #148 [CW]ボタンは常に表示にする
@@ -9055,7 +9049,6 @@ begin
 
       // バンドメニューを全部表示
       RenewBandMenu();
-      InitBandMenu();
 
       MultiButton.Enabled := True; // toolbar
       menuShowMultipliers.Enabled := True; // menu
@@ -9063,6 +9056,7 @@ begin
 
       InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestMode, strContestName, strCfgFileName);
 
+      InitBandMenu();
       InitGridColumnWidth();
       InitSerialPanel();
 
@@ -9195,7 +9189,7 @@ begin
       // 使用可能なバンドが無いときは必要バンドをONにする
       if c = 0 then begin
          AdjustActiveBands();
-         MessageDlg(TMainForm_Active_Band_Adjusted, mtInformation, [mbOK], 0);
+         MessageBox(Handle, PChar(TMainForm_Active_Band_Adjusted), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       end;
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
@@ -13260,6 +13254,12 @@ begin
    for b := b19 to HiBand do begin
       BandMenu.Items[ord(b)].Enabled := dmZLogGlobal.Settings._activebands[b];
       BandMenu.Items[ord(b)].Visible := dmZLogGlobal.Settings._activebands[b];
+
+      if dmZLogGlobal.Settings.FShowAvailableBandsForUserDefinedContest = False then begin
+         if MyContest.IsAvailableBand[b] = False then begin
+            HideBandMenu(b);
+         end;
+      end;
    end;
 end;
 
