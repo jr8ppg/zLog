@@ -129,10 +129,10 @@ type
 
     FZaqBgColor: array[0..3] of TColor;
     FZaqFgColor: array[0..3] of TColor;
-    FZaqRowBgColor: array[0..35] of TColor;
-    FZaqRowFgColor: array[0..35] of TColor;
-    FZaq2RowBgColor: array[0..35] of TColor;
-    FZaq2RowFgColor: array[0..35] of TColor;
+    FZaqRowBgColor: array[0..50] of TColor;
+    FZaqRowFgColor: array[0..50] of TColor;
+    FZaq2RowBgColor: array[0..50] of TColor;
+    FZaq2RowFgColor: array[0..50] of TColor;
     FTargetColorByBand: Boolean;
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
@@ -362,6 +362,18 @@ begin
    for i := 25 to 48 do begin
       ScoreGrid.ColWidths[i] := ifthen(FContestPeriod <= 24, -1, 42);
       ScoreGrid2.ColWidths[i] := ifthen(FContestPeriod <= 24, -1, 30);
+   end;
+
+   if MyContest.Single10G = True then begin
+      if menuDispAlternating.Checked = True then begin
+         ScoreGrid.RowHeights[33] := -1;
+         ScoreGrid.RowHeights[34] := -1;
+      end
+      else begin
+         ScoreGrid.RowHeights[17] := -1;
+         ScoreGrid.RowHeights[40] := -1;
+      end;
+      ScoreGrid2.RowHeights[17] := -1;
    end;
 
    radioOriginClick(nil);
@@ -919,6 +931,17 @@ begin
    else begin
       InitScoreGrid_type2();
       TargetToGrid_type2(dmZLogGlobal.Target);
+   end;
+
+   if MyContest.Single10G = True then begin
+      if menuDispAlternating.Checked = True then begin
+         ScoreGrid.RowHeights[33] := -1;
+         ScoreGrid.RowHeights[34] := -1;
+      end
+      else begin
+         ScoreGrid.RowHeights[17] := -1;
+         ScoreGrid.RowHeights[40] := -1;
+      end;
    end;
 
    InitScoreGridRowColor();
@@ -1601,13 +1624,13 @@ begin
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R + 0] := IntToStr(ATarget.Bands[b].Hours[i].Target);
          ScoreGrid.Cells[i, R + 1] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
-         ScoreGrid.Cells[i, 33]       := IntToStr(ATarget.Total.Hours[i].Target);
-         ScoreGrid.Cells[i, 34]       := IntToStr(ATarget.Total.Hours[i].Actual);
+         ScoreGrid.Cells[i, 45]       := IntToStr(ATarget.Total.Hours[i].Target);
+         ScoreGrid.Cells[i, 46]       := IntToStr(ATarget.Total.Hours[i].Actual);
          if menuAchievementRate.Checked = True then begin
-            ScoreGrid.Cells[i, 35]    := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
+            ScoreGrid.Cells[i, 47]    := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
          end
          else begin
-            ScoreGrid.Cells[i, 35]    := IntToStr(ATarget.Total.Hours[i].Actual - ATarget.Total.Hours[i].Target);
+            ScoreGrid.Cells[i, 47]    := IntToStr(ATarget.Total.Hours[i].Actual - ATarget.Total.Hours[i].Target);
          end;
       end;
 
@@ -1622,16 +1645,16 @@ begin
       end;
    end;
 
-   ScoreGrid.Cells[49, 33]   := IntToStr(ATarget.TotalTotal.Target);
-   ScoreGrid.Cells[49, 34]   := IntToStr(ATarget.TotalTotal.Actual);
+   ScoreGrid.Cells[49, 45]   := IntToStr(ATarget.TotalTotal.Target);
+   ScoreGrid.Cells[49, 46]   := IntToStr(ATarget.TotalTotal.Actual);
 
    if menuAchievementRate.Checked = True then begin
-      ScoreGrid.Cells[49, 35]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
-      ScoreGrid.Cells[50, 34]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+      ScoreGrid.Cells[50, 46]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+      ScoreGrid.Cells[50, 47]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
    end
    else begin
-      ScoreGrid.Cells[49, 35]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
-      ScoreGrid.Cells[50, 34]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[50, 46]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[50, 47]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
    end;
 
    ScoreGrid.Refresh();
