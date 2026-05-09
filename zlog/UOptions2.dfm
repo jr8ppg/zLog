@@ -3079,7 +3079,7 @@ object formOptions2: TformOptions2
           Height = 22
           AutoSize = False
           MaxValue = 9999
-          MinValue = 1
+          MinValue = 0
           TabOrder = 2
           Value = 5000
         end
