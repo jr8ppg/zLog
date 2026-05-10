@@ -341,8 +341,6 @@ begin
 
    LoadSettings();
 
-   InitScoreGrid();
-
    FPreHour := GetHour(Now);
 end;
 
@@ -357,23 +355,13 @@ var
 begin
    MainForm.AddTaskbar(Handle);
 
+   InitScoreGrid();
+
    FContestPeriod := Min(Max(MyContest.Period, 24), 48);
 
    for i := 25 to 48 do begin
       ScoreGrid.ColWidths[i] := ifthen(FContestPeriod <= 24, -1, 42);
       ScoreGrid2.ColWidths[i] := ifthen(FContestPeriod <= 24, -1, 30);
-   end;
-
-   if MyContest.Single10G = True then begin
-      if menuDispAlternating.Checked = True then begin
-         ScoreGrid.RowHeights[33] := -1;
-         ScoreGrid.RowHeights[34] := -1;
-      end
-      else begin
-         ScoreGrid.RowHeights[17] := -1;
-         ScoreGrid.RowHeights[40] := -1;
-      end;
-      ScoreGrid2.RowHeights[17] := -1;
    end;
 
    radioOriginClick(nil);
@@ -933,17 +921,6 @@ begin
       TargetToGrid_type2(dmZLogGlobal.Target);
    end;
 
-   if MyContest.Single10G = True then begin
-      if menuDispAlternating.Checked = True then begin
-         ScoreGrid.RowHeights[33] := -1;
-         ScoreGrid.RowHeights[34] := -1;
-      end
-      else begin
-         ScoreGrid.RowHeights[17] := -1;
-         ScoreGrid.RowHeights[40] := -1;
-      end;
-   end;
-
    InitScoreGridRowColor();
 
    ScoreGrid.Refresh();
@@ -1070,7 +1047,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else if (ARow = 35) or (ACol = 50) then begin   // 合計行(35)、合計列(26)の表示
+      else if (ARow = 47) or (ACol = 50) then begin   // 合計行(47)、合計列(50)の表示
          // 達成率/WinLoss
          strText := ScoreGrid.Cells[ACol, ARow];
 
@@ -1452,6 +1429,14 @@ begin
          ScoreGrid.RowHeights[R + 2] := -1;
       end;
    end;
+
+   // 10.4G対策
+   if Assigned(MyContest) then begin
+      if MyContest.Single10G = True then begin
+         ScoreGrid.RowHeights[33] := -1;
+         ScoreGrid.RowHeights[34] := -1;
+      end;
+   end;
 end;
 
 procedure TRateDialogEx.InitScoreGrid_type2();
@@ -1548,6 +1533,14 @@ begin
       end;
       Inc(R);
    end;
+
+   // 10.4G対策
+   if Assigned(MyContest) then begin
+      if MyContest.Single10G = True then begin
+         ScoreGrid.RowHeights[17] := -1;
+         ScoreGrid.RowHeights[40] := -1;
+      end;
+   end;
 end;
 
 // ZAQ2用
@@ -1611,6 +1604,13 @@ begin
          ScoreGrid2.RowHeights[R + 1] := -1;
       end;
    end;
+
+   // 10.4G対策
+   if Assigned(MyContest) then begin
+      if MyContest.Single10G = True then begin
+         ScoreGrid2.RowHeights[17] := -1;
+      end;
+   end;
 end;
 
 procedure TRateDialogEx.TargetToGrid(ATarget: TContestTarget);
@@ -1650,11 +1650,11 @@ begin
 
    if menuAchievementRate.Checked = True then begin
       ScoreGrid.Cells[50, 46]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
-      ScoreGrid.Cells[50, 47]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+      ScoreGrid.Cells[49, 47]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
    end
    else begin
       ScoreGrid.Cells[50, 46]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
-      ScoreGrid.Cells[50, 47]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[49, 47]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
    end;
 
    ScoreGrid.Refresh();
