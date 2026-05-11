@@ -141,6 +141,7 @@ type
 
   TFTX1 = class(TFT710)
     procedure ExecuteCommand(S: AnsiString); override;
+    procedure PollingProcess; override;
     procedure SetMode(Q: TQSO); override;
     procedure SelectBand(b: TBand); override;
     procedure AudioInputSelect(input: TAudioInput); override;
@@ -1619,6 +1620,8 @@ begin
          // XIT Status
          strTemp := string(Copy(S, 21, 1));
          FXit := StrToBoolDef(strTemp, False);
+
+         Inc(FPollingCount);
       end;
 
       if strCommand = 'FA' then begin
@@ -1640,7 +1643,6 @@ begin
       end;
    finally
       if (FUsePolling = True) or (FInitialPolling = False) then begin
-         Inc(FPollingCount);
          FPollingTimer.Enabled := True;
       end;
    end;
@@ -1885,6 +1887,8 @@ begin
          // XIT Status
          strTemp := string(Copy(S, 23, 1));
          FXit := StrToBoolDef(strTemp, False);
+
+         Inc(FPollingCount);
       end;
 
       if strCommand = 'FA' then begin
@@ -1901,13 +1905,42 @@ begin
          _currentfreq[1] := i;
       end;
 
+      if strCommand = 'VS' then begin
+         strTemp := string(Copy(S, 3, 1));
+         _currentvfo := StrToIntDef(strTemp, 0);
+         Inc(FPollingCount);
+      end;
+
       if Selected then begin
          UpdateStatus;
       end;
    finally
       if (FUsePolling = True) or (FInitialPolling = False) then begin
-         Inc(FPollingCount);
          FPollingTimer.Enabled := True;
+      end;
+   end;
+end;
+
+procedure TFTX1.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
+   case FPollingCount of
+      0, 1: begin
+         WriteData('IF;');
+      end;
+
+      2: begin
+         WriteData('OI;');
+      end;
+
+      3: begin
+         WriteData('VS;');
+         FInitialPolling := True;
+         FPollingCount := 0;
       end;
    end;
 end;
