@@ -323,15 +323,15 @@ const
 
   def_rtty_messages: array[1..maxmessage] of string =
     (
-      'CQ CQ CQ TEST $M $M $M TEST K',
-      '$C DE $M $R$X $R$X BK',
-      'TU DE $M TEST',
+      'TEST $M $M CQ',
+      '$C $R $X $X $C',
+      '$C TU $M CQ',
       '',
-      'NR? NR? AGN BK',
-      '$C?',
+      'NR? NR?',
+      '$C? $C?',
       '$M $M',
-      '$R$X $R$X',
-      'TU',
+      '$C $R $X $X $M TU',
+      '',
       '',
       '',
       ''

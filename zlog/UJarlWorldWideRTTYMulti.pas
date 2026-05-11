@@ -730,7 +730,9 @@ var
    begin
       fNumber := False;
       area := '';
-      for i := 1 to Length(str) do begin
+
+      // 7K,8J対策で２文字目からチェックする
+      for i := 2 to Length(str) do begin
          ch := str[i];
          if (fNumber = False) and (CharInSet(ch, ['0'..'9']) = True) then begin
             area := str[i];

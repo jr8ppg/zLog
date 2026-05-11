@@ -224,6 +224,18 @@ begin
    temp := StringReplace(temp, '$V', MyContest.Prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
    temp := StringReplace(temp, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
+   temp := StringReplace(temp, '$D', #13#10, [rfReplaceAll]);
+
+   if aQSO.Callsign = '' then begin
+      S := Log.LastCallsign;
+   end
+   else if EditedSinceTABPressed = tabstate_tabpressedandedited then begin
+      S := aQSO.Callsign;
+   end
+   else begin
+      S := '';
+   end;
+   temp := StringReplace(temp, '$E', S, [rfReplaceAll]);
 
    temp := StringReplace(temp, '$H', aQSO.NrSent, [rfReplaceAll]);
 
