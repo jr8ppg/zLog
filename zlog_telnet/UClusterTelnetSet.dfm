@@ -3,7 +3,7 @@ object formClusterTelnetSet: TformClusterTelnetSet
   Top = 157
   BorderStyle = bsDialog
   Caption = 'TELNET settings'
-  ClientHeight = 304
+  ClientHeight = 376
   ClientWidth = 297
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,11 +16,11 @@ object formClusterTelnetSet: TformClusterTelnetSet
   OnCreate = FormCreate
   DesignSize = (
     297
-    304)
+    376)
   TextHeight = 12
   object buttonOK: TButton
     Left = 75
-    Top = 272
+    Top = 344
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -28,11 +28,11 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Default = True
     TabOrder = 1
     OnClick = buttonOKClick
-    ExplicitTop = 271
+    ExplicitTop = 272
   end
   object buttonCancel: TButton
     Left = 157
-    Top = 272
+    Top = 344
     Width = 75
     Height = 25
     Anchors = [akLeft, akBottom]
@@ -40,62 +40,76 @@ object formClusterTelnetSet: TformClusterTelnetSet
     Caption = 'Cancel'
     ModalResult = 2
     TabOrder = 2
-    ExplicitTop = 271
+    ExplicitTop = 272
   end
   object GroupBox1: TGroupBox
     Left = 8
     Top = 8
     Width = 282
-    Height = 257
+    Height = 329
     TabOrder = 0
     object Label1: TLabel
       Left = 8
       Top = 46
-      Width = 55
+      Width = 42
       Height = 12
-      Caption = 'Host name'
+      Caption = #12507#12473#12488#21517
     end
     object Label2: TLabel
       Left = 8
       Top = 107
-      Width = 53
+      Width = 54
       Height = 12
-      Caption = 'Line break'
+      Caption = #25913#34892#12467#12540#12489
     end
     object Label3: TLabel
       Left = 177
       Top = 77
-      Width = 31
+      Width = 37
       Height = 12
-      Caption = 'Port #'
+      Caption = #12509#12540#12488'#'
     end
     object Label4: TLabel
       Left = 8
       Top = 15
-      Width = 67
+      Width = 36
       Height = 12
-      Caption = 'Setting name'
+      Caption = #35373#23450#21517
     end
     object Label5: TLabel
       Left = 8
       Top = 77
-      Width = 42
+      Width = 52
       Height = 12
-      Caption = 'Login ID'
+      Caption = #12525#12464#12452#12531'ID'
     end
     object Label6: TLabel
-      Left = 9
+      Left = 8
       Top = 138
-      Width = 56
+      Width = 39
       Height = 12
-      Caption = 'Commands'
+      Caption = #12467#12510#12531#12489
+    end
+    object Label13: TLabel
+      Left = 28
+      Top = 295
+      Width = 87
+      Height = 12
+      Caption = #12467#12510#12531#12489#23455#34892#38291#38548
+    end
+    object Label15: TLabel
+      Left = 238
+      Top = 295
+      Width = 12
+      Height = 12
+      Caption = #31186
     end
     object checkLocalEcho: TCheckBox
       Left = 176
       Top = 106
       Width = 97
       Height = 17
-      Caption = 'Local echo'
+      Caption = #12525#12540#12459#12523#12456#12467#12540
       TabOrder = 5
     end
     object comboHostName: TComboBox
@@ -119,9 +133,9 @@ object formClusterTelnetSet: TformClusterTelnetSet
         'LF')
     end
     object spPortNumber: TSpinEdit
-      Left = 212
+      Left = 220
       Top = 74
-      Width = 61
+      Width = 53
       Height = 22
       AutoSize = False
       MaxValue = 0
@@ -152,6 +166,25 @@ object formClusterTelnetSet: TformClusterTelnetSet
       ScrollBars = ssVertical
       TabOrder = 6
       WordWrap = False
+    end
+    object spExecInterval: TSpinEdit
+      Left = 184
+      Top = 292
+      Width = 48
+      Height = 22
+      AutoSize = False
+      MaxValue = 0
+      MinValue = 0
+      TabOrder = 7
+      Value = 180
+    end
+    object checkUsePeriodicCmdExec: TCheckBox
+      Left = 8
+      Top = 264
+      Width = 153
+      Height = 17
+      Caption = #12467#12510#12531#12489#23450#26399#23455#34892#12434#34892#12358
+      TabOrder = 8
     end
   end
 end

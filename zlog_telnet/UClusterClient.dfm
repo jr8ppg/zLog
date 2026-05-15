@@ -310,4 +310,11 @@ object ClusterClient: TClusterClient
     Left = 80
     Top = 16
   end
+  object timerPeriodicCmdExec: TTimer
+    Enabled = False
+    Interval = 60000
+    OnTimer = timerPeriodicCmdExecTimer
+    Left = 156
+    Top = 168
+  end
 end

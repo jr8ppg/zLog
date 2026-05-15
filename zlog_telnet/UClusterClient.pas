@@ -55,6 +55,7 @@ type
     ZServer: TSslWSocket;
     ZSslContext: TSslContext;
     timerLoginCheck: TTimer;
+    timerPeriodicCmdExec: TTimer;
     procedure buttonCloseClick(Sender: TObject);
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -80,6 +81,7 @@ type
     procedure ZServerSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
     procedure ZServerDataAvailable(Sender: TObject; ErrCode: Word);
     procedure timerLoginCheckTimer(Sender: TObject);
+    procedure timerPeriodicCmdExecTimer(Sender: TObject);
   private
     { Private declarations }
     FSpotExpireMin: Integer;                       // スポットの生存時間
@@ -130,6 +132,10 @@ type
 
     FLineBreak: string;
     FLocalEcho: Boolean;
+
+    // コマンド定期実行
+    FCommandNo: Integer;
+    FCommandList: TStringList;
     procedure LoadSettings();
     procedure SaveSettings();
     procedure ImplementOptions;
@@ -186,6 +192,9 @@ begin
    FCommBuffer := TStringList.Create;
    Timer1.Enabled := False;
    FAutoLogined := False;
+   FCommandNo := 0;
+   FCommandList := TStringList.Create();
+
    LoadSettings();
    ImplementOptions();
 
@@ -220,6 +229,8 @@ begin
    TerminateCommProcessThread();
 
    SaveSettings();
+
+   FCommandList.Free();
    FCommBuffer.Free();
 
    FSpotterList.Free();
@@ -338,6 +349,8 @@ begin
          setting.LineBreak := ini.ReadInteger('PacketCluster', strKey + '_LineBreak', 0);
          setting.LocalEcho := ini.ReadBool('PacketCluster', strKey + '_LocalEcho', False);
          setting.CommandList := ini.ReadString('PacketCluster', strKey + '_CommandList', '');
+         setting.UsePeriodicCmdExec := ini.ReadBool('PacketCluster', strKey + '_UsePeriodicCmdExec', False);
+         setting.PeriodicExecInterval := ini.ReadInteger('PacketCluster', strKey + '_PeriodicExecInterval', 180);
          FPacketClusterList.Add(setting);
       end;
    finally
@@ -390,6 +403,8 @@ begin
          ini.WriteInteger('PacketCluster', strKey + '_LineBreak', FPacketClusterList[i].LineBreak);
          ini.WriteBool('PacketCluster', strKey + '_LocalEcho', FPacketClusterList[i].LocalEcho);
          ini.WriteString('PacketCluster', strKey + '_CommandList', FPacketClusterList[i].CommandList);
+         ini.WriteBool('PacketCluster', strKey + '_UsePeriodicCmdExec', FPacketClusterList[i].UsePeriodicCmdExec);
+         ini.WriteInteger('PacketCluster', strKey + '_PeriodicExecInterval', FPacketClusterList[i].PeriodicExecInterval);
       end;
 
       ini.UpdateFile();
@@ -722,8 +737,16 @@ begin
 
       FConnectTime := Now;
 
+      // 強制再接続タイマー起動
       if FForceReconnectIntervalMin > 0 then begin
          timerForceReconnect.Enabled := True;
+         WriteConsole('強制再接続タイマー開始');
+      end;
+
+      // 定期実行タイマー起動
+      if timerPeriodicCmdExec.Tag = 1 then begin
+         timerPeriodicCmdExec.Enabled := True;
+         WriteConsole('コマンド定期実行タイマー開始');
       end;
    except
       on E: Exception do begin
@@ -738,6 +761,8 @@ var
    fname: string;
 begin
    WriteLineConsole('disconnected...');
+
+   timerPeriodicCmdExec.Enabled := False;
 
    if FClusterRecordLogs = True then begin
       CloseFile(FClusterLog);
@@ -798,6 +823,22 @@ begin
       ZServer.Close();
       Telnet.Close();
       WriteConsole('Z-ServerがSECUREモードではありません');
+   end;
+end;
+
+procedure TClusterClient.timerPeriodicCmdExecTimer(Sender: TObject);
+var
+   S: string;
+begin
+   S := FCommandList[FCommandNo];
+   if S <> '' then begin
+      WriteData(S + FLineBreak);
+      WriteConsole(S + FLineBreak);
+   end;
+
+   Inc(FCommandNo);
+   if FCommandNo >= FCommandList.Count then begin
+      FCommandNo := 0;
    end;
 end;
 
@@ -1192,6 +1233,18 @@ begin
    Edit.Items.CommaText := setting.CommandList;
 
    FLocalEcho := setting.LocalEcho;
+
+   // コマンド定期実行
+   if setting.UsePeriodicCmdExec = True then begin
+      timerPeriodicCmdExec.Tag := 1;
+   end
+   else begin
+      timerPeriodicCmdExec.Tag := 0;
+   end;
+   timerPeriodicCmdExec.Interval := setting.PeriodicExecInterval * 1000;
+
+   FCommandNo := 0;
+   FCommandList.CommaText := setting.CommandList;
 end;
 
 procedure TClusterClient.ConnectZServer();
