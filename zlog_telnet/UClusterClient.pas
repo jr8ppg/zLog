@@ -1235,13 +1235,13 @@ begin
    FLocalEcho := setting.LocalEcho;
 
    // コマンド定期実行
-   if setting.UsePeriodicCmdExec = True then begin
+   if (setting.UsePeriodicCmdExec = True) and (setting.PeriodicExecInterval > 0) then begin
       timerPeriodicCmdExec.Tag := 1;
+      timerPeriodicCmdExec.Interval := setting.PeriodicExecInterval * 1000;
    end
    else begin
       timerPeriodicCmdExec.Tag := 0;
    end;
-   timerPeriodicCmdExec.Interval := setting.PeriodicExecInterval * 1000;
 
    FCommandNo := 0;
    FCommandList.CommaText := setting.CommandList;
