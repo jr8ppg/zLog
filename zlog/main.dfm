@@ -6815,6 +6815,10 @@ object MainForm: TMainForm
       object N2: TMenuItem
         Caption = '-'
       end
+      object menuLogChecker: TMenuItem
+        Caption = 'Log checker'
+        OnClick = menuLogCheckerClick
+      end
       object CreateJARLELog: TMenuItem
         Caption = 'Create JARL E-Log'
         OnClick = CreateJARLELogClick

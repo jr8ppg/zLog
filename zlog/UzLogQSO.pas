@@ -117,6 +117,8 @@ type
       Delimiter: WORD;
    end;
 
+  TCheckResult = ( crOk = 0, crRstSentError, crNrSentError, crNrRcvdError );
+
   TQSO = class(TObject)
   private
     FIndex: Integer;
@@ -159,6 +161,7 @@ type
 
     FTimeUtc: string;   // $D
 
+    FCheckResult: TCheckResult;
     function GetMode2(): TMode;
     function GetPoints(): Integer;
     function GetQsoId(): Integer;
@@ -282,6 +285,7 @@ type
     property MemoStr2: string read GetMemoStr2;
 
     property TimeUtc: string read GetTimeUtc write FTimeUtc;
+    property CheckResult: TCheckResult read FCheckResult write FCheckResult;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
     property FileRecordEx: TQSODataEx read GetFileRecordEx write SetFileRecordEx;
@@ -619,6 +623,7 @@ begin
    FContinent := '';
    FEntity := '';
    FTimeUtc := '';
+   FCheckResult := crOk;
 end;
 
 procedure TQSO.IncTime;
@@ -1440,6 +1445,7 @@ begin
    FRbnVerified := src.RbnVerified;
    FContinent := src.Continent;
    FEntity := src.Entity;
+   FCheckResult := src.FCheckResult;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;

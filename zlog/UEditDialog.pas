@@ -305,6 +305,23 @@ begin
          comboTxNo.Enabled := True;
       end;
    end;
+
+   case origQSO.CheckResult of
+      crRstSentError: begin
+         SentRstEdit.Color := ZLOG_WARN_COLOR;
+      end;
+      crNrSentError: begin
+         NrSentEdit.Color := ZLOG_WARN_COLOR;
+      end;
+      crNrRcvdError: begin
+         NrRcvdEdit.Color := ZLOG_WARN_COLOR;
+      end
+      else begin
+         SentRstEdit.Color := clWindow;
+         NrSentEdit.Color := clWindow;
+         NrRcvdEdit.Color := clWindow;
+      end;
+   end;
 end;
 
 procedure TEditDialog.FormActivate(Sender: TObject);

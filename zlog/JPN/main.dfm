@@ -6817,6 +6817,10 @@ object MainForm: TMainForm
         Caption = '-'
         GroupIndex = 1
       end
+      object menuLogChecker: TMenuItem
+        Caption = 'Log checker'
+        OnClick = menuLogCheckerClick
+      end
       object CreateJARLELog: TMenuItem
         Caption = 'JARL E-Log'#12398#20316#25104
         OnClick = CreateJARLELogClick

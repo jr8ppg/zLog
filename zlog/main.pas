@@ -731,6 +731,7 @@ type
     menuExecHamlogLookup: TMenuItem;
     menuExecHamlogConverter: TMenuItem;
     menuMMTTYSep: TMenuItem;
+    menuLogChecker: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1074,6 +1075,7 @@ type
     procedure actionShowSentNumberExecute(Sender: TObject);
     procedure menuExecHamlogLookupClick(Sender: TObject);
     procedure menuExecHamlogConverterClick(Sender: TObject);
+    procedure menuLogCheckerClick(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -1387,6 +1389,8 @@ type
     procedure FreeForm(var F: TForm);
     procedure OpenPartialCheck();
     procedure ClosePartialCheck();
+    procedure LogCheck();
+    procedure AdjustTopRow(fUp: Boolean);
   public
     LastFocus : TEdit;
 
@@ -1580,6 +1584,8 @@ resourcestring
   TMainForm_Load_MMTTY = 'Load MMTTY';
   TMainForm_Unload_MMTTY = 'Unload MMTTY';
   TMainForm_NoCwMessages = 'No CW message settings were found. Do you want to load MyMessages (zlog.ini)?';
+  TMainForm_LogCheckOk = 'Log check completed with no errors.';
+  TMainForm_LogCheckError = 'The log check found %s error(s).';
 
 var
   MainForm: TMainForm;
@@ -5292,6 +5298,11 @@ begin
             end;
          end;
 
+         if (Q <> nil) and (Q.CheckResult <> crOk) then begin
+            bg := ZLOG_WARN_COLOR;
+            fg := clBlack;
+         end;
+
          Pen.Color := bg;
          Pen.Style := psSolid;
          Brush.Color := bg;
@@ -8495,6 +8506,11 @@ begin
 //   AutoInput(TBSData(BSList2[0]));
 end;
 
+procedure TMainForm.menuLogCheckerClick(Sender: TObject);
+begin
+   LogCheck();
+end;
+
 procedure TMainForm.CreateJARLELogClick(Sender: TObject);
 var
    f: TformELogJarlEx;
@@ -10900,12 +10916,7 @@ begin
       Exit;
    end;
 
-   p := Grid.TopRow;
-   p := p + (Grid.VisibleRowCount div 2);
-   if p > (Log.QsoList.Count - Grid.VisibleRowCount) then begin
-      p := (Log.QsoList.Count - Grid.VisibleRowCount);
-   end;
-   Grid.TopRow := p
+   AdjustTopRow(False);
 end;
 
 // #38 PageDown
@@ -10917,12 +10928,7 @@ begin
       Exit;
    end;
 
-   p := Grid.TopRow;
-   p := p - (Grid.VisibleRowCount div 2);
-   if p < 0 then begin
-      p := 1;
-   end;
-   Grid.TopRow := p
+   AdjustTopRow(True);
 end;
 
 // #39 フィールドの先頭へ移動
@@ -15916,6 +15922,106 @@ begin
    timerPartialClose.Enabled := False;
    Log.ClearPartialList();
    GridRefreshScreen(False, False);
+end;
+
+procedure TMainForm.LogCheck();
+var
+   R: Integer;
+   p: Integer;
+   n: Integer;
+   Q: TQSO;
+   C: Integer;
+   S: String;
+   sentnr: string;
+begin
+   C := 0;
+   for R := 1 to Grid.RowCount do begin
+      Q := TQSO(Grid.Objects[0, R]);
+      if Q = nil then begin
+         Continue;
+      end;
+
+      Q.CheckResult := crOk;
+
+      // 無効判定済みはチェックしない
+      if Q.Invalid = True then begin
+         Continue;
+      end;
+
+      // 送信RST桁チェック
+      n := Length(Q.RSTSentStr);
+      if (Q.Mode = mCW) or (Q.Mode = mRTTY) then begin
+         if (n <> 3) then begin
+            Q.CheckResult := crRstSentError;
+            Inc(C);
+         end;
+      end
+      else if (Q.Mode = mSSB) or (Q.Mode = mAM) or (Q.Mode = mFM) or (Q.Mode = mDV) then begin
+         if (n <> 2) then begin
+            Q.CheckResult := crRstSentError;
+            Inc(C);
+         end;
+      end;
+
+      // 送信NRチェック
+      if not (MyContest is TPedi) then begin
+         sentnr := GetInitNrSent(Q, True);
+
+         if (Q.NrSent = '') or (Pos(sentnr, Q.NrSent) = 0) then begin
+            Q.CheckResult := crNrSentError;
+            Inc(C);
+         end;
+      end;
+
+      // 受信NRチェック
+      if Q.NrRcvd = '' then begin
+         Q.CheckResult := crNrRcvdError;
+         Inc(C);
+      end;
+   end;
+
+   if C = 0 then begin
+      GridRefreshScreen(True, False);
+      S := TMainForm_LogCheckOk;
+   end
+   else begin
+      GridRefreshScreen(True, False);
+      S := Format(TMainForm_LogCheckError, [IntToStr(C)]);
+      for R := 1 to Grid.RowCount do begin
+         Q := TQSO(Grid.Objects[0, R]);
+         if Q = nil then begin
+            Continue;
+         end;
+
+         if Q.CheckResult <> crOk then begin
+            Grid.TopRow := R;
+            AdjustTopRow(False);
+            Break;
+         end;
+      end;
+   end;
+
+   MessageBox(Handle, PChar(S), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
+end;
+
+procedure TMainForm.AdjustTopRow(fUp: Boolean);
+var
+   p: Integer;
+begin
+   p := Grid.TopRow;
+   if fUp = True then begin
+      p := p - (Grid.VisibleRowCount div 2);
+      if p < 0 then begin
+         p := 1;
+      end;
+   end
+   else begin
+      p := p + (Grid.VisibleRowCount div 2);
+      if p > (Log.QsoList.Count - Grid.VisibleRowCount) then begin
+         p := (Log.QsoList.Count - Grid.VisibleRowCount);
+      end;
+   end;
+   Grid.TopRow := p;
 end;
 
 { TBandScopeNotifyThread }

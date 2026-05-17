@@ -378,6 +378,8 @@ const
     $00000000, $00000000, $00000000, $00000000
   );
 
+  ZLOG_WARN_COLOR = $00EADEFF;
+
 const
   default_primary_shortcut: array[0..172] of string = (
     'Ctrl+F1',          // #00
