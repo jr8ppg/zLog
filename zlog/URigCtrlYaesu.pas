@@ -131,6 +131,7 @@ type
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure ExecuteCommand(S: AnsiString); override;
+    procedure PollingProcess; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetDataMode(fOn:Boolean); override;
     procedure AudioInputSelect(input: TAudioInput); override;
@@ -154,7 +155,6 @@ type
     procedure ReadMeter(param: string); override;
   public
     procedure ExecuteCommand(S: AnsiString); override;
-    procedure PollingProcess; override;
     procedure SetMode(Q: TQSO); override;
     procedure SelectBand(b: TBand); override;
     procedure AudioInputSelect(input: TAudioInput); override;
@@ -186,6 +186,7 @@ type
     procedure FunctionTx(param: string); override;
     procedure ReadMeter(param: string); override;
   public
+    procedure PollingProcess; override;
     procedure AntSelect(no: Integer); override;
     procedure AudioInputSelect(input: TAudioInput); override;
   end;
@@ -1723,6 +1724,12 @@ begin
          Inc(FPollingCount);
       end;
 
+      // RX切り替え＝VFO A/B切り替え
+      if strCommand = 'FR' then begin
+         FunctionRx(string(Copy(S, 3)));
+         Inc(FPollingCount);
+      end;
+
       // メーター値読み出し（0-255を0-100にマップする）
       if strCommand = 'RM' then begin
          ReadMeter(string(Copy(S, 3)));
@@ -1734,6 +1741,30 @@ begin
    finally
       if (FUsePolling = True) or (FInitialPolling = False) then begin
          FPollingTimer.Enabled := True;
+      end;
+   end;
+end;
+
+procedure TFT991.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
+   case FPollingCount of
+      0, 1: begin
+         WriteData('IF;');
+      end;
+
+      2: begin
+         WriteData('OI;');
+      end;
+
+      3: begin
+         WriteData('FT;');
+         FInitialPolling := True;
+         FPollingCount := 0;
       end;
    end;
 end;
@@ -2078,30 +2109,6 @@ begin
    end;
 end;
 
-procedure TFTX1.PollingProcess;
-begin
-   FPollingTimer.Enabled := False;
-   if FStopRequest = True then begin
-      Exit;
-   end;
-
-   case FPollingCount of
-      0, 1: begin
-         WriteData('IF;');
-      end;
-
-      2: begin
-         WriteData('OI;');
-      end;
-
-      3: begin
-         WriteData('FT;');
-         FInitialPolling := True;
-         FPollingCount := 0;
-      end;
-   end;
-end;
-
 //
 // OPERATING MODE
 //        0 1  2  3  4  5  6  7  8  9 10 11
@@ -2258,6 +2265,61 @@ end;
 
 { TFTDX101 }
 
+procedure TFTDX101.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
+   case FPollingCount of
+      0, 1: begin
+         WriteData('IF;');
+      end;
+
+      2: begin
+         WriteData('OI;');
+      end;
+
+      3: begin
+         WriteData('FR;');
+         FInitialPolling := True;
+         FPollingCount := 0;
+      end;
+   end;
+end;
+
+procedure TFTDX101.AntSelect(no: Integer);
+begin
+   case no of
+      0: Exit;
+      1: WriteData('AN01;');
+      2: WriteData('AN02;');
+      3: WriteData('AN03;');
+   end;
+end;
+
+procedure TFTDX101.AudioInputSelect(input: TAudioInput);
+var
+   cmd: AnsiString;
+begin
+   case _currentmode of
+      mSSB: cmd := 'EX010111';
+      mFM:  cmd := 'EX010310';
+      mAM:  cmd := 'EX010211';
+      else  cmd := '';
+   end;
+
+   case input of
+      aiDontCare: ;
+      aiMic:      WriteData(cmd + '0;');
+      aiUsb:      WriteData(cmd + '1;');
+      aiAcc:      ;
+      aiMicUsb:   ;
+      aiMicAcc:   ;
+   end;
+end;
+
 procedure TFTDX101.FunctionRx(param: string);
 var
    strP12: string;
@@ -2300,37 +2362,6 @@ begin
    end;
    if strP1 = '2' then begin
       FSMeterValue[1] := MeterValue(strP2);
-   end;
-end;
-
-procedure TFTDX101.AntSelect(no: Integer);
-begin
-   case no of
-      0: Exit;
-      1: WriteData('AN01;');
-      2: WriteData('AN02;');
-      3: WriteData('AN03;');
-   end;
-end;
-
-procedure TFTDX101.AudioInputSelect(input: TAudioInput);
-var
-   cmd: AnsiString;
-begin
-   case _currentmode of
-      mSSB: cmd := 'EX010111';
-      mFM:  cmd := 'EX010310';
-      mAM:  cmd := 'EX010211';
-      else  cmd := '';
-   end;
-
-   case input of
-      aiDontCare: ;
-      aiMic:      WriteData(cmd + '0;');
-      aiUsb:      WriteData(cmd + '1;');
-      aiAcc:      ;
-      aiMicUsb:   ;
-      aiMicAcc:   ;
    end;
 end;
 
