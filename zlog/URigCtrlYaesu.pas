@@ -514,6 +514,23 @@ begin
          _currentfreq[1] := i;
       end;
 
+      // RX切り替え＝VFO A/B切り替え
+      if strCommand = 'FR' then begin
+         strTemp := string(Copy(S, 3, 1));
+         i := StrToIntDef(strTemp, 0);
+         if (i = 0) or (i = 1) then begin
+            _currentvfo := 0;
+            WriteData('IF;');
+            FSMeterValue[1] := 0;
+         end
+         else begin
+            _currentvfo := 1;
+            WriteData('OI;');
+            FSMeterValue[0] := 0;
+         end;
+         Inc(FPollingCount);
+      end;
+
       // メーター値読み出し（0-255を0-100にマップする）
       if strCommand = 'RM' then begin
          strTemp := string(Copy(S, 4, 3));
@@ -608,12 +625,20 @@ begin
       Exit;
    end;
 
-   if (FPollingCount = 0) or ((FPollingCount and 1) = 0) then begin
-      WriteData('IF;');
-   end
-   else begin
-      WriteData('OI;');
-      FInitialPolling := True;
+   case FPollingCount of
+      0, 1: begin
+         WriteData('IF;');
+      end;
+
+      2: begin
+         WriteData('OI;');
+      end;
+
+      3: begin
+         WriteData('FR;');
+         FInitialPolling := True;
+         FPollingCount := 0;
+      end;
    end;
 end;
 
@@ -1905,10 +1930,28 @@ begin
          _currentfreq[1] := i;
       end;
 
-      if strCommand = 'VS' then begin
+      // TX切り替え＝VFO A/B切り替え
+      if strCommand = 'FT' then begin
          strTemp := string(Copy(S, 3, 1));
          _currentvfo := StrToIntDef(strTemp, 0);
+         if _currentvfo = 0 then begin
+            WriteData('IF;');
+         end
+         else begin
+            WriteData('OI;');
+         end;
          Inc(FPollingCount);
+      end;
+
+      // メーター値読み出し（0-255を0-100にマップする）
+      if strCommand = 'RM' then begin
+         strTemp := Copy(S, 3, 1);
+         if strTemp = '0' then begin
+            strTemp := string(Copy(S, 4, 3));
+            FSMeterValue[0] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
+            strTemp := string(Copy(S, 7, 3));
+            FSMeterValue[1] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
+         end;
       end;
 
       if Selected then begin
@@ -1938,7 +1981,7 @@ begin
       end;
 
       3: begin
-         WriteData('VS;');
+         WriteData('FT;');
          FInitialPolling := True;
          FPollingCount := 0;
       end;
