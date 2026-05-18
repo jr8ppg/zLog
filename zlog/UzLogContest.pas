@@ -305,39 +305,6 @@ type
     function GetNewMulti2(aQSO: TQSO): string; override;
   end;
 
-const
-  def_cw_messages: array[1..maxmessage] of string =
-    ( 'CQ TEST $M TEST',
-      '$C $R$X',
-      'TU $M TEST',
-      '',
-      'NR?',
-      '$C?',
-      '$M',
-      '$R$X',
-      'TU',
-      '',
-      '',
-      ''
-    );
-
-  def_rtty_messages: array[1..maxmessage] of string =
-    (
-      'TEST $M $M CQ',
-      '$C $R $X $X $C',
-      '$C TU $M CQ',
-      '',
-      'NR? NR?',
-      '$C? $C?',
-      '$M $M',
-      '$C $R $X $X $M TU',
-      '',
-      '',
-      '',
-      ''
-    );
-
-
 implementation
 
 uses
@@ -1082,20 +1049,10 @@ begin
       FDefCwMessageCQ[i] := '';
    end;
 
-   FDefCwMessages[1, 1] := 'CQ TEST $M TEST';
-   FDefCwMessages[1, 2] := '$C $R$X';
-   FDefCwMessages[1, 3] := 'TU $M TEST';
-   FDefCwMessages[1, 4] := 'QSO B4 TU';
-   FDefCwMessages[1, 5] := 'NR?';
-   FDefCwMessages[1, 6] := '$C?';
-   FDefCwMessages[1, 7] := '$M';
-   FDefCwMessages[1, 8] := '$R$X';
-
-   FDefCwMessages[3, 1] := 'CQ CQ CQ TEST $M $M $M TEST K';
-   FDefCwMessages[3, 2] := '$C DE $M $R$X $R$X BK';
-   FDefCwMessages[3, 3] := 'TU DE $M TEST';
-   FDefCwMessages[3, 4] := 'QSO B4 TU';
-   FDefCwMessages[3, 5] := 'NR? NR? AGN BK';
+   for i := 1 to 8 do begin
+      FDefCwMessages[1, i] := def_cw_messages[i];
+      FDefCwMessages[3, i] := def_rtty_messages[i];
+   end;
 end;
 
 procedure TContest.SetDefaultColumnWidths();

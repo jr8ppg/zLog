@@ -382,6 +382,38 @@ const
   ZLOG_WARN_COLOR = $00EADEFF;
 
 const
+  def_cw_messages: array[1..maxmessage] of string =
+    ( 'CQ TEST $M TEST',
+      '$C $R$X',
+      'TU $M TEST',
+      '',
+      'NR?',
+      '$C?',
+      '$M',
+      '$R$X',
+      'TU',
+      '',
+      '',
+      ''
+    );
+
+  def_rtty_messages: array[1..maxmessage] of string =
+    (
+      'TEST $M $M CQ',
+      '$C $R $X $X $C',
+      '$C TU $M CQ',
+      '',
+      'NR? NR?',
+      '$C? $C?',
+      '$M $M',
+      '$C $R $X $X $M TU',
+      '',
+      '',
+      '',
+      ''
+    );
+
+const
   default_primary_shortcut: array[0..172] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
