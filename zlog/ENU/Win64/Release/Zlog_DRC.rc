@@ -8,21 +8,22 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsOSVersion 64112
-#define UExceptionDialog_RsProcessor 64113
-#define UExceptionDialog_RsMemory 64114
-#define UExceptionDialog_RsScreenRes 64115
-#define UExceptionDialog_RsActiveControl 64116
-#define UExceptionDialog_RsThread 64117
-#define UExceptionDialog_RsMissingVersionInfo 64118
-#define UExceptionDialog_RsExceptionStack 64119
-#define UExceptionDialog_RsMainThreadID 64120
-#define UExceptionDialog_RsExceptionThreadID 64121
-#define UExceptionDialog_RsMainThreadCallStack 64122
-#define UExceptionDialog_RsThreadCallStack 64123
-#define UExceptionDialog_RsErrorMessage 64124
-#define UExceptionDialog_RsDetailsIntro 64125
-#define UExceptionDialog_RsUnitVersioningIntro 64126
+#define UExceptionDialog_RsModulesList 64112
+#define UExceptionDialog_RsOSVersion 64113
+#define UExceptionDialog_RsProcessor 64114
+#define UExceptionDialog_RsMemory 64115
+#define UExceptionDialog_RsScreenRes 64116
+#define UExceptionDialog_RsActiveControl 64117
+#define UExceptionDialog_RsThread 64118
+#define UExceptionDialog_RsMissingVersionInfo 64119
+#define UExceptionDialog_RsExceptionStack 64120
+#define UExceptionDialog_RsMainThreadID 64121
+#define UExceptionDialog_RsExceptionThreadID 64122
+#define UExceptionDialog_RsMainThreadCallStack 64123
+#define UExceptionDialog_RsThreadCallStack 64124
+#define UExceptionDialog_RsErrorMessage 64125
+#define UExceptionDialog_RsDetailsIntro 64126
+#define UExceptionDialog_RsUnitVersioningIntro 64127
 #define Main_TMainForm_partial_nomatch 64128
 #define Main_TMainForm_prev_used_file_notfound 64129
 #define Main_TMainForm_Check_Multi 64130
@@ -33,12 +34,12 @@
 #define Main_TMainForm_NoCwMessages 64135
 #define Main_TMainForm_LogCheckOk 64136
 #define Main_TMainForm_LogCheckError 64137
-#define UExceptionDialog_RsAppError 64138
-#define UExceptionDialog_RsExceptionClass 64139
-#define UExceptionDialog_RsExceptionMessage 64140
-#define UExceptionDialog_RsExceptionAddr 64141
-#define UExceptionDialog_RsStackList 64142
-#define UExceptionDialog_RsModulesList 64143
+#define Main_TMainForm_ConfirmLogCheck 64138
+#define UExceptionDialog_RsAppError 64139
+#define UExceptionDialog_RsExceptionClass 64140
+#define UExceptionDialog_RsExceptionMessage 64141
+#define UExceptionDialog_RsExceptionAddr 64142
+#define UExceptionDialog_RsStackList 64143
 #define Main_TMainForm_SoundFileFolderNotSet 64144
 #define Main_TMainForm_Compressing 64145
 #define Main_TMainForm_FailedToCompressSoundFiles 64146
@@ -1433,6 +1434,7 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
+	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
 	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
@@ -1458,12 +1460,12 @@ BEGIN
 	Main_TMainForm_NoCwMessages,	L"No CW message settings were found. Do you want to load MyMessages (zlog.ini)?"
 	Main_TMainForm_LogCheckOk,	L"Log check completed with no errors."
 	Main_TMainForm_LogCheckError,	L"The log check found %s error(s)."
+	Main_TMainForm_ConfirmLogCheck,	L"Do you want to perform a log check?"
 	UExceptionDialog_RsAppError,	L"%s - application error"
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
 	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
-	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
 	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
 	Main_TMainForm_Compressing,	L"Compressing..."
 	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."

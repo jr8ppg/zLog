@@ -1389,7 +1389,7 @@ type
     procedure FreeForm(var F: TForm);
     procedure OpenPartialCheck();
     procedure ClosePartialCheck();
-    procedure LogCheck();
+    function LogCheck(): Integer;
     procedure AdjustTopRow(fUp: Boolean);
   public
     LastFocus : TEdit;
@@ -1586,6 +1586,7 @@ resourcestring
   TMainForm_NoCwMessages = 'No CW message settings were found. Do you want to load MyMessages (zlog.ini)?';
   TMainForm_LogCheckOk = 'Log check completed with no errors.';
   TMainForm_LogCheckError = 'The log check found %s error(s).';
+  TMainForm_ConfirmLogCheck = 'Do you want to perform a log check?';
 
 var
   MainForm: TMainForm;
@@ -8515,6 +8516,12 @@ procedure TMainForm.CreateJARLELogClick(Sender: TObject);
 var
    f: TformELogJarlEx;
 begin
+   if MessageBox(Handle, PChar(TMainForm_ConfirmLogCheck), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON1 or MB_ICONEXCLAMATION) = IDYES then begin
+      if LogCheck() <> 0 then begin
+         Exit;
+      end;
+   end;
+
    f := TformELogJarlEx.Create(Self);
    try
       f.ShowModal();
@@ -15924,7 +15931,7 @@ begin
    GridRefreshScreen(False, False);
 end;
 
-procedure TMainForm.LogCheck();
+function TMainForm.LogCheck(): Integer;
 var
    R: Integer;
    p: Integer;
@@ -16002,6 +16009,8 @@ begin
    end;
 
    MessageBox(Handle, PChar(S), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
+
+   Result := C;
 end;
 
 procedure TMainForm.AdjustTopRow(fUp: Boolean);
