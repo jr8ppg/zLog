@@ -8618,7 +8618,6 @@ end;
 
 procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; mode: TContestMode; strContestName: string; strCfgFileName: string);
 var
-   b: TBand;
    i: Integer;
    imemode: TImeMode;
 begin
@@ -10916,8 +10915,6 @@ end;
 
 // #37 PageUp
 procedure TMainForm.actionPageDownExecute(Sender: TObject);
-var
-   p: Integer;
 begin
    if Log.QsoList.Count <= Grid.VisibleRowCount then begin
       Exit;
@@ -10928,8 +10925,6 @@ end;
 
 // #38 PageDown
 procedure TMainForm.actionPageUpExecute(Sender: TObject);
-var
-   p: Integer;
 begin
    if Log.QsoList.Count <= Grid.VisibleRowCount then begin
       Exit;
@@ -15934,7 +15929,6 @@ end;
 function TMainForm.LogCheck(): Integer;
 var
    R: Integer;
-   p: Integer;
    n: Integer;
    Q: TQSO;
    C: Integer;
@@ -16002,7 +15996,7 @@ begin
 
          if Q.CheckResult <> crOk then begin
             Grid.TopRow := R;
-            AdjustTopRow(False);
+            AdjustTopRow(True);
             Break;
          end;
       end;
