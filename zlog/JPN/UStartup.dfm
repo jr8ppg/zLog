@@ -12,11 +12,12 @@ object formStartup: TformStartup
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poOwnerFormCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 13
   object buttonNewContest: TButton
     Left = 8
-    Top = 80
+    Top = 8
     Width = 345
     Height = 57
     Caption = #26032#35215#21448#12399#26082#23384#12398#12467#12531#12486#12473#12488#12434#38283#12367
@@ -26,12 +27,12 @@ object formStartup: TformStartup
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
     OnClick = buttonNewContestClick
   end
   object buttonLastContest: TButton
     Left = 8
-    Top = 152
+    Top = 80
     Width = 345
     Height = 57
     Caption = #21069#22238#12398#12467#12531#12486#12473#12488#12434#20877#38283#12377#12427
@@ -41,7 +42,7 @@ object formStartup: TformStartup
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 1
     OnClick = buttonLastContestClick
   end
   object GroupBox1: TGroupBox
@@ -82,17 +83,17 @@ object formStartup: TformStartup
   end
   object buttonLoggingNow: TButton
     Left = 8
-    Top = 8
+    Top = 152
     Width = 345
     Height = 57
-    Caption = #12356#12414#12377#12368#12513#12452#12531#30011#38754#12408
+    Caption = #12392#12395#12363#12367#12525#12464#12514#12540#12489'#13#10(DXpedition, '#12510#12523#12481#12481#12455#12483#12463#28961#12375')'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -21
+    Font.Height = -18
     Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
     Font.Style = []
     ParentFont = False
-    TabOrder = 0
+    TabOrder = 2
     OnClick = buttonLoggingNowClick
   end
 end

@@ -18,6 +18,7 @@ type
     procedure buttonLastContestClick(Sender: TObject);
     procedure buttonLoggingNowClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private êÈåæ }
     function GetLastContestName(): string;
@@ -34,8 +35,21 @@ implementation
 
 {$R *.dfm}
 
+procedure TformStartup.FormCreate(Sender: TObject);
+begin
+   SetWindowLong(buttonLoggingNow.Handle, GWL_STYLE,
+                 GetWindowLong(buttonLoggingNow.Handle, GWL_STYLE) or BS_MULTILINE);
+   SetWindowPos(buttonLoggingNow.Handle,
+    0,
+    0, 0, 0, 0,
+    SWP_NOMOVE or SWP_NOSIZE or SWP_NOZORDER or SWP_FRAMECHANGED
+   );
+end;
+
 procedure TformStartup.FormShow(Sender: TObject);
 begin
+   buttonLoggingNow.Caption := StringReplace(buttonLoggingNow.Caption, '#13#10', #13#10, [rfReplaceAll]);
+
    if LastContestName = '' then begin
       buttonLastContest.Enabled := False;
       buttonNewContest.SetFocus;
