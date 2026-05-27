@@ -498,6 +498,13 @@ begin
                // 周波数を更新
                BS.FreqHz := D.FreqHz;
 
+               // 上書き禁止GROUPならスポットグループを転記
+               if ((D.SpotGroup = 1) and (dmZLogGlobal.Settings._bandscopecolor[7].FNotOverwrite = True)) or
+                  ((D.SpotGroup = 2) and (dmZLogGlobal.Settings._bandscopecolor[8].FNotOverwrite = True)) or
+                  ((D.SpotGroup = 3) and (dmZLogGlobal.Settings._bandscopecolor[9].FNotOverwrite = True)) then begin
+                  BS.SpotGroup := D.SpotGroup;
+               end;
+
                D.Free();
                D := nil;
             end
