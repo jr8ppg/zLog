@@ -964,10 +964,10 @@ begin
 //      Settings._city := ini.ReadString('Profiles', 'City', '');
 
       // CQ Zone
-      Settings._mycqzone := ini.ReadString('Profiles', 'CQZone', '');
+      Settings._mycqzone := ini.ReadString('Profiles', 'CQZone', '25');
 
       // ITU Zone
-      Settings._myiaruzone := ini.ReadString('Profiles', 'IARUZone', '');
+      Settings._myiaruzone := ini.ReadString('Profiles', 'IARUZone', '45');
 
       // Age
       Settings._myage := ini.ReadString('Profiles', 'Age', '');
