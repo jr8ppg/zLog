@@ -65,6 +65,7 @@ type
   public
     { Public declarations }
     procedure SendStrNow(S: String);
+    procedure TxClear();
 
     property TTYMode: Integer read FTTYMode write SetTTYMode;
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -459,6 +460,11 @@ begin
    RXLog.Font.Size := v;
    TXLog.Font.Size := v;
    Callsignlist.Font.Size := v;
+end;
+
+procedure TTTYConsole.TxClear();
+begin
+   TXLog.Clear();
 end;
 
 end.

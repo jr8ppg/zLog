@@ -14183,6 +14183,12 @@ begin
    end
    else if (mode = mSSB) or (mode = mFM) or (mode = mAM) or (mode = mDV) then begin
       VoiceStopButtonClick(Self);
+   end
+   else if (mode = mRTTY) then begin
+      if FTTYConsole <> nil then begin
+         mm_RX(); // Switch to RX immediately
+         FTTYConsole.TxClear();
+      end;
    end;
 end;
 
