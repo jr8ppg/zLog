@@ -463,6 +463,18 @@ var
    Diff: TDateTime;
    BS_khz: TFrequency;
    D_khz: TFrequency;
+
+   function IsOverwriteOk(BS: TBSData): Boolean;
+   begin
+      if ((BS.SpotGroup = 1) and (dmZLogGlobal.Settings._bandscopecolor[7].FNotOverwrite = True)) or
+         ((BS.SpotGroup = 2) and (dmZLogGlobal.Settings._bandscopecolor[8].FNotOverwrite = True)) or
+         ((BS.SpotGroup = 3) and (dmZLogGlobal.Settings._bandscopecolor[9].FNotOverwrite = True)) then begin
+         Result := False;
+      end
+      else begin
+         Result := True;
+      end;
+   end;
 begin
    Lock();
    try
@@ -476,9 +488,7 @@ begin
             // 同一コール同一バンド
             if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
                // 上書き禁止GROUP
-               if ((BS.SpotGroup = 1) and (dmZLogGlobal.Settings._bandscopecolor[7].FNotOverwrite = True)) or
-                  ((BS.SpotGroup = 2) and (dmZLogGlobal.Settings._bandscopecolor[8].FNotOverwrite = True)) or
-                  ((BS.SpotGroup = 3) and (dmZLogGlobal.Settings._bandscopecolor[9].FNotOverwrite = True)) then begin
+               if IsOverwriteOk(BS) = False then begin
                   D.Free();
                   D := nil;
                   Continue;
@@ -499,9 +509,7 @@ begin
                BS.FreqHz := D.FreqHz;
 
                // 上書き禁止GROUPならスポットグループを転記
-               if ((D.SpotGroup = 1) and (dmZLogGlobal.Settings._bandscopecolor[7].FNotOverwrite = True)) or
-                  ((D.SpotGroup = 2) and (dmZLogGlobal.Settings._bandscopecolor[8].FNotOverwrite = True)) or
-                  ((D.SpotGroup = 3) and (dmZLogGlobal.Settings._bandscopecolor[9].FNotOverwrite = True)) then begin
+               if IsOverwriteOk(BS) = False then begin
                   BS.SpotGroup := D.SpotGroup;
                end;
 
@@ -510,7 +518,9 @@ begin
             end
             // コールが違う同一周波数SPOTは消す
             else if (BS.Call <> D.Call) and (BS_khz = D_khz) then begin
-               FBSList[i] := nil;
+               if IsOverwriteOk(BS) = True then begin
+                  FBSList[i] := nil;
+               end;
             end;
          end;
 
