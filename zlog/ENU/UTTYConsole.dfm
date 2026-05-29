@@ -12,8 +12,10 @@ object TTYConsole: TTTYConsole
   Font.Style = []
   KeyPreview = True
   Menu = MainMenu1
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 13
@@ -45,9 +47,9 @@ object TTYConsole: TTTYConsole
       TabOrder = 0
       object TXLog: TMemo
         Left = 0
-        Top = 20
+        Top = 24
         Width = 356
-        Height = 110
+        Height = 106
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -60,21 +62,32 @@ object TTYConsole: TTTYConsole
         TabOrder = 0
         OnKeyDown = TXLogKeyDown
         OnKeyPress = TXLogKeyPress
+        ExplicitTop = 20
+        ExplicitHeight = 110
       end
       object panelTxHeader: TPanel
         Left = 0
         Top = 0
         Width = 356
-        Height = 20
+        Height = 24
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
         object Label1: TLabel
           Left = 4
-          Top = 4
+          Top = 5
           Width = 35
           Height = 13
           Caption = 'TX Log'
+        end
+        object buttonTXLogClear: TButton
+          Left = 284
+          Top = 3
+          Width = 70
+          Height = 19
+          Caption = 'Clear'
+          TabOrder = 0
+          OnClick = buttonTXLogClearClick
         end
       end
     end
@@ -88,9 +101,9 @@ object TTYConsole: TTTYConsole
       TabOrder = 1
       object RXLog: TConsole2
         Left = 0
-        Top = 20
+        Top = 24
         Width = 356
-        Height = 199
+        Height = 195
         Align = alClient
         ParentColor = False
         Font.Charset = DEFAULT_CHARSET
@@ -101,21 +114,32 @@ object TTYConsole: TTTYConsole
         Options = [coAutoTracking, coCheckBreak, coLazyWrite, coFixedPitchOnly]
         Rows = 500
         LineBreak = CRLF
+        ExplicitTop = 20
+        ExplicitHeight = 199
       end
       object panelRxHeader: TPanel
         Left = 0
         Top = 0
         Width = 356
-        Height = 20
+        Height = 24
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
         object Label2: TLabel
           Left = 4
-          Top = 4
+          Top = 5
           Width = 36
           Height = 13
           Caption = 'RX Log'
+        end
+        object buttonRXLogClear: TButton
+          Left = 284
+          Top = 3
+          Width = 70
+          Height = 19
+          Caption = 'Clear'
+          TabOrder = 0
+          OnClick = buttonRXLogClearClick
         end
       end
     end
@@ -129,9 +153,9 @@ object TTYConsole: TTTYConsole
     TabOrder = 1
     object CallsignList: TListBox
       Left = 1
-      Top = 21
+      Top = 25
       Width = 159
-      Height = 333
+      Height = 329
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -143,21 +167,32 @@ object TTYConsole: TTTYConsole
       TabOrder = 0
       OnClick = CallsignListClick
       OnDblClick = CallsignListDblClick
+      ExplicitTop = 21
+      ExplicitHeight = 333
     end
     object panelLeftHeader: TPanel
       Left = 1
       Top = 1
       Width = 159
-      Height = 20
+      Height = 24
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
       object Label3: TLabel
         Left = 4
-        Top = 4
+        Top = 5
         Width = 51
         Height = 13
         Caption = 'Callsign list'
+      end
+      object buttonCallListClear: TButton
+        Left = 100
+        Top = 3
+        Width = 56
+        Height = 19
+        Caption = 'Clear'
+        TabOrder = 0
+        OnClick = buttonCallListClearClick
       end
     end
   end
@@ -197,6 +232,189 @@ object TTYConsole: TTTYConsole
         Caption = '&Stay on Top'
         OnClick = menuStayOnTopClick
       end
+    end
+  end
+  object ActionList1: TActionList
+    State = asSuspended
+    Left = 308
+    Top = 60
+    object actionPlayMessageA01: TAction
+      Tag = 1
+      Caption = 'actionPlayMessageA01'
+      ShortCut = 112
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA02: TAction
+      Tag = 2
+      Caption = 'actionPlayMessageA02'
+      ShortCut = 113
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA03: TAction
+      Tag = 3
+      Caption = 'actionPlayMessageA03'
+      ShortCut = 114
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA04: TAction
+      Tag = 4
+      Caption = 'actionPlayMessageA04'
+      ShortCut = 115
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA05: TAction
+      Tag = 5
+      Caption = 'actionPlayMessageA05'
+      ShortCut = 116
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA06: TAction
+      Tag = 6
+      Caption = 'actionPlayMessageA06'
+      ShortCut = 117
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA07: TAction
+      Tag = 7
+      Caption = 'actionPlayMessageA07'
+      ShortCut = 118
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA08: TAction
+      Tag = 8
+      Caption = 'actionPlayMessageA08'
+      ShortCut = 119
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA09: TAction
+      Tag = 9
+      Caption = 'actionPlayMessageA09'
+      ShortCut = 120
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA10: TAction
+      Tag = 10
+      Caption = 'actionPlayMessageA10'
+      ShortCut = 121
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA11: TAction
+      Tag = 11
+      Caption = 'actionPlayMessageA11'
+      ShortCut = 122
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageA12: TAction
+      Tag = 12
+      Caption = 'actionPlayMessageA12'
+      ShortCut = 123
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayMessageB01: TAction
+      Tag = 1
+      Caption = 'actionPlayMessageB01'
+      ShortCut = 8304
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB02: TAction
+      Tag = 2
+      Caption = 'actionPlayMessageB02'
+      ShortCut = 8305
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB03: TAction
+      Tag = 3
+      Caption = 'actionPlayMessageB03'
+      ShortCut = 8306
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB04: TAction
+      Tag = 4
+      Caption = 'actionPlayMessageB04'
+      ShortCut = 8307
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB05: TAction
+      Tag = 5
+      Caption = 'actionPlayMessageB05'
+      ShortCut = 8308
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB06: TAction
+      Tag = 6
+      Caption = 'actionPlayMessageB06'
+      ShortCut = 8309
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB07: TAction
+      Tag = 7
+      Caption = 'actionPlayMessageB07'
+      ShortCut = 8310
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB08: TAction
+      Tag = 8
+      Caption = 'actionPlayMessageB08'
+      ShortCut = 8311
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB09: TAction
+      Tag = 9
+      Caption = 'actionPlayMessageB09'
+      ShortCut = 8312
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB10: TAction
+      Tag = 10
+      Caption = 'actionPlayMessageB10'
+      ShortCut = 8313
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB11: TAction
+      Tag = 11
+      Caption = 'actionPlayMessageB11'
+      ShortCut = 8314
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayMessageB12: TAction
+      Tag = 12
+      Caption = 'actionPlayMessageB12'
+      ShortCut = 8315
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayCQA1: TAction
+      Tag = 101
+      Caption = 'actionPlayCQA1'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQA2: TAction
+      Tag = 102
+      Caption = 'actionPlayCQA2'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQA3: TAction
+      Tag = 103
+      Caption = 'actionPlayCQA3'
+      OnExecute = actionPlayMessageAExecute
+    end
+    object actionPlayCQB1: TAction
+      Tag = 101
+      Caption = 'actionPlayCQB1'
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayCQB2: TAction
+      Tag = 102
+      Caption = 'actionPlayCQB2'
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionPlayCQB3: TAction
+      Tag = 103
+      Caption = 'actionPlayCQB3'
+      OnExecute = actionPlayMessageBExecute
+    end
+    object actionControlPTT: TAction
+      Caption = 'actionControlPTT'
+      OnExecute = actionControlPTTExecute
     end
   end
 end

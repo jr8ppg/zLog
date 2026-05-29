@@ -5,7 +5,8 @@ interface
 uses
   WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
-  UzLogForm, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW;
+  UzLogForm, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW, System.Actions,
+  Vcl.ActnList;
 
 const
   ttyMMTTY = 0;
@@ -35,6 +36,41 @@ type
     Label2: TLabel;
     panelLeftHeader: TPanel;
     Label3: TLabel;
+    ActionList1: TActionList;
+    actionPlayMessageA01: TAction;
+    actionPlayMessageA02: TAction;
+    actionPlayMessageA03: TAction;
+    actionPlayMessageA04: TAction;
+    actionPlayMessageA05: TAction;
+    actionPlayMessageA06: TAction;
+    actionPlayMessageA07: TAction;
+    actionPlayMessageA08: TAction;
+    actionPlayMessageA09: TAction;
+    actionPlayMessageA10: TAction;
+    actionPlayMessageA11: TAction;
+    actionPlayMessageA12: TAction;
+    actionPlayMessageB01: TAction;
+    actionPlayMessageB02: TAction;
+    actionPlayMessageB03: TAction;
+    actionPlayMessageB04: TAction;
+    actionPlayMessageB05: TAction;
+    actionPlayMessageB06: TAction;
+    actionPlayMessageB07: TAction;
+    actionPlayMessageB08: TAction;
+    actionPlayMessageB09: TAction;
+    actionPlayMessageB10: TAction;
+    actionPlayMessageB11: TAction;
+    actionPlayMessageB12: TAction;
+    actionPlayCQA1: TAction;
+    actionPlayCQA2: TAction;
+    actionPlayCQA3: TAction;
+    actionPlayCQB1: TAction;
+    actionPlayCQB2: TAction;
+    actionPlayCQB3: TAction;
+    buttonTXLogClear: TButton;
+    buttonRXLogClear: TButton;
+    buttonCallListClear: TButton;
+    actionControlPTT: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -49,6 +85,14 @@ type
     procedure menuClearEverythingClick(Sender: TObject);
     procedure CallsignListClick(Sender: TObject);
     procedure CallsignListDblClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
+    procedure buttonCallListClearClick(Sender: TObject);
+    procedure buttonRXLogClearClick(Sender: TObject);
+    procedure buttonTXLogClearClick(Sender: TObject);
+    procedure actionPlayMessageAExecute(Sender: TObject);
+    procedure actionPlayMessageBExecute(Sender: TObject);
+    procedure actionControlPTTExecute(Sender: TObject);
   private
     { Private declarations }
     FTTYMode: Integer;
@@ -60,12 +104,15 @@ type
     function Sending(): Boolean;
     procedure RXChar(C: AnsiChar);
     procedure TXChar(C: AnsiChar);
+    procedure PlayMessageRTTY(no: Integer);
+    procedure ApplyShortcut();
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
   public
     { Public declarations }
     procedure SendStrNow(S: String);
     procedure TxClear();
+    procedure ToggleTXRX();
 
     property TTYMode: Integer read FTTYMode write SetTTYMode;
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -96,9 +143,23 @@ end;
 procedure TTTYConsole.FormShow(Sender: TObject);
 begin
    MainForm.AddTaskbar(Handle);
+   ApplyShortcut();
    RXLog.ClrScr();
    TXLog.Clear();
    CallsignList.Clear();
+end;
+
+procedure TTTYConsole.FormActivate(Sender: TObject);
+begin
+   inherited;
+   ActionList1.State := asNormal;
+   TXLog.SetFocus();
+end;
+
+procedure TTTYConsole.FormDeactivate(Sender: TObject);
+begin
+   inherited;
+   ActionList1.State := asSuspended;
 end;
 
 procedure TTTYConsole.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -107,14 +168,15 @@ var
    S: string;
 begin
    case Key of
-      VK_ESCAPE:
-         MainForm.SetLastFocus();
+      VK_ESCAPE: begin
+         PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 2);
+         menuClearTxLog.Click();
+         Key := 0;
+      end;
 
-      VK_F1 .. VK_F8, VK_F11, VK_F12: begin
-         i := Key - VK_F1 + 1;
-         S := dmZLogGlobal.CWMessage(3, i);
-         S := SetStrNoAbbrev(S, Main.CurrentQSO);
-         SendStrNow(S);
+      VK_NONCONVERT: begin
+         toggleTXRX();
+         Key := 0;
       end;
    end;
 end;
@@ -240,27 +302,6 @@ begin
          end;
       end;
 
-//      i := pos('DE ', TTYLineBuffer);
-//      if i > 0 then begin
-//         S := TTYLineBuffer;
-//         Delete(S, 1, i - 1); // S = DE XX1XXX
-//         if length(S) > 5 then begin
-//            Delete(S, 1, 3);
-//            S := TrimLeft(S);
-//            i := pos(' ', S);
-//            if i > 0 then
-//               S := copy(S, 1, i - 1);
-//            if (length(S) >= 3) and (length(S) <= 15) then begin
-//               for j := 0 to CallsignList.Items.Count - 1 do begin
-//                  if CallsignList.Items[j] = S then
-//                     goto xxxx;
-//               end;
-//               CallsignList.Items.Add(S);
-//               // TTYLineBuffer := '';
-//            end;
-//         end;
-//      end;
-
    xxxx:
       i := Pos('599', FTTYLineBuffer);
       if i > 0 then begin
@@ -363,19 +404,6 @@ begin
                   FTTYSendBuffer := FTTYSendBuffer + _CR + _LF;
                end;
             end;
-
-            VK_F9: begin
-               if MMTTY_TX then
-                  mm_RX
-               else begin
-                  if FTTYSendBuffer <> '' then begin
-                     mm_SendStr(FTTYSendBuffer, False);
-                     FTTYSendBuffer := '';
-                  end
-                  else
-                     mm_TX;
-               end;
-            end;
          end;
       end;
 
@@ -419,6 +447,24 @@ begin
    TXLog.Clear;
 end;
 
+procedure TTTYConsole.buttonCallListClearClick(Sender: TObject);
+begin
+   CallsignList.Clear;
+   TXLog.SetFocus();
+end;
+
+procedure TTTYConsole.buttonRXLogClearClick(Sender: TObject);
+begin
+   RXLog.ClrScr;
+   TXLog.SetFocus();
+end;
+
+procedure TTTYConsole.buttonTXLogClearClick(Sender: TObject);
+begin
+   TXLog.Clear;
+   TXLog.SetFocus();
+end;
+
 procedure TTTYConsole.CallsignListClick(Sender: TObject);
 begin
    if CallsignList.ItemIndex >= 0 then begin
@@ -439,14 +485,135 @@ end;
 function TTTYConsole.Sending(): Boolean;
 begin
    Result := False;
+
    case FTTYMode of
       ttyMMTTY: begin
          Result := MMTTY_TX;
       end;
 
-      ttyPSK31:
+      ttyPSK31: begin
          Result := False;
+      end;
    end;
+end;
+
+procedure TTTYConsole.actionControlPTTExecute(Sender: TObject);
+begin
+   ToggleTXRX();
+end;
+
+procedure TTTYConsole.actionPlayMessageAExecute(Sender: TObject);
+var
+   no: Integer;
+   nID: Integer;
+begin
+   no := TAction(Sender).Tag;
+   nID := MainForm.CurrentRigID;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('PlayMessageA(' + IntToStr(no) + ')'));
+   {$ENDIF}
+
+   PlayMessageRTTY(no);
+end;
+
+procedure TTTYConsole.actionPlayMessageBExecute(Sender: TObject);
+var
+   no: Integer;
+   nID: Integer;
+begin
+   no := TAction(Sender).Tag;
+   nID := MainForm.CurrentRigID;
+
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('PlayMessageB(' + IntToStr(no) + ')'));
+   {$ENDIF}
+
+   PlayMessageRTTY(no);
+end;
+
+procedure TTTYConsole.PlayMessageRTTY(no: Integer);
+var
+   S: string;
+begin
+   S := dmZLogGlobal.CWMessage(3, no);
+   if S = '' then begin
+      Exit;
+   end;
+
+   S := SetStrNoAbbrev(S, CurrentQSO);
+   SendStrNow(S);
+end;
+
+procedure TTTYConsole.ApplyShortcut();
+begin
+   actionPlayMessageA01.ShortCut := MainForm.actionPlayMessageA01.ShortCut;
+   actionPlayMessageA02.ShortCut := MainForm.actionPlayMessageA02.ShortCut;
+   actionPlayMessageA03.ShortCut := MainForm.actionPlayMessageA03.ShortCut;
+   actionPlayMessageA04.ShortCut := MainForm.actionPlayMessageA04.ShortCut;
+   actionPlayMessageA05.ShortCut := MainForm.actionPlayMessageA05.ShortCut;
+   actionPlayMessageA06.ShortCut := MainForm.actionPlayMessageA06.ShortCut;
+   actionPlayMessageA07.ShortCut := MainForm.actionPlayMessageA07.ShortCut;
+   actionPlayMessageA08.ShortCut := MainForm.actionPlayMessageA08.ShortCut;
+   actionPlayMessageA09.ShortCut := MainForm.actionPlayMessageA09.ShortCut;
+   actionPlayMessageA10.ShortCut := MainForm.actionPlayMessageA10.ShortCut;
+   actionPlayMessageA11.ShortCut := MainForm.actionPlayMessageA11.ShortCut;
+   actionPlayMessageA12.ShortCut := MainForm.actionPlayMessageA12.ShortCut;
+
+   actionPlayMessageB01.ShortCut := MainForm.actionPlayMessageB01.ShortCut;
+   actionPlayMessageB02.ShortCut := MainForm.actionPlayMessageB02.ShortCut;
+   actionPlayMessageB03.ShortCut := MainForm.actionPlayMessageB03.ShortCut;
+   actionPlayMessageB04.ShortCut := MainForm.actionPlayMessageB04.ShortCut;
+   actionPlayMessageB05.ShortCut := MainForm.actionPlayMessageB05.ShortCut;
+   actionPlayMessageB06.ShortCut := MainForm.actionPlayMessageB06.ShortCut;
+   actionPlayMessageB07.ShortCut := MainForm.actionPlayMessageB07.ShortCut;
+   actionPlayMessageB08.ShortCut := MainForm.actionPlayMessageB08.ShortCut;
+   actionPlayMessageB09.ShortCut := MainForm.actionPlayMessageB09.ShortCut;
+   actionPlayMessageB10.ShortCut := MainForm.actionPlayMessageB10.ShortCut;
+   actionPlayMessageB11.ShortCut := MainForm.actionPlayMessageB11.ShortCut;
+   actionPlayMessageB12.ShortCut := MainForm.actionPlayMessageB12.ShortCut;
+
+   actionPlayCQA1.ShortCut := MainForm.actionPlayCQA1.ShortCut;
+   actionPlayCQA2.ShortCut := MainForm.actionPlayCQA2.ShortCut;
+   actionPlayCQA3.ShortCut := MainForm.actionPlayCQA3.ShortCut;
+   actionPlayCQB1.ShortCut := MainForm.actionPlayCQB1.ShortCut;
+   actionPlayCQB2.ShortCut := MainForm.actionPlayCQB2.ShortCut;
+   actionPlayCQB3.ShortCut := MainForm.actionPlayCQB3.ShortCut;
+
+   actionControlPTT.ShortCut := MainForm.actionControlPTT.ShortCut;
+
+   actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
+   actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
+   actionPlayMessageA03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA03.SecondaryShortCuts);
+   actionPlayMessageA04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA04.SecondaryShortCuts);
+   actionPlayMessageA05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA05.SecondaryShortCuts);
+   actionPlayMessageA06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA06.SecondaryShortCuts);
+   actionPlayMessageA07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA07.SecondaryShortCuts);
+   actionPlayMessageA08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA08.SecondaryShortCuts);
+   actionPlayMessageA09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA09.SecondaryShortCuts);
+   actionPlayMessageA10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA10.SecondaryShortCuts);
+   actionPlayMessageA11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA11.SecondaryShortCuts);
+   actionPlayMessageA12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA12.SecondaryShortCuts);
+
+   actionPlayMessageB01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB01.SecondaryShortCuts);
+   actionPlayMessageB02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB02.SecondaryShortCuts);
+   actionPlayMessageB03.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB03.SecondaryShortCuts);
+   actionPlayMessageB04.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB04.SecondaryShortCuts);
+   actionPlayMessageB05.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB05.SecondaryShortCuts);
+   actionPlayMessageB06.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB06.SecondaryShortCuts);
+   actionPlayMessageB07.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB07.SecondaryShortCuts);
+   actionPlayMessageB08.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB08.SecondaryShortCuts);
+   actionPlayMessageB09.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB09.SecondaryShortCuts);
+   actionPlayMessageB10.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB10.SecondaryShortCuts);
+   actionPlayMessageB11.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB11.SecondaryShortCuts);
+   actionPlayMessageB12.SecondaryShortCuts.Assign(MainForm.actionPlayMessageB12.SecondaryShortCuts);
+
+   actionPlayCQA2.SecondaryShortCuts.Assign(MainForm.actionPlayCQA2.SecondaryShortCuts);
+   actionPlayCQA3.SecondaryShortCuts.Assign(MainForm.actionPlayCQA3.SecondaryShortCuts);
+   actionPlayCQB2.SecondaryShortCuts.Assign(MainForm.actionPlayCQB2.SecondaryShortCuts);
+   actionPlayCQB3.SecondaryShortCuts.Assign(MainForm.actionPlayCQB3.SecondaryShortCuts);
+
+   actionControlPTT.SecondaryShortCuts.Assign(MainForm.actionControlPTT.SecondaryShortCuts);
 end;
 
 function TTTYConsole.GetFontSize(): Integer;
@@ -465,6 +632,22 @@ end;
 procedure TTTYConsole.TxClear();
 begin
    TXLog.Clear();
+end;
+
+procedure TTTYConsole.ToggleTXRX();
+begin
+   if MMTTY_TX then begin
+      mm_RX;
+   end
+   else begin
+      if FTTYSendBuffer <> '' then begin
+         mm_SendStr(FTTYSendBuffer, False);
+         FTTYSendBuffer := '';
+      end
+      else begin
+         mm_TX;
+      end;
+   end;
 end;
 
 end.

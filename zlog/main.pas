@@ -14313,18 +14313,22 @@ begin
       Exit;
    end;
 
-   // PTT制御無効なら何もしない
-   if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
-       (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
-      Exit;
-   end;
+   // モード取得
+   mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
 
-   // WAIT=OFFの場合はキューをクリア
-   if FInformation.IsWait = False then begin
-      if (dmZLogKeyer.IsPlaying = True) or (FMessageManager.IsPlaying = True) then begin
-         mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
-         StopMessage(mode);
-         FMessageManager.ClearQue();
+   if mode <> mRTTY then begin
+      // PTT制御無効なら何もしない
+      if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
+          (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
+         Exit;
+      end;
+
+      // WAIT=OFFの場合はキューをクリア
+      if FInformation.IsWait = False then begin
+         if (dmZLogKeyer.IsPlaying = True) or (FMessageManager.IsPlaying = True) then begin
+            StopMessage(mode);
+            FMessageManager.ClearQue();
+         end;
       end;
    end;
 
@@ -14380,6 +14384,9 @@ begin
             rig.ControlPTT(fPTT);
          end;
       end
+      else if mode = mRTTY then begin
+         //
+      end
       else begin
          if dmZLogGlobal.Settings._pttenabled_ph = True then begin
             rig.ControlPTT(fPTT);
@@ -14387,14 +14394,23 @@ begin
       end;
    end;
 
-   if mode = mCW then begin
-      if dmZLogGlobal.Settings._pttenabled_cw = True then begin
-         ControlPTT(fPTT);
+   case mode of
+      mCW: begin
+         if dmZLogGlobal.Settings._pttenabled_cw = True then begin
+            ControlPTT(fPTT);
+         end;
       end;
-   end
-   else begin
-      if dmZLogGlobal.Settings._pttenabled_ph = True then begin
-         VoiceControl(fPTT, 0);
+
+      mRTTY: begin
+         if Assigned(FTTYConsole) then begin
+            FTTYConsole.ToggleTXRX();
+         end;
+      end;
+
+      else begin
+         if dmZLogGlobal.Settings._pttenabled_ph = True then begin
+            VoiceControl(fPTT, 0);
+         end;
       end;
    end;
 end;
