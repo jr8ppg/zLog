@@ -456,6 +456,12 @@ type
     buttonAudioConfig4: TButton;
     label2RadioVText: TLabel;
     checkSo2rDontSwitchSpMode: TCheckBox;
+    Label1: TLabel;
+    buttonBrowseMmtty1Path: TButton;
+    editMmtty1Folder: TEdit;
+    Label2: TLabel;
+    buttonBrowseMmtty2Path: TButton;
+    editMmtty2Folder: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1144,6 +1150,8 @@ begin
       50: strDir := editPluginsFolder.Text;
       60: strDir := editSpcFolder.Text;
       70: strDir := editResumeFolder.Text;
+      80: strDir := editMmtty1Folder.Text;
+      90: strDir := editMmtty2Folder.Text;
    end;
 
    if SelectDirectory(SELECT_FOLDER, '', strDir, [sdNewFolder, sdNewUI, sdValidateDir], Self) = False then begin
@@ -1177,6 +1185,12 @@ begin
 
       // BS Resume
       70: editResumeFolder.Text := strDir;
+
+      // MMTTY1
+      80: editMmtty1Folder.Text := strDir;
+
+      // MMTTY2
+      90: editMmtty2Folder.Text := strDir;
    end;
 end;
 
@@ -2022,6 +2036,8 @@ begin
 
       Settings.FSuperCheck.FSuperCheckFolder := editSpcFolder.Text;
       Settings._bsresumepath := editResumeFolder.Text;
+      Settings._mmtty1path := editMmtty1Folder.Text;
+      Settings._mmtty2path := editMmtty2Folder.Text;
 
       //
       // Fonts
@@ -2375,6 +2391,8 @@ begin
       editPluginsFolder.Text := Settings._pluginpath;
       editSpcFolder.Text := Settings.FSuperCheck.FSuperCheckFolder;
       editResumeFolder.Text := Settings._bsresumepath;
+      editMmtty1Folder.Text := Settings._mmtty1path;
+      editMmtty2Folder.Text := Settings._mmtty2path;
 
       //
       // Fonts

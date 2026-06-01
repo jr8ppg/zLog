@@ -62,8 +62,6 @@ object TTYConsole: TTTYConsole
         TabOrder = 0
         OnKeyDown = TXLogKeyDown
         OnKeyPress = TXLogKeyPress
-        ExplicitTop = 20
-        ExplicitHeight = 110
       end
       object panelTxHeader: TPanel
         Left = 0
@@ -114,8 +112,6 @@ object TTYConsole: TTTYConsole
         Options = [coAutoTracking, coCheckBreak, coLazyWrite, coFixedPitchOnly]
         Rows = 500
         LineBreak = CRLF
-        ExplicitTop = 20
-        ExplicitHeight = 199
       end
       object panelRxHeader: TPanel
         Left = 0
@@ -167,8 +163,6 @@ object TTYConsole: TTTYConsole
       TabOrder = 0
       OnClick = CallsignListClick
       OnDblClick = CallsignListDblClick
-      ExplicitTop = 21
-      ExplicitHeight = 333
     end
     object panelLeftHeader: TPanel
       Left = 1

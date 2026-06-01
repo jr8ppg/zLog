@@ -238,6 +238,8 @@ type
     _pluginlist: string;
     _pluginDLLs: string;
     _bsresumepath: string;
+    _mmtty1Path: string;
+    _mmtty2path: string;
 
     // PTT Control
     // CW
@@ -546,6 +548,10 @@ type
     procedure SetSpcPath(v: string);
     function GetBsResumePath(): string;
     procedure SetBsResumePath(v: string);
+    function GetMmtty1Path(): string;
+    procedure SetMmtty1Path(v: string);
+    function GetMmtty2Path(): string;
+    procedure SetMmtty2Path(v: string);
     function GetCurrentBandPlan(): TBandPlan;
     procedure FreeCommPortList();
     function GetCommPortList(): TList<TCommPort>;
@@ -639,6 +645,8 @@ public
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
     property BsResumePath: string read GetBsResumePath write SetBsResumePath;
+    property Mmtty1Path: string read GetMmtty1Path write SetMmtty1Path;
+    property Mmtty2Path: string read GetMmtty2Path write SetMmtty2Path;
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
     property PacketClusterList: TTelnetSettingList read FPacketClusterList;
@@ -1327,6 +1335,14 @@ begin
       // Bandscope resume data path
       Settings._bsresumepath := ini.ReadString('Preferences', 'BsResumePath', '');
       Settings._bsresumepath := AdjustPath(Settings._bsresumepath);
+
+      // MMTTY1
+      Settings._mmtty1path := ini.ReadString('Preferences', 'Mmtty1Path', '');
+      Settings._mmtty1path := AdjustPath(Settings._mmtty1path);
+
+      // MMTTY2
+      Settings._mmtty2path := ini.ReadString('Preferences', 'Mmtty2Path', '');
+      Settings._mmtty2path := AdjustPath(Settings._mmtty2path);
 
       //
       // Misc
@@ -2164,6 +2180,12 @@ begin
 
       // Bandscope resume data path
       ini.WriteString('Preferences', 'BsResumePath', Settings._bsresumepath);
+
+      // MMTTY1
+      ini.WriteString('Preferences', 'Mmtty1Path', Settings._mmtty1path);
+
+      // MMTTY2
+      ini.WriteString('Preferences', 'Mmtty2Path', Settings._mmtty2path);
 
       //
       // Misc
@@ -3518,6 +3540,50 @@ begin
    end
    else begin
       Settings._bsresumepath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetMmtty1Path(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._mmtty1path);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._mmtty1path;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetMmtty1Path(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._mmtty1path := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._mmtty1path := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetMmtty2Path(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._mmtty2path);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._mmtty2path;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetMmtty2Path(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._mmtty2path := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._mmtty2path := v;
    end;
 end;
 
