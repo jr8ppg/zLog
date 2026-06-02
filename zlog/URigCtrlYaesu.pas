@@ -2368,9 +2368,16 @@ procedure TFTDX101.ReadMeter(param: string);
 var
    strP1: string;
    strP2: string;
+   strP3: string;
 begin
    strP1 := Copy(param, 1, 1);
    strP2 := Copy(param, 2, 3);
+   strP3 := Copy(param, 5, 3);
+
+   if strP1 = '0' then begin
+      FSMeterValue[0] := MeterValue(strP2);
+      FSMeterValue[1] := MeterValue(strP3);
+   end;
    if strP1 = '1' then begin
       FSMeterValue[0] := MeterValue(strP2);
    end;
@@ -2428,6 +2435,9 @@ var
 begin
    strP1 := Copy(param, 1, 1);
    strP2 := Copy(param, 2, 3);
+   if strP1 = '0' then begin
+      FSMeterValue[_currentvfo] := MeterValue(strP2);
+   end;
    if strP1 = '1' then begin
       FSMeterValue[_currentvfo] := MeterValue(strP2);
    end;
