@@ -129,7 +129,7 @@ object CommForm: TCommForm
         Layout = tlCenter
       end
       object labelLoginID: TLabel
-        Left = 56
+        Left = 66
         Top = 59
         Width = 211
         Height = 13
@@ -151,6 +151,7 @@ object CommForm: TCommForm
         Top = 77
         Width = 106
         Height = 21
+        AutoComplete = False
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 0
         OnKeyPress = EditKeyPress
@@ -207,7 +208,6 @@ object CommForm: TCommForm
       OnDrawItem = ListBoxDrawItem
       OnKeyDown = ListBoxKeyDown
       OnMeasureItem = ListBoxMeasureItem
-      ExplicitTop = -1
     end
     object Console: TListBox
       Left = 1
