@@ -377,7 +377,7 @@ object MainForm: TMainForm
           ImeMode = imDisable
           MaxLength = 20
           TabOrder = 2
-          OnChange = SentNumberEdit1Change
+          OnChange = RcvdNumberEdit1Change
           OnEnter = EditEnter
           OnExit = EditExit
           OnKeyDown = EditKeyDown
