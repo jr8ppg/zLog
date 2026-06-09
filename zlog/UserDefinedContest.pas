@@ -1262,6 +1262,7 @@ function TUserDefinedContest.IsLocal(aQSO: TQSO): Boolean;
 var
    i: Integer;
    S: string;
+   arr: TArray<TPair<string, string>>;
 begin
    Result := False;
 
@@ -1292,11 +1293,22 @@ begin
       S := Copy(S, 1, FMinLocalLen);
    end;
 
-   if FLocalString.ContainsKey(S) = True then begin
-      Result := True;
+   if FLocalString.Count = 1 then begin
+      arr := FLocalString.ToArray();
+      if Pos(arr[0].Key, S) = 1 then begin
+         Result := True;
+      end
+      else begin
+         Result := False;
+      end;
    end
    else begin
-      Result := False;
+      if FLocalString.ContainsKey(S) = True then begin
+         Result := True;
+      end
+      else begin
+         Result := False;
+      end;
    end;
 end;
 
