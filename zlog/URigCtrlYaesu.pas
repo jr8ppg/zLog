@@ -532,20 +532,6 @@ begin
          Inc(FPollingCount);
       end;
 
-      if strCommand = 'FA' then begin
-         // ü”g”(Hz)
-         strTemp := string(Copy(S, 3, 8));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[0] := i;
-      end;
-
-      if strCommand = 'FB' then begin
-         // ü”g”(Hz)
-         strTemp := string(Copy(S, 3, 8));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[1] := i;
-      end;
-
       // RXØ‚è‘Ö‚¦VFO A/BØ‚è‘Ö‚¦
       if strCommand = 'FR' then begin
          FunctionRx(string(Copy(S, 3)));
@@ -642,7 +628,7 @@ begin
       BufferString := Copy(BufferString, Index + 1);
 
       {$IFDEF DEBUG}
-      OutputDebugString(PChar('***FT-2000 COMMAND=[' + string(cmd) + ']'));
+      //OutputDebugString(PChar('***FT-2000 COMMAND=[' + string(cmd) + ']'));
       {$ENDIF}
 
       ExecuteCommand(cmd);
@@ -1704,20 +1690,6 @@ begin
          Inc(FPollingCount);
       end;
 
-      if strCommand = 'FA' then begin
-         // ü”g”(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[0] := i;
-      end;
-
-      if strCommand = 'FB' then begin
-         // ü”g”(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[1] := i;
-      end;
-
       // TXØ‚è‘Ö‚¦VFO A/BØ‚è‘Ö‚¦
       if strCommand = 'FT' then begin
          FunctionTx(string(Copy(S, 3)));
@@ -2078,20 +2050,6 @@ begin
          FXit := StrToBoolDef(strTemp, False);
 
          Inc(FPollingCount);
-      end;
-
-      if strCommand = 'FA' then begin
-         // ü”g”(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[0] := i;
-      end;
-
-      if strCommand = 'FB' then begin
-         // ü”g”(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[1] := i;
       end;
 
       // TXØ‚è‘Ö‚¦VFO A/BØ‚è‘Ö‚¦
