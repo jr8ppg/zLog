@@ -2602,6 +2602,7 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, B);
    if rig <> nil then begin
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+      AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
    end;
 
    if B <= HiBand then begin
