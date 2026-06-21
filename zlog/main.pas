@@ -12904,10 +12904,8 @@ begin
       if strNumber <> '' then begin
          N.Text := strNumber;
          N.SelStart := Length(N.Text);
-      end
-      else begin
-         CallSpaceBarProc(C, N, B);
       end;
+      CallSpaceBarProc(C, N, B);
    end;
 
    // OriginalモードではNumber欄へ、ESMモードではEnterで相手を呼ぶためにCall欄へ
