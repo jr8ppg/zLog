@@ -536,7 +536,7 @@ var
    np1: string;
    j: Integer;
    len1, len2: Integer;
-   C: string;
+   C1, C2: string;
 begin
    L := TSuperResultList.Create();
    try
@@ -549,11 +549,12 @@ begin
          end;
 
          // レーベンシュタイン距離を求める
-         C := SI.Callsign;
-         n := LD_dp(C, FPartialStr);
+         C1 := SI.Callsign;
+         C2 := FPartialStr;
+         n := LD_dp(C1, C2);
 
          // レーベンシュタイン距離から類似度を算出
-         len1 := Length(C);
+         len1 := Length(C1);
          len2 := Length(FPartialStr);
          score := n / Max(len1, len2);
 
@@ -569,15 +570,15 @@ begin
             diffpos := 0;
 
             if len1 > len2 then begin
-               FPartialStr := FPartialStr + DupeString(' ', len1 - len2);
+               C2 := C2 + DupeString(' ', len1 - len2);
             end
             else if len1 < len2 then begin
-               C := C + DupeString(' ', len2 - len1);
+               C1 := C1 + DupeString(' ', len2 - len1);
                len1 := len2;
             end;
 
             for j := 1 to len1 do begin
-               if C[j] <> FPartialStr[j] then begin
+               if C1[j] <> C2[j] then begin
                   diffpos := j;
                   Break;
                end;
