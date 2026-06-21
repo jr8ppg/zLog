@@ -1336,7 +1336,8 @@ type
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
     procedure AssignControls(nID: Integer; var C, SN, RN, B, M, O, P: TEdit);
-    procedure CallSpaceBarProc(C, N, B: TEdit);
+    procedure CallSpaceBarProc(C, N, B: TEdit; fLookupOtherBands: Boolean = True);
+    procedure ShowEntityInfo(strCallsign: string);
     procedure ShowSentNumber(aQSO: TQSO);
     procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
     procedure StartCqRepeatTimer();
@@ -6457,33 +6458,37 @@ begin
    end;
 end;
 
-procedure TMainForm.CallSpaceBarProc(C, N, B: TEdit);
+procedure TMainForm.CallSpaceBarProc(C, N, B: TEdit; fLookupOtherBands: Boolean);
 var
    strNumber: string;
    str: string;
    Q: TQSO;
-   CTY: TCountry;
 begin
    Q := TQSO.Create();
    Q.Callsign := C.Text;
    Q.NrRcvd := N.Text;
    Q.Band := TextToBand(B.Text);
 
-   strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
+   if fLookupOtherBands = True then begin
+      strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
 
-   // シリアルナンバータイプはNR自動補完無し
-   if (MyContest.SerialType <> stNone) then begin
-      strNumber := '';
-   end;
+      // シリアルナンバータイプはNR自動補完無し
+      if (MyContest.SerialType <> stNone) then begin
+         strNumber := '';
+      end;
 
-   // スーパーチェックからのNR自動取込
-   if (MyContest.SerialType = stNone) and (dmZLogGlobal.Settings._entersuperexchange = True) and (FSpcRcvd_Estimate <> '') then begin
-      if strNumber = '' then begin
-         if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
-            strNumber := TrimRight(FSpcRcvd_Estimate);
-            MyContest.MultiFound := True;
+      // スーパーチェックからのNR自動取込
+      if (MyContest.SerialType = stNone) and (dmZLogGlobal.Settings._entersuperexchange = True) and (FSpcRcvd_Estimate <> '') then begin
+         if strNumber = '' then begin
+            if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
+               strNumber := TrimRight(FSpcRcvd_Estimate);
+               MyContest.MultiFound := True;
+            end;
          end;
       end;
+   end
+   else begin
+      strNumber := N.Text;
    end;
 
    if FCheckMulti.Visible then begin
@@ -6509,12 +6514,6 @@ begin
       end;
    end;
 
-//   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
-//      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = False)) or
-//      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = True) and (FCurrentTX = FCurrentRx)) then begin
-//      N.SetFocus;
-//   end;
-
    if (MyContest is TCQWWContest) or
       (MyContest is TWAEContest) then begin
       if (dmZLogGlobal.IsMultiStation() = True) then begin
@@ -6535,9 +6534,18 @@ begin
    end;
 
    // Entity情報
+   ShowEntityInfo(Q.Callsign);
+
+   Q.Free();
+end;
+
+procedure TMainForm.ShowEntityInfo(strCallsign: string);
+var
+   CTY: TCountry;
+begin
    if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = True) then begin
       if FEntityInfo.Visible then begin
-         CTY := dmZLogGlobal.GetPrefix(Q.Callsign).Country;
+         CTY := dmZLogGlobal.GetPrefix(strCallsign).Country;
          if CTY.CountryName = 'Unknown' then begin
             FEntityInfo.SetData(nil);
          end
@@ -6549,8 +6557,6 @@ begin
    else begin
       FEntityInfo.SetData(nil);
    end;
-
-   Q.Free();
 end;
 
 procedure TMainForm.Timer1Timer(Sender: TObject);
@@ -12904,8 +12910,11 @@ begin
       if strNumber <> '' then begin
          N.Text := strNumber;
          N.SelStart := Length(N.Text);
+         CallSpaceBarProc(C, N, B, False);
+      end
+      else begin
+         CallSpaceBarProc(C, N, B);
       end;
-      CallSpaceBarProc(C, N, B);
    end;
 
    // OriginalモードではNumber欄へ、ESMモードではEnterで相手を呼ぶためにCall欄へ
