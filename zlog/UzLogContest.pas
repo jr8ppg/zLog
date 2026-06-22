@@ -106,8 +106,9 @@ type
 
     procedure LoadCwMessages();
     procedure SaveCwMessages();
+    procedure LoadMyMessagesAll();
+    procedure LoadMyMessages(bank: Integer);
     procedure SaveColumnWidths();
-    procedure ApplyCwMessages();
 
     property Name: string read FContestName;
     property Mode: TContestMode read FContestMode write SetContestMode;
@@ -136,6 +137,7 @@ type
     property ScoreForm: TBasicScore read FScoreForm;
     property WantedList: TList<TWanted> read FWantedList;
 
+    property UseDefaultMessages: Boolean read FUseDefaultMessages;
     property Prov: string read GetProv write FProv;
     property City: string read GetCity write FCity;
     property CwMessages[Bank: Integer; Index: Integer]: string read GetCwMessages write SetCwMessages;
@@ -288,38 +290,20 @@ type
     function GetNewMulti1(aQSO: TQSO): string; override;
   end;
 
-const
-  def_cw_messages: array[1..maxmessage] of string =
-    ( 'CQ TEST $M TEST',
-      '$C $R$X',
-      'TU $M TEST',
-      '',
-      'NR?',
-      '$C?',
-      '$M',
-      '$R$X',
-      'TU',
-      '',
-      '',
-      ''
-    );
+  TJarlWorldWideRTTY = class(TContest)
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
+    function ADIF_ExchangeRX_FieldName : string; override;
+    function GetNewMulti1(aQSO: TQSO): string; override;
+    function GetNewMulti2(aQSO: TQSO): string; override;
+  end;
 
-  def_rtty_messages: array[1..maxmessage] of string =
-    (
-      'CQ CQ CQ TEST $M $M $M TEST K',
-      '$C DE $M $R$X $R$X BK',
-      'TU DE $M TEST',
-      '',
-      'NR? NR? AGN BK',
-      '$C?',
-      '$M $M',
-      '$R$X $R$X',
-      'TU',
-      '',
-      '',
-      ''
-    );
-
+  TBartgHfRTTY = class(TContest)
+    constructor Create(AOwner: TComponent; N : string; M: TContestMode); reintroduce;
+    function ADIF_ExtraFieldName() : string; override;
+    function ADIF_ExtraField(aQSO: TQSO): string; override;
+    function GetNewMulti1(aQSO: TQSO): string; override;
+    function GetNewMulti2(aQSO: TQSO): string; override;
+  end;
 
 implementation
 
@@ -330,7 +314,8 @@ uses
   UARRLWMulti, UAllAsianScore, UJIDX_DX_Multi, UJIDX_DX_Score,
   UWPXMulti, UWPXScore, UWAEMulti, UWAEScore, UIARUMulti, UIARUScore,
   UARRL10Multi, UARRL10Score, UPediScore, UALLJAMulti, UALLJAScore,
-  UACAGMulti, UFDMulti, USixDownMulti, UGeneralMulti2, UGeneralScore;
+  UACAGMulti, UFDMulti, USixDownMulti, UGeneralMulti2, UGeneralScore,
+  UJarlWorldWideRTTYScore, UJarlWorldWideRTTYMulti;
 
 constructor TContest.Create(AOwner: TComponent; N: string; M: TContestMode);
 begin
@@ -897,7 +882,8 @@ begin
          end;
       end;
 
-      ApplyCwMessages();
+      dmZLogGlobal.Settings.CW._prov := Prov;
+      dmZLogGlobal.Settings.CW._city := City;
    finally
       ini.Free();
       SL.Free();
@@ -955,6 +941,27 @@ begin
    end;
 end;
 
+procedure TContest.LoadMyMessagesAll();
+begin
+   LoadMyMessages(1);
+   LoadMyMessages(2);
+   LoadMyMessages(3);
+   FCwMessageCQ[2] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[2];
+   FCwMessageCQ[3] := dmZLogGlobal.Settings.CW.AdditionalCQMessages[3];
+   FProv := dmZLogGlobal.Settings._myprov;
+   FCity := dmZLogGlobal.Settings._mycity;
+end;
+
+procedure TContest.LoadMyMessages(bank: Integer);
+var
+   i: Integer;
+begin
+   FUseDefaultMessages := False;
+   for i := 1 to maxmessage do begin
+      FCwMessages[bank][i] := dmZLogGlobal.Settings.CW.CWStrBank[bank, i];
+   end;
+end;
+
 procedure TContest.SaveColumnWidths();
 var
    ini: TIniFile;
@@ -972,12 +979,6 @@ begin
       ini.Free();
       SL.Free();
    end;
-end;
-
-procedure TContest.ApplyCwMessages();
-begin
-   dmZLogGlobal.Settings.CW._prov := Prov;
-   dmZLogGlobal.Settings.CW._city := City;
 end;
 
 function TContest.GetProv(): string;
@@ -1012,6 +1013,7 @@ end;
 
 procedure TContest.SetCwMessages(Bank: Integer; Index: Integer; v: string);
 begin
+   FUseDefaultMessages := False;
    FCwMessages[Bank, Index] := v;
 end;
 
@@ -1047,20 +1049,10 @@ begin
       FDefCwMessageCQ[i] := '';
    end;
 
-   FDefCwMessages[1, 1] := 'CQ TEST $M TEST';
-   FDefCwMessages[1, 2] := '$C $R$X';
-   FDefCwMessages[1, 3] := 'TU $M TEST';
-   FDefCwMessages[1, 4] := 'QSO B4 TU';
-   FDefCwMessages[1, 5] := 'NR?';
-   FDefCwMessages[1, 6] := '$C?';
-   FDefCwMessages[1, 7] := '$M';
-   FDefCwMessages[1, 8] := '$R$X';
-
-   FDefCwMessages[3, 1] := 'CQ CQ CQ TEST $M $M $M TEST K';
-   FDefCwMessages[3, 2] := '$C DE $M $R$X $R$X BK';
-   FDefCwMessages[3, 3] := 'TU DE $M TEST';
-   FDefCwMessages[3, 4] := 'QSO B4 TU';
-   FDefCwMessages[3, 5] := 'NR? NR? AGN BK';
+   for i := 1 to 8 do begin
+      FDefCwMessages[1, i] := def_cw_messages[i];
+      FDefCwMessages[3, i] := def_rtty_messages[i];
+   end;
 end;
 
 procedure TContest.SetDefaultColumnWidths();
@@ -1430,7 +1422,6 @@ begin
    FUserDatLoaded := False;
    FMultiForm := TGeneralMulti2.Create(AOwner);
    FScoreForm := TGeneralScore.Create(AOwner);
-   TGeneralScore(FScoreForm).formMulti := TGeneralMulti2(FMultiForm);
 
    FConfig := TUserDefinedContest.Parse(CFGFileName);
    TGeneralScore(FScoreForm).Config := FConfig;
@@ -2568,6 +2559,155 @@ function TAllAsianContest.GetNewMulti1(aQSO: TQSO): string;
 begin
    if aQSO.NewMulti1 then
       Result := aQSO.Multi1
+   else
+      Result := '';
+end;
+
+{ TJarlWorldWideRTTY }
+
+constructor TJarlWorldWideRTTY.Create(AOwner: TComponent; N: string; M: TContestMode);
+begin
+   inherited Create(AOwner, N, M);
+
+   FMultiForm := TJarlWorldWideRTTYMulti.Create(AOwner);
+   TJarlWorldWideRTTYMulti(FMultiForm).PtSameCont := 2;
+   TJarlWorldWideRTTYMulti(FMultiForm).PtDiffCont := 3;
+   FScoreForm := TJarlWorldWideRTTYScore.Create(AOwner);
+
+   UseUTC := True;
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   FSentStr := '$A';
+
+   FBandLow := b35;
+   FBandHigh := b28;
+   FBandPlan := 'DX';
+
+   FNeedCtyDat := True;
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := 'JARL-WW-RTTY';
+      cmCw: AdifContestId := 'JARL-WW-RTTY';
+      cmPh: AdifContestId := 'JARL-WW-RTTY';
+      else AdifContestId := 'JARL-WW-RTTY';
+   end;
+
+   FColWidths[0] := 3;      // status
+   FColWidths[1] := 6;      // date
+   FColWidths[2] := 6;      // time
+   FColWidths[3] := 12;     // callsign
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 5;      // Sent Number
+   FColWidths[6] := 4;      // Rcvd RST
+   FColWidths[7] := 5;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
+   FColWidths[15] := 10;    // freq
+   FColWidths[16] := 0;     // QSOID
+end;
+
+function TJarlWorldWideRTTY.ADIF_ExchangeRX_FieldName: string;
+begin
+   Result := 'age';
+end;
+
+function TJarlWorldWideRTTY.GetNewMulti1(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti1 then
+      Result := aQSO.Multi1
+   else
+      Result := '';
+end;
+
+function TJarlWorldWideRTTY.GetNewMulti2(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti2 then
+      Result := aQSO.Multi2
+   else
+      Result := '';
+end;
+
+{ TBartgHfRTTY }
+
+constructor TBartgHfRTTY.Create(AOwner: TComponent; N: string; M: TContestMode);
+begin
+   inherited Create(AOwner, N, M);
+
+   FMultiForm := TJarlWorldWideRTTYMulti.Create(AOwner, True);
+   FMultiForm.Multi2Kind := mkContinent;
+   TJarlWorldWideRTTYMulti(FMultiForm).PtSameCont := 1;
+   TJarlWorldWideRTTYMulti(FMultiForm).PtDiffCont := 1;
+   FScoreForm := TJarlWorldWideRTTYScore.Create(AOwner);
+   FScoreForm.UseMulti2 := True;
+
+   UseUTC := True;
+   Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
+   Log.QsoList[0].Serial := $01; // uses serial number
+   FSerialType := stAll;
+   FSentStr := '$S$D';
+
+   FBandLow := b35;
+   FBandHigh := b28;
+   FBandPlan := 'DX';
+
+   FNeedCtyDat := True;
+   FStartTime := 0;  // UTC
+   FPeriod := 48;
+
+   case M of
+      cmMix: AdifContestId := 'BARTG-RTTY';
+      cmCw: AdifContestId := 'BARTG-RTTY';
+      cmPh: AdifContestId := 'BARTG-RTTY';
+      else AdifContestId := 'BARTG-RTTY';
+   end;
+
+   FColWidths[0] := 3;      // status
+   FColWidths[1] := 6;      // date
+   FColWidths[2] := 6;      // time
+   FColWidths[3] := 12;     // callsign
+   FColWidths[4] := 4;      // Sent RST
+   FColWidths[5] := 8;      // Sent Number
+   FColWidths[6] := 8;      // Rcvd RST
+   FColWidths[7] := 5;      // Rcvd Number
+   FColWidths[8] := 3;      // multi1
+   FColWidths[9] := 3;      // multi2
+   FColWidths[10] := 4;     // band
+   FColWidths[11] := 4;     // mode
+   FColWidths[12] := 6;     // op
+   FColWidths[13] := 7;     // memo
+   FColWidths[14] := 4;     // point
+   FColWidths[15] := 10;    // freq
+   FColWidths[16] := 0;     // QSOID
+end;
+
+function TBartgHfRTTY.ADIF_ExtraFieldName(): string;
+begin
+   Result := 'CONT';
+end;
+
+function TBartgHfRTTY.ADIF_ExtraField(aQSO: TQSO): string;
+begin
+   Result := aQSO.Continent;
+end;
+
+function TBartgHfRTTY.GetNewMulti1(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti1 then
+      Result := aQSO.Multi1
+   else
+      Result := '';
+end;
+
+function TBartgHfRTTY.GetNewMulti2(aQSO: TQSO): string;
+begin
+   if aQSO.NewMulti2 then
+      Result := aQSO.Multi2
    else
       Result := '';
 end;

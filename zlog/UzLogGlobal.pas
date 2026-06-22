@@ -40,6 +40,8 @@ type
 
     _prov: string;
     _city: string;
+
+    _cwk_clear_delay: Integer;
   end;
 
   TCommParam = record
@@ -77,6 +79,7 @@ type
     FBackColor: TColor;
     FBold: Boolean;
     FUseReliability: Boolean;
+    FNotOverwrite: Boolean;
     FTransparent: Boolean;
   end;
 
@@ -158,6 +161,7 @@ type
     _bandscope_show_dx_spots: Boolean;
     _bandscope_use_number_lookup: Boolean;
     _bandscope_use_lookup_server: Boolean;
+    _bandscope_lookup_server_option: Integer;
     _bandscope_use_resume: Boolean;
     _bandscope_setfreq_after_mode_change: Boolean;
     _bandscope_always_change_mode: Boolean;
@@ -234,6 +238,8 @@ type
     _pluginlist: string;
     _pluginDLLs: string;
     _bsresumepath: string;
+    _mmtty1Path: string;
+    _mmtty2path: string;
 
     // PTT Control
     // CW
@@ -415,6 +421,9 @@ type
     // Startup window
     FShowStartupWindow: Boolean;
 
+    // Show available bands for user defined contest
+    FShowAvailableBandsForUserDefinedContest: Boolean;
+
     // Usability
     FUseMultiLineTabs: Boolean;
     FUseDarkMode: Boolean;
@@ -539,6 +548,10 @@ type
     procedure SetSpcPath(v: string);
     function GetBsResumePath(): string;
     procedure SetBsResumePath(v: string);
+    function GetMmtty1Path(): string;
+    procedure SetMmtty1Path(v: string);
+    function GetMmtty2Path(): string;
+    procedure SetMmtty2Path(v: string);
     function GetCurrentBandPlan(): TBandPlan;
     procedure FreeCommPortList();
     function GetCommPortList(): TList<TCommPort>;
@@ -632,6 +645,8 @@ public
     property PluginPath: string read GetPluginPath write SetPluginPath;
     property SpcPath: string read GetSpcPath write SetSpcPath;
     property BsResumePath: string read GetBsResumePath write SetBsResumePath;
+    property Mmtty1Path: string read GetMmtty1Path write SetMmtty1Path;
+    property Mmtty2Path: string read GetMmtty2Path write SetMmtty2Path;
 
     property CommPortList: TList<TCommPort> read GetCommPortList;
     property PacketClusterList: TTelnetSettingList read FPacketClusterList;
@@ -849,6 +864,8 @@ begin
 end;
 
 procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
+var
+   i: Integer;
 begin
    // Prov/State($V) -> readonly
    Settings._myprov := ini.ReadString('Profiles', 'Province/State', '');
@@ -856,10 +873,9 @@ begin
    // CITY -> readonly
    Settings._mycity := ini.ReadString('Profiles', 'City', '');
 
-   Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M TEST');
-   Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
-   Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
-   Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
+   for i := 1 to 4 do begin
+      Settings.CW.CWStrBank[1, i]  := ini.ReadString('CW', 'F' + IntToStr(i), def_cw_messages[i]);
+   end;
 
    Settings.CW._prov := Settings._myprov;
    Settings.CW._city := Settings._mycity;
@@ -956,10 +972,10 @@ begin
 //      Settings._city := ini.ReadString('Profiles', 'City', '');
 
       // CQ Zone
-      Settings._mycqzone := ini.ReadString('Profiles', 'CQZone', '');
+      Settings._mycqzone := ini.ReadString('Profiles', 'CQZone', '25');
 
       // ITU Zone
-      Settings._myiaruzone := ini.ReadString('Profiles', 'IARUZone', '');
+      Settings._myiaruzone := ini.ReadString('Profiles', 'IARUZone', '45');
 
       // Age
       Settings._myage := ini.ReadString('Profiles', 'Age', '');
@@ -985,31 +1001,16 @@ begin
       //
 
       // Messages
-//      Settings.CW.CWStrBank[1, 1] := ini.ReadString('CW', 'F1', 'CQ TEST $M $M TEST');
-//      Settings.CW.CWStrBank[1, 2] := ini.ReadString('CW', 'F2', '$C 5NN$X');
-//      Settings.CW.CWStrBank[1, 3] := ini.ReadString('CW', 'F3', 'TU $M TEST');
-//      Settings.CW.CWStrBank[1, 4] := ini.ReadString('CW', 'F4', 'QSO B4 TU');
-      Settings.CW.CWStrBank[1, 5]  := ini.ReadString('CW', 'F5', 'NR?');
-      Settings.CW.CWStrBank[1, 6]  := ini.ReadString('CW', 'F6', '$C?');
-      Settings.CW.CWStrBank[1, 7]  := ini.ReadString('CW', 'F7', '$M');
-      Settings.CW.CWStrBank[1, 8]  := ini.ReadString('CW', 'F8', '5NN$X');
-      Settings.CW.CWStrBank[1, 9]  := ini.ReadString('CW', 'F9', '');
-      Settings.CW.CWStrBank[1, 10] := ini.ReadString('CW', 'F10', '');
-      Settings.CW.CWStrBank[1, 11] := ini.ReadString('CW', 'F11', '');
-      Settings.CW.CWStrBank[1, 12] := ini.ReadString('CW', 'F12', '');
+      for i := 5 to maxmessage do begin
+         Settings.CW.CWStrBank[1, i]  := ini.ReadString('CW', 'F' + IntToStr(i), def_cw_messages[i]);
+      end;
 
       // Additional CQ Messages
       Settings.CW.AdditionalCQMessages[2] := ini.ReadString('CW', 'CQ2', '');
       Settings.CW.AdditionalCQMessages[3] := ini.ReadString('CW', 'CQ3', '');
 
-      Settings.CW.CWStrBank[3, 1] := ini.ReadString('RTTY', 'F1', 'CQ CQ CQ TEST $M $M $M TEST K');
-      Settings.CW.CWStrBank[3, 2] := ini.ReadString('RTTY', 'F2', '$C DE $M 599$X 599$X BK');
-      Settings.CW.CWStrBank[3, 3] := ini.ReadString('RTTY', 'F3', 'TU DE $M TEST');
-      Settings.CW.CWStrBank[3, 4] := ini.ReadString('RTTY', 'F4', 'QSO B4 TU');
-      Settings.CW.CWStrBank[3, 5] := ini.ReadString('RTTY', 'F5', 'NR? NR? AGN BK');
-
-      for i := 6 to maxmessage do begin
-         Settings.CW.CWStrBank[3, i] := ini.ReadString('RTTY', 'F' + IntToStr(i), '');
+      for i := 1 to maxmessage do begin
+         Settings.CW.CWStrBank[3, i] := ini.ReadString('RTTY', 'F' + IntToStr(i), def_rtty_messages[i]);
       end;
 
       for i := 1 to maxmessage do begin
@@ -1068,6 +1069,9 @@ begin
 
       // Not send leading zeros in serial number
       Settings.CW._not_send_leading_zeros := ini.ReadBool('CW', 'not_send_leading_zeros', False);
+
+      // CW Keyboard Clear Delay
+      Settings.CW._cwk_clear_delay:= ini.ReadInteger('CW', 'cwk_clear_delay', 2);
 
       //
       // Hardware
@@ -1332,6 +1336,14 @@ begin
       Settings._bsresumepath := ini.ReadString('Preferences', 'BsResumePath', '');
       Settings._bsresumepath := AdjustPath(Settings._bsresumepath);
 
+      // MMTTY1
+      Settings._mmtty1path := ini.ReadString('Preferences', 'Mmtty1Path', '');
+      Settings._mmtty1path := AdjustPath(Settings._mmtty1path);
+
+      // MMTTY2
+      Settings._mmtty2path := ini.ReadString('Preferences', 'Mmtty2Path', '');
+      Settings._mmtty2path := AdjustPath(Settings._mmtty2path);
+
       //
       // Misc
       //
@@ -1366,10 +1378,13 @@ begin
       Settings.FShowEquator := ini.ReadBool('Grayline', 'ShowEquator', False);
       Settings.FShowMyLocation := ini.ReadBool('Grayline', 'ShowMyLocation', False);
       Settings.FGrayLineStayOnTop := ini.ReadBool('Grayline', 'GrayLineStayOnTop', False);
-      Settings.FGrayLineYcutsize := ini.ReadInteger('Grayline', 'ycutsize', 15);
+      Settings.FGrayLineYcutsize := ini.ReadInteger('Grayline', 'ycutsize', 0);
 
       // Startup window
       Settings.FShowStartupWindow := ini.ReadBool('Preferences', 'ShowStartupWindow', True);
+
+      // Show available bands for user defined contests
+      Settings.FShowAvailableBandsForUserDefinedContest := ini.ReadBool('Preferences', 'ShowAvailableBandsForUserDefinedContest', False);
 
       // Export Memo field to ADIF
       Settings.FExportMemoToAdif := ini.ReadBool('Preferences', 'ExportMemoFieldToAdif', False);
@@ -1479,77 +1494,92 @@ begin
       Settings._bandscopecolor[1].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor1', '$ffffff'), clWhite);
       Settings._bandscopecolor[1].FBold      := ini.ReadBool('BandScopeEx', 'Bold1', True);
       Settings._bandscopecolor[1].FUseReliability := False;
+      Settings._bandscopecolor[1].FNotOverwrite := False;
       Settings._bandscopecolor[1].FTransparent := False;
       Settings._bandscopecolor[2].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor2', '$0000ff'), clRed);
       Settings._bandscopecolor[2].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor2', '$0000ff'), clRed);
       Settings._bandscopecolor[2].FBold      := ini.ReadBool('BandScopeEx', 'Bold2', True);
       Settings._bandscopecolor[2].FUseReliability := False;
+      Settings._bandscopecolor[2].FNotOverwrite := False;
       Settings._bandscopecolor[2].FTransparent := False;
       Settings._bandscopecolor[3].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor3', '$008000'), clGreen);
       Settings._bandscopecolor[3].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor3', '$ffffff'), clWhite);
       Settings._bandscopecolor[3].FBold      := ini.ReadBool('BandScopeEx', 'Bold3', True);
       Settings._bandscopecolor[3].FUseReliability := False;
+      Settings._bandscopecolor[3].FNotOverwrite := False;
       Settings._bandscopecolor[3].FTransparent := False;
       Settings._bandscopecolor[4].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor4', '$008000'), clGreen);
       Settings._bandscopecolor[4].FBackColor := clWhite; //ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor4', '$ffffff'), clWhite);
       Settings._bandscopecolor[4].FBold      := ini.ReadBool('BandScopeEx', 'Bold4', True);
       Settings._bandscopecolor[4].FUseReliability := False;
+      Settings._bandscopecolor[4].FNotOverwrite := False;
       Settings._bandscopecolor[4].FTransparent := False;
       Settings._bandscopecolor[5].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor5', '$000000'), clBlack);
       Settings._bandscopecolor[5].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor5', '$ffffff'), clWhite);
       Settings._bandscopecolor[5].FBold      := ini.ReadBool('BandScopeEx', 'Bold5', True);
       Settings._bandscopecolor[5].FUseReliability := ini.ReadBool('BandScopeEx', 'UseReliability5', False);;
+      Settings._bandscopecolor[5].FNotOverwrite := False;
       Settings._bandscopecolor[5].FTransparent := False;
       Settings._bandscopecolor[6].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor6', '$000000'), clBlack);
       Settings._bandscopecolor[6].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor6', '$ffffff'), clWhite);
       Settings._bandscopecolor[6].FBold      := ini.ReadBool('BandScopeEx', 'Bold6', True);
       Settings._bandscopecolor[6].FUseReliability := False;
+      Settings._bandscopecolor[6].FNotOverwrite := False;
       Settings._bandscopecolor[6].FTransparent := False;
       Settings._bandscopecolor[7].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor7', '$000000'), clBlack);
       Settings._bandscopecolor[7].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor7', '$ffffff'), clWhite);
       Settings._bandscopecolor[7].FBold      := ini.ReadBool('BandScopeEx', 'Bold7', True);
       Settings._bandscopecolor[7].FUseReliability := ini.ReadBool('BandScopeEx', 'UseReliability7', False);
+      Settings._bandscopecolor[7].FNotOverwrite := ini.ReadBool('BandScopeEx', 'NotOverwrite7', False);
       Settings._bandscopecolor[7].FTransparent := False;
       Settings._bandscopecolor[8].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor8', '$000000'), clBlack);
       Settings._bandscopecolor[8].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor8', '$ffffff'), clWhite);
       Settings._bandscopecolor[8].FBold      := ini.ReadBool('BandScopeEx', 'Bold8', True);
       Settings._bandscopecolor[8].FUseReliability := ini.ReadBool('BandScopeEx', 'UseReliability8', False);
+      Settings._bandscopecolor[8].FNotOverwrite := ini.ReadBool('BandScopeEx', 'NotOverwrite8', False);
       Settings._bandscopecolor[8].FTransparent := False;
       Settings._bandscopecolor[9].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor9', '$000000'), clBlack);
       Settings._bandscopecolor[9].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor9', '$ffffff'), clWhite);
       Settings._bandscopecolor[9].FBold      := ini.ReadBool('BandScopeEx', 'Bold9', True);
       Settings._bandscopecolor[9].FUseReliability := ini.ReadBool('BandScopeEx', 'UseReliability9', False);
+      Settings._bandscopecolor[9].FNotOverwrite := ini.ReadBool('BandScopeEx', 'NotOverwrite9', False);
       Settings._bandscopecolor[9].FTransparent := False;
       Settings._bandscopecolor[10].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor10', '$000000'), clBlack);
       Settings._bandscopecolor[10].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor10', '$ffffff'), clWhite);
       Settings._bandscopecolor[10].FBold      := ini.ReadBool('BandScopeEx', 'Bold10', True);
       Settings._bandscopecolor[10].FUseReliability := False;
+      Settings._bandscopecolor[10].FNotOverwrite := False;
       Settings._bandscopecolor[10].FTransparent := False;
       Settings._bandscopecolor[11].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor11', '$000000'), clBlack);
       Settings._bandscopecolor[11].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor11', '$ffffff'), clWhite);
       Settings._bandscopecolor[11].FBold      := ini.ReadBool('BandScopeEx', 'Bold11', True);
       Settings._bandscopecolor[11].FUseReliability := False;
+      Settings._bandscopecolor[11].FNotOverwrite := False;
       Settings._bandscopecolor[11].FTransparent := False;
       Settings._bandscopecolor[12].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor12', '$000000'), clBlack);
       Settings._bandscopecolor[12].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor12', '$ffffff'), clWhite);
       Settings._bandscopecolor[12].FBold      := ini.ReadBool('BandScopeEx', 'Bold12', True);
       Settings._bandscopecolor[12].FUseReliability := False;
+      Settings._bandscopecolor[12].FNotOverwrite := False;
       Settings._bandscopecolor[12].FTransparent := False;
 
       Settings._bandscopecolor[13].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor13', '$000000'), clBlack);
       Settings._bandscopecolor[13].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor13', '$FFFFC0'), $FFFFC0);
       Settings._bandscopecolor[13].FBold      := ini.ReadBool('BandScopeEx', 'Bold13', True);
       Settings._bandscopecolor[13].FUseReliability := False;
+      Settings._bandscopecolor[13].FNotOverwrite := False;
       Settings._bandscopecolor[13].FTransparent := ini.ReadBool('BandScopeEx', 'Transparent13', False);
       Settings._bandscopecolor[14].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor14', '$000000'), clBlack);
       Settings._bandscopecolor[14].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor14', '$C0FFFF'), $C0FFFF);
       Settings._bandscopecolor[14].FBold      := ini.ReadBool('BandScopeEx', 'Bold14', True);
       Settings._bandscopecolor[14].FUseReliability := False;
+      Settings._bandscopecolor[14].FNotOverwrite := False;
       Settings._bandscopecolor[14].FTransparent := ini.ReadBool('BandScopeEx', 'Transparent14', False);
       Settings._bandscopecolor[15].FForeColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'ForeColor15', '$000000'), clBlack);
       Settings._bandscopecolor[15].FBackColor := ZStringToColorDef(ini.ReadString('BandScopeEx', 'BackColor15', '$FFD2FF'), $FFD2FF);
       Settings._bandscopecolor[15].FBold      := ini.ReadBool('BandScopeEx', 'Bold15', True);
       Settings._bandscopecolor[15].FUseReliability := False;
+      Settings._bandscopecolor[15].FNotOverwrite := False;
       Settings._bandscopecolor[15].FTransparent := ini.ReadBool('BandScopeEx', 'Transparent15', False);
 
       Settings._bandscope_freshness_mode := ini.ReadInteger('BandScopeEx', 'freshness_mode', 0);
@@ -1561,6 +1591,7 @@ begin
       Settings._bandscope_show_dx_spots := ini.ReadBool('BandScopeOptions', 'show_dx_spots', False);
       Settings._bandscope_use_number_lookup := ini.ReadBool('BandScopeOptions', 'use_number_lookup', True);
       Settings._bandscope_use_lookup_server := ini.ReadBool('BandScopeOptions', 'use_lookup_server', False);
+      Settings._bandscope_lookup_server_option := ini.ReadInteger('BandScopeOptions', 'lookup_server_option', 0);
       Settings._bandscope_use_resume := ini.ReadBool('BandScopeOptions', 'use_resume', False);
       Settings._bandscope_setfreq_after_mode_change := ini.ReadBool('BandScopeOptions', 'setfreq_after_mode_change', False);
       Settings._bandscope_always_change_mode := ini.ReadBool('BandScopeOptions', 'always_change_mode', True);
@@ -1904,7 +1935,10 @@ begin
       ini.WriteBool('CW', 'send_nr_auto', Settings.CW._send_nr_auto);
 
       // Not send leading zeros in serial number
-      ini.ReadBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
+      ini.WriteBool('CW', 'not_send_leading_zeros', Settings.CW._not_send_leading_zeros);
+
+      // CW Keyboard Clear Delay
+      ini.WriteInteger('CW', 'cwk_clear_delay', Settings.CW._cwk_clear_delay);
 
       //
       // Hardware
@@ -2147,6 +2181,12 @@ begin
       // Bandscope resume data path
       ini.WriteString('Preferences', 'BsResumePath', Settings._bsresumepath);
 
+      // MMTTY1
+      ini.WriteString('Preferences', 'Mmtty1Path', Settings._mmtty1path);
+
+      // MMTTY2
+      ini.WriteString('Preferences', 'Mmtty2Path', Settings._mmtty2path);
+
       //
       // Misc
       //
@@ -2184,6 +2224,9 @@ begin
 
       // Startup window
       ini.WriteBool('Preferences', 'ShowStartupWindow', Settings.FShowStartupWindow);
+
+      // Show available bands for user defined contests
+      ini.WriteBool('Preferences', 'ShowAvailableBandsForUserDefinedContest', Settings.FShowAvailableBandsForUserDefinedContest);
 
       // Export Memo field to ADIF
       ini.WriteBool('Preferences', 'ExportMemoFieldToAdif', Settings.FExportMemoToAdif);
@@ -2274,6 +2317,7 @@ begin
          ini.WriteString('BandScopeEx', 'BackColor' + IntToStr(i), ZColorToString(Settings._bandscopecolor[i].FBackColor));
          ini.WriteBool('BandScopeEx', 'Bold' + IntToStr(i), Settings._bandscopecolor[i].FBold);
          ini.WriteBool('BandScopeEx', 'UseReliability' + IntToStr(i), Settings._bandscopecolor[i].FUseReliability);
+         ini.WriteBool('BandScopeEx', 'NotOverwrite' + IntToStr(i), Settings._bandscopecolor[i].FNotOverwrite);
          ini.WriteBool('BandScopeEx', 'Transparent' + IntToStr(i), Settings._bandscopecolor[i].FTransparent);
       end;
 
@@ -2286,6 +2330,7 @@ begin
       ini.WriteBool('BandScopeOptions', 'show_dx_spots', Settings._bandscope_show_dx_spots);
       ini.WriteBool('BandScopeOptions', 'use_number_lookup', Settings._bandscope_use_number_lookup);
       ini.WriteBool('BandScopeOptions', 'use_lookup_server', Settings._bandscope_use_lookup_server);
+      ini.WriteInteger('BandScopeOptions', 'lookup_server_option', Settings._bandscope_lookup_server_option);
       ini.WriteBool('BandScopeOptions', 'use_resume', Settings._bandscope_use_resume);
       ini.WriteBool('BandScopeOptions', 'setfreq_after_mode_change', Settings._bandscope_setfreq_after_mode_change);
       ini.WriteBool('BandScopeOptions', 'always_change_mode', Settings._bandscope_always_change_mode);
@@ -3495,6 +3540,50 @@ begin
    end
    else begin
       Settings._bsresumepath := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetMmtty1Path(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._mmtty1path);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._mmtty1path;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetMmtty1Path(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._mmtty1path := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._mmtty1path := v;
+   end;
+end;
+
+function TdmZLogGlobal.GetMmtty2Path(): string;
+begin
+   Result := ExpandEnvironmentVariables(Settings._mmtty2path);
+   if IsFullPath(Result) = True then begin
+//      Result := Settings._backuppath;
+   end
+   else begin
+      Result := RootPath + Settings._mmtty2path;
+   end;
+   Result := IncludeTrailingPathDelimiter(Result);
+end;
+
+procedure TdmZLogGlobal.SetMmtty2Path(v: string);
+begin
+   if Pos(RootPath, v) > 0 then begin
+      Settings._mmtty2path := StringReplace(v, RootPath, '', [rfReplaceAll]);
+   end
+   else begin
+      Settings._mmtty2path := v;
    end;
 end;
 

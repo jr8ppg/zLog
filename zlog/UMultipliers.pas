@@ -31,11 +31,13 @@ type
   public
     constructor Create(); overload;
     constructor Create(strText: string); overload;
+    procedure Assign(src: TCountry);
 
     function Summary : string;
     function SummaryWAE : string;
     function Summary2 : string;
     function SummaryARRL10 : string;
+    function SummaryJARLWWRTTY: string;
     function SummaryGeneral : string;
     function JustInfo : string; // returns cty name, px and continent
 
@@ -173,7 +175,7 @@ type
 implementation
 
 uses
-  Main, UzLogGlobal;
+  Main, UzLogGlobal, UzLogContest;
 
 constructor TCountryList.Create(OwnsObjects: Boolean);
 begin
@@ -247,14 +249,19 @@ var
    temp: string;
    B: TBand;
 begin
-   if pos('WAEDC', MyContest.Name) > 0 then begin
+   if MyContest is TWAEContest then begin
       Result := SummaryWAE;
-      exit;
+      Exit;
+   end;
+
+   if MyContest is TJarlWorldWideRTTY then begin
+      Result := SummaryJARLWWRTTY;
+      Exit;
    end;
 
    if CountryName = 'Unknown' then begin
       Result := 'Unknown Country';
-      exit;
+      Exit;
    end;
 
    temp := '';
@@ -289,6 +296,34 @@ begin
    temp := FillRight(Country, 7) +
            StringReplace(FillRight(CountryName, 28), '&', '&&', [rfReplaceAll]) +
            '   ' + Continent + '    ';
+
+   for B := b35 to b28 do begin
+      if NotWARC(B) then begin
+         if Worked[B] then
+            temp := temp + '* '
+         else
+            temp := temp + '. ';
+      end;
+   end;
+
+   Result := temp;
+end;
+
+function TCountry.SummaryJARLWWRTTY: string;
+var
+   temp: string;
+   B: TBand;
+begin
+   if CountryName = 'Unknown' then begin
+      Result := 'Unknown Country';
+      exit;
+   end;
+
+   temp := '';
+   temp := FillRight(Country, 7) +
+           StringReplace(FillRight(CountryName, 28), '&', '&&', [rfReplaceAll]) +
+           FillRight(CQZone, 2) + ' ' +
+           Continent + '  ';
 
    for B := b35 to b28 do begin
       if NotWARC(B) then begin
@@ -438,6 +473,26 @@ constructor TCountry.Create(strText: string);
 begin
    Inherited Create();
    Parse(strText);
+end;
+
+procedure TCountry.Assign(src: TCountry);
+var
+   b: TBand;
+begin
+   FName := src.FName;
+   FCQZone := src.FCQZone;
+   FITUZone := src.FITUZone;
+   FContinent := src.FContinent;
+   FLatitude := src.FLatitude;
+   FLongitude := src.FLongitude;
+   FUTCOffset := src.FUTCOffset;
+   FCode := src.FCode;
+   FPrefixes := src.FPrefixes;
+   for b := b19 to HiBand do begin
+      FWorked[b] := src.FWorked[b];
+   end;
+   FIndex := src.FIndex;
+   FGridIndex := src.FGridIndex;
 end;
 
 procedure TCountry.Parse(strText: string);

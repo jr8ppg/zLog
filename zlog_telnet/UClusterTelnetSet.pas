@@ -25,6 +25,10 @@ type
     editLoginId: TEdit;
     Label6: TLabel;
     memoCommands: TMemo;
+    Label13: TLabel;
+    Label15: TLabel;
+    spExecInterval: TSpinEdit;
+    checkUsePeriodicCmdExec: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure buttonOKClick(Sender: TObject);
     procedure editSettingNameExit(Sender: TObject);
@@ -144,6 +148,8 @@ begin
       end;
    end;
    obj.CommandList := memoCommands.Lines.CommaText;
+   obj.UsePeriodicCmdExec := checkUsePeriodicCmdExec.Checked;
+   obj.PeriodicExecInterval := spExecInterval.Value;
    Result := obj;
 end;
 
@@ -156,6 +162,8 @@ begin
    checkLocalEcho.Checked := v.LocalEcho;
    editLoginId.Text := v.LoginId;
    memoCommands.Lines.CommaText := v.CommandList;
+   checkUsePeriodicCmdExec.Checked := v.UsePeriodicCmdExec;
+   spExecInterval.Value := v.PeriodicExecInterval;
 end;
 
 end.

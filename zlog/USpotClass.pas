@@ -169,7 +169,7 @@ var
   call_spotter_list: TDictionary<string, TSpotReporterInfo>;
 
 {$IFNDEF ZLOG_TELNET}
-  function ExecLookup(strCallsign: string; b: TBand): string;
+  function ExecLookup(strCallsign: string; b: TBand; var number: string): Boolean;
   function FindLookupServer(): HWND;
 {$ENDIF}
 
@@ -927,6 +927,8 @@ var
    multi: string;
    SD, SD2: TSuperData;
    Q: TQSO;
+   fResult: Boolean;
+   strNumber: string;
 begin
    if (Sp.Band < MyContest.BandLow) or (Sp.Band > MyContest.BandHigh) or (NotWARC(Sp.Band) = False) then begin
       Exit;
@@ -958,12 +960,14 @@ begin
          // SPC‚©‚ç‚àŽæ“¾‚Å‚«‚È‚¢ê‡‚ÍLookup Server‚ÉˆË—Š‚·‚é
          if dmZLogGlobal.Settings._bandscope_use_lookup_server = True then begin
             if (Sp.Number = '') and (Sp.IsPortable = False) and (Sp.IsDomestic = True) then begin
-               Sp.Number := ExecLookup(Sp.Call, Sp.Band);
-               if Sp.Number = '' then begin
+               fResult := ExecLookup(Sp.Call, Sp.Band, strNumber);
+               Sp.Number := strNumber;
+               if fResult = False then begin // lookupŽ¸”s
                   Sp.LookupFailed := True;
                   Sp.SpotReliability := srLow;
                end
-               else begin
+               else begin  // lookup¬Œ÷
+                  Sp.LookupFailed := False;
                   if Sp.ReliableSpotter = True then begin
                      Sp.SpotReliability := srHigh;
                   end
@@ -996,7 +1000,7 @@ begin
    end;
 end;
 
-function ExecLookup(strCallsign: string; b: TBand): string;
+function ExecLookup(strCallsign: string; b: TBand; var number: string): Boolean;
 var
    callsign_atom: ATOM;
    number_atom: ATOM;
@@ -1005,38 +1009,68 @@ var
    szWindowText: array[0..255] of Char;
    nLen: Integer;
    reqcode: Integer;
-begin
-   if dmZLogGlobal.Settings._bandscope_use_lookup_server = False then begin
-      Result := '';
-      Exit;
-   end;
 
+   function GetRequestCode(b: TBand): Integer;
+   var
+      reqcode: Integer;
+   begin
+      if (MyContest is TFDContest) or
+         (MyContest is TSixDownContest) then begin
+         if (b >= b2400) then begin
+            reqcode := 1;
+         end
+         else begin
+            reqcode := 0;
+         end;
+      end
+      else begin
+         if Pos('$Q', MyContest.SentStr) > 0 then begin
+            // city
+            reqcode := 1;
+         end
+         else begin
+            // prov
+            reqcode := 0;
+         end;
+      end;
+
+      Result := reqcode;
+   end;
+begin
    if hLookupServer = 0 then begin
       hLookupServer := FindLookupServer();
    end;
 
    if hLookupServer = 0 then begin
-      Result := '';
+      Result := False;
       Exit;
    end;
 
-   if (MyContest is TFDContest) or
-      (MyContest is TSixDownContest) then begin
-      if (b >= b2400) then begin
-         reqcode := 1;
-      end
-      else begin
+   case dmZLogGlobal.Settings._bandscope_lookup_server_option of
+      // Auto
+      0: begin
+         reqcode := GetRequestCode(b);
+      end;
+
+      // Prov
+      1: begin
          reqcode := 0;
       end;
-   end
-   else begin
-      if Pos('$Q', MyContest.SentStr) > 0 then begin
-         // city
+
+      // City
+      2: begin
          reqcode := 1;
-      end
+      end;
+
+      // None
+      3: begin
+         number := '';
+         Result := True;
+         Exit;
+      end;
+
       else begin
-         // prov
-         reqcode := 0;
+         reqcode := GetRequestCode(b);
       end;
    end;
 
@@ -1044,7 +1078,8 @@ begin
    callsign_atom := GlobalAddAtom(PChar(S));
    r := SendMessage(hLookupServer, (WM_USER+501), callsign_atom, reqcode);
    if r = 0 then begin
-      Result := '';
+      number := '';
+      Result := True;
       Exit;
    end;
 
@@ -1052,13 +1087,15 @@ begin
    number_atom := LOWORD(r);
    nLen := GlobalGetAtomName(number_atom, PChar(@szWindowText), SizeOf(szWindowText));
    if (nLen = 0) then begin
-      Result := '';
+      number := '';
+      Result := True;
       Exit;
    end;
 
    GlobalDeleteAtom(number_atom);
 
-   Result := StrPas(szWindowText);
+   number := StrPas(szWindowText);
+   Result := True;
 end;
 
 function FindLookupServer(): HWND;

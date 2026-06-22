@@ -12,11 +12,12 @@ object formStartup: TformStartup
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Position = poOwnerFormCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 13
   object buttonNewContest: TButton
     Left = 8
-    Top = 80
+    Top = 8
     Width = 345
     Height = 57
     Caption = 'New or open contest'
@@ -26,12 +27,12 @@ object formStartup: TformStartup
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
     OnClick = buttonNewContestClick
   end
   object buttonLastContest: TButton
     Left = 8
-    Top = 152
+    Top = 80
     Width = 345
     Height = 57
     Caption = 'Restart the last contest'
@@ -41,7 +42,7 @@ object formStartup: TformStartup
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 1
     OnClick = buttonLastContestClick
   end
   object GroupBox1: TGroupBox
@@ -82,7 +83,7 @@ object formStartup: TformStartup
   end
   object buttonLoggingNow: TButton
     Left = 8
-    Top = 8
+    Top = 152
     Width = 345
     Height = 57
     Caption = 'Logging now!'
@@ -92,7 +93,7 @@ object formStartup: TformStartup
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    TabOrder = 0
+    TabOrder = 2
     OnClick = buttonLoggingNowClick
   end
 end

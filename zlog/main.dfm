@@ -377,7 +377,7 @@ object MainForm: TMainForm
           ImeMode = imDisable
           MaxLength = 20
           TabOrder = 2
-          OnChange = SentNumberEdit1Change
+          OnChange = RcvdNumberEdit1Change
           OnEnter = EditEnter
           OnExit = EditExit
           OnKeyDown = EditKeyDown
@@ -6815,6 +6815,10 @@ object MainForm: TMainForm
       object N2: TMenuItem
         Caption = '-'
       end
+      object menuLogChecker: TMenuItem
+        Caption = 'Log checker'
+        OnClick = menuLogCheckerClick
+      end
       object CreateJARLELog: TMenuItem
         Caption = 'Create JARL E-Log'
         OnClick = CreateJARLELogClick
@@ -7919,7 +7923,8 @@ object MainForm: TMainForm
   object FileExportDialog: TSaveDialog
     Filter = 
       'ALL bands|*.all|zLog DOS compatible text|*.txt|TX#|*.tx|ADIF|*.a' +
-      'di|Cabrillo|*.CBR|zLog CSV|*.csv|HAMLOG|*.csv|HAM Support|*.csv'
+      'di|Cabrillo|*.CBR|zLog CSV|*.csv|HAMLOG|*.csv|HAM Support|*.csv|' +
+      'Super Check|*.SPC'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Export'
     OnTypeChange = FileExportDialogTypeChange

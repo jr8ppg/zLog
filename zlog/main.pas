@@ -731,6 +731,7 @@ type
     menuExecHamlogLookup: TMenuItem;
     menuExecHamlogConverter: TMenuItem;
     menuMMTTYSep: TMenuItem;
+    menuLogChecker: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1074,6 +1075,7 @@ type
     procedure actionShowSentNumberExecute(Sender: TObject);
     procedure menuExecHamlogLookupClick(Sender: TObject);
     procedure menuExecHamlogConverterClick(Sender: TObject);
+    procedure menuLogCheckerClick(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -1334,7 +1336,8 @@ type
     procedure SetCurrentQSO(nID: Integer);
     procedure EditCurrentRow();
     procedure AssignControls(nID: Integer; var C, SN, RN, B, M, O, P: TEdit);
-    procedure CallSpaceBarProc(C, N, B: TEdit);
+    procedure CallSpaceBarProc(C, N, B: TEdit; fLookupOtherBands: Boolean = True);
+    procedure ShowEntityInfo(strCallsign: string);
     procedure ShowSentNumber(aQSO: TQSO);
     procedure SetCqRepeatMode(fOn: Boolean; fFirst: Boolean);
     procedure StartCqRepeatTimer();
@@ -1385,6 +1388,10 @@ type
     procedure SetLightMode();
     procedure ShowDupeMessage(Q: TQSO);
     procedure FreeForm(var F: TForm);
+    procedure OpenPartialCheck();
+    procedure ClosePartialCheck();
+    function LogCheck(): Integer;
+    procedure AdjustTopRow(fUp: Boolean);
   public
     LastFocus : TEdit;
 
@@ -1577,6 +1584,10 @@ resourcestring
   TMainForm_Reset_grid_column_widths = 'Reset Column widths to their default values. Are you sure?';
   TMainForm_Load_MMTTY = 'Load MMTTY';
   TMainForm_Unload_MMTTY = 'Unload MMTTY';
+  TMainForm_NoCwMessages = 'No CW message settings were found. Do you want to load MyMessages (zlog.ini)?';
+  TMainForm_LogCheckOk = 'Log check completed with no errors.';
+  TMainForm_LogCheckError = 'The log check found %s error(s).';
+  TMainForm_ConfirmLogCheck = 'Do you want to perform a log check?';
 
 var
   MainForm: TMainForm;
@@ -2083,7 +2094,12 @@ begin
    end;
 
    // SO2R
-   dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
+   if (dmZLogGlobal.Settings._operate_style = os2RadioH) then begin
+      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked;
+   end;
+   if (dmZLogGlobal.Settings._operate_style = os2RadioV) then begin
+      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3V.Checked;
+   end;
 
    // Last CQ mode
    dmZLogGlobal.Settings.FLastCQMode := IsCQ();
@@ -2564,7 +2580,7 @@ begin
 
    if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
       if FPartialCheck.Visible then begin
-         FPartialCheck.UpdateData(CurrentQSO);
+         FPartialCheck.UpdateDataEx(CurrentQSO, Log.PartialList);
       end;
    end
    else begin
@@ -2587,6 +2603,7 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, B);
    if rig <> nil then begin
       dmZLogKeyer.SetRxRigFlag(FCurrentRigSet, rig.RigNumber);
+      AntennaSelect(rig, FCurrentRigSet, CurrentQSO.Band);
    end;
 
    if B <= HiBand then begin
@@ -2668,7 +2685,7 @@ begin
 
    if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
       if FPartialCheck.Visible then begin
-         FPartialCheck.UpdateData(CurrentQSO);
+         FPartialCheck.UpdateDataEx(CurrentQSO, Log.PartialList);
       end;
    end
    else begin
@@ -3050,9 +3067,9 @@ var
       NumberEdit2VA.Top := CallsignEdit2VA.Top;
       BandEdit2VA.Top := CallsignEdit2VA.Top;
       ModeEdit2VA.Top := CallsignEdit2VA.Top;
-      CallsignEdit2VA.Width := w * 8;
+      CallsignEdit2VA.Width := w * 12;
       RcvdRSTEdit2VA.Width := w * 4;
-      NumberEdit2VA.Width := w * 8;
+      NumberEdit2VA.Width := w * 9;
       BandEdit2VA.Width := w * 5;
       ModeEdit2VA.Width := w * 5;
       RcvdRSTEdit2VA.Left := CallsignEdit2VA.Left + CallsignEdit2VA.Width + 3;
@@ -3068,9 +3085,9 @@ var
       NumberEdit2VB.Top := CallsignEdit2VB.Top;
       BandEdit2VB.Top := CallsignEdit2VB.Top;
       ModeEdit2VB.Top := CallsignEdit2VB.Top;
-      CallsignEdit2VB.Width := w * 8;
+      CallsignEdit2VB.Width := w * 12;
       RcvdRSTEdit2VB.Width := w * 4;
-      NumberEdit2VB.Width := w * 8;
+      NumberEdit2VB.Width := w * 9;
       BandEdit2VB.Width := w * 5;
       ModeEdit2VB.Width := w * 5;
       RcvdRSTEdit2VB.Left := CallsignEdit2VB.Left + CallsignEdit2VB.Width + 3;
@@ -3089,9 +3106,9 @@ var
       ModeEdit2VC.Top := CallsignEdit2VC.Top;
       checkWithRig1V.Top := (RigPanelVC.Height - checkWithRig1V.Height) div 2;
       checkWithRig2V.Top := (RigPanelVC.Height - checkWithRig2V.Height) div 2;
-      CallsignEdit2VC.Width := w * 8;
+      CallsignEdit2VC.Width := w * 12;
       RcvdRSTEdit2VC.Width := w * 4;
-      NumberEdit2VC.Width := w * 8;
+      NumberEdit2VC.Width := w * 9;
       BandEdit2VC.Width := w * 5;
       ModeEdit2VC.Width := w * 5;
       RcvdRSTEdit2VC.Left := CallsignEdit2VC.Left + CallsignEdit2VC.Width + 3;
@@ -4332,6 +4349,10 @@ var
 begin
    AssignControls(nID, C, SN, RN, B, M, OP, P);
 
+   // パーシャルチェック
+   OpenPartialCheck();
+
+   // デュープチェック
    Q := Log.QuickDupe(CurrentQSO);
    if Q <> nil then begin
       MessageBeep(0);
@@ -4364,7 +4385,7 @@ begin
 
    if C.Text = '' then begin
       FEntityInfo.SetData(nil);
-      Log.ClearPartialList();
+      ClosePartialCheck();
    end;
 
    // SO2Rなので送受が同じ場合のみコールセットする
@@ -4376,19 +4397,8 @@ begin
       EditedSinceTABPressed := tabstate_tabpressedandedited;
    end;
 
-   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
-      if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
-         FPartialCheck.CheckPartial(CurrentQSO);
-      end;
-   end
-   else begin
-      Log.UpdatePartialList(CurrentQSO);
-      GridRefreshScreen(False, False);
-      if dmZLogGlobal.Settings.FPartialCloseTime > 0 then begin
-         timerPartialClose.Interval := dmZLogGlobal.Settings.FPartialCloseTime;
-         timerPartialClose.Enabled := True;
-      end;
-   end;
+   // 通常パーシャル／インクリメンタルデュープチェック
+   OpenPartialCheck();
 
    if FSuperCheck.Visible then begin
       CheckSuper(CurrentQSO);
@@ -5239,6 +5249,7 @@ begin
    txt := Grid.Cells[ACol, ARow];
    with Grid.Canvas do begin
       fg := clBlack;
+      Font.Style := [];
 
       if ARow = 0 then begin
          Pen.Color := dmZLogGlobal.ZGridFixedColor;
@@ -5246,7 +5257,6 @@ begin
          Brush.Color := dmZLogGlobal.ZGridFixedColor;
          Brush.Style := bsSolid;
          Font.Color := dmZLogGlobal.ZNormalTextColor1;
-         Font.Style := [];
       end
       else begin
          // ゼブラカラーかRBN Verifiedか
@@ -5289,6 +5299,11 @@ begin
                fg := clWhite;
                Font.Style := Font.Style + [fsBold];
             end;
+         end;
+
+         if (Q <> nil) and (Q.CheckResult <> crOk) then begin
+            bg := ZLOG_WARN_COLOR;
+            fg := clBlack;
          end;
 
          Pen.Color := bg;
@@ -5386,6 +5401,9 @@ begin
       Exit;
    end;
 
+   // パーシャルチェッククローズ
+   ClosePartialCheck();
+
    // 初期値セット
    Q.Points := 0;
    Q.NewMulti1 := False;
@@ -5443,11 +5461,13 @@ begin
       Q.NrSent   := Q.NrSentStr;
    end
    else begin
-      if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
-         Q.Serial   := StrToIntDef(SentNumberEdit.Text, 1);
-      end
-      else begin
-         Q.Serial   := StrToIntDef(FEditPanel[nID].SentNumberEdit.Text, 1);
+      if MyContest.SentStr = '$S' then begin
+         if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
+            Q.Serial   := StrToIntDef(SentNumberEdit.Text, 1);
+         end
+         else begin
+            Q.Serial   := StrToIntDef(FEditPanel[nID].SentNumberEdit.Text, 1);
+         end;
       end;
       Q.NrSent   := GetInitNrSent(Q, True);
    end;
@@ -6009,9 +6029,7 @@ end;
 
 procedure TMainForm.timerPartialCloseTimer(Sender: TObject);
 begin
-   timerPartialClose.Enabled := False;
-   Log.ClearPartialList();
-   GridRefreshScreen(False, False);
+   ClosePartialCheck();
 end;
 
 // 汎用のInfoPanel
@@ -6440,33 +6458,37 @@ begin
    end;
 end;
 
-procedure TMainForm.CallSpaceBarProc(C, N, B: TEdit);
+procedure TMainForm.CallSpaceBarProc(C, N, B: TEdit; fLookupOtherBands: Boolean);
 var
    strNumber: string;
    str: string;
    Q: TQSO;
-   CTY: TCountry;
 begin
    Q := TQSO.Create();
    Q.Callsign := C.Text;
    Q.NrRcvd := N.Text;
    Q.Band := TextToBand(B.Text);
 
-   strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
+   if fLookupOtherBands = True then begin
+      strNumber := MyContest.SpaceBarProc(C.Text, N.Text, Q.Band);
 
-   // シリアルナンバータイプはNR自動補完無し
-   if (MyContest.SerialType <> stNone) then begin
-      strNumber := '';
-   end;
+      // シリアルナンバータイプはNR自動補完無し
+      if (MyContest.SerialType <> stNone) then begin
+         strNumber := '';
+      end;
 
-   // スーパーチェックからのNR自動取込
-   if (MyContest.SerialType = stNone) and (dmZLogGlobal.Settings._entersuperexchange = True) and (FSpcRcvd_Estimate <> '') then begin
-      if strNumber = '' then begin
-         if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
-            strNumber := TrimRight(FSpcRcvd_Estimate);
-            MyContest.MultiFound := True;
+      // スーパーチェックからのNR自動取込
+      if (MyContest.SerialType = stNone) and (dmZLogGlobal.Settings._entersuperexchange = True) and (FSpcRcvd_Estimate <> '') then begin
+         if strNumber = '' then begin
+            if CoreCall(FSpcFirstDataCall) = CoreCall(C.Text) then begin
+               strNumber := TrimRight(FSpcRcvd_Estimate);
+               MyContest.MultiFound := True;
+            end;
          end;
       end;
+   end
+   else begin
+      strNumber := N.Text;
    end;
 
    if FCheckMulti.Visible then begin
@@ -6492,12 +6514,6 @@ begin
       end;
    end;
 
-//   if (dmZLogGlobal.Settings._so2r_type = so2rNone) or
-//      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = False)) or
-//      ((dmZLogGlobal.Settings._so2r_type <> so2rNone) and (Is2bsiq() = True) and (FCurrentTX = FCurrentRx)) then begin
-//      N.SetFocus;
-//   end;
-
    if (MyContest is TCQWWContest) or
       (MyContest is TWAEContest) then begin
       if (dmZLogGlobal.IsMultiStation() = True) then begin
@@ -6518,9 +6534,18 @@ begin
    end;
 
    // Entity情報
+   ShowEntityInfo(Q.Callsign);
+
+   Q.Free();
+end;
+
+procedure TMainForm.ShowEntityInfo(strCallsign: string);
+var
+   CTY: TCountry;
+begin
    if (MyContest.NeedCtyDat = True) and (dmZLogGlobal.CtyDatLoaded = True) then begin
       if FEntityInfo.Visible then begin
-         CTY := dmZLogGlobal.GetPrefix(Q.Callsign).Country;
+         CTY := dmZLogGlobal.GetPrefix(strCallsign).Country;
          if CTY.CountryName = 'Unknown' then begin
             FEntityInfo.SetData(nil);
          end
@@ -6532,8 +6557,6 @@ begin
    else begin
       FEntityInfo.SetData(nil);
    end;
-
-   Q.Free();
 end;
 
 procedure TMainForm.Timer1Timer(Sender: TObject);
@@ -6683,7 +6706,11 @@ begin
       else begin
          Log.SaveToFileAszLogCsv(f);
       end;
-   end
+   end;
+
+   if ext = '.SPC' then begin
+      Log.SaveToFileAsSpc(f);
+   end;
 
    { Add code to save current file under SaveDialog.FileName }
 end;
@@ -6821,14 +6848,11 @@ begin
       // KeyingとRigControlを一旦終了
       FRigControl.ForcePowerOff();
       CancelCqRepeat();
-      dmZLogGlobal.Settings._so2r_use_rig3 := checkUseRig3H.Checked or checkUseRig3V.Checked;
 
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
 
-      checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
-      checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZLogGlobal.ImplementSettings(False);
       dmZLogGlobal.SaveCurrentSettings();
       InitBandMenu();
@@ -6893,8 +6917,6 @@ begin
          Exit;
       end;
 
-      checkUseRig3H.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
-      checkUseRig3V.Checked := dmZLogGlobal.Settings._so2r_use_rig3;
       dmZLogGlobal.ImplementSettings(False);
       dmZLogGlobal.SaveCurrentSettings();
 
@@ -7606,7 +7628,7 @@ end;
 
 procedure TMainForm.NumberEdit1KeyUp(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
-   if FPartialCheck.Visible and not(FPartialCheck._CheckCall) then
+   if FPartialCheck.Visible and not(FPartialCheck.CheckCall) then
       FPartialCheck.CheckPartialNumber(CurrentQSO);
 
    if FCheckMulti.Visible then
@@ -8492,10 +8514,21 @@ begin
 //   AutoInput(TBSData(BSList2[0]));
 end;
 
+procedure TMainForm.menuLogCheckerClick(Sender: TObject);
+begin
+   LogCheck();
+end;
+
 procedure TMainForm.CreateJARLELogClick(Sender: TObject);
 var
    f: TformELogJarlEx;
 begin
+   if MessageBox(Handle, PChar(TMainForm_ConfirmLogCheck), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON1 or MB_ICONEXCLAMATION) = IDYES then begin
+      if LogCheck() <> 0 then begin
+         Exit;
+      end;
+   end;
+
    f := TformELogJarlEx.Create(Self);
    try
       f.ShowModal();
@@ -8592,7 +8625,6 @@ end;
 
 procedure TMainForm.InitContest(contestno: Integer; category: TContestCategory; mode: TContestMode; strContestName: string; strCfgFileName: string);
 var
-   b: TBand;
    i: Integer;
    imemode: TImeMode;
 begin
@@ -8727,11 +8759,15 @@ begin
       20: begin
          MyContest := TWAEContest.Create(Self, 'WAEDC Contest', mode);
       end;
-   end;
 
-   for b := b19 to HiBand do begin
-      if MyContest.IsAvailableBand[b] = False then begin
-         HideBandMenu(b);
+      // JARL World Wide RTTY
+      21: begin
+         MyContest := TJarlWorldWideRTTY.Create(Self, 'JARL World Wide RTTY', mode);
+      end;
+
+      // BARTG HF RTTY
+      22: begin
+         MyContest := TBartgHfRTTY.Create(Self, 'BARTG HF RTTY', mode);
       end;
    end;
 
@@ -9042,7 +9078,6 @@ begin
 
       // バンドメニューを全部表示
       RenewBandMenu();
-      InitBandMenu();
 
       MultiButton.Enabled := True; // toolbar
       menuShowMultipliers.Enabled := True; // menu
@@ -9050,8 +9085,17 @@ begin
 
       InitContest(dmZLogGlobal.ContestMenuNo, dmZLogGlobal.ContestCategory, dmZLogGlobal.ContestMode, strContestName, strCfgFileName);
 
+      InitBandMenu();
       InitGridColumnWidth();
       InitSerialPanel();
+
+      // zlog_cwparams.iniに設定が無かった
+      if MyContest.UseDefaultMessages = True then begin
+         // CWメッセージの設定がありませんでした。マイメッセージ（zlog.ini）をロードしますか？
+         if MessageBox(Handle, PChar(TMainForm_NoCwMessages), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON1 or MB_ICONEXCLAMATION) = IDYES then begin
+            MyContest.LoadMyMessagesAll();
+         end;
+      end;
 
       // #201 モード選択によって動作を変える(NEW CONTESTのみ)
       case dmZLogGlobal.ContestMode of
@@ -9174,7 +9218,7 @@ begin
       // 使用可能なバンドが無いときは必要バンドをONにする
       if c = 0 then begin
          AdjustActiveBands();
-         MessageDlg(TMainForm_Active_Band_Adjusted, mtInformation, [mbOK], 0);
+         MessageBox(Handle, PChar(TMainForm_Active_Band_Adjusted), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       end;
 
       // 低いバンドから使用可能なバンドを探して最初のバンドとする
@@ -10878,36 +10922,22 @@ end;
 
 // #37 PageUp
 procedure TMainForm.actionPageDownExecute(Sender: TObject);
-var
-   p: Integer;
 begin
    if Log.QsoList.Count <= Grid.VisibleRowCount then begin
       Exit;
    end;
 
-   p := Grid.TopRow;
-   p := p + (Grid.VisibleRowCount div 2);
-   if p > (Log.QsoList.Count - Grid.VisibleRowCount) then begin
-      p := (Log.QsoList.Count - Grid.VisibleRowCount);
-   end;
-   Grid.TopRow := p
+   AdjustTopRow(False);
 end;
 
 // #38 PageDown
 procedure TMainForm.actionPageUpExecute(Sender: TObject);
-var
-   p: Integer;
 begin
    if Log.QsoList.Count <= Grid.VisibleRowCount then begin
       Exit;
    end;
 
-   p := Grid.TopRow;
-   p := p - (Grid.VisibleRowCount div 2);
-   if p < 0 then begin
-      p := 1;
-   end;
-   Grid.TopRow := p
+   AdjustTopRow(True);
 end;
 
 // #39 フィールドの先頭へ移動
@@ -11263,6 +11293,7 @@ begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('---actoinClearCallAndNumAftFocusExecute---'));
    {$ENDIF}
+   ClosePartialCheck();
    CallsignEdit.Clear();
    RcvdNumberEdit.Clear();
    if Assigned(MemoEdit) then MemoEdit.Clear();
@@ -12879,6 +12910,7 @@ begin
       if strNumber <> '' then begin
          N.Text := strNumber;
          N.SelStart := Length(N.Text);
+         CallSpaceBarProc(C, N, B, False);
       end
       else begin
          CallSpaceBarProc(C, N, B);
@@ -13238,6 +13270,12 @@ begin
    for b := b19 to HiBand do begin
       BandMenu.Items[ord(b)].Enabled := dmZLogGlobal.Settings._activebands[b];
       BandMenu.Items[ord(b)].Visible := dmZLogGlobal.Settings._activebands[b];
+
+      if dmZLogGlobal.Settings.FShowAvailableBandsForUserDefinedContest = False then begin
+         if MyContest.IsAvailableBand[b] = False then begin
+            HideBandMenu(b);
+         end;
+      end;
    end;
 end;
 
@@ -13378,13 +13416,18 @@ begin
       op := dmZLogGlobal.OpList.ObjectOf(O);
    end;
 
-   OpEdit.Text := O;
-   CurrentQSO.Operator := O;
+   if OpEdit <> nil then begin
+      OpEdit.Text := O;
+      CurrentQSO.Operator := O;
+      FZLinkForm.SendOperator;
+   end;
 
    LastFocus.SetFocus;
    dmZLogGlobal.SetOpPower(CurrentQSO);
-   PowerEdit.Text := CurrentQSO.NewPowerStr;
-   FZLinkForm.SendOperator;
+
+   if PowerEdit <> nil then begin
+      PowerEdit.Text := CurrentQSO.NewPowerStr;
+   end;
 
    // Set current operator
    dmZLogGlobal.CurrentOperator := op;
@@ -14148,6 +14191,12 @@ begin
    end
    else if (mode = mSSB) or (mode = mFM) or (mode = mAM) or (mode = mDV) then begin
       VoiceStopButtonClick(Self);
+   end
+   else if (mode = mRTTY) then begin
+      if FTTYConsole <> nil then begin
+         mm_RX(); // Switch to RX immediately
+         FTTYConsole.TxClear();
+      end;
    end;
 end;
 
@@ -14272,18 +14321,22 @@ begin
       Exit;
    end;
 
-   // PTT制御無効なら何もしない
-   if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
-       (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
-      Exit;
-   end;
+   // モード取得
+   mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
 
-   // WAIT=OFFの場合はキューをクリア
-   if FInformation.IsWait = False then begin
-      if (dmZLogKeyer.IsPlaying = True) or (FMessageManager.IsPlaying = True) then begin
-         mode := TextToMode(FEditPanel[FCurrentTx].ModeEdit.Text);
-         StopMessage(mode);
-         FMessageManager.ClearQue();
+   if mode <> mRTTY then begin
+      // PTT制御無効なら何もしない
+      if ((dmZLogGlobal.Settings._pttenabled_cw = False) and
+          (dmZLogGlobal.Settings._pttenabled_ph = False)) then begin
+         Exit;
+      end;
+
+      // WAIT=OFFの場合はキューをクリア
+      if FInformation.IsWait = False then begin
+         if (dmZLogKeyer.IsPlaying = True) or (FMessageManager.IsPlaying = True) then begin
+            StopMessage(mode);
+            FMessageManager.ClearQue();
+         end;
       end;
    end;
 
@@ -14339,6 +14392,9 @@ begin
             rig.ControlPTT(fPTT);
          end;
       end
+      else if mode = mRTTY then begin
+         //
+      end
       else begin
          if dmZLogGlobal.Settings._pttenabled_ph = True then begin
             rig.ControlPTT(fPTT);
@@ -14346,14 +14402,23 @@ begin
       end;
    end;
 
-   if mode = mCW then begin
-      if dmZLogGlobal.Settings._pttenabled_cw = True then begin
-         ControlPTT(fPTT);
+   case mode of
+      mCW: begin
+         if dmZLogGlobal.Settings._pttenabled_cw = True then begin
+            ControlPTT(fPTT);
+         end;
       end;
-   end
-   else begin
-      if dmZLogGlobal.Settings._pttenabled_ph = True then begin
-         VoiceControl(fPTT, 0);
+
+      mRTTY: begin
+         if Assigned(FTTYConsole) then begin
+            FTTYConsole.ToggleTXRX();
+         end;
+      end;
+
+      else begin
+         if dmZLogGlobal.Settings._pttenabled_ph = True then begin
+            VoiceControl(fPTT, 0);
+         end;
       end;
    end;
 end;
@@ -14714,7 +14779,7 @@ begin
 
       GridWriteQSO(R, aQSO);
 
-      if FPartialCheck.Visible and FPartialCheck._CheckCall then begin
+      if FPartialCheck.Visible and FPartialCheck.CheckCall then begin
          FPartialCheck.CheckPartial(CurrentQSO);
       end;
 
@@ -15688,7 +15753,9 @@ begin
       S := StringReplace(S, '$T', '', [rfReplaceAll]);
       S := StringReplace(S, '$H', '', [rfReplaceAll]);
       S := StringReplace(S, '$N', '', [rfReplaceAll]);
+      aQSO.TimeUtc := '';
    end;
+   S := StringReplace(S, '$D', aQSO.TimeUtc, [rfReplaceAll]);
    Result := S;
 end;
 
@@ -15858,6 +15925,136 @@ begin
    end;
 
    Result := FQuickRef;
+end;
+
+procedure TMainForm.OpenPartialCheck();
+begin
+   if dmZLogGlobal.Settings.FUseIncrementalDupeCheck = False then begin
+      if FPartialCheck.Visible and FPartialCheck.CheckCall then begin
+         FPartialCheck.CheckPartial(CurrentQSO);
+      end;
+   end
+   else begin
+      Log.UpdatePartialList(CurrentQSO);
+      GridRefreshScreen(False, False);
+
+      if FPartialCheck.Visible and FPartialCheck.CheckCall then begin
+         FPartialCheck.CheckPartialEx(CurrentQSO, Log.PartialList);
+      end;
+
+      if dmZLogGlobal.Settings.FPartialCloseTime > 0 then begin
+         timerPartialClose.Interval := dmZLogGlobal.Settings.FPartialCloseTime;
+         timerPartialClose.Enabled := True;
+      end;
+   end;
+end;
+
+procedure TMainForm.ClosePartialCheck();
+begin
+   timerPartialClose.Enabled := False;
+   Log.ClearPartialList();
+   GridRefreshScreen(False, False);
+end;
+
+function TMainForm.LogCheck(): Integer;
+var
+   R: Integer;
+   n: Integer;
+   Q: TQSO;
+   C: Integer;
+   S: String;
+   sentnr: string;
+begin
+   C := 0;
+   for R := 1 to Grid.RowCount do begin
+      Q := TQSO(Grid.Objects[0, R]);
+      if Q = nil then begin
+         Continue;
+      end;
+
+      Q.CheckResult := crOk;
+
+      // 無効判定済みはチェックしない
+      if Q.Invalid = True then begin
+         Continue;
+      end;
+
+      // 送信RST桁チェック
+      n := Length(Q.RSTSentStr);
+      if (Q.Mode = mCW) or (Q.Mode = mRTTY) then begin
+         if (n <> 3) then begin
+            Q.CheckResult := crRstSentError;
+            Inc(C);
+         end;
+      end
+      else if (Q.Mode = mSSB) or (Q.Mode = mAM) or (Q.Mode = mFM) or (Q.Mode = mDV) then begin
+         if (n <> 2) then begin
+            Q.CheckResult := crRstSentError;
+            Inc(C);
+         end;
+      end;
+
+      // 送信NRチェック
+      if not (MyContest is TPedi) then begin
+         sentnr := GetInitNrSent(Q, True);
+
+         if (Q.NrSent = '') or (Pos(sentnr, Q.NrSent) = 0) then begin
+            Q.CheckResult := crNrSentError;
+            Inc(C);
+         end;
+      end;
+
+      // 受信NRチェック
+      if Q.NrRcvd = '' then begin
+         Q.CheckResult := crNrRcvdError;
+         Inc(C);
+      end;
+   end;
+
+   if C = 0 then begin
+      GridRefreshScreen(True, False);
+      S := TMainForm_LogCheckOk;
+   end
+   else begin
+      GridRefreshScreen(True, False);
+      S := Format(TMainForm_LogCheckError, [IntToStr(C)]);
+      for R := 1 to Grid.RowCount do begin
+         Q := TQSO(Grid.Objects[0, R]);
+         if Q = nil then begin
+            Continue;
+         end;
+
+         if Q.CheckResult <> crOk then begin
+            Grid.TopRow := R;
+            AdjustTopRow(True);
+            Break;
+         end;
+      end;
+   end;
+
+   MessageBox(Handle, PChar(S), PChar(Application.Title), MB_OK or MB_ICONINFORMATION);
+
+   Result := C;
+end;
+
+procedure TMainForm.AdjustTopRow(fUp: Boolean);
+var
+   p: Integer;
+begin
+   p := Grid.TopRow;
+   if fUp = True then begin
+      p := p - (Grid.VisibleRowCount div 2);
+      if p < 0 then begin
+         p := 1;
+      end;
+   end
+   else begin
+      p := p + (Grid.VisibleRowCount div 2);
+      if p > (Log.QsoList.Count - Grid.VisibleRowCount) then begin
+         p := (Log.QsoList.Count - Grid.VisibleRowCount);
+      end;
+   end;
+   Grid.TopRow := p;
 end;
 
 { TBandScopeNotifyThread }

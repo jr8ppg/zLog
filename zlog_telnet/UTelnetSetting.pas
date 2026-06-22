@@ -15,6 +15,8 @@ type
     FLocalEcho: Boolean;
     FLoginId: string;
     FCommandList: string;
+    FUsePeriodicCmdExec: Boolean;
+    FPeriodicExecInterval: Integer;
   public
     constructor Create();
     destructor Destroy(); override;
@@ -26,6 +28,8 @@ type
     property LocalEcho: Boolean read FLocalEcho write FLocalEcho;
     property LoginId: string read FLoginId write FLoginId;
     property CommandList: string read FCommandList write FCommandList;
+    property UsePeriodicCmdExec: Boolean read FUsePeriodicCmdExec write FUsePeriodicCmdExec;
+    property PeriodicExecInterval: Integer read FPeriodicExecInterval write FPeriodicExecInterval;
   end;
 
   TTelnetSettingList = class(TObjectList<TTelnetSetting>)
@@ -48,6 +52,8 @@ begin
    FLocalEcho := False;
    FLoginId := '';
    FCommandList := '';
+   FUsePeriodicCmdExec := False;
+   FPeriodicExecInterval := 180;
 end;
 
 destructor TTelnetSetting.Destroy();
@@ -64,6 +70,8 @@ begin
    Self.FLocalEcho := src.LocalEcho;
    Self.FLoginId := src.LoginId;
    Self.CommandList := src.CommandList;
+   Self.FUsePeriodicCmdExec := src.FUsePeriodicCmdExec;
+   Self.FPeriodicExecInterval := src.FPeriodicExecInterval;
 end;
 
 { TTelnetSettingList }

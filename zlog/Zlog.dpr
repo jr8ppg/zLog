@@ -168,7 +168,9 @@ uses
   UDmsToGridDialog in 'UDmsToGridDialog.pas' {formDmsToGridDialog},
   UGridLocator in 'UGridLocator.pas',
   USentNumber in 'USentNumber.pas' {formSentNumber},
-  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig};
+  UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
+  UJarlWorldWideRTTYScore in 'UJarlWorldWideRTTYScore.pas' {JarlWorldWideRTTYScore},
+  UJarlWorldWideRTTYMulti in 'UJarlWorldWideRTTYMulti.pas' {JarlWorldWideRTTYMulti};
 
 {$R *.res}
 

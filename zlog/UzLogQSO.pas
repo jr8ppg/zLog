@@ -117,6 +117,8 @@ type
       Delimiter: WORD;
    end;
 
+  TCheckResult = ( crOk = 0, crRstSentError, crNrSentError, crNrRcvdError );
+
   TQSO = class(TObject)
   private
     FIndex: Integer;
@@ -157,6 +159,9 @@ type
     FContinent: string;
     FEntity: string;
 
+    FTimeUtc: string;   // $D
+
+    FCheckResult: TCheckResult;
     function GetMode2(): TMode;
     function GetPoints(): Integer;
     function GetQsoId(): Integer;
@@ -191,6 +196,7 @@ type
     function GetMemoStr(): string;
     function GetMemoStr2(): string;
     procedure SetInvalid(v: Boolean);
+    function GetTimeUtc(): string;
   public
     constructor Create;
     procedure IncTime;
@@ -277,6 +283,9 @@ type
     property FreqStr3: string read GetFreqStr3;
     property MemoStr: string read GetMemoStr;
     property MemoStr2: string read GetMemoStr2;
+
+    property TimeUtc: string read GetTimeUtc write FTimeUtc;
+    property CheckResult: TCheckResult read FCheckResult write FCheckResult;
 
     property FileRecord: TQSOData read GetFileRecord write SetFileRecord;
     property FileRecordEx: TQSODataEx read GetFileRecordEx write SetFileRecordEx;
@@ -476,6 +485,7 @@ type
     procedure SaveToFileAsHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
     procedure SaveToFileAsHamSupport(Filename: string);
     procedure SaveToFileAsAdif(Filename: string);
+    procedure SaveToFileAsSpc(Filename: string);
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -612,6 +622,8 @@ begin
    FRbnVerified := False;
    FContinent := '';
    FEntity := '';
+   FTimeUtc := '';
+   FCheckResult := crOk;
 end;
 
 procedure TQSO.IncTime;
@@ -1064,6 +1076,15 @@ begin
    end;
 end;
 
+function TQSO.GetTimeUtc(): string;
+begin
+   if FTimeUtc = '' then begin
+      FTimeUtc := FormatDateTime('hhnn', GetUTC());
+   end;
+
+   Result := FTimeUtc;
+end;
+
 function TQSO.PartialSummary(DispDate: Boolean): string;
 var
    S: string;
@@ -1424,6 +1445,7 @@ begin
    FRbnVerified := src.RbnVerified;
    FContinent := src.Continent;
    FEntity := src.Entity;
+   FCheckResult := src.FCheckResult;
 end;
 
 function TQSO.GetFileRecord(): TQSOData;
@@ -3713,6 +3735,37 @@ begin
    end;
 
    CloseFile(f);
+end;
+
+procedure TLog.SaveToFileAsSpc(Filename: string);
+var
+   S: string;
+   i: Integer;
+   Q: TQSO;
+   L: TStringList;
+begin
+   L := TStringList.Create();
+   try
+      L.Sorted := True;
+      L.Duplicates := dupIgnore;
+
+      for i := 1 to Log.TotalQSO do begin
+         Q := Log.QsoList[i];
+
+         S := Q.Callsign;
+         if Q.NrRcvd <> '' then begin
+            S := S + DupeString(' ', 11);
+            S := Copy(S, 1, 11);
+            S := S + Q.NrRcvd;
+         end;
+
+         L.Add(S);
+      end;
+
+      L.SaveToFile(Filename);
+   finally
+      L.Free();
+   end;
 end;
 
 {$ENDIF}

@@ -36,6 +36,10 @@ type
     procedure SetRit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
     procedure SetXit(flag: Boolean); override;
+    procedure FunctionRx(param: string); virtual;
+    procedure FunctionTx(param: string); virtual;
+    procedure ReadMeter(param: string); virtual;
+    function MeterValue(P2: string): Integer;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
@@ -120,8 +124,14 @@ type
   end;
 
   TFT991 = class(TFT2000)
+  protected
+    procedure FunctionRx(param: string); override;
+    procedure FunctionTx(param: string); override;
+    procedure ReadMeter(param: string); override;
+  public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure ExecuteCommand(S: AnsiString); override;
+    procedure PollingProcess; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetDataMode(fOn:Boolean); override;
     procedure AudioInputSelect(input: TAudioInput); override;
@@ -132,6 +142,7 @@ type
     procedure SetRit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
     procedure SetXit(flag: Boolean); override;
+    procedure ReadMeter(param: string); override;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure AntSelect(no: Integer); override;
@@ -140,6 +151,9 @@ type
   end;
 
   TFTX1 = class(TFT710)
+  protected
+    procedure ReadMeter(param: string); override;
+  public
     procedure ExecuteCommand(S: AnsiString); override;
     procedure SetMode(Q: TQSO); override;
     procedure SelectBand(b: TBand); override;
@@ -147,22 +161,41 @@ type
   end;
 
   TFTDX3000 = class(TFT2000)
+  protected
+    procedure ReadMeter(param: string); override;
   public
     procedure AntSelect(no: Integer); override;
   end;
 
   TFTDX5000 = class(TFT2000)
+  protected
+    procedure ReadMeter(param: string); override;
   public
     procedure AntSelect(no: Integer); override;
   end;
 
-  TFTDX101 = class(TFT991)
+  TFTDX9000 = class(TFTDX5000)
+  protected
+    procedure ReadMeter(param: string); override;
   public
+  end;
+
+  TFTDX101 = class(TFT991)
+  protected
+    procedure FunctionRx(param: string); override;
+    procedure FunctionTx(param: string); override;
+    procedure ReadMeter(param: string); override;
+  public
+    procedure PollingProcess; override;
     procedure AntSelect(no: Integer); override;
     procedure AudioInputSelect(input: TAudioInput); override;
   end;
 
   TFTDX10 = class(TFT991)
+  protected
+    procedure FunctionRx(param: string); override;
+    procedure FunctionTx(param: string); override;
+    procedure ReadMeter(param: string); override;
   public
     procedure AudioInputSelect(input: TAudioInput); override;
   end;
@@ -499,28 +532,15 @@ begin
          Inc(FPollingCount);
       end;
 
-      if strCommand = 'FA' then begin
-         // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 8));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[0] := i;
-      end;
-
-      if strCommand = 'FB' then begin
-         // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 8));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[1] := i;
+      // RX切り替え＝VFO A/B切り替え
+      if strCommand = 'FR' then begin
+         FunctionRx(string(Copy(S, 3)));
+         Inc(FPollingCount);
       end;
 
       // メーター値読み出し（0-255を0-100にマップする）
       if strCommand = 'RM' then begin
-         strTemp := string(Copy(S, 4, 3));
-         case S[3] of
-            '0': FSMeterValue[_currentvfo] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
-            '1': FSMeterValue[0] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
-            '2': FSMeterValue[1] := Round(StrToFloatDef(strTemp, 0) * (100 / 255));
-         end;
+         ReadMeter(string(Copy(S, 3)));
       end;
 
       if Selected then begin
@@ -531,6 +551,45 @@ begin
          FPollingTimer.Enabled := True;
       end;
    end;
+end;
+
+procedure TFT2000.ReadMeter(param: string);
+var
+   strP2: string;
+begin
+   strP2 := string(Copy(param, 2, 3));
+   case param[1] of
+      '0': FSMeterValue[_currentvfo] := MeterValue(strP2);
+      '1': FSMeterValue[0] := MeterValue(strP2);
+      '2': FSMeterValue[1] := MeterValue(strP2);
+   end;
+end;
+
+procedure TFT2000.FunctionRx(param: string);
+var
+   strP1: string;
+begin
+   strP1 := Copy(param, 1, 1);
+   if (strP1 = '0') or (strP1 = '1') then begin
+      _currentvfo := 0;
+      WriteData('IF;');
+      FSMeterValue[1] := 0;
+   end
+   else begin
+      _currentvfo := 1;
+      WriteData('OI;');
+      FSMeterValue[0] := 0;
+   end;
+end;
+
+procedure TFT2000.FunctionTx(param: string);
+begin
+   //
+end;
+
+function TFT2000.MeterValue(P2: string): Integer;
+begin
+   Result := Round(StrToFloatDef(P2, 0) * (100 / 255));
 end;
 
 procedure TFT2000.Initialize();
@@ -569,7 +628,7 @@ begin
       BufferString := Copy(BufferString, Index + 1);
 
       {$IFDEF DEBUG}
-      OutputDebugString(PChar('***FT-2000 COMMAND=[' + string(cmd) + ']'));
+      //OutputDebugString(PChar('***FT-2000 COMMAND=[' + string(cmd) + ']'));
       {$ENDIF}
 
       ExecuteCommand(cmd);
@@ -607,12 +666,20 @@ begin
       Exit;
    end;
 
-   if (FPollingCount = 0) or ((FPollingCount and 1) = 0) then begin
-      WriteData('IF;');
-   end
-   else begin
-      WriteData('OI;');
-      FInitialPolling := True;
+   case FPollingCount of
+      0, 1: begin
+         WriteData('IF;');
+      end;
+
+      2: begin
+         WriteData('OI;');
+      end;
+
+      3: begin
+         WriteData('FR;');
+         FInitialPolling := True;
+         FPollingCount := 0;
+      end;
    end;
 end;
 
@@ -1619,20 +1686,25 @@ begin
          // XIT Status
          strTemp := string(Copy(S, 21, 1));
          FXit := StrToBoolDef(strTemp, False);
+
+         Inc(FPollingCount);
       end;
 
-      if strCommand = 'FA' then begin
-         // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[0] := i;
+      // TX切り替え＝VFO A/B切り替え
+      if strCommand = 'FT' then begin
+         FunctionTx(string(Copy(S, 3)));
+         Inc(FPollingCount);
       end;
 
-      if strCommand = 'FB' then begin
-         // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[1] := i;
+      // RX切り替え＝VFO A/B切り替え
+      if strCommand = 'FR' then begin
+         FunctionRx(string(Copy(S, 3)));
+         Inc(FPollingCount);
+      end;
+
+      // メーター値読み出し（0-255を0-100にマップする）
+      if strCommand = 'RM' then begin
+         ReadMeter(string(Copy(S, 3)));
       end;
 
       if Selected then begin
@@ -1640,8 +1712,31 @@ begin
       end;
    finally
       if (FUsePolling = True) or (FInitialPolling = False) then begin
-         Inc(FPollingCount);
          FPollingTimer.Enabled := True;
+      end;
+   end;
+end;
+
+procedure TFT991.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
+   case FPollingCount of
+      0, 1: begin
+         WriteData('IF;');
+      end;
+
+      2: begin
+         WriteData('OI;');
+      end;
+
+      3: begin
+         WriteData('FT;');
+         FInitialPolling := True;
+         FPollingCount := 0;
       end;
    end;
 end;
@@ -1695,6 +1790,39 @@ begin
       aiMicAcc:   ;
    end;
 end;
+
+procedure TFT991.FunctionRx(param: string);
+begin
+   //
+end;
+
+procedure TFT991.FunctionTx(param: string);
+var
+   strP1: string;
+begin
+   strP1 := Copy(param, 1, 1);
+   _currentvfo := StrToIntDef(strP1, 0);
+   if _currentvfo = 0 then begin
+      WriteData('IF;');
+   end
+   else begin
+      WriteData('OI;');
+   end;
+end;
+
+procedure TFT991.ReadMeter(param: string);
+var
+   strP1: string;
+   strP2: string;
+begin
+   strP1 := string(Copy(param, 1, 1));
+   strP2 := string(Copy(param, 2, 3));
+
+   if strP1 = '0' then begin
+      FSMeterValue[_currentvfo] := MeterValue(strP2);
+   end;
+end;
+
 
 { TFT710 }
 
@@ -1814,6 +1942,19 @@ begin
    end;
 end;
 
+procedure TFT710.ReadMeter(param: string);
+var
+   strP1: string;
+   strP2: string;
+begin
+   strP1 := string(Copy(param, 1, 1));
+   strP2 := string(Copy(param, 2, 3));
+
+   if strP1 = '0' then begin
+      FSMeterValue[_currentvfo] := MeterValue(strP2);
+   end;
+end;
+
 { TFTX1 }
 
 // FTX-1対応
@@ -1823,6 +1964,28 @@ end;
 // 00 00000 001111111 11122 22 2222223
 // 12 34567 890123456 78901 23 4567890
 // IF 00001 007131790 +0000 10 140000;
+
+procedure TFTX1.ReadMeter(param: string);
+var
+   strP1: string;
+   strP2: string;
+   strP3: string;
+begin
+   strP1 := string(Copy(param, 1, 1));
+   strP2 := string(Copy(param, 2, 3));
+   strP3 := string(Copy(param, 5, 3));
+
+   if strP1 = '0' then begin
+      FSMeterValue[0] := MeterValue(strP2);
+      FSMeterValue[1] := MeterValue(strP3);
+   end;
+   if strP1 = '1' then begin
+      FSMeterValue[0] := MeterValue(strP2);
+   end;
+   if strP1 = '2' then begin
+      FSMeterValue[1] := MeterValue(strP2);
+   end;
+end;
 
 procedure TFTX1.ExecuteCommand(S: AnsiString);
 var
@@ -1885,20 +2048,19 @@ begin
          // XIT Status
          strTemp := string(Copy(S, 23, 1));
          FXit := StrToBoolDef(strTemp, False);
+
+         Inc(FPollingCount);
       end;
 
-      if strCommand = 'FA' then begin
-         // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[0] := i;
+      // TX切り替え＝VFO A/B切り替え
+      if strCommand = 'FT' then begin
+         FunctionTx(string(Copy(S, 3)));
+         Inc(FPollingCount);
       end;
 
-      if strCommand = 'FB' then begin
-         // 周波数(Hz)
-         strTemp := string(Copy(S, 3, 9));
-         i := StrToIntDef(strTemp, 0);
-         _currentfreq[1] := i;
+      // メーター値読み出し（0-255を0-100にマップする）
+      if strCommand = 'RM' then begin
+         ReadMeter(string(Copy(S, 3)));
       end;
 
       if Selected then begin
@@ -1906,7 +2068,6 @@ begin
       end;
    finally
       if (FUsePolling = True) or (FInitialPolling = False) then begin
-         Inc(FPollingCount);
          FPollingTimer.Enabled := True;
       end;
    end;
@@ -2005,6 +2166,17 @@ end;
 
 { TFTDX3000 }
 
+procedure TFTDX3000.ReadMeter(param: string);
+var
+   strP2: string;
+begin
+   strP2 := string(Copy(param, 2, 3));
+   case param[1] of
+      '0': FSMeterValue[_currentvfo] := MeterValue(strP2);
+      '1': FSMeterValue[_currentvfo] := MeterValue(strP2);
+   end;
+end;
+
 procedure TFTDX3000.AntSelect(no: Integer);
 begin
    case no of
@@ -2017,6 +2189,18 @@ end;
 
 { TFTDX5000 }
 
+procedure TFTDX5000.ReadMeter(param: string);
+var
+   strP2: string;
+begin
+   strP2 := Copy(param, 2, 3);
+   case param[1] of
+      '0': FSMeterValue[_currentvfo] := MeterValue(strP2);
+      '1': FSMeterValue[0] := MeterValue(strP2);
+      '2': FSMeterValue[1] := MeterValue(strP2);
+   end;
+end;
+
 procedure TFTDX5000.AntSelect(no: Integer);
 begin
    case no of
@@ -2028,7 +2212,54 @@ begin
    end;
 end;
 
+{ TFTDX9000 }
+
+procedure TFTDX9000.ReadMeter(param: string);
+var
+   strP1: string;
+   strP2: string;
+begin
+   strP1 := Copy(param, 1, 2);
+   strP2 := Copy(param, 3, 3);
+   if strP1 = '00' then begin
+      FSMeterValue[0] := MeterValue(strP2);
+   end;
+   if strP1 = '01' then begin
+      FSMeterValue[1] := MeterValue(strP2);
+   end;
+   if strP1 = '04' then begin
+      FSMeterValue[0] := MeterValue(strP2);
+   end;
+   if strP1 = '05' then begin
+      FSMeterValue[1] := MeterValue(strP2);
+   end;
+end;
+
 { TFTDX101 }
+
+procedure TFTDX101.PollingProcess;
+begin
+   FPollingTimer.Enabled := False;
+   if FStopRequest = True then begin
+      Exit;
+   end;
+
+   case FPollingCount of
+      0, 1: begin
+         WriteData('IF;');
+      end;
+
+      2: begin
+         WriteData('OI;');
+      end;
+
+      3: begin
+         WriteData('FR;');
+         FInitialPolling := True;
+         FPollingCount := 0;
+      end;
+   end;
+end;
 
 procedure TFTDX101.AntSelect(no: Integer);
 begin
@@ -2061,6 +2292,58 @@ begin
    end;
 end;
 
+procedure TFTDX101.FunctionRx(param: string);
+var
+   strP12: string;
+begin
+   strP12 := Copy(param, 1, 2);
+
+   // P P
+   // 1 2
+   // 0 0 Main mute off/Sub mute off
+   // 0 1 Main mute off/Sub mute on
+   // 1 0 Main mute on /Sub mute off
+   // 1 1 Main mute on /Sub mute on
+   if (strP12 = '00') or (strP12 = '01') or (strP12 = '11') then begin
+      _currentvfo := 0;
+      WriteData('IF;');
+      FSMeterValue[1] := 0;
+   end;
+
+   if strP12 = '10' then begin
+      _currentvfo := 1;
+      WriteData('OI;');
+      FSMeterValue[0] := 0;
+   end;
+end;
+
+procedure TFTDX101.FunctionTx(param: string);
+begin
+   //
+end;
+
+procedure TFTDX101.ReadMeter(param: string);
+var
+   strP1: string;
+   strP2: string;
+   strP3: string;
+begin
+   strP1 := Copy(param, 1, 1);
+   strP2 := Copy(param, 2, 3);
+   strP3 := Copy(param, 5, 3);
+
+   if strP1 = '0' then begin
+      FSMeterValue[0] := MeterValue(strP2);
+      FSMeterValue[1] := MeterValue(strP3);
+   end;
+   if strP1 = '1' then begin
+      FSMeterValue[0] := MeterValue(strP2);
+   end;
+   if strP1 = '2' then begin
+      FSMeterValue[1] := MeterValue(strP2);
+   end;
+end;
+
 { TFTDX10 }
 
 procedure TFTDX10.AudioInputSelect(input: TAudioInput);
@@ -2081,6 +2364,40 @@ begin
       aiAcc:      ;
       aiMicUsb:   ;
       aiMicAcc:   ;
+   end;
+end;
+
+procedure TFTDX10.FunctionRx(param: string);
+begin
+   //
+end;
+
+procedure TFTDX10.FunctionTx(param: string);
+var
+   strP2: string;
+begin
+   strP2 := Copy(param, 1, 1);
+   _currentvfo := StrToIntDef(strP2, 0);
+   if _currentvfo = 0 then begin
+      WriteData('IF;');
+   end
+   else begin
+      WriteData('OI;');
+   end;
+end;
+
+procedure TFTDX10.ReadMeter(param: string);
+var
+   strP1: string;
+   strP2: string;
+begin
+   strP1 := Copy(param, 1, 1);
+   strP2 := Copy(param, 2, 3);
+   if strP1 = '0' then begin
+      FSMeterValue[_currentvfo] := MeterValue(strP2);
+   end;
+   if strP1 = '1' then begin
+      FSMeterValue[_currentvfo] := MeterValue(strP2);
    end;
 end;
 

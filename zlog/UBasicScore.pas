@@ -27,6 +27,7 @@ type
     procedure menuExtraInfoClick(Sender: TObject);
     procedure GridDrawCell(Sender: TObject; ACol, ARow: LongInt; Rect: TRect; State: TGridDrawState);
   protected
+    FUseMulti2: Boolean;
     FExtraInfo: Integer;
     FContestMode: TContestMode;
     FValidQso: Boolean;
@@ -62,6 +63,7 @@ type
     function IntToStr3(v: Integer): string;
     property Score: Integer read GetScore;
     property ContestMode: TContestMode read FContestMode write FContestMode;
+    property UseMulti2: Boolean read FUseMulti2 write FUseMulti2;
   published
     property FontSize;
     property OnChangeFontSize;
@@ -80,6 +82,7 @@ uses
 constructor TBasicScore.Create(AOwner: TComponent);
 begin
    Inherited Create(AOwner);
+   FUseMulti2 := False;
    FContestMode := cmMix;
    ShowCWRatio := False;
    Reset;
@@ -127,14 +130,11 @@ end;
 procedure TBasicScore.AddNoUpdate(aQSO: TQSO);
 var
    B: TBand;
+   SL: TStringList;
 begin
    FValidQso := False;
 
    B := aQSO.band;
-
-   if aQSO.Dupe then begin
-      Exit;
-   end;
 
    case FContestMode of
       cmMix: begin
@@ -190,13 +190,19 @@ begin
       end;
    end;
 
+   SL := TStringList.Create();
+
    if aQSO.NewMulti1 then begin
-      Inc(Multi[B]);
+      SL.CommaText := aQSO.Multi1;
+      Inc(Multi[B], SL.Count);
    end;
 
    if aQSO.NewMulti2 then begin
-      Inc(Multi2[B]);
+      SL.CommaText := aQSO.Multi2;
+      Inc(Multi2[B], SL.Count);
    end;
+
+   SL.Free();
 end;
 
 procedure TBasicScore.Add(aQSO: TQSO);

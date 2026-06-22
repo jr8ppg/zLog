@@ -129,10 +129,10 @@ type
 
     FZaqBgColor: array[0..3] of TColor;
     FZaqFgColor: array[0..3] of TColor;
-    FZaqRowBgColor: array[0..35] of TColor;
-    FZaqRowFgColor: array[0..35] of TColor;
-    FZaq2RowBgColor: array[0..35] of TColor;
-    FZaq2RowFgColor: array[0..35] of TColor;
+    FZaqRowBgColor: array[0..50] of TColor;
+    FZaqRowFgColor: array[0..50] of TColor;
+    FZaq2RowBgColor: array[0..50] of TColor;
+    FZaq2RowFgColor: array[0..50] of TColor;
     FTargetColorByBand: Boolean;
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
@@ -341,8 +341,6 @@ begin
 
    LoadSettings();
 
-   InitScoreGrid();
-
    FPreHour := GetHour(Now);
 end;
 
@@ -356,6 +354,8 @@ var
    i: Integer;
 begin
    MainForm.AddTaskbar(Handle);
+
+   InitScoreGrid();
 
    FContestPeriod := Min(Max(MyContest.Period, 24), 48);
 
@@ -1047,7 +1047,7 @@ begin
          Brush.Style := bsClear;
          Rectangle(Rect.Left - 1, Rect.Top - 1, Rect.Right + 1, Rect.Bottom + 1);
       end
-      else if (ARow = 35) or (ACol = 50) then begin   // 合計行(35)、合計列(26)の表示
+      else if (ARow = 47) or (ACol = 50) then begin   // 合計行(47)、合計列(50)の表示
          // 達成率/WinLoss
          strText := ScoreGrid.Cells[ACol, ARow];
 
@@ -1429,6 +1429,14 @@ begin
          ScoreGrid.RowHeights[R + 2] := -1;
       end;
    end;
+
+   // 10.4G対策
+   if Assigned(MyContest) then begin
+      if MyContest.Single10G = True then begin
+         ScoreGrid.RowHeights[33] := -1;
+         ScoreGrid.RowHeights[34] := -1;
+      end;
+   end;
 end;
 
 procedure TRateDialogEx.InitScoreGrid_type2();
@@ -1525,6 +1533,14 @@ begin
       end;
       Inc(R);
    end;
+
+   // 10.4G対策
+   if Assigned(MyContest) then begin
+      if MyContest.Single10G = True then begin
+         ScoreGrid.RowHeights[17] := -1;
+         ScoreGrid.RowHeights[40] := -1;
+      end;
+   end;
 end;
 
 // ZAQ2用
@@ -1588,6 +1604,13 @@ begin
          ScoreGrid2.RowHeights[R + 1] := -1;
       end;
    end;
+
+   // 10.4G対策
+   if Assigned(MyContest) then begin
+      if MyContest.Single10G = True then begin
+         ScoreGrid2.RowHeights[17] := -1;
+      end;
+   end;
 end;
 
 procedure TRateDialogEx.TargetToGrid(ATarget: TContestTarget);
@@ -1601,13 +1624,13 @@ begin
       for i := 1 to FContestPeriod do begin
          ScoreGrid.Cells[i, R + 0] := IntToStr(ATarget.Bands[b].Hours[i].Target);
          ScoreGrid.Cells[i, R + 1] := IntToStr(ATarget.Bands[b].Hours[i].Actual);
-         ScoreGrid.Cells[i, 33]       := IntToStr(ATarget.Total.Hours[i].Target);
-         ScoreGrid.Cells[i, 34]       := IntToStr(ATarget.Total.Hours[i].Actual);
+         ScoreGrid.Cells[i, 45]       := IntToStr(ATarget.Total.Hours[i].Target);
+         ScoreGrid.Cells[i, 46]       := IntToStr(ATarget.Total.Hours[i].Actual);
          if menuAchievementRate.Checked = True then begin
-            ScoreGrid.Cells[i, 35]    := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
+            ScoreGrid.Cells[i, 47]    := FloatToStrF(ATarget.Total.Hours[i].Rate, ffFixed, 1000, 1);
          end
          else begin
-            ScoreGrid.Cells[i, 35]    := IntToStr(ATarget.Total.Hours[i].Actual - ATarget.Total.Hours[i].Target);
+            ScoreGrid.Cells[i, 47]    := IntToStr(ATarget.Total.Hours[i].Actual - ATarget.Total.Hours[i].Target);
          end;
       end;
 
@@ -1622,16 +1645,16 @@ begin
       end;
    end;
 
-   ScoreGrid.Cells[49, 33]   := IntToStr(ATarget.TotalTotal.Target);
-   ScoreGrid.Cells[49, 34]   := IntToStr(ATarget.TotalTotal.Actual);
+   ScoreGrid.Cells[49, 45]   := IntToStr(ATarget.TotalTotal.Target);
+   ScoreGrid.Cells[49, 46]   := IntToStr(ATarget.TotalTotal.Actual);
 
    if menuAchievementRate.Checked = True then begin
-      ScoreGrid.Cells[49, 35]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
-      ScoreGrid.Cells[50, 34]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+      ScoreGrid.Cells[50, 46]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
+      ScoreGrid.Cells[49, 47]   := FloatToStrF(ATarget.TotalTotal.Rate, ffFixed, 1000, 1);
    end
    else begin
-      ScoreGrid.Cells[49, 35]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
-      ScoreGrid.Cells[50, 34]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[50, 46]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
+      ScoreGrid.Cells[49, 47]   := IntToStr(ATarget.TotalTotal.Actual - ATarget.TotalTotal.Target);
    end;
 
    ScoreGrid.Refresh();

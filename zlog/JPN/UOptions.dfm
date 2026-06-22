@@ -4596,6 +4596,20 @@ object formOptions: TformOptions
         Height = 13
         Caption = #12524#12472#12517#12540#12512#12487#12540#12479
       end
+      object Label1: TLabel
+        Left = 8
+        Top = 219
+        Width = 45
+        Height = 13
+        Caption = 'MMTTY1'
+      end
+      object Label2: TLabel
+        Left = 8
+        Top = 244
+        Width = 45
+        Height = 13
+        Caption = 'MMTTY2'
+      end
       object editCfgDatFolder: TEdit
         Left = 128
         Top = 41
@@ -4732,6 +4746,40 @@ object formOptions: TformOptions
         Height = 21
         TabOrder = 14
       end
+      object buttonBrowseMmtty1Path: TButton
+        Tag = 80
+        Left = 448
+        Top = 217
+        Width = 65
+        Height = 20
+        Caption = #21442#29031'...'
+        TabOrder = 17
+        OnClick = BrowsePathClick
+      end
+      object editMmtty1Folder: TEdit
+        Left = 128
+        Top = 216
+        Width = 314
+        Height = 21
+        TabOrder = 16
+      end
+      object buttonBrowseMmtty2Path: TButton
+        Tag = 90
+        Left = 448
+        Top = 242
+        Width = 65
+        Height = 20
+        Caption = #21442#29031'...'
+        TabOrder = 19
+        OnClick = BrowsePathClick
+      end
+      object editMmtty2Folder: TEdit
+        Left = 128
+        Top = 241
+        Width = 314
+        Height = 21
+        TabOrder = 18
+      end
     end
     object tabsheetFont: TTabSheet
       Caption = #21508#31278#12501#12457#12531#12488
@@ -4770,13 +4818,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'Source Code Pro ExtraLight'
+          FontName = '@PlemolJP ExtraLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 122
+          ItemIndex = 16
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

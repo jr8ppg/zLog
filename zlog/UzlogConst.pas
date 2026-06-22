@@ -24,6 +24,7 @@ type
   TAudioInput = (aiDontCare = 0, aiMic, aiUsb, aiAcc, aiMicUsb, aiMicAcc);
   TExecuteAt = (eaBefore = 0, eaAfter);
   TWebUploadContest = ( wuAllja = 0, wu6d, wuFd, wuAcag, wuAacw, wuAaph, wuNyp, wuOther );
+  TMultiKind = ( mkNone = 0, mkContinent );
 
 type
   TPortAction = ( paNone = 0, paPtt, paKey, paAlwaysOn, paAlwaysOff, paHandshake );
@@ -208,7 +209,7 @@ const
      );
 
 const
-  RIGNAMES : array[0..25] of string =
+  RIGNAMES : array[0..26] of string =
 ('None',
  'TS-690/450',
  'TS-850',
@@ -232,7 +233,8 @@ const
  'FT-2000',
  'FTDX-10',
  'FTDX-3000',
- 'FTDX-5000/9000',
+ 'FTDX-5000',
+ 'FTDX-9000',
  'FTDX-101',
  'FTX-1'
  );
@@ -376,6 +378,40 @@ const
   default_zaq_fg_color: array[0..3] of TColor = (
     $00000000, $00000000, $00000000, $00000000
   );
+
+  ZLOG_WARN_COLOR = $00EADEFF;
+
+const
+  def_cw_messages: array[1..maxmessage] of string =
+    ( 'CQ TEST $M TEST',
+      '$C $R$X',
+      'TU $M TEST',
+      '',
+      'NR?',
+      '$C?',
+      '$M',
+      '$R$X',
+      'TU',
+      '',
+      '',
+      ''
+    );
+
+  def_rtty_messages: array[1..maxmessage] of string =
+    (
+      'TEST $M $M CQ',
+      '$C $R $X $X $C',
+      '$C TU $M CQ',
+      '',
+      'NR? NR?',
+      '$C? $C?',
+      '$M $M',
+      '$C $R $X $X $M TU',
+      '',
+      '',
+      '',
+      ''
+    );
 
 const
   default_primary_shortcut: array[0..172] of string = (

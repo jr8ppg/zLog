@@ -5,29 +5,29 @@ object formFreqPanel: TformFreqPanel
   BorderStyle = bsToolWindow
   Caption = 'Freq.'
   ClientHeight = 110
-  ClientWidth = 240
+  ClientWidth = 329
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  TextHeight = 15
+  OnShow = FormShow
+  TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 86
-    Width = 240
+    Width = 329
     Height = 24
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 74
-    ExplicitWidth = 232
+    ExplicitWidth = 240
     DesignSize = (
-      240
+      329
       24)
     object buttonCancel: TButton
-      Left = 163
+      Left = 252
       Top = 2
       Width = 65
       Height = 20
@@ -36,10 +36,10 @@ object formFreqPanel: TformFreqPanel
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 0
-      ExplicitLeft = 155
+      ExplicitLeft = 163
     end
     object buttonOK: TButton
-      Left = 94
+      Left = 183
       Top = 2
       Width = 65
       Height = 20
@@ -48,17 +48,19 @@ object formFreqPanel: TformFreqPanel
       Default = True
       ModalResult = 1
       TabOrder = 1
-      ExplicitLeft = 86
+      ExplicitLeft = 94
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 240
-    Height = 40
+    Width = 329
+    Height = 41
+    Align = alTop
     BevelOuter = bvNone
     ParentBackground = False
     TabOrder = 4
+    ExplicitWidth = 240
     object buttonBand01: TSpeedButton
       Tag = 1800
       Left = 0
@@ -90,7 +92,7 @@ object formFreqPanel: TformFreqPanel
       OnClick = buttonBandClick
     end
     object buttonBand04: TSpeedButton
-      Tag = 10000
+      Tag = 10100
       Left = 90
       Top = 0
       Width = 30
@@ -141,8 +143,8 @@ object formFreqPanel: TformFreqPanel
     end
     object buttonBand09: TSpeedButton
       Tag = 28000
-      Left = 0
-      Top = 20
+      Left = 237
+      Top = 0
       Width = 30
       Height = 20
       GroupIndex = 1
@@ -151,8 +153,8 @@ object formFreqPanel: TformFreqPanel
     end
     object buttonBand10: TSpeedButton
       Tag = 50000
-      Left = 30
-      Top = 20
+      Left = 267
+      Top = 0
       Width = 30
       Height = 20
       GroupIndex = 1
@@ -161,8 +163,8 @@ object formFreqPanel: TformFreqPanel
     end
     object buttonBand11: TSpeedButton
       Tag = 144000
-      Left = 60
-      Top = 20
+      Left = 297
+      Top = 0
       Width = 30
       Height = 20
       GroupIndex = 1
@@ -171,7 +173,7 @@ object formFreqPanel: TformFreqPanel
     end
     object buttonBand12: TSpeedButton
       Tag = 430000
-      Left = 90
+      Left = 0
       Top = 20
       Width = 30
       Height = 20
@@ -180,8 +182,8 @@ object formFreqPanel: TformFreqPanel
       OnClick = buttonBandClick
     end
     object buttonBand13: TSpeedButton
-      Tag = 1200000
-      Left = 120
+      Tag = 1294000
+      Left = 30
       Top = 20
       Width = 30
       Height = 20
@@ -190,8 +192,8 @@ object formFreqPanel: TformFreqPanel
       OnClick = buttonBandClick
     end
     object buttonBand14: TSpeedButton
-      Tag = 2400000
-      Left = 150
+      Tag = 2424000
+      Left = 60
       Top = 20
       Width = 30
       Height = 20
@@ -200,8 +202,8 @@ object formFreqPanel: TformFreqPanel
       OnClick = buttonBandClick
     end
     object buttonBand15: TSpeedButton
-      Tag = 5600000
-      Left = 180
+      Tag = 5760000
+      Left = 90
       Top = 20
       Width = 30
       Height = 20
@@ -210,20 +212,80 @@ object formFreqPanel: TformFreqPanel
       OnClick = buttonBandClick
     end
     object buttonBand16: TSpeedButton
-      Tag = 10000000
+      Tag = 10240000
+      Left = 120
+      Top = 20
+      Width = 30
+      Height = 20
+      GroupIndex = 1
+      Caption = '10.1G'
+      OnClick = buttonBandClick
+    end
+    object buttonBand17: TSpeedButton
+      Tag = 10450000
+      Left = 150
+      Top = 20
+      Width = 30
+      Height = 20
+      GroupIndex = 1
+      Caption = '10.4G'
+      OnClick = buttonBandClick
+    end
+    object buttonBand18: TSpeedButton
+      Tag = 24000000
+      Left = 180
+      Top = 20
+      Width = 30
+      Height = 20
+      GroupIndex = 1
+      Caption = '24G'
+      OnClick = buttonBandClick
+    end
+    object buttonBand19: TSpeedButton
+      Tag = 47000000
       Left = 210
       Top = 20
       Width = 30
       Height = 20
       GroupIndex = 1
-      Caption = '10G'
+      Caption = '47G'
+      OnClick = buttonBandClick
+    end
+    object buttonBand20: TSpeedButton
+      Tag = 77500000
+      Left = 237
+      Top = 20
+      Width = 30
+      Height = 20
+      GroupIndex = 1
+      Caption = '77G'
+      OnClick = buttonBandClick
+    end
+    object buttonBand21: TSpeedButton
+      Tag = 134000000
+      Left = 267
+      Top = 20
+      Width = 30
+      Height = 20
+      GroupIndex = 1
+      Caption = '135G'
+      OnClick = buttonBandClick
+    end
+    object buttonBand22: TSpeedButton
+      Tag = 248000000
+      Left = 297
+      Top = 20
+      Width = 30
+      Height = 20
+      GroupIndex = 1
+      Caption = '248G'
       OnClick = buttonBandClick
     end
   end
   object editMHz: TEdit
-    Left = 55
-    Top = 46
-    Width = 59
+    Left = 95
+    Top = 47
+    Width = 70
     Height = 30
     Alignment = taRightJustify
     Font.Charset = DEFAULT_CHARSET
@@ -237,8 +299,8 @@ object formFreqPanel: TformFreqPanel
     Text = '2400'
   end
   object editKHz: TEdit
-    Left = 113
-    Top = 46
+    Left = 164
+    Top = 47
     Width = 36
     Height = 30
     Font.Charset = DEFAULT_CHARSET
@@ -255,8 +317,8 @@ object formFreqPanel: TformFreqPanel
     OnExit = editKHzExit
   end
   object editHz: TEdit
-    Left = 148
-    Top = 46
+    Left = 199
+    Top = 47
     Width = 39
     Height = 30
     Font.Charset = DEFAULT_CHARSET

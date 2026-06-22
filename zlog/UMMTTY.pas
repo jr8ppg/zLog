@@ -70,6 +70,9 @@ procedure ProcessMMTTYMessage(Msg : TMsg; var Handled : Boolean);
 
 implementation
 
+uses
+  UzLogGlobal;
+
 procedure InitializeMMTTY(_Handle: THandle);
 var
    strMmtty: string;
@@ -83,7 +86,7 @@ begin
 
    GetStartupInfo(si);
 
-   strCurDir := ExtractFilePath(Application.ExeName);
+   strCurDir := dmZLogGlobal.Mmtty1Path;
    strMmtty :=  strCurDir + 'mmtty.exe';
    if FileExists(strMmtty) = False then begin
       Application.MessageBox(PChar('MMTTY not exists' + #13#10 + strMmtty), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);

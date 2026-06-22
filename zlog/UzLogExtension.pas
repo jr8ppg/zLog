@@ -100,6 +100,9 @@ type
 		function Put(obj: TObject; key: string; val: variant): TObject;
 	end;
 
+type
+   TCommitProc = procedure(ptr: pointer; id: Integer; mask: UInt64); stdcall;
+
 var
 	LastDLL: TDLL;
 	FileDLL: TDLL;
@@ -122,6 +125,18 @@ const
 	KEY_DLLS = 'DLLs';
 	KEY_PATH = 'path';
 	KEY_ZYLO = 'zylo';
+
+const
+   QSO_COMMIT_CALL = UInt64(1) shl 0;
+   QSO_COMMIT_SENT = UInt64(1) shl 1;
+   QSO_COMMIT_RCVD = UInt64(1) shl 2;
+   QSO_COMMIT_NAME = UInt64(1) shl 3;
+   QSO_COMMIT_NOTE = UInt64(1) shl 4;
+   QSO_COMMIT_MUL1 = UInt64(1) shl 5;
+   QSO_COMMIT_MUL2 = UInt64(1) shl 6;
+
+var
+   zyloNotifySuppressDepth: Integer = 0;
 
 function LoadIniFile: TIniFile;
 procedure InstallDLL(path: string);
@@ -157,6 +172,7 @@ function HandleCallBack(f: PAnsiChar): THandle; stdcall;
 function ButtonCallBack(f: PAnsiChar): integer; stdcall;
 function EditorCallBack(f: PAnsiChar): integer; stdcall;
 function ScriptCallBack(f: PAnsiChar): integer; stdcall;
+procedure CommitCallBack(ptr: pointer; id: Integer; mask: UInt64); stdcall;
 
 function DtoC(str: string): PAnsiChar;
 function CtoD(str: PAnsiChar): string;
@@ -574,6 +590,43 @@ begin
 	end;
 end;
 
+procedure CommitCallBack(ptr: pointer; id: Integer; mask: UInt64); stdcall;
+begin
+   if (Log = nil) or (id <= 0) or (mask = 0) then Exit;
+
+   var baseQSO := Log.ObjectOf(id);
+   if baseQSO = nil then Exit;
+
+   var patch := TQSO.Create;
+   var afterQSO := TQSO.Create;
+
+   try
+      patch.FileRecord := TQSOData(ptr^);
+      afterQSO.Assign(baseQSO);
+
+      if (mask and QSO_COMMIT_CALL) <> 0 then afterQSO.Callsign := patch.Callsign;
+      if (mask and QSO_COMMIT_SENT) <> 0 then afterQSO.NrSent := patch.NrSent;
+      if (mask and QSO_COMMIT_RCVD) <> 0 then afterQSO.NrRcvd := patch.NrRcvd;
+      if (mask and QSO_COMMIT_NAME) <> 0 then afterQSO.Operator := patch.Operator;
+      if (mask and QSO_COMMIT_NOTE) <> 0 then afterQSO.Memo := patch.Memo;
+      if (mask and QSO_COMMIT_MUL1) <> 0 then afterQSO.Multi1 := patch.Multi1;
+      if (mask and QSO_COMMIT_MUL2) <> 0 then afterQSO.Multi2 := patch.Multi2;
+
+      afterQSO.Reserve := actEdit;
+      Inc(zyloNotifySuppressDepth);
+      try
+         Log.AddQue(afterQSO);
+         Log.ProcessQue;
+         MyContest.Renew;
+      finally
+         Dec(zyloNotifySuppressDepth);
+      end;
+   finally
+      patch.Free;
+      afterQSO.Free;
+   end;
+end;
+
 /// <summary>
 /// load zLog.ini
 /// </summary>
@@ -867,18 +920,20 @@ end;
 /// <param>
 procedure zyloLogUpdated(event: TzLogEvent; bQSO, aQSO: TQSO);
 var
-	dll: TDLL;
-	qso: TQSOData;
+   dll: TDLL;
+   qso: TQSOData;
 begin
-	if not Enabled then Exit;
-	if event <> evInsertQSO then begin
-		qso := bQSO.FileRecord;
-		for dll in Rules.Values do dll.DeleteEvent(@qso);
-	end;
-	if event <> evDeleteQSO then begin
-		qso := aQSO.FileRecord;
-		for dll in Rules.Values do dll.InsertEvent(@qso);
-	end;
+   if not Enabled then Exit;
+   if zyloNotifySuppressDepth > 0 then Exit;
+
+   if event <> evInsertQSO then begin
+      qso := bQSO.FileRecord;
+      for dll in Rules.Values do dll.DeleteEvent(@qso);
+   end;
+   if event <> evDeleteQSO then begin
+      qso := aQSO.FileRecord;
+      for dll in Rules.Values do dll.InsertEvent(@qso);
+   end;
 end;
 
 /// <summary>
@@ -1078,6 +1133,7 @@ begin
 		Allow('zylo_allow_editor', @EditorCallBack);
 		Allow('zylo_allow_script', @ScriptCallBack);
 		Allow('zylo_query_format', @FormatCallBack);
+      Allow('zylo_allow_commit', @CommitCallBack);
 		if not LaunchEvent then NotifyMismatch;
 		Rules.Add(ExtractFileName(path), Self);
 		MainForm.PluginMenu.Visible := True;

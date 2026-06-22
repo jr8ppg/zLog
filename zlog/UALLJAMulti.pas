@@ -3,9 +3,10 @@ unit UALLJAMulti;
 interface
 
 uses
-  SysUtils, Windows, Messages, Classes, Graphics, Controls,
-  StdCtrls, ExtCtrls, Forms, ComCtrls,
-  UzLogConst, UzLogGlobal, UzLogQSO, UBasicMulti, JLLabel, Vcl.Grids;
+  System.SysUtils, Winapi.Windows, Winapi.Messages, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Forms, Vcl.ComCtrls,
+  Vcl.Grids, Winapi.CommCtrl,
+  UzLogConst, UzLogGlobal, UzLogQSO, UBasicMulti, JLLabel;
 
 const
   WM_ZLOG_UPDATEALLLIST = (WM_USER + 100);
@@ -146,10 +147,13 @@ var
    ken: TKen;
    x, y: integer;
    w, h: Integer;
+
+   nTabHeight: Integer;
+   R: TRect;
 begin
    for band := b19 to b50 do begin
       if NotWARC(band) then begin
-         for x := 1 to 5 do begin
+         for x := 1 to 4 do begin
             for y := 1 to 16 do begin
                ken := TKen(16 * (x - 1) + y - 1);
                if ken <= m48 then begin
@@ -170,6 +174,16 @@ begin
          end;
       end;
    end;
+
+   if TabCtrl_GetItemRect(PageControl.Handle, 0, R) = True then begin
+      nTabHeight := R.Bottom;
+   end
+   else begin
+      nTabHeight := 0;
+   end;
+
+   ClientWidth := KenLabels[b19, m48].Left + w + 8;
+   ClientHeight := Panel1.Height + nTabHeight + KenLabels[b19, m03].Top + h + 8 + 4;
 end;
 
 procedure TALLJAMulti.InitAllList();

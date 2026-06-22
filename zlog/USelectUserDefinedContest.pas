@@ -98,6 +98,7 @@ begin
 
    FSelectedContest := TUserDefinedContest(ListView1.Selected.Data);
 
+{
    if (Pos('$V', FSelectedContest.Sent) > 0) and (FSelectedContest.Prov = '') then begin
       MessageBox(Handle, PChar(Setup_prov_first), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
       PostMessage(Handle, WM_ZLOG_SHOWCFGEDIT, 0, 0);
@@ -109,6 +110,7 @@ begin
       PostMessage(Handle, WM_ZLOG_SHOWCFGEDIT, 0, 0);
       Exit;
    end;
+}
 
    ModalResult := mrOK;
 end;

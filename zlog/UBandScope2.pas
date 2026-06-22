@@ -463,6 +463,22 @@ var
    Diff: TDateTime;
    BS_khz: TFrequency;
    D_khz: TFrequency;
+
+   function IsOverwriteOk(oldSpotGroup: Integer; newSpotGroup: Integer): Boolean;
+   begin
+      if (oldSpotGroup = newSpotGroup) then begin
+         Result := True;
+         Exit;
+      end;
+      if ((oldSpotGroup = 1) and (dmZLogGlobal.Settings._bandscopecolor[7].FNotOverwrite = True)) or
+         ((oldSpotGroup = 2) and (dmZLogGlobal.Settings._bandscopecolor[8].FNotOverwrite = True)) or
+         ((oldSpotGroup = 3) and (dmZLogGlobal.Settings._bandscopecolor[9].FNotOverwrite = True)) then begin
+         Result := False;
+      end
+      else begin
+         Result := True;
+      end;
+   end;
 begin
    Lock();
    try
@@ -475,6 +491,12 @@ begin
 
             // 同一コール同一バンド
             if (BS.Call = D.Call) and (BS.Band = D.Band) then begin
+               // 上書き禁止GROUP
+               if IsOverwriteOk(BS.SpotGroup, D.SpotGroup) = False then begin
+                  D.Free();
+                  D := nil;
+                  Continue;
+               end;
 
                // 信頼度が上がる場合
                if BS.SpotReliability < D.SpotReliability then begin
@@ -490,12 +512,20 @@ begin
                // 周波数を更新
                BS.FreqHz := D.FreqHz;
 
+               // 上書き禁止GROUPならスポットグループを転記
+               if IsOverwriteOk(D.SpotGroup, BS.SpotGroup) = False then begin
+                  BS.SpotGroup := D.SpotGroup;
+                  BS.SpotSource := D.SpotSource;
+               end;
+
                D.Free();
                D := nil;
             end
             // コールが違う同一周波数SPOTは消す
             else if (BS.Call <> D.Call) and (BS_khz = D_khz) then begin
-               FBSList[i] := nil;
+               if IsOverwriteOk(BS.SpotGroup, D.SpotGroup) = True then begin
+                  FBSList[i] := nil;
+               end;
             end;
          end;
 

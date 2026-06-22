@@ -6,10 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes,
   System.StrUtils, Vcl.Forms,
   Generics.Collections, Generics.Defaults,
-  UzLogConst, UzLogGlobal;
+  UzLogConst, UzLogGlobal, UzLogQso, UMultipliers;
 
 const
-  MAXLOCAL = 31;
   PX_WPX    = 1;
   PX_NORMAL = 2;
 
@@ -24,7 +23,7 @@ type
   TPowerTable = array[b19..HiBand] of string;
   TSerialTable = array[b19..HiBand] of Integer;
   TAlphabetPointsTable = array[ord('0')..ord('Z')] of Integer;
-  TLocalStringTable = array[0..MAXLOCAL] of string;
+  TLocalStringTable = TDictionary<string, string>; //array[0..MAXLOCAL] of string;
 
   TSpecialCallMatch = ( scmFull = 0, scmPartial );
 
@@ -173,7 +172,7 @@ type
     property LocalCountry: string read FLocalCountry;
     property LocalContinental: string read FLocalContinental;
 
-    property LocalString: TLocalStringTable read FLocalString;
+    function IsLocal(aQSO: TQSO): Boolean;
 
     property AlphabetPoints: Boolean read FAlphabetPoints;
     property AlphabetPointsTable: TAlphabetPointsTable read FAlphabetPointsTable;
@@ -251,7 +250,7 @@ begin
    FContestName := '';
    FProv := '';
    FCity := '';
-   FPower := '';
+   FPower := DupeString('-', 19);
    FCoeff := True;
    for i := 1 to 8 do begin
       FCwMessageA[i] := '';
@@ -278,9 +277,10 @@ begin
    FLocalCountry := '';
    FLocalContinental := '';
 
-   for i := 0 to High(FLocalString) do begin
-      FLocalString[i] := '';
-   end;
+   FLocalString := TDictionary<string, string>.Create();
+//   for i := 0 to High(FLocalString) do begin
+//      FLocalString[i] := '';
+//   end;
 
    FAlphabetPoints := False;
 
@@ -317,6 +317,7 @@ begin
 
    for B := b19 to HiBand do begin
       FSerialArray[B] := 1;
+      FPowerTable[B] := '-';
    end;
 
    FBandPlan := '';
@@ -344,6 +345,7 @@ destructor TUserDefinedContest.Destroy();
 begin
    Inherited;
    FCfgSource.Free();
+   FLocalString.Free();
 end;
 
 procedure TUserDefinedContest.Load();
@@ -612,10 +614,21 @@ begin
          if strCmd = 'LOCAL' then begin
             SL.CommaText := UpperCase(strParam);
             for k := 0 to SL.Count - 1 do begin
-               if k > MAXLOCAL then begin
-                  Break;
+//               if k > MAXLOCAL then begin
+//                  Break;
+//               end;
+//               D.FLocalString[k] := SL.Strings[k];
+               if SL.Strings[k] <> '' then begin
+
+                  strTmp := SL.Strings[k];
+                  if D.MinLocalLen > 0 then begin
+                     strTmp := Copy(strTmp, 1, D.MinLocalLen);
+                  end;
+
+                  if D.FLocalString.ContainsKey(strTmp) = False then begin
+                     D.FLocalString.Add(strTmp, SL.Strings[k]);
+                  end;
                end;
-               D.FLocalString[k] := SL.Strings[k];
             end;
          end;
 
@@ -974,6 +987,12 @@ begin
       PT[B, mSSB] := k;
       PT[B, mFM] := k;
       PT[B, mAM] := k;
+      PT[B, mRTTY] := k;
+      PT[B, mFT4] := k;
+      PT[B, mFT8] := k;
+      PT[B, mOther] := k;
+      PT[B, mDV] := k;
+
       delete(tempstr, 1, i);
 
       repeat
@@ -1239,6 +1258,59 @@ begin
    end;
 end;
 
+function TUserDefinedContest.IsLocal(aQSO: TQSO): Boolean;
+var
+   i: Integer;
+   S: string;
+   arr: TArray<TPair<string, string>>;
+begin
+   Result := False;
+
+   if FUseCtyDat then begin
+      if FLocalCountry <> '' then begin
+         i := aQSO.Power2;
+         if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then begin
+            if Pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Country + ',', ',' + FLocalCountry + ',') > 0 then begin
+               Result := True;
+               Exit;
+            end;
+         end;
+      end;
+
+      if FLocalContinental <> '' then begin
+         i := aQSO.Power2;
+         if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then begin
+            if Pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Continent + ',', ',' + FLocalContinental + ',') > 0 then begin
+               Result := True;
+               Exit;
+            end;
+         end;
+      end;
+   end;
+
+   S := aQSO.NrRcvd;
+   if FMinLocalLen > 0 then begin
+      S := Copy(S, 1, FMinLocalLen);
+   end;
+
+   if FLocalString.Count = 1 then begin
+      arr := FLocalString.ToArray();
+      if Pos(arr[0].Key, S) = 1 then begin
+         Result := True;
+      end
+      else begin
+         Result := False;
+      end;
+   end
+   else begin
+      if FLocalString.ContainsKey(S) = True then begin
+         Result := True;
+      end
+      else begin
+         Result := False;
+      end;
+   end;
+end;
 
 { TUserDefinedContestList }
 

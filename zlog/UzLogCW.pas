@@ -49,10 +49,13 @@ var
 begin
    temp := sendtext;
 
-   //S := MyContest.SentStr;
-   S := aQSO.NrSentStr;
+   S := MyContest.SentStr;
    temp := StringReplace(temp, '$X', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$x', LowerCase(S), [rfReplaceAll]);
+
+   S := aQSO.NrSentStr;
+   temp := StringReplace(temp, '$Y', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$y', S, [rfReplaceAll]);
 
    S := aQSO.Callsign;
    temp := StringReplace(temp, '$B', S, [rfReplaceAll]);
@@ -128,6 +131,10 @@ begin
    S := dmZLogGlobal.GetGreetingsCode();
    temp := StringReplace(temp, '$G', S, [rfReplaceAll]);
    temp := StringReplace(temp, '$g', S, [rfReplaceAll]);
+
+   S := aQSO.TimeUtc;
+   temp := StringReplace(temp, '$D', Abbreviate(S), [rfReplaceAll]);
+   temp := StringReplace(temp, '$d', S, [rfReplaceAll]);
 
    if aQSO.mode = mRTTY then begin
       S := aQSO.Callsign;
@@ -206,8 +213,9 @@ begin
    temp := StringReplace(temp, '[BK]', '', [rfReplaceAll]);
    temp := StringReplace(temp, '[BT]', '', [rfReplaceAll]);
 
-   temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
    temp := StringReplace(temp, '$X', MyContest.SentStr, [rfReplaceAll]);
+   temp := StringReplace(temp, '$Y', aQSO.NrSentStr, [rfReplaceAll]);
+   temp := StringReplace(temp, '$B', aQSO.Callsign, [rfReplaceAll]);
    temp := StringReplace(temp, '$R', aQSO.RSTSentStr, [rfReplaceAll]);
    temp := StringReplace(temp, '$F', aQSO.NrRcvd, [rfReplaceAll]);
    temp := StringReplace(temp, '$Z', dmZLogGlobal.Settings._mycqzone, [rfReplaceAll]);
@@ -216,6 +224,18 @@ begin
    temp := StringReplace(temp, '$V', MyContest.Prov, [rfReplaceAll]);
    temp := StringReplace(temp, '$O', aQSO.Operator, [rfReplaceAll]);
    temp := StringReplace(temp, '$T', dmZLogGlobal.Settings._myiota, [rfReplaceAll]);
+   temp := StringReplace(temp, '$D', #13#10, [rfReplaceAll]);
+
+   if aQSO.Callsign = '' then begin
+      S := Log.LastCallsign;
+   end
+   else if EditedSinceTABPressed = tabstate_tabpressedandedited then begin
+      S := aQSO.Callsign;
+   end
+   else begin
+      S := '';
+   end;
+   temp := StringReplace(temp, '$E', S, [rfReplaceAll]);
 
    temp := StringReplace(temp, '$H', aQSO.NrSent, [rfReplaceAll]);
 
@@ -232,6 +252,7 @@ begin
    temp := StringReplace(temp, '$L', Log.LastCallSign, [rfReplaceAll]);
    temp := StringReplace(temp, '$U', Log.LastNumber, [rfReplaceAll]);
    temp := StringReplace(temp, '$G', dmZLogGlobal.GetGreetingsCode(), [rfReplaceAll]);
+   temp := StringReplace(temp, '$D', aQSO.TimeUtc, [rfReplaceAll]);
 
    temp := StringReplace(temp, '$C', aQSO.Callsign, [rfReplaceAll]);
 

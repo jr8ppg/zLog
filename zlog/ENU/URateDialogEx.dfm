@@ -1,7 +1,7 @@
 object RateDialogEx: TRateDialogEx
   Left = 69
   Top = 213
-  ActiveControl = ShowLastCombo
+  ActiveControl = ScoreGrid
   Caption = 'QSO Rate Ex'
   ClientHeight = 262
   ClientWidth = 388
@@ -77,7 +77,7 @@ object RateDialogEx: TRateDialogEx
     Top = 37
     Width = 388
     Height = 225
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -965,7 +965,7 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         ColCount = 51
         DefaultDrawing = False
-        RowCount = 36
+        RowCount = 48
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15

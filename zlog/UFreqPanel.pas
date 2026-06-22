@@ -35,9 +35,16 @@ type
     editMHz: TEdit;
     editKHz: TEdit;
     editHz: TEdit;
+    buttonBand17: TSpeedButton;
+    buttonBand18: TSpeedButton;
+    buttonBand19: TSpeedButton;
+    buttonBand20: TSpeedButton;
+    buttonBand21: TSpeedButton;
+    buttonBand22: TSpeedButton;
     procedure buttonBandClick(Sender: TObject);
     procedure editKHzChange(Sender: TObject);
     procedure editKHzExit(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private êÈåæ }
     procedure SetFreq(freq: TFrequency);
@@ -50,6 +57,16 @@ type
 implementation
 
 {$R *.dfm}
+
+procedure TformFreqPanel.FormShow(Sender: TObject);
+begin
+   if editMHz.Text = '0' then begin
+      editMHz.SetFocus();
+   end
+   else begin
+      editKHz.SetFocus();
+   end;
+end;
 
 procedure TformFreqPanel.buttonBandClick(Sender: TObject);
 var

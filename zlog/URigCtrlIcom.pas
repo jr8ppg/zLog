@@ -412,7 +412,6 @@ procedure TICOM.Initialize();
 begin
    Inherited;
    FCommThread.Start();
-   SetVFO(0);
    FPollingTimer.Enabled := True;
 end;
 

@@ -260,6 +260,7 @@ var
    b: TBand;
    i: Integer;
 begin
+   ATarget.Clear();
    for b := b19 to HiBand do begin
       for i := 1 to FContestPeriod do begin
          ATarget.Bands[b].Hours[i].Target := StrToIntDef(ScoreGrid.Cells[i, Ord(b)+1], 0);

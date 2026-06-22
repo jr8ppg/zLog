@@ -472,8 +472,8 @@ object formELogJarlEx: TformELogJarlEx
         Top = 417
         Width = 101
         Height = 20
-        Date = 36526.000000000000000000
-        Time = 0.963688356481725400
+        Date = 36526
+        Time = 0.963688356481725000
         TabOrder = 17
       end
       object edCallsign: TEdit

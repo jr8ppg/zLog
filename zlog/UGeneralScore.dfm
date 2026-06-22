@@ -23,5 +23,6 @@ inherited GeneralScore: TGeneralScore
   end
   inherited Grid: TStringGrid
     Width = 200
+    ExplicitWidth = 200
   end
 end

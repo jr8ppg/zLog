@@ -95,6 +95,7 @@ type
     FRigs: TRigArray;
     FCurrentRig : TRig;
     FPrevVfo: array[0..1] of TFrequency;
+    FPrevTick: DWORD;
     FOnVFOChanged: TNotifyEvent;
     FOnBandChanged: TNotifyEvent;
     FFreqLabel: array[0..1] of TLabel;
@@ -198,6 +199,7 @@ begin
    FRigs[5] := nil;
    FPrevVfo[0] := 0;
    FPrevVfo[1] := 0;
+   FPrevTick := 0;
    FOnVFOChanged := nil;
    FFreqLabel[0] := dispFreqA;
    FFreqLabel[1] := dispFreqB;
@@ -419,6 +421,7 @@ end;
 procedure TRigControl.SetPrevVFO(Index: Integer; fFreq: TFrequency);
 begin
    FPrevVfo[Index] := fFreq;
+   FPrevTick := GetTickCount();
 end;
 
 function TRigControl.GetPrevVFO(Index: Integer): TFrequency;
@@ -610,8 +613,12 @@ begin
             rig:= TFTDX3000.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
-         if rname = 'FTDX-5000/9000' then begin
+         if rname = 'FTDX-5000' then begin
             rig:= TFTDX5000.Create(rignum, Port, Comm, Timer, b19, b50);
+         end;
+
+         if rname = 'FTDX-9000' then begin
+            rig:= TFTDX9000.Create(rignum, Port, Comm, Timer, b19, b50);
          end;
 
          if rname = 'FTDX-101' then begin
@@ -962,7 +969,7 @@ begin
          S := FOmniRig.Rig2.RigType;
       end;
 
-      RigLabel.Caption := 'RIG-' + IntToStr(MainForm.RigControl.CurrentRigNumber) + ':Omni-Rig(' + S + ')';
+      RigLabel.Caption := 'RIG-' + IntToStr(FCurrentRigNumber) + ':Omni-Rig(' + S + ')';
    end;
 
    // DEBUG:RITî•ñ•\Ž¦
@@ -993,29 +1000,51 @@ end;
 procedure TRigControl.UpdateFreq(currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode);
 var
    vfo: array[0..1] of TFrequency;
+   dwTick: DWORD;
+   dwTickDiff: DWORD;
+   freqDiff: TFrequency;
 begin
+   dwTick := GetTickCount();
    vfo[0] := VfoA;
    vfo[1] := VfoB;
 
-   if (FPrevVfo[currentvfo] > 0) then begin
-      if (Abs(FPrevVfo[currentvfo] - vfo[currentvfo]) > 20) then begin
-         if Assigned(FOnVFOChanged) then begin
-            FOnVFOChanged(TObject(currentvfo));
-         end;
-      end;
+   if FPrevTick = 0 then begin
+      FPrevTick := dwTick;
+   end;
+   if (FPrevVfo[0] = 0) then begin
+      FPrevVfo[0] := vfo[0];
+   end;
+   if (FPrevVfo[1] = 0) then begin
+      FPrevVfo[1] := vfo[1];
+   end;
 
-      if (dmZLogGlobal.BandPlan.FreqToBand(FPrevVfo[currentvfo]) <> b) then begin
-         if Assigned(FOnBandChanged) then begin
-            FOnBandChanged(TObject(currentvfo));
-         end;
+   dwTickDiff := (dwTick - FPrevTick);
+   freqDiff := Abs(FPrevVfo[currentvfo] - vfo[currentvfo]);
+
+   {$IFDEF DEBUG}
+   if freqDiff > 0 then begin
+      OutputDebugString(PChar('tick=' + IntToStr(dwTickDiff) + ', freq=' + IntToStr(freqDiff)));
+   end;
+   {$ENDIF}
+
+   if (dwTickDiff > 75) and
+      (freqDiff > 20) then begin
+      if Assigned(FOnVFOChanged) then begin
+         FOnVFOChanged(TObject(currentvfo));
+      end;
+      FPrevVfo[0] := VfoA;
+      FPrevVfo[1] := VfoB;
+      FPrevTick := dwTick;
+   end;
+
+   if (dmZLogGlobal.BandPlan.FreqToBand(FPrevVfo[currentvfo]) <> b) then begin
+      if Assigned(FOnBandChanged) then begin
+         FOnBandChanged(TObject(currentvfo));
       end;
    end;
 
    dispFreqA.Caption := FreqStr(VfoA) + ' kHz';
    dispFreqB.Caption := FreqStr(VfoB) + ' kHz';
-//   dispLastFreq.Caption := FreqStr(Last) + ' kHz';
-   FPrevVfo[0] := VfoA;
-   FPrevVfo[1] := VfoB;
 
    if dmZLogGlobal.BandPlan.IsInBand(b, m, vfo[currentvfo]) = True then begin
       FFreqLabel[currentvfo].Font.Color := dmZLogGlobal.ZNormalTextColor1;
@@ -1187,6 +1216,7 @@ end;
 
 procedure TRigControl.ForcePowerOn();
 begin
+   FCurrentRigNumber := 1;
    ToggleSwitch1.State := tssOn;
 end;
 

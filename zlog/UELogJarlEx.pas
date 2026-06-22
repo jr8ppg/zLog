@@ -1411,10 +1411,6 @@ begin
          Continue;
       end;
 
-      if Q.Points = 0 then begin
-         Continue;
-      end;
-
       Inc(qso[b]);
 
       if Q.NewMulti1 = True then begin
@@ -1502,6 +1498,7 @@ begin
          edLicense.Visible := True;
          checkFieldExtend.Visible := False;
          buttonWebUpload.Enabled := False;
+         edCategoryCode.Width := 60;
       end;
 
       // R2.1
@@ -1521,6 +1518,7 @@ begin
          edLicense.Visible := False;
          checkFieldExtend.Visible := True;
          buttonWebUpload.Enabled := True;
+         edCategoryCode.Width := 121;
       end;
    end;
 end;

@@ -3420,7 +3420,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Use multiline tabs'
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkUseDarkMode: TCheckBox
           Left = 268
@@ -3428,7 +3428,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Use dark mode'
-          TabOrder = 7
+          TabOrder = 8
         end
         object checkDisableShortCutsQSOEdit: TCheckBox
           Left = 268
@@ -3436,7 +3436,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Disable shortcuts during QSO editing'
-          TabOrder = 8
+          TabOrder = 9
         end
         object checkExportMemoToAdif: TCheckBox
           Left = 268
@@ -3444,7 +3444,7 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Export the Memo field to ADIF'
-          TabOrder = 9
+          TabOrder = 10
         end
         object checkShowStartupWindow: TCheckBox
           Left = 268
@@ -3452,7 +3452,16 @@ object formOptions2: TformOptions2
           Width = 217
           Height = 17
           Caption = 'Show startup window'
-          TabOrder = 10
+          TabOrder = 11
+        end
+        object checkShowAvailableBands: TCheckBox
+          Left = 11
+          Top = 161
+          Width = 252
+          Height = 28
+          Caption = 'Show available bands for user defined contests'
+          TabOrder = 6
+          WordWrap = True
         end
       end
       object groupAccessibility: TGroupBox
@@ -4033,7 +4042,7 @@ object formOptions2: TformOptions2
           Height = 22
           AutoSize = False
           MaxValue = 9999
-          MinValue = 1
+          MinValue = 0
           TabOrder = 2
           Value = 5000
         end
@@ -4870,7 +4879,7 @@ object formOptions2: TformOptions2
         Left = 6
         Top = 281
         Width = 423
-        Height = 112
+        Height = 158
         Caption = 'BandScope Options'
         TabOrder = 2
         object checkUseEstimatedMode: TCheckBox
@@ -4879,7 +4888,7 @@ object formOptions2: TformOptions2
           Width = 190
           Height = 17
           Caption = 'Use estimated mode by freq.'
-          TabOrder = 5
+          TabOrder = 6
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowOnlyInBandplan: TCheckBox
@@ -4899,12 +4908,13 @@ object formOptions2: TformOptions2
           TabOrder = 1
         end
         object checkUseLookupServer: TCheckBox
-          Left = 12
+          Left = 23
           Top = 86
           Width = 165
           Height = 17
           Caption = 'Use lookup server'
           TabOrder = 4
+          OnClick = checkUseLookupServerClick
         end
         object checkSetFreqAfterModeChange: TCheckBox
           Left = 226
@@ -4912,7 +4922,7 @@ object formOptions2: TformOptions2
           Width = 157
           Height = 17
           Caption = 'Suppress freq. deviation'
-          TabOrder = 7
+          TabOrder = 8
         end
         object checkAlwaysChangeMode: TCheckBox
           Left = 226
@@ -4920,7 +4930,7 @@ object formOptions2: TformOptions2
           Width = 176
           Height = 17
           Caption = 'Suppress LSB/USB mode error'
-          TabOrder = 6
+          TabOrder = 7
         end
         object checkSaveCurrentFreq: TCheckBox
           Left = 215
@@ -4928,7 +4938,7 @@ object formOptions2: TformOptions2
           Width = 204
           Height = 17
           Caption = 'Save the freq. before QSY to Spot'
-          TabOrder = 8
+          TabOrder = 9
           OnClick = checkUseEstimatedModeClick
         end
         object checkShowDXspots: TCheckBox
@@ -4950,23 +4960,66 @@ object formOptions2: TformOptions2
         end
         object checkUseResume: TCheckBox
           Left = 12
-          Top = 109
+          Top = 132
           Width = 145
           Height = 17
           Caption = 'Use resume'
-          TabOrder = 9
+          TabOrder = 10
+        end
+        object panelLookupServerOption: TPanel
+          Left = 25
+          Top = 104
+          Width = 221
+          Height = 25
+          BevelOuter = bvNone
+          ParentColor = True
+          TabOrder = 5
+          object radioLookupServerAuto: TRadioButton
+            Left = 8
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'Auto'
+            Checked = True
+            TabOrder = 0
+            TabStop = True
+          end
+          object radioLookupServerProv: TRadioButton
+            Left = 60
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'Prov'
+            TabOrder = 1
+          end
+          object radioLookupServerCity: TRadioButton
+            Left = 110
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'City'
+            TabOrder = 2
+          end
+          object radioLookupServerNone: TRadioButton
+            Left = 163
+            Top = 4
+            Width = 51
+            Height = 17
+            Caption = 'None'
+            TabOrder = 3
+          end
         end
       end
       object groupReliability: TGroupBox
         Left = 6
-        Top = 445
+        Top = 458
         Width = 165
-        Height = 58
+        Height = 42
         Caption = 'Initial reliability'
         TabOrder = 3
         object radioReliabilityHigh: TRadioButton
           Left = 12
-          Top = 26
+          Top = 18
           Width = 74
           Height = 17
           Caption = 'High'
@@ -4974,7 +5027,7 @@ object formOptions2: TformOptions2
         end
         object radioReliabilityMiddle: TRadioButton
           Left = 84
-          Top = 26
+          Top = 18
           Width = 74
           Height = 17
           Caption = 'Middle'
@@ -5040,9 +5093,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSBack5: TButton
           Tag = 5
-          Left = 317
+          Left = 316
           Top = 25
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Back...'
           TabOrder = 2
@@ -5050,9 +5103,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSReset5: TButton
           Tag = 5
-          Left = 368
+          Left = 369
           Top = 25
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Reset'
           TabOrder = 3
@@ -5072,9 +5125,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSBack7: TButton
           Tag = 7
-          Left = 317
+          Left = 316
           Top = 51
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Back...'
           TabOrder = 6
@@ -5082,9 +5135,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSReset7: TButton
           Tag = 7
-          Left = 368
+          Left = 369
           Top = 51
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Reset'
           TabOrder = 7
@@ -5098,28 +5151,28 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 8
+          TabOrder = 9
           Text = 'TEXT'
           StyleElements = [seFont, seBorder]
         end
         object buttonBSBack8: TButton
           Tag = 8
-          Left = 317
+          Left = 316
           Top = 77
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Back...'
-          TabOrder = 10
+          TabOrder = 11
           OnClick = buttonBSBackClick
         end
         object buttonBSBack9: TButton
           Tag = 9
-          Left = 317
+          Left = 316
           Top = 103
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Back...'
-          TabOrder = 14
+          TabOrder = 16
           OnClick = buttonBSBackClick
         end
         object editBSColor9: TEdit
@@ -5130,32 +5183,32 @@ object formOptions2: TformOptions2
           Height = 21
           TabStop = False
           ReadOnly = True
-          TabOrder = 12
+          TabOrder = 14
           Text = 'TEXT'
           StyleElements = [seFont, seBorder]
         end
         object buttonBSReset8: TButton
           Tag = 8
-          Left = 368
+          Left = 369
           Top = 77
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Reset'
-          TabOrder = 11
+          TabOrder = 12
           OnClick = buttonBSResetClick
         end
         object buttonBSReset9: TButton
           Tag = 9
-          Left = 368
+          Left = 369
           Top = 103
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Reset'
-          TabOrder = 15
+          TabOrder = 17
           OnClick = buttonBSResetClick
         end
         object checkUseReliability7: TCheckBox
-          Left = 224
+          Left = 223
           Top = 52
           Width = 87
           Height = 17
@@ -5163,28 +5216,52 @@ object formOptions2: TformOptions2
           TabOrder = 5
         end
         object checkUseReliability8: TCheckBox
-          Left = 224
+          Left = 223
           Top = 78
           Width = 87
           Height = 17
           Caption = 'Use reliability'
-          TabOrder = 9
+          TabOrder = 10
         end
         object checkUseReliability9: TCheckBox
-          Left = 224
+          Left = 223
           Top = 104
           Width = 87
           Height = 17
           Caption = 'Use reliability'
-          TabOrder = 13
+          TabOrder = 15
         end
         object checkUseReliability5: TCheckBox
-          Left = 224
+          Left = 223
           Top = 26
           Width = 87
           Height = 17
           Caption = 'Use reliability'
           TabOrder = 1
+        end
+        object checkNotOverwrite7: TCheckBox
+          Left = 421
+          Top = 52
+          Width = 87
+          Height = 17
+          Caption = 'Not overwrite'
+          TabOrder = 8
+        end
+        object checkNotOverwrite8: TCheckBox
+          Left = 421
+          Top = 78
+          Width = 87
+          Height = 17
+          Caption = 'Not overwrite'
+          TabOrder = 13
+        end
+        object checkNotOverwrite9: TCheckBox
+          Left = 421
+          Top = 104
+          Width = 87
+          Height = 17
+          Caption = 'Not overwrite'
+          TabOrder = 18
         end
       end
       object groupSpotFreshness: TGroupBox
@@ -5309,9 +5386,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSBackSrHigh: TButton
           Tag = 13
-          Left = 317
+          Left = 316
           Top = 25
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Back...'
           TabOrder = 2
@@ -5319,9 +5396,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSBackSrMiddle: TButton
           Tag = 14
-          Left = 317
+          Left = 316
           Top = 52
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Back...'
           TabOrder = 6
@@ -5329,9 +5406,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSBackSrLow: TButton
           Tag = 15
-          Left = 317
+          Left = 316
           Top = 79
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Back...'
           TabOrder = 10
@@ -5339,9 +5416,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSResetSrHigh: TButton
           Tag = 13
-          Left = 368
+          Left = 369
           Top = 25
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Reset'
           TabOrder = 3
@@ -5349,9 +5426,9 @@ object formOptions2: TformOptions2
         end
         object buttonBSResetSrMiddle: TButton
           Tag = 14
-          Left = 368
+          Left = 369
           Top = 52
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Reset'
           TabOrder = 7
@@ -5359,16 +5436,16 @@ object formOptions2: TformOptions2
         end
         object buttonBSResetSrLow: TButton
           Tag = 15
-          Left = 368
+          Left = 369
           Top = 79
-          Width = 45
+          Width = 48
           Height = 20
           Caption = 'Reset'
           TabOrder = 11
           OnClick = buttonBSResetClick
         end
         object checkTransparentSrHigh: TCheckBox
-          Left = 224
+          Left = 223
           Top = 26
           Width = 87
           Height = 17
@@ -5376,7 +5453,7 @@ object formOptions2: TformOptions2
           TabOrder = 1
         end
         object checkTransparentSrMiddle: TCheckBox
-          Left = 224
+          Left = 223
           Top = 53
           Width = 87
           Height = 17
@@ -5384,7 +5461,7 @@ object formOptions2: TformOptions2
           TabOrder = 5
         end
         object checkTransparentSrLow: TCheckBox
-          Left = 224
+          Left = 223
           Top = 80
           Width = 87
           Height = 17

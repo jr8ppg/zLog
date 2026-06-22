@@ -28,7 +28,6 @@ type
     function NumericCompare(S1, S2: string): Boolean;
   public
     { Public declarations }
-    function IsLocal(aQSO: TQSO): Boolean;
     procedure LoadDAT(Filename: string);
     function ExtractMulti(aQSO: TQSO): string; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
@@ -244,7 +243,7 @@ begin
          str := copy(str, 1, i);
    end;
 
-   if IsLocal(aQSO) then begin
+   if FConfig.IsLocal(aQSO) then begin
       if FConfig.LCut <> 0 then begin
          if FConfig.LCut > 0 then
             Delete(str, length(str)-FConfig.LCut+1, FConfig.LCut)
@@ -392,46 +391,6 @@ aaa:
       CityList.AddAndSort(C);
       aQSO.NewMulti1 := True;
       LatestMultiAddition := C.Index;
-   end;
-end;
-
-function TGeneralMulti2.IsLocal(aQSO: TQSO): Boolean;
-var
-   i: Integer;
-begin
-   Result := False;
-
-   if FConfig.UseCtyDat then begin
-      if FConfig.LocalCountry <> '' then begin
-         i := aQSO.Power2;
-         if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then
-            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Country + ',', ',' + FConfig.LocalCountry + ',') > 0 then begin
-               Result := True;
-               exit;
-            end;
-      end;
-
-      if FConfig.LocalContinental <> '' then begin
-         i := aQSO.Power2;
-         if (i > -1) and (i < dmZLogGlobal.CountryList.Count) then
-            if pos(',' + TCountry(dmZLogGlobal.CountryList.List[i]).Continent + ',', ',' + FConfig.LocalContinental + ',') > 0 then begin
-               Result := True;
-               exit;
-            end;
-      end;
-   end;
-
-   for i := 0 to MAXLOCAL do begin
-      if FConfig.LocalString[i] = '' then begin
-         exit;
-      end
-      else begin
-         if (Pos(FConfig.LocalString[i], aQSO.NrRcvd) = 1) and
-            (Length(aQSO.NrRcvd) >= FConfig.MinLocalLen) then begin
-            Result := True;
-            exit;
-         end;
-      end;
    end;
 end;
 
