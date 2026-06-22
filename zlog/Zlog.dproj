@@ -69,7 +69,7 @@
         <SanitizedProjectName>zlog</SanitizedProjectName>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1041</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.2.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -79,12 +79,12 @@
         <DCC_OutputDRCFile>true</DCC_OutputDRCFile>
         <DCC_Define>EUREKALOG_VER7;EUREKALOG;USE_SSL;$(DCC_Define)</DCC_Define>
         <Custom_Styles>Carbon|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Carbon.vsf</Custom_Styles>
-        <VerInfo_Release>1</VerInfo_Release>
+        <VerInfo_Release>2</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.1.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <Icon_MainIcon>zlog_v3.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
@@ -100,7 +100,7 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.1.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_MapFile>3</DCC_MapFile>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
@@ -115,22 +115,22 @@
         <BT_BuildType>Debug</BT_BuildType>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.1.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <DCC_PEOSVersion>5.0</DCC_PEOSVersion>
         <DCC_PESubSysVersion>5.0</DCC_PESubSysVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.1.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.2.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.1.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <VerInfo_Debug>true</VerInfo_Debug>
@@ -138,7 +138,7 @@
         <DCC_PESubSysVersion>5.0</DCC_PESubSysVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.1.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.2.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
         <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
         <DCC_RangeChecking>true</DCC_RangeChecking>
     </PropertyGroup>
@@ -763,15 +763,15 @@
                     <RDP_Source_Files Name="Item3">UKCJScore.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item4">UELogJarl1.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item5">UELogJarl2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item6">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item7">UVoiceForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item8">UNewPrefix.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item9">UIOTACategory.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item10">UWinKeyerTester.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item11">UFreqTest.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item12">Win32\Release\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item13">UJarlWorldWideRTTYMulti2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item14">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item6">UVoiceForm.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item7">UNewPrefix.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item8">UIOTACategory.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item9">UWinKeyerTester.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item10">UFreqTest.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item11">UJarlWorldWideRTTYMulti2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item12">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item13">Win32\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item14">Win32\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item16">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item17">UBasicScore.dfm</RDP_Source_Files>

@@ -398,6 +398,7 @@ object formELogJarlEx: TformELogJarlEx
         Top = 421
         Width = 465
         Height = 47
+        Hint = #12522#12464#21517#31216#65288#33258#20316#12398#22580#21512#12399#32066#27573#31649#21517#31216#12539#20491#25968#65289#12289#31354#20013#32218
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -405,7 +406,9 @@ object formELogJarlEx: TformELogJarlEx
         Font.Style = []
         MaxLength = 800
         ParentFont = False
+        ParentShowHint = False
         ScrollBars = ssVertical
+        ShowHint = True
         TabOrder = 15
       end
       object memoMultiOpList: TMemo
@@ -1442,7 +1445,6 @@ object formELogJarlEx: TformELogJarlEx
           TabOrder = 70
         end
         object editQsoTotal: TEdit
-          Tag = 15
           Left = 112
           Top = 367
           Width = 41
@@ -1451,9 +1453,9 @@ object formELogJarlEx: TformELogJarlEx
           NumbersOnly = True
           ReadOnly = True
           TabOrder = 65
+          Tag = 15
         end
         object editMulti1Total: TEdit
-          Tag = 15
           Left = 159
           Top = 367
           Width = 41
@@ -1462,9 +1464,9 @@ object formELogJarlEx: TformELogJarlEx
           NumbersOnly = True
           ReadOnly = True
           TabOrder = 66
+          Tag = 15
         end
         object editPointsTotal: TEdit
-          Tag = 15
           Left = 253
           Top = 367
           Width = 59
@@ -1473,6 +1475,7 @@ object formELogJarlEx: TformELogJarlEx
           NumbersOnly = True
           ReadOnly = True
           TabOrder = 68
+          Tag = 15
         end
         object editMulti2_00: TEdit
           Left = 206
@@ -1617,7 +1620,6 @@ object formELogJarlEx: TformELogJarlEx
           TabOrder = 63
         end
         object editMulti2Total: TEdit
-          Tag = 15
           Left = 206
           Top = 367
           Width = 41
@@ -1626,6 +1628,343 @@ object formELogJarlEx: TformELogJarlEx
           NumbersOnly = True
           ReadOnly = True
           TabOrder = 67
+          Tag = 15
+        end
+        object checkBand16: TCheckBox
+          Tag = 16
+          Left = 16
+          Top = 317
+          Width = 81
+          Height = 17
+          Caption = '10.4GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 65
+          OnClick = checkBandClick
+        end
+        object editQso16: TEdit
+          Tag = 16
+          Left = 112
+          Top = 315
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 66
+        end
+        object editMulti16: TEdit
+          Tag = 16
+          Left = 159
+          Top = 315
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 67
+        end
+        object editPoints16: TEdit
+          Tag = 16
+          Left = 253
+          Top = 315
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 69
+        end
+        object editMulti2_16: TEdit
+          Tag = 16
+          Left = 206
+          Top = 315
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 68
+        end
+        object checkBand17: TCheckBox
+          Tag = 17
+          Left = 16
+          Top = 339
+          Width = 81
+          Height = 17
+          Caption = '24GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 70
+          OnClick = checkBandClick
+        end
+        object editQso17: TEdit
+          Tag = 17
+          Left = 112
+          Top = 337
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 71
+        end
+        object editMulti17: TEdit
+          Tag = 17
+          Left = 159
+          Top = 337
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 72
+        end
+        object editPoints17: TEdit
+          Tag = 17
+          Left = 253
+          Top = 337
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 74
+        end
+        object editMulti2_17: TEdit
+          Tag = 17
+          Left = 206
+          Top = 337
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 73
+        end
+        object checkBand18: TCheckBox
+          Tag = 18
+          Left = 16
+          Top = 361
+          Width = 81
+          Height = 17
+          Caption = '47GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 75
+          OnClick = checkBandClick
+        end
+        object editQso18: TEdit
+          Tag = 18
+          Left = 112
+          Top = 359
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 76
+        end
+        object editMulti18: TEdit
+          Tag = 18
+          Left = 159
+          Top = 359
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 77
+        end
+        object editPoints18: TEdit
+          Tag = 18
+          Left = 253
+          Top = 359
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 79
+        end
+        object editMulti2_18: TEdit
+          Tag = 18
+          Left = 206
+          Top = 359
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 78
+        end
+        object checkBand19: TCheckBox
+          Tag = 19
+          Left = 16
+          Top = 383
+          Width = 81
+          Height = 17
+          Caption = '77GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 80
+          OnClick = checkBandClick
+        end
+        object editQso19: TEdit
+          Tag = 19
+          Left = 112
+          Top = 381
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 81
+        end
+        object editMulti19: TEdit
+          Tag = 19
+          Left = 159
+          Top = 381
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 82
+        end
+        object editPoints19: TEdit
+          Tag = 19
+          Left = 253
+          Top = 381
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 84
+        end
+        object editMulti2_19: TEdit
+          Tag = 19
+          Left = 206
+          Top = 381
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 83
+        end
+        object checkBand20: TCheckBox
+          Tag = 20
+          Left = 16
+          Top = 405
+          Width = 81
+          Height = 17
+          Caption = '135GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 85
+          OnClick = checkBandClick
+        end
+        object editQso20: TEdit
+          Tag = 20
+          Left = 112
+          Top = 403
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 86
+        end
+        object editMulti20: TEdit
+          Tag = 20
+          Left = 159
+          Top = 403
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 87
+        end
+        object editPoints20: TEdit
+          Tag = 20
+          Left = 253
+          Top = 403
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 89
+        end
+        object editMulti2_20: TEdit
+          Tag = 20
+          Left = 206
+          Top = 403
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 88
+        end
+        object checkBand21: TCheckBox
+          Tag = 21
+          Left = 16
+          Top = 427
+          Width = 81
+          Height = 17
+          Caption = '248GHz'
+          Checked = True
+          State = cbChecked
+          TabOrder = 90
+          OnClick = checkBandClick
+        end
+        object editQso21: TEdit
+          Tag = 21
+          Left = 112
+          Top = 425
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 91
+        end
+        object editMulti21: TEdit
+          Tag = 21
+          Left = 159
+          Top = 425
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 92
+        end
+        object editPoints21: TEdit
+          Tag = 21
+          Left = 253
+          Top = 425
+          Width = 59
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 94
+        end
+        object editMulti2_21: TEdit
+          Tag = 21
+          Left = 206
+          Top = 425
+          Width = 41
+          Height = 20
+          Alignment = taRightJustify
+          NumbersOnly = True
+          ReadOnly = True
+          TabOrder = 93
         end
       end
     end
