@@ -5249,6 +5249,7 @@ begin
    txt := Grid.Cells[ACol, ARow];
    with Grid.Canvas do begin
       fg := clBlack;
+      Font.Style := [];
 
       if ARow = 0 then begin
          Pen.Color := dmZLogGlobal.ZGridFixedColor;
@@ -5256,7 +5257,6 @@ begin
          Brush.Color := dmZLogGlobal.ZGridFixedColor;
          Brush.Style := bsSolid;
          Font.Color := dmZLogGlobal.ZNormalTextColor1;
-         Font.Style := [];
       end
       else begin
          // ゼブラカラーかRBN Verifiedか
