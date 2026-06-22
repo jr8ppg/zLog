@@ -780,7 +780,7 @@ begin
       end;
 
       // æ“ª;‚ÍƒRƒƒ“ƒgs
-      if (str[1] = ';') or (str[1] = '#') then begin
+      if (str[1] = ';') or (str[1] = '#') or (str[1] = '!') then begin
          Continue;
       end;
 
