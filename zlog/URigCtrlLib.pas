@@ -692,7 +692,7 @@ begin
    if _currentband <> Q.Band then begin
       FSMeterValue[0] := 0;
       FSMeterValue[1] := 0;
-      FSMeterMax := 0;
+      UpdateStatus();
    end;
 
    _currentband := Q.Band;
