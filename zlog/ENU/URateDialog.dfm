@@ -3,7 +3,7 @@ object RateDialog: TRateDialog
   Top = 213
   Caption = 'QSO rate'
   ClientHeight = 262
-  ClientWidth = 388
+  ClientWidth = 334
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 350
@@ -23,12 +23,15 @@ object RateDialog: TRateDialog
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 388
+    Width = 334
     Height = 37
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 334
+    ExplicitWidth = 388
+    DesignSize = (
+      334
+      37)
     object Label1: TLabel
       Left = 8
       Top = 8
@@ -71,41 +74,65 @@ object RateDialog: TRateDialog
       Height = 13
       Caption = '0.00 QSOs/hr'
     end
+    object labelOperateTime: TLabel
+      Left = 274
+      Top = 15
+      Width = 50
+      Height = 22
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      Caption = '00:00'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ParentFont = False
+      ExplicitLeft = 328
+    end
+    object Label3: TLabel
+      Left = 256
+      Top = 3
+      Width = 68
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'Operating time'
+      ExplicitLeft = 310
+    end
   end
   object Panel2: TPanel
     Left = 0
     Top = 232
-    Width = 388
+    Width = 334
     Height = 30
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     ExplicitTop = 231
-    ExplicitWidth = 334
+    ExplicitWidth = 388
     DesignSize = (
-      388
+      334
       30)
     object Label4: TLabel
-      Left = 309
+      Left = 255
       Top = 8
       Width = 26
       Height = 13
       Anchors = [akRight]
       Caption = 'hours'
-      ExplicitLeft = 255
     end
     object labelHourCaption: TLabel
-      Left = 187
+      Left = 158
       Top = 8
       Width = 71
       Height = 13
       Alignment = taRightJustify
       Anchors = [akRight]
       Caption = 'Show last'
-      ExplicitLeft = 199
+      ExplicitLeft = 212
     end
     object ShowLastCombo: TComboBox
-      Left = 263
+      Left = 209
       Top = 5
       Width = 41
       Height = 21
@@ -125,10 +152,10 @@ object RateDialog: TRateDialog
         '24'
         '36'
         '48')
-      ExplicitLeft = 209
+      ExplicitLeft = 263
     end
     object check3D: TCheckBox
-      Left = 349
+      Left = 295
       Top = 6
       Width = 33
       Height = 17
@@ -136,7 +163,7 @@ object RateDialog: TRateDialog
       Caption = '3D'
       TabOrder = 1
       OnClick = check3DClick
-      ExplicitLeft = 295
+      ExplicitLeft = 349
     end
     object Panel3: TPanel
       Left = 0
@@ -179,7 +206,7 @@ object RateDialog: TRateDialog
   object Chart1: TChart
     Left = 0
     Top = 37
-    Width = 388
+    Width = 334
     Height = 195
     LeftWall.Color = clWhite
     Legend.Visible = False
@@ -195,7 +222,7 @@ object RateDialog: TRateDialog
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 334
+    ExplicitWidth = 388
     ExplicitHeight = 194
     DefaultCanvas = 'TGDIPlusCanvas'
     ColorPaletteIndex = 13
@@ -425,6 +452,120 @@ object RateDialog: TRateDialog
       YValues.Name = 'Bar'
       YValues.Order = loNone
     end
+    object Series17: TBarSeries
+      HoverElement = []
+      BarBrush.Color = -1
+      Marks.Font.Color = clRed
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clRed
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clRed
+      SeriesColor = 8454143
+      BarWidthPercent = 75
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series18: TBarSeries
+      HoverElement = []
+      BarBrush.Color = -1
+      Marks.Font.Color = clRed
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clRed
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clRed
+      SeriesColor = 8454143
+      BarWidthPercent = 75
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series19: TBarSeries
+      HoverElement = []
+      BarBrush.Color = -1
+      Marks.Font.Color = clRed
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clRed
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clRed
+      SeriesColor = 8454143
+      BarWidthPercent = 75
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series20: TBarSeries
+      HoverElement = []
+      BarBrush.Color = -1
+      Marks.Font.Color = clRed
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clRed
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clRed
+      SeriesColor = 8454143
+      BarWidthPercent = 75
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series21: TBarSeries
+      HoverElement = []
+      BarBrush.Color = -1
+      Marks.Font.Color = clRed
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clRed
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clRed
+      SeriesColor = 8454143
+      BarWidthPercent = 75
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
+    object Series22: TBarSeries
+      HoverElement = []
+      BarBrush.Color = -1
+      Marks.Font.Color = clRed
+      Marks.Transparent = True
+      Marks.Arrow.Visible = False
+      Marks.BackColor = clRed
+      Marks.Callout.Arrow.Visible = False
+      Marks.Color = clRed
+      SeriesColor = 8454143
+      BarWidthPercent = 75
+      MarksLocation = mlCenter
+      MarksOnBar = True
+      MultiBar = mbStacked
+      XValues.Name = 'X'
+      XValues.Order = loAscending
+      YValues.Name = 'Bar'
+      YValues.Order = loNone
+    end
     object SeriesTotalQSOs: TLineSeries
       HoverElement = [heCurrent]
       SeriesColor = 33023
@@ -444,14 +585,14 @@ object RateDialog: TRateDialog
     Enabled = False
     Interval = 2000
     OnTimer = TimerTimer
-    Left = 288
-    Top = 12
+    Left = 272
+    Top = 36
   end
   object timerRefresh: TTimer
     Enabled = False
     Interval = 180000
     OnTimer = timerRefreshTimer
     Left = 240
-    Top = 16
+    Top = 32
   end
 end
