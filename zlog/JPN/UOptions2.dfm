@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -1130,7 +1130,7 @@ object formOptions2: TformOptions2
           Caption = #24066#21306#37089'($Q)'
         end
         object SentEdit: TEdit
-          Left = 120
+          Left = 100
           Top = 21
           Width = 60
           Height = 21
@@ -1141,20 +1141,29 @@ object formOptions2: TformOptions2
           TabOrder = 0
         end
         object editCity: TEdit
-          Left = 120
+          Left = 100
           Top = 74
+          Width = 60
+          Height = 21
+          MaxLength = 20
+          TabOrder = 3
+        end
+        object editProv: TEdit
+          Left = 100
+          Top = 48
           Width = 60
           Height = 21
           MaxLength = 20
           TabOrder = 2
         end
-        object editProv: TEdit
-          Left = 120
-          Top = 48
-          Width = 60
+        object checkSentOverride: TCheckBox
+          Left = 167
+          Top = 21
+          Width = 70
           Height = 21
-          MaxLength = 20
+          Caption = #19968#26178#22793#26356
           TabOrder = 1
+          OnClick = checkSentOverrideClick
         end
       end
       object groupOtherRules: TGroupBox

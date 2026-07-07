@@ -502,6 +502,7 @@ type
     checkNotOverwrite8: TCheckBox;
     checkNotOverwrite9: TCheckBox;
     checkShowAvailableBands: TCheckBox;
+    checkSentOverride: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -572,6 +573,7 @@ type
     procedure menuLoadFromMyMessagesClick(Sender: TObject);
     procedure menuSaveToMyMessagesClick(Sender: TObject);
     procedure checkUseLookupServerClick(Sender: TObject);
+    procedure checkSentOverrideClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -996,6 +998,7 @@ begin
    if MyContest is TPedi then begin
       SentEdit.ReadOnly := False;
       SentEdit.Color := clWindow;
+      checkSentOverride.Visible := False;
    end;
 end;
 
@@ -1223,9 +1226,9 @@ begin
 
       // Exchange
       // Sent欄は表示専用
-      if MyContest is TPedi then begin
+//      if MyContest is TPedi then begin
          MyContest.SentStr := SentEdit.Text;
-      end;
+//      end;
 
       // Prov/City
       Settings.CW._prov := editProv.Text;
@@ -2711,6 +2714,18 @@ begin
    end
    else begin
       FQSOListColor[n].Font.Style := FQSOListColor[n].Font.Style - [fsBold];
+   end;
+end;
+
+procedure TformOptions2.checkSentOverrideClick(Sender: TObject);
+begin
+   if checkSentOverride.Checked = True then begin
+      SentEdit.ReadOnly := False;
+      SentEdit.Color := clWindow;
+   end
+   else begin
+      SentEdit.ReadOnly := True;
+      SentEdit.Color := clBtnFace;
    end;
 end;
 
