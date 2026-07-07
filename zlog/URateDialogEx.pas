@@ -482,7 +482,6 @@ var
    hindex: Integer;
    b: TBand;
    end_time: TDateTime;
-   optime: Integer;
 
    function CalcStartTime(dt: TDateTime): TDateTime;
    begin
@@ -690,12 +689,7 @@ var
    optime: Integer;
    H, M: Integer;
 begin
-   if MyContest.UseContestPeriod = True then begin
-      optime := Log.OperatingTime;
-   end
-   else begin
-      optime := 0;
-   end;
+   optime := Log.OperatingTime;
    H := optime div 60;
    M := optime mod 60;
    labelOperateTime.Caption := RightStr(IntToStr(H), 2) + ':' + RightStr('00' + IntToStr(M), 2);

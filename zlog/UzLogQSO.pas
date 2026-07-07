@@ -6,7 +6,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.DateUtils, Generics.Collections, Generics.Defaults,
+  System.DateUtils, System.Math, Generics.Collections, Generics.Defaults,
   UzLogConst, HelperLib, UzLogAdif;
 
 type
@@ -5711,8 +5711,18 @@ var
    qso_time2: TDateTime;
    aQSO: TQSO;
    M: Integer;
+   start_time: TDateTime;
 begin
    optime := 0;
+
+   if TotalQSO = 0 then begin
+      start_time := CurrentTime();
+   end
+   else begin
+      start_time := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
+      start_time := Trunc(start_time * MinsPerDay) / MinsPerDay;
+   end;
+
    for i := 1 to TotalQSO do begin
       aQSO := FQsoList[i];
 
@@ -5720,7 +5730,7 @@ begin
       qso_time := Trunc(aQSO.Time * MinsPerDay) / MinsPerDay;
 
       // コンテスト開始前QSO
-      if qso_time < Self.StartTime then begin
+      if qso_time < start_time then begin
          Continue;
       end;
 
