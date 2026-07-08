@@ -410,6 +410,7 @@ object EditDialog: TEditDialog
       Width = 65
       Height = 21
       AutoSize = False
+      CharCase = ecUpperCase
       ImeMode = imDisable
       TabOrder = 2
       OnKeyDown = EditKeyDown
