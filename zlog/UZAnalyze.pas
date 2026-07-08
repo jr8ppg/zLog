@@ -130,6 +130,7 @@ type
     procedure ShowZAD(sl: TStrings);
     procedure ShowZOP(sl: TStrings; fShowCW: Boolean);
     procedure ShowZCN(sl: TStrings; fShowCW: Boolean);
+    procedure ShowACT(sl: TStrings);
     procedure ShowRBN(sl: TStrings; fShowCW: Boolean);
     function GetExcludeZeroPoint(): Boolean;
     procedure SetExcludeZeroPoint(v: Boolean);
@@ -257,9 +258,15 @@ begin
    fname := ChangeFileExt(fname, '.ZCN');
    Memo1.Lines.SaveToFile(fname);
 
+   // ACT
+   TabControl1.TabIndex := 7;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ACT');
+   Memo1.Lines.SaveToFile(fname);
+
    // RBN
    if FUseRbnAnalyze = True then begin
-      TabControl1.TabIndex := 7;
+      TabControl1.TabIndex := 8;
       TabControl1Change(nil);
       fname := ChangeFileExt(fname, '.RBN');
       Memo1.Lines.SaveToFile(fname);
@@ -358,8 +365,13 @@ begin
             ShowZCN(sl, fShowCW);
          end;
 
-         // RBN
+         // ACT
          7: begin
+            ShowACT(sl);
+         end;
+
+         // RBN
+         8: begin
             if FUseRbnAnalyze = True then begin
                ShowRBN(sl, fShowCW);
             end;
@@ -2250,6 +2262,54 @@ begin
    sl.Add(strText);
 end;
 
+procedure TZAnalyze.ShowACT(sl: TStrings);
+var
+   i: Integer;
+   strText: string;
+   aQSO: TQSO;
+   nPH: Integer;
+   nCW: Integer;
+   nDigital: Integer;
+begin
+   sl.Clear();
+   strText := '＜アクティビティコンテスト登録情報＞';
+   sl.Add(strText);
+   sl.Add('');
+
+   nPH := 0;
+   nCW := 0;
+   nDigital := 0;
+
+   for i := 1 to Log.TotalQSO do begin
+      aQSO := Log.QsoList[i];
+
+      if (aQSO.Points = 0) then begin    // 得点無しはスキップ
+         Continue;
+      end;
+
+      if (aQSO.Invalid = True) then begin    // 無効もスキップ
+         Continue;
+      end;
+
+      if aQSO.Mode = mCW then begin
+         Inc(nCW);
+      end;
+      if (aQSO.Mode = mSSB) or (aQSO.Mode = mAM) or (aQSO.Mode = mFM) or (aQSO.Mode = mDV) then begin
+         Inc(nPH);
+      end;
+      if (aQSO.Mode = mRTTY) or (aQSO.Mode = mFT4) or (aQSO.Mode = mFT8) then begin
+         Inc(nDigital);
+      end;
+   end;
+
+   strText := '電話による交信局数　　　　　：' + IntToStr(nPH);
+   sl.Add(strText);
+   strText := '電信による交信局数　　　　　：' + IntToStr(nCW);
+   sl.Add(strText);
+   strText := 'デジタルモードによる交信局数：' + IntToStr(nDigital);
+   sl.Add(strText);
+end;
+
 procedure TZAnalyze.ShowRBN(sl: TStrings; fShowCW: Boolean);
 var
    i: Integer;
@@ -2336,10 +2396,10 @@ procedure TZAnalyze.SetUseRbnAnalyze(v: Boolean);
 begin
    FUseRbnAnalyze := v;
    if v = True then begin
-      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN,RBN';
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN,ACT,RBN';
    end
    else begin
-      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN';
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN,ACT';
    end;
 end;
 
