@@ -65,7 +65,9 @@ begin
 
    aQSO.Entity := C.Country;
 
-   aQSO.Multi1 := C.Country;
+   if C.IsWAEDC = False then begin
+      aQSO.Multi1 := C.Country;
+   end;
 
    if C.Index = -1 then begin
       Grid.TopRow := 0;
@@ -115,10 +117,12 @@ begin
 
    B := aQSO.Band;
 
-   if C.Worked[B] = False then begin
-      C.Worked[B] := True;
-      aQSO.NewMulti1 := True;
-      // Grid.Cells[0,C.GridIndex] := C.Summary;
+   if C.IsWAEDC = False then begin
+      if C.Worked[B] = False then begin
+         C.Worked[B] := True;
+         aQSO.NewMulti1 := True;
+         // Grid.Cells[0,C.GridIndex] := C.Summary;
+      end;
    end;
 end;
 

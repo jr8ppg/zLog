@@ -66,6 +66,7 @@ type
     FDatFileName: string;
 
     FUseCtyDat: Boolean;
+    FCtyDatEntityOnly: Boolean;     // true: ARRL false:CQ
 
     FCountMultiOnce: Boolean;
     FNoCountryMulti: string;
@@ -182,6 +183,7 @@ type
     property DatFileFullPath: string read GetDatFileFullPath;
 
     property UseCtyDat: Boolean read FUseCtyDat;
+    property CtyDatEntityOnly: Boolean read FCtyDatEntityOnly;
 
     property CountMultiOnce: Boolean read FCountMultiOnce;
     property NoCountryMulti: string read FNoCountryMulti;
@@ -292,6 +294,7 @@ begin
    FDatFileName := '';
 
    FUseCtyDat := False;
+   FCtyDatEntityOnly := False;
 
    FCountMultiOnce := False;
    FNoCountryMulti := '';
@@ -665,6 +668,10 @@ begin
 
          if strCmd = 'CTY' then begin
             D.FUseCtyDat := True;
+         end;
+
+         if strCmd = 'CTYENTITYONLY' then begin
+            D.FCtyDatEntityOnly := ParseOnOff(strParam);
          end;
 
          if strCmd = 'COUNTMULTIONCE' then begin

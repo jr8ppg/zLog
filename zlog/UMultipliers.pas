@@ -28,6 +28,7 @@ type
 
     function GetWorked(Index: TBand): Boolean;
     procedure SetWorked(Index: TBand; Value: Boolean);
+    function GetIsWAEDC(): Boolean;
   public
     constructor Create(); overload;
     constructor Create(strText: string); overload;
@@ -54,6 +55,7 @@ type
     property Worked[Index: TBand]: Boolean read GetWorked write SetWorked;
     property Index: Integer read FIndex write FIndex;
     property GridIndex: Integer read FGridIndex write FGridIndex;
+    property IsWAEDC: Boolean read GetIsWAEDC;
   end;
 
   TCountryList = class(TObjectList<TCountry>)
@@ -443,6 +445,11 @@ begin
            Continent + '  ';
 
    Result := temp;
+end;
+
+function TCountry.GetIsWAEDC(): Boolean;
+begin
+   Result := (Copy(FCode, 1, 1) = '*');
 end;
 
 constructor TCountry.Create();

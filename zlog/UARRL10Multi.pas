@@ -150,12 +150,14 @@ begin
       end;
    end
    else begin
-      aQSO.Multi1 := C.Country;
-      if C.Worked[B] = False then begin
-         C.Worked[B] := True;
-         aQSO.NewMulti1 := True;
+      if C.IsWAEDC = False then begin
+         aQSO.Multi1 := C.Country;
+         if C.Worked[B] = False then begin
+            C.Worked[B] := True;
+            aQSO.NewMulti1 := True;
+         end;
+         LatestMultiAddition := C.GridIndex;
       end;
-      LatestMultiAddition := C.GridIndex;
    end;
 end;
 
