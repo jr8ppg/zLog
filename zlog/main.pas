@@ -2620,6 +2620,7 @@ begin
 
    FRateDialogEx.Band := CurrentQSO.Band;
 
+   SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
    ShowSentNumber(CurrentQSO);
 
    SetEnableF2A();
