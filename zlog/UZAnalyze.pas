@@ -413,7 +413,7 @@ begin
    end;
 
    FZADSupport := False;
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 02 to 114 do begin
          FMultiGet[i][b] := 0;
       end;
@@ -859,7 +859,7 @@ begin
          Continue;
       end;
 
-      strText := ' ' + RightStr('     ' + MHzString[b], 5) + ' MHz    ' +
+      strText := RightStr('          ' + BandString[b], 10) + '    ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FQso), 5) + '     ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FPts), 5) + '   ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FMulti), 5);
@@ -1466,7 +1466,7 @@ var
    r: Integer;
    r2: Integer;
 begin
-   strText := '[' + MHzString[b] + ' MHz]';
+   strText := '[' + BandString[b] + ']';
    sl.Add(strText);
    strText := '         1     2     3     4     5     6     7     8     9     0     不明    合計    累積';
    sl.Add(strText);
@@ -1733,7 +1733,7 @@ var
 
       // 2400以上はとれたマルチのみ
       if fGet = True then begin
-         for b := b2400 to b10g do begin
+         for b := b2400 to HiBand do begin
             // 交信の無いバンド除く
             if FCountData[HTOTAL][b].FQso = 0 then begin
                Continue;
@@ -1815,14 +1815,14 @@ begin
    strTitle := '＜マルチマップ＞';
    sl.Add(strTitle);
    sl.Add('');
-   strTitle := '    11111111111111';
+   strTitle := '     11111111111111';
    sl.Add(strTitle);
-   strTitle := '    0000000001111100000000111111111122222222223333333333444444444';
+   strTitle := '     0000000001111100000000111111111122222222223333333333444444444';
    sl.Add(strTitle);
-   strTitle := '    1234567890123423456789012345678901234567890123456789012345678';
+   strTitle := '     1234567890123423456789012345678901234567890123456789012345678';
    sl.Add(strTitle);
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       // WARCバンド除く
       if (b = b10) or (b = b18) or (b = b24) then begin
          Continue;
@@ -1834,7 +1834,7 @@ begin
       end;
 
       // バンド名
-      strText := RightStr('    ' + MHzString[b], 4);
+      strText := RightStr('     ' + MHzString[b], 5);
 
       // 北海道マルチ
       for i := 101 to 114 do begin
@@ -1898,7 +1898,7 @@ var
       strText2 := LeftStr(O.FOpName + DupeString(' ', 9), 9);
       all_tt := 0;
       all_cw := 0;
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -1944,7 +1944,7 @@ var
       strText2 := LeftStr(O.FOpName + DupeString(' ', 9), 9);
       all_tt := 0;
       all_cw := 0;
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -1983,7 +1983,7 @@ var
       strTitle: string;
    begin
       strTitle := DupeString(' ', len);
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -2032,7 +2032,7 @@ begin
       strText2 := BuildQsoCount(O);
       sl.Add(strText2);
 
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -2070,7 +2070,7 @@ begin
       strText2 := BuildMultiCount(O);
       sl.Add(strText2);
 
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -2438,7 +2438,7 @@ var
    b: TBand;
 begin
    Inherited;
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FQsoCountPH[b] := 0;
       FQsoCountCW[b] := 0;
       FMultiCountPH[b] := 0;
