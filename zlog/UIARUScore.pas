@@ -43,7 +43,7 @@ begin
    band := aQSO.band;
 
    if FValidQso = True then begin
-      aQSO.Points := 1;
+      {Points calculated in IARUMulti.AddNoUpdate}
    end
    else begin
       aQSO.Points := 0;
