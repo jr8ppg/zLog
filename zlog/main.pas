@@ -4287,7 +4287,13 @@ begin
          end;
       end
       else begin
-         actionQsoComplete.Execute();
+         if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+            CurrentQSO.Reserve2 := $FF;
+            LogButtonClick(Self);
+         end
+         else begin
+            actionQsoComplete.Execute();
+         end;
       end;
    end
    else begin  // S&P mode
