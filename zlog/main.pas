@@ -1204,6 +1204,7 @@ type
     // QSO Search
     FSearchPosition: Integer;
 
+    FUsbDeviceList: TStringList;
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1633,6 +1634,13 @@ begin
 
    // taskbar表示用リスト
    FTaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskBarList;
+
+   // 起動時のUSBデバイスリスト
+   FUsbDeviceList := TStringList.Create();
+   EnumUSBDevices(FUsbDeviceList);
+   {$IFDEF DEBUG}
+   FUsbDeviceList.SaveToFile('zlog_devicelist.txt');
+   {$ENDIF}
 
    F2bsiqStart := False;
    FWaitForQsoFinish[0] := False;
@@ -2185,6 +2193,7 @@ begin
    CurrentQSO.Free();
 
    FTaskbarList := nil;
+   FUsbDeviceList.Free();
 
    SuperCheckFreeData();
 
@@ -10036,8 +10045,29 @@ begin
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );
+var
+   L: TStringList;
 begin
    case Message.WParam of
+      // DBT_DEVNODES_CHANGED
+      $0007: begin
+         L := TStringList.Create();
+         EnumUSBDevices(L);
+
+         // デバイスが減った（抜去された）
+         if L.Count < FUsbDeviceList.Count then begin
+            CQAbort(True);
+            FRigControl.ForcePowerOff();
+         end;
+
+         // 前回と異なれば前回値として保存
+         if L.Count <> FUsbDeviceList.Count then begin
+            FUsbDeviceList.Assign(L);
+         end;
+
+         L.Free();
+      end;
+
       // DBT_DEVICEARRIVAL
       $8000: begin
          // パラレルポート初期化
@@ -10046,8 +10076,8 @@ begin
 
       // DBT_DEVICEREMOVECOMPLETE
       $8004: begin
-         CQAbort(True);
-         FRigControl.ForcePowerOff();
+//         CQAbort(True);
+//         FRigControl.ForcePowerOff();
       end;
    end;
 end;
