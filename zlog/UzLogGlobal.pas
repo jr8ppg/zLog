@@ -7,7 +7,7 @@ uses
   Winapi.Windows, Vcl.Menus, System.Math, Vcl.Graphics, Vcl.StdCtrls,
   System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
-  WinApi.MultiMon, WinApi.ShellScaling, WinApi.ShlObj,
+  WinApi.MultiMon, WinApi.ShellScaling, WinApi.ShlObj, SetupApi,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort, UzFreqMemory;
 
@@ -755,6 +755,7 @@ function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
 procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
 function GetDisplayScalingFactor(x, y: Integer): double;
 procedure ExecProgram(handle: THandle; strExeName: string);
+function EnumUSBDevices(List: TStrings): Integer;
 
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
@@ -5276,6 +5277,48 @@ begin
 
    CloseHandle(pi.hProcess);
    CloseHandle(pi.hThread);
+end;
+
+function EnumUSBDevices(List: TStrings): Integer;
+var
+  DevInfo: HDEVINFO;
+  DevInfoData: SP_DEVINFO_DATA;
+  Index: Integer;
+  Buffer: array[0..1023] of Char;
+begin
+   List.Clear;
+
+   DevInfo := SetupDiGetClassDevs(nil, 'USB', 0, DIGCF_PRESENT or DIGCF_ALLCLASSES);
+   if DevInfo = INVALID_HANDLE_VALUE then begin
+      Result := 0;
+      Exit;
+   end;
+
+   try
+      Index := 0;
+      DevInfoData.cbSize := SizeOf(DevInfoData);
+
+      while SetupDiEnumDeviceInfo(DevInfo, Index, DevInfoData) do begin
+         if SetupDiGetDeviceRegistryProperty(
+             DevInfo,
+             DevInfoData,
+             SPDRP_HARDWAREID,
+             nil,
+             @Buffer,
+             SizeOf(Buffer),
+             nil) then
+         begin
+            List.Add(Buffer);
+         end;
+
+         Inc(Index);
+      end;
+
+      Result := List.Count;
+
+   finally
+      SetupDiDestroyDeviceInfoList(DevInfo);
+   end;
 end;
 
 end.
