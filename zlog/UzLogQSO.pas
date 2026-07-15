@@ -5664,7 +5664,7 @@ begin
             Q2.Assign(Q);
 
             // FULL MATCH�̏ꍇ
-            if (PartialStr = Q2.Callsign) and (CheckQSO.Band = Q2.Band) then begin
+            if (PartialStr = CoreCall(Q2.Callsign)) and (CheckQSO.Band = Q2.Band) then begin
                if FAcceptDifferentMode = False then begin
                   Q2.Dupe := True;
                end
