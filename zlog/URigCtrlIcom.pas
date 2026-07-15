@@ -1041,7 +1041,7 @@ begin
    c := 0;
    dwTick := GetTickCount();
    Result := '';
-   while True do begin
+   while Terminated = False do begin
       Sleep(0);
       CH := #00;
       fResult := FRig.FComm.ReadChar(CH);
