@@ -5652,6 +5652,7 @@ begin
    end;
 
    try
+      PartialStr := CoreCall(PartialStr);
       for i := 1 to Log.TotalQSO do begin
          Q := Log.QsoList[i];
 
@@ -5664,7 +5665,7 @@ begin
             Q2.Assign(Q);
 
             // FULL MATCH�̏ꍇ
-            if (CoreCall(PartialStr) = CoreCall(Q2.Callsign)) and (CheckQSO.Band = Q2.Band) then begin
+            if (PartialStr = CoreCall(Q2.Callsign)) and (CheckQSO.Band = Q2.Band) then begin
                if FAcceptDifferentMode = False then begin
                   Q2.Dupe := True;
                end
