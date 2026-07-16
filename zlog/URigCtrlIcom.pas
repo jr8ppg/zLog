@@ -742,6 +742,11 @@ end;
 procedure TICOM.StopRequest();
 begin
    Inherited;
+
+   IcomLock.Enter();
+   FCommandList.Clear();
+   IcomLock.Leave();
+
    FCommThread.Terminate();
    FCommThread.WaitFor();
 end;
@@ -971,6 +976,13 @@ begin
       // ちょっと待って
       Sleep(10);
 
+      if Terminated = True then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('*** (1)Terminated=True ***'));
+         {$ENDIF}
+         Break;
+      end;
+
       // 最初の応答電文受信
       R := RecvText(E);
 
@@ -979,6 +991,13 @@ begin
          DebugDump('受信①', R, E);
       end;
       {$ENDIF}
+
+      if Terminated = True then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('*** (2)Terminated=True ***'));
+         {$ENDIF}
+         Break;
+      end;
 
       // それはエコーバックか？
       if S = R then begin
@@ -1016,14 +1035,18 @@ begin
       {$ENDIF}
       IcomLock.Enter();
       FRig.FCommandList.Delete(0);
+      FRig.FComm.OnReceiveData := proc;
       IcomLock.Leave();
+
+      if Terminated = True then begin
+         {$IFDEF DEBUG}
+         OutputDebugString(PChar('*** (3)Terminated=True ***'));
+         {$ENDIF}
+         Break;
+      end;
 
       // ポーリング再開
       FRig.StartPolling();
-
-      IcomLock.Enter();
-      FRig.FComm.OnReceiveData := proc;
-      IcomLock.Leave();
    end;
 end;
 

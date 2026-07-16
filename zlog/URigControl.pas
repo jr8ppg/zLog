@@ -782,23 +782,24 @@ procedure TRigControl.Stop();
 var
    i: Integer;
 begin
-   for i := 1 to 3 do begin
-      if Assigned(FRigs[i]) then begin
-         FRigs[i].StopRequest();
-      end;
-   end;
-
    Timer1.Enabled := False;
    PollingTimer1.Enabled := False;
    PollingTimer2.Enabled := False;
    PollingTimer3.Enabled := False;
    PollingTimer4.Enabled := False;
 
+   for i := 1 to 4 do begin
+      if Assigned(FRigs[i]) then begin
+         FRigs[i].StopRequest();
+      end;
+   end;
+
    for i := 1 to 5 do begin
       if Assigned(FRigs[i]) then begin
          FreeAndNil(FRigs[i]);
       end;
    end;
+
    FCurrentRig := nil;
 end;
 
