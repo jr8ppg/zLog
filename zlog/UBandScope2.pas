@@ -235,6 +235,7 @@ type
     procedure JudgeEstimatedMode();
     procedure SaveSettings(ini: TMemIniFile; section: string);
     procedure LoadSettings(ini: TMemIniFile; section: string);
+    procedure ResetFontSize(ini: TMemIniFile; section: string);
     procedure Suspend();
     procedure Resume();
     procedure RenewTab();
@@ -2253,6 +2254,11 @@ begin
 
    FInitialVisible := ini.ReadBool(section, 'Open', False);
    Visible := FInitialVisible;
+end;
+
+procedure TBandScope2.ResetFontSize(ini: TMemIniFile; section: string);
+begin
+   FontSize := ini.ReadInteger(section, 'FontSize', 9);
 end;
 
 procedure TBandScope2.ApplyFontSize(font_size: Integer);

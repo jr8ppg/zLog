@@ -7431,6 +7431,10 @@ object MainForm: TMainForm
         Action = actionDecreaseFontSize
         GroupIndex = 1
       end
+      object menuResetFontSize: TMenuItem
+        Action = actionResetFontSize
+        GroupIndex = 1
+      end
     end
     object Labo1: TMenuItem
       Caption = '&Labs'
@@ -8819,6 +8823,10 @@ object MainForm: TMainForm
     object actionShowSentNumber: TAction
       Caption = 'Sent number'
       OnExecute = actionShowSentNumberExecute
+    end
+    object actionResetFontSize: TAction
+      Caption = 'Reset Font Size'
+      OnExecute = actionResetFontSizeExecute
     end
   end
   object SPCMenu: TPopupMenu

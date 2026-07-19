@@ -600,6 +600,7 @@ public
 
     procedure ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
     procedure WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = '');
+    procedure ReadWindowFontSize(ini: TMemIniFile; form: TForm; strWindowName: string = '');
     procedure ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);
     procedure WriteMainFormState(ini: TMemIniFile; X, Y, W, H: integer; TB1, TB2: boolean);
 
@@ -2927,6 +2928,17 @@ begin
 
    if (form is TZLogForm) then begin
       ini.WriteInteger('Windows', strWindowName + '_FontSize', TZLogForm(form).FontSize);
+   end;
+end;
+
+procedure TdmZLogGlobal.ReadWindowFontSize(ini: TMemIniFile; form: TForm; strWindowName: string);
+begin
+   if strWindowName = '' then begin
+      strWindowName := form.Name;
+   end;
+
+   if (form is TZLogForm) then begin
+      TZLogForm(form).FontSize := ini.ReadInteger('Windows', strWindowName + '_FontSize', 9);
    end;
 end;
 
