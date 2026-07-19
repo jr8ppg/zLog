@@ -2052,6 +2052,16 @@ begin
       Exit;
    end;
 
+   // メモリースキャン解除
+   RigControl.MemScanOff();
+
+   // F2Aモード解除
+   F2AOff();
+
+   // KeyingとRigControlを一旦終了
+   FRigControl.ForcePowerOff();
+   CancelCqRepeat();
+
    if Log.Saved = False then begin
       S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
       R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
