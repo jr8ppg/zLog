@@ -943,10 +943,10 @@ begin
       Settings._use_contest_period := ini.ReadBool('Preferences', 'UseContestPeriod', True);
 
       // Save when not sending CW
-      Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
+      Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', True);
 
       // Save every N QSOs
-      Settings._saveevery := ini.ReadInteger('Preferences', 'SaveEvery', 3);
+      Settings._saveevery := ini.ReadInteger('Preferences', 'SaveEvery', 1);
 
       // QSL Default
       Settings._qsl_default := TQslState(ini.ReadInteger('Preferences', 'QslDefault', 0));
