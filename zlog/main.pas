@@ -7007,6 +7007,9 @@ begin
 
       // Voice初期化
       FMessageManager.Init();
+      if (OpEdit <> nil) and (OpEdit.Text <> '') then begin
+         SelectOperator(OpEdit.Text);
+      end;
 
       // Band再設定
       UpdateBand(CurrentQSO.Band);
