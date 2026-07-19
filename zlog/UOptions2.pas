@@ -574,6 +574,7 @@ type
     procedure menuSaveToMyMessagesClick(Sender: TObject);
     procedure checkUseLookupServerClick(Sender: TObject);
     procedure checkSentOverrideClick(Sender: TObject);
+    procedure comboPowerChange(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -657,6 +658,7 @@ resourcestring
   Setup_SentNR_age= 'Please enter operator''s age.';
   Setup_SentNR_iota = 'Please enter IOTA number.';
   Setup_SentNR_handle = 'Please enter your Handle Name.';
+  DoYouWantTheUpperBandsToHaveTheSameSettins = 'Do you want the higher bands to have the same settings?';
 
 implementation
 
@@ -2262,6 +2264,21 @@ begin
    f := checkUseNumberLookup.Checked;
    checkUseLookupServer.Enabled := f;
    checkUseLookupServerClick(nil);
+end;
+
+procedure TformOptions2.comboPowerChange(Sender: TObject);
+var
+   Index: Integer;
+   b: TBand;
+begin
+   if MessageBox(Handle, PChar(DoYouWantTheUpperBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   Index := TComboBox(Sender).Tag;
+   for b := TBand(Index + 1) to High(FPowerPerBand) do begin
+      FPowerPerBand[b].ItemIndex := TComboBox(Sender).ItemIndex;
+   end;
 end;
 
 procedure TformOptions2.SetEditNumber(no: Integer);
