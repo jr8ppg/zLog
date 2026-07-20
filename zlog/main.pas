@@ -16099,7 +16099,7 @@ var
    sentnr: string;
 begin
    C := 0;
-   for R := 1 to Grid.RowCount do begin
+   for R := 1 to Grid.RowCount - 1 do begin
       Q := TQSO(Grid.Objects[0, R]);
       if Q = nil then begin
          Continue;
@@ -16151,7 +16151,7 @@ begin
    else begin
       GridRefreshScreen(True, False);
       S := Format(TMainForm_LogCheckError, [IntToStr(C)]);
-      for R := 1 to Grid.RowCount do begin
+      for R := 1 to Grid.RowCount - 1 do begin
          Q := TQSO(Grid.Objects[0, R]);
          if Q = nil then begin
             Continue;
