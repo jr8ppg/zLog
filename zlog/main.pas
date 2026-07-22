@@ -4124,6 +4124,7 @@ end;
 procedure TMainForm.OnZLogResetColumnWidth( var Message: TMessage );
 begin
    MyContest.SetDefaultColumnWidths();
+   MyContest.SaveColumnWidths();
    InitGridColumnWidth();
 end;
 
