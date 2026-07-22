@@ -113,9 +113,47 @@ begin
 end;
 
 procedure TOperatorInfo.SetPower(S: string);
+var
+   i: Integer;
+   CH: Char;
 begin
-   S := S + DupeString('-', 13);
-   FPower := Copy(S, 1, 13);
+   S := S + DupeString('-', 19);
+
+   // 1-7:1.9M-50M
+   for i := 1 to 7 do begin
+      CH := S[i];
+      if CharInSet(CH, ['H', 'M', 'L', 'P', '-']) = False then begin
+         S[i] := '-';
+      end;
+   end;
+
+
+   // 8-9:144M-430M
+   for i := 8 to 9 do begin
+      CH := S[i];
+      if CharInSet(CH, ['M', 'L', 'P', '-']) = False then begin
+         S[i] := '-';
+      end;
+   end;
+
+
+   // 10:1200M
+   for i := 10 to 10 do begin
+      CH := S[i];
+      if CharInSet(CH, ['L', 'P', '-']) = False then begin
+         S[i] := '-';
+      end;
+   end;
+
+   // 11-19:2400M-248G
+   for i := 11 to 19 do begin
+      CH := S[i];
+      if CharInSet(CH, ['P', '-']) = False then begin
+         S[i] := '-';
+      end;
+   end;
+
+   FPower := Copy(S, 1, 19);
 end;
 
 { TOperatorInfoList }

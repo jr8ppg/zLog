@@ -2269,7 +2269,9 @@ end;
 procedure TformOptions2.comboPowerChange(Sender: TObject);
 var
    Index: Integer;
+   ItemIndex: Integer;
    b: TBand;
+   S: string;
 begin
    if MessageBox(Handle, PChar(DoYouWantTheUpperBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
       Exit;
@@ -2277,7 +2279,14 @@ begin
 
    Index := TComboBox(Sender).Tag;
    for b := TBand(Index + 1) to High(FPowerPerBand) do begin
-      FPowerPerBand[b].ItemIndex := TComboBox(Sender).ItemIndex;
+      S := TComboBox(Sender).Items[TComboBox(Sender).ItemIndex];
+      ItemIndex := FPowerPerBand[b].Items.IndexOf(S);
+      if ItemIndex = -1 then begin
+         FPowerPerBand[b].ItemIndex := 0;
+      end
+      else begin
+         FPowerPerBand[b].ItemIndex := ItemIndex;
+      end;
    end;
 end;
 

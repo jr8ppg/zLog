@@ -895,6 +895,7 @@ var
    num: Integer;
    setting: TTelnetSetting;
    D: TFreqMemory;
+   CH: Char;
 begin
    slParam := TStringList.Create();
    slSection := TStringList.Create();
@@ -908,6 +909,32 @@ begin
       for b := b19 to HiBand do begin
          Settings._activebands[b] := ini.ReadBool('Profiles', 'Active' + BandIniString[b], DefIniUseBand[b]);
          Settings._power[b] := ini.ReadString('Profiles', 'Power' + BandIniString[b], DefIniPower[b]);
+         CH := Settings._power[b][1];
+         case b of
+            b19, b35, b7, b10, b14, b18, b21, b24, b28, b50: begin
+               if CharInSet(CH, ['H', 'M', 'L', 'P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+
+            b144, b430: begin
+               if CharInSet(CH, ['M', 'L', 'P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+
+            b1200: begin
+               if CharInSet(CH, ['L', 'P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+
+            else begin
+               if CharInSet(CH, ['P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+         end;
       end;
 
       // Automatically enter exchange from SuperCheck

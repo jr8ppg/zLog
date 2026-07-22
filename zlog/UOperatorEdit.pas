@@ -312,7 +312,7 @@ end;
 procedure TformOperatorEdit.editPowerExit(Sender: TObject);
 begin
    if editPower.Text <> '' then begin
-      editPower.Text := Copy(editPower.Text + DupeString('-', 13), 1, 13);
+      editPower.Text := Copy(editPower.Text + DupeString('-', 19), 1, 19);
    end;
 end;
 

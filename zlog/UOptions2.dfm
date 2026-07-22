@@ -362,10 +362,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 21
-          Text = 'H'
+          Text = 'M'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
             'M'
             'L'
             'P')
@@ -378,10 +377,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 23
-          Text = 'H'
+          Text = 'M'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
             'M'
             'L'
             'P')
@@ -394,11 +392,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 25
-          Text = 'H'
+          Text = 'L'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
             'L'
             'P')
         end
@@ -410,12 +406,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 27
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object comboPower5600: TComboBox
@@ -426,12 +419,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 29
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object comboPower101g: TComboBox
@@ -442,12 +432,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 31
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act104g: TCheckBox
@@ -468,12 +455,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 33
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act24g: TCheckBox
@@ -492,12 +476,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 35
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act47g: TCheckBox
@@ -516,12 +497,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 37
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act77g: TCheckBox
@@ -540,12 +518,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 39
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act135g: TCheckBox
@@ -564,12 +539,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 41
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act248g: TCheckBox
@@ -588,12 +560,9 @@ object formOptions2: TformOptions2
           Height = 21
           ItemIndex = 0
           TabOrder = 43
-          Text = 'H'
+          Text = 'P'
           OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
       end
