@@ -75,6 +75,7 @@ const
   WM_ZLOG_SHOWOPTIONS = (WM_USER + 207);
   WM_ZLOG_CQABORT = (WM_USER + 208);
   WM_ZLOG_SETFONTSIZE = (WM_USER + 209);
+  WM_ZLOG_RESETCOLUMNWIDTH = (WM_USER + 210);
 
 type
   TEditPanel = record
@@ -874,6 +875,7 @@ type
     procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
     procedure OnZLogCqAbortProc( var Message: TMessage ); message WM_ZLOG_CQABORT;
     procedure OnZLogSetFontSize( var Message: TMessage ); message WM_ZLOG_SETFONTSIZE;
+    procedure OnZLogResetColumnWidth( var Message: TMessage ); message WM_ZLOG_RESETCOLUMNWIDTH;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure OnPowerBroadcast( var Message: TMessage ); message WM_POWERBROADCAST;
     procedure OnZLogNonconvertKeyPress( var Message: TMessage ); message WM_ZLOG_NONCONVERTKEYPRESS;
@@ -4117,6 +4119,12 @@ begin
    dmZLogGlobal.Settings._mainfontsize := font_size;
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
+end;
+
+procedure TMainForm.OnZLogResetColumnWidth( var Message: TMessage );
+begin
+   MyContest.SetDefaultColumnWidths();
+   InitGridColumnWidth();
 end;
 
 procedure TMainForm.OnChangeFontSize(Sender: TObject; font_size: Integer);
@@ -12641,9 +12649,7 @@ begin
       dmZLogGlobal.ReadWindowFontSize(ini, MyContest.MultiForm, 'MultiForm');
       dmZLogGlobal.ReadWindowFontSize(ini, MyContest.ScoreForm, 'ScoreForm');
 
-      Refresh();
-
-      Grid.Invalidate();
+      PostMessage(Handle, WM_ZLOG_RESETCOLUMNWIDTH, 0, 0);
    finally
       ini.Free();
    end;
