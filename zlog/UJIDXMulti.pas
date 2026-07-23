@@ -78,6 +78,10 @@ begin
       Exit;
    end;
 
+   if C.IsWAEDC = True then begin
+      Exit;
+   end;
+
    FMostRecentCty := C;
    aQSO.Multi2 := C.Country;
 

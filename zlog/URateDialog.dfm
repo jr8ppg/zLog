@@ -28,6 +28,9 @@ object RateDialog: TRateDialog
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    DesignSize = (
+      388
+      37)
     object Label1: TLabel
       Left = 8
       Top = 8
@@ -69,6 +72,29 @@ object RateDialog: TRateDialog
       Width = 66
       Height = 13
       Caption = '0.00 QSOs/hr'
+    end
+    object labelOperateTime: TLabel
+      Left = 328
+      Top = 15
+      Width = 50
+      Height = 22
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      Caption = '00:00'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 310
+      Top = 3
+      Width = 68
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'Operating time'
     end
   end
   object Panel2: TPanel
@@ -550,14 +576,14 @@ object RateDialog: TRateDialog
     Enabled = False
     Interval = 2000
     OnTimer = TimerTimer
-    Left = 288
-    Top = 12
+    Left = 272
+    Top = 36
   end
   object timerRefresh: TTimer
     Enabled = False
     Interval = 180000
     OnTimer = timerRefreshTimer
     Left = 240
-    Top = 16
+    Top = 32
   end
 end

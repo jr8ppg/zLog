@@ -5,7 +5,7 @@ interface
 uses
   WinApi.Windows, System.SysUtils, System.Classes, Vcl.Graphics, Vcl.Forms,
   Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, System.Math,
-  System.DateUtils, VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs,
+  System.DateUtils, System.StrUtils, VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs,
   VCLTee.Chart, VCLTee.Series, VCLTee.TeCanvas, Vcl.Menus, Vcl.ComCtrls, Vcl.Grids,
   UOptions, UzLogGlobal, UzLogQSO, UzLogConst, UQsoTarget;
 
@@ -88,6 +88,8 @@ type
     menuDispAlternating: TMenuItem;
     menuDispOrder: TMenuItem;
     timerRefresh: TTimer;
+    labelOperateTime: TLabel;
+    Label3: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -134,6 +136,7 @@ type
     FZaq2RowBgColor: array[0..50] of TColor;
     FZaq2RowFgColor: array[0..50] of TColor;
     FTargetColorByBand: Boolean;
+    procedure ShowOperatingTime();
     function UpdateGraphOriginal(hh: Integer): Integer;
     function UpdateGraphByBand(hh: Integer): Integer;
     function UpdateGraphByRange(hh: Integer): Integer;
@@ -560,6 +563,9 @@ begin
 
    FNowDay := D;
 
+   // 運用時間を表示
+   ShowOperatingTime();
+
    // グラフ化以前のactual数
    actual_total_count := dmZLogGlobal.Target.BeforeGraphCount;
 
@@ -676,6 +682,17 @@ begin
    finally
       timerRefresh.Enabled := False;
    end;
+end;
+
+procedure TRateDialogEx.ShowOperatingTime();
+var
+   optime: Integer;
+   H, M: Integer;
+begin
+   optime := Log.OperatingTime;
+   H := optime div 60;
+   M := optime mod 60;
+   labelOperateTime.Caption := RightStr(IntToStr(H), 2) + ':' + RightStr('00' + IntToStr(M), 2);
 end;
 
 function TRateDialogEx.UpdateGraphOriginal(hh: Integer): Integer;

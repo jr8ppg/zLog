@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, System.Math, System.DateUtils,
+  Buttons, ExtCtrls, System.Math, System.DateUtils, System.StrUtils,
   VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
   VCLTee.Series, UOptions, UzLogGlobal, UzLogQSO, UzLogConst;
 
@@ -52,6 +52,8 @@ type
     Series20: TBarSeries;
     Series21: TBarSeries;
     Series22: TBarSeries;
+    labelOperateTime: TLabel;
+    Label3: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -72,6 +74,7 @@ type
     FGraphSeries: array[b19..HiBand] of TBarSeries;
     FGraphStyle: TQSORateStyle;
     FGraphStartPosition: TQSORateStartPosition;
+    procedure ShowOperatingTime();
     function GetGraphSeries(b: TBand): TBarSeries;
     procedure SetGraphStyle(v: TQSORateStyle);
     procedure SetGraphStartPosition(v: TQSORateStartPosition);
@@ -416,6 +419,9 @@ begin
       end;
    end;
 
+   // ‰^—pŽžŠÔ‚ð•\Ž¦
+   ShowOperatingTime();
+
    hour_peak := 0;
    for i := 0 to FShowLast - 1 do begin
       Str := IntToStr(GetHour(_start + (1 / 24) * i));
@@ -552,6 +558,17 @@ begin
    finally
       timerRefresh.Enabled := False;
    end;
+end;
+
+procedure TRateDialog.ShowOperatingTime();
+var
+   optime: Integer;
+   H, M: Integer;
+begin
+   optime := Log.OperatingTime;
+   H := optime div 60;
+   M := optime mod 60;
+   labelOperateTime.Caption := RightStr(IntToStr(H), 2) + ':' + RightStr('00' + IntToStr(M), 2);
 end;
 
 procedure TRateDialog.ShowLastComboChange(Sender: TObject);

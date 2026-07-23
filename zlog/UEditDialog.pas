@@ -432,8 +432,9 @@ begin
    if radioNoQsl.Checked then workQSO.QslState := qsNoQsl;
 
    // Sent
-   MyContest.SetNrSent(workQSO);
-
+   if workQSO.NrSent = '' then begin
+      MyContest.SetNrSent(workQSO);
+   end;
 
    if Action = _ActChange then begin
       IncEditCounter(workQSO);

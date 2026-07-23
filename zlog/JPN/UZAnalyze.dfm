@@ -102,6 +102,7 @@ object ZAnalyze: TZAnalyze
       'ZAD'
       'ZOP'
       'ZCN'
+      'ACT'
       'RBN')
     TabIndex = 0
     OnChange = TabControl1Change

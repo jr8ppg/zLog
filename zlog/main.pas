@@ -74,6 +74,8 @@ const
   WM_ZLOG_MOVELASTFREQ = (WM_USER + 206);
   WM_ZLOG_SHOWOPTIONS = (WM_USER + 207);
   WM_ZLOG_CQABORT = (WM_USER + 208);
+  WM_ZLOG_SETFONTSIZE = (WM_USER + 209);
+  WM_ZLOG_RESETCOLUMNWIDTH = (WM_USER + 210);
 
 type
   TEditPanel = record
@@ -732,6 +734,8 @@ type
     menuExecHamlogConverter: TMenuItem;
     menuMMTTYSep: TMenuItem;
     menuLogChecker: TMenuItem;
+    actionResetFontSize: TAction;
+    menuResetFontSize: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -870,6 +874,8 @@ type
     procedure OnZLogMoveLastFreq( var Message: TMessage ); message WM_ZLOG_MOVELASTFREQ;
     procedure OnZLogShowOptions( var Message: TMessage ); message WM_ZLOG_SHOWOPTIONS;
     procedure OnZLogCqAbortProc( var Message: TMessage ); message WM_ZLOG_CQABORT;
+    procedure OnZLogSetFontSize( var Message: TMessage ); message WM_ZLOG_SETFONTSIZE;
+    procedure OnZLogResetColumnWidth( var Message: TMessage ); message WM_ZLOG_RESETCOLUMNWIDTH;
     procedure OnDeviceChange( var Message: TMessage ); message WM_DEVICECHANGE;
     procedure OnPowerBroadcast( var Message: TMessage ); message WM_POWERBROADCAST;
     procedure OnZLogNonconvertKeyPress( var Message: TMessage ); message WM_ZLOG_NONCONVERTKEYPRESS;
@@ -1076,6 +1082,7 @@ type
     procedure menuExecHamlogLookupClick(Sender: TObject);
     procedure menuExecHamlogConverterClick(Sender: TObject);
     procedure menuLogCheckerClick(Sender: TObject);
+    procedure actionResetFontSizeExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -1204,6 +1211,7 @@ type
     // QSO Search
     FSearchPosition: Integer;
 
+    FUsbDeviceList: TStringList;
     procedure MyIdleEvent(Sender: TObject; var Done: Boolean);
     procedure MyMessageEvent(var Msg: TMsg; var Handled: Boolean);
 
@@ -1634,6 +1642,13 @@ begin
    // taskbar表示用リスト
    FTaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskBarList;
 
+   // 起動時のUSBデバイスリスト
+   FUsbDeviceList := TStringList.Create();
+   EnumUSBDevices(FUsbDeviceList);
+   {$IFDEF DEBUG}
+   FUsbDeviceList.SaveToFile('zlog_devicelist.txt');
+   {$ENDIF}
+
    F2bsiqStart := False;
    FWaitForQsoFinish[0] := False;
    FWaitForQsoFinish[1] := False;
@@ -2039,6 +2054,16 @@ begin
       Exit;
    end;
 
+   // メモリースキャン解除
+   RigControl.MemScanOff();
+
+   // F2Aモード解除
+   F2AOff();
+
+   // KeyingとRigControlを一旦終了
+   FRigControl.ForcePowerOff();
+   CancelCqRepeat();
+
    if Log.Saved = False then begin
       S := Format(TMainForm_Confirm_Save_Changes, [CurrentFileName]);
       R := MessageDlg(S, mtConfirmation, [mbYes, mbNo, mbCancel], 0); { HELP context 0 }
@@ -2185,6 +2210,7 @@ begin
    CurrentQSO.Free();
 
    FTaskbarList := nil;
+   FUsbDeviceList.Free();
 
    SuperCheckFreeData();
 
@@ -2620,6 +2646,7 @@ begin
 
    FRateDialogEx.Band := CurrentQSO.Band;
 
+   SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
    ShowSentNumber(CurrentQSO);
 
    SetEnableF2A();
@@ -4047,15 +4074,26 @@ begin
 end;
 
 procedure TMainForm.SetFontSize(font_size: Integer);
-var
-   h: Integer;
 begin
    Grid.Font.Size := font_size;
-   h := Grid.Canvas.TextHeight('A');
-   Grid.DefaultRowHeight := h + 4;
-   Grid.Refresh();
+   PostMessage(Handle, WM_ZLOG_SETFONTSIZE, font_size, 0);
+end;
 
-   h := h + 6;
+procedure TMainForm.OnZLogSetFontSize( var Message: TMessage );
+var
+   h: Integer;
+   i: Integer;
+   font_size: Integer;
+begin
+   font_size := Message.WParam;
+
+   h := Grid.Canvas.TextHeight('A');
+   for i := 0 to Grid.RowCount - 1 do begin
+      Grid.RowHeights[i] := h + 4;
+   end;
+   Grid.DefaultRowHeight := h + 4;
+
+   Grid.Refresh();
 
    // 1R
    EditPanel1R.Font.Size := font_size;
@@ -4081,6 +4119,13 @@ begin
    dmZLogGlobal.Settings._mainfontsize := font_size;
 
    PostMessage(Handle, WM_ZLOG_SETGRIDCOL, 0, 0);
+end;
+
+procedure TMainForm.OnZLogResetColumnWidth( var Message: TMessage );
+begin
+   MyContest.SetDefaultColumnWidths();
+   MyContest.SaveColumnWidths();
+   InitGridColumnWidth();
 end;
 
 procedure TMainForm.OnChangeFontSize(Sender: TObject; font_size: Integer);
@@ -4277,7 +4322,13 @@ begin
          end;
       end
       else begin
-         actionQsoComplete.Execute();
+         if GetAsyncKeyState(VK_SHIFT) < 0 then begin
+            CurrentQSO.Reserve2 := $FF;
+            LogButtonClick(Self);
+         end
+         else begin
+            actionQsoComplete.Execute();
+         end;
       end;
    end
    else begin  // S&P mode
@@ -6991,6 +7042,9 @@ begin
 
       // Voice初期化
       FMessageManager.Init();
+      if (OpEdit <> nil) and (OpEdit.Text <> '') then begin
+         SelectOperator(OpEdit.Text);
+      end;
 
       // Band再設定
       UpdateBand(CurrentQSO.Band);
@@ -10035,8 +10089,29 @@ begin
 end;
 
 procedure TMainForm.OnDeviceChange( var Message: TMessage );
+var
+   L: TStringList;
 begin
    case Message.WParam of
+      // DBT_DEVNODES_CHANGED
+      $0007: begin
+         L := TStringList.Create();
+         EnumUSBDevices(L);
+
+         // デバイスが減った（抜去された）
+         if L.Count < FUsbDeviceList.Count then begin
+            CQAbort(True);
+            FRigControl.ForcePowerOff();
+         end;
+
+         // 前回と異なれば前回値として保存
+         if L.Count <> FUsbDeviceList.Count then begin
+            FUsbDeviceList.Assign(L);
+         end;
+
+         L.Free();
+      end;
+
       // DBT_DEVICEARRIVAL
       $8000: begin
          // パラレルポート初期化
@@ -10045,8 +10120,8 @@ begin
 
       // DBT_DEVICEREMOVECOMPLETE
       $8004: begin
-         CQAbort(True);
-         FRigControl.ForcePowerOff();
+//         CQAbort(True);
+//         FRigControl.ForcePowerOff();
       end;
    end;
 end;
@@ -12514,6 +12589,71 @@ end;
 procedure TMainForm.actionShowSentNumberExecute(Sender: TObject);
 begin
    FSentNumber.Show();
+end;
+
+// #173 Reset font size
+procedure TMainForm.actionResetFontSizeExecute(Sender: TObject);
+var
+   ini: TMemIniFile;
+   b: TBand;
+   font_size: Integer;
+begin
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      font_size := ini.ReadInteger('Preferences', 'FontSize', 9);
+      SetFontSize(font_size);
+
+      dmZLogGlobal.ReadWindowFontSize(ini, FCheckCall2);
+      dmZLogGlobal.ReadWindowFontSize(ini, FPartialCheck);
+      dmZLogGlobal.ReadWindowFontSize(ini, FSuperCheck);
+      dmZLogGlobal.ReadWindowFontSize(ini, FSuperCheck2);
+      dmZLogGlobal.ReadWindowFontSize(ini, FCheckMulti);
+      dmZLogGlobal.ReadWindowFontSize(ini, FCWKeyBoard);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FRigControl);
+      dmZLogGlobal.ReadWindowFontSize(ini, FChatForm);
+      dmZLogGlobal.ReadWindowFontSize(ini, FFreqList);
+      dmZLogGlobal.ReadWindowFontSize(ini, FCommForm);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FRateDialog);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FRateDialogEx);
+      dmZLogGlobal.ReadWindowFontSize(ini, FZAnalyze);
+      dmZLogGlobal.ReadWindowFontSize(ini, FCwMessagePad);
+      dmZLogGlobal.ReadWindowFontSize(ini, FFunctionKeyPanel);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FSo2rNeoCp);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FInformation);
+      dmZLogGlobal.ReadWindowFontSize(ini, FZLinkForm);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FMessageManager);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FCWMonitor);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FEntityInfo);
+      //dmZLogGlobal.ReadWindowFontSize(ini, FGrayline);
+      //FSentNumber.LoadSettings(ini);
+
+//      if FConsolePad <> nil then begin
+//         dmZLogGlobal.ReadWindowFontSize(ini, FConsolePad);
+//      end;
+//      if FScratchSheet <> nil then begin
+//         dmZLogGlobal.ReadWindowFontSize(ini, FScratchSheet);
+//      end;
+//      if FQuickRef <> nil then begin
+//         dmZLogGlobal.ReadWindowFontSize(ini, FQuickRef);
+//      end;
+//      if FQsyInfoForm <> nil then begin
+//         dmZLogGlobal.ReadWindowFontSize(ini, FQsyInfoForm);
+//      end;
+
+      for b := Low(FBandScopeEx) to High(FBandScopeEx) do begin
+         FBandScopeEx[b].ResetFontSize(ini, 'BandScope(' + MHzString[b] + ')');
+      end;
+      FBandScope.ResetFontSize(ini, 'BandScope');
+      FBandScopeNewMulti.ResetFontSize(ini, 'BandScopeNewMulti');
+      FBandScopeAllBands.ResetFontSize(ini, 'BandScopeAllBands');
+
+      dmZLogGlobal.ReadWindowFontSize(ini, MyContest.MultiForm, 'MultiForm');
+      dmZLogGlobal.ReadWindowFontSize(ini, MyContest.ScoreForm, 'ScoreForm');
+
+      PostMessage(Handle, WM_ZLOG_RESETCOLUMNWIDTH, 0, 0);
+   finally
+      ini.Free();
+   end;
 end;
 
 procedure TMainForm.WriteKeymap();
@@ -15966,7 +16106,7 @@ var
    sentnr: string;
 begin
    C := 0;
-   for R := 1 to Grid.RowCount do begin
+   for R := 1 to Grid.RowCount - 1 do begin
       Q := TQSO(Grid.Objects[0, R]);
       if Q = nil then begin
          Continue;
@@ -16018,7 +16158,7 @@ begin
    else begin
       GridRefreshScreen(True, False);
       S := Format(TMainForm_LogCheckError, [IntToStr(C)]);
-      for R := 1 to Grid.RowCount do begin
+      for R := 1 to Grid.RowCount - 1 do begin
          Q := TQSO(Grid.Objects[0, R]);
          if Q = nil then begin
             Continue;

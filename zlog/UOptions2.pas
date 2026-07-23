@@ -502,6 +502,7 @@ type
     checkNotOverwrite8: TCheckBox;
     checkNotOverwrite9: TCheckBox;
     checkShowAvailableBands: TCheckBox;
+    checkSentOverride: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -572,6 +573,8 @@ type
     procedure menuLoadFromMyMessagesClick(Sender: TObject);
     procedure menuSaveToMyMessagesClick(Sender: TObject);
     procedure checkUseLookupServerClick(Sender: TObject);
+    procedure checkSentOverrideClick(Sender: TObject);
+    procedure comboPowerChange(Sender: TObject);
   private
     FOriginalHeight: Integer;
     FEditMode: Integer;
@@ -655,6 +658,7 @@ resourcestring
   Setup_SentNR_age= 'Please enter operator''s age.';
   Setup_SentNR_iota = 'Please enter IOTA number.';
   Setup_SentNR_handle = 'Please enter your Handle Name.';
+  DoYouWantTheUpperBandsToHaveTheSameSettins = 'Do you want the higher bands to have the same settings?';
 
 implementation
 
@@ -996,6 +1000,7 @@ begin
    if MyContest is TPedi then begin
       SentEdit.ReadOnly := False;
       SentEdit.Color := clWindow;
+      checkSentOverride.Visible := False;
    end;
 end;
 
@@ -1223,9 +1228,9 @@ begin
 
       // Exchange
       // Sent欄は表示専用
-      if MyContest is TPedi then begin
+//      if MyContest is TPedi then begin
          MyContest.SentStr := SentEdit.Text;
-      end;
+//      end;
 
       // Prov/City
       Settings.CW._prov := editProv.Text;
@@ -2261,6 +2266,30 @@ begin
    checkUseLookupServerClick(nil);
 end;
 
+procedure TformOptions2.comboPowerChange(Sender: TObject);
+var
+   Index: Integer;
+   ItemIndex: Integer;
+   b: TBand;
+   S: string;
+begin
+   if MessageBox(Handle, PChar(DoYouWantTheUpperBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+
+   Index := TComboBox(Sender).Tag;
+   for b := TBand(Index + 1) to High(FPowerPerBand) do begin
+      S := TComboBox(Sender).Items[TComboBox(Sender).ItemIndex];
+      ItemIndex := FPowerPerBand[b].Items.IndexOf(S);
+      if ItemIndex = -1 then begin
+         FPowerPerBand[b].ItemIndex := 0;
+      end
+      else begin
+         FPowerPerBand[b].ItemIndex := ItemIndex;
+      end;
+   end;
+end;
+
 procedure TformOptions2.SetEditNumber(no: Integer);
 begin
    if (no >= 1) and (no <= 12) then begin
@@ -2711,6 +2740,18 @@ begin
    end
    else begin
       FQSOListColor[n].Font.Style := FQSOListColor[n].Font.Style - [fsBold];
+   end;
+end;
+
+procedure TformOptions2.checkSentOverrideClick(Sender: TObject);
+begin
+   if checkSentOverride.Checked = True then begin
+      SentEdit.ReadOnly := False;
+      SentEdit.Color := clWindow;
+   end
+   else begin
+      SentEdit.ReadOnly := True;
+      SentEdit.Color := clBtnFace;
    end;
 end;
 

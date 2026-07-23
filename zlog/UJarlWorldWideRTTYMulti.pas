@@ -371,16 +371,18 @@ begin
          // Entity
          if FCountryList[i].Country = strEntity then begin
             C2 := FCountryList[i];
-            if C2.Worked[B] = False then begin
-               if aQSO.Multi1 = '' then begin
-                  aQSO.Multi1 := strEntity;
-               end
-               else begin
-                  aQSO.Multi1 := aQSO.Multi1 + ',' + strEntity;
-               end;
+            if C2.IsWAEDC = False then begin
+               if C2.Worked[B] = False then begin
+                  if aQSO.Multi1 = '' then begin
+                     aQSO.Multi1 := strEntity;
+                  end
+                  else begin
+                     aQSO.Multi1 := aQSO.Multi1 + ',' + strEntity;
+                  end;
 
-               C2.Worked[B] := True;
-               aQSO.NewMulti1 := True;
+                  C2.Worked[B] := True;
+                  aQSO.NewMulti1 := True;
+               end;
             end;
          end;
 
@@ -388,16 +390,18 @@ begin
          if strCallArea <> '' then begin
             if FCountryList[i].Country = strCallArea then begin
                C2 := FCountryList[i];
-               if C2.Worked[B] = False then begin
-                  if aQSO.Multi1 = '' then begin
-                     aQSO.Multi1 := strCallArea;
-                  end
-                  else begin
-                     aQSO.Multi1 := aQSO.Multi1 + ',' + strCallArea;
-                  end;
+               if C2.IsWAEDC = False then begin
+                  if C2.Worked[B] = False then begin
+                     if aQSO.Multi1 = '' then begin
+                        aQSO.Multi1 := strCallArea;
+                     end
+                     else begin
+                        aQSO.Multi1 := aQSO.Multi1 + ',' + strCallArea;
+                     end;
 
-                  C2.Worked[B] := True;
-                  aQSO.NewMulti1 := True;
+                     C2.Worked[B] := True;
+                     aQSO.NewMulti1 := True;
+                  end;
                end;
             end;
          end;
@@ -421,7 +425,9 @@ begin
          for i := 0 to FCountryList.Count - 1 do begin
             if FCountryList[i].Country = P.Country.Country then begin
                C2 := FCountryList[i];
-               aQSO.Multi1 := C.Country;
+               if C2.IsWAEDC = False then begin
+                  aQSO.Multi1 := C.Country;
+               end;
                Break;
             end;
          end;
@@ -429,9 +435,11 @@ begin
 
       if C2 <> nil then begin
          B := aQSO.Band;
-         if C2.Worked[B] = False then begin
-            C2.Worked[B] := True;
-            aQSO.NewMulti1 := True;
+         if C2.IsWAEDC = False then begin
+            if C2.Worked[B] = False then begin
+               C2.Worked[B] := True;
+               aQSO.NewMulti1 := True;
+            end;
          end;
       end;
    end;

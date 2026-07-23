@@ -6,7 +6,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, StrUtils, IniFiles, Forms, Windows, Menus,
-  System.DateUtils, Generics.Collections, Generics.Defaults,
+  System.DateUtils, System.Math, Generics.Collections, Generics.Defaults,
   UzLogConst, HelperLib, UzLogAdif;
 
 type
@@ -455,6 +455,7 @@ type
     function GetLastNumber(): string;
     {$ENDIF}
     function IsSameBand(b1: TBand; b2: TBand): Boolean;
+    function GetOperatingTime(): Integer;
   public
     constructor Create(memo : string);
     destructor Destroy; override;
@@ -561,6 +562,8 @@ type
     property EndTime: TDateTime read GetEndTime;
     property Period: Integer read FPeriod write SetPeriod;
     property PartialList: TQSOList read FPartialList;
+
+    property OperatingTime: Integer read GetOperatingTime;
 
     {$IFNDEF ZSERVER}
     property LastCallsign: string read GetLastCallsign;
@@ -5649,6 +5652,7 @@ begin
    end;
 
    try
+      PartialStr := CoreCall(PartialStr);
       for i := 1 to Log.TotalQSO do begin
          Q := Log.QsoList[i];
 
@@ -5661,7 +5665,7 @@ begin
             Q2.Assign(Q);
 
             // FULL MATCHの場合
-            if (PartialStr = Q2.Callsign) and (CheckQSO.Band = Q2.Band) then begin
+            if (PartialStr = CoreCall(Q2.Callsign)) and (CheckQSO.Band = Q2.Band) then begin
                if FAcceptDifferentMode = False then begin
                   Q2.Dupe := True;
                end
@@ -5698,6 +5702,58 @@ procedure TLog.ClearPartialList();
 begin
    FPartialList.Clear();
 end;
+
+function TLog.GetOperatingTime(): Integer;
+var
+   i: Integer;
+   optime: Integer;
+   diff: TDateTime;
+   qso_time: TDateTime;
+   qso_time2: TDateTime;
+   aQSO: TQSO;
+   M: Integer;
+   start_time: TDateTime;
+begin
+   optime := 0;
+
+   if TotalQSO = 0 then begin
+      start_time := CurrentTime();
+   end
+   else begin
+      start_time := ifthen(MyContest.UseContestPeriod, Log.StartTime, Log.QsoList[1].Time);
+      start_time := Trunc(start_time * MinsPerDay) / MinsPerDay;
+   end;
+
+   for i := 1 to TotalQSO do begin
+      aQSO := FQsoList[i];
+
+      // 秒を0にする
+      qso_time := Trunc(aQSO.Time * MinsPerDay) / MinsPerDay;
+
+      // コンテスト開始前QSO
+      if qso_time < start_time then begin
+         Continue;
+      end;
+
+      // コンテスト終了後QSO
+      if qso_time > Self.EndTime then begin
+         Continue;
+      end;
+
+      // 次のQSOとの時間差を累積
+      if i < Log.TotalQSO then begin
+         qso_time2 := Trunc(QsoList[i + 1].Time * MinsPerDay) / MinsPerDay;
+         diff := qso_time2 - qso_time;
+         M := Round(diff * MinsPerDay);
+         if M < 60 then begin
+            optime := optime + M;
+         end;
+      end;
+   end;
+
+   Result := optime;
+end;
+
 
 { TQSOCallsignComparer }
 

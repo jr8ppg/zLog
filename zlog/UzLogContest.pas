@@ -108,6 +108,7 @@ type
     procedure SaveCwMessages();
     procedure LoadMyMessagesAll();
     procedure LoadMyMessages(bank: Integer);
+    procedure LoadColumnWidths();
     procedure SaveColumnWidths();
 
     property Name: string read FContestName;
@@ -959,6 +960,32 @@ begin
    FUseDefaultMessages := False;
    for i := 1 to maxmessage do begin
       FCwMessages[bank][i] := dmZLogGlobal.Settings.CW.CWStrBank[bank, i];
+   end;
+end;
+
+procedure TContest.LoadColumnWidths();
+var
+   ini: TIniFile;
+   i: Integer;
+   SL: TStringList;
+   S: string;
+begin
+   ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'zlog_cwparams.ini');
+   SL := TStringList.Create();
+   try
+      S := ini.ReadString(FContestName, 'ColumnWidths', '');
+      if S = '' then begin
+         SetDefaultColumnWidths();
+      end
+      else begin
+         SL.CommaText := S;
+         for i := 0 to 16 do begin
+            Self.ColWidths[i] := StrToIntDef(SL[i], 1);
+         end;
+      end;
+   finally
+      ini.Free();
+      SL.Free();
    end;
 end;
 

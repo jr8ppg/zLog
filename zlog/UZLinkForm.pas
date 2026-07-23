@@ -7,7 +7,10 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
   Vcl.StdCtrls, Vcl.ComCtrls, System.UITypes, System.NetEncoding,
   System.AnsiStrings, Generics.Collections,
-  OverbyteIcsWndControl, OverbyteIcsWSocket, OverbyteIcsTypes, OverbyteIcsSslBase,
+  OverbyteIcsWndControl, OverbyteIcsWSocket, OverbyteIcsTypes,
+  {$IFDEF WIN64}
+  OverbyteIcsSslBase,
+  {$ENDIF}
   UzLogConst, UzLogGlobal, UzLogQSO, HelperLib;
 
 type
@@ -25,8 +28,6 @@ type
     ConnectButton: TButton;
     Timer1: TTimer;
     Console: TListBox;
-    ZSocket: TSslWSocket;
-    ZSslContext: TSslContext;
     timerLoginCheck: TTimer;
     Timer2: TTimer;
     procedure FormCreate(Sender: TObject);
@@ -37,14 +38,24 @@ type
     procedure EditKeyPress(Sender: TObject; var Key: Char);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ConnectButtonClick(Sender: TObject);
-    procedure ZSocketSessionConnected(Sender: TObject; Error: Word);
+    procedure ZSocketSSLSessionConnected(Sender: TObject; Error: Word);
+    {$IFDEF WIN64}
     procedure ZSocketSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
-    procedure ZSocketDataAvailable(Sender: TObject; Error: Word);
-    procedure ZSocketSessionClosed(Sender: TObject; Error: Word);
+    {$ENDIF}
+    procedure ZSocketSSLDataAvailable(Sender: TObject; Error: Word);
+    procedure ZSocketSSLSessionClosed(Sender: TObject; Error: Word);
     procedure timerLoginCheckTimer(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
   private
     { Private declarations }
+
+    {$IFDEF WIN64}
+    ZSslContext: TSslContext;
+    ZSocket: TSslWSocket;
+    {$ELSE}
+    ZSocket: TWSocket;
+    {$ENDIF}
+
     FSecure: Boolean;
     FDisconnectedByMenu: Boolean;
 
@@ -141,6 +152,70 @@ var
 procedure TZLinkForm.FormCreate(Sender: TObject);
 begin
    FSecure := False;
+
+   {$IFDEF WIN64}
+   ZSslContext := TSslContext.Create(Self);
+   ZSslContext.AutoEnableBuiltinEngines := False;
+   ZSslContext.SslCheckHostFlags := [];
+   ZSslContext.SslCheckHostFlagsValue := 0;
+   ZSslContext.SslCipherList := 'ALL';
+   ZSslContext.SslCipherList13 := 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256';
+   ZSslContext.SslCliSecurity := sslCliSecTls1;
+   ZSslContext.SslCryptoGroups := 'P-256:X25519:P-384:P-521';
+   ZSslContext.SslECDHMethod := sslECDHNone;
+   ZSslContext.SslMaxVersion := sslVerMax;
+   ZSslContext.SslMinVersion := sslVerTLS1;
+   ZSslContext.SslOcspStatus := False;
+   ZSslContext.SslOptions := [sslOpt_NO_SSLv2,sslOpt_NO_SSLv3];
+   ZSslContext.SslOptions2 := [sslOpt2_ALLOW_UNSAFE_LEGACY_RENEGOTIATION,SslOpt2_LEGACY_SERVER_CONNECT];
+   ZSslContext.SslSecLevel := sslSecLevel80bits;
+   ZSslContext.SslSessionCacheModes := [];
+   ZSslContext.SslSessionCacheSize := 20480;
+   ZSslContext.SslSessionTimeout := 0;
+   ZSslContext.SslVerifyDepth := 9;
+   ZSslContext.SslVerifyFlags := [];
+   ZSslContext.SslVerifyFlagsValue := 0;
+   ZSslContext.SslVerifyPeer := False;
+   ZSslContext.SslVerifyPeerModes := [SslVerifyMode_PEER];
+   ZSslContext.SslVerifyPeerModesValue := 1;
+   ZSslContext.SslVersionMethod := sslBestVer;
+   ZSslContext.UseSharedCAStore := False;
+
+   ZSocket := TSslWSocket.Create(Self);
+   ZSocket.OnDataAvailable := ZSocketSSLDataAvailable;
+   ZSocket.OnSessionClosed := ZSocketSSLSessionClosed;
+   ZSocket.OnSessionConnected := ZSocketSSLSessionConnected;
+   ZSocket.OnSslHandshakeDone := ZSocketSslHandshakeDone;
+   ZSocket.ComponentOptions := [];
+   ZSocket.ExclusiveAddr := False;
+   ZSocket.LineEnd := #13#10;
+   ZSocket.ListenBacklog := 15;
+   ZSocket.LocalAddr := '0.0.0.0';
+   ZSocket.LocalAddr6 := '::';
+   ZSocket.LocalPort := '0';
+   ZSocket.MultiCastAddrStr := 'ZSocketSSL';
+   ZSocket.Proto := 'tcp';
+   ZSocket.SocketErrs := wsErrTech;
+   ZSocket.SocksLevel := '5';
+   ZSocket.SSLContext := ZSslContext;
+   ZSocket.SslEnable := False;
+   ZSocket.SslMode := sslModeClient;
+   {$ELSE}
+   ZSocket := TWSocket.Create(Self);
+   ZSocket.OnDataAvailable := ZSocketSSLDataAvailable;
+   ZSocket.OnSessionClosed := ZSocketSSLSessionClosed;
+   ZSocket.OnSessionConnected := ZSocketSSLSessionConnected;
+   ZSocket.ComponentOptions := [];
+   ZSocket.ExclusiveAddr := False;
+   ZSocket.LineEnd := #13#10;
+   ZSocket.ListenBacklog := 15;
+   ZSocket.LocalAddr := '0.0.0.0';
+   ZSocket.LocalAddr6 := '::';
+   ZSocket.LocalPort := '0';
+   ZSocket.Proto := 'tcp';
+   ZSocket.SocketErrs := wsErrTech;
+   ZSocket.SocksLevel := '5';
+   {$ENDIF}
 
    // Transparent := False;
    FDisconnectedByMenu := false;
@@ -259,7 +334,7 @@ begin
    end;
 end;
 
-procedure TZLinkForm.ZSocketSessionConnected(Sender: TObject; Error: Word);
+procedure TZLinkForm.ZSocketSSLSessionConnected(Sender: TObject; Error: Word);
 begin
    if Error <> 0 then begin
       AddConsole('SessionConnected Error=' + IntToStr(Error));
@@ -272,6 +347,7 @@ begin
 
    FInitProcessDone := False;
 
+   {$IFDEF WIN64}
    if FSecure = True then begin
       ZSocket.StartSslHandshake();
       timerLoginCheck.Enabled := True;
@@ -280,8 +356,13 @@ begin
       FLoginStep := lsLogined;
       InitProcess();
    end;
+   {$ELSE}
+   FLoginStep := lsLogined;
+   InitProcess();
+   {$ENDIF}
 end;
 
+{$IFDEF WIN64}
 procedure TZLinkForm.ZSocketSslHandshakeDone(Sender: TObject; ErrCode: Word; PeerCert: TX509Base; var Disconnect: Boolean);
 begin
    if Error <> 0 then begin
@@ -292,8 +373,9 @@ begin
 
    FLoginStep := lsReqUser;
 end;
+{$ENDIF}
 
-procedure TZLinkForm.ZSocketDataAvailable(Sender: TObject; Error: Word);
+procedure TZLinkForm.ZSocketSSLDataAvailable(Sender: TObject; Error: Word);
 const
    BUFSIZE = 2047;
 var
@@ -309,7 +391,11 @@ begin
 
    ZeroMemory(@Buf, SizeOf(Buf));
 
+   {$IFDEF WIN64}
    count := TSslWSocket(Sender).Receive(@Buf, SizeOf(Buf) - 1);
+   {$ELSE}
+   count := TWSocket(Sender).Receive(@Buf, SizeOf(Buf) - 1);
+   {$ENDIF}
    if count <= 0 then begin
       Exit;
    end;
@@ -357,7 +443,7 @@ begin
    Result := True;
 end;
 
-procedure TZLinkForm.ZSocketSessionClosed(Sender: TObject; Error: Word);
+procedure TZLinkForm.ZSocketSSLSessionClosed(Sender: TObject; Error: Word);
 begin
    timerLoginCheck.Enabled := False;
 
@@ -1352,7 +1438,9 @@ begin
 
    FSecure := dmZLogGlobal.Settings._zlink_telnet.FUseSecure;
 
+   {$IFDEF WIN64}
    ZSocket.SslEnable := FSecure;                         // SSLŽg—p—L–³
+   {$ENDIF}
    ZSocket.Addr := dmZLogGlobal.Settings._zlink_telnet.FHostName;
    ZSocket.Port := dmZLogGlobal.Settings._zlink_telnet.FPort;
    ZSocket.Connect();

@@ -7437,6 +7437,10 @@ object MainForm: TMainForm
         Action = actionDecreaseFontSize
         GroupIndex = 1
       end
+      object menuResetFontSize: TMenuItem
+        Action = actionResetFontSize
+        GroupIndex = 1
+      end
     end
     object Labo1: TMenuItem
       Caption = #12521#12508'(&L)'
@@ -8825,6 +8829,10 @@ object MainForm: TMainForm
     object actionShowSentNumber: TAction
       Caption = #12467#12531#12486#12473#12488#12490#12531#12496#12540
       OnExecute = actionShowSentNumberExecute
+    end
+    object actionResetFontSize: TAction
+      Caption = #12501#12457#12531#12488#12469#12452#12474#12434#36215#21205#26178#12395#25147#12377
+      OnExecute = actionResetFontSizeExecute
     end
   end
   object SPCMenu: TPopupMenu

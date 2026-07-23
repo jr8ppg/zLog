@@ -313,9 +313,15 @@ begin
       if pos(',' + Cty.Country + ',', ',' + FConfig.NoCountryMulti + ',') > 0 then
          goto aaa;
 
-      aQSO.Multi1 := Cty.Country;
-
       if aQSO.Dupe then begin
+         Exit;
+      end;
+
+      if (FConfig.CtyDatEntityOnly = False) or
+         ((FConfig.CtyDatEntityOnly = True) and (Cty.IsWAEDC = False)) then begin
+         aQSO.Multi1 := Cty.Country;
+      end
+      else begin
          Exit;
       end;
 

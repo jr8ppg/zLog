@@ -7,7 +7,7 @@ uses
   Winapi.Windows, Vcl.Menus, System.Math, Vcl.Graphics, Vcl.StdCtrls,
   System.DateUtils, Generics.Collections, Generics.Defaults,
   Vcl.Dialogs, System.UITypes, System.Win.Registry, System.IOUtils,
-  WinApi.MultiMon, WinApi.ShellScaling, WinApi.ShlObj,
+  WinApi.MultiMon, WinApi.ShellScaling, WinApi.ShlObj, SetupApi,
   UzLogConst, UzLogQSO, UzLogOperatorInfo, UMultipliers, UBandPlan,
   UQsoTarget, UTelnetSetting, UzLogForm, UParallelPort, UzFreqMemory;
 
@@ -600,6 +600,7 @@ public
 
     procedure ReadWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = ''; fPositionOnly: Boolean = False);
     procedure WriteWindowState(ini: TMemIniFile; form: TForm; strWindowName: string = '');
+    procedure ReadWindowFontSize(ini: TMemIniFile; form: TForm; strWindowName: string = '');
     procedure ReadMainFormState(ini: TMemIniFile; var X, Y, W, H: integer; var TB1, TB2: boolean);
     procedure WriteMainFormState(ini: TMemIniFile; X, Y, W, H: integer; TB1, TB2: boolean);
 
@@ -755,6 +756,7 @@ function JudgeFileNameCharactor(AOwner: TForm; Edit: TEdit): Boolean;
 procedure AdjustWindowPosInsideMonitor(f: TForm; var x, y: Integer);
 function GetDisplayScalingFactor(x, y: Integer): double;
 procedure ExecProgram(handle: THandle; strExeName: string);
+function EnumUSBDevices(List: TStrings): Integer;
 
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
@@ -893,6 +895,7 @@ var
    num: Integer;
    setting: TTelnetSetting;
    D: TFreqMemory;
+   CH: Char;
 begin
    slParam := TStringList.Create();
    slSection := TStringList.Create();
@@ -906,6 +909,32 @@ begin
       for b := b19 to HiBand do begin
          Settings._activebands[b] := ini.ReadBool('Profiles', 'Active' + BandIniString[b], DefIniUseBand[b]);
          Settings._power[b] := ini.ReadString('Profiles', 'Power' + BandIniString[b], DefIniPower[b]);
+         CH := Settings._power[b][1];
+         case b of
+            b19, b35, b7, b10, b14, b18, b21, b24, b28, b50: begin
+               if CharInSet(CH, ['H', 'M', 'L', 'P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+
+            b144, b430: begin
+               if CharInSet(CH, ['M', 'L', 'P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+
+            b1200: begin
+               if CharInSet(CH, ['L', 'P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+
+            else begin
+               if CharInSet(CH, ['P']) = False then begin
+                  Settings._power[b] := DefIniPower[b];
+               end;
+            end;
+         end;
       end;
 
       // Automatically enter exchange from SuperCheck
@@ -941,10 +970,10 @@ begin
       Settings._use_contest_period := ini.ReadBool('Preferences', 'UseContestPeriod', True);
 
       // Save when not sending CW
-      Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', False);
+      Settings._savewhennocw := ini.ReadBool('Preferences', 'SaveWhenNoCW', True);
 
       // Save every N QSOs
-      Settings._saveevery := ini.ReadInteger('Preferences', 'SaveEvery', 3);
+      Settings._saveevery := ini.ReadInteger('Preferences', 'SaveEvery', 1);
 
       // QSL Default
       Settings._qsl_default := TQslState(ini.ReadInteger('Preferences', 'QslDefault', 0));
@@ -2926,6 +2955,17 @@ begin
 
    if (form is TZLogForm) then begin
       ini.WriteInteger('Windows', strWindowName + '_FontSize', TZLogForm(form).FontSize);
+   end;
+end;
+
+procedure TdmZLogGlobal.ReadWindowFontSize(ini: TMemIniFile; form: TForm; strWindowName: string);
+begin
+   if strWindowName = '' then begin
+      strWindowName := form.Name;
+   end;
+
+   if (form is TZLogForm) then begin
+      TZLogForm(form).FontSize := ini.ReadInteger('Windows', strWindowName + '_FontSize', 9);
    end;
 end;
 
@@ -5276,6 +5316,48 @@ begin
 
    CloseHandle(pi.hProcess);
    CloseHandle(pi.hThread);
+end;
+
+function EnumUSBDevices(List: TStrings): Integer;
+var
+  DevInfo: HDEVINFO;
+  DevInfoData: SP_DEVINFO_DATA;
+  Index: Integer;
+  Buffer: array[0..1023] of Char;
+begin
+   List.Clear;
+
+   DevInfo := SetupDiGetClassDevs(nil, 'USB', 0, DIGCF_PRESENT or DIGCF_ALLCLASSES);
+   if DevInfo = INVALID_HANDLE_VALUE then begin
+      Result := 0;
+      Exit;
+   end;
+
+   try
+      Index := 0;
+      DevInfoData.cbSize := SizeOf(DevInfoData);
+
+      while SetupDiEnumDeviceInfo(DevInfo, Index, DevInfoData) do begin
+         if SetupDiGetDeviceRegistryProperty(
+             DevInfo,
+             DevInfoData,
+             SPDRP_HARDWAREID,
+             nil,
+             @Buffer,
+             SizeOf(Buffer),
+             nil) then
+         begin
+            List.Add(Buffer);
+         end;
+
+         Inc(Index);
+      end;
+
+      Result := List.Count;
+
+   finally
+      SetupDiDestroyDeviceInfoList(DevInfo);
+   end;
 end;
 
 end.

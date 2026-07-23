@@ -130,6 +130,7 @@ type
     procedure ShowZAD(sl: TStrings);
     procedure ShowZOP(sl: TStrings; fShowCW: Boolean);
     procedure ShowZCN(sl: TStrings; fShowCW: Boolean);
+    procedure ShowACT(sl: TStrings);
     procedure ShowRBN(sl: TStrings; fShowCW: Boolean);
     function GetExcludeZeroPoint(): Boolean;
     procedure SetExcludeZeroPoint(v: Boolean);
@@ -257,9 +258,15 @@ begin
    fname := ChangeFileExt(fname, '.ZCN');
    Memo1.Lines.SaveToFile(fname);
 
+   // ACT
+   TabControl1.TabIndex := 7;
+   TabControl1Change(nil);
+   fname := ChangeFileExt(fname, '.ACT');
+   Memo1.Lines.SaveToFile(fname);
+
    // RBN
    if FUseRbnAnalyze = True then begin
-      TabControl1.TabIndex := 7;
+      TabControl1.TabIndex := 8;
       TabControl1Change(nil);
       fname := ChangeFileExt(fname, '.RBN');
       Memo1.Lines.SaveToFile(fname);
@@ -358,8 +365,13 @@ begin
             ShowZCN(sl, fShowCW);
          end;
 
-         // RBN
+         // ACT
          7: begin
+            ShowACT(sl);
+         end;
+
+         // RBN
+         8: begin
             if FUseRbnAnalyze = True then begin
                ShowRBN(sl, fShowCW);
             end;
@@ -401,7 +413,7 @@ begin
    end;
 
    FZADSupport := False;
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       for i := 02 to 114 do begin
          FMultiGet[i][b] := 0;
       end;
@@ -847,7 +859,7 @@ begin
          Continue;
       end;
 
-      strText := ' ' + RightStr('     ' + MHzString[b], 5) + ' MHz    ' +
+      strText := RightStr('          ' + BandString[b], 10) + '    ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FQso), 5) + '     ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FPts), 5) + '   ' +
                  RightStr('     ' + IntToStr(FCountData[HTOTAL][b].FMulti), 5);
@@ -1454,7 +1466,7 @@ var
    r: Integer;
    r2: Integer;
 begin
-   strText := '[' + MHzString[b] + ' MHz]';
+   strText := '[' + BandString[b] + ']';
    sl.Add(strText);
    strText := '         1     2     3     4     5     6     7     8     9     0     不明    合計    累積';
    sl.Add(strText);
@@ -1721,7 +1733,7 @@ var
 
       // 2400以上はとれたマルチのみ
       if fGet = True then begin
-         for b := b2400 to b10g do begin
+         for b := b2400 to HiBand do begin
             // 交信の無いバンド除く
             if FCountData[HTOTAL][b].FQso = 0 then begin
                Continue;
@@ -1803,14 +1815,14 @@ begin
    strTitle := '＜マルチマップ＞';
    sl.Add(strTitle);
    sl.Add('');
-   strTitle := '    11111111111111';
+   strTitle := '     11111111111111';
    sl.Add(strTitle);
-   strTitle := '    0000000001111100000000111111111122222222223333333333444444444';
+   strTitle := '     0000000001111100000000111111111122222222223333333333444444444';
    sl.Add(strTitle);
-   strTitle := '    1234567890123423456789012345678901234567890123456789012345678';
+   strTitle := '     1234567890123423456789012345678901234567890123456789012345678';
    sl.Add(strTitle);
 
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       // WARCバンド除く
       if (b = b10) or (b = b18) or (b = b24) then begin
          Continue;
@@ -1822,7 +1834,7 @@ begin
       end;
 
       // バンド名
-      strText := RightStr('    ' + MHzString[b], 4);
+      strText := RightStr('     ' + MHzString[b], 5);
 
       // 北海道マルチ
       for i := 101 to 114 do begin
@@ -1886,7 +1898,7 @@ var
       strText2 := LeftStr(O.FOpName + DupeString(' ', 9), 9);
       all_tt := 0;
       all_cw := 0;
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -1932,7 +1944,7 @@ var
       strText2 := LeftStr(O.FOpName + DupeString(' ', 9), 9);
       all_tt := 0;
       all_cw := 0;
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -1971,7 +1983,7 @@ var
       strTitle: string;
    begin
       strTitle := DupeString(' ', len);
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -2020,7 +2032,7 @@ begin
       strText2 := BuildQsoCount(O);
       sl.Add(strText2);
 
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -2058,7 +2070,7 @@ begin
       strText2 := BuildMultiCount(O);
       sl.Add(strText2);
 
-      for b := b19 to b10g do begin
+      for b := b19 to HiBand do begin
          if FCountData[HTOTAL][b].FQso = 0 then begin
             Continue;
          end;
@@ -2250,6 +2262,54 @@ begin
    sl.Add(strText);
 end;
 
+procedure TZAnalyze.ShowACT(sl: TStrings);
+var
+   i: Integer;
+   strText: string;
+   aQSO: TQSO;
+   nPH: Integer;
+   nCW: Integer;
+   nDigital: Integer;
+begin
+   sl.Clear();
+   strText := '＜アクティビティコンテスト登録情報＞';
+   sl.Add(strText);
+   sl.Add('');
+
+   nPH := 0;
+   nCW := 0;
+   nDigital := 0;
+
+   for i := 1 to Log.TotalQSO do begin
+      aQSO := Log.QsoList[i];
+
+      if (aQSO.Points = 0) then begin    // 得点無しはスキップ
+         Continue;
+      end;
+
+      if (aQSO.Invalid = True) then begin    // 無効もスキップ
+         Continue;
+      end;
+
+      if aQSO.Mode = mCW then begin
+         Inc(nCW);
+      end;
+      if (aQSO.Mode = mSSB) or (aQSO.Mode = mAM) or (aQSO.Mode = mFM) or (aQSO.Mode = mDV) then begin
+         Inc(nPH);
+      end;
+      if (aQSO.Mode = mRTTY) or (aQSO.Mode = mFT4) or (aQSO.Mode = mFT8) then begin
+         Inc(nDigital);
+      end;
+   end;
+
+   strText := '電話による交信局数　　　　　：' + IntToStr(nPH);
+   sl.Add(strText);
+   strText := '電信による交信局数　　　　　：' + IntToStr(nCW);
+   sl.Add(strText);
+   strText := 'デジタルモードによる交信局数：' + IntToStr(nDigital);
+   sl.Add(strText);
+end;
+
 procedure TZAnalyze.ShowRBN(sl: TStrings; fShowCW: Boolean);
 var
    i: Integer;
@@ -2336,10 +2396,10 @@ procedure TZAnalyze.SetUseRbnAnalyze(v: Boolean);
 begin
    FUseRbnAnalyze := v;
    if v = True then begin
-      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN,RBN';
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN,ACT,RBN';
    end
    else begin
-      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN';
+      TabControl1.Tabs.CommaText := 'ZAF,ZAQ,ZAA,ZAA(ALL),ZAD,ZOP,ZCN,ACT';
    end;
 end;
 
@@ -2378,7 +2438,7 @@ var
    b: TBand;
 begin
    Inherited;
-   for b := b19 to b10g do begin
+   for b := b19 to HiBand do begin
       FQsoCountPH[b] := 0;
       FQsoCountCW[b] := 0;
       FMultiCountPH[b] := 0;

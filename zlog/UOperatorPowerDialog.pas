@@ -38,11 +38,29 @@ type
     comboPower10g: TComboBox;
     Label13: TLabel;
     GroupBox1: TGroupBox;
+    Label14: TLabel;
+    comboPower104g: TComboBox;
+    Label15: TLabel;
+    comboPower24g: TComboBox;
+    Label16: TLabel;
+    comboPower47g: TComboBox;
+    Label17: TLabel;
+    comboPower77g: TComboBox;
+    Label18: TLabel;
+    comboPower135g: TComboBox;
+    Label19: TLabel;
+    comboPower248g: TComboBox;
+    Label20: TLabel;
+    comboPower10: TComboBox;
+    Label21: TLabel;
+    comboPower18: TComboBox;
+    Label22: TLabel;
+    comboPower24: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure comboPowerChange(Sender: TObject);
   private
     { Private êÈåæ }
-    FComboArray: array[1..13] of TComboBox;
+    FComboArray: array[1..22] of TComboBox;
     function GetPower(): string;
     procedure SetPower(v: string);
   public
@@ -63,22 +81,33 @@ begin
    FComboArray[1] := comboPower19;
    FComboArray[2] := comboPower35;
    FComboArray[3] := comboPower7;
-   FComboArray[4] := comboPower14;
-   FComboArray[5] := comboPower21;
-   FComboArray[6] := comboPower28;
-   FComboArray[7] := comboPower50;
-   FComboArray[8] := comboPower144;
-   FComboArray[9] := comboPower430;
-   FComboArray[10] := comboPower1200;
-   FComboArray[11] := comboPower2400;
-   FComboArray[12] := comboPower5600;
-   FComboArray[13] := comboPower10g;
+   FComboArray[4] := comboPower10;
+   FComboArray[5] := comboPower14;
+   FComboArray[6] := comboPower18;
+   FComboArray[7] := comboPower21;
+   FComboArray[8] := comboPower24;
+   FComboArray[9] := comboPower28;
+   FComboArray[10] := comboPower50;
+   FComboArray[11] := comboPower144;
+   FComboArray[12] := comboPower430;
+   FComboArray[13] := comboPower1200;
+   FComboArray[14] := comboPower2400;
+   FComboArray[15] := comboPower5600;
+   FComboArray[16] := comboPower10g;
+   FComboArray[17] := comboPower104g;
+   FComboArray[18] := comboPower24g;
+   FComboArray[19] := comboPower47g;
+   FComboArray[20] := comboPower77g;
+   FComboArray[21] := comboPower135g;
+   FComboArray[22] := comboPower248g;
 end;
 
 procedure TOperatorPowerDialog.comboPowerChange(Sender: TObject);
 var
    Index: Integer;
+   ItemIndex: Integer;
    i: Integer;
+   S: string;
 begin
    if MessageBox(Handle, PChar(DoYouWantTheUpperBandsToHaveTheSameSettins), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
       Exit;
@@ -86,7 +115,14 @@ begin
 
    Index := TComboBox(Sender).Tag;
    for i := Index + 1 to High(FComboArray) do begin
-      FComboArray[i].ItemIndex := TComboBox(Sender).ItemIndex;
+      S := TComboBox(Sender).Items[TComboBox(Sender).ItemIndex];
+      ItemIndex := FComboArray[i].Items.IndexOf(S);
+      if ItemIndex = -1 then begin
+         FComboArray[i].ItemIndex := 1;   // MAXIMUM
+      end
+      else begin
+         FComboArray[i].ItemIndex := ItemIndex;
+      end;
    end;
 end;
 
@@ -97,6 +133,10 @@ var
 begin
    S := '';
    for i := Low(FComboArray) to High(FComboArray) do begin
+      if FComboArray[i].Visible = False then begin
+         Continue;
+      end;
+
       S := S + FComboArray[i].Text;
    end;
 
@@ -106,18 +146,26 @@ end;
 procedure TOperatorPowerDialog.SetPower(v: string);
 var
    i: Integer;
+   c: Integer;
    S: string;
    Index: Integer;
 begin
-   S := v + DupeString('-', 13);
+   S := v + DupeString('-', 19);
+   c := 1;
    for i := Low(FComboArray) to High(FComboArray) do begin
-      Index := FComboArray[i].Items.IndexOf(S[i]);
+      if FComboArray[i].Visible = False then begin
+         Continue;
+      end;
+
+      Index := FComboArray[i].Items.IndexOf(S[c]);
       if Index = -1 then begin
          FComboArray[i].ItemIndex := 0;   // -
       end
       else begin
          FComboArray[i].ItemIndex := Index;
       end;
+
+      Inc(c);
    end;
 end;
 

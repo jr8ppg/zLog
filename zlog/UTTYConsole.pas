@@ -93,6 +93,8 @@ type
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
     procedure actionControlPTTExecute(Sender: TObject);
+    function GetFontSize(): Integer; override;
+    procedure SetFontSize(v: Integer); override;
   private
     { Private declarations }
     FTTYMode: Integer;
@@ -106,8 +108,6 @@ type
     procedure TXChar(C: AnsiChar);
     procedure PlayMessageRTTY(no: Integer);
     procedure ApplyShortcut();
-    function GetFontSize(): Integer; override;
-    procedure SetFontSize(v: Integer); override;
   public
     { Public declarations }
     procedure SendStrNow(S: String);

@@ -203,6 +203,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 1
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -210,6 +211,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower35: TComboBox
+          Tag = 1
           Left = 86
           Top = 39
           Width = 38
@@ -217,6 +219,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 3
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -224,6 +227,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower7: TComboBox
+          Tag = 2
           Left = 86
           Top = 62
           Width = 38
@@ -231,6 +235,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 5
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -238,6 +243,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower10: TComboBox
+          Tag = 3
           Left = 86
           Top = 85
           Width = 38
@@ -245,6 +251,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 7
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -252,6 +259,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower14: TComboBox
+          Tag = 4
           Left = 86
           Top = 108
           Width = 38
@@ -259,6 +267,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 9
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -266,6 +275,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower18: TComboBox
+          Tag = 5
           Left = 86
           Top = 131
           Width = 38
@@ -273,6 +283,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 11
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -280,6 +291,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower21: TComboBox
+          Tag = 6
           Left = 86
           Top = 154
           Width = 38
@@ -287,6 +299,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 13
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -294,6 +307,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower24: TComboBox
+          Tag = 7
           Left = 86
           Top = 177
           Width = 38
@@ -301,6 +315,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 15
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -308,6 +323,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower28: TComboBox
+          Tag = 8
           Left = 86
           Top = 200
           Width = 38
@@ -315,6 +331,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 17
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -322,6 +339,7 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower50: TComboBox
+          Tag = 9
           Left = 86
           Top = 223
           Width = 38
@@ -329,6 +347,7 @@ object formOptions2: TformOptions2
           ItemIndex = 0
           TabOrder = 19
           Text = 'H'
+          OnChange = comboPowerChange
           Items.Strings = (
             'H'
             'M'
@@ -336,87 +355,86 @@ object formOptions2: TformOptions2
             'P')
         end
         object comboPower144: TComboBox
+          Tag = 10
           Left = 86
           Top = 246
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 21
-          Text = 'H'
+          Text = 'M'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
             'M'
             'L'
             'P')
         end
         object comboPower430: TComboBox
+          Tag = 11
           Left = 222
           Top = 16
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 23
-          Text = 'H'
+          Text = 'M'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
             'M'
             'L'
             'P')
         end
         object comboPower1200: TComboBox
+          Tag = 12
           Left = 222
           Top = 39
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 25
-          Text = 'H'
+          Text = 'L'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
             'L'
             'P')
         end
         object comboPower2400: TComboBox
+          Tag = 13
           Left = 222
           Top = 62
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 27
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object comboPower5600: TComboBox
+          Tag = 14
           Left = 222
           Top = 85
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 29
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object comboPower101g: TComboBox
+          Tag = 15
           Left = 222
           Top = 108
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 31
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act104g: TCheckBox
@@ -430,17 +448,16 @@ object formOptions2: TformOptions2
           TabOrder = 32
         end
         object comboPower104g: TComboBox
+          Tag = 16
           Left = 222
           Top = 131
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 33
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act24g: TCheckBox
@@ -452,17 +469,16 @@ object formOptions2: TformOptions2
           TabOrder = 34
         end
         object comboPower24g: TComboBox
+          Tag = 17
           Left = 222
           Top = 154
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 35
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act47g: TCheckBox
@@ -474,17 +490,16 @@ object formOptions2: TformOptions2
           TabOrder = 36
         end
         object comboPower47g: TComboBox
+          Tag = 18
           Left = 222
           Top = 177
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 37
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act77g: TCheckBox
@@ -496,17 +511,16 @@ object formOptions2: TformOptions2
           TabOrder = 38
         end
         object comboPower77g: TComboBox
+          Tag = 19
           Left = 222
           Top = 200
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 39
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act135g: TCheckBox
@@ -518,17 +532,16 @@ object formOptions2: TformOptions2
           TabOrder = 40
         end
         object comboPower135g: TComboBox
+          Tag = 20
           Left = 222
           Top = 223
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 41
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
         object act248g: TCheckBox
@@ -540,17 +553,16 @@ object formOptions2: TformOptions2
           TabOrder = 42
         end
         object comboPower248g: TComboBox
+          Tag = 21
           Left = 222
           Top = 246
           Width = 38
           Height = 21
           ItemIndex = 0
           TabOrder = 43
-          Text = 'H'
+          Text = 'P'
+          OnChange = comboPowerChange
           Items.Strings = (
-            'H'
-            'M'
-            'L'
             'P')
         end
       end
@@ -1130,7 +1142,7 @@ object formOptions2: TformOptions2
           Caption = 'City($Q)'
         end
         object SentEdit: TEdit
-          Left = 120
+          Left = 100
           Top = 21
           Width = 60
           Height = 21
@@ -1141,20 +1153,29 @@ object formOptions2: TformOptions2
           TabOrder = 0
         end
         object editCity: TEdit
-          Left = 120
+          Left = 100
           Top = 74
+          Width = 60
+          Height = 21
+          MaxLength = 20
+          TabOrder = 3
+        end
+        object editProv: TEdit
+          Left = 100
+          Top = 48
           Width = 60
           Height = 21
           MaxLength = 20
           TabOrder = 2
         end
-        object editProv: TEdit
-          Left = 120
-          Top = 48
-          Width = 60
+        object checkSentOverride: TCheckBox
+          Left = 167
+          Top = 21
+          Width = 70
           Height = 21
-          MaxLength = 20
+          Caption = 'Override'
           TabOrder = 1
+          OnClick = checkSentOverrideClick
         end
       end
       object groupOtherRules: TGroupBox

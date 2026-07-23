@@ -4,7 +4,7 @@ object RateDialogEx: TRateDialogEx
   ActiveControl = ScoreGrid
   Caption = 'QSO Rate Ex'
   ClientHeight = 262
-  ClientWidth = 388
+  ClientWidth = 334
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 350
@@ -24,11 +24,15 @@ object RateDialogEx: TRateDialogEx
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 388
+    Width = 334
     Height = 37
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 388
+    DesignSize = (
+      334
+      37)
     object Label1: TLabel
       Left = 8
       Top = 8
@@ -71,30 +75,57 @@ object RateDialogEx: TRateDialogEx
       Height = 13
       Caption = '0.00 QSOs/hr'
     end
+    object labelOperateTime: TLabel
+      Left = 274
+      Top = 15
+      Width = 50
+      Height = 22
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      Caption = '00:00'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ParentFont = False
+      ExplicitLeft = 328
+    end
+    object Label3: TLabel
+      Left = 256
+      Top = 3
+      Width = 68
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = 'Operating time'
+      ExplicitLeft = 310
+    end
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 37
-    Width = 388
+    Width = 334
     Height = 225
     ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
+    ExplicitWidth = 388
     object TabSheet1: TTabSheet
       Caption = #12464#12521#12501
       object Panel2: TPanel
         Left = 0
         Top = 167
-        Width = 380
+        Width = 326
         Height = 30
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 380
         DesignSize = (
-          380
+          326
           30)
         object Label4: TLabel
-          Left = 293
+          Left = 239
           Top = 8
           Width = 26
           Height = 13
@@ -103,16 +134,17 @@ object RateDialogEx: TRateDialogEx
           ExplicitLeft = 255
         end
         object labelHourCaption: TLabel
-          Left = 180
+          Left = 126
           Top = 8
           Width = 63
           Height = 13
           Alignment = taRightJustify
           Anchors = [akRight]
           Caption = 'Show current'
+          ExplicitLeft = 180
         end
         object ShowLastCombo: TComboBox
-          Left = 247
+          Left = 193
           Top = 5
           Width = 41
           Height = 21
@@ -132,9 +164,10 @@ object RateDialogEx: TRateDialogEx
             '24'
             '36'
             '48')
+          ExplicitLeft = 247
         end
         object check3D: TCheckBox
-          Left = 333
+          Left = 279
           Top = 6
           Width = 33
           Height = 17
@@ -142,6 +175,7 @@ object RateDialogEx: TRateDialogEx
           Caption = '3D'
           TabOrder = 1
           OnClick = check3DClick
+          ExplicitLeft = 333
         end
         object Panel3: TPanel
           Left = 0
@@ -184,7 +218,7 @@ object RateDialogEx: TRateDialogEx
       object Chart1: TChart
         Left = 0
         Top = 0
-        Width = 380
+        Width = 326
         Height = 167
         LeftWall.Color = clWhite
         Legend.Visible = False
@@ -200,6 +234,7 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 380
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 13
         object Series1: TBarSeries
@@ -960,7 +995,7 @@ object RateDialogEx: TRateDialogEx
       object ScoreGrid: TStringGrid
         Left = 0
         Top = 0
-        Width = 380
+        Width = 326
         Height = 197
         Align = alClient
         ColCount = 51
@@ -978,6 +1013,7 @@ object RateDialogEx: TRateDialogEx
         OnDrawCell = ScoreGridDrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
+        ExplicitWidth = 380
       end
     end
     object TabSheet3: TTabSheet
@@ -986,7 +1022,7 @@ object RateDialogEx: TRateDialogEx
       object ScoreGrid2: TStringGrid
         Left = 0
         Top = 0
-        Width = 380
+        Width = 326
         Height = 197
         Align = alClient
         ColCount = 52
@@ -1004,6 +1040,7 @@ object RateDialogEx: TRateDialogEx
         OnDrawCell = ScoreGrid2DrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
+        ExplicitWidth = 380
       end
     end
   end
@@ -1011,8 +1048,8 @@ object RateDialogEx: TRateDialogEx
     Enabled = False
     Interval = 3000
     OnTimer = TimerTimer
-    Left = 288
-    Top = 12
+    Left = 268
+    Top = 32
   end
   object popupScore: TPopupMenu
     AutoHotkeys = maManual
@@ -1055,6 +1092,6 @@ object RateDialogEx: TRateDialogEx
     Interval = 180000
     OnTimer = timerRefreshTimer
     Left = 240
-    Top = 16
+    Top = 32
   end
 end
