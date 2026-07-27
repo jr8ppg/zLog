@@ -487,6 +487,7 @@ type
     procedure SaveToFileAsHamSupport(Filename: string);
     procedure SaveToFileAsAdif(Filename: string);
     procedure SaveToFileAsSpc(Filename: string);
+    function SplitIotaNr(NR: string): string;
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -2993,11 +2994,22 @@ begin
 
       strText := strText + FillRight(dmZLogGlobal.MyCall, 13) + ' ';
       strText := strText + FillLeft(IntToStr(Q.RSTSent), 3) + ' ';
-      strText := strText + FillRight(Q.NrSent, 6) + ' ';
+      if MyContest is TIotaContest then begin
+         strText := strText + FillRight(SplitIotaNr(Q.NrSent), 6) + ' ';
+      end
+      else begin
+         strText := strText + FillRight(Q.NrSent, 6) + ' ';
+      end;
 
       strText := strText + FillRight(Q.Callsign, 13) + ' ';
       strText := strText + FillLeft(IntToStr(Q.RSTRcvd), 3) + ' ';
-      strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
+
+      if MyContest is TIotaContest then begin
+         strText := strText + FillRight(SplitIotaNr(Q.NrRcvd), 6) + ' ';
+      end
+      else begin
+         strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
+      end;
 
       // M/S, M/2‚Ì‚ÝTXNO‚ðo—ÍA‚»‚êˆÈŠO‚Í0ŒÅ’è
       if (dmZLogGlobal.ContestCategory in [ccMultiOpSingleTx, ccMultiOpTwoTx]) then begin
@@ -3072,6 +3084,26 @@ begin
    clist.Free();
    SL.Free();
 end;
+
+function TLog.SplitIotaNr(NR: string): string;
+var
+   i: Integer;
+   Index: Integer;
+const
+   iota_prefixes: array[1..7] of string = ( 'AS', 'NA', 'OC', 'EU', 'AF', 'SA', 'AN' );
+begin
+   for i := Low(iota_prefixes) to High(iota_prefixes) do begin
+      Index := Pos(iota_prefixes[i], NR);
+      if Index > 0 then begin
+         NR.Insert(Index - 1, ' ');  // 001AS007 -> 001 AS007
+         NR.Insert(Index + 2, '-');
+         Result := NR;
+         Exit;
+      end;
+   end;
+   Result := NR;
+end;
+
 {$ENDIF}
 
 {
