@@ -182,6 +182,7 @@ type
     editMulti21: TEdit;
     editPoints21: TEdit;
     editMulti2_21: TEdit;
+    checkELogMaker: TCheckBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -214,8 +215,7 @@ type
     procedure WriteLogSheetR1(SL: TStringList);
     procedure WriteSummarySheetR2(SL: TStringList);
     procedure WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
-    function FormatQSO_v1(q: TQSO; fValid: Boolean): string;
-    function FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
+    procedure WriteLogSheetStd(SL: TStringList);
     function IsNewcomer(cate: string): Boolean;
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
@@ -622,7 +622,12 @@ begin
    WriteSummarySheetR2(SL);
 
    // ログシート
-   WriteLogSheetR2(SL, checkFieldExtend.Checked);
+   if checkELogMaker.Checked = False then begin
+      WriteLogSheetR2(SL, checkFieldExtend.Checked);
+   end
+   else begin
+      WriteLogSheetStd(SL);
+   end;
 
    Result := True;
 end;
@@ -633,7 +638,12 @@ begin
    WriteSummarySheetR1(SL);
 
    // ログシート
-   WriteLogSheetR1(SL);
+   if checkELogMaker.Checked = False then begin
+      WriteLogSheetR1(SL);
+   end
+   else begin
+      WriteLogSheetStd(SL);
+   end;
 
    Result := True;
 end;
@@ -1071,7 +1081,7 @@ begin
 //         Continue;
 //      end;
 
-      s := FormatQSO_v1(Q, FScoreBand[Q.Band].Checked);
+      s := Q.FormatELogR1(FScoreBand[Q.Band].Checked);
 
       SL.Add(s);
    end;
@@ -1208,110 +1218,43 @@ begin
          Continue;
       end;
 
-//      if Q.Invalid = True then begin
-//         Continue;
-//      end;
-
-      s := FormatQSO_v2(Q, fExtend);
+      s := Q.FormatELogR2(fExtend);
       SL.Add(s);
    end;
 
    SL.Add('</LOGSHEET>');
 end;
 
-function TformELogJarlEx.FormatQSO_v1(q: TQSO; fValid: Boolean): string;
+procedure TformELogJarlEx.WriteLogSheetStd(SL: TStringList);
 var
-   S: string;
+   i: Integer;
+   s: string;
+   Q: TQSO;
 begin
-   S := '';
-   if q.Invalid = True then begin
-      S := S + 'X ' + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+   SL.Add('<LOGSHEET TYPE="CTESTWIN">');
+
+   if Log.QsoList[0].RSTsent = _USEUTC then begin
+      s := 'DATE (UTC)';
    end
    else begin
-      S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
-   end;
-   S := S + FillRight2(q.CallSign, 13);
-   S := S + FillRight2(IntToStr(q.RSTSent), 4);
-   S := S + FillRight2(q.NrSent, 8);
-   S := S + FillRight2(IntToStr(q.RSTRcvd), 4);
-   S := S + FillRight2(q.NrRcvd, 8);
-
-   if q.NewMulti1 then begin
-      S := S + FillRight2(q.Multi1, 6);
-   end
-   else begin
-      S := S + '-     ';
+      s := 'DATE (JST)';
    end;
 
-   if q.NewMulti2 then begin
-      S := S + FillRight2(q.Multi2, 6);
-   end
-   else begin
-      S := S + '-     ';
-   end;
+   SL.Add(s + ' TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts');
 
-   S := S + FillRight2(MHzString[q.Band], 5);
-   S := S + FillRight2(ModeString[q.Mode], 5);
-   if fValid = True then begin
-      S := S + FillRight2(IntToStr(q.Points), 3);
-   end
-   else begin
-      S := S + FillRight2(IntToStr(0), 3);
-   end;
+   for i := 1 to Log.TotalQSO do begin
+      Q := Log.QsoList[i];
 
-   if q.Operator <> '' then begin
-      S := S + FillRight2('%%' + q.Operator + '%%', 19);
-   end;
-
-   if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
-      S := S + FillRight2('TX#' + IntToStr(q.TX), 6);
-   end;
-
-//   S := S + q.Memo;
-
-   Result := S;
-end;
-
-function TformELogJarlEx.FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
-var
-   slLine: TStringList;
-begin
-   slLine := TStringList.Create();
-   slLine.StrictDelimiter := True;
-   slLine.Delimiter := TAB;
-   try
-      if q.Invalid = True then begin
-         slLine.Add('X ' + FormatDateTime('yyyy-mm-dd', q.Time));
-      end
-      else begin
-         slLine.Add(FormatDateTime('yyyy-mm-dd', q.Time));
-      end;
-      slLine.Add(FormatDateTime('hh:nn', q.Time));
-
-      slLine.Add(MHzString[q.Band]);
-      slLine.Add(ModeString[q.Mode]);
-      slLine.Add(q.Callsign);
-
-      slLine.Add(IntToStr(q.RSTsent) + ' ' + q.NrSent);
-      slLine.Add(IntToStr(q.RSTrcvd) + ' ' + q.NrRcvd);
-
-      if q.NewMulti1 = True then begin
-         slLine.Add(q.Multi1);
-      end
-      else begin
-         slLine.Add('-');
+      if (dmZLogGlobal.Settings._output_outofperiod = False) and
+         (Log.IsOutOfPeriod(Q) = True) then begin
+         Continue;
       end;
 
-      slLine.Add(IntToStr(q.Points));
-
-      if fExtend = True then begin
-         slLine.Add('TX#' + IntToStr(q.TX));
-      end;
-
-      Result := slLine.DelimitedText;
-   finally
-      slLine.Free();
+      s := Q.FormatELogStd();
+      SL.Add(s);
    end;
+
+   SL.Add('</LOGSHEET>');
 end;
 
 procedure TformELogJarlEx.checkBandClick(Sender: TObject);

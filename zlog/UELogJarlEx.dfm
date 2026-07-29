@@ -30,7 +30,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 89
       Height = 23
       Caption = 'E-Log'#20316#25104
-      TabOrder = 2
+      TabOrder = 3
       OnClick = buttonCreateLogClick
     end
     object buttonSave: TButton
@@ -39,7 +39,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 89
       Height = 23
       Caption = #20445#23384
-      TabOrder = 1
+      TabOrder = 2
       OnClick = buttonSaveClick
     end
     object buttonCancel: TButton
@@ -49,7 +49,7 @@ object formELogJarlEx: TformELogJarlEx
       Height = 23
       Caption = #38281#12376#12427
       ModalResult = 2
-      TabOrder = 4
+      TabOrder = 5
       OnClick = buttonCancelClick
     end
     object buttonWebUpload: TButton
@@ -58,7 +58,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 105
       Height = 23
       Caption = 'Web Upload'
-      TabOrder = 3
+      TabOrder = 4
       OnClick = buttonWebUploadClick
     end
     object checkFieldExtend: TCheckBox
@@ -68,6 +68,14 @@ object formELogJarlEx: TformELogJarlEx
       Height = 17
       Caption = 'TX#'#12434#36861#21152
       TabOrder = 0
+    end
+    object checkELogMaker: TCheckBox
+      Left = 122
+      Top = 7
+      Width = 113
+      Height = 17
+      Caption = 'ELOGMAKER'#24418#24335
+      TabOrder = 1
     end
   end
   object TabControl1: TTabControl
@@ -1970,7 +1978,7 @@ object formELogJarlEx: TformELogJarlEx
     Filter = 'JARL E-log files (*.em)|*.em|'#20840#12390#12398#12501#12449#12452#12523'|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Save E-Log file'
-    Left = 153
+    Left = 641
     Top = 684
   end
 end

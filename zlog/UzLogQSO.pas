@@ -9,6 +9,9 @@ uses
   System.DateUtils, System.Math, Generics.Collections, Generics.Defaults,
   UzLogConst, HelperLib, UzLogAdif;
 
+const
+  TAB = #09;
+
 type
   TQSODataExHeader = packed record
     case Integer of
@@ -205,7 +208,10 @@ type
     function CheckCallSummary : string;
     procedure UpdateTime;
     {$IFNDEF ZSERVER}
-    function zLogALL : string;
+    function zLogALL(): string;
+    function FormatELogR1(fValid: Boolean): string;
+    function FormatELogR2(fExtend: Boolean): string;
+    function FormatELogStd(): string;
     {$ENDIF}
     function DOSzLogText : string;
     function DOSzLogTextShort : string;
@@ -1248,6 +1254,134 @@ begin
    end;
 
    S := S + Self.MemoStr;
+   Result := S;
+end;
+
+function TQSO.FormatELogR1(fValid: Boolean): string;
+var
+   S: string;
+begin
+   S := '';
+   if Self.Invalid = True then begin
+      S := S + 'X ' + FormatDateTime('yyyy/mm/dd hh":"nn ', Self.Time);
+   end
+   else begin
+      S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', self.Time);
+   end;
+   S := S + FillRight2(Self.CallSign, 13);
+   S := S + FillRight2(IntToStr(Self.RSTSent), 4);
+   S := S + FillRight2(Self.NrSent, 8);
+   S := S + FillRight2(IntToStr(Self.RSTRcvd), 4);
+   S := S + FillRight2(Self.NrRcvd, 8);
+
+   if Self.NewMulti1 then begin
+      S := S + FillRight2(Self.Multi1, 6);
+   end
+   else begin
+      S := S + '-     ';
+   end;
+
+   if Self.NewMulti2 then begin
+      S := S + FillRight2(Self.Multi2, 6);
+   end
+   else begin
+      S := S + '-     ';
+   end;
+
+   S := S + FillRight2(MHzString[Self.Band], 5);
+   S := S + FillRight2(ModeString[Self.Mode], 5);
+   if fValid = True then begin
+      S := S + FillRight2(IntToStr(Self.Points), 3);
+   end
+   else begin
+      S := S + FillRight2(IntToStr(0), 3);
+   end;
+
+   if Self.Operator <> '' then begin
+      S := S + FillRight2('%%' + Self.Operator + '%%', 19);
+   end;
+
+   if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+      S := S + FillRight2('TX#' + IntToStr(Self.TX), 6);
+   end;
+
+   Result := S;
+end;
+
+function TQSO.FormatELogR2(fExtend: Boolean): string;
+var
+   slLine: TStringList;
+begin
+   slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
+   slLine.Delimiter := TAB;
+   try
+      if Self.Invalid = True then begin
+         slLine.Add('X ' + FormatDateTime('yyyy-mm-dd', Self.Time));
+      end
+      else begin
+         slLine.Add(FormatDateTime('yyyy-mm-dd', Self.Time));
+      end;
+      slLine.Add(FormatDateTime('hh:nn', Self.Time));
+
+      slLine.Add(MHzString[Self.Band]);
+      slLine.Add(ModeString[Self.Mode]);
+      slLine.Add(Self.Callsign);
+
+      slLine.Add(IntToStr(Self.RSTsent) + ' ' + Self.NrSent);
+      slLine.Add(IntToStr(Self.RSTrcvd) + ' ' + Self.NrRcvd);
+
+      if Self.NewMulti1 = True then begin
+         slLine.Add(Self.Multi1);
+      end
+      else begin
+         slLine.Add('-');
+      end;
+
+      slLine.Add(IntToStr(Self.Points));
+
+      if fExtend = True then begin
+         slLine.Add('TX#' + IntToStr(Self.TX));
+      end;
+
+      Result := slLine.DelimitedText;
+   finally
+      slLine.Free();
+   end;
+end;
+
+// 1234567890123456712345612345612345678901234123412345678901234123456789012345678
+// 2008-08-03 12:01   21  SSB   JA1xxx        59  14M       59  14H       14      1
+
+function TQSO.FormatELogStd(): string;
+var
+   S: string;
+begin
+   S := '';
+   if Self.Invalid = True then begin
+      S := S + 'X ' + FormatDateTime('yyyy/mm/dd hh":"nn ', Self.Time);
+   end
+   else begin
+      S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', self.Time);
+   end;
+
+   S := S + FillLeft(MHzString[Self.Band], 4) + '  ';
+   S := S + FillRight2(ModeString[Self.Mode], 6);
+   S := S + FillRight2(Self.CallSign, 14);
+   S := S + FillRight2(IntToStr(Self.RSTSent), 4);
+   S := S + FillRight2(Self.NrSent, 10);
+   S := S + FillRight2(IntToStr(Self.RSTRcvd), 4);
+   S := S + FillRight2(Self.NrRcvd, 10);
+
+   if Self.NewMulti1 then begin
+      S := S + FillRight2(Self.Multi1, 8);
+   end
+   else begin
+      S := S + '-       ';
+   end;
+
+   S := S + IntToStr(Self.Points);
+
    Result := S;
 end;
 {$ENDIF}
