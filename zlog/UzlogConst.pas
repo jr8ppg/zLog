@@ -94,7 +94,7 @@ type
   end;
 
 const
-  MAXICOM = 54;
+  MAXICOM = 55;
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
@@ -205,6 +205,8 @@ const
        (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
         AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+       (name: 'IC-2730';      addr: $90; minband: b144; maxband: b430; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
         AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; )
      );
 
