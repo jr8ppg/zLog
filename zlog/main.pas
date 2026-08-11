@@ -736,6 +736,12 @@ type
     menuLogChecker: TMenuItem;
     actionResetFontSize: TAction;
     menuResetFontSize: TMenuItem;
+    MemoEdit2A: TOvrEdit;
+    MemoEdit2B: TOvrEdit;
+    MemoEdit2C: TOvrEdit;
+    MemoEdit2VA: TOvrEdit;
+    MemoEdit2VB: TOvrEdit;
+    MemoEdit2VC: TOvrEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1317,6 +1323,7 @@ type
     function GetGridColmunLeft(col: Integer): Integer;
     procedure SetEditFields();
     procedure SetEditFields1R();
+    procedure SetEditFields2RH();
     procedure SetEditFields2RV();
     function GetNextRigID(curid: Integer): Integer;
 
@@ -2950,6 +2957,7 @@ end;
 procedure TMainForm.SetEditFields();
 begin
    SetEditFields1R();
+   SetEditFields2RH();
    SetEditFields2RV();
 end;
 
@@ -3042,10 +3050,155 @@ begin
    LayoutEdit(13, MemoEdit1);
 end;
 
+procedure TMainForm.SetEditFields2RH();
+var
+   h: Integer;
+   w: Integer;
+   t: Integer;
+
+   procedure SetFieldWidth(edit: TEdit; no: Integer);
+   begin
+      if dmZLogGlobal.QsoListColumnVisible[no] = False then begin
+         edit.Visible := False;
+      end
+      else begin
+         if MyContest = nil then begin
+            edit.Width := 7 * w;
+         end
+         else begin
+            edit.Width := MyContest.ColWidths[no] * w;
+         end;
+         edit.Visible := True;
+      end;
+   end;
+begin
+   h := Grid.Canvas.TextHeight('A') + 4;
+   w := Grid.Canvas.TextWidth('A');
+
+   // RIG-A 上段
+   BandEdit2A.Height := h;
+   ModeEdit2A.Height := h;
+   BandEdit2A.Width := w * 6;
+
+   ModeEdit2A.Width := w * 6;
+
+   t := BandEdit2A.Top + h + 2;
+
+   // RIG-A 下段
+   ledTx2A.Top := t + ((h - ledTx2A.Height) div 2);
+   CallsignEdit2A.Height := h;
+   RcvdRSTEdit2A.Height := h;
+   NumberEdit2A.Height := h;
+   MemoEdit2A.Height := h;
+   CallsignEdit2A.Top := t;
+   RcvdRSTEdit2A.Top := t;
+   NumberEdit2A.Top := t;
+   MemoEdit2A.Top := t;
+   CallsignEdit2A.Width := w * 10;
+   RcvdRSTEdit2A.Width := w * 4;
+   NumberEdit2A.Width := w * 9;
+   SetFieldWidth(MemoEdit2A, 13);
+   RcvdRSTEdit2A.Left := CallsignEdit2A.Left + CallsignEdit2A.Width + 3;
+   NumberEdit2A.Left := RcvdRSTEdit2A.Left + RcvdRSTEdit2A.Width + 3;
+   MemoEdit2A.Left := NumberEdit2A.Left + NumberEdit2A.Width + 3;
+
+   BandEdit2A.Left := RcvdRSTEdit2A.Left;
+   ModeEdit2A.Left := BandEdit2A.Left + BandEdit2A.Width + 3;
+
+   // RIG-B 上段
+   BandEdit2B.Height := h;
+   ModeEdit2B.Height := h;
+   BandEdit2B.Width := w * 6;
+
+   ModeEdit2B.Width := w * 6;
+
+   t := BandEdit2B.Top + h + 2;
+
+   // RIG-B 下段
+   ledTx2B.Top := t + ((h - ledTx2B.Height) div 2);
+   CallsignEdit2B.Height := h;
+   RcvdRSTEdit2B.Height := h;
+   NumberEdit2B.Height := h;
+   MemoEdit2B.Height := h;
+   CallsignEdit2B.Top := t;
+   RcvdRSTEdit2B.Top := t;
+   NumberEdit2B.Top := t;
+   MemoEdit2B.Top := t;
+   CallsignEdit2B.Width := w * 10;
+   RcvdRSTEdit2B.Width := w * 4;
+   NumberEdit2B.Width := w * 9;
+   SetFieldWidth(MemoEdit2B, 13);
+   RcvdRSTEdit2B.Left := CallsignEdit2B.Left + CallsignEdit2B.Width + 3;
+   NumberEdit2B.Left := RcvdRSTEdit2B.Left + RcvdRSTEdit2B.Width + 3;
+   MemoEdit2B.Left := NumberEdit2B.Left + NumberEdit2B.Width + 3;
+
+   BandEdit2B.Left := RcvdRSTEdit2B.Left;
+   ModeEdit2B.Left := BandEdit2B.Left + BandEdit2B.Width + 3;
+
+   // 左パネル時計
+   TimeEdit2RH.Height := h;
+   TimeEdit2RH.Width := w * 7 + 5;
+   TimeEdit2RH.Top := CallsignEdit2A.Top;
+
+   // 左パネルシリアルＮＯ
+   SerialEdit2A.Height := h;
+   SerialEdit2A.Width := w * 5;
+
+   // RIG-C
+   CallsignEdit2C.Height := h;
+   RcvdRSTEdit2C.Height := h;
+   NumberEdit2C.Height := h;
+   BandEdit2C.Height := h;
+   ModeEdit2C.Height := h;
+   MemoEdit2C.Height := h;
+   CallsignEdit2C.Width := w * 10;
+   RcvdRSTEdit2C.Width := w * 4;
+   NumberEdit2C.Width := w * 9;
+   BandEdit2C.Width := w * 6;
+   ModeEdit2C.Width := w * 6;
+   SetFieldWidth(MemoEdit2C, 13);
+
+   RigPanelHC.Height := h + 8;
+
+   // 左パネル
+   EditUpperLeftPanel2RH.Width := TimeEdit2RH.Left + TimeEdit2RH.Width + 2;
+
+   // 2RHパネル全体サイズ
+   EditPanel2RH.Height := RigPanelHC.Height + CallsignEdit2A.Top + CallsignEdit2A.Height + 5;
+
+   // RIG-C再配置
+   checkUseRig3H.Top := CallsignEdit2C.Top + ((h - checkUseRig3H.Height) div 2);
+   labelRigTitle2HC.Top := CallsignEdit2C.Top + ((h - labelRigTitle2HC.Height) div 2);
+   ledTx2C.Top := CallsignEdit2C.Top + ((h - ledTx2C.Height) div 2);
+   ledTx2C.Left := EditUpperLeftPanel2RH.Width + ledTx2A.Left;
+   CallsignEdit2C.Left := EditUpperLeftPanel2RH.Width + CallsignEdit2A.Left;
+   RcvdRSTEdit2C.Left := CallsignEdit2C.Left + CallsignEdit2C.Width + 3;
+   NumberEdit2C.Left := RcvdRSTEdit2C.Left + RcvdRSTEdit2C.Width + 3;
+   BandEdit2C.Left := NumberEdit2C.Left + NumberEdit2C.Width + 3;
+   ModeEdit2C.Left := BandEdit2C.Left + BandEdit2C.Width + 3;
+   MemoEdit2C.Left := ModeEdit2C.Left + ModeEdit2C.Width + 3;
+end;
+
 procedure TMainForm.SetEditFields2RV();
 var
    h: Integer;
    w: Integer;
+
+   procedure SetFieldWidth(edit: TEdit; no: Integer);
+   begin
+      if dmZLogGlobal.QsoListColumnVisible[no] = False then begin
+         edit.Visible := False;
+      end
+      else begin
+         if MyContest = nil then begin
+            edit.Width := 7 * w;
+         end
+         else begin
+            edit.Width := MyContest.ColWidths[no] * w;
+         end;
+         edit.Visible := True;
+      end;
+   end;
 
    procedure SetPanelSizeInc();
    begin
@@ -3072,16 +3225,19 @@ var
       NumberEdit2VA.Height := h;
       BandEdit2VA.Height := h;
       ModeEdit2VA.Height := h;
+      MemoEdit2VA.Height := h;
       CallsignEdit2VB.Height := h;
       RcvdRSTEdit2VB.Height := h;
       NumberEdit2VB.Height := h;
       BandEdit2VB.Height := h;
       ModeEdit2VB.Height := h;
+      MemoEdit2VB.Height := h;
       CallsignEdit2VC.Height := h;
       RcvdRSTEdit2VC.Height := h;
       NumberEdit2VC.Height := h;
       BandEdit2VC.Height := h;
       ModeEdit2VC.Height := h;
+      MemoEdit2VC.Height := h;
       DateEdit2RV.Height := h;
       TimeEdit2RV.Height := h;
       SerialEdit2VA.Height := h;
@@ -3094,15 +3250,19 @@ var
       NumberEdit2VA.Top := CallsignEdit2VA.Top;
       BandEdit2VA.Top := CallsignEdit2VA.Top;
       ModeEdit2VA.Top := CallsignEdit2VA.Top;
+      MemoEdit2VA.Top := CallsignEdit2VA.Top;
       CallsignEdit2VA.Width := w * 12;
       RcvdRSTEdit2VA.Width := w * 4;
       NumberEdit2VA.Width := w * 9;
       BandEdit2VA.Width := w * 5;
       ModeEdit2VA.Width := w * 5;
+      SetFieldWidth(MemoEdit2VA, 13);
+
       RcvdRSTEdit2VA.Left := CallsignEdit2VA.Left + CallsignEdit2VA.Width + 3;
       NumberEdit2VA.Left := RcvdRSTEdit2VA.Left + RcvdRSTEdit2VA.Width + 3;
       BandEdit2VA.Left := NumberEdit2VA.Left + NumberEdit2VA.Width + 3;
       ModeEdit2VA.Left := BandEdit2VA.Left + BandEdit2VA.Width + 3;
+      MemoEdit2VA.Left := ModeEdit2VA.Left + ModeEdit2VA.Width + 3;
 
       // RIG-B
       ledTx2VB.Top := (RigPanelVB.Height - ledTx2VB.Height) div 2;
@@ -3112,15 +3272,19 @@ var
       NumberEdit2VB.Top := CallsignEdit2VB.Top;
       BandEdit2VB.Top := CallsignEdit2VB.Top;
       ModeEdit2VB.Top := CallsignEdit2VB.Top;
+      MemoEdit2VB.Top := CallsignEdit2VB.Top;
       CallsignEdit2VB.Width := w * 12;
       RcvdRSTEdit2VB.Width := w * 4;
       NumberEdit2VB.Width := w * 9;
       BandEdit2VB.Width := w * 5;
       ModeEdit2VB.Width := w * 5;
+      SetFieldWidth(MemoEdit2VB, 13);
+
       RcvdRSTEdit2VB.Left := CallsignEdit2VB.Left + CallsignEdit2VB.Width + 3;
       NumberEdit2VB.Left := RcvdRSTEdit2VB.Left + RcvdRSTEdit2VB.Width + 3;
       BandEdit2VB.Left := NumberEdit2VB.Left + NumberEdit2VB.Width + 3;
       ModeEdit2VB.Left := BandEdit2VB.Left + BandEdit2VB.Width + 3;
+      MemoEdit2VB.Left := ModeEdit2VB.Left + ModeEdit2VB.Width + 3;
 
       // RIG-C
       ledTx2VC.Top := (RigPanelVC.Height - ledTx2VC.Height) div 2;
@@ -3131,6 +3295,7 @@ var
       NumberEdit2VC.Top := CallsignEdit2VC.Top;
       BandEdit2VC.Top := CallsignEdit2VC.Top;
       ModeEdit2VC.Top := CallsignEdit2VC.Top;
+      MemoEdit2VC.Top := CallsignEdit2VC.Top;
       checkWithRig1V.Top := (RigPanelVC.Height - checkWithRig1V.Height) div 2;
       checkWithRig2V.Top := (RigPanelVC.Height - checkWithRig2V.Height) div 2;
       CallsignEdit2VC.Width := w * 12;
@@ -3138,10 +3303,13 @@ var
       NumberEdit2VC.Width := w * 9;
       BandEdit2VC.Width := w * 5;
       ModeEdit2VC.Width := w * 5;
+      SetFieldWidth(MemoEdit2VC, 13);
+
       RcvdRSTEdit2VC.Left := CallsignEdit2VC.Left + CallsignEdit2VC.Width + 3;
       NumberEdit2VC.Left := RcvdRSTEdit2VC.Left + RcvdRSTEdit2VC.Width + 3;
       BandEdit2VC.Left := NumberEdit2VC.Left + NumberEdit2VC.Width + 3;
       ModeEdit2VC.Left := BandEdit2VC.Left + BandEdit2VC.Width + 3;
+      MemoEdit2VC.Left := ModeEdit2VC.Left + ModeEdit2VC.Width + 3;
    end;
 begin
    h := Grid.RowHeights[0];
@@ -4099,6 +4267,22 @@ begin
    EditPanel1R.Font.Size := font_size;
    CallsignEdit1.Font.Size := font_size;
    NumberEdit1.Font.Size := font_size;
+
+   // 2RH
+   EditPanel2RH.Font.Size := font_size;
+   EditUpperLeftPanel2RH.Font.Size := font_size;
+   EditUpperRightPanel2RH.Font.Size := font_size;
+   RigPanelHC.Font.Size := font_size;
+
+   CallsignEdit2A.Font.Size := font_size;
+   RcvdRSTEdit2A.Font.Size := font_size;
+   NumberEdit2A.Font.Size := font_size;
+   CallsignEdit2B.Font.Size := font_size;
+   RcvdRSTEdit2B.Font.Size := font_size;
+   NumberEdit2B.Font.Size := font_size;
+   CallsignEdit2C.Font.Size := font_size;
+   RcvdRSTEdit2C.Font.Size := font_size;
+   NumberEdit2C.Font.Size := font_size;
 
    // 2RV
    EditPanel2RV.Font.Size := font_size;
@@ -7303,7 +7487,12 @@ begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
    if Is2Radio() = True then begin
-      FCurrentRigSet := edit.Tag;
+      if edit.Tag >= 1000 then begin
+         FCurrentRigSet := edit.Tag - 1000;
+      end
+      else begin
+         FCurrentRigSet := edit.Tag;
+      end;
    end;
 
    if FPastEditMode = True then begin
@@ -7337,7 +7526,7 @@ begin
    actionQsoComplete.Enabled:= True;
 
    // memo欄ではSHIFTキーを使うaction禁止
-   if TEdit(Sender).Tag = 1000 then begin
+   if TEdit(Sender).Tag >= 1000 then begin
       EnableShiftKeyAction(False);
    end;
 end;
@@ -7357,7 +7546,7 @@ begin
    actionQsoComplete.Enabled:= False;
 
    // memo欄ではSHIFTキーを使うaction禁止
-   if TEdit(Sender).Tag = 1000 then begin
+   if TEdit(Sender).Tag >= 1000 then begin
       EnableShiftKeyAction(True);
    end;
 end;
@@ -13725,7 +13914,7 @@ begin
       FEditPanel[0].PowerEdit      := PowerEdit2HA;
       FEditPanel[0].BandEdit       := BandEdit2A;
       FEditPanel[0].OpEdit         := nil;
-      FEditPanel[0].MemoEdit       := nil;
+      FEditPanel[0].MemoEdit       := MemoEdit2A;
       FEditPanel[0].TxLed          := ledTx2A;
       FEditPanel[0].SelShape       := RigPanelShape2A;
       FEditPanel[0].Title          := labelRigTitle2HA;
@@ -13742,7 +13931,7 @@ begin
       FEditPanel[1].PowerEdit      := PowerEdit2HB;
       FEditPanel[1].BandEdit       := BandEdit2B;
       FEditPanel[1].OpEdit         := nil;
-      FEditPanel[1].MemoEdit       := nil;
+      FEditPanel[1].MemoEdit       := MemoEdit2B;
       FEditPanel[1].TxLed          := ledTx2B;
       FEditPanel[1].SelShape       := RigPanelShape2B;
       FEditPanel[1].Title          := labelRigTitle2HB;
@@ -13759,7 +13948,7 @@ begin
       FEditPanel[2].PowerEdit      := PowerEdit2HC;
       FEditPanel[2].BandEdit       := BandEdit2C;
       FEditPanel[2].OpEdit         := nil;
-      FEditPanel[2].MemoEdit       := nil;
+      FEditPanel[2].MemoEdit       := MemoEdit2C;
       FEditPanel[2].TxLed          := ledTx2C;
       FEditPanel[2].SelShape       := RigPanelShape2C;
       FEditPanel[2].Title          := labelRigTitle2HC;
@@ -13783,7 +13972,7 @@ begin
       FEditPanel[0].PowerEdit      := PowerEdit2VA;
       FEditPanel[0].BandEdit       := BandEdit2VA;
       FEditPanel[0].OpEdit         := nil;
-      FEditPanel[0].MemoEdit       := nil;
+      FEditPanel[0].MemoEdit       := MemoEdit2VA;
       FEditPanel[0].TxLed          := ledTx2VA;
       FEditPanel[0].SelShape       := RigPanelShape2VA;
       FEditPanel[0].Title          := labelRigTitle2VA;
@@ -13800,7 +13989,7 @@ begin
       FEditPanel[1].PowerEdit      := PowerEdit2VB;
       FEditPanel[1].BandEdit       := BandEdit2VB;
       FEditPanel[1].OpEdit         := nil;
-      FEditPanel[1].MemoEdit       := nil;
+      FEditPanel[1].MemoEdit       := MemoEdit2VB;
       FEditPanel[1].TxLed          := ledTx2VB;
       FEditPanel[1].SelShape       := RigPanelShape2VB;
       FEditPanel[1].Title          := labelRigTitle2VB;
@@ -13817,7 +14006,7 @@ begin
       FEditPanel[2].PowerEdit      := PowerEdit2VC;
       FEditPanel[2].BandEdit       := BandEdit2VC;
       FEditPanel[2].OpEdit         := nil;
-      FEditPanel[2].MemoEdit       := nil;
+      FEditPanel[2].MemoEdit       := MemoEdit2VC;
       FEditPanel[2].TxLed          := ledTx2VC;
       FEditPanel[2].SelShape       := RigPanelShape2C;
       FEditPanel[2].Title          := labelRigTitle2VC;
@@ -13850,8 +14039,10 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].RcvdNumberEdit.Color := clWindow;
       FEditPanel[id].ModeEdit.Color := clWindow;
       FEditPanel[id].BandEdit.Color := clWindow;
+      FEditPanel[id].MemoEdit.Color := clWindow;
       FEditPanel[id].ModeEdit.Enabled := True;
       FEditPanel[id].BandEdit.Enabled := True;
+      FEditPanel[id].MemoEdit.Enabled := True;
    end;
 
    procedure SetGlay(id: Integer);
@@ -13865,8 +14056,10 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].RcvdNumberEdit.Color := clBtnFace;
       FEditPanel[id].ModeEdit.Color := clBtnFace;
       FEditPanel[id].BandEdit.Color := clBtnFace;
+      FEditPanel[id].MemoEdit.Color := clBtnFace;
       FEditPanel[id].ModeEdit.Enabled := False;
       FEditPanel[id].BandEdit.Enabled := False;
+      FEditPanel[id].MemoEdit.Enabled := False;
    end;
 
    procedure SetRigTitleColor(os: TOperateStyle; rig1, rig2, rig3: Boolean);

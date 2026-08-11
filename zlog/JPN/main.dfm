@@ -311,17 +311,6 @@ object MainForm: TMainForm
         DesignSize = (
           526
           28)
-        object RigPanelShape2C: TShape
-          Tag = 3
-          Left = 0
-          Top = 0
-          Width = 526
-          Height = 28
-          Align = alClient
-          Brush.Style = bsClear
-          Pen.Width = 2
-          ExplicitLeft = 1
-        end
         object ledTx2C: TJvLED
           Left = 71
           Top = 5
@@ -343,6 +332,17 @@ object MainForm: TMainForm
           ParentFont = False
           StyleElements = [seClient, seBorder]
           OnClick = labelRigTitleCClick
+        end
+        object RigPanelShape2C: TShape
+          Tag = 3
+          Left = 0
+          Top = 0
+          Width = 526
+          Height = 28
+          Align = alClient
+          Brush.Style = bsClear
+          Pen.Width = 2
+          ExplicitLeft = 1
         end
         object CallsignEdit2C: TOvrEdit
           Tag = 3
@@ -531,6 +531,22 @@ object MainForm: TMainForm
           OnClick = PowerEdit1Click
           OnKeyDown = EditKeyDown
         end
+        object MemoEdit2C: TOvrEdit
+          Tag = 1003
+          Left = 445
+          Top = 4
+          Width = 73
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          TabOrder = 11
+          OnChange = MemoEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          TabOnEnter = False
+        end
       end
       object EditUpperLeftPanel2RH: TPanel
         Left = 1
@@ -625,19 +641,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          object RigPanelShape2A: TShape
-            Tag = 1
-            Left = 0
-            Top = 0
-            Width = 230
-            Height = 53
-            Align = alClient
-            Brush.Style = bsClear
-            Pen.Width = 2
-            ExplicitLeft = -1
-            ExplicitWidth = 217
-            ExplicitHeight = 51
-          end
           object ledTx2A: TJvLED
             Left = 6
             Top = 28
@@ -657,6 +660,19 @@ object MainForm: TMainForm
             Font.Style = []
             ParentFont = False
             StyleElements = [seClient, seBorder]
+          end
+          object RigPanelShape2A: TShape
+            Tag = 1
+            Left = 0
+            Top = 0
+            Width = 230
+            Height = 53
+            Align = alClient
+            Brush.Style = bsClear
+            Pen.Width = 2
+            ExplicitLeft = -1
+            ExplicitWidth = 217
+            ExplicitHeight = 51
           end
           object CallsignEdit2A: TOvrEdit
             Tag = 1
@@ -795,6 +811,22 @@ object MainForm: TMainForm
             OnClick = PowerEdit1Click
             OnKeyDown = EditKeyDown
           end
+          object MemoEdit2A: TOvrEdit
+            Tag = 1001
+            Left = 221
+            Top = 27
+            Width = 73
+            Height = 20
+            TabStop = False
+            AutoSize = False
+            TabOrder = 8
+            OnChange = MemoEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            TabOnEnter = False
+          end
         end
         object RigPanelB: TPanel
           Left = 230
@@ -804,19 +836,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          object RigPanelShape2B: TShape
-            Tag = 2
-            Left = 0
-            Top = 0
-            Width = 231
-            Height = 53
-            Align = alClient
-            Brush.Style = bsClear
-            Pen.Width = 2
-            ExplicitLeft = -1
-            ExplicitWidth = 217
-            ExplicitHeight = 51
-          end
           object ledTx2B: TJvLED
             Left = 6
             Top = 28
@@ -836,6 +855,19 @@ object MainForm: TMainForm
             Font.Style = []
             ParentFont = False
             StyleElements = [seClient, seBorder]
+          end
+          object RigPanelShape2B: TShape
+            Tag = 2
+            Left = 0
+            Top = 0
+            Width = 231
+            Height = 53
+            Align = alClient
+            Brush.Style = bsClear
+            Pen.Width = 2
+            ExplicitLeft = -1
+            ExplicitWidth = 217
+            ExplicitHeight = 51
           end
           object CallsignEdit2B: TOvrEdit
             Tag = 2
@@ -973,6 +1005,22 @@ object MainForm: TMainForm
             Visible = False
             OnClick = PowerEdit1Click
             OnKeyDown = EditKeyDown
+          end
+          object MemoEdit2B: TOvrEdit
+            Tag = 1002
+            Left = 221
+            Top = 27
+            Width = 73
+            Height = 20
+            TabStop = False
+            AutoSize = False
+            TabOrder = 8
+            OnChange = MemoEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            TabOnEnter = False
           end
         end
       end
@@ -1226,18 +1274,6 @@ object MainForm: TMainForm
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          object RigPanelShape2VA: TShape
-            Tag = 1
-            Left = 0
-            Top = 0
-            Width = 461
-            Height = 29
-            Align = alClient
-            Brush.Style = bsClear
-            Pen.Width = 2
-            ExplicitTop = -1
-            ExplicitHeight = 30
-          end
           object ledTx2VA: TJvLED
             Left = 6
             Top = 6
@@ -1257,6 +1293,18 @@ object MainForm: TMainForm
             Font.Style = []
             ParentFont = False
             StyleElements = [seClient, seBorder]
+          end
+          object RigPanelShape2VA: TShape
+            Tag = 1
+            Left = 0
+            Top = 0
+            Width = 461
+            Height = 29
+            Align = alClient
+            Brush.Style = bsClear
+            Pen.Width = 2
+            ExplicitTop = -1
+            ExplicitHeight = 30
           end
           object CallsignEdit2VA: TOvrEdit
             Tag = 1
@@ -1394,6 +1442,22 @@ object MainForm: TMainForm
             Visible = False
             OnClick = PowerEdit1Click
             OnKeyDown = EditKeyDown
+          end
+          object MemoEdit2VA: TOvrEdit
+            Tag = 1001
+            Left = 463
+            Top = 5
+            Width = 73
+            Height = 20
+            TabStop = False
+            AutoSize = False
+            TabOrder = 8
+            OnChange = MemoEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            TabOnEnter = False
           end
         end
         object RigPanelVB: TPanel
@@ -1572,6 +1636,22 @@ object MainForm: TMainForm
             Visible = False
             OnClick = PowerEdit1Click
             OnKeyDown = EditKeyDown
+          end
+          object MemoEdit2VB: TOvrEdit
+            Tag = 1002
+            Left = 463
+            Top = 5
+            Width = 73
+            Height = 20
+            TabStop = False
+            AutoSize = False
+            TabOrder = 8
+            OnChange = MemoEdit1Change
+            OnEnter = EditEnter
+            OnExit = EditExit
+            OnKeyDown = EditKeyDown
+            OnKeyPress = EditKeyPress
+            TabOnEnter = False
           end
         end
       end
@@ -1805,6 +1885,22 @@ object MainForm: TMainForm
           Visible = False
           OnClick = PowerEdit1Click
           OnKeyDown = EditKeyDown
+        end
+        object MemoEdit2VC: TOvrEdit
+          Tag = 1003
+          Left = 528
+          Top = 5
+          Width = 73
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          TabOrder = 11
+          OnChange = MemoEdit1Change
+          OnEnter = EditEnter
+          OnExit = EditExit
+          OnKeyDown = EditKeyDown
+          OnKeyPress = EditKeyPress
+          TabOnEnter = False
         end
       end
     end
@@ -8878,8 +8974,8 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 20
     OnTimer = timerShowInfoTimer
-    Left = 320
-    Top = 195
+    Left = 288
+    Top = 163
   end
   object popupTimeZone: TPopupMenu
     AutoHotkeys = maManual
@@ -8941,7 +9037,7 @@ object MainForm: TMainForm
     Enabled = False
     Interval = 20
     OnTimer = timerPartialCloseTimer
-    Left = 288
-    Top = 175
+    Left = 260
+    Top = 163
   end
 end
