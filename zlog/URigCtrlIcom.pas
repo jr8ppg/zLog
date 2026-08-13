@@ -1038,7 +1038,9 @@ begin
       OutputDebugString(PChar('*** ƒRƒ}ƒ“ƒhíœ ***'));
       {$ENDIF}
       IcomLock.Enter();
-      FRig.FCommandList.Delete(0);
+      if FRig.FCommandList.Count > 0 then begin
+         FRig.FCommandList.Delete(0);
+      end;
       FRig.FComm.OnReceiveData := proc;
       IcomLock.Leave();
 
