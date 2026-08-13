@@ -542,7 +542,10 @@ procedure TICOM.SetMode(Q: TQSO);
 var
    Command: AnsiString;
    para: byte;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    Inherited SetMode(Q);
 
    FPollingTimer.Enabled := False;
@@ -575,6 +578,7 @@ begin
 
       ICOMWriteData(Command);
    finally
+      FIgnoreRigMode := fIgnoreRigModeBack;
       FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;

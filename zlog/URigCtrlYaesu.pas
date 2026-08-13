@@ -377,7 +377,10 @@ procedure TFT1000MP.SetMode(Q: TQSO);
 var
    Command: AnsiString;
    para: byte;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    Inherited SetMode(Q);
 
    para := 0;
@@ -402,6 +405,7 @@ begin
 
    Command := _nil3 + AnsiChar(para) + AnsiChar($0C);
    WriteData(Command);
+   FIgnoreRigMode := fIgnoreRigModeBack;
 end;
 
 procedure TFT1000MP.SetVFO(i: Integer); // A:0, B:1
@@ -730,7 +734,10 @@ end;
 procedure TFT2000.SetMode(Q: TQSO);
 var
    m: Integer;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    Inherited SetMode(Q);
 
    case Q.Mode of
@@ -754,6 +761,7 @@ begin
    end;
 
    WriteData(AnsiString('MD') + AnsiChar(Ord('0') + _currentvfo) + AnsiChar(Ord('0') + m) + AnsiString(';'));
+   FIgnoreRigMode := fIgnoreRigModeBack;
 end;
 
 procedure TFT2000.SetRit(flag: Boolean);
@@ -1100,7 +1108,10 @@ procedure TFT1011.SetMode(Q: TQSO);
 var
    Command: AnsiString;
    para: byte;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    Inherited SetMode(Q);
 
    para := 0;
@@ -1125,6 +1136,7 @@ begin
 
    Command := _nil3 + AnsiChar(para) + AnsiChar($0C);
    WriteData(Command);
+   FIgnoreRigMode := fIgnoreRigModeBack;
 
    _currentmode := Q.Mode;
    if Selected then begin
@@ -1367,7 +1379,10 @@ procedure TFT847.SetMode(Q: TQSO);
 var
    Command: AnsiString;
    para: byte;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    _currentmode := Q.Mode;
 
    case Q.Mode of
@@ -1388,6 +1403,7 @@ begin
 
    Command := AnsiChar(para) + _nil3 + AnsiChar($07);
    WriteData(Command);
+   FIgnoreRigMode := fIgnoreRigModeBack;
 end;
 
 procedure TFT847.SetVFO(i: Integer);
@@ -1438,7 +1454,10 @@ procedure TFT817.SetMode(Q: TQSO);
 var
    Command: AnsiString;
    para: byte;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    _currentmode := Q.Mode;
 
    case Q.Mode of
@@ -1459,6 +1478,7 @@ begin
 
    Command := AnsiChar(para) + _nil3 + AnsiChar($07);
    WriteData(Command);
+   FIgnoreRigMode := fIgnoreRigModeBack;
 
    FPollingTimer.Enabled := False;
    Fchange := True;
@@ -2086,7 +2106,10 @@ end;
 procedure TFTX1.SetMode(Q: TQSO);
 var
    m: AnsiChar;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    Inherited SetMode(Q);
 
    case Q.Mode of
@@ -2112,6 +2135,7 @@ begin
    end;
 
    WriteData(AnsiString('MD') + AnsiChar(Ord('0') + _currentvfo) + AnsiChar(m) + AnsiChar(';'));
+   FIgnoreRigMode := fIgnoreRigModeBack;
 end;
 
 procedure TFTX1.SelectBand(b: TBand);
