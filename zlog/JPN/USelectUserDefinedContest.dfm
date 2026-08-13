@@ -63,6 +63,58 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       Visible = False
       OnClick = buttonCFGEditClick
     end
+    object checkImportCwMessage1: TCheckBox
+      Left = 10
+      Top = 25
+      Width = 68
+      Height = 13
+      Caption = 'f1'#21462#36796
+      Checked = True
+      State = cbChecked
+      TabOrder = 3
+    end
+    object checkImportCwMessage2: TCheckBox
+      Left = 92
+      Top = 25
+      Width = 68
+      Height = 13
+      Caption = 'f2'#21462#36796
+      Checked = True
+      State = cbChecked
+      TabOrder = 4
+    end
+    object checkImportCwMessage3: TCheckBox
+      Left = 174
+      Top = 25
+      Width = 68
+      Height = 13
+      Caption = 'f3'#21462#36796
+      TabOrder = 5
+    end
+    object checkImportCwMessage4: TCheckBox
+      Left = 256
+      Top = 25
+      Width = 68
+      Height = 13
+      Caption = 'f4'#21462#36796
+      TabOrder = 6
+    end
+    object checkImportCQMessage2: TCheckBox
+      Left = 338
+      Top = 25
+      Width = 80
+      Height = 13
+      Caption = 'CQ2'#21462#36796
+      TabOrder = 7
+    end
+    object checkImportCQMessage3: TCheckBox
+      Left = 420
+      Top = 25
+      Width = 80
+      Height = 13
+      Caption = 'CQ3'#21462#36796
+      TabOrder = 8
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -129,12 +181,6 @@ object SelectUserDefinedContest: TSelectUserDefinedContest
       item
         Caption = #12467#12531#12486#12473#12488#21517
         Width = 180
-      end
-      item
-        Caption = 'prov'
-      end
-      item
-        Caption = 'city'
       end
       item
         Caption = 'f1_a'

@@ -1513,12 +1513,16 @@ begin
 
    // F1Å`F4éÊçû
    for i := 1 to 4 do begin
-      FDefCwMessages[1, i] := FConfig.CwMessageA[i];
+      if dmZLogGlobal.Settings.FImpCwMessage[i] = True then begin
+         FDefCwMessages[1, i] := FConfig.CwMessageA[i];
+      end;
    end;
 
    // CQ2,CQ3éÊÇËçûÇ›
    for i := 2 to 3 do begin
-      FDefCwMessageCQ[i] := FConfig.CwMessageCQ[i];
+      if dmZLogGlobal.Settings.FImpCQMessage[i] = True then begin
+         FDefCwMessageCQ[i] := FConfig.CwMessageCQ[i];
+      end;
    end;
 end;
 

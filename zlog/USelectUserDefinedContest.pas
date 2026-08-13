@@ -25,6 +25,12 @@ type
     ListView1: TListView;
     buttonCFGEdit: TButton;
     editFilterText: TEdit;
+    checkImportCwMessage1: TCheckBox;
+    checkImportCwMessage2: TCheckBox;
+    checkImportCwMessage3: TCheckBox;
+    checkImportCwMessage4: TCheckBox;
+    checkImportCQMessage2: TCheckBox;
+    checkImportCQMessage3: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonCfgFolderRefClick(Sender: TObject);
@@ -67,12 +73,24 @@ uses
 procedure TSelectUserDefinedContest.FormCreate(Sender: TObject);
 begin
    FCfgList := nil;
+   checkImportCwMessage1.Checked := dmZLogGlobal.Settings.FImpCwMessage[1];
+   checkImportCwMessage2.Checked := dmZLogGlobal.Settings.FImpCwMessage[2];
+   checkImportCwMessage3.Checked := dmZLogGlobal.Settings.FImpCwMessage[3];
+   checkImportCwMessage4.Checked := dmZLogGlobal.Settings.FImpCwMessage[4];
+   checkImportCQMessage2.Checked := dmZLogGlobal.Settings.FImpCQMessage[2];
+   checkImportCQMessage3.Checked := dmZLogGlobal.Settings.FImpCQMessage[3];
    editFilterText.Text := '';
 end;
 
 procedure TSelectUserDefinedContest.FormDestroy(Sender: TObject);
 begin
    FCfgList.Free();
+   dmZLogGlobal.Settings.FImpCwMessage[1] := checkImportCwMessage1.Checked;
+   dmZLogGlobal.Settings.FImpCwMessage[2] := checkImportCwMessage2.Checked;
+   dmZLogGlobal.Settings.FImpCwMessage[3] := checkImportCwMessage3.Checked;
+   dmZLogGlobal.Settings.FImpCwMessage[4] := checkImportCwMessage4.Checked;
+   dmZLogGlobal.Settings.FImpCQMessage[2] := checkImportCQMessage2.Checked;
+   dmZLogGlobal.Settings.FImpCQMessage[3] := checkImportCQMessage3.Checked;
 end;
 
 procedure TSelectUserDefinedContest.FormShow(Sender: TObject);
@@ -164,14 +182,12 @@ begin
       D.Period := f.Period;
       D.Save();
 
-      ListView1.Selected.SubItems[1] := D.Prov;
-      ListView1.Selected.SubItems[2] := D.City;
-      ListView1.Selected.SubItems[3] := D.CwMessageA[1];
-      ListView1.Selected.SubItems[4] := D.CwMessageA[2];
-      ListView1.Selected.SubItems[5] := D.CwMessageA[3];
-      ListView1.Selected.SubItems[6] := D.CwMessageA[4];
-      ListView1.Selected.SubItems[7] := D.CwMessageCQ[2];
-      ListView1.Selected.SubItems[8] := D.CwMessageCQ[3];
+      ListView1.Selected.SubItems[1] := D.CwMessageA[1];
+      ListView1.Selected.SubItems[2] := D.CwMessageA[2];
+      ListView1.Selected.SubItems[3] := D.CwMessageA[3];
+      ListView1.Selected.SubItems[4] := D.CwMessageA[4];
+      ListView1.Selected.SubItems[5] := D.CwMessageCQ[2];
+      ListView1.Selected.SubItems[6] := D.CwMessageCQ[3];
    finally
       f.Release();
    end;
@@ -276,8 +292,6 @@ begin
       listitem := ListView1.Items.Add();
       listitem.Caption := D.FileName;
       listitem.SubItems.Add(D.ContestName);
-      listitem.SubItems.Add(D.Prov);
-      listitem.SubItems.Add(D.City);
       listitem.SubItems.Add(D.FCwMessageA[1]);
       listitem.SubItems.Add(D.FCwMessageA[2]);
       listitem.SubItems.Add(D.FCwMessageA[3]);
