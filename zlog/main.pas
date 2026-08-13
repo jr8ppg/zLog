@@ -10551,6 +10551,11 @@ begin
 
    if rig <> nil then begin
       rig.SetMode(CurrentQSO);
+
+      // モードに見合った周波数にする
+      if dmZLogGlobal.Settings._set_initfreq_chgmode = True then begin
+         rig.SetBand(FCurrentRigSet, CurrentQSO);
+      end;
    end;
 end;
 
@@ -11894,6 +11899,11 @@ begin
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       rig.SetMode(CurrentQSO);
+
+      // モードに見合った周波数にする
+      if dmZLogGlobal.Settings._set_initfreq_chgmode = True then begin
+         rig.SetBand(FCurrentRigSet, CurrentQSO);
+      end;
    end;
 end;
 

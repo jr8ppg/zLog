@@ -282,6 +282,7 @@ type
     _sync_rig_wpm: Boolean;
     _use_band_updown: Boolean;
     _use_band_select: Boolean;
+    _set_initfreq_chgmode: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -1304,6 +1305,9 @@ begin
       // Use band select command
       Settings._use_band_select := ini.ReadBool('Rig', 'UseBandSelect', False);
 
+      // Set the initial frequency when changing modes.
+      Settings._set_initfreq_chgmode := ini.ReadBool('Rig', 'SetInitFreqWhenChangeMode', False);
+
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
 
@@ -2153,7 +2157,10 @@ begin
       ini.WriteBool('Rig', 'UseBandUpDown', Settings._use_band_updown);
 
       // Use band select command
-      ini.ReadBool('Rig', 'UseBandSelect', Settings._use_band_select);
+      ini.WriteBool('Rig', 'UseBandSelect', Settings._use_band_select);
+
+      // Set the initial frequency when changing modes.
+      ini.WriteBool('Rig', 'SetInitFreqWhenChangeMode', Settings._set_initfreq_chgmode);
 
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);

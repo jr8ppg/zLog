@@ -4192,7 +4192,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 250
-        Height = 224
+        Height = 293
         Caption = 'General settings'
         TabOrder = 0
         object Label45: TLabel
@@ -4313,6 +4313,16 @@ object formOptions: TformOptions
           ParentShowHint = False
           ShowHint = True
           TabOrder = 10
+        end
+        object checkSetInitFreqChgMode: TCheckBox
+          Left = 8
+          Top = 258
+          Width = 233
+          Height = 18
+          Caption = 'Set the initial freq. when changing modes'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 11
         end
       end
       object groupRcMemoryScan: TGroupBox
@@ -4858,13 +4868,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = '@PlemolJP ExtraLight'
+          FontName = 'PlemolJP ExtraLight'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 16
+          ItemIndex = 112
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

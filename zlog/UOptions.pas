@@ -462,6 +462,7 @@ type
     Label2: TLabel;
     buttonBrowseMmtty2Path: TButton;
     editMmtty2Folder: TEdit;
+    checkSetInitFreqChgMode: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1990,6 +1991,7 @@ begin
       Settings._sync_rig_wpm := checkSyncRigWPM.Checked;
       Settings._use_band_updown := checkUseBandUpDown.Checked;
       Settings._use_band_select := checkUseBandSelect.Checked;
+      Settings._set_initfreq_chgmode := checkSetInitFreqChgMode.Checked;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -2348,6 +2350,7 @@ begin
       checkSyncRigWPM.Checked := Settings._sync_rig_wpm;
       checkUseBandUpDown.Checked := Settings._use_band_updown;
       checkUseBandSelect.Checked := Settings._use_band_select;
+      checkSetInitFreqChgMode.Checked := Settings._set_initfreq_chgmode;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;
