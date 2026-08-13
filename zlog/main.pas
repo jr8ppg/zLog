@@ -3055,6 +3055,7 @@ var
    h: Integer;
    w: Integer;
    t: Integer;
+   memo_w: Integer;
 
    procedure SetFieldWidth(edit: TEdit; no: Integer);
    begin
@@ -3105,6 +3106,16 @@ begin
    BandEdit2A.Left := RcvdRSTEdit2A.Left;
    ModeEdit2A.Left := BandEdit2A.Left + BandEdit2A.Width + 3;
 
+   // Memo欄の調整
+   memo_w := RigPanelA.Width - MemoEdit2A.Left - 4;
+   if memo_w < w then begin
+      MemoEdit2A.Visible := False;
+   end
+   else begin
+      MemoEdit2A.Visible := True;
+      MemoEdit2A.Width := Min(memo_w, MemoEdit2A.Width);
+   end;
+
    // RIG-B 上段
    BandEdit2B.Height := h;
    ModeEdit2B.Height := h;
@@ -3134,6 +3145,16 @@ begin
 
    BandEdit2B.Left := RcvdRSTEdit2B.Left;
    ModeEdit2B.Left := BandEdit2B.Left + BandEdit2B.Width + 3;
+
+   // Memo欄の調整
+   memo_w := RigPanelB.Width - MemoEdit2B.Left - 4;
+   if memo_w < w then begin
+      MemoEdit2B.Visible := False;
+   end
+   else begin
+      MemoEdit2B.Visible := True;
+      MemoEdit2B.Width := Min(memo_w, MemoEdit2B.Width);
+   end;
 
    // 左パネル時計
    TimeEdit2RH.Height := h;
