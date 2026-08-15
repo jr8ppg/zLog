@@ -4433,7 +4433,7 @@ begin
 
       ' ': begin
          // memo欄は入力可
-         if TEdit(Sender).Tag = 1000 then begin
+         if TEdit(Sender).Tag >= 1000 then begin
             if dmZLogGlobal.Settings._movetomemo then begin
                Key := #0;
                CallsignEdit.SetFocus;
