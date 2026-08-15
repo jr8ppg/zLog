@@ -2040,9 +2040,9 @@ var
 begin
    Index := buttonSortByTime.ImageIndex;
    if Index = -1 then begin
-      Index := 0;
+      Index := 1;
       buttonSortByFreq.ImageIndex := -1;
-      FSortOrder := 2;
+      FSortOrder := Index + 2;
    end
    else begin
       Inc(Index);
