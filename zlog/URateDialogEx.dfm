@@ -1,7 +1,7 @@
 object RateDialogEx: TRateDialogEx
   Left = 69
   Top = 213
-  ActiveControl = ScoreGrid
+  ActiveControl = ShowLastCombo
   Caption = 'QSO Rate Ex'
   ClientHeight = 262
   ClientWidth = 334
@@ -29,7 +29,6 @@ object RateDialogEx: TRateDialogEx
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 388
     DesignSize = (
       334
       37)
@@ -106,10 +105,9 @@ object RateDialogEx: TRateDialogEx
     Top = 37
     Width = 334
     Height = 225
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
-    ExplicitWidth = 388
     object TabSheet1: TTabSheet
       Caption = 'Graph'
       object Panel2: TPanel
@@ -120,7 +118,6 @@ object RateDialogEx: TRateDialogEx
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 380
         DesignSize = (
           326
           30)
@@ -164,7 +161,6 @@ object RateDialogEx: TRateDialogEx
             '24'
             '36'
             '48')
-          ExplicitLeft = 247
         end
         object check3D: TCheckBox
           Left = 279
@@ -175,7 +171,6 @@ object RateDialogEx: TRateDialogEx
           Caption = '3D'
           TabOrder = 1
           OnClick = check3DClick
-          ExplicitLeft = 333
         end
         object Panel3: TPanel
           Left = 0
@@ -234,7 +229,6 @@ object RateDialogEx: TRateDialogEx
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 380
         DefaultCanvas = 'TGDIPlusCanvas'
         ColorPaletteIndex = 13
         object Series1: TBarSeries
@@ -1013,7 +1007,6 @@ object RateDialogEx: TRateDialogEx
         OnDrawCell = ScoreGridDrawCell
         OnSelectCell = ScoreGridSelectCell
         OnTopLeftChanged = ScoreGridTopLeftChanged
-        ExplicitWidth = 380
       end
     end
     object TabSheet3: TTabSheet

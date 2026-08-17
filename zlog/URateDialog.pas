@@ -202,6 +202,9 @@ begin
 
    radioOriginClick(nil);
 
+   labelOperateTime.Left := Panel1.ClientWidth - labelOperateTime.Width - 10;
+
+   TimerTimer(nil);
    Timer.Enabled := True;
 end;
 
