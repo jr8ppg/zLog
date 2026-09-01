@@ -8930,6 +8930,9 @@ object MainForm: TMainForm
       Caption = #12501#12457#12531#12488#12469#12452#12474#12434#36215#21205#26178#12395#25147#12377
       OnExecute = actionResetFontSizeExecute
     end
+    object actionRttyGrab: TAction
+      Caption = 'actionRttyGrab'
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

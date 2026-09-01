@@ -8924,6 +8924,9 @@ object MainForm: TMainForm
       Caption = 'Reset Font Size'
       OnExecute = actionResetFontSizeExecute
     end
+    object actionRttyGrab: TAction
+      Caption = 'actionRttyGrab'
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

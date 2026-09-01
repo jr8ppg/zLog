@@ -742,6 +742,7 @@ type
     MemoEdit2VA: TOvrEdit;
     MemoEdit2VB: TOvrEdit;
     MemoEdit2VC: TOvrEdit;
+    actionRttyGrab: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);

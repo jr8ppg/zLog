@@ -160,6 +160,7 @@ object TTYConsole: TTTYConsole
       Font.Style = []
       ItemHeight = 14
       ParentFont = False
+      PopupMenu = popupCallsignList
       TabOrder = 0
       OnClick = CallsignListClick
       OnDblClick = CallsignListDblClick
@@ -409,6 +410,38 @@ object TTYConsole: TTTYConsole
     object actionControlPTT: TAction
       Caption = 'actionControlPTT'
       OnExecute = actionControlPTTExecute
+    end
+    object actionRttyGrab: TAction
+      Caption = 'Set callsign'
+      OnExecute = actionRttyGrabExecute
+    end
+  end
+  object popupCallsignList: TPopupMenu
+    AutoHotkeys = maManual
+    AutoLineReduction = maManual
+    OnPopup = popupCallsignListPopup
+    Left = 76
+    Top = 168
+    object actionRttyGrab1: TMenuItem
+      Action = actionRttyGrab
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object menuCallsignDelete: TMenuItem
+      Caption = 'Delete'
+      OnClick = menuCallsignDeleteClick
+    end
+    object menuDebugSep: TMenuItem
+      Caption = '-'
+    end
+    object menuLoadList: TMenuItem
+      Caption = 'Load'
+      OnClick = menuLoadListClick
+    end
+    object menuSaveList: TMenuItem
+      Caption = 'Save'
+      OnClick = menuSaveListClick
     end
   end
 end

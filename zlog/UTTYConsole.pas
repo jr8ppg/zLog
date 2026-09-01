@@ -71,6 +71,14 @@ type
     buttonRXLogClear: TButton;
     buttonCallListClear: TButton;
     actionControlPTT: TAction;
+    actionRttyGrab: TAction;
+    popupCallsignList: TPopupMenu;
+    actionRttyGrab1: TMenuItem;
+    N2: TMenuItem;
+    menuCallsignDelete: TMenuItem;
+    menuLoadList: TMenuItem;
+    menuSaveList: TMenuItem;
+    menuDebugSep: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -95,6 +103,11 @@ type
     procedure actionControlPTTExecute(Sender: TObject);
     function GetFontSize(): Integer; override;
     procedure SetFontSize(v: Integer); override;
+    procedure actionRttyGrabExecute(Sender: TObject);
+    procedure menuCallsignDeleteClick(Sender: TObject);
+    procedure popupCallsignListPopup(Sender: TObject);
+    procedure menuLoadListClick(Sender: TObject);
+    procedure menuSaveListClick(Sender: TObject);
   private
     { Private declarations }
     FTTYMode: Integer;
@@ -163,9 +176,6 @@ begin
 end;
 
 procedure TTTYConsole.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-var
-   i: integer;
-   S: string;
 begin
    case Key of
       VK_ESCAPE: begin
@@ -193,8 +203,9 @@ begin
                exit;
 
             // RXLog.Text := RXLog.Text + MMTTYBuffer;
-            for i := 1 to length(MMTTYBuffer) do
+            for i := 1 to Length(MMTTYBuffer) do begin
                RXChar(AnsiChar(MMTTYBuffer[i]));
+            end;
 
             MMTTYBuffer := '';
 
@@ -246,6 +257,7 @@ var
    ch: Char;
    nAlph, nNG: Integer;
    nNum: Integer;
+   Index: Integer;
 label
    xxxx;
 begin
@@ -294,11 +306,13 @@ begin
             Continue;
          end;
 
-         if CallsignList.Items.IndexOf(S) = -1 then begin
-            CallsignList.Items.Add(S);
+         Index := CallsignList.Items.IndexOf(S);
+         if Index = -1 then begin
+            CallsignList.Items.Insert(0, S);
          end
          else begin
-            Break;
+            CallsignList.Items.Delete(Index);
+            CallsignList.Items.Insert(0, S);
          end;
       end;
 
@@ -437,6 +451,16 @@ begin
    TXLog.Clear;
 end;
 
+procedure TTTYConsole.menuCallsignDeleteClick(Sender: TObject);
+var
+   Index: Integer;
+begin
+   Index := CallsignList.ItemIndex;
+   if Index <> -1 then begin
+      CallsignList.Items.Delete(Index);
+   end;
+end;
+
 procedure TTTYConsole.menuClearCallsignlistClick(Sender: TObject);
 begin
    CallsignList.Clear;
@@ -480,7 +504,7 @@ begin
    if CallsignList.ItemIndex >= 0 then begin
       MainForm.CallsignEdit.Text := CallsignList.Items[CallsignList.ItemIndex];
       MainForm.CallsignEdit.SelectAll;
-      MainForm.CallsignEdit.SetFocus;
+      MainForm.SetLastFocus();
    end;
 end;
 
@@ -534,6 +558,31 @@ begin
    PlayMessageRTTY(no);
 end;
 
+procedure TTTYConsole.actionRttyGrabExecute(Sender: TObject);
+begin
+   if CallsignList.Items.Count = 0 then begin
+      Exit;
+   end;
+
+   if CallsignList.ItemIndex = -1 then begin
+      CallsignList.ItemIndex := 0;
+      MainForm.CallsignEdit.Text := CallsignList.Items[CallsignList.ItemIndex];
+      MainForm.CallsignEdit.SelectAll;
+      MainForm.SetLastFocus();
+   end
+   else begin
+      if CallsignList.ItemIndex < (CallsignList.Items.Count - 1) then begin
+         CallsignList.ItemIndex := CallsignList.ItemIndex + 1;
+         MainForm.CallsignEdit.Text := CallsignList.Items[CallsignList.ItemIndex];
+         MainForm.CallsignEdit.SelectAll;
+         MainForm.SetLastFocus();
+      end
+      else begin
+         CallsignList.ItemIndex := -1;
+      end;
+   end;
+end;
+
 procedure TTTYConsole.PlayMessageRTTY(no: Integer);
 var
    S: string;
@@ -545,6 +594,30 @@ begin
 
    S := SetStrNoAbbrev(S, CurrentQSO);
    SendStrNow(S);
+end;
+
+procedure TTTYConsole.popupCallsignListPopup(Sender: TObject);
+begin
+   if (GetAsyncKeyState(VK_SHIFT) < 0) and (GetAsyncKeyState(VK_CONTROL) < 0) then begin
+      menuDebugSep.Visible := True;
+      menuLoadList.Visible := True;
+      menuSaveList.Visible := True;
+   end
+   else begin
+      menuDebugSep.Visible := False;
+      menuLoadList.Visible := False;
+      menuSaveList.Visible := False;
+   end;
+end;
+
+procedure TTTYConsole.menuLoadListClick(Sender: TObject);
+begin
+   CallsignList.Items.LoadFromFile('zlog_rtty_calllist.txt');
+end;
+
+procedure TTTYConsole.menuSaveListClick(Sender: TObject);
+begin
+   CallsignList.Items.SaveToFile('zlog_rtty_calllist.txt');
 end;
 
 procedure TTTYConsole.ApplyShortcut();
@@ -583,6 +656,7 @@ begin
    actionPlayCQB3.ShortCut := MainForm.actionPlayCQB3.ShortCut;
 
    actionControlPTT.ShortCut := MainForm.actionControlPTT.ShortCut;
+   actionRttyGrab.ShortCut := MainForm.actionRttyGrab.ShortCut;
 
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
@@ -616,6 +690,7 @@ begin
    actionPlayCQB3.SecondaryShortCuts.Assign(MainForm.actionPlayCQB3.SecondaryShortCuts);
 
    actionControlPTT.SecondaryShortCuts.Assign(MainForm.actionControlPTT.SecondaryShortCuts);
+   actionRttyGrab.SecondaryShortCuts.Assign(MainForm.actionRttyGrab.SecondaryShortCuts);
 end;
 
 function TTTYConsole.GetFontSize(): Integer;
