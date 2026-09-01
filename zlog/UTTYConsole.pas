@@ -363,8 +363,10 @@ begin
             end;
          end;
 
-         if MMTTY_TX then
-            UMMTTY.mm_SendStr(Key, False)
+         if MMTTY_TX then begin
+            UMMTTY.mm_SendStr(Key, False);
+            RXLog.WriteString(_CR + _LF);
+         end
          else begin
             FTTYSendBuffer := FTTYSendBuffer + Key;
          end;
@@ -642,6 +644,7 @@ begin
    else begin
       if FTTYSendBuffer <> '' then begin
          mm_SendStr(FTTYSendBuffer, False);
+         RXLog.WriteString(_CR + _LF);
          FTTYSendBuffer := '';
       end
       else begin
