@@ -242,8 +242,22 @@ begin
 end;
 
 procedure TMenuForm.EnableEveryThing(contestno: Integer);
-var
-   i: Integer;
+   procedure AdjustMode(newMode: Integer);
+   begin
+      if ((ModeGroup.ItemIndex = 3) and
+          (ModeGroup.Controls[3].Enabled = False)) or
+         (ModeGroup.Controls[ModeGroup.ItemIndex].Enabled = False) then begin
+         if ModeGroup.Controls[newMode].Enabled = True then begin
+            ModeGroup.ItemIndex := newMode;
+         end
+         else if ModeGroup.Controls[1].Enabled = True then begin
+            ModeGroup.ItemIndex := 1;
+         end
+         else if ModeGroup.Controls[0].Enabled = True then begin
+            ModeGroup.ItemIndex := 0;
+         end
+      end;
+   end;
 begin
    radioSingleOp.Enabled := True;
    radioMultiOpMultiTx.Enabled := True;
@@ -255,10 +269,6 @@ begin
    if radioMultiOpSingleTx.Checked = True then OpGroupClick(radioMultiOpSingleTx);
    if radioMultiOpTwoTx.Checked = True then OpGroupClick(radioMultiOpTwoTx);
 
-   for i := 0 to ModeGroup.Items.Count - 1 do begin
-      ModeGroup.Controls[i].Enabled := True;
-   end;
-
    SelectButton.Enabled := False;
    ScoreCoeffEdit.Enabled := False;
    OKButton.Enabled := True;
@@ -267,23 +277,34 @@ begin
       // ALLJA,6D,ACAG,ARRL10,IARU,IOTA
       0, 1, 3, 108, 109, 111: begin
          ScoreCoeffEdit.Enabled := False;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 0;
+         ModeGroup.Controls[0].Enabled := True;    // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := False;   // RTTY
+         ModeGroup.Controls[4].Enabled := True;    // ALL
+         AdjustMode(0);
       end;
 
       // FD
       2: begin
          ScoreCoeffEdit.Enabled := True;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 0;
+         ModeGroup.Controls[0].Enabled := True;    // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := False;   // RTTY
+         ModeGroup.Controls[4].Enabled := True;    // ALL
+         AdjustMode(0);
       end;
 
       // ALL JA0
       4, 5: begin
          ScoreCoeffEdit.Enabled := False;
-         ModeGroup.Controls[2].Enabled := False;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 0;
+         ModeGroup.Controls[0].Enabled := True;    // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := False;   // PH
+         ModeGroup.Controls[3].Enabled := False;   // RTTY
+         ModeGroup.Controls[4].Enabled := True;    // ALL
+         AdjustMode(0);
 
          radioSingleOp.Checked := True;
          radioMultiOpMultiTx.Enabled := False;
@@ -294,39 +315,68 @@ begin
       6: begin
          ScoreCoeffEdit.Enabled := False;
          radioSingleOp.Checked := True;
-         ModeGroup.ItemIndex := 0;
+         ModeGroup.Controls[0].Enabled := True;    // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := True;    // RTTY
+         ModeGroup.Controls[4].Enabled := True;    // ALL
+         AdjustMode(0);
       end;
 
-      // CQWW,CQWPX,JIDX,ARRLDX(W/VE),ARRLDX(DX),ALLASIA,JIDX(DX)
-      101, 102, 103, 106, 107, 110, 112, 113: begin
+      // CQWW,CQWPX,JIDX,ARRLDX(W/VE),ARRLDX(DX),JIDX(DX)
+      101, 102, 103, 106, 107, 112, 113: begin
          ScoreCoeffEdit.Enabled := False;
-         ModeGroup.Controls[0].Enabled := False;
-         ModeGroup.ItemIndex := 1;
+         ModeGroup.Controls[0].Enabled := False;   // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := True;    // RTTY
+         ModeGroup.Controls[4].Enabled := False;   // ALL
+         AdjustMode(1);
       end;
 
       // APSprint
       105: begin
-         ModeGroup.Controls[0].Enabled := False;
-         ModeGroup.Controls[3].Enabled := False;
-         ModeGroup.ItemIndex := 1;
+         ModeGroup.Controls[0].Enabled := False;   // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := False;   // RTTY
+         ModeGroup.Controls[4].Enabled := True;    // ALL
+         AdjustMode(1);
          radioSingleOp.Checked := True;
          radioMultiOpMultiTx.Enabled := False;
          comboTxNo.Enabled := False;
       end;
 
+      // ALL ASIA
+      110: begin
+         ScoreCoeffEdit.Enabled := False;
+         ModeGroup.Controls[0].Enabled := False;   // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := False;   // RTTY
+         ModeGroup.Controls[4].Enabled := False;   // ALL
+         AdjustMode(1);
+      end;
+
       // JARL World Wide RTTY, BARTG HF RTTY
       114, 115: begin
-         ModeGroup.Controls[0].Enabled := False;
-         ModeGroup.Controls[1].Enabled := False;
-         ModeGroup.Controls[2].Enabled := False;
-         ModeGroup.Controls[4].Enabled := False;
+         ModeGroup.Controls[0].Enabled := False;   // MIX
+         ModeGroup.Controls[1].Enabled := False;   // CW
+         ModeGroup.Controls[2].Enabled := False;   // PH
+         ModeGroup.Controls[3].Enabled := True;    // RTTY
+         ModeGroup.Controls[4].Enabled := False;   // ALL
          ModeGroup.ItemIndex := 3;
       end;
 
       // PEDI
       200: begin
          ScoreCoeffEdit.Enabled := False;
-         ModeGroup.ItemIndex := 0;
+         ModeGroup.Controls[0].Enabled := True;    // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := True;    // RTTY
+         ModeGroup.Controls[4].Enabled := True;    // ALL
+         AdjustMode(0);
       end;
 
       // User Defined Contest
@@ -342,7 +392,14 @@ begin
          end;
 
          SelectButton.Enabled := True;
-         ModeGroup.ItemIndex := 0;
+
+         ModeGroup.Controls[0].Enabled := True;    // MIX
+         ModeGroup.Controls[1].Enabled := True;    // CW
+         ModeGroup.Controls[2].Enabled := True;    // PH
+         ModeGroup.Controls[3].Enabled := True;    // RTTY
+         ModeGroup.Controls[4].Enabled := True;    // ALL
+
+         AdjustMode(0);
       end;
    end;
 end;
