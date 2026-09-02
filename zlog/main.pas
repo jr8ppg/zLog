@@ -1090,6 +1090,7 @@ type
     procedure menuExecHamlogConverterClick(Sender: TObject);
     procedure menuLogCheckerClick(Sender: TObject);
     procedure actionResetFontSizeExecute(Sender: TObject);
+    procedure actionRttyGrabExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -5899,6 +5900,13 @@ begin
 
    // BandScopeの更新
    BandScopeNotifyWorked(Q);
+
+   // RTTYコールリストクリア
+   if Q.Mode = mRTTY then begin
+      if Assigned(FTTYConsole) then begin
+         FTTYConsole.RemoveCallsign(Q.Callsign);
+      end;
+   end;
 
    // 次のＱＳＯの準備
 
@@ -12875,6 +12883,12 @@ begin
    finally
       ini.Free();
    end;
+end;
+
+// #174 RTTY Grab
+procedure TMainForm.actionRttyGrabExecute(Sender: TObject);
+begin
+   FTTYConsole.Grab();
 end;
 
 procedure TMainForm.WriteKeymap();

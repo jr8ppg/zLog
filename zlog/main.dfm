@@ -8926,6 +8926,7 @@ object MainForm: TMainForm
     end
     object actionRttyGrab: TAction
       Caption = 'actionRttyGrab'
+      OnExecute = actionRttyGrabExecute
     end
   end
   object SPCMenu: TPopupMenu

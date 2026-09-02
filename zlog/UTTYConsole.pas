@@ -126,6 +126,8 @@ type
     procedure SendStrNow(S: String);
     procedure TxClear();
     procedure ToggleTXRX();
+    procedure Grab();
+    procedure RemoveCallsign(strCall: string);
 
     property TTYMode: Integer read FTTYMode write SetTTYMode;
     property FontSize: Integer read GetFontSize write SetFontSize;
@@ -725,6 +727,22 @@ begin
       else begin
          mm_TX;
       end;
+   end;
+end;
+
+procedure TTTYConsole.Grab();
+begin
+   actionRttyGrabExecute(nil);
+end;
+
+procedure TTTYConsole.RemoveCallsign(strCall: string);
+var
+   Index: Integer;
+begin
+   Index := CallsignList.Items.IndexOf(strCall);
+   if Index <> -1 then begin
+      CallsignList.Items.Delete(Index);
+      CallsignList.ItemIndex := -1;
    end;
 end;
 
