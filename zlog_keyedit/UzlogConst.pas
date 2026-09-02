@@ -94,7 +94,7 @@ type
   end;
 
 const
-  MAXICOM = 54;
+  MAXICOM = 55;
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
@@ -205,6 +205,8 @@ const
        (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
         AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+       (name: 'IC-2730';      addr: $90; minband: b144; maxband: b430; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
         AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; )
      );
 
@@ -414,7 +416,7 @@ const
     );
 
 const
-  default_primary_shortcut: array[0..173] of string = (
+  default_primary_shortcut: array[0..174] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -588,10 +590,11 @@ const
     '',                 // #170 actionShowGrayline
     '',                 // #171 actionFocusRstSentExecute
     '',                 // #172 actionShowSentNumber
-    ''                  // #173 actionResetFontSize
+    '',                 // #173 actionResetFontSize
+    ''                  // #174 actionRttyGrab
   );
 
-  default_secondary_shortcut: array[0..173] of string = (
+  default_secondary_shortcut: array[0..174] of string = (
     '',                 // #00
     '',
     '',
@@ -765,7 +768,8 @@ const
     '',                 // #170 actionShowGrayline
     '',                 // #171 actionFocusRstSentExecute
     '',                 // #172 actionShowSentNumber
-    ''                  // #173 actionResetFontSize
+    '',                 // #173 actionResetFontSize
+    ''                  // #174 actionRttyGrab
   );
 
 const
