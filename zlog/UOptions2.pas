@@ -503,6 +503,10 @@ type
     checkNotOverwrite9: TCheckBox;
     checkShowAvailableBands: TCheckBox;
     checkSentOverride: TCheckBox;
+    groupRTTY: TGroupBox;
+    checkUseAfskTone: TCheckBox;
+    checkDontChangeRigMode: TCheckBox;
+    checkUseFskKeying: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1341,6 +1345,11 @@ begin
       // Paddle reverse
       Settings.CW._paddlereverse := checkPaddleReverse.Checked;
 
+      // RTTY
+      Settings.FRTTY_UseAfskTone := checkUseAfskTone.Checked;
+      Settings.FRTTY_UseFskKeying := checkUseFskKeying.Checked;
+      Settings.FRTTY_DontChangeRigMode := checkDontChangeRigMode.Checked;
+
       //
       // Voice
       //
@@ -1807,6 +1816,11 @@ begin
 
       // Paddle reverse
       checkPaddleReverse.Checked := Settings.CW._paddlereverse;
+
+      // RTTY
+      checkUseAfskTone.Checked := Settings.FRTTY_UseAfskTone;
+      checkUseFskKeying.Checked := Settings.FRTTY_UseFskKeying;
+      checkDontChangeRigMode.Checked := Settings.FRTTY_DontChangeRigMode;
 
       //
       // Voice

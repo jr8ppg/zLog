@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetCW
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -3306,6 +3306,38 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Send NR? automatically'
           TabOrder = 8
+        end
+        object groupRTTY: TGroupBox
+          Left = 288
+          Top = 260
+          Width = 213
+          Height = 93
+          Caption = 'RTTY'
+          TabOrder = 11
+          object checkUseAfskTone: TCheckBox
+            Left = 12
+            Top = 19
+            Width = 193
+            Height = 17
+            Caption = 'Use AFSK tone'
+            TabOrder = 0
+          end
+          object checkDontChangeRigMode: TCheckBox
+            Left = 12
+            Top = 65
+            Width = 193
+            Height = 17
+            Caption = 'Don'#39't change rig mode in RTTY'
+            TabOrder = 2
+          end
+          object checkUseFskKeying: TCheckBox
+            Left = 12
+            Top = 42
+            Width = 193
+            Height = 17
+            Caption = 'Use FSK keying in zLog'
+            TabOrder = 1
+          end
         end
       end
       object groupCwSettings: TGroupBox

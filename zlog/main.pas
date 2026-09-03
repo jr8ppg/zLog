@@ -2698,6 +2698,10 @@ begin
       if dmZLogKeyer.UseWinKeyer = True then begin
          dmZLogKeyer.WinKeyerSetPinCfg(True);
       end;
+
+      // RTTY
+      dmZLogKeyer.RTTY := (M = mRTTY);
+      dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.FRTTY_UseAfskTone;
    end;
    SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
 
@@ -10824,10 +10828,6 @@ procedure TMainForm.PlayMessageRTTY(no: Integer);
 var
    S: string;
 begin
-   if FTTYConsole = nil then begin
-      Exit;
-   end;
-
    S := dmZLogGlobal.CWMessage(3, no);
 
    if S = '' then begin
@@ -10835,7 +10835,15 @@ begin
    end;
 
    S := SetStrNoAbbrev(S, CurrentQSO);
-   FTTYConsole.SendStrNow(S);
+
+   if dmZLogGlobal.Settings.FRTTY_UseFskKeying = True then begin
+      dmZLogKeyer.SendStr(FCurrentTx, S)
+   end
+   else begin
+      if FTTYConsole <> nil then begin
+         FTTYConsole.SendStrNow(S);
+      end;
+   end;
 end;
 
 procedure TMainForm.OnVoicePlayStarted(Sender: TObject; msgno: Integer);
@@ -11904,6 +11912,10 @@ begin
       SetQSOMode(CurrentQSO, False);
    end;
    UpdateMode(CurrentQSO.Mode);
+
+   if (CurrentQSO.Mode = mRTTY) and (dmZLogGlobal.Settings.FRTTY_DontChangeRigMode) then begin
+      Exit;
+   end;
 
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
@@ -14572,9 +14584,14 @@ begin
       VoiceStopButtonClick(Self);
    end
    else if (mode = mRTTY) then begin
-      if FTTYConsole <> nil then begin
-         mm_RX(); // Switch to RX immediately
-         FTTYConsole.TxClear();
+      if dmZLogGlobal.Settings.FRTTY_UseFskKeying = True then begin
+         dmZLogKeyer.ClrBuffer();
+      end
+      else begin
+         if FTTYConsole <> nil then begin
+            mm_RX(); // Switch to RX immediately
+            FTTYConsole.TxClear();
+         end;
       end;
    end;
 end;

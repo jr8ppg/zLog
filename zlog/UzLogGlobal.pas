@@ -435,6 +435,11 @@ type
     FBrowserForWebUpload: Integer;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
+
+    // RTTY
+    FRTTY_UseAfskTone: Boolean;
+    FRTTY_UseFskKeying: Boolean;
+    FRTTY_DontChangeRigMode: Boolean;
   end;
 
   TLastContest = record
@@ -1104,6 +1109,11 @@ begin
 
       // CW Keyboard Clear Delay
       Settings.CW._cwk_clear_delay:= ini.ReadInteger('CW', 'cwk_clear_delay', 2);
+
+      // RTTY
+      Settings.FRTTY_UseAfskTone := ini.ReadBool('RTTY', 'use_afsk_tone', False);
+      Settings.FRTTY_UseFskKeying := ini.ReadBool('RTTY', 'use_fsk_keying', False);
+      Settings.FRTTY_DontChangeRigMode := ini.ReadBool('RTTY', 'dont_change_rig_mode', False);
 
       //
       // Hardware
@@ -1981,6 +1991,11 @@ begin
       // CW Keyboard Clear Delay
       ini.WriteInteger('CW', 'cwk_clear_delay', Settings.CW._cwk_clear_delay);
 
+      // RTTY
+      ini.WriteBool('RTTY', 'use_afsk_tone', Settings.FRTTY_UseAfskTone);
+      ini.WriteBool('RTTY', 'use_fsk_keying', Settings.FRTTY_UseFskKeying);
+      ini.WriteBool('RTTY', 'dont_change_rig_mode', Settings.FRTTY_DontChangeRigMode);
+
       //
       // Hardware
       //
@@ -2595,6 +2610,8 @@ begin
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
+
+   dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.FRTTY_UseAfskTone;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;

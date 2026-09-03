@@ -29,6 +29,10 @@ const
   LF = #$0a;
 
 const
+  LTRS = #$1F;
+  FIGS = #$1B;
+
+const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
   WM_USER_WKCHANGEWPM = (WM_USER + 2);
   WM_USER_WKPADDLE = (WM_USER + 3);
@@ -66,6 +70,7 @@ type
 type
   CodeData = array[1..codemax] of byte;
   CodeTableType = array[0..255] of CodeData;
+  BaudotTableType = array[0..255] of CodeData;
 
 type
   TdmZLogKeyer = class;
@@ -168,6 +173,8 @@ type
 
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
+    FMarkSound: TSideTone;
+    FSpaceSound: TSideTone;
     {$ENDIF}
 
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
@@ -186,6 +193,7 @@ type
     FSendChar: Boolean;
 
     FCodeTable: CodeTableType;
+    FBaudotTable: BaudotTableType;
 
     FInitialized: Boolean;
 
@@ -283,6 +291,10 @@ type
     FUseCanSend: Boolean;
     FPrevDSR: Boolean;
 
+    // RTTY support
+    FRTTY: Boolean;
+    FUseAFSKTone: Boolean;
+
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
     procedure SetTxRigFlag_com_v28(rigset: Integer);
@@ -302,6 +314,7 @@ type
 
     procedure Sound();
     procedure NoSound();
+    procedure RttyAudio(key: Integer; fOn: Boolean);
 
     procedure SetCWSendBufChar(b: Integer; C: Char); {Adds a char to the end of buffer}
     procedure SetCWSendBufFinish(b: Integer);
@@ -419,6 +432,9 @@ type
     property PaddleReverse: Boolean read FPaddleReverse write FPaddleReverse;
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
     property UseCanSend: Boolean read FUseCanSend write FUseCanSend;
+
+    property RTTY: Boolean read FRTTY write FRTTY;
+    property UseAFSKTone: Boolean read FUseAFSKTone write FUseAFSKTone;
 
     // paddle support
     procedure PaddleProc(PaddleStatus: Byte);
@@ -551,6 +567,8 @@ begin
    FTune := False;
    FUseCanSend := False;
    FPrevDSR := True;
+   FRTTY := False;
+   FUseAFSKTone := False;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -559,9 +577,15 @@ begin
    {$IFDEF USESIDETONE}
    if TSideTone.NumDevices() = 0 then begin
       FTone := nil;
+      FMarkSound := nil;
+      FSpaceSound := nil;
    end
    else begin
       FTone := TSideTone.Create(700);
+      FMarkSound := TSideTone.Create(2125);
+      FSpaceSound := TSideTone.Create(2295);
+      FMarkSound.Open(WAVE_MAPPER);
+      FSpaceSound.Open(WAVE_MAPPER);
    end;
    {$ENDIF}
 
@@ -620,6 +644,8 @@ var
 begin
    {$IFDEF USESIDETONE}
    FTone.Free();
+   FMarkSound.Free();
+   FSpaceSound.Free();
    {$ENDIF}
    FMonitorThread.Free();
    FPaddleThread.Free();
@@ -1290,6 +1316,52 @@ begin
    {$ENDIF}
 end;
 
+procedure TdmZLogKeyer.RttyAudio(key: Integer; fOn: Boolean);
+   procedure MarkAudio(fOn: Boolean);
+   begin
+      if Assigned(FMarkSound) then begin
+         if fOn = True then begin
+            FSpaceSound.Stop();
+            if FMarkSound.Playing = False then begin
+               FMarkSound.Play();
+            end;
+         end
+         else begin
+            FMarkSound.Stop();
+         end;
+      end;
+   end;
+   procedure SpaceAudio(fOn: Boolean);
+   begin
+      if Assigned(FSpaceSound) then begin
+         if fOn = True then begin
+            FMarkSound.Stop();
+            if FSpaceSound.Playing = False then begin
+               FSpaceSound.Play();
+            end;
+         end
+         else begin
+            FSpaceSound.Stop();
+         end;
+      end;
+   end;
+begin
+   {$IFDEF USESIDETONE}
+   if fOn = True then begin
+      if key = 0 then begin
+         SpaceAudio(fOn);
+      end
+      else if key = 1 then begin
+         MarkAudio(fOn);
+      end;
+   end
+   else begin
+      SpaceAudio(False);
+      MarkAudio(False);
+   end;
+   {$ENDIF}
+end;
+
 procedure TdmZLogKeyer.ControlPTT(nID: Integer; PTTON: Boolean; fPhonePTT: Boolean);
 begin
    try
@@ -1457,11 +1529,19 @@ end;
 procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: Char);
 var
    m: Integer;
+   code: Byte;
 begin
 //   CWBufferSync.Enter();
    try
       for m := 1 to codemax do begin
-         FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+         if FRTTY = True then begin
+            code := FBaudotTable[Ord(C)][m];
+         end
+         else begin
+            code := FCodeTable[Ord(C)][m];
+         end;
+
+         FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := code;
       end;
 
       inc(tailcwstrptr);
@@ -1487,6 +1567,7 @@ procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
 var
    S: string;
    m: Integer;
+   code: Byte;
 begin
    if UseWinKeyer = True then begin
       FWkAbort := False;
@@ -1550,7 +1631,13 @@ begin
       try
          // set send char
          for m := 1 to codemax do begin
-            FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+            if FRTTY = True then begin
+               code := FBaudotTable[Ord(C)][m];
+            end
+            else begin
+               code := FCodeTable[Ord(C)][m];
+            end;
+            FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := code;
          end;
 
          if FPTTEnabled then begin
@@ -1639,6 +1726,10 @@ procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string);
 var
    SS: string;
    CW: string;
+   i: Integer;
+   CH: Char;
+   fLTRS: Boolean;
+   fFIGS: Boolean;
 begin
    if sStr = '' then
       Exit;
@@ -1652,11 +1743,38 @@ begin
 
    SS := sStr;
 
-   if FPTTEnabled then begin
+   if FPTTEnabled and (FRTTY = False) then begin
       SS := '(' + SS + ')';
    end;
 
    SS := CW + SS;
+
+   if FRTTY then begin
+      CW := SS;
+      SS := LTRS + LTRS + LTRS;
+      fLTRS := True;
+      fFIGS := False;
+      for i := 1 to Length(CW) do begin
+         CH := CW[i];
+
+         if CH in ['A'..'Z'] then begin
+            if fLTRS = False then begin
+               SS := SS + LTRS;
+               fLTRS := True;
+               fFIGS := False;
+            end;
+            SS := SS + CH;
+         end
+         else begin
+            if fFIGS = False then begin
+               SS := SS + FIGS;
+               fLTRS := False;
+               fFIGS := True;
+            end;
+            SS := SS + CH;
+         end;
+      end;
+   end;
 
    SetCWSendBuf(0, SS);
 
@@ -2061,6 +2179,10 @@ begin
       $FF: begin { SendOK:=False; }
          Finish();
 
+         if FRTTY and FUseAFSKTone then begin
+            RttyAudio(0, False);
+         end;
+
          if Assigned(FOnSendFinishProc) then begin
             {$IFDEF DEBUG}
             OutputDebugString(PChar(' *** FOnSendFinishProc() called in TimerProcess() ***'));
@@ -2166,6 +2288,36 @@ begin
             FOnCommand(Self, nCommand);
          end;
       end;
+
+      // SPACE
+      $70: begin
+         CW_OFF(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(0, True);
+         end;
+         FKeyingCounter := 22;
+         FSendChar := True;
+      end;
+
+      // MARK
+      $71: begin
+         CW_ON(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(1, True);
+         end;
+         FKeyingCounter := 22;
+         FSendChar := True;
+      end;
+
+      // STOPBIT
+      $72: begin
+         CW_ON(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(1, True);
+         end;
+         FKeyingCounter := 33;
+         FSendChar := True;
+      end;
    end;
 
    CWBufferSync.Enter();
@@ -2234,6 +2386,7 @@ begin
    for n := 0 to 255 do begin
       for m := 1 to codemax do begin
          FCodeTable[n, m] := $FF;
+         FBaudotTable[n, m] := $FF;
       end;
    end;
 
@@ -2811,6 +2964,561 @@ begin
    FCodeTable[Ord('@')][4] := 0;
    FCodeTable[Ord('@')][5] := 9;
 
+   //
+   // RTTY(Baudot / ITA2)
+   //
+
+   // A
+   FBaudotTable[Ord('A')][1] := $70;   // START
+   FBaudotTable[Ord('A')][2] := $71;   // MARK
+   FBaudotTable[Ord('A')][3] := $71;   // MARK
+   FBaudotTable[Ord('A')][4] := $70;   // SPACE
+   FBaudotTable[Ord('A')][5] := $70;   // SPACE
+   FBaudotTable[Ord('A')][6] := $70;   // SPACE
+   FBaudotTable[Ord('A')][7] := $72;   // STOP
+   FBaudotTable[Ord('A')][8] := 9;     // next char
+
+   // B
+   FBaudotTable[Ord('B')][1] := $70;
+   FBaudotTable[Ord('B')][2] := $71;
+   FBaudotTable[Ord('B')][3] := $70;
+   FBaudotTable[Ord('B')][4] := $70;
+   FBaudotTable[Ord('B')][5] := $71;
+   FBaudotTable[Ord('B')][6] := $71;
+   FBaudotTable[Ord('B')][7] := $72;
+   FBaudotTable[Ord('B')][8] := 9;
+
+   // C
+   FBaudotTable[Ord('C')][1] := $70;
+   FBaudotTable[Ord('C')][2] := $70;
+   FBaudotTable[Ord('C')][3] := $71;
+   FBaudotTable[Ord('C')][4] := $71;
+   FBaudotTable[Ord('C')][5] := $71;
+   FBaudotTable[Ord('C')][6] := $70;
+   FBaudotTable[Ord('C')][7] := $72;
+   FBaudotTable[Ord('C')][8] := 9;
+
+   // D
+   FBaudotTable[Ord('D')][1] := $70;
+   FBaudotTable[Ord('D')][2] := $71;
+   FBaudotTable[Ord('D')][3] := $70;
+   FBaudotTable[Ord('D')][4] := $70;
+   FBaudotTable[Ord('D')][5] := $71;
+   FBaudotTable[Ord('D')][6] := $70;
+   FBaudotTable[Ord('D')][7] := $72;
+   FBaudotTable[Ord('D')][8] := 9;
+
+   // E
+   FBaudotTable[Ord('E')][1] := $70;
+   FBaudotTable[Ord('E')][2] := $71;
+   FBaudotTable[Ord('E')][3] := $70;
+   FBaudotTable[Ord('E')][4] := $70;
+   FBaudotTable[Ord('E')][5] := $70;
+   FBaudotTable[Ord('E')][6] := $70;
+   FBaudotTable[Ord('E')][7] := $72;
+   FBaudotTable[Ord('E')][8] := 9;
+
+   // F
+   FBaudotTable[Ord('F')][1] := $70;
+   FBaudotTable[Ord('F')][2] := $71;
+   FBaudotTable[Ord('F')][3] := $70;
+   FBaudotTable[Ord('F')][4] := $71;
+   FBaudotTable[Ord('F')][5] := $71;
+   FBaudotTable[Ord('F')][6] := $70;
+   FBaudotTable[Ord('F')][7] := $72;
+   FBaudotTable[Ord('F')][8] := 9;
+
+   // G
+   FBaudotTable[Ord('G')][1] := $70;
+   FBaudotTable[Ord('G')][2] := $70;
+   FBaudotTable[Ord('G')][3] := $71;
+   FBaudotTable[Ord('G')][4] := $70;
+   FBaudotTable[Ord('G')][5] := $71;
+   FBaudotTable[Ord('G')][6] := $71;
+   FBaudotTable[Ord('G')][7] := $72;
+   FBaudotTable[Ord('G')][8] := 9;
+
+   // H
+   FBaudotTable[Ord('H')][1] := $70;
+   FBaudotTable[Ord('H')][2] := $70;
+   FBaudotTable[Ord('H')][3] := $70;
+   FBaudotTable[Ord('H')][4] := $71;
+   FBaudotTable[Ord('H')][5] := $70;
+   FBaudotTable[Ord('H')][6] := $71;
+   FBaudotTable[Ord('H')][7] := $72;
+   FBaudotTable[Ord('H')][8] := 9;
+
+   // I
+   FBaudotTable[Ord('I')][1] := $70;
+   FBaudotTable[Ord('I')][2] := $70;
+   FBaudotTable[Ord('I')][3] := $71;
+   FBaudotTable[Ord('I')][4] := $71;
+   FBaudotTable[Ord('I')][5] := $70;
+   FBaudotTable[Ord('I')][6] := $70;
+   FBaudotTable[Ord('I')][7] := $72;
+   FBaudotTable[Ord('I')][8] := 9;
+
+   // J
+   FBaudotTable[Ord('J')][1] := $70;
+   FBaudotTable[Ord('J')][2] := $71;
+   FBaudotTable[Ord('J')][3] := $71;
+   FBaudotTable[Ord('J')][4] := $70;
+   FBaudotTable[Ord('J')][5] := $71;
+   FBaudotTable[Ord('J')][6] := $70;
+   FBaudotTable[Ord('J')][7] := $72;
+   FBaudotTable[Ord('J')][8] := 9;
+
+   // K
+   FBaudotTable[Ord('K')][1] := $70;
+   FBaudotTable[Ord('K')][2] := $71;
+   FBaudotTable[Ord('K')][3] := $71;
+   FBaudotTable[Ord('K')][4] := $71;
+   FBaudotTable[Ord('K')][5] := $71;
+   FBaudotTable[Ord('K')][6] := $70;
+   FBaudotTable[Ord('K')][7] := $72;
+   FBaudotTable[Ord('K')][8] := 9;
+
+   // L
+   FBaudotTable[Ord('L')][1] := $70;
+   FBaudotTable[Ord('L')][2] := $70;
+   FBaudotTable[Ord('L')][3] := $71;
+   FBaudotTable[Ord('L')][4] := $70;
+   FBaudotTable[Ord('L')][5] := $70;
+   FBaudotTable[Ord('L')][6] := $71;
+   FBaudotTable[Ord('L')][7] := $72;
+   FBaudotTable[Ord('L')][8] := 9;
+
+   // M
+   FBaudotTable[Ord('M')][1] := $70;
+   FBaudotTable[Ord('M')][2] := $70;
+   FBaudotTable[Ord('M')][3] := $70;
+   FBaudotTable[Ord('M')][4] := $71;
+   FBaudotTable[Ord('M')][5] := $71;
+   FBaudotTable[Ord('M')][6] := $71;
+   FBaudotTable[Ord('M')][7] := $72;
+   FBaudotTable[Ord('M')][8] := 9;
+
+   // N
+   FBaudotTable[Ord('N')][1] := $70;
+   FBaudotTable[Ord('N')][2] := $70;
+   FBaudotTable[Ord('N')][3] := $70;
+   FBaudotTable[Ord('N')][4] := $71;
+   FBaudotTable[Ord('N')][5] := $71;
+   FBaudotTable[Ord('N')][6] := $70;
+   FBaudotTable[Ord('N')][7] := $72;
+   FBaudotTable[Ord('N')][8] := 9;
+
+   // O
+   FBaudotTable[Ord('O')][1] := $70;
+   FBaudotTable[Ord('O')][2] := $70;
+   FBaudotTable[Ord('O')][3] := $70;
+   FBaudotTable[Ord('O')][4] := $70;
+   FBaudotTable[Ord('O')][5] := $71;
+   FBaudotTable[Ord('O')][6] := $71;
+   FBaudotTable[Ord('O')][7] := $72;
+   FBaudotTable[Ord('O')][8] := 9;
+
+   // P
+   FBaudotTable[Ord('P')][1] := $70;
+   FBaudotTable[Ord('P')][2] := $70;
+   FBaudotTable[Ord('P')][3] := $71;
+   FBaudotTable[Ord('P')][4] := $71;
+   FBaudotTable[Ord('P')][5] := $70;
+   FBaudotTable[Ord('P')][6] := $71;
+   FBaudotTable[Ord('P')][7] := $72;
+   FBaudotTable[Ord('P')][8] := 9;
+
+   // Q
+   FBaudotTable[Ord('Q')][1] := $70;
+   FBaudotTable[Ord('Q')][2] := $71;
+   FBaudotTable[Ord('Q')][3] := $71;
+   FBaudotTable[Ord('Q')][4] := $71;
+   FBaudotTable[Ord('Q')][5] := $70;
+   FBaudotTable[Ord('Q')][6] := $71;
+   FBaudotTable[Ord('Q')][7] := $72;
+   FBaudotTable[Ord('Q')][8] := 9;
+
+   // R
+   FBaudotTable[Ord('R')][1] := $70;
+   FBaudotTable[Ord('R')][2] := $70;
+   FBaudotTable[Ord('R')][3] := $71;
+   FBaudotTable[Ord('R')][4] := $70;
+   FBaudotTable[Ord('R')][5] := $71;
+   FBaudotTable[Ord('R')][6] := $70;
+   FBaudotTable[Ord('R')][7] := $72;
+   FBaudotTable[Ord('R')][8] := 9;
+
+   // S
+   FBaudotTable[Ord('S')][1] := $70;
+   FBaudotTable[Ord('S')][2] := $71;
+   FBaudotTable[Ord('S')][3] := $70;
+   FBaudotTable[Ord('S')][4] := $71;
+   FBaudotTable[Ord('S')][5] := $70;
+   FBaudotTable[Ord('S')][6] := $70;
+   FBaudotTable[Ord('S')][7] := $72;
+   FBaudotTable[Ord('S')][8] := 9;
+
+   // T
+   FBaudotTable[Ord('T')][1] := $70;
+   FBaudotTable[Ord('T')][2] := $70;
+   FBaudotTable[Ord('T')][3] := $70;
+   FBaudotTable[Ord('T')][4] := $70;
+   FBaudotTable[Ord('T')][5] := $70;
+   FBaudotTable[Ord('T')][6] := $71;
+   FBaudotTable[Ord('T')][7] := $72;
+   FBaudotTable[Ord('T')][8] := 9;
+
+   // U
+   FBaudotTable[Ord('U')][1] := $70;
+   FBaudotTable[Ord('U')][2] := $71;
+   FBaudotTable[Ord('U')][3] := $71;
+   FBaudotTable[Ord('U')][4] := $71;
+   FBaudotTable[Ord('U')][5] := $70;
+   FBaudotTable[Ord('U')][6] := $70;
+   FBaudotTable[Ord('U')][7] := $72;
+   FBaudotTable[Ord('U')][8] := 9;
+
+   // V
+   FBaudotTable[Ord('V')][1] := $70;
+   FBaudotTable[Ord('V')][2] := $70;
+   FBaudotTable[Ord('V')][3] := $71;
+   FBaudotTable[Ord('V')][4] := $71;
+   FBaudotTable[Ord('V')][5] := $71;
+   FBaudotTable[Ord('V')][6] := $71;
+   FBaudotTable[Ord('V')][7] := $72;
+   FBaudotTable[Ord('V')][8] := 9;
+
+   // W
+   FBaudotTable[Ord('W')][1] := $70;
+   FBaudotTable[Ord('W')][2] := $71;
+   FBaudotTable[Ord('W')][3] := $71;
+   FBaudotTable[Ord('W')][4] := $70;
+   FBaudotTable[Ord('W')][5] := $70;
+   FBaudotTable[Ord('W')][6] := $71;
+   FBaudotTable[Ord('W')][7] := $72;
+   FBaudotTable[Ord('W')][8] := 9;
+
+   // X
+   FBaudotTable[Ord('X')][1] := $70;
+   FBaudotTable[Ord('X')][2] := $71;
+   FBaudotTable[Ord('X')][3] := $70;
+   FBaudotTable[Ord('X')][4] := $71;
+   FBaudotTable[Ord('X')][5] := $71;
+   FBaudotTable[Ord('X')][6] := $71;
+   FBaudotTable[Ord('X')][7] := $72;
+   FBaudotTable[Ord('X')][8] := 9;
+
+   // Y
+   FBaudotTable[Ord('Y')][1] := $70;
+   FBaudotTable[Ord('Y')][2] := $71;
+   FBaudotTable[Ord('Y')][3] := $70;
+   FBaudotTable[Ord('Y')][4] := $71;
+   FBaudotTable[Ord('Y')][5] := $70;
+   FBaudotTable[Ord('Y')][6] := $71;
+   FBaudotTable[Ord('Y')][7] := $72;
+   FBaudotTable[Ord('Y')][8] := 9;
+
+   // Z
+   FBaudotTable[Ord('Z')][1] := $70;
+   FBaudotTable[Ord('Z')][2] := $71;
+   FBaudotTable[Ord('Z')][3] := $70;
+   FBaudotTable[Ord('Z')][4] := $70;
+   FBaudotTable[Ord('Z')][5] := $70;
+   FBaudotTable[Ord('Z')][6] := $71;
+   FBaudotTable[Ord('Z')][7] := $72;
+   FBaudotTable[Ord('Z')][8] := 9;
+
+   // 0
+   FBaudotTable[Ord('0')][1] := $70;
+   FBaudotTable[Ord('0')][2] := $70;
+   FBaudotTable[Ord('0')][3] := $71;
+   FBaudotTable[Ord('0')][4] := $71;
+   FBaudotTable[Ord('0')][5] := $70;
+   FBaudotTable[Ord('0')][6] := $71;
+   FBaudotTable[Ord('0')][7] := $72;
+   FBaudotTable[Ord('0')][8] := 9;
+
+   // 1
+   FBaudotTable[Ord('1')][1] := $70;
+   FBaudotTable[Ord('1')][2] := $71;
+   FBaudotTable[Ord('1')][3] := $71;
+   FBaudotTable[Ord('1')][4] := $71;
+   FBaudotTable[Ord('1')][5] := $70;
+   FBaudotTable[Ord('1')][6] := $71;
+   FBaudotTable[Ord('1')][7] := $72;
+   FBaudotTable[Ord('1')][8] := 9;
+
+   // 2
+   FBaudotTable[Ord('2')][1] := $70;
+   FBaudotTable[Ord('2')][2] := $71;
+   FBaudotTable[Ord('2')][3] := $71;
+   FBaudotTable[Ord('2')][4] := $70;
+   FBaudotTable[Ord('2')][5] := $70;
+   FBaudotTable[Ord('2')][6] := $71;
+   FBaudotTable[Ord('2')][7] := $72;
+   FBaudotTable[Ord('2')][8] := 9;
+
+   // 3
+   FBaudotTable[Ord('3')][1] := $70;
+   FBaudotTable[Ord('3')][2] := $71;
+   FBaudotTable[Ord('3')][3] := $70;
+   FBaudotTable[Ord('3')][4] := $70;
+   FBaudotTable[Ord('3')][5] := $70;
+   FBaudotTable[Ord('3')][6] := $70;
+   FBaudotTable[Ord('3')][7] := $72;
+   FBaudotTable[Ord('3')][8] := 9;
+
+   // 4
+   FBaudotTable[Ord('4')][1] := $70;
+   FBaudotTable[Ord('4')][2] := $70;
+   FBaudotTable[Ord('4')][3] := $71;
+   FBaudotTable[Ord('4')][4] := $70;
+   FBaudotTable[Ord('4')][5] := $71;
+   FBaudotTable[Ord('4')][6] := $70;
+   FBaudotTable[Ord('4')][7] := $72;
+   FBaudotTable[Ord('4')][8] := 9;
+
+   // 5
+   FBaudotTable[Ord('5')][1] := $70;
+   FBaudotTable[Ord('5')][2] := $70;
+   FBaudotTable[Ord('5')][3] := $70;
+   FBaudotTable[Ord('5')][4] := $70;
+   FBaudotTable[Ord('5')][5] := $70;
+   FBaudotTable[Ord('5')][6] := $71;
+   FBaudotTable[Ord('5')][7] := $72;
+   FBaudotTable[Ord('5')][8] := 9;
+
+   // 6
+   FBaudotTable[Ord('6')][1] := $70;
+   FBaudotTable[Ord('6')][2] := $71;
+   FBaudotTable[Ord('6')][3] := $70;
+   FBaudotTable[Ord('6')][4] := $71;
+   FBaudotTable[Ord('6')][5] := $70;
+   FBaudotTable[Ord('6')][6] := $71;
+   FBaudotTable[Ord('6')][7] := $72;
+   FBaudotTable[Ord('6')][8] := 9;
+
+   // 7
+   FBaudotTable[Ord('7')][1] := $70;
+   FBaudotTable[Ord('7')][2] := $71;
+   FBaudotTable[Ord('7')][3] := $71;
+   FBaudotTable[Ord('7')][4] := $71;
+   FBaudotTable[Ord('7')][5] := $70;
+   FBaudotTable[Ord('7')][6] := $70;
+   FBaudotTable[Ord('7')][7] := $72;
+   FBaudotTable[Ord('7')][8] := 9;
+
+   // 8
+   FBaudotTable[Ord('8')][1] := $70;
+   FBaudotTable[Ord('8')][2] := $70;
+   FBaudotTable[Ord('8')][3] := $71;
+   FBaudotTable[Ord('8')][4] := $71;
+   FBaudotTable[Ord('8')][5] := $70;
+   FBaudotTable[Ord('8')][6] := $70;
+   FBaudotTable[Ord('8')][7] := $72;
+   FBaudotTable[Ord('8')][8] := 9;
+
+   // 9
+   FBaudotTable[Ord('9')][1] := $70;
+   FBaudotTable[Ord('9')][2] := $70;
+   FBaudotTable[Ord('9')][3] := $70;
+   FBaudotTable[Ord('9')][4] := $70;
+   FBaudotTable[Ord('9')][5] := $71;
+   FBaudotTable[Ord('9')][6] := $71;
+   FBaudotTable[Ord('9')][7] := $72;
+   FBaudotTable[Ord('9')][8] := 9;
+
+   // -
+   FBaudotTable[Ord('-')][1] := $70;
+   FBaudotTable[Ord('-')][2] := $71;
+   FBaudotTable[Ord('-')][3] := $71;
+   FBaudotTable[Ord('-')][4] := $70;
+   FBaudotTable[Ord('-')][5] := $70;
+   FBaudotTable[Ord('-')][6] := $70;
+   FBaudotTable[Ord('-')][7] := $72;
+   FBaudotTable[Ord('-')][8] := 9;
+
+   // ?
+   FBaudotTable[Ord('?')][1] := $70;
+   FBaudotTable[Ord('?')][2] := $71;
+   FBaudotTable[Ord('?')][3] := $70;
+   FBaudotTable[Ord('?')][4] := $70;
+   FBaudotTable[Ord('?')][5] := $71;
+   FBaudotTable[Ord('?')][6] := $71;
+   FBaudotTable[Ord('?')][7] := $72;
+   FBaudotTable[Ord('?')][8] := 9;
+
+   // :
+   FBaudotTable[Ord(':')][1] := $70;
+   FBaudotTable[Ord(':')][2] := $70;
+   FBaudotTable[Ord(':')][3] := $71;
+   FBaudotTable[Ord(':')][4] := $71;
+   FBaudotTable[Ord(':')][5] := $71;
+   FBaudotTable[Ord(':')][6] := $70;
+   FBaudotTable[Ord(':')][7] := $72;
+   FBaudotTable[Ord(':')][8] := 9;
+
+   // $
+   FBaudotTable[Ord('$')][1] := $70;
+   FBaudotTable[Ord('$')][2] := $71;
+   FBaudotTable[Ord('$')][3] := $70;
+   FBaudotTable[Ord('$')][4] := $70;
+   FBaudotTable[Ord('$')][5] := $71;
+   FBaudotTable[Ord('$')][6] := $70;
+   FBaudotTable[Ord('$')][7] := $72;
+   FBaudotTable[Ord('$')][8] := 9;
+
+   // !
+   FBaudotTable[Ord('!')][1] := $70;
+   FBaudotTable[Ord('!')][2] := $71;
+   FBaudotTable[Ord('!')][3] := $70;
+   FBaudotTable[Ord('!')][4] := $71;
+   FBaudotTable[Ord('!')][5] := $71;
+   FBaudotTable[Ord('!')][6] := $70;
+   FBaudotTable[Ord('!')][7] := $72;
+   FBaudotTable[Ord('!')][8] := 9;
+
+   // &
+   FBaudotTable[Ord('&')][1] := $70;
+   FBaudotTable[Ord('&')][2] := $70;
+   FBaudotTable[Ord('&')][3] := $71;
+   FBaudotTable[Ord('&')][4] := $70;
+   FBaudotTable[Ord('&')][5] := $71;
+   FBaudotTable[Ord('&')][6] := $71;
+   FBaudotTable[Ord('&')][7] := $72;
+   FBaudotTable[Ord('&')][8] := 9;
+
+   // #
+   FBaudotTable[Ord('#')][1] := $70;
+   FBaudotTable[Ord('#')][2] := $70;
+   FBaudotTable[Ord('#')][3] := $70;
+   FBaudotTable[Ord('#')][4] := $71;
+   FBaudotTable[Ord('#')][5] := $70;
+   FBaudotTable[Ord('#')][6] := $71;
+   FBaudotTable[Ord('#')][7] := $72;
+   FBaudotTable[Ord('#')][8] := 9;
+
+   // '
+   FBaudotTable[Ord('''')][1] := $70;
+   FBaudotTable[Ord('''')][2] := $71;
+   FBaudotTable[Ord('''')][3] := $71;
+   FBaudotTable[Ord('''')][4] := $70;
+   FBaudotTable[Ord('''')][5] := $71;
+   FBaudotTable[Ord('''')][6] := $70;
+   FBaudotTable[Ord('''')][7] := $72;
+   FBaudotTable[Ord('''')][8] := 9;
+
+   // (
+   FBaudotTable[Ord('(')][1] := $70;
+   FBaudotTable[Ord('(')][2] := $71;
+   FBaudotTable[Ord('(')][3] := $71;
+   FBaudotTable[Ord('(')][4] := $71;
+   FBaudotTable[Ord('(')][5] := $71;
+   FBaudotTable[Ord('(')][6] := $70;
+   FBaudotTable[Ord('(')][7] := $72;
+   FBaudotTable[Ord('(')][8] := 9;
+
+   // )
+   FBaudotTable[Ord(')')][1] := $70;
+   FBaudotTable[Ord(')')][2] := $70;
+   FBaudotTable[Ord(')')][3] := $71;
+   FBaudotTable[Ord(')')][4] := $70;
+   FBaudotTable[Ord(')')][5] := $70;
+   FBaudotTable[Ord(')')][6] := $71;
+   FBaudotTable[Ord(')')][7] := $72;
+   FBaudotTable[Ord(')')][8] := 9;
+
+   // .
+   FBaudotTable[Ord('.')][1] := $70;
+   FBaudotTable[Ord('.')][2] := $70;
+   FBaudotTable[Ord('.')][3] := $70;
+   FBaudotTable[Ord('.')][4] := $71;
+   FBaudotTable[Ord('.')][5] := $71;
+   FBaudotTable[Ord('.')][6] := $71;
+   FBaudotTable[Ord('.')][7] := $72;
+   FBaudotTable[Ord('.')][8] := 9;
+
+   // ,
+   FBaudotTable[Ord(',')][1] := $70;
+   FBaudotTable[Ord(',')][2] := $70;
+   FBaudotTable[Ord(',')][3] := $70;
+   FBaudotTable[Ord(',')][4] := $71;
+   FBaudotTable[Ord(',')][5] := $71;
+   FBaudotTable[Ord(',')][6] := $70;
+   FBaudotTable[Ord(',')][7] := $72;
+   FBaudotTable[Ord(',')][8] := 9;
+
+   // /
+   FBaudotTable[Ord('/')][1] := $70;
+   FBaudotTable[Ord('/')][2] := $71;
+   FBaudotTable[Ord('/')][3] := $70;
+   FBaudotTable[Ord('/')][4] := $71;
+   FBaudotTable[Ord('/')][5] := $71;
+   FBaudotTable[Ord('/')][6] := $71;
+   FBaudotTable[Ord('/')][7] := $72;
+   FBaudotTable[Ord('/')][8] := 9;
+
+   // =
+   FBaudotTable[Ord('=')][1] := $70;
+   FBaudotTable[Ord('=')][2] := $70;
+   FBaudotTable[Ord('=')][3] := $71;
+   FBaudotTable[Ord('=')][4] := $71;
+   FBaudotTable[Ord('=')][5] := $71;
+   FBaudotTable[Ord('=')][6] := $71;
+   FBaudotTable[Ord('=')][7] := $72;
+   FBaudotTable[Ord('=')][8] := 9;
+
+   // +
+   FBaudotTable[Ord('+')][1] := $70;
+   FBaudotTable[Ord('+')][2] := $71;
+   FBaudotTable[Ord('+')][3] := $70;
+   FBaudotTable[Ord('+')][4] := $70;
+   FBaudotTable[Ord('+')][5] := $70;
+   FBaudotTable[Ord('+')][6] := $71;
+   FBaudotTable[Ord('+')][7] := $72;
+   FBaudotTable[Ord('+')][8] := 9;
+
+   // SPACE
+   FBaudotTable[Ord(' ')][1] := $70;
+   FBaudotTable[Ord(' ')][2] := $70;
+   FBaudotTable[Ord(' ')][3] := $70;
+   FBaudotTable[Ord(' ')][4] := $71;
+   FBaudotTable[Ord(' ')][5] := $70;
+   FBaudotTable[Ord(' ')][6] := $70;
+   FBaudotTable[Ord(' ')][7] := $72;
+   FBaudotTable[Ord(' ')][8] := 9;
+
+   // LTRS
+   FBaudotTable[Ord(LTRS)][1] := $70;  // START
+   FBaudotTable[Ord(LTRS)][2] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][3] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][4] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][5] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][6] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][7] := $72;  // STOP
+   FBaudotTable[Ord(LTRS)][8] := 9;    // next char
+
+   // FIGS
+   FBaudotTable[Ord(FIGS)][1] := $70;  // START
+   FBaudotTable[Ord(FIGS)][2] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][3] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][4] := $70;  // SPACE
+   FBaudotTable[Ord(FIGS)][5] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][6] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][7] := $72;  // STOP
+   FBaudotTable[Ord(FIGS)][8] := 9;    // next char
+
+   FBaudotTable[$90][1] := $20;
+   FBaudotTable[$90][2] := 9;
+   FBaudotTable[$91][1] := $21;
+   FBaudotTable[$91][2] := 9;
+   FBaudotTable[$92][1] := $22;
+   FBaudotTable[$92][2] := 9;
+   FBaudotTable[$93][1] := $23;
+   FBaudotTable[$93][2] := 9;
+   FBaudotTable[$94][1] := $24;
+   FBaudotTable[$94][2] := 9;
+
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
    end;
@@ -2995,15 +3703,22 @@ begin
          mousetail := 1;
          paddle_waiting := True;
 
+         if RTTY then begin
+            if FUseAFSKTone = True then begin
+               RttyAudio(0, False);
+            end;
+         end
+         else begin
+            if FUseSideTone then begin
+               NoSound();
+            end;
+         end;
+         CW_OFF(FWkTx);
 
-      if FUseSideTone then begin
-         NoSound();
-      end;
-      CW_OFF(FWkTx);
-      ResetSpeed();
-      FUserFlag := False;
+         ResetSpeed();
+         FUserFlag := False;
 
-      FSendOK := True;
+         FSendOK := True;
 
       finally
          CWBufferSync.Leave();
@@ -3043,9 +3758,16 @@ end;
 procedure TdmZLogKeyer.SetCWSendBufChar2(C: char; CharPos: word);
 var
    m: Integer;
+   code: Byte;
 begin
    for m := 1 to codemax do begin
-      FCWSendBuf[0, codemax * (CharPos - 1) + m] := FCodeTable[Ord(C)][m];
+      if FRTTY = True then begin
+         code := FBaudotTable[Ord(C)][m];
+      end
+      else begin
+         code := FCodeTable[Ord(C)][m];
+      end;
+      FCWSendBuf[0, codemax * (CharPos - 1) + m] := code;
    end;
 end;
 
@@ -3604,6 +4326,8 @@ begin
    {$IFDEF USESIDETONE}
    if Assigned(FTone) then begin
       FTone.Volume := v;
+      FMarkSound.Volume := v;
+      FSpaceSound.Volume := v;
    end;
    {$ENDIF}
 end;
