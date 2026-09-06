@@ -135,7 +135,7 @@ uses
   UDateDialog in 'UDateDialog.pas' {DateDialog},
   UCWMonitor in 'UCWMonitor.pas' {formCWMonitor},
   UELogCabrillo in 'UELogCabrillo.pas' {formELogCabrillo},
-  UPortConfigDialog2 in 'UPortConfigDialog2.pas' {formPortConfig2},
+  UPortConfigDialog3 in 'UPortConfigDialog3.pas' {formPortConfig3},
   UOptions in 'UOptions.pas' {formOptions},
   UJarlMemberInfo in 'UJarlMemberInfo.pas' {formJarlMemberInfo},
   UCountryChecker in 'UCountryChecker.pas' {formCountryChecker},
@@ -171,7 +171,8 @@ uses
   UPortConfigDialog in 'UPortConfigDialog.pas' {formPortConfig},
   UJarlWorldWideRTTYScore in 'UJarlWorldWideRTTYScore.pas' {JarlWorldWideRTTYScore},
   UJarlWorldWideRTTYMulti in 'UJarlWorldWideRTTYMulti.pas' {JarlWorldWideRTTYMulti},
-  SetupApi in 'SetupApi.pas';
+  SetupApi in 'SetupApi.pas',
+  UPortConfigDialog2 in 'UPortConfigDialog2.pas' {formPortConfig2};
 
 {$R *.res}
 

@@ -463,6 +463,18 @@ type
     buttonBrowseMmtty2Path: TButton;
     editMmtty2Folder: TEdit;
     checkSetInitFreqChgMode: TCheckBox;
+    groupRig2Fsk: TGroupBox;
+    comboRig2FskPort: TComboBox;
+    buttonRig2FskPortConfig: TButton;
+    groupRig1Fsk: TGroupBox;
+    comboRig1FskPort: TComboBox;
+    buttonRig1FskPortConfig: TButton;
+    groupRig3Fsk: TGroupBox;
+    comboRig3FskPort: TComboBox;
+    buttonRig3FskPortConfig: TButton;
+    groupRig4Fsk: TGroupBox;
+    comboRig4FskPort: TComboBox;
+    buttonRig4FskPortConfig: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -504,6 +516,8 @@ type
     procedure checkUseF2ADataModeClick(Sender: TObject);
     procedure checkUseRigDeviceClick(Sender: TObject);
     procedure buttonAudioConfigClick(Sender: TObject);
+    procedure comboFskPortChange(Sender: TObject);
+    procedure buttonFskPortConfigClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
 //    FEditMode: Integer;
@@ -541,6 +555,8 @@ type
     FUseF2APtt: array[1..4] of TCheckBox;
     FF2ABefore: array[1..4] of TEdit;
     FF2AAfter: array[1..4] of TEdit;
+    FFskPort: array[1..4] of TComboBox;
+    FFskPortConfig: array[1..4] of TButton;
 
     procedure InitRigNames();
     function CheckRigSetting(): Boolean;
@@ -598,7 +614,8 @@ implementation
 
 uses
   Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet, UPortConfigDialog,
-  UPortConfigDialog2, UZlinkTelnetSet, UZLinkForm, URigControl, USpotterListDlg;
+  UPortConfigDialog2, UPortConfigDialog3, UZlinkTelnetSet, UZLinkForm,
+  URigControl, USpotterListDlg;
 
 {$R *.DFM}
 
@@ -788,6 +805,10 @@ begin
    comboSo2rTxSelectPort.Items.Clear();
    comboSo2rRxSelectPort.Items.Clear();
    comboSo2rOtrspPort.Items.Clear();
+   comboRig1FskPort.Items.Clear();
+   comboRig2FskPort.Items.Clear();
+   comboRig3FskPort.Items.Clear();
+   comboRig4FskPort.Items.Clear();
 
    list := dmZLogGlobal.CommPortList;
    for i := 0 to list.Count - 1 do begin
@@ -807,6 +828,13 @@ begin
          comboRig3Keying.Items.AddObject(CP.Name, CP);
          comboRig4Keying.Items.AddObject(CP.Name, CP);
          comboRig5Keying.Items.AddObject(CP.Name, CP);
+      end;
+
+      if CP.FPortNumber <= 20 then begin
+         comboRig1FskPort.Items.AddObject(CP.Name, CP);
+         comboRig2FskPort.Items.AddObject(CP.Name, CP);
+         comboRig3FskPort.Items.AddObject(CP.Name, CP);
+         comboRig4FskPort.Items.AddObject(CP.Name, CP);
       end;
    end;
 
@@ -847,6 +875,14 @@ begin
    FF2AAfter[2] := editRig2F2AAfter;
    FF2AAfter[3] := editRig3F2AAfter;
    FF2AAfter[4] := editRig4F2AAfter;
+   FFskPort[1] := comboRig1FskPort;
+   FFskPort[2] := comboRig2FskPort;
+   FFskPort[3] := comboRig3FskPort;
+   FFskPort[4] := comboRig4FskPort;
+   FFskPortConfig[1] := buttonRig1FskPortConfig;
+   FFskPortConfig[2] := buttonRig2FskPortConfig;
+   FFskPortConfig[3] := buttonRig3FskPortConfig;
+   FFskPortConfig[4] := buttonRig4FskPortConfig;
 
    // F2A 再生用デバイスリスト
    L := TWaveSound.DeviceList();
@@ -900,6 +936,11 @@ begin
    checkUseF2AClick(FUseF2A[2]);
    checkUseF2AClick(FUseF2A[3]);
    checkUseF2AClick(FUseF2A[4]);
+
+   comboFskPortChange(FFskPort[1]);
+   comboFskPortChange(FFskPort[2]);
+   comboFskPortChange(FFskPort[3]);
+   comboFskPortChange(FFskPort[4]);
 end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
@@ -1380,6 +1421,43 @@ begin
    end
    else begin
       FRigControlPortConfig[rigno].Enabled := False;
+   end;
+end;
+
+procedure TformOptions.comboFskPortChange(Sender: TObject);
+var
+   rigno: Integer;
+   KeyIndex: Integer;
+begin
+   rigno := TComboBox(Sender).Tag;
+   KeyIndex := TCommPort(FFskPort[rigno].Items.Objects[FFskPort[rigno].ItemIndex]).Number;
+   if KeyIndex = 0 then begin
+      FFskPortConfig[rigno].Enabled := False;
+   end
+   else begin
+      FFskPortConfig[rigno].Enabled := True;
+   end;
+end;
+
+procedure TformOptions.buttonFskPortConfigClick(Sender: TObject);
+var
+   f: TformPortConfig3;
+   r: Integer;
+begin
+   f := TformPortConfig3.Create(Self);
+   try
+      r := TButton(sender).Tag;
+
+      f.PortName := FFskPort[r].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[r].FFskPortConfig;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[r].FFskPortConfig := f.PortConfig;
+   finally
+      f.Release();
    end;
 end;
 
@@ -1973,6 +2051,7 @@ begin
          Settings._f2a_use_datamode[i] := FUseF2ADataMode[i].Checked;
          Settings._f2a_datamode[i] := FF2aDataMode[i].ItemIndex;
          Settings._f2a_filter[i] := FF2aFilter[i].ItemIndex;
+         Settings.FRigControl[i].FFskPort := TCommPort(FFskPort[i].Items.Objects[FFskPort[i].ItemIndex]).Number;
       end;
 
       //
@@ -2052,6 +2131,7 @@ procedure TformOptions.ImplementSettings();
 var
    b: TBand;
    i: Integer;
+   j: Integer;
 
    procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
    var
@@ -2332,6 +2412,15 @@ begin
          FUseF2ADataMode[i].Checked := Settings._f2a_use_datamode[i];
          FF2aDataMode[i].ItemIndex := Settings._f2a_datamode[i];
          FF2aFilter[i].ItemIndex := Settings._f2a_filter[i];
+
+         FFskPort[i].ItemIndex := 0;
+         for j := 0 to FFskPort[i].Items.Count - 1 do begin
+            if TCommPort(FFskPort[i].Items.Objects[j]).Number = Settings.FRigControl[i].FFskPort then begin
+               FFskPort[i].ItemIndex := j;
+               FFskPort[i].OnChange(FFskPort[i]);
+               Break;
+            end;
+         end;
       end;
 
       //

@@ -480,8 +480,8 @@
         <DCCReference Include="UELogCabrillo.pas">
             <Form>formELogCabrillo</Form>
         </DCCReference>
-        <DCCReference Include="UPortConfigDialog2.pas">
-            <Form>formPortConfig2</Form>
+        <DCCReference Include="UPortConfigDialog3.pas">
+            <Form>formPortConfig3</Form>
         </DCCReference>
         <DCCReference Include="UOptions.pas">
             <Form>formOptions</Form>
@@ -569,6 +569,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="SetupApi.pas"/>
+        <DCCReference Include="UPortConfigDialog2.pas">
+            <Form>formPortConfig2</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -773,8 +777,8 @@
                     <RDP_Source_Files Name="Item10">UFreqTest.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item11">UJarlWorldWideRTTYMulti2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item13">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item14">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item13">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item14">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item16">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item17">UBasicScore.dfm</RDP_Source_Files>
@@ -876,7 +880,7 @@
                     <RDP_Source_Files Name="Item113">UDateDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item114">UCWMonitor.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item115">UELogCabrillo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item116">UPortConfigDialog2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item116">UPortConfigDialog3.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item117">UOptions.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item118">UJarlMemberInfo.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item119">UCountryChecker.dfm</RDP_Source_Files>
@@ -902,7 +906,8 @@
                     <RDP_Source_Files Name="Item139">UPortConfigDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item140">UJarlWorldWideRTTYScore.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item141">UJarlWorldWideRTTYMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item142">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item142">UPortConfigDialog2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item143">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

@@ -86,6 +86,7 @@ type
   TPortConfig = record
     FRts: TPortAction;  // default: PTT
     FDtr: TPortAction;  // default: KEY
+    FTxD: TPortAction;  // default: NONE
   end;
 
   TPrePostPlayBack = record
@@ -112,6 +113,8 @@ type
     FUsePolling: Boolean;
     FPrePlayback: TAudioInput;
     FPostPlayback: TAudioInput;
+    FFskPort: Integer;
+    FFskPortConfig: TPortConfig;
   end;
 
   TRigSet = record
@@ -440,6 +443,9 @@ type
     FRTTY_UseAfskTone: Boolean;
     FRTTY_UseFskKeying: Boolean;
     FRTTY_DontChangeRigMode: Boolean;
+    FRTTY_SpaceFreq: Integer;
+    FRTTY_MarkFreq: Integer;
+    FRTTY_FskReverse: Boolean;
   end;
 
   TLastContest = record
@@ -1114,6 +1120,9 @@ begin
       Settings.FRTTY_UseAfskTone := ini.ReadBool('RTTY', 'use_afsk_tone', False);
       Settings.FRTTY_UseFskKeying := ini.ReadBool('RTTY', 'use_fsk_keying', False);
       Settings.FRTTY_DontChangeRigMode := ini.ReadBool('RTTY', 'dont_change_rig_mode', False);
+      Settings.FRTTY_SpaceFreq := ini.ReadInteger('RTTY', 'space_freq', 1955);
+      Settings.FRTTY_MarkFreq  := ini.ReadInteger('RTTY', 'mark_freq', 2125);
+      Settings.FRTTY_FskReverse := ini.ReadBool('RTTY', 'fsk_reverse', False);
 
       //
       // Hardware
@@ -1172,10 +1181,15 @@ begin
          Settings.FRigControl[i].FKeyingPort    := ini.ReadInteger(s, 'KeyingPort', 0);
          Settings.FRigControl[i].FKeyingPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'keying_port_rts', Integer(paPtt)));
          Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
+         Settings.FRigControl[i].FKeyingPortConfig.FTxD := TPortAction(ini.ReadInteger(s, 'keying_port_txd', Integer(paNone)));
          Settings.FRigControl[i].FPhoneChgPTT := ini.ReadBool(s, 'PhoneChgPTT', False);
          Settings.FRigControl[i].FUsePolling := ini.ReadBool(s, 'UsePolling', True);
          Settings.FRigControl[i].FPrePlayback := TAudioInput(ini.ReadInteger(s, 'PrePlayback', 0));
          Settings.FRigControl[i].FPostPlayback := TAudioInput(ini.ReadInteger(s, 'PostPlayback', 0));
+         Settings.FRigControl[i].FFskPort    := ini.ReadInteger(s, 'FskPort', 0);
+         Settings.FRigControl[i].FFskPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'fsk_port_rts', Integer(paPtt)));
+         Settings.FRigControl[i].FFskPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'fsk_port_dtr', Integer(paNone)));
+         Settings.FRigControl[i].FFskPortConfig.FTxD := TPortAction(ini.ReadInteger(s, 'fsk_port_txd', Integer(paKey)));
       end;
 
       //
@@ -1995,6 +2009,9 @@ begin
       ini.WriteBool('RTTY', 'use_afsk_tone', Settings.FRTTY_UseAfskTone);
       ini.WriteBool('RTTY', 'use_fsk_keying', Settings.FRTTY_UseFskKeying);
       ini.WriteBool('RTTY', 'dont_change_rig_mode', Settings.FRTTY_DontChangeRigMode);
+      ini.WriteInteger('RTTY', 'space_freq', Settings.FRTTY_SpaceFreq);
+      ini.WriteInteger('RTTY', 'mark_freq', Settings.FRTTY_MarkFreq);
+      ini.WriteBool('RTTY', 'fsk_reverse', Settings.FRTTY_FskReverse);
 
       //
       // Hardware
@@ -2046,10 +2063,15 @@ begin
          ini.WriteInteger(s, 'TransverterOffset', Settings.FRigControl[i].FTransverterOffset);
          ini.WriteInteger(s, 'keying_port_rts', Integer(Settings.FRigControl[i].FKeyingPortConfig.FRts));
          ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
+         ini.WriteInteger(s, 'keying_port_txd', Integer(Settings.FRigControl[i].FKeyingPortConfig.FTxD));
          ini.WriteBool(s, 'PhoneChgPTT', Settings.FRigControl[i].FPhoneChgPTT);
          ini.WriteBool(s, 'UsePolling', Settings.FRigControl[i].FUsePolling);
          ini.WriteInteger(s, 'PrePlayback', Integer(Settings.FRigControl[i].FPrePlayback));
          ini.WriteInteger(s, 'PostPlayback', Integer(Settings.FRigControl[i].FPostPlayback));
+         ini.WriteInteger(s, 'FskPort', Settings.FRigControl[i].FFskPort);
+         ini.WriteInteger(s, 'fsk_port_rts', Integer(Settings.FRigControl[i].FFskPortConfig.FRts));
+         ini.WriteInteger(s, 'fsk_port_dtr', Integer(Settings.FRigControl[i].FFskPortConfig.FDtr));
+         ini.WriteInteger(s, 'fsk_port_txd', Integer(Settings.FRigControl[i].FFskPortConfig.FTxd));
       end;
 
       //
@@ -2611,7 +2633,15 @@ begin
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
 
+   // FSKキーイングポートの設定
+   for i := 0 to 3 do begin
+      dmZLogKeyer.FskPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FFskPort);
+      dmZLogKeyer.FskPortConfig[i] := Settings.FRigControl[i + 1].FFskPortConfig;
+   end;
    dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.FRTTY_UseAfskTone;
+   dmZLogKeyer.SpaceFreq := dmZLogGlobal.Settings.FRTTY_SpaceFreq;
+   dmZLogKeyer.MarkFreq := dmZLogGlobal.Settings.FRTTY_MarkFreq;
+   dmZLogKeyer.FskReverse := dmZLogGlobal.Settings.FRTTY_FskReverse;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;

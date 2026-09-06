@@ -3596,6 +3596,34 @@ object formOptions: TformOptions
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
         end
+        object groupRig1Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 81
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig1FskPort: TComboBox
+            Tag = 1
+            Left = 9
+            Top = 20
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig1FskPortConfig: TButton
+            Tag = 1
+            Left = 9
+            Top = 48
+            Width = 64
+            Height = 22
+            Caption = 'Config'
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
+        end
       end
       object gtoupRig2F2A: TGroupBox
         Left = 6
@@ -3732,6 +3760,34 @@ object formOptions: TformOptions
           Caption = 'Use DATAMODE'
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
+        end
+        object groupRig2Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 81
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig2FskPort: TComboBox
+            Tag = 2
+            Left = 9
+            Top = 20
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig2FskPortConfig: TButton
+            Tag = 2
+            Left = 9
+            Top = 48
+            Width = 64
+            Height = 22
+            Caption = 'Config'
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
         end
       end
       object gtoupRig3F2A: TGroupBox
@@ -3870,6 +3926,34 @@ object formOptions: TformOptions
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
         end
+        object groupRig3Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 81
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig3FskPort: TComboBox
+            Tag = 3
+            Left = 9
+            Top = 20
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig3FskPortConfig: TButton
+            Tag = 3
+            Left = 9
+            Top = 48
+            Width = 64
+            Height = 22
+            Caption = 'Config'
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
+        end
       end
       object gtoupRig4F2A: TGroupBox
         Left = 6
@@ -4006,6 +4090,34 @@ object formOptions: TformOptions
           Caption = 'Use DATAMODE'
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
+        end
+        object groupRig4Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 81
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig4FskPort: TComboBox
+            Tag = 4
+            Left = 9
+            Top = 20
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig4FskPortConfig: TButton
+            Tag = 4
+            Left = 9
+            Top = 48
+            Width = 64
+            Height = 22
+            Caption = 'Config'
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
         end
       end
     end
@@ -4836,13 +4948,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'PlemolJP ExtraLight'
+          FontName = 'PlemolJP'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 112
+          ItemIndex = 111
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

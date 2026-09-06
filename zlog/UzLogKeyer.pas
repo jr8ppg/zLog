@@ -144,6 +144,7 @@ type
     { Private 宣言 }
     FDefautCom: array[0..MAXPORT] of TCommPortDriver;
     FComKeying: array[0..MAXPORT] of TCommPortDriver;
+    FFskKeying: array[0..MAXPORT] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
     FPaddleThread: TPaddleThread;
@@ -294,6 +295,11 @@ type
     // RTTY support
     FRTTY: Boolean;
     FUseAFSKTone: Boolean;
+    FSpaceFreq: Integer;
+    FMarkFreq: Integer;
+    FFskReverse: Boolean;
+    FFskPort: array[0..MAXPORT] of TKeyingPort;
+    FFskPortConfig: array[0..MAXPORT] of TPortConfig;
 
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
@@ -362,6 +368,16 @@ type
     procedure DumpSendBuf();
     procedure SetOtrspPortParam(CP: TCommPortDriver);
     procedure WinKeyerSleep(dwMilidec: DWORD);
+
+    procedure SetSpaceFreq(v: Integer);
+    procedure SetMarkFreq(v: Integer);
+    procedure FSK_KEYING(nID: Integer; fMark: Boolean);
+    procedure FSK_ON(nID: Integer);
+    procedure FSK_OFF(nID: Integer);
+    function GetFskPort(Index: Integer): TKeyingPort;
+    procedure SetFskPort(Index: Integer; port: TKeyingPort);
+    function GetFskPortConfig(Index: Integer): TPortConfig;
+    procedure SetFskPortConfig(Index: Integer; v: TPortConfig);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -374,6 +390,8 @@ type
 
     procedure ControlPTT(nID: Integer; PTTON : Boolean; fPhonePTT: Boolean = False); {Sets PTT on/off}
     procedure ResetPTT();
+    procedure FskControlPTT(nID: Integer; PTTON : Boolean; fPhonePTT: Boolean = False); {Sets PTT on/off}
+    procedure FskResetPTT();
     procedure TuneOn(nID: Integer);
 
     procedure SetCallSign(S: string); {Update realtime callsign}
@@ -433,8 +451,14 @@ type
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
     property UseCanSend: Boolean read FUseCanSend write FUseCanSend;
 
+    // RTTY support
     property RTTY: Boolean read FRTTY write FRTTY;
     property UseAFSKTone: Boolean read FUseAFSKTone write FUseAFSKTone;
+    property SpaceFreq: Integer read FSpaceFreq write SetSpaceFreq;
+    property MarkFreq: Integer read FMarkFreq write SetMarkFreq;
+    property FskReverse: Boolean read FFskReverse write FFskReverse;
+    property FskPort[Index: Integer]: TKeyingPort read GetFskPort write SetFskPort;
+    property FskPortConfig[Index: Integer]: TPortConfig read GetFskPortConfig write SetFskPortConfig;
 
     // paddle support
     procedure PaddleProc(PaddleStatus: Byte);
@@ -544,6 +568,11 @@ begin
    FComKeying[2] := FDefautCom[2];
    FComKeying[3] := FDefautCom[3];
    FComKeying[4] := FDefautCom[4];
+   FFskKeying[0] := FDefautCom[0];
+   FFskKeying[1] := FDefautCom[1];
+   FFskKeying[2] := FDefautCom[2];
+   FFskKeying[3] := FDefautCom[3];
+   FFskKeying[4] := FDefautCom[4];
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
@@ -569,6 +598,9 @@ begin
    FPrevDSR := True;
    FRTTY := False;
    FUseAFSKTone := False;
+   FSpaceFreq := 1955;
+   FMarkFreq := 2125;
+   FFskReverse := False;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -583,9 +615,7 @@ begin
    else begin
       FTone := TSideTone.Create(700);
       FMarkSound := TSideTone.Create(2125);
-      FSpaceSound := TSideTone.Create(2295);
-      FMarkSound.Open(WAVE_MAPPER);
-      FSpaceSound.Open(WAVE_MAPPER);
+      FSpaceSound := TSideTone.Create(1955);
    end;
    {$ENDIF}
 
@@ -632,6 +662,11 @@ begin
       KeyingPort[i] := tkpNone;
       FKeyingPortConfig[i].FRts := paPtt;
       FKeyingPortConfig[i].FDtr := paKey;
+      FKeyingPortConfig[i].FTxD := paNone;
+      FFskPort[i] := tkpNone;
+      FFskPortConfig[i].FRts := paPtt;
+      FFskPortConfig[i].FDtr := paNone;
+      FFskPortConfig[i].FTxD := paKey;
    end;
 
    tailcwstrptr := 1;
@@ -1466,6 +1501,59 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.FskControlPTT(nID: Integer; PTTON: Boolean; fPhonePTT: Boolean);
+begin
+   try
+      FPTTFLAG := PTTON;
+      FWkTx := nID;
+
+      // COM port
+      if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+         if FKeyingPortConfig[nID].FRts = paPtt then begin
+            FFskKeying[nID].ToggleRTS(PTTON);
+         end;
+         if FKeyingPortConfig[nID].FDtr = paPtt then begin
+            FFskKeying[nID].ToggleDTR(PTTON);
+         end;
+         Exit;
+      end;
+   finally
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** ControlPTT ***'));
+      {$ENDIF}
+      if Assigned(FOnWkStatusProc) then begin
+         FOnWkStatusProc(Self, FWkTx, FWkRx, PTTON);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.FskResetPTT();
+var
+   nID: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** Enter -- FskResetPTT ***'));
+   {$ENDIF}
+   try
+      FPTTFLAG := False;
+
+      for nID := 0 to MAXPORT do begin
+         if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
+            if FKeyingPortConfig[nID].FRts = paPtt then begin
+               FFskKeying[nID].ToggleRTS(False);
+            end;
+            if FKeyingPortConfig[nID].FDtr = paPtt then begin
+               FFskKeying[nID].ToggleDTR(False);
+            end;
+         end;
+      end;
+   finally
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** Leave -- FskResetPTT ***'));
+      {$ENDIF}
+   end;
+end;
+
 procedure TdmZLogKeyer.SetPTT(_on: Boolean);
 var
    i: Integer;
@@ -2291,7 +2379,7 @@ begin
 
       // SPACE
       $70: begin
-         CW_OFF(FWkTx);
+         FSK_OFF(FWkTx);
          if FUseAFSKTone then begin
             RttyAudio(0, True);
          end;
@@ -2301,7 +2389,7 @@ begin
 
       // MARK
       $71: begin
-         CW_ON(FWkTx);
+         FSK_ON(FWkTx);
          if FUseAFSKTone then begin
             RttyAudio(1, True);
          end;
@@ -2311,7 +2399,7 @@ begin
 
       // STOPBIT
       $72: begin
-         CW_ON(FWkTx);
+         FSK_ON(FWkTx);
          if FUseAFSKTone then begin
             RttyAudio(1, True);
          end;
@@ -5895,6 +5983,67 @@ begin
          Sleep(dmZLogGlobal.Settings._wk_delaytime);
       end;
    end;
+end;
+
+procedure TdmZLogKeyer.SetSpaceFreq(v: Integer);
+begin
+   FSpaceSound.Frequency := v;
+end;
+
+procedure TdmZLogKeyer.SetMarkFreq(v: Integer);
+begin
+   FMarkSound.Frequency := v;
+end;
+
+procedure TdmZLogKeyer.FSK_KEYING(nID: Integer; fMark: Boolean);
+begin
+   if FFskReverse then begin
+      fMark := Not fMark;
+   end;
+
+   case FFskPort[nID] of
+      tkpSerial1..tkpSerial20: begin
+         if FFskPortConfig[nID].FRts = paKey then begin
+            FFskKeying[nID].ToggleRTS(fMark);
+         end;
+         if FFskPortConfig[nID].FDtr = paKey then begin
+            FFskKeying[nID].ToggleDTR(fMark);
+         end;
+         if FFskPortConfig[nID].FTxD = paKey then begin
+            FFskKeying[nID].ToggleTxD(fMark);
+         end;
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.FSK_ON(nID: Integer);
+begin
+   FSK_KEYING(nID, True);
+end;
+
+procedure TdmZLogKeyer.FSK_OFF(nID: Integer);
+begin
+   FSK_KEYING(nID, False);
+end;
+
+function TdmZLogKeyer.GetFskPort(Index: Integer): TKeyingPort;
+begin
+   Result := FFskPort[Index];
+end;
+
+procedure TdmZLogKeyer.SetFskPort(Index: Integer; port: TKeyingPort);
+begin
+   FFskPort[Index] := port;
+end;
+
+function TdmZLogKeyer.GetFskPortConfig(Index: Integer): TPortConfig;
+begin
+   Result := FFskPortConfig[Index];
+end;
+
+procedure TdmZLogKeyer.SetFskPortConfig(Index: Integer; v: TPortConfig);
+begin
+   FFskPortConfig[Index] := v;
 end;
 
 { TUSBPortInfo }
