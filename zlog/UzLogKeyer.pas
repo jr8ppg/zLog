@@ -3618,11 +3618,14 @@ begin
 
    // STX(PTT ON)
    FBaudotTable[Ord(STX)][1] := $73;   // PTT ON
-   FBaudotTable[Ord(STX)][2] := 9;     // next char
+   FBaudotTable[Ord(STX)][2] := $55;   // set PTT delay
+   FBaudotTable[Ord(STX)][3] := 9;     // next char
 
    // ETX(PTT OFF)
-   FBaudotTable[Ord(ETX)][1] := $74;   // PTT OFF
-   FBaudotTable[Ord(ETX)][2] := 9;     // next char
+   FBaudotTable[Ord(ETX)][1] := $A1;   // set Hold Counter
+   FBaudotTable[Ord(ETX)][2] := $A3;   // set PTT delay
+   FBaudotTable[Ord(ETX)][3] := $74;   // PTT OFF
+   FBaudotTable[Ord(ETX)][4] := 9;     // next char
 
    FBaudotTable[$90][1] := $20;
    FBaudotTable[$90][2] := 9;
