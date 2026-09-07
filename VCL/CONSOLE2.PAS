@@ -243,6 +243,15 @@ type
     FRows: Integer;
     FProcessControlCodes: TProcessControlCodes;
     FLineBreak: TConsole2LineBreak;        { CR/LF/CRLF translation }
+    FSelStart: TPoint;
+    FSelEnd: TPoint;
+    FHasSelection: Boolean;
+    FOnSelected: TNotifyEvent;
+    function GetSelectedText: String;
+    function GetConsoleTextColor: TColor;
+    procedure SetConsoleTextColor(Value: TColor);
+    function GetConsoleBackgroundColor: TColor;
+    procedure SetConsoleBackgroundColor(Value: TColor);
     procedure InternalClrScr;
     procedure SetOptions(NewOptions: TConsole2Options);
     procedure SetCols(N: Integer);
@@ -292,6 +301,9 @@ type
     procedure DoCtrlBreak; dynamic;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
 		 X, Y: Integer); override;
+    function MouseToCell(X, Y: Integer): TPoint;
+    procedure PaintSelection;
+    procedure ClearSelection;
     procedure LazyTrackCursor;
     procedure LazyScrollBy(dx, dy: Integer);
     procedure Loaded; override;
@@ -313,11 +325,15 @@ type
     procedure AssignCrt(var F: Text); dynamic;
     procedure ShowCursor; virtual;
     procedure HideCursor;
+    property SelectedText: String read GetSelectedText;
   published
     property Align;
     property ParentColor;
     property Color;
     property Font: TFixedFont_ read FFont write SetFont;
+    property TextColor: TColor read GetConsoleTextColor write SetConsoleTextColor;
+    property BackgroundColor: TColor read GetConsoleBackgroundColor write SetConsoleBackgroundColor;
+    property OnSelected: TNotifyEvent read FOnSelected write FOnSelected;
     property Options: TConsole2Options read FOptions write SetOptions
       default [coAutoTracking, coCheckBreak, coLazyWrite{, coFixedPitchOnly}];
     property Cols: Integer read FCols write SetCols default 80;
@@ -331,6 +347,7 @@ type
 type
   PIntArray = ^TIntArray;
   TIntArray = array [0..0] of Integer;
+  PConsoleColor = ^TColor;
 
 type
   TAttr = class(TFixedFont_)
@@ -363,11 +380,21 @@ type
     property  Count: Integer read GetCount;
   end;
 
+  TConsoleColorRule = class
+  public
+    Text: String;
+    Color: TColor;
+  end;
+
   TColorConsole2 = class(TConsole2)
   private
     FIndexes: PIntArray;
+    FColorRules: TList;
+    FHighlightColors: array of TColor;
     FAttrList: TAttrManager;
     FCellWidths: PIntArray;
+    procedure UpdateHighlightsForRow(Y: Integer);
+    procedure RebuildHighlights;
     procedure FillAttr(X,Y: Integer; Count: Cardinal);
   protected
     function  IndexPtr(X,Y: Integer): PInteger;
@@ -379,6 +406,8 @@ type
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
+    procedure AddColorString(const S: String; AColor: TColor);
+    procedure ClearColorStrings;
   end;
 
 procedure Register;
@@ -498,6 +527,9 @@ begin
   ResizeBuffer;
   TabStop := True;
   Enabled := True;
+  FHasSelection := False;
+  FSelStart := Point(0, 0);
+  FSelEnd := Point(0, 0);
 end;
 
 destructor TConsole2.Destroy;
@@ -507,6 +539,86 @@ begin
   FOldFont.Free;
   FFont.Free;
   inherited Destroy;
+end;
+
+function TConsole2.GetConsoleTextColor: TColor;
+begin
+  Result := Font.Color;
+end;
+
+procedure TConsole2.SetConsoleTextColor(Value: TColor);
+begin
+  Font.Color := Value;
+end;
+
+function TConsole2.GetConsoleBackgroundColor: TColor;
+begin
+  Result := Font.BkColor;
+end;
+
+procedure TConsole2.SetConsoleBackgroundColor(Value: TColor);
+begin
+  Font.BkColor := Value;
+  Color := Value;
+  Invalidate;
+end;
+
+function TConsole2.GetSelectedText: String;
+var
+  A: AnsiString;
+  L: Integer;
+begin
+  Result := '';
+  if not FHasSelection then Exit;
+  if FSelStart.Y <> FSelEnd.Y then Exit;
+  L := FSelEnd.X - FSelStart.X + 1;
+  if L <= 0 then Exit;
+  SetString(A, ScreenPtr(FSelStart.X, FSelStart.Y), L);
+  Result := String(A);
+end;
+
+procedure TConsole2.ClearSelection;
+begin
+  if FHasSelection then
+  begin
+    FHasSelection := False;
+    Invalidate;
+  end;
+end;
+
+function TConsole2.MouseToCell(X, Y: Integer): TPoint;
+begin
+  Result.X := FOrigin.X + (X div Max(1, FCharSize.X));
+  Result.Y := FOrigin.Y + (Y div Max(1, FCharSize.Y));
+  Result.X := Max(0, Min(Result.X, Cols - 1));
+  Result.Y := Max(0, Min(Result.Y, Rows - 1));
+end;
+
+procedure TConsole2.PaintSelection;
+var
+  R: TRect;
+  L: Integer;
+  P: PAnsiChar;
+  DC: HDC;
+begin
+  if not FHasSelection then Exit;
+  if FSelStart.Y <> FSelEnd.Y then Exit;
+  L := FSelEnd.X - FSelStart.X + 1;
+  if L <= 0 then Exit;
+
+  R.Left := FSelStart.X * FCharSize.X;
+  R.Top := FSelStart.Y * FCharSize.Y;
+  R.Right := (FSelEnd.X + 1) * FCharSize.X;
+  R.Bottom := R.Top + FCharSize.Y;
+  P := ScreenPtr(FSelStart.X, FSelStart.Y);
+
+  DC := Canvas.Handle;
+  SetTextAlign(DC, TA_Top);
+  SelectObject(DC, Font.Handle);
+  SetTextColor(DC, ColorToRGB(clHighlightText));
+  SetBkColor(DC, ColorToRGB(clHighlight));
+  SetBkMode(DC, OPAQUE);
+  ExtTextOutA(DC, R.Left, R.Top, ETO_Opaque or ETO_Clipped, @R, P, L, nil);
 end;
 
 procedure TConsole2.Loaded;
@@ -830,6 +942,7 @@ end;
 
 procedure TConsole2.InternalClrScr;
 begin
+  FHasSelection := False;
   WriteFill(0,0,' ',Cols * Rows);
   FOrigin.X := 0;
   FOrigin.Y := 0;
@@ -1221,6 +1334,7 @@ begin
     Inc(Y1);
     Inc(PY, FCharSize.Y);
   end;
+  PaintSelection;
 end;
 
 procedure TConsole2.WMSize(var M: TWMSize);
@@ -1340,8 +1454,48 @@ end;
 
 procedure TConsole2.MouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
+var
+  C: TPoint;
+  P: PAnsiChar;
+  L, R: Integer;
 begin
   SetFocus;
+
+  if Button = mbLeft then
+  begin
+    { A single click only clears the previous selection.
+      Select a word only when the left button is double-clicked. }
+    if not (ssDouble in Shift) then
+      ClearSelection
+    else
+    begin
+      C := MouseToCell(X, Y);
+      P := ScreenPtr(C.X, C.Y);
+
+      if P^ <= ' ' then
+        ClearSelection
+      else
+      begin
+        L := C.X;
+        while (L > 0) and (ScreenPtr(L - 1, C.Y)^ > ' ') do
+          Dec(L);
+
+        R := C.X;
+        while (R < Cols - 1) and (ScreenPtr(R + 1, C.Y)^ > ' ') do
+          Inc(R);
+
+        FSelStart := Point(L, C.Y);
+        FSelEnd := Point(R, C.Y);
+        FHasSelection := True;
+        Invalidate;
+
+        { Fire after SelectedText has been updated. }
+        if Assigned(FOnSelected) then
+          FOnSelected(Self);
+      end;
+    end;
+  end;
+
   inherited MouseDown(Button, Shift, X, Y);
 end;
 
@@ -1503,15 +1657,94 @@ end;
 constructor TColorConsole2.Create(Owner: TComponent);
 begin
   FAttrList := TAttrManager.Create;
+  FColorRules := TList.Create;
   inherited Create(Owner);
 end;
 
 destructor TColorConsole2.Destroy;
 begin
+  ClearColorStrings;
+  FColorRules.Free;
   inherited Destroy;
   AnsiStrings.StrDispose(PAnsiChar(FIndexes));
   FAttrList.Free;
   AnsiStrings.StrDispose(PAnsiChar(FCellWidths));
+end;
+
+procedure TColorConsole2.AddColorString(const S: String; AColor: TColor);
+var
+  R: TConsoleColorRule;
+begin
+  if S = '' then Exit;
+  R := TConsoleColorRule.Create;
+  R.Text := S;
+  R.Color := AColor;
+  FColorRules.Add(R);
+  RebuildHighlights;
+  Invalidate;
+end;
+
+procedure TColorConsole2.ClearColorStrings;
+var
+  I: Integer;
+begin
+  if FColorRules <> nil then
+  begin
+    for I := FColorRules.Count - 1 downto 0 do
+      TObject(FColorRules[I]).Free;
+    FColorRules.Clear;
+  end;
+  RebuildHighlights;
+  Invalidate;
+end;
+
+procedure TColorConsole2.RebuildHighlights;
+var
+  Y: Integer;
+begin
+  if Length(FHighlightColors) <> Cols * Rows then
+    SetLength(FHighlightColors, Cols * Rows);
+  for Y := 0 to Rows - 1 do
+    UpdateHighlightsForRow(Y);
+end;
+
+procedure TColorConsole2.UpdateHighlightsForRow(Y: Integer);
+var
+  Base, I, J, P0, StartPos: Integer;
+  Line, FindText, WorkLine, WorkFind: AnsiString;
+  Rule: TConsoleColorRule;
+begin
+  if (Y < 0) or (Y >= Rows) then Exit;
+  if Length(FHighlightColors) <> Cols * Rows then
+    SetLength(FHighlightColors, Cols * Rows);
+
+  Base := NativeInt(ScreenPtr(0, Y)) - NativeInt(FBuffer);
+  for I := 0 to Cols - 1 do
+    FHighlightColors[Base + I] := clNone;
+
+  if (FColorRules = nil) or (FColorRules.Count = 0) then Exit;
+
+  SetString(Line, ScreenPtr(0, Y), Cols);
+  WorkLine := AnsiStrings.AnsiUpperCase(Line);
+
+  for I := 0 to FColorRules.Count - 1 do
+  begin
+    Rule := TConsoleColorRule(FColorRules[I]);
+    FindText := AnsiString(Rule.Text);
+    if FindText = '' then Continue;
+    WorkFind := AnsiStrings.AnsiUpperCase(FindText);
+    StartPos := 1;
+    while StartPos <= Length(WorkLine) do
+    begin
+      P0 := Pos(WorkFind, Copy(WorkLine, StartPos, MaxInt));
+      if P0 = 0 then Break;
+      P0 := P0 + StartPos - 1;
+      for J := 0 to Length(WorkFind) - 1 do
+        if (P0 - 1 + J) < Cols then
+          FHighlightColors[Base + P0 - 1 + J] := Rule.Color;
+      StartPos := P0 + Length(WorkFind);
+    end;
+  end;
 end;
 
 function TColorConsole2.IndexPtr(X,Y: Integer): PInteger;
@@ -1553,6 +1786,8 @@ begin
 
   FillInt(FIndexes^, Cols * Rows, A);
   FillInt(FCellWidths^, Cols, FCharSize.X);
+  SetLength(FHighlightColors, Cols * Rows);
+  RebuildHighlights;
 end;
 
 { If the character cell is larger, expand settings and redraw }
@@ -1608,10 +1843,16 @@ end;
 
 
 procedure TColorConsole2.WriteFill(X,Y: Integer; Ch: AnsiChar; Count: Cardinal);
+var
+  StartY, EndY, I: Integer;
 begin
   if Count = 0 then Exit;
+  StartY := Y;
+  EndY := Min(Rows - 1, Y + (X + Integer(Count) - 1) div Cols);
   FillAttr(X,Y,Count);
   inherited WriteFill(X,Y,Ch,Count);  { write ch to the AnsiChar buffer }
+  for I := StartY to EndY do
+    UpdateHighlightsForRow(I);
 end;
 
 procedure TColorConsole2.FillAttr(X,Y: Integer; Count: Cardinal);
@@ -1662,18 +1903,22 @@ begin
   if Count = 0 then Exit;
   FillAttr(X,Y,Count);                     { fill range with current attr }
   inherited WriteBlock(X,Y,Buffer,Count);  { copy chars to AnsiChar buf }
+  UpdateHighlightsForRow(Y);
 end;
 
 procedure TColorConsole2.Paint;
 var
-  X1, X2, Y1, Y2, RunValue, RunStart, RunEnd, Len, Count, Prev: Integer;
+  X1, X2, Y1, Y2, RunValue, Len, Count, PrevAttr: Integer;
   R: TRect;
   P: PInteger;
+  H: PConsoleColor;
   Buf: PAnsiChar;
   A: TAttr;
   C: TPoint;
   DC: HDC;
   L: Integer;
+  RunColor, EffectiveColor, PrevTextColor: TColor;
+  Base: Integer;
 begin
   C := FCharSize;
   SetViewportOrgEx(Canvas.Handle, -FOrigin.X * FCharSize.X, -FOrigin.Y * C.Y, nil);
@@ -1697,63 +1942,72 @@ begin
     R.Top := Rows * C.Y;
     Canvas.FillRect(R);
   end;
-    { In this tight display loop, we don't need all the automatic services
-      provided by TCanvas.  To optimize performance, we'll select the text
-      font and colors into the DC 'manually'. }
+
   DC := Canvas.Handle;
   SetBkMode(DC, OPAQUE);
   SetTextAlign(DC, TA_BaseLine);
   R.Top := Y1 * C.Y;
   R.Bottom := R.Top + C.Y;
-  Prev := -1;
+  PrevAttr := -1;
+  PrevTextColor := TColor($7FFFFFFF);
+
   while Y1 < Y2 do
   begin
     Buf := ScreenPtr(X1,Y1);
     P := Pointer(IndexPtr(X1,Y1));
+    Base := NativeInt(Buf) - NativeInt(FBuffer);
+    H := @FHighlightColors[Base];
     Count := X2 - X1;
     R.Left := X1 * C.X;
-    RunEnd := Integer(P) + Count * sizeof(Integer);
+
     while Count > 0 do
     begin
-      RunStart := Integer(P);
       RunValue := P^;
-      while (Integer(P) < RunEnd) and (P^ = RunValue) do
+      RunColor := H^;
+      Len := 0;
+      while (Len < Count) and (P^ = RunValue) and (H^ = RunColor) do
+      begin
         Inc(P);
-      Len := (Integer(P) - RunStart) div sizeof(Integer);
+        Inc(H);
+        Inc(Len);
+      end;
       Dec(Count, Len);
-      if RunValue <> Prev then   { Only select objects when we have to }
-      begin                      { (this helps at line breaks )        }
-        A := FAttrList[RunValue];
+
+      A := FAttrList[RunValue];
+      if RunValue <> PrevAttr then
+      begin
         SelectObject(DC, A.Handle);
-        SetTextColor(DC, ColorToRGB(A.Color));
         SetBkColor(DC, ColorToRGB(A.BkColor));
-        Prev := RunValue;
-      end
-      else begin
-        A := nil;
+        PrevAttr := RunValue;
       end;
+
+      if RunColor <> clNone then
+        EffectiveColor := RunColor
+      else
+        EffectiveColor := A.Color;
+
+      if EffectiveColor <> PrevTextColor then
+      begin
+        SetTextColor(DC, ColorToRGB(EffectiveColor));
+        PrevTextColor := EffectiveColor;
+      end;
+
       R.Right := R.Left + Len * C.X;
-      if Assigned(A) then begin
-        L := R.Left - A.Underhang;
-      end
-      else begin
-        L := R.Left;
-      end;
+      L := R.Left - A.Underhang;
       ExtTextOutA(DC, L, R.Top + FCharAscent,
         ETO_Opaque or ETO_Clipped, @R, Buf, Len, Pointer(FCellWidths));
       R.Left := R.Right;
       Inc(Buf, Len);
     end;
+
     Inc(Y1);
     Inc(R.Top, C.Y);
     Inc(R.Bottom, C.Y);
   end;
-   { Since we've manipulated the DC directly, and the canvas may think its
-     current objects are still selected, we should force the canvas to
-     deselect all GDI objects }
+
+  PaintSelection;
   Canvas.Handle := 0;
 end;
-
 
 procedure Register;
 begin
