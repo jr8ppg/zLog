@@ -1,7 +1,7 @@
 object dmZLogKeyer: TdmZLogKeyer
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 175
+  Height = 287
   Width = 299
   object ZComKeying1: TCommPortDriver
     Tag = 1
@@ -76,5 +76,65 @@ object dmZLogKeyer: TdmZLogKeyer
     OnReceiveData = ZComKeying1ReceiveData
     Left = 211
     Top = 76
+  end
+  object ZFskKeying1: TCommPortDriver
+    Tag = 1
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComKeying1ReceiveData
+    Left = 63
+    Top = 200
+  end
+  object ZFskKeying2: TCommPortDriver
+    Tag = 1
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComKeying1ReceiveData
+    Left = 99
+    Top = 200
+  end
+  object ZFskKeying3: TCommPortDriver
+    Tag = 1
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComKeying1ReceiveData
+    Left = 135
+    Top = 200
+  end
+  object ZFskKeying4: TCommPortDriver
+    Tag = 1
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComKeying1ReceiveData
+    Left = 171
+    Top = 200
+  end
+  object ZFskKeying5: TCommPortDriver
+    Tag = 1
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComKeying1ReceiveData
+    Left = 207
+    Top = 200
   end
 end

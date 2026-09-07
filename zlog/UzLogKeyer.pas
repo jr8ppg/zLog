@@ -29,6 +29,8 @@ const
   LF = #$0a;
 
 const
+  STX = #$02;
+  ETX = #$03;
   LTRS = #$1F;
   FIGS = #$1B;
 
@@ -130,6 +132,11 @@ type
     ZComTxRigSelect: TCommPortDriver;
     ZComKeying4: TCommPortDriver;
     ZComKeying5: TCommPortDriver;
+    ZFskKeying1: TCommPortDriver;
+    ZFskKeying2: TCommPortDriver;
+    ZFskKeying3: TCommPortDriver;
+    ZFskKeying4: TCommPortDriver;
+    ZFskKeying5: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -346,6 +353,8 @@ type
     procedure COM_OFF();
     procedure USB_ON();
     procedure USB_OFF();
+    procedure FSK_ON();
+    procedure FSK_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
 
@@ -372,8 +381,8 @@ type
     procedure SetSpaceFreq(v: Integer);
     procedure SetMarkFreq(v: Integer);
     procedure FSK_KEYING(nID: Integer; fMark: Boolean);
-    procedure FSK_ON(nID: Integer);
-    procedure FSK_OFF(nID: Integer);
+    procedure FSK_MARK(nID: Integer);
+    procedure FSK_SPACE(nID: Integer);
     function GetFskPort(Index: Integer): TKeyingPort;
     procedure SetFskPort(Index: Integer; port: TKeyingPort);
     function GetFskPortConfig(Index: Integer): TPortConfig;
@@ -568,11 +577,11 @@ begin
    FComKeying[2] := FDefautCom[2];
    FComKeying[3] := FDefautCom[3];
    FComKeying[4] := FDefautCom[4];
-   FFskKeying[0] := FDefautCom[0];
-   FFskKeying[1] := FDefautCom[1];
-   FFskKeying[2] := FDefautCom[2];
-   FFskKeying[3] := FDefautCom[3];
-   FFskKeying[4] := FDefautCom[4];
+   FFskKeying[0] := ZFskKeying1;
+   FFskKeying[1] := ZFskKeying2;
+   FFskKeying[2] := ZFskKeying3;
+   FFskKeying[3] := ZFskKeying4;
+   FFskKeying[4] := ZFskKeying5;
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
@@ -1508,11 +1517,11 @@ begin
       FWkTx := nID;
 
       // COM port
-      if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-         if FKeyingPortConfig[nID].FRts = paPtt then begin
+      if (FFskPort[nID] in [tkpSerial1..tkpSerial20]) then begin
+         if FFskPortConfig[nID].FRts = paPtt then begin
             FFskKeying[nID].ToggleRTS(PTTON);
          end;
-         if FKeyingPortConfig[nID].FDtr = paPtt then begin
+         if FFskPortConfig[nID].FDtr = paPtt then begin
             FFskKeying[nID].ToggleDTR(PTTON);
          end;
          Exit;
@@ -1538,11 +1547,11 @@ begin
       FPTTFLAG := False;
 
       for nID := 0 to MAXPORT do begin
-         if (FKeyingPort[nID] in [tkpSerial1..tkpSerial20]) and (FUseWinKeyer = False) then begin
-            if FKeyingPortConfig[nID].FRts = paPtt then begin
+         if (FFskPort[nID] in [tkpSerial1..tkpSerial20]) then begin
+            if FFskPortConfig[nID].FRts = paPtt then begin
                FFskKeying[nID].ToggleRTS(False);
             end;
-            if FKeyingPortConfig[nID].FDtr = paPtt then begin
+            if FFskPortConfig[nID].FDtr = paPtt then begin
                FFskKeying[nID].ToggleDTR(False);
             end;
          end;
@@ -1839,7 +1848,7 @@ begin
 
    if FRTTY then begin
       CW := SS;
-      SS := LTRS + LTRS + LTRS;
+      SS := STX + LTRS + LTRS + LTRS;
       fLTRS := True;
       fFIGS := False;
       for i := 1 to Length(CW) do begin
@@ -1862,6 +1871,7 @@ begin
             SS := SS + CH;
          end;
       end;
+      SS := SS + ETX;
    end;
 
    SetCWSendBuf(0, SS);
@@ -2379,7 +2389,7 @@ begin
 
       // SPACE
       $70: begin
-         FSK_OFF(FWkTx);
+         FSK_SPACE(FWkTx);
          if FUseAFSKTone then begin
             RttyAudio(0, True);
          end;
@@ -2389,7 +2399,7 @@ begin
 
       // MARK
       $71: begin
-         FSK_ON(FWkTx);
+         FSK_MARK(FWkTx);
          if FUseAFSKTone then begin
             RttyAudio(1, True);
          end;
@@ -2399,12 +2409,22 @@ begin
 
       // STOPBIT
       $72: begin
-         FSK_ON(FWkTx);
+         FSK_MARK(FWkTx);
          if FUseAFSKTone then begin
             RttyAudio(1, True);
          end;
          FKeyingCounter := 33;
          FSendChar := True;
+      end;
+
+      // PTT ON
+      $73: begin
+         FskControlPTT(FWkTx, True, False);
+      end;
+
+      // PTT OFF
+      $74: begin
+         FskControlPTT(FWkTx, False, False);
       end;
    end;
 
@@ -3596,6 +3616,14 @@ begin
    FBaudotTable[Ord(FIGS)][7] := $72;  // STOP
    FBaudotTable[Ord(FIGS)][8] := 9;    // next char
 
+   // STX(PTT ON)
+   FBaudotTable[Ord(STX)][1] := $73;   // PTT ON
+   FBaudotTable[Ord(STX)][2] := 9;     // next char
+
+   // ETX(PTT OFF)
+   FBaudotTable[Ord(ETX)][1] := $74;   // PTT OFF
+   FBaudotTable[Ord(ETX)][2] := 9;     // next char
+
    FBaudotTable[$90][1] := $20;
    FBaudotTable[$90][2] := 9;
    FBaudotTable[$91][1] := $21;
@@ -3795,13 +3823,14 @@ begin
             if FUseAFSKTone = True then begin
                RttyAudio(0, False);
             end;
+            FSK_SPACE(FWkTx);
          end
          else begin
             if FUseSideTone then begin
                NoSound();
             end;
+            CW_OFF(FWkTx);
          end;
-         CW_OFF(FWkTx);
 
          ResetSpeed();
          FUserFlag := False;
@@ -3813,8 +3842,11 @@ begin
       end;
    end;
 
-   if FPTTEnabled then begin
+   if FPTTEnabled and (RTTY = False) then begin
       ControlPTT(FWkTx, False);
+   end;
+   if RTTY then begin
+      FskControlPTT(FWkTx, False, False);
    end;
 
    if Assigned(FOnOneCharSentProc) then begin
@@ -3997,6 +4029,7 @@ var
    usb_no: Integer;
    fUseUSB: Boolean;
    fUseCOM: Boolean;
+   fUseFSK: Boolean;
    fUseParallel: Boolean;
 
    procedure UsbInfoClear(n: Integer);
@@ -4059,6 +4092,7 @@ begin
 
    fUseUSB := False;
    fUseCOM := False;
+   fUseFSK := False;
    fUseParallel := False;
    UsbInfoClearAll();
 
@@ -4097,6 +4131,15 @@ begin
       else begin
          fUseCom := True;
       end;
+
+      // FSK
+      if (FFskPort[i] = tkpNone) then begin
+         FFskPort[i] := tkpNone;
+         FFskKeying[i] := nil;
+      end
+      else begin
+         fUseFSK := True;
+      end;
    end;
 
 {
@@ -4132,6 +4175,12 @@ begin
                FKeyingPortConfig[j] := FKeyingPortConfig[i];
             end;
          end;
+
+         // CWとFSKポートが同じ場合
+         if (FKeyingPort[i] = FFskPort[i]) then begin
+            FFskKeying[i] := FComKeying[i];
+            FFskPortConfig[i] := FKeyingPortConfig[i];
+         end;
       end;
    end;
 
@@ -4152,6 +4201,9 @@ begin
    end;
    if fUseCOM = True then begin
       COM_ON();
+   end;
+   if fUseFSK = True then begin
+      FSK_ON();
    end;
 
    // RIG選択用ポート
@@ -4319,9 +4371,6 @@ begin
       else begin
          FComKeying[i].ToggleDTR(False);
       end;
-
-      FComKeying[i].ToggleDTR(False);
-      FComKeying[i].ToggleRTS(False);
    end;
 end;
 
@@ -4334,7 +4383,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 2 do begin
+   for i := 0 to MAXPORT do begin
       if FComKeying[i] = nil then begin
          Continue;
       end;
@@ -4347,7 +4396,7 @@ procedure TdmZLogKeyer.USB_ON();
 var
    i: Integer;
 begin
-   for i := 0 to 2 do begin
+   for i := 0 to MAXPORT do begin
       if FUsbInfo[i].FUSBIF4CW <> nil then begin
          FUsbInfo[i].FPORTDATA.Clear();
 
@@ -4394,6 +4443,49 @@ begin
    FUsbInfo[2].FUSBIF4CW := nil;
 
    FUSBIF4CW_Detected := False;
+end;
+
+procedure TdmZLogKeyer.FSK_ON();
+var
+   i: Integer;
+begin
+   for i := 0 to MAXPORT do begin
+      if FFskKeying[i] = nil then begin
+         Continue;
+      end;
+
+      if FFskKeying[i].Connected = False then begin
+         FFskKeying[i].Port := TPortNumber(FFskPort[i]);
+         FFskKeying[i].Connect;
+      end;
+
+      if FFskPortConfig[i].FRts = paAlwaysOn then begin
+         FFskKeying[i].ToggleRTS(True);
+      end
+      else begin
+         FFskKeying[i].ToggleRTS(False);
+      end;
+
+      if FFskPortConfig[i].FDtr = paAlwaysOn then begin
+         FFskKeying[i].ToggleDTR(True);
+      end
+      else begin
+         FFskKeying[i].ToggleDTR(False);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.FSK_OFF();
+var
+   i: Integer;
+begin
+   for i := 0 to MAXPORT do begin
+      if FFskKeying[i] = nil then begin
+         Continue;
+      end;
+
+      FFskKeying[i].Disconnect();
+   end;
 end;
 
 procedure TdmZLogKeyer.SetUseSideTone(fUse: Boolean);
@@ -6016,12 +6108,12 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.FSK_ON(nID: Integer);
+procedure TdmZLogKeyer.FSK_MARK(nID: Integer);
 begin
    FSK_KEYING(nID, True);
 end;
 
-procedure TdmZLogKeyer.FSK_OFF(nID: Integer);
+procedure TdmZLogKeyer.FSK_SPACE(nID: Integer);
 begin
    FSK_KEYING(nID, False);
 end;
