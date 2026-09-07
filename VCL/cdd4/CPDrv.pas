@@ -251,6 +251,7 @@ type
     // Set RTS line high (onOff=TRUE) or low (onOff=FALSE).
     // You must not use HW handshaking.
     procedure ToggleRTS( onOff: boolean );
+    procedure ToggleTxD( onOff: boolean );
 
     // Make the Handle of the COM port public (for TAPI...) [read/write]
     property Handle: THandle read FHandle write SetHandle;
@@ -1063,6 +1064,19 @@ begin
   if Connected then
     EscapeCommFunction( FHandle, funcs[onOff] );
 end;
+
+procedure TCommPortDriver.ToggleTxD( onOff: boolean );
+begin
+  if Connected then begin
+    if onOff = True then begin
+      ClearCommBreak(FHandle);
+    end
+    else begin
+      SetCommBreak(FHandle);
+    end;
+  end;
+end;
+
 
 // COM port polling proc 
 procedure TCommPortDriver.TimerWndProc( var msg: TMessage );
