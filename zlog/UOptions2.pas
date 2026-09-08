@@ -1346,9 +1346,9 @@ begin
       Settings.CW._paddlereverse := checkPaddleReverse.Checked;
 
       // RTTY
-      Settings.FRTTY_UseAfskTone := checkUseAfskTone.Checked;
-      Settings.FRTTY_UseFskKeying := checkUseFskKeying.Checked;
-      Settings.FRTTY_DontChangeRigMode := checkDontChangeRigMode.Checked;
+      Settings.RTTY.UseAfskTone := checkUseAfskTone.Checked;
+      Settings.RTTY.UseFskKeying := checkUseFskKeying.Checked;
+      Settings.RTTY.DontChangeRigMode := checkDontChangeRigMode.Checked;
 
       //
       // Voice
@@ -1818,9 +1818,9 @@ begin
       checkPaddleReverse.Checked := Settings.CW._paddlereverse;
 
       // RTTY
-      checkUseAfskTone.Checked := Settings.FRTTY_UseAfskTone;
-      checkUseFskKeying.Checked := Settings.FRTTY_UseFskKeying;
-      checkDontChangeRigMode.Checked := Settings.FRTTY_DontChangeRigMode;
+      checkUseAfskTone.Checked := Settings.RTTY.UseAfskTone;
+      checkUseFskKeying.Checked := Settings.RTTY.UseFskKeying;
+      checkDontChangeRigMode.Checked := Settings.RTTY.DontChangeRigMode;
 
       //
       // Voice

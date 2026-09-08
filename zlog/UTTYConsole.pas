@@ -18,7 +18,6 @@ type
     CallsignList: TListBox;
     Splitter1: TSplitter;
     Timer1: TTimer;
-    RXLog: TConsole2;
     MainMenu1: TMainMenu;
     menuConsole: TMenuItem;
     menuClearRxLog: TMenuItem;
@@ -79,6 +78,9 @@ type
     menuLoadList: TMenuItem;
     menuSaveList: TMenuItem;
     menuDebugSep: TMenuItem;
+    RXLog: TColorConsole2;
+    N3: TMenuItem;
+    menuOptions: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -108,6 +110,7 @@ type
     procedure popupCallsignListPopup(Sender: TObject);
     procedure menuLoadListClick(Sender: TObject);
     procedure menuSaveListClick(Sender: TObject);
+    procedure menuOptionsClick(Sender: TObject);
   private
     { Private declarations }
     FTTYMode: Integer;
@@ -121,6 +124,7 @@ type
     procedure TXChar(C: AnsiChar);
     procedure PlayMessageRTTY(no: Integer);
     procedure ApplyShortcut();
+    procedure ImplementOptions();
   public
     { Public declarations }
     procedure SendStrNow(S: String);
@@ -137,7 +141,7 @@ type
 implementation
 
 uses
-  Main;
+  Main, URttyOptions, UzColorCoding;
 
 {$R *.DFM}
 
@@ -162,6 +166,7 @@ begin
    RXLog.ClrScr();
    TXLog.Clear();
    CallsignList.Clear();
+   ImplementOptions();
 end;
 
 procedure TTTYConsole.FormActivate(Sender: TObject);
@@ -617,6 +622,44 @@ begin
    CallsignList.Items.LoadFromFile('zlog_rtty_calllist.txt');
 end;
 
+procedure TTTYConsole.menuOptionsClick(Sender: TObject);
+var
+   f: TformRttyOptions;
+   i: Integer;
+   CC: TColorCoding;
+   S: string;
+begin
+   f := TformRttyOptions.Create(Self);
+   try
+      f.DefaultColor := dmZLogGlobal.Settings.RTTY.DefaultColor;
+
+      f.ColorCodingList.Clear();
+      for i := 0 to dmZLogGlobal.Settings.RTTY.ColorCoding.Count - 1 do begin
+         CC := TColorCoding.Create();
+         CC.Text := dmZLogGlobal.Settings.RTTY.ColorCoding[i];
+         f.ColorCodingList.Add(CC);
+      end;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.RTTY.DefaultColor := f.DefaultColor;
+      dmZLogGlobal.Settings.RTTY.BackColor := f.BackColor;
+      dmZLogGlobal.Settings.RTTY.ForeColor := f.ForeColor;
+
+      dmZLogGlobal.Settings.RTTY.ColorCoding.Clear();
+      for i := 0 to f.ColorCodingList.Count - 1 do begin
+         S := f.ColorCodingList[i].Text;
+         dmZLogGlobal.Settings.RTTY.ColorCoding.Add(S);
+      end;
+
+      ImplementOptions();
+   finally
+      f.Release();
+   end;
+end;
+
 procedure TTTYConsole.menuSaveListClick(Sender: TObject);
 begin
    CallsignList.Items.SaveToFile('zlog_rtty_calllist.txt');
@@ -744,6 +787,33 @@ begin
       CallsignList.Items.Delete(Index);
       CallsignList.ItemIndex := -1;
    end;
+end;
+
+procedure TTTYConsole.ImplementOptions();
+var
+   i: Integer;
+   CC: TColorCoding;
+   fs: TFontStyles;
+begin
+   RXLog.BackgroundColor := dmZLogGlobal.Settings.RTTY.BackColor;
+   RXLog.TextColor := dmZLogGlobal.Settings.RTTY.ForeColor;
+
+   RXLog.ClearColorStrings();
+
+   for i := 0 to dmZLogGlobal.Settings.RTTY.ColorCoding.Count - 1 do begin
+      CC := TColorCoding.Create();
+      CC.Text := dmZLogGlobal.Settings.RTTY.ColorCoding[i];
+      fs := [];
+      if CC.Bold then fs := fs + [fsBold];
+      if CC.Italic then fs := fs + [fsBold];
+      RXLog.AddColorString(CC.Keyword, CC.ForeColor, fs);
+   end;
+
+   TXLog.Color := dmZLogGlobal.Settings.RTTY.BackColor;
+   TXLog.Font.Color := dmZLogGlobal.Settings.RTTY.ForeColor;
+
+   CallsignList.Color := dmZLogGlobal.Settings.RTTY.BackColor;
+   CallsignList.Font.Color := dmZLogGlobal.Settings.RTTY.ForeColor;
 end;
 
 end.

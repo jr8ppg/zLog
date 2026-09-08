@@ -172,7 +172,9 @@ uses
   UJarlWorldWideRTTYScore in 'UJarlWorldWideRTTYScore.pas' {JarlWorldWideRTTYScore},
   UJarlWorldWideRTTYMulti in 'UJarlWorldWideRTTYMulti.pas' {JarlWorldWideRTTYMulti},
   SetupApi in 'SetupApi.pas',
-  UPortConfigDialog2 in 'UPortConfigDialog2.pas' {formPortConfig2};
+  UPortConfigDialog2 in 'UPortConfigDialog2.pas' {formPortConfig2},
+  URttyOptions in 'URttyOptions.pas' {formRttyOptions},
+  UzColorCoding in 'UzColorCoding.pas';
 
 {$R *.res}
 

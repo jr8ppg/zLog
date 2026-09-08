@@ -96,6 +96,7 @@ library Zlog;
 {ITE} {DFMFileType} {URateDialog.dfm}
 {ITE} {DFMFileType} {URateDialogEx.dfm}
 {ITE} {DFMFileType} {URigControl.dfm}
+{ITE} {DFMFileType} {URttyOptions.dfm}
 {ITE} {DFMFileType} {UScratchSheet.dfm}
 {ITE} {DFMFileType} {USearch.dfm}
 {ITE} {DFMFileType} {USelectClusterLog.dfm}
@@ -130,7 +131,7 @@ library Zlog;
 {ITE} {DFMFileType} {UzLogKeyer.dfm}
 {ITE} {DFMFileType} {UZServerInquiry.dfm}
 {ITE} {RCFileType} {resource.rc}
-{ITE} {RCFileType} {Win64\Debug\Zlog_DRC.rc}
+{ITE} {RCFileType} {Win64\Release\Zlog_DRC.rc}
 
 {$R 'main.dfm' 'MainForm:TForm'}
 {$R 'Progress.dfm' 'formProgress:TForm'}
@@ -226,6 +227,7 @@ library Zlog;
 {$R 'URateDialog.dfm' 'RateDialog:TForm'}
 {$R 'URateDialogEx.dfm' 'RateDialogEx:TForm'}
 {$R 'URigControl.dfm' 'RigControl:TForm'}
+{$R 'URttyOptions.dfm' 'formRttyOptions:TForm'}
 {$R 'UScratchSheet.dfm' 'ScratchSheet:TForm(ConsolePad)'}
 {$R 'USearch.dfm' 'formSearch:TForm'}
 {$R 'USelectClusterLog.dfm' 'formSelectClusterLog:TForm'}
@@ -260,7 +262,7 @@ library Zlog;
 {$R 'UzLogKeyer.dfm' 'dmZLogKeyer:TDataModule'}
 {$R 'UZServerInquiry.dfm' 'ZServerInquiry:TForm'}
 {$R 'resource.res' 'resource.rc'}
-{$R 'Win64\Debug\Zlog_DRC.res' 'Win64\Debug\Zlog_DRC.rc'}
+{$R 'Win64\Release\Zlog_DRC.res' 'Win64\Release\Zlog_DRC.rc'}
 
 {$E JPN}
 

@@ -51,13 +51,14 @@ object TTYConsole: TTTYConsole
         Width = 356
         Height = 106
         Align = alClient
+        CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
         Font.Name = 'Consolas'
         Font.Style = []
         Lines.Strings = (
-          'TXLog')
+          'TXLOG')
         ParentFont = False
         TabOrder = 0
         OnKeyDown = TXLogKeyDown
@@ -97,22 +98,6 @@ object TTYConsole: TTTYConsole
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      object RXLog: TConsole2
-        Left = 0
-        Top = 24
-        Width = 356
-        Height = 195
-        Align = alClient
-        ParentColor = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Consolas'
-        Font.Style = []
-        Options = [coAutoTracking, coCheckBreak, coLazyWrite, coFixedPitchOnly]
-        Rows = 500
-        LineBreak = CRLF
-      end
       object panelRxHeader: TPanel
         Left = 0
         Top = 0
@@ -120,7 +105,7 @@ object TTYConsole: TTTYConsole
         Height = 24
         Align = alTop
         BevelOuter = bvNone
-        TabOrder = 1
+        TabOrder = 0
         object Label2: TLabel
           Left = 4
           Top = 5
@@ -137,6 +122,22 @@ object TTYConsole: TTTYConsole
           TabOrder = 0
           OnClick = buttonRXLogClearClick
         end
+      end
+      object RXLog: TColorConsole2
+        Left = 0
+        Top = 24
+        Width = 356
+        Height = 195
+        Align = alClient
+        ParentColor = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Consolas'
+        Font.Style = []
+        TextColor = clWindowText
+        BackgroundColor = clWindow
+        LineBreak = CRLF
       end
     end
   end
@@ -219,6 +220,13 @@ object TTYConsole: TTTYConsole
       object menuClearEverything: TMenuItem
         Caption = #20840#12390#12463#12522#12450
         OnClick = menuClearEverythingClick
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object menuOptions: TMenuItem
+        Caption = 'Options'
+        OnClick = menuOptionsClick
       end
       object N1: TMenuItem
         Caption = '-'

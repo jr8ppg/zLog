@@ -2701,7 +2701,7 @@ begin
 
       // RTTY
       dmZLogKeyer.RTTY := (M = mRTTY);
-      dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.FRTTY_UseAfskTone;
+      dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.RTTY.UseAfskTone;
    end;
    SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
 
@@ -8716,7 +8716,10 @@ begin
          FTTYConsole.OnChangeFontSize := OnChangeFontSize;
          dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
 
-         dmZLogKeyer.CloseBGK();
+         // FSKを使用しない場合はキーヤーをOFFにする
+         if dmZLogGlobal.Settings.RTTY.UseFskKeying = False then begin
+            dmZLogKeyer.CloseBGK();
+         end;
 
          FTTYConsole.TTYMode := ttyMMTTY;
          InitializeMMTTY(Handle);
@@ -8738,8 +8741,11 @@ begin
 
          ExitMMTTY;
 
-         dmZLogKeyer.InitializeBGK(dmZLogGlobal.Settings.CW._interval);
-         dmZLogGlobal.InitializeCW();
+         // FSKを使用しない場合はキーヤーをONにする
+         if dmZLogGlobal.Settings.RTTY.UseFskKeying = False then begin
+            dmZLogKeyer.InitializeBGK(dmZLogGlobal.Settings.CW._interval);
+            dmZLogGlobal.InitializeCW();
+         end;
       end;
    finally
       ini.Free();
@@ -10836,7 +10842,7 @@ begin
 
    S := SetStrNoAbbrev(S, CurrentQSO);
 
-   if dmZLogGlobal.Settings.FRTTY_UseFskKeying = True then begin
+   if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
       dmZLogKeyer.SendStr(FCurrentTx, S)
    end
    else begin
@@ -11913,7 +11919,7 @@ begin
    end;
    UpdateMode(CurrentQSO.Mode);
 
-   if (CurrentQSO.Mode = mRTTY) and (dmZLogGlobal.Settings.FRTTY_DontChangeRigMode) then begin
+   if (CurrentQSO.Mode = mRTTY) and (dmZLogGlobal.Settings.RTTY.DontChangeRigMode) then begin
       Exit;
    end;
 
@@ -14584,7 +14590,7 @@ begin
       VoiceStopButtonClick(Self);
    end
    else if (mode = mRTTY) then begin
-      if dmZLogGlobal.Settings.FRTTY_UseFskKeying = True then begin
+      if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
          dmZLogKeyer.ClrBuffer();
       end
       else begin

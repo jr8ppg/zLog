@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetCW
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet

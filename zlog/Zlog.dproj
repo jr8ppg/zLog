@@ -573,6 +573,11 @@
             <Form>formPortConfig2</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="URttyOptions.pas">
+            <Form>formRttyOptions</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UzColorCoding.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -907,7 +912,8 @@
                     <RDP_Source_Files Name="Item140">UJarlWorldWideRTTYScore.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item141">UJarlWorldWideRTTYMulti.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item142">UPortConfigDialog2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item143">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item143">URttyOptions.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item144">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

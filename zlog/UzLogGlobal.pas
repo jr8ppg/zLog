@@ -44,6 +44,20 @@ type
     _cwk_clear_delay: Integer;
   end;
 
+  // RTTY
+  TRTTYSettingsParam = record
+    UseAfskTone: Boolean;
+    UseFskKeying: Boolean;
+    DontChangeRigMode: Boolean;
+    SpaceFreq: Integer;
+    MarkFreq: Integer;
+    FskReverse: Boolean;
+    DefaultColor: Integer;
+    BackColor: TColor;
+    ForeColor: TColor;
+    ColorCoding: TStringList;
+  end;
+
   TCommParam = record
     FHostName: string;
     FPort: string;
@@ -171,7 +185,8 @@ type
     _bandscope_save_current_freq: Boolean;
     _bandscope_initial_reliability_high: Boolean;
 
-    CW : TCWSettingsParam;
+    CW: TCWSettingsParam;
+    RTTY: TRTTYSettingsParam;
 
     FRigControl: array[1..5] of TRigSetting;
     FRigSet: array[1..2] of TRigSet;
@@ -438,14 +453,6 @@ type
     FBrowserForWebUpload: Integer;
     FAfterQsoEditOkFocusPos: Integer;
     FAfterQsoEditCancelFocusPos: Integer;
-
-    // RTTY
-    FRTTY_UseAfskTone: Boolean;
-    FRTTY_UseFskKeying: Boolean;
-    FRTTY_DontChangeRigMode: Boolean;
-    FRTTY_SpaceFreq: Integer;
-    FRTTY_MarkFreq: Integer;
-    FRTTY_FskReverse: Boolean;
   end;
 
   TLastContest = record
@@ -806,6 +813,7 @@ var
 begin
    FCurrentFileName := '';
    FLog := nil;
+   Settings.RTTY.ColorCoding := TStringList.Create();
 
    // PacketClusterリスト
    FPacketClusterList := TTelnetSettingList.Create();
@@ -877,6 +885,7 @@ begin
    FLog.Free();
    FPacketClusterList.Free();
    FFreqMemList.Free();
+   Settings.RTTY.ColorCoding.Free();
 end;
 
 procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
@@ -1117,12 +1126,22 @@ begin
       Settings.CW._cwk_clear_delay:= ini.ReadInteger('CW', 'cwk_clear_delay', 2);
 
       // RTTY
-      Settings.FRTTY_UseAfskTone := ini.ReadBool('RTTY', 'use_afsk_tone', False);
-      Settings.FRTTY_UseFskKeying := ini.ReadBool('RTTY', 'use_fsk_keying', False);
-      Settings.FRTTY_DontChangeRigMode := ini.ReadBool('RTTY', 'dont_change_rig_mode', False);
-      Settings.FRTTY_SpaceFreq := ini.ReadInteger('RTTY', 'space_freq', 1955);
-      Settings.FRTTY_MarkFreq  := ini.ReadInteger('RTTY', 'mark_freq', 2125);
-      Settings.FRTTY_FskReverse := ini.ReadBool('RTTY', 'fsk_reverse', False);
+      Settings.RTTY.UseAfskTone := ini.ReadBool('RTTY', 'use_afsk_tone', False);
+      Settings.RTTY.UseFskKeying := ini.ReadBool('RTTY', 'use_fsk_keying', False);
+      Settings.RTTY.DontChangeRigMode := ini.ReadBool('RTTY', 'dont_change_rig_mode', False);
+      Settings.RTTY.SpaceFreq := ini.ReadInteger('RTTY', 'space_freq', 2295);
+      Settings.RTTY.MarkFreq  := ini.ReadInteger('RTTY', 'mark_freq', 2125);
+      Settings.RTTY.FskReverse := ini.ReadBool('RTTY', 'fsk_reverse', False);
+
+      Settings.RTTY.DefaultColor := ini.ReadInteger('RTTY', 'DefaultColor', 0);
+      Settings.RTTY.BackColor := ZStringToColorDef(ini.ReadString('RTTY', 'BackColor', '$FFFFFF'), clWhite);
+      Settings.RTTY.ForeColor := ZStringToColorDef(ini.ReadString('RTTY', 'ForeColor', '$000000'), clBlack);
+
+      num := ini.ReadInteger('RTTY_ColorCoding', 'num', 0);
+      for i := 1 to num do begin
+         s := ini.ReadString('RTTY_ColorCoding', '#' + IntToStr(i), '');
+         Settings.RTTY.ColorCoding.Add(s);
+      end;
 
       //
       // Hardware
@@ -2006,12 +2025,21 @@ begin
       ini.WriteInteger('CW', 'cwk_clear_delay', Settings.CW._cwk_clear_delay);
 
       // RTTY
-      ini.WriteBool('RTTY', 'use_afsk_tone', Settings.FRTTY_UseAfskTone);
-      ini.WriteBool('RTTY', 'use_fsk_keying', Settings.FRTTY_UseFskKeying);
-      ini.WriteBool('RTTY', 'dont_change_rig_mode', Settings.FRTTY_DontChangeRigMode);
-      ini.WriteInteger('RTTY', 'space_freq', Settings.FRTTY_SpaceFreq);
-      ini.WriteInteger('RTTY', 'mark_freq', Settings.FRTTY_MarkFreq);
-      ini.WriteBool('RTTY', 'fsk_reverse', Settings.FRTTY_FskReverse);
+      ini.WriteBool('RTTY', 'use_afsk_tone', Settings.RTTY.UseAfskTone);
+      ini.WriteBool('RTTY', 'use_fsk_keying', Settings.RTTY.UseFskKeying);
+      ini.WriteBool('RTTY', 'dont_change_rig_mode', Settings.RTTY.DontChangeRigMode);
+      ini.WriteInteger('RTTY', 'space_freq', Settings.RTTY.SpaceFreq);
+      ini.WriteInteger('RTTY', 'mark_freq', Settings.RTTY.MarkFreq);
+      ini.WriteBool('RTTY', 'fsk_reverse', Settings.RTTY.FskReverse);
+
+      ini.WriteInteger('RTTY', 'DefaultColor', Settings.RTTY.DefaultColor);
+      ini.WriteString('RTTY', 'BackColor', ZColorToString(Settings.RTTY.BackColor));
+      ini.WriteString('RTTY', 'ForeColor', ZColorToString(Settings.RTTY.ForeColor));
+
+      ini.WriteInteger('RTTY_ColorCoding', 'num', Settings.RTTY.ColorCoding.Count);
+      for i := 1 to Settings.RTTY.ColorCoding.Count do begin
+         ini.WriteString('RTTY_ColorCoding', '#' + IntToStr(i), Settings.RTTY.ColorCoding[i - 1]);
+      end;
 
       //
       // Hardware
@@ -2638,10 +2666,10 @@ begin
       dmZLogKeyer.FskPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FFskPort);
       dmZLogKeyer.FskPortConfig[i] := Settings.FRigControl[i + 1].FFskPortConfig;
    end;
-   dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.FRTTY_UseAfskTone;
-   dmZLogKeyer.SpaceFreq := dmZLogGlobal.Settings.FRTTY_SpaceFreq;
-   dmZLogKeyer.MarkFreq := dmZLogGlobal.Settings.FRTTY_MarkFreq;
-   dmZLogKeyer.FskReverse := dmZLogGlobal.Settings.FRTTY_FskReverse;
+   dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.RTTY.UseAfskTone;
+   dmZLogKeyer.SpaceFreq := dmZLogGlobal.Settings.RTTY.SpaceFreq;
+   dmZLogKeyer.MarkFreq := dmZLogGlobal.Settings.RTTY.MarkFreq;
+   dmZLogKeyer.FskReverse := dmZLogGlobal.Settings.RTTY.FskReverse;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
