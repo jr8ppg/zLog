@@ -43,7 +43,7 @@ interface
 
 uses
   // Delphi units
-  Windows, Messages, SysUtils, Classes, Forms
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes
   // ComDrv32 units
   ;
 
@@ -157,9 +157,9 @@ type
     // This is used for the timer
     FNotifyWnd                 : HWND;
     // Temporary buffer (RX) - used internally
-    FTempInBuffer              : pointer;
+    FTempInBuffer              : TBytes;
     // Time of the first byte of current RX packet
-    FFirstByteOfPacketTime     : DWORD;
+    FFirstByteOfPacketTime     : UInt64;
     // Number of RX polling timer pauses
     FRXPollingPauses           : integer;
 
@@ -344,35 +344,6 @@ const
   dcb_AbortOnError        = $00004000;
   dcb_Reserveds           = $FFFF8000;
 
-function GetWinPlatform: string;
-var ov: TOSVERSIONINFO;
-begin
-  ov.dwOSVersionInfoSize := sizeof(ov);
-  if GetVersionEx( ov ) then
-  begin
-    case ov.dwPlatformId of
-      VER_PLATFORM_WIN32s: // Win32s on Windows 3.1
-        Result := 'W32S';
-      VER_PLATFORM_WIN32_WINDOWS: // Win32 on Windows 95/98
-        Result := 'W95';
-      VER_PLATFORM_WIN32_NT: //	Windows NT
-        Result := 'WNT';
-    end;
-  end
-  else
-    Result := '??';
-end;
-
-function GetWinVersion: DWORD;
-var ov: TOSVERSIONINFO;
-begin
-  ov.dwOSVersionInfoSize := sizeof(ov);
-  if GetVersionEx( ov ) then
-    Result := MAKELONG( ov.dwMinorVersion, ov.dwMajorVersion )
-  else
-    Result := $00000000;
-end;
-
 function BaudRateOf( bRate: TBaudRate ): DWORD;
 begin
   if bRate = brCustom then
@@ -381,9 +352,20 @@ begin
     Result := Win32BaudRates[ bRate ];
 end;
 
+function DelayForRXValue( BaudRate, DataSize: DWORD ): DWORD;
+begin
+  // Approximate 1 character as 10 bits.  Guard against a zero baud rate.
+  if BaudRate = 0 then
+    Result := 0
+  else
+    Result := Round((DataSize * 10.0 * 1000.0) / BaudRate);
+end;
+
 function DelayForRX( bRate: TBaudRate; DataSize: DWORD ): DWORD;
 begin
-  Result := round( DataSize / (BaudRateOf(bRate) / 10) * 1000 );
+  // brCustom has no numeric value in TBaudRate itself.  Keep this legacy
+  // helper safe; code inside TCommPortDriver uses FBaudRateValue instead.
+  Result := DelayForRXValue(BaudRateOf(bRate), DataSize);
 end;
 
 constructor TCommPortDriver.Create( AOwner: TComponent );
@@ -427,13 +409,13 @@ begin
   // DTR high on connect
   FEnableDTROnOpen           := true;
   // Time not valid ( used by the packing routines )
-  FFirstByteOfPacketTime     := DWORD(-1);
+  FFirstByteOfPacketTime     := High(UInt64);
   // Don't check of off-line devices
   FCkLineStatus              := false;
   // Init number of RX polling timer pauses - not paused
   FRXPollingPauses := 0;
   // Temporary buffer for received data 
-  FTempInBuffer := AllocMem( FInBufSize );
+  SetLength(FTempInBuffer, FInBufSize);
   // Allocate a window handle to catch timer's notification messages
   if not (csDesigning in ComponentState) then
     FNotifyWnd := AllocateHWnd( TimerWndProc );
@@ -444,7 +426,7 @@ begin
   // Be sure to release the COM port
   Disconnect;
   // Free the temporary buffer
-  FreeMem( FTempInBuffer, FInBufSize );
+  FTempInBuffer := nil;
   // Destroy the timer's window
   if not (csDesigning in ComponentState) then
     DeallocateHWnd( FNotifyWnd );
@@ -589,7 +571,7 @@ begin
   if Connected then
     exit;
   // Free the temporary input buffer
-  FreeMem( FTempInBuffer, FInBufSize );
+  FTempInBuffer := nil;
   // Set new input buffer size
   if Value > 8192 then
     Value := 8192
@@ -597,7 +579,7 @@ begin
     Value := 128;
   FInBufSize := Value;
   // Allocate the temporary input buffer
-  FTempInBuffer := AllocMem( FInBufSize );
+  SetLength(FTempInBuffer, FInBufSize);
   // Adjust the RX packet size
   SetPacketSize( FPacketSize );
 end;
@@ -619,16 +601,26 @@ end;
 // Sets the size of incoming packets
 procedure TCommPortDriver.SetPacketSize( Value: smallint );
 begin
-  // PackeSize <= 0 if data isn't to be 'packetized'
+  // PacketSize <= 0 if data isn't to be 'packetized'
   if Value <= 0 then
-    FPacketSize := -1
-  // If the PacketSize if greater than then RX buffer size then
-  // increase the RX buffer size
-  else if DWORD(Value) > FInBufSize then
   begin
-    FPacketSize := Value;
-    SetInBufSize( FPacketSize );
+    FPacketSize := -1;
+    exit;
   end;
+
+  // SetInBufSize currently limits the internal temporary RX buffer to 8192
+  // bytes, therefore PacketSize must not exceed the same limit.
+  if Value > 8192 then
+    Value := 8192;
+
+  // Grow the RX buffer first.  FPacketSize is assigned afterwards because
+  // SetInBufSize calls SetPacketSize(FPacketSize); assigning first could cause
+  // recursive calls when a value greater than the buffer limit is requested.
+  if DWORD(Value) > FInBufSize then
+    SetInBufSize(DWORD(Value));
+
+  // Always store the effective requested packet size.
+  FPacketSize := Value;
 end;
 
 // Sets the timeout for incoming packets
@@ -637,9 +629,11 @@ begin
   // PacketTimeout <= 0 if packet timeout is to be disabled
   if Value < 1 then
     FPacketTimeout := -1
-  // PacketTimeout cannot be less than polling delay + some extra ms 
+  // PacketTimeout cannot be less than polling delay + some extra ms
   else if Value < FPollingDelay then
-    FPacketTimeout := FPollingDelay + (FPollingDelay*40) div 100;
+    FPacketTimeout := FPollingDelay + (FPollingDelay*40) div 100
+  else
+    FPacketTimeout := Value;
 end;
 
 // Sets the delay between polling checks
@@ -707,18 +701,10 @@ begin
       dcb.Flags := dcb.Flags or dcb_OutX or dcb_InX;
   end;
   // Set XONLim: specifies the minimum number of bytes allowed in the input
-  // buffer before the XON character is sent (or CTS is set). 
-  if (GetWinPlatform = 'WNT') and (GetWinVersion >= $00040000) then
-  begin
-    // WinNT 4.0 + Service Pack 3 needs XONLim to be less than or
-    // equal to 4096 bytes. Win95/98 doesn't have such limit. 
-    if FInBufSize div 4 > 4096 then
-      dcb.XONLim := 4096
-    else
-      dcb.XONLim := FInBufSize div 4;
-  end
-  else
-    dcb.XONLim := FInBufSize div 4;
+  // buffer before the XON character is sent (or CTS is set).
+  // FInBufSize is limited to 8192 bytes by this component, so the old
+  // Windows NT 4.0/SP3 special case (4096-byte limit) can never apply here.
+  dcb.XONLim := FInBufSize div 4;
   // Specifies the maximum number of bytes allowed in the input buffer before
   // the XOFF character is sent (or CTS is set low). The maximum number of bytes
   // allowed is calculated by subtracting this value from the size, in bytes, of
@@ -849,8 +835,10 @@ end;
 // Re-starts polling (after pause) 
 procedure TCommPortDriver.ContinuePolling;
 begin
-  // Dec. RX polling pauses counter 
-  dec( FRXPollingPauses );
+  // Do not allow an unmatched ContinuePolling call to make the counter
+  // negative and silently change the polling state.
+  if FRXPollingPauses > 0 then
+    Dec(FRXPollingPauses);
 end;
 
 // Flush rx/tx buffers 
@@ -871,7 +859,7 @@ begin
   Result := PurgeComm( FHandle, dwAction );
   // Used by the RX packet mechanism
   if Result then
-    FFirstByteOfPacketTime := DWORD(-1);
+    FFirstByteOfPacketTime := High(UInt64);
 end;
 
 // Returns number of received bytes in the RX buffer
@@ -879,12 +867,20 @@ function TCommPortDriver.CountRX: integer;
 var stat: TCOMSTAT;
     errs: DWORD;
 begin
-  // Do nothing if port has not been opened 
+  // Do nothing if port has not been opened
   Result := 65535;
   if not Connected then
     exit;
-  // Get count 
-  ClearCommError( FHandle, errs, @stat );
+
+  // ClearCommError may fail (for example after USB serial removal).
+  FillChar(stat, SizeOf(stat), 0);
+  errs := 0;
+  if not ClearCommError(FHandle, errs, @stat) then
+  begin
+    Result := 0;
+    exit;
+  end;
+
   Result := stat.cbInQue;
 end;
 
@@ -897,22 +893,33 @@ begin
     Result := 65535
   else
   begin
-    ClearCommError( FHandle, errs, @stat );
-    Result := FOutBufSize - stat.cbOutQue;
+    FillChar(stat, SizeOf(stat), 0);
+    errs := 0;
+    if not ClearCommError(FHandle, errs, @stat) then
+      Exit(0);
+
+    // SetupComm() only requests a driver buffer size.  Do not allow the
+    // subtraction to underflow if a driver reports a larger queued count.
+    if stat.cbOutQue >= FOutBufSize then
+      Result := 0
+    else
+      Result := Word(FOutBufSize - stat.cbOutQue);
   end;
 end;
 
 // Sends binary data. Returns number of bytes sent. Timeout overrides
 // the value specifiend in the OutputTimeout property
 function TCommPortDriver.SendDataEx( DataPtr: PAnsiChar; DataSize, Timeout: DWORD ): DWORD;
-var nToSend, nSent, t1: DWORD;
+var
+  nToSend, nSent: DWORD;
+  t1: UInt64;
 begin
   // Do nothing if port has not been opened
   Result := 0;
   if not Connected then
     exit;
   // Current time
-  t1 := GetTickCount;
+  t1 := GetTickCount64;
   // Loop until all data sent or timeout occurred
   while DataSize > 0 do
   begin
@@ -927,9 +934,10 @@ begin
       // Don't send more bytes than we actually have to send
       if nToSend > DataSize then
         nToSend := DataSize;
-      // Send
-      WriteFile( FHandle, DataPtr^, nToSend, nSent, nil );
-      nSent := abs( nSent );
+      // Send.  nSent is only valid when WriteFile succeeds.
+      nSent := 0;
+      if not WriteFile(FHandle, DataPtr^, nToSend, nSent, nil) then
+        exit;
       if nSent > 0 then
       begin
         // Update number of bytes sent
@@ -939,15 +947,18 @@ begin
         // Inc. data pointer 
         DataPtr := DataPtr + nSent;
         // Get current time 
-        t1 := GetTickCount;
+        t1 := GetTickCount64;
         // Continue. This skips the time check below (don't stop
         // trasmitting if the Timeout is set too low)
         continue;
       end;
     end;
     // Buffer is full. If we are waiting too long then exit 
-    if DWORD(GetTickCount-t1) > Timeout then
+    if (GetTickCount64 - t1) > Timeout then
       exit;
+
+    // Avoid spinning at 100% CPU while the driver queue is full.
+    Sleep(1);
   end;
 end;
 
@@ -992,47 +1003,65 @@ end;
 
 // Reads binary data. Returns number of bytes read 
 function TCommPortDriver.ReadData( DataPtr: PAnsiChar; MaxDataSize: DWORD ): DWORD;
-var nToRead, nRead, t1: DWORD;
+var
+  nToRead, nRead: DWORD;
+  t1: UInt64;
 begin
-  // Do nothing if port has not been opened 
+  // Do nothing if port has not been opened
   Result := 0;
   if not Connected then
     exit;
-  // Pause polling 
+
+  // Pause polling while synchronous reading is in progress.
   PausePolling;
-  // Current time 
-  t1 := GetTickCount;
-  // Loop until all requested data read or timeout occurred 
-  while MaxDataSize > 0 do
-  begin
-    // Get data bytes count in RX buffer 
-    nToRead := CountRX;
-    // If input buffer has some data... 
-    if nToRead > 0 then
+  try
+    // Current time
+    t1 := GetTickCount64;
+    // Loop until all requested data read or timeout occurred
+    while MaxDataSize > 0 do
     begin
-      // Don't read more bytes than we actually have to read 
-      if nToRead > MaxDataSize then
-        nToRead := MaxDataSize;
-      // Read 
-      ReadFile( FHandle, DataPtr^, nToRead, nRead, nil );
-      // Update number of bytes read 
-      Result := Result + nRead;
-      // Decrease the count of bytes to read 
-      MaxDataSize := MaxDataSize - nRead;
-      // Inc. data pointer 
-      DataPtr := DataPtr + nRead;
-      // Get current time 
-      t1 := GetTickCount;
-      // Continue. This skips the time check below (don't stop
-      // reading if the FInputTimeout is set too low)
-      continue;
+      // Get data bytes count in RX buffer
+      nToRead := CountRX;
+      // If input buffer has some data...
+      if nToRead > 0 then
+      begin
+        // Don't read more bytes than we actually have to read
+        if nToRead > MaxDataSize then
+          nToRead := MaxDataSize;
+
+        // nRead is only valid when ReadFile succeeds.
+        nRead := 0;
+        if not ReadFile(FHandle, DataPtr^, nToRead, nRead, nil) then
+          break;
+
+        if nRead > 0 then
+        begin
+          // Update number of bytes read
+          Result := Result + nRead;
+          // Decrease the count of bytes to read
+          MaxDataSize := MaxDataSize - nRead;
+          // Inc. data pointer
+          DataPtr := DataPtr + nRead;
+          // Get current time
+          t1 := GetTickCount64;
+          // Continue. This skips the time check below (don't stop
+          // reading if the FInputTimeout is set too low)
+          continue;
+        end;
+      end;
+
+      // Buffer is empty, or ReadFile returned no data. If we are waiting
+      // too long then exit.
+      if (GetTickCount64 - t1) > FInputTimeout then
+        break;
+
+      // No data available yet; yield instead of busy-spinning.
+      Sleep(1);
     end;
-    // Buffer is empty. If we are waiting too long then exit 
-    if (GetTickCount-t1) > FInputTimeout then
-      break;
+  finally
+    // Always restore polling, even if user code or an RTL routine raises.
+    ContinuePolling;
   end;
-  // Continue polling 
-  ContinuePolling;
 end;
 
 // Reads a byte. Returns true if the byte has been read 
@@ -1090,7 +1119,10 @@ begin
       exit;
     // If PacketSize is > 0 then raise the OnReceiveData event only if the RX
     // buffer has at least PacketSize bytes in it.
-    ClearCommError( FHandle, dummy, @comStat );
+    FillChar(comStat, SizeOf(comStat), 0);
+    dummy := 0;
+    if not ClearCommError(FHandle, dummy, @comStat) then
+      exit;
     if FPacketSize > 0 then
     begin
       // Complete packet received ?
@@ -1099,48 +1131,53 @@ begin
         repeat
           // Read the packet and pass it to the app
           nRead := 0;
-          if ReadFile( FHandle, FTempInBuffer^, FPacketSize, nRead, nil ) then
+          if ReadFile( FHandle, FTempInBuffer[0], FPacketSize, nRead, nil ) then
             if (nRead <> 0) and Assigned(FOnReceivePacket) then
-              FOnReceivePacket( Self, FTempInBuffer, nRead );
+              FOnReceivePacket(Self, @FTempInBuffer[0], nRead);
           // Adjust time
           //if comStat.cbInQue >= FPacketSize then
             FFirstByteOfPacketTime := FFirstByteOfPacketTime +
-                                      DelayForRX( FBaudRate, FPacketSize );
+                                      DelayForRXValue(FBaudRateValue, DWORD(FPacketSize));
           comStat.cbInQue := comStat.cbInQue - WORD(FPacketSize);
           if comStat.cbInQue = 0 then
-            FFirstByteOfPacketTime := DWORD(-1);
+            FFirstByteOfPacketTime := High(UInt64);
         until DWORD(comStat.cbInQue) < DWORD(FPacketSize);
         // Done
         exit;
       end;
       // Handle packet timeouts
-      if (FPacketTimeout > 0) and (FFirstByteOfPacketTime <> DWORD(-1)) and
-         (GetTickCount - FFirstByteOfPacketTime > DWORD(FPacketTimeout)) then
+      if (FPacketTimeout > 0) and (FFirstByteOfPacketTime <> High(UInt64)) and
+         (GetTickCount64 - FFirstByteOfPacketTime > UInt64(FPacketTimeout)) then
       begin
         nRead := 0;
         // Read the "incomplete" packet
-        if ReadFile( FHandle, FTempInBuffer^, comStat.cbInQue, nRead, nil ) then
+        if ReadFile( FHandle, FTempInBuffer[0], comStat.cbInQue, nRead, nil ) then
           // If PacketMode is not pmDiscard then pass the packet to the app
           if (FPacketMode <> pmDiscard) and (nRead <> 0) and Assigned(FOnReceivePacket) then
-            FOnReceivePacket( Self, FTempInBuffer, nRead );
+            FOnReceivePacket(Self, @FTempInBuffer[0], nRead);
         // Restart waiting for a packet
-        FFirstByteOfPacketTime := DWORD(-1);
+        FFirstByteOfPacketTime := High(UInt64);
         // Done
         exit;
       end;
       // Start time
-      if (comStat.cbInQue > 0) and (FFirstByteOfPacketTime = DWORD(-1)) then
-        FFirstByteOfPacketTime := GetTickCount;
+      if (comStat.cbInQue > 0) and (FFirstByteOfPacketTime = High(UInt64)) then
+        FFirstByteOfPacketTime := GetTickCount64;
       // Done
       exit;
     end;
 
-    // Standard data handling
+    // Standard data handling.  Never ask ReadFile to write more bytes than
+    // the temporary buffer can hold.
     nRead := 0;
     nToRead := comStat.cbInQue;
-    if (nToRead > 0) and ReadFile( FHandle, FTempInBuffer^, nToRead, nRead, nil ) then
+    if nToRead > FInBufSize then
+      nToRead := FInBufSize;
+
+    if (nToRead > 0) and
+       ReadFile(FHandle, FTempInBuffer[0], nToRead, nRead, nil) then
       if (nRead <> 0) and Assigned(FOnReceiveData) then
-        FOnReceiveData( Self, FTempInBuffer, nRead );
+        FOnReceiveData(Self, @FTempInBuffer[0], nRead);
   end
   // Let Windows handle other messages
   else
