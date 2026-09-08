@@ -1,4 +1,4 @@
-unit Console2;
+﻿unit Console2;
 {$A+,B-,F-,Q-,R-,S-,W-,X+}
 
 {  Text Console component
@@ -348,6 +348,7 @@ type
   PIntArray = ^TIntArray;
   TIntArray = array [0..0] of Integer;
   PConsoleColor = ^TColor;
+  PFontStyles = ^TFontStyles;
 
 type
   TAttr = class(TFixedFont_)
@@ -384,6 +385,7 @@ type
   public
     Text: String;
     Color: TColor;
+    Style: TFontStyles;
   end;
 
   TColorConsole2 = class(TConsole2)
@@ -391,11 +393,13 @@ type
     FIndexes: PIntArray;
     FColorRules: TList;
     FHighlightColors: array of TColor;
+    FHighlightStyles: array of TFontStyles;
     FAttrList: TAttrManager;
     FCellWidths: PIntArray;
     procedure UpdateHighlightsForRow(Y: Integer);
     procedure RebuildHighlights;
     procedure FillAttr(X,Y: Integer; Count: Cardinal);
+    procedure SetAllBackgroundColors(Value: TColor);
   protected
     function  IndexPtr(X,Y: Integer): PInteger;
     procedure ResizeBuffer; override;
@@ -406,7 +410,9 @@ type
   public
     constructor Create(Owner: TComponent); override;
     destructor Destroy; override;
-    procedure AddColorString(const S: String; AColor: TColor);
+    procedure AddColorString(const S: String; AColor: TColor); overload;
+    procedure AddColorString(const S: String; AColor: TColor;
+      AStyle: TFontStyles); overload;
     procedure ClearColorStrings;
   end;
 
@@ -560,6 +566,13 @@ procedure TConsole2.SetConsoleBackgroundColor(Value: TColor);
 begin
   Font.BkColor := Value;
   Color := Value;
+
+  { TColorConsole2 keeps a separate TAttr for each cell/run.
+    Update the cached attributes too, otherwise blank/existing cells
+    continue to be painted with their old background color. }
+  if Self is TColorConsole2 then
+    TColorConsole2(Self).SetAllBackgroundColors(Value);
+
   Invalidate;
 end;
 
@@ -1562,47 +1575,62 @@ begin
 end;
 
 function TAttrManager.AllocIndex: Integer;
+var
+  I: Integer;
 begin
+  { Reuse an unused slot first. }
+  for I := 0 to FList.Count - 1 do
+    if FList[I] = nil then
+    begin
+      Result := I;
+      Exit;
+    end;
+
   FList.Add(nil);
   Result := FList.Count - 1;
 end;
 
 function  TAttrManager.Allocate(F: TFixedFont_): Integer;
 var
-  P: ^Pointer;
+  I: Integer;
+  A: TAttr;
   H: THandle;
-  C,B: TColor;
+  C, B: TColor;
 begin
   Result := FCacheIndex;
+
   with F do
   begin
     C := Color;
     B := BkColor;
     H := Handle;
   end;
+
+  { Fast path: the cached attribute is still valid and matches. }
   if FCache <> nil then
-  with FCache do
-    if (Color = C) and (BkColor = B) and (Handle = H) then
+    if (FCache.Color = C) and
+       (FCache.BkColor = B) and
+       (FCache.Handle = H) then
       Exit;
 
-  { Search for a match }
-  Result := FList.Count;
-  P := Pointer(FList.List);  { Use pointer iterator instead of For loop }
-  while (Result > 0) do
+  { Search existing attributes.
+    IMPORTANT: freed slots in FList are nil, so never dereference them. }
+  for I := 0 to FList.Count - 1 do
   begin
-    with TAttr(P^) do
-      if (Color = C) and (BkColor = B) and (Handle = H) then
+    A := TAttr(FList[I]);
+    if A <> nil then
+      if (A.Color = C) and
+         (A.BkColor = B) and
+         (A.Handle = H) then
       begin
-        FCache := TAttr(P^);
-        Result := FList.Count - Result;
-        FCacheIndex := Result;
+        FCache := A;
+        FCacheIndex := I;
+        Result := I;
         Exit;
       end;
-    Inc(P);
-    Dec(Result);
   end;
 
-  { No match found, so create a new TAttr in an empty slot }
+  { No match found. Allocate a new attribute, reusing a free slot if possible. }
   Result := AllocIndex;
   Attr[Result] := TAttr.Create(F);
 end;
@@ -1671,7 +1699,28 @@ begin
   AnsiStrings.StrDispose(PAnsiChar(FCellWidths));
 end;
 
+procedure TColorConsole2.SetAllBackgroundColors(Value: TColor);
+var
+  I: Integer;
+  A: TAttr;
+begin
+  if FAttrList = nil then Exit;
+
+  for I := 0 to FAttrList.Count - 1 do
+  begin
+    A := FAttrList[I];
+    if A <> nil then
+      A.BkColor := Value;
+  end;
+end;
+
 procedure TColorConsole2.AddColorString(const S: String; AColor: TColor);
+begin
+  AddColorString(S, AColor, []);
+end;
+
+procedure TColorConsole2.AddColorString(const S: String; AColor: TColor;
+  AStyle: TFontStyles);
 var
   R: TConsoleColorRule;
 begin
@@ -1679,6 +1728,7 @@ begin
   R := TConsoleColorRule.Create;
   R.Text := S;
   R.Color := AColor;
+  R.Style := AStyle;
   FColorRules.Add(R);
   RebuildHighlights;
   Invalidate;
@@ -1704,6 +1754,8 @@ var
 begin
   if Length(FHighlightColors) <> Cols * Rows then
     SetLength(FHighlightColors, Cols * Rows);
+  if Length(FHighlightStyles) <> Cols * Rows then
+    SetLength(FHighlightStyles, Cols * Rows);
   for Y := 0 to Rows - 1 do
     UpdateHighlightsForRow(Y);
 end;
@@ -1717,10 +1769,15 @@ begin
   if (Y < 0) or (Y >= Rows) then Exit;
   if Length(FHighlightColors) <> Cols * Rows then
     SetLength(FHighlightColors, Cols * Rows);
+  if Length(FHighlightStyles) <> Cols * Rows then
+    SetLength(FHighlightStyles, Cols * Rows);
 
   Base := NativeInt(ScreenPtr(0, Y)) - NativeInt(FBuffer);
   for I := 0 to Cols - 1 do
+  begin
     FHighlightColors[Base + I] := clNone;
+    FHighlightStyles[Base + I] := [];
+  end;
 
   if (FColorRules = nil) or (FColorRules.Count = 0) then Exit;
 
@@ -1741,7 +1798,10 @@ begin
       P0 := P0 + StartPos - 1;
       for J := 0 to Length(WorkFind) - 1 do
         if (P0 - 1 + J) < Cols then
+        begin
           FHighlightColors[Base + P0 - 1 + J] := Rule.Color;
+          FHighlightStyles[Base + P0 - 1 + J] := Rule.Style;
+        end;
       StartPos := P0 + Length(WorkFind);
     end;
   end;
@@ -1912,13 +1972,16 @@ var
   R: TRect;
   P: PInteger;
   H: PConsoleColor;
+  S: PFontStyles;
   Buf: PAnsiChar;
   A: TAttr;
   C: TPoint;
   DC: HDC;
   L: Integer;
   RunColor, EffectiveColor, PrevTextColor: TColor;
+  RunStyle, PrevStyle: TFontStyles;
   Base: Integer;
+  TempFont: TFont;
 begin
   C := FCharSize;
   SetViewportOrgEx(Canvas.Handle, -FOrigin.X * FCharSize.X, -FOrigin.Y * C.Y, nil);
@@ -1929,7 +1992,7 @@ begin
   Y2 := Min(Rows, (R.bottom + C.Y - 1) div C.Y);
   if ((Cols * C.X) < R.Right) then
   begin
-    Canvas.Brush := Brush;
+    Canvas.Brush.Color := BackgroundColor;
     Count := R.Left;
     R.Left := Cols * C.X;
     Canvas.FillRect(R);
@@ -1938,7 +2001,7 @@ begin
   end;
   if (Rows * C.Y) < R.Bottom then
   begin
-    Canvas.Brush := Brush;
+    Canvas.Brush.Color := BackgroundColor;
     R.Top := Rows * C.Y;
     Canvas.FillRect(R);
   end;
@@ -1950,13 +2013,16 @@ begin
   R.Bottom := R.Top + C.Y;
   PrevAttr := -1;
   PrevTextColor := TColor($7FFFFFFF);
-
-  while Y1 < Y2 do
-  begin
+  PrevStyle := [];
+  TempFont := TFont.Create;
+  try
+    while Y1 < Y2 do
+    begin
     Buf := ScreenPtr(X1,Y1);
     P := Pointer(IndexPtr(X1,Y1));
     Base := NativeInt(Buf) - NativeInt(FBuffer);
     H := @FHighlightColors[Base];
+    S := @FHighlightStyles[Base];
     Count := X2 - X1;
     R.Left := X1 * C.X;
 
@@ -1964,21 +2030,33 @@ begin
     begin
       RunValue := P^;
       RunColor := H^;
+      RunStyle := S^;
       Len := 0;
-      while (Len < Count) and (P^ = RunValue) and (H^ = RunColor) do
+      while (Len < Count) and (P^ = RunValue) and
+            (H^ = RunColor) and (S^ = RunStyle) do
       begin
         Inc(P);
         Inc(H);
+        Inc(S);
         Inc(Len);
       end;
       Dec(Count, Len);
 
       A := FAttrList[RunValue];
-      if RunValue <> PrevAttr then
+
+      if (RunValue <> PrevAttr) or (RunStyle <> PrevStyle) then
       begin
-        SelectObject(DC, A.Handle);
+        if RunStyle = [] then
+          SelectObject(DC, A.Handle)
+        else
+        begin
+          TempFont.Assign(A);
+          TempFont.Style := A.Style + RunStyle;
+          SelectObject(DC, TempFont.Handle);
+        end;
         SetBkColor(DC, ColorToRGB(A.BkColor));
         PrevAttr := RunValue;
+        PrevStyle := RunStyle;
       end;
 
       if RunColor <> clNone then
@@ -2000,9 +2078,12 @@ begin
       Inc(Buf, Len);
     end;
 
-    Inc(Y1);
-    Inc(R.Top, C.Y);
-    Inc(R.Bottom, C.Y);
+      Inc(Y1);
+      Inc(R.Top, C.Y);
+      Inc(R.Bottom, C.Y);
+    end;
+  finally
+    TempFont.Free;
   end;
 
   PaintSelection;
