@@ -1959,11 +1959,31 @@ begin
 end;
 
 procedure TColorConsole2.WriteBlock(X,Y: Integer; Buffer: PAnsiChar; Count: Cardinal);
+var
+  R: TRect;
 begin
   if Count = 0 then Exit;
+
   FillAttr(X,Y,Count);                     { fill range with current attr }
   inherited WriteBlock(X,Y,Buffer,Count);  { copy chars to AnsiChar buf }
+
+  { Re-scan the whole row because a newly written character may complete
+    a keyword that starts several characters before X. }
   UpdateHighlightsForRow(Y);
+
+  { WriteChar() normally invalidates only the newly written character.
+    If that character completed a keyword, the preceding characters also
+    need to be repainted with the new keyword color/style. }
+  if HandleAllocated then
+  begin
+    R.Left   := 0;
+    R.Top    := (Y - FOrigin.Y) * FCharSize.Y;
+    R.Right  := ClientWidth;
+    R.Bottom := R.Top + FCharSize.Y;
+
+    if (R.Bottom > 0) and (R.Top < ClientHeight) then
+      InvalidateRect(Handle, @R, False);
+  end;
 end;
 
 procedure TColorConsole2.Paint;
