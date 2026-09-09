@@ -698,6 +698,7 @@ begin
    FPaddleThread.Free();
    COM_OFF();
    USB_OFF();
+   FSK_OFF();
    FParallelPort.Close();
    DeallocateHWnd(FWnd);
    usbdevlist.Free();

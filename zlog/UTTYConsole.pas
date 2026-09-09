@@ -113,7 +113,6 @@ type
     FTTYLineBuffer: string; // line buffer for rx data
     FNeedFinishEvent: Boolean;
     FOnSendFinishProc: TPlayMessageFinishedProc;
-    procedure SetTTYMode(i: Integer);
     function Sending(): Boolean;
     procedure RXChar(C: AnsiChar);
     procedure TXChar(C: AnsiChar);
@@ -220,11 +219,6 @@ begin
    finally
       Timer1.Enabled := True;
    end;
-end;
-
-procedure TTTYConsole.SetTTYMode(i: Integer);
-begin
-   Caption := 'RTTY Console';
 end;
 
 procedure TTTYConsole.RXChar(C: AnsiChar);
@@ -370,6 +364,11 @@ begin
    end;
 
    Key := UpCase(Key);
+
+   if Not CharInSet(Key, ['A'..'Z', '0'..'9', '-', '?', ':', '$', '!', '&', '#', '''', '(', ')', '.', ',', '/', '=', '+']) then begin
+      Key := #00;
+      Exit;
+   end;
 
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
       nID := MainForm.CurrentTX;

@@ -51,14 +51,14 @@ object TTYConsole: TTTYConsole
         Width = 356
         Height = 106
         Align = alClient
-        CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
         Font.Name = 'Consolas'
         Font.Style = []
+        ImeMode = imDisable
         Lines.Strings = (
-          'TXLOG')
+          'txlog')
         ParentFont = False
         TabOrder = 0
         OnKeyDown = TXLogKeyDown
@@ -159,6 +159,7 @@ object TTYConsole: TTTYConsole
       Font.Height = -12
       Font.Name = 'Consolas'
       Font.Style = []
+      ImeMode = imDisable
       ItemHeight = 14
       ParentFont = False
       PopupMenu = popupCallsignList
@@ -225,7 +226,7 @@ object TTYConsole: TTTYConsole
         Caption = '-'
       end
       object menuOptions: TMenuItem
-        Caption = 'Options'
+        Caption = #35373#23450'(&O)'
         OnClick = menuOptionsClick
       end
       object N1: TMenuItem

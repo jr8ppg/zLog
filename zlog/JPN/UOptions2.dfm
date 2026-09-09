@@ -2370,7 +2370,7 @@ object formOptions2: TformOptions2
             Top = 19
             Width = 193
             Height = 17
-            Caption = 'Use RTTY(AFSK) tone'
+            Caption = 'RTTY'#12488#12540#12531#12434#20351#12358
             TabOrder = 0
           end
           object checkDontChangeRigMode: TCheckBox
@@ -2378,7 +2378,7 @@ object formOptions2: TformOptions2
             Top = 144
             Width = 193
             Height = 17
-            Caption = 'Don'#39't change rig mode in RTTY'
+            Caption = #12522#12464#12398#12514#12540#12489#12434#22793#26356#12375#12394#12356
             TabOrder = 5
           end
           object checkUseFskKeying: TCheckBox
@@ -2386,7 +2386,7 @@ object formOptions2: TformOptions2
             Top = 98
             Width = 193
             Height = 17
-            Caption = 'Use FSK keying in zLog'
+            Caption = 'FSK'#12461#12540#12452#12531#12464#12434#34892#12358
             TabOrder = 3
           end
           object comboMarkFreq: TComboBox
@@ -2416,7 +2416,7 @@ object formOptions2: TformOptions2
             Top = 121
             Width = 193
             Height = 17
-            Caption = 'Use FSK reverse'
+            Caption = 'FSK'#12522#12496#12540#12473
             TabOrder = 4
           end
         end
