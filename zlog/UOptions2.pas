@@ -507,6 +507,11 @@ type
     checkUseAfskTone: TCheckBox;
     checkDontChangeRigMode: TCheckBox;
     checkUseFskKeying: TCheckBox;
+    comboMarkFreq: TComboBox;
+    Label68: TLabel;
+    comboSpaceFreq: TComboBox;
+    Label84: TLabel;
+    checkFskReverse: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1347,7 +1352,10 @@ begin
 
       // RTTY
       Settings.RTTY.UseAfskTone := checkUseAfskTone.Checked;
+      Settings.RTTY.MarkFreq := StrToIntDef(comboMarkFreq.Text, 2125);
+      Settings.RTTY.SpaceFreq := StrToIntDef(comboSpaceFreq.Text, 1955);
       Settings.RTTY.UseFskKeying := checkUseFskKeying.Checked;
+      Settings.RTTY.FskReverse := checkFskReverse.Checked;
       Settings.RTTY.DontChangeRigMode := checkDontChangeRigMode.Checked;
 
       //
@@ -1819,7 +1827,10 @@ begin
 
       // RTTY
       checkUseAfskTone.Checked := Settings.RTTY.UseAfskTone;
+      comboMarkFreq.Text := IntToStr(Settings.RTTY.MarkFreq);
+      comboSpaceFreq.Text := IntToStr(Settings.RTTY.SpaceFreq);
       checkUseFskKeying.Checked := Settings.RTTY.UseFskKeying;
+      checkFskReverse.Checked := Settings.RTTY.FskReverse;
       checkDontChangeRigMode.Checked := Settings.RTTY.DontChangeRigMode;
 
       //

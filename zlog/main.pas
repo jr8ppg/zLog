@@ -1258,7 +1258,7 @@ type
     procedure PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessagePH(no: Integer; fResetTx: Boolean);
-    procedure PlayMessageRTTY(no: Integer);
+    procedure PlayMessageRTTY(no: Integer; Q: TQSO);
     procedure OnVoicePlayStarted(Sender: TObject; msgno: Integer);
     procedure OnOneCharSentProc(Sender: TObject);
     procedure OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean; msgno: Integer);
@@ -5142,9 +5142,7 @@ begin
 
       // RTTY
       if mode = mRTTY then begin
-         if FTTYConsole <> nil then begin
-            FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZLogGlobal.CWMessage(3, 2), curQSO));
-         end;
+         PlayMessageRTTY(2, curQSO);
 
          CallSpaceBarProc(C, RN, B);
          RN.SetFocus();
@@ -5364,11 +5362,7 @@ begin
 
          mRTTY: begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
-               S := dmZLogGlobal.CWMessage(3, 5);
-               S := SetStrNoAbbrev(S, curQSO);
-               if FTTYConsole <> nil then begin
-                  FTTYConsole.SendStrNow(S);
-               end;
+               PlayMessageRTTY(5, curQSO);
                WriteStatusLine(TMainForm_Invalid_number, False);
                RcvdNumberEdit.SetFocus;
                RcvdNumberEdit.SelectAll;
@@ -5376,18 +5370,13 @@ begin
                exit;
             end;
 
-            S := dmZLogGlobal.CWMessage(3, 3);
-
-            S := SetStrNoAbbrev(S, curQSO);
-            if FTTYConsole <> nil then begin
-               if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
-                  FTTYConsole.SendStrNow(S);
-               end
-               else begin
-                  // SHIFTキーが押されていない場合のみMSG送信
-                  if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
-                     FTTYConsole.SendStrNow(S);
-                  end;
+            if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+               PlayMessageRTTY(3, curQSO);
+            end
+            else begin
+               // SHIFTキーが押されていない場合のみMSG送信
+               if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                  PlayMessageRTTY(3, curQSO);
                end;
             end;
 
@@ -8721,7 +8710,6 @@ begin
             dmZLogKeyer.CloseBGK();
          end;
 
-         FTTYConsole.TTYMode := ttyMMTTY;
          InitializeMMTTY(Handle);
 
          FormShowAndRestore(FTTYConsole);
@@ -10687,7 +10675,7 @@ begin
       end;
 
       mRTTY: begin
-         PlayMessageRTTY(no);
+         PlayMessageRTTY(no, nil);
       end;
 
       else begin
@@ -10830,9 +10818,10 @@ begin
    FMessageManager.ContinueQue();
 end;
 
-procedure TMainForm.PlayMessageRTTY(no: Integer);
+procedure TMainForm.PlayMessageRTTY(no: Integer; Q: TQSO);
 var
    S: string;
+   C: string;
 begin
    S := dmZLogGlobal.CWMessage(3, no);
 
@@ -10840,9 +10829,16 @@ begin
       Exit;
    end;
 
-   S := SetStrNoAbbrev(S, CurrentQSO);
+   if Q = nil then begin
+      Q := CurrentQSO;
+   end;
+
+   S := SetStrNoAbbrev(S, Q);
+   C := '';
 
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
+      // CWモニターに送信電文をセット
+      zLogSetSendText(FCurrentTx, S, C);
       dmZLogKeyer.SendStr(FCurrentTx, S)
    end
    else begin
@@ -14599,6 +14595,7 @@ begin
             FTTYConsole.TxClear();
          end;
       end;
+      FCWMonitor.ClearSendingText();
    end;
 end;
 

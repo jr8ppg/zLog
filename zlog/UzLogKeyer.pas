@@ -307,6 +307,8 @@ type
     FFskReverse: Boolean;
     FFskPort: array[0..MAXPORT] of TKeyingPort;
     FFskPortConfig: array[0..MAXPORT] of TPortConfig;
+    FLTRS: Boolean;
+    FFIGS: Boolean;
 
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
@@ -410,7 +412,8 @@ type
     procedure PauseCW; {Pause}
     procedure ResumeCW; {Resume}
 
-    procedure SendStr(nID: Integer; sStr: string); {Sends a string (Overwrites buffer)}
+    procedure SendStr(nID: Integer; sStr: string; fWithOutPTT: Boolean = False); overload;
+    procedure SendStr(nID: Integer; CH: AnsiChar); overload;
     procedure SendStrFIFO(nID: Integer; sStr: string); {Sends a string (adds to buffer)}
 
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
@@ -1819,14 +1822,12 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string);
+procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string; fWithOutPTT: Boolean);
 var
    SS: string;
    CW: string;
    i: Integer;
    CH: Char;
-   fLTRS: Boolean;
-   fFIGS: Boolean;
 begin
    if sStr = '' then
       Exit;
@@ -1848,30 +1849,78 @@ begin
 
    if FRTTY then begin
       CW := SS;
-      SS := STX + LTRS + LTRS + LTRS;
-      fLTRS := True;
-      fFIGS := False;
+      SS := '';
+
+      // PTT ON 指令
+      if fWithOutPTT = False then begin
+         SS := STX;
+      end;
+
+      SS := SS + LTRS + LTRS + LTRS;
+
+      FLTRS := True;
+      FFIGS := False;
       for i := 1 to Length(CW) do begin
          CH := CW[i];
 
-         if CH in ['A'..'Z'] then begin
-            if fLTRS = False then begin
+         if CharInSet(CH, ['A'..'Z']) then begin
+            if FLTRS = False then begin
                SS := SS + LTRS;
-               fLTRS := True;
-               fFIGS := False;
+               FLTRS := True;
+               FFIGS := False;
             end;
             SS := SS + CH;
          end
+         else if CharInSet(CH, [CR, LF, ' ']) then begin    // LTRS/FIGSは変更しない
+            SS := SS + CH;
+         end
          else begin
-            if fFIGS = False then begin
+            if FFIGS = False then begin
                SS := SS + FIGS;
-               fLTRS := False;
-               fFIGS := True;
+               FLTRS := False;
+               FFIGS := True;
             end;
             SS := SS + CH;
          end;
       end;
-      SS := SS + ETX;
+      SS := SS + CR + LF;
+
+      // PTT OFF 指令
+      if fWithOutPTT = False then begin
+         SS := SS + ETX;
+      end;
+   end;
+
+   SetCWSendBuf(0, SS);
+
+   FSendOK := True;
+   FKeyingCounter := 1;
+end;
+
+procedure TdmZLogKeyer.SendStr(nID: Integer; CH: AnsiChar);
+var
+   SS: string;
+begin
+   SS := '';
+
+   if CharInSet(CH, ['A'..'Z']) then begin
+      if FLTRS = False then begin
+         SS := SS + LTRS;
+         FLTRS := True;
+         FFIGS := False;
+      end;
+      SS := SS + CH;
+   end
+   else if CharInSet(CH, [CR, LF, ' ']) then begin    // LTRS/FIGSは変更しない
+      SS := SS + CH;
+   end
+   else begin
+      if FFIGS = False then begin
+         SS := SS + FIGS;
+         FLTRS := False;
+         FFIGS := True;
+      end;
+      SS := SS + CH;
    end;
 
    SetCWSendBuf(0, SS);
@@ -2172,7 +2221,17 @@ begin
          FSendChar := True;
       end;
 
-      // next char
+      // next char without sent event
+      8: begin
+         CWBufferSync.Enter();
+         try
+            cwstrptr := (cwstrptr div codemax + 1) * codemax;
+         finally
+            CWBufferSync.Leave();
+         end;
+      end;
+
+      // next char with sent event
       9: begin
          CWBufferSync.Enter();
          try
@@ -3596,6 +3655,26 @@ begin
    FBaudotTable[Ord(' ')][7] := $72;
    FBaudotTable[Ord(' ')][8] := 9;
 
+   // CR
+   FBaudotTable[Ord(CR)][1] := $70;
+   FBaudotTable[Ord(CR)][2] := $70;
+   FBaudotTable[Ord(CR)][3] := $70;
+   FBaudotTable[Ord(CR)][4] := $70;
+   FBaudotTable[Ord(CR)][5] := $71;
+   FBaudotTable[Ord(CR)][6] := $70;
+   FBaudotTable[Ord(CR)][7] := $72;
+   FBaudotTable[Ord(CR)][8] := 8;
+
+   // LF
+   FBaudotTable[Ord(LF)][1] := $70;    // START
+   FBaudotTable[Ord(LF)][2] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][3] := $71;    // MARK
+   FBaudotTable[Ord(LF)][4] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][5] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][6] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][7] := $72;    // STOP
+   FBaudotTable[Ord(LF)][8] := 8;      // next char
+
    // LTRS
    FBaudotTable[Ord(LTRS)][1] := $70;  // START
    FBaudotTable[Ord(LTRS)][2] := $71;  // MARK
@@ -3604,7 +3683,7 @@ begin
    FBaudotTable[Ord(LTRS)][5] := $71;  // MARK
    FBaudotTable[Ord(LTRS)][6] := $71;  // MARK
    FBaudotTable[Ord(LTRS)][7] := $72;  // STOP
-   FBaudotTable[Ord(LTRS)][8] := 9;    // next char
+   FBaudotTable[Ord(LTRS)][8] := 8;    // next char
 
    // FIGS
    FBaudotTable[Ord(FIGS)][1] := $70;  // START
@@ -3614,29 +3693,29 @@ begin
    FBaudotTable[Ord(FIGS)][5] := $71;  // MARK
    FBaudotTable[Ord(FIGS)][6] := $71;  // MARK
    FBaudotTable[Ord(FIGS)][7] := $72;  // STOP
-   FBaudotTable[Ord(FIGS)][8] := 9;    // next char
+   FBaudotTable[Ord(FIGS)][8] := 8;    // next char
 
    // STX(PTT ON)
    FBaudotTable[Ord(STX)][1] := $73;   // PTT ON
    FBaudotTable[Ord(STX)][2] := $55;   // set PTT delay
-   FBaudotTable[Ord(STX)][3] := 9;     // next char
+   FBaudotTable[Ord(STX)][3] := 8;     // next char
 
    // ETX(PTT OFF)
    FBaudotTable[Ord(ETX)][1] := $A1;   // set Hold Counter
    FBaudotTable[Ord(ETX)][2] := $A3;   // set PTT delay
    FBaudotTable[Ord(ETX)][3] := $74;   // PTT OFF
-   FBaudotTable[Ord(ETX)][4] := 9;     // next char
+   FBaudotTable[Ord(ETX)][4] := 8;     // next char
 
    FBaudotTable[$90][1] := $20;
-   FBaudotTable[$90][2] := 9;
+   FBaudotTable[$90][2] := 8;
    FBaudotTable[$91][1] := $21;
-   FBaudotTable[$91][2] := 9;
+   FBaudotTable[$91][2] := 8;
    FBaudotTable[$92][1] := $22;
-   FBaudotTable[$92][2] := 9;
+   FBaudotTable[$92][2] := 8;
    FBaudotTable[$93][1] := $23;
-   FBaudotTable[$93][2] := 9;
+   FBaudotTable[$93][2] := 8;
    FBaudotTable[$94][1] := $24;
-   FBaudotTable[$94][2] := 9;
+   FBaudotTable[$94][2] := 8;
 
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
@@ -6092,7 +6171,7 @@ end;
 
 procedure TdmZLogKeyer.FSK_KEYING(nID: Integer; fMark: Boolean);
 begin
-   if FFskReverse then begin
+   if FFskReverse = False then begin
       fMark := Not fMark;
    end;
 
