@@ -1012,6 +1012,12 @@ begin
       SentEdit.Color := clWindow;
       checkSentOverride.Visible := False;
    end;
+
+   // RTTYのとき
+   if CurrentQSO.Mode = mRTTY then begin
+      rbRTTY.Checked := True;
+      CWBankClick(rbRTTY);
+   end;
 end;
 
 procedure TformOptions2.FormDestroy(Sender: TObject);

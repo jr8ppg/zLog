@@ -141,6 +141,7 @@ type
     procedure StopMessageCW(); virtual;
     procedure ControlPTT(fOn: Boolean); virtual;
     procedure AudioInputSelect(input: TAudioInput); virtual;
+    procedure SetRttyMonitor(fOn: Boolean); virtual;
 
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
@@ -605,6 +606,11 @@ begin
 end;
 
 procedure TRig.AudioInputSelect(input: TAudioInput);
+begin
+//
+end;
+
+procedure TRig.SetRttyMonitor(fOn: Boolean);
 begin
 //
 end;

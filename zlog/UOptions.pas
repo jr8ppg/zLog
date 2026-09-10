@@ -475,6 +475,10 @@ type
     groupRig4Fsk: TGroupBox;
     comboRig4FskPort: TComboBox;
     buttonRig4FskPortConfig: TButton;
+    comboRig1RxPort: TComboBox;
+    comboRig2RxPort: TComboBox;
+    comboRig3RxPort: TComboBox;
+    comboRig4RxPort: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -557,6 +561,7 @@ type
     FF2AAfter: array[1..4] of TEdit;
     FFskPort: array[1..4] of TComboBox;
     FFskPortConfig: array[1..4] of TButton;
+    FTtyRxPort: array[1..4] of TComboBox;
 
     procedure InitRigNames();
     function CheckRigSetting(): Boolean;
@@ -626,6 +631,7 @@ var
    list: TList<TCommPort>;
    L: TStringList;
    rc: TRect;
+   O: TCommPort;
 begin
    FOriginalHeight := ClientHeight;
    PageControl.MultiLine := dmZLogGlobal.Settings.FUseMultiLineTabs;
@@ -809,6 +815,11 @@ begin
    comboRig2FskPort.Items.Clear();
    comboRig3FskPort.Items.Clear();
    comboRig4FskPort.Items.Clear();
+   comboRig1RxPort.Items.Clear();
+   comboRig2RxPort.Items.Clear();
+   comboRig3RxPort.Items.Clear();
+   comboRig4RxPort.Items.Clear();
+
 
    list := dmZLogGlobal.CommPortList;
    for i := 0 to list.Count - 1 do begin
@@ -835,8 +846,22 @@ begin
          comboRig2FskPort.Items.AddObject(CP.Name, CP);
          comboRig3FskPort.Items.AddObject(CP.Name, CP);
          comboRig4FskPort.Items.AddObject(CP.Name, CP);
+         comboRig1RxPort.Items.AddObject(CP.Name, CP);
+         comboRig2RxPort.Items.AddObject(CP.Name, CP);
+         comboRig3RxPort.Items.AddObject(CP.Name, CP);
+         comboRig4RxPort.Items.AddObject(CP.Name, CP);
       end;
    end;
+
+   CP := TCommPort.Create();
+   CP.Number := 24;  // tkpMmtty
+   CP.Name := 'MMTTY';
+   CP.Keying := True;
+
+   comboRig1RxPort.Items.InsertObject(1, CP.Name, CP);
+   comboRig2RxPort.Items.InsertObject(1, CP.Name, CP);
+   comboRig3RxPort.Items.InsertObject(1, CP.Name, CP);
+   comboRig4RxPort.Items.InsertObject(1, CP.Name, CP);
 
    // Hardware4タブ
    FSoundDevice[1] := comboRig1SoundDevice;
@@ -883,6 +908,10 @@ begin
    FFskPortConfig[2] := buttonRig2FskPortConfig;
    FFskPortConfig[3] := buttonRig3FskPortConfig;
    FFskPortConfig[4] := buttonRig4FskPortConfig;
+   FTtyRxPort[1] := comboRig1RxPort;
+   FTtyRxPort[2] := comboRig2RxPort;
+   FTtyRxPort[3] := comboRig3RxPort;
+   FTtyRxPort[4] := comboRig4RxPort;
 
    // F2A 再生用デバイスリスト
    L := TWaveSound.DeviceList();
@@ -2052,6 +2081,7 @@ begin
          Settings._f2a_datamode[i] := FF2aDataMode[i].ItemIndex;
          Settings._f2a_filter[i] := FF2aFilter[i].ItemIndex;
          Settings.FRigControl[i].FFskPort := TCommPort(FFskPort[i].Items.Objects[FFskPort[i].ItemIndex]).Number;
+         Settings.FRigControl[i].FTtyRxPort := TCommPort(FTtyRxPort[i].Items.Objects[FTtyRxPort[i].ItemIndex]).Number;
       end;
 
       //
@@ -2418,6 +2448,15 @@ begin
             if TCommPort(FFskPort[i].Items.Objects[j]).Number = Settings.FRigControl[i].FFskPort then begin
                FFskPort[i].ItemIndex := j;
                FFskPort[i].OnChange(FFskPort[i]);
+               Break;
+            end;
+         end;
+
+         FTtyRxPort[i].ItemIndex := 0;
+         for j := 0 to FTtyRxPort[i].Items.Count - 1 do begin
+            if TCommPort(FTtyRxPort[i].Items.Objects[j]).Number = Settings.FRigControl[i].FTtyRxPort then begin
+               FTtyRxPort[i].ItemIndex := j;
+               //FTtyRxPort[i].OnChange(FTtyRxPort[i]);
                Break;
             end;
          end;

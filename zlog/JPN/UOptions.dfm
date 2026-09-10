@@ -3594,13 +3594,13 @@ object formOptions: TformOptions
           Left = 425
           Top = 12
           Width = 81
-          Height = 81
+          Height = 101
           Caption = 'FSK'
           TabOrder = 9
           object comboRig1FskPort: TComboBox
             Tag = 1
             Left = 9
-            Top = 20
+            Top = 17
             Width = 64
             Height = 21
             Style = csDropDownList
@@ -3610,12 +3610,21 @@ object formOptions: TformOptions
           object buttonRig1FskPortConfig: TButton
             Tag = 1
             Left = 9
-            Top = 48
+            Top = 45
             Width = 64
             Height = 22
             Caption = 'Config'
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
+          end
+          object comboRig1RxPort: TComboBox
+            Tag = 1
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
           end
         end
       end
@@ -3759,13 +3768,13 @@ object formOptions: TformOptions
           Left = 425
           Top = 12
           Width = 81
-          Height = 81
+          Height = 101
           Caption = 'FSK'
           TabOrder = 9
           object comboRig2FskPort: TComboBox
             Tag = 2
             Left = 9
-            Top = 20
+            Top = 17
             Width = 64
             Height = 21
             Style = csDropDownList
@@ -3775,12 +3784,21 @@ object formOptions: TformOptions
           object buttonRig2FskPortConfig: TButton
             Tag = 2
             Left = 9
-            Top = 48
+            Top = 45
             Width = 64
             Height = 22
             Caption = 'Config'
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
+          end
+          object comboRig2RxPort: TComboBox
+            Tag = 2
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
           end
         end
       end
@@ -3924,13 +3942,13 @@ object formOptions: TformOptions
           Left = 425
           Top = 12
           Width = 81
-          Height = 81
+          Height = 101
           Caption = 'FSK'
           TabOrder = 9
           object comboRig3FskPort: TComboBox
             Tag = 3
             Left = 9
-            Top = 20
+            Top = 17
             Width = 64
             Height = 21
             Style = csDropDownList
@@ -3940,12 +3958,21 @@ object formOptions: TformOptions
           object buttonRig3FskPortConfig: TButton
             Tag = 3
             Left = 9
-            Top = 48
+            Top = 45
             Width = 64
             Height = 22
             Caption = 'Config'
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
+          end
+          object comboRig3RxPort: TComboBox
+            Tag = 3
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
           end
         end
       end
@@ -4089,13 +4116,13 @@ object formOptions: TformOptions
           Left = 425
           Top = 12
           Width = 81
-          Height = 81
+          Height = 101
           Caption = 'FSK'
           TabOrder = 9
           object comboRig4FskPort: TComboBox
             Tag = 4
             Left = 9
-            Top = 20
+            Top = 17
             Width = 64
             Height = 21
             Style = csDropDownList
@@ -4105,12 +4132,21 @@ object formOptions: TformOptions
           object buttonRig4FskPortConfig: TButton
             Tag = 4
             Left = 9
-            Top = 48
+            Top = 45
             Width = 64
             Height = 22
             Caption = 'Config'
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
+          end
+          object comboRig4RxPort: TComboBox
+            Tag = 4
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
           end
         end
       end
@@ -4940,13 +4976,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'PlemolJP'
+          FontName = 'PlemolJP Text'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 111
+          ItemIndex = 116
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

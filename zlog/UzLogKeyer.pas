@@ -69,7 +69,7 @@ type
                  tkpSerial6, tkpSerial7, tkpSerial8, tkpSerial9, tkpSerial10,
                  tkpSerial11, tkpSerial12, tkpSerial13, tkpSerial14, tkpSerial15,
                  tkpSerial16, tkpSerial17, tkpSerial18, tkpSerial19, tkpSerial20,
-                 tkpUSB, tkpRIG, tkpParallel);
+                 tkpUSB, tkpRIG, tkpParallel, tkpMmtty);
 
 type
   CodeData = array[1..codemax] of byte;
@@ -139,6 +139,11 @@ type
     ZFskKeying3: TCommPortDriver;
     ZFskKeying4: TCommPortDriver;
     ZFskKeying5: TCommPortDriver;
+    ZComTtyRx1: TCommPortDriver;
+    ZComTtyRx2: TCommPortDriver;
+    ZComTtyRx3: TCommPortDriver;
+    ZComTtyRx4: TCommPortDriver;
+    ZComTtyRx5: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -149,11 +154,14 @@ type
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
     procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
     procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
+    procedure ZComTtyRx1ReceiveData(Sender: TObject; DataPtr: Pointer;
+      DataSize: DWORD);
   private
     { Private 宣言 }
     FDefautCom: array[0..MAXPORT] of TCommPortDriver;
     FComKeying: array[0..MAXPORT] of TCommPortDriver;
     FFskKeying: array[0..MAXPORT] of TCommPortDriver;
+    FTtyRxCom: array[0..MAXPORT] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
     FPaddleThread: TPaddleThread;
@@ -309,6 +317,7 @@ type
     FFskReverse: Boolean;
     FFskPort: array[0..MAXPORT] of TKeyingPort;
     FFskPortConfig: array[0..MAXPORT] of TPortConfig;
+    FTtyRxPort: array[0..MAXPORT] of TKeyingPort;
     FUseTxUOS: Boolean;
     FLTRS: Boolean;
     FFIGS: Boolean;
@@ -392,6 +401,8 @@ type
     procedure SetFskPort(Index: Integer; port: TKeyingPort);
     function GetFskPortConfig(Index: Integer): TPortConfig;
     procedure SetFskPortConfig(Index: Integer; v: TPortConfig);
+    function GetTtyRxPort(Index: Integer): TKeyingPort;
+    procedure SetTtyRxPort(Index: Integer; port: TKeyingPort);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -475,6 +486,7 @@ type
     property FskReverse: Boolean read FFskReverse write FFskReverse;
     property FskPort[Index: Integer]: TKeyingPort read GetFskPort write SetFskPort;
     property FskPortConfig[Index: Integer]: TPortConfig read GetFskPortConfig write SetFskPortConfig;
+    property TtyRxPort[Index: Integer]: TKeyingPort read GetTtyRxPort write SetTtyRxPort;
     property UseTxUOS: Boolean read FUseTxUOS write FUseTxUOS;
 
     // paddle support
@@ -561,6 +573,9 @@ const
 
 implementation
 
+uses
+  Main, UTTYConsole;
+
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
@@ -590,6 +605,11 @@ begin
    FFskKeying[2] := ZFskKeying3;
    FFskKeying[3] := ZFskKeying4;
    FFskKeying[4] := ZFskKeying5;
+   FTtyRxCom[0]  := ZComTtyRx1;
+   FTtyRxCom[1]  := ZComTtyRx2;
+   FTtyRxCom[2]  := ZComTtyRx3;
+   FTtyRxCom[3]  := ZComTtyRx4;
+   FTtyRxCom[4]  := ZComTtyRx5;
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
@@ -685,6 +705,7 @@ begin
       FFskPortConfig[i].FRts := paPtt;
       FFskPortConfig[i].FDtr := paNone;
       FFskPortConfig[i].FTxD := paKey;
+      FTtyRxPort[i] := tkpNone;
    end;
 
    tailcwstrptr := 1;
@@ -1574,17 +1595,33 @@ begin
 end;
 
 procedure TdmZLogKeyer.FskCancelSend(nID: Integer);
+var
+   m: Integer;
 begin
    // Stop the one-character FSK sender without invoking the generic
    // ClrBuffer() callback path used by normal CW/RTTY transmission.
    CWBufferSync.Enter();
    try
-      FCWSendBuf[0, 1] := $FF;
+      for m := 0 to 2 do begin
+         FCWSendBuf[m, 1] := $FF;
+      end;
       cwstrptr := 0;
-      tailcwstrptr := 1;
+      FSelectedBuf := 0; // ver 2.1b
       FSendChar := False;
-      FSendOK := False;
-      FKeyingCounter := 0;
+      callsignptr := 0;
+      tailcwstrptr := 1;
+      mousetail := 1;
+      paddle_waiting := True;
+
+      // RTTY idle state is MARK.
+      FSK_MARK(nID);
+      if FUseAFSKTone then begin
+         RttyAudio(1, False);
+      end;
+
+      FUserFlag := False;
+
+      FSendOK := True;
 
       // Force a known shift state for the next TX.  The first printable
       // character will insert LTRS/FIGS as required.
@@ -1592,12 +1629,6 @@ begin
       FFIGS := False;
    finally
       CWBufferSync.Leave();
-   end;
-
-   // RTTY idle state is MARK.
-   FSK_MARK(nID);
-   if FUseAFSKTone then begin
-      RttyAudio(1, False);
    end;
 
    FskControlPTT(nID, False, False);
@@ -1969,8 +2000,15 @@ begin
       end;
       SS := SS + CH;
    end
-   else if CharInSet(CH, [CR, LF, ' ']) then begin    // LTRS/FIGSは変更しない
+   else if CharInSet(CH, [CR, LF]) then begin    // LTRS/FIGSは変更しない
       SS := SS + CH;
+   end
+   else if CH = ' ' then begin
+      SS := SS + CH;
+      if FUseTxUos then begin
+         FLTRS := True;
+         FFIGS := False;
+      end;
    end
    else begin
       if FFIGS = False then begin
@@ -3737,7 +3775,7 @@ begin
    FBaudotTable[Ord(CR)][5] := $71;
    FBaudotTable[Ord(CR)][6] := $70;
    FBaudotTable[Ord(CR)][7] := $72;
-   FBaudotTable[Ord(CR)][8] := 8;
+   FBaudotTable[Ord(CR)][8] := 9;
 
    // LF
    FBaudotTable[Ord(LF)][1] := $70;    // START
@@ -3747,7 +3785,7 @@ begin
    FBaudotTable[Ord(LF)][5] := $70;    // SPACE
    FBaudotTable[Ord(LF)][6] := $70;    // SPACE
    FBaudotTable[Ord(LF)][7] := $72;    // STOP
-   FBaudotTable[Ord(LF)][8] := 8;      // next char
+   FBaudotTable[Ord(LF)][8] := 9;      // next char
 
    // LTRS
    FBaudotTable[Ord(LTRS)][1] := $70;  // START
@@ -4280,6 +4318,7 @@ begin
       (FKeyingPort[4] = tkpNone) then begin
       COM_OFF();
       USB_OFF();
+      FSK_OFF();
       Exit;
    end;
 
@@ -4315,6 +4354,12 @@ begin
       end
       else begin
          fUseFSK := True;
+      end;
+
+      // TTY RX
+      if (FTtyRxPort[i] = tkpNone) then begin
+         FTtyRxPort[i] := tkpNone;
+         FTtyRxCom[i] := nil;
       end;
    end;
 
@@ -4437,6 +4482,7 @@ procedure TdmZLogKeyer.Close();
 begin
    COM_OFF();
    USB_OFF();
+   FSK_OFF();
 
    // RIG選択用ポート
    // RX
@@ -4649,6 +4695,20 @@ begin
          FFskKeying[i].ToggleDTR(False);
       end;
    end;
+
+   for i := 0 to MAXPORT do begin
+      if FTtyRxCom[i] = nil then begin
+         Continue;
+      end;
+
+      if FTtyRxCom[i].Connected = False then begin
+         FTtyRxCom[i].Port := TPortNumber(FTtyRxPort[i]);
+         FTtyRxCom[i].Connect;
+      end;
+
+      FTtyRxCom[i].ToggleRTS(True);
+      FTtyRxCom[i].ToggleDTR(True);
+   end;
 end;
 
 procedure TdmZLogKeyer.FSK_OFF();
@@ -4656,11 +4716,13 @@ var
    i: Integer;
 begin
    for i := 0 to MAXPORT do begin
-      if FFskKeying[i] = nil then begin
-         Continue;
+      if FFskKeying[i] <> nil then begin
+         FFskKeying[i].Disconnect();
       end;
 
-      FFskKeying[i].Disconnect();
+      if FTtyRxCom[i] <> nil then begin
+         FTtyRxCom[i].Disconnect();
+      end;
    end;
 end;
 
@@ -5856,6 +5918,18 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.ZComTtyRx1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+var
+   ptr: PAnsiChar;
+   i: Integer;
+begin
+   ptr := PAnsiChar(DataPtr);
+
+   for i := 0 to DataSize - 1 do begin
+      PostMessage(MainForm.TTYConsole.Handle, WM_ZLOG_RTTY_RXCHAR, WParam(AnsiChar(ptr[i])), TCommPortDriver(Sender).Tag);
+   end;
+end;
+
 procedure TdmZLogKeyer.IncCWSpeed();
 begin
    FKeyerInitWPM := FKeyerInitWPM + 1;
@@ -6312,6 +6386,16 @@ end;
 procedure TdmZLogKeyer.SetFskPortConfig(Index: Integer; v: TPortConfig);
 begin
    FFskPortConfig[Index] := v;
+end;
+
+function TdmZLogKeyer.GetTtyRxPort(Index: Integer): TKeyingPort;
+begin
+   Result := FTtyRxPort[Index];
+end;
+
+procedure TdmZLogKeyer.SetTtyRxPort(Index: Integer; port: TKeyingPort);
+begin
+   FTtyRxPort[Index] := port;
 end;
 
 { TUSBPortInfo }

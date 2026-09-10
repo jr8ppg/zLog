@@ -1439,6 +1439,7 @@ type
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
     procedure SetYourCallsign(strCallsign, strNumber: string);
+    procedure SetYourNumber(strNumber: string);
     procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
     procedure SetFreqAndCall(freq: TFrequency; strCallsign, strNumber: string);
     procedure Restore2bsiqMode();
@@ -13303,6 +13304,27 @@ end;
 procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
 begin
    SetYourCallsignEx(CurrentRx + 1, strCallsign, strNumber);
+end;
+
+procedure TMainForm.SetYourNumber(strNumber: string);
+var
+   nID: Integer;
+   C, S, N, B, M, OP, P: TEdit;
+begin
+   nID := CurrentRx;
+
+   AssignControls(nID, C, S, N, B, M, OP, P);
+
+   if (MyContest.SameExchange = True) and (N.Text = '') then begin
+      if strNumber <> '' then begin
+         N.Text := strNumber;
+         N.SelStart := Length(N.Text);
+         CallSpaceBarProc(C, N, B, False);
+      end
+      else begin
+         CallSpaceBarProc(C, N, B);
+      end;
+   end;
 end;
 
 procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);

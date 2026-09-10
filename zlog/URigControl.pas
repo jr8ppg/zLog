@@ -658,6 +658,12 @@ begin
             else if (rname = 'IC-7851') then begin
                rig := TIC7851.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end
+            else if (rname = 'IC-705') then begin
+               rig := TIC705.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
+            end
+            else if (rname = 'IC-7300') then begin
+               rig := TIC7300.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
+            end
             else begin
                rig := TICOM.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end;
@@ -1133,6 +1139,7 @@ end;
 procedure TRigControl.PowerOn();
 var
    rigno: Integer;
+   i: Integer;
 begin
    // ÉäÉOê›íËÇîΩâf
    rigno := GetCurrentRig();
@@ -1165,10 +1172,30 @@ begin
 
    // CWäJén
    dmZLogKeyer.Open();
+
+   // RTTY Monitor
+   for i := 1 to 4 do begin
+      if (MainForm.RigControl.Rigs[i] <> nil) and
+         (dmZLogKeyer.TtyRxPort[i - 1] >= tkpSerial1) and
+         (dmZLogKeyer.TtyRxPort[i - 1] <= tkpSerial20) then begin
+         MainForm.RigControl.Rigs[i].SetRttyMonitor(True);
+      end;
+   end;
 end;
 
 procedure TRigControl.PowerOff();
+var
+   i: Integer;
 begin
+   // RTTY Monitor
+   for i := 1 to 4 do begin
+      if (MainForm.RigControl.Rigs[i] <> nil) and
+         (dmZLogKeyer.TtyRxPort[i - 1] >= tkpSerial1) and
+         (dmZLogKeyer.TtyRxPort[i - 1] <= tkpSerial20) then begin
+         MainForm.RigControl.Rigs[i].SetRttyMonitor(False);
+      end;
+   end;
+
    // CWí‚é~
    dmZLogKeyer.ClrBuffer();
    dmZLogKeyer.Close();

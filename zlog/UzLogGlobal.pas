@@ -130,6 +130,7 @@ type
     FPostPlayback: TAudioInput;
     FFskPort: Integer;
     FFskPortConfig: TPortConfig;
+    FTtyRxPort: Integer;
   end;
 
   TRigSet = record
@@ -1211,6 +1212,7 @@ begin
          Settings.FRigControl[i].FFskPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'fsk_port_rts', Integer(paPtt)));
          Settings.FRigControl[i].FFskPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'fsk_port_dtr', Integer(paNone)));
          Settings.FRigControl[i].FFskPortConfig.FTxD := TPortAction(ini.ReadInteger(s, 'fsk_port_txd', Integer(paKey)));
+         Settings.FRigControl[i].FTtyRxPort     := ini.ReadInteger(s, 'TtyRxPort', 0);
       end;
 
       //
@@ -2103,6 +2105,7 @@ begin
          ini.WriteInteger(s, 'fsk_port_rts', Integer(Settings.FRigControl[i].FFskPortConfig.FRts));
          ini.WriteInteger(s, 'fsk_port_dtr', Integer(Settings.FRigControl[i].FFskPortConfig.FDtr));
          ini.WriteInteger(s, 'fsk_port_txd', Integer(Settings.FRigControl[i].FFskPortConfig.FTxd));
+         ini.WriteInteger(s, 'TtyRxPort', Settings.FRigControl[i].FTtyRxPort);
       end;
 
       //
@@ -2668,6 +2671,7 @@ begin
    for i := 0 to 3 do begin
       dmZLogKeyer.FskPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FFskPort);
       dmZLogKeyer.FskPortConfig[i] := Settings.FRigControl[i + 1].FFskPortConfig;
+      dmZLogKeyer.TtyRxPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FTtyRxPort);
    end;
    dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.RTTY.UseAfskTone;
    dmZLogKeyer.SpaceFreq := dmZLogGlobal.Settings.RTTY.SpaceFreq;

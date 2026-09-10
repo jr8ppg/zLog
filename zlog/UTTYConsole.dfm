@@ -106,6 +106,7 @@ object TTYConsole: TTTYConsole
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitLeft = 1
         object Label2: TLabel
           Left = 4
           Top = 5
@@ -137,6 +138,7 @@ object TTYConsole: TTTYConsole
         Font.Style = []
         TextColor = clWindowText
         BackgroundColor = clWindow
+        OnSelected = RXLogSelected
         LineBreak = CRLF
       end
     end
@@ -452,11 +454,5 @@ object TTYConsole: TTTYConsole
       Caption = 'Save'
       OnClick = menuSaveListClick
     end
-  end
-  object Timer2: TTimer
-    Enabled = False
-    Interval = 50
-    Left = 112
-    Top = 92
   end
 end

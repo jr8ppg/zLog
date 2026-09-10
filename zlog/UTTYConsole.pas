@@ -8,6 +8,9 @@ uses
   UzLogForm, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW, System.Actions,
   Vcl.ActnList;
 
+const
+  WM_ZLOG_RTTY_RXCHAR = (WM_USER + 1000);
+
 type
   TTTYConsole = class(TZLogForm)
     panelLeft: TPanel;
@@ -77,7 +80,6 @@ type
     RXLog: TColorConsole2;
     N3: TMenuItem;
     menuOptions: TMenuItem;
-    Timer2: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -108,13 +110,17 @@ type
     procedure menuLoadListClick(Sender: TObject);
     procedure menuSaveListClick(Sender: TObject);
     procedure menuOptionsClick(Sender: TObject);
+    procedure RXLogSelected(Sender: TObject);
   private
     { Private declarations }
     FTTYSendBuffer: string;
     FTTYSendPos: Integer;   // next character position for FSK one-character transmission
     FTTYLineBuffer: string; // line buffer for rx data
     FNeedFinishEvent: Boolean;
+    FAutoPttOff: Boolean;
     FOnSendFinishProc: TPlayMessageFinishedProc;
+    FRxCharNo: Integer;
+    procedure OnZLogRttyRxChar( var Message: TMessage ); message WM_ZLOG_RTTY_RXCHAR;
     function Sending(): Boolean;
     procedure RXChar(C: AnsiChar);
     procedure TXChar(C: AnsiChar);
@@ -137,7 +143,7 @@ type
 implementation
 
 uses
-  Main, URttyOptions, UzColorCoding, UzLogKeyer;
+  Main, URttyOptions, UzColorCoding, UzLogKeyer, URigControl;
 
 {$R *.DFM}
 
@@ -148,6 +154,7 @@ begin
    FTTYSendPos := 0;
    FTTYLineBuffer := '';
    FNeedFinishEvent := False;
+   FAutoPttOff := False;
 end;
 
 procedure TTTYConsole.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -197,11 +204,18 @@ end;
 procedure TTTYConsole.Timer1Timer(Sender: TObject);
 var
    i: integer;
+   nID: Integer;
 begin
    Timer1.Enabled := False;
    try
-      if MMTTYBuffer = '' then
-         exit;
+      nID := MainForm.CurrentRX;
+      if dmZLogKeyer.TtyRxPort[nID] <> tkpMmtty then begin
+         Exit;
+      end;
+
+      if MMTTYBuffer = '' then begin
+         Exit;
+      end;
 
       // RXLog.Text := RXLog.Text + MMTTYBuffer;
       for i := 1 to Length(MMTTYBuffer) do begin
@@ -384,9 +398,13 @@ begin
       Exit;
    end;
 
+   if Key = CR then begin
+      Exit;
+   end;
+
    Key := UpCase(Key);
 
-   if Not CharInSet(Key, ['A'..'Z', '0'..'9', '-', '?', ':', '$', '!', '&', '#', '''', '(', ')', '.', ',', '/', '=', '+', ' ', CR, LF]) then begin
+   if Not CharInSet(Key, ['A'..'Z', '0'..'9', '-', '?', ':', '$', '!', '&', '#', '''', '(', ')', '.', ',', '/', '=', '+', ' ']) then begin
       Key := #00;
       Exit;
    end;
@@ -518,6 +536,21 @@ begin
    end;
 end;
 
+procedure TTTYConsole.OnZLogRttyRxChar( var Message: TMessage );
+var
+   CH: AnsiChar;
+   rigno: Integer;
+begin
+   CH := AnsiChar(Message.WParam);
+   rigno := Message.LParam;
+
+   if (MainForm.CurrentRX) <> rigno then begin
+      Exit;
+   end;
+
+   RXChar(CH);
+end;
+
 function TTTYConsole.Sending(): Boolean;
 begin
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
@@ -596,10 +629,20 @@ begin
 
    S := SetStrNoAbbrev(S, CurrentQSO);
 
+   FAutoPttOff := True;
+
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
       nID := MainForm.CurrentTX;
-      zLogSetSendText(nID, S, '');
-      dmZLogKeyer.SendStr(nID, S)
+      //zLogSetSendText(nID, S, '');
+      //dmZLogKeyer.SendStr(nID, S)
+      TXLog.Lines.Add(S);
+      if dmZLogKeyer.PTTIsOn = False then begin
+         FTTYSendBuffer := S + CR + LF;
+         ToggleTXRX();
+      end
+      else begin
+         FTTYSendBuffer := FTTYSendBuffer + S + CR + LF;
+      end;
    end
    else begin
       SendStrNow(S);
@@ -666,6 +709,14 @@ end;
 procedure TTTYConsole.menuSaveListClick(Sender: TObject);
 begin
    CallsignList.Items.SaveToFile('zlog_rtty_calllist.txt');
+end;
+
+procedure TTTYConsole.RXLogSelected(Sender: TObject);
+var
+   S: string;
+begin
+   S := RXLog.SelectedText;
+   MainForm.SetYourNumber(S);
 end;
 
 procedure TTTYConsole.ApplyShortcut();
@@ -880,7 +931,7 @@ begin
       CH := AnsiChar(FTTYSendBuffer[FTTYSendPos]);
       Inc(FTTYSendPos);
       dmZLogKeyer.SendChar(nID, CH);
-      RXLog.WriteChar(CH);
+      PostMessage(Handle, WM_ZLOG_RTTY_RXCHAR, WPARAM(CH), 0);
    end
    else begin
       {$IFDEF DEBUG}
@@ -896,7 +947,13 @@ begin
       // If a character is entered while this LTRS is being sent, it is
       // appended to FTTYSendBuffer and will be sent on the next callback.
       dmZLogKeyer.SendChar(nID, LTRS2);
+
+      if FAutoPttOff = True then begin
+         ToggleTXRX();
+         FAutoPttOff := False;
+      end;
    end;
 end;
 
 end.
+
