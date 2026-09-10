@@ -56,6 +56,7 @@ type
     BackColor: TColor;
     ForeColor: TColor;
     ColorCoding: TStringList;
+    UseTxUos: Boolean;
   end;
 
   TCommParam = record
@@ -1129,6 +1130,7 @@ begin
       Settings.RTTY.UseAfskTone := ini.ReadBool('RTTY', 'use_afsk_tone', False);
       Settings.RTTY.UseFskKeying := ini.ReadBool('RTTY', 'use_fsk_keying', False);
       Settings.RTTY.DontChangeRigMode := ini.ReadBool('RTTY', 'dont_change_rig_mode', False);
+      Settings.RTTY.UseTxUos := ini.ReadBool('RTTY', 'use_txuos', True);
       Settings.RTTY.SpaceFreq := ini.ReadInteger('RTTY', 'space_freq', 2295);
       Settings.RTTY.MarkFreq  := ini.ReadInteger('RTTY', 'mark_freq', 2125);
       Settings.RTTY.FskReverse := ini.ReadBool('RTTY', 'fsk_reverse', False);
@@ -2028,6 +2030,7 @@ begin
       ini.WriteBool('RTTY', 'use_afsk_tone', Settings.RTTY.UseAfskTone);
       ini.WriteBool('RTTY', 'use_fsk_keying', Settings.RTTY.UseFskKeying);
       ini.WriteBool('RTTY', 'dont_change_rig_mode', Settings.RTTY.DontChangeRigMode);
+      ini.WriteBool('RTTY', 'use_txuos', Settings.RTTY.UseTxUos);
       ini.WriteInteger('RTTY', 'space_freq', Settings.RTTY.SpaceFreq);
       ini.WriteInteger('RTTY', 'mark_freq', Settings.RTTY.MarkFreq);
       ini.WriteBool('RTTY', 'fsk_reverse', Settings.RTTY.FskReverse);
@@ -2670,6 +2673,7 @@ begin
    dmZLogKeyer.SpaceFreq := dmZLogGlobal.Settings.RTTY.SpaceFreq;
    dmZLogKeyer.MarkFreq := dmZLogGlobal.Settings.RTTY.MarkFreq;
    dmZLogKeyer.FskReverse := dmZLogGlobal.Settings.RTTY.FskReverse;
+   dmZLogKeyer.UseTxUOS := dmZLogGlobal.Settings.RTTY.UseTxUOS;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;

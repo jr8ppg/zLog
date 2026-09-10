@@ -1,4 +1,4 @@
-unit UTTYConsole;
+ï»¿unit UTTYConsole;
 
 interface
 
@@ -77,6 +77,7 @@ type
     RXLog: TColorConsole2;
     N3: TMenuItem;
     menuOptions: TMenuItem;
+    Timer2: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -110,6 +111,7 @@ type
   private
     { Private declarations }
     FTTYSendBuffer: string;
+    FTTYSendPos: Integer;   // next character position for FSK one-character transmission
     FTTYLineBuffer: string; // line buffer for rx data
     FNeedFinishEvent: Boolean;
     FOnSendFinishProc: TPlayMessageFinishedProc;
@@ -126,6 +128,7 @@ type
     procedure ToggleTXRX();
     procedure Grab();
     procedure RemoveCallsign(strCall: string);
+    procedure OneCharSentProc();
 
     property FontSize: Integer read GetFontSize write SetFontSize;
     property OnSendFinishProc: TPlayMessageFinishedProc read FOnSendFinishProc write FOnSendFinishProc;
@@ -142,6 +145,7 @@ procedure TTTYConsole.FormCreate(Sender: TObject);
 begin
    RXLog.ClrScr;
    FTTYSendBuffer := '';
+   FTTYSendPos := 0;
    FTTYLineBuffer := '';
    FNeedFinishEvent := False;
 end;
@@ -251,13 +255,13 @@ begin
       for i := 0 to L.Count - 1 do begin
          S := L.Strings[i];
 
-         // ’·‚³ƒ`ƒFƒbƒN
+         // ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
          len := Length(S);
          if (len < 3) or (len > 15) then begin
             Continue;
          end;
 
-         // •¶Žšƒ`ƒFƒbƒN
+         // ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
          nAlph := 0;
          nNG := 0;
          nNum := 0;
@@ -334,20 +338,37 @@ begin
 end;
 
 procedure TTTYConsole.TXLogKeyPress(Sender: TObject; var Key: Char);
-var
-   nID: Integer;
 begin
    if Key = Chr($08) then begin  // BackSpace
       if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
-         nID := MainForm.CurrentTX;
-         if FTTYSendBuffer = '' then begin
-            if dmZLogKeyer.PTTIsOn = True then begin
-               dmZLogKeyer.SendStr(nID, 'X');
+         if dmZLogKeyer.PTTIsOn = True then begin
+            // During FSK transmission, FTTYSendPos points to the next
+            // character that has not yet been sent.  BS can delete only
+            // a character that is still waiting in the queue.
+            if FTTYSendPos <= Length(FTTYSendBuffer) then begin
+               Delete(FTTYSendBuffer, Length(FTTYSendBuffer), 1);
+               // Leave Key as BS so TXLog also deletes one character.
+            end
+            else begin
+               // Everything already entered has been sent.  It cannot be
+               // withdrawn, so queue the conventional correction character.
+               FTTYSendBuffer := FTTYSendBuffer + 'X';
+               Key := 'X';
             end;
-            Key := 'X';
          end
          else begin
-            FTTYSendBuffer := Copy(FTTYSendBuffer, 1, Length(FTTYSendBuffer) - 1);
+            // Before transmission starts, every character in the buffer is
+            // still unsent and can therefore be removed normally.
+            if FTTYSendBuffer <> '' then begin
+               Delete(FTTYSendBuffer, Length(FTTYSendBuffer), 1);
+               // Leave Key as BS so TXLog also deletes one character.
+            end
+            else begin
+               // There is nothing that can be deleted. Queue X so it will
+               // be transmitted when FSK transmission starts.
+               FTTYSendBuffer := 'X';
+               Key := 'X';
+            end;
          end;
       end
       else begin
@@ -365,19 +386,16 @@ begin
 
    Key := UpCase(Key);
 
-   if Not CharInSet(Key, ['A'..'Z', '0'..'9', '-', '?', ':', '$', '!', '&', '#', '''', '(', ')', '.', ',', '/', '=', '+']) then begin
+   if Not CharInSet(Key, ['A'..'Z', '0'..'9', '-', '?', ':', '$', '!', '&', '#', '''', '(', ')', '.', ',', '/', '=', '+', ' ', CR, LF]) then begin
       Key := #00;
       Exit;
    end;
 
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
-      nID := MainForm.CurrentTX;
-      if dmZLogKeyer.PTTIsOn = True then begin
-         dmZLogKeyer.SendStr(nID, Key);
-      end
-      else begin
-         FTTYSendBuffer := FTTYSendBuffer + Key;
-      end;
+      // FSK transmission is always queued. Even while PTT is on,
+      // characters entered here are appended to FTTYSendBuffer and
+      // are sent one at a time from OneCharSentProc().
+      FTTYSendBuffer := FTTYSendBuffer + Key;
    end
    else begin
       if MMTTY_TX then begin
@@ -397,8 +415,6 @@ begin
 end;
 
 procedure TTTYConsole.TXLogKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-var
-   nID: Integer;
 begin
    case Key of
       VK_RIGHT, VK_LEFT, VK_UP, VK_DOWN, VK_DELETE:
@@ -406,13 +422,9 @@ begin
 
       VK_RETURN: begin
          if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
-            nID := MainForm.CurrentTX;
-            if dmZLogKeyer.PTTIsOn = True then begin
-               dmZLogKeyer.SendStr(nID, CR + LF, True);
-            end
-            else begin
-               FTTYSendBuffer := FTTYSendBuffer + _CR + _LF;
-            end;
+            // CR/LF is also queued so it follows the same one-character
+            // transmission path as normal keyboard input.
+            FTTYSendBuffer := FTTYSendBuffer + _CR + _LF;
          end
          else begin
             if MMTTY_TX then begin
@@ -750,22 +762,36 @@ end;
 procedure TTTYConsole.ToggleTXRX();
 var
    nID: Integer;
+   CH: AnsiChar;
 begin
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
       nID := MainForm.CurrentTX;
       if dmZLogKeyer.PTTIsOn = True then begin
-         dmZLogKeyer.FskControlPTT(nID, False);
+         // Stop transmission only when ToggleTXRX() is explicitly called.
+         FTTYSendPos := 0;
+         FTTYSendBuffer := '';
+         // Cancel the current one-character FSK send as well as PTT.
+         // This prevents the previous LTRS/character tail from being
+         // processed after the next TX start.
+         dmZLogKeyer.FskCancelSend(nID);
+         RXLog.WriteString(CR + LF);
       end
       else begin
          FNeedFinishEvent := False;
          dmZLogKeyer.FskControlPTT(nID, True);
+
+         // The first transmit position is 1.
+         FTTYSendPos := 1;
+
          if FTTYSendBuffer <> '' then begin
-            dmZLogKeyer.SendStr(nID, FTTYSendBuffer, True);
-            RXLog.WriteString(_CR + _LF);
-            FTTYSendBuffer := '';
+            CH := AnsiChar(FTTYSendBuffer[FTTYSendPos]);
+            dmZLogKeyer.SendChar(nID, CH);
+            Inc(FTTYSendPos);
+            RXLog.WriteChar(CH);
          end
          else begin
-            dmZLogKeyer.SendStr(nID, LTRS, True);
+            // Nothing to send: keep the transmitter active by sending LTRS.
+            dmZLogKeyer.SendChar(nID, LTRS2);
          end;
       end;
    end
@@ -827,6 +853,50 @@ begin
 
    CallsignList.Color := dmZLogGlobal.Settings.RTTY.BackColor;
    CallsignList.Font.Color := dmZLogGlobal.Settings.RTTY.ForeColor;
+end;
+
+procedure TTTYConsole.OneCharSentProc();
+var
+   nID: Integer;
+   CH: AnsiChar;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('-----TTYConsole.OneCharSentProc()-----'));
+   {$ENDIF}
+
+   if dmZLogGlobal.Settings.RTTY.UseFskKeying = False then begin
+      Exit;
+   end;
+
+   // FTTYSendPos = 0 means that FSK transmission is not active.
+   if FTTYSendPos = 0 then begin
+      Exit;
+   end;
+
+   nID := MainForm.CurrentTX;
+
+   if FTTYSendPos <= Length(FTTYSendBuffer) then begin
+      // Send the next queued character.
+      CH := AnsiChar(FTTYSendBuffer[FTTYSendPos]);
+      Inc(FTTYSendPos);
+      dmZLogKeyer.SendChar(nID, CH);
+      RXLog.WriteChar(CH);
+   end
+   else begin
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('-----é€ã‚‹ã‚‚ã®ãŒãªã„-----'));
+      {$ENDIF}
+
+      // All queued characters have been sent.  Discard the transmitted
+      // portion and wait at position 1 for newly entered characters.
+      FTTYSendBuffer := '';
+      FTTYSendPos := 1;
+
+      // While there is nothing to send, continuously send LTRS.
+      // If a character is entered while this LTRS is being sent, it is
+      // appended to FTTYSendBuffer and will be sent on the next callback.
+      dmZLogKeyer.SendChar(nID, LTRS2);
+   end;
 end;
 
 end.

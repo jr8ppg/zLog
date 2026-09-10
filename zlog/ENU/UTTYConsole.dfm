@@ -453,4 +453,10 @@ object TTYConsole: TTTYConsole
       OnClick = menuSaveListClick
     end
   end
+  object Timer2: TTimer
+    Enabled = False
+    Interval = 50
+    Left = 112
+    Top = 92
+  end
 end

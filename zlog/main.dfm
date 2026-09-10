@@ -557,7 +557,7 @@ object MainForm: TMainForm
         BevelOuter = bvNone
         TabOrder = 0
         object DateEdit2RH: TOvrEdit
-          Left = 2
+          Left = 4
           Top = 27
           Width = 57
           Height = 20
@@ -573,7 +573,7 @@ object MainForm: TMainForm
           TabOnEnter = False
         end
         object TimeEdit2RH: TOvrEdit
-          Left = 2
+          Left = 4
           Top = 27
           Width = 57
           Height = 20
@@ -600,6 +600,22 @@ object MainForm: TMainForm
           TabOrder = 2
           Visible = False
           OnChange = SerialEdit1Change
+          OnKeyDown = EditKeyDown
+        end
+        object OpEdit2RH: TEdit
+          Left = 4
+          Top = 5
+          Width = 57
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          ParentShowHint = False
+          PopupMenu = OpMenu
+          ReadOnly = True
+          ShowHint = False
+          TabOrder = 3
+          OnClick = OpEdit1Click
           OnKeyDown = EditKeyDown
         end
       end
@@ -1189,9 +1205,10 @@ object MainForm: TMainForm
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitTop = 0
         object DateEdit2RV: TOvrEdit
-          Left = 5
-          Top = 36
+          Left = 4
+          Top = 34
           Width = 57
           Height = 20
           TabStop = False
@@ -1206,8 +1223,8 @@ object MainForm: TMainForm
           TabOnEnter = False
         end
         object TimeEdit2RV: TOvrEdit
-          Left = 5
-          Top = 36
+          Left = 4
+          Top = 34
           Width = 57
           Height = 20
           TabStop = False
@@ -1233,6 +1250,22 @@ object MainForm: TMainForm
           TabOrder = 2
           Visible = False
           OnChange = SerialEdit1Change
+          OnKeyDown = EditKeyDown
+        end
+        object OpEdit2RV: TEdit
+          Left = 4
+          Top = 5
+          Width = 57
+          Height = 20
+          TabStop = False
+          AutoSize = False
+          ImeMode = imDisable
+          ParentShowHint = False
+          PopupMenu = OpMenu
+          ReadOnly = True
+          ShowHint = False
+          TabOrder = 3
+          OnClick = OpEdit1Click
           OnKeyDown = EditKeyDown
         end
       end
@@ -7598,14 +7631,14 @@ object MainForm: TMainForm
   object OpenDialog: TOpenDialog
     DefaultExt = 'ZLOX'
     Filter = 'zLog file|*.ZLO;*.ZLOX|any file|*.*'
-    Left = 418
-    Top = 207
+    Left = 282
+    Top = 79
   end
   object SaveDialog: TSaveDialog
     DefaultExt = 'ZLOX'
     Filter = 'zLog Extended binary file|*.ZLOX'
-    Left = 376
-    Top = 213
+    Left = 252
+    Top = 81
   end
   object BandMenu: TPopupMenu
     AutoHotkeys = maManual
@@ -8028,8 +8061,8 @@ object MainForm: TMainForm
     Options = [ofOverwritePrompt, ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Export'
     OnTypeChange = FileExportDialogTypeChange
-    Left = 472
-    Top = 196
+    Left = 312
+    Top = 80
   end
   object CWFMenu: TPopupMenu
     AutoHotkeys = maManual

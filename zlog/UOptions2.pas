@@ -512,6 +512,7 @@ type
     comboSpaceFreq: TComboBox;
     Label84: TLabel;
     checkFskReverse: TCheckBox;
+    checkUseTxUos: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1357,6 +1358,7 @@ begin
       Settings.RTTY.UseFskKeying := checkUseFskKeying.Checked;
       Settings.RTTY.FskReverse := checkFskReverse.Checked;
       Settings.RTTY.DontChangeRigMode := checkDontChangeRigMode.Checked;
+      Settings.RTTY.UseTxUos := checkUseTxUos.Checked;
 
       //
       // Voice
@@ -1832,6 +1834,7 @@ begin
       checkUseFskKeying.Checked := Settings.RTTY.UseFskKeying;
       checkFskReverse.Checked := Settings.RTTY.FskReverse;
       checkDontChangeRigMode.Checked := Settings.RTTY.DontChangeRigMode;
+      checkUseTxUos.Checked := Settings.RTTY.UseTxUos;
 
       //
       // Voice

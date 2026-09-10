@@ -33,6 +33,8 @@ const
   ETX = #$03;
   LTRS = #$1F;
   FIGS = #$1B;
+  LTRS2 = #$1E;
+  FIGS2 = #$1A;
 
 const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
@@ -307,6 +309,7 @@ type
     FFskReverse: Boolean;
     FFskPort: array[0..MAXPORT] of TKeyingPort;
     FFskPortConfig: array[0..MAXPORT] of TPortConfig;
+    FUseTxUOS: Boolean;
     FLTRS: Boolean;
     FFIGS: Boolean;
 
@@ -331,7 +334,7 @@ type
     procedure NoSound();
     procedure RttyAudio(key: Integer; fOn: Boolean);
 
-    procedure SetCWSendBufChar(b: Integer; C: Char); {Adds a char to the end of buffer}
+    procedure SetCWSendBufChar(b: Integer; C: AnsiChar); {Adds a char to the end of buffer}
     procedure SetCWSendBufFinish(b: Integer);
     function DecodeCommands(S: string): string;
     procedure CW_ON(nID: Integer);
@@ -403,6 +406,7 @@ type
     procedure ResetPTT();
     procedure FskControlPTT(nID: Integer; PTTON : Boolean; fPhonePTT: Boolean = False); {Sets PTT on/off}
     procedure FskResetPTT();
+    procedure FskCancelSend(nID: Integer); {Stops FSK one-character send and clears its buffer}
     procedure TuneOn(nID: Integer);
 
     procedure SetCallSign(S: string); {Update realtime callsign}
@@ -412,8 +416,8 @@ type
     procedure PauseCW; {Pause}
     procedure ResumeCW; {Resume}
 
-    procedure SendStr(nID: Integer; sStr: string; fWithOutPTT: Boolean = False); overload;
-    procedure SendStr(nID: Integer; CH: AnsiChar); overload;
+    procedure SendStr(nID: Integer; sStr: string; fWithOutPTT: Boolean = False);
+    procedure SendChar(nID: Integer; CH: AnsiChar);
     procedure SendStrFIFO(nID: Integer; sStr: string); {Sends a string (adds to buffer)}
 
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
@@ -471,6 +475,7 @@ type
     property FskReverse: Boolean read FFskReverse write FFskReverse;
     property FskPort[Index: Integer]: TKeyingPort read GetFskPort write SetFskPort;
     property FskPortConfig[Index: Integer]: TPortConfig read GetFskPortConfig write SetFskPortConfig;
+    property UseTxUOS: Boolean read FUseTxUOS write FUseTxUOS;
 
     // paddle support
     procedure PaddleProc(PaddleStatus: Byte);
@@ -613,6 +618,7 @@ begin
    FSpaceFreq := 1955;
    FMarkFreq := 2125;
    FFskReverse := False;
+   FUseTxUOS := True;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -1567,6 +1573,36 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.FskCancelSend(nID: Integer);
+begin
+   // Stop the one-character FSK sender without invoking the generic
+   // ClrBuffer() callback path used by normal CW/RTTY transmission.
+   CWBufferSync.Enter();
+   try
+      FCWSendBuf[0, 1] := $FF;
+      cwstrptr := 0;
+      tailcwstrptr := 1;
+      FSendChar := False;
+      FSendOK := False;
+      FKeyingCounter := 0;
+
+      // Force a known shift state for the next TX.  The first printable
+      // character will insert LTRS/FIGS as required.
+      FLTRS := False;
+      FFIGS := False;
+   finally
+      CWBufferSync.Leave();
+   end;
+
+   // RTTY idle state is MARK.
+   FSK_MARK(nID);
+   if FUseAFSKTone then begin
+      RttyAudio(1, False);
+   end;
+
+   FskControlPTT(nID, False, False);
+end;
+
 procedure TdmZLogKeyer.SetPTT(_on: Boolean);
 var
    i: Integer;
@@ -1627,7 +1663,7 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: Char);
+procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: AnsiChar);
 var
    m: Integer;
    code: Byte;
@@ -1875,6 +1911,13 @@ begin
          else if CharInSet(CH, [CR, LF, ' ']) then begin    // LTRS/FIGSは変更しない
             SS := SS + CH;
          end
+         else if CH = ' ' then begin    // LTRS/FIGSは変更しない
+            SS := SS + CH;
+            if FUseTxUOS then begin
+               FLTRS := True;
+               FFIGS := False;
+            end;
+         end
          else begin
             if FFIGS = False then begin
                SS := SS + FIGS;
@@ -1898,14 +1941,28 @@ begin
    FKeyingCounter := 1;
 end;
 
-procedure TdmZLogKeyer.SendStr(nID: Integer; CH: AnsiChar);
+procedure TdmZLogKeyer.SendChar(nID: Integer; CH: AnsiChar);
 var
    SS: string;
 begin
    SS := '';
 
-   if CharInSet(CH, ['A'..'Z']) then begin
+   // Shift codes themselves must update the internal shift state.
+   // LTRS2/FIGS2 are the event-generating variants used by the
+   // one-character RTTY console.
+   if CharInSet(CH, [LTRS, LTRS2]) then begin
+      SS := SS + CH;
+      FLTRS := True;
+      FFIGS := False;
+   end
+   else if CharInSet(CH, [FIGS, FIGS2]) then begin
+      SS := SS + CH;
+      FLTRS := False;
+      FFIGS := True;
+   end
+   else if CharInSet(CH, ['A'..'Z']) then begin
       if FLTRS = False then begin
+         // Automatic shift must not generate OneCharSentProc.
          SS := SS + LTRS;
          FLTRS := True;
          FFIGS := False;
@@ -1917,6 +1974,7 @@ begin
    end
    else begin
       if FFIGS = False then begin
+         // Automatic shift must not generate OneCharSentProc.
          SS := SS + FIGS;
          FLTRS := False;
          FFIGS := True;
@@ -1995,7 +2053,7 @@ begin
          Inc(n, 2)
       end
       else begin
-         SetCWSendBufChar(b, SS[n]);
+         SetCWSendBufChar(b, AnsiChar(SS[n]));
       end;
 
       Inc(n);
@@ -2103,6 +2161,7 @@ var
    cmd: Byte;
    wpm_change: Integer;
    wpm_sign: Integer;
+   OneCharBufferReplaced: Boolean;
 
    procedure Finish();
    begin
@@ -2131,6 +2190,8 @@ var
         ControlPTT(False); } // PTT doesn't work with \
    end;
 begin
+   OneCharBufferReplaced := False;
+
    if FKeyingCounter > 0 then begin
       Dec(FKeyingCounter);
       Exit;
@@ -2243,6 +2304,16 @@ begin
 
          if Assigned(FOnOneCharSentProc) and FSendChar then begin
             FOnOneCharSentProc(Self);
+
+            // SendChar() -> SetCWSendBuf() replaces the send buffer and
+            // resets cwstrptr to 1. In that case, do not increment it
+            // again at the end of TimerProcess().
+            CWBufferSync.Enter();
+            try
+               OneCharBufferReplaced := (cwstrptr = 1);
+            finally
+               CWBufferSync.Leave();
+            end;
          end;
       end;
 
@@ -2488,11 +2559,13 @@ begin
       end;
    end;
 
-   CWBufferSync.Enter();
-   try
-      Inc(cwstrptr);
-   finally
-      CWBufferSync.Leave();
+   if not OneCharBufferReplaced then begin
+      CWBufferSync.Enter();
+      try
+         Inc(cwstrptr);
+      finally
+         CWBufferSync.Leave();
+      end;
    end;
 end; { TimerProcess }
 
@@ -3695,6 +3768,26 @@ begin
    FBaudotTable[Ord(FIGS)][6] := $71;  // MARK
    FBaudotTable[Ord(FIGS)][7] := $72;  // STOP
    FBaudotTable[Ord(FIGS)][8] := 8;    // next char
+
+   // LTRS2
+   FBaudotTable[Ord(LTRS2)][1] := $70;  // START
+   FBaudotTable[Ord(LTRS2)][2] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][3] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][4] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][5] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][6] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][7] := $72;  // STOP
+   FBaudotTable[Ord(LTRS2)][8] := 9;    // next char
+
+   // FIGS2
+   FBaudotTable[Ord(FIGS2)][1] := $70;  // START
+   FBaudotTable[Ord(FIGS2)][2] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][3] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][4] := $70;  // SPACE
+   FBaudotTable[Ord(FIGS2)][5] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][6] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][7] := $72;  // STOP
+   FBaudotTable[Ord(FIGS2)][8] := 9;    // next char
 
    // STX(PTT ON)
    FBaudotTable[Ord(STX)][1] := $73;   // PTT ON

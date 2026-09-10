@@ -2346,9 +2346,9 @@ object formOptions2: TformOptions2
         end
         object groupRTTY: TGroupBox
           Left = 288
-          Top = 176
+          Top = 158
           Width = 213
-          Height = 177
+          Height = 197
           Caption = 'RTTY'
           TabOrder = 11
           object Label68: TLabel
@@ -2418,6 +2418,14 @@ object formOptions2: TformOptions2
             Height = 17
             Caption = 'Use FSK reverse'
             TabOrder = 4
+          end
+          object checkUseTxUos: TCheckBox
+            Left = 12
+            Top = 167
+            Width = 193
+            Height = 17
+            Caption = 'Use TX UOS'
+            TabOrder = 6
           end
         end
       end

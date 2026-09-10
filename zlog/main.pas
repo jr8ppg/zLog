@@ -743,6 +743,8 @@ type
     MemoEdit2VB: TOvrEdit;
     MemoEdit2VC: TOvrEdit;
     actionRttyGrab: TAction;
+    OpEdit2RH: TEdit;
+    OpEdit2RV: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -3168,8 +3170,20 @@ begin
    TimeEdit2RH.Top := CallsignEdit2A.Top;
 
    // 左パネルシリアルＮＯ
+   SerialEdit2A.Top := SentNrEdit2HA.Top;
    SerialEdit2A.Height := h;
    SerialEdit2A.Width := w * 5;
+
+   // 左パネルＯＰ
+   if dmZLogGlobal.QsoListColumnVisible[12] = False then begin
+      OpEdit2RH.Visible := False;
+   end
+   else begin
+      OpEdit2RH.Visible := True;
+      OpEdit2RH.Top := SentNrEdit2HA.Top;
+      OpEdit2RH.Height := h;
+      OpEdit2RH.Width := w * 7 + 5;
+   end;
 
    // RIG-C
    CallsignEdit2C.Height := h;
@@ -3268,6 +3282,14 @@ var
       DateEdit2RV.Height := h;
       TimeEdit2RV.Height := h;
       SerialEdit2VA.Height := h;
+      OpEdit2RV.Height := h;
+
+      if dmZLogGlobal.QsoListColumnVisible[12] = False then begin
+         OpEdit2RV.Visible := False;
+      end
+      else begin
+         OpEdit2RV.Visible := True;
+      end;
 
       // RIG-A
       ledTx2VA.Top := (RigPanelVA.Height - ledTx2VA.Height) div 2;
@@ -10860,11 +10882,21 @@ begin
       //FCWMonitor.ClearSendingText();
    end
    else begin
-      if ({(FCWKeyboard.Active) and} (FStartCWKeyboard = True)) then begin
-         FCWKeyboard.OneCharSentProc();
+      if CurrentQSO.Mode = mCW then begin
+         if ({(FCWKeyboard.Active) and} (FStartCWKeyboard = True)) then begin
+            FCWKeyboard.OneCharSentProc();
+         end
+         else begin
+            FCWMonitor.OneCharSentProc();
+         end;
       end
-      else begin
-         FCWMonitor.OneCharSentProc();
+      else if CurrentQSO.Mode = mRTTY then begin
+         if (FTTYConsole <> nil) and (FTTYConsole.Active) then begin
+            FTTYConsole.OneCharSentProc();
+         end
+         else begin
+            FCWMonitor.OneCharSentProc();
+         end;
       end;
    end;
 end;
@@ -13973,7 +14005,7 @@ begin
       FEditPanel[0].ModeEdit       := ModeEdit2A;
       FEditPanel[0].PowerEdit      := PowerEdit2HA;
       FEditPanel[0].BandEdit       := BandEdit2A;
-      FEditPanel[0].OpEdit         := nil;
+      FEditPanel[0].OpEdit         := OpEdit2RH;
       FEditPanel[0].MemoEdit       := MemoEdit2A;
       FEditPanel[0].TxLed          := ledTx2A;
       FEditPanel[0].SelShape       := RigPanelShape2A;
@@ -13990,7 +14022,7 @@ begin
       FEditPanel[1].ModeEdit       := ModeEdit2B;
       FEditPanel[1].PowerEdit      := PowerEdit2HB;
       FEditPanel[1].BandEdit       := BandEdit2B;
-      FEditPanel[1].OpEdit         := nil;
+      FEditPanel[1].OpEdit         := OpEdit2RH;
       FEditPanel[1].MemoEdit       := MemoEdit2B;
       FEditPanel[1].TxLed          := ledTx2B;
       FEditPanel[1].SelShape       := RigPanelShape2B;
@@ -14007,7 +14039,7 @@ begin
       FEditPanel[2].ModeEdit       := ModeEdit2C;
       FEditPanel[2].PowerEdit      := PowerEdit2HC;
       FEditPanel[2].BandEdit       := BandEdit2C;
-      FEditPanel[2].OpEdit         := nil;
+      FEditPanel[2].OpEdit         := OpEdit2RH;
       FEditPanel[2].MemoEdit       := MemoEdit2C;
       FEditPanel[2].TxLed          := ledTx2C;
       FEditPanel[2].SelShape       := RigPanelShape2C;
@@ -14031,7 +14063,7 @@ begin
       FEditPanel[0].ModeEdit       := ModeEdit2VA;
       FEditPanel[0].PowerEdit      := PowerEdit2VA;
       FEditPanel[0].BandEdit       := BandEdit2VA;
-      FEditPanel[0].OpEdit         := nil;
+      FEditPanel[0].OpEdit         := OpEdit2RV;
       FEditPanel[0].MemoEdit       := MemoEdit2VA;
       FEditPanel[0].TxLed          := ledTx2VA;
       FEditPanel[0].SelShape       := RigPanelShape2VA;
@@ -14048,7 +14080,7 @@ begin
       FEditPanel[1].ModeEdit       := ModeEdit2VB;
       FEditPanel[1].PowerEdit      := PowerEdit2VB;
       FEditPanel[1].BandEdit       := BandEdit2VB;
-      FEditPanel[1].OpEdit         := nil;
+      FEditPanel[1].OpEdit         := OpEdit2RV;
       FEditPanel[1].MemoEdit       := MemoEdit2VB;
       FEditPanel[1].TxLed          := ledTx2VB;
       FEditPanel[1].SelShape       := RigPanelShape2VB;
@@ -14065,7 +14097,7 @@ begin
       FEditPanel[2].ModeEdit       := ModeEdit2VC;
       FEditPanel[2].PowerEdit      := PowerEdit2VC;
       FEditPanel[2].BandEdit       := BandEdit2VC;
-      FEditPanel[2].OpEdit         := nil;
+      FEditPanel[2].OpEdit         := OpEdit2RV;
       FEditPanel[2].MemoEdit       := MemoEdit2VC;
       FEditPanel[2].TxLed          := ledTx2VC;
       FEditPanel[2].SelShape       := RigPanelShape2C;
