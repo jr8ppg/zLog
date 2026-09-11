@@ -1555,6 +1555,9 @@ begin
          if FFskPortConfig[nID].FDtr = paPtt then begin
             FFskKeying[nID].ToggleDTR(PTTON);
          end;
+         SendChar(nID, FIGS);
+         SendChar(nID, FIGS);
+         SendChar(nID, FIGS);
          Exit;
       end;
    finally
@@ -1939,7 +1942,7 @@ begin
             end;
             SS := SS + CH;
          end
-         else if CharInSet(CH, [CR, LF, ' ']) then begin    // LTRS/FIGSは変更しない
+         else if CharInSet(CH, [CR, LF]) then begin    // LTRS/FIGSは変更しない
             SS := SS + CH;
          end
          else if CH = ' ' then begin    // LTRS/FIGSは変更しない
