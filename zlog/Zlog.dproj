@@ -3,7 +3,7 @@
         <ProjectGuid>{83497C9C-5934-4E18-AC20-2AB9247B7276}</ProjectGuid>
         <MainSource>zlog.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -783,7 +783,7 @@
                     <RDP_Source_Files Name="Item11">UJarlWorldWideRTTYMulti2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">Win32\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">Win32\Release\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item14">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item14">Win64\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item16">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item17">UBasicScore.dfm</RDP_Source_Files>
@@ -913,7 +913,7 @@
                     <RDP_Source_Files Name="Item141">UJarlWorldWideRTTYMulti.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item142">UPortConfigDialog2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item143">URttyOptions.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item144">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item144">Win64\Debug\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

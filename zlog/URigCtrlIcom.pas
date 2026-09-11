@@ -96,16 +96,6 @@ type
     procedure AntSelect(no: Integer); override;
   end;
 
-  TIC705 = class(TICOM)
-  public
-    procedure SetRttyMonitor(fOn: Boolean); override;
-  end;
-
-  TIC7300 = class(TICOM)
-  public
-    procedure SetRttyMonitor(fOn: Boolean); override;
-  end;
-
 var
   IcomLock: TCriticalSection;
 
@@ -925,24 +915,6 @@ begin
       3: ICOMWriteData(AnsiChar($12) + AnsiChar($02) + AnsiChar($00));
       4: ICOMWriteData(AnsiChar($12) + AnsiChar($03) + AnsiChar($00));
    end;
-end;
-
-{ TIC705 }
-
-procedure TIC705.SetRttyMonitor(fOn: Boolean);
-const
-   cmd: array[False..True] of AnsiChar = ( #$00, #$01 );
-begin
-   ICOMWriteData(AnsiChar($1A) + AnsiChar($05) + AnsiChar($01) + AnsiChar($33) + cmd[fOn]);
-end;
-
-{ TIC7300 }
-
-procedure TIC7300.SetRttyMonitor(fOn: Boolean);
-const
-   cmd: array[False..True] of AnsiChar = ( #$00, #$01 );
-begin
-   ICOMWriteData(AnsiChar($1A) + AnsiChar($05) + AnsiChar($00) + AnsiChar($76) + cmd[fOn]);
 end;
 
 { TIcomCommThread }

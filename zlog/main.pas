@@ -1704,7 +1704,8 @@ begin
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
    FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
    FInformation   := TformInformation.Create(Self);
-   FTTYConsole    := nil;
+   FTTYConsole    := TTTYConsole.Create(Self);
+   FTTYConsole.OnSendFinishProc := OnPlayMessageFinished;
    FCWMonitor     := TformCWMonitor.Create(Self);
    FProgress      := TformProgress.Create(Self);
    FQsoSearch     := TformSearch.Create(Self);
@@ -1736,6 +1737,7 @@ begin
    FCheckCountry.OnChangeFontSize := OnChangeFontSize;
    FFunctionKeyPanel.OnChangeFontSize := OnChangeFontSize;
    FChatForm.OnChangeFontSize := OnChangeFontSize;
+   FTTYConsole.OnChangeFontSize := OnChangeFontSize;
 
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
@@ -3540,6 +3542,8 @@ begin
       dmZLogGlobal.ReadWindowState(ini, FCWMonitor);
       dmZLogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
       dmZLogGlobal.ReadWindowState(ini, FGrayline);
+      dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
+      actionShowTeletypeConsoleExecute(actionShowTeletypeConsole);
       FSentNumber.LoadSettings(ini);
 
       if ini.ReadBool('Windows', 'ConsolePad_Open', False) = True then begin
@@ -3606,6 +3610,7 @@ begin
       dmZLogGlobal.WriteWindowState(ini, FCWMonitor);
       dmZLogGlobal.WriteWindowState(ini, FEntityInfo);
       dmZLogGlobal.WriteWindowState(ini, FGrayline);
+      dmZLogGlobal.WriteWindowState(ini, FTTYConsole);
       FSentNumber.SaveSettings(ini);
 
       if FConsolePad <> nil then begin
@@ -8719,14 +8724,16 @@ begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       if menuMMTTY.Tag = 0 then begin
+         // MMTTYの使用が１つも無ければ起動しない
+         if (dmZLogGlobal.Settings.FRigControl[1].FTtyRxPort <> Integer(tkpMmtty)) and
+            (dmZLogGlobal.Settings.FRigControl[2].FTtyRxPort <> Integer(tkpMmtty)) and
+            (dmZLogGlobal.Settings.FRigControl[3].FTtyRxPort <> Integer(tkpMmtty)) and
+            (dmZLogGlobal.Settings.FRigControl[4].FTtyRxPort <> Integer(tkpMmtty)) then begin
+            Exit;
+         end;
+
          menuMMTTY.Tag := 1;
          menuMMTTY.Caption := TMainForm_Unload_MMTTY;
-         menuShowTTYConsole.Visible := True;
-
-         FTTYConsole := TTTYConsole.Create(Self);
-         FTTYConsole.OnSendFinishProc := OnPlayMessageFinished;
-         FTTYConsole.OnChangeFontSize := OnChangeFontSize;
-         dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
 
          // FSKを使用しない場合はキーヤーをOFFにする
          if dmZLogGlobal.Settings.RTTY.UseFskKeying = False then begin
@@ -8741,14 +8748,6 @@ begin
       else begin
          menuMMTTY.Tag := 0;
          menuMMTTY.Caption := TMainForm_Load_MMTTY;
-         menuShowTTYConsole.Visible := False;
-
-         dmZLogGlobal.WriteWindowState(ini, FTTYConsole);
-         ini.UpdateFile();
-
-         FTTYConsole.Close();
-         FTTYConsole.Release();
-         FTTYConsole := nil;
 
          ExitMMTTY;
 
@@ -11720,6 +11719,10 @@ begin
    if Assigned(FTTYConsole) then begin
       FormShowAndRestore(FTTYConsole);
    end;
+
+   if (FTTYConsole.Visible = True) and (MMTTYInitialized = False) then begin
+      menuMMTTYClick(menuMMTTY);
+   end;
 end;
 
 // #75 analyzeウインドウ
@@ -14641,7 +14644,7 @@ begin
    end
    else if (mode = mRTTY) then begin
       if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
-         dmZLogKeyer.ClrBuffer();
+         dmZLogKeyer.FskCancelSend(CurrentTx);
       end
       else begin
          if FTTYConsole <> nil then begin

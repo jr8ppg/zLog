@@ -658,12 +658,6 @@ begin
             else if (rname = 'IC-7851') then begin
                rig := TIC7851.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end
-            else if (rname = 'IC-705') then begin
-               rig := TIC705.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
-            end
-            else if (rname = 'IC-7300') then begin
-               rig := TIC7300.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
-            end
             else begin
                rig := TICOM.Create(rignum, Port, Comm, Timer, ICOMLIST[i].minband, ICOMLIST[i].maxband);
             end;

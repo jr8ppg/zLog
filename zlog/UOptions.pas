@@ -533,6 +533,8 @@ type
 
     FNeedSuperCheckLoad: Boolean;
 
+    FMMTTY_CP: TCommPort;
+
     FRigSetA_rig: array[b19..HiBand] of TComboBox;
     FRigSetA_ant: array[b19..HiBand] of TComboBox;
     FRigSetB_rig: array[b19..HiBand] of TComboBox;
@@ -857,6 +859,7 @@ begin
    CP.Number := 24;  // tkpMmtty
    CP.Name := 'MMTTY';
    CP.Keying := True;
+   FMMTTY_CP := CP;
 
    comboRig1RxPort.Items.InsertObject(1, CP.Name, CP);
    comboRig2RxPort.Items.InsertObject(1, CP.Name, CP);
@@ -975,6 +978,9 @@ end;
 procedure TformOptions.FormDestroy(Sender: TObject);
 begin
    ListViewClear();
+   if FMMTTY_CP <> nil then begin
+      FMMTTY_CP.Free();
+   end;
 end;
 
 procedure TformOptions.buttonOKClick(Sender: TObject);

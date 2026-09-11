@@ -189,6 +189,8 @@ procedure TTTYConsole.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftS
 begin
    case Key of
       VK_ESCAPE: begin
+         FTTYSendPos := 0;
+         FTTYSendBuffer := '';
          PostMessage(MainForm.Handle, WM_ZLOG_CQABORT, 0, 2);
          menuClearTxLog.Click();
          Key := 0;
@@ -544,7 +546,7 @@ begin
    CH := AnsiChar(Message.WParam);
    rigno := Message.LParam;
 
-   if (MainForm.CurrentRX) <> (rigno - 1) then begin
+   if (rigno > 0) and ((MainForm.CurrentRX) <> (rigno - 1)) then begin
       Exit;
    end;
 
@@ -897,6 +899,7 @@ begin
       if CC.Bold then fs := fs + [fsBold];
       if CC.Italic then fs := fs + [fsBold];
       RXLog.AddColorString(CC.Keyword, CC.ForeColor, fs);
+      CC.Free();
    end;
 
    TXLog.Color := dmZLogGlobal.Settings.RTTY.BackColor;

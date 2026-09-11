@@ -1205,7 +1205,6 @@ object MainForm: TMainForm
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitTop = 0
         object DateEdit2RV: TOvrEdit
           Left = 4
           Top = 34
@@ -7256,7 +7255,6 @@ object MainForm: TMainForm
         end
         object menuShowTTYConsole: TMenuItem
           Action = actionShowTeletypeConsole
-          Visible = False
         end
         object menuShowConsole: TMenuItem
           Action = actionShowConsolePad
