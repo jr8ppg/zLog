@@ -1555,9 +1555,6 @@ begin
          if FFskPortConfig[nID].FDtr = paPtt then begin
             FFskKeying[nID].ToggleDTR(PTTON);
          end;
-         SendChar(nID, FIGS);
-         SendChar(nID, FIGS);
-         SendChar(nID, FIGS);
          Exit;
       end;
    finally

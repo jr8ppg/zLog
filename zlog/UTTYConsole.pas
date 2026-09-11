@@ -254,7 +254,7 @@ var
 label
    xxxx;
 begin
-   if C in [AnsiChar(0) .. AnsiChar($09), AnsiChar($0B) .. AnsiChar($0C), AnsiChar($0E) .. AnsiChar($1F), AnsiChar($80) .. AnsiChar($FF)] then begin
+   if CharInSet(C, [AnsiChar(0) .. AnsiChar($09), AnsiChar($0B) .. AnsiChar($0C), AnsiChar($0E) .. AnsiChar($1F), AnsiChar($80) .. AnsiChar($FF)]) then begin
       Exit;
    end;
 
@@ -832,6 +832,10 @@ begin
       else begin
          FNeedFinishEvent := False;
          dmZLogKeyer.FskControlPTT(nID, True);
+
+         dmZLogKeyer.SendChar(nID, LTRS2);
+         dmZLogKeyer.SendChar(nID, LTRS2);
+         dmZLogKeyer.SendChar(nID, LTRS2);
 
          // The first transmit position is 1.
          FTTYSendPos := 1;
