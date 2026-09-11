@@ -544,7 +544,7 @@ begin
    CH := AnsiChar(Message.WParam);
    rigno := Message.LParam;
 
-   if (MainForm.CurrentRX) <> rigno then begin
+   if (MainForm.CurrentRX) <> (rigno - 1) then begin
       Exit;
    end;
 
