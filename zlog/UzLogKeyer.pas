@@ -322,6 +322,8 @@ type
     FLTRS: Boolean;
     FFIGS: Boolean;
 
+    procedure ResetComm();
+
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
     procedure SetTxRigFlag_com_v28(rigset: Integer);
@@ -590,26 +592,7 @@ var
    i: Integer;
 begin
    FInitialized := False;
-   FDefautCom[0] := ZComKeying1;
-   FDefautCom[1] := ZComKeying2;
-   FDefautCom[2] := ZComKeying3;
-   FDefautCom[3] := ZComKeying4;
-   FDefautCom[4] := ZComKeying5;
-   FComKeying[0] := FDefautCom[0];
-   FComKeying[1] := FDefautCom[1];
-   FComKeying[2] := FDefautCom[2];
-   FComKeying[3] := FDefautCom[3];
-   FComKeying[4] := FDefautCom[4];
-   FFskKeying[0] := ZFskKeying1;
-   FFskKeying[1] := ZFskKeying2;
-   FFskKeying[2] := ZFskKeying3;
-   FFskKeying[3] := ZFskKeying4;
-   FFskKeying[4] := ZFskKeying5;
-   FTtyRxCom[0]  := ZComTtyRx1;
-   FTtyRxCom[1]  := ZComTtyRx2;
-   FTtyRxCom[2]  := ZComTtyRx3;
-   FTtyRxCom[3]  := ZComTtyRx4;
-   FTtyRxCom[4]  := ZComTtyRx5;
+   ResetComm();
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
@@ -4237,6 +4220,30 @@ begin
    FKeyingPort[Index] := port;
 end;
 
+procedure TdmZLogKeyer.ResetComm();
+begin
+   FDefautCom[0] := ZComKeying1;
+   FDefautCom[1] := ZComKeying2;
+   FDefautCom[2] := ZComKeying3;
+   FDefautCom[3] := ZComKeying4;
+   FDefautCom[4] := ZComKeying5;
+   FComKeying[0] := FDefautCom[0];
+   FComKeying[1] := FDefautCom[1];
+   FComKeying[2] := FDefautCom[2];
+   FComKeying[3] := FDefautCom[3];
+   FComKeying[4] := FDefautCom[4];
+   FFskKeying[0] := ZFskKeying1;
+   FFskKeying[1] := ZFskKeying2;
+   FFskKeying[2] := ZFskKeying3;
+   FFskKeying[3] := ZFskKeying4;
+   FFskKeying[4] := ZFskKeying5;
+   FTtyRxCom[0]  := ZComTtyRx1;
+   FTtyRxCom[1]  := ZComTtyRx2;
+   FTtyRxCom[2]  := ZComTtyRx3;
+   FTtyRxCom[3]  := ZComTtyRx4;
+   FTtyRxCom[4]  := ZComTtyRx5;
+end;
+
 procedure TdmZLogKeyer.Open();
 var
    i: Integer;
@@ -4290,7 +4297,20 @@ var
          Result := usbinflist[0];
       end;
    end;
+
+   procedure SetTtyRxCom(no: Integer; CP: TCommPortDriver);
+   begin
+      FTtyRxCom[i] := CP;
+      FTtyRxCom[i].BaudRate := br38400;
+      FTtyRxCom[i].HwFlow := hfNone;
+      FTtyRxCom[i].DataBits := db8bits;
+      FTtyRxCom[i].StopBits := sb1bits;
+      FTtyRxCom[i].Parity := ptNONE;
+      FTtyRxCom[i].EnableDTROnOpen := False;
+   end;
 begin
+   ResetComm();
+
    if FUsePaddleKeyer = True then begin
       HidController.OnDeviceData := nil;
    end
@@ -4397,8 +4417,27 @@ begin
             end;
          end;
 
-         // CWとFSKポートが同じ場合
-         if (FKeyingPort[i] = FFskPort[i]) then begin
+         // CW/FSK/RTTYが同じ場合
+         if (FKeyingPort[i] = FFskPort[i]) and
+            (FKeyingPort[i] = FTtyRxPort[i]) then begin
+            FFskKeying[i] := FComKeying[i];
+            FFskPortConfig[i] := FKeyingPortConfig[i];
+
+            SetTtyRxCom(i, FComKeying[i]);
+         end
+
+         // FSKとRTTY受信が同じ場合
+         else if (FFskPort[i] = FTtyRxPort[i]) then begin
+            SetTtyRxCom(i, FFskKeying[i]);
+         end
+
+         // CWとRTTY受信が同じ場合
+         else if (FKeyingPort[i] = FTtyRxPort[i]) then begin
+            SetTtyRxCom(i, FComKeying[i]);
+         end
+
+         // CWとFSKが同じ場合
+         else if (FKeyingPort[i] = FFskPort[i]) then begin
             FFskKeying[i] := FComKeying[i];
             FFskPortConfig[i] := FKeyingPortConfig[i];
          end;
@@ -4705,9 +4744,6 @@ begin
          FTtyRxCom[i].Port := TPortNumber(FTtyRxPort[i]);
          FTtyRxCom[i].Connect;
       end;
-
-      FTtyRxCom[i].ToggleRTS(True);
-      FTtyRxCom[i].ToggleDTR(True);
    end;
 end;
 
@@ -5772,6 +5808,7 @@ var
    PP: PByte;
    newwpm: Integer;
    C: Char;
+   ptr: PAnsiChar;
 begin
    PP := DataPtr;
 
@@ -5915,16 +5952,21 @@ begin
             end;
          end;
       end;
+   end
+   else begin
+      ptr := PAnsiChar(DataPtr);
+      for i := 0 to DataSize - 1 do begin
+         PostMessage(MainForm.TTYConsole.Handle, WM_ZLOG_RTTY_RXCHAR, WParam(AnsiChar(ptr[i])), TCommPortDriver(Sender).Tag);
+      end;
    end;
 end;
 
 procedure TdmZLogKeyer.ZComTtyRx1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
 var
-   ptr: PAnsiChar;
    i: Integer;
+   ptr: PAnsiChar;
 begin
    ptr := PAnsiChar(DataPtr);
-
    for i := 0 to DataSize - 1 do begin
       PostMessage(MainForm.TTYConsole.Handle, WM_ZLOG_RTTY_RXCHAR, WParam(AnsiChar(ptr[i])), TCommPortDriver(Sender).Tag);
    end;

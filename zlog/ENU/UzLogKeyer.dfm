@@ -85,6 +85,7 @@ object dmZLogKeyer: TdmZLogKeyer
     InBufSize = 4096
     EnableDTROnOpen = False
     InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
     Left = 63
     Top = 200
   end
@@ -96,6 +97,7 @@ object dmZLogKeyer: TdmZLogKeyer
     InBufSize = 4096
     EnableDTROnOpen = False
     InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
     Left = 99
     Top = 200
   end
@@ -107,6 +109,7 @@ object dmZLogKeyer: TdmZLogKeyer
     InBufSize = 4096
     EnableDTROnOpen = False
     InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
     Left = 135
     Top = 200
   end
@@ -118,6 +121,7 @@ object dmZLogKeyer: TdmZLogKeyer
     InBufSize = 4096
     EnableDTROnOpen = False
     InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
     Left = 171
     Top = 200
   end
@@ -129,6 +133,7 @@ object dmZLogKeyer: TdmZLogKeyer
     InBufSize = 4096
     EnableDTROnOpen = False
     InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
     Left = 207
     Top = 200
   end
@@ -136,7 +141,7 @@ object dmZLogKeyer: TdmZLogKeyer
     Tag = 1
     Port = pnCustom
     PortName = '\\.\COM2'
-    BaudRate = br38400
+    BaudRate = brCustom
     BaudRateValue = 38400
     HwFlow = hfNONE
     InBufSize = 4096
@@ -150,7 +155,7 @@ object dmZLogKeyer: TdmZLogKeyer
     Tag = 2
     Port = pnCustom
     PortName = '\\.\COM2'
-    BaudRate = br38400
+    BaudRate = brCustom
     BaudRateValue = 38400
     HwFlow = hfNONE
     InBufSize = 4096
@@ -164,7 +169,7 @@ object dmZLogKeyer: TdmZLogKeyer
     Tag = 3
     Port = pnCustom
     PortName = '\\.\COM2'
-    BaudRate = br38400
+    BaudRate = brCustom
     BaudRateValue = 38400
     HwFlow = hfNONE
     InBufSize = 4096
@@ -178,7 +183,7 @@ object dmZLogKeyer: TdmZLogKeyer
     Tag = 4
     Port = pnCustom
     PortName = '\\.\COM2'
-    BaudRate = br38400
+    BaudRate = brCustom
     BaudRateValue = 38400
     HwFlow = hfNONE
     InBufSize = 4096
@@ -192,7 +197,7 @@ object dmZLogKeyer: TdmZLogKeyer
     Tag = 5
     Port = pnCustom
     PortName = '\\.\COM2'
-    BaudRate = br38400
+    BaudRate = brCustom
     BaudRateValue = 38400
     HwFlow = hfNONE
     InBufSize = 4096
