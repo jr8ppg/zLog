@@ -4416,31 +4416,32 @@ begin
                FKeyingPortConfig[j] := FKeyingPortConfig[i];
             end;
          end;
+      end;
 
-         // CW/FSK/RTTYが同じ場合
-         if (FKeyingPort[i] = FFskPort[i]) and
-            (FKeyingPort[i] = FTtyRxPort[i]) then begin
-            FFskKeying[i] := FComKeying[i];
-            FFskPortConfig[i] := FKeyingPortConfig[i];
+      // CW/FSK/RTTYが同じ場合
+      if (FKeyingPort[i] <> tkpNone) and (FFskPort[i] <> tkpNone) and (FTtyRxPort[i] <> tkpNone) and
+         (FKeyingPort[i] = FFskPort[i]) and
+         (FKeyingPort[i] = FTtyRxPort[i]) then begin
+         FFskKeying[i] := FComKeying[i];
+         FFskPortConfig[i] := FKeyingPortConfig[i];
 
-            SetTtyRxCom(i, FComKeying[i]);
-         end
+         SetTtyRxCom(i, FComKeying[i]);
+      end
 
-         // FSKとRTTY受信が同じ場合
-         else if (FFskPort[i] = FTtyRxPort[i]) then begin
-            SetTtyRxCom(i, FFskKeying[i]);
-         end
+      // FSKとRTTY受信が同じ場合
+      else if (FFskPort[i] <> tkpNone) and (FTtyRxPort[i] <> tkpNone) and (FFskPort[i] = FTtyRxPort[i]) then begin
+         SetTtyRxCom(i, FFskKeying[i]);
+      end
 
-         // CWとRTTY受信が同じ場合
-         else if (FKeyingPort[i] = FTtyRxPort[i]) then begin
-            SetTtyRxCom(i, FComKeying[i]);
-         end
+      // CWとRTTY受信が同じ場合
+      else if (FKeyingPort[i] <> tkpNone) and (FTtyRxPort[i] <> tkpNone) and (FKeyingPort[i] = FTtyRxPort[i]) then begin
+         SetTtyRxCom(i, FComKeying[i]);
+      end
 
-         // CWとFSKが同じ場合
-         else if (FKeyingPort[i] = FFskPort[i]) then begin
-            FFskKeying[i] := FComKeying[i];
-            FFskPortConfig[i] := FKeyingPortConfig[i];
-         end;
+      // CWとFSKが同じ場合
+      else if (FFskPort[i] <> tkpNone) and (FKeyingPort[i] <> tkpNone) and (FKeyingPort[i] = FFskPort[i]) then begin
+         FFskKeying[i] := FComKeying[i];
+         FFskPortConfig[i] := FKeyingPortConfig[i];
       end;
    end;
 
