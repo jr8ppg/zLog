@@ -1538,6 +1538,7 @@ begin
          if FFskPortConfig[nID].FDtr = paPtt then begin
             FFskKeying[nID].ToggleDTR(PTTON);
          end;
+         FSK_MARK(nID);
          Exit;
       end;
    finally
