@@ -4423,7 +4423,6 @@ begin
          (FKeyingPort[i] = FFskPort[i]) and
          (FKeyingPort[i] = FTtyRxPort[i]) then begin
          FFskKeying[i] := FComKeying[i];
-         FFskPortConfig[i] := FKeyingPortConfig[i];
 
          SetTtyRxCom(i, FComKeying[i]);
       end
@@ -4441,7 +4440,6 @@ begin
       // CWとFSKが同じ場合
       else if (FFskPort[i] <> tkpNone) and (FKeyingPort[i] <> tkpNone) and (FKeyingPort[i] = FFskPort[i]) then begin
          FFskKeying[i] := FComKeying[i];
-         FFskPortConfig[i] := FKeyingPortConfig[i];
       end;
    end;
 
