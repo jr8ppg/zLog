@@ -10844,6 +10844,7 @@ procedure TMainForm.PlayMessageRTTY(no: Integer; Q: TQSO);
 var
    S: string;
    C: string;
+   Index: Integer;
 begin
    S := dmZLogGlobal.CWMessage(3, no);
 
@@ -10857,6 +10858,13 @@ begin
 
    S := SetStrNoAbbrev(S, Q);
    C := '';
+
+   // 最初に見つかった"."の後ろはカットして"?"に変更する
+   Index := Pos('.', S);
+   if Index > 0 then begin
+      S := Copy(S, 1, Index);
+      S := StringReplace(S, '.', '?', [rfReplaceAll]);
+   end;
 
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
       // CWモニターに送信電文をセット
