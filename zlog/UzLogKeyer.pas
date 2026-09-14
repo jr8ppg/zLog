@@ -4619,19 +4619,22 @@ begin
          FComKeying[i].Connect;
       end;
 
-      if FKeyingPortConfig[i].FRts = paAlwaysOn then begin
-         FComKeying[i].ToggleRTS(True);
-      end
-      else begin
-         FComKeying[i].ToggleRTS(False);
-      end;
+//      if FKeyingPortConfig[i].FRts = paAlwaysOn then begin
+//         FComKeying[i].ToggleRTS(True);
+//      end
+//      else begin
+//         FComKeying[i].ToggleRTS(False);
+//      end;
+//
+//      if FKeyingPortConfig[i].FDtr = paAlwaysOn then begin
+//         FComKeying[i].ToggleDTR(True);
+//      end
+//      else begin
+//         FComKeying[i].ToggleDTR(False);
+//      end;
 
-      if FKeyingPortConfig[i].FDtr = paAlwaysOn then begin
-         FComKeying[i].ToggleDTR(True);
-      end
-      else begin
-         FComKeying[i].ToggleDTR(False);
-      end;
+      FComKeying[i].ToggleDTR(False);
+      FComKeying[i].ToggleRTS(False);
    end;
 end;
 
