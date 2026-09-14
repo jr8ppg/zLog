@@ -124,6 +124,7 @@ type
     function Sending(): Boolean;
     procedure RXChar(C: AnsiChar);
     procedure TXChar(C: AnsiChar);
+    procedure ExtractRcvdNumber(strLine: string);
     procedure PlayMessageRTTY(no: Integer);
     procedure ApplyShortcut();
     procedure ImplementOptions();
@@ -271,13 +272,13 @@ begin
       for i := 0 to L.Count - 1 do begin
          S := L.Strings[i];
 
-         // �����`�F�b�N
+         // 長さチェック
          len := Length(S);
          if (len < 3) or (len > 15) then begin
             Continue;
          end;
 
-         // �����`�F�b�N
+         // 文字チェック
          nAlph := 0;
          nNG := 0;
          nNum := 0;
@@ -309,32 +310,8 @@ begin
          end;
       end;
 
-   xxxx:
-      i := Pos('599', FTTYLineBuffer);
-      if i > 0 then begin
-         S := FTTYLineBuffer;
-         Delete(S, 1, i + 2);
-         S := TrimLeft(S);
-         // Caption := Caption + '*' + S;
-         if S <> '' then begin
-            if CharInSet(S[1], [' ', '/', '-', '|']) then
-               Delete(S, 1, 1);
-
-            for i := 1 to length(S) do
-               if CharInSet(S[i], ['-', '/']) then
-                  S[i] := ' ';
-
-            i := pos(' ', S);
-            if i > 0 then
-               S := copy(S, 1, i - 1);
-            if length(S) > 0 then begin
-               if MainForm.RcvdNumberEdit.Text <> S then begin
-                  MainForm.RcvdNumberEdit.Text := S;
-                  MainForm.RcvdNumberEdit.SelectAll;
-               end;
-               // TTYLineBuffer := '';
-            end;
-         end;
+      if dmZLogKeyer.IsPlaying = False then begin
+         ExtractRcvdNumber(S);
       end;
    end;
 
@@ -346,6 +323,46 @@ begin
    end;
 
    L.Free();
+end;
+
+procedure TTTYConsole.ExtractRcvdNumber(strLine: string);
+var
+   i: Integer;
+   S: string;
+begin
+   i := Pos('599', strLine);
+   if i = 0 then begin
+      Exit;
+   end;
+
+   S := strLine;
+   Delete(S, 1, i + 2);
+
+   S := TrimLeft(S);
+   if S = '' then begin
+      Exit;
+   end;
+
+   if CharInSet(S[1], [' ', '/', '-', '|']) then begin
+      Delete(S, 1, 1);
+   end;
+
+   for i := 1 to Length(S) do begin
+      if CharInSet(S[i], ['-', '/']) then begin
+         S[i] := ' ';
+      end;
+   end;
+
+   i := pos(' ', S);
+   if i > 0 then begin
+      S := copy(S, 1, i - 1);
+   end;
+
+   if S = '' then begin
+      Exit;
+   end;
+
+   MainForm.SetYourNumber(S);
 end;
 
 procedure TTTYConsole.TXChar(C: AnsiChar);

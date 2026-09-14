@@ -10868,7 +10868,7 @@ begin
 
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
       // CWモニターに送信電文をセット
-      zLogSetSendText(FCurrentTx, S, C);
+      zLogSetSendText(FCurrentTx, S, '');
       dmZLogKeyer.SendStr(FCurrentTx, S)
    end
    else begin
