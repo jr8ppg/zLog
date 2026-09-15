@@ -3613,7 +3613,7 @@ object formOptions: TformOptions
             Top = 45
             Width = 64
             Height = 22
-            Caption = 'Config'
+            Caption = #35373#23450
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
           end
@@ -3787,7 +3787,7 @@ object formOptions: TformOptions
             Top = 45
             Width = 64
             Height = 22
-            Caption = 'Config'
+            Caption = #35373#23450
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
           end
@@ -3961,7 +3961,7 @@ object formOptions: TformOptions
             Top = 45
             Width = 64
             Height = 22
-            Caption = 'Config'
+            Caption = #35373#23450
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
           end
@@ -4135,7 +4135,7 @@ object formOptions: TformOptions
             Top = 45
             Width = 64
             Height = 22
-            Caption = 'Config'
+            Caption = #35373#23450
             TabOrder = 1
             OnClick = buttonFskPortConfigClick
           end
