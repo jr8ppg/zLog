@@ -159,6 +159,7 @@ type
   private
     { Private 宣言 }
     FDefautCom: array[0..MAXPORT] of TCommPortDriver;
+    FDefautFsk: array[0..MAXPORT] of TCommPortDriver;
     FComKeying: array[0..MAXPORT] of TCommPortDriver;
     FFskKeying: array[0..MAXPORT] of TCommPortDriver;
     FTtyRxCom: array[0..MAXPORT] of TCommPortDriver;
@@ -322,8 +323,6 @@ type
     FLTRS: Boolean;
     FFIGS: Boolean;
 
-    procedure ResetComm();
-
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
     procedure SetTxRigFlag_com_v28(rigset: Integer);
@@ -409,6 +408,7 @@ type
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
     procedure CloseBGK; {Closes BGK}
+    procedure ResetComm();
 
     function PTTIsOn : Boolean;
     function IsPlaying : Boolean;
@@ -503,8 +503,10 @@ type
     procedure usbif4cwSetPort(port: Integer; value: Boolean);
 
     // 1Port Control support
-    procedure SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
-    procedure ResetCommPortDriver(Index: Integer; port: TKeyingPort);
+    procedure SetCwkPortDriver(Index: Integer; CP: TCommPortDriver);
+    procedure SetFskPortDriver(Index: Integer; CP: TCommPortDriver);
+    procedure ResetCwkPortDriver(Index: Integer; port: TKeyingPort);
+    procedure ResetFskPortDriver(Index: Integer; port: TKeyingPort);
 
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
@@ -4233,11 +4235,16 @@ begin
    FComKeying[2] := FDefautCom[2];
    FComKeying[3] := FDefautCom[3];
    FComKeying[4] := FDefautCom[4];
-   FFskKeying[0] := ZFskKeying1;
-   FFskKeying[1] := ZFskKeying2;
-   FFskKeying[2] := ZFskKeying3;
-   FFskKeying[3] := ZFskKeying4;
-   FFskKeying[4] := ZFskKeying5;
+   FDefautFsk[0] := ZFskKeying1;
+   FDefautFsk[1] := ZFskKeying2;
+   FDefautFsk[2] := ZFskKeying3;
+   FDefautFsk[3] := ZFskKeying4;
+   FDefautFsk[4] := ZFskKeying5;
+   FFskKeying[0] := FDefautFsk[0];
+   FFskKeying[1] := FDefautFsk[1];
+   FFskKeying[2] := FDefautFsk[2];
+   FFskKeying[3] := FDefautFsk[3];
+   FFskKeying[4] := FDefautFsk[4];
    FTtyRxCom[0]  := ZComTtyRx1;
    FTtyRxCom[1]  := ZComTtyRx2;
    FTtyRxCom[2]  := ZComTtyRx3;
@@ -4310,8 +4317,6 @@ var
       FTtyRxCom[i].EnableDTROnOpen := False;
    end;
 begin
-   ResetComm();
-
    if FUsePaddleKeyer = True then begin
       HidController.OnDeviceData := nil;
    end
@@ -4331,12 +4336,17 @@ begin
    fUseParallel := False;
    UsbInfoClearAll();
 
-   // RIG1/RIG2/RIG3全て無し
+   // RIG1/RIG2/RIG3/RIG4全てCW/FSK共に無し
    if (FKeyingPort[0] = tkpNone) and
       (FKeyingPort[1] = tkpNone) and
       (FKeyingPort[2] = tkpNone) and
       (FKeyingPort[3] = tkpNone) and
-      (FKeyingPort[4] = tkpNone) then begin
+      (FKeyingPort[4] = tkpNone) and
+      (FFskPort[0] = tkpNone) and
+      (FFskPort[1] = tkpNone) and
+      (FFskPort[2] = tkpNone) and
+      (FFskPort[3] = tkpNone) and
+      (FFskPort[4] = tkpNone) then begin
       COM_OFF();
       USB_OFF();
       FSK_OFF();
@@ -5184,7 +5194,7 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
+procedure TdmZLogKeyer.SetCwkPortDriver(Index: Integer; CP: TCommPortDriver);
 begin
    if FComKeying[Index] = CP then begin
       Exit;
@@ -5202,17 +5212,41 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.ResetCommPortDriver(Index: Integer; port: TKeyingPort);
+procedure TdmZLogKeyer.SetFskPortDriver(Index: Integer; CP: TCommPortDriver);
+begin
+   if FFskKeying[Index] = CP then begin
+      Exit;
+   end;
+
+   COM_OFF();
+   FFskKeying[Index] := CP;
+
+   if Assigned(CP) then begin
+      FFskPort[Index] := TKeyingPort(CP.Port);
+   end
+   else begin
+      FFskPort[Index] := tkpNone;
+   end;
+end;
+
+procedure TdmZLogKeyer.ResetCwkPortDriver(Index: Integer; port: TKeyingPort);
 begin
    if FComKeying[Index] = FDefautCom[Index] then begin
       Exit;
    end;
 
-//   COM_OFF();
    FComKeying[Index] := FDefautCom[Index];
-//   COM_ON(FKeyingPort);
-
    KeyingPort[Index] := port;
+end;
+
+procedure TdmZLogKeyer.ResetFskPortDriver(Index: Integer; port: TKeyingPort);
+begin
+   if FFskKeying[Index] = FDefautFsk[Index] then begin
+      Exit;
+   end;
+
+   FFskKeying[Index] := FDefautFsk[Index];
+   FFskPort[Index] := port;
 end;
 
 procedure TdmZLogKeyer.WinKeyerOpen(nPort: TKeyingPort);

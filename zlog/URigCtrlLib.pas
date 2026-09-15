@@ -381,9 +381,15 @@ end;
 procedure TRig.Initialize();
 begin
    FPollingTimer.Interval := FPollingInterval;
+   FComm.EnableDTROnOpen := False;
    FComm.Connect();
 
    case FPortConfig.FRts of
+      paNone, paPtt, paKey: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(False);
+      end;
+
       paAlwaysOn: begin
          FComm.HwFlow := hfNone;
          FComm.ToggleRTS(True);
@@ -406,13 +412,22 @@ begin
    end;
 
    case FPortConfig.FDtr of
+      paNone, paPtt, paKey: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(False);
+      end;
+
       paAlwaysOn: begin
          FComm.ToggleDTR(True);
       end;
 
-      paNone, paAlwaysOff: begin
+      paAlwaysOff: begin
          FComm.ToggleDTR(False);
       end;
+
+      paHandshake: begin
+         FComm.ToggleDTR(True);
+      end
 
       else begin
          FComm.ToggleDTR(True);
