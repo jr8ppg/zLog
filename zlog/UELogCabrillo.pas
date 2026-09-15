@@ -184,7 +184,8 @@ begin
       end;
 
       // CabrilloèoóÕ
-      Log.SaveToFileAsCabrillo(fname, nTimeZoneOffset, slSummaryInfo);
+      Log.SaveToFileAsCabrillo(fname, nTimeZoneOffset, slSummaryInfo,
+         SameText(comboContest.Text, 'CQ-WW-RTTY'));
    finally
       slSummaryInfo.Free();
    end;

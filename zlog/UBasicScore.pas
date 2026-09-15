@@ -28,6 +28,7 @@ type
     procedure GridDrawCell(Sender: TObject; ACol, ARow: LongInt; Rect: TRect; State: TGridDrawState);
   protected
     FUseMulti2: Boolean;
+    FUseMulti3: Boolean;
     FExtraInfo: Integer;
     FContestMode: TContestMode;
     FValidQso: Boolean;
@@ -46,6 +47,7 @@ type
     Points : array[b19..HiBand] of LongInt;
     Multi : array[b19..HiBand] of LongInt;
     Multi2 : array[b19..HiBand] of LongInt;
+    Multi3 : array[b19..HiBand] of LongInt;
     ShowCWRatio : boolean;
     constructor Create(AOwner: TComponent); overload;
     constructor Create(AOwner: TComponent; LowBand: TBand; HighBand: TBand; M: TContestMode); overload; virtual; abstract;
@@ -64,6 +66,7 @@ type
     property Score: Integer read GetScore;
     property ContestMode: TContestMode read FContestMode write FContestMode;
     property UseMulti2: Boolean read FUseMulti2 write FUseMulti2;
+    property UseMulti3: Boolean read FUseMulti3 write FUseMulti3;
   published
     property FontSize;
     property OnChangeFontSize;
@@ -83,6 +86,7 @@ constructor TBasicScore.Create(AOwner: TComponent);
 begin
    Inherited Create(AOwner);
    FUseMulti2 := False;
+   FUseMulti3 := False;
    FContestMode := cmMix;
    ShowCWRatio := False;
    Reset;
@@ -202,6 +206,11 @@ begin
       Inc(Multi2[B], SL.Count);
    end;
 
+   if aQSO.NewMulti3 then begin
+      SL.CommaText := aQSO.Multi3;
+      Inc(Multi3[B], SL.Count);
+   end;
+
    SL.Free();
 end;
 
@@ -226,6 +235,7 @@ begin
       Points[band] := 0;
       Multi[band] := 0;
       Multi2[band] := 0;
+      Multi3[band] := 0;
    end;
 end;
 
@@ -382,15 +392,17 @@ end;
 function TBasicScore.GetScore(): Integer;
 var
    B: TBand;
-   pts, m1, m2: Integer;
+   pts, m1, m2, m3: Integer;
 begin
    pts := 0;
    m1 := 0;
    m2 := 0;
+   m3 := 0;
    for B := b19 to HiBand do begin
       pts := pts + Points[B];
       m1 := m1 + Multi[B];
       m2 := m2 + Multi2[B];
+      m3 := m3 + Multi3[B];
    end;
 
    Result := pts * (m1 + m2);

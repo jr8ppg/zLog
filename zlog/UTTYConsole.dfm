@@ -106,7 +106,6 @@ object TTYConsole: TTTYConsole
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 1
         object Label2: TLabel
           Left = 4
           Top = 5

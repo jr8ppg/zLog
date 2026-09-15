@@ -4650,6 +4650,8 @@ begin
       if dmZLogGlobal.Settings._allowdupe = True then begin
          CallSpacebarProc(C, RN, B);
          RN.SetFocus();
+         RN.SelStart := Length(RN.Text);
+         RN.SelLength := 1;
       end
       else begin
          C.SelectAll;
@@ -4660,6 +4662,8 @@ begin
    else begin { if not dupe }
       CallSpacebarProc(C, RN, B);
       RN.SetFocus();
+      RN.SelStart := Length(RN.Text);
+      RN.SelLength := 1;
       WriteStatusLine('', False);
    end;
 end;
@@ -5174,6 +5178,8 @@ begin
 
          CallSpaceBarProc(C, RN, B);
          RN.SetFocus();
+         RN.SelStart := Length(RN.Text);
+         RN.SelLength := 1;
 
          FCQRepeatPlaying := False;
 

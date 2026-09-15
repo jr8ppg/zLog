@@ -26,9 +26,12 @@ type
     procedure CheckMulti(aQSO : TQSO); override;
     procedure Reset; override;
     function ValidMulti(aQSO : TQSO) : boolean; override;
+    function ValidState(const StateCode: string): Boolean;
+    procedure AddMulti3NoUpdate(aQSO: TQSO; const StateCode: string);
   end;
 
-function GetState(aQSO : TQSO; SL : TStateList) : TState;
+function GetState(aQSO : TQSO; SL : TStateList) : TState; overload;
+function GetState(const StateCode: string; SL: TStateList): TState; overload;
 
 implementation
 
@@ -37,13 +40,18 @@ uses Main;
 {$R *.DFM}
 
 function GetState(aQSO: TQSO; SL: TStateList): TState;
+begin
+   Result := GetState(aQSO.NrRcvd, SL);
+end;
+
+function GetState(const StateCode: string; SL: TStateList): TState;
 var
    i: integer;
    str: string;
    S: TState;
 begin
    Result := nil;
-   str := aQSO.NrRcvd;
+   str := UpperCase(Trim(StateCode));
 
    for i := 0 to SL.List.Count - 1 do begin
       S := TState(SL.List[i]);
@@ -51,6 +59,35 @@ begin
          Result := S;
          exit;
       end;
+   end;
+end;
+
+function TARRLDXMulti.ValidState(const StateCode: string): Boolean;
+begin
+   Result := GetState(StateCode, StateList) <> nil;
+end;
+
+procedure TARRLDXMulti.AddMulti3NoUpdate(aQSO: TQSO; const StateCode: string);
+var
+   S: TState;
+begin
+   aQSO.Multi3 := '';
+   aQSO.NewMulti3 := False;
+
+   if aQSO.Dupe or
+      not (aQSO.Mode in ContestModeSet[FContestMode]) or
+      (StateCode = '') then begin
+      Exit;
+   end;
+
+   S := GetState(StateCode, StateList);
+   if S <> nil then begin
+      aQSO.Multi3 := S.StateAbbrev;
+      if not S.Worked[aQSO.Band] then begin
+         S.Worked[aQSO.Band] := True;
+         aQSO.NewMulti3 := True;
+      end;
+      LatestMultiAddition := S.Index;
    end;
 end;
 

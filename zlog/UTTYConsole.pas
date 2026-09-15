@@ -300,13 +300,15 @@ begin
             Continue;
          end;
 
-         Index := CallsignList.Items.IndexOf(S);
-         if Index = -1 then begin
-            CallsignList.Items.Insert(0, S);
-         end
-         else begin
-            CallsignList.Items.Delete(Index);
-            CallsignList.Items.Insert(0, S);
+         if dmZLogKeyer.IsPlaying = False then begin
+            Index := CallsignList.Items.IndexOf(S);
+            if Index = -1 then begin
+               CallsignList.Items.Insert(0, S);
+            end
+            else begin
+               CallsignList.Items.Delete(Index);
+               CallsignList.Items.Insert(0, S);
+            end;
          end;
       end;
 

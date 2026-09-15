@@ -93,7 +93,9 @@ type
     RbnVerified: Boolean;  { 1 byte false:not verified true:verified }
     Continent: string[2];  { 3 bytes }
     Entity: string[10];    { 11 bytes }
-    Reserve4: string[86];  { 87 bytes }
+    Multi3: string[30];    { 31 bytes }
+    NewMulti3: Boolean;    { 1 byte }
+    Reserve4: string[54];  { 55 bytes }
     // 384bytes
   end;
 
@@ -161,6 +163,8 @@ type
     FRbnVerified: Boolean;
     FContinent: string;
     FEntity: string;
+    FMulti3: string;
+    FNewMulti3: Boolean;
 
     FTimeUtc: string;   // $D
 
@@ -266,6 +270,8 @@ type
     property RbnVerified: Boolean read FRbnVerified write FRbnVerified;
     property Continent: string read FContinent write FContinent;
     property Entity: string read FEntity write FEntity;
+    property Multi3: string read FMulti3 write FMulti3;
+    property NewMulti3: Boolean read FNewMulti3 write FNewMulti3;
 
     property SerialStr: string read GetSerialStr;
     property DateTimeStr: string read GetDateTimeStr;
@@ -488,7 +494,8 @@ type
     {$IFNDEF ZSERVER}
     procedure SaveToFileAszLogALL(Filename : string);
     procedure SaveToFileAsTxtByTX(Filename : string);
-    procedure SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList = nil);
+    procedure SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer;
+      slSummaryInfo: TStringList = nil; fCQWWRTTY: Boolean = False);
     procedure SaveToFileAsHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
     procedure SaveToFileAsHamSupport(Filename: string);
     procedure SaveToFileAsAdif(Filename: string);
@@ -632,6 +639,8 @@ begin
    FRbnVerified := False;
    FContinent := '';
    FEntity := '';
+   FMulti3 := '';
+   FNewMulti3 := False;
    FTimeUtc := '';
    FCheckResult := crOk;
 end;
@@ -1083,6 +1092,7 @@ begin
    if v = True then begin
       FMulti1 := '';
       FMulti2 := '';
+      FMulti3 := '';
    end;
 end;
 
@@ -1583,6 +1593,8 @@ begin
    FRbnVerified := src.RbnVerified;
    FContinent := src.Continent;
    FEntity := src.Entity;
+   FMulti3 := src.FMulti3;
+   FNewMulti3 := src.FNewMulti3;
    FCheckResult := src.FCheckResult;
 end;
 
@@ -1717,6 +1729,8 @@ begin
    Result.RbnVerified := FRbnVerified;
    Result.Continent  := ShortString(Copy(FContinent, 1, 2));
    Result.Entity     := ShortString(Copy(FEntity, 1, 10));
+   Result.Multi3     := ShortString(FMulti3);
+   Result.NewMulti3  := FNewMulti3;
 end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
@@ -1763,6 +1777,8 @@ begin
    FRbnVerified := src.RbnVerified;
    FContinent  := string(src.Continent);
    FEntity     := string(src.Entity);
+   FMulti3     := string(src.Multi3);
+   FNewMulti3  := src.NewMulti3;
 end;
 
 procedure TQSO.ToUTC();
@@ -2969,7 +2985,8 @@ end;
 //QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
 
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList);
+procedure TLog.SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer;
+  slSummaryInfo: TStringList; fCQWWRTTY: Boolean);
 var
    F: TextFile;
    i: Integer;
@@ -2991,6 +3008,7 @@ var
    SL: TStringList;
    qtcseqnum: Integer;
    b: TBand;
+   strState: string;
 
    function FillRight(S: string; len: integer): string;
    var
@@ -3045,6 +3063,9 @@ var
       Result := bUnknown;
    end;
 begin
+   fCQWWRTTY := fCQWWRTTY or
+      ((MyContest.ClassType = TCQWWContest) and (MyContest.Mode = cmRtty));
+
    AssignFile(F, Filename);
    ReWrite(F);
 
@@ -3098,7 +3119,6 @@ begin
    SL.Delimiter := ' ';
    clist := TCabrilloRecordList.Create();
    qtcseqnum := 1;
-
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
 
@@ -3128,7 +3148,11 @@ begin
 
       strText := strText + FillRight(dmZLogGlobal.MyCall, 13) + ' ';
       strText := strText + FillLeft(IntToStr(Q.RSTSent), 3) + ' ';
-      if MyContest is TIotaContest then begin
+      if fCQWWRTTY then begin
+         strText := strText + FillRight(Q.NrSent, 2) + ' ';
+         strText := strText + FillRight('DX', 4) + ' ';
+      end
+      else if MyContest is TIotaContest then begin
          strText := strText + FillRight(SplitIotaNr(Q.NrSent), 6) + ' ';
       end
       else begin
@@ -3138,7 +3162,17 @@ begin
       strText := strText + FillRight(Q.Callsign, 13) + ' ';
       strText := strText + FillLeft(IntToStr(Q.RSTRcvd), 3) + ' ';
 
-      if MyContest is TIotaContest then begin
+      if fCQWWRTTY then begin
+         if Q.Multi3 = '' then begin
+            strState := 'DX';
+         end
+         else begin
+            strState := Q.Multi3;
+         end;
+         strText := strText + FillRight(Q.Multi1, 2) + ' ';
+         strText := strText + FillRight(strState, 4) + ' ';
+      end
+      else if MyContest is TIotaContest then begin
          strText := strText + FillRight(SplitIotaNr(Q.NrRcvd), 6) + ' ';
       end
       else begin
