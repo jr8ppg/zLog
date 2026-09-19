@@ -8743,11 +8743,6 @@ begin
          menuMMTTY.Tag := 1;
          menuMMTTY.Caption := TMainForm_Unload_MMTTY;
 
-         // FSKを使用しない場合はキーヤーをOFFにする
-         if dmZLogGlobal.Settings.RTTY.UseFskKeying = False then begin
-            dmZLogKeyer.CloseBGK();
-         end;
-
          InitializeMMTTY(Handle);
 
          FormShowAndRestore(FTTYConsole);
@@ -8758,12 +8753,6 @@ begin
          menuMMTTY.Caption := TMainForm_Load_MMTTY;
 
          ExitMMTTY;
-
-         // FSKを使用しない場合はキーヤーをONにする
-         if dmZLogGlobal.Settings.RTTY.UseFskKeying = False then begin
-            dmZLogKeyer.InitializeBGK(dmZLogGlobal.Settings.CW._interval);
-            dmZLogGlobal.InitializeCW();
-         end;
       end;
    finally
       ini.Free();
