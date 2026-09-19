@@ -3545,7 +3545,6 @@ begin
       dmZLogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
       dmZLogGlobal.ReadWindowState(ini, FGrayline);
       dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
-      actionShowTeletypeConsoleExecute(actionShowTeletypeConsole);
       FSentNumber.LoadSettings(ini);
 
       if ini.ReadBool('Windows', 'ConsolePad_Open', False) = True then begin
