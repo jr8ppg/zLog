@@ -1313,6 +1313,7 @@ type
     function GetMemoEdit(): TEdit;        // 11
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
+    procedure ShowOpEdit();
     procedure SwitchRig(rigset: Integer);
     procedure SwitchTxRx(tx_rig, rx_rig: Integer);
     procedure SwitchTx(rigset: Integer);
@@ -2970,6 +2971,7 @@ begin
    SetEditFields1R();
    SetEditFields2RH();
    SetEditFields2RV();
+   ShowOpEdit();
 end;
 
 procedure TMainForm.SetEditFields1R();
@@ -9351,14 +9353,11 @@ begin
       mPXListWPX.Visible := False;
       menuPostContest.Checked := FPostContest;
 
-      // SO2RはSingleOpのみが設定可能
-      if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
-         if Is2Radio() = True then begin
-            dmZLogGlobal.Settings._operate_style := os1Radio;
-            InitQsoEditPanel();
-            UpdateQsoEditPanel(1);
-            LastFocus := CallsignEdit;
-         end;
+      // SO2RはSingleOpのみが設定可能→Multi-OPでも設定可能とする
+      if Is2Radio() = True then begin
+         InitQsoEditPanel();
+         UpdateQsoEditPanel(1);
+         LastFocus := CallsignEdit;
       end;
 
       if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
@@ -14257,6 +14256,16 @@ begin
 //            UpdateMode(RigControl.Rigs[rig].CurrentMode);
 //         end;
 //      end;
+   end;
+end;
+
+procedure TMainForm.ShowOpEdit();
+begin
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      FEditPanel[0].OpEdit.Visible := False;
+   end
+   else begin
+      FEditPanel[0].OpEdit.Visible := True;
    end;
 end;
 
