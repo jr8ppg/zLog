@@ -1438,9 +1438,9 @@ type
 
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
-    procedure SetYourCallsign(strCallsign, strNumber: string);
+    procedure SetYourCallsign(strCallsign, strNumber: string; fAbort: Boolean = False);
     procedure SetYourNumber(strNumber: string);
-    procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
+    procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string; fAbort: Boolean = False);
     procedure SetFreqAndCall(freq: TFrequency; strCallsign, strNumber: string);
     procedure Restore2bsiqMode();
     procedure BSRefresh();
@@ -13318,9 +13318,9 @@ end;
 
 // 相手コールサインの設定
 // バンドスコープから呼ばれる
-procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
+procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string; fAbort: Boolean);
 begin
-   SetYourCallsignEx(CurrentRx + 1, strCallsign, strNumber);
+   SetYourCallsignEx(CurrentRx + 1, strCallsign, strNumber, fAbort);
 end;
 
 procedure TMainForm.SetYourNumber(strNumber: string);
@@ -13344,7 +13344,7 @@ begin
    end;
 end;
 
-procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
+procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string; fAbort: Boolean);
 var
    nID: Integer;
    C, S, N, B, M, OP, P: TEdit;
@@ -13352,6 +13352,13 @@ begin
    nID := no - 1;
 
    AssignControls(nID, C, S, N, B, M, OP, P);
+
+   if fAbort = True then begin
+      if (FCtrlZCQLoop = True) then begin
+         CancelCqRepeat();
+         StopMessage(FCQRepeatStartMode);
+      end;
+   end;
 
    CurrentQSO.CallSign := strCallsign;
 
@@ -14955,28 +14962,14 @@ begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
          CancelCqRepeat();
-         if FCQRepeatStartMode = mCW then begin
-            dmZLogKeyer.ClrBuffer;
-            FCWMonitor.ClearSendingText();
-         end
-         else begin
-            FMessageManager.StopVoice();
-            VoiceControl(False, FMessageManager.CurrentVoice);
-         end;
+         StopMessage(FCQRepeatStartMode);
       end;
    end
    else begin
       if Is2bsiq() = False then begin
          if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) and (FCurrentTx = FCurrentRx) then begin
             CancelCqRepeat();
-            if FCQRepeatStartMode = mCW then begin
-               dmZLogKeyer.ClrBuffer;
-               FCWMonitor.ClearSendingText();
-            end
-            else begin
-               FMessageManager.StopVoice();
-               VoiceControl(False, FMessageManager.CurrentVoice);
-            end;
+            StopMessage(FCQRepeatStartMode);
          end;
       end
       else begin

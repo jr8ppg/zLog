@@ -541,19 +541,22 @@ begin
 end;
 
 procedure TTTYConsole.CallsignListClick(Sender: TObject);
+var
+   S: string;
 begin
    if CallsignList.ItemIndex >= 0 then begin
-      MainForm.CallsignEdit.Text := CallsignList.Items[CallsignList.ItemIndex];
-      MainForm.CallsignEdit.SelectAll;
+      S := CallsignList.Items[CallsignList.ItemIndex];
+      MainForm.SetYourCallsign(S, '', True);
    end;
 end;
 
 procedure TTTYConsole.CallsignListDblClick(Sender: TObject);
+var
+   S: string;
 begin
    if CallsignList.ItemIndex >= 0 then begin
-      MainForm.CallsignEdit.Text := CallsignList.Items[CallsignList.ItemIndex];
-      MainForm.CallsignEdit.SelectAll;
-      MainForm.SetLastFocus();
+      S := CallsignList.Items[CallsignList.ItemIndex];
+      MainForm.SetYourCallsign(S, '', True);
    end;
 end;
 
@@ -614,6 +617,8 @@ begin
 end;
 
 procedure TTTYConsole.actionRttyGrabExecute(Sender: TObject);
+var
+   S: string;
 begin
    if CallsignList.Items.Count = 0 then begin
       Exit;
@@ -621,16 +626,14 @@ begin
 
    if CallsignList.ItemIndex = -1 then begin
       CallsignList.ItemIndex := 0;
-      MainForm.CallsignEdit.Text := CallsignList.Items[CallsignList.ItemIndex];
-      MainForm.CallsignEdit.SelectAll;
-      MainForm.SetLastFocus();
+      S := CallsignList.Items[CallsignList.ItemIndex];
+      MainForm.SetYourCallsign(S, '', True);
    end
    else begin
       if CallsignList.ItemIndex < (CallsignList.Items.Count - 1) then begin
          CallsignList.ItemIndex := CallsignList.ItemIndex + 1;
-         MainForm.CallsignEdit.Text := CallsignList.Items[CallsignList.ItemIndex];
-         MainForm.CallsignEdit.SelectAll;
-         MainForm.SetLastFocus();
+         S := CallsignList.Items[CallsignList.ItemIndex];
+         MainForm.SetYourCallsign(S, '', True);
       end
       else begin
          CallsignList.ItemIndex := -1;
