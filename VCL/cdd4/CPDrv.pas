@@ -1098,14 +1098,13 @@ procedure TCommPortDriver.ToggleTxD( onOff: boolean );
 begin
   if Connected then begin
     if onOff = True then begin
-      ClearCommBreak(FHandle);
+      SetCommBreak(FHandle);
     end
     else begin
-      SetCommBreak(FHandle);
+      ClearCommBreak(FHandle);
     end;
   end;
 end;
-
 
 // COM port polling proc 
 procedure TCommPortDriver.TimerWndProc( var msg: TMessage );
