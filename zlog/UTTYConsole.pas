@@ -949,35 +949,23 @@ begin
          // Stop transmission only when ToggleTXRX() is explicitly called.
          FTTYSendPos := 0;
          FTTYSendBuffer := '';
-         // Cancel the current one-character FSK send as well as PTT.
-         // This prevents the previous LTRS/character tail from being
-         // processed after the next TX start.
-         dmZLogKeyer.FskCancelSend(nID);
+
+         // PTT OFF
+         dmZLogKeyer.SendChar(nID, DC4);
          RXLog.WriteString(CR + LF);
       end
       else begin
          FNeedFinishEvent := False;
-         dmZLogKeyer.FskControlPTT(nID, True);
 
-         dmZLogKeyer.SendChar(nID, LTRS2);
-         dmZLogKeyer.SendChar(nID, LTRS2);
-         dmZLogKeyer.SendChar(nID, LTRS2);
+         // PTT ON
+         dmZLogKeyer.SendChar(nID, DC3);
 
          // The first transmit position is 1.
          FTTYSendPos := 1;
 
          FAutoPttOff := checkAutoPttOff.Checked;
 
-         if FTTYSendBuffer <> '' then begin
-            CH := AnsiChar(FTTYSendBuffer[FTTYSendPos]);
-            dmZLogKeyer.SendChar(nID, CH);
-            Inc(FTTYSendPos);
-            RXLog.WriteChar(CH);
-         end
-         else begin
-            // Nothing to send: keep the transmitter active by sending LTRS.
-            dmZLogKeyer.SendChar(nID, LTRS2);
-         end;
+         FTTYSendBuffer := LTRS2 + LTRS2 + LTRS2 + FTTYSendBuffer;
       end;
    end
    else begin
@@ -1051,6 +1039,13 @@ begin
    OutputDebugString(PChar('-----TTYConsole.OneCharSentProc()-----'));
    {$ENDIF}
 
+   nID := MainForm.CurrentTX;
+
+   if dmZLogKeyer.PTTIsOn = False then begin
+      dmZLogKeyer.FskCancelSend(nID);
+      Exit;
+   end;
+
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = False then begin
       Exit;
    end;
@@ -1059,8 +1054,6 @@ begin
    if FTTYSendPos = 0 then begin
       Exit;
    end;
-
-   nID := MainForm.CurrentTX;
 
    if FTTYSendPos <= Length(FTTYSendBuffer) then begin
       // Send the next queued character.

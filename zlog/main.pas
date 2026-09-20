@@ -14663,6 +14663,7 @@ begin
    else if (mode = mRTTY) then begin
       if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
          dmZLogKeyer.FskCancelSend(CurrentTx);
+         dmZLogKeyer.FskResetPTT();
       end
       else begin
          if FTTYConsole <> nil then begin

@@ -1548,7 +1548,7 @@ begin
          end;
          FSK_MARK(nID);
          if FUseAFSKTone then begin
-            RttyAudio(1, True);
+            RttyAudio(1, PTTON);
          end;
          Exit;
       end;
@@ -1580,6 +1580,12 @@ begin
             if FFskPortConfig[nID].FDtr = paPtt then begin
                FFskKeying[nID].ToggleDTR(False);
             end;
+
+            // RTTY idle state is MARK.
+            FSK_MARK(nID);
+            if FUseAFSKTone then begin
+               RttyAudio(1, False);
+            end;
          end;
       end;
    finally
@@ -1608,12 +1614,6 @@ begin
       mousetail := 1;
       paddle_waiting := True;
 
-      // RTTY idle state is MARK.
-      FSK_MARK(nID);
-      if FUseAFSKTone then begin
-         RttyAudio(1, False);
-      end;
-
       FUserFlag := False;
 
       FSendOK := True;
@@ -1622,8 +1622,6 @@ begin
       // character will insert LTRS/FIGS as required.
       FLTRS := False;
       FFIGS := False;
-
-      FskControlPTT(nID, False, False);
    finally
       CWBufferSync.Leave();
    end;
@@ -3224,7 +3222,7 @@ begin
    FCodeTable[Ord('^')][2] := 9;
 
    FCodeTable[Ord('(')][1] := $10;  { PTT on }
-   FCodeTable[Ord('(')][2] := $A3;  { set Hold Counter }
+   FCodeTable[Ord('(')][2] := $55;  { set Hold Counter }
    FCodeTable[Ord('(')][3] := 9;
 
    FCodeTable[Ord(')')][1] := $A1;  { set PTT delay }
@@ -3859,15 +3857,13 @@ begin
    FBaudotTable[Ord(DC1)][1] := $73;   // PTT ON
    FBaudotTable[Ord(DC1)][2] := $77;   // MARK
    FBaudotTable[Ord(DC1)][3] := $75;   // set PTT delay
-   FBaudotTable[Ord(DC1)][4] := $A3;   // set Hold Counter
-   FBaudotTable[Ord(DC1)][5] := 8;     // next char
+   FBaudotTable[Ord(DC1)][4] := 8;     // next char
 
    // DC2(PTT OFF)
    FBaudotTable[Ord(DC2)][1] := $77;   // MARK
    FBaudotTable[Ord(DC2)][2] := $76;   // set PTT delay
-   FBaudotTable[Ord(DC2)][3] := $A3;   // set Hold Counter
-   FBaudotTable[Ord(DC2)][4] := $74;   // PTT OFF
-   FBaudotTable[Ord(DC2)][5] := 8;     // next char
+   FBaudotTable[Ord(DC2)][3] := $74;   // PTT OFF
+   FBaudotTable[Ord(DC2)][4] := 8;     // next char
 
    // DC3(PTT ON)
    FBaudotTable[Ord(DC3)][1] := $73;   // PTT ON

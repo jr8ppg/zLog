@@ -3294,18 +3294,18 @@ object formOptions: TformOptions
           Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object Label63: TLabel
-          Left = 307
+          Left = 282
           Top = 67
           Width = 61
           Height = 13
-          Caption = 'After TX (ms)'
+          Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
         end
         object Label64: TLabel
-          Left = 151
+          Left = 125
           Top = 67
           Width = 70
           Height = 13
-          Caption = 'Before TX (ms)'
+          Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
         object checkEnablePttCw: TCheckBox
           Left = 8
@@ -3362,7 +3362,7 @@ object formOptions: TformOptions
           Top = 66
           Width = 130
           Height = 17
-          Caption = 'Enable PTT (RTTY)'
+          Caption = 'RTTY'#12391'PTT'#20351#12358
           Checked = True
           Enabled = False
           State = cbChecked
