@@ -29,8 +29,10 @@ const
   LF = #$0a;
 
 const
-  STX = #$02;
-  ETX = #$03;
+  DC1 = #$11;
+  DC2 = #$12;
+  DC3 = #$13;
+  DC4 = #$14;
   LTRS = #$1F;
   FIGS = #$1B;
   LTRS2 = #$1E;
@@ -232,6 +234,9 @@ type
 
     FPttDelayBeforeTime: Byte;
     FPttDelayAfterTime: Byte;
+
+    FRttyPttDelayBeforeCount: Integer;
+    FRttyPttDelayAfterCount: Integer;
 
     cwstrptr: Integer;
     tailcwstrptr: Integer;
@@ -450,6 +455,7 @@ type
 
     procedure SetPTT(_on : Boolean);
     procedure SetPTTDelay(before, after : word);
+    procedure SetRttyPTTDelay(before, after: word);
     procedure SetWeight(W : word); {Sets the weight 0-100 %}
 
     property WPM: Integer read FKeyerWPM write SetWPM;
@@ -1541,6 +1547,9 @@ begin
             FFskKeying[nID].ToggleDTR(PTTON);
          end;
          FSK_MARK(nID);
+         if FUseAFSKTone then begin
+            RttyAudio(1, True);
+         end;
          Exit;
       end;
    finally
@@ -1613,11 +1622,11 @@ begin
       // character will insert LTRS/FIGS as required.
       FLTRS := False;
       FFIGS := False;
+
+      FskControlPTT(nID, False, False);
    finally
       CWBufferSync.Leave();
    end;
-
-   FskControlPTT(nID, False, False);
 end;
 
 procedure TdmZLogKeyer.SetPTT(_on: Boolean);
@@ -1661,6 +1670,21 @@ begin
 
    FPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
    FPttDelayAfterTime := after;
+end;
+
+procedure TdmZLogKeyer.SetRttyPTTDelay(before, after: word);
+begin
+   if FTimerMicroSec = 0 then begin
+      Exit;
+   end;
+
+   before := Max(before, 1);
+
+   FRttyPttDelayBeforeCount := Trunc(before * 1000 / FTimerMicroSec);
+
+   after := Max(after, 1);
+
+   FRttyPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
 end;
 
 function TdmZLogKeyer.Paused: Boolean;
@@ -1907,7 +1931,7 @@ begin
 
       // PTT ON 指令
       if fWithOutPTT = False then begin
-         SS := STX;
+         SS := DC1;
       end;
 
       SS := SS + LTRS + LTRS + LTRS;
@@ -1948,7 +1972,7 @@ begin
 
       // PTT OFF 指令
       if fWithOutPTT = False then begin
-         SS := SS + ETX;
+         SS := SS + DC2;
       end;
    end;
 
@@ -2581,6 +2605,24 @@ begin
       $74: begin
          FskControlPTT(FWkTx, False, False);
       end;
+
+      // SET PTT DELAY Before
+      $75: begin
+         FKeyingCounter := FRttyPttDelayBeforeCount;
+      end;
+
+      // SET PTT DELAY After
+      $76: begin
+         FKeyingCounter := FRttyPttDelayAfterCount;
+      end;
+
+      // MARK
+      $77: begin
+         FSK_MARK(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(1, True);
+         end;
+      end;
    end;
 
    if not OneCharBufferReplaced then begin
@@ -3182,11 +3224,11 @@ begin
    FCodeTable[Ord('^')][2] := 9;
 
    FCodeTable[Ord('(')][1] := $10;  { PTT on }
-   FCodeTable[Ord('(')][2] := $55;  { set PTT delay }
+   FCodeTable[Ord('(')][2] := $A3;  { set Hold Counter }
    FCodeTable[Ord('(')][3] := 9;
 
-   FCodeTable[Ord(')')][1] := $A1;  { set Hold Counter }
-   FCodeTable[Ord(')')][2] := $A3;  { set PTT delay }
+   FCodeTable[Ord(')')][1] := $A1;  { set PTT delay }
+   FCodeTable[Ord(')')][2] := $A3;  { set Hold Counter }
    FCodeTable[Ord(')')][3] := $1F;  { PTT off }
    FCodeTable[Ord(')')][4] := 9;
 
@@ -3813,16 +3855,33 @@ begin
    FBaudotTable[Ord(FIGS2)][7] := $72;  // STOP
    FBaudotTable[Ord(FIGS2)][8] := 9;    // next char
 
-   // STX(PTT ON)
-   FBaudotTable[Ord(STX)][1] := $73;   // PTT ON
-   FBaudotTable[Ord(STX)][2] := $55;   // set PTT delay
-   FBaudotTable[Ord(STX)][3] := 8;     // next char
+   // DC1(PTT ON)
+   FBaudotTable[Ord(DC1)][1] := $73;   // PTT ON
+   FBaudotTable[Ord(DC1)][2] := $77;   // MARK
+   FBaudotTable[Ord(DC1)][3] := $75;   // set PTT delay
+   FBaudotTable[Ord(DC1)][4] := $A3;   // set Hold Counter
+   FBaudotTable[Ord(DC1)][5] := 8;     // next char
 
-   // ETX(PTT OFF)
-   FBaudotTable[Ord(ETX)][1] := $A1;   // set Hold Counter
-   FBaudotTable[Ord(ETX)][2] := $A3;   // set PTT delay
-   FBaudotTable[Ord(ETX)][3] := $74;   // PTT OFF
-   FBaudotTable[Ord(ETX)][4] := 8;     // next char
+   // DC2(PTT OFF)
+   FBaudotTable[Ord(DC2)][1] := $77;   // MARK
+   FBaudotTable[Ord(DC2)][2] := $76;   // set PTT delay
+   FBaudotTable[Ord(DC2)][3] := $A3;   // set Hold Counter
+   FBaudotTable[Ord(DC2)][4] := $74;   // PTT OFF
+   FBaudotTable[Ord(DC2)][5] := 8;     // next char
+
+   // DC3(PTT ON)
+   FBaudotTable[Ord(DC3)][1] := $73;   // PTT ON
+   FBaudotTable[Ord(DC3)][2] := $77;   // MARK
+   FBaudotTable[Ord(DC3)][3] := $75;   // set PTT delay
+   FBaudotTable[Ord(DC3)][4] := $A3;   // set Hold Counter
+   FBaudotTable[Ord(DC3)][5] := 9;     // next char
+
+   // DC4(PTT OFF)
+   FBaudotTable[Ord(DC4)][1] := $77;   // MARK
+   FBaudotTable[Ord(DC4)][2] := $76;   // set PTT delay
+   FBaudotTable[Ord(DC4)][3] := $A3;   // set Hold Counter
+   FBaudotTable[Ord(DC4)][4] := $74;   // PTT OFF
+   FBaudotTable[Ord(DC4)][5] := 9;     // next char
 
    FBaudotTable[$90][1] := $20;
    FBaudotTable[$90][2] := 8;

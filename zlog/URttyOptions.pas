@@ -34,6 +34,9 @@ type
     editConsoleSample: TEdit;
     Label1: TLabel;
     Label2: TLabel;
+    groupCallsignExtraction: TGroupBox;
+    Label3: TLabel;
+    editFilter: TEdit;
     procedure checkCCBoldClick(Sender: TObject);
     procedure checkCCItalicClick(Sender: TObject);
     procedure buttonCCFgColorClick(Sender: TObject);
@@ -61,12 +64,15 @@ type
     procedure SetDefaultColor(v: Integer);
     function GetBackColor(): TColor;
     function GetForeColor(): TColor;
+    function GetFilter(): string;
+    procedure SetFilter(v: string);
   public
     { Public êÈåæ }
     property DefaultColor: Integer read GetDefaultColor write SetDefaultColor;
     property BackColor: TColor read GetBackColor;
     property ForeColor: TColor read GetForeColor;
     property ColorCodingList: TColorCodingList read FColorCodingList;
+    property Filter: string read GetFilter write SetFilter;
   end;
 
 implementation
@@ -365,6 +371,16 @@ end;
 function TformRttyOptions.GetForeColor(): TColor;
 begin
    Result := editConsoleSample.Font.Color;
+end;
+
+function TformRttyOptions.GetFilter(): string;
+begin
+   Result := editFilter.Text;
+end;
+
+procedure TformRttyOptions.SetFilter(v: string);
+begin
+   editFilter.Text := v;
 end;
 
 end.

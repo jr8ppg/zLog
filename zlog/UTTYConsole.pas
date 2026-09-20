@@ -5,8 +5,9 @@ interface
 uses
   WinApi.Windows, WinApi.Messages, System.SysUtils, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
-  UzLogForm, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW, System.Actions,
-  Vcl.ActnList;
+  System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList, Vcl.Buttons,
+  System.RegularExpressions,
+  UzLogForm, UMMTTY, UzLogConst, UzLogGlobal, Console2, UzLogCW;
 
 const
   WM_ZLOG_RTTY_RXCHAR = (WM_USER + 1000);
@@ -80,6 +81,19 @@ type
     RXLog: TColorConsole2;
     N3: TMenuItem;
     menuOptions: TMenuItem;
+    panelTxMessages: TPanel;
+    editMessage1: TEdit;
+    editMessage2: TEdit;
+    editMessage3: TEdit;
+    buttonSend1: TButton;
+    buttonSend2: TButton;
+    buttonSend3: TButton;
+    ImageList1: TImageList;
+    buttonCallMessage1: TSpeedButton;
+    buttonCallMessage2: TSpeedButton;
+    buttonCallMessage3: TSpeedButton;
+    popupMessageList: TPopupMenu;
+    checkAutoPttOff: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -111,6 +125,9 @@ type
     procedure menuSaveListClick(Sender: TObject);
     procedure menuOptionsClick(Sender: TObject);
     procedure RXLogSelected(Sender: TObject);
+    procedure buttonCallMessageClick(Sender: TObject);
+    procedure buttonSendClick(Sender: TObject);
+    procedure editMessageKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     FTTYSendBuffer: string;
@@ -120,7 +137,9 @@ type
     FAutoPttOff: Boolean;
     FOnSendFinishProc: TPlayMessageFinishedProc;
     FRxCharNo: Integer;
+    FMessageEdit: array[0..2] of TEdit;
     procedure OnZLogRttyRxChar( var Message: TMessage ); message WM_ZLOG_RTTY_RXCHAR;
+    procedure OnMessageClick(Sender: TObject);
     function Sending(): Boolean;
     procedure RXChar(C: AnsiChar);
     procedure TXChar(C: AnsiChar);
@@ -128,6 +147,7 @@ type
     procedure PlayMessageRTTY(no: Integer);
     procedure ApplyShortcut();
     procedure ImplementOptions();
+    procedure SendTtyMessage(n: Integer);
   public
     { Public declarations }
     procedure SendStrNow(S: String);
@@ -156,6 +176,10 @@ begin
    FTTYLineBuffer := '';
    FNeedFinishEvent := False;
    FAutoPttOff := False;
+
+   FMessageEdit[0] := editMessage1;
+   FMessageEdit[1] := editMessage2;
+   FMessageEdit[2] := editMessage3;
 end;
 
 procedure TTTYConsole.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -272,9 +296,13 @@ begin
       for i := 0 to L.Count - 1 do begin
          S := L.Strings[i];
 
+         if TRegEx.IsMatch(S, dmZLogGlobal.Settings.RTTY.CallsignFilter) = False then begin
+            Continue;
+         end;
+{
          // 長さチェック
          len := Length(S);
-         if (len < 3) or (len > 15) then begin
+         if (len < 3) or (len > 10) then begin
             Continue;
          end;
 
@@ -299,8 +327,12 @@ begin
          if (nNG > 0) or (nNum = 0) or (nAlph = 0) then begin
             Continue;
          end;
-
+}
          if dmZLogKeyer.IsPlaying = False then begin
+            if S = dmZLogGlobal.MyCall then begin
+               Continue;
+            end;
+
             Index := CallsignList.Items.IndexOf(S);
             if Index = -1 then begin
                CallsignList.Items.Insert(0, S);
@@ -528,10 +560,67 @@ begin
    TXLog.SetFocus();
 end;
 
+procedure TTTYConsole.buttonCallMessageClick(Sender: TObject);
+var
+   n: Integer;
+   m: TMenuItem;
+   i: Integer;
+   S: string;
+   pt: TPoint;
+begin
+   n := TSpeedButton(Sender).Tag;
+
+   for i := popupMessageList.Items.Count - 1 downto 0 do begin
+      m := popupMessageList.Items[i];
+      m.Free();
+   end;
+   popupMessageList.Items.Clear();
+
+   for i := 1 to 12 do begin
+      S := dmZLogGlobal.CWMessage(3, i);
+      if S = '' then begin
+         Continue;
+      end;
+
+      S := SetStrNoAbbrev(S, CurrentQSO);
+
+      m := TMenuItem.Create(Self);
+      m.OnClick := OnMessageClick;
+      m.Caption := S;
+      m.Hint := S;
+      m.Tag := n;
+      m.AutoHotkeys := maManual;
+      popupMessageList.Items.Add(m);
+   end;
+
+   pt.X := TSpeedButton(Sender).Left;
+   pt.Y := TSpeedButton(Sender).Top;
+   pt := panelTxMessages.ClientToScreen(pt);
+   popupMessageList.Popup(pt.X, pt.Y);
+end;
+
+procedure TTTYConsole.OnMessageClick(Sender: TObject);
+var
+   n: Integer;
+begin
+   n := TMenuItem(Sender).Tag;
+   FMessageEdit[n].Text := TMenuItem(Sender).Hint;
+   FMessageEdit[n].SetFocus();
+end;
+
 procedure TTTYConsole.buttonRXLogClearClick(Sender: TObject);
 begin
    RXLog.ClrScr;
    TXLog.SetFocus();
+end;
+
+procedure TTTYConsole.buttonSendClick(Sender: TObject);
+var
+   n: Integer;
+   S: string;
+begin
+   n := TButton(Sender).Tag;
+   SendTtyMessage(n);
 end;
 
 procedure TTTYConsole.buttonTXLogClearClick(Sender: TObject);
@@ -557,6 +646,17 @@ begin
    if CallsignList.ItemIndex >= 0 then begin
       S := CallsignList.Items[CallsignList.ItemIndex];
       MainForm.SetYourCallsign(S, '', True);
+   end;
+end;
+
+procedure TTTYConsole.editMessageKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key = Char($0D) then begin
+      SendTtyMessage(TEdit(Sender).Tag);
+      Key := #00;
+   end
+   else begin
+      Key := UpCase(Key);
    end;
 end;
 
@@ -710,6 +810,8 @@ begin
          f.ColorCodingList.Add(CC);
       end;
 
+      f.Filter := dmZLogGlobal.Settings.RTTY.CallsignFilter;
+
       if f.ShowModal() <> mrOK then begin
          Exit;
       end;
@@ -723,6 +825,8 @@ begin
          S := f.ColorCodingList[i].Text;
          dmZLogGlobal.Settings.RTTY.ColorCoding.Add(S);
       end;
+
+      dmZLogGlobal.Settings.RTTY.CallsignFilter := f.Filter;
 
       ImplementOptions();
    finally
@@ -862,6 +966,8 @@ begin
          // The first transmit position is 1.
          FTTYSendPos := 1;
 
+         FAutoPttOff := checkAutoPttOff.Checked;
+
          if FTTYSendBuffer <> '' then begin
             CH := AnsiChar(FTTYSendBuffer[FTTYSendPos]);
             dmZLogKeyer.SendChar(nID, CH);
@@ -939,6 +1045,7 @@ procedure TTTYConsole.OneCharSentProc();
 var
    nID: Integer;
    CH: AnsiChar;
+   oldpos: Integer;
 begin
    {$IFDEF DEBUG}
    OutputDebugString(PChar('-----TTYConsole.OneCharSentProc()-----'));
@@ -967,6 +1074,8 @@ begin
       OutputDebugString(PChar('-----送るものがない-----'));
       {$ENDIF}
 
+      oldpos := FTTYSendPos;
+
       // All queued characters have been sent.  Discard the transmitted
       // portion and wait at position 1 for newly entered characters.
       FTTYSendBuffer := '';
@@ -977,11 +1086,30 @@ begin
       // appended to FTTYSendBuffer and will be sent on the next callback.
       dmZLogKeyer.SendChar(nID, LTRS2);
 
-      if FAutoPttOff = True then begin
+      if (oldpos > 1) and (FAutoPttOff = True) then begin
          ToggleTXRX();
          FAutoPttOff := False;
       end;
    end;
+end;
+
+procedure TTTYConsole.SendTtyMessage(n: Integer);
+var
+   S: string;
+begin
+   S := FMessageEdit[n].Text;
+   if S = '' then begin
+      Exit;
+   end;
+
+   // 送信バッファにセット
+   S := S + CR + LF;
+   TXLog.Text := TXLog.Text + S;
+   FTTySendBuffer := FTTYSendBuffer + S;
+
+   TXLog.SetFocus();
+   TXLog.SelStart := Length(TXLog.Text);
+   TXLog.SelLength := 1;
 end;
 
 end.

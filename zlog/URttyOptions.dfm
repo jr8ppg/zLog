@@ -24,7 +24,6 @@ object formRttyOptions: TformRttyOptions
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 435
     DesignSize = (
       471
       37)
@@ -59,7 +58,6 @@ object formRttyOptions: TformRttyOptions
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
-    ExplicitHeight = 435
     object TabSheet1: TTabSheet
       Caption = 'Console'
       object groupDefaultColor: TGroupBox
@@ -209,7 +207,7 @@ object formRttyOptions: TformRttyOptions
         Left = 6
         Top = 192
         Width = 449
-        Height = 224
+        Height = 157
         Caption = 'Color Coding List'
         TabOrder = 4
         object buttonCCDelete: TButton
@@ -225,11 +223,33 @@ object formRttyOptions: TformRttyOptions
           Left = 12
           Top = 21
           Width = 350
-          Height = 189
+          Height = 124
           Style = lbOwnerDrawVariable
           TabOrder = 0
           OnClick = listColorCodingClick
           OnDrawItem = listColorCodingDrawItem
+        end
+      end
+      object groupCallsignExtraction: TGroupBox
+        Left = 6
+        Top = 360
+        Width = 449
+        Height = 57
+        Caption = 'Callsign Extraction'
+        TabOrder = 5
+        object Label3: TLabel
+          Left = 12
+          Top = 28
+          Width = 22
+          Height = 13
+          Caption = 'Filter'
+        end
+        object editFilter: TEdit
+          Left = 60
+          Top = 25
+          Width = 379
+          Height = 21
+          TabOrder = 0
         end
       end
     end

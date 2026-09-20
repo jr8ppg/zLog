@@ -57,6 +57,7 @@ type
     ForeColor: TColor;
     ColorCoding: TStringList;
     UseTxUos: Boolean;
+    CallsignFilter: string;
   end;
 
   TCommParam = record
@@ -271,6 +272,11 @@ type
     _pttenabled_ph: Boolean;
     _pttbefore_ph: Word;
     _pttafter_ph: Word;
+
+    // RTTY
+    _pttenabled_rtty: Boolean;
+    _pttbefore_rtty: Word;
+    _pttafter_rtty: Word;
 
     _txnr : byte;
     _pcname : string;
@@ -1146,6 +1152,8 @@ begin
          Settings.RTTY.ColorCoding.Add(s);
       end;
 
+      Settings.RTTY.CallsignFilter := ini.ReadString('RTTY', 'CallsignFilter', '^(?=.{3,10}$)(?=.*[0-9])(?=.*[A-Z])[A-Z0-9]*[0-9][A-Z]{1,4}$');
+
       //
       // Hardware
       //
@@ -1319,6 +1327,16 @@ begin
 
       // After TX paddle/keybd (ms)
       Settings._pttafter_ph := ini.ReadInteger('Hardware', 'PTTAfterPH', 0);
+
+      // RTTY
+      // Enable PTT
+      Settings._pttenabled_rtty := ini.ReadBool('Hardware', 'PTTEnabledRTTY', True);
+
+      // Before TX (ms)
+      Settings._pttbefore_rtty := ini.ReadInteger('Hardware', 'PTTBeforeRTTY', 700);
+
+      // After TX paddle/keybd (ms)
+      Settings._pttafter_rtty := ini.ReadInteger('Hardware', 'PTTAfterRTTY', 700);
 
       //
       // Rig control
@@ -2046,6 +2064,8 @@ begin
          ini.WriteString('RTTY_ColorCoding', '#' + IntToStr(i), Settings.RTTY.ColorCoding[i - 1]);
       end;
 
+      ini.WriteString('RTTY', 'CallsignFilter', Settings.RTTY.CallsignFilter);
+
       //
       // Hardware
       //
@@ -2203,6 +2223,16 @@ begin
 
       // After TX paddle/keybd (ms)
       ini.WriteInteger('Hardware', 'PTTAfterPH', Settings._pttafter_ph);
+
+      // RTTY
+      // Enable PTT
+      ini.WriteBool('Hardware', 'PTTEnabledRTTY', Settings._pttenabled_rtty);
+
+      // Before TX (ms)
+      ini.WriteInteger('Hardware', 'PTTBeforeRTTY', Settings._pttbefore_rtty);
+
+      // After TX paddle/keybd (ms)
+      ini.WriteInteger('Hardware', 'PTTAfterRTTY', Settings._pttafter_rtty);
 
       //
       // Rig control
@@ -2658,6 +2688,7 @@ begin
 
    dmZLogKeyer.SetPTTDelay(Settings._pttbefore_cw, Settings._pttafter_cw);
    dmZLogKeyer.SetPTT(Settings._pttenabled_cw);
+   dmZLogKeyer.SetRttyPTTDelay(Settings._pttbefore_rtty, Settings._pttafter_rtty);
 
    dmZLogKeyer.InitWPM := Settings.CW._speed;
    dmZLogKeyer.WPM := Settings.CW._speed;

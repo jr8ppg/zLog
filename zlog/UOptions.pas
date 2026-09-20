@@ -479,6 +479,11 @@ type
     comboRig2RxPort: TComboBox;
     comboRig3RxPort: TComboBox;
     comboRig4RxPort: TComboBox;
+    Label63: TLabel;
+    Label64: TLabel;
+    checkEnablePttRtty: TCheckBox;
+    editBeforeTxRtty: TEdit;
+    editAfterTxRtty: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -2055,6 +2060,11 @@ begin
       Settings._pttbefore_ph := StrToIntDef(editBeforeTxPh.Text, Settings._pttbefore_ph);
       Settings._pttafter_ph := StrToIntDef(editAfterTxPh.Text, Settings._pttafter_ph);
 
+      // RTTY
+      Settings._pttenabled_rtty := checkEnablePttRtty.Checked;
+      Settings._pttbefore_rtty := StrToIntDef(editBeforeTxRtty.Text, Settings._pttbefore_rtty);
+      Settings._pttafter_rtty := StrToIntDef(editAfterTxRtty.Text, Settings._pttafter_rtty);
+
       // USBIF4CW
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
       Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
@@ -2416,6 +2426,10 @@ begin
          editAfterTxPh.Enabled := False;
       end;
 
+      // RTTY
+      checkEnablePttRtty.Checked := Settings._pttenabled_rtty;
+      editBeforeTxRtty.Text := IntToStr(Settings._pttbefore_rtty);
+      editAfterTxRtty.Text := IntToStr(Settings._pttafter_rtty);
 
       // USBIF4CW
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
