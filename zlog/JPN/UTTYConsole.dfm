@@ -63,6 +63,7 @@ object TTYConsole: TTTYConsole
         Lines.Strings = (
           'txlog')
         ParentFont = False
+        ScrollBars = ssVertical
         TabOrder = 0
         OnKeyDown = TXLogKeyDown
         OnKeyPress = TXLogKeyPress
