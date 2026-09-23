@@ -6087,26 +6087,42 @@ end;
 
 function TQSODupeWithoutModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
-             ((Integer(Left.Band) - Integer(Right.Band)) * 10);
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign));
+
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Band) - Integer(Right.Band);
 end;
 
 { TQSODupeWithModeComparer }
 
 function TQSODupeWithModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
-             ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
-             ((Integer(Left.Mode) - Integer(Right.Mode)) * 100);
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign));
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Band) - Integer(Right.Band);
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Mode) - Integer(Right.Mode);
 end;
 
 { TQSODupeWithMode2Comparer }
 
 function TQSODupeWithMode2Comparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
-             ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
-             ((Integer(Left.Mode2) - Integer(Right.Mode2)) * 100);
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign));
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Band) - Integer(Right.Band);
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Mode2) - Integer(Right.Mode2);
 end;
 
 { TCabrilloRecord }
