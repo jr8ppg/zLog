@@ -1361,7 +1361,9 @@ begin
 end;
 
 // 1234567890123456712345612345612345678901234123412345678901234123456789012345678
-// 2008-08-03 12:01   21  SSB   JA1xxx        59  14M       59  14H       14      1
+// DATE (JST) TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts
+// 2008-08-03 12:01   21  SSB   JA1xxx        59  14M     59  14H     14      1
+// 2026-03-01 13:11    7  SSB   JA4xxx        59  PM95    59  3502    3502    5
 
 function TQSO.FormatELogStd(): string;
 var
@@ -1369,19 +1371,19 @@ var
 begin
    S := '';
    if Self.Invalid = True then begin
-      S := S + 'X ' + FormatDateTime('yyyy/mm/dd hh":"nn ', Self.Time);
+      S := S + 'X ' + FormatDateTime('yyyy-mm-dd hh":"nn ', Self.Time);
    end
    else begin
-      S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', self.Time);
+      S := S + FormatDateTime('yyyy-mm-dd hh":"nn ', Self.Time);
    end;
 
    S := S + FillLeft(MHzString[Self.Band], 4) + '  ';
    S := S + FillRight2(ModeString[Self.Mode], 6);
    S := S + FillRight2(Self.CallSign, 14);
    S := S + FillRight2(IntToStr(Self.RSTSent), 4);
-   S := S + FillRight2(Self.NrSent, 10);
+   S := S + FillRight2(Self.NrSent, 8);
    S := S + FillRight2(IntToStr(Self.RSTRcvd), 4);
-   S := S + FillRight2(Self.NrRcvd, 10);
+   S := S + FillRight2(Self.NrRcvd, 8);
 
    if Self.NewMulti1 then begin
       S := S + FillRight2(Self.Multi1, 8);
