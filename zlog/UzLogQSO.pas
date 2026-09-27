@@ -1363,11 +1363,13 @@ end;
 // 1234567890123456712345612345612345678901234123412345678901234123456789012345678
 // DATE (JST) TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts
 // 2008-08-03 12:01   21  SSB   JA1xxx        59  14M     59  14H     14      1
-// 2026-03-01 13:11    7  SSB   JA4xxx        59  PM95    59  3502    3502    5
+// 2026-09-27 12:47 10.1G CW    JA1xxx        599 010103P 599 100102P 100102  1
+// 2026-09-27 12:47   24G CW    JA1xxx        599 010103P 599 100102P 100102  1
 
 function TQSO.FormatELogStd(): string;
 var
    S: string;
+   strBand: string;
 begin
    S := '';
    if Self.Invalid = True then begin
@@ -1377,7 +1379,14 @@ begin
       S := S + FormatDateTime('yyyy-mm-dd hh":"nn ', Self.Time);
    end;
 
-   S := S + FillLeft(MHzString[Self.Band], 4) + '  ';
+   // ÉoÉìÉhÇ…GÇ™ä‹Ç‹ÇÍÇÈèÍçáÇÕ5åÖÇ≈âEäÒÇπÇ…Ç∑ÇÈ
+   strBand := MHzString[Self.Band];
+   if Pos('G', strBand) = 0 then begin
+      S := S + FillLeft(strBand, 4) + '  ';
+   end
+   else begin
+      S := S + FillLeft(strBand, 5) + ' ';
+   end;
    S := S + FillRight2(ModeString[Self.Mode], 6);
    S := S + FillRight2(Self.CallSign, 14);
    S := S + FillRight2(IntToStr(Self.RSTSent), 4);
