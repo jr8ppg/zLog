@@ -138,6 +138,7 @@ type
     FOnSendFinishProc: TPlayMessageFinishedProc;
     FRxCharNo: Integer;
     FMessageEdit: array[0..2] of TEdit;
+    FPrevRXChar: AnsiChar;
     procedure OnZLogRttyRxChar( var Message: TMessage ); message WM_ZLOG_RTTY_RXCHAR;
     procedure OnMessageClick(Sender: TObject);
     function Sending(): Boolean;
@@ -176,6 +177,7 @@ begin
    FTTYLineBuffer := '';
    FNeedFinishEvent := False;
    FAutoPttOff := False;
+   FPrevRXChar := #00;
 
    FMessageEdit[0] := editMessage1;
    FMessageEdit[1] := editMessage2;
@@ -276,20 +278,34 @@ var
    nAlph, nNG: Integer;
    nNum: Integer;
    Index: Integer;
-label
-   xxxx;
 begin
    if CharInSet(C, [AnsiChar(0) .. AnsiChar($09), AnsiChar($0B) .. AnsiChar($0C), AnsiChar($0E) .. AnsiChar($1F), AnsiChar($80) .. AnsiChar($FF)]) then begin
       Exit;
    end;
 
-   RXLog.WriteChar(C);
+   if (C = _CR) and (FPrevRXChar <> _LF) then begin
+      RXLog.WriteChar(_CR);
+      RXLog.WriteChar(_LF);
+      FPrevRXChar := _LF;
+   end
+   else if (C = _LF) and (FPrevRXChar <> _LF) then begin
+      RXLog.WriteChar(_CR);
+      RXLog.WriteChar(_LF);
+      FPrevRXChar := _LF;
+   end
+   else if (C <> _CR) and (C <> _LF) then begin
+      RXLog.WriteChar(C);
+      FPrevRXChar := #00;
+   end
+   else begin
+      FPrevRXChar := #00;
+   end;
 
    L := TStringList.Create();
    L.Delimiter := ' ';
    L.StrictDelimiter := True;
 
-   if (C = ' ') or (C = _CR) then begin
+   if (C <= #$20) then begin
 
       L.DelimitedText := FTTYLineBuffer;
 
@@ -299,35 +315,7 @@ begin
          if TRegEx.IsMatch(S, dmZLogGlobal.Settings.RTTY.CallsignFilter) = False then begin
             Continue;
          end;
-{
-         // 長さチェック
-         len := Length(S);
-         if (len < 3) or (len > 10) then begin
-            Continue;
-         end;
 
-         // 文字チェック
-         nAlph := 0;
-         nNG := 0;
-         nNum := 0;
-         for j := 1 to len do begin
-            ch := S[j];
-
-            if ((ch >= '0') and (ch <= '9')) then begin
-               Inc(nNum);
-            end
-            else if (((ch >= 'A') and (ch <= 'Z')) or (ch = '/')) then begin
-               Inc(nAlph);
-            end
-            else begin
-               Inc(nNG);
-            end;
-         end;
-
-         if (nNG > 0) or (nNum = 0) or (nAlph = 0) then begin
-            Continue;
-         end;
-}
          if dmZLogKeyer.IsPlaying = False then begin
             if S = dmZLogGlobal.MyCall then begin
                Continue;
