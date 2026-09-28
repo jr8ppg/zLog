@@ -8961,11 +8961,13 @@ begin
 
       // NYP
       6: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TNYP.Create(Self, 'NEW YEAR PARTY', mode);
       end;
 
       // DX pedi
       8: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TPedi.Create(Self, 'Pedition mode', mode);
          actionShowMultipliers.Enabled := False;
          menuShowMultipliers.Enabled := False;
@@ -8975,11 +8977,13 @@ begin
       // User Defined
       9: begin
          zyloContestSwitch(strContestName, strCfgFileName);
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TGeneralContest.Create(Self, strContestName, strCfgFileName, mode);
       end;
 
       // CQWW
       10: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', mode);
          menuShowCheckCountry.Visible := True;
          actionShowCheckMulti.Caption := TMainForm_Check_Zone;
@@ -8988,6 +8992,7 @@ begin
 
       // WPX
       11: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', category, mode);
          Grid.Cols[8].Text := 'prefix';
          Grid.Cols[9].Text := 'zone';
@@ -8997,6 +9002,7 @@ begin
       // JIDX
       // now determines JA/DX from callsign
       7, 12: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          if dmZLogGlobal.MyCountry = 'JA' then begin
             menuShowCheckCountry.Visible := True;
             actionShowCheckMulti.Caption := TMainForm_Check_Zone;
@@ -9010,52 +9016,62 @@ begin
 
       // AP Sprint
       13: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TAPSprint.Create(Self, 'Asia Pacific Sprint', mode);
       end;
 
       // ARRL DX(W/VE)
       14: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)', mode);
       end;
 
       // ARRL(DX)
       15: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)', mode);
       end;
 
       // ARRL 10m
       16: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TARRL10Contest.Create(Self, 'ARRL 10m Contest', mode);
          FCheckMulti.ListCWandPh := True;
       end;
 
       // IARU HF
       17: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TIARUContest.Create(Self, 'IARU HF Championship', mode);
       end;
 
       // All Asian DX(Asia)
       18: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', mode);
       end;
 
       // IOTA
       19: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TIOTAContest.Create(Self, 'IOTA Contest', mode);
       end;
 
       // WAEDC(DX)
       20: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TWAEContest.Create(Self, 'WAEDC Contest', mode);
       end;
 
       // JARL World Wide RTTY
       21: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TJarlWorldWideRTTY.Create(Self, 'JARL World Wide RTTY', mode);
       end;
 
       // BARTG HF RTTY
       22: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TBartgHfRTTY.Create(Self, 'BARTG HF RTTY', mode);
       end;
    end;

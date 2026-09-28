@@ -532,7 +532,6 @@ type
     FPacketClusterList: TTelnetSettingList;
     FFreqMemList: TFreqMemoryList;
 
-    function Load_CTYDAT(): Boolean;
     procedure AnalyzeMyCountry();
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
@@ -648,6 +647,7 @@ public
     function GuessCQZone(strCallsign: string): string;
     function IsUSA(): Boolean;
     function IsMultiStation(): Boolean;
+    function Load_CTYDAT(UseWAEDC: Boolean): Boolean;
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
     property PowerOfBand2[b: TBand]: string read GetPowerOfBand2;
@@ -846,7 +846,6 @@ begin
 
    FCountryList := TCountryList.Create();
    FPrefixList := TPrefixList.Create();
-   FCtyDatLoaded := Load_CTYDAT();
 
    L := TStringList.Create();
    L.CommaText := Settings.FBandPlanPresetList;
@@ -3238,16 +3237,19 @@ begin
    Result := fullpath;
 end;
 
-function TdmZLogGlobal.Load_CTYDAT(): Boolean;
+function TdmZLogGlobal.Load_CTYDAT(UseWAEDC: Boolean): Boolean;
 var
    i: Integer;
    P: TPrefix;
    strFileName: string;
 begin
+   FCountryList.Clear();
+   FPrefixList.Clear();
+
    strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
 
    // カントリーリストをロード
-   FCountryList.LoadFromFile(strFileName);
+   FCountryList.LoadFromFile(strFileName, UseWAEDC);
 
    if FileExists(strFileName) = True then begin
 
@@ -3263,9 +3265,11 @@ begin
       FPrefixList.SaveToFile('prefixlist.txt');
       {$ENDIF}
 
+      FCtyDatLoaded := True;
       Result := True;
    end
    else begin
+      FCtyDatLoaded := False;
       Result := False;
    end;
 

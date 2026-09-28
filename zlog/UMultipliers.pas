@@ -62,7 +62,7 @@ type
   private
   public
     constructor Create(OwnsObjects: Boolean = True);
-    procedure LoadFromFile(strFileName: string);
+    procedure LoadFromFile(strFileName: string; UseWAEDC: Boolean);
     procedure Reset();
   end;
 
@@ -184,7 +184,7 @@ begin
    Inherited Create(OwnsObjects);
 end;
 
-procedure TCountryList.LoadFromFile(strFileName: string);
+procedure TCountryList.LoadFromFile(strFileName: string; UseWAEDC: Boolean);
 var
    mem: TMemoryStream;
    i: Integer;
@@ -221,8 +221,15 @@ begin
          if ch = ';' then begin
             C := TCountry.Create(strLine);
             C.Index := Count;
-            Add(C);
+
             strLine := '';
+
+            if (UseWAEDC = False) and (C.IsWAEDC = True) then begin
+               C.Free();
+               Continue;
+            end;
+
+            Add(C);
          end
          else begin
             strLine := strLine + Char(ch);
