@@ -182,7 +182,6 @@ type
     editMulti21: TEdit;
     editPoints21: TEdit;
     editMulti2_21: TEdit;
-    checkELogMaker: TCheckBox;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -198,6 +197,7 @@ type
     procedure ControlEnter(Sender: TObject);
     procedure ControlExit(Sender: TObject);
     procedure buttonModeClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private 宣言 }
     FScoreBand: array[b19..HiBand] of TCheckBox;
@@ -215,7 +215,7 @@ type
     procedure WriteLogSheetR1(SL: TStringList);
     procedure WriteSummarySheetR2(SL: TStringList);
     procedure WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
-    procedure WriteLogSheetStd(SL: TStringList);
+    procedure WriteLogSheetStd(SL: TStringList; fExtend: Boolean);
     function IsNewcomer(cate: string): Boolean;
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
@@ -416,6 +416,11 @@ begin
    end;
 end;
 
+procedure TformELogJarlEx.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   MyContest.Renew();
+end;
+
 procedure TformELogJarlEx.RemoveBlankLines(M: TMemo);
 var
    i: integer;
@@ -553,9 +558,22 @@ procedure TformELogJarlEx.buttonCreateLogClick(Sender: TObject);
 var
    SL: TStringList;
    fname: string;
+   b: TBand;
+   i: Integer;
 begin
    SL := TStringList.Create();
    try
+      MyContest.Renew();
+      for b := Low(FScoreBand) to High(FScoreBand) do begin
+         if (FScoreBand[b] <> nil) and (FScoreBand[b].Checked = False) then begin
+            for i := 1 to Log.TotalQSO do begin
+               if Log.QsoList[i].Band = b then begin
+                  Log.QsoList[i].Points := 0;
+               end;
+            end;
+         end;
+      end;
+
       if TabControl1.TabIndex = 0 then begin
          if CreateELogR1(SL) = False then begin
             Exit;
@@ -622,12 +640,7 @@ begin
    WriteSummarySheetR2(SL);
 
    // ログシート
-   if checkELogMaker.Checked = False then begin
-      WriteLogSheetR2(SL, checkFieldExtend.Checked);
-   end
-   else begin
-      WriteLogSheetStd(SL);
-   end;
+   WriteLogSheetStd(SL, checkFieldExtend.Checked);
 
    Result := True;
 end;
@@ -638,12 +651,7 @@ begin
    WriteSummarySheetR1(SL);
 
    // ログシート
-   if checkELogMaker.Checked = False then begin
-      WriteLogSheetR1(SL);
-   end
-   else begin
-      WriteLogSheetStd(SL);
-   end;
+   WriteLogSheetStd(SL, checkFieldExtend.Checked);
 
    Result := True;
 end;
@@ -1225,13 +1233,13 @@ begin
    SL.Add('</LOGSHEET>');
 end;
 
-procedure TformELogJarlEx.WriteLogSheetStd(SL: TStringList);
+procedure TformELogJarlEx.WriteLogSheetStd(SL: TStringList; fExtend: Boolean);
 var
    i: Integer;
    s: string;
    Q: TQSO;
 begin
-   SL.Add('<LOGSHEET TYPE="CTESTWIN">');
+   SL.Add('<LOGSHEET TYPE="ZLOG_REIWA">');
 
    if Log.QsoList[0].RSTsent = _USEUTC then begin
       s := 'DATE (UTC)';
@@ -1240,7 +1248,12 @@ begin
       s := 'DATE (JST)';
    end;
 
-   SL.Add(s + ' TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts');
+   if fExtend = True then begin
+      SL.Add(s + ' TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts TX#');
+   end
+   else begin
+      SL.Add(s + ' TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts');
+   end;
 
    for i := 1 to Log.TotalQSO do begin
       Q := Log.QsoList[i];
@@ -1250,7 +1263,7 @@ begin
          Continue;
       end;
 
-      s := Q.FormatELogStd();
+      s := Q.FormatELogStd(fExtend);
       SL.Add(s);
    end;
 
@@ -1439,7 +1452,7 @@ begin
          edClubName.Visible := True;
          labelLicense.Visible := True;
          edLicense.Visible := True;
-         checkFieldExtend.Visible := False;
+         checkFieldExtend.Visible := True;
          buttonWebUpload.Enabled := False;
          edCategoryCode.Width := 60;
       end;

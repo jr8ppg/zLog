@@ -215,7 +215,7 @@ type
     function zLogALL(): string;
     function FormatELogR1(fValid: Boolean): string;
     function FormatELogR2(fExtend: Boolean): string;
-    function FormatELogStd(): string;
+    function FormatELogStd(fExtend: Boolean): string;
     {$ENDIF}
     function DOSzLogText : string;
     function DOSzLogTextShort : string;
@@ -1361,12 +1361,12 @@ begin
 end;
 
 // 1234567890123456712345612345612345678901234123412345678901234123456789012345678
-// DATE (JST) TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts
-// 2008-08-03 12:01   21  SSB   JA1xxx        59  14M     59  14H     14      1
-// 2026-09-27 12:47 10.1G CW    JA1xxx        599 010103P 599 100102P 100102  1
-// 2026-09-27 12:47   24G CW    JA1xxx        599 010103P 599 100102P 100102  1
+// DATE (JST) TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts TX#
+// 2008-08-03 12:01   21  SSB   JA1xxx        59  14M     59  14H     14      1   0
+// 2026-09-27 12:47 10.1G CW    JA1xxx        599 010103P 599 100102P 100102  1   0
+// 2026-09-27 12:47   24G CW    JA1xxx        599 010103P 599 100102P 100102  1   0
 
-function TQSO.FormatELogStd(): string;
+function TQSO.FormatELogStd(fExtend: Boolean): string;
 var
    S: string;
    strBand: string;
@@ -1401,7 +1401,13 @@ begin
       S := S + '-       ';
    end;
 
-   S := S + IntToStr(Self.Points);
+   if fExtend = True then begin
+      S := S + FillRight2(IntToStr(Self.Points), 3);
+      S := S + ' ' + IntToStr(Self.TX);
+   end
+   else begin
+      S := S + IntToStr(Self.Points);
+   end;
 
    Result := S;
 end;

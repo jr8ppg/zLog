@@ -12,7 +12,7 @@ object formELogJarlEx: TformELogJarlEx
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poScreenCenter
-  OnClick = checkBandClick
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 12
@@ -30,7 +30,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 89
       Height = 23
       Caption = 'E-Log'#20316#25104
-      TabOrder = 3
+      TabOrder = 2
       OnClick = buttonCreateLogClick
     end
     object buttonSave: TButton
@@ -39,7 +39,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 89
       Height = 23
       Caption = #20445#23384
-      TabOrder = 2
+      TabOrder = 1
       OnClick = buttonSaveClick
     end
     object buttonCancel: TButton
@@ -49,7 +49,7 @@ object formELogJarlEx: TformELogJarlEx
       Height = 23
       Caption = #38281#12376#12427
       ModalResult = 2
-      TabOrder = 5
+      TabOrder = 4
       OnClick = buttonCancelClick
     end
     object buttonWebUpload: TButton
@@ -58,7 +58,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 105
       Height = 23
       Caption = 'Web Upload'
-      TabOrder = 4
+      TabOrder = 3
       OnClick = buttonWebUploadClick
     end
     object checkFieldExtend: TCheckBox
@@ -68,14 +68,6 @@ object formELogJarlEx: TformELogJarlEx
       Height = 17
       Caption = 'TX#'#12434#36861#21152
       TabOrder = 0
-    end
-    object checkELogMaker: TCheckBox
-      Left = 122
-      Top = 7
-      Width = 113
-      Height = 17
-      Caption = 'ELOGMAKER'#24418#24335
-      TabOrder = 1
     end
   end
   object TabControl1: TTabControl
