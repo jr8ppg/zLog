@@ -25,8 +25,8 @@ object formELogJarlEx: TformELogJarlEx
     BevelOuter = bvNone
     TabOrder = 1
     object Label11: TLabel
-      Left = 128
-      Top = 8
+      Left = 113
+      Top = 9
       Width = 36
       Height = 12
       Caption = #20986#21147#38918
@@ -77,8 +77,8 @@ object formELogJarlEx: TformELogJarlEx
       TabOrder = 0
     end
     object comboOutputOrder: TComboBox
-      Left = 177
-      Top = 5
+      Left = 154
+      Top = 6
       Width = 85
       Height = 20
       Style = csDropDownList

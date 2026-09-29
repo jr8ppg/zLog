@@ -12,7 +12,7 @@ object formELogJarlEx: TformELogJarlEx
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poScreenCenter
-  OnClick = checkBandClick
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 12
@@ -24,6 +24,13 @@ object formELogJarlEx: TformELogJarlEx
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    object Label11: TLabel
+      Left = 113
+      Top = 9
+      Width = 36
+      Height = 12
+      Caption = #20986#21147#38918
+    end
     object buttonCreateLog: TButton
       Left = 377
       Top = 4
@@ -69,13 +76,19 @@ object formELogJarlEx: TformELogJarlEx
       Caption = 'TX#'#12434#36861#21152
       TabOrder = 0
     end
-    object checkELogMaker: TCheckBox
-      Left = 122
-      Top = 7
-      Width = 113
-      Height = 17
-      Caption = 'ELOGMAKER'#24418#24335
+    object comboOutputOrder: TComboBox
+      Left = 154
+      Top = 6
+      Width = 85
+      Height = 20
+      Style = csDropDownList
+      ItemIndex = 0
       TabOrder = 1
+      Text = #22793#26356#12375#12394#12356
+      Items.Strings = (
+        #22793#26356#12375#12394#12356
+        #26178#38291#38918
+        #12496#12531#12489#38918#12289#26178#38291#38918)
     end
   end
   object TabControl1: TTabControl
