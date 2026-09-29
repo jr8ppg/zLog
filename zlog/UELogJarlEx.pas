@@ -182,6 +182,8 @@ type
     editMulti21: TEdit;
     editPoints21: TEdit;
     editMulti2_21: TEdit;
+    comboOutputOrder: TComboBox;
+    Label11: TLabel;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -572,6 +574,17 @@ begin
                end;
             end;
          end;
+      end;
+
+      if comboOutputOrder.ItemIndex = 0 then begin
+         //
+      end
+      else if comboOutputOrder.ItemIndex = 1 then begin // ŠÔ‡
+         Log.SortBy(soTime);
+      end
+      else if comboOutputOrder.ItemIndex = 2 then begin  // ƒoƒ“ƒh‡AŠÔ‡
+         Log.SortBy(soTime);
+         Log.SortBy(soBand);
       end;
 
       if TabControl1.TabIndex = 0 then begin
