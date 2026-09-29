@@ -969,7 +969,12 @@ var
    i: Integer;
 begin
    FUseDefaultMessages := False;
-   for i := 1 to maxmessage do begin
+   for i := 1 to 4 do begin
+      if dmZLogGlobal.Settings.FImpCwMessage[i] = False then begin
+         FCwMessages[bank][i] := dmZLogGlobal.Settings.CW.CWStrBank[bank, i];
+      end;
+   end;
+   for i := 5 to maxmessage do begin
       FCwMessages[bank][i] := dmZLogGlobal.Settings.CW.CWStrBank[bank, i];
    end;
 end;
