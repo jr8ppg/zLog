@@ -586,6 +586,31 @@ var
 begin
    SL := TStringList.Create();
    try
+      // 入力チェック
+      if edSignature.Text = '' then begin
+         MessageBox(Handle, PChar('署名を忘れています.'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         edSignature.SetFocus();
+         Exit;
+      end;
+
+      if TabControl1.TabIndex = 1 then begin
+         if IsNewcomer(edCategoryCode.Text) = True then begin
+            if datetimeLicenseDate.Date = EncodeDate(2000, 1, 1) then begin
+               MessageBox(Handle, PChar('参加部門が ' + dmZLogGlobal.Settings.FELogNewcomerCategory + ' の場合は、局免許年月日を入力して下さい'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+               datetimeLicenseDate.SetFocus();
+               Exit;
+            end;
+         end;
+
+         if IsSeniorJunior(edCategoryCode.Text) = True then begin
+            if comboAge.Text = '' then begin
+               MessageBox(Handle, PChar('参加部門が ' + dmZLogGlobal.Settings.FELogSeniorJuniorCategory + ' の場合は、年齢を入力して下さい'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+               comboAge.SetFocus();
+               Exit;
+            end;
+         end;
+      end;
+
       if comboOutputOrder.ItemIndex = 0 then begin
          if FSorted = True then begin
             CopyLog();
@@ -627,7 +652,7 @@ begin
 
       // 既にファイルがある場合は上書き確認
       if FileExists(fname) = True then begin
-         if MessageDlg('[' + fname + '] file already exists. overwrite?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then begin
+         if MessageBox(Handle, PChar('ファイル [' + fname + '] は既に存在します. 上書きしますか？'), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
             Exit;
          end;
       end;
@@ -641,25 +666,6 @@ end;
 
 function TformELogJarlEx.CreateELogR2(SL: TStringList): Boolean;
 begin
-   // 入力チェック
-   if IsNewcomer(edCategoryCode.Text) = True then begin
-      if datetimeLicenseDate.Date = EncodeDate(2000, 1, 1) then begin
-         MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogNewcomerCategory + ' の場合は、局免許年月日を入力して下さい', mtWarning, [mbOK], 0);
-         datetimeLicenseDate.SetFocus();
-         Result := False;
-         Exit;
-      end;
-   end;
-
-   if IsSeniorJunior(edCategoryCode.Text) = True then begin
-      if comboAge.Text = '' then begin
-         MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogSeniorJuniorCategory + ' の場合は、年齢を入力して下さい', mtWarning, [mbOK], 0);
-         comboAge.SetFocus();
-         Result := False;
-         Exit;
-      end;
-   end;
-
    // サマリーシート
    WriteSummarySheetR2(SL);
 
