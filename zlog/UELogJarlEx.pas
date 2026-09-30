@@ -1298,27 +1298,34 @@ procedure TformELogJarlEx.checkBandClick(Sender: TObject);
 var
    n: Integer;
    fChecked: Boolean;
+   cur: TCursor;
 begin
-   n := TCheckBox(Sender).Tag;
-   fChecked := TCheckBox(Sender).Checked;
+   cur := Screen.Cursor;
+   Screen.Cursor := crHourGlass;
+   try
+      n := TCheckBox(Sender).Tag;
+      fChecked := TCheckBox(Sender).Checked;
 
-   if fChecked = True then begin
-      FScoreQso[TBand(n)].Color := clWindow;
-      FScoreMulti1[TBand(n)].Color := clWindow;
-      FScoreMulti2[TBand(n)].Color := clWindow;
-      FScorePoints[TBand(n)].Color := clWindow;
-   end
-   else begin
-      FScoreQso[TBand(n)].Color := clBtnFace;
-      FScoreMulti1[TBand(n)].Color := clBtnFace;
-      FScoreMulti2[TBand(n)].Color := clBtnFace;
-      FScorePoints[TBand(n)].Color := clBtnFace;
-   end;
+      if fChecked = True then begin
+         FScoreQso[TBand(n)].Color := clWindow;
+         FScoreMulti1[TBand(n)].Color := clWindow;
+         FScoreMulti2[TBand(n)].Color := clWindow;
+         FScorePoints[TBand(n)].Color := clWindow;
+      end
+      else begin
+         FScoreQso[TBand(n)].Color := clBtnFace;
+         FScoreMulti1[TBand(n)].Color := clBtnFace;
+         FScoreMulti2[TBand(n)].Color := clBtnFace;
+         FScorePoints[TBand(n)].Color := clBtnFace;
+      end;
 
-   if Initializing = False then begin
-      CopyLog();
+      if Initializing = False then begin
+         CopyLog();
+      end;
+      CalcAll();
+   finally
+      Screen.Cursor := cur;
    end;
-   CalcAll();
 end;
 
 function TformELogJarlEx.IsNewcomer(cate: string): Boolean;
