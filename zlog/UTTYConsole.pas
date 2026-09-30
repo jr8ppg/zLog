@@ -308,9 +308,10 @@ begin
    if (C <= #$20) then begin
 
       L.DelimitedText := FTTYLineBuffer;
+      FTTYLineBuffer := '';
 
       for i := 0 to L.Count - 1 do begin
-         S := L.Strings[i];
+         S := Trim(L.Strings[i]);
 
          if TRegEx.IsMatch(S, dmZLogGlobal.Settings.RTTY.CallsignFilter) = False then begin
             Continue;
@@ -335,10 +336,6 @@ begin
       if dmZLogKeyer.IsPlaying = False then begin
          ExtractRcvdNumber(S);
       end;
-   end;
-
-   if C = _CR then begin
-      FTTYLineBuffer := '';
    end
    else begin
       FTTYLineBuffer := FTTYLineBuffer + Char(C);
@@ -929,7 +926,6 @@ end;
 procedure TTTYConsole.ToggleTXRX();
 var
    nID: Integer;
-   CH: AnsiChar;
 begin
    if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
       nID := MainForm.CurrentTX;

@@ -1151,7 +1151,7 @@ begin
          Settings.RTTY.ColorCoding.Add(s);
       end;
 
-      Settings.RTTY.CallsignFilter := ini.ReadString('RTTY', 'CallsignFilter', '^(?=.{3,10}$)(?=.*[0-9])(?=.*[A-Z])[A-Z0-9]*[0-9][A-Z]{1,4}$');
+      Settings.RTTY.CallsignFilter := ini.ReadString('RTTY', 'CallsignFilter', '^(?=.{3,15}$)(?=.*[0-9])(?=.*[A-Z])[A-Z0-9]+(?:/[A-Z0-9]+)*$');
 
       //
       // Hardware
