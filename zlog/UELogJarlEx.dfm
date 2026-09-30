@@ -14,6 +14,7 @@ object formELogJarlEx: TformELogJarlEx
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   TextHeight = 12
   object Panel1: TPanel
