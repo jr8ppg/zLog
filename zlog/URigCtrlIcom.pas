@@ -542,7 +542,10 @@ procedure TICOM.SetMode(Q: TQSO);
 var
    Command: AnsiString;
    para: byte;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    Inherited SetMode(Q);
 
    FPollingTimer.Enabled := False;
@@ -575,6 +578,7 @@ begin
 
       ICOMWriteData(Command);
    finally
+      FIgnoreRigMode := fIgnoreRigModeBack;
       FPollingCount := 0;
       FPollingTimer.Enabled := True;
    end;
@@ -1034,7 +1038,9 @@ begin
       OutputDebugString(PChar('*** ƒRƒ}ƒ“ƒhíœ ***'));
       {$ENDIF}
       IcomLock.Enter();
-      FRig.FCommandList.Delete(0);
+      if FRig.FCommandList.Count > 0 then begin
+         FRig.FCommandList.Delete(0);
+      end;
       FRig.FComm.OnReceiveData := proc;
       IcomLock.Leave();
 

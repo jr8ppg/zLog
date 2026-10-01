@@ -1,7 +1,7 @@
 object dmZLogKeyer: TdmZLogKeyer
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 175
+  Height = 363
   Width = 299
   object ZComKeying1: TCommPortDriver
     Tag = 1
@@ -76,5 +76,135 @@ object dmZLogKeyer: TdmZLogKeyer
     OnReceiveData = ZComKeying1ReceiveData
     Left = 211
     Top = 76
+  end
+  object ZFskKeying1: TCommPortDriver
+    Tag = 1
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 63
+    Top = 200
+  end
+  object ZFskKeying2: TCommPortDriver
+    Tag = 2
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 99
+    Top = 200
+  end
+  object ZFskKeying3: TCommPortDriver
+    Tag = 3
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 135
+    Top = 200
+  end
+  object ZFskKeying4: TCommPortDriver
+    Tag = 4
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 171
+    Top = 200
+  end
+  object ZFskKeying5: TCommPortDriver
+    Tag = 5
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 207
+    Top = 200
+  end
+  object ZComTtyRx1: TCommPortDriver
+    Tag = 1
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    BaudRate = brCustom
+    BaudRateValue = 38400
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 63
+    Top = 268
+  end
+  object ZComTtyRx2: TCommPortDriver
+    Tag = 2
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    BaudRate = brCustom
+    BaudRateValue = 38400
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 99
+    Top = 268
+  end
+  object ZComTtyRx3: TCommPortDriver
+    Tag = 3
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    BaudRate = brCustom
+    BaudRateValue = 38400
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 135
+    Top = 268
+  end
+  object ZComTtyRx4: TCommPortDriver
+    Tag = 4
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    BaudRate = brCustom
+    BaudRateValue = 38400
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 171
+    Top = 268
+  end
+  object ZComTtyRx5: TCommPortDriver
+    Tag = 5
+    Port = pnCustom
+    PortName = '\\.\COM2'
+    BaudRate = brCustom
+    BaudRateValue = 38400
+    HwFlow = hfNONE
+    InBufSize = 4096
+    EnableDTROnOpen = False
+    InputTimeout = 500
+    OnReceiveData = ZComTtyRx1ReceiveData
+    Left = 207
+    Top = 268
   end
 end

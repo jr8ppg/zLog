@@ -563,6 +563,7 @@ begin
    end;
 
    waveOutReset(m_hwo);
+   FPlaying := False;
 end;
 
 procedure TWaveSound.Close();

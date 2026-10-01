@@ -131,7 +131,9 @@ type
     function GetSunTime(Index: Integer): TDateTime;
     function IsTimeZoneStored: Boolean;
     procedure ParametersChanged(Sender: TObject);
-    function UTCMinutesToLocalTime(const Minutes: Extended): TDateTime;
+    function UTCMinutesToLocalTime(const Minutes: Extended): TDateTime; overload;
+    function UTCMinutesToLocalTime(const Minutes: Extended;
+      const TZInfo: TTimeZoneInformation): TDateTime; overload;
     procedure CalcTimes;
   public
     constructor Create(AOwner: TComponent); override;
@@ -233,59 +235,62 @@ begin
   end;
 end;
 
-function GetBiasMinutesAtDateTime(const ADateTime: TDateTime): Integer;
-const
-  TIME_ZONE_ID_INVALID  = $FFFFFFFF;
-  TIME_ZONE_ID_UNKNOWN  = 0;
-  TIME_ZONE_ID_STANDARD = 1;
-  TIME_ZONE_ID_DAYLIGHT = 2;
+function GetBiasMinutesAtDateTimeInfo(const ADateTime: TDateTime;
+  const Info: TTimeZoneInformation): Integer;
 var
-  Info: TTimeZoneInformation;
   StdDateTime, DltDateTime: TDateTime;
   AdjustOffset: Integer;
   AYear, NotUsed: Word;
 begin
-  FillChar(Info, SizeOf(Info), 0);
-  GetTimeZoneInformation(Info);
   Result := Info.Bias;
-  // Daylight Time is in use
-  if (Info.StandardDate.wMonth <> 0) and (Info.DaylightDate.wMonth <> 0) then
+
+  // No daylight-saving transition: this is the common and very fast path.
+  if (Info.StandardDate.wMonth = 0) or (Info.DaylightDate.wMonth = 0) then
+    Exit;
+
+  DecodeDate(ADateTime, AYear, NotUsed, NotUsed);
+  with Info.StandardDate do
   begin
-    DecodeDate(ADateTime, AYear, NotUsed, NotUsed);
-    with Info.StandardDate do
-    begin
-      if wYear = 0 then
-        // Day-in-month format
-        StdDateTime := DayOfMonthToDate(wDay, wDayOfWeek, wMonth, AYear)
-                     + EncodeTime(wHour, wMinute, wSecond, wMilliseconds)
-      else
-        // Absolute format (exact date and time)
-        StdDateTime := EncodeDate(AYear, wMonth, wDay)
-                     + EncodeTime(wHour, wMinute, wSecond, wMilliseconds);
-    end;
-    with Info.DaylightDate do
-    begin
-      if wYear = 0 then
-        // Day-in-month format
-        DltDateTime := DayOfMonthToDate(wDay, wDayOfWeek, wMonth, AYear)
-                     + EncodeTime(wHour, wMinute, wSecond, wMilliseconds)
-      else
-        // Absolute format (exact date and time)
-        DltDateTime := EncodeDate(AYear, wMonth, wDay)
-                     + EncodeTime(wHour, wMinute, wSecond, wMilliseconds);
-    end;
-    if StdDateTime < DltDateTime then
-      if (ADateTime < StdDateTime) or (ADateTime > DltDateTime) then
-        AdjustOffset := Info.DaylightBias
-      else
-        AdjustOffset := Info.StandardBias
+    if wYear = 0 then
+      StdDateTime := DayOfMonthToDate(wDay, wDayOfWeek, wMonth, AYear)
+                   + EncodeTime(wHour, wMinute, wSecond, wMilliseconds)
     else
-      if (ADateTime > DltDateTime) and (ADateTime < StdDateTime) then
-        AdjustOffset := Info.DaylightBias
-      else
-        AdjustOffset := Info.StandardBias;
-    Inc(Result, AdjustOffset);
+      StdDateTime := EncodeDate(AYear, wMonth, wDay)
+                   + EncodeTime(wHour, wMinute, wSecond, wMilliseconds);
   end;
+  with Info.DaylightDate do
+  begin
+    if wYear = 0 then
+      DltDateTime := DayOfMonthToDate(wDay, wDayOfWeek, wMonth, AYear)
+                   + EncodeTime(wHour, wMinute, wSecond, wMilliseconds)
+    else
+      DltDateTime := EncodeDate(AYear, wMonth, wDay)
+                   + EncodeTime(wHour, wMinute, wSecond, wMilliseconds);
+  end;
+
+  if StdDateTime < DltDateTime then
+  begin
+    if (ADateTime < StdDateTime) or (ADateTime > DltDateTime) then
+      AdjustOffset := Info.DaylightBias
+    else
+      AdjustOffset := Info.StandardBias;
+  end
+  else
+  begin
+    if (ADateTime > DltDateTime) and (ADateTime < StdDateTime) then
+      AdjustOffset := Info.DaylightBias
+    else
+      AdjustOffset := Info.StandardBias;
+  end;
+  Inc(Result, AdjustOffset);
+end;
+
+function GetBiasMinutesAtDateTime(const ADateTime: TDateTime): Integer;
+var
+  Info: TTimeZoneInformation;
+begin
+  GetTimeZoneInformation(Info);
+  Result := GetBiasMinutesAtDateTimeInfo(ADateTime, Info);
 end;
 
 { Solar Position Functions }
@@ -456,14 +461,46 @@ end;
 //   When: morning or evening?
 function GetSunHourAngleOfZenithDistance(const Latitude, SolarDec,
   ZD: Extended; When: TAMPM): Extended;
+const
+  // Allow only a very small overshoot caused by floating point rounding.
+  // A larger overshoot means that sunrise/sunset does not occur on that day.
+  ACosTolerance = 1.0E-12;
 var
   L: Extended;
   SD: Extended;
+  Denom: Extended;
   HAarg: Extended;
 begin
   L := D2R(Latitude);
   SD := D2R(SolarDec);
-  HAarg := Cos(D2R(ZD)) / (Cos(L) * Cos(SD)) - Tan(L) * Tan(SD);
+  Denom := Cos(L) * Cos(SD);
+
+  // At (or extremely close to) a pole the ordinary sunrise/sunset hour-angle
+  // equation becomes singular.  Treat it as no ordinary daily event instead
+  // of allowing a division by a value close to zero to produce a bogus time.
+  if Abs(Denom) < 1.0E-15 then
+    raise EInvalidOp.Create('Sunrise/sunset hour angle is undefined');
+
+  HAarg := Cos(D2R(ZD)) / Denom - Tan(L) * Tan(SD);
+
+  // ArcCos is only defined for [-1, +1].  Around an equinox HAarg can be
+  // infinitesimally outside this interval because of floating point rounding.
+  // Clamp only that rounding error; genuine polar day/night remains "no event".
+  if HAarg > 1.0 then
+  begin
+    if HAarg <= 1.0 + ACosTolerance then
+      HAarg := 1.0
+    else
+      raise EInvalidOp.Create('No sunrise/sunset on this date');
+  end
+  else if HAarg < -1.0 then
+  begin
+    if HAarg >= -1.0 - ACosTolerance then
+      HAarg := -1.0
+    else
+      raise EInvalidOp.Create('No sunrise/sunset on this date');
+  end;
+
   Result := R2D(ArcCos(HAarg));
   if When = PM then
     Result := -Result;
@@ -477,8 +514,17 @@ function GetSolarNoonUTC(const JD, Longitude: Extended): Extended;
 var
   T: Extended;
   ETime: Extended;
+  NoonMin: Extended;
 begin
+  // First estimate.  Longitude follows the original component convention:
+  // west positive, east negative.
   T := GetTimeJulianCent(JD + 0.5 + Longitude / 360.0);
+  ETime := GetEquationOfTime(T);
+  NoonMin := 720 + (Longitude * 4) - ETime;
+
+  // Recalculate at the estimated solar-noon instant.  This removes a small
+  // date-dependent discontinuity in the original one-pass calculation.
+  T := GetTimeJulianCent(JD + NoonMin / 1440.0);
   ETime := GetEquationOfTime(T);
   Result := 720 + (Longitude * 4) - ETime;
 end;
@@ -816,44 +862,140 @@ begin
 end;
 
 function TSunTime.UTCMinutesToLocalTime(const Minutes: Extended): TDateTime;
+var
+  TZInfo: TTimeZoneInformation;
 begin
   if UseSysTimeZone then
   begin
-    Result := Trunc(Date) + (Minutes / (60 * 24));
-    Result := Result - (GetBiasMinutesAtDateTime(Result) / (60 * 24));
+    GetTimeZoneInformation(TZInfo);
+    Result := UTCMinutesToLocalTime(Minutes, TZInfo);
   end
   else
-    Result := Trunc(Date) + (Minutes / 60 + TimeZone) / 24;
+    Result := Trunc(Date) + Minutes / 1440.0 + TimeZone / 24.0;
+end;
+
+function TSunTime.UTCMinutesToLocalTime(const Minutes: Extended;
+  const TZInfo: TTimeZoneInformation): TDateTime;
+var
+  UTCDateTime: TDateTime;
+  BiasMinutes: Integer;
+begin
+  UTCDateTime := Trunc(Date) + Minutes / 1440.0;
+
+  if UseSysTimeZone then
+  begin
+    BiasMinutes := GetBiasMinutesAtDateTimeInfo(UTCDateTime, TZInfo);
+    Result := UTCDateTime - BiasMinutes / 1440.0;
+
+    // Only DST zones need the second pass.  Avoid all date decoding on the
+    // common no-DST path (for example Japan).
+    if (TZInfo.StandardDate.wMonth <> 0) and
+       (TZInfo.DaylightDate.wMonth <> 0) then
+    begin
+      BiasMinutes := GetBiasMinutesAtDateTimeInfo(Result, TZInfo);
+      Result := UTCDateTime - BiasMinutes / 1440.0;
+    end;
+  end
+  else
+    Result := UTCDateTime + TimeZone / 24.0;
 end;
 
 procedure TSunTime.CalcTimes;
 var
   JD: Extended;
-  Minutes: Extended;
+  LatitudeValue, LongitudeValue, ZDValue: Extended;
+  NoonMin, NoonT: Extended;
+  ETime, SolarDec, BaseHourAngle: Extended;
+  HourAngle, RiseUTC, SetUTC, T: Extended;
+  TZInfo: TTimeZoneInformation;
+  HaveTZInfo: Boolean;
+  HaveBaseHourAngle: Boolean;
 begin
   JD := DateToJulian(Date);
+
+  // Read component properties once.
+  LatitudeValue := Latitude.Value;
+  LongitudeValue := Longitude.Value;
+  ZDValue := ZenithDistance.Value;
+
+  // Solar noon is common to sunrise, sunset and Noon.  The previous code
+  // calculated it three times.
+  NoonMin := GetSolarNoonUTC(JD, LongitudeValue);
+  NoonT := GetTimeJulianCent(JD + NoonMin / 1440.0);
+  ETime := GetEquationOfTime(NoonT);
+  SolarDec := GetSunDeclination(NoonT);
+
+  // Fetch Windows time-zone information only once per calculation.
+  HaveTZInfo := UseSysTimeZone;
+  if HaveTZInfo then
+    GetTimeZoneInformation(TZInfo);
+
+  // At the first estimate AM/PM differ only in the sign of the hour angle.
+  // Therefore only one ArcCos calculation is required.
+  HaveBaseHourAngle := True;
   try
-    Minutes := GetSolarTimeOfZenithDistanceUTC(JD,
-      Latitude.Value, Longitude.Value, ZenithDistance.Value, AM);
-    fSunrise := UTCMinutesToLocalTime(Minutes);
+    BaseHourAngle := GetSunHourAngleOfZenithDistance(
+      LatitudeValue, SolarDec, ZDValue, AM);
   except
-    fSunrise := 0;  // No sunrise
+    HaveBaseHourAngle := False;
+    BaseHourAngle := 0;
   end;
+
+  if HaveBaseHourAngle then
+  begin
+    RiseUTC := 720.0 + 4.0 * (LongitudeValue - BaseHourAngle) - ETime;
+    SetUTC  := 720.0 + 4.0 * (LongitudeValue + BaseHourAngle) - ETime;
+
+    // Refine sunrise once at the estimated event time.
+    try
+      T := GetTimeJulianCent(JD + RiseUTC / 1440.0);
+      ETime := GetEquationOfTime(T);
+      SolarDec := GetSunDeclination(T);
+      HourAngle := GetSunHourAngleOfZenithDistance(
+        LatitudeValue, SolarDec, ZDValue, AM);
+      RiseUTC := 720.0 + 4.0 * (LongitudeValue - HourAngle) - ETime;
+      if HaveTZInfo then
+        fSunrise := UTCMinutesToLocalTime(RiseUTC, TZInfo)
+      else
+        fSunrise := UTCMinutesToLocalTime(RiseUTC);
+    except
+      fSunrise := 0;
+    end;
+
+    // Refine sunset once at the estimated event time.
+    try
+      T := GetTimeJulianCent(JD + SetUTC / 1440.0);
+      ETime := GetEquationOfTime(T);
+      SolarDec := GetSunDeclination(T);
+      HourAngle := GetSunHourAngleOfZenithDistance(
+        LatitudeValue, SolarDec, ZDValue, PM);
+      SetUTC := 720.0 + 4.0 * (LongitudeValue - HourAngle) - ETime;
+      if HaveTZInfo then
+        fSunset := UTCMinutesToLocalTime(SetUTC, TZInfo)
+      else
+        fSunset := UTCMinutesToLocalTime(SetUTC);
+    except
+      fSunset := 0;
+    end;
+  end
+  else
+  begin
+    fSunrise := 0;
+    fSunset := 0;
+  end;
+
+  // NoonMin has already been calculated above; do not calculate solar noon
+  // for a third time.
   try
-    Minutes := GetSolarTimeOfZenithDistanceUTC(JD,
-      Latitude.Value, Longitude.Value, ZenithDistance.Value, PM);
-    fSunset := UTCMinutesToLocalTime(Minutes);
+    if HaveTZInfo then
+      fNoon := UTCMinutesToLocalTime(NoonMin, TZInfo)
+    else
+      fNoon := UTCMinutesToLocalTime(NoonMin);
   except
-    fSunset := 0;  // No sunset
+    fNoon := 0;
   end;
-  try
-    Minutes := GetSolarNoonUTC(JD, Longitude.Value);
-    fNoon := UTCMinutesToLocalTime(Minutes);
-  except
-    fNoon := 0;    // No solar noon
-  end;
+
   fReady := True;
 end;
-
 end.
 

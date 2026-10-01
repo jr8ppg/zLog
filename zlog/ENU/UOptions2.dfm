@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -3306,6 +3306,90 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'Send NR? automatically'
           TabOrder = 8
+        end
+        object groupRTTY: TGroupBox
+          Left = 288
+          Top = 158
+          Width = 213
+          Height = 197
+          Caption = 'RTTY'
+          TabOrder = 11
+          object Label68: TLabel
+            Left = 36
+            Top = 46
+            Width = 31
+            Height = 13
+            Caption = 'MARK'
+          end
+          object Label84: TLabel
+            Left = 36
+            Top = 72
+            Width = 35
+            Height = 13
+            Caption = 'SPACE'
+          end
+          object checkUseAfskTone: TCheckBox
+            Left = 12
+            Top = 19
+            Width = 193
+            Height = 17
+            Caption = 'Use RTTY(AFSK) tone'
+            TabOrder = 0
+          end
+          object checkDontChangeRigMode: TCheckBox
+            Left = 12
+            Top = 144
+            Width = 193
+            Height = 17
+            Caption = 'Don'#39't change rig mode in RTTY'
+            TabOrder = 5
+          end
+          object checkUseFskKeying: TCheckBox
+            Left = 12
+            Top = 98
+            Width = 193
+            Height = 17
+            Caption = 'Use FSK keying in zLog'
+            TabOrder = 3
+          end
+          object comboMarkFreq: TComboBox
+            Left = 88
+            Top = 42
+            Width = 53
+            Height = 21
+            TabOrder = 1
+            Items.Strings = (
+              '1955'
+              '2125'
+              '2295')
+          end
+          object comboSpaceFreq: TComboBox
+            Left = 88
+            Top = 69
+            Width = 53
+            Height = 21
+            TabOrder = 2
+            Items.Strings = (
+              '1955'
+              '2125'
+              '2295')
+          end
+          object checkFskReverse: TCheckBox
+            Left = 12
+            Top = 121
+            Width = 193
+            Height = 17
+            Caption = 'Use FSK reverse'
+            TabOrder = 4
+          end
+          object checkUseTxUos: TCheckBox
+            Left = 12
+            Top = 167
+            Width = 193
+            Height = 17
+            Caption = 'Use TX UOS'
+            TabOrder = 6
+          end
         end
       end
       object groupCwSettings: TGroupBox

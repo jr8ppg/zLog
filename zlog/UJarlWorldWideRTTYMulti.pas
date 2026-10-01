@@ -473,9 +473,14 @@ begin
    end;
 end;
 
-// NRは年齢なので特にチェックしない
+// NRは年齢なので未入力のチェックのみ
 function TJarlWorldWideRTTYMulti.ValidMulti(aQSO: TQSO): boolean;
 begin
+   if aQSO.NrRcvd = '' then begin
+      Result := False;
+      Exit;
+   end;
+
    Result := True;
 end;
 

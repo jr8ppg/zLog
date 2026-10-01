@@ -9,6 +9,9 @@ uses
   System.DateUtils, System.Math, Generics.Collections, Generics.Defaults,
   UzLogConst, HelperLib, UzLogAdif;
 
+const
+  TAB = #09;
+
 type
   TQSODataExHeader = packed record
     case Integer of
@@ -90,7 +93,9 @@ type
     RbnVerified: Boolean;  { 1 byte false:not verified true:verified }
     Continent: string[2];  { 3 bytes }
     Entity: string[10];    { 11 bytes }
-    Reserve4: string[86];  { 87 bytes }
+    Multi3: string[30];    { 31 bytes }
+    NewMulti3: Boolean;    { 1 byte }
+    Reserve4: string[54];  { 55 bytes }
     // 384bytes
   end;
 
@@ -158,6 +163,8 @@ type
     FRbnVerified: Boolean;
     FContinent: string;
     FEntity: string;
+    FMulti3: string;
+    FNewMulti3: Boolean;
 
     FTimeUtc: string;   // $D
 
@@ -205,7 +212,10 @@ type
     function CheckCallSummary : string;
     procedure UpdateTime;
     {$IFNDEF ZSERVER}
-    function zLogALL : string;
+    function zLogALL(): string;
+    function FormatELogR1(fValid: Boolean): string;
+    function FormatELogR2(fExtend: Boolean): string;
+    function FormatELogStd(fExtend: Boolean): string;
     {$ENDIF}
     function DOSzLogText : string;
     function DOSzLogTextShort : string;
@@ -260,6 +270,8 @@ type
     property RbnVerified: Boolean read FRbnVerified write FRbnVerified;
     property Continent: string read FContinent write FContinent;
     property Entity: string read FEntity write FEntity;
+    property Multi3: string read FMulti3 write FMulti3;
+    property NewMulti3: Boolean read FNewMulti3 write FNewMulti3;
 
     property SerialStr: string read GetSerialStr;
     property DateTimeStr: string read GetDateTimeStr;
@@ -482,11 +494,13 @@ type
     {$IFNDEF ZSERVER}
     procedure SaveToFileAszLogALL(Filename : string);
     procedure SaveToFileAsTxtByTX(Filename : string);
-    procedure SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList = nil);
+    procedure SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer;
+      slSummaryInfo: TStringList = nil; fCQWWRTTY: Boolean = False);
     procedure SaveToFileAsHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
     procedure SaveToFileAsHamSupport(Filename: string);
     procedure SaveToFileAsAdif(Filename: string);
     procedure SaveToFileAsSpc(Filename: string);
+    function SplitIotaNr(NR: string): string;
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
     function IsDupe2(aQSO : TQSO; index : Integer; var dupeindex : Integer) : Boolean;
@@ -625,6 +639,8 @@ begin
    FRbnVerified := False;
    FContinent := '';
    FEntity := '';
+   FMulti3 := '';
+   FNewMulti3 := False;
    FTimeUtc := '';
    FCheckResult := crOk;
 end;
@@ -1076,6 +1092,7 @@ begin
    if v = True then begin
       FMulti1 := '';
       FMulti2 := '';
+      FMulti3 := '';
    end;
 end;
 
@@ -1247,6 +1264,151 @@ begin
    end;
 
    S := S + Self.MemoStr;
+   Result := S;
+end;
+
+function TQSO.FormatELogR1(fValid: Boolean): string;
+var
+   S: string;
+begin
+   S := '';
+   if Self.Invalid = True then begin
+      S := S + 'X ' + FormatDateTime('yyyy/mm/dd hh":"nn ', Self.Time);
+   end
+   else begin
+      S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', self.Time);
+   end;
+   S := S + FillRight2(Self.CallSign, 13);
+   S := S + FillRight2(IntToStr(Self.RSTSent), 4);
+   S := S + FillRight2(Self.NrSent, 8);
+   S := S + FillRight2(IntToStr(Self.RSTRcvd), 4);
+   S := S + FillRight2(Self.NrRcvd, 8);
+
+   if Self.NewMulti1 then begin
+      S := S + FillRight2(Self.Multi1, 6);
+   end
+   else begin
+      S := S + '-     ';
+   end;
+
+   if Self.NewMulti2 then begin
+      S := S + FillRight2(Self.Multi2, 6);
+   end
+   else begin
+      S := S + '-     ';
+   end;
+
+   S := S + FillRight2(MHzString[Self.Band], 5);
+   S := S + FillRight2(ModeString[Self.Mode], 5);
+   if fValid = True then begin
+      S := S + FillRight2(IntToStr(Self.Points), 3);
+   end
+   else begin
+      S := S + FillRight2(IntToStr(0), 3);
+   end;
+
+   if Self.Operator <> '' then begin
+      S := S + FillRight2('%%' + Self.Operator + '%%', 19);
+   end;
+
+   if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
+      S := S + FillRight2('TX#' + IntToStr(Self.TX), 6);
+   end;
+
+   Result := S;
+end;
+
+function TQSO.FormatELogR2(fExtend: Boolean): string;
+var
+   slLine: TStringList;
+begin
+   slLine := TStringList.Create();
+   slLine.StrictDelimiter := True;
+   slLine.Delimiter := TAB;
+   try
+      if Self.Invalid = True then begin
+         slLine.Add('X ' + FormatDateTime('yyyy-mm-dd', Self.Time));
+      end
+      else begin
+         slLine.Add(FormatDateTime('yyyy-mm-dd', Self.Time));
+      end;
+      slLine.Add(FormatDateTime('hh:nn', Self.Time));
+
+      slLine.Add(MHzString[Self.Band]);
+      slLine.Add(ModeString[Self.Mode]);
+      slLine.Add(Self.Callsign);
+
+      slLine.Add(IntToStr(Self.RSTsent) + ' ' + Self.NrSent);
+      slLine.Add(IntToStr(Self.RSTrcvd) + ' ' + Self.NrRcvd);
+
+      if Self.NewMulti1 = True then begin
+         slLine.Add(Self.Multi1);
+      end
+      else begin
+         slLine.Add('-');
+      end;
+
+      slLine.Add(IntToStr(Self.Points));
+
+      if fExtend = True then begin
+         slLine.Add('TX#' + IntToStr(Self.TX));
+      end;
+
+      Result := slLine.DelimitedText;
+   finally
+      slLine.Free();
+   end;
+end;
+
+// 1234567890123456712345612345612345678901234123412345678901234123456789012345678
+// DATE (JST) TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts TX#
+// 2008-08-03 12:01   21  SSB   JA1xxx        59  14M     59  14H     14      1   0
+// 2026-09-27 12:47 10.1G CW    JA1xxx        599 010103P 599 100102P 100102  1   0
+// 2026-09-27 12:47   24G CW    JA1xxx        599 010103P 599 100102P 100102  1   0
+
+function TQSO.FormatELogStd(fExtend: Boolean): string;
+var
+   S: string;
+   strBand: string;
+begin
+   S := '';
+   if Self.Invalid = True then begin
+      S := S + 'X ' + FormatDateTime('yyyy-mm-dd hh":"nn ', Self.Time);
+   end
+   else begin
+      S := S + FormatDateTime('yyyy-mm-dd hh":"nn ', Self.Time);
+   end;
+
+   // バンドにGが含まれる場合は5桁で右寄せにする
+   strBand := MHzString[Self.Band];
+   if Pos('G', strBand) = 0 then begin
+      S := S + FillLeft(strBand, 4) + '  ';
+   end
+   else begin
+      S := S + FillLeft(strBand, 5) + ' ';
+   end;
+   S := S + FillRight2(ModeString[Self.Mode], 6);
+   S := S + FillRight2(Self.CallSign, 14);
+   S := S + FillRight2(IntToStr(Self.RSTSent), 4);
+   S := S + FillRight2(Self.NrSent, 8);
+   S := S + FillRight2(IntToStr(Self.RSTRcvd), 4);
+   S := S + FillRight2(Self.NrRcvd, 8);
+
+   if Self.NewMulti1 then begin
+      S := S + FillRight2(Self.Multi1, 8);
+   end
+   else begin
+      S := S + '-       ';
+   end;
+
+   if fExtend = True then begin
+      S := S + FillRight2(IntToStr(Self.Points), 3);
+      S := S + ' ' + IntToStr(Self.TX);
+   end
+   else begin
+      S := S + IntToStr(Self.Points);
+   end;
+
    Result := S;
 end;
 {$ENDIF}
@@ -1448,6 +1610,8 @@ begin
    FRbnVerified := src.RbnVerified;
    FContinent := src.Continent;
    FEntity := src.Entity;
+   FMulti3 := src.FMulti3;
+   FNewMulti3 := src.FNewMulti3;
    FCheckResult := src.FCheckResult;
 end;
 
@@ -1582,6 +1746,8 @@ begin
    Result.RbnVerified := FRbnVerified;
    Result.Continent  := ShortString(Copy(FContinent, 1, 2));
    Result.Entity     := ShortString(Copy(FEntity, 1, 10));
+   Result.Multi3     := ShortString(FMulti3);
+   Result.NewMulti3  := FNewMulti3;
 end;
 
 procedure TQSO.SetFileRecordEx(src: TQSODataEx);
@@ -1628,6 +1794,8 @@ begin
    FRbnVerified := src.RbnVerified;
    FContinent  := string(src.Continent);
    FEntity     := string(src.Entity);
+   FMulti3     := string(src.Multi3);
+   FNewMulti3  := src.NewMulti3;
 end;
 
 procedure TQSO.ToUTC();
@@ -2834,7 +3002,8 @@ end;
 //QSO:  3799 PH 1999-03-06 0712 HC8N           59 700    N5KO           59 CA     0
 
 {$IFNDEF ZSERVER}
-procedure TLog.SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer; slSummaryInfo: TStringList);
+procedure TLog.SaveToFileAsCabrillo(Filename: string; nTimeZoneOffset: Integer;
+  slSummaryInfo: TStringList; fCQWWRTTY: Boolean);
 var
    F: TextFile;
    i: Integer;
@@ -2856,6 +3025,7 @@ var
    SL: TStringList;
    qtcseqnum: Integer;
    b: TBand;
+   strState: string;
 
    function FillRight(S: string; len: integer): string;
    var
@@ -2910,6 +3080,9 @@ var
       Result := bUnknown;
    end;
 begin
+   fCQWWRTTY := fCQWWRTTY or
+      ((MyContest.ClassType = TCQWWContest) and (MyContest.Mode = cmRtty));
+
    AssignFile(F, Filename);
    ReWrite(F);
 
@@ -2963,7 +3136,6 @@ begin
    SL.Delimiter := ' ';
    clist := TCabrilloRecordList.Create();
    qtcseqnum := 1;
-
    for i := 1 to FQSOList.Count - 1 do begin
       Q := FQSOList[i];
 
@@ -2993,11 +3165,36 @@ begin
 
       strText := strText + FillRight(dmZLogGlobal.MyCall, 13) + ' ';
       strText := strText + FillLeft(IntToStr(Q.RSTSent), 3) + ' ';
-      strText := strText + FillRight(Q.NrSent, 6) + ' ';
+      if fCQWWRTTY then begin
+         strText := strText + FillRight(Q.NrSent, 2) + ' ';
+         strText := strText + FillRight('DX', 4) + ' ';
+      end
+      else if MyContest is TIotaContest then begin
+         strText := strText + FillRight(SplitIotaNr(Q.NrSent), 6) + ' ';
+      end
+      else begin
+         strText := strText + FillRight(Q.NrSent, 6) + ' ';
+      end;
 
       strText := strText + FillRight(Q.Callsign, 13) + ' ';
       strText := strText + FillLeft(IntToStr(Q.RSTRcvd), 3) + ' ';
-      strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
+
+      if fCQWWRTTY then begin
+         if Q.Multi3 = '' then begin
+            strState := 'DX';
+         end
+         else begin
+            strState := Q.Multi3;
+         end;
+         strText := strText + FillRight(Q.Multi1, 2) + ' ';
+         strText := strText + FillRight(strState, 4) + ' ';
+      end
+      else if MyContest is TIotaContest then begin
+         strText := strText + FillRight(SplitIotaNr(Q.NrRcvd), 6) + ' ';
+      end
+      else begin
+         strText := strText + FillRight(Q.NrRcvd, 6) + ' ';
+      end;
 
       // M/S, M/2のみTXNOを出力、それ以外は0固定
       if (dmZLogGlobal.ContestCategory in [ccMultiOpSingleTx, ccMultiOpTwoTx]) then begin
@@ -3072,6 +3269,26 @@ begin
    clist.Free();
    SL.Free();
 end;
+
+function TLog.SplitIotaNr(NR: string): string;
+var
+   i: Integer;
+   Index: Integer;
+const
+   iota_prefixes: array[1..7] of string = ( 'AS', 'NA', 'OC', 'EU', 'AF', 'SA', 'AN' );
+begin
+   for i := Low(iota_prefixes) to High(iota_prefixes) do begin
+      Index := Pos(iota_prefixes[i], NR);
+      if Index > 0 then begin
+         NR.Insert(Index - 1, ' ');  // 001AS007 -> 001 AS007
+         NR.Insert(Index + 2, '-');
+         Result := NR;
+         Exit;
+      end;
+   end;
+   Result := NR;
+end;
+
 {$ENDIF}
 
 {
@@ -5887,26 +6104,42 @@ end;
 
 function TQSODupeWithoutModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
-             ((Integer(Left.Band) - Integer(Right.Band)) * 10);
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign));
+
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Band) - Integer(Right.Band);
 end;
 
 { TQSODupeWithModeComparer }
 
 function TQSODupeWithModeComparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
-             ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
-             ((Integer(Left.Mode) - Integer(Right.Mode)) * 100);
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign));
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Band) - Integer(Right.Band);
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Mode) - Integer(Right.Mode);
 end;
 
 { TQSODupeWithMode2Comparer }
 
 function TQSODupeWithMode2Comparer.Compare(const Left, Right: TQSO): Integer;
 begin
-   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign)) +
-             ((Integer(Left.Band) - Integer(Right.Band)) * 10) +
-             ((Integer(Left.Mode2) - Integer(Right.Mode2)) * 100);
+   Result := CompareText(CoreCall(Left.Callsign), CoreCall(Right.Callsign));
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Band) - Integer(Right.Band);
+   if Result <> 0 then
+      Exit;
+
+   Result := Integer(Left.Mode2) - Integer(Right.Mode2);
 end;
 
 { TCabrilloRecord }

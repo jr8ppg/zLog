@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   UBasicMulti, StdCtrls, JLLabel, ExtCtrls, Grids, StrUtils,
-  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers, UWWZone;
+  UzLogConst, UzLogGlobal, UzLogQSO, USpotClass, UComm, UMultipliers, UWWZone,
+  UARRLDXMulti;
 
 const
   WM_ZLOG_UPDATELABEL = (WM_USER + 100);
@@ -47,6 +48,8 @@ type
     FLastCountry: TCountry;
     FGridReverse: array[0..500] of integer; {pointer from grid row to countrylist index}
     FAllAsia: Boolean;
+    FStateForm: TARRLDXMulti;
+    procedure SplitZoneState(const Exchange: string; out Zone, State: string);
     procedure SetFontSize(v: Integer); override;
     procedure OnZLogUpdateLabel( var Message: TMessage ); message WM_ZLOG_UPDATELABEL;
     procedure UpdateLabelPos(); virtual;
@@ -75,6 +78,7 @@ type
     property Zone: TZoneArray read FZoneFlag write FZoneFlag;
     property LastCountry: TCountry read FLastCountry;
     property ALLASIANFLAG: Boolean read FAllAsia write FAllAsia;
+    property StateForm: TARRLDXMulti read FStateForm write FStateForm;
   end;
 
 implementation
@@ -88,6 +92,7 @@ procedure TWWMulti.FormCreate(Sender: TObject);
 begin
    Inherited;
    FZoneForm := nil;
+   FStateForm := nil;
    FMostRecentCty := nil;
    FLastCountry := nil;
    FAllAsia := False;
@@ -135,6 +140,9 @@ begin
 
    RefreshGrid;
    RefreshZone;
+   if Assigned(FStateForm) then begin
+      FStateForm.UpdateData;
+   end;
 
    AddSpot(aQSO);
 end;
@@ -262,6 +270,9 @@ begin
    if Assigned(FZoneForm) then begin
       FZoneForm.Reset;
    end;
+   if Assigned(FStateForm) then begin
+      FStateForm.Reset;
+   end;
 
    for B := b19 to HiBand do begin
       for i := 1 to MAXCQZONE do begin
@@ -349,6 +360,7 @@ end;
 procedure TWWMulti.AddNoUpdate(aQSO: TQSO);
 var
    str: string;
+   State: string;
    B: TBand;
    i: integer;
    C: TCountry;
@@ -357,7 +369,9 @@ var
 begin
    aQSO.NewMulti1 := False;
    aQSO.NewMulti2 := False;
-   str := aQSO.NrRcvd;
+   aQSO.NewMulti3 := False;
+   aQSO.Multi3 := '';
+   SplitZoneState(aQSO.NrRcvd, str, State);
    aQSO.Multi1 := str;
    aQSO.Multi2 := '';
 
@@ -367,6 +381,11 @@ begin
 
    if Not(aQSO.Mode in ContestModeSet[FContestMode]) then begin
       Exit;
+   end;
+
+   if Assigned(FStateForm) and (aQSO.Mode = mRTTY) then begin
+      FStateForm.AddMulti3NoUpdate(aQSO, State);
+      FStateForm.UpdateData();
    end;
 
    B := aQSO.band;
@@ -447,17 +466,50 @@ end;
 function TWWMulti.ValidMulti(aQSO: TQSO): boolean;
 var
    str: string;
+   State: string;
    i: integer;
+   P: TPrefix;
+   StateRequired: Boolean;
 begin
-   str := aQSO.NrRcvd;
+   SplitZoneState(aQSO.NrRcvd, str, State);
    i := StrToIntDef(str, 0);
 
    if i in [1..MAXCQZONE] then begin
-      Result := True;
+      if not Assigned(FStateForm) then begin
+         Result := True;
+         Exit;
+      end;
+
+      P := dmZLogGlobal.GetPrefix(aQSO.Callsign);
+      StateRequired := Assigned(P) and Assigned(P.Country) and
+         ((P.Country.Country = 'K') or (P.Country.Country = 'N') or
+          (P.Country.Country = 'W') or (P.Country.Country = 'VE'));
+
+      if StateRequired then begin
+         Result := FStateForm.ValidState(State);
+      end
+      else begin
+         Result := (State = '') or FStateForm.ValidState(State);
+      end;
    end
    else begin
       Result := False;
    end;
+end;
+
+procedure TWWMulti.SplitZoneState(const Exchange: string; out Zone,
+  State: string);
+var
+   I: Integer;
+   S: string;
+begin
+   S := UpperCase(Trim(Exchange));
+   I := 1;
+   while (I <= Length(S)) and (I <= 2) and CharInSet(S[I], ['0'..'9']) do begin
+      Inc(I);
+   end;
+   Zone := Copy(S, 1, I - 1);
+   State := Trim(Copy(S, I));
 end;
 
 function TWWMulti.GuessZone(strCallsign: string): string;
@@ -663,11 +715,17 @@ end;
 procedure TWWMulti.BeginUpdate();
 begin
    Grid.BeginUpdate();
+   if Assigned(FStateForm) then begin
+      FStateForm.BeginUpdate;
+   end;
 end;
 
 procedure TWWMulti.EndUpdate();
 begin
    Grid.EndUpdate();
+   if Assigned(FStateForm) then begin
+      FStateForm.EndUpdate;
+   end;
 end;
 
 procedure TWWMulti.SetFontSize(v: Integer);

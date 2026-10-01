@@ -3,7 +3,7 @@ object RateDialog: TRateDialog
   Top = 213
   Caption = 'QSO rate'
   ClientHeight = 262
-  ClientWidth = 388
+  ClientWidth = 334
   Color = clBtnFace
   Constraints.MinHeight = 300
   Constraints.MinWidth = 350
@@ -23,13 +23,14 @@ object RateDialog: TRateDialog
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 388
+    Width = 334
     Height = 37
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 388
     DesignSize = (
-      388
+      334
       37)
     object Label1: TLabel
       Left = 8
@@ -74,7 +75,7 @@ object RateDialog: TRateDialog
       Caption = '0.00 QSOs/hr'
     end
     object labelOperateTime: TLabel
-      Left = 328
+      Left = 274
       Top = 15
       Width = 50
       Height = 22
@@ -87,47 +88,50 @@ object RateDialog: TRateDialog
       Font.Name = 'Consolas'
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 328
     end
     object Label3: TLabel
-      Left = 310
+      Left = 256
       Top = 3
       Width = 68
       Height = 13
       Anchors = [akTop, akRight]
       Caption = 'Operating time'
+      ExplicitLeft = 310
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 232
-    Width = 388
+    Width = 334
     Height = 30
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 388
     DesignSize = (
-      388
+      334
       30)
     object Label4: TLabel
-      Left = 309
+      Left = 255
       Top = 8
       Width = 26
       Height = 13
       Anchors = [akRight]
       Caption = 'hours'
-      ExplicitLeft = 255
     end
     object labelHourCaption: TLabel
-      Left = 212
+      Left = 158
       Top = 8
       Width = 46
       Height = 13
       Alignment = taRightJustify
       Anchors = [akRight]
       Caption = 'Show last'
+      ExplicitLeft = 212
     end
     object ShowLastCombo: TComboBox
-      Left = 263
+      Left = 209
       Top = 5
       Width = 41
       Height = 21
@@ -147,9 +151,10 @@ object RateDialog: TRateDialog
         '24'
         '36'
         '48')
+      ExplicitLeft = 263
     end
     object check3D: TCheckBox
-      Left = 349
+      Left = 295
       Top = 6
       Width = 33
       Height = 17
@@ -157,6 +162,7 @@ object RateDialog: TRateDialog
       Caption = '3D'
       TabOrder = 1
       OnClick = check3DClick
+      ExplicitLeft = 349
     end
     object Panel3: TPanel
       Left = 0
@@ -199,7 +205,7 @@ object RateDialog: TRateDialog
   object Chart1: TChart
     Left = 0
     Top = 37
-    Width = 388
+    Width = 334
     Height = 195
     LeftWall.Color = clWhite
     Legend.Visible = False
@@ -215,6 +221,7 @@ object RateDialog: TRateDialog
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitWidth = 388
     DefaultCanvas = 'TGDIPlusCanvas'
     ColorPaletteIndex = 13
     object Series1: TBarSeries

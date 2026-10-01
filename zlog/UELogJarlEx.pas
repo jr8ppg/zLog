@@ -182,6 +182,8 @@ type
     editMulti21: TEdit;
     editPoints21: TEdit;
     editMulti2_21: TEdit;
+    comboOutputOrder: TComboBox;
+    Label11: TLabel;
     procedure buttonCreateLogClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
@@ -196,9 +198,13 @@ type
     procedure buttonWebUploadClick(Sender: TObject);
     procedure ControlEnter(Sender: TObject);
     procedure ControlExit(Sender: TObject);
-    procedure buttonModeClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private 宣言 }
+    Initializing: Boolean;
+    FWorkLog: TLog;
+    FSorted: Boolean;
     FScoreBand: array[b19..HiBand] of TCheckBox;
     FScoreQso: array[b19..HiBand] of TEdit;
     FScoreMulti1: array[b19..HiBand] of TEdit;
@@ -214,14 +220,14 @@ type
     procedure WriteLogSheetR1(SL: TStringList);
     procedure WriteSummarySheetR2(SL: TStringList);
     procedure WriteLogSheetR2(SL: TStringList; fExtend: Boolean);
-    function FormatQSO_v1(q: TQSO; fValid: Boolean): string;
-    function FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
+    procedure WriteLogSheetStd(SL: TStringList; fExtend: Boolean);
     function IsNewcomer(cate: string): Boolean;
     function IsSeniorJunior(cate: string): Boolean;
     procedure CalcAll();
     procedure SetBandUsed(b: TBand);
     procedure ShowWebUploadDialogIE(logtext: string; contest: TWebUploadContest);
     procedure ShowWebUploadDialogEdge(logtext: string; contest: TWebUploadContest);
+    procedure CopyLog();
   public
     { Public 宣言 }
   end;
@@ -237,7 +243,18 @@ uses
 {$R *.dfm}
 
 procedure TformELogJarlEx.FormCreate(Sender: TObject);
+var
+   i: Integer;
+   Q: TQSO;
 begin
+   Initializing := True;
+   FSorted := False;
+   FWorkLog := TLog.Create('work');
+   FWorkLog.ScoreCoeff := Log.ScoreCoeff;
+   FWorkLog.StartTime := Log.StartTime;
+   FWorkLog.Period := Log.Period;
+   CopyLog();
+
    FScoreBand[b19]   := checkBand00;
    FScoreBand[b35]   := checkBand01;
    FScoreBand[b7]    := checkBand02;
@@ -353,11 +370,17 @@ begin
    FScorePoints[b135g] := editPoints20;
    FScorePoints[b248g] := editPoints21;
 
-   editFdcoeff.Enabled := MyContest.UseCoeff;
+   editFDCOEFF.Enabled := MyContest.UseCoeff;
 
    edFDCoefficient.Enabled := MyContest.UseCoeff;
 
    InitializeFields;
+   Initializing := False;
+end;
+
+procedure TformELogJarlEx.FormDestroy(Sender: TObject);
+begin
+   FWorkLog.Free();
 end;
 
 procedure TformELogJarlEx.FormShow(Sender: TObject);
@@ -416,6 +439,11 @@ begin
    end;
 end;
 
+procedure TformELogJarlEx.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//
+end;
+
 procedure TformELogJarlEx.RemoveBlankLines(M: TMemo);
 var
    i: integer;
@@ -438,7 +466,7 @@ var
    fSavedBack: Boolean;
    b: TBand;
 begin
-   fSavedBack := Log.Saved;
+   fSavedBack := FWorkLog.Saved;
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       TabControl1.TabIndex := ini.ReadInteger('SummaryInfo', 'Version', 0);
@@ -449,7 +477,7 @@ begin
       edCallsign.Text      := ini.ReadString('Categories', 'MyCall', 'Your call sign');
       edOpCallsign.Text    := ini.ReadString('SummaryInfo', 'OperatorCallsign', '');
 
-      if Log.ScoreCoeff > 0 then begin
+      if FWorkLog.ScoreCoeff > 0 then begin
          edFDCoefficient.Text := FloatToStr(Log.ScoreCoeff);
       end
       else begin
@@ -526,13 +554,13 @@ begin
 
       checkFieldExtend.Checked := ini.ReadBool('LogSheet', 'FieldExtend', False);
 
-      if Log.ScoreCoeff > 0 then begin
-         edFDCoefficient.Text := FloatToStr(Log.ScoreCoeff);
+      if FWorkLog.ScoreCoeff > 0 then begin
+         edFDCoefficient.Text := FloatToStr(FWorkLog.ScoreCoeff);
       end
       else begin
          edFDCoefficient.Text := '';
       end;
-      editFdcoeff.Text := edFDCoefficient.Text;
+      editFDCOEFF.Text := edFDCoefficient.Text;
 
       for b := Low(FScoreQso) to High(FScoreQso) do begin
          FScoreQso[b].Text := IntToStr(MyContest.ScoreForm.QSO[b]);
@@ -545,7 +573,7 @@ begin
       CalcAll();
    finally
       ini.Free();
-      Log.Saved := fSavedBack;
+      FWorkLog.Saved := fSavedBack;
    end;
 end;
 
@@ -553,9 +581,53 @@ procedure TformELogJarlEx.buttonCreateLogClick(Sender: TObject);
 var
    SL: TStringList;
    fname: string;
+   b: TBand;
+   i: Integer;
 begin
    SL := TStringList.Create();
    try
+      // 入力チェック
+      if edSignature.Text = '' then begin
+         MessageBox(Handle, PChar('署名を忘れています.'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+         edSignature.SetFocus();
+         Exit;
+      end;
+
+      if TabControl1.TabIndex = 1 then begin
+         if IsNewcomer(edCategoryCode.Text) = True then begin
+            if datetimeLicenseDate.Date = EncodeDate(2000, 1, 1) then begin
+               MessageBox(Handle, PChar('参加部門が ' + dmZLogGlobal.Settings.FELogNewcomerCategory + ' の場合は、局免許年月日を入力して下さい'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+               datetimeLicenseDate.SetFocus();
+               Exit;
+            end;
+         end;
+
+         if IsSeniorJunior(edCategoryCode.Text) = True then begin
+            if comboAge.Text = '' then begin
+               MessageBox(Handle, PChar('参加部門が ' + dmZLogGlobal.Settings.FELogSeniorJuniorCategory + ' の場合は、年齢を入力して下さい'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION);
+               comboAge.SetFocus();
+               Exit;
+            end;
+         end;
+      end;
+
+      if comboOutputOrder.ItemIndex = 0 then begin
+         if FSorted = True then begin
+            CopyLog();
+            CalcAll();
+            FSorted := False;
+         end;
+      end
+      else if comboOutputOrder.ItemIndex = 1 then begin // 時間順
+         FWorkLog.SortBy(soTime);
+         FSorted := True;
+      end
+      else if comboOutputOrder.ItemIndex = 2 then begin  // バンド順、時間順
+         FWorkLog.SortBy(soTime);
+         FWorkLog.SortBy(soBand);
+         FSorted := True;
+      end;
+
       if TabControl1.TabIndex = 0 then begin
          if CreateELogR1(SL) = False then begin
             Exit;
@@ -580,7 +652,7 @@ begin
 
       // 既にファイルがある場合は上書き確認
       if FileExists(fname) = True then begin
-         if MessageDlg('[' + fname + '] file already exists. overwrite?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then begin
+         if MessageBox(Handle, PChar('ファイル [' + fname + '] は既に存在します. 上書きしますか？'), PChar(Application.Title), MB_YESNO or MB_ICONEXCLAMATION or MB_DEFBUTTON2) = IDNO then begin
             Exit;
          end;
       end;
@@ -592,37 +664,13 @@ begin
    end;
 end;
 
-procedure TformELogJarlEx.buttonModeClick(Sender: TObject);
-begin
-   CalcAll();
-end;
-
 function TformELogJarlEx.CreateELogR2(SL: TStringList): Boolean;
 begin
-   // 入力チェック
-   if IsNewcomer(edCategoryCode.Text) = True then begin
-      if datetimeLicenseDate.Date = EncodeDate(2000, 1, 1) then begin
-         MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogNewcomerCategory + ' の場合は、局免許年月日を入力して下さい', mtWarning, [mbOK], 0);
-         datetimeLicenseDate.SetFocus();
-         Result := False;
-         Exit;
-      end;
-   end;
-
-   if IsSeniorJunior(edCategoryCode.Text) = True then begin
-      if comboAge.Text = '' then begin
-         MessageDlg('参加部門が ' + dmZLogGlobal.Settings.FELogSeniorJuniorCategory + ' の場合は、年齢を入力して下さい', mtWarning, [mbOK], 0);
-         comboAge.SetFocus();
-         Result := False;
-         Exit;
-      end;
-   end;
-
    // サマリーシート
    WriteSummarySheetR2(SL);
 
    // ログシート
-   WriteLogSheetR2(SL, checkFieldExtend.Checked);
+   WriteLogSheetStd(SL, checkFieldExtend.Checked);
 
    Result := True;
 end;
@@ -633,7 +681,7 @@ begin
    WriteSummarySheetR1(SL);
 
    // ログシート
-   WriteLogSheetR1(SL);
+   WriteLogSheetStd(SL, checkFieldExtend.Checked);
 
    Result := True;
 end;
@@ -755,7 +803,7 @@ begin
       end;
 
       if MyContest is TAllAsianContest then begin
-         if Log.QSOList[1].Mode = mCW then begin
+         if FWorkLog.QSOList[1].Mode = mCW then begin
             contest := wuAacw;
          end
          else begin
@@ -874,7 +922,7 @@ var
 begin
    editFdcoeff.Text := edFDCoefficient.Text;
    E := StrToFloatDef(edFDCoefficient.Text, 1);
-   Log.ScoreCoeff := E;
+   FWorkLog.ScoreCoeff := E;
    CalcAll();
 end;
 
@@ -1056,14 +1104,14 @@ begin
    SL.Add('<LOGSHEET TYPE="ZLOG.ALL">');
 
    SL.Add('Date       Time  Callsign    RSTs ExSent RSTr ExRcvd  Mult  Mult2 MHz  Mode Pt Memo');
-   for i := 1 to Log.TotalQSO do begin
-      Q := Log.QsoList[i];
+   for i := 1 to FWorkLog.TotalQSO do begin
+      Q := FWorkLog.QsoList[i];
       if Assigned(FScoreBand[Q.Band]) = False then begin
          Continue;
       end;
 
       if (dmZLogGlobal.Settings._output_outofperiod = False) and
-         (Log.IsOutOfPeriod(Q) = True) then begin
+         (FWorkLog.IsOutOfPeriod(Q) = True) then begin
          Continue;
       end;
 
@@ -1071,7 +1119,7 @@ begin
 //         Continue;
 //      end;
 
-      s := FormatQSO_v1(Q, FScoreBand[Q.Band].Checked);
+      s := Q.FormatELogR1(FScoreBand[Q.Band].Checked);
 
       SL.Add(s);
    end;
@@ -1184,7 +1232,7 @@ var
 begin
    SL.Add('<LOGSHEET TYPE="ZLOG">');
 
-   if Log.QsoList[0].RSTsent = _USEUTC then begin
+   if FWorkLog.QsoList[0].RSTsent = _USEUTC then begin
       s := 'DATE(UTC)';
    end
    else begin
@@ -1200,142 +1248,90 @@ begin
 
    SL.Add(s + TAB + 'TIME' + TAB + 'BAND' + TAB + 'MODE' + TAB + 'CALLSIGN' + TAB + 'SENTNo' + TAB + 'RCVDNo' + TAB + 'Multi' + TAB + 'Points' + s2);
 
-   for i := 1 to Log.TotalQSO do begin
-      Q := Log.QsoList[i];
+   for i := 1 to FWorkLog.TotalQSO do begin
+      Q := FWorkLog.QsoList[i];
 
       if (dmZLogGlobal.Settings._output_outofperiod = False) and
-         (Log.IsOutOfPeriod(Q) = True) then begin
+         (FWorkLog.IsOutOfPeriod(Q) = True) then begin
          Continue;
       end;
 
-//      if Q.Invalid = True then begin
-//         Continue;
-//      end;
-
-      s := FormatQSO_v2(Q, fExtend);
+      s := Q.FormatELogR2(fExtend);
       SL.Add(s);
    end;
 
    SL.Add('</LOGSHEET>');
 end;
 
-function TformELogJarlEx.FormatQSO_v1(q: TQSO; fValid: Boolean): string;
+procedure TformELogJarlEx.WriteLogSheetStd(SL: TStringList; fExtend: Boolean);
 var
-   S: string;
+   i: Integer;
+   s: string;
+   Q: TQSO;
 begin
-   S := '';
-   if q.Invalid = True then begin
-      S := S + 'X ' + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+   SL.Add('<LOGSHEET TYPE="ZLOG_REIWA">');
+
+   if FWorkLog.QsoList[0].RSTsent = _USEUTC then begin
+      s := 'DATE (UTC)';
    end
    else begin
-      S := S + FormatDateTime('yyyy/mm/dd hh":"nn ', q.Time);
+      s := 'DATE (JST)';
    end;
-   S := S + FillRight2(q.CallSign, 13);
-   S := S + FillRight2(IntToStr(q.RSTSent), 4);
-   S := S + FillRight2(q.NrSent, 8);
-   S := S + FillRight2(IntToStr(q.RSTRcvd), 4);
-   S := S + FillRight2(q.NrRcvd, 8);
 
-   if q.NewMulti1 then begin
-      S := S + FillRight2(q.Multi1, 6);
+   if fExtend = True then begin
+      SL.Add(s + ' TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts TX#');
    end
    else begin
-      S := S + '-     ';
+      SL.Add(s + ' TIME   BAND MODE  CALLSIGN      SENTNo      RCVDNo      Mlt    Pts');
    end;
 
-   if q.NewMulti2 then begin
-      S := S + FillRight2(q.Multi2, 6);
-   end
-   else begin
-      S := S + '-     ';
-   end;
+   for i := 1 to FWorkLog.TotalQSO do begin
+      Q := FWorkLog.QsoList[i];
 
-   S := S + FillRight2(MHzString[q.Band], 5);
-   S := S + FillRight2(ModeString[q.Mode], 5);
-   if fValid = True then begin
-      S := S + FillRight2(IntToStr(q.Points), 3);
-   end
-   else begin
-      S := S + FillRight2(IntToStr(0), 3);
-   end;
-
-   if q.Operator <> '' then begin
-      S := S + FillRight2('%%' + q.Operator + '%%', 19);
-   end;
-
-   if dmZlogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
-      S := S + FillRight2('TX#' + IntToStr(q.TX), 6);
-   end;
-
-//   S := S + q.Memo;
-
-   Result := S;
-end;
-
-function TformELogJarlEx.FormatQSO_v2(q: TQSO; fExtend: Boolean): string;
-var
-   slLine: TStringList;
-begin
-   slLine := TStringList.Create();
-   slLine.StrictDelimiter := True;
-   slLine.Delimiter := TAB;
-   try
-      if q.Invalid = True then begin
-         slLine.Add('X ' + FormatDateTime('yyyy-mm-dd', q.Time));
-      end
-      else begin
-         slLine.Add(FormatDateTime('yyyy-mm-dd', q.Time));
-      end;
-      slLine.Add(FormatDateTime('hh:nn', q.Time));
-
-      slLine.Add(MHzString[q.Band]);
-      slLine.Add(ModeString[q.Mode]);
-      slLine.Add(q.Callsign);
-
-      slLine.Add(IntToStr(q.RSTsent) + ' ' + q.NrSent);
-      slLine.Add(IntToStr(q.RSTrcvd) + ' ' + q.NrRcvd);
-
-      if q.NewMulti1 = True then begin
-         slLine.Add(q.Multi1);
-      end
-      else begin
-         slLine.Add('-');
+      if (dmZLogGlobal.Settings._output_outofperiod = False) and
+         (FWorkLog.IsOutOfPeriod(Q) = True) then begin
+         Continue;
       end;
 
-      slLine.Add(IntToStr(q.Points));
-
-      if fExtend = True then begin
-         slLine.Add('TX#' + IntToStr(q.TX));
-      end;
-
-      Result := slLine.DelimitedText;
-   finally
-      slLine.Free();
+      s := Q.FormatELogStd(fExtend);
+      SL.Add(s);
    end;
+
+   SL.Add('</LOGSHEET>');
 end;
 
 procedure TformELogJarlEx.checkBandClick(Sender: TObject);
 var
    n: Integer;
    fChecked: Boolean;
+   cur: TCursor;
 begin
-   n := TCheckBox(Sender).Tag;
-   fChecked := TCheckBox(Sender).Checked;
+   cur := Screen.Cursor;
+   Screen.Cursor := crHourGlass;
+   try
+      n := TCheckBox(Sender).Tag;
+      fChecked := TCheckBox(Sender).Checked;
 
-   if fChecked = True then begin
-      FScoreQso[TBand(n)].Color := clWindow;
-      FScoreMulti1[TBand(n)].Color := clWindow;
-      FScoreMulti2[TBand(n)].Color := clWindow;
-      FScorePoints[TBand(n)].Color := clWindow;
-   end
-   else begin
-      FScoreQso[TBand(n)].Color := clBtnFace;
-      FScoreMulti1[TBand(n)].Color := clBtnFace;
-      FScoreMulti2[TBand(n)].Color := clBtnFace;
-      FScorePoints[TBand(n)].Color := clBtnFace;
+      if fChecked = True then begin
+         FScoreQso[TBand(n)].Color := clWindow;
+         FScoreMulti1[TBand(n)].Color := clWindow;
+         FScoreMulti2[TBand(n)].Color := clWindow;
+         FScorePoints[TBand(n)].Color := clWindow;
+      end
+      else begin
+         FScoreQso[TBand(n)].Color := clBtnFace;
+         FScoreMulti1[TBand(n)].Color := clBtnFace;
+         FScoreMulti2[TBand(n)].Color := clBtnFace;
+         FScorePoints[TBand(n)].Color := clBtnFace;
+      end;
+
+      if Initializing = False then begin
+         CopyLog();
+      end;
+      CalcAll();
+   finally
+      Screen.Cursor := cur;
    end;
-
-   CalcAll();
 end;
 
 function TformELogJarlEx.IsNewcomer(cate: string): Boolean;
@@ -1390,6 +1386,16 @@ var
    i: Integer;
    Q: TQSO;
 begin
+   for b := Low(FScoreBand) to High(FScoreBand) do begin
+      if (FScoreBand[b] <> nil) and (FScoreBand[b].Checked = False) then begin
+         for i := 1 to FWorkLog.TotalQSO do begin
+            if FWorkLog.QsoList[i].Band = b then begin
+               FWorkLog.QsoList[i].Points := 0;
+            end;
+         end;
+      end;
+   end;
+
    totalqso := 0;
    totalmulti1 := 0;
    totalmulti2 := 0;
@@ -1402,8 +1408,8 @@ begin
       points[b] := 0;
    end;
 
-   for i := 1 to Log.TotalQSO do begin
-      Q := Log.QSOList[i];
+   for i := 1 to FWorkLog.TotalQSO do begin
+      Q := FWorkLog.QSOList[i];
 
       b := Q.Band;
 
@@ -1496,7 +1502,7 @@ begin
          edClubName.Visible := True;
          labelLicense.Visible := True;
          edLicense.Visible := True;
-         checkFieldExtend.Visible := False;
+         checkFieldExtend.Visible := True;
          buttonWebUpload.Enabled := False;
          edCategoryCode.Width := 60;
       end;
@@ -1548,6 +1554,21 @@ begin
       f.ShowModal();
    finally
       f.Release();
+   end;
+end;
+
+procedure TformELogJarlEx.CopyLog();
+var
+   i: Integer;
+   Q1: TQSO;
+   Q2: TQSO;
+begin
+   FWorkLog.Clear2();
+   for i := 1 to Log.TotalQSO do begin
+      Q1 := TQSO.Create();
+      Q2 := Log.QSOList[i];
+      Q1.Assign(Q2);
+      FWorkLog.Add(Q1);
    end;
 end;
 

@@ -22,7 +22,7 @@ object formOptions2: TformOptions2
     Top = 0
     Width = 534
     Height = 534
-    ActivePage = tabsheetMyStation
+    ActivePage = tabsheetCategories
     Align = alClient
     TabOrder = 0
     object tabsheetMyStation: TTabSheet
@@ -2343,6 +2343,90 @@ object formOptions2: TformOptions2
           Height = 17
           Caption = 'NR?'#12434#33258#21205#36865#20449
           TabOrder = 8
+        end
+        object groupRTTY: TGroupBox
+          Left = 288
+          Top = 158
+          Width = 213
+          Height = 197
+          Caption = 'RTTY'
+          TabOrder = 11
+          object Label68: TLabel
+            Left = 36
+            Top = 46
+            Width = 31
+            Height = 13
+            Caption = 'MARK'
+          end
+          object Label84: TLabel
+            Left = 36
+            Top = 72
+            Width = 35
+            Height = 13
+            Caption = 'SPACE'
+          end
+          object checkUseAfskTone: TCheckBox
+            Left = 12
+            Top = 19
+            Width = 193
+            Height = 17
+            Caption = 'RTTY'#12488#12540#12531#12434#20351#12358
+            TabOrder = 0
+          end
+          object checkDontChangeRigMode: TCheckBox
+            Left = 12
+            Top = 144
+            Width = 193
+            Height = 17
+            Caption = #12522#12464#12398#12514#12540#12489#12434#22793#26356#12375#12394#12356
+            TabOrder = 5
+          end
+          object checkUseFskKeying: TCheckBox
+            Left = 12
+            Top = 98
+            Width = 193
+            Height = 17
+            Caption = 'FSK'#12461#12540#12452#12531#12464#12434#34892#12358
+            TabOrder = 3
+          end
+          object comboMarkFreq: TComboBox
+            Left = 88
+            Top = 42
+            Width = 53
+            Height = 21
+            TabOrder = 1
+            Items.Strings = (
+              '1955'
+              '2125'
+              '2295')
+          end
+          object comboSpaceFreq: TComboBox
+            Left = 88
+            Top = 69
+            Width = 53
+            Height = 21
+            TabOrder = 2
+            Items.Strings = (
+              '1955'
+              '2125'
+              '2295')
+          end
+          object checkFskReverse: TCheckBox
+            Left = 12
+            Top = 121
+            Width = 193
+            Height = 17
+            Caption = 'FSK'#12522#12496#12540#12473
+            TabOrder = 4
+          end
+          object checkUseTxUos: TCheckBox
+            Left = 12
+            Top = 167
+            Width = 193
+            Height = 17
+            Caption = 'TX UOS'#27231#33021#12434#20351#12358
+            TabOrder = 6
+          end
         end
       end
       object groupCwSettings: TGroupBox

@@ -352,7 +352,10 @@ procedure TTS690.SetMode(Q: TQSO);
 var
    Command: AnsiString;
    para: AnsiChar;
+   fIgnoreRigModeBack: Boolean;
 begin
+   fIgnoreRigModeBack := FIgnoreRigMode;
+   FIgnoreRigMode := True;
    Inherited SetMode(Q);
 
    { 1=LSB, 2=USB, 3=CW, 4=FM, 5=AM, 6=FSK, 7=CW-R, 8=FSK=R }
@@ -378,6 +381,7 @@ begin
 
    Command := AnsiString('MD') + para + TerminatorCode;
    WriteData(Command);
+   FIgnoreRigMode := fIgnoreRigModeBack;
 end;
 
 procedure TTS690.SetRit(flag: Boolean);

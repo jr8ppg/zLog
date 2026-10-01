@@ -12,8 +12,9 @@ object formELogJarlEx: TformELogJarlEx
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poScreenCenter
-  OnClick = checkBandClick
+  OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   TextHeight = 12
   object Panel1: TPanel
@@ -24,13 +25,20 @@ object formELogJarlEx: TformELogJarlEx
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    object Label11: TLabel
+      Left = 113
+      Top = 9
+      Width = 36
+      Height = 12
+      Caption = #20986#21147#38918
+    end
     object buttonCreateLog: TButton
       Left = 377
       Top = 4
       Width = 89
       Height = 23
       Caption = 'E-Log'#20316#25104
-      TabOrder = 2
+      TabOrder = 3
       OnClick = buttonCreateLogClick
     end
     object buttonSave: TButton
@@ -39,7 +47,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 89
       Height = 23
       Caption = #20445#23384
-      TabOrder = 1
+      TabOrder = 2
       OnClick = buttonSaveClick
     end
     object buttonCancel: TButton
@@ -49,7 +57,7 @@ object formELogJarlEx: TformELogJarlEx
       Height = 23
       Caption = #38281#12376#12427
       ModalResult = 2
-      TabOrder = 4
+      TabOrder = 5
       OnClick = buttonCancelClick
     end
     object buttonWebUpload: TButton
@@ -58,7 +66,7 @@ object formELogJarlEx: TformELogJarlEx
       Width = 105
       Height = 23
       Caption = 'Web Upload'
-      TabOrder = 3
+      TabOrder = 4
       OnClick = buttonWebUploadClick
     end
     object checkFieldExtend: TCheckBox
@@ -68,6 +76,20 @@ object formELogJarlEx: TformELogJarlEx
       Height = 17
       Caption = 'TX#'#12434#36861#21152
       TabOrder = 0
+    end
+    object comboOutputOrder: TComboBox
+      Left = 154
+      Top = 6
+      Width = 85
+      Height = 20
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 1
+      Text = #22793#26356#12375#12394#12356
+      Items.Strings = (
+        #22793#26356#12375#12394#12356
+        #26178#38291#38918
+        #12496#12531#12489#38918#12289#26178#38291#38918)
     end
   end
   object TabControl1: TTabControl
@@ -1974,7 +1996,7 @@ object formELogJarlEx: TformELogJarlEx
     Filter = 'JARL E-log files (*.em)|*.em|'#20840#12390#12398#12501#12449#12452#12523'|*.*'
     Options = [ofHideReadOnly, ofPathMustExist, ofEnableSizing]
     Title = 'Save E-Log file'
-    Left = 105
+    Left = 641
     Top = 636
   end
 end

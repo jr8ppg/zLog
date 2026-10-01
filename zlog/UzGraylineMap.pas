@@ -43,6 +43,7 @@ type
     FTime: array[-180..180] of array[-90..90] of TGraylineTime;
   private
     FShowGrayline: Boolean;
+    procedure CalcFastStates(Nowtime: TDateTime; UpdateTimes: Boolean);
     function GetDayTime(X: Integer; Y: Integer): TGraylineTime;
   public
     constructor Create();
@@ -186,115 +187,164 @@ begin
    FSuntime.Free();
 end;
 
-procedure TGraylineMap.Calc(Nowtime: TDateTime);
+function Normalize180(A: Double): Double; inline;
+begin
+   while A > 180.0 do A := A - 360.0;
+   while A < -180.0 do A := A + 360.0;
+   Result := A;
+end;
+
+procedure CalcSolarPositionUTC(ADateTime: TDateTime;
+   out Declination, EqTime, SubSolarWest: Double);
+var
+   JD, T, L0, M, Ecc, C, TrueLong, Omega: Double;
+   MeanObliq, ObliqCorr, Y, Sin2L0, SinM, Cos2L0, Sin4L0, Sin2M: Double;
+   UtcMinutes: Double;
+begin
+   // NOAA Solar Calculator formulae.
+   // ADateTime is UTC.  Delphi TDateTime 0 = 1899-12-30 00:00.
+   JD := ADateTime + 2415018.5;
+   T := (JD - 2451545.0) / 36525.0;
+
+   L0 := 280.46646 + T * (36000.76983 + T * 0.0003032);
+   L0 := L0 - Floor(L0 / 360.0) * 360.0;
+
+   M := 357.52911 + T * (35999.05029 - 0.0001537 * T);
+   Ecc := 0.016708634 - T * (0.000042037 + 0.0000001267 * T);
+
+   C := Sin(DegToRad(M)) * (1.914602 - T * (0.004817 + 0.000014 * T))
+      + Sin(DegToRad(2.0 * M)) * (0.019993 - 0.000101 * T)
+      + Sin(DegToRad(3.0 * M)) * 0.000289;
+
+   TrueLong := L0 + C;
+   Omega := 125.04 - 1934.136 * T;
+
+   MeanObliq := 23.0 + (26.0 +
+      (21.448 - T * (46.815 + T * (0.00059 - T * 0.001813))) / 60.0) / 60.0;
+   ObliqCorr := MeanObliq + 0.00256 * Cos(DegToRad(Omega));
+
+   Declination := RadToDeg(ArcSin(
+      Sin(DegToRad(ObliqCorr)) * Sin(DegToRad(TrueLong - 0.00569 - 0.00478 * Sin(DegToRad(Omega))))));
+
+   Y := Sqr(Tan(DegToRad(ObliqCorr) / 2.0));
+   Sin2L0 := Sin(2.0 * DegToRad(L0));
+   SinM := Sin(DegToRad(M));
+   Cos2L0 := Cos(2.0 * DegToRad(L0));
+   Sin4L0 := Sin(4.0 * DegToRad(L0));
+   Sin2M := Sin(2.0 * DegToRad(M));
+
+   EqTime := 4.0 * RadToDeg(
+        Y * Sin2L0
+      - 2.0 * Ecc * SinM
+      + 4.0 * Ecc * Y * SinM * Cos2L0
+      - 0.5 * Y * Y * Sin4L0
+      - 1.25 * Ecc * Ecc * Sin2M);
+
+   // Longitude convention in this unit is WEST positive / EAST negative.
+   // At the subsolar longitude the solar hour angle is zero.
+   UtcMinutes := Frac(ADateTime) * 1440.0;
+   if UtcMinutes < 0 then UtcMinutes := UtcMinutes + 1440.0;
+   SubSolarWest := Normalize180((UtcMinutes + EqTime) / 4.0 - 180.0);
+end;
+
+procedure TGraylineMap.CalcFastStates(Nowtime: TDateTime; UpdateTimes: Boolean);
+const
+   SUNRISE_ALTITUDE = -0.833; // atmospheric refraction + solar radius
+   GRAY_ANGLE = GRAYOFFSET * 0.25; // 30 min * 15 deg/hour = 7.5 deg
 var
    x, y: Integer;
-   PrevDay: TDateTime;
-   NextDay: TDateTime;
-   sunset: TDateTime;
+   Declination, EqTime, SubSolarWest: Double;
+   Phi, Delta, SinPhi, CosPhi, SinDelta, CosDelta: Double;
+   CosH0, H0, H, D: Double;
+   State: TGrayState;
+   BaseDate, SolarNoonMin, SunriseMin, SunsetMin: Double;
 begin
-   // setrise/sunset
-   NextDay := IncDay(Nowtime, 1);
-   PrevDay := IncDay(Nowtime, -1);
+   CalcSolarPositionUTC(Nowtime, Declination, EqTime, SubSolarWest);
+   Delta := DegToRad(Declination);
+   SinDelta := Sin(Delta);
+   CosDelta := Cos(Delta);
+   BaseDate := Trunc(Nowtime);
 
-   // north->south
-   for y := 90 downto -90 do begin
-      // west->east
-      for x := 180 downto -180 do begin
-         // 地点セット
-         FSuntime.Latitude.Value := y;
-         FSuntime.Longitude.Value := x;
+   // Only one ArcCos is required per latitude (181 calls total).
+   for y := -90 to 90 do begin
+      Phi := DegToRad(y);
+      SinPhi := Sin(Phi);
+      CosPhi := Cos(Phi);
 
-         // 西経部は１日戻す
-         if x > 0 then begin
-            FSuntime.Date := PrevDay;
+      if Abs(CosPhi * CosDelta) < 1.0E-12 then begin
+         // Pole: determine day/night from current solar altitude.
+         if SinPhi * SinDelta >= Sin(DegToRad(SUNRISE_ALTITUDE)) then
+            H0 := 180.0
+         else
+            H0 := 0.0;
+      end
+      else begin
+         CosH0 := (Sin(DegToRad(SUNRISE_ALTITUDE)) - SinPhi * SinDelta) /
+                  (CosPhi * CosDelta);
+
+         if CosH0 >= 1.0 then
+            H0 := 0.0              // polar night
+         else if CosH0 <= -1.0 then
+            H0 := 180.0            // midnight sun
+         else
+            H0 := RadToDeg(ArcCos(CosH0));
+      end;
+
+      for x := -180 to 180 do begin
+         // Local solar hour angle.  x is WEST-positive longitude.
+         H := SubSolarWest - x;
+         if H > 180.0 then
+            H := H - 360.0
+         else if H < -180.0 then
+            H := H + 360.0;
+
+         if (H0 > 0.0) and (H0 < 180.0) then begin
+            D := Abs(Abs(H) - H0);
+            if FShowGrayline and (D <= GRAY_ANGLE) then begin
+               if H < 0.0 then
+                  State := gsGrayline1       // sunrise side
+               else
+                  State := gsGrayline2;      // sunset side
+            end
+            else if Abs(H) < H0 then
+               State := gsDaytime
+            else
+               State := gsNight;
          end
-         else begin
-            FSuntime.Date := Nowtime;
-         end;
+         else if H0 >= 180.0 then
+            State := gsDaytime
+         else
+            State := gsNight;
 
-         // 日の入り
-         if IsNan(FSuntime.sunset) then begin
-            FTime[x, y].Sunset := 0;
-         end
-         else begin
-            FTime[x, y].Sunset := FSuntime.sunset;
-         end;
+         FTime[x, y].FGrayState := State;
 
-         // 既にsunsetを過ぎていたらsunriseは翌日について計算する
-         sunset := FTime[x, y].SunsetMax;
-         if ((sunset > 0) and (Nowtime > sunset)) then begin
-            // 東経部は１日進める
-            if x < 0 then begin
-               FSuntime.Date := NextDay;
+         // Keep public Sunrise/Sunset values available at low cost.
+         // This is only needed on the initial Calc; Judge does not use them.
+         if UpdateTimes then begin
+            if (H0 > 0.0) and (H0 < 180.0) then begin
+               SolarNoonMin := 720.0 + 4.0 * x - EqTime;
+               SunriseMin := SolarNoonMin - 4.0 * H0;
+               SunsetMin := SolarNoonMin + 4.0 * H0;
+               FTime[x, y].Sunrise := BaseDate + SunriseMin / 1440.0;
+               FTime[x, y].Sunset := BaseDate + SunsetMin / 1440.0;
             end
             else begin
-               FSuntime.Date := Nowtime;
+               FTime[x, y].Sunrise := 0;
+               FTime[x, y].Sunset := 0;
             end;
          end;
-
-         // 日の出
-         if IsNan(FSuntime.sunrise) then begin
-            FTime[x, y].Sunrise := 0;
-         end
-         else begin
-            FTime[x, y].Sunrise := FSuntime.sunrise;
-         end;
-
-         // 昼夜判定
-         FTime[x, y].Judge(Nowtime, FShowGrayline);
       end;
    end;
 end;
 
-procedure TGraylineMap.Judge(Nowtime: TDateTime);
-var
-   x, y: Integer;
-   NextDay: TDateTime;
-   sunset: TDateTime;
+procedure TGraylineMap.Calc(Nowtime: TDateTime);
 begin
-   NextDay := IncDay(Nowtime, 1);
+   CalcFastStates(Nowtime, True);
+end;
 
-   // north->south
-   for y := 90 downto -90 do begin
-      // west->east
-      for x := 180 downto -180 do begin
-         // 各地点について昼夜判定
-         FTime[x, y].Judge(Nowtime, FShowGrayline);
-
-         // 既にsunsetを過ぎていたらsunriseは翌日について計算する
-         sunset := FTime[x, y].SunsetMax;
-         if (sunset > 0) and (Nowtime > sunset) then begin
-
-            FSuntime.Latitude.Value := y;
-            FSuntime.Longitude.Value := x;
-
-            // 東経部は１日進める
-            if x < 0 then begin
-               FSuntime.Date := NextDay;
-            end
-            else begin
-               FSuntime.Date := Nowtime;
-            end;
-
-            // 日の出
-            if IsNan(FSuntime.sunrise) then begin
-               FTime[x, y].Sunrise := 0;
-            end
-            else begin
-               FTime[x, y].Sunrise := FSuntime.sunrise;
-            end;
-
-            // 日の入り
-            if IsNan(FSuntime.sunset) then begin
-               FTime[x, y].Sunset := 0;
-            end
-            else begin
-               FTime[x, y].Sunset := FSuntime.sunset;
-            end;
-         end;
-      end;
-   end;
+procedure TGraylineMap.Judge(Nowtime: TDateTime);
+begin
+   CalcFastStates(Nowtime, False);
 end;
 
 procedure TGraylineMap.Draw(bmp: TBitmap; ycutoff: Integer);
@@ -302,76 +352,66 @@ type
    TRGBTripleArray = array[0..5000] of TRGBTriple;
    PTRGBTripleArray = ^TRGBTripleArray;
 var
-   bmp_w: Integer;
-   bmp_h: Integer;
-   w_rate: Extended;
-   h_rate: Extended;
-   x, y: Integer;
-   xx, yy: Integer;
+   bmp_w, bmp_h: Integer;
+   x, y, xx, yy: Integer;
+   w_rate, h_rate: Double;
    P: PTRGBTripleArray;
-   C: TGraylineTime;
-   PX: RGBTriple;
+   State: TGrayState;
+   Offset: Integer;
+   R, G, B: Integer;
 begin
    bmp_w := bmp.Width;
    bmp_h := bmp.Height;
-   w_rate := 360 / bmp_w;
-   h_rate := (180 - (ycutoff * 2)) / bmp_h;
+   if (bmp_w <= 0) or (bmp_h <= 0) then Exit;
+
+   // pf24bit is required for TRGBTriple ScanLine access.
+   if bmp.PixelFormat <> pf24bit then
+      bmp.PixelFormat := pf24bit;
+
+   w_rate := 360.0 / bmp_w;
+   h_rate := (180.0 - (ycutoff * 2.0)) / bmp_h;
 
    for y := 0 to bmp_h - 1 do begin
-
       P := bmp.ScanLine[y];
+      yy := (90 - ycutoff) - Trunc(y * h_rate);
+      if yy > 90 then yy := 90;
+      if yy < -90 then yy := -90;
 
       for x := 0 to bmp_w - 1 do begin
-         xx := 180 - Trunc(x * w_rate);
-         yy := (90 - ycutoff) - Trunc(y * h_rate);
+         // Fast path for the native 360-pixel map avoids a floating multiply.
+         if bmp_w = 360 then
+            xx := 180 - x
+         else
+            xx := 180 - Trunc(x * w_rate);
 
-         C := FTime[xx, yy];
+         if xx > 180 then xx := 180;
+         if xx < -180 then xx := -180;
 
-         if FShowGrayline = True then begin
-            if C.GrayState = gsGrayline1 then begin
-               PX := P^[x];
+         State := FTime[xx, yy].FGrayState;
 
-               PX.rgbtRed := Max(PX.rgbtRed - 64, 0);
-               PX.rgbtGreen := Max(PX.rgbtGreen - 64, 0);
-               PX.rgbtBlue := Max(PX.rgbtBlue - 64, 0);
+         case State of
+            gsNight:
+               Offset := 110;
 
-               P^[x] := PX;
-            end
-            else if C.GrayState = gsGrayline2 then begin
-               PX := P^[x];
+            gsGrayline1, gsGrayline2:
+               if FShowGrayline then
+                  Offset := 64
+               else
+                  Offset := 0;
+         else
+            Offset := 0;
+         end;
 
-               {$IFDEF DEBUG}
-               PX.rgbtRed := Max(PX.rgbtRed - 32, 0);
-               PX.rgbtGreen := Max(PX.rgbtGreen - 80, 0);
-               PX.rgbtBlue := Max(PX.rgbtBlue - 80, 0);
-               {$ELSE}
-               PX.rgbtRed := Max(PX.rgbtRed - 64, 0);
-               PX.rgbtGreen := Max(PX.rgbtGreen - 64, 0);
-               PX.rgbtBlue := Max(PX.rgbtBlue - 64, 0);
-               {$ENDIF}
-
-               P^[x] := PX;
-            end
-            else if C.GrayState = gsNight then begin
-               PX := P^[x];
-
-               PX.rgbtRed := Max(PX.rgbtRed - 110, 0);
-               PX.rgbtGreen := Max(PX.rgbtGreen - 110, 0);
-               PX.rgbtBlue := Max(PX.rgbtBlue - 110, 0);
-
-               P^[x] := PX;
-            end;
-         end
-         else begin
-            if C.GrayState = gsNight then begin
-               PX := P^[x];
-
-               PX.rgbtRed := Max(PX.rgbtRed - 110, 0);
-               PX.rgbtGreen := Max(PX.rgbtGreen - 110, 0);
-               PX.rgbtBlue := Max(PX.rgbtBlue - 110, 0);
-
-               P^[x] := PX;
-            end;
+         if Offset <> 0 then begin
+            R := Integer(P^[x].rgbtRed) - Offset;
+            G := Integer(P^[x].rgbtGreen) - Offset;
+            B := Integer(P^[x].rgbtBlue) - Offset;
+            if R < 0 then R := 0;
+            if G < 0 then G := 0;
+            if B < 0 then B := 0;
+            P^[x].rgbtRed := Byte(R);
+            P^[x].rgbtGreen := Byte(G);
+            P^[x].rgbtBlue := Byte(B);
          end;
       end;
    end;

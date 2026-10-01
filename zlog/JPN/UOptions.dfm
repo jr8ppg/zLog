@@ -3262,7 +3262,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 84
         Width = 514
-        Height = 68
+        Height = 93
         Caption = 'PTT'#21046#24481
         TabOrder = 1
         object Label38: TLabel
@@ -3293,10 +3293,24 @@ object formOptions: TformOptions
           Height = 13
           Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
         end
+        object Label63: TLabel
+          Left = 282
+          Top = 67
+          Width = 61
+          Height = 13
+          Caption = #36865#20449#24460#12487#12451#12524#12452'(ms)'
+        end
+        object Label64: TLabel
+          Left = 125
+          Top = 67
+          Width = 70
+          Height = 13
+          Caption = #36865#20449#21069#12487#12451#12524#12452'(ms)'
+        end
         object checkEnablePttCw: TCheckBox
           Left = 8
           Top = 18
-          Width = 113
+          Width = 130
           Height = 17
           Caption = 'CW'#12391'PTT'#20351#12358
           TabOrder = 0
@@ -3321,7 +3335,7 @@ object formOptions: TformOptions
         object checkEnablePttPh: TCheckBox
           Left = 8
           Top = 42
-          Width = 113
+          Width = 130
           Height = 17
           Caption = 'PH'#12391'PTT'#20351#12358
           TabOrder = 3
@@ -3343,10 +3357,37 @@ object formOptions: TformOptions
           TabOrder = 5
           OnKeyPress = NumberEditKeyPress
         end
+        object checkEnablePttRtty: TCheckBox
+          Left = 8
+          Top = 66
+          Width = 130
+          Height = 17
+          Caption = 'RTTY'#12391'PTT'#20351#12358
+          Checked = True
+          Enabled = False
+          State = cbChecked
+          TabOrder = 6
+        end
+        object editBeforeTxRtty: TEdit
+          Left = 229
+          Top = 64
+          Width = 40
+          Height = 21
+          TabOrder = 7
+          OnKeyPress = NumberEditKeyPress
+        end
+        object editAfterTxRtty: TEdit
+          Left = 385
+          Top = 64
+          Width = 40
+          Height = 21
+          TabOrder = 8
+          OnKeyPress = NumberEditKeyPress
+        end
       end
       object groupUsif4cw: TGroupBox
         Left = 6
-        Top = 159
+        Top = 183
         Width = 514
         Height = 68
         Caption = 'USBIF4CW'#12458#12503#12471#12519#12531
@@ -3378,7 +3419,7 @@ object formOptions: TformOptions
       end
       object groupWinKeyer: TGroupBox
         Left = 6
-        Top = 234
+        Top = 258
         Width = 514
         Height = 68
         Caption = 'WinKeyer'#12458#12503#12471#12519#12531
@@ -3427,7 +3468,7 @@ object formOptions: TformOptions
       end
       object groupSoundDevice: TGroupBox
         Left = 6
-        Top = 308
+        Top = 332
         Width = 514
         Height = 52
         Caption = #38899#22768#20877#29983#12487#12496#12452#12473
@@ -3590,6 +3631,43 @@ object formOptions: TformOptions
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
         end
+        object groupRIg1Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 101
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig1FskPort: TComboBox
+            Tag = 1
+            Left = 9
+            Top = 17
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig1FskPortConfig: TButton
+            Tag = 1
+            Left = 9
+            Top = 45
+            Width = 64
+            Height = 22
+            Caption = #35373#23450
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
+          object comboRig1RxPort: TComboBox
+            Tag = 1
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
+          end
+        end
       end
       object gtoupRig2F2A: TGroupBox
         Left = 6
@@ -3726,6 +3804,43 @@ object formOptions: TformOptions
           Caption = #12487#12540#12479#12514#12540#12489#12434#20351#12358
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
+        end
+        object groupRIg2Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 101
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig2FskPort: TComboBox
+            Tag = 2
+            Left = 9
+            Top = 17
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig2FskPortConfig: TButton
+            Tag = 2
+            Left = 9
+            Top = 45
+            Width = 64
+            Height = 22
+            Caption = #35373#23450
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
+          object comboRig2RxPort: TComboBox
+            Tag = 2
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
+          end
         end
       end
       object gtoupRig3F2A: TGroupBox
@@ -3864,6 +3979,43 @@ object formOptions: TformOptions
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
         end
+        object groupRIg3Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 101
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig3FskPort: TComboBox
+            Tag = 3
+            Left = 9
+            Top = 17
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig3FskPortConfig: TButton
+            Tag = 3
+            Left = 9
+            Top = 45
+            Width = 64
+            Height = 22
+            Caption = #35373#23450
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
+          object comboRig3RxPort: TComboBox
+            Tag = 3
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
+          end
+        end
       end
       object gtoupRig4F2A: TGroupBox
         Left = 6
@@ -4000,6 +4152,43 @@ object formOptions: TformOptions
           Caption = #12487#12540#12479#12514#12540#12489#12434#20351#12358
           TabOrder = 3
           OnClick = checkUseF2ADataModeClick
+        end
+        object groupRIg4Fsk: TGroupBox
+          Left = 425
+          Top = 12
+          Width = 81
+          Height = 101
+          Caption = 'FSK'
+          TabOrder = 9
+          object comboRig4FskPort: TComboBox
+            Tag = 4
+            Left = 9
+            Top = 17
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 0
+            OnChange = comboFskPortChange
+          end
+          object buttonRig4FskPortConfig: TButton
+            Tag = 4
+            Left = 9
+            Top = 45
+            Width = 64
+            Height = 22
+            Caption = #35373#23450
+            TabOrder = 1
+            OnClick = buttonFskPortConfigClick
+          end
+          object comboRig4RxPort: TComboBox
+            Tag = 4
+            Left = 9
+            Top = 73
+            Width = 64
+            Height = 21
+            Style = csDropDownList
+            TabOrder = 2
+          end
         end
       end
     end
@@ -4154,7 +4343,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 250
-        Height = 261
+        Height = 293
         Caption = #20840#33324
         TabOrder = 0
         object Label45: TLabel
@@ -4273,6 +4462,16 @@ object formOptions: TformOptions
           ParentShowHint = False
           ShowHint = True
           TabOrder = 10
+        end
+        object checkSetInitFreqChgMode: TCheckBox
+          Left = 8
+          Top = 258
+          Width = 233
+          Height = 18
+          Caption = #12514#12540#12489#22793#26356#26178#12289#21021#26399#21608#27874#25968#12434#12475#12483#12488#12377#12427
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 11
         end
       end
       object groupRcMemoryScan: TGroupBox
@@ -4818,13 +5017,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = '@PlemolJP ExtraLight'
+          FontName = 'Source Code Pro'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 16
+          ItemIndex = 120
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

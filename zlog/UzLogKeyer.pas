@@ -29,6 +29,16 @@ const
   LF = #$0a;
 
 const
+  DC1 = #$11;
+  DC2 = #$12;
+  DC3 = #$13;
+  DC4 = #$14;
+  LTRS = #$1F;
+  FIGS = #$1B;
+  LTRS2 = #$1E;
+  FIGS2 = #$1A;
+
+const
   WM_USER_WKSENDNEXTCHAR = (WM_USER + 1);
   WM_USER_WKCHANGEWPM = (WM_USER + 2);
   WM_USER_WKPADDLE = (WM_USER + 3);
@@ -61,11 +71,12 @@ type
                  tkpSerial6, tkpSerial7, tkpSerial8, tkpSerial9, tkpSerial10,
                  tkpSerial11, tkpSerial12, tkpSerial13, tkpSerial14, tkpSerial15,
                  tkpSerial16, tkpSerial17, tkpSerial18, tkpSerial19, tkpSerial20,
-                 tkpUSB, tkpRIG, tkpParallel);
+                 tkpUSB, tkpRIG, tkpParallel, tkpMmtty);
 
 type
   CodeData = array[1..codemax] of byte;
   CodeTableType = array[0..255] of CodeData;
+  BaudotTableType = array[0..255] of CodeData;
 
 type
   TdmZLogKeyer = class;
@@ -125,6 +136,16 @@ type
     ZComTxRigSelect: TCommPortDriver;
     ZComKeying4: TCommPortDriver;
     ZComKeying5: TCommPortDriver;
+    ZFskKeying1: TCommPortDriver;
+    ZFskKeying2: TCommPortDriver;
+    ZFskKeying3: TCommPortDriver;
+    ZFskKeying4: TCommPortDriver;
+    ZFskKeying5: TCommPortDriver;
+    ZComTtyRx1: TCommPortDriver;
+    ZComTtyRx2: TCommPortDriver;
+    ZComTtyRx3: TCommPortDriver;
+    ZComTtyRx4: TCommPortDriver;
+    ZComTtyRx5: TCommPortDriver;
     procedure WndMethod(var msg: TMessage);
     procedure DoDeviceChanges(Sender: TObject);
     function DoEnumeration(HidDev: TJvHidDevice; const Index: Integer) : Boolean;
@@ -135,10 +156,15 @@ type
     procedure HidControllerRemoval(HidDev: TJvHidDevice);
     procedure ZComKeying1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
     procedure HidControllerDeviceCreateError(Controller: TJvHidDeviceController; PnPInfo: TJvHidPnPInfo; var Handled, RetryCreate: Boolean);
+    procedure ZComTtyRx1ReceiveData(Sender: TObject; DataPtr: Pointer;
+      DataSize: DWORD);
   private
     { Private 宣言 }
     FDefautCom: array[0..MAXPORT] of TCommPortDriver;
+    FDefautFsk: array[0..MAXPORT] of TCommPortDriver;
     FComKeying: array[0..MAXPORT] of TCommPortDriver;
+    FFskKeying: array[0..MAXPORT] of TCommPortDriver;
+    FTtyRxCom: array[0..MAXPORT] of TCommPortDriver;
 
     FMonitorThread: TKeyerMonitorThread;
     FPaddleThread: TPaddleThread;
@@ -168,6 +194,8 @@ type
 
     {$IFDEF USESIDETONE}
     FTone: TSideTone;
+    FMarkSound: TSideTone;
+    FSpaceSound: TSideTone;
     {$ENDIF}
 
     FUserFlag: Boolean; // can be set to True by user. set to False only when ClrBuffer is called or "  is reached in the sending buffer. // 1.9z2 used in QTCForm
@@ -186,6 +214,7 @@ type
     FSendChar: Boolean;
 
     FCodeTable: CodeTableType;
+    FBaudotTable: BaudotTableType;
 
     FInitialized: Boolean;
 
@@ -205,6 +234,9 @@ type
 
     FPttDelayBeforeTime: Byte;
     FPttDelayAfterTime: Byte;
+
+    FRttyPttDelayBeforeCount: Integer;
+    FRttyPttDelayAfterCount: Integer;
 
     cwstrptr: Integer;
     tailcwstrptr: Integer;
@@ -283,6 +315,19 @@ type
     FUseCanSend: Boolean;
     FPrevDSR: Boolean;
 
+    // RTTY support
+    FRTTY: Boolean;
+    FUseAFSKTone: Boolean;
+    FSpaceFreq: Integer;
+    FMarkFreq: Integer;
+    FFskReverse: Boolean;
+    FFskPort: array[0..MAXPORT] of TKeyingPort;
+    FFskPortConfig: array[0..MAXPORT] of TPortConfig;
+    FTtyRxPort: array[0..MAXPORT] of TKeyingPort;
+    FUseTxUOS: Boolean;
+    FLTRS: Boolean;
+    FFIGS: Boolean;
+
     // TX select sub
     procedure SetTxRigFlag_com(rigset: Integer);
     procedure SetTxRigFlag_com_v28(rigset: Integer);
@@ -302,8 +347,9 @@ type
 
     procedure Sound();
     procedure NoSound();
+    procedure RttyAudio(key: Integer; fOn: Boolean);
 
-    procedure SetCWSendBufChar(b: Integer; C: Char); {Adds a char to the end of buffer}
+    procedure SetCWSendBufChar(b: Integer; C: AnsiChar); {Adds a char to the end of buffer}
     procedure SetCWSendBufFinish(b: Integer);
     function DecodeCommands(S: string): string;
     procedure CW_ON(nID: Integer);
@@ -327,6 +373,8 @@ type
     procedure COM_OFF();
     procedure USB_ON();
     procedure USB_OFF();
+    procedure FSK_ON();
+    procedure FSK_OFF();
     procedure SetUseSideTone(fUse: Boolean);
     procedure SetSideToneVolume(v: Integer);
 
@@ -349,10 +397,23 @@ type
     procedure DumpSendBuf();
     procedure SetOtrspPortParam(CP: TCommPortDriver);
     procedure WinKeyerSleep(dwMilidec: DWORD);
+
+    procedure SetSpaceFreq(v: Integer);
+    procedure SetMarkFreq(v: Integer);
+    procedure FSK_KEYING(nID: Integer; fMark: Boolean);
+    procedure FSK_MARK(nID: Integer);
+    procedure FSK_SPACE(nID: Integer);
+    function GetFskPort(Index: Integer): TKeyingPort;
+    procedure SetFskPort(Index: Integer; port: TKeyingPort);
+    function GetFskPortConfig(Index: Integer): TPortConfig;
+    procedure SetFskPortConfig(Index: Integer; v: TPortConfig);
+    function GetTtyRxPort(Index: Integer): TKeyingPort;
+    procedure SetTtyRxPort(Index: Integer; port: TKeyingPort);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
     procedure CloseBGK; {Closes BGK}
+    procedure ResetComm();
 
     function PTTIsOn : Boolean;
     function IsPlaying : Boolean;
@@ -361,6 +422,9 @@ type
 
     procedure ControlPTT(nID: Integer; PTTON : Boolean; fPhonePTT: Boolean = False); {Sets PTT on/off}
     procedure ResetPTT();
+    procedure FskControlPTT(nID: Integer; PTTON : Boolean; fPhonePTT: Boolean = False); {Sets PTT on/off}
+    procedure FskResetPTT();
+    procedure FskCancelSend(nID: Integer); {Stops FSK one-character send and clears its buffer}
     procedure TuneOn(nID: Integer);
 
     procedure SetCallSign(S: string); {Update realtime callsign}
@@ -370,7 +434,8 @@ type
     procedure PauseCW; {Pause}
     procedure ResumeCW; {Resume}
 
-    procedure SendStr(nID: Integer; sStr: string); {Sends a string (Overwrites buffer)}
+    procedure SendStr(nID: Integer; sStr: string; fWithOutPTT: Boolean = False);
+    procedure SendChar(nID: Integer; CH: AnsiChar);
     procedure SendStrFIFO(nID: Integer; sStr: string); {Sends a string (adds to buffer)}
 
     procedure SetCWSendBuf(b: byte; S: string); {Sets str to buffer but does not start sending}
@@ -390,6 +455,7 @@ type
 
     procedure SetPTT(_on : Boolean);
     procedure SetPTTDelay(before, after : word);
+    procedure SetRttyPTTDelay(before, after: word);
     procedure SetWeight(W : word); {Sets the weight 0-100 %}
 
     property WPM: Integer read FKeyerWPM write SetWPM;
@@ -420,6 +486,17 @@ type
     property Gen3MicSelect: Boolean read FGen3MicSelect write FGen3MicSelect;
     property UseCanSend: Boolean read FUseCanSend write FUseCanSend;
 
+    // RTTY support
+    property RTTY: Boolean read FRTTY write FRTTY;
+    property UseAFSKTone: Boolean read FUseAFSKTone write FUseAFSKTone;
+    property SpaceFreq: Integer read FSpaceFreq write SetSpaceFreq;
+    property MarkFreq: Integer read FMarkFreq write SetMarkFreq;
+    property FskReverse: Boolean read FFskReverse write FFskReverse;
+    property FskPort[Index: Integer]: TKeyingPort read GetFskPort write SetFskPort;
+    property FskPortConfig[Index: Integer]: TPortConfig read GetFskPortConfig write SetFskPortConfig;
+    property TtyRxPort[Index: Integer]: TKeyingPort read GetTtyRxPort write SetTtyRxPort;
+    property UseTxUOS: Boolean read FUseTxUOS write FUseTxUOS;
+
     // paddle support
     procedure PaddleProc(PaddleStatus: Byte);
 
@@ -432,8 +509,10 @@ type
     procedure usbif4cwSetPort(port: Integer; value: Boolean);
 
     // 1Port Control support
-    procedure SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
-    procedure ResetCommPortDriver(Index: Integer; port: TKeyingPort);
+    procedure SetCwkPortDriver(Index: Integer; CP: TCommPortDriver);
+    procedure SetFskPortDriver(Index: Integer; CP: TCommPortDriver);
+    procedure ResetCwkPortDriver(Index: Integer; port: TKeyingPort);
+    procedure ResetFskPortDriver(Index: Integer; port: TKeyingPort);
 
     // WinKeyer support
     property UseWinKeyer: Boolean read FUseWinKeyer write FUseWinKeyer;
@@ -504,6 +583,9 @@ const
 
 implementation
 
+uses
+  Main, UTTYConsole;
+
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
@@ -518,16 +600,7 @@ var
    i: Integer;
 begin
    FInitialized := False;
-   FDefautCom[0] := ZComKeying1;
-   FDefautCom[1] := ZComKeying2;
-   FDefautCom[2] := ZComKeying3;
-   FDefautCom[3] := ZComKeying4;
-   FDefautCom[4] := ZComKeying5;
-   FComKeying[0] := FDefautCom[0];
-   FComKeying[1] := FDefautCom[1];
-   FComKeying[2] := FDefautCom[2];
-   FComKeying[3] := FDefautCom[3];
-   FComKeying[4] := FDefautCom[4];
+   ResetComm();
    FUseWinKeyer := False;
    FUseWk9600 := False;
    FUseWkOutpSelect := True;
@@ -551,6 +624,12 @@ begin
    FTune := False;
    FUseCanSend := False;
    FPrevDSR := True;
+   FRTTY := False;
+   FUseAFSKTone := False;
+   FSpaceFreq := 1955;
+   FMarkFreq := 2125;
+   FFskReverse := False;
+   FUseTxUOS := True;
 
    FWnd := AllocateHWnd(WndMethod);
    usbdevlist := TList<TJvHidDevice>.Create();
@@ -559,9 +638,13 @@ begin
    {$IFDEF USESIDETONE}
    if TSideTone.NumDevices() = 0 then begin
       FTone := nil;
+      FMarkSound := nil;
+      FSpaceSound := nil;
    end
    else begin
       FTone := TSideTone.Create(700);
+      FMarkSound := TSideTone.Create(2125);
+      FSpaceSound := TSideTone.Create(1955);
    end;
    {$ENDIF}
 
@@ -608,6 +691,12 @@ begin
       KeyingPort[i] := tkpNone;
       FKeyingPortConfig[i].FRts := paPtt;
       FKeyingPortConfig[i].FDtr := paKey;
+      FKeyingPortConfig[i].FTxD := paNone;
+      FFskPort[i] := tkpNone;
+      FFskPortConfig[i].FRts := paPtt;
+      FFskPortConfig[i].FDtr := paNone;
+      FFskPortConfig[i].FTxD := paKey;
+      FTtyRxPort[i] := tkpNone;
    end;
 
    tailcwstrptr := 1;
@@ -620,11 +709,14 @@ var
 begin
    {$IFDEF USESIDETONE}
    FTone.Free();
+   FMarkSound.Free();
+   FSpaceSound.Free();
    {$ENDIF}
    FMonitorThread.Free();
    FPaddleThread.Free();
    COM_OFF();
    USB_OFF();
+   FSK_OFF();
    FParallelPort.Close();
    DeallocateHWnd(FWnd);
    usbdevlist.Free();
@@ -1290,6 +1382,52 @@ begin
    {$ENDIF}
 end;
 
+procedure TdmZLogKeyer.RttyAudio(key: Integer; fOn: Boolean);
+   procedure MarkAudio(fOn: Boolean);
+   begin
+      if Assigned(FMarkSound) then begin
+         if fOn = True then begin
+            FSpaceSound.Stop();
+            if FMarkSound.Playing = False then begin
+               FMarkSound.Play();
+            end;
+         end
+         else begin
+            FMarkSound.Stop();
+         end;
+      end;
+   end;
+   procedure SpaceAudio(fOn: Boolean);
+   begin
+      if Assigned(FSpaceSound) then begin
+         if fOn = True then begin
+            FMarkSound.Stop();
+            if FSpaceSound.Playing = False then begin
+               FSpaceSound.Play();
+            end;
+         end
+         else begin
+            FSpaceSound.Stop();
+         end;
+      end;
+   end;
+begin
+   {$IFDEF USESIDETONE}
+   if fOn = True then begin
+      if key = 0 then begin
+         SpaceAudio(fOn);
+      end
+      else if key = 1 then begin
+         MarkAudio(fOn);
+      end;
+   end
+   else begin
+      SpaceAudio(False);
+      MarkAudio(False);
+   end;
+   {$ENDIF}
+end;
+
 procedure TdmZLogKeyer.ControlPTT(nID: Integer; PTTON: Boolean; fPhonePTT: Boolean);
 begin
    try
@@ -1394,6 +1532,101 @@ begin
    end;
 end;
 
+procedure TdmZLogKeyer.FskControlPTT(nID: Integer; PTTON: Boolean; fPhonePTT: Boolean);
+begin
+   try
+      FPTTFLAG := PTTON;
+      FWkTx := nID;
+
+      // COM port
+      if (FFskPort[nID] in [tkpSerial1..tkpSerial20]) then begin
+         if FFskPortConfig[nID].FRts = paPtt then begin
+            FFskKeying[nID].ToggleRTS(PTTON);
+         end;
+         if FFskPortConfig[nID].FDtr = paPtt then begin
+            FFskKeying[nID].ToggleDTR(PTTON);
+         end;
+         FSK_MARK(nID);
+         if FUseAFSKTone then begin
+            RttyAudio(1, PTTON);
+         end;
+         Exit;
+      end;
+   finally
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** ControlPTT ***'));
+      {$ENDIF}
+      if Assigned(FOnWkStatusProc) then begin
+         FOnWkStatusProc(Self, FWkTx, FWkRx, PTTON);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.FskResetPTT();
+var
+   nID: Integer;
+begin
+   {$IFDEF DEBUG}
+   OutputDebugString(PChar('*** Enter -- FskResetPTT ***'));
+   {$ENDIF}
+   try
+      FPTTFLAG := False;
+
+      for nID := 0 to MAXPORT do begin
+         if (FFskPort[nID] in [tkpSerial1..tkpSerial20]) then begin
+            if FFskPortConfig[nID].FRts = paPtt then begin
+               FFskKeying[nID].ToggleRTS(False);
+            end;
+            if FFskPortConfig[nID].FDtr = paPtt then begin
+               FFskKeying[nID].ToggleDTR(False);
+            end;
+
+            // RTTY idle state is MARK.
+            FSK_MARK(nID);
+            if FUseAFSKTone then begin
+               RttyAudio(1, False);
+            end;
+         end;
+      end;
+   finally
+      {$IFDEF DEBUG}
+      OutputDebugString(PChar('*** Leave -- FskResetPTT ***'));
+      {$ENDIF}
+   end;
+end;
+
+procedure TdmZLogKeyer.FskCancelSend(nID: Integer);
+var
+   m: Integer;
+begin
+   // Stop the one-character FSK sender without invoking the generic
+   // ClrBuffer() callback path used by normal CW/RTTY transmission.
+   CWBufferSync.Enter();
+   try
+      for m := 0 to 2 do begin
+         FCWSendBuf[m, 1] := $FF;
+      end;
+      cwstrptr := 0;
+      FSelectedBuf := 0; // ver 2.1b
+      FSendChar := False;
+      callsignptr := 0;
+      tailcwstrptr := 1;
+      mousetail := 1;
+      paddle_waiting := True;
+
+      FUserFlag := False;
+
+      FSendOK := True;
+
+      // Force a known shift state for the next TX.  The first printable
+      // character will insert LTRS/FIGS as required.
+      FLTRS := False;
+      FFIGS := False;
+   finally
+      CWBufferSync.Leave();
+   end;
+end;
+
 procedure TdmZLogKeyer.SetPTT(_on: Boolean);
 var
    i: Integer;
@@ -1437,6 +1670,21 @@ begin
    FPttDelayAfterTime := after;
 end;
 
+procedure TdmZLogKeyer.SetRttyPTTDelay(before, after: word);
+begin
+   if FTimerMicroSec = 0 then begin
+      Exit;
+   end;
+
+   before := Max(before, 1);
+
+   FRttyPttDelayBeforeCount := Trunc(before * 1000 / FTimerMicroSec);
+
+   after := Max(after, 1);
+
+   FRttyPttDelayAfterCount := Trunc(after * 1000 / FTimerMicroSec);
+end;
+
 function TdmZLogKeyer.Paused: Boolean;
 begin
    Result := not FSendOK;
@@ -1454,14 +1702,22 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: Char);
+procedure TdmZLogKeyer.SetCWSendBufChar(b: Integer; C: AnsiChar);
 var
    m: Integer;
+   code: Byte;
 begin
 //   CWBufferSync.Enter();
    try
       for m := 1 to codemax do begin
-         FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+         if FRTTY = True then begin
+            code := FBaudotTable[Ord(C)][m];
+         end
+         else begin
+            code := FCodeTable[Ord(C)][m];
+         end;
+
+         FCWSendBuf[b, codemax * (tailcwstrptr - 1) + m] := code;
       end;
 
       inc(tailcwstrptr);
@@ -1487,6 +1743,7 @@ procedure TdmZLogKeyer.SetCWSendBufCharPTT(nID: Integer; C: Char);
 var
    S: string;
    m: Integer;
+   code: Byte;
 begin
    if UseWinKeyer = True then begin
       FWkAbort := False;
@@ -1550,7 +1807,13 @@ begin
       try
          // set send char
          for m := 1 to codemax do begin
-            FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := FCodeTable[Ord(C)][m];
+            if FRTTY = True then begin
+               code := FBaudotTable[Ord(C)][m];
+            end
+            else begin
+               code := FCodeTable[Ord(C)][m];
+            end;
+            FCWSendBuf[0, codemax * (tailcwstrptr - 1) + m] := code;
          end;
 
          if FPTTEnabled then begin
@@ -1635,10 +1898,12 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string);
+procedure TdmZLogKeyer.SendStr(nID: Integer; sStr: string; fWithOutPTT: Boolean);
 var
    SS: string;
    CW: string;
+   i: Integer;
+   CH: Char;
 begin
    if sStr = '' then
       Exit;
@@ -1652,11 +1917,116 @@ begin
 
    SS := sStr;
 
-   if FPTTEnabled then begin
+   if FPTTEnabled and (FRTTY = False) then begin
       SS := '(' + SS + ')';
    end;
 
    SS := CW + SS;
+
+   if FRTTY then begin
+      CW := SS;
+      SS := '';
+
+      // PTT ON 指令
+      if fWithOutPTT = False then begin
+         SS := DC1;
+      end;
+
+      SS := SS + LTRS + LTRS + LTRS;
+
+      FLTRS := True;
+      FFIGS := False;
+      for i := 1 to Length(CW) do begin
+         CH := CW[i];
+
+         if CharInSet(CH, ['A'..'Z']) then begin
+            if FLTRS = False then begin
+               SS := SS + LTRS;
+               FLTRS := True;
+               FFIGS := False;
+            end;
+            SS := SS + CH;
+         end
+         else if CharInSet(CH, [CR, LF]) then begin    // LTRS/FIGSは変更しない
+            SS := SS + CH;
+         end
+         else if CH = ' ' then begin    // LTRS/FIGSは変更しない
+            SS := SS + CH;
+            if FUseTxUOS then begin
+               FLTRS := True;
+               FFIGS := False;
+            end;
+         end
+         else begin
+            if FFIGS = False then begin
+               SS := SS + FIGS;
+               FLTRS := False;
+               FFIGS := True;
+            end;
+            SS := SS + CH;
+         end;
+      end;
+      SS := SS + CR + LF;
+
+      // PTT OFF 指令
+      if fWithOutPTT = False then begin
+         SS := SS + DC2;
+      end;
+   end;
+
+   SetCWSendBuf(0, SS);
+
+   FSendOK := True;
+   FKeyingCounter := 1;
+end;
+
+procedure TdmZLogKeyer.SendChar(nID: Integer; CH: AnsiChar);
+var
+   SS: string;
+begin
+   SS := '';
+
+   // Shift codes themselves must update the internal shift state.
+   // LTRS2/FIGS2 are the event-generating variants used by the
+   // one-character RTTY console.
+   if CharInSet(CH, [LTRS, LTRS2]) then begin
+      SS := SS + CH;
+      FLTRS := True;
+      FFIGS := False;
+   end
+   else if CharInSet(CH, [FIGS, FIGS2]) then begin
+      SS := SS + CH;
+      FLTRS := False;
+      FFIGS := True;
+   end
+   else if CharInSet(CH, ['A'..'Z']) then begin
+      if FLTRS = False then begin
+         // Automatic shift must not generate OneCharSentProc.
+         SS := SS + LTRS;
+         FLTRS := True;
+         FFIGS := False;
+      end;
+      SS := SS + CH;
+   end
+   else if CharInSet(CH, [CR, LF]) then begin    // LTRS/FIGSは変更しない
+      SS := SS + CH;
+   end
+   else if CH = ' ' then begin
+      SS := SS + CH;
+      if FUseTxUos then begin
+         FLTRS := True;
+         FFIGS := False;
+      end;
+   end
+   else begin
+      if FFIGS = False then begin
+         // Automatic shift must not generate OneCharSentProc.
+         SS := SS + FIGS;
+         FLTRS := False;
+         FFIGS := True;
+      end;
+      SS := SS + CH;
+   end;
 
    SetCWSendBuf(0, SS);
 
@@ -1729,7 +2099,7 @@ begin
          Inc(n, 2)
       end
       else begin
-         SetCWSendBufChar(b, SS[n]);
+         SetCWSendBufChar(b, AnsiChar(SS[n]));
       end;
 
       Inc(n);
@@ -1837,6 +2207,7 @@ var
    cmd: Byte;
    wpm_change: Integer;
    wpm_sign: Integer;
+   OneCharBufferReplaced: Boolean;
 
    procedure Finish();
    begin
@@ -1865,6 +2236,8 @@ var
         ControlPTT(False); } // PTT doesn't work with \
    end;
 begin
+   OneCharBufferReplaced := False;
+
    if FKeyingCounter > 0 then begin
       Dec(FKeyingCounter);
       Exit;
@@ -1956,7 +2329,17 @@ begin
          FSendChar := True;
       end;
 
-      // next char
+      // next char without sent event
+      8: begin
+         CWBufferSync.Enter();
+         try
+            cwstrptr := (cwstrptr div codemax + 1) * codemax;
+         finally
+            CWBufferSync.Leave();
+         end;
+      end;
+
+      // next char with sent event
       9: begin
          CWBufferSync.Enter();
          try
@@ -1967,6 +2350,16 @@ begin
 
          if Assigned(FOnOneCharSentProc) and FSendChar then begin
             FOnOneCharSentProc(Self);
+
+            // SendChar() -> SetCWSendBuf() replaces the send buffer and
+            // resets cwstrptr to 1. In that case, do not increment it
+            // again at the end of TimerProcess().
+            CWBufferSync.Enter();
+            try
+               OneCharBufferReplaced := (cwstrptr = 1);
+            finally
+               CWBufferSync.Leave();
+            end;
          end;
       end;
 
@@ -2060,6 +2453,10 @@ begin
 
       $FF: begin { SendOK:=False; }
          Finish();
+
+         if FRTTY and FUseAFSKTone then begin
+            RttyAudio(0, False);
+         end;
 
          if Assigned(FOnSendFinishProc) then begin
             {$IFDEF DEBUG}
@@ -2166,13 +2563,73 @@ begin
             FOnCommand(Self, nCommand);
          end;
       end;
+
+      // SPACE
+      $70: begin
+         FSK_SPACE(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(0, True);
+         end;
+         FKeyingCounter := 22;
+         FSendChar := True;
+      end;
+
+      // MARK
+      $71: begin
+         FSK_MARK(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(1, True);
+         end;
+         FKeyingCounter := 22;
+         FSendChar := True;
+      end;
+
+      // STOPBIT
+      $72: begin
+         FSK_MARK(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(1, True);
+         end;
+         FKeyingCounter := 33;
+         FSendChar := True;
+      end;
+
+      // PTT ON
+      $73: begin
+         FskControlPTT(FWkTx, True, False);
+      end;
+
+      // PTT OFF
+      $74: begin
+         FskControlPTT(FWkTx, False, False);
+      end;
+
+      // SET PTT DELAY Before
+      $75: begin
+         FKeyingCounter := FRttyPttDelayBeforeCount;
+      end;
+
+      // SET PTT DELAY After
+      $76: begin
+         FKeyingCounter := FRttyPttDelayAfterCount;
+      end;
+
+      // MARK
+      $77: begin
+         FSK_MARK(FWkTx);
+         if FUseAFSKTone then begin
+            RttyAudio(1, True);
+         end;
+      end;
    end;
 
-   CWBufferSync.Enter();
-   try
-      Inc(cwstrptr);
-   finally
-      CWBufferSync.Leave();
+   if not OneCharBufferReplaced then begin
+      CWBufferSync.Enter();
+      try
+         Inc(cwstrptr);
+      finally
+         CWBufferSync.Leave();
+      end;
    end;
 end; { TimerProcess }
 
@@ -2234,6 +2691,7 @@ begin
    for n := 0 to 255 do begin
       for m := 1 to codemax do begin
          FCodeTable[n, m] := $FF;
+         FBaudotTable[n, m] := $FF;
       end;
    end;
 
@@ -2764,11 +3222,11 @@ begin
    FCodeTable[Ord('^')][2] := 9;
 
    FCodeTable[Ord('(')][1] := $10;  { PTT on }
-   FCodeTable[Ord('(')][2] := $55;  { set PTT delay }
+   FCodeTable[Ord('(')][2] := $55;  { set Hold Counter }
    FCodeTable[Ord('(')][3] := 9;
 
-   FCodeTable[Ord(')')][1] := $A1;  { set Hold Counter }
-   FCodeTable[Ord(')')][2] := $A3;  { set PTT delay }
+   FCodeTable[Ord(')')][1] := $A1;  { set PTT delay }
+   FCodeTable[Ord(')')][2] := $A3;  { set Hold Counter }
    FCodeTable[Ord(')')][3] := $1F;  { PTT off }
    FCodeTable[Ord(')')][4] := 9;
 
@@ -2810,6 +3268,627 @@ begin
    FCodeTable[Ord('@')][3] := 0;
    FCodeTable[Ord('@')][4] := 0;
    FCodeTable[Ord('@')][5] := 9;
+
+   //
+   // RTTY(Baudot / ITA2)
+   //
+
+   // A
+   FBaudotTable[Ord('A')][1] := $70;   // START
+   FBaudotTable[Ord('A')][2] := $71;   // MARK
+   FBaudotTable[Ord('A')][3] := $71;   // MARK
+   FBaudotTable[Ord('A')][4] := $70;   // SPACE
+   FBaudotTable[Ord('A')][5] := $70;   // SPACE
+   FBaudotTable[Ord('A')][6] := $70;   // SPACE
+   FBaudotTable[Ord('A')][7] := $72;   // STOP
+   FBaudotTable[Ord('A')][8] := 9;     // next char
+
+   // B
+   FBaudotTable[Ord('B')][1] := $70;
+   FBaudotTable[Ord('B')][2] := $71;
+   FBaudotTable[Ord('B')][3] := $70;
+   FBaudotTable[Ord('B')][4] := $70;
+   FBaudotTable[Ord('B')][5] := $71;
+   FBaudotTable[Ord('B')][6] := $71;
+   FBaudotTable[Ord('B')][7] := $72;
+   FBaudotTable[Ord('B')][8] := 9;
+
+   // C
+   FBaudotTable[Ord('C')][1] := $70;
+   FBaudotTable[Ord('C')][2] := $70;
+   FBaudotTable[Ord('C')][3] := $71;
+   FBaudotTable[Ord('C')][4] := $71;
+   FBaudotTable[Ord('C')][5] := $71;
+   FBaudotTable[Ord('C')][6] := $70;
+   FBaudotTable[Ord('C')][7] := $72;
+   FBaudotTable[Ord('C')][8] := 9;
+
+   // D
+   FBaudotTable[Ord('D')][1] := $70;
+   FBaudotTable[Ord('D')][2] := $71;
+   FBaudotTable[Ord('D')][3] := $70;
+   FBaudotTable[Ord('D')][4] := $70;
+   FBaudotTable[Ord('D')][5] := $71;
+   FBaudotTable[Ord('D')][6] := $70;
+   FBaudotTable[Ord('D')][7] := $72;
+   FBaudotTable[Ord('D')][8] := 9;
+
+   // E
+   FBaudotTable[Ord('E')][1] := $70;
+   FBaudotTable[Ord('E')][2] := $71;
+   FBaudotTable[Ord('E')][3] := $70;
+   FBaudotTable[Ord('E')][4] := $70;
+   FBaudotTable[Ord('E')][5] := $70;
+   FBaudotTable[Ord('E')][6] := $70;
+   FBaudotTable[Ord('E')][7] := $72;
+   FBaudotTable[Ord('E')][8] := 9;
+
+   // F
+   FBaudotTable[Ord('F')][1] := $70;
+   FBaudotTable[Ord('F')][2] := $71;
+   FBaudotTable[Ord('F')][3] := $70;
+   FBaudotTable[Ord('F')][4] := $71;
+   FBaudotTable[Ord('F')][5] := $71;
+   FBaudotTable[Ord('F')][6] := $70;
+   FBaudotTable[Ord('F')][7] := $72;
+   FBaudotTable[Ord('F')][8] := 9;
+
+   // G
+   FBaudotTable[Ord('G')][1] := $70;
+   FBaudotTable[Ord('G')][2] := $70;
+   FBaudotTable[Ord('G')][3] := $71;
+   FBaudotTable[Ord('G')][4] := $70;
+   FBaudotTable[Ord('G')][5] := $71;
+   FBaudotTable[Ord('G')][6] := $71;
+   FBaudotTable[Ord('G')][7] := $72;
+   FBaudotTable[Ord('G')][8] := 9;
+
+   // H
+   FBaudotTable[Ord('H')][1] := $70;
+   FBaudotTable[Ord('H')][2] := $70;
+   FBaudotTable[Ord('H')][3] := $70;
+   FBaudotTable[Ord('H')][4] := $71;
+   FBaudotTable[Ord('H')][5] := $70;
+   FBaudotTable[Ord('H')][6] := $71;
+   FBaudotTable[Ord('H')][7] := $72;
+   FBaudotTable[Ord('H')][8] := 9;
+
+   // I
+   FBaudotTable[Ord('I')][1] := $70;
+   FBaudotTable[Ord('I')][2] := $70;
+   FBaudotTable[Ord('I')][3] := $71;
+   FBaudotTable[Ord('I')][4] := $71;
+   FBaudotTable[Ord('I')][5] := $70;
+   FBaudotTable[Ord('I')][6] := $70;
+   FBaudotTable[Ord('I')][7] := $72;
+   FBaudotTable[Ord('I')][8] := 9;
+
+   // J
+   FBaudotTable[Ord('J')][1] := $70;
+   FBaudotTable[Ord('J')][2] := $71;
+   FBaudotTable[Ord('J')][3] := $71;
+   FBaudotTable[Ord('J')][4] := $70;
+   FBaudotTable[Ord('J')][5] := $71;
+   FBaudotTable[Ord('J')][6] := $70;
+   FBaudotTable[Ord('J')][7] := $72;
+   FBaudotTable[Ord('J')][8] := 9;
+
+   // K
+   FBaudotTable[Ord('K')][1] := $70;
+   FBaudotTable[Ord('K')][2] := $71;
+   FBaudotTable[Ord('K')][3] := $71;
+   FBaudotTable[Ord('K')][4] := $71;
+   FBaudotTable[Ord('K')][5] := $71;
+   FBaudotTable[Ord('K')][6] := $70;
+   FBaudotTable[Ord('K')][7] := $72;
+   FBaudotTable[Ord('K')][8] := 9;
+
+   // L
+   FBaudotTable[Ord('L')][1] := $70;
+   FBaudotTable[Ord('L')][2] := $70;
+   FBaudotTable[Ord('L')][3] := $71;
+   FBaudotTable[Ord('L')][4] := $70;
+   FBaudotTable[Ord('L')][5] := $70;
+   FBaudotTable[Ord('L')][6] := $71;
+   FBaudotTable[Ord('L')][7] := $72;
+   FBaudotTable[Ord('L')][8] := 9;
+
+   // M
+   FBaudotTable[Ord('M')][1] := $70;
+   FBaudotTable[Ord('M')][2] := $70;
+   FBaudotTable[Ord('M')][3] := $70;
+   FBaudotTable[Ord('M')][4] := $71;
+   FBaudotTable[Ord('M')][5] := $71;
+   FBaudotTable[Ord('M')][6] := $71;
+   FBaudotTable[Ord('M')][7] := $72;
+   FBaudotTable[Ord('M')][8] := 9;
+
+   // N
+   FBaudotTable[Ord('N')][1] := $70;
+   FBaudotTable[Ord('N')][2] := $70;
+   FBaudotTable[Ord('N')][3] := $70;
+   FBaudotTable[Ord('N')][4] := $71;
+   FBaudotTable[Ord('N')][5] := $71;
+   FBaudotTable[Ord('N')][6] := $70;
+   FBaudotTable[Ord('N')][7] := $72;
+   FBaudotTable[Ord('N')][8] := 9;
+
+   // O
+   FBaudotTable[Ord('O')][1] := $70;
+   FBaudotTable[Ord('O')][2] := $70;
+   FBaudotTable[Ord('O')][3] := $70;
+   FBaudotTable[Ord('O')][4] := $70;
+   FBaudotTable[Ord('O')][5] := $71;
+   FBaudotTable[Ord('O')][6] := $71;
+   FBaudotTable[Ord('O')][7] := $72;
+   FBaudotTable[Ord('O')][8] := 9;
+
+   // P
+   FBaudotTable[Ord('P')][1] := $70;
+   FBaudotTable[Ord('P')][2] := $70;
+   FBaudotTable[Ord('P')][3] := $71;
+   FBaudotTable[Ord('P')][4] := $71;
+   FBaudotTable[Ord('P')][5] := $70;
+   FBaudotTable[Ord('P')][6] := $71;
+   FBaudotTable[Ord('P')][7] := $72;
+   FBaudotTable[Ord('P')][8] := 9;
+
+   // Q
+   FBaudotTable[Ord('Q')][1] := $70;
+   FBaudotTable[Ord('Q')][2] := $71;
+   FBaudotTable[Ord('Q')][3] := $71;
+   FBaudotTable[Ord('Q')][4] := $71;
+   FBaudotTable[Ord('Q')][5] := $70;
+   FBaudotTable[Ord('Q')][6] := $71;
+   FBaudotTable[Ord('Q')][7] := $72;
+   FBaudotTable[Ord('Q')][8] := 9;
+
+   // R
+   FBaudotTable[Ord('R')][1] := $70;
+   FBaudotTable[Ord('R')][2] := $70;
+   FBaudotTable[Ord('R')][3] := $71;
+   FBaudotTable[Ord('R')][4] := $70;
+   FBaudotTable[Ord('R')][5] := $71;
+   FBaudotTable[Ord('R')][6] := $70;
+   FBaudotTable[Ord('R')][7] := $72;
+   FBaudotTable[Ord('R')][8] := 9;
+
+   // S
+   FBaudotTable[Ord('S')][1] := $70;
+   FBaudotTable[Ord('S')][2] := $71;
+   FBaudotTable[Ord('S')][3] := $70;
+   FBaudotTable[Ord('S')][4] := $71;
+   FBaudotTable[Ord('S')][5] := $70;
+   FBaudotTable[Ord('S')][6] := $70;
+   FBaudotTable[Ord('S')][7] := $72;
+   FBaudotTable[Ord('S')][8] := 9;
+
+   // T
+   FBaudotTable[Ord('T')][1] := $70;
+   FBaudotTable[Ord('T')][2] := $70;
+   FBaudotTable[Ord('T')][3] := $70;
+   FBaudotTable[Ord('T')][4] := $70;
+   FBaudotTable[Ord('T')][5] := $70;
+   FBaudotTable[Ord('T')][6] := $71;
+   FBaudotTable[Ord('T')][7] := $72;
+   FBaudotTable[Ord('T')][8] := 9;
+
+   // U
+   FBaudotTable[Ord('U')][1] := $70;
+   FBaudotTable[Ord('U')][2] := $71;
+   FBaudotTable[Ord('U')][3] := $71;
+   FBaudotTable[Ord('U')][4] := $71;
+   FBaudotTable[Ord('U')][5] := $70;
+   FBaudotTable[Ord('U')][6] := $70;
+   FBaudotTable[Ord('U')][7] := $72;
+   FBaudotTable[Ord('U')][8] := 9;
+
+   // V
+   FBaudotTable[Ord('V')][1] := $70;
+   FBaudotTable[Ord('V')][2] := $70;
+   FBaudotTable[Ord('V')][3] := $71;
+   FBaudotTable[Ord('V')][4] := $71;
+   FBaudotTable[Ord('V')][5] := $71;
+   FBaudotTable[Ord('V')][6] := $71;
+   FBaudotTable[Ord('V')][7] := $72;
+   FBaudotTable[Ord('V')][8] := 9;
+
+   // W
+   FBaudotTable[Ord('W')][1] := $70;
+   FBaudotTable[Ord('W')][2] := $71;
+   FBaudotTable[Ord('W')][3] := $71;
+   FBaudotTable[Ord('W')][4] := $70;
+   FBaudotTable[Ord('W')][5] := $70;
+   FBaudotTable[Ord('W')][6] := $71;
+   FBaudotTable[Ord('W')][7] := $72;
+   FBaudotTable[Ord('W')][8] := 9;
+
+   // X
+   FBaudotTable[Ord('X')][1] := $70;
+   FBaudotTable[Ord('X')][2] := $71;
+   FBaudotTable[Ord('X')][3] := $70;
+   FBaudotTable[Ord('X')][4] := $71;
+   FBaudotTable[Ord('X')][5] := $71;
+   FBaudotTable[Ord('X')][6] := $71;
+   FBaudotTable[Ord('X')][7] := $72;
+   FBaudotTable[Ord('X')][8] := 9;
+
+   // Y
+   FBaudotTable[Ord('Y')][1] := $70;
+   FBaudotTable[Ord('Y')][2] := $71;
+   FBaudotTable[Ord('Y')][3] := $70;
+   FBaudotTable[Ord('Y')][4] := $71;
+   FBaudotTable[Ord('Y')][5] := $70;
+   FBaudotTable[Ord('Y')][6] := $71;
+   FBaudotTable[Ord('Y')][7] := $72;
+   FBaudotTable[Ord('Y')][8] := 9;
+
+   // Z
+   FBaudotTable[Ord('Z')][1] := $70;
+   FBaudotTable[Ord('Z')][2] := $71;
+   FBaudotTable[Ord('Z')][3] := $70;
+   FBaudotTable[Ord('Z')][4] := $70;
+   FBaudotTable[Ord('Z')][5] := $70;
+   FBaudotTable[Ord('Z')][6] := $71;
+   FBaudotTable[Ord('Z')][7] := $72;
+   FBaudotTable[Ord('Z')][8] := 9;
+
+   // 0
+   FBaudotTable[Ord('0')][1] := $70;
+   FBaudotTable[Ord('0')][2] := $70;
+   FBaudotTable[Ord('0')][3] := $71;
+   FBaudotTable[Ord('0')][4] := $71;
+   FBaudotTable[Ord('0')][5] := $70;
+   FBaudotTable[Ord('0')][6] := $71;
+   FBaudotTable[Ord('0')][7] := $72;
+   FBaudotTable[Ord('0')][8] := 9;
+
+   // 1
+   FBaudotTable[Ord('1')][1] := $70;
+   FBaudotTable[Ord('1')][2] := $71;
+   FBaudotTable[Ord('1')][3] := $71;
+   FBaudotTable[Ord('1')][4] := $71;
+   FBaudotTable[Ord('1')][5] := $70;
+   FBaudotTable[Ord('1')][6] := $71;
+   FBaudotTable[Ord('1')][7] := $72;
+   FBaudotTable[Ord('1')][8] := 9;
+
+   // 2
+   FBaudotTable[Ord('2')][1] := $70;
+   FBaudotTable[Ord('2')][2] := $71;
+   FBaudotTable[Ord('2')][3] := $71;
+   FBaudotTable[Ord('2')][4] := $70;
+   FBaudotTable[Ord('2')][5] := $70;
+   FBaudotTable[Ord('2')][6] := $71;
+   FBaudotTable[Ord('2')][7] := $72;
+   FBaudotTable[Ord('2')][8] := 9;
+
+   // 3
+   FBaudotTable[Ord('3')][1] := $70;
+   FBaudotTable[Ord('3')][2] := $71;
+   FBaudotTable[Ord('3')][3] := $70;
+   FBaudotTable[Ord('3')][4] := $70;
+   FBaudotTable[Ord('3')][5] := $70;
+   FBaudotTable[Ord('3')][6] := $70;
+   FBaudotTable[Ord('3')][7] := $72;
+   FBaudotTable[Ord('3')][8] := 9;
+
+   // 4
+   FBaudotTable[Ord('4')][1] := $70;
+   FBaudotTable[Ord('4')][2] := $70;
+   FBaudotTable[Ord('4')][3] := $71;
+   FBaudotTable[Ord('4')][4] := $70;
+   FBaudotTable[Ord('4')][5] := $71;
+   FBaudotTable[Ord('4')][6] := $70;
+   FBaudotTable[Ord('4')][7] := $72;
+   FBaudotTable[Ord('4')][8] := 9;
+
+   // 5
+   FBaudotTable[Ord('5')][1] := $70;
+   FBaudotTable[Ord('5')][2] := $70;
+   FBaudotTable[Ord('5')][3] := $70;
+   FBaudotTable[Ord('5')][4] := $70;
+   FBaudotTable[Ord('5')][5] := $70;
+   FBaudotTable[Ord('5')][6] := $71;
+   FBaudotTable[Ord('5')][7] := $72;
+   FBaudotTable[Ord('5')][8] := 9;
+
+   // 6
+   FBaudotTable[Ord('6')][1] := $70;
+   FBaudotTable[Ord('6')][2] := $71;
+   FBaudotTable[Ord('6')][3] := $70;
+   FBaudotTable[Ord('6')][4] := $71;
+   FBaudotTable[Ord('6')][5] := $70;
+   FBaudotTable[Ord('6')][6] := $71;
+   FBaudotTable[Ord('6')][7] := $72;
+   FBaudotTable[Ord('6')][8] := 9;
+
+   // 7
+   FBaudotTable[Ord('7')][1] := $70;
+   FBaudotTable[Ord('7')][2] := $71;
+   FBaudotTable[Ord('7')][3] := $71;
+   FBaudotTable[Ord('7')][4] := $71;
+   FBaudotTable[Ord('7')][5] := $70;
+   FBaudotTable[Ord('7')][6] := $70;
+   FBaudotTable[Ord('7')][7] := $72;
+   FBaudotTable[Ord('7')][8] := 9;
+
+   // 8
+   FBaudotTable[Ord('8')][1] := $70;
+   FBaudotTable[Ord('8')][2] := $70;
+   FBaudotTable[Ord('8')][3] := $71;
+   FBaudotTable[Ord('8')][4] := $71;
+   FBaudotTable[Ord('8')][5] := $70;
+   FBaudotTable[Ord('8')][6] := $70;
+   FBaudotTable[Ord('8')][7] := $72;
+   FBaudotTable[Ord('8')][8] := 9;
+
+   // 9
+   FBaudotTable[Ord('9')][1] := $70;
+   FBaudotTable[Ord('9')][2] := $70;
+   FBaudotTable[Ord('9')][3] := $70;
+   FBaudotTable[Ord('9')][4] := $70;
+   FBaudotTable[Ord('9')][5] := $71;
+   FBaudotTable[Ord('9')][6] := $71;
+   FBaudotTable[Ord('9')][7] := $72;
+   FBaudotTable[Ord('9')][8] := 9;
+
+   // -
+   FBaudotTable[Ord('-')][1] := $70;
+   FBaudotTable[Ord('-')][2] := $71;
+   FBaudotTable[Ord('-')][3] := $71;
+   FBaudotTable[Ord('-')][4] := $70;
+   FBaudotTable[Ord('-')][5] := $70;
+   FBaudotTable[Ord('-')][6] := $70;
+   FBaudotTable[Ord('-')][7] := $72;
+   FBaudotTable[Ord('-')][8] := 9;
+
+   // ?
+   FBaudotTable[Ord('?')][1] := $70;
+   FBaudotTable[Ord('?')][2] := $71;
+   FBaudotTable[Ord('?')][3] := $70;
+   FBaudotTable[Ord('?')][4] := $70;
+   FBaudotTable[Ord('?')][5] := $71;
+   FBaudotTable[Ord('?')][6] := $71;
+   FBaudotTable[Ord('?')][7] := $72;
+   FBaudotTable[Ord('?')][8] := 9;
+
+   // :
+   FBaudotTable[Ord(':')][1] := $70;
+   FBaudotTable[Ord(':')][2] := $70;
+   FBaudotTable[Ord(':')][3] := $71;
+   FBaudotTable[Ord(':')][4] := $71;
+   FBaudotTable[Ord(':')][5] := $71;
+   FBaudotTable[Ord(':')][6] := $70;
+   FBaudotTable[Ord(':')][7] := $72;
+   FBaudotTable[Ord(':')][8] := 9;
+
+   // $
+   FBaudotTable[Ord('$')][1] := $70;
+   FBaudotTable[Ord('$')][2] := $71;
+   FBaudotTable[Ord('$')][3] := $70;
+   FBaudotTable[Ord('$')][4] := $70;
+   FBaudotTable[Ord('$')][5] := $71;
+   FBaudotTable[Ord('$')][6] := $70;
+   FBaudotTable[Ord('$')][7] := $72;
+   FBaudotTable[Ord('$')][8] := 9;
+
+   // !
+   FBaudotTable[Ord('!')][1] := $70;
+   FBaudotTable[Ord('!')][2] := $71;
+   FBaudotTable[Ord('!')][3] := $70;
+   FBaudotTable[Ord('!')][4] := $71;
+   FBaudotTable[Ord('!')][5] := $71;
+   FBaudotTable[Ord('!')][6] := $70;
+   FBaudotTable[Ord('!')][7] := $72;
+   FBaudotTable[Ord('!')][8] := 9;
+
+   // &
+   FBaudotTable[Ord('&')][1] := $70;
+   FBaudotTable[Ord('&')][2] := $70;
+   FBaudotTable[Ord('&')][3] := $71;
+   FBaudotTable[Ord('&')][4] := $70;
+   FBaudotTable[Ord('&')][5] := $71;
+   FBaudotTable[Ord('&')][6] := $71;
+   FBaudotTable[Ord('&')][7] := $72;
+   FBaudotTable[Ord('&')][8] := 9;
+
+   // #
+   FBaudotTable[Ord('#')][1] := $70;
+   FBaudotTable[Ord('#')][2] := $70;
+   FBaudotTable[Ord('#')][3] := $70;
+   FBaudotTable[Ord('#')][4] := $71;
+   FBaudotTable[Ord('#')][5] := $70;
+   FBaudotTable[Ord('#')][6] := $71;
+   FBaudotTable[Ord('#')][7] := $72;
+   FBaudotTable[Ord('#')][8] := 9;
+
+   // '
+   FBaudotTable[Ord('''')][1] := $70;
+   FBaudotTable[Ord('''')][2] := $71;
+   FBaudotTable[Ord('''')][3] := $71;
+   FBaudotTable[Ord('''')][4] := $70;
+   FBaudotTable[Ord('''')][5] := $71;
+   FBaudotTable[Ord('''')][6] := $70;
+   FBaudotTable[Ord('''')][7] := $72;
+   FBaudotTable[Ord('''')][8] := 9;
+
+   // (
+   FBaudotTable[Ord('(')][1] := $70;
+   FBaudotTable[Ord('(')][2] := $71;
+   FBaudotTable[Ord('(')][3] := $71;
+   FBaudotTable[Ord('(')][4] := $71;
+   FBaudotTable[Ord('(')][5] := $71;
+   FBaudotTable[Ord('(')][6] := $70;
+   FBaudotTable[Ord('(')][7] := $72;
+   FBaudotTable[Ord('(')][8] := 9;
+
+   // )
+   FBaudotTable[Ord(')')][1] := $70;
+   FBaudotTable[Ord(')')][2] := $70;
+   FBaudotTable[Ord(')')][3] := $71;
+   FBaudotTable[Ord(')')][4] := $70;
+   FBaudotTable[Ord(')')][5] := $70;
+   FBaudotTable[Ord(')')][6] := $71;
+   FBaudotTable[Ord(')')][7] := $72;
+   FBaudotTable[Ord(')')][8] := 9;
+
+   // .
+   FBaudotTable[Ord('.')][1] := $70;
+   FBaudotTable[Ord('.')][2] := $70;
+   FBaudotTable[Ord('.')][3] := $70;
+   FBaudotTable[Ord('.')][4] := $71;
+   FBaudotTable[Ord('.')][5] := $71;
+   FBaudotTable[Ord('.')][6] := $71;
+   FBaudotTable[Ord('.')][7] := $72;
+   FBaudotTable[Ord('.')][8] := 9;
+
+   // ,
+   FBaudotTable[Ord(',')][1] := $70;
+   FBaudotTable[Ord(',')][2] := $70;
+   FBaudotTable[Ord(',')][3] := $70;
+   FBaudotTable[Ord(',')][4] := $71;
+   FBaudotTable[Ord(',')][5] := $71;
+   FBaudotTable[Ord(',')][6] := $70;
+   FBaudotTable[Ord(',')][7] := $72;
+   FBaudotTable[Ord(',')][8] := 9;
+
+   // /
+   FBaudotTable[Ord('/')][1] := $70;
+   FBaudotTable[Ord('/')][2] := $71;
+   FBaudotTable[Ord('/')][3] := $70;
+   FBaudotTable[Ord('/')][4] := $71;
+   FBaudotTable[Ord('/')][5] := $71;
+   FBaudotTable[Ord('/')][6] := $71;
+   FBaudotTable[Ord('/')][7] := $72;
+   FBaudotTable[Ord('/')][8] := 9;
+
+   // =
+   FBaudotTable[Ord('=')][1] := $70;
+   FBaudotTable[Ord('=')][2] := $70;
+   FBaudotTable[Ord('=')][3] := $71;
+   FBaudotTable[Ord('=')][4] := $71;
+   FBaudotTable[Ord('=')][5] := $71;
+   FBaudotTable[Ord('=')][6] := $71;
+   FBaudotTable[Ord('=')][7] := $72;
+   FBaudotTable[Ord('=')][8] := 9;
+
+   // +
+   FBaudotTable[Ord('+')][1] := $70;
+   FBaudotTable[Ord('+')][2] := $71;
+   FBaudotTable[Ord('+')][3] := $70;
+   FBaudotTable[Ord('+')][4] := $70;
+   FBaudotTable[Ord('+')][5] := $70;
+   FBaudotTable[Ord('+')][6] := $71;
+   FBaudotTable[Ord('+')][7] := $72;
+   FBaudotTable[Ord('+')][8] := 9;
+
+   // SPACE
+   FBaudotTable[Ord(' ')][1] := $70;
+   FBaudotTable[Ord(' ')][2] := $70;
+   FBaudotTable[Ord(' ')][3] := $70;
+   FBaudotTable[Ord(' ')][4] := $71;
+   FBaudotTable[Ord(' ')][5] := $70;
+   FBaudotTable[Ord(' ')][6] := $70;
+   FBaudotTable[Ord(' ')][7] := $72;
+   FBaudotTable[Ord(' ')][8] := 9;
+
+   // CR
+   FBaudotTable[Ord(CR)][1] := $70;
+   FBaudotTable[Ord(CR)][2] := $70;
+   FBaudotTable[Ord(CR)][3] := $70;
+   FBaudotTable[Ord(CR)][4] := $70;
+   FBaudotTable[Ord(CR)][5] := $71;
+   FBaudotTable[Ord(CR)][6] := $70;
+   FBaudotTable[Ord(CR)][7] := $72;
+   FBaudotTable[Ord(CR)][8] := 9;
+
+   // LF
+   FBaudotTable[Ord(LF)][1] := $70;    // START
+   FBaudotTable[Ord(LF)][2] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][3] := $71;    // MARK
+   FBaudotTable[Ord(LF)][4] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][5] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][6] := $70;    // SPACE
+   FBaudotTable[Ord(LF)][7] := $72;    // STOP
+   FBaudotTable[Ord(LF)][8] := 9;      // next char
+
+   // LTRS
+   FBaudotTable[Ord(LTRS)][1] := $70;  // START
+   FBaudotTable[Ord(LTRS)][2] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][3] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][4] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][5] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][6] := $71;  // MARK
+   FBaudotTable[Ord(LTRS)][7] := $72;  // STOP
+   FBaudotTable[Ord(LTRS)][8] := 8;    // next char
+
+   // FIGS
+   FBaudotTable[Ord(FIGS)][1] := $70;  // START
+   FBaudotTable[Ord(FIGS)][2] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][3] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][4] := $70;  // SPACE
+   FBaudotTable[Ord(FIGS)][5] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][6] := $71;  // MARK
+   FBaudotTable[Ord(FIGS)][7] := $72;  // STOP
+   FBaudotTable[Ord(FIGS)][8] := 8;    // next char
+
+   // LTRS2
+   FBaudotTable[Ord(LTRS2)][1] := $70;  // START
+   FBaudotTable[Ord(LTRS2)][2] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][3] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][4] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][5] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][6] := $71;  // MARK
+   FBaudotTable[Ord(LTRS2)][7] := $72;  // STOP
+   FBaudotTable[Ord(LTRS2)][8] := 9;    // next char
+
+   // FIGS2
+   FBaudotTable[Ord(FIGS2)][1] := $70;  // START
+   FBaudotTable[Ord(FIGS2)][2] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][3] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][4] := $70;  // SPACE
+   FBaudotTable[Ord(FIGS2)][5] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][6] := $71;  // MARK
+   FBaudotTable[Ord(FIGS2)][7] := $72;  // STOP
+   FBaudotTable[Ord(FIGS2)][8] := 9;    // next char
+
+   // DC1(PTT ON)
+   FBaudotTable[Ord(DC1)][1] := $73;   // PTT ON
+   FBaudotTable[Ord(DC1)][2] := $77;   // MARK
+   FBaudotTable[Ord(DC1)][3] := $75;   // set PTT delay
+   FBaudotTable[Ord(DC1)][4] := 8;     // next char
+
+   // DC2(PTT OFF)
+   FBaudotTable[Ord(DC2)][1] := $77;   // MARK
+   FBaudotTable[Ord(DC2)][2] := $76;   // set PTT delay
+   FBaudotTable[Ord(DC2)][3] := $74;   // PTT OFF
+   FBaudotTable[Ord(DC2)][4] := 8;     // next char
+
+   // DC3(PTT ON)
+   FBaudotTable[Ord(DC3)][1] := $73;   // PTT ON
+   FBaudotTable[Ord(DC3)][2] := $77;   // MARK
+   FBaudotTable[Ord(DC3)][3] := $75;   // set PTT delay
+   FBaudotTable[Ord(DC3)][4] := $A3;   // set Hold Counter
+   FBaudotTable[Ord(DC3)][5] := 9;     // next char
+
+   // DC4(PTT OFF)
+   FBaudotTable[Ord(DC4)][1] := $77;   // MARK
+   FBaudotTable[Ord(DC4)][2] := $76;   // set PTT delay
+   FBaudotTable[Ord(DC4)][3] := $A3;   // set Hold Counter
+   FBaudotTable[Ord(DC4)][4] := $74;   // PTT OFF
+   FBaudotTable[Ord(DC4)][5] := 9;     // next char
+
+   FBaudotTable[$90][1] := $20;
+   FBaudotTable[$90][2] := 8;
+   FBaudotTable[$91][1] := $21;
+   FBaudotTable[$91][2] := 8;
+   FBaudotTable[$92][1] := $22;
+   FBaudotTable[$92][2] := 8;
+   FBaudotTable[$93][1] := $23;
+   FBaudotTable[$93][2] := 8;
+   FBaudotTable[$94][1] := $24;
+   FBaudotTable[$94][2] := 8;
 
    if FMonitorThread = nil then begin
       FMonitorThread := TKeyerMonitorThread.Create(Self);
@@ -2995,23 +4074,34 @@ begin
          mousetail := 1;
          paddle_waiting := True;
 
+         if RTTY then begin
+            if FUseAFSKTone = True then begin
+               RttyAudio(0, False);
+            end;
+            FSK_SPACE(FWkTx);
+         end
+         else begin
+            if FUseSideTone then begin
+               NoSound();
+            end;
+            CW_OFF(FWkTx);
+         end;
 
-      if FUseSideTone then begin
-         NoSound();
-      end;
-      CW_OFF(FWkTx);
-      ResetSpeed();
-      FUserFlag := False;
+         ResetSpeed();
+         FUserFlag := False;
 
-      FSendOK := True;
+         FSendOK := True;
 
       finally
          CWBufferSync.Leave();
       end;
    end;
 
-   if FPTTEnabled then begin
+   if FPTTEnabled and (RTTY = False) then begin
       ControlPTT(FWkTx, False);
+   end;
+   if RTTY then begin
+      FskControlPTT(FWkTx, False, False);
    end;
 
    if Assigned(FOnOneCharSentProc) then begin
@@ -3043,9 +4133,16 @@ end;
 procedure TdmZLogKeyer.SetCWSendBufChar2(C: char; CharPos: word);
 var
    m: Integer;
+   code: Byte;
 begin
    for m := 1 to codemax do begin
-      FCWSendBuf[0, codemax * (CharPos - 1) + m] := FCodeTable[Ord(C)][m];
+      if FRTTY = True then begin
+         code := FBaudotTable[Ord(C)][m];
+      end
+      else begin
+         code := FCodeTable[Ord(C)][m];
+      end;
+      FCWSendBuf[0, codemax * (CharPos - 1) + m] := code;
    end;
 end;
 
@@ -3181,12 +4278,42 @@ begin
    FKeyingPort[Index] := port;
 end;
 
+procedure TdmZLogKeyer.ResetComm();
+begin
+   FDefautCom[0] := ZComKeying1;
+   FDefautCom[1] := ZComKeying2;
+   FDefautCom[2] := ZComKeying3;
+   FDefautCom[3] := ZComKeying4;
+   FDefautCom[4] := ZComKeying5;
+   FComKeying[0] := FDefautCom[0];
+   FComKeying[1] := FDefautCom[1];
+   FComKeying[2] := FDefautCom[2];
+   FComKeying[3] := FDefautCom[3];
+   FComKeying[4] := FDefautCom[4];
+   FDefautFsk[0] := ZFskKeying1;
+   FDefautFsk[1] := ZFskKeying2;
+   FDefautFsk[2] := ZFskKeying3;
+   FDefautFsk[3] := ZFskKeying4;
+   FDefautFsk[4] := ZFskKeying5;
+   FFskKeying[0] := FDefautFsk[0];
+   FFskKeying[1] := FDefautFsk[1];
+   FFskKeying[2] := FDefautFsk[2];
+   FFskKeying[3] := FDefautFsk[3];
+   FFskKeying[4] := FDefautFsk[4];
+   FTtyRxCom[0]  := ZComTtyRx1;
+   FTtyRxCom[1]  := ZComTtyRx2;
+   FTtyRxCom[2]  := ZComTtyRx3;
+   FTtyRxCom[3]  := ZComTtyRx4;
+   FTtyRxCom[4]  := ZComTtyRx5;
+end;
+
 procedure TdmZLogKeyer.Open();
 var
    i: Integer;
    usb_no: Integer;
    fUseUSB: Boolean;
    fUseCOM: Boolean;
+   fUseFSK: Boolean;
    fUseParallel: Boolean;
 
    procedure UsbInfoClear(n: Integer);
@@ -3233,6 +4360,17 @@ var
          Result := usbinflist[0];
       end;
    end;
+
+   procedure SetTtyRxCom(no: Integer; CP: TCommPortDriver);
+   begin
+      FTtyRxCom[i] := CP;
+      FTtyRxCom[i].BaudRate := br38400;
+      FTtyRxCom[i].HwFlow := hfNone;
+      FTtyRxCom[i].DataBits := db8bits;
+      FTtyRxCom[i].StopBits := sb1bits;
+      FTtyRxCom[i].Parity := ptNONE;
+      FTtyRxCom[i].EnableDTROnOpen := False;
+   end;
 begin
    if FUsePaddleKeyer = True then begin
       HidController.OnDeviceData := nil;
@@ -3249,17 +4387,24 @@ begin
 
    fUseUSB := False;
    fUseCOM := False;
+   fUseFSK := False;
    fUseParallel := False;
    UsbInfoClearAll();
 
-   // RIG1/RIG2/RIG3全て無し
+   // RIG1/RIG2/RIG3/RIG4全てCW/FSK共に無し
    if (FKeyingPort[0] = tkpNone) and
       (FKeyingPort[1] = tkpNone) and
       (FKeyingPort[2] = tkpNone) and
       (FKeyingPort[3] = tkpNone) and
-      (FKeyingPort[4] = tkpNone) then begin
+      (FKeyingPort[4] = tkpNone) and
+      (FFskPort[0] = tkpNone) and
+      (FFskPort[1] = tkpNone) and
+      (FFskPort[2] = tkpNone) and
+      (FFskPort[3] = tkpNone) and
+      (FFskPort[4] = tkpNone) then begin
       COM_OFF();
       USB_OFF();
+      FSK_OFF();
       Exit;
    end;
 
@@ -3286,6 +4431,21 @@ begin
       end
       else begin
          fUseCom := True;
+      end;
+
+      // FSK
+      if (FFskPort[i] = tkpNone) then begin
+         FFskPort[i] := tkpNone;
+         FFskKeying[i] := nil;
+      end
+      else begin
+         fUseFSK := True;
+      end;
+
+      // TTY RX
+      if (FTtyRxPort[i] = tkpNone) then begin
+         FTtyRxPort[i] := tkpNone;
+         FTtyRxCom[i] := nil;
       end;
    end;
 
@@ -3323,6 +4483,30 @@ begin
             end;
          end;
       end;
+
+      // CW/FSK/RTTYが同じ場合
+      if (FKeyingPort[i] <> tkpNone) and (FFskPort[i] <> tkpNone) and (FTtyRxPort[i] <> tkpNone) and
+         (FKeyingPort[i] = FFskPort[i]) and
+         (FKeyingPort[i] = FTtyRxPort[i]) then begin
+         FFskKeying[i] := FComKeying[i];
+
+         SetTtyRxCom(i, FComKeying[i]);
+      end
+
+      // FSKとRTTY受信が同じ場合
+      else if (FFskPort[i] <> tkpNone) and (FTtyRxPort[i] <> tkpNone) and (FFskPort[i] = FTtyRxPort[i]) then begin
+         SetTtyRxCom(i, FFskKeying[i]);
+      end
+
+      // CWとRTTY受信が同じ場合
+      else if (FKeyingPort[i] <> tkpNone) and (FTtyRxPort[i] <> tkpNone) and (FKeyingPort[i] = FTtyRxPort[i]) then begin
+         SetTtyRxCom(i, FComKeying[i]);
+      end
+
+      // CWとFSKが同じ場合
+      else if (FFskPort[i] <> tkpNone) and (FKeyingPort[i] <> tkpNone) and (FKeyingPort[i] = FFskPort[i]) then begin
+         FFskKeying[i] := FComKeying[i];
+      end;
    end;
 
    // RIG-1/2のKeyingポートとOTRSPポートが同じ場合
@@ -3342,6 +4526,9 @@ begin
    end;
    if fUseCOM = True then begin
       COM_ON();
+   end;
+   if fUseFSK = True then begin
+      FSK_ON();
    end;
 
    // RIG選択用ポート
@@ -3399,6 +4586,7 @@ procedure TdmZLogKeyer.Close();
 begin
    COM_OFF();
    USB_OFF();
+   FSK_OFF();
 
    // RIG選択用ポート
    // RX
@@ -3496,19 +4684,19 @@ begin
          FComKeying[i].Connect;
       end;
 
-      if FKeyingPortConfig[i].FRts = paAlwaysOn then begin
-         FComKeying[i].ToggleRTS(True);
-      end
-      else begin
-         FComKeying[i].ToggleRTS(False);
-      end;
-
-      if FKeyingPortConfig[i].FDtr = paAlwaysOn then begin
-         FComKeying[i].ToggleDTR(True);
-      end
-      else begin
-         FComKeying[i].ToggleDTR(False);
-      end;
+//      if FKeyingPortConfig[i].FRts = paAlwaysOn then begin
+//         FComKeying[i].ToggleRTS(True);
+//      end
+//      else begin
+//         FComKeying[i].ToggleRTS(False);
+//      end;
+//
+//      if FKeyingPortConfig[i].FDtr = paAlwaysOn then begin
+//         FComKeying[i].ToggleDTR(True);
+//      end
+//      else begin
+//         FComKeying[i].ToggleDTR(False);
+//      end;
 
       FComKeying[i].ToggleDTR(False);
       FComKeying[i].ToggleRTS(False);
@@ -3524,7 +4712,7 @@ begin
       Exit;
    end;
 
-   for i := 0 to 2 do begin
+   for i := 0 to MAXPORT do begin
       if FComKeying[i] = nil then begin
          Continue;
       end;
@@ -3537,7 +4725,7 @@ procedure TdmZLogKeyer.USB_ON();
 var
    i: Integer;
 begin
-   for i := 0 to 2 do begin
+   for i := 0 to MAXPORT do begin
       if FUsbInfo[i].FUSBIF4CW <> nil then begin
          FUsbInfo[i].FPORTDATA.Clear();
 
@@ -3586,6 +4774,62 @@ begin
    FUSBIF4CW_Detected := False;
 end;
 
+procedure TdmZLogKeyer.FSK_ON();
+var
+   i: Integer;
+begin
+   for i := 0 to MAXPORT do begin
+      if FFskKeying[i] = nil then begin
+         Continue;
+      end;
+
+      if FFskKeying[i].Connected = False then begin
+         FFskKeying[i].Port := TPortNumber(FFskPort[i]);
+         FFskKeying[i].Connect;
+      end;
+
+      if FFskPortConfig[i].FRts = paAlwaysOn then begin
+         FFskKeying[i].ToggleRTS(True);
+      end
+      else begin
+         FFskKeying[i].ToggleRTS(False);
+      end;
+
+      if FFskPortConfig[i].FDtr = paAlwaysOn then begin
+         FFskKeying[i].ToggleDTR(True);
+      end
+      else begin
+         FFskKeying[i].ToggleDTR(False);
+      end;
+   end;
+
+   for i := 0 to MAXPORT do begin
+      if FTtyRxCom[i] = nil then begin
+         Continue;
+      end;
+
+      if FTtyRxCom[i].Connected = False then begin
+         FTtyRxCom[i].Port := TPortNumber(FTtyRxPort[i]);
+         FTtyRxCom[i].Connect;
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.FSK_OFF();
+var
+   i: Integer;
+begin
+   for i := 0 to MAXPORT do begin
+      if FFskKeying[i] <> nil then begin
+         FFskKeying[i].Disconnect();
+      end;
+
+      if FTtyRxCom[i] <> nil then begin
+         FTtyRxCom[i].Disconnect();
+      end;
+   end;
+end;
+
 procedure TdmZLogKeyer.SetUseSideTone(fUse: Boolean);
 begin
    FUseSideTone := fUse;
@@ -3604,6 +4848,8 @@ begin
    {$IFDEF USESIDETONE}
    if Assigned(FTone) then begin
       FTone.Volume := v;
+      FMarkSound.Volume := v;
+      FSpaceSound.Volume := v;
    end;
    {$ENDIF}
 end;
@@ -4003,7 +5249,7 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.SetCommPortDriver(Index: Integer; CP: TCommPortDriver);
+procedure TdmZLogKeyer.SetCwkPortDriver(Index: Integer; CP: TCommPortDriver);
 begin
    if FComKeying[Index] = CP then begin
       Exit;
@@ -4021,17 +5267,41 @@ begin
    end;
 end;
 
-procedure TdmZLogKeyer.ResetCommPortDriver(Index: Integer; port: TKeyingPort);
+procedure TdmZLogKeyer.SetFskPortDriver(Index: Integer; CP: TCommPortDriver);
+begin
+   if FFskKeying[Index] = CP then begin
+      Exit;
+   end;
+
+   COM_OFF();
+   FFskKeying[Index] := CP;
+
+   if Assigned(CP) then begin
+      FFskPort[Index] := TKeyingPort(CP.Port);
+   end
+   else begin
+      FFskPort[Index] := tkpNone;
+   end;
+end;
+
+procedure TdmZLogKeyer.ResetCwkPortDriver(Index: Integer; port: TKeyingPort);
 begin
    if FComKeying[Index] = FDefautCom[Index] then begin
       Exit;
    end;
 
-//   COM_OFF();
    FComKeying[Index] := FDefautCom[Index];
-//   COM_ON(FKeyingPort);
-
    KeyingPort[Index] := port;
+end;
+
+procedure TdmZLogKeyer.ResetFskPortDriver(Index: Integer; port: TKeyingPort);
+begin
+   if FFskKeying[Index] = FDefautFsk[Index] then begin
+      Exit;
+   end;
+
+   FFskKeying[Index] := FDefautFsk[Index];
+   FFskPort[Index] := port;
 end;
 
 procedure TdmZLogKeyer.WinKeyerOpen(nPort: TKeyingPort);
@@ -4630,6 +5900,7 @@ var
    PP: PByte;
    newwpm: Integer;
    C: Char;
+   ptr: PAnsiChar;
 begin
    PP := DataPtr;
 
@@ -4773,6 +6044,23 @@ begin
             end;
          end;
       end;
+   end
+   else begin
+      ptr := PAnsiChar(DataPtr);
+      for i := 0 to DataSize - 1 do begin
+         PostMessage(MainForm.TTYConsole.Handle, WM_ZLOG_RTTY_RXCHAR, WParam(AnsiChar(ptr[i])), TCommPortDriver(Sender).Tag);
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.ZComTtyRx1ReceiveData(Sender: TObject; DataPtr: Pointer; DataSize: DWORD);
+var
+   i: Integer;
+   ptr: PAnsiChar;
+begin
+   ptr := PAnsiChar(DataPtr);
+   for i := 0 to DataSize - 1 do begin
+      PostMessage(MainForm.TTYConsole.Handle, WM_ZLOG_RTTY_RXCHAR, WParam(AnsiChar(ptr[i])), TCommPortDriver(Sender).Tag);
    end;
 end;
 
@@ -5171,6 +6459,77 @@ begin
          Sleep(dmZLogGlobal.Settings._wk_delaytime);
       end;
    end;
+end;
+
+procedure TdmZLogKeyer.SetSpaceFreq(v: Integer);
+begin
+   FSpaceSound.Frequency := v;
+end;
+
+procedure TdmZLogKeyer.SetMarkFreq(v: Integer);
+begin
+   FMarkSound.Frequency := v;
+end;
+
+procedure TdmZLogKeyer.FSK_KEYING(nID: Integer; fMark: Boolean);
+begin
+   if FFskReverse = False then begin
+      fMark := Not fMark;
+   end;
+
+   case FFskPort[nID] of
+      tkpSerial1..tkpSerial20: begin
+         if FFskPortConfig[nID].FRts = paKey then begin
+            FFskKeying[nID].ToggleRTS(fMark);
+         end;
+         if FFskPortConfig[nID].FDtr = paKey then begin
+            FFskKeying[nID].ToggleDTR(fMark);
+         end;
+         if FFskPortConfig[nID].FTxD = paKey then begin
+            FFskKeying[nID].ToggleTxD(fMark);
+         end;
+      end;
+   end;
+end;
+
+procedure TdmZLogKeyer.FSK_MARK(nID: Integer);
+begin
+   FSK_KEYING(nID, True);
+end;
+
+procedure TdmZLogKeyer.FSK_SPACE(nID: Integer);
+begin
+   FSK_KEYING(nID, False);
+end;
+
+function TdmZLogKeyer.GetFskPort(Index: Integer): TKeyingPort;
+begin
+   Result := FFskPort[Index];
+end;
+
+procedure TdmZLogKeyer.SetFskPort(Index: Integer; port: TKeyingPort);
+begin
+   FFskPort[Index] := port;
+end;
+
+function TdmZLogKeyer.GetFskPortConfig(Index: Integer): TPortConfig;
+begin
+   Result := FFskPortConfig[Index];
+end;
+
+procedure TdmZLogKeyer.SetFskPortConfig(Index: Integer; v: TPortConfig);
+begin
+   FFskPortConfig[Index] := v;
+end;
+
+function TdmZLogKeyer.GetTtyRxPort(Index: Integer): TKeyingPort;
+begin
+   Result := FTtyRxPort[Index];
+end;
+
+procedure TdmZLogKeyer.SetTtyRxPort(Index: Integer; port: TKeyingPort);
+begin
+   FTtyRxPort[Index] := port;
 end;
 
 { TUSBPortInfo }

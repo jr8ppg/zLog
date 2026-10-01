@@ -503,6 +503,16 @@ type
     checkNotOverwrite9: TCheckBox;
     checkShowAvailableBands: TCheckBox;
     checkSentOverride: TCheckBox;
+    groupRTTY: TGroupBox;
+    checkUseAfskTone: TCheckBox;
+    checkDontChangeRigMode: TCheckBox;
+    checkUseFskKeying: TCheckBox;
+    comboMarkFreq: TComboBox;
+    Label68: TLabel;
+    comboSpaceFreq: TComboBox;
+    Label84: TLabel;
+    checkFskReverse: TCheckBox;
+    checkUseTxUos: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1002,6 +1012,12 @@ begin
       SentEdit.Color := clWindow;
       checkSentOverride.Visible := False;
    end;
+
+   // RTTYのとき
+   if CurrentQSO.Mode = mRTTY then begin
+      rbRTTY.Checked := True;
+      CWBankClick(rbRTTY);
+   end;
 end;
 
 procedure TformOptions2.FormDestroy(Sender: TObject);
@@ -1340,6 +1356,15 @@ begin
 
       // Paddle reverse
       Settings.CW._paddlereverse := checkPaddleReverse.Checked;
+
+      // RTTY
+      Settings.RTTY.UseAfskTone := checkUseAfskTone.Checked;
+      Settings.RTTY.MarkFreq := StrToIntDef(comboMarkFreq.Text, 2125);
+      Settings.RTTY.SpaceFreq := StrToIntDef(comboSpaceFreq.Text, 1955);
+      Settings.RTTY.UseFskKeying := checkUseFskKeying.Checked;
+      Settings.RTTY.FskReverse := checkFskReverse.Checked;
+      Settings.RTTY.DontChangeRigMode := checkDontChangeRigMode.Checked;
+      Settings.RTTY.UseTxUos := checkUseTxUos.Checked;
 
       //
       // Voice
@@ -1807,6 +1832,15 @@ begin
 
       // Paddle reverse
       checkPaddleReverse.Checked := Settings.CW._paddlereverse;
+
+      // RTTY
+      checkUseAfskTone.Checked := Settings.RTTY.UseAfskTone;
+      comboMarkFreq.Text := IntToStr(Settings.RTTY.MarkFreq);
+      comboSpaceFreq.Text := IntToStr(Settings.RTTY.SpaceFreq);
+      checkUseFskKeying.Checked := Settings.RTTY.UseFskKeying;
+      checkFskReverse.Checked := Settings.RTTY.FskReverse;
+      checkDontChangeRigMode.Checked := Settings.RTTY.DontChangeRigMode;
+      checkUseTxUos.Checked := Settings.RTTY.UseTxUos;
 
       //
       // Voice

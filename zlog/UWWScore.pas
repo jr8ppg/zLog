@@ -13,6 +13,8 @@ type
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    FUseState: Boolean;
+    Multi3: array[b19..HiBand] of LongInt;
   public
     { Public declarations }
     constructor Create(AOwner: TComponent); overload;
@@ -20,6 +22,7 @@ type
     procedure Reset; override;
     procedure AddNoUpdate(aQSO: TQSO); override;
     procedure UpdateData; override;
+    property UseState: Boolean read FUseState write FUseState;
   end;
 
 var
@@ -32,6 +35,7 @@ implementation
 constructor TWWScore.Create(AOwner: TComponent);
 begin
    inherited Create(AOwner);
+   FUseState := False;
 end;
 
 procedure TWWScore.FormCreate(Sender: TObject);
@@ -64,6 +68,10 @@ begin
       if Log.QsoList[i].NewMulti2 then begin
         inc(Multi2[band]);
       end;
+
+      if FUseState and Log.QsoList[i].NewMulti3 then begin
+        Inc(Multi3[band]);
+      end;
    end;
 end;
 
@@ -77,6 +85,7 @@ begin
       Points[band] := 0;
       Multi[band] := 0;
       Multi2[band] := 0;
+      Multi3[band] := 0;
    end;
 end;
 
@@ -85,6 +94,10 @@ var
    band: TBand;
 begin
    Inherited;
+
+   if FUseState and aQSO.NewMulti3 then begin
+      Inc(Multi3[aQSO.Band]);
+   end;
 
    if aQSO.Dupe then begin
       exit;
@@ -105,26 +118,40 @@ end;
 procedure TWWScore.UpdateData;
 var
    band : TBand;
-   TotQSO, TotPts, TotMulti, TotMulti2: Integer;
+   TotQSO, TotPts, TotMulti, TotMulti2, TotMulti3: Integer;
    row: Integer;
    i: Integer;
    h: Integer;
    w: Integer;
    strScore: string;
 begin
-   Grid.ColCount := 5;
+   if FUseState then
+      Grid.ColCount := 6
+   else
+      Grid.ColCount := 5;
    TotQSO := 0;
    TotPts := 0;
    TotMulti := 0;
    TotMulti2 := 0;
+   TotMulti3 := 0;
    row := 1;
 
    // 見出し行
-   Grid.Cells[0, 0] := 'MHz';
+   if FUseState then
+      Grid.Cells[0, 0] := 'Band'
+   else
+      Grid.Cells[0, 0] := 'MHz';
    Grid.Cells[1, 0] := 'QSOs';
    Grid.Cells[2, 0] := 'Points';
-   Grid.Cells[3, 0] := 'Multi';
-   Grid.Cells[4, 0] := 'Multi2';
+   if FUseState then begin
+      Grid.Cells[3, 0] := 'Zone';
+      Grid.Cells[4, 0] := 'Entity';
+      Grid.Cells[5, 0] := 'State';
+   end
+   else begin
+      Grid.Cells[3, 0] := 'Multi';
+      Grid.Cells[4, 0] := 'Multi2';
+   end;
 
    for band := b19 to b28 do begin
       // WARC除外
@@ -141,12 +168,16 @@ begin
       TotPts := TotPts + Points[band];
       TotMulti := TotMulti + Multi[band];
       TotMulti2 := TotMulti2 + Multi2[band];
+      TotMulti3 := TotMulti3 + Multi3[band];
 
       Grid.Cells[0, row] := '*' + MHzString[band];
       Grid.Cells[1, row] := IntToStr3(QSO[band]);
       Grid.Cells[2, row] := IntToStr3(Points[band]);
       Grid.Cells[3, row] := IntToStr3(Multi[band]);
       Grid.Cells[4, row] := IntToStr3(Multi2[band]);
+      if FUseState then begin
+         Grid.Cells[5, row] := IntToStr3(Multi3[band]);
+      end;
 
       Inc(row);
    end;
@@ -157,19 +188,29 @@ begin
    Grid.Cells[2, row] := IntToStr3(TotPts);
    Grid.Cells[3, row] := IntToStr3(TotMulti);
    Grid.Cells[4, row] := IntToStr3(TotMulti2);
+   if FUseState then begin
+      Grid.Cells[5, row] := IntToStr3(TotMulti3);
+   end;
    Inc(row);
 
    // スコア行
-   strScore:= IntToStr3(TotPts * (TotMulti + TotMulti2));
+   strScore:= IntToStr3(TotPts * (TotMulti + TotMulti2 + TotMulti3));
    Grid.Cells[0, row] := 'Score';
    Grid.Cells[1, row] := '';
    Grid.Cells[2, row] := '';
    Grid.Cells[3, row] := '';
    Grid.Cells[4, row] := strScore;
+   if FUseState then begin
+      Grid.Cells[4, row] := '';
+      Grid.Cells[5, row] := strScore;
+   end;
    Inc(row);
 
    // 行数をセット
-   Grid.ColCount := 5;
+   if FUseState then
+      Grid.ColCount := 6
+   else
+      Grid.ColCount := 5;
    Grid.RowCount := row;
 
    // カラム幅をセット
@@ -179,6 +220,10 @@ begin
    Grid.ColWidths[2] := w * 7;
    Grid.ColWidths[3] := w * 7;
    Grid.ColWidths[4] := w * Max(8, Length(strScore)+1);
+   if FUseState then begin
+      Grid.ColWidths[4] := w * 8;
+      Grid.ColWidths[5] := w * Max(8, Length(strScore)+1);
+   end;
 
    // 幅調整
    w := 0;

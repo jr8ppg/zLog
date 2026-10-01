@@ -141,6 +141,7 @@ type
     procedure StopMessageCW(); virtual;
     procedure ControlPTT(fOn: Boolean); virtual;
     procedure AudioInputSelect(input: TAudioInput); virtual;
+    procedure SetRttyMonitor(fOn: Boolean); virtual;
 
     property Name: string read FName write FName;
     property CommPortDriver: TCommPortDriver read FComm;
@@ -380,9 +381,15 @@ end;
 procedure TRig.Initialize();
 begin
    FPollingTimer.Interval := FPollingInterval;
+   FComm.EnableDTROnOpen := False;
    FComm.Connect();
 
    case FPortConfig.FRts of
+      paNone, paPtt, paKey: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(False);
+      end;
+
       paAlwaysOn: begin
          FComm.HwFlow := hfNone;
          FComm.ToggleRTS(True);
@@ -405,13 +412,22 @@ begin
    end;
 
    case FPortConfig.FDtr of
+      paNone, paPtt, paKey: begin
+         FComm.HwFlow := hfNone;
+         FComm.ToggleRTS(False);
+      end;
+
       paAlwaysOn: begin
          FComm.ToggleDTR(True);
       end;
 
-      paNone, paAlwaysOff: begin
+      paAlwaysOff: begin
          FComm.ToggleDTR(False);
       end;
+
+      paHandshake: begin
+         FComm.ToggleDTR(True);
+      end
 
       else begin
          FComm.ToggleDTR(True);
@@ -605,6 +621,11 @@ begin
 end;
 
 procedure TRig.AudioInputSelect(input: TAudioInput);
+begin
+//
+end;
+
+procedure TRig.SetRttyMonitor(fOn: Boolean);
 begin
 //
 end;

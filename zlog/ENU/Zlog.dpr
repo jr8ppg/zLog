@@ -87,6 +87,7 @@ library Zlog;
 {ITE} {DFMFileType} {UPluginManager.dfm}
 {ITE} {DFMFileType} {UPortConfigDialog.dfm}
 {ITE} {DFMFileType} {UPortConfigDialog2.dfm}
+{ITE} {DFMFileType} {UPortConfigDialog3.dfm}
 {ITE} {DFMFileType} {UPrePostPlaybackDlg.dfm}
 {ITE} {DFMFileType} {UQSOListColumnSettings.dfm}
 {ITE} {DFMFileType} {UQsyInfo.dfm}
@@ -95,6 +96,7 @@ library Zlog;
 {ITE} {DFMFileType} {URateDialog.dfm}
 {ITE} {DFMFileType} {URateDialogEx.dfm}
 {ITE} {DFMFileType} {URigControl.dfm}
+{ITE} {DFMFileType} {URttyOptions.dfm}
 {ITE} {DFMFileType} {UScratchSheet.dfm}
 {ITE} {DFMFileType} {USearch.dfm}
 {ITE} {DFMFileType} {USelectClusterLog.dfm}
@@ -129,7 +131,7 @@ library Zlog;
 {ITE} {DFMFileType} {UzLogKeyer.dfm}
 {ITE} {DFMFileType} {UZServerInquiry.dfm}
 {ITE} {RCFileType} {resource.rc}
-{ITE} {RCFileType} {Win64\Release\Zlog_DRC.rc}
+{ITE} {RCFileType} {Win32\Release\Zlog_DRC.rc}
 
 {$R 'main.dfm' 'MainForm:TForm'}
 {$R 'Progress.dfm' 'formProgress:TForm'}
@@ -216,6 +218,7 @@ library Zlog;
 {$R 'UPluginManager.dfm' 'MarketForm:TForm'}
 {$R 'UPortConfigDialog.dfm' 'formPortConfig:TForm'}
 {$R 'UPortConfigDialog2.dfm' 'formPortConfig2:TForm'}
+{$R 'UPortConfigDialog3.dfm' 'formPortConfig3:TForm'}
 {$R 'UPrePostPlaybackDlg.dfm' 'formPrePostPlaybackDlg:TForm'}
 {$R 'UQSOListColumnSettings.dfm' 'formQSOListColumnSettings:TForm'}
 {$R 'UQsyInfo.dfm' 'formQsyInfo:TForm'}
@@ -224,6 +227,7 @@ library Zlog;
 {$R 'URateDialog.dfm' 'RateDialog:TForm'}
 {$R 'URateDialogEx.dfm' 'RateDialogEx:TForm'}
 {$R 'URigControl.dfm' 'RigControl:TForm'}
+{$R 'URttyOptions.dfm' 'formRttyOptions:TForm'}
 {$R 'UScratchSheet.dfm' 'ScratchSheet:TForm(ConsolePad)'}
 {$R 'USearch.dfm' 'formSearch:TForm'}
 {$R 'USelectClusterLog.dfm' 'formSelectClusterLog:TForm'}
@@ -258,7 +262,7 @@ library Zlog;
 {$R 'UzLogKeyer.dfm' 'dmZLogKeyer:TDataModule'}
 {$R 'UZServerInquiry.dfm' 'ZServerInquiry:TForm'}
 {$R 'resource.res' 'resource.rc'}
-{$R 'Win64\Release\Zlog_DRC.res' 'Win64\Release\Zlog_DRC.rc'}
+{$R 'Win32\Release\Zlog_DRC.res' 'Win32\Release\Zlog_DRC.rc'}
 
 {$E ENU}
 

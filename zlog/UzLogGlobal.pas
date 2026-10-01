@@ -44,6 +44,22 @@ type
     _cwk_clear_delay: Integer;
   end;
 
+  // RTTY
+  TRTTYSettingsParam = record
+    UseAfskTone: Boolean;
+    UseFskKeying: Boolean;
+    DontChangeRigMode: Boolean;
+    SpaceFreq: Integer;
+    MarkFreq: Integer;
+    FskReverse: Boolean;
+    DefaultColor: Integer;
+    BackColor: TColor;
+    ForeColor: TColor;
+    ColorCoding: TStringList;
+    UseTxUos: Boolean;
+    CallsignFilter: string;
+  end;
+
   TCommParam = record
     FHostName: string;
     FPort: string;
@@ -86,6 +102,7 @@ type
   TPortConfig = record
     FRts: TPortAction;  // default: PTT
     FDtr: TPortAction;  // default: KEY
+    FTxD: TPortAction;  // default: NONE
   end;
 
   TPrePostPlayBack = record
@@ -112,6 +129,9 @@ type
     FUsePolling: Boolean;
     FPrePlayback: TAudioInput;
     FPostPlayback: TAudioInput;
+    FFskPort: Integer;
+    FFskPortConfig: TPortConfig;
+    FTtyRxPort: Integer;
   end;
 
   TRigSet = record
@@ -168,7 +188,8 @@ type
     _bandscope_save_current_freq: Boolean;
     _bandscope_initial_reliability_high: Boolean;
 
-    CW : TCWSettingsParam;
+    CW: TCWSettingsParam;
+    RTTY: TRTTYSettingsParam;
 
     FRigControl: array[1..5] of TRigSetting;
     FRigSet: array[1..2] of TRigSet;
@@ -252,6 +273,11 @@ type
     _pttbefore_ph: Word;
     _pttafter_ph: Word;
 
+    // RTTY
+    _pttenabled_rtty: Boolean;
+    _pttbefore_rtty: Word;
+    _pttafter_rtty: Word;
+
     _txnr : byte;
     _pcname : string;
     _saveevery : word;
@@ -282,6 +308,7 @@ type
     _sync_rig_wpm: Boolean;
     _use_band_updown: Boolean;
     _use_band_select: Boolean;
+    _set_initfreq_chgmode: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -329,6 +356,8 @@ type
     FSoundDevice: Integer;
 
     // Select User Defined Contest
+    FImpCwMessage: array[1..4] of Boolean;
+    FImpCQMessage: array[1..3] of Boolean;
     FLastCFGFileName: string;
 
     // スコア表示の追加情報(評価用指数)
@@ -503,7 +532,6 @@ type
     FPacketClusterList: TTelnetSettingList;
     FFreqMemList: TFreqMemoryList;
 
-    function Load_CTYDAT(): Boolean;
     procedure AnalyzeMyCountry();
 
     procedure LoadIniFile; {loads Settings from zlog.ini}
@@ -619,6 +647,7 @@ public
     function GuessCQZone(strCallsign: string): string;
     function IsUSA(): Boolean;
     function IsMultiStation(): Boolean;
+    function Load_CTYDAT(UseWAEDC: Boolean): Boolean;
 
     property PowerOfBand[b: TBand]: TPower read GetPowerOfBand;
     property PowerOfBand2[b: TBand]: string read GetPowerOfBand2;
@@ -792,6 +821,7 @@ var
 begin
    FCurrentFileName := '';
    FLog := nil;
+   Settings.RTTY.ColorCoding := TStringList.Create();
 
    // PacketClusterリスト
    FPacketClusterList := TTelnetSettingList.Create();
@@ -816,7 +846,6 @@ begin
 
    FCountryList := TCountryList.Create();
    FPrefixList := TPrefixList.Create();
-   FCtyDatLoaded := Load_CTYDAT();
 
    L := TStringList.Create();
    L.CommaText := Settings.FBandPlanPresetList;
@@ -863,6 +892,7 @@ begin
    FLog.Free();
    FPacketClusterList.Free();
    FFreqMemList.Free();
+   Settings.RTTY.ColorCoding.Free();
 end;
 
 procedure TdmZLogGlobal.LoadCfgParams(ini: TCustomIniFile);
@@ -1102,6 +1132,27 @@ begin
       // CW Keyboard Clear Delay
       Settings.CW._cwk_clear_delay:= ini.ReadInteger('CW', 'cwk_clear_delay', 2);
 
+      // RTTY
+      Settings.RTTY.UseAfskTone := ini.ReadBool('RTTY', 'use_afsk_tone', False);
+      Settings.RTTY.UseFskKeying := ini.ReadBool('RTTY', 'use_fsk_keying', False);
+      Settings.RTTY.DontChangeRigMode := ini.ReadBool('RTTY', 'dont_change_rig_mode', False);
+      Settings.RTTY.UseTxUos := ini.ReadBool('RTTY', 'use_txuos', True);
+      Settings.RTTY.SpaceFreq := ini.ReadInteger('RTTY', 'space_freq', 2295);
+      Settings.RTTY.MarkFreq  := ini.ReadInteger('RTTY', 'mark_freq', 2125);
+      Settings.RTTY.FskReverse := ini.ReadBool('RTTY', 'fsk_reverse', False);
+
+      Settings.RTTY.DefaultColor := ini.ReadInteger('RTTY', 'DefaultColor', 0);
+      Settings.RTTY.BackColor := ZStringToColorDef(ini.ReadString('RTTY', 'BackColor', '$FFFFFF'), clWhite);
+      Settings.RTTY.ForeColor := ZStringToColorDef(ini.ReadString('RTTY', 'ForeColor', '$000000'), clBlack);
+
+      num := ini.ReadInteger('RTTY_ColorCoding', 'num', 0);
+      for i := 1 to num do begin
+         s := ini.ReadString('RTTY_ColorCoding', '#' + IntToStr(i), '');
+         Settings.RTTY.ColorCoding.Add(s);
+      end;
+
+      Settings.RTTY.CallsignFilter := ini.ReadString('RTTY', 'CallsignFilter', '^(?=.{3,15}$)(?=.*[0-9])(?=.*[A-Z])[A-Z0-9]+(?:/[A-Z0-9]+)*$');
+
       //
       // Hardware
       //
@@ -1159,10 +1210,16 @@ begin
          Settings.FRigControl[i].FKeyingPort    := ini.ReadInteger(s, 'KeyingPort', 0);
          Settings.FRigControl[i].FKeyingPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'keying_port_rts', Integer(paPtt)));
          Settings.FRigControl[i].FKeyingPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'keying_port_dtr', Integer(paKey)));
+         Settings.FRigControl[i].FKeyingPortConfig.FTxD := TPortAction(ini.ReadInteger(s, 'keying_port_txd', Integer(paNone)));
          Settings.FRigControl[i].FPhoneChgPTT := ini.ReadBool(s, 'PhoneChgPTT', False);
          Settings.FRigControl[i].FUsePolling := ini.ReadBool(s, 'UsePolling', True);
          Settings.FRigControl[i].FPrePlayback := TAudioInput(ini.ReadInteger(s, 'PrePlayback', 0));
          Settings.FRigControl[i].FPostPlayback := TAudioInput(ini.ReadInteger(s, 'PostPlayback', 0));
+         Settings.FRigControl[i].FFskPort    := ini.ReadInteger(s, 'FskPort', 0);
+         Settings.FRigControl[i].FFskPortConfig.FRts := TPortAction(ini.ReadInteger(s, 'fsk_port_rts', Integer(paPtt)));
+         Settings.FRigControl[i].FFskPortConfig.FDtr := TPortAction(ini.ReadInteger(s, 'fsk_port_dtr', Integer(paNone)));
+         Settings.FRigControl[i].FFskPortConfig.FTxD := TPortAction(ini.ReadInteger(s, 'fsk_port_txd', Integer(paKey)));
+         Settings.FRigControl[i].FTtyRxPort     := ini.ReadInteger(s, 'TtyRxPort', 0);
       end;
 
       //
@@ -1270,6 +1327,16 @@ begin
       // After TX paddle/keybd (ms)
       Settings._pttafter_ph := ini.ReadInteger('Hardware', 'PTTAfterPH', 0);
 
+      // RTTY
+      // Enable PTT
+      Settings._pttenabled_rtty := ini.ReadBool('Hardware', 'PTTEnabledRTTY', True);
+
+      // Before TX (ms)
+      Settings._pttbefore_rtty := ini.ReadInteger('Hardware', 'PTTBeforeRTTY', 700);
+
+      // After TX paddle/keybd (ms)
+      Settings._pttafter_rtty := ini.ReadInteger('Hardware', 'PTTAfterRTTY', 700);
+
       //
       // Rig control
       //
@@ -1303,6 +1370,9 @@ begin
 
       // Use band select command
       Settings._use_band_select := ini.ReadBool('Rig', 'UseBandSelect', False);
+
+      // Set the initial frequency when changing modes.
+      Settings._set_initfreq_chgmode := ini.ReadBool('Rig', 'SetInitFreqWhenChangeMode', False);
 
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
@@ -1679,6 +1749,12 @@ begin
       Settings.FSoundDevice := ini.ReadInteger('Voice', 'device', 0);
 
       // Select User Defined Contest
+      Settings.FImpCwMessage[1] := ini.ReadBool('UserDefinedContest', 'imp_f1a', True);
+      Settings.FImpCwMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_f2a', True);
+      Settings.FImpCwMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_f3a', False);
+      Settings.FImpCwMessage[4] := ini.ReadBool('UserDefinedContest', 'imp_f4a', False);
+      Settings.FImpCQMessage[2] := ini.ReadBool('UserDefinedContest', 'imp_cq2', False);
+      Settings.FImpCQMessage[3] := ini.ReadBool('UserDefinedContest', 'imp_cq3', False);
       Settings.FLastCFGFileName := ini.ReadString('UserDefinedContest', 'last_cfgfilename', '');
 
       // スコア表示の追加情報(評価用指数)
@@ -1969,6 +2045,26 @@ begin
       // CW Keyboard Clear Delay
       ini.WriteInteger('CW', 'cwk_clear_delay', Settings.CW._cwk_clear_delay);
 
+      // RTTY
+      ini.WriteBool('RTTY', 'use_afsk_tone', Settings.RTTY.UseAfskTone);
+      ini.WriteBool('RTTY', 'use_fsk_keying', Settings.RTTY.UseFskKeying);
+      ini.WriteBool('RTTY', 'dont_change_rig_mode', Settings.RTTY.DontChangeRigMode);
+      ini.WriteBool('RTTY', 'use_txuos', Settings.RTTY.UseTxUos);
+      ini.WriteInteger('RTTY', 'space_freq', Settings.RTTY.SpaceFreq);
+      ini.WriteInteger('RTTY', 'mark_freq', Settings.RTTY.MarkFreq);
+      ini.WriteBool('RTTY', 'fsk_reverse', Settings.RTTY.FskReverse);
+
+      ini.WriteInteger('RTTY', 'DefaultColor', Settings.RTTY.DefaultColor);
+      ini.WriteString('RTTY', 'BackColor', ZColorToString(Settings.RTTY.BackColor));
+      ini.WriteString('RTTY', 'ForeColor', ZColorToString(Settings.RTTY.ForeColor));
+
+      ini.WriteInteger('RTTY_ColorCoding', 'num', Settings.RTTY.ColorCoding.Count);
+      for i := 1 to Settings.RTTY.ColorCoding.Count do begin
+         ini.WriteString('RTTY_ColorCoding', '#' + IntToStr(i), Settings.RTTY.ColorCoding[i - 1]);
+      end;
+
+      ini.WriteString('RTTY', 'CallsignFilter', Settings.RTTY.CallsignFilter);
+
       //
       // Hardware
       //
@@ -2019,10 +2115,16 @@ begin
          ini.WriteInteger(s, 'TransverterOffset', Settings.FRigControl[i].FTransverterOffset);
          ini.WriteInteger(s, 'keying_port_rts', Integer(Settings.FRigControl[i].FKeyingPortConfig.FRts));
          ini.WriteInteger(s, 'keying_port_dtr', Integer(Settings.FRigControl[i].FKeyingPortConfig.FDtr));
+         ini.WriteInteger(s, 'keying_port_txd', Integer(Settings.FRigControl[i].FKeyingPortConfig.FTxD));
          ini.WriteBool(s, 'PhoneChgPTT', Settings.FRigControl[i].FPhoneChgPTT);
          ini.WriteBool(s, 'UsePolling', Settings.FRigControl[i].FUsePolling);
          ini.WriteInteger(s, 'PrePlayback', Integer(Settings.FRigControl[i].FPrePlayback));
          ini.WriteInteger(s, 'PostPlayback', Integer(Settings.FRigControl[i].FPostPlayback));
+         ini.WriteInteger(s, 'FskPort', Settings.FRigControl[i].FFskPort);
+         ini.WriteInteger(s, 'fsk_port_rts', Integer(Settings.FRigControl[i].FFskPortConfig.FRts));
+         ini.WriteInteger(s, 'fsk_port_dtr', Integer(Settings.FRigControl[i].FFskPortConfig.FDtr));
+         ini.WriteInteger(s, 'fsk_port_txd', Integer(Settings.FRigControl[i].FFskPortConfig.FTxd));
+         ini.WriteInteger(s, 'TtyRxPort', Settings.FRigControl[i].FTtyRxPort);
       end;
 
       //
@@ -2121,6 +2223,16 @@ begin
       // After TX paddle/keybd (ms)
       ini.WriteInteger('Hardware', 'PTTAfterPH', Settings._pttafter_ph);
 
+      // RTTY
+      // Enable PTT
+      ini.WriteBool('Hardware', 'PTTEnabledRTTY', Settings._pttenabled_rtty);
+
+      // Before TX (ms)
+      ini.WriteInteger('Hardware', 'PTTBeforeRTTY', Settings._pttbefore_rtty);
+
+      // After TX paddle/keybd (ms)
+      ini.WriteInteger('Hardware', 'PTTAfterRTTY', Settings._pttafter_rtty);
+
       //
       // Rig control
       //
@@ -2153,7 +2265,10 @@ begin
       ini.WriteBool('Rig', 'UseBandUpDown', Settings._use_band_updown);
 
       // Use band select command
-      ini.ReadBool('Rig', 'UseBandSelect', Settings._use_band_select);
+      ini.WriteBool('Rig', 'UseBandSelect', Settings._use_band_select);
+
+      // Set the initial frequency when changing modes.
+      ini.WriteBool('Rig', 'SetInitFreqWhenChangeMode', Settings._set_initfreq_chgmode);
 
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);
@@ -2390,6 +2505,12 @@ begin
       ini.WriteInteger('Voice', 'device', Settings.FSoundDevice);
 
       // Select User Defined Contest
+      ini.WriteBool('UserDefinedContest', 'imp_f1a', Settings.FImpCwMessage[1]);
+      ini.WriteBool('UserDefinedContest', 'imp_f2a', Settings.FImpCwMessage[2]);
+      ini.WriteBool('UserDefinedContest', 'imp_f3a', Settings.FImpCwMessage[3]);
+      ini.WriteBool('UserDefinedContest', 'imp_f4a', Settings.FImpCwMessage[4]);
+      ini.WriteBool('UserDefinedContest', 'imp_cq2', Settings.FImpCQMessage[2]);
+      ini.WriteBool('UserDefinedContest', 'imp_cq3', Settings.FImpCQMessage[3]);
       ini.WriteString('UserDefinedContest', 'last_cfgfilename', Settings.FLastCFGFileName);
 
       // スコア表示の追加情報(評価用指数)
@@ -2566,6 +2687,7 @@ begin
 
    dmZLogKeyer.SetPTTDelay(Settings._pttbefore_cw, Settings._pttafter_cw);
    dmZLogKeyer.SetPTT(Settings._pttenabled_cw);
+   dmZLogKeyer.SetRttyPTTDelay(Settings._pttbefore_rtty, Settings._pttafter_rtty);
 
    dmZLogKeyer.InitWPM := Settings.CW._speed;
    dmZLogKeyer.WPM := Settings.CW._speed;
@@ -2574,6 +2696,18 @@ begin
 
    dmZLogKeyer.SpaceFactor := Settings.CW._spacefactor;
    dmZLogKeyer.EISpaceFactor := Settings.CW._eispacefactor;
+
+   // FSKキーイングポートの設定
+   for i := 0 to 3 do begin
+      dmZLogKeyer.FskPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FFskPort);
+      dmZLogKeyer.FskPortConfig[i] := Settings.FRigControl[i + 1].FFskPortConfig;
+      dmZLogKeyer.TtyRxPort[i] := TKeyingPort(Settings.FRigControl[i + 1].FTtyRxPort);
+   end;
+   dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.RTTY.UseAfskTone;
+   dmZLogKeyer.SpaceFreq := dmZLogGlobal.Settings.RTTY.SpaceFreq;
+   dmZLogKeyer.MarkFreq := dmZLogGlobal.Settings.RTTY.MarkFreq;
+   dmZLogKeyer.FskReverse := dmZLogGlobal.Settings.RTTY.FskReverse;
+   dmZLogKeyer.UseTxUOS := dmZLogGlobal.Settings.RTTY.UseTxUOS;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;
@@ -3103,16 +3237,19 @@ begin
    Result := fullpath;
 end;
 
-function TdmZLogGlobal.Load_CTYDAT(): Boolean;
+function TdmZLogGlobal.Load_CTYDAT(UseWAEDC: Boolean): Boolean;
 var
    i: Integer;
    P: TPrefix;
    strFileName: string;
 begin
+   FCountryList.Clear();
+   FPrefixList.Clear();
+
    strFileName := ExtractFilePath(Application.ExeName) + 'CTY.DAT';
 
    // カントリーリストをロード
-   FCountryList.LoadFromFile(strFileName);
+   FCountryList.LoadFromFile(strFileName, UseWAEDC);
 
    if FileExists(strFileName) = True then begin
 
@@ -3128,9 +3265,11 @@ begin
       FPrefixList.SaveToFile('prefixlist.txt');
       {$ENDIF}
 
+      FCtyDatLoaded := True;
       Result := True;
    end
    else begin
+      FCtyDatLoaded := False;
       Result := False;
    end;
 

@@ -18,7 +18,7 @@ object formMain: TformMain
     Top = 0
     Width = 575
     Height = 421
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -270,7 +270,8 @@ object formMain: TformMain
           '#154 PSE QSL='
           '#155 NO QSL='
           '#167 QSO'#26908#32034'='
-          '#171 sRST'#12501#12451#12540#12523#12489#12395#31227#21205'=')
+          '#171 sRST'#12501#12451#12540#12523#12489#12395#31227#21205'='
+          '#174 RTTY'#12467#12540#12523#21462#36796'=')
         TabOrder = 0
         TitleCaptions.Strings = (
           #27231#33021

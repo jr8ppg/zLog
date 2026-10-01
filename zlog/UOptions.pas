@@ -462,6 +462,28 @@ type
     Label2: TLabel;
     buttonBrowseMmtty2Path: TButton;
     editMmtty2Folder: TEdit;
+    checkSetInitFreqChgMode: TCheckBox;
+    groupRig2Fsk: TGroupBox;
+    comboRig2FskPort: TComboBox;
+    buttonRig2FskPortConfig: TButton;
+    groupRig1Fsk: TGroupBox;
+    comboRig1FskPort: TComboBox;
+    buttonRig1FskPortConfig: TButton;
+    groupRig3Fsk: TGroupBox;
+    comboRig3FskPort: TComboBox;
+    buttonRig3FskPortConfig: TButton;
+    groupRig4Fsk: TGroupBox;
+    comboRig4FskPort: TComboBox;
+    buttonRig4FskPortConfig: TButton;
+    comboRig1RxPort: TComboBox;
+    comboRig2RxPort: TComboBox;
+    comboRig3RxPort: TComboBox;
+    comboRig4RxPort: TComboBox;
+    Label63: TLabel;
+    Label64: TLabel;
+    checkEnablePttRtty: TCheckBox;
+    editBeforeTxRtty: TEdit;
+    editAfterTxRtty: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -503,6 +525,8 @@ type
     procedure checkUseF2ADataModeClick(Sender: TObject);
     procedure checkUseRigDeviceClick(Sender: TObject);
     procedure buttonAudioConfigClick(Sender: TObject);
+    procedure comboFskPortChange(Sender: TObject);
+    procedure buttonFskPortConfigClick(Sender: TObject);
   private
     FOriginalHeight: Integer;
 //    FEditMode: Integer;
@@ -513,6 +537,8 @@ type
     FTempZLinkTelnet: TCommParam;
 
     FNeedSuperCheckLoad: Boolean;
+
+    FMMTTY_CP: TCommPort;
 
     FRigSetA_rig: array[b19..HiBand] of TComboBox;
     FRigSetA_ant: array[b19..HiBand] of TComboBox;
@@ -540,6 +566,9 @@ type
     FUseF2APtt: array[1..4] of TCheckBox;
     FF2ABefore: array[1..4] of TEdit;
     FF2AAfter: array[1..4] of TEdit;
+    FFskPort: array[1..4] of TComboBox;
+    FFskPortConfig: array[1..4] of TButton;
+    FTtyRxPort: array[1..4] of TComboBox;
 
     procedure InitRigNames();
     function CheckRigSetting(): Boolean;
@@ -597,7 +626,8 @@ implementation
 
 uses
   Main, UzLogCW, UComm, UClusterTelnetSet, UClusterCOMSet, UPortConfigDialog,
-  UPortConfigDialog2, UZlinkTelnetSet, UZLinkForm, URigControl, USpotterListDlg;
+  UPortConfigDialog2, UPortConfigDialog3, UZlinkTelnetSet, UZLinkForm,
+  URigControl, USpotterListDlg;
 
 {$R *.DFM}
 
@@ -608,6 +638,7 @@ var
    list: TList<TCommPort>;
    L: TStringList;
    rc: TRect;
+   O: TCommPort;
 begin
    FOriginalHeight := ClientHeight;
    PageControl.MultiLine := dmZLogGlobal.Settings.FUseMultiLineTabs;
@@ -787,6 +818,15 @@ begin
    comboSo2rTxSelectPort.Items.Clear();
    comboSo2rRxSelectPort.Items.Clear();
    comboSo2rOtrspPort.Items.Clear();
+   comboRig1FskPort.Items.Clear();
+   comboRig2FskPort.Items.Clear();
+   comboRig3FskPort.Items.Clear();
+   comboRig4FskPort.Items.Clear();
+   comboRig1RxPort.Items.Clear();
+   comboRig2RxPort.Items.Clear();
+   comboRig3RxPort.Items.Clear();
+   comboRig4RxPort.Items.Clear();
+
 
    list := dmZLogGlobal.CommPortList;
    for i := 0 to list.Count - 1 do begin
@@ -807,7 +847,29 @@ begin
          comboRig4Keying.Items.AddObject(CP.Name, CP);
          comboRig5Keying.Items.AddObject(CP.Name, CP);
       end;
+
+      if CP.FPortNumber <= 20 then begin
+         comboRig1FskPort.Items.AddObject(CP.Name, CP);
+         comboRig2FskPort.Items.AddObject(CP.Name, CP);
+         comboRig3FskPort.Items.AddObject(CP.Name, CP);
+         comboRig4FskPort.Items.AddObject(CP.Name, CP);
+         comboRig1RxPort.Items.AddObject(CP.Name, CP);
+         comboRig2RxPort.Items.AddObject(CP.Name, CP);
+         comboRig3RxPort.Items.AddObject(CP.Name, CP);
+         comboRig4RxPort.Items.AddObject(CP.Name, CP);
+      end;
    end;
+
+   CP := TCommPort.Create();
+   CP.Number := 24;  // tkpMmtty
+   CP.Name := 'MMTTY';
+   CP.Keying := True;
+   FMMTTY_CP := CP;
+
+   comboRig1RxPort.Items.InsertObject(1, CP.Name, CP);
+   comboRig2RxPort.Items.InsertObject(1, CP.Name, CP);
+   comboRig3RxPort.Items.InsertObject(1, CP.Name, CP);
+   comboRig4RxPort.Items.InsertObject(1, CP.Name, CP);
 
    // Hardware4タブ
    FSoundDevice[1] := comboRig1SoundDevice;
@@ -846,6 +908,18 @@ begin
    FF2AAfter[2] := editRig2F2AAfter;
    FF2AAfter[3] := editRig3F2AAfter;
    FF2AAfter[4] := editRig4F2AAfter;
+   FFskPort[1] := comboRig1FskPort;
+   FFskPort[2] := comboRig2FskPort;
+   FFskPort[3] := comboRig3FskPort;
+   FFskPort[4] := comboRig4FskPort;
+   FFskPortConfig[1] := buttonRig1FskPortConfig;
+   FFskPortConfig[2] := buttonRig2FskPortConfig;
+   FFskPortConfig[3] := buttonRig3FskPortConfig;
+   FFskPortConfig[4] := buttonRig4FskPortConfig;
+   FTtyRxPort[1] := comboRig1RxPort;
+   FTtyRxPort[2] := comboRig2RxPort;
+   FTtyRxPort[3] := comboRig3RxPort;
+   FTtyRxPort[4] := comboRig4RxPort;
 
    // F2A 再生用デバイスリスト
    L := TWaveSound.DeviceList();
@@ -899,11 +973,19 @@ begin
    checkUseF2AClick(FUseF2A[2]);
    checkUseF2AClick(FUseF2A[3]);
    checkUseF2AClick(FUseF2A[4]);
+
+   comboFskPortChange(FFskPort[1]);
+   comboFskPortChange(FFskPort[2]);
+   comboFskPortChange(FFskPort[3]);
+   comboFskPortChange(FFskPort[4]);
 end;
 
 procedure TformOptions.FormDestroy(Sender: TObject);
 begin
    ListViewClear();
+   if FMMTTY_CP <> nil then begin
+      FMMTTY_CP.Free();
+   end;
 end;
 
 procedure TformOptions.buttonOKClick(Sender: TObject);
@@ -1379,6 +1461,43 @@ begin
    end
    else begin
       FRigControlPortConfig[rigno].Enabled := False;
+   end;
+end;
+
+procedure TformOptions.comboFskPortChange(Sender: TObject);
+var
+   rigno: Integer;
+   KeyIndex: Integer;
+begin
+   rigno := TComboBox(Sender).Tag;
+   KeyIndex := TCommPort(FFskPort[rigno].Items.Objects[FFskPort[rigno].ItemIndex]).Number;
+   if KeyIndex = 0 then begin
+      FFskPortConfig[rigno].Enabled := False;
+   end
+   else begin
+      FFskPortConfig[rigno].Enabled := True;
+   end;
+end;
+
+procedure TformOptions.buttonFskPortConfigClick(Sender: TObject);
+var
+   f: TformPortConfig3;
+   r: Integer;
+begin
+   f := TformPortConfig3.Create(Self);
+   try
+      r := TButton(sender).Tag;
+
+      f.PortName := FFskPort[r].Text;
+      f.PortConfig := dmZLogGlobal.Settings.FRigControl[r].FFskPortConfig;
+
+      if f.ShowModal() <> mrOK then begin
+         Exit;
+      end;
+
+      dmZLogGlobal.Settings.FRigControl[r].FFskPortConfig := f.PortConfig;
+   finally
+      f.Release();
    end;
 end;
 
@@ -1941,6 +2060,11 @@ begin
       Settings._pttbefore_ph := StrToIntDef(editBeforeTxPh.Text, Settings._pttbefore_ph);
       Settings._pttafter_ph := StrToIntDef(editAfterTxPh.Text, Settings._pttafter_ph);
 
+      // RTTY
+      Settings._pttenabled_rtty := checkEnablePttRtty.Checked;
+      Settings._pttbefore_rtty := StrToIntDef(editBeforeTxRtty.Text, Settings._pttbefore_rtty);
+      Settings._pttafter_rtty := StrToIntDef(editAfterTxRtty.Text, Settings._pttafter_rtty);
+
       // USBIF4CW
       Settings._usbif4cw_sync_wpm := checkUsbif4cwSyncWpm.Checked;
       Settings._usbif4cw_gen3_micsel := checkGen3MicSelect.Checked;
@@ -1972,6 +2096,8 @@ begin
          Settings._f2a_use_datamode[i] := FUseF2ADataMode[i].Checked;
          Settings._f2a_datamode[i] := FF2aDataMode[i].ItemIndex;
          Settings._f2a_filter[i] := FF2aFilter[i].ItemIndex;
+         Settings.FRigControl[i].FFskPort := TCommPort(FFskPort[i].Items.Objects[FFskPort[i].ItemIndex]).Number;
+         Settings.FRigControl[i].FTtyRxPort := TCommPort(FTtyRxPort[i].Items.Objects[FTtyRxPort[i].ItemIndex]).Number;
       end;
 
       //
@@ -1990,6 +2116,7 @@ begin
       Settings._sync_rig_wpm := checkSyncRigWPM.Checked;
       Settings._use_band_updown := checkUseBandUpDown.Checked;
       Settings._use_band_select := checkUseBandSelect.Checked;
+      Settings._set_initfreq_chgmode := checkSetInitFreqChgMode.Checked;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -2050,6 +2177,7 @@ procedure TformOptions.ImplementSettings();
 var
    b: TBand;
    i: Integer;
+   j: Integer;
 
    procedure GetRigControlParam(no: Integer; C, S, N, K: TComboBox; T: TCheckBox);
    var
@@ -2298,6 +2426,10 @@ begin
          editAfterTxPh.Enabled := False;
       end;
 
+      // RTTY
+      checkEnablePttRtty.Checked := Settings._pttenabled_rtty;
+      editBeforeTxRtty.Text := IntToStr(Settings._pttbefore_rtty);
+      editAfterTxRtty.Text := IntToStr(Settings._pttafter_rtty);
 
       // USBIF4CW
       checkUsbif4cwSyncWpm.Checked := Settings._usbif4cw_sync_wpm;
@@ -2330,6 +2462,24 @@ begin
          FUseF2ADataMode[i].Checked := Settings._f2a_use_datamode[i];
          FF2aDataMode[i].ItemIndex := Settings._f2a_datamode[i];
          FF2aFilter[i].ItemIndex := Settings._f2a_filter[i];
+
+         FFskPort[i].ItemIndex := 0;
+         for j := 0 to FFskPort[i].Items.Count - 1 do begin
+            if TCommPort(FFskPort[i].Items.Objects[j]).Number = Settings.FRigControl[i].FFskPort then begin
+               FFskPort[i].ItemIndex := j;
+               FFskPort[i].OnChange(FFskPort[i]);
+               Break;
+            end;
+         end;
+
+         FTtyRxPort[i].ItemIndex := 0;
+         for j := 0 to FTtyRxPort[i].Items.Count - 1 do begin
+            if TCommPort(FTtyRxPort[i].Items.Objects[j]).Number = Settings.FRigControl[i].FTtyRxPort then begin
+               FTtyRxPort[i].ItemIndex := j;
+               //FTtyRxPort[i].OnChange(FTtyRxPort[i]);
+               Break;
+            end;
+         end;
       end;
 
       //
@@ -2348,6 +2498,7 @@ begin
       checkSyncRigWPM.Checked := Settings._sync_rig_wpm;
       checkUseBandUpDown.Checked := Settings._use_band_updown;
       checkUseBandSelect.Checked := Settings._use_band_select;
+      checkSetInitFreqChgMode.Checked := Settings._set_initfreq_chgmode;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;

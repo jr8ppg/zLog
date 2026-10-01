@@ -349,8 +349,15 @@ begin
             end;
 
             mRTTY: begin
-               if MainForm.TTYConsole <> nil then begin
-                  MainForm.TTYConsole.SendStrNow(msg2.FText);
+               nID := MainForm.GetTxRigID();
+               if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
+                  zLogSetSendText(nID, msg2.FText, '');
+                  dmZLogKeyer.SendStr(nID, msg2.FText);
+               end
+               else begin
+                  if MainForm.TTYConsole <> nil then begin
+                     MainForm.TTYConsole.SendStrNow(msg2.FText);
+                  end;
                end;
             end;
 

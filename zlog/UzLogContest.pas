@@ -7,7 +7,7 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, ExtCtrls, Menus, ComCtrls, Grids,
   System.Generics.Collections, System.IniFiles,
   UzLogGlobal, UzLogConst, UzLogQSO, UBasicMulti, UBasicScore, UQTCForm,
-  UserDefinedContest, UWWZone;
+  UserDefinedContest, UWWZone, UARRLDXMulti;
 
 type
   TWanted = class
@@ -66,6 +66,7 @@ type
     FMultiForm: TBasicMulti;
     FScoreForm: TBasicScore;
     FZoneForm: TWWZone;
+    FStateForm: TARRLDXMulti;
     FWantedList: TList<TWanted>;
 
     function DispExchangeOnOtherBands(strCallsign: string; aBand: TBand): string; virtual;
@@ -245,7 +246,9 @@ type
   end;
 
   TCQWWContest = class(TContest)
+  public
     constructor Create(AOwner: TComponent; N : string; M: TContestMode; fJIDX: Boolean = False); reintroduce;
+    destructor Destroy; override;
     function SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string; override;
     procedure ShowMulti; override;
     function CheckWinSummary(aQSO : TQSO) : string; override;
@@ -311,7 +314,7 @@ implementation
 uses
   UzLogCW, URenewThread,
   UIOTAMulti, UJIDXMulti, UJIDXScore2, UWWMulti, UWWScore,
-  UARRLDXMulti, UARRLDXScore, UAPSprintScore, UJA0Score, UJA0Multi,
+  UARRLDXScore, UAPSprintScore, UJA0Score, UJA0Multi,
   UARRLWMulti, UAllAsianScore, UJIDX_DX_Multi, UJIDX_DX_Score,
   UWPXMulti, UWPXScore, UWAEMulti, UWAEScore, UIARUMulti, UIARUScore,
   UARRL10Multi, UARRL10Score, UPediScore, UALLJAMulti, UALLJAScore,
@@ -323,6 +326,7 @@ begin
    FMultiForm := nil;
    FScoreForm := nil;
    FZoneForm := nil;
+   FStateForm := nil;
    FWantedList := TList<TWanted>.Create();
 
    FSameExchange := True;
@@ -379,6 +383,9 @@ begin
    end;
    if Assigned(FZoneForm) then begin
       FZoneForm.Release();
+   end;
+   if Assigned(FStateForm) then begin
+      FStateForm.Release();
    end;
 end;
 
@@ -486,6 +493,9 @@ end;
 procedure TContest.ShowMulti;
 begin
    FormShowAndRestore(FMultiForm);
+   if Assigned(FStateForm) then begin
+      FormShowAndRestore(FStateForm);
+   end;
 end;
 
 procedure TContest.Renew;
@@ -719,6 +729,7 @@ begin
       aQSO.Points := 0;
       aQSO.NewMulti1 := False;
       aQSO.NewMulti2 := False;
+      aQSO.NewMulti3 := False;
 
       // 所管外バンドならスキップ
       if (aQSO.Band < FBandLow) or (aQSO.Band > FBandHigh) then begin
@@ -958,7 +969,12 @@ var
    i: Integer;
 begin
    FUseDefaultMessages := False;
-   for i := 1 to maxmessage do begin
+   for i := 1 to 4 do begin
+      if dmZLogGlobal.Settings.FImpCwMessage[i] = False then begin
+         FCwMessages[bank][i] := dmZLogGlobal.Settings.CW.CWStrBank[bank, i];
+      end;
+   end;
+   for i := 5 to maxmessage do begin
       FCwMessages[bank][i] := dmZLogGlobal.Settings.CW.CWStrBank[bank, i];
    end;
 end;
@@ -1513,12 +1529,16 @@ begin
 
    // F1～F4取込
    for i := 1 to 4 do begin
-      FDefCwMessages[1, i] := FConfig.CwMessageA[i];
+      if dmZLogGlobal.Settings.FImpCwMessage[i] = True then begin
+         FDefCwMessages[1, i] := FConfig.CwMessageA[i];
+      end;
    end;
 
    // CQ2,CQ3取り込み
    for i := 2 to 3 do begin
-      FDefCwMessageCQ[i] := FConfig.CwMessageCQ[i];
+      if dmZLogGlobal.Settings.FImpCQMessage[i] = True then begin
+         FDefCwMessageCQ[i] := FConfig.CwMessageCQ[i];
+      end;
    end;
 end;
 
@@ -1601,6 +1621,7 @@ begin
    FMultiForm := TWPXMulti.Create(AOwner);
    FScoreForm := TWPXScore.Create(AOwner);
    FZoneForm := nil;
+   FStateForm := nil;
    FMultiForm.Reset();
 
    TWPXScore(FScoreForm).MultiForm := TWPXMulti(FMultiForm);
@@ -1683,6 +1704,7 @@ begin
    FMultiForm := TWAEMulti.Create(AOwner);
    FScoreForm := TWAEScore.Create(AOwner);
    FZoneForm := TWWZone.Create(AOwner);
+   FStateForm := nil;
    QTCForm := TQTCForm.Create(AOwner);
 
    UseUTC := True;
@@ -1843,6 +1865,7 @@ begin
    FMultiForm := TARRL10Multi.Create(AOwner);
    FScoreForm := TARRL10Score.Create(AOwner);
    FZoneForm := TWWZone.Create(AOwner);
+   FStateForm := nil;
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -2053,6 +2076,7 @@ begin
    FMultiForm := TWPXMulti.Create(AOwner);
    FScoreForm := TAPSprintScore.Create(AOwner);
    FZoneForm := TWWZone.Create(AOwner);
+   FStateForm := nil;
 
    TAPSprintScore(FScoreForm).MultiForm := TWPXMulti(FMultiForm);
 
@@ -2117,6 +2141,13 @@ begin
       FScoreForm := TWWScore.Create(AOwner);
       FZoneForm := TWWZone.Create(AOwner);
       TWWMulti(FMultiForm).ZoneForm := FZoneForm;
+      if M = cmRtty then begin
+         FStateForm := TARRLDXMulti.Create(AOwner);
+         FStateForm.Caption := 'State';
+         FStateForm.ContestMode := M;
+         TWWMulti(FMultiForm).StateForm := FStateForm;
+         TWWScore(FScoreForm).UseState := True;
+      end;
       FMultiForm.Reset();
    end;
 
@@ -2158,6 +2189,12 @@ begin
    FColWidths[16] := 0;     // QSOID
 end;
 
+destructor TCQWWContest.Destroy;
+begin
+   TWWMulti(FMultiForm).StateForm := nil;
+   inherited;
+end;
+
 function TCQWWContest.SpaceBarProc(strCallsign: string; strNumber: string; b: TBand): string;
 var
    temp: string;
@@ -2172,6 +2209,9 @@ procedure TCQWWContest.ShowMulti;
 begin
    FMultiForm.Show;
    FZoneForm.Show;
+   if Assigned(FStateForm) then begin
+      FStateForm.Show;
+   end;
 end;
 
 function TCQWWContest.CheckWinSummary(aQSO: TQSO): string;
@@ -2213,6 +2253,7 @@ begin
    FMultiForm := TIARUMulti.Create(AOwner);
    FScoreForm := TIARUScore.Create(AOwner);
    FZoneForm := TWWZone.Create(AOwner);
+   FStateForm := nil;
 
    UseUTC := True;
    Log.AcceptDifferentMode := True;
@@ -2284,6 +2325,7 @@ begin
    FMultiForm := TJIDXMulti.Create(AOwner);
    FScoreForm := TJIDXScore2.Create(AOwner);
    FZoneForm := TWWZone.Create(AOwner);
+   FStateForm := nil;
    TJIDXMulti(FMultiForm).ZoneForm := FZoneForm;
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2468,6 +2510,7 @@ begin
    TARRLWMulti(FMultiForm).ALLASIANFLAG := False;
    FScoreForm := TARRLDXScore.Create(AOwner);
    FZoneForm := TWWZone.Create(AOwner);
+   FStateForm := nil;
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF
@@ -2533,6 +2576,7 @@ begin
    TARRLWMulti(FMultiForm).ALLASIANFLAG := True;
    FScoreForm := TAllAsianScore.Create(AOwner);
    FZoneForm := TWWZone.Create(AOwner);
+   FStateForm := nil;
 
    UseUTC := True;
    Log.QsoList[0].RSTsent := _USEUTC; // JST = 0; UTC = $FFFF

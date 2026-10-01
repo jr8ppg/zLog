@@ -736,6 +736,15 @@ type
     menuLogChecker: TMenuItem;
     actionResetFontSize: TAction;
     menuResetFontSize: TMenuItem;
+    MemoEdit2A: TOvrEdit;
+    MemoEdit2B: TOvrEdit;
+    MemoEdit2C: TOvrEdit;
+    MemoEdit2VA: TOvrEdit;
+    MemoEdit2VB: TOvrEdit;
+    MemoEdit2VC: TOvrEdit;
+    actionRttyGrab: TAction;
+    OpEdit2RH: TEdit;
+    OpEdit2RV: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1083,6 +1092,7 @@ type
     procedure menuExecHamlogConverterClick(Sender: TObject);
     procedure menuLogCheckerClick(Sender: TObject);
     procedure actionResetFontSizeExecute(Sender: TObject);
+    procedure actionRttyGrabExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -1250,7 +1260,7 @@ type
     procedure PlayMessage(mode: TMode; bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessageCW(bank: Integer; no: Integer; fResetTx: Boolean);
     procedure PlayMessagePH(no: Integer; fResetTx: Boolean);
-    procedure PlayMessageRTTY(no: Integer);
+    procedure PlayMessageRTTY(no: Integer; Q: TQSO);
     procedure OnVoicePlayStarted(Sender: TObject; msgno: Integer);
     procedure OnOneCharSentProc(Sender: TObject);
     procedure OnPlayMessageFinished(Sender: TObject; mode: TMode; fAbort: Boolean; msgno: Integer);
@@ -1303,6 +1313,7 @@ type
     function GetMemoEdit(): TEdit;        // 11
     procedure InitQsoEditPanel();
     procedure UpdateQsoEditPanel(rig: Integer);
+    procedure ShowOpEdit();
     procedure SwitchRig(rigset: Integer);
     procedure SwitchTxRx(tx_rig, rx_rig: Integer);
     procedure SwitchTx(rigset: Integer);
@@ -1317,6 +1328,7 @@ type
     function GetGridColmunLeft(col: Integer): Integer;
     procedure SetEditFields();
     procedure SetEditFields1R();
+    procedure SetEditFields2RH();
     procedure SetEditFields2RV();
     function GetNextRigID(curid: Integer): Integer;
 
@@ -1427,8 +1439,9 @@ type
 
     procedure HighlightCallsign(fHighlight: Boolean);
     procedure BandScopeNotifyWorked(aQSO: TQSO);
-    procedure SetYourCallsign(strCallsign, strNumber: string);
-    procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
+    procedure SetYourCallsign(strCallsign, strNumber: string; fAbort: Boolean = False);
+    procedure SetYourNumber(strNumber: string);
+    procedure SetYourCallsignEx(no: Integer; strCallsign, strNumber: string; fAbort: Boolean = False);
     procedure SetFreqAndCall(freq: TFrequency; strCallsign, strNumber: string);
     procedure Restore2bsiqMode();
     procedure BSRefresh();
@@ -1692,7 +1705,8 @@ begin
    FFunctionKeyPanel := TformFunctionKeyPanel.Create(Self);
    FSo2rNeoCp     := TformSo2rNeoCp.Create(Self);
    FInformation   := TformInformation.Create(Self);
-   FTTYConsole    := nil;
+   FTTYConsole    := TTTYConsole.Create(Self);
+   FTTYConsole.OnSendFinishProc := OnPlayMessageFinished;
    FCWMonitor     := TformCWMonitor.Create(Self);
    FProgress      := TformProgress.Create(Self);
    FQsoSearch     := TformSearch.Create(Self);
@@ -1724,6 +1738,7 @@ begin
    FCheckCountry.OnChangeFontSize := OnChangeFontSize;
    FFunctionKeyPanel.OnChangeFontSize := OnChangeFontSize;
    FChatForm.OnChangeFontSize := OnChangeFontSize;
+   FTTYConsole.OnChangeFontSize := OnChangeFontSize;
 
    FCurrentCQMessageNo := 101;
    FCQLoopRunning := False;
@@ -2689,6 +2704,10 @@ begin
       if dmZLogKeyer.UseWinKeyer = True then begin
          dmZLogKeyer.WinKeyerSetPinCfg(True);
       end;
+
+      // RTTY
+      dmZLogKeyer.RTTY := (M = mRTTY);
+      dmZLogKeyer.UseAFSKTone := dmZLogGlobal.Settings.RTTY.UseAfskTone;
    end;
    SentNumberEdit.Text := GetInitNrSent(CurrentQSO, False);
 
@@ -2950,7 +2969,9 @@ end;
 procedure TMainForm.SetEditFields();
 begin
    SetEditFields1R();
+   SetEditFields2RH();
    SetEditFields2RV();
+   ShowOpEdit();
 end;
 
 procedure TMainForm.SetEditFields1R();
@@ -3042,10 +3063,188 @@ begin
    LayoutEdit(13, MemoEdit1);
 end;
 
+procedure TMainForm.SetEditFields2RH();
+var
+   h: Integer;
+   w: Integer;
+   t: Integer;
+   memo_w: Integer;
+
+   procedure SetFieldWidth(edit: TEdit; no: Integer);
+   begin
+      if dmZLogGlobal.QsoListColumnVisible[no] = False then begin
+         edit.Visible := False;
+      end
+      else begin
+         if MyContest = nil then begin
+            edit.Width := 7 * w;
+         end
+         else begin
+            edit.Width := MyContest.ColWidths[no] * w;
+         end;
+         edit.Visible := True;
+      end;
+   end;
+begin
+   h := Grid.Canvas.TextHeight('A') + 4;
+   w := Grid.Canvas.TextWidth('A');
+
+   // RIG-A 上段
+   BandEdit2A.Height := h;
+   ModeEdit2A.Height := h;
+   BandEdit2A.Width := w * 6;
+
+   ModeEdit2A.Width := w * 6;
+
+   t := BandEdit2A.Top + h + 2;
+
+   // RIG-A 下段
+   ledTx2A.Top := t + ((h - ledTx2A.Height) div 2);
+   CallsignEdit2A.Height := h;
+   RcvdRSTEdit2A.Height := h;
+   NumberEdit2A.Height := h;
+   MemoEdit2A.Height := h;
+   CallsignEdit2A.Top := t;
+   RcvdRSTEdit2A.Top := t;
+   NumberEdit2A.Top := t;
+   MemoEdit2A.Top := t;
+   CallsignEdit2A.Width := w * 10;
+   RcvdRSTEdit2A.Width := w * 4;
+   NumberEdit2A.Width := w * 9;
+   SetFieldWidth(MemoEdit2A, 13);
+   RcvdRSTEdit2A.Left := CallsignEdit2A.Left + CallsignEdit2A.Width + 3;
+   NumberEdit2A.Left := RcvdRSTEdit2A.Left + RcvdRSTEdit2A.Width + 3;
+   MemoEdit2A.Left := NumberEdit2A.Left + NumberEdit2A.Width + 3;
+
+   BandEdit2A.Left := RcvdRSTEdit2A.Left;
+   ModeEdit2A.Left := BandEdit2A.Left + BandEdit2A.Width + 3;
+
+   // Memo欄の調整
+   memo_w := RigPanelA.Width - MemoEdit2A.Left - 4;
+   if memo_w < w then begin
+      MemoEdit2A.Visible := False;
+   end
+   else begin
+      MemoEdit2A.Visible := True;
+      MemoEdit2A.Width := Min(memo_w, MemoEdit2A.Width);
+   end;
+
+   // RIG-B 上段
+   BandEdit2B.Height := h;
+   ModeEdit2B.Height := h;
+   BandEdit2B.Width := w * 6;
+
+   ModeEdit2B.Width := w * 6;
+
+   t := BandEdit2B.Top + h + 2;
+
+   // RIG-B 下段
+   ledTx2B.Top := t + ((h - ledTx2B.Height) div 2);
+   CallsignEdit2B.Height := h;
+   RcvdRSTEdit2B.Height := h;
+   NumberEdit2B.Height := h;
+   MemoEdit2B.Height := h;
+   CallsignEdit2B.Top := t;
+   RcvdRSTEdit2B.Top := t;
+   NumberEdit2B.Top := t;
+   MemoEdit2B.Top := t;
+   CallsignEdit2B.Width := w * 10;
+   RcvdRSTEdit2B.Width := w * 4;
+   NumberEdit2B.Width := w * 9;
+   SetFieldWidth(MemoEdit2B, 13);
+   RcvdRSTEdit2B.Left := CallsignEdit2B.Left + CallsignEdit2B.Width + 3;
+   NumberEdit2B.Left := RcvdRSTEdit2B.Left + RcvdRSTEdit2B.Width + 3;
+   MemoEdit2B.Left := NumberEdit2B.Left + NumberEdit2B.Width + 3;
+
+   BandEdit2B.Left := RcvdRSTEdit2B.Left;
+   ModeEdit2B.Left := BandEdit2B.Left + BandEdit2B.Width + 3;
+
+   // Memo欄の調整
+   memo_w := RigPanelB.Width - MemoEdit2B.Left - 4;
+   if memo_w < w then begin
+      MemoEdit2B.Visible := False;
+   end
+   else begin
+      MemoEdit2B.Visible := True;
+      MemoEdit2B.Width := Min(memo_w, MemoEdit2B.Width);
+   end;
+
+   // 左パネル時計
+   TimeEdit2RH.Height := h;
+   TimeEdit2RH.Width := w * 7 + 5;
+   TimeEdit2RH.Top := CallsignEdit2A.Top;
+
+   // 左パネルシリアルＮＯ
+   SerialEdit2A.Top := SentNrEdit2HA.Top;
+   SerialEdit2A.Height := h;
+   SerialEdit2A.Width := w * 5;
+
+   // 左パネルＯＰ
+   if dmZLogGlobal.QsoListColumnVisible[12] = False then begin
+      OpEdit2RH.Visible := False;
+   end
+   else begin
+      OpEdit2RH.Visible := True;
+      OpEdit2RH.Top := SentNrEdit2HA.Top;
+      OpEdit2RH.Height := h;
+      OpEdit2RH.Width := w * 7 + 5;
+   end;
+
+   // RIG-C
+   CallsignEdit2C.Height := h;
+   RcvdRSTEdit2C.Height := h;
+   NumberEdit2C.Height := h;
+   BandEdit2C.Height := h;
+   ModeEdit2C.Height := h;
+   MemoEdit2C.Height := h;
+   CallsignEdit2C.Width := w * 10;
+   RcvdRSTEdit2C.Width := w * 4;
+   NumberEdit2C.Width := w * 9;
+   BandEdit2C.Width := w * 6;
+   ModeEdit2C.Width := w * 6;
+   SetFieldWidth(MemoEdit2C, 13);
+
+   RigPanelHC.Height := h + 8;
+
+   // 左パネル
+   EditUpperLeftPanel2RH.Width := TimeEdit2RH.Left + TimeEdit2RH.Width + 2;
+
+   // 2RHパネル全体サイズ
+   EditPanel2RH.Height := RigPanelHC.Height + CallsignEdit2A.Top + CallsignEdit2A.Height + 5;
+
+   // RIG-C再配置
+   checkUseRig3H.Top := CallsignEdit2C.Top + ((h - checkUseRig3H.Height) div 2);
+   labelRigTitle2HC.Top := CallsignEdit2C.Top + ((h - labelRigTitle2HC.Height) div 2);
+   ledTx2C.Top := CallsignEdit2C.Top + ((h - ledTx2C.Height) div 2);
+   ledTx2C.Left := EditUpperLeftPanel2RH.Width + ledTx2A.Left;
+   CallsignEdit2C.Left := EditUpperLeftPanel2RH.Width + CallsignEdit2A.Left;
+   RcvdRSTEdit2C.Left := CallsignEdit2C.Left + CallsignEdit2C.Width + 3;
+   NumberEdit2C.Left := RcvdRSTEdit2C.Left + RcvdRSTEdit2C.Width + 3;
+   BandEdit2C.Left := NumberEdit2C.Left + NumberEdit2C.Width + 3;
+   ModeEdit2C.Left := BandEdit2C.Left + BandEdit2C.Width + 3;
+   MemoEdit2C.Left := ModeEdit2C.Left + ModeEdit2C.Width + 3;
+end;
+
 procedure TMainForm.SetEditFields2RV();
 var
    h: Integer;
    w: Integer;
+
+   procedure SetFieldWidth(edit: TEdit; no: Integer);
+   begin
+      if dmZLogGlobal.QsoListColumnVisible[no] = False then begin
+         edit.Visible := False;
+      end
+      else begin
+         if MyContest = nil then begin
+            edit.Width := 7 * w;
+         end
+         else begin
+            edit.Width := MyContest.ColWidths[no] * w;
+         end;
+         edit.Visible := True;
+      end;
+   end;
 
    procedure SetPanelSizeInc();
    begin
@@ -3072,19 +3271,30 @@ var
       NumberEdit2VA.Height := h;
       BandEdit2VA.Height := h;
       ModeEdit2VA.Height := h;
+      MemoEdit2VA.Height := h;
       CallsignEdit2VB.Height := h;
       RcvdRSTEdit2VB.Height := h;
       NumberEdit2VB.Height := h;
       BandEdit2VB.Height := h;
       ModeEdit2VB.Height := h;
+      MemoEdit2VB.Height := h;
       CallsignEdit2VC.Height := h;
       RcvdRSTEdit2VC.Height := h;
       NumberEdit2VC.Height := h;
       BandEdit2VC.Height := h;
       ModeEdit2VC.Height := h;
+      MemoEdit2VC.Height := h;
       DateEdit2RV.Height := h;
       TimeEdit2RV.Height := h;
       SerialEdit2VA.Height := h;
+      OpEdit2RV.Height := h;
+
+      if dmZLogGlobal.QsoListColumnVisible[12] = False then begin
+         OpEdit2RV.Visible := False;
+      end
+      else begin
+         OpEdit2RV.Visible := True;
+      end;
 
       // RIG-A
       ledTx2VA.Top := (RigPanelVA.Height - ledTx2VA.Height) div 2;
@@ -3094,15 +3304,19 @@ var
       NumberEdit2VA.Top := CallsignEdit2VA.Top;
       BandEdit2VA.Top := CallsignEdit2VA.Top;
       ModeEdit2VA.Top := CallsignEdit2VA.Top;
+      MemoEdit2VA.Top := CallsignEdit2VA.Top;
       CallsignEdit2VA.Width := w * 12;
       RcvdRSTEdit2VA.Width := w * 4;
       NumberEdit2VA.Width := w * 9;
       BandEdit2VA.Width := w * 5;
       ModeEdit2VA.Width := w * 5;
+      SetFieldWidth(MemoEdit2VA, 13);
+
       RcvdRSTEdit2VA.Left := CallsignEdit2VA.Left + CallsignEdit2VA.Width + 3;
       NumberEdit2VA.Left := RcvdRSTEdit2VA.Left + RcvdRSTEdit2VA.Width + 3;
       BandEdit2VA.Left := NumberEdit2VA.Left + NumberEdit2VA.Width + 3;
       ModeEdit2VA.Left := BandEdit2VA.Left + BandEdit2VA.Width + 3;
+      MemoEdit2VA.Left := ModeEdit2VA.Left + ModeEdit2VA.Width + 3;
 
       // RIG-B
       ledTx2VB.Top := (RigPanelVB.Height - ledTx2VB.Height) div 2;
@@ -3112,15 +3326,19 @@ var
       NumberEdit2VB.Top := CallsignEdit2VB.Top;
       BandEdit2VB.Top := CallsignEdit2VB.Top;
       ModeEdit2VB.Top := CallsignEdit2VB.Top;
+      MemoEdit2VB.Top := CallsignEdit2VB.Top;
       CallsignEdit2VB.Width := w * 12;
       RcvdRSTEdit2VB.Width := w * 4;
       NumberEdit2VB.Width := w * 9;
       BandEdit2VB.Width := w * 5;
       ModeEdit2VB.Width := w * 5;
+      SetFieldWidth(MemoEdit2VB, 13);
+
       RcvdRSTEdit2VB.Left := CallsignEdit2VB.Left + CallsignEdit2VB.Width + 3;
       NumberEdit2VB.Left := RcvdRSTEdit2VB.Left + RcvdRSTEdit2VB.Width + 3;
       BandEdit2VB.Left := NumberEdit2VB.Left + NumberEdit2VB.Width + 3;
       ModeEdit2VB.Left := BandEdit2VB.Left + BandEdit2VB.Width + 3;
+      MemoEdit2VB.Left := ModeEdit2VB.Left + ModeEdit2VB.Width + 3;
 
       // RIG-C
       ledTx2VC.Top := (RigPanelVC.Height - ledTx2VC.Height) div 2;
@@ -3131,6 +3349,7 @@ var
       NumberEdit2VC.Top := CallsignEdit2VC.Top;
       BandEdit2VC.Top := CallsignEdit2VC.Top;
       ModeEdit2VC.Top := CallsignEdit2VC.Top;
+      MemoEdit2VC.Top := CallsignEdit2VC.Top;
       checkWithRig1V.Top := (RigPanelVC.Height - checkWithRig1V.Height) div 2;
       checkWithRig2V.Top := (RigPanelVC.Height - checkWithRig2V.Height) div 2;
       CallsignEdit2VC.Width := w * 12;
@@ -3138,10 +3357,13 @@ var
       NumberEdit2VC.Width := w * 9;
       BandEdit2VC.Width := w * 5;
       ModeEdit2VC.Width := w * 5;
+      SetFieldWidth(MemoEdit2VC, 13);
+
       RcvdRSTEdit2VC.Left := CallsignEdit2VC.Left + CallsignEdit2VC.Width + 3;
       NumberEdit2VC.Left := RcvdRSTEdit2VC.Left + RcvdRSTEdit2VC.Width + 3;
       BandEdit2VC.Left := NumberEdit2VC.Left + NumberEdit2VC.Width + 3;
       ModeEdit2VC.Left := BandEdit2VC.Left + BandEdit2VC.Width + 3;
+      MemoEdit2VC.Left := ModeEdit2VC.Left + ModeEdit2VC.Width + 3;
    end;
 begin
    h := Grid.RowHeights[0];
@@ -3322,6 +3544,7 @@ begin
       dmZLogGlobal.ReadWindowState(ini, FCWMonitor);
       dmZLogGlobal.ReadWindowState(ini, FEntityInfo, '', True);
       dmZLogGlobal.ReadWindowState(ini, FGrayline);
+      dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
       FSentNumber.LoadSettings(ini);
 
       if ini.ReadBool('Windows', 'ConsolePad_Open', False) = True then begin
@@ -3388,6 +3611,7 @@ begin
       dmZLogGlobal.WriteWindowState(ini, FCWMonitor);
       dmZLogGlobal.WriteWindowState(ini, FEntityInfo);
       dmZLogGlobal.WriteWindowState(ini, FGrayline);
+      dmZLogGlobal.WriteWindowState(ini, FTTYConsole);
       FSentNumber.SaveSettings(ini);
 
       if FConsolePad <> nil then begin
@@ -4100,6 +4324,22 @@ begin
    CallsignEdit1.Font.Size := font_size;
    NumberEdit1.Font.Size := font_size;
 
+   // 2RH
+   EditPanel2RH.Font.Size := font_size;
+   EditUpperLeftPanel2RH.Font.Size := font_size;
+   EditUpperRightPanel2RH.Font.Size := font_size;
+   RigPanelHC.Font.Size := font_size;
+
+   CallsignEdit2A.Font.Size := font_size;
+   RcvdRSTEdit2A.Font.Size := font_size;
+   NumberEdit2A.Font.Size := font_size;
+   CallsignEdit2B.Font.Size := font_size;
+   RcvdRSTEdit2B.Font.Size := font_size;
+   NumberEdit2B.Font.Size := font_size;
+   CallsignEdit2C.Font.Size := font_size;
+   RcvdRSTEdit2C.Font.Size := font_size;
+   NumberEdit2C.Font.Size := font_size;
+
    // 2RV
    EditPanel2RV.Font.Size := font_size;
    EditUpperLeftPanel2RV.Font.Size := font_size;
@@ -4228,7 +4468,7 @@ begin
 
       ' ': begin
          // memo欄は入力可
-         if TEdit(Sender).Tag = 1000 then begin
+         if TEdit(Sender).Tag >= 1000 then begin
             if dmZLogGlobal.Settings._movetomemo then begin
                Key := #0;
                CallsignEdit.SetFocus;
@@ -4411,6 +4651,8 @@ begin
       if dmZLogGlobal.Settings._allowdupe = True then begin
          CallSpacebarProc(C, RN, B);
          RN.SetFocus();
+         RN.SelStart := Length(RN.Text);
+         RN.SelLength := 1;
       end
       else begin
          C.SelectAll;
@@ -4421,6 +4663,8 @@ begin
    else begin { if not dupe }
       CallSpacebarProc(C, RN, B);
       RN.SetFocus();
+      RN.SelStart := Length(RN.Text);
+      RN.SelLength := 1;
       WriteStatusLine('', False);
    end;
 end;
@@ -4931,12 +5175,12 @@ begin
 
       // RTTY
       if mode = mRTTY then begin
-         if FTTYConsole <> nil then begin
-            FTTYConsole.SendStrNow(SetStrNoAbbrev(dmZLogGlobal.CWMessage(3, 2), curQSO));
-         end;
+         PlayMessageRTTY(2, curQSO);
 
          CallSpaceBarProc(C, RN, B);
          RN.SetFocus();
+         RN.SelStart := Length(RN.Text);
+         RN.SelLength := 1;
 
          FCQRepeatPlaying := False;
 
@@ -5153,11 +5397,7 @@ begin
 
          mRTTY: begin
             if Not(MyContest.MultiForm.ValidMulti(curQSO)) then begin
-               S := dmZLogGlobal.CWMessage(3, 5);
-               S := SetStrNoAbbrev(S, curQSO);
-               if FTTYConsole <> nil then begin
-                  FTTYConsole.SendStrNow(S);
-               end;
+               PlayMessageRTTY(5, curQSO);
                WriteStatusLine(TMainForm_Invalid_number, False);
                RcvdNumberEdit.SetFocus;
                RcvdNumberEdit.SelectAll;
@@ -5165,18 +5405,13 @@ begin
                exit;
             end;
 
-            S := dmZLogGlobal.CWMessage(3, 3);
-
-            S := SetStrNoAbbrev(S, curQSO);
-            if FTTYConsole <> nil then begin
-               if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
-                  FTTYConsole.SendStrNow(S);
-               end
-               else begin
-                  // SHIFTキーが押されていない場合のみMSG送信
-                  if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
-                     FTTYConsole.SendStrNow(S);
-                  end;
+            if dmZLogGlobal.Settings._operate_mode = omOriginal then begin
+               PlayMessageRTTY(3, curQSO);
+            end
+            else begin
+               // SHIFTキーが押されていない場合のみMSG送信
+               if (GetAsyncKeyState(VK_SHIFT) and $8000) = 0 then begin
+                  PlayMessageRTTY(3, curQSO);
                end;
             end;
 
@@ -5693,6 +5928,13 @@ begin
 
    // BandScopeの更新
    BandScopeNotifyWorked(Q);
+
+   // RTTYコールリストクリア
+   if Q.Mode = mRTTY then begin
+      if Assigned(FTTYConsole) then begin
+         FTTYConsole.RemoveCallsign(Q.Callsign);
+      end;
+   end;
 
    // 次のＱＳＯの準備
 
@@ -7303,7 +7545,12 @@ begin
    LastFocus := TEdit(Sender);
    edit := TEdit(Sender);
    if Is2Radio() = True then begin
-      FCurrentRigSet := edit.Tag;
+      if edit.Tag >= 1000 then begin
+         FCurrentRigSet := edit.Tag - 1000;
+      end
+      else begin
+         FCurrentRigSet := edit.Tag;
+      end;
    end;
 
    if FPastEditMode = True then begin
@@ -7337,7 +7584,7 @@ begin
    actionQsoComplete.Enabled:= True;
 
    // memo欄ではSHIFTキーを使うaction禁止
-   if TEdit(Sender).Tag = 1000 then begin
+   if TEdit(Sender).Tag >= 1000 then begin
       EnableShiftKeyAction(False);
    end;
 end;
@@ -7357,7 +7604,7 @@ begin
    actionQsoComplete.Enabled:= False;
 
    // memo欄ではSHIFTキーを使うaction禁止
-   if TEdit(Sender).Tag = 1000 then begin
+   if TEdit(Sender).Tag >= 1000 then begin
       EnableShiftKeyAction(True);
    end;
 end;
@@ -8484,18 +8731,17 @@ begin
    ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
    try
       if menuMMTTY.Tag = 0 then begin
+         // MMTTYの使用が１つも無ければ起動しない
+         if (dmZLogGlobal.Settings.FRigControl[1].FTtyRxPort <> Integer(tkpMmtty)) and
+            (dmZLogGlobal.Settings.FRigControl[2].FTtyRxPort <> Integer(tkpMmtty)) and
+            (dmZLogGlobal.Settings.FRigControl[3].FTtyRxPort <> Integer(tkpMmtty)) and
+            (dmZLogGlobal.Settings.FRigControl[4].FTtyRxPort <> Integer(tkpMmtty)) then begin
+            Exit;
+         end;
+
          menuMMTTY.Tag := 1;
          menuMMTTY.Caption := TMainForm_Unload_MMTTY;
-         menuShowTTYConsole.Visible := True;
 
-         FTTYConsole := TTTYConsole.Create(Self);
-         FTTYConsole.OnSendFinishProc := OnPlayMessageFinished;
-         FTTYConsole.OnChangeFontSize := OnChangeFontSize;
-         dmZLogGlobal.ReadWindowState(ini, FTTYConsole);
-
-         dmZLogKeyer.CloseBGK();
-
-         FTTYConsole.TTYMode := ttyMMTTY;
          InitializeMMTTY(Handle);
 
          FormShowAndRestore(FTTYConsole);
@@ -8504,19 +8750,8 @@ begin
       else begin
          menuMMTTY.Tag := 0;
          menuMMTTY.Caption := TMainForm_Load_MMTTY;
-         menuShowTTYConsole.Visible := False;
-
-         dmZLogGlobal.WriteWindowState(ini, FTTYConsole);
-         ini.UpdateFile();
-
-         FTTYConsole.Close();
-         FTTYConsole.Release();
-         FTTYConsole := nil;
 
          ExitMMTTY;
-
-         dmZLogKeyer.InitializeBGK(dmZLogGlobal.Settings.CW._interval);
-         dmZLogGlobal.InitializeCW();
       end;
    finally
       ini.Free();
@@ -8726,11 +8961,13 @@ begin
 
       // NYP
       6: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TNYP.Create(Self, 'NEW YEAR PARTY', mode);
       end;
 
       // DX pedi
       8: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TPedi.Create(Self, 'Pedition mode', mode);
          actionShowMultipliers.Enabled := False;
          menuShowMultipliers.Enabled := False;
@@ -8740,11 +8977,13 @@ begin
       // User Defined
       9: begin
          zyloContestSwitch(strContestName, strCfgFileName);
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TGeneralContest.Create(Self, strContestName, strCfgFileName, mode);
       end;
 
       // CQWW
       10: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TCQWWContest.Create(Self, 'CQWW DX Contest', mode);
          menuShowCheckCountry.Visible := True;
          actionShowCheckMulti.Caption := TMainForm_Check_Zone;
@@ -8753,6 +8992,7 @@ begin
 
       // WPX
       11: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TCQWPXContest.Create(Self, 'CQ WPX Contest', category, mode);
          Grid.Cols[8].Text := 'prefix';
          Grid.Cols[9].Text := 'zone';
@@ -8762,6 +9002,7 @@ begin
       // JIDX
       // now determines JA/DX from callsign
       7, 12: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          if dmZLogGlobal.MyCountry = 'JA' then begin
             menuShowCheckCountry.Visible := True;
             actionShowCheckMulti.Caption := TMainForm_Check_Zone;
@@ -8775,52 +9016,62 @@ begin
 
       // AP Sprint
       13: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TAPSprint.Create(Self, 'Asia Pacific Sprint', mode);
       end;
 
       // ARRL DX(W/VE)
       14: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TARRLDXContestW.Create(Self, 'ARRL International DX Contest (W/VE)', mode);
       end;
 
       // ARRL(DX)
       15: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TARRLDXContestDX.Create(Self, 'ARRL International DX Contest (DX)', mode);
       end;
 
       // ARRL 10m
       16: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TARRL10Contest.Create(Self, 'ARRL 10m Contest', mode);
          FCheckMulti.ListCWandPh := True;
       end;
 
       // IARU HF
       17: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TIARUContest.Create(Self, 'IARU HF Championship', mode);
       end;
 
       // All Asian DX(Asia)
       18: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TAllAsianContest.Create(Self, 'All Asian DX Contest (Asia)', mode);
       end;
 
       // IOTA
       19: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TIOTAContest.Create(Self, 'IOTA Contest', mode);
       end;
 
       // WAEDC(DX)
       20: begin
+         dmZLogGlobal.Load_CTYDAT(True);
          MyContest := TWAEContest.Create(Self, 'WAEDC Contest', mode);
       end;
 
       // JARL World Wide RTTY
       21: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TJarlWorldWideRTTY.Create(Self, 'JARL World Wide RTTY', mode);
       end;
 
       // BARTG HF RTTY
       22: begin
+         dmZLogGlobal.Load_CTYDAT(False);
          MyContest := TBartgHfRTTY.Create(Self, 'BARTG HF RTTY', mode);
       end;
    end;
@@ -9106,14 +9357,11 @@ begin
       mPXListWPX.Visible := False;
       menuPostContest.Checked := FPostContest;
 
-      // SO2RはSingleOpのみが設定可能
-      if dmZLogGlobal.ContestCategory <> ccSingleOp then begin
-         if Is2Radio() = True then begin
-            dmZLogGlobal.Settings._operate_style := os1Radio;
-            InitQsoEditPanel();
-            UpdateQsoEditPanel(1);
-            LastFocus := CallsignEdit;
-         end;
+      // SO2RはSingleOpのみが設定可能→Multi-OPでも設定可能とする
+      if Is2Radio() = True then begin
+         InitQsoEditPanel();
+         UpdateQsoEditPanel(1);
+         LastFocus := CallsignEdit;
       end;
 
       if dmZLogGlobal.ContestCategory in [ccMultiOpMultiTx, ccMultiOpSingleTx, ccMultiOpTwoTx] then begin
@@ -10341,6 +10589,11 @@ begin
 
    if rig <> nil then begin
       rig.SetMode(CurrentQSO);
+
+      // モードに見合った周波数にする
+      if dmZLogGlobal.Settings._set_initfreq_chgmode = True then begin
+         rig.SetBand(FCurrentRigSet, CurrentQSO);
+      end;
    end;
 end;
 
@@ -10453,7 +10706,7 @@ begin
       end;
 
       mRTTY: begin
-         PlayMessageRTTY(no);
+         PlayMessageRTTY(no, nil);
       end;
 
       else begin
@@ -10596,22 +10849,42 @@ begin
    FMessageManager.ContinueQue();
 end;
 
-procedure TMainForm.PlayMessageRTTY(no: Integer);
+procedure TMainForm.PlayMessageRTTY(no: Integer; Q: TQSO);
 var
    S: string;
+   C: string;
+   Index: Integer;
 begin
-   if FTTYConsole = nil then begin
-      Exit;
-   end;
-
    S := dmZLogGlobal.CWMessage(3, no);
 
    if S = '' then begin
       Exit;
    end;
 
-   S := SetStrNoAbbrev(S, CurrentQSO);
-   FTTYConsole.SendStrNow(S);
+   if Q = nil then begin
+      Q := CurrentQSO;
+   end;
+
+   S := SetStrNoAbbrev(S, Q);
+   C := '';
+
+   // 最初に見つかった"."の後ろはカットして"?"に変更する
+   Index := Pos('.', S);
+   if Index > 0 then begin
+      S := Copy(S, 1, Index);
+      S := StringReplace(S, '.', '?', [rfReplaceAll]);
+   end;
+
+   if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
+      // CWモニターに送信電文をセット
+      zLogSetSendText(FCurrentTx, S, '');
+      dmZLogKeyer.SendStr(FCurrentTx, S)
+   end
+   else begin
+      if FTTYConsole <> nil then begin
+         FTTYConsole.SendStrNow(S);
+      end;
+   end;
 end;
 
 procedure TMainForm.OnVoicePlayStarted(Sender: TObject; msgno: Integer);
@@ -10626,11 +10899,21 @@ begin
       //FCWMonitor.ClearSendingText();
    end
    else begin
-      if ({(FCWKeyboard.Active) and} (FStartCWKeyboard = True)) then begin
-         FCWKeyboard.OneCharSentProc();
+      if CurrentQSO.Mode = mCW then begin
+         if ({(FCWKeyboard.Active) and} (FStartCWKeyboard = True)) then begin
+            FCWKeyboard.OneCharSentProc();
+         end
+         else begin
+            FCWMonitor.OneCharSentProc();
+         end;
       end
-      else begin
-         FCWMonitor.OneCharSentProc();
+      else if CurrentQSO.Mode = mRTTY then begin
+         if (FTTYConsole <> nil) and (FTTYConsole.Active) then begin
+            FTTYConsole.OneCharSentProc();
+         end
+         else begin
+            FCWMonitor.OneCharSentProc();
+         end;
       end;
    end;
 end;
@@ -11453,6 +11736,10 @@ begin
    if Assigned(FTTYConsole) then begin
       FormShowAndRestore(FTTYConsole);
    end;
+
+   if (FTTYConsole.Visible = True) and (MMTTYInitialized = False) then begin
+      menuMMTTYClick(menuMMTTY);
+   end;
 end;
 
 // #75 analyzeウインドウ
@@ -11681,9 +11968,18 @@ begin
    end;
    UpdateMode(CurrentQSO.Mode);
 
+   if (CurrentQSO.Mode = mRTTY) and (dmZLogGlobal.Settings.RTTY.DontChangeRigMode) then begin
+      Exit;
+   end;
+
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
       rig.SetMode(CurrentQSO);
+
+      // モードに見合った周波数にする
+      if dmZLogGlobal.Settings._set_initfreq_chgmode = True then begin
+         rig.SetBand(FCurrentRigSet, CurrentQSO);
+      end;
    end;
 end;
 
@@ -12656,6 +12952,12 @@ begin
    end;
 end;
 
+// #174 RTTY Grab
+procedure TMainForm.actionRttyGrabExecute(Sender: TObject);
+begin
+   FTTYConsole.Grab();
+end;
+
 procedure TMainForm.WriteKeymap();
 var
    i: Integer;
@@ -13019,12 +13321,33 @@ end;
 
 // 相手コールサインの設定
 // バンドスコープから呼ばれる
-procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string);
+procedure TMainForm.SetYourCallsign(strCallsign, strNumber: string; fAbort: Boolean);
 begin
-   SetYourCallsignEx(CurrentRx + 1, strCallsign, strNumber);
+   SetYourCallsignEx(CurrentRx + 1, strCallsign, strNumber, fAbort);
 end;
 
-procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string);
+procedure TMainForm.SetYourNumber(strNumber: string);
+var
+   nID: Integer;
+   C, S, N, B, M, OP, P: TEdit;
+begin
+   nID := CurrentRx;
+
+   AssignControls(nID, C, S, N, B, M, OP, P);
+
+   if (MyContest.SameExchange = True) and (N.Text = '') then begin
+      if strNumber <> '' then begin
+         N.Text := strNumber;
+         N.SelStart := Length(N.Text);
+         CallSpaceBarProc(C, N, B, False);
+      end
+      else begin
+         CallSpaceBarProc(C, N, B);
+      end;
+   end;
+end;
+
+procedure TMainForm.SetYourCallsignEx(no: Integer; strCallsign, strNumber: string; fAbort: Boolean);
 var
    nID: Integer;
    C, S, N, B, M, OP, P: TEdit;
@@ -13032,6 +13355,13 @@ begin
    nID := no - 1;
 
    AssignControls(nID, C, S, N, B, M, OP, P);
+
+   if fAbort = True then begin
+      if (FCtrlZCQLoop = True) then begin
+         CancelCqRepeat();
+         StopMessage(FCQRepeatStartMode);
+      end;
+   end;
 
    CurrentQSO.CallSign := strCallsign;
 
@@ -13724,8 +14054,8 @@ begin
       FEditPanel[0].ModeEdit       := ModeEdit2A;
       FEditPanel[0].PowerEdit      := PowerEdit2HA;
       FEditPanel[0].BandEdit       := BandEdit2A;
-      FEditPanel[0].OpEdit         := nil;
-      FEditPanel[0].MemoEdit       := nil;
+      FEditPanel[0].OpEdit         := OpEdit2RH;
+      FEditPanel[0].MemoEdit       := MemoEdit2A;
       FEditPanel[0].TxLed          := ledTx2A;
       FEditPanel[0].SelShape       := RigPanelShape2A;
       FEditPanel[0].Title          := labelRigTitle2HA;
@@ -13741,8 +14071,8 @@ begin
       FEditPanel[1].ModeEdit       := ModeEdit2B;
       FEditPanel[1].PowerEdit      := PowerEdit2HB;
       FEditPanel[1].BandEdit       := BandEdit2B;
-      FEditPanel[1].OpEdit         := nil;
-      FEditPanel[1].MemoEdit       := nil;
+      FEditPanel[1].OpEdit         := OpEdit2RH;
+      FEditPanel[1].MemoEdit       := MemoEdit2B;
       FEditPanel[1].TxLed          := ledTx2B;
       FEditPanel[1].SelShape       := RigPanelShape2B;
       FEditPanel[1].Title          := labelRigTitle2HB;
@@ -13758,8 +14088,8 @@ begin
       FEditPanel[2].ModeEdit       := ModeEdit2C;
       FEditPanel[2].PowerEdit      := PowerEdit2HC;
       FEditPanel[2].BandEdit       := BandEdit2C;
-      FEditPanel[2].OpEdit         := nil;
-      FEditPanel[2].MemoEdit       := nil;
+      FEditPanel[2].OpEdit         := OpEdit2RH;
+      FEditPanel[2].MemoEdit       := MemoEdit2C;
       FEditPanel[2].TxLed          := ledTx2C;
       FEditPanel[2].SelShape       := RigPanelShape2C;
       FEditPanel[2].Title          := labelRigTitle2HC;
@@ -13782,8 +14112,8 @@ begin
       FEditPanel[0].ModeEdit       := ModeEdit2VA;
       FEditPanel[0].PowerEdit      := PowerEdit2VA;
       FEditPanel[0].BandEdit       := BandEdit2VA;
-      FEditPanel[0].OpEdit         := nil;
-      FEditPanel[0].MemoEdit       := nil;
+      FEditPanel[0].OpEdit         := OpEdit2RV;
+      FEditPanel[0].MemoEdit       := MemoEdit2VA;
       FEditPanel[0].TxLed          := ledTx2VA;
       FEditPanel[0].SelShape       := RigPanelShape2VA;
       FEditPanel[0].Title          := labelRigTitle2VA;
@@ -13799,8 +14129,8 @@ begin
       FEditPanel[1].ModeEdit       := ModeEdit2VB;
       FEditPanel[1].PowerEdit      := PowerEdit2VB;
       FEditPanel[1].BandEdit       := BandEdit2VB;
-      FEditPanel[1].OpEdit         := nil;
-      FEditPanel[1].MemoEdit       := nil;
+      FEditPanel[1].OpEdit         := OpEdit2RV;
+      FEditPanel[1].MemoEdit       := MemoEdit2VB;
       FEditPanel[1].TxLed          := ledTx2VB;
       FEditPanel[1].SelShape       := RigPanelShape2VB;
       FEditPanel[1].Title          := labelRigTitle2VB;
@@ -13816,8 +14146,8 @@ begin
       FEditPanel[2].ModeEdit       := ModeEdit2VC;
       FEditPanel[2].PowerEdit      := PowerEdit2VC;
       FEditPanel[2].BandEdit       := BandEdit2VC;
-      FEditPanel[2].OpEdit         := nil;
-      FEditPanel[2].MemoEdit       := nil;
+      FEditPanel[2].OpEdit         := OpEdit2RV;
+      FEditPanel[2].MemoEdit       := MemoEdit2VC;
       FEditPanel[2].TxLed          := ledTx2VC;
       FEditPanel[2].SelShape       := RigPanelShape2C;
       FEditPanel[2].Title          := labelRigTitle2VC;
@@ -13850,8 +14180,10 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].RcvdNumberEdit.Color := clWindow;
       FEditPanel[id].ModeEdit.Color := clWindow;
       FEditPanel[id].BandEdit.Color := clWindow;
+      FEditPanel[id].MemoEdit.Color := clWindow;
       FEditPanel[id].ModeEdit.Enabled := True;
       FEditPanel[id].BandEdit.Enabled := True;
+      FEditPanel[id].MemoEdit.Enabled := True;
    end;
 
    procedure SetGlay(id: Integer);
@@ -13865,8 +14197,10 @@ procedure TMainForm.UpdateQsoEditPanel(rig: Integer);
       FEditPanel[id].RcvdNumberEdit.Color := clBtnFace;
       FEditPanel[id].ModeEdit.Color := clBtnFace;
       FEditPanel[id].BandEdit.Color := clBtnFace;
+      FEditPanel[id].MemoEdit.Color := clBtnFace;
       FEditPanel[id].ModeEdit.Enabled := False;
       FEditPanel[id].BandEdit.Enabled := False;
+      FEditPanel[id].MemoEdit.Enabled := False;
    end;
 
    procedure SetRigTitleColor(os: TOperateStyle; rig1, rig2, rig3: Boolean);
@@ -13926,6 +14260,16 @@ begin
 //            UpdateMode(RigControl.Rigs[rig].CurrentMode);
 //         end;
 //      end;
+   end;
+end;
+
+procedure TMainForm.ShowOpEdit();
+begin
+   if dmZLogGlobal.ContestCategory = ccSingleOp then begin
+      FEditPanel[0].OpEdit.Visible := False;
+   end
+   else begin
+      FEditPanel[0].OpEdit.Visible := True;
    end;
 end;
 
@@ -14333,10 +14677,17 @@ begin
       VoiceStopButtonClick(Self);
    end
    else if (mode = mRTTY) then begin
-      if FTTYConsole <> nil then begin
-         mm_RX(); // Switch to RX immediately
-         FTTYConsole.TxClear();
+      if dmZLogGlobal.Settings.RTTY.UseFskKeying = True then begin
+         dmZLogKeyer.FskCancelSend(CurrentTx);
+         dmZLogKeyer.FskResetPTT();
+      end
+      else begin
+         if FTTYConsole <> nil then begin
+            mm_RX(); // Switch to RX immediately
+            FTTYConsole.TxClear();
+         end;
       end;
+      FCWMonitor.ClearSendingText();
    end;
 end;
 
@@ -14625,28 +14976,14 @@ begin
    if (dmZLogGlobal.Settings._operate_style = os1Radio) then begin
       if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) then begin
          CancelCqRepeat();
-         if FCQRepeatStartMode = mCW then begin
-            dmZLogKeyer.ClrBuffer;
-            FCWMonitor.ClearSendingText();
-         end
-         else begin
-            FMessageManager.StopVoice();
-            VoiceControl(False, FMessageManager.CurrentVoice);
-         end;
+         StopMessage(FCQRepeatStartMode);
       end;
    end
    else begin
       if Is2bsiq() = False then begin
          if (FCtrlZCQLoop = True) and (Sender = CallsignEdit) and (FCurrentTx = FCurrentRx) then begin
             CancelCqRepeat();
-            if FCQRepeatStartMode = mCW then begin
-               dmZLogKeyer.ClrBuffer;
-               FCWMonitor.ClearSendingText();
-            end
-            else begin
-               FMessageManager.StopVoice();
-               VoiceControl(False, FMessageManager.CurrentVoice);
-            end;
+            StopMessage(FCQRepeatStartMode);
          end;
       end
       else begin

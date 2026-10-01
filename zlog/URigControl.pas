@@ -706,6 +706,8 @@ var
    i: Integer;
 begin
    Stop();
+   dmZLogKeyer.Close();
+   dmZLogKeyer.ResetComm();
 
    // OmniRigは最初にOFFにしておく
    // その後、OmniRigがあればBuildRigObject()でONになる
@@ -748,12 +750,19 @@ begin
       // RIGとCWが同じポートの場合はCW側の設定を使う
       if (dmZLogGlobal.Settings.FRigControl[i].FControlPort = dmZLogGlobal.Settings.FRigControl[i].FKeyingPort) then begin
          FPollingTimer[i].Enabled := False;
-         dmZLogKeyer.SetCommPortDriver(i - 1, FRigs[i].CommPortDriver);
+         dmZLogKeyer.SetCwkPortDriver(i - 1, FRigs[i].CommPortDriver);
          FPollingTimer[i].Enabled := True;
          FRigs[i].PortConfig := dmZLogGlobal.Settings.FRigControl[i].FKeyingPortConfig;
       end
+      else if (dmZLogGlobal.Settings.FRigControl[i].FControlPort = dmZLogGlobal.Settings.FRigControl[i].FFskPort) then begin
+         FPollingTimer[i].Enabled := False;
+         dmZLogKeyer.SetFskPortDriver(i - 1, FRigs[i].CommPortDriver);
+         FPollingTimer[i].Enabled := True;
+         FRigs[i].PortConfig := dmZLogGlobal.Settings.FRigControl[i].FFskPortConfig;
+      end
       else begin
-         dmZLogKeyer.ResetCommPortDriver(i - 1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[i].FKeyingPort));
+         dmZLogKeyer.ResetCwkPortDriver(i - 1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[i].FKeyingPort));
+         dmZLogKeyer.ResetFskPortDriver(i - 1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[i].FFskPort));
          FRigs[i].PortConfig := dmZLogGlobal.Settings.FRigControl[i].FControlPortConfig;
       end;
 
@@ -1133,6 +1142,7 @@ end;
 procedure TRigControl.PowerOn();
 var
    rigno: Integer;
+   i: Integer;
 begin
    // リグ設定を反映
    rigno := GetCurrentRig();
@@ -1165,18 +1175,37 @@ begin
 
    // CW開始
    dmZLogKeyer.Open();
+
+   // RTTY Monitor
+   for i := 1 to 4 do begin
+      if (MainForm.RigControl.Rigs[i] <> nil) and
+         (dmZLogKeyer.TtyRxPort[i - 1] >= tkpSerial1) and
+         (dmZLogKeyer.TtyRxPort[i - 1] <= tkpSerial20) then begin
+         MainForm.RigControl.Rigs[i].SetRttyMonitor(True);
+      end;
+   end;
 end;
 
 procedure TRigControl.PowerOff();
+var
+   i: Integer;
 begin
+   // RTTY Monitor
+   for i := 1 to 4 do begin
+      if (MainForm.RigControl.Rigs[i] <> nil) and
+         (dmZLogKeyer.TtyRxPort[i - 1] >= tkpSerial1) and
+         (dmZLogKeyer.TtyRxPort[i - 1] <= tkpSerial20) then begin
+         MainForm.RigControl.Rigs[i].SetRttyMonitor(False);
+      end;
+   end;
+
    // CW停止
    dmZLogKeyer.ClrBuffer();
    dmZLogKeyer.Close();
-   dmZLogKeyer.ResetCommPortDriver(0, TKeyingPort(dmZLogGlobal.Settings.FRigControl[1].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(1, TKeyingPort(dmZLogGlobal.Settings.FRigControl[2].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(2, TKeyingPort(dmZLogGlobal.Settings.FRigControl[3].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(3, TKeyingPort(dmZLogGlobal.Settings.FRigControl[4].FKeyingPort));
-   dmZLogKeyer.ResetCommPortDriver(4, TKeyingPort(dmZLogGlobal.Settings.FRigControl[5].FKeyingPort));
+   for i := 0 to 4 do begin
+      dmZLogKeyer.ResetCwkPortDriver(i, TKeyingPort(dmZLogGlobal.Settings.FRigControl[i + 1].FKeyingPort));
+      dmZLogKeyer.ResetFskPortDriver(i, TKeyingPort(dmZLogGlobal.Settings.FRigControl[i + 1].FFskPort));
+   end;
 
    // リグコン停止
    Stop();
