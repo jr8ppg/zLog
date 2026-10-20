@@ -3404,11 +3404,21 @@ begin
       ReWrite(F);
 
       offsetmin := FQsoList[0].RSTsent;
-      if offsetmin = _USEUTC then begin
-         offsethour := 0;
+      if offsetmin = _USEUTC then begin   // FROM UTC
+         if nTimeOption = 1 then begin // TO JST
+            offsethour := 9;
+         end
+         else begin     // TO UTC
+            offsethour := 0;
+         end;
       end
-      else begin
-         offsethour := offsetmin div 60;
+      else begin  // FROM JST
+         if nTimeOption = 2 then begin // TO UTC
+            offsethour := offsetmin div 60;
+         end
+         else begin  // TO JST
+            offsethour := 0;
+         end;
       end;
 
       for i := 1 to FQSOList.Count - 1 do begin
@@ -3428,7 +3438,7 @@ begin
                if offsetmin = _USEUTC then begin
                   qsotime := IncHour(qsotime, offsethour);
                end;
-               newoffsetmin := offsetmin;
+               newoffsetmin := 0;
             end;
 
             // UTCìùàÍ
