@@ -243,9 +243,6 @@ uses
 {$R *.dfm}
 
 procedure TformELogJarlEx.FormCreate(Sender: TObject);
-var
-   i: Integer;
-   Q: TQSO;
 begin
    Initializing := True;
    FSorted := False;
@@ -581,8 +578,6 @@ procedure TformELogJarlEx.buttonCreateLogClick(Sender: TObject);
 var
    SL: TStringList;
    fname: string;
-   b: TBand;
-   i: Integer;
 begin
    SL := TStringList.Create();
    try

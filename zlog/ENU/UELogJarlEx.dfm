@@ -341,9 +341,9 @@ object formELogJarlEx: TformELogJarlEx
       object Label16: TLabel
         Left = 16
         Top = 337
-        Width = 82
+        Width = 112
         Height = 12
-        Caption = #24847#35211#65288'10'#34892#12414#12391#65289
+        Caption = #24847#35211#12539#24863#24819#65288'10'#34892#12414#12391#65289
       end
       object Label17: TLabel
         Left = 16
