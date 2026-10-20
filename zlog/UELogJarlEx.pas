@@ -1271,7 +1271,7 @@ var
 begin
    SL.Add('<LOGSHEET TYPE="ZLOG_REIWA">');
 
-   if FWorkLog.QsoList[0].RSTsent = _USEUTC then begin
+   if FWorkLog.QsoList[0].RSTSent = _USEUTC then begin
       s := 'DATE (UTC)';
    end
    else begin
@@ -1564,6 +1564,11 @@ var
    Q2: TQSO;
 begin
    FWorkLog.Clear2();
+
+   // TimeZoneをコピー
+   FWorkLog.QSOList[0].RSTSent := Log.QSOList[0].RSTSent;
+
+   // QSOデータをコピー
    for i := 1 to Log.TotalQSO do begin
       Q1 := TQSO.Create();
       Q2 := Log.QSOList[i];
