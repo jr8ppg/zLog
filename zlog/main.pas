@@ -745,6 +745,7 @@ type
     actionRttyGrab: TAction;
     OpEdit2RH: TEdit;
     OpEdit2RV: TEdit;
+    actionRttyGrabRev: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1093,6 +1094,7 @@ type
     procedure menuLogCheckerClick(Sender: TObject);
     procedure actionResetFontSizeExecute(Sender: TObject);
     procedure actionRttyGrabExecute(Sender: TObject);
+    procedure actionRttyGrabRevExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -12956,6 +12958,12 @@ end;
 procedure TMainForm.actionRttyGrabExecute(Sender: TObject);
 begin
    FTTYConsole.Grab();
+end;
+
+// #175 RTTY Grab reverse
+procedure TMainForm.actionRttyGrabRevExecute(Sender: TObject);
+begin
+   FTTYConsole.GrabReverse();
 end;
 
 procedure TMainForm.WriteKeymap();

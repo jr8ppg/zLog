@@ -416,7 +416,7 @@ const
     );
 
 const
-  default_primary_shortcut: array[0..174] of string = (
+  default_primary_shortcut: array[0..175] of string = (
     'Ctrl+F1',          // #00
     'Ctrl+F2',
     'Ctrl+F3',
@@ -591,10 +591,11 @@ const
     '',                 // #171 actionFocusRstSentExecute
     '',                 // #172 actionShowSentNumber
     '',                 // #173 actionResetFontSize
-    ''                  // #174 actionRttyGrab
+    '',                 // #174 actionRttyGrab
+    ''                  // #175 actionRttyGrabRev
   );
 
-  default_secondary_shortcut: array[0..174] of string = (
+  default_secondary_shortcut: array[0..175] of string = (
     '',                 // #00
     '',
     '',
@@ -769,7 +770,8 @@ const
     '',                 // #171 actionFocusRstSentExecute
     '',                 // #172 actionShowSentNumber
     '',                 // #173 actionResetFontSize
-    ''                  // #174 actionRttyGrab
+    '',                 // #174 actionRttyGrab
+    ''                  // #175 actionRttyGrabRev
   );
 
 const

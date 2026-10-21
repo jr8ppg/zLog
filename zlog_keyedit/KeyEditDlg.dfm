@@ -11,12 +11,10 @@ object formKeyEditDlg: TformKeyEditDlg
   Font.Height = -12
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   DesignSize = (
     495
     374)
-  PixelsPerInch = 96
   TextHeight = 12
   object GroupBox1: TGroupBox
     Left = 8
@@ -159,12 +157,12 @@ object formKeyEditDlg: TformKeyEditDlg
   end
   object GroupBox3: TGroupBox
     Left = 8
-    Top = 141
+    Top = 135
     Width = 385
     Height = 57
     Caption = #29305#27530#12461#12540
     TabOrder = 2
-    object comboOtherKey: TComboBox
+    object comboSpecialKey: TComboBox
       Left = 16
       Top = 22
       Width = 57
@@ -173,14 +171,41 @@ object formKeyEditDlg: TformKeyEditDlg
       ItemIndex = 0
       TabOrder = 0
       Text = #12394#12375
-      OnClick = comboOtherKeyClick
+      OnClick = comboSpecialKeyClick
       Items.Strings = (
         #12394#12375
         'PgUp'
         'PgDn'
         'TAB'
+        'Esc'
+        'Up'
         'Down'
-        'Esc')
+        'Right'
+        'Left')
+    end
+    object checkSpecialAndCtrl: TCheckBox
+      Left = 96
+      Top = 24
+      Width = 73
+      Height = 17
+      Caption = 'Ctrl'#12461#12540
+      TabOrder = 1
+    end
+    object checkSpecialAndAlt: TCheckBox
+      Left = 272
+      Top = 24
+      Width = 73
+      Height = 17
+      Caption = 'Alt'#12461#12540
+      TabOrder = 2
+    end
+    object checkSpecialAndShift: TCheckBox
+      Left = 184
+      Top = 24
+      Width = 73
+      Height = 17
+      Caption = 'Shift'#12461#12540
+      TabOrder = 3
     end
   end
   object buttonOK: TButton

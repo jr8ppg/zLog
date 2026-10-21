@@ -94,6 +94,7 @@ type
     buttonCallMessage3: TSpeedButton;
     popupMessageList: TPopupMenu;
     checkAutoPttOff: TCheckBox;
+    actionRttyGrabRev: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -128,6 +129,7 @@ type
     procedure buttonCallMessageClick(Sender: TObject);
     procedure buttonSendClick(Sender: TObject);
     procedure editMessageKeyPress(Sender: TObject; var Key: Char);
+    procedure actionRttyGrabRevExecute(Sender: TObject);
   private
     { Private declarations }
     FTTYSendBuffer: string;
@@ -155,6 +157,7 @@ type
     procedure TxClear();
     procedure ToggleTXRX();
     procedure Grab();
+    procedure GrabReverse();
     procedure RemoveCallsign(strCall: string);
     procedure OneCharSentProc();
 
@@ -726,6 +729,31 @@ begin
    end;
 end;
 
+procedure TTTYConsole.actionRttyGrabRevExecute(Sender: TObject);
+var
+   S: string;
+begin
+   if CallsignList.Items.Count = 0 then begin
+      Exit;
+   end;
+
+   if CallsignList.ItemIndex = -1 then begin
+      CallsignList.ItemIndex := CallsignList.Items.Count - 1;
+      S := CallsignList.Items[CallsignList.ItemIndex];
+      MainForm.SetYourCallsign(S, '', True);
+   end
+   else begin
+      if CallsignList.ItemIndex > 0 then begin
+         CallsignList.ItemIndex := CallsignList.ItemIndex - 1;
+         S := CallsignList.Items[CallsignList.ItemIndex];
+         MainForm.SetYourCallsign(S, '', True);
+      end
+      else begin
+         CallsignList.ItemIndex := -1;
+      end;
+   end;
+end;
+
 procedure TTTYConsole.PlayMessageRTTY(no: Integer);
 var
    S: string;
@@ -869,6 +897,7 @@ begin
 
    actionControlPTT.ShortCut := MainForm.actionControlPTT.ShortCut;
    actionRttyGrab.ShortCut := MainForm.actionRttyGrab.ShortCut;
+   actionRttyGrabRev.ShortCut := MainForm.actionRttyGrabRev.ShortCut;
 
    actionPlayMessageA01.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA01.SecondaryShortCuts);
    actionPlayMessageA02.SecondaryShortCuts.Assign(MainForm.actionPlayMessageA02.SecondaryShortCuts);
@@ -903,6 +932,7 @@ begin
 
    actionControlPTT.SecondaryShortCuts.Assign(MainForm.actionControlPTT.SecondaryShortCuts);
    actionRttyGrab.SecondaryShortCuts.Assign(MainForm.actionRttyGrab.SecondaryShortCuts);
+   actionRttyGrabRev.SecondaryShortCuts.Assign(MainForm.actionRttyGrabRev.SecondaryShortCuts);
 end;
 
 function TTTYConsole.GetFontSize(): Integer;
@@ -972,6 +1002,11 @@ end;
 procedure TTTYConsole.Grab();
 begin
    actionRttyGrabExecute(nil);
+end;
+
+procedure TTTYConsole.GrabReverse();
+begin
+   actionRttyGrabRevExecute(nil);
 end;
 
 procedure TTTYConsole.RemoveCallsign(strCall: string);

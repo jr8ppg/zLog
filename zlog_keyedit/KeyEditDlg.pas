@@ -18,7 +18,7 @@ type
     checkAlphabetAndCtrl: TCheckBox;
     checkAlphabetAndAlt: TCheckBox;
     GroupBox3: TGroupBox;
-    comboOtherKey: TComboBox;
+    comboSpecialKey: TComboBox;
     buttonOK: TButton;
     buttonCancel: TButton;
     GroupBox4: TGroupBox;
@@ -33,10 +33,13 @@ type
     GroupBox5: TGroupBox;
     editDispText: TEdit;
     Label1: TLabel;
+    checkSpecialAndCtrl: TCheckBox;
+    checkSpecialAndAlt: TCheckBox;
+    checkSpecialAndShift: TCheckBox;
     procedure buttonOKClick(Sender: TObject);
     procedure comboFunctionKeyClick(Sender: TObject);
     procedure comboAlphabetKeyClick(Sender: TObject);
-    procedure comboOtherKeyClick(Sender: TObject);
+    procedure comboSpecialKeyClick(Sender: TObject);
   private
     { Private êÈåæ }
     procedure SetPrimaryKey(v: string);
@@ -113,12 +116,12 @@ begin
                comboAlphabetKey.ItemIndex := Index;
             end;
 
-            Index := comboOtherKey.Items.IndexOf(sl[i]);
+            Index := comboSpecialKey.Items.IndexOf(sl[i]);
             if Index <= 0 then begin
-               comboOtherKey.ItemIndex := 0;
+               comboSpecialKey.ItemIndex := 0;
             end
             else begin
-               comboOtherKey.ItemIndex := Index;
+               comboSpecialKey.ItemIndex := Index;
             end;
          end;
       end;
@@ -146,6 +149,18 @@ begin
             checkAlphabetAndAlt.Checked := True;
          end;
       end;
+
+      if comboSpecialKey.ItemIndex > 0 then begin
+         if fCtrl = True then begin
+            checkSpecialAndCtrl.Checked := True;
+         end;
+         if fShift = True then begin
+            checkSpecialAndShift.Checked := True;
+         end;
+         if fAlt = True then begin
+            checkSpecialAndAlt.Checked := True;
+         end;
+      end;
    finally
       sl.Free();
    end;
@@ -155,7 +170,7 @@ procedure TformKeyEditDlg.comboFunctionKeyClick(Sender: TObject);
 begin
    if TComboBox(Sender).ItemIndex > 0 then begin
       comboAlphabetKey.ItemIndex := 0;
-      comboOtherKey.ItemIndex := 0;
+      comboSpecialKey.ItemIndex := 0;
    end;
 end;
 
@@ -163,11 +178,11 @@ procedure TformKeyEditDlg.comboAlphabetKeyClick(Sender: TObject);
 begin
    if TComboBox(Sender).ItemIndex > 0 then begin
       comboFunctionKey.ItemIndex := 0;
-      comboOtherKey.ItemIndex := 0;
+      comboSpecialKey.ItemIndex := 0;
    end;
 end;
 
-procedure TformKeyEditDlg.comboOtherKeyClick(Sender: TObject);
+procedure TformKeyEditDlg.comboSpecialKeyClick(Sender: TObject);
 begin
    if TComboBox(Sender).ItemIndex > 0 then begin
       comboFunctionKey.ItemIndex := 0;
@@ -206,8 +221,17 @@ begin
          end;
          sl.Add(comboAlphabetKey.Items[comboAlphabetKey.ItemIndex]);
       end
-      else if comboOtherKey.ItemIndex > 0 then begin
-         sl.Add(comboOtherKey.Items[comboOtherKey.ItemIndex]);
+      else if comboSpecialKey.ItemIndex > 0 then begin
+         if checkSpecialAndCtrl.Checked = True then begin
+            sl.Add('Ctrl');
+         end;
+         if checkSpecialAndShift.Checked = True then begin
+            sl.Add('Shift');
+         end;
+         if checkSpecialAndAlt.Checked = True then begin
+            sl.Add('Alt');
+         end;
+         sl.Add(comboSpecialKey.Items[comboSpecialKey.ItemIndex]);
       end;
 
       Result := sl.DelimitedText;

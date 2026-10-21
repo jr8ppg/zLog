@@ -550,6 +550,10 @@ object TTYConsole: TTTYConsole
       Caption = 'Set callsign'
       OnExecute = actionRttyGrabExecute
     end
+    object actionRttyGrabRev: TAction
+      Caption = 'actionRttyGrabRev'
+      OnExecute = actionRttyGrabRevExecute
+    end
   end
   object popupCallsignList: TPopupMenu
     AutoHotkeys = maManual
