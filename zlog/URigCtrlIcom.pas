@@ -16,6 +16,7 @@ type
     procedure SetRit(flag: Boolean); override;
     procedure SetXit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
+    procedure SetRitOffsetSub(offset: Integer);
   private
     FMyAddr: Byte;
     FRigAddr: Byte;
@@ -49,6 +50,8 @@ type
     procedure PollingProcess; override;
     procedure Reset; override;
     procedure RitClear; override;
+    procedure RitUp(); override;
+    procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetDataMode(fOn: Boolean); override;
@@ -408,6 +411,28 @@ begin
    ICOMWriteData(Command);
 end;
 
+procedure TICOM.RitUp();
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
+end;
+
+procedure TICOM.RitDown();
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
+end;
+
 procedure TICOM.Initialize();
 begin
    Inherited;
@@ -648,6 +673,18 @@ begin
       Exit;
    end;
 
+   SetRitOffsetSub(offset);
+
+   Inherited;
+end;
+
+procedure TICOM.SetRitOffsetSub(offset: Integer);
+var
+   CMD: AnsiString;
+   sign: AnsiString;
+   freq: Integer;
+   i: Integer;
+begin
    if offset < 0 then begin
       freq := offset * -1;
       sign := AnsiChar($01);
@@ -667,14 +704,11 @@ begin
    // 1KHz  100Hz
    i := freq mod 100;
    CMD := CMD + AnsiChar((i div 10) * 16 + (i mod 10));
-//   freq := freq div 100;
 
    // plus/minus
    CMD := CMD + sign;
 
    ICOMWriteData(CMD);
-
-   Inherited;
 end;
 
 procedure TICOM.SetVFO(i: Integer); // A:0, B:1

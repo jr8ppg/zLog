@@ -118,6 +118,8 @@ type
     procedure PassOnRxData(S : AnsiString); virtual;
     procedure ParseBufferString; virtual; abstract;
     procedure RitClear(); virtual;
+    procedure RitUp();  virtual;
+    procedure RitDown();  virtual;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); virtual;
     procedure Reset; virtual; abstract; // called when user wants to reset the rig
                                         // after power outage etc
@@ -726,6 +728,16 @@ end;
 procedure TRig.RitClear();
 begin
    FRitOffset := 0;
+end;
+
+procedure TRig.RitUp();
+begin
+   FRitOffset := FRitOffset + 20;
+end;
+
+procedure TRig.RitDown();
+begin
+   FRitOffset := FRitOffset - 20;
 end;
 
 procedure TRig.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);

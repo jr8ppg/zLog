@@ -15,6 +15,7 @@ type
     procedure SetRit(flag: Boolean); override;
     procedure SetXit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
+    procedure SetRitOffsetSub(offset: Integer);
   private
     FCwReverse: Boolean; // CW-R flag
   public
@@ -27,6 +28,8 @@ type
     procedure ParseBufferString; override;
     procedure Reset; override;
     procedure RitClear; override;
+    procedure RitUp(); override;
+    procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
@@ -307,6 +310,28 @@ begin
    WriteData('RC;');
 end;
 
+procedure TElecraft.RitUp();
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
+end;
+
+procedure TElecraft.RitDown();
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
+end;
+
 // FA and FB (VFO A/B Frequency; GET/SET)
 // SET/RSP format: FAxxxxxxxxxxx; or FBxxxxxxxxxxx; where xxxxxxxxxxx is the frequency in Hz. Example:
 // FA00014060000; sets VFO A to 14060 kHz. The Hz digit is ignored if the K3 is not in FINE mode (1-Hz tuning;
@@ -403,6 +428,15 @@ begin
       Exit;
    end;
 
+   SetRitOffsetSub(offset);
+
+   Inherited;
+end;
+
+procedure TElecraft.SetRitOffsetSub(offset: Integer);
+var
+   CMD: AnsiString;
+begin
    if offset = 0 then begin
       WriteData('RC;');
    end
@@ -418,8 +452,6 @@ begin
       CMD := AnsiString('RO+' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
       WriteData(CMD);
    end;
-
-   Inherited;
 end;
 
 // FR (RX VFO Assignment [K2 only] and SPLIT Cancel; GET/SET)

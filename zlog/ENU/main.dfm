@@ -8963,6 +8963,14 @@ object MainForm: TMainForm
       Caption = 'actionRttyGrabRev'
       OnExecute = actionRttyGrabRevExecute
     end
+    object actionRitUp: TAction
+      Caption = 'RIT Up'
+      OnExecute = actionRitUpExecute
+    end
+    object actionRitDown: TAction
+      Caption = 'RIT Down'
+      OnExecute = actionRitDownExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual

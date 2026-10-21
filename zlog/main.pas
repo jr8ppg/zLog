@@ -746,6 +746,8 @@ type
     OpEdit2RH: TEdit;
     OpEdit2RV: TEdit;
     actionRttyGrabRev: TAction;
+    actionRitUp: TAction;
+    actionRitDown: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1095,6 +1097,8 @@ type
     procedure actionResetFontSizeExecute(Sender: TObject);
     procedure actionRttyGrabExecute(Sender: TObject);
     procedure actionRttyGrabRevExecute(Sender: TObject);
+    procedure actionRitUpExecute(Sender: TObject);
+    procedure actionRitDownExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -12964,6 +12968,28 @@ end;
 procedure TMainForm.actionRttyGrabRevExecute(Sender: TObject);
 begin
    FTTYConsole.GrabReverse();
+end;
+
+// #176 RIT Up
+procedure TMainForm.actionRitUpExecute(Sender: TObject);
+var
+   rig: TRig;
+begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.RitUp();
+   end;
+end;
+
+// #177 RIT Down
+procedure TMainForm.actionRitDownExecute(Sender: TObject);
+var
+   rig: TRig;
+begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      rig.RitDown();
+   end;
 end;
 
 procedure TMainForm.WriteKeymap();

@@ -35,6 +35,7 @@ type
   protected
     procedure SetRit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
+    procedure SetRitOffsetSub(offset: Integer);
     procedure SetXit(flag: Boolean); override;
     procedure FunctionRx(param: string); virtual;
     procedure FunctionTx(param: string); virtual;
@@ -52,6 +53,8 @@ type
     procedure PollingProcess; override;
     procedure Reset; override;
     procedure RitClear; override;
+    procedure RitUp(); override;
+    procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
@@ -702,6 +705,28 @@ begin
    WriteData('RC;');
 end;
 
+procedure TFT2000.RitUp();
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
+end;
+
+procedure TFT2000.RitDown();
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
+end;
+
 //
 // FREQUENCY VFO-A/B
 //        0 1  2  3  4  5  6  7  8  9 10 11
@@ -776,13 +801,20 @@ begin
 end;
 
 procedure TFT2000.SetRitOffset(offset: Integer);
-var
-   CMD: AnsiString;
 begin
    if FRitOffset = offset then begin
       Exit;
    end;
 
+   SetRitOffsetSub(offset);
+
+   Inherited;
+end;
+
+procedure TFT2000.SetRitOffsetSub(offset: Integer);
+var
+   CMD: AnsiString;
+begin
    if offset = 0 then begin
       WriteData('RC;');
    end
@@ -796,8 +828,6 @@ begin
       CMD := AnsiString('RU' + RightStr('0000' + IntToStr(Abs(offset)), 4) + ';');
       WriteData(CMD);
    end;
-
-   Inherited;
 end;
 
 //

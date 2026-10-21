@@ -27,6 +27,8 @@ type
     procedure InquireStatus; override;
     procedure ParseBufferString; override;
     procedure RitClear; override;
+    procedure RitUp(); override;
+    procedure RitDown(); override;
     procedure Reset; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
@@ -38,10 +40,13 @@ type
   TTS2000 = class(TTS690)
   protected
     procedure SetRitOffset(offset: Integer); override;
+    procedure SetRitOffsetSub(offset: Integer);
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
     procedure Initialize(); override;
+    procedure RitUp(); override;
+    procedure RitDown(); override;
     procedure SetWPM(wpm: Integer); override;
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
@@ -330,6 +335,20 @@ begin
    WriteData('RC;');
 end;
 
+procedure TTS690.RitUp();
+begin
+   Inherited;
+   WriteData('RU;');
+   WriteData('RU;');
+end;
+
+procedure TTS690.RitDown();
+begin
+   Inherited;
+   WriteData('RD;');
+   WriteData('RD;');
+end;
+
 procedure TTS690.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 var
    fstr: AnsiString;
@@ -521,13 +540,20 @@ begin
 end;
 
 procedure TTS2000.SetRitOffset(offset: Integer);
-var
-   CMD: AnsiString;
 begin
    if FRitOffset = offset then begin
       Exit;
    end;
 
+   SetRitOffsetSub(offset);
+
+   Inherited;
+end;
+
+procedure TTS2000.SetRitOffsetSub(offset: Integer);
+var
+   CMD: AnsiString;
+begin
    if offset = 0 then begin
       WriteData('RC;');
    end
@@ -541,8 +567,28 @@ begin
       CMD := AnsiString('RU' + RightStr('00000' + IntToStr(Abs(offset)), 5) + ';');
       WriteData(CMD);
    end;
+end;
 
+procedure TTS2000.RitUp();
+begin
    Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
+end;
+
+procedure TTS2000.RitDown();
+begin
+   Inherited;
+
+   if FRitCtrlSupported = False then begin
+      Exit;
+   end;
+
+   SetRitOffsetSub(FRitOffset);
 end;
 
 procedure TTS2000.SetWPM(wpm: Integer);
