@@ -550,6 +550,16 @@ begin
          ReadMeter(string(Copy(S, 3)));
       end;
 
+      // RITèÛë‘
+      if strCommand = 'RT' then begin
+         FRit := StrToBoolDef(string(Copy(S, 3, 1)), False);
+      end;
+
+      // XITèÛë‘
+      if strCommand = 'XT' then begin
+         FXit := StrToBoolDef(string(Copy(S, 3, 1)), False);
+      end;
+
       if Selected then begin
          UpdateStatus;
       end;
@@ -798,6 +808,7 @@ begin
    else begin
       WriteData('RT0;');
    end;
+   WriteData('RT;');
 end;
 
 procedure TFT2000.SetRitOffset(offset: Integer);
@@ -863,6 +874,7 @@ begin
    else begin
       WriteData('XT0;');
    end;
+   WriteData('XT;');
 end;
 
 procedure TFT2000.ControlPTT(fOn: Boolean);

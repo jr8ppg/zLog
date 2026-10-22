@@ -748,6 +748,8 @@ type
     actionRttyGrabRev: TAction;
     actionRitUp: TAction;
     actionRitDown: TAction;
+    actionXitUp: TAction;
+    actionXitDown: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1099,6 +1101,8 @@ type
     procedure actionRttyGrabRevExecute(Sender: TObject);
     procedure actionRitUpExecute(Sender: TObject);
     procedure actionRitDownExecute(Sender: TObject);
+    procedure actionXitUpExecute(Sender: TObject);
+    procedure actionXitDownExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -12977,6 +12981,9 @@ var
 begin
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
+      if rig.Rit = False then begin
+         rig.Rit := True;
+      end;
       rig.RitUp();
    end;
 end;
@@ -12988,6 +12995,37 @@ var
 begin
    rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
    if rig <> nil then begin
+      if rig.Rit = False then begin
+         rig.Rit := True;
+      end;
+      rig.RitDown();
+   end;
+end;
+
+// #178 XIT Up
+procedure TMainForm.actionXitUpExecute(Sender: TObject);
+var
+   rig: TRig;
+begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      if rig.Xit = False then begin
+         rig.Xit := True;
+      end;
+      rig.RitUp();
+   end;
+end;
+
+// #179 XIT Down
+procedure TMainForm.actionXitDownExecute(Sender: TObject);
+var
+   rig: TRig;
+begin
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig <> nil then begin
+      if rig.Xit = False then begin
+         rig.Xit := True;
+      end;
       rig.RitDown();
    end;
 end;

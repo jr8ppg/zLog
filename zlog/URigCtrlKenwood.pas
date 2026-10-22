@@ -266,6 +266,16 @@ begin
          FSMeterValue[_currentvfo] := Round(StrToFloatDef(Copy(string(S), 4, 3), 0) * (100 / FSMeterMax));
       end;
 
+      // RITèÛë‘
+      if Command = 'RT' then begin
+         FRit := StrToBoolDef(string(Copy(S, 3, 1)), False);
+      end;
+
+      // XITèÛë‘
+      if Command = 'XT' then begin
+         FXit := StrToBoolDef(string(Copy(S, 3, 1)), False);
+      end;
+
       if Selected then begin
          UpdateStatus;
       end;

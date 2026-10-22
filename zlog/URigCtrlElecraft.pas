@@ -225,9 +225,20 @@ begin
       end;
 
       FreqMem[_currentband, M] := _currentfreq[_currentvfo];
+   end;
 
-      if Selected then
-         UpdateStatus;
+   // RITó‘Ô
+   if Command = 'RT' then begin
+      FRit := StrToBoolDef(string(Copy(S, 3, 1)), False);
+   end;
+
+   // XITó‘Ô
+   if Command = 'XT' then begin
+      FXit := StrToBoolDef(string(Copy(S, 3, 1)), False);
+   end;
+
+   if Selected then begin
+      UpdateStatus;
    end;
 end;
 

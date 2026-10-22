@@ -8977,6 +8977,14 @@ object MainForm: TMainForm
       Caption = 'RIT Down'
       OnExecute = actionRitDownExecute
     end
+    object actionXitUp: TAction
+      Caption = 'actionXitUp'
+      OnExecute = actionXitUpExecute
+    end
+    object actionXitDown: TAction
+      Caption = 'actionXitDown'
+      OnExecute = actionXitDownExecute
+    end
   end
   object SPCMenu: TPopupMenu
     AutoHotkeys = maManual
