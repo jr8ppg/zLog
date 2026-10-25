@@ -1296,17 +1296,24 @@ begin
    end;
 
    S := aQSO.NrRcvd;
-   if FMinLocalLen > 0 then begin
-      S := Copy(S, 1, FMinLocalLen);
+   if S = '' then begin
+      Exit;
    end;
 
-   if FLocalString.Count = 1 then begin
+   if FMinLocalLen > 0 then begin
       arr := FLocalString.ToArray();
-      if Pos(arr[0].Key, S) = 1 then begin
-         Result := True;
-      end
-      else begin
-         Result := False;
+
+      for i := 0 to Length(arr) - 1 do begin
+         if arr[i].Value = '' then begin
+            Exit;
+         end
+         else begin
+            if (Pos(arr[i].Value, S) = 1) and
+               (Length(S) >= FMinLocalLen) then begin
+               Result := True;
+               Exit;
+            end;
+         end;
       end;
    end
    else begin
