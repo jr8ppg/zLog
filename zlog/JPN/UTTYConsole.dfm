@@ -102,8 +102,9 @@ object TTYConsole: TTTYConsole
           Width = 97
           Height = 17
           Anchors = [akTop, akRight]
-          Caption = 'Auto PTT OFF'
+          Caption = #33258#21205'PTT OFF'
           TabOrder = 1
+          OnClick = checkboxClick
         end
       end
       object panelTxMessages: TPanel
@@ -246,6 +247,18 @@ object TTYConsole: TTTYConsole
           Caption = #12463#12522#12450
           TabOrder = 0
           OnClick = buttonRXLogClearClick
+        end
+        object checkAutoFillNR: TCheckBox
+          Left = 95
+          Top = 4
+          Width = 98
+          Height = 17
+          Anchors = [akTop, akRight]
+          Caption = 'NR'#33258#21205#20837#21147
+          Checked = True
+          State = cbChecked
+          TabOrder = 1
+          OnClick = checkboxClick
         end
       end
       object RXLog: TColorConsole2

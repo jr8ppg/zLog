@@ -58,6 +58,8 @@ type
     ColorCoding: TStringList;
     UseTxUos: Boolean;
     CallsignFilter: string;
+    AutoFillNR: Boolean;
+    AutoPttOff: Boolean;
   end;
 
   TCommParam = record
@@ -1152,6 +1154,8 @@ begin
       end;
 
       Settings.RTTY.CallsignFilter := ini.ReadString('RTTY', 'CallsignFilter', '^(?=.{3,15}$)(?=.*[0-9])(?=.*[A-Z])[A-Z0-9]+(?:/[A-Z0-9]+)*$');
+      Settings.RTTY.AutoFillNR := ini.ReadBool('RTTY', 'AutoFillNR', True);
+      Settings.RTTY.AutoPttOff := ini.ReadBool('RTTY', 'AutoPttOff', False);
 
       //
       // Hardware
@@ -2064,6 +2068,8 @@ begin
       end;
 
       ini.WriteString('RTTY', 'CallsignFilter', Settings.RTTY.CallsignFilter);
+      ini.WriteBool('RTTY', 'AutoFillNR', Settings.RTTY.AutoFillNR);
+      ini.WriteBool('RTTY', 'AutoPttOff', Settings.RTTY.AutoPttOff);
 
       //
       // Hardware

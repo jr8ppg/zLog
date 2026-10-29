@@ -95,6 +95,7 @@ type
     popupMessageList: TPopupMenu;
     checkAutoPttOff: TCheckBox;
     actionRttyGrabRev: TAction;
+    checkAutoFillNR: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -130,6 +131,7 @@ type
     procedure buttonSendClick(Sender: TObject);
     procedure editMessageKeyPress(Sender: TObject; var Key: Char);
     procedure actionRttyGrabRevExecute(Sender: TObject);
+    procedure checkboxClick(Sender: TObject);
   private
     { Private declarations }
     FTTYSendBuffer: string;
@@ -146,10 +148,11 @@ type
     function Sending(): Boolean;
     procedure RXChar(C: AnsiChar);
     procedure TXChar(C: AnsiChar);
-    procedure ExtractRcvdNumber(strLine: string);
+    function ExtractRcvdNumber(strLine: string): string;
     procedure PlayMessageRTTY(no: Integer);
     procedure ApplyShortcut();
     procedure ImplementOptions();
+    procedure RenewOptions();
     procedure SendTtyMessage(n: Integer);
   public
     { Public declarations }
@@ -190,6 +193,7 @@ end;
 procedure TTTYConsole.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    MainForm.DelTaskbar(Handle);
+   RenewOptions();
 end;
 
 procedure TTTYConsole.FormShow(Sender: TObject);
@@ -336,8 +340,11 @@ begin
          end;
       end;
 
-      if dmZLogKeyer.IsPlaying = False then begin
-         ExtractRcvdNumber(S);
+      if (dmZLogKeyer.IsPlaying = False) and (checkAutoFillNR.Checked = True) then begin
+         S := ExtractRcvdNumber(S);
+         if S <> '' then begin
+            MainForm.SetYourNumber(S);
+         end;
       end;
    end
    else begin
@@ -347,13 +354,14 @@ begin
    L.Free();
 end;
 
-procedure TTTYConsole.ExtractRcvdNumber(strLine: string);
+function TTTYConsole.ExtractRcvdNumber(strLine: string): string;
 var
    i: Integer;
    S: string;
 begin
    i := Pos('599', strLine);
    if i = 0 then begin
+      Result := '';
       Exit;
    end;
 
@@ -362,6 +370,7 @@ begin
 
    S := TrimLeft(S);
    if S = '' then begin
+      Result := '';
       Exit;
    end;
 
@@ -380,11 +389,7 @@ begin
       S := copy(S, 1, i - 1);
    end;
 
-   if S = '' then begin
-      Exit;
-   end;
-
-   MainForm.SetYourNumber(S);
+   Result := S;
 end;
 
 procedure TTTYConsole.TXChar(C: AnsiChar);
@@ -635,6 +640,11 @@ begin
       S := CallsignList.Items[CallsignList.ItemIndex];
       MainForm.SetYourCallsign(S, '', True);
    end;
+end;
+
+procedure TTTYConsole.checkboxClick(Sender: TObject);
+begin
+   RenewOptions();
 end;
 
 procedure TTTYConsole.editMessageKeyPress(Sender: TObject; var Key: Char);
@@ -1046,6 +1056,15 @@ begin
 
    CallsignList.Color := dmZLogGlobal.Settings.RTTY.BackColor;
    CallsignList.Font.Color := dmZLogGlobal.Settings.RTTY.ForeColor;
+
+   checkAutoFillNR.Checked := dmZLogGlobal.Settings.RTTY.AutoFillNR;
+   checkAutoPttOff.Checked := dmZLogGlobal.Settings.RTTY.AutoPttOff;
+end;
+
+procedure TTTYConsole.RenewOptions();
+begin
+   dmZLogGlobal.Settings.RTTY.AutoFillNR := checkAutoFillNR.Checked;
+   dmZLogGlobal.Settings.RTTY.AutoPttOff := checkAutoPttOff.Checked;
 end;
 
 procedure TTTYConsole.OneCharSentProc();
