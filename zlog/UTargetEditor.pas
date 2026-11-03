@@ -24,6 +24,7 @@ type
     popupScore: TPopupMenu;
     menuCopy: TMenuItem;
     menuPaste: TMenuItem;
+    buttonAllZero: TButton;
     procedure FormCreate(Sender: TObject);
     procedure ScoreGridSetEditText(Sender: TObject; ACol, ARow: Integer;
       const Value: string);
@@ -42,6 +43,7 @@ type
     procedure menuCopyClick(Sender: TObject);
     procedure popupScorePopup(Sender: TObject);
     procedure menuPasteClick(Sender: TObject);
+    procedure buttonAllZeroClick(Sender: TObject);
   private
     { Private êÈåæ }
     FContestPeriod: Integer;
@@ -52,6 +54,9 @@ type
   public
     { Public êÈåæ }
   end;
+
+resourcestring
+  AreYouSureYouWantToResetAllTargetValuesTo0 = 'Are you sure you want to clear all target values?';
 
 implementation
 
@@ -140,6 +145,15 @@ begin
 
    FTarget.Adjust(n);
 
+   TargetToGrid(FTarget);
+end;
+
+procedure TTargetEditor.buttonAllZeroClick(Sender: TObject);
+begin
+   if MessageBox(Handle, PChar(AreYouSureYouWantToResetAllTargetValuesTo0), PChar(Application.Title), MB_YESNO or MB_DEFBUTTON2 or MB_ICONEXCLAMATION) = IDNO then begin
+      Exit;
+   end;
+   FTarget.Clear();
    TargetToGrid(FTarget);
 end;
 

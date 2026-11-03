@@ -8,887 +8,899 @@
 コンパイラ生成リソースはバインドされていません。
 */
 
-#define UExceptionDialog_RsUnitVersioningIntro 64096
-#define UExceptionDialog_RsStackList 64112
-#define UExceptionDialog_RsModulesList 64113
-#define UExceptionDialog_RsOSVersion 64114
-#define UExceptionDialog_RsProcessor 64115
-#define UExceptionDialog_RsMemory 64116
-#define UExceptionDialog_RsScreenRes 64117
-#define UExceptionDialog_RsActiveControl 64118
-#define UExceptionDialog_RsThread 64119
-#define UExceptionDialog_RsMissingVersionInfo 64120
-#define UExceptionDialog_RsExceptionStack 64121
-#define UExceptionDialog_RsMainThreadID 64122
-#define UExceptionDialog_RsExceptionThreadID 64123
-#define UExceptionDialog_RsMainThreadCallStack 64124
-#define UExceptionDialog_RsThreadCallStack 64125
-#define UExceptionDialog_RsErrorMessage 64126
-#define UExceptionDialog_RsDetailsIntro 64127
-#define Main_TMainForm_darkmode_changed 64128
-#define Main_TMainForm_partial_nomatch 64129
-#define Main_TMainForm_prev_used_file_notfound 64130
-#define Main_TMainForm_Check_Multi 64131
-#define Main_TMainForm_Check_Zone 64132
-#define Main_TMainForm_Reset_grid_column_widths 64133
-#define Main_TMainForm_Load_MMTTY 64134
-#define Main_TMainForm_Unload_MMTTY 64135
-#define Main_TMainForm_NoCwMessages 64136
-#define Main_TMainForm_LogCheckOk 64137
-#define Main_TMainForm_LogCheckError 64138
-#define Main_TMainForm_ConfirmLogCheck 64139
-#define UExceptionDialog_RsAppError 64140
-#define UExceptionDialog_RsExceptionClass 64141
-#define UExceptionDialog_RsExceptionMessage 64142
-#define UExceptionDialog_RsExceptionAddr 64143
-#define Main_TMainForm_UploadFile 64144
-#define Main_TMainForm_SoundFileFolderNotSet 64145
-#define Main_TMainForm_Compressing 64146
-#define Main_TMainForm_FailedToCompressSoundFiles 64147
-#define Main_TMainForm_FileNotFound 64148
-#define Main_TMainForm_ComfirmUploadSound 64149
-#define Main_TMainForm_ComfirmDownloadSound 64150
-#define Main_TMainForm_ConfirmRewindSerialNumber 64151
-#define Main_TMainForm_ConfirmContestPeriod 64152
-#define Main_TMainForm_ConfirmOverwrite 64153
-#define Main_TMainForm_ConfirmModeConvert 64154
-#define Main_TMainForm_No_QTC_Message 64155
-#define Main_TMainForm_Assigned_Another_Function 64156
-#define Main_TMainForm_To_Change_the_mode 64157
-#define Main_TMainForm_To_Change_the_band 64158
-#define Main_TMainForm_rbn_verified 64159
-#define Main_TMainForm_EmptyOpList 64160
-#define Main_TMainForm_Setup_MyCall_first 64161
-#define Main_TMainForm_Setup_SentNR_first 64162
-#define Main_TMainForm_Setup_SentNR_cqzone 64163
-#define Main_TMainForm_Setup_SentNR_ituzone 64164
-#define Main_TMainForm_Setup_SentNR_age 64165
-#define Main_TMainForm_Setup_SentNR_iota 64166
-#define Main_TMainForm_Setup_SentNR_handle 64167
-#define Main_TMainForm_New_QSO_Arrived 64168
-#define Main_TMainForm_Select_Operator 64169
-#define Main_TMainForm_JARL_Member_Info 64170
-#define Main_TMainForm_Inquire_JARL_Member_Info 64171
-#define Main_TMainForm_UserDat_not_loaded 64172
-#define Main_TMainForm_ComfirmUploadOpList 64173
-#define Main_TMainForm_ComfirmDownloadOpList 64174
-#define Main_TMainForm_DownloadFile 64175
-#define Main_TMainForm_This_QSO_is_locked 64176
-#define Main_TMainForm_Invalid_number 64177
-#define Main_TMainForm_Callsign_not_entered 64178
-#define Main_TMainForm_Dupe_qso 64179
-#define Main_TMainForm_Thankyou_for_your_qso 64180
-#define Main_TMainForm_CW_port_is_no_set 64181
-#define Main_TMainForm_Not_a_new_multi 64182
-#define Main_TMainForm_Cannot_merge_current_file 64183
-#define Main_TMainForm_Merging_now 64184
-#define Main_TMainForm_Some_qsos_merged 64185
-#define Main_TMainForm_CtyDat_not_loaded 64186
-#define Main_TMainForm_RIT_XIT_Cleared 64187
-#define Main_TMainForm_Anti_zeroin 64188
-#define Main_TMainForm_Set_CQ_Repeat_Int 64189
-#define Main_TMainForm_Invalid_zone 64190
-#define Main_TMainForm_JudgePeriod 64191
-#define Main_TMainForm_Change_Date 64192
-#define Main_TMainForm_Confirm_Save_Changes 64193
-#define Main_TMainForm_Active_Band_Adjusted 64194
-#define Main_TMainForm_Change_Band_QSOs 64195
-#define Main_TMainForm_Change_Mode_QSOs 64196
-#define Main_TMainForm_Change_Operator_QSOs 64197
-#define Main_TMainForm_Change_Power_QSOs 64198
-#define Main_TMainForm_Change_TXNO_QSOs 64199
-#define Main_TMainForm_Need_File_Name 64200
-#define Main_TMainForm_QTC_Sent 64201
-#define Main_TMainForm_QTC_no_shortcut_keys 64202
-#define Main_TMainForm_Less_Than_10min 64203
-#define Main_TMainForm_QSY_Count_Exceeded 64204
-#define Main_TMainForm_Loading_now 64205
-#define Main_TMainForm_Switch_CW_Bank_A 64206
-#define Main_TMainForm_Switch_CW_Bank_B 64207
-#define URateDialogEx_SCOREGRID_DIFF 64208
-#define URateDialogEx_SCOREGRID_DIFF2 64209
-#define URateDialogEx_SCOREGRID_CUMULATIVE 64210
-#define URateDialogEx_SCOREGRID_WINLOSS_L 64211
-#define URateDialogEx_SCOREGRID_WINLOSS_S 64212
-#define URateDialogEx_HOURCAPTION_SHOWFIRST 64213
-#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64214
-#define URateDialogEx_HOURCAPTION_SHOWLAST 64215
-#define UCFGEdit_Please_enter_the_prov_code 64216
-#define UCFGEdit_Please_enter_the_city_code 64217
-#define UBandPlanEditDialog_Input_Text 64218
-#define UBandPlanEditDialog_Delete_Preset 64219
-#define Main_TMainForm_Enter_Frequency 64220
-#define Main_TMainForm_Comfirm_Delete_Qso 64221
-#define Main_TMainForm_Comfirm_Delete_Qsos 64222
-#define Main_TMainForm_New_Multi_Only 64223
-#define Vcl_EdgeConst_SNoWebView 64224
-#define IEConst_sNotSupportedByEdge 64225
-#define Web_WebConst_sDuplicateActionName 64226
-#define Web_WebConst_sOnlyOneDispatcher 64227
-#define Web_WebConst_sHTTPItemName 64228
-#define Web_WebConst_sHTTPItemURI 64229
-#define Web_WebConst_sHTTPItemEnabled 64230
-#define Web_WebConst_sHTTPItemDefault 64231
-#define Web_WebConst_sHTTPItemProducer 64232
-#define Web_WebConst_sHTTPItemMethod 64233
-#define Web_WebConst_sInternalApplicationError 64234
-#define URateDialog_HOURCAPTION_SHOWFIRST 64235
-#define URateDialog_HOURCAPTION_SHOWCURRENT 64236
-#define URateDialog_HOURCAPTION_SHOWLAST 64237
-#define URateDialogEx_SCOREGRID_TOTAL 64238
-#define URateDialogEx_SCOREGRID_TARGET 64239
-#define UOptions2_Save_CWA_MyMessages 64240
-#define UOptions2_Save_CWB_MyMessages 64241
-#define UOptions2_Save_RTTY_MyMessages 64242
-#define UOptions2_Reset_CWA_messages_to_default 64243
-#define UOptions2_Reset_CWB_messages_to_default 64244
-#define UOptions2_Reset_RTTY_messages_to_default 64245
-#define UOptions2_Setup_MyCall 64246
-#define UOptions2_Setup_SentNR_prov 64247
-#define UOptions2_Setup_SentNR_city 64248
-#define UOptions2_Setup_SentNR_cqzone 64249
-#define UOptions2_Setup_SentNR_ituzone 64250
-#define UOptions2_Setup_SentNR_age 64251
-#define UOptions2_Setup_SentNR_iota 64252
-#define UOptions2_Setup_SentNR_handle 64253
-#define UOptions2_DoYouWantTheUpperBandsToHaveTheSameSettins 64254
-#define Vcl_EdgeConst_SWebViewFailure 64255
-#define System_NetConsts_SNetHttpRequestOpenError 64256
-#define System_NetConsts_SNetHttpRequestAddHeaderError 64257
-#define System_NetConsts_SNetHttpRequestRemoveHeaderError 64258
-#define System_NetConsts_SNetHttpRequestReadDataError 64259
-#define System_NetConsts_SNetHttpRequestSetTimeoutError 64260
-#define System_NetConsts_SNetHttpCertFileOpenError 64261
-#define System_NetConsts_SNetHttpCertNotFoundError 64262
-#define System_NetConsts_SMimeDuplicateType 64263
-#define System_NetConsts_SMimeTypeEmpty 64264
-#define System_NetConsts_SMimeValueEmpty 64265
-#define System_NetConsts_SMimeWeightOutOfRange 64266
-#define UzLogGlobal_MSG_INVALID_CHARACTER 64267
-#define UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE 64268
-#define UOptions2_Load_CWA_MyMessages 64269
-#define UOptions2_Load_CWB_MyMessages 64270
-#define UOptions2_Load_RTTY_MyMessages 64271
-#define System_NetConsts_SNetUriParamNotFound 64272
-#define System_NetConsts_SNetUriInvalidRelPath 64273
-#define System_NetConsts_SNetHttpMaxRedirections 64274
-#define System_NetConsts_SNetHttpGetServerCertificate 64275
-#define System_NetConsts_SNetHttpInvalidServerCertificate 64276
-#define System_NetConsts_SNetHttpServerCertificateNotAccepted 64277
-#define System_NetConsts_SNetHttpEmptyCertificateList 64278
-#define System_NetConsts_SNetHttpUnspecifiedCertificate 64279
-#define System_NetConsts_SNetHttpRejectedCertificate 64280
-#define System_NetConsts_SNetHttpClientUnknownError 64281
-#define System_NetConsts_SNetHttpComponentRequestClient 64282
-#define System_NetConsts_SNetHttpHeadersError 64283
-#define System_NetConsts_SNetHttpClientHandleError 64284
-#define System_NetConsts_SNetHttpClientSendError 64285
-#define System_NetConsts_SNetHttpClientReceiveError 64286
-#define System_NetConsts_SNetHttpRequestConnectError 64287
-#define System_JSONConsts_SCannotAddJSONValue 64288
-#define System_JSONConsts_SJSONPathUnexpectedRootChar 64289
-#define System_JSONConsts_SJSONPathEndedOpenBracket 64290
-#define System_JSONConsts_SJSONPathEndedOpenString 64291
-#define System_JSONConsts_SJSONPathInvalidArrayIndex 64292
-#define System_JSONConsts_SJSONPathUnexpectedIndexedChar 64293
-#define System_JSONConsts_SJSONPathDotsEmptyName 64294
-#define System_NetConsts_SSchemeAlreadyRegistered 64295
-#define System_NetConsts_SSchemeNotRegistered 64296
-#define System_NetConsts_SCredentialInvalidUserPassword 64297
-#define System_NetConsts_SNetPlatformFunctionNotImplemented 64298
-#define System_NetConsts_SNetSchemeFunctionNotImplemented 64299
-#define System_NetConsts_SNetUriMethodAlreadyAssigned 64300
-#define System_NetConsts_SNetUriURLAlreadyAssigned 64301
-#define System_NetConsts_SNetUriIndexOutOfRange 64302
-#define System_NetConsts_SNetUriInvalid 64303
-#define IdResourceStrings_RSStackClassUndefined 64304
-#define IdResourceStrings_RSStackAlreadyCreated 64305
-#define IdResourceStrings_RSInvalidServiceName 64306
-#define IdResourceStrings_RSInvalidIPv6Address 64307
-#define IdResourceStrings_RSIPVersionUnsupported 64308
-#define IdResourceStrings_RSNotAllBytesSent 64309
-#define IdResourceStrings_RSPackageSizeTooBig 64310
-#define IdResourceStrings_RSSetSizeExceeded 64311
-#define System_JSONConsts_SUTF8Start 64312
-#define System_JSONConsts_SUTF8UnexpectedByte 64313
-#define System_JSONConsts_SUTF8InvalidHeaderByte 64314
-#define System_JSONConsts_SJSONSyntaxError 64315
-#define System_JSONConsts_SJSONLocation 64316
-#define System_JSONConsts_STooMuchNesting 64317
-#define System_JSONConsts_SValueNotFound 64318
-#define System_JSONConsts_SCannotConvertJSONValueToType 64319
-#define IdResourceStrings_RSStackENETRESET 64320
-#define IdResourceStrings_RSStackECONNABORTED 64321
-#define IdResourceStrings_RSStackECONNRESET 64322
-#define IdResourceStrings_RSStackENOBUFS 64323
-#define IdResourceStrings_RSStackEISCONN 64324
-#define IdResourceStrings_RSStackENOTCONN 64325
-#define IdResourceStrings_RSStackESHUTDOWN 64326
-#define IdResourceStrings_RSStackETOOMANYREFS 64327
-#define IdResourceStrings_RSStackETIMEDOUT 64328
-#define IdResourceStrings_RSStackECONNREFUSED 64329
-#define IdResourceStrings_RSStackELOOP 64330
-#define IdResourceStrings_RSStackENAMETOOLONG 64331
-#define IdResourceStrings_RSStackEHOSTDOWN 64332
-#define IdResourceStrings_RSStackEHOSTUNREACH 64333
-#define IdResourceStrings_RSStackENOTEMPTY 64334
-#define IdResourceStrings_RSStackHOST_NOT_FOUND 64335
-#define IdResourceStrings_RSStackEINPROGRESS 64336
-#define IdResourceStrings_RSStackEALREADY 64337
-#define IdResourceStrings_RSStackENOTSOCK 64338
-#define IdResourceStrings_RSStackEDESTADDRREQ 64339
-#define IdResourceStrings_RSStackEMSGSIZE 64340
-#define IdResourceStrings_RSStackEPROTOTYPE 64341
-#define IdResourceStrings_RSStackENOPROTOOPT 64342
-#define IdResourceStrings_RSStackEPROTONOSUPPORT 64343
-#define IdResourceStrings_RSStackESOCKTNOSUPPORT 64344
-#define IdResourceStrings_RSStackEOPNOTSUPP 64345
-#define IdResourceStrings_RSStackEPFNOSUPPORT 64346
-#define IdResourceStrings_RSStackEAFNOSUPPORT 64347
-#define IdResourceStrings_RSStackEADDRINUSE 64348
-#define IdResourceStrings_RSStackEADDRNOTAVAIL 64349
-#define IdResourceStrings_RSStackENETDOWN 64350
-#define IdResourceStrings_RSStackENETUNREACH 64351
-#define IdResourceStrings_RSInvalidSourceArray 64352
-#define IdResourceStrings_RSInvalidDestinationArray 64353
-#define IdResourceStrings_RSCharIndexOutOfBounds 64354
-#define IdResourceStrings_RSInvalidCharCount 64355
-#define IdResourceStrings_RSInvalidDestinationIndex 64356
-#define IdResourceStrings_RSInvalidCodePage 64357
-#define IdResourceStrings_RSWinsockCallError 64358
-#define IdResourceStrings_RSWinsockLoadError 64359
-#define IdResourceStrings_RSStackError 64360
-#define IdResourceStrings_RSStackEINTR 64361
-#define IdResourceStrings_RSStackEBADF 64362
-#define IdResourceStrings_RSStackEACCES 64363
-#define IdResourceStrings_RSStackEFAULT 64364
-#define IdResourceStrings_RSStackEINVAL 64365
-#define IdResourceStrings_RSStackEMFILE 64366
-#define IdResourceStrings_RSStackEWOULDBLOCK 64367
-#define System_Bindings_Consts_sIntToVariant 64368
-#define System_Bindings_Consts_sIntToVariantDesc 64369
-#define System_Bindings_Consts_sBoolToVariant 64370
-#define System_Bindings_Consts_sBoolToVariantDesc 64371
-#define System_Bindings_Consts_sVariantToBool 64372
-#define System_Bindings_Consts_sVariantToBoolDesc 64373
-#define System_Bindings_Consts_sStrToFloat 64374
-#define System_Bindings_Consts_sStrToFloatDesc 64375
-#define System_Bindings_Consts_sFloatToInteger 64376
-#define System_Bindings_Consts_sFloatToIntegerDesc 64377
-#define System_Bindings_Consts_sTStringsToString 64378
-#define System_Bindings_Consts_sTStringToStringDesc 64379
-#define System_Bindings_Consts_sStringToTStrings 64380
-#define System_Bindings_Consts_sStringToTStringsDesc 64381
-#define System_Bindings_Consts_sStringToChar 64382
-#define System_Bindings_Consts_sStringToCharDesc 64383
-#define System_Bindings_Consts_sTDateTimeToStr 64384
-#define System_Bindings_Consts_sTDateTimeToStrDesc 64385
-#define System_Bindings_Consts_sStrToTDate 64386
-#define System_Bindings_Consts_sStrToTDateDesc 64387
-#define System_Bindings_Consts_sStrToTTime 64388
-#define System_Bindings_Consts_sStrToTTimeDesc 64389
-#define System_Bindings_Consts_sNilToString 64390
-#define System_Bindings_Consts_sNilToStringDesc 64391
-#define System_Bindings_Consts_sNilToBoolean 64392
-#define System_Bindings_Consts_sNilToBooleanDesc 64393
-#define System_Bindings_Consts_sNilToVariant 64394
-#define System_Bindings_Consts_sNilToVariantDesc 64395
-#define System_Bindings_Consts_sStringToVariant 64396
-#define System_Bindings_Consts_sStringToVariantDesc 64397
-#define System_Bindings_Consts_sFloatToVariant 64398
-#define System_Bindings_Consts_sFloatToVariantDesc 64399
-#define System_Bindings_Consts_sIntegerToBool 64400
-#define System_Bindings_Consts_sIntegerToBoolDesc 64401
-#define System_Bindings_Consts_sBoolToFloat 64402
-#define System_Bindings_Consts_sBoolToFloatDesc 64403
-#define System_Bindings_Consts_sFloatToBool 64404
-#define System_Bindings_Consts_sFloatToBoolDesc 64405
-#define System_Bindings_Consts_sNilToNumber 64406
-#define System_Bindings_Consts_sNilToNumberDesc 64407
-#define System_Bindings_Consts_sIntegerToString 64408
-#define System_Bindings_Consts_sIntegerToStringDesc 64409
-#define System_Bindings_Consts_sStringToInteger 64410
-#define System_Bindings_Consts_sStringToIntegerDesc 64411
-#define System_Bindings_Consts_sFloatToString 64412
-#define System_Bindings_Consts_sFloatToStringDesc 64413
-#define System_Bindings_Consts_sStrToTDateTime 64414
-#define System_Bindings_Consts_sStrToTDateTimeDesc 64415
-#define System_Bindings_Consts_sVirtualMemberReadOnly 64416
-#define System_Bindings_Consts_sConvertWrapperFail 64417
-#define System_Bindings_Consts_sNilToTDateTime 64418
-#define System_Bindings_Consts_sNilToTDateTimeDesc 64419
-#define System_Bindings_Consts_sNilToTStrings 64420
-#define System_Bindings_Consts_sNilToTStringsDesc 64421
-#define System_Bindings_Consts_sPersistentToPersistent 64422
-#define System_Bindings_Consts_sPersistentToPersistentDesc 64423
-#define System_Bindings_Consts_sPersistentToString 64424
-#define System_Bindings_Consts_sPersistentToStringDesc 64425
-#define System_Bindings_Consts_sBoolToString 64426
-#define System_Bindings_Consts_sBoolToStringDesc 64427
-#define System_Bindings_Consts_sStringToBool 64428
-#define System_Bindings_Consts_sStringToBoolDesc 64429
-#define System_Bindings_Consts_sBoolToInteger 64430
-#define System_Bindings_Consts_sBoolToIntegerDesc 64431
-#define System_Bindings_Consts_sTooManyArgs 64432
-#define System_Bindings_Consts_sExpectedIdentifier 64433
-#define System_Bindings_Consts_sExpressionTooComplex 64434
-#define System_Bindings_Consts_sEvalStackOverflow 64435
-#define System_Bindings_Consts_sLookupError 64436
-#define System_Bindings_Consts_sInvokeError 64437
-#define System_Bindings_Consts_sUnsupportedWrapper 64438
-#define System_Bindings_Consts_sUnsupportedGroup 64439
-#define System_Bindings_Consts_sObjectTypeNotRegistered 64440
-#define System_Bindings_Consts_sScopeClassNotRegistered 64441
-#define System_Bindings_Consts_sScopeClassAlreadyRegistered 64442
-#define System_Bindings_Consts_sInvalidCustomWrapper 64443
-#define System_Bindings_Consts_sPropertyNotFound 64444
-#define System_Bindings_Consts_sNoGetterOrSetter 64445
-#define System_Bindings_Consts_sUpdateOutputLocFailed 64446
-#define System_Bindings_Consts_sNoOutputScopes 64447
-#define System_Bindings_Consts_sMismatchArgCount 64448
-#define System_Bindings_Consts_sAddOpFail 64449
-#define System_Bindings_Consts_sSubtractOpFail 64450
-#define System_Bindings_Consts_sMultiplyOpFail 64451
-#define System_Bindings_Consts_sDivideOpFail 64452
-#define System_Bindings_Consts_sNegateOpFail 64453
-#define System_Bindings_Consts_sCompareOpFail 64454
-#define System_Bindings_Consts_sBoolOpFail 64455
-#define System_Bindings_Consts_sBoolNegateOpFail 64456
-#define System_Bindings_Consts_sParserUnexpected 64457
-#define System_Bindings_Consts_sInvalidFloatingPt 64458
-#define System_Bindings_Consts_sInvalidFloatingPtExpt 64459
-#define System_Bindings_Consts_sUnterminatedString 64460
-#define System_Bindings_Consts_sInvalidOperator 64461
-#define System_Bindings_Consts_sInvalidOperatorNum 64462
-#define System_Bindings_Consts_sExpectedEOF 64463
-#define UOptions_zLogRootFolderNotExist 64464
-#define UOptions_RigIsNotAssignedToAntBand 64465
-#define UOptions_BandsHaveNoRigsAssigned 64466
-#define URigControl_RECONNECT_ALL_RIGS 64467
-#define System_Bindings_Consts_sOwnerNotFound 64468
-#define System_Bindings_Consts_sScopeObjNull 64469
-#define System_Bindings_Consts_sUncompiledExpression 64470
-#define System_Bindings_Consts_sUnsupportedManager 64471
-#define System_Bindings_Consts_sClassTypeNotFound 64472
-#define System_Bindings_Consts_sOutputIsReadOnly 64473
-#define System_Bindings_Consts_sUnavailNotifier 64474
-#define System_Bindings_Consts_sConverterNotFound 64475
-#define System_Bindings_Consts_sConverterIDNotFound 64476
-#define System_Bindings_Consts_sConverterIDNotRegistered 64477
-#define System_Bindings_Consts_sDuplicatedConverterType 64478
-#define System_Bindings_Consts_sDuplicatedConverterType2 64479
-#define UComm_UComm_Connect 64480
-#define UComm_UComm_Disconnect 64481
-#define UComm_UComm_Connecting 64482
-#define UComm_UComm_Disconnecting 64483
-#define UComm_UComm_SecondsLeft 64484
-#define UComm_UComm_ExceededLimit 64485
-#define UComm_UComm_SiteChanging 64486
-#define UQTCForm_QTC_DONE 64487
-#define UQTCForm_QTC_SEND 64488
-#define UQTCForm_QTC_SENT 64489
-#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64490
-#define UOptions_SELECT_FOLDER 64491
-#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64492
-#define UOptions_Installed_Plugins_Disabled 64493
-#define UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64494
-#define UOptions_EnterTheFullPathOfRootFolder 64495
-#define UBandScope2_SHOW_ALLBANDS 64496
-#define UBandScope2_SHOW_CURRENT 64497
-#define UBandScope2_MENU_BLOCK_THIS_SPOT 64498
-#define UBandScope2_MENU_EDIT_BLOCKLIST 64499
-#define UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink 64500
-#define UZLinkForm_ZServer_connection_failed 64501
-#define UZLinkForm_Connect_ZSERVER 64502
-#define UZLinkForm_Disconnect_ZSERVER 64503
-#define UZLinkForm_FileDownloadFailed 64504
-#define UZLinkForm_FileDownloadSuccessfully 64505
-#define UZLinkForm_NoFilesFoundToUpload 64506
-#define UZLinkForm_FileUploadSuccessfully 64507
-#define UZLinkForm_ZServerSettingsNotConfigured 64508
-#define UZLinkForm_ZServerSecureNotConfigured 64509
-#define UZLinkForm_ZServerIsNotSecureMode 64510
-#define UZLinkForm_UnableToLoginToZServer 64511
-#define OverbyteIcsCharsetUtils_sGreekWindows 64512
-#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64513
-#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64514
-#define OverbyteIcsCharsetUtils_sHebrewWindows 64515
-#define OverbyteIcsCharsetUtils_sJapaneseJIS 64516
-#define OverbyteIcsCharsetUtils_sKorean 64517
-#define OverbyteIcsCharsetUtils_sKoreanEUC 64518
-#define OverbyteIcsCharsetUtils_sLatin9 64519
-#define OverbyteIcsCharsetUtils_sThaiWindows 64520
-#define OverbyteIcsCharsetUtils_sTurkishISO 64521
-#define OverbyteIcsCharsetUtils_sTurkishWindows 64522
-#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64523
-#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64524
-#define OverbyteIcsCharsetUtils_sVietnameseWindows 64525
-#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64526
-#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64527
-#define OverbyteIcsCharsetUtils_sArabicISO 64528
-#define OverbyteIcsCharsetUtils_sArabicWindows 64529
-#define OverbyteIcsCharsetUtils_sBalticISO 64530
-#define OverbyteIcsCharsetUtils_sBalticWindows 64531
-#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64532
-#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64533
-#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64534
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64535
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64536
-#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64537
-#define OverbyteIcsCharsetUtils_sCyrillicISO 64538
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64539
-#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64540
-#define OverbyteIcsCharsetUtils_sCyrillicWindows 64541
-#define OverbyteIcsCharsetUtils_sEstonianISO 64542
-#define OverbyteIcsCharsetUtils_sGreekISO 64543
-#define Vcl_Imaging_pnglang_EInvalidSpec 64544
-#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64545
-#define Vcl_OleConst_SBadPropValue 64546
-#define Vcl_OleConst_SCannotActivate 64547
-#define Vcl_OleConst_SNoWindowHandle 64548
-#define Vcl_OleConst_SInvalidLicense 64549
-#define Vcl_OleConst_SNotLicensed 64550
-#define Vcl_OleConst_sNoRunningObject 64551
-#define Data_DBConsts_SBcdOverflow 64552
-#define Data_DBConsts_SInvalidBcdValue 64553
-#define Data_DBConsts_SCouldNotParseTimeStamp 64554
-#define Data_DBConsts_SInvalidSqlTimeStamp 64555
-#define Vcl_Imaging_JConsts_sChangeJPGSize 64556
-#define Vcl_Imaging_JConsts_sJPEGError 64557
-#define Vcl_Imaging_JConsts_sJPEGImageFile 64558
-#define UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins 64559
-#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64560
-#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64561
-#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64562
-#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64563
-#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64564
-#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64565
-#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64566
-#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64567
-#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64568
-#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64569
-#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64570
-#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64571
-#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64572
-#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64573
-#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64574
-#define Vcl_Imaging_pnglang_EInvalidNewSize 64575
-#define JclResources_RsELibraryNotFound 64576
-#define JclResources_RsEFunctionNotFound 64577
-#define UzLogConst_RigPortActionList 64578
-#define System_RegularExpressionsConsts_SRegExMissingExpression 64579
-#define System_RegularExpressionsConsts_SRegExExpressionError 64580
-#define System_RegularExpressionsConsts_SRegExStudyError 64581
-#define System_RegularExpressionsConsts_SRegExMatchRequired 64582
-#define System_RegularExpressionsConsts_SRegExStringsRequired 64583
-#define System_RegularExpressionsConsts_SRegExIndexOutOfBounds 64584
-#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64585
-#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64586
-#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64587
-#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64588
-#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64589
-#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64590
-#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64591
-#define JclResources_RsOSVersionWinServer 64592
-#define JclResources_RsOSVersionWin11 64593
-#define JclResources_RsProductTypeWorkStation 64594
-#define JclResources_RsProductTypeServer 64595
-#define JclResources_RsProductTypeAdvancedServer 64596
-#define JclResources_RsProductTypePersonal 64597
-#define JclResources_RsProductTypeProfessional 64598
-#define JclResources_RsProductTypeDatacenterServer 64599
-#define JclResources_RsProductTypeEnterprise 64600
-#define JclResources_RsProductTypeWebEdition 64601
-#define JclResources_RsCannotWriteRefStream 64602
-#define JclResources_RsInvalidMMFName 64603
-#define JclResources_RsInvalidMMFEmpty 64604
-#define JclResources_RsHasNotTD32Info 64605
-#define JclResources_RsEUnexpectedEOSeq 64606
-#define JclResources_RsWin32Error 64607
-#define JclResources_RsOSVersionWin2003R2 64608
-#define JclResources_RsOSVersionWinXP64 64609
-#define JclResources_RsOSVersionWinVista 64610
-#define JclResources_RsOSVersionWinServer2008 64611
-#define JclResources_RsOSVersionWin7 64612
-#define JclResources_RsOSVersionWinServer2008R2 64613
-#define JclResources_RsOSVersionWin8 64614
-#define JclResources_RsOSVersionWin8RT 64615
-#define JclResources_RsOSVersionWinServer2012 64616
-#define JclResources_RsOSVersionWin81 64617
-#define JclResources_RsOSVersionWin81RT 64618
-#define JclResources_RsOSVersionWinServer2012R2 64619
-#define JclResources_RsOSVersionWin10 64620
-#define JclResources_RsOSVersionWinServer2016 64621
-#define JclResources_RsOSVersionWinServer2019 64622
-#define JclResources_RsOSVersionWinServer2022 64623
-#define JclResources_RsIntelCacheDescrEB 64624
-#define JclResources_RsIntelCacheDescrEC 64625
-#define JclResources_RsIntelCacheDescrF0 64626
-#define JclResources_RsIntelCacheDescrF1 64627
-#define JclResources_RsIntelCacheDescrFF 64628
-#define JclResources_RsUnknownAMDModel 64629
-#define JclResources_RsOSVersionWin95 64630
-#define JclResources_RsOSVersionWin95OSR2 64631
-#define JclResources_RsOSVersionWin98 64632
-#define JclResources_RsOSVersionWin98SE 64633
-#define JclResources_RsOSVersionWinME 64634
-#define JclResources_RsOSVersionWinNT3 64635
-#define JclResources_RsOSVersionWinNT4 64636
-#define JclResources_RsOSVersionWin2000 64637
-#define JclResources_RsOSVersionWinXP 64638
-#define JclResources_RsOSVersionWin2003 64639
-#define JclResources_RsIntelCacheDescrBA 64640
-#define JclResources_RsIntelCacheDescrC0 64641
-#define JclResources_RsIntelCacheDescrCA 64642
-#define JclResources_RsIntelCacheDescrD0 64643
-#define JclResources_RsIntelCacheDescrD1 64644
-#define JclResources_RsIntelCacheDescrD2 64645
-#define JclResources_RsIntelCacheDescrD6 64646
-#define JclResources_RsIntelCacheDescrD7 64647
-#define JclResources_RsIntelCacheDescrD8 64648
-#define JclResources_RsIntelCacheDescrDC 64649
-#define JclResources_RsIntelCacheDescrDD 64650
-#define JclResources_RsIntelCacheDescrDE 64651
-#define JclResources_RsIntelCacheDescrE2 64652
-#define JclResources_RsIntelCacheDescrE3 64653
-#define JclResources_RsIntelCacheDescrE4 64654
-#define JclResources_RsIntelCacheDescrEA 64655
-#define JclResources_RsIntelCacheDescr7B 64656
-#define JclResources_RsIntelCacheDescr7C 64657
-#define JclResources_RsIntelCacheDescr7D 64658
-#define JclResources_RsIntelCacheDescr7F 64659
-#define JclResources_RsIntelCacheDescr80 64660
-#define JclResources_RsIntelCacheDescr82 64661
-#define JclResources_RsIntelCacheDescr83 64662
-#define JclResources_RsIntelCacheDescr84 64663
-#define JclResources_RsIntelCacheDescr85 64664
-#define JclResources_RsIntelCacheDescr86 64665
-#define JclResources_RsIntelCacheDescr87 64666
-#define JclResources_RsIntelCacheDescrB0 64667
-#define JclResources_RsIntelCacheDescrB1 64668
-#define JclResources_RsIntelCacheDescrB2 64669
-#define JclResources_RsIntelCacheDescrB3 64670
-#define JclResources_RsIntelCacheDescrB4 64671
-#define JclResources_RsIntelCacheDescr5A 64672
-#define JclResources_RsIntelCacheDescr5B 64673
-#define JclResources_RsIntelCacheDescr5C 64674
-#define JclResources_RsIntelCacheDescr5D 64675
-#define JclResources_RsIntelCacheDescr60 64676
-#define JclResources_RsIntelCacheDescr66 64677
-#define JclResources_RsIntelCacheDescr67 64678
-#define JclResources_RsIntelCacheDescr68 64679
-#define JclResources_RsIntelCacheDescr70 64680
-#define JclResources_RsIntelCacheDescr71 64681
-#define JclResources_RsIntelCacheDescr72 64682
-#define JclResources_RsIntelCacheDescr73 64683
-#define JclResources_RsIntelCacheDescr76 64684
-#define JclResources_RsIntelCacheDescr78 64685
-#define JclResources_RsIntelCacheDescr79 64686
-#define JclResources_RsIntelCacheDescr7A 64687
-#define JclResources_RsIntelCacheDescr47 64688
-#define JclResources_RsIntelCacheDescr48 64689
-#define JclResources_RsIntelCacheDescr49 64690
-#define JclResources_RsIntelCacheDescr4A 64691
-#define JclResources_RsIntelCacheDescr4B 64692
-#define JclResources_RsIntelCacheDescr4C 64693
-#define JclResources_RsIntelCacheDescr4D 64694
-#define JclResources_RsIntelCacheDescr4E 64695
-#define JclResources_RsIntelCacheDescr4F 64696
-#define JclResources_RsIntelCacheDescr50 64697
-#define JclResources_RsIntelCacheDescr51 64698
-#define JclResources_RsIntelCacheDescr52 64699
-#define JclResources_RsIntelCacheDescr55 64700
-#define JclResources_RsIntelCacheDescr56 64701
-#define JclResources_RsIntelCacheDescr57 64702
-#define JclResources_RsIntelCacheDescr59 64703
-#define JclResources_RsIntelCacheDescr29 64704
-#define JclResources_RsIntelCacheDescr2C 64705
-#define JclResources_RsIntelCacheDescr30 64706
-#define JclResources_RsIntelCacheDescr39 64707
-#define JclResources_RsIntelCacheDescr3A 64708
-#define JclResources_RsIntelCacheDescr3B 64709
-#define JclResources_RsIntelCacheDescr3C 64710
-#define JclResources_RsIntelCacheDescr3D 64711
-#define JclResources_RsIntelCacheDescr3E 64712
-#define JclResources_RsIntelCacheDescr40 64713
-#define JclResources_RsIntelCacheDescr41 64714
-#define JclResources_RsIntelCacheDescr42 64715
-#define JclResources_RsIntelCacheDescr43 64716
-#define JclResources_RsIntelCacheDescr44 64717
-#define JclResources_RsIntelCacheDescr45 64718
-#define JclResources_RsIntelCacheDescr46 64719
-#define JclResources_RsIntelCacheDescr02 64720
-#define JclResources_RsIntelCacheDescr03 64721
-#define JclResources_RsIntelCacheDescr04 64722
-#define JclResources_RsIntelCacheDescr05 64723
-#define JclResources_RsIntelCacheDescr06 64724
-#define JclResources_RsIntelCacheDescr08 64725
-#define JclResources_RsIntelCacheDescr09 64726
-#define JclResources_RsIntelCacheDescr0A 64727
-#define JclResources_RsIntelCacheDescr0B 64728
-#define JclResources_RsIntelCacheDescr0C 64729
-#define JclResources_RsIntelCacheDescr0D 64730
-#define JclResources_RsIntelCacheDescr0E 64731
-#define JclResources_RsIntelCacheDescr21 64732
-#define JclResources_RsIntelCacheDescr22 64733
-#define JclResources_RsIntelCacheDescr23 64734
-#define JclResources_RsIntelCacheDescr25 64735
-#define JclResources_RsPePkgV3Produced 64736
-#define JclResources_RsPePkgProducerUndefined 64737
-#define JclResources_RsPePkgBCB4Produced 64738
-#define JclResources_RsPePkgDelphi4Produced 64739
-#define JclResources_RsPePkgMain 64740
-#define JclResources_RsPePkgWeak 64741
-#define JclResources_RsPePkgOrgWeak 64742
-#define JclResources_RsPePkgImplicit 64743
-#define JclResources_RsUnableToOpenKeyRead 64744
-#define JclResources_RsUnableToAccessValue 64745
-#define JclResources_RsWrongDataType 64746
-#define JclResources_RsInconsistentPath 64747
-#define JclResources_RsSynchCreateMutex 64748
-#define JclResources_RsSynchOpenMutex 64749
-#define JclResources_RsIntelCacheDescr00 64750
-#define JclResources_RsIntelCacheDescr01 64751
-#define JclResources_RsPeDEBUG_UNKNOWN 64752
-#define JclResources_RsPeDEBUG_COFF 64753
-#define JclResources_RsPeDEBUG_CODEVIEW 64754
-#define JclResources_RsPeDEBUG_FPO 64755
-#define JclResources_RsPeDEBUG_MISC 64756
-#define JclResources_RsPeDEBUG_EXCEPTION 64757
-#define JclResources_RsPeDEBUG_FIXUP 64758
-#define JclResources_RsPeDEBUG_OMAP_TO_SRC 64759
-#define JclResources_RsPeDEBUG_OMAP_FROM_SRC 64760
-#define JclResources_RsPePkgExecutable 64761
-#define JclResources_RsPePkgPackage 64762
-#define JclResources_PsPePkgLibrary 64763
-#define JclResources_RsPePkgNeverBuild 64764
-#define JclResources_RsPePkgDesignOnly 64765
-#define JclResources_RsPePkgRunOnly 64766
-#define JclResources_RsPePkgIgnoreDupUnits 64767
-#define JclResources_RsPeMACHINE_AMPHA64 64768
-#define JclResources_RsPeMACHINE_MIPSFPU 64769
-#define JclResources_RsPeMACHINE_MIPSFPU16 64770
-#define JclResources_RsPeMACHINE_TRICORE 64771
-#define JclResources_RsPeMACHINE_CEF 64772
-#define JclResources_RsPeMACHINE_EBC 64773
-#define JclResources_RsPeMACHINE_AMD64 64774
-#define JclResources_RsPeMACHINE_M32R 64775
-#define JclResources_RsPeMACHINE_CEE 64776
-#define JclResources_RsPeSUBSYSTEM_UNKNOWN 64777
-#define JclResources_RsPeSUBSYSTEM_NATIVE 64778
-#define JclResources_RsPeSUBSYSTEM_WINDOWS_GUI 64779
-#define JclResources_RsPeSUBSYSTEM_WINDOWS_CUI 64780
-#define JclResources_RsPeSUBSYSTEM_OS2_CUI 64781
-#define JclResources_RsPeSUBSYSTEM_POSIX_CUI 64782
-#define JclResources_RsPeSUBSYSTEM_RESERVED8 64783
-#define JclResources_RsPeMACHINE_R4000 64784
-#define JclResources_RsPeMACHINE_R10000 64785
-#define JclResources_RsPeMACHINE_WCEMIPSV2 64786
-#define JclResources_RsPeMACHINE_ALPHA 64787
-#define JclResources_RsPeMACHINE_SH3 64788
-#define JclResources_RsPeMACHINE_SH3DSP 64789
-#define JclResources_RsPeMACHINE_SH3E 64790
-#define JclResources_RsPeMACHINE_SH4 64791
-#define JclResources_RsPeMACHINE_SH5 64792
-#define JclResources_RsPeMACHINE_ARM 64793
-#define JclResources_RsPeMACHINE_THUMB 64794
-#define JclResources_RsPeMACHINE_AM33 64795
-#define JclResources_RsPeMACHINE_POWERPC 64796
-#define JclResources_RsPeMACHINE_POWERPCFP 64797
-#define JclResources_RsPeMACHINE_IA64 64798
-#define JclResources_RsPeMACHINE_MIPS16 64799
-#define JclResources_RsPeGlobalFlagsClear 64800
-#define JclResources_RsPeGlobalFlagsSet 64801
-#define JclResources_RsPeCriticalSectionDefaultTimeout 64802
-#define JclResources_RsPeDeCommitFreeBlockThreshold 64803
-#define JclResources_RsPeDeCommitTotalFreeThreshold 64804
-#define JclResources_RsPeLockPrefixTable 64805
-#define JclResources_RsPeMaximumAllocationSize 64806
-#define JclResources_RsPeVirtualMemoryThreshold 64807
-#define JclResources_RsPeProcessHeapFlags 64808
-#define JclResources_RsPeProcessAffinityMask 64809
-#define JclResources_RsPeCSDVersion 64810
-#define JclResources_RsPeReserved 64811
-#define JclResources_RsPeEditList 64812
-#define JclResources_RsPeMACHINE_UNKNOWN 64813
-#define JclResources_RsPeMACHINE_I386 64814
-#define JclResources_RsPeMACHINE_R3000 64815
-#define JclResources_RsPeOperatingSystemVersion 64816
-#define JclResources_RsPeImageVersion 64817
-#define JclResources_RsPeSubsystemVersion 64818
-#define JclResources_RsPeWin32VersionValue 64819
-#define JclResources_RsPeSizeOfImage 64820
-#define JclResources_RsPeSizeOfHeaders 64821
-#define JclResources_RsPeCheckSum 64822
-#define JclResources_RsPeSubsystem 64823
-#define JclResources_RsPeDllCharacteristics 64824
-#define JclResources_RsPeSizeOfStackReserve 64825
-#define JclResources_RsPeSizeOfStackCommit 64826
-#define JclResources_RsPeSizeOfHeapReserve 64827
-#define JclResources_RsPeSizeOfHeapCommit 64828
-#define JclResources_RsPeLoaderFlags 64829
-#define JclResources_RsPeNumberOfRvaAndSizes 64830
-#define JclResources_RsPeVersion 64831
-#define JclResources_RsPeTimeDateStamp 64832
-#define JclResources_RsPePointerToSymbolTable 64833
-#define JclResources_RsPeNumberOfSymbols 64834
-#define JclResources_RsPeSizeOfOptionalHeader 64835
-#define JclResources_RsPeCharacteristics 64836
-#define JclResources_RsPeMagic 64837
-#define JclResources_RsPeLinkerVersion 64838
-#define JclResources_RsPeSizeOfCode 64839
-#define JclResources_RsPeSizeOfInitializedData 64840
-#define JclResources_RsPeSizeOfUninitializedData 64841
-#define JclResources_RsPeAddressOfEntryPoint 64842
-#define JclResources_RsPeBaseOfCode 64843
-#define JclResources_RsPeBaseOfData 64844
-#define JclResources_RsPeImageBase 64845
-#define JclResources_RsPeSectionAlignment 64846
-#define JclResources_RsPeFileAlignment 64847
-#define JclResources_RsPeImg_03 64848
-#define JclResources_RsPeImg_04 64849
-#define JclResources_RsPeImg_05 64850
-#define JclResources_RsPeImg_06 64851
-#define JclResources_RsPeImg_07 64852
-#define JclResources_RsPeImg_08 64853
-#define JclResources_RsPeImg_09 64854
-#define JclResources_RsPeImg_10 64855
-#define JclResources_RsPeImg_11 64856
-#define JclResources_RsPeImg_12 64857
-#define JclResources_RsPeImg_13 64858
-#define JclResources_RsPeImg_14 64859
-#define JclResources_RsPeImg_Reserved 64860
-#define JclResources_RsPeSignature 64861
-#define JclResources_RsPeMachine 64862
-#define JclResources_RsPeNumberOfSections 64863
-#define JclResources_RsFileUtilsLanguageIndex 64864
-#define JclResources_RsFileUtilsEmptyValue 64865
-#define JclResources_RsFileUtilsValueNotFound 64866
-#define JclResources_RsCreateFileMapping 64867
-#define JclResources_RsCreateFileMappingView 64868
-#define JclResources_RsFailedToObtainSize 64869
-#define JclResources_RsPeReadOnlyStream 64870
-#define JclResources_RsPeCantOpen 64871
-#define JclResources_RsPeNotPE 64872
-#define JclResources_RsPeUnknownTarget 64873
-#define JclResources_RsPeNotResDir 64874
-#define JclResources_RsPeNotAvailableForAttached 64875
-#define JclResources_RsPeSectionNotFound 64876
-#define JclResources_RsPeImg_00 64877
-#define JclResources_RsPeImg_01 64878
-#define JclResources_RsPeImg_02 64879
-#define JvResources_RsClInfoText 64880
-#define JvResources_RsClInfoBk 64881
-#define JvResources_RsGradientActiveCaption 64882
-#define JvResources_RsGradientInactiveCaption 64883
-#define JvResources_RsHotLight 64884
-#define JvResources_RsMenuBar 64885
-#define JvResources_RsMenuHighlight 64886
-#define JclResources_RsEReplacementChar 64887
-#define JclResources_RsDateConversion 64888
-#define JclResources_RsUnknownFunctionAt 64889
-#define JclResources_RsEWindowsVersionNotSupported 64890
-#define JclResources_RsEWindowNotValid 64891
-#define JclResources_RsEProcessNotValid 64892
-#define JclResources_RsEModuleNotValid 64893
-#define JclResources_RsFileUtilsNoVersionInfo 64894
-#define JclResources_RsFileUtilsFileDoesNotExist 64895
-#define JvResources_RsClMenuText 64896
-#define JvResources_RsClWindowText 64897
-#define JvResources_RsClCaptionText 64898
-#define JvResources_RsClActiveBorder 64899
-#define JvResources_RsClInactiveBorder 64900
-#define JvResources_RsClAppWorkSpace 64901
-#define JvResources_RsClHighlight 64902
-#define JvResources_RsClHighlightText 64903
-#define JvResources_RsClBtnFace 64904
-#define JvResources_RsClBtnShadow 64905
-#define JvResources_RsClGrayText 64906
-#define JvResources_RsClBtnText 64907
-#define JvResources_RsClInactiveCaptionText 64908
-#define JvResources_RsClBtnHighlight 64909
-#define JvResources_RsCl3DDkShadow 64910
-#define JvResources_RsCl3DLight 64911
-#define JvResources_RsClPlum 64912
-#define JvResources_RsClGray25 64913
-#define JvResources_RsClRose 64914
-#define JvResources_RsClTan 64915
-#define JvResources_RsClLightYellow 64916
-#define JvResources_RsClLightGreen 64917
-#define JvResources_RsClLightTurquoise 64918
-#define JvResources_RsClPaleBlue 64919
-#define JvResources_RsClLavender 64920
-#define JvResources_RsClScrollBar 64921
-#define JvResources_RsClBackground 64922
-#define JvResources_RsClActiveCaption 64923
-#define JvResources_RsClInactiveCaption 64924
-#define JvResources_RsClMenu 64925
-#define JvResources_RsClWindow 64926
-#define JvResources_RsClWindowFrame 64927
-#define JvResources_RsClIndigo 64928
-#define JvResources_RsClGray80 64929
-#define JvResources_RsClDarkRed 64930
-#define JvResources_RsClOrange 64931
-#define JvResources_RsClDarkYellow 64932
-#define JvResources_RsClBlueGray 64933
-#define JvResources_RsClGray50 64934
-#define JvResources_RsClLightOrange 64935
-#define JvResources_RsClSeaGreen 64936
-#define JvResources_RsClLightBlue 64937
-#define JvResources_RsClViolet 64938
-#define JvResources_RsClGray40 64939
-#define JvResources_RsClPink 64940
-#define JvResources_RsClGold 64941
-#define JvResources_RsClBrightGreen 64942
-#define JvResources_RsClTurquoise 64943
-#define JvResources_RsClRed 64944
-#define JvResources_RsClLime 64945
-#define JvResources_RsClYellow 64946
-#define JvResources_RsClBlue 64947
-#define JvResources_RsClFuchsia 64948
-#define JvResources_RsClAqua 64949
-#define JvResources_RsClWhite 64950
-#define JvResources_RsClMoneyGreen 64951
-#define JvResources_RsClSkyBlue 64952
-#define JvResources_RsClCream 64953
-#define JvResources_RsClMedGray 64954
-#define JvResources_RsClBrown 64955
-#define JvResources_RsClOliveGreen 64956
-#define JvResources_RsClDarkGreen 64957
-#define JvResources_RsClDarkTeal 64958
-#define JvResources_RsClDarkBlue 64959
-#define JvResources_RsEExtensibleIntObjInvalidClass 64960
-#define JvResources_RsUnknownLocaleIDFmt 64961
-#define JvResources_RsEDirectThreadCreationNotAllowed 64962
-#define JvResources_RsEDirectHidDeviceCreationNotAllowed 64963
-#define JvResources_RsEDeviceCannotBeIdentified 64964
-#define JvResources_RsEDeviceCannotBeOpened 64965
-#define JvResources_RsUnknown 64966
-#define JvResources_RsClBlack 64967
-#define JvResources_RsClMaroon 64968
-#define JvResources_RsClGreen 64969
-#define JvResources_RsClOlive 64970
-#define JvResources_RsClNavy 64971
-#define JvResources_RsClPurple 64972
-#define JvResources_RsClTeal 64973
-#define JvResources_RsClGray 64974
-#define JvResources_RsClSilver 64975
+#define UExceptionDialog_RsMemory 64096
+#define UExceptionDialog_RsScreenRes 64097
+#define UExceptionDialog_RsActiveControl 64098
+#define UExceptionDialog_RsThread 64099
+#define UExceptionDialog_RsMissingVersionInfo 64100
+#define UExceptionDialog_RsExceptionStack 64101
+#define UExceptionDialog_RsMainThreadID 64102
+#define UExceptionDialog_RsExceptionThreadID 64103
+#define UExceptionDialog_RsMainThreadCallStack 64104
+#define UExceptionDialog_RsThreadCallStack 64105
+#define UExceptionDialog_RsErrorMessage 64106
+#define UExceptionDialog_RsDetailsIntro 64107
+#define UExceptionDialog_RsUnitVersioningIntro 64108
+#define Main_TMainForm_Check_Zone 64112
+#define Main_TMainForm_Reset_grid_column_widths 64113
+#define Main_TMainForm_Load_MMTTY 64114
+#define Main_TMainForm_Unload_MMTTY 64115
+#define Main_TMainForm_NoCwMessages 64116
+#define Main_TMainForm_LogCheckOk 64117
+#define Main_TMainForm_LogCheckError 64118
+#define Main_TMainForm_ConfirmLogCheck 64119
+#define UExceptionDialog_RsAppError 64120
+#define UExceptionDialog_RsExceptionClass 64121
+#define UExceptionDialog_RsExceptionMessage 64122
+#define UExceptionDialog_RsExceptionAddr 64123
+#define UExceptionDialog_RsStackList 64124
+#define UExceptionDialog_RsModulesList 64125
+#define UExceptionDialog_RsOSVersion 64126
+#define UExceptionDialog_RsProcessor 64127
+#define Main_TMainForm_FileNotFound 64128
+#define Main_TMainForm_ComfirmUploadSound 64129
+#define Main_TMainForm_ComfirmDownloadSound 64130
+#define Main_TMainForm_ConfirmRewindSerialNumber 64131
+#define Main_TMainForm_ConfirmContestPeriod 64132
+#define Main_TMainForm_ConfirmOverwrite 64133
+#define Main_TMainForm_ConfirmModeConvert 64134
+#define Main_TMainForm_No_QTC_Message 64135
+#define Main_TMainForm_Assigned_Another_Function 64136
+#define Main_TMainForm_To_Change_the_mode 64137
+#define Main_TMainForm_To_Change_the_band 64138
+#define Main_TMainForm_rbn_verified 64139
+#define Main_TMainForm_darkmode_changed 64140
+#define Main_TMainForm_partial_nomatch 64141
+#define Main_TMainForm_prev_used_file_notfound 64142
+#define Main_TMainForm_Check_Multi 64143
+#define Main_TMainForm_Setup_SentNR_ituzone 64144
+#define Main_TMainForm_Setup_SentNR_age 64145
+#define Main_TMainForm_Setup_SentNR_iota 64146
+#define Main_TMainForm_Setup_SentNR_handle 64147
+#define Main_TMainForm_New_QSO_Arrived 64148
+#define Main_TMainForm_Select_Operator 64149
+#define Main_TMainForm_JARL_Member_Info 64150
+#define Main_TMainForm_Inquire_JARL_Member_Info 64151
+#define Main_TMainForm_UserDat_not_loaded 64152
+#define Main_TMainForm_ComfirmUploadOpList 64153
+#define Main_TMainForm_ComfirmDownloadOpList 64154
+#define Main_TMainForm_DownloadFile 64155
+#define Main_TMainForm_UploadFile 64156
+#define Main_TMainForm_SoundFileFolderNotSet 64157
+#define Main_TMainForm_Compressing 64158
+#define Main_TMainForm_FailedToCompressSoundFiles 64159
+#define Main_TMainForm_Thankyou_for_your_qso 64160
+#define Main_TMainForm_CW_port_is_no_set 64161
+#define Main_TMainForm_Not_a_new_multi 64162
+#define Main_TMainForm_Cannot_merge_current_file 64163
+#define Main_TMainForm_Merging_now 64164
+#define Main_TMainForm_Some_qsos_merged 64165
+#define Main_TMainForm_CtyDat_not_loaded 64166
+#define Main_TMainForm_RIT_XIT_Cleared 64167
+#define Main_TMainForm_Anti_zeroin 64168
+#define Main_TMainForm_Set_CQ_Repeat_Int 64169
+#define Main_TMainForm_Invalid_zone 64170
+#define Main_TMainForm_JudgePeriod 64171
+#define Main_TMainForm_EmptyOpList 64172
+#define Main_TMainForm_Setup_MyCall_first 64173
+#define Main_TMainForm_Setup_SentNR_first 64174
+#define Main_TMainForm_Setup_SentNR_cqzone 64175
+#define Main_TMainForm_Change_Mode_QSOs 64176
+#define Main_TMainForm_Change_Operator_QSOs 64177
+#define Main_TMainForm_Change_Power_QSOs 64178
+#define Main_TMainForm_Change_TXNO_QSOs 64179
+#define Main_TMainForm_Need_File_Name 64180
+#define Main_TMainForm_QTC_Sent 64181
+#define Main_TMainForm_QTC_no_shortcut_keys 64182
+#define Main_TMainForm_Less_Than_10min 64183
+#define Main_TMainForm_QSY_Count_Exceeded 64184
+#define Main_TMainForm_Loading_now 64185
+#define Main_TMainForm_Switch_CW_Bank_A 64186
+#define Main_TMainForm_Switch_CW_Bank_B 64187
+#define Main_TMainForm_This_QSO_is_locked 64188
+#define Main_TMainForm_Invalid_number 64189
+#define Main_TMainForm_Callsign_not_entered 64190
+#define Main_TMainForm_Dupe_qso 64191
+#define URateDialogEx_HOURCAPTION_SHOWFIRST 64192
+#define URateDialogEx_HOURCAPTION_SHOWCURRENT 64193
+#define URateDialogEx_HOURCAPTION_SHOWLAST 64194
+#define UCFGEdit_Please_enter_the_prov_code 64195
+#define UCFGEdit_Please_enter_the_city_code 64196
+#define UBandPlanEditDialog_Input_Text 64197
+#define UBandPlanEditDialog_Delete_Preset 64198
+#define UTargetEditor_AreYouSureYouWantToResetAllTargetValuesTo0 64199
+#define Main_TMainForm_Enter_Frequency 64200
+#define Main_TMainForm_Comfirm_Delete_Qso 64201
+#define Main_TMainForm_Comfirm_Delete_Qsos 64202
+#define Main_TMainForm_New_Multi_Only 64203
+#define Main_TMainForm_Change_Date 64204
+#define Main_TMainForm_Confirm_Save_Changes 64205
+#define Main_TMainForm_Active_Band_Adjusted 64206
+#define Main_TMainForm_Change_Band_QSOs 64207
+#define Web_WebConst_sHTTPItemURI 64208
+#define Web_WebConst_sHTTPItemEnabled 64209
+#define Web_WebConst_sHTTPItemDefault 64210
+#define Web_WebConst_sHTTPItemProducer 64211
+#define Web_WebConst_sHTTPItemMethod 64212
+#define Web_WebConst_sInternalApplicationError 64213
+#define URateDialog_HOURCAPTION_SHOWFIRST 64214
+#define URateDialog_HOURCAPTION_SHOWCURRENT 64215
+#define URateDialog_HOURCAPTION_SHOWLAST 64216
+#define URateDialogEx_SCOREGRID_TOTAL 64217
+#define URateDialogEx_SCOREGRID_TARGET 64218
+#define URateDialogEx_SCOREGRID_DIFF 64219
+#define URateDialogEx_SCOREGRID_DIFF2 64220
+#define URateDialogEx_SCOREGRID_CUMULATIVE 64221
+#define URateDialogEx_SCOREGRID_WINLOSS_L 64222
+#define URateDialogEx_SCOREGRID_WINLOSS_S 64223
+#define UOptions2_Reset_RTTY_messages_to_default 64224
+#define UOptions2_Setup_MyCall 64225
+#define UOptions2_Setup_SentNR_prov 64226
+#define UOptions2_Setup_SentNR_city 64227
+#define UOptions2_Setup_SentNR_cqzone 64228
+#define UOptions2_Setup_SentNR_ituzone 64229
+#define UOptions2_Setup_SentNR_age 64230
+#define UOptions2_Setup_SentNR_iota 64231
+#define UOptions2_Setup_SentNR_handle 64232
+#define UOptions2_DoYouWantTheUpperBandsToHaveTheSameSettins 64233
+#define Vcl_EdgeConst_SWebViewFailure 64234
+#define Vcl_EdgeConst_SNoWebView 64235
+#define IEConst_sNotSupportedByEdge 64236
+#define Web_WebConst_sDuplicateActionName 64237
+#define Web_WebConst_sOnlyOneDispatcher 64238
+#define Web_WebConst_sHTTPItemName 64239
+#define System_NetConsts_SNetHttpCertFileOpenError 64240
+#define System_NetConsts_SNetHttpCertNotFoundError 64241
+#define System_NetConsts_SMimeDuplicateType 64242
+#define System_NetConsts_SMimeTypeEmpty 64243
+#define System_NetConsts_SMimeValueEmpty 64244
+#define System_NetConsts_SMimeWeightOutOfRange 64245
+#define UzLogGlobal_MSG_INVALID_CHARACTER 64246
+#define UFreqMemDialog_THE_COMMAND_IS_ALREADY_IN_USE 64247
+#define UOptions2_Load_CWA_MyMessages 64248
+#define UOptions2_Load_CWB_MyMessages 64249
+#define UOptions2_Load_RTTY_MyMessages 64250
+#define UOptions2_Save_CWA_MyMessages 64251
+#define UOptions2_Save_CWB_MyMessages 64252
+#define UOptions2_Save_RTTY_MyMessages 64253
+#define UOptions2_Reset_CWA_messages_to_default 64254
+#define UOptions2_Reset_CWB_messages_to_default 64255
+#define System_NetConsts_SNetHttpServerCertificateNotAccepted 64256
+#define System_NetConsts_SNetHttpEmptyCertificateList 64257
+#define System_NetConsts_SNetHttpUnspecifiedCertificate 64258
+#define System_NetConsts_SNetHttpRejectedCertificate 64259
+#define System_NetConsts_SNetHttpClientUnknownError 64260
+#define System_NetConsts_SNetHttpComponentRequestClient 64261
+#define System_NetConsts_SNetHttpHeadersError 64262
+#define System_NetConsts_SNetHttpClientHandleError 64263
+#define System_NetConsts_SNetHttpClientSendError 64264
+#define System_NetConsts_SNetHttpClientReceiveError 64265
+#define System_NetConsts_SNetHttpRequestConnectError 64266
+#define System_NetConsts_SNetHttpRequestOpenError 64267
+#define System_NetConsts_SNetHttpRequestAddHeaderError 64268
+#define System_NetConsts_SNetHttpRequestRemoveHeaderError 64269
+#define System_NetConsts_SNetHttpRequestReadDataError 64270
+#define System_NetConsts_SNetHttpRequestSetTimeoutError 64271
+#define System_JSONConsts_SJSONPathUnexpectedIndexedChar 64272
+#define System_JSONConsts_SJSONPathDotsEmptyName 64273
+#define System_NetConsts_SSchemeAlreadyRegistered 64274
+#define System_NetConsts_SSchemeNotRegistered 64275
+#define System_NetConsts_SCredentialInvalidUserPassword 64276
+#define System_NetConsts_SNetPlatformFunctionNotImplemented 64277
+#define System_NetConsts_SNetSchemeFunctionNotImplemented 64278
+#define System_NetConsts_SNetUriMethodAlreadyAssigned 64279
+#define System_NetConsts_SNetUriURLAlreadyAssigned 64280
+#define System_NetConsts_SNetUriIndexOutOfRange 64281
+#define System_NetConsts_SNetUriInvalid 64282
+#define System_NetConsts_SNetUriParamNotFound 64283
+#define System_NetConsts_SNetUriInvalidRelPath 64284
+#define System_NetConsts_SNetHttpMaxRedirections 64285
+#define System_NetConsts_SNetHttpGetServerCertificate 64286
+#define System_NetConsts_SNetHttpInvalidServerCertificate 64287
+#define IdResourceStrings_RSNotAllBytesSent 64288
+#define IdResourceStrings_RSPackageSizeTooBig 64289
+#define IdResourceStrings_RSSetSizeExceeded 64290
+#define System_JSONConsts_SUTF8Start 64291
+#define System_JSONConsts_SUTF8UnexpectedByte 64292
+#define System_JSONConsts_SUTF8InvalidHeaderByte 64293
+#define System_JSONConsts_SJSONSyntaxError 64294
+#define System_JSONConsts_SJSONLocation 64295
+#define System_JSONConsts_STooMuchNesting 64296
+#define System_JSONConsts_SValueNotFound 64297
+#define System_JSONConsts_SCannotConvertJSONValueToType 64298
+#define System_JSONConsts_SCannotAddJSONValue 64299
+#define System_JSONConsts_SJSONPathUnexpectedRootChar 64300
+#define System_JSONConsts_SJSONPathEndedOpenBracket 64301
+#define System_JSONConsts_SJSONPathEndedOpenString 64302
+#define System_JSONConsts_SJSONPathInvalidArrayIndex 64303
+#define IdResourceStrings_RSStackENOTCONN 64304
+#define IdResourceStrings_RSStackESHUTDOWN 64305
+#define IdResourceStrings_RSStackETOOMANYREFS 64306
+#define IdResourceStrings_RSStackETIMEDOUT 64307
+#define IdResourceStrings_RSStackECONNREFUSED 64308
+#define IdResourceStrings_RSStackELOOP 64309
+#define IdResourceStrings_RSStackENAMETOOLONG 64310
+#define IdResourceStrings_RSStackEHOSTDOWN 64311
+#define IdResourceStrings_RSStackEHOSTUNREACH 64312
+#define IdResourceStrings_RSStackENOTEMPTY 64313
+#define IdResourceStrings_RSStackHOST_NOT_FOUND 64314
+#define IdResourceStrings_RSStackClassUndefined 64315
+#define IdResourceStrings_RSStackAlreadyCreated 64316
+#define IdResourceStrings_RSInvalidServiceName 64317
+#define IdResourceStrings_RSInvalidIPv6Address 64318
+#define IdResourceStrings_RSIPVersionUnsupported 64319
+#define IdResourceStrings_RSStackEPROTOTYPE 64320
+#define IdResourceStrings_RSStackENOPROTOOPT 64321
+#define IdResourceStrings_RSStackEPROTONOSUPPORT 64322
+#define IdResourceStrings_RSStackESOCKTNOSUPPORT 64323
+#define IdResourceStrings_RSStackEOPNOTSUPP 64324
+#define IdResourceStrings_RSStackEPFNOSUPPORT 64325
+#define IdResourceStrings_RSStackEAFNOSUPPORT 64326
+#define IdResourceStrings_RSStackEADDRINUSE 64327
+#define IdResourceStrings_RSStackEADDRNOTAVAIL 64328
+#define IdResourceStrings_RSStackENETDOWN 64329
+#define IdResourceStrings_RSStackENETUNREACH 64330
+#define IdResourceStrings_RSStackENETRESET 64331
+#define IdResourceStrings_RSStackECONNABORTED 64332
+#define IdResourceStrings_RSStackECONNRESET 64333
+#define IdResourceStrings_RSStackENOBUFS 64334
+#define IdResourceStrings_RSStackEISCONN 64335
+#define IdResourceStrings_RSInvalidCodePage 64336
+#define IdResourceStrings_RSWinsockCallError 64337
+#define IdResourceStrings_RSWinsockLoadError 64338
+#define IdResourceStrings_RSStackError 64339
+#define IdResourceStrings_RSStackEINTR 64340
+#define IdResourceStrings_RSStackEBADF 64341
+#define IdResourceStrings_RSStackEACCES 64342
+#define IdResourceStrings_RSStackEFAULT 64343
+#define IdResourceStrings_RSStackEINVAL 64344
+#define IdResourceStrings_RSStackEMFILE 64345
+#define IdResourceStrings_RSStackEWOULDBLOCK 64346
+#define IdResourceStrings_RSStackEINPROGRESS 64347
+#define IdResourceStrings_RSStackEALREADY 64348
+#define IdResourceStrings_RSStackENOTSOCK 64349
+#define IdResourceStrings_RSStackEDESTADDRREQ 64350
+#define IdResourceStrings_RSStackEMSGSIZE 64351
+#define System_Bindings_Consts_sVariantToBoolDesc 64352
+#define System_Bindings_Consts_sStrToFloat 64353
+#define System_Bindings_Consts_sStrToFloatDesc 64354
+#define System_Bindings_Consts_sFloatToInteger 64355
+#define System_Bindings_Consts_sFloatToIntegerDesc 64356
+#define System_Bindings_Consts_sTStringsToString 64357
+#define System_Bindings_Consts_sTStringToStringDesc 64358
+#define System_Bindings_Consts_sStringToTStrings 64359
+#define System_Bindings_Consts_sStringToTStringsDesc 64360
+#define System_Bindings_Consts_sStringToChar 64361
+#define System_Bindings_Consts_sStringToCharDesc 64362
+#define IdResourceStrings_RSInvalidSourceArray 64363
+#define IdResourceStrings_RSInvalidDestinationArray 64364
+#define IdResourceStrings_RSCharIndexOutOfBounds 64365
+#define IdResourceStrings_RSInvalidCharCount 64366
+#define IdResourceStrings_RSInvalidDestinationIndex 64367
+#define System_Bindings_Consts_sStrToTTimeDesc 64368
+#define System_Bindings_Consts_sNilToString 64369
+#define System_Bindings_Consts_sNilToStringDesc 64370
+#define System_Bindings_Consts_sNilToBoolean 64371
+#define System_Bindings_Consts_sNilToBooleanDesc 64372
+#define System_Bindings_Consts_sNilToVariant 64373
+#define System_Bindings_Consts_sNilToVariantDesc 64374
+#define System_Bindings_Consts_sStringToVariant 64375
+#define System_Bindings_Consts_sStringToVariantDesc 64376
+#define System_Bindings_Consts_sFloatToVariant 64377
+#define System_Bindings_Consts_sFloatToVariantDesc 64378
+#define System_Bindings_Consts_sIntToVariant 64379
+#define System_Bindings_Consts_sIntToVariantDesc 64380
+#define System_Bindings_Consts_sBoolToVariant 64381
+#define System_Bindings_Consts_sBoolToVariantDesc 64382
+#define System_Bindings_Consts_sVariantToBool 64383
+#define System_Bindings_Consts_sFloatToBoolDesc 64384
+#define System_Bindings_Consts_sNilToNumber 64385
+#define System_Bindings_Consts_sNilToNumberDesc 64386
+#define System_Bindings_Consts_sIntegerToString 64387
+#define System_Bindings_Consts_sIntegerToStringDesc 64388
+#define System_Bindings_Consts_sStringToInteger 64389
+#define System_Bindings_Consts_sStringToIntegerDesc 64390
+#define System_Bindings_Consts_sFloatToString 64391
+#define System_Bindings_Consts_sFloatToStringDesc 64392
+#define System_Bindings_Consts_sStrToTDateTime 64393
+#define System_Bindings_Consts_sStrToTDateTimeDesc 64394
+#define System_Bindings_Consts_sTDateTimeToStr 64395
+#define System_Bindings_Consts_sTDateTimeToStrDesc 64396
+#define System_Bindings_Consts_sStrToTDate 64397
+#define System_Bindings_Consts_sStrToTDateDesc 64398
+#define System_Bindings_Consts_sStrToTTime 64399
+#define System_Bindings_Consts_sNilToTStringsDesc 64400
+#define System_Bindings_Consts_sPersistentToPersistent 64401
+#define System_Bindings_Consts_sPersistentToPersistentDesc 64402
+#define System_Bindings_Consts_sPersistentToString 64403
+#define System_Bindings_Consts_sPersistentToStringDesc 64404
+#define System_Bindings_Consts_sBoolToString 64405
+#define System_Bindings_Consts_sBoolToStringDesc 64406
+#define System_Bindings_Consts_sStringToBool 64407
+#define System_Bindings_Consts_sStringToBoolDesc 64408
+#define System_Bindings_Consts_sBoolToInteger 64409
+#define System_Bindings_Consts_sBoolToIntegerDesc 64410
+#define System_Bindings_Consts_sIntegerToBool 64411
+#define System_Bindings_Consts_sIntegerToBoolDesc 64412
+#define System_Bindings_Consts_sBoolToFloat 64413
+#define System_Bindings_Consts_sBoolToFloatDesc 64414
+#define System_Bindings_Consts_sFloatToBool 64415
+#define System_Bindings_Consts_sInvokeError 64416
+#define System_Bindings_Consts_sUnsupportedWrapper 64417
+#define System_Bindings_Consts_sUnsupportedGroup 64418
+#define System_Bindings_Consts_sObjectTypeNotRegistered 64419
+#define System_Bindings_Consts_sScopeClassNotRegistered 64420
+#define System_Bindings_Consts_sScopeClassAlreadyRegistered 64421
+#define System_Bindings_Consts_sInvalidCustomWrapper 64422
+#define System_Bindings_Consts_sPropertyNotFound 64423
+#define System_Bindings_Consts_sNoGetterOrSetter 64424
+#define System_Bindings_Consts_sUpdateOutputLocFailed 64425
+#define System_Bindings_Consts_sNoOutputScopes 64426
+#define System_Bindings_Consts_sVirtualMemberReadOnly 64427
+#define System_Bindings_Consts_sConvertWrapperFail 64428
+#define System_Bindings_Consts_sNilToTDateTime 64429
+#define System_Bindings_Consts_sNilToTDateTimeDesc 64430
+#define System_Bindings_Consts_sNilToTStrings 64431
+#define System_Bindings_Consts_sNegateOpFail 64432
+#define System_Bindings_Consts_sCompareOpFail 64433
+#define System_Bindings_Consts_sBoolOpFail 64434
+#define System_Bindings_Consts_sBoolNegateOpFail 64435
+#define System_Bindings_Consts_sParserUnexpected 64436
+#define System_Bindings_Consts_sInvalidFloatingPt 64437
+#define System_Bindings_Consts_sInvalidFloatingPtExpt 64438
+#define System_Bindings_Consts_sUnterminatedString 64439
+#define System_Bindings_Consts_sInvalidOperator 64440
+#define System_Bindings_Consts_sInvalidOperatorNum 64441
+#define System_Bindings_Consts_sExpectedEOF 64442
+#define System_Bindings_Consts_sTooManyArgs 64443
+#define System_Bindings_Consts_sExpectedIdentifier 64444
+#define System_Bindings_Consts_sExpressionTooComplex 64445
+#define System_Bindings_Consts_sEvalStackOverflow 64446
+#define System_Bindings_Consts_sLookupError 64447
+#define System_Bindings_Consts_sScopeObjNull 64448
+#define System_Bindings_Consts_sUncompiledExpression 64449
+#define System_Bindings_Consts_sUnsupportedManager 64450
+#define System_Bindings_Consts_sClassTypeNotFound 64451
+#define System_Bindings_Consts_sOutputIsReadOnly 64452
+#define System_Bindings_Consts_sUnavailNotifier 64453
+#define System_Bindings_Consts_sConverterNotFound 64454
+#define System_Bindings_Consts_sConverterIDNotFound 64455
+#define System_Bindings_Consts_sConverterIDNotRegistered 64456
+#define System_Bindings_Consts_sDuplicatedConverterType 64457
+#define System_Bindings_Consts_sDuplicatedConverterType2 64458
+#define System_Bindings_Consts_sMismatchArgCount 64459
+#define System_Bindings_Consts_sAddOpFail 64460
+#define System_Bindings_Consts_sSubtractOpFail 64461
+#define System_Bindings_Consts_sMultiplyOpFail 64462
+#define System_Bindings_Consts_sDivideOpFail 64463
+#define UComm_UComm_ExceededLimit 64464
+#define UComm_UComm_SiteChanging 64465
+#define UQTCForm_QTC_DONE 64466
+#define UQTCForm_QTC_SEND 64467
+#define UQTCForm_QTC_SENT 64468
+#define UOperatorEdit_PLEASE_ENTER_OPS_CALLSIGN 64469
+#define UOptions_SELECT_FOLDER 64470
+#define UOptions_PLEASE_INPUT_OFFSET_FREQ 64471
+#define UOptions_Installed_Plugins_Disabled 64472
+#define UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins 64473
+#define UOptions_EnterTheFullPathOfRootFolder 64474
+#define UOptions_zLogRootFolderNotExist 64475
+#define UOptions_RigIsNotAssignedToAntBand 64476
+#define UOptions_BandsHaveNoRigsAssigned 64477
+#define URigControl_RECONNECT_ALL_RIGS 64478
+#define System_Bindings_Consts_sOwnerNotFound 64479
+#define UZLinkForm_ZServer_connection_failed 64480
+#define UZLinkForm_Connect_ZSERVER 64481
+#define UZLinkForm_Disconnect_ZSERVER 64482
+#define UZLinkForm_FileDownloadFailed 64483
+#define UZLinkForm_FileDownloadSuccessfully 64484
+#define UZLinkForm_NoFilesFoundToUpload 64485
+#define UZLinkForm_FileUploadSuccessfully 64486
+#define UZLinkForm_ZServerSettingsNotConfigured 64487
+#define UZLinkForm_ZServerSecureNotConfigured 64488
+#define UZLinkForm_ZServerIsNotSecureMode 64489
+#define UZLinkForm_UnableToLoginToZServer 64490
+#define UComm_UComm_Connect 64491
+#define UComm_UComm_Disconnect 64492
+#define UComm_UComm_Connecting 64493
+#define UComm_UComm_Disconnecting 64494
+#define UComm_UComm_SecondsLeft 64495
+#define OverbyteIcsCharsetUtils_sKorean 64496
+#define OverbyteIcsCharsetUtils_sKoreanEUC 64497
+#define OverbyteIcsCharsetUtils_sLatin9 64498
+#define OverbyteIcsCharsetUtils_sThaiWindows 64499
+#define OverbyteIcsCharsetUtils_sTurkishISO 64500
+#define OverbyteIcsCharsetUtils_sTurkishWindows 64501
+#define OverbyteIcsCharsetUtils_sUnicodeUTF7 64502
+#define OverbyteIcsCharsetUtils_sUnicodeUTF8 64503
+#define OverbyteIcsCharsetUtils_sVietnameseWindows 64504
+#define OverbyteIcsCharsetUtils_sWesternEuropeanISO 64505
+#define OverbyteIcsCharsetUtils_sWesternEuropeanWindows 64506
+#define UBandScope2_SHOW_ALLBANDS 64507
+#define UBandScope2_SHOW_CURRENT 64508
+#define UBandScope2_MENU_BLOCK_THIS_SPOT 64509
+#define UBandScope2_MENU_EDIT_BLOCKLIST 64510
+#define UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink 64511
+#define OverbyteIcsCharsetUtils_sCentralEuropeanWindows 64512
+#define OverbyteIcsCharsetUtils_sChineseTraditionalBig5 64513
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030 64514
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedGB2312 64515
+#define OverbyteIcsCharsetUtils_sChineseSimplifiedHZ 64516
+#define OverbyteIcsCharsetUtils_sCyrillicISO 64517
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8R 64518
+#define OverbyteIcsCharsetUtils_sCyrillicKOI8U 64519
+#define OverbyteIcsCharsetUtils_sCyrillicWindows 64520
+#define OverbyteIcsCharsetUtils_sEstonianISO 64521
+#define OverbyteIcsCharsetUtils_sGreekISO 64522
+#define OverbyteIcsCharsetUtils_sGreekWindows 64523
+#define OverbyteIcsCharsetUtils_sHebrewISOLogical 64524
+#define OverbyteIcsCharsetUtils_sHebrewISOVisual 64525
+#define OverbyteIcsCharsetUtils_sHebrewWindows 64526
+#define OverbyteIcsCharsetUtils_sJapaneseJIS 64527
+#define Vcl_OleConst_SInvalidLicense 64528
+#define Vcl_OleConst_SNotLicensed 64529
+#define Vcl_OleConst_sNoRunningObject 64530
+#define Data_DBConsts_SBcdOverflow 64531
+#define Data_DBConsts_SInvalidBcdValue 64532
+#define Data_DBConsts_SCouldNotParseTimeStamp 64533
+#define Data_DBConsts_SInvalidSqlTimeStamp 64534
+#define Vcl_Imaging_JConsts_sChangeJPGSize 64535
+#define Vcl_Imaging_JConsts_sJPEGError 64536
+#define Vcl_Imaging_JConsts_sJPEGImageFile 64537
+#define UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins 64538
+#define OverbyteIcsCharsetUtils_sArabicISO 64539
+#define OverbyteIcsCharsetUtils_sArabicWindows 64540
+#define OverbyteIcsCharsetUtils_sBalticISO 64541
+#define OverbyteIcsCharsetUtils_sBalticWindows 64542
+#define OverbyteIcsCharsetUtils_sCentralEuropeanISO 64543
+#define Vcl_Imaging_pnglang_EPNGUnknownColorTypeText 64544
+#define Vcl_Imaging_pnglang_EPNGCannotAssignChunkText 64545
+#define Vcl_Imaging_pnglang_EPNGUnexpectedEndText 64546
+#define Vcl_Imaging_pnglang_EPNGNoImageDataText 64547
+#define Vcl_Imaging_pnglang_EPNGCannotAddChunkText 64548
+#define Vcl_Imaging_pnglang_EPNGCannotAddInvalidImageText 64549
+#define Vcl_Imaging_pnglang_EPNGCouldNotLoadResourceText 64550
+#define Vcl_Imaging_pnglang_EPNGOutMemoryText 64551
+#define Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText 64552
+#define Vcl_Imaging_pnglang_EPNGHeaderNotPresentText 64553
+#define Vcl_Imaging_pnglang_EInvalidNewSize 64554
+#define Vcl_Imaging_pnglang_EInvalidSpec 64555
+#define Vcl_Imaging_pnglang_EPNGInvalidBitDepthText 64556
+#define Vcl_OleConst_SBadPropValue 64557
+#define Vcl_OleConst_SCannotActivate 64558
+#define Vcl_OleConst_SNoWindowHandle 64559
+#define System_RegularExpressionsConsts_SRegExStudyError 64560
+#define System_RegularExpressionsConsts_SRegExMatchRequired 64561
+#define System_RegularExpressionsConsts_SRegExStringsRequired 64562
+#define System_RegularExpressionsConsts_SRegExIndexOutOfBounds 64563
+#define Vcl_Imaging_pnglang_EPngInvalidCRCText 64564
+#define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 64565
+#define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 64566
+#define Vcl_Imaging_pnglang_EPNGZLIBErrorText 64567
+#define Vcl_Imaging_pnglang_EPNGInvalidPaletteText 64568
+#define Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText 64569
+#define Vcl_Imaging_pnglang_EPNGIHDRNotFirstText 64570
+#define Vcl_Imaging_pnglang_EPNGSizeExceedsText 64571
+#define Vcl_Imaging_pnglang_EPNGUnknownPalEntryText 64572
+#define Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText 64573
+#define Vcl_Imaging_pnglang_EPNGUnknownCompressionText 64574
+#define Vcl_Imaging_pnglang_EPNGUnknownInterlaceText 64575
+#define JclResources_RsProductTypePersonal 64576
+#define JclResources_RsProductTypeProfessional 64577
+#define JclResources_RsProductTypeDatacenterServer 64578
+#define JclResources_RsProductTypeEnterprise 64579
+#define JclResources_RsProductTypeWebEdition 64580
+#define JclResources_RsCannotWriteRefStream 64581
+#define JclResources_RsInvalidMMFName 64582
+#define JclResources_RsInvalidMMFEmpty 64583
+#define JclResources_RsHasNotTD32Info 64584
+#define JclResources_RsEUnexpectedEOSeq 64585
+#define JclResources_RsWin32Error 64586
+#define JclResources_RsELibraryNotFound 64587
+#define JclResources_RsEFunctionNotFound 64588
+#define UzLogConst_RigPortActionList 64589
+#define System_RegularExpressionsConsts_SRegExMissingExpression 64590
+#define System_RegularExpressionsConsts_SRegExExpressionError 64591
+#define JclResources_RsOSVersionWinServer2008R2 64592
+#define JclResources_RsOSVersionWin8 64593
+#define JclResources_RsOSVersionWin8RT 64594
+#define JclResources_RsOSVersionWinServer2012 64595
+#define JclResources_RsOSVersionWin81 64596
+#define JclResources_RsOSVersionWin81RT 64597
+#define JclResources_RsOSVersionWinServer2012R2 64598
+#define JclResources_RsOSVersionWin10 64599
+#define JclResources_RsOSVersionWinServer2016 64600
+#define JclResources_RsOSVersionWinServer2019 64601
+#define JclResources_RsOSVersionWinServer2022 64602
+#define JclResources_RsOSVersionWinServer 64603
+#define JclResources_RsOSVersionWin11 64604
+#define JclResources_RsProductTypeWorkStation 64605
+#define JclResources_RsProductTypeServer 64606
+#define JclResources_RsProductTypeAdvancedServer 64607
+#define JclResources_RsUnknownAMDModel 64608
+#define JclResources_RsOSVersionWin95 64609
+#define JclResources_RsOSVersionWin95OSR2 64610
+#define JclResources_RsOSVersionWin98 64611
+#define JclResources_RsOSVersionWin98SE 64612
+#define JclResources_RsOSVersionWinME 64613
+#define JclResources_RsOSVersionWinNT3 64614
+#define JclResources_RsOSVersionWinNT4 64615
+#define JclResources_RsOSVersionWin2000 64616
+#define JclResources_RsOSVersionWinXP 64617
+#define JclResources_RsOSVersionWin2003 64618
+#define JclResources_RsOSVersionWin2003R2 64619
+#define JclResources_RsOSVersionWinXP64 64620
+#define JclResources_RsOSVersionWinVista 64621
+#define JclResources_RsOSVersionWinServer2008 64622
+#define JclResources_RsOSVersionWin7 64623
+#define JclResources_RsIntelCacheDescrD2 64624
+#define JclResources_RsIntelCacheDescrD6 64625
+#define JclResources_RsIntelCacheDescrD7 64626
+#define JclResources_RsIntelCacheDescrD8 64627
+#define JclResources_RsIntelCacheDescrDC 64628
+#define JclResources_RsIntelCacheDescrDD 64629
+#define JclResources_RsIntelCacheDescrDE 64630
+#define JclResources_RsIntelCacheDescrE2 64631
+#define JclResources_RsIntelCacheDescrE3 64632
+#define JclResources_RsIntelCacheDescrE4 64633
+#define JclResources_RsIntelCacheDescrEA 64634
+#define JclResources_RsIntelCacheDescrEB 64635
+#define JclResources_RsIntelCacheDescrEC 64636
+#define JclResources_RsIntelCacheDescrF0 64637
+#define JclResources_RsIntelCacheDescrF1 64638
+#define JclResources_RsIntelCacheDescrFF 64639
+#define JclResources_RsIntelCacheDescr82 64640
+#define JclResources_RsIntelCacheDescr83 64641
+#define JclResources_RsIntelCacheDescr84 64642
+#define JclResources_RsIntelCacheDescr85 64643
+#define JclResources_RsIntelCacheDescr86 64644
+#define JclResources_RsIntelCacheDescr87 64645
+#define JclResources_RsIntelCacheDescrB0 64646
+#define JclResources_RsIntelCacheDescrB1 64647
+#define JclResources_RsIntelCacheDescrB2 64648
+#define JclResources_RsIntelCacheDescrB3 64649
+#define JclResources_RsIntelCacheDescrB4 64650
+#define JclResources_RsIntelCacheDescrBA 64651
+#define JclResources_RsIntelCacheDescrC0 64652
+#define JclResources_RsIntelCacheDescrCA 64653
+#define JclResources_RsIntelCacheDescrD0 64654
+#define JclResources_RsIntelCacheDescrD1 64655
+#define JclResources_RsIntelCacheDescr66 64656
+#define JclResources_RsIntelCacheDescr67 64657
+#define JclResources_RsIntelCacheDescr68 64658
+#define JclResources_RsIntelCacheDescr70 64659
+#define JclResources_RsIntelCacheDescr71 64660
+#define JclResources_RsIntelCacheDescr72 64661
+#define JclResources_RsIntelCacheDescr73 64662
+#define JclResources_RsIntelCacheDescr76 64663
+#define JclResources_RsIntelCacheDescr78 64664
+#define JclResources_RsIntelCacheDescr79 64665
+#define JclResources_RsIntelCacheDescr7A 64666
+#define JclResources_RsIntelCacheDescr7B 64667
+#define JclResources_RsIntelCacheDescr7C 64668
+#define JclResources_RsIntelCacheDescr7D 64669
+#define JclResources_RsIntelCacheDescr7F 64670
+#define JclResources_RsIntelCacheDescr80 64671
+#define JclResources_RsIntelCacheDescr4C 64672
+#define JclResources_RsIntelCacheDescr4D 64673
+#define JclResources_RsIntelCacheDescr4E 64674
+#define JclResources_RsIntelCacheDescr4F 64675
+#define JclResources_RsIntelCacheDescr50 64676
+#define JclResources_RsIntelCacheDescr51 64677
+#define JclResources_RsIntelCacheDescr52 64678
+#define JclResources_RsIntelCacheDescr55 64679
+#define JclResources_RsIntelCacheDescr56 64680
+#define JclResources_RsIntelCacheDescr57 64681
+#define JclResources_RsIntelCacheDescr59 64682
+#define JclResources_RsIntelCacheDescr5A 64683
+#define JclResources_RsIntelCacheDescr5B 64684
+#define JclResources_RsIntelCacheDescr5C 64685
+#define JclResources_RsIntelCacheDescr5D 64686
+#define JclResources_RsIntelCacheDescr60 64687
+#define JclResources_RsIntelCacheDescr3B 64688
+#define JclResources_RsIntelCacheDescr3C 64689
+#define JclResources_RsIntelCacheDescr3D 64690
+#define JclResources_RsIntelCacheDescr3E 64691
+#define JclResources_RsIntelCacheDescr40 64692
+#define JclResources_RsIntelCacheDescr41 64693
+#define JclResources_RsIntelCacheDescr42 64694
+#define JclResources_RsIntelCacheDescr43 64695
+#define JclResources_RsIntelCacheDescr44 64696
+#define JclResources_RsIntelCacheDescr45 64697
+#define JclResources_RsIntelCacheDescr46 64698
+#define JclResources_RsIntelCacheDescr47 64699
+#define JclResources_RsIntelCacheDescr48 64700
+#define JclResources_RsIntelCacheDescr49 64701
+#define JclResources_RsIntelCacheDescr4A 64702
+#define JclResources_RsIntelCacheDescr4B 64703
+#define JclResources_RsIntelCacheDescr08 64704
+#define JclResources_RsIntelCacheDescr09 64705
+#define JclResources_RsIntelCacheDescr0A 64706
+#define JclResources_RsIntelCacheDescr0B 64707
+#define JclResources_RsIntelCacheDescr0C 64708
+#define JclResources_RsIntelCacheDescr0D 64709
+#define JclResources_RsIntelCacheDescr0E 64710
+#define JclResources_RsIntelCacheDescr21 64711
+#define JclResources_RsIntelCacheDescr22 64712
+#define JclResources_RsIntelCacheDescr23 64713
+#define JclResources_RsIntelCacheDescr25 64714
+#define JclResources_RsIntelCacheDescr29 64715
+#define JclResources_RsIntelCacheDescr2C 64716
+#define JclResources_RsIntelCacheDescr30 64717
+#define JclResources_RsIntelCacheDescr39 64718
+#define JclResources_RsIntelCacheDescr3A 64719
+#define JclResources_RsPePkgWeak 64720
+#define JclResources_RsPePkgOrgWeak 64721
+#define JclResources_RsPePkgImplicit 64722
+#define JclResources_RsUnableToOpenKeyRead 64723
+#define JclResources_RsUnableToAccessValue 64724
+#define JclResources_RsWrongDataType 64725
+#define JclResources_RsInconsistentPath 64726
+#define JclResources_RsSynchCreateMutex 64727
+#define JclResources_RsSynchOpenMutex 64728
+#define JclResources_RsIntelCacheDescr00 64729
+#define JclResources_RsIntelCacheDescr01 64730
+#define JclResources_RsIntelCacheDescr02 64731
+#define JclResources_RsIntelCacheDescr03 64732
+#define JclResources_RsIntelCacheDescr04 64733
+#define JclResources_RsIntelCacheDescr05 64734
+#define JclResources_RsIntelCacheDescr06 64735
+#define JclResources_RsPeDEBUG_EXCEPTION 64736
+#define JclResources_RsPeDEBUG_FIXUP 64737
+#define JclResources_RsPeDEBUG_OMAP_TO_SRC 64738
+#define JclResources_RsPeDEBUG_OMAP_FROM_SRC 64739
+#define JclResources_RsPePkgExecutable 64740
+#define JclResources_RsPePkgPackage 64741
+#define JclResources_PsPePkgLibrary 64742
+#define JclResources_RsPePkgNeverBuild 64743
+#define JclResources_RsPePkgDesignOnly 64744
+#define JclResources_RsPePkgRunOnly 64745
+#define JclResources_RsPePkgIgnoreDupUnits 64746
+#define JclResources_RsPePkgV3Produced 64747
+#define JclResources_RsPePkgProducerUndefined 64748
+#define JclResources_RsPePkgBCB4Produced 64749
+#define JclResources_RsPePkgDelphi4Produced 64750
+#define JclResources_RsPePkgMain 64751
+#define JclResources_RsPeMACHINE_EBC 64752
+#define JclResources_RsPeMACHINE_AMD64 64753
+#define JclResources_RsPeMACHINE_M32R 64754
+#define JclResources_RsPeMACHINE_CEE 64755
+#define JclResources_RsPeSUBSYSTEM_UNKNOWN 64756
+#define JclResources_RsPeSUBSYSTEM_NATIVE 64757
+#define JclResources_RsPeSUBSYSTEM_WINDOWS_GUI 64758
+#define JclResources_RsPeSUBSYSTEM_WINDOWS_CUI 64759
+#define JclResources_RsPeSUBSYSTEM_OS2_CUI 64760
+#define JclResources_RsPeSUBSYSTEM_POSIX_CUI 64761
+#define JclResources_RsPeSUBSYSTEM_RESERVED8 64762
+#define JclResources_RsPeDEBUG_UNKNOWN 64763
+#define JclResources_RsPeDEBUG_COFF 64764
+#define JclResources_RsPeDEBUG_CODEVIEW 64765
+#define JclResources_RsPeDEBUG_FPO 64766
+#define JclResources_RsPeDEBUG_MISC 64767
+#define JclResources_RsPeMACHINE_SH3DSP 64768
+#define JclResources_RsPeMACHINE_SH3E 64769
+#define JclResources_RsPeMACHINE_SH4 64770
+#define JclResources_RsPeMACHINE_SH5 64771
+#define JclResources_RsPeMACHINE_ARM 64772
+#define JclResources_RsPeMACHINE_THUMB 64773
+#define JclResources_RsPeMACHINE_AM33 64774
+#define JclResources_RsPeMACHINE_POWERPC 64775
+#define JclResources_RsPeMACHINE_POWERPCFP 64776
+#define JclResources_RsPeMACHINE_IA64 64777
+#define JclResources_RsPeMACHINE_MIPS16 64778
+#define JclResources_RsPeMACHINE_AMPHA64 64779
+#define JclResources_RsPeMACHINE_MIPSFPU 64780
+#define JclResources_RsPeMACHINE_MIPSFPU16 64781
+#define JclResources_RsPeMACHINE_TRICORE 64782
+#define JclResources_RsPeMACHINE_CEF 64783
+#define JclResources_RsPeLockPrefixTable 64784
+#define JclResources_RsPeMaximumAllocationSize 64785
+#define JclResources_RsPeVirtualMemoryThreshold 64786
+#define JclResources_RsPeProcessHeapFlags 64787
+#define JclResources_RsPeProcessAffinityMask 64788
+#define JclResources_RsPeCSDVersion 64789
+#define JclResources_RsPeReserved 64790
+#define JclResources_RsPeEditList 64791
+#define JclResources_RsPeMACHINE_UNKNOWN 64792
+#define JclResources_RsPeMACHINE_I386 64793
+#define JclResources_RsPeMACHINE_R3000 64794
+#define JclResources_RsPeMACHINE_R4000 64795
+#define JclResources_RsPeMACHINE_R10000 64796
+#define JclResources_RsPeMACHINE_WCEMIPSV2 64797
+#define JclResources_RsPeMACHINE_ALPHA 64798
+#define JclResources_RsPeMACHINE_SH3 64799
+#define JclResources_RsPeSizeOfHeaders 64800
+#define JclResources_RsPeCheckSum 64801
+#define JclResources_RsPeSubsystem 64802
+#define JclResources_RsPeDllCharacteristics 64803
+#define JclResources_RsPeSizeOfStackReserve 64804
+#define JclResources_RsPeSizeOfStackCommit 64805
+#define JclResources_RsPeSizeOfHeapReserve 64806
+#define JclResources_RsPeSizeOfHeapCommit 64807
+#define JclResources_RsPeLoaderFlags 64808
+#define JclResources_RsPeNumberOfRvaAndSizes 64809
+#define JclResources_RsPeVersion 64810
+#define JclResources_RsPeGlobalFlagsClear 64811
+#define JclResources_RsPeGlobalFlagsSet 64812
+#define JclResources_RsPeCriticalSectionDefaultTimeout 64813
+#define JclResources_RsPeDeCommitFreeBlockThreshold 64814
+#define JclResources_RsPeDeCommitTotalFreeThreshold 64815
+#define JclResources_RsPeMagic 64816
+#define JclResources_RsPeLinkerVersion 64817
+#define JclResources_RsPeSizeOfCode 64818
+#define JclResources_RsPeSizeOfInitializedData 64819
+#define JclResources_RsPeSizeOfUninitializedData 64820
+#define JclResources_RsPeAddressOfEntryPoint 64821
+#define JclResources_RsPeBaseOfCode 64822
+#define JclResources_RsPeBaseOfData 64823
+#define JclResources_RsPeImageBase 64824
+#define JclResources_RsPeSectionAlignment 64825
+#define JclResources_RsPeFileAlignment 64826
+#define JclResources_RsPeOperatingSystemVersion 64827
+#define JclResources_RsPeImageVersion 64828
+#define JclResources_RsPeSubsystemVersion 64829
+#define JclResources_RsPeWin32VersionValue 64830
+#define JclResources_RsPeSizeOfImage 64831
+#define JclResources_RsPeImg_08 64832
+#define JclResources_RsPeImg_09 64833
+#define JclResources_RsPeImg_10 64834
+#define JclResources_RsPeImg_11 64835
+#define JclResources_RsPeImg_12 64836
+#define JclResources_RsPeImg_13 64837
+#define JclResources_RsPeImg_14 64838
+#define JclResources_RsPeImg_Reserved 64839
+#define JclResources_RsPeSignature 64840
+#define JclResources_RsPeMachine 64841
+#define JclResources_RsPeNumberOfSections 64842
+#define JclResources_RsPeTimeDateStamp 64843
+#define JclResources_RsPePointerToSymbolTable 64844
+#define JclResources_RsPeNumberOfSymbols 64845
+#define JclResources_RsPeSizeOfOptionalHeader 64846
+#define JclResources_RsPeCharacteristics 64847
+#define JclResources_RsFailedToObtainSize 64848
+#define JclResources_RsPeReadOnlyStream 64849
+#define JclResources_RsPeCantOpen 64850
+#define JclResources_RsPeNotPE 64851
+#define JclResources_RsPeUnknownTarget 64852
+#define JclResources_RsPeNotResDir 64853
+#define JclResources_RsPeNotAvailableForAttached 64854
+#define JclResources_RsPeSectionNotFound 64855
+#define JclResources_RsPeImg_00 64856
+#define JclResources_RsPeImg_01 64857
+#define JclResources_RsPeImg_02 64858
+#define JclResources_RsPeImg_03 64859
+#define JclResources_RsPeImg_04 64860
+#define JclResources_RsPeImg_05 64861
+#define JclResources_RsPeImg_06 64862
+#define JclResources_RsPeImg_07 64863
+#define JvResources_RsEInvalidWizardPage 64864
+#define JvResources_RsETilingError 64865
+#define JclResources_RsEReplacementChar 64866
+#define JclResources_RsDateConversion 64867
+#define JclResources_RsUnknownFunctionAt 64868
+#define JclResources_RsEWindowsVersionNotSupported 64869
+#define JclResources_RsEWindowNotValid 64870
+#define JclResources_RsEProcessNotValid 64871
+#define JclResources_RsEModuleNotValid 64872
+#define JclResources_RsFileUtilsNoVersionInfo 64873
+#define JclResources_RsFileUtilsFileDoesNotExist 64874
+#define JclResources_RsFileUtilsLanguageIndex 64875
+#define JclResources_RsFileUtilsEmptyValue 64876
+#define JclResources_RsFileUtilsValueNotFound 64877
+#define JclResources_RsCreateFileMapping 64878
+#define JclResources_RsCreateFileMappingView 64879
+#define JvResources_RsCl3DDkShadow 64880
+#define JvResources_RsCl3DLight 64881
+#define JvResources_RsClInfoText 64882
+#define JvResources_RsClInfoBk 64883
+#define JvResources_RsGradientActiveCaption 64884
+#define JvResources_RsGradientInactiveCaption 64885
+#define JvResources_RsHotLight 64886
+#define JvResources_RsMenuBar 64887
+#define JvResources_RsMenuHighlight 64888
+#define JvResources_RsFirstButtonCaption 64889
+#define JvResources_RsLastButtonCaption 64890
+#define JvResources_RsFinishButtonCaption 64891
+#define JvResources_RsWelcome 64892
+#define JvResources_RsTitle 64893
+#define JvResources_RsSubtitle 64894
+#define JvResources_RsEInvalidParentControl 64895
+#define JvResources_RsClWindow 64896
+#define JvResources_RsClWindowFrame 64897
+#define JvResources_RsClMenuText 64898
+#define JvResources_RsClWindowText 64899
+#define JvResources_RsClCaptionText 64900
+#define JvResources_RsClActiveBorder 64901
+#define JvResources_RsClInactiveBorder 64902
+#define JvResources_RsClAppWorkSpace 64903
+#define JvResources_RsClHighlight 64904
+#define JvResources_RsClHighlightText 64905
+#define JvResources_RsClBtnFace 64906
+#define JvResources_RsClBtnShadow 64907
+#define JvResources_RsClGrayText 64908
+#define JvResources_RsClBtnText 64909
+#define JvResources_RsClInactiveCaptionText 64910
+#define JvResources_RsClBtnHighlight 64911
+#define JvResources_RsClBrightGreen 64912
+#define JvResources_RsClTurquoise 64913
+#define JvResources_RsClPlum 64914
+#define JvResources_RsClGray25 64915
+#define JvResources_RsClRose 64916
+#define JvResources_RsClTan 64917
+#define JvResources_RsClLightYellow 64918
+#define JvResources_RsClLightGreen 64919
+#define JvResources_RsClLightTurquoise 64920
+#define JvResources_RsClPaleBlue 64921
+#define JvResources_RsClLavender 64922
+#define JvResources_RsClScrollBar 64923
+#define JvResources_RsClBackground 64924
+#define JvResources_RsClActiveCaption 64925
+#define JvResources_RsClInactiveCaption 64926
+#define JvResources_RsClMenu 64927
+#define JvResources_RsClDarkTeal 64928
+#define JvResources_RsClDarkBlue 64929
+#define JvResources_RsClIndigo 64930
+#define JvResources_RsClGray80 64931
+#define JvResources_RsClDarkRed 64932
+#define JvResources_RsClOrange 64933
+#define JvResources_RsClDarkYellow 64934
+#define JvResources_RsClBlueGray 64935
+#define JvResources_RsClGray50 64936
+#define JvResources_RsClLightOrange 64937
+#define JvResources_RsClSeaGreen 64938
+#define JvResources_RsClLightBlue 64939
+#define JvResources_RsClViolet 64940
+#define JvResources_RsClGray40 64941
+#define JvResources_RsClPink 64942
+#define JvResources_RsClGold 64943
+#define JvResources_RsClGray 64944
+#define JvResources_RsClSilver 64945
+#define JvResources_RsClRed 64946
+#define JvResources_RsClLime 64947
+#define JvResources_RsClYellow 64948
+#define JvResources_RsClBlue 64949
+#define JvResources_RsClFuchsia 64950
+#define JvResources_RsClAqua 64951
+#define JvResources_RsClWhite 64952
+#define JvResources_RsClMoneyGreen 64953
+#define JvResources_RsClSkyBlue 64954
+#define JvResources_RsClCream 64955
+#define JvResources_RsClMedGray 64956
+#define JvResources_RsClBrown 64957
+#define JvResources_RsClOliveGreen 64958
+#define JvResources_RsClDarkGreen 64959
+#define JvResources_RsEExtensibleIntObjCollectionExpected 64960
+#define JvResources_RsEExtensibleIntObjClassNameExpected 64961
+#define JvResources_RsEExtensibleIntObjInvalidClass 64962
+#define JvResources_RsUnknownLocaleIDFmt 64963
+#define JvResources_RsEDirectThreadCreationNotAllowed 64964
+#define JvResources_RsEDirectHidDeviceCreationNotAllowed 64965
+#define JvResources_RsEDeviceCannotBeIdentified 64966
+#define JvResources_RsEDeviceCannotBeOpened 64967
+#define JvResources_RsUnknown 64968
+#define JvResources_RsClBlack 64969
+#define JvResources_RsClMaroon 64970
+#define JvResources_RsClGreen 64971
+#define JvResources_RsClOlive 64972
+#define JvResources_RsClNavy 64973
+#define JvResources_RsClPurple 64974
+#define JvResources_RsClTeal 64975
 #define Vcl_ComStrs_sFailsetCalSelRange 64976
-#define JvResources_RsDataItemRenderHasNoText 64977
-#define JvResources_RsEInternalError 64978
-#define JvResources_RsEItemCanNotBeDeleted 64979
-#define JvResources_RsEAContextWithThatNameAlreadyExists 64980
-#define JvResources_RsECannotCreateAContextWithoutAContext 64981
-#define JvResources_RsEYouMustSpecifyAProviderBeforeSettin 64982
-#define JvResources_RsEProviderHasNoContextNameds 64983
-#define JvResources_RsEProviderDoesNotSupportContexts 64984
-#define JvResources_RsETheSpecifiedContextIsNotPartOfTheSa 64985
-#define JvResources_RsEYouMustSpecifyAProviderBeforeSettin_ 64986
-#define JvResources_RsEItemNotFoundInTheSelectedContext 64987
-#define JvResources_RsEViewListOutOfSync 64988
-#define JvResources_RsEExtensibleIntObjDuplicateClass 64989
-#define JvResources_RsEExtensibleIntObjCollectionExpected 64990
-#define JvResources_RsEExtensibleIntObjClassNameExpected 64991
+#define JvResources_RsBackButtonCaption 64977
+#define JvResources_RsNextButtonCaption 64978
+#define JvResources_RsDataItemRenderHasNoText 64979
+#define JvResources_RsEInternalError 64980
+#define JvResources_RsEItemCanNotBeDeleted 64981
+#define JvResources_RsEAContextWithThatNameAlreadyExists 64982
+#define JvResources_RsECannotCreateAContextWithoutAContext 64983
+#define JvResources_RsEYouMustSpecifyAProviderBeforeSettin 64984
+#define JvResources_RsEProviderHasNoContextNameds 64985
+#define JvResources_RsEProviderDoesNotSupportContexts 64986
+#define JvResources_RsETheSpecifiedContextIsNotPartOfTheSa 64987
+#define JvResources_RsEYouMustSpecifyAProviderBeforeSettin_ 64988
+#define JvResources_RsEItemNotFoundInTheSelectedContext 64989
+#define JvResources_RsEViewListOutOfSync 64990
+#define JvResources_RsEExtensibleIntObjDuplicateClass 64991
 #define Vcl_ComStrs_sInvalidLevelEx 64992
 #define Vcl_ComStrs_sInvalidIndex 64993
 #define Vcl_ComStrs_sInsertError 64994
@@ -1435,11 +1447,6 @@
 #define System_SysConst_SInvalidUnknownFilename 65535
 STRINGTABLE
 BEGIN
-	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
-	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
-	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
-	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
-	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	UExceptionDialog_RsMemory,	L"Memory: %d; free %d"
 	UExceptionDialog_RsScreenRes,	L"Display  : %dx%d pixels, %d bpp"
 	UExceptionDialog_RsActiveControl,	L"Active Controls hierarchy:"
@@ -1452,10 +1459,7 @@ BEGIN
 	UExceptionDialog_RsThreadCallStack,	L"Call stack for thread %d %s ""%s"""
 	UExceptionDialog_RsErrorMessage,	L"There was an error during the execution of this program.\r\nThe application might become unstable and even useless.\r\nIt's recommended that you save your work and close this application.\r\n\r\n"
 	UExceptionDialog_RsDetailsIntro,	L"Exception log with detailed tech info. Generated on %s.\r\nYou may send it to the application vendor, helping him to understand what had happened.\r\n Application title: %s\r\n Application file: %s"
-	Main_TMainForm_darkmode_changed,	L"Dark Mode changes will take effect on the next startup."
-	Main_TMainForm_partial_nomatch,	L"NO MATCH!"
-	Main_TMainForm_prev_used_file_notfound,	L"The previously used file %s was not found."
-	Main_TMainForm_Check_Multi,	L"Check Multi"
+	UExceptionDialog_RsUnitVersioningIntro,	L"Unit versioning information:"
 	Main_TMainForm_Check_Zone,	L"Check Zone"
 	Main_TMainForm_Reset_grid_column_widths,	L"Reset Column widths to their default values. Are you sure?"
 	Main_TMainForm_Load_MMTTY,	L"Load MMTTY"
@@ -1468,10 +1472,10 @@ BEGIN
 	UExceptionDialog_RsExceptionClass,	L"Exception class: %s"
 	UExceptionDialog_RsExceptionMessage,	L"Exception message: %s"
 	UExceptionDialog_RsExceptionAddr,	L"Exception address: %p"
-	Main_TMainForm_UploadFile,	L"Uploading..."
-	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
-	Main_TMainForm_Compressing,	L"Compressing..."
-	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
+	UExceptionDialog_RsStackList,	L"Stack list, generated %s"
+	UExceptionDialog_RsModulesList,	L"List of loaded modules:"
+	UExceptionDialog_RsOSVersion,	L"System   : %s %s, Version: %d.%d, Build: %x, ""%s"""
+	UExceptionDialog_RsProcessor,	L"Processor: %s, %s, %d MHz"
 	Main_TMainForm_FileNotFound,	L"file not found."
 	Main_TMainForm_ComfirmUploadSound,	L"Upload the sound file to Z-Server. Are you sure?"
 	Main_TMainForm_ComfirmDownloadSound,	L"Would you like to download the sound file?\r\nOverwrite the existing sound file."
@@ -1484,10 +1488,10 @@ BEGIN
 	Main_TMainForm_To_Change_the_mode,	L"To change the operating mode, first turn off the F2A mode."
 	Main_TMainForm_To_Change_the_band,	L"To change the operating band, first turn off the F2A mode."
 	Main_TMainForm_rbn_verified,	L"Verification results\r\n%1 of %2 stations were verified with RBN"
-	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
-	Main_TMainForm_Setup_MyCall_first,	L"Please enter your callsign first."
-	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State code and City code first."
-	Main_TMainForm_Setup_SentNR_cqzone,	L"Setup CQ Zone number first."
+	Main_TMainForm_darkmode_changed,	L"Dark Mode changes will take effect on the next startup."
+	Main_TMainForm_partial_nomatch,	L"NO MATCH!"
+	Main_TMainForm_prev_used_file_notfound,	L"The previously used file %s was not found."
+	Main_TMainForm_Check_Multi,	L"Check Multi"
 	Main_TMainForm_Setup_SentNR_ituzone,	L"Setup ITU Zone number first."
 	Main_TMainForm_Setup_SentNR_age,	L"Setup operator's age first."
 	Main_TMainForm_Setup_SentNR_iota,	L"Setup IOTA number first."
@@ -1500,10 +1504,10 @@ BEGIN
 	Main_TMainForm_ComfirmUploadOpList,	L"Upload the operator list to Z-Server. Are you sure?"
 	Main_TMainForm_ComfirmDownloadOpList,	L"Would you like to download the operator list?\r\nOverwrite the existing operator list."
 	Main_TMainForm_DownloadFile,	L"Downloading..."
-	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
-	Main_TMainForm_Invalid_number,	L"Invalid number"
-	Main_TMainForm_Callsign_not_entered,	L"Callsign not entered"
-	Main_TMainForm_Dupe_qso,	L"Dupe"
+	Main_TMainForm_UploadFile,	L"Uploading..."
+	Main_TMainForm_SoundFileFolderNotSet,	L"Sound file folder not set."
+	Main_TMainForm_Compressing,	L"Compressing..."
+	Main_TMainForm_FailedToCompressSoundFiles,	L"Failed to compress sound files."
 	Main_TMainForm_Thankyou_for_your_qso,	L"Thank you for the QSO with JA1ZLO"
 	Main_TMainForm_CW_port_is_no_set,	L"CW port is not set"
 	Main_TMainForm_Not_a_new_multi,	L"NOT a new multiplier. (This is a multi stn)"
@@ -1516,10 +1520,10 @@ BEGIN
 	Main_TMainForm_Set_CQ_Repeat_Int,	L"CQ Repeat Int. %.1f sec."
 	Main_TMainForm_Invalid_zone,	L"Invalid zone"
 	Main_TMainForm_JudgePeriod,	L"Do you want to judge whether all QSOs are within the contest period?"
-	Main_TMainForm_Change_Date,	L"To change the date, double click the time field."
-	Main_TMainForm_Confirm_Save_Changes,	L"Save changes to %s ?"
-	Main_TMainForm_Active_Band_Adjusted,	L"Active Bands adjusted to the required bands"
-	Main_TMainForm_Change_Band_QSOs,	L"Are you sure to change the band for these QSO's?"
+	Main_TMainForm_EmptyOpList,	L"Operator list is empty."
+	Main_TMainForm_Setup_MyCall_first,	L"Please enter your callsign first."
+	Main_TMainForm_Setup_SentNR_first,	L"Setup Prov/State code and City code first."
+	Main_TMainForm_Setup_SentNR_cqzone,	L"Setup CQ Zone number first."
 	Main_TMainForm_Change_Mode_QSOs,	L"Are you sure to change the mode for these QSO's?"
 	Main_TMainForm_Change_Operator_QSOs,	L"Are you sure to change the operator names for these QSO's?"
 	Main_TMainForm_Change_Power_QSOs,	L"Are you sure to change the power for these QSO's?"
@@ -1532,11 +1536,10 @@ BEGIN
 	Main_TMainForm_Loading_now,	L"Loading..."
 	Main_TMainForm_Switch_CW_Bank_A,	L"CW Bank A"
 	Main_TMainForm_Switch_CW_Bank_B,	L"CW Bank B"
-	URateDialogEx_SCOREGRID_DIFF,	L"Diff"
-	URateDialogEx_SCOREGRID_DIFF2,	L"+/-"
-	URateDialogEx_SCOREGRID_CUMULATIVE,	L"Cumulative"
-	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
-	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
+	Main_TMainForm_This_QSO_is_locked,	L"This QSO is currently locked"
+	Main_TMainForm_Invalid_number,	L"Invalid number"
+	Main_TMainForm_Callsign_not_entered,	L"Callsign not entered"
+	Main_TMainForm_Dupe_qso,	L"Dupe"
 	URateDialogEx_HOURCAPTION_SHOWFIRST,	L"Show first"
 	URateDialogEx_HOURCAPTION_SHOWCURRENT,	L"Show current"
 	URateDialogEx_HOURCAPTION_SHOWLAST,	L"Show last"
@@ -1544,15 +1547,15 @@ BEGIN
 	UCFGEdit_Please_enter_the_city_code,	L"Please enter the City code"
 	UBandPlanEditDialog_Input_Text,	L"Please enter preset name"
 	UBandPlanEditDialog_Delete_Preset,	L"Are you sure to delete the bandplan preset [%s]"
+	UTargetEditor_AreYouSureYouWantToResetAllTargetValuesTo0,	L"Are you sure you want to clear all target values?"
 	Main_TMainForm_Enter_Frequency,	L"Enter frequency in kHz"
 	Main_TMainForm_Comfirm_Delete_Qso,	L"Are you sure to delete this QSO?"
 	Main_TMainForm_Comfirm_Delete_Qsos,	L"Are you sure to delete these QSO's?"
 	Main_TMainForm_New_Multi_Only,	L"This station is not a new multiplier, but will be logged anyway."
-	Vcl_EdgeConst_SNoWebView,	L"\x57FA\x790E\x3068\x3059\x308B WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x304C\x521D\x671F\x5316\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
-	IEConst_sNotSupportedByEdge,	L"\x64CD\x4F5C\x306F Edge WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3067\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
-	Web_WebConst_sDuplicateActionName,	L"Duplicate action name"
-	Web_WebConst_sOnlyOneDispatcher,	L"WebDispatcher \x306F 1 \x3064\x306E\x30D5\x30A9\x30FC\x30E0/\x30C7\x30FC\x30BF \x30E2\x30B8\x30E5\x30FC\x30EB\x306B 1 \x3064\x3057\x304B\x7F6E\x3051\x307E\x305B\x3093"
-	Web_WebConst_sHTTPItemName,	L"Name"
+	Main_TMainForm_Change_Date,	L"To change the date, double click the time field."
+	Main_TMainForm_Confirm_Save_Changes,	L"Save changes to %s ?"
+	Main_TMainForm_Active_Band_Adjusted,	L"Active Bands adjusted to the required bands"
+	Main_TMainForm_Change_Band_QSOs,	L"Are you sure to change the band for these QSO's?"
 	Web_WebConst_sHTTPItemURI,	L"PathInfo"
 	Web_WebConst_sHTTPItemEnabled,	L"Enabled"
 	Web_WebConst_sHTTPItemDefault,	L"Default"
@@ -1564,11 +1567,11 @@ BEGIN
 	URateDialog_HOURCAPTION_SHOWLAST,	L"Show last"
 	URateDialogEx_SCOREGRID_TOTAL,	L"Total"
 	URateDialogEx_SCOREGRID_TARGET,	L"Target"
-	UOptions2_Save_CWA_MyMessages,	L"Save CW(Bank-A) messages to My Messages(zlog.ini). Are you sure?"
-	UOptions2_Save_CWB_MyMessages,	L"Save CW(Bank-B) messages to My Messages(zlog.ini). Are you sure?"
-	UOptions2_Save_RTTY_MyMessages,	L"Save RTTY messages to My Messages(zlog.ini). Are you sure?"
-	UOptions2_Reset_CWA_messages_to_default,	L"Reset CW(Bank-A) messages to their default values. Are you sure?"
-	UOptions2_Reset_CWB_messages_to_default,	L"Reset CW(Bank-B) messages to their default values. Are you sure?"
+	URateDialogEx_SCOREGRID_DIFF,	L"Diff"
+	URateDialogEx_SCOREGRID_DIFF2,	L"+/-"
+	URateDialogEx_SCOREGRID_CUMULATIVE,	L"Cumulative"
+	URateDialogEx_SCOREGRID_WINLOSS_L,	L"Win/Loss"
+	URateDialogEx_SCOREGRID_WINLOSS_S,	L"W/L"
 	UOptions2_Reset_RTTY_messages_to_default,	L"Reset RTTY messages to their default values. Are you sure?"
 	UOptions2_Setup_MyCall,	L"Please enter your callsign."
 	UOptions2_Setup_SentNR_prov,	L"Please enter Prov code."
@@ -1580,11 +1583,11 @@ BEGIN
 	UOptions2_Setup_SentNR_handle,	L"Please enter your Handle Name."
 	UOptions2_DoYouWantTheUpperBandsToHaveTheSameSettins,	L"Do you want the higher bands to have the same settings?"
 	Vcl_EdgeConst_SWebViewFailure,	L"Edge \x30D6\x30E9\x30A6\x30B6 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F"
-	System_NetConsts_SNetHttpRequestOpenError,	L"\x8981\x6C42\x3092\x958B\x304F\x969B\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
-	System_NetConsts_SNetHttpRequestAddHeaderError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x8FFD\x52A0\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
-	System_NetConsts_SNetHttpRequestRemoveHeaderError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x524A\x9664\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
-	System_NetConsts_SNetHttpRequestReadDataError,	L"\x30C7\x30FC\x30BF\x306E\x8AAD\x307F\x53D6\x308A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
-	System_NetConsts_SNetHttpRequestSetTimeoutError,	L"\x8981\x6C42\x306E\x30BF\x30A4\x30E0\x30A2\x30A6\x30C8\x306E\x8A2D\x5B9A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
+	Vcl_EdgeConst_SNoWebView,	L"\x57FA\x790E\x3068\x3059\x308B WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x304C\x521D\x671F\x5316\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
+	IEConst_sNotSupportedByEdge,	L"\x64CD\x4F5C\x306F Edge WebView2 \x30B3\x30F3\x30C8\x30ED\x30FC\x30EB\x3067\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
+	Web_WebConst_sDuplicateActionName,	L"Duplicate action name"
+	Web_WebConst_sOnlyOneDispatcher,	L"WebDispatcher \x306F 1 \x3064\x306E\x30D5\x30A9\x30FC\x30E0/\x30C7\x30FC\x30BF \x30E2\x30B8\x30E5\x30FC\x30EB\x306B 1 \x3064\x3057\x304B\x7F6E\x3051\x307E\x305B\x3093"
+	Web_WebConst_sHTTPItemName,	L"Name"
 	System_NetConsts_SNetHttpCertFileOpenError,	L"\x8A8D\x8A3C\x30D5\x30A1\x30A4\x30EB\x306E\x30AA\x30FC\x30D7\x30F3\x6642\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpCertNotFoundError,	L"\x30D5\x30A1\x30A4\x30EB\x3067\x8A3C\x660E\x66F8\x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093: (%d) %s"
 	System_NetConsts_SMimeDuplicateType,	L"\x62E1\x5F35\x5B50\x3068 MIME \x30BF\x30A4\x30D7\x306E\x30DA\x30A2\x304C\x65E2\x306B\x5B58\x5728\x3057\x307E\x3059"
@@ -1596,11 +1599,11 @@ BEGIN
 	UOptions2_Load_CWA_MyMessages,	L"Load CW(Bank-A) messages from My Messages(zlog.ini). Are you sure?"
 	UOptions2_Load_CWB_MyMessages,	L"Load CW(Bank-B) messages from My Messages(zlog.ini). Are you sure?"
 	UOptions2_Load_RTTY_MyMessages,	L"Load RTTY messages from My Messages(zlog.ini). Are you sure?"
-	System_NetConsts_SNetUriParamNotFound,	L"\x30D1\x30E9\x30E1\x30FC\x30BF ""%s"" \x306F\x898B\x3064\x304B\x308A\x307E\x305B\x3093"
-	System_NetConsts_SNetUriInvalidRelPath,	L"\x76F8\x5BFE URL \x30D1\x30B9\x304C\x7121\x52B9\x3067\x3059: ""%s"""
-	System_NetConsts_SNetHttpMaxRedirections,	L"\x30EA\x30C0\x30A4\x30EC\x30AF\x30C8\x306E\x6700\x5927\x6570 (%d) \x3092\x8D85\x3048\x307E\x3057\x305F"
-	System_NetConsts_SNetHttpGetServerCertificate,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x306E\x53D6\x5F97\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F"
-	System_NetConsts_SNetHttpInvalidServerCertificate,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x304C\x7121\x52B9\x3067\x3042\x308B\x304B\x5B58\x5728\x3057\x307E\x305B\x3093"
+	UOptions2_Save_CWA_MyMessages,	L"Save CW(Bank-A) messages to My Messages(zlog.ini). Are you sure?"
+	UOptions2_Save_CWB_MyMessages,	L"Save CW(Bank-B) messages to My Messages(zlog.ini). Are you sure?"
+	UOptions2_Save_RTTY_MyMessages,	L"Save RTTY messages to My Messages(zlog.ini). Are you sure?"
+	UOptions2_Reset_CWA_messages_to_default,	L"Reset CW(Bank-A) messages to their default values. Are you sure?"
+	UOptions2_Reset_CWB_messages_to_default,	L"Reset CW(Bank-B) messages to their default values. Are you sure?"
 	System_NetConsts_SNetHttpServerCertificateNotAccepted,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x304C\x53D7\x7406\x3055\x308C\x307E\x305B\x3093\x3067\x3057\x305F"
 	System_NetConsts_SNetHttpEmptyCertificateList,	L"\x8A3C\x660E\x66F8\x30EA\x30B9\x30C8\x304C\x7A7A\x3067\x3059"
 	System_NetConsts_SNetHttpUnspecifiedCertificate,	L"\x30AF\x30E9\x30A4\x30A2\x30F3\x30C8\x304B\x3089\x306E\x8A3C\x660E\x66F8\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
@@ -1612,11 +1615,11 @@ BEGIN
 	System_NetConsts_SNetHttpClientSendError,	L"\x30C7\x30FC\x30BF\x306E\x9001\x4FE1\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpClientReceiveError,	L"\x30C7\x30FC\x30BF\x306E\x53D7\x4FE1\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_NetConsts_SNetHttpRequestConnectError,	L"\x30B5\x30FC\x30D0\x30FC\x3078\x306E\x63A5\x7D9A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: %s"
-	System_JSONConsts_SCannotAddJSONValue,	L"\x5024 %s \x306F %s \x306B\x8FFD\x52A0\x3067\x304D\x307E\x305B\x3093"
-	System_JSONConsts_SJSONPathUnexpectedRootChar,	L"\x30EB\x30FC\x30C8\x8981\x7D20\x306B\x4E88\x671F\x3057\x306A\x3044\x6587\x5B57\x304C\x3042\x308A\x307E\x3059: ."
-	System_JSONConsts_SJSONPathEndedOpenBracket,	L"\x30D1\x30B9\x304C\x5DE6\x89D2\x304B\x3063\x3053\x3067\x7D42\x308F\x3063\x3066\x3044\x307E\x3059"
-	System_JSONConsts_SJSONPathEndedOpenString,	L"\x30D1\x30B9\x304C\x30AA\x30FC\x30D7\x30F3\x6587\x5B57\x5217\x3067\x7D42\x308F\x3063\x3066\x3044\x307E\x3059"
-	System_JSONConsts_SJSONPathInvalidArrayIndex,	L"\x914D\x5217\x306E\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x304C\x7121\x52B9\x3067\x3059: %s"
+	System_NetConsts_SNetHttpRequestOpenError,	L"\x8981\x6C42\x3092\x958B\x304F\x969B\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
+	System_NetConsts_SNetHttpRequestAddHeaderError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x8FFD\x52A0\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
+	System_NetConsts_SNetHttpRequestRemoveHeaderError,	L"\x30D8\x30C3\x30C0\x30FC\x306E\x524A\x9664\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
+	System_NetConsts_SNetHttpRequestReadDataError,	L"\x30C7\x30FC\x30BF\x306E\x8AAD\x307F\x53D6\x308A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
+	System_NetConsts_SNetHttpRequestSetTimeoutError,	L"\x8981\x6C42\x306E\x30BF\x30A4\x30E0\x30A2\x30A6\x30C8\x306E\x8A2D\x5B9A\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: (%d) %s"
 	System_JSONConsts_SJSONPathUnexpectedIndexedChar,	L"\x30A4\x30F3\x30C7\x30AF\x30B5\x306E\x89E3\x6790\x4E2D\x306B\x4E88\x671F\x3057\x306A\x3044\x6587\x5B57\x304C\x898B\x3064\x304B\x308A\x307E\x3057\x305F: %s"
 	System_JSONConsts_SJSONPathDotsEmptyName,	L"\x30C9\x30C3\x30C8\x8868\x8A18\x3067\x306F\x540D\x524D\x3092\x7A7A\x306B\x306F\x3067\x304D\x307E\x305B\x3093\x3002[''] \x3092\x4F7F\x7528\x3057\x307E\x3059"
 	System_NetConsts_SSchemeAlreadyRegistered,	L"\x30B9\x30AD\x30FC\x30E0 ""%s"" \x306F %s \x306B\x65E2\x306B\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x3059"
@@ -1628,11 +1631,11 @@ BEGIN
 	System_NetConsts_SNetUriURLAlreadyAssigned,	L"URL \x304C\x65E2\x306B\x5272\x308A\x5F53\x3066\x3089\x308C\x3066\x3044\x307E\x3059"
 	System_NetConsts_SNetUriIndexOutOfRange,	L"\x30D1\x30E9\x30E1\x30FC\x30BF\x306E\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9 (%d) \x304C\x7BC4\x56F2 (%d..%d) \x5916\x3067\x3059"
 	System_NetConsts_SNetUriInvalid,	L"URL \x304C\x7121\x52B9\x3067\x3059: ""%s"""
-	IdResourceStrings_RSStackClassUndefined,	L"\x30B9\x30BF\x30C3\x30AF \x30AF\x30E9\x30B9\x306F\x672A\x5B9A\x7FA9\x3067\x3059\x3002"
-	IdResourceStrings_RSStackAlreadyCreated,	L"\x30B9\x30BF\x30C3\x30AF\x304C\x65E2\x306B\x4F5C\x6210\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
-	IdResourceStrings_RSInvalidServiceName,	L"%s \x306F\x6709\x52B9\x306A\x30B5\x30FC\x30D3\x30B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
-	IdResourceStrings_RSInvalidIPv6Address,	L"%s \x306F\x6709\x52B9\x306A IPv6 \x30A2\x30C9\x30EC\x30B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093"
-	IdResourceStrings_RSIPVersionUnsupported,	L"\x8981\x6C42\x3057\x305F IP \x30D0\x30FC\x30B8\x30E7\x30F3/\x30A2\x30C9\x30EC\x30B9 \x30D5\x30A1\x30DF\x30EA\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
+	System_NetConsts_SNetUriParamNotFound,	L"\x30D1\x30E9\x30E1\x30FC\x30BF ""%s"" \x306F\x898B\x3064\x304B\x308A\x307E\x305B\x3093"
+	System_NetConsts_SNetUriInvalidRelPath,	L"\x76F8\x5BFE URL \x30D1\x30B9\x304C\x7121\x52B9\x3067\x3059: ""%s"""
+	System_NetConsts_SNetHttpMaxRedirections,	L"\x30EA\x30C0\x30A4\x30EC\x30AF\x30C8\x306E\x6700\x5927\x6570 (%d) \x3092\x8D85\x3048\x307E\x3057\x305F"
+	System_NetConsts_SNetHttpGetServerCertificate,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x306E\x53D6\x5F97\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F"
+	System_NetConsts_SNetHttpInvalidServerCertificate,	L"\x30B5\x30FC\x30D0\x30FC\x8A3C\x660E\x66F8\x304C\x7121\x52B9\x3067\x3042\x308B\x304B\x5B58\x5728\x3057\x307E\x305B\x3093"
 	IdResourceStrings_RSNotAllBytesSent,	L"\x9001\x4FE1\x3067\x304D\x306A\x304B\x3063\x305F\x30D0\x30A4\x30C8\x304C\x3042\x308A\x307E\x3059\x3002"
 	IdResourceStrings_RSPackageSizeTooBig,	L"\x30D1\x30C3\x30B1\x30FC\x30B8 \x30B5\x30A4\x30BA\x304C\x5927\x304D\x3059\x304E\x307E\x3059\x3002"
 	IdResourceStrings_RSSetSizeExceeded,	L"\x30BB\x30C3\x30C8\x306E\x30B5\x30A4\x30BA\x3092\x8D85\x3048\x3066\x3044\x307E\x3059\x3002"
@@ -1644,11 +1647,11 @@ BEGIN
 	System_JSONConsts_STooMuchNesting,	L"JSON\x914D\x5217 / \x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x306E\x5165\x308C\x5B50\x30EC\x30D9\x30EB\x304C %d \x3088\x308A\x5927\x304D\x3044"
 	System_JSONConsts_SValueNotFound,	L"\x5024 '%s' \x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093"
 	System_JSONConsts_SCannotConvertJSONValueToType,	L"%0:s \x304B\x3089 %1:s \x3078\x306E\x5909\x63DB\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
-	IdResourceStrings_RSStackENETRESET,	L"\x30CD\x30C3\x30C8\x30EF\x30FC\x30AF\x304C\x63A5\x7D9A\x3092\x5207\x65AD\x307E\x305F\x306F\x30EA\x30BB\x30C3\x30C8\x3057\x307E\x3057\x305F\x3002"
-	IdResourceStrings_RSStackECONNABORTED,	L"\x30BD\x30D5\x30C8\x30A6\x30A7\x30A2\x304C\x539F\x56E0\x3067\x63A5\x7D9A\x304C\x9014\x4E2D\x3067\x4E2D\x6B62\x3055\x308C\x307E\x3057\x305F\x3002"
-	IdResourceStrings_RSStackECONNRESET,	L"\x30D4\x30A2\x306B\x3088\x308A\x63A5\x7D9A\x304C\x30EA\x30BB\x30C3\x30C8\x3055\x308C\x307E\x3057\x305F\x3002"
-	IdResourceStrings_RSStackENOBUFS,	L"\x4F7F\x7528\x3067\x304D\x308B\x30D0\x30C3\x30D5\x30A1\x9818\x57DF\x304C\x3042\x308A\x307E\x305B\x3093\x3002"
-	IdResourceStrings_RSStackEISCONN,	L"\x30BD\x30B1\x30C3\x30C8\x306F\x65E2\x306B\x63A5\x7D9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
+	System_JSONConsts_SCannotAddJSONValue,	L"\x5024 %s \x306F %s \x306B\x8FFD\x52A0\x3067\x304D\x307E\x305B\x3093"
+	System_JSONConsts_SJSONPathUnexpectedRootChar,	L"\x30EB\x30FC\x30C8\x8981\x7D20\x306B\x4E88\x671F\x3057\x306A\x3044\x6587\x5B57\x304C\x3042\x308A\x307E\x3059: ."
+	System_JSONConsts_SJSONPathEndedOpenBracket,	L"\x30D1\x30B9\x304C\x5DE6\x89D2\x304B\x3063\x3053\x3067\x7D42\x308F\x3063\x3066\x3044\x307E\x3059"
+	System_JSONConsts_SJSONPathEndedOpenString,	L"\x30D1\x30B9\x304C\x30AA\x30FC\x30D7\x30F3\x6587\x5B57\x5217\x3067\x7D42\x308F\x3063\x3066\x3044\x307E\x3059"
+	System_JSONConsts_SJSONPathInvalidArrayIndex,	L"\x914D\x5217\x306E\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x304C\x7121\x52B9\x3067\x3059: %s"
 	IdResourceStrings_RSStackENOTCONN,	L"\x30BD\x30B1\x30C3\x30C8\x304C\x63A5\x7D9A\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
 	IdResourceStrings_RSStackESHUTDOWN,	L"\x30BD\x30B1\x30C3\x30C8\x304C\x9589\x3058\x305F\x5F8C\x306B\x9001\x4FE1\x3084\x53D7\x4FE1\x3092\x3059\x308B\x3053\x3068\x306F\x3067\x304D\x307E\x305B\x3093\x3002"
 	IdResourceStrings_RSStackETOOMANYREFS,	L"\x53C2\x7167\x304C\x591A\x3059\x304E\x307E\x3059\x3002\x7D99\x304E\x5408\x308F\x305B\x308B\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3002"
@@ -1660,11 +1663,11 @@ BEGIN
 	IdResourceStrings_RSStackEHOSTUNREACH,	L"\x30DB\x30B9\x30C8\x3078\x306E\x30EB\x30FC\x30C8\x304C\x5B58\x5728\x3057\x307E\x305B\x3093\x3002"
 	IdResourceStrings_RSStackENOTEMPTY,	L"\x30C7\x30A3\x30EC\x30AF\x30C8\x30EA\x304C\x7A7A\x3067\x306F\x3042\x308A\x307E\x305B\x3093"
 	IdResourceStrings_RSStackHOST_NOT_FOUND,	L"\x30DB\x30B9\x30C8\x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093\x3002"
-	IdResourceStrings_RSStackEINPROGRESS,	L"\x64CD\x4F5C\x3092\x73FE\x5728\x5B9F\x884C\x4E2D\x3067\x3059\x3002"
-	IdResourceStrings_RSStackEALREADY,	L"\x64CD\x4F5C\x306F\x65E2\x306B\x5B9F\x884C\x4E2D\x3067\x3059\x3002"
-	IdResourceStrings_RSStackENOTSOCK,	L"\x30BD\x30B1\x30C3\x30C8\x4EE5\x5916\x306E\x3082\x306E\x306B\x5BFE\x3059\x308B\x30BD\x30B1\x30C3\x30C8\x64CD\x4F5C\x3067\x3059\x3002"
-	IdResourceStrings_RSStackEDESTADDRREQ,	L"\x9001\x4FE1\x5148\x30A2\x30C9\x30EC\x30B9\x304C\x5FC5\x8981\x3067\x3059\x3002"
-	IdResourceStrings_RSStackEMSGSIZE,	L"\x30E1\x30C3\x30BB\x30FC\x30B8\x304C\x9577\x3059\x304E\x307E\x3059\x3002"
+	IdResourceStrings_RSStackClassUndefined,	L"\x30B9\x30BF\x30C3\x30AF \x30AF\x30E9\x30B9\x306F\x672A\x5B9A\x7FA9\x3067\x3059\x3002"
+	IdResourceStrings_RSStackAlreadyCreated,	L"\x30B9\x30BF\x30C3\x30AF\x304C\x65E2\x306B\x4F5C\x6210\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
+	IdResourceStrings_RSInvalidServiceName,	L"%s \x306F\x6709\x52B9\x306A\x30B5\x30FC\x30D3\x30B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
+	IdResourceStrings_RSInvalidIPv6Address,	L"%s \x306F\x6709\x52B9\x306A IPv6 \x30A2\x30C9\x30EC\x30B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093"
+	IdResourceStrings_RSIPVersionUnsupported,	L"\x8981\x6C42\x3057\x305F IP \x30D0\x30FC\x30B8\x30E7\x30F3/\x30A2\x30C9\x30EC\x30B9 \x30D5\x30A1\x30DF\x30EA\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
 	IdResourceStrings_RSStackEPROTOTYPE,	L"\x30BD\x30B1\x30C3\x30C8\x306E\x30D7\x30ED\x30C8\x30B3\x30EB\x306E\x7A2E\x985E\x304C\x6B63\x3057\x304F\x3042\x308A\x307E\x305B\x3093\x3002"
 	IdResourceStrings_RSStackENOPROTOOPT,	L"\x30D7\x30ED\x30C8\x30B3\x30EB \x30AA\x30D7\x30B7\x30E7\x30F3\x304C\x4E0D\x6B63\x3067\x3059\x3002"
 	IdResourceStrings_RSStackEPROTONOSUPPORT,	L"\x30D7\x30ED\x30C8\x30B3\x30EB\x304C\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
@@ -1676,11 +1679,11 @@ BEGIN
 	IdResourceStrings_RSStackEADDRNOTAVAIL,	L"\x8981\x6C42\x3055\x308C\x305F\x30A2\x30C9\x30EC\x30B9\x3092\x5272\x308A\x5F53\x3066\x308B\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3002"
 	IdResourceStrings_RSStackENETDOWN,	L"\x30CD\x30C3\x30C8\x30EF\x30FC\x30AF\x304C\x505C\x6B62\x3057\x3066\x3044\x307E\x3059\x3002"
 	IdResourceStrings_RSStackENETUNREACH,	L"\x30CD\x30C3\x30C8\x30EF\x30FC\x30AF\x306B\x5230\x9054\x3067\x304D\x307E\x305B\x3093\x3002"
-	IdResourceStrings_RSInvalidSourceArray,	L"\x30BD\x30FC\x30B9\x914D\x5217\x304C\x7121\x52B9\x3067\x3059"
-	IdResourceStrings_RSInvalidDestinationArray,	L"\x30BF\x30FC\x30B2\x30C3\x30C8\x914D\x5217\x304C\x7121\x52B9\x3067\x3059"
-	IdResourceStrings_RSCharIndexOutOfBounds,	L"\x6587\x5B57\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x304C\x7BC4\x56F2\x5916\x3067\x3059 (%d)"
-	IdResourceStrings_RSInvalidCharCount,	L"\x30AB\x30A6\x30F3\x30C8\x304C\x7121\x52B9\x3067\x3059 (%d)"
-	IdResourceStrings_RSInvalidDestinationIndex,	L"\x30BF\x30FC\x30B2\x30C3\x30C8 \x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x304C\x7121\x52B9\x3067\x3059 (%d)"
+	IdResourceStrings_RSStackENETRESET,	L"\x30CD\x30C3\x30C8\x30EF\x30FC\x30AF\x304C\x63A5\x7D9A\x3092\x5207\x65AD\x307E\x305F\x306F\x30EA\x30BB\x30C3\x30C8\x3057\x307E\x3057\x305F\x3002"
+	IdResourceStrings_RSStackECONNABORTED,	L"\x30BD\x30D5\x30C8\x30A6\x30A7\x30A2\x304C\x539F\x56E0\x3067\x63A5\x7D9A\x304C\x9014\x4E2D\x3067\x4E2D\x6B62\x3055\x308C\x307E\x3057\x305F\x3002"
+	IdResourceStrings_RSStackECONNRESET,	L"\x30D4\x30A2\x306B\x3088\x308A\x63A5\x7D9A\x304C\x30EA\x30BB\x30C3\x30C8\x3055\x308C\x307E\x3057\x305F\x3002"
+	IdResourceStrings_RSStackENOBUFS,	L"\x4F7F\x7528\x3067\x304D\x308B\x30D0\x30C3\x30D5\x30A1\x9818\x57DF\x304C\x3042\x308A\x307E\x305B\x3093\x3002"
+	IdResourceStrings_RSStackEISCONN,	L"\x30BD\x30B1\x30C3\x30C8\x306F\x65E2\x306B\x63A5\x7D9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
 	IdResourceStrings_RSInvalidCodePage,	L"\x30B3\x30FC\x30C9\x30DA\x30FC\x30B8\x304C\x7121\x52B9\x3067\x3059 (%d)"
 	IdResourceStrings_RSWinsockCallError,	L"Winsock2 \x30E9\x30A4\x30D6\x30E9\x30EA\x95A2\x6570 %s \x3078\x306E\x547C\x3073\x51FA\x3057\x3067\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F"
 	IdResourceStrings_RSWinsockLoadError,	L"Winsock2 \x30E9\x30A4\x30D6\x30E9\x30EA (%s) \x306E\x8AAD\x307F\x8FBC\x307F\x4E2D\x306B\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F"
@@ -1692,11 +1695,11 @@ BEGIN
 	IdResourceStrings_RSStackEINVAL,	L"\x5F15\x6570\x304C\x7121\x52B9\x3067\x3059\x3002"
 	IdResourceStrings_RSStackEMFILE,	L"\x958B\x3044\x3066\x3044\x308B\x30D5\x30A1\x30A4\x30EB\x304C\x591A\x3059\x304E\x307E\x3059\x3002"
 	IdResourceStrings_RSStackEWOULDBLOCK,	L"\x64CD\x4F5C\x306F\x30D6\x30ED\x30C3\x30AF\x3055\x308C\x307E\x3059\x3002"
-	System_Bindings_Consts_sIntToVariant,	L"IntToVariant"
-	System_Bindings_Consts_sIntToVariantDesc,	L""
-	System_Bindings_Consts_sBoolToVariant,	L"BoolToVariant"
-	System_Bindings_Consts_sBoolToVariantDesc,	L""
-	System_Bindings_Consts_sVariantToBool,	L"VariantToBool"
+	IdResourceStrings_RSStackEINPROGRESS,	L"\x64CD\x4F5C\x3092\x73FE\x5728\x5B9F\x884C\x4E2D\x3067\x3059\x3002"
+	IdResourceStrings_RSStackEALREADY,	L"\x64CD\x4F5C\x306F\x65E2\x306B\x5B9F\x884C\x4E2D\x3067\x3059\x3002"
+	IdResourceStrings_RSStackENOTSOCK,	L"\x30BD\x30B1\x30C3\x30C8\x4EE5\x5916\x306E\x3082\x306E\x306B\x5BFE\x3059\x308B\x30BD\x30B1\x30C3\x30C8\x64CD\x4F5C\x3067\x3059\x3002"
+	IdResourceStrings_RSStackEDESTADDRREQ,	L"\x9001\x4FE1\x5148\x30A2\x30C9\x30EC\x30B9\x304C\x5FC5\x8981\x3067\x3059\x3002"
+	IdResourceStrings_RSStackEMSGSIZE,	L"\x30E1\x30C3\x30BB\x30FC\x30B8\x304C\x9577\x3059\x304E\x307E\x3059\x3002"
 	System_Bindings_Consts_sVariantToBoolDesc,	L""
 	System_Bindings_Consts_sStrToFloat,	L"StrToFloat"
 	System_Bindings_Consts_sStrToFloatDesc,	L""
@@ -1708,11 +1711,11 @@ BEGIN
 	System_Bindings_Consts_sStringToTStringsDesc,	L""
 	System_Bindings_Consts_sStringToChar,	L"StringToChar"
 	System_Bindings_Consts_sStringToCharDesc,	L""
-	System_Bindings_Consts_sTDateTimeToStr,	L"TDateTimeToStr"
-	System_Bindings_Consts_sTDateTimeToStrDesc,	L""
-	System_Bindings_Consts_sStrToTDate,	L"TStrTDate"
-	System_Bindings_Consts_sStrToTDateDesc,	L""
-	System_Bindings_Consts_sStrToTTime,	L"TStrTTime"
+	IdResourceStrings_RSInvalidSourceArray,	L"\x30BD\x30FC\x30B9\x914D\x5217\x304C\x7121\x52B9\x3067\x3059"
+	IdResourceStrings_RSInvalidDestinationArray,	L"\x30BF\x30FC\x30B2\x30C3\x30C8\x914D\x5217\x304C\x7121\x52B9\x3067\x3059"
+	IdResourceStrings_RSCharIndexOutOfBounds,	L"\x6587\x5B57\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x304C\x7BC4\x56F2\x5916\x3067\x3059 (%d)"
+	IdResourceStrings_RSInvalidCharCount,	L"\x30AB\x30A6\x30F3\x30C8\x304C\x7121\x52B9\x3067\x3059 (%d)"
+	IdResourceStrings_RSInvalidDestinationIndex,	L"\x30BF\x30FC\x30B2\x30C3\x30C8 \x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x304C\x7121\x52B9\x3067\x3059 (%d)"
 	System_Bindings_Consts_sStrToTTimeDesc,	L""
 	System_Bindings_Consts_sNilToString,	L"NilToString"
 	System_Bindings_Consts_sNilToStringDesc,	L""
@@ -1724,11 +1727,11 @@ BEGIN
 	System_Bindings_Consts_sStringToVariantDesc,	L""
 	System_Bindings_Consts_sFloatToVariant,	L"FloatToVariant"
 	System_Bindings_Consts_sFloatToVariantDesc,	L""
-	System_Bindings_Consts_sIntegerToBool,	L"IntegerToBool"
-	System_Bindings_Consts_sIntegerToBoolDesc,	L""
-	System_Bindings_Consts_sBoolToFloat,	L"BoolToFloat"
-	System_Bindings_Consts_sBoolToFloatDesc,	L""
-	System_Bindings_Consts_sFloatToBool,	L"FloatToBool"
+	System_Bindings_Consts_sIntToVariant,	L"IntToVariant"
+	System_Bindings_Consts_sIntToVariantDesc,	L""
+	System_Bindings_Consts_sBoolToVariant,	L"BoolToVariant"
+	System_Bindings_Consts_sBoolToVariantDesc,	L""
+	System_Bindings_Consts_sVariantToBool,	L"VariantToBool"
 	System_Bindings_Consts_sFloatToBoolDesc,	L""
 	System_Bindings_Consts_sNilToNumber,	L"NilToNumber"
 	System_Bindings_Consts_sNilToNumberDesc,	L""
@@ -1740,11 +1743,11 @@ BEGIN
 	System_Bindings_Consts_sFloatToStringDesc,	L""
 	System_Bindings_Consts_sStrToTDateTime,	L"StrToTDateTime"
 	System_Bindings_Consts_sStrToTDateTimeDesc,	L""
-	System_Bindings_Consts_sVirtualMemberReadOnly,	L"\x4EEE\x60F3\x30E1\x30F3\x30D0\x306F\x8AAD\x307F\x53D6\x308A\x5C02\x7528\x3067\x3059\x3002"
-	System_Bindings_Consts_sConvertWrapperFail,	L"\x30E9\x30C3\x30D1\x30FC\x3092\x5909\x63DB\x3067\x304D\x307E\x305B\x3093\x3002%s \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x307E\x305B\x3093"
-	System_Bindings_Consts_sNilToTDateTime,	L"NilToDateTime"
-	System_Bindings_Consts_sNilToTDateTimeDesc,	L""
-	System_Bindings_Consts_sNilToTStrings,	L"NilToTStrings"
+	System_Bindings_Consts_sTDateTimeToStr,	L"TDateTimeToStr"
+	System_Bindings_Consts_sTDateTimeToStrDesc,	L""
+	System_Bindings_Consts_sStrToTDate,	L"TStrTDate"
+	System_Bindings_Consts_sStrToTDateDesc,	L""
+	System_Bindings_Consts_sStrToTTime,	L"TStrTTime"
 	System_Bindings_Consts_sNilToTStringsDesc,	L""
 	System_Bindings_Consts_sPersistentToPersistent,	L"PersistentToPersistent"
 	System_Bindings_Consts_sPersistentToPersistentDesc,	L""
@@ -1756,11 +1759,11 @@ BEGIN
 	System_Bindings_Consts_sStringToBoolDesc,	L""
 	System_Bindings_Consts_sBoolToInteger,	L"BoolToInteger"
 	System_Bindings_Consts_sBoolToIntegerDesc,	L""
-	System_Bindings_Consts_sTooManyArgs,	L"\x5F15\x6570\x304C\x591A\x3059\x304E\x307E\x3059"
-	System_Bindings_Consts_sExpectedIdentifier,	L"\x8B58\x5225\x5B50\x3001\x6570\x5024\x3001\x307E\x305F\x306F\x6587\x5B57\x5217\x304C\x5FC5\x8981\x3067\x3059"
-	System_Bindings_Consts_sExpressionTooComplex,	L"\x5F0F\x304C\x8907\x96D1\x3059\x304E\x307E\x3059 (\x5B9A\x6570\x304C\x591A\x3059\x304E\x307E\x3059)"
-	System_Bindings_Consts_sEvalStackOverflow,	L"\x30B9\x30BF\x30C3\x30AF \x30A2\x30F3\x30C0\x30FC\x30D5\x30ED\x30FC"
-	System_Bindings_Consts_sLookupError,	L"%s \x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093\x3067\x3057\x305F"
+	System_Bindings_Consts_sIntegerToBool,	L"IntegerToBool"
+	System_Bindings_Consts_sIntegerToBoolDesc,	L""
+	System_Bindings_Consts_sBoolToFloat,	L"BoolToFloat"
+	System_Bindings_Consts_sBoolToFloatDesc,	L""
+	System_Bindings_Consts_sFloatToBool,	L"FloatToBool"
 	System_Bindings_Consts_sInvokeError,	L"\x95A2\x6570/\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9\x4ED8\x304D\x30D7\x30ED\x30D1\x30C6\x30A3\x4EE5\x5916\x306E\x3082\x306E\x3092\x547C\x3073\x51FA\x305D\x3046\x3068\x3057\x307E\x3057\x305F"
 	System_Bindings_Consts_sUnsupportedWrapper,	L"\x30E9\x30C3\x30D1\x30FC\x304C IValue \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x306A\x3044\x305F\x3081\x5024\x3092\x6C7A\x5B9A\x3067\x304D\x307E\x305B\x3093"
 	System_Bindings_Consts_sUnsupportedGroup,	L"\x30E1\x30F3\x30D0 \x30E9\x30C3\x30D1\x30FC\x304C IGroup \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x306A\x3044\x305F\x3081\x3001\x7D50\x679C\x30E9\x30C3\x30D1\x30FC\x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093"
@@ -1772,11 +1775,11 @@ BEGIN
 	System_Bindings_Consts_sNoGetterOrSetter,	L"\x5C11\x306A\x304F\x3068\x3082\x53D6\x5F97\x30A2\x30AF\x30BB\x30B5\x307E\x305F\x306F\x8A2D\x5B9A\x30A2\x30AF\x30BB\x30B5\x304C\x5FC5\x8981\x3067\x3059"
 	System_Bindings_Consts_sUpdateOutputLocFailed,	L"%s \x306E\x51FA\x529B\x5F0F\x3092\x518D\x30B3\x30F3\x30D1\x30A4\x30EB\x3067\x304D\x307E\x305B\x3093 (%s)"
 	System_Bindings_Consts_sNoOutputScopes,	L"\x51FA\x529B\x7BC4\x56F2\x306F\x5FC5\x9808\x3067\x3059"
-	System_Bindings_Consts_sMismatchArgCount,	L"\x5F15\x6570\x306E\x6570\x304C\x6B63\x3057\x304F\x3042\x308A\x307E\x305B\x3093\x3002%d \x500B\x5FC5\x8981\x3067\x3059\x304C\x3001\x53D7\x3051\x53D6\x3063\x305F\x306E\x306F %d \x500B\x3067\x3059"
-	System_Bindings_Consts_sAddOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x52A0\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
-	System_Bindings_Consts_sSubtractOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x6E1B\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
-	System_Bindings_Consts_sMultiplyOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x4E57\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
-	System_Bindings_Consts_sDivideOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x9664\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
+	System_Bindings_Consts_sVirtualMemberReadOnly,	L"\x4EEE\x60F3\x30E1\x30F3\x30D0\x306F\x8AAD\x307F\x53D6\x308A\x5C02\x7528\x3067\x3059\x3002"
+	System_Bindings_Consts_sConvertWrapperFail,	L"\x30E9\x30C3\x30D1\x30FC\x3092\x5909\x63DB\x3067\x304D\x307E\x305B\x3093\x3002%s \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x307E\x305B\x3093"
+	System_Bindings_Consts_sNilToTDateTime,	L"NilToDateTime"
+	System_Bindings_Consts_sNilToTDateTimeDesc,	L""
+	System_Bindings_Consts_sNilToTStrings,	L"NilToTStrings"
 	System_Bindings_Consts_sNegateOpFail,	L"""%s"" \x306E\x5426\x5B9A\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sCompareOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x6BD4\x8F03\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	System_Bindings_Consts_sBoolOpFail,	L"""%s"" \x304A\x3088\x3073 ""%s"" \x3067\x30D6\x30FC\x30EA\x30A2\x30F3\x6F14\x7B97\x3092\x5B9F\x884C\x3059\x308B\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059\x3002"
@@ -1788,11 +1791,11 @@ BEGIN
 	System_Bindings_Consts_sInvalidOperator,	L"\x30BD\x30FC\x30B9 (%s%s) \x5185\x306B\x7121\x52B9\x306A\x6F14\x7B97\x5B50\x304C\x3042\x308A\x307E\x3059"
 	System_Bindings_Consts_sInvalidOperatorNum,	L"\x30BD\x30FC\x30B9 (#%d) \x5185\x306B\x7121\x52B9\x306A\x6587\x5B57\x304C\x3042\x308A\x307E\x3059"
 	System_Bindings_Consts_sExpectedEOF,	L"EOF \x304C\x5FC5\x8981\x3067\x3059\x304C\x3001\x5F0F\x306E\x4E2D\x306B\x307E\x3060\x30C6\x30AD\x30B9\x30C8\x304C\x7D9A\x3044\x3066\x3044\x307E\x3059"
-	UOptions_zLogRootFolderNotExist,	L"zLog root folder does not exist"
-	UOptions_RigIsNotAssignedToAntBand,	L"RIG-%d %s is not assigned to any band. Do you want to assign it now?"
-	UOptions_BandsHaveNoRigsAssigned,	L"There are bands that have no rigs assigned. Do you want to assign them now?"
-	URigControl_RECONNECT_ALL_RIGS,	L"Reconnect all RIGs?"
-	System_Bindings_Consts_sOwnerNotFound,	L"Owner \x306B Nil \x3092\x6307\x5B9A\x3067\x304D\x307E\x305B\x3093\x3002"
+	System_Bindings_Consts_sTooManyArgs,	L"\x5F15\x6570\x304C\x591A\x3059\x304E\x307E\x3059"
+	System_Bindings_Consts_sExpectedIdentifier,	L"\x8B58\x5225\x5B50\x3001\x6570\x5024\x3001\x307E\x305F\x306F\x6587\x5B57\x5217\x304C\x5FC5\x8981\x3067\x3059"
+	System_Bindings_Consts_sExpressionTooComplex,	L"\x5F0F\x304C\x8907\x96D1\x3059\x304E\x307E\x3059 (\x5B9A\x6570\x304C\x591A\x3059\x304E\x307E\x3059)"
+	System_Bindings_Consts_sEvalStackOverflow,	L"\x30B9\x30BF\x30C3\x30AF \x30A2\x30F3\x30C0\x30FC\x30D5\x30ED\x30FC"
+	System_Bindings_Consts_sLookupError,	L"%s \x304C\x898B\x3064\x304B\x308A\x307E\x305B\x3093\x3067\x3057\x305F"
 	System_Bindings_Consts_sScopeObjNull,	L"\x30B9\x30B3\x30FC\x30D7 \x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x306F Nil \x306B\x3067\x304D\x307E\x305B\x3093\x3002"
 	System_Bindings_Consts_sUncompiledExpression,	L"\x5F0F\x304C\x307E\x3060\x30B3\x30F3\x30D1\x30A4\x30EB\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002"
 	System_Bindings_Consts_sUnsupportedManager,	L"\x30DE\x30CD\x30FC\x30B8\x30E3\x304C IBindingNotification \x3092\x30B5\x30DD\x30FC\x30C8\x3057\x3066\x3044\x307E\x305B\x3093\x3002"
@@ -1804,11 +1807,11 @@ BEGIN
 	System_Bindings_Consts_sConverterIDNotRegistered,	L"%s \x3068\x3044\x3046\x540D\x524D\x306E\x5909\x63DB\x30B3\x30F3\x30DD\x30FC\x30CD\x30F3\x30C8\x306F\x767B\x9332\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	System_Bindings_Consts_sDuplicatedConverterType,	L"\x5165\x529B\x578B (%s) \x304A\x3088\x3073\x51FA\x529B\x578B (%s) \x304C\x540C\x3058\x3067\x3042\x308B ""%s"" \x3068\x3044\x3046\x540D\x524D\x306E\x5909\x63DB\x30B3\x30F3\x30DD\x30FC\x30CD\x30F3\x30C8\x304C\x65E2\x306B\x8FFD\x52A0\x3055\x308C\x3066\x3044\x307E\x3059"
 	System_Bindings_Consts_sDuplicatedConverterType2,	L"\x30B3\x30F3\x30D0\x30FC\x30BF ""%s"" \x306F\x30B3\x30F3\x30D0\x30FC\x30BF ""%s(%s, %s)"" \x3068\x91CD\x8907\x3057\x3066\x3044\x307E\x3059"
-	UComm_UComm_Connect,	L"Connect"
-	UComm_UComm_Disconnect,	L"Disconnect"
-	UComm_UComm_Connecting,	L"Connecting..."
-	UComm_UComm_Disconnecting,	L"Disconnecting..."
-	UComm_UComm_SecondsLeft,	L"%s seconds left to reconnect"
+	System_Bindings_Consts_sMismatchArgCount,	L"\x5F15\x6570\x306E\x6570\x304C\x6B63\x3057\x304F\x3042\x308A\x307E\x305B\x3093\x3002%d \x500B\x5FC5\x8981\x3067\x3059\x304C\x3001\x53D7\x3051\x53D6\x3063\x305F\x306E\x306F %d \x500B\x3067\x3059"
+	System_Bindings_Consts_sAddOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x52A0\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
+	System_Bindings_Consts_sSubtractOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x6E1B\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
+	System_Bindings_Consts_sMultiplyOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x4E57\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
+	System_Bindings_Consts_sDivideOpFail,	L"""%s"" \x3068 ""%s"" \x306E\x9664\x7B97\x65B9\x6CD5\x304C\x4E0D\x660E\x3067\x3059"
 	UComm_UComm_ExceededLimit,	L"reconnection attempts exceeded limit"
 	UComm_UComm_SiteChanging,	L"You are already connected to the %s. Do you want to disconnect?"
 	UQTCForm_QTC_DONE,	L"Done"
@@ -1820,11 +1823,11 @@ BEGIN
 	UOptions_Installed_Plugins_Disabled,	L"Plugins folder changed. Installed plugins will be disabled. Are you sure?"
 	UOptions_DoYouWantTheFollowingBandsToHaveTheSameSettins,	L"Do you want the following bands to have the same settings?"
 	UOptions_EnterTheFullPathOfRootFolder,	L"Enter the full path of the zLog root folder"
-	UBandScope2_SHOW_ALLBANDS,	L"To ALL"
-	UBandScope2_SHOW_CURRENT,	L"To Current"
-	UBandScope2_MENU_BLOCK_THIS_SPOT,	L"Block this spot"
-	UBandScope2_MENU_EDIT_BLOCKLIST,	L"Edit block list"
-	UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink,	L"This will delete all data and loads data using Z-Link"
+	UOptions_zLogRootFolderNotExist,	L"zLog root folder does not exist"
+	UOptions_RigIsNotAssignedToAntBand,	L"RIG-%d %s is not assigned to any band. Do you want to assign it now?"
+	UOptions_BandsHaveNoRigsAssigned,	L"There are bands that have no rigs assigned. Do you want to assign them now?"
+	URigControl_RECONNECT_ALL_RIGS,	L"Reconnect all RIGs?"
+	System_Bindings_Consts_sOwnerNotFound,	L"Owner \x306B Nil \x3092\x6307\x5B9A\x3067\x304D\x307E\x305B\x3093\x3002"
 	UZLinkForm_ZServer_connection_failed,	L"Z-Server connection failed."
 	UZLinkForm_Connect_ZSERVER,	L"Connect to Z-Server"
 	UZLinkForm_Disconnect_ZSERVER,	L"Disconnect from Z-Server"
@@ -1836,11 +1839,11 @@ BEGIN
 	UZLinkForm_ZServerSecureNotConfigured,	L"Z-Server secure settings are not configured."
 	UZLinkForm_ZServerIsNotSecureMode,	L"Z-Server is not in SECURE mode."
 	UZLinkForm_UnableToLoginToZServer,	L"Unable to login to Z-Server."
-	OverbyteIcsCharsetUtils_sGreekWindows,	L"Greek (Windows)"
-	OverbyteIcsCharsetUtils_sHebrewISOLogical,	L"Hebrew (ISO-Logical)"
-	OverbyteIcsCharsetUtils_sHebrewISOVisual,	L"Hebrew (ISO-Visual)"
-	OverbyteIcsCharsetUtils_sHebrewWindows,	L"Hebrew (Windows)"
-	OverbyteIcsCharsetUtils_sJapaneseJIS,	L"Japanese (JIS)"
+	UComm_UComm_Connect,	L"Connect"
+	UComm_UComm_Disconnect,	L"Disconnect"
+	UComm_UComm_Connecting,	L"Connecting..."
+	UComm_UComm_Disconnecting,	L"Disconnecting..."
+	UComm_UComm_SecondsLeft,	L"%s seconds left to reconnect"
 	OverbyteIcsCharsetUtils_sKorean,	L"Korean"
 	OverbyteIcsCharsetUtils_sKoreanEUC,	L"Korean (EUC)"
 	OverbyteIcsCharsetUtils_sLatin9,	L"Latin 9 (ISO)"
@@ -1852,11 +1855,11 @@ BEGIN
 	OverbyteIcsCharsetUtils_sVietnameseWindows,	L"Vietnamese (Windows)"
 	OverbyteIcsCharsetUtils_sWesternEuropeanISO,	L"Western European (ISO)"
 	OverbyteIcsCharsetUtils_sWesternEuropeanWindows,	L"Western European (Windows)"
-	OverbyteIcsCharsetUtils_sArabicISO,	L"Arabic (ISO)"
-	OverbyteIcsCharsetUtils_sArabicWindows,	L"Arabic (Windows)"
-	OverbyteIcsCharsetUtils_sBalticISO,	L"Baltic (ISO)"
-	OverbyteIcsCharsetUtils_sBalticWindows,	L"Baltic (Windows)"
-	OverbyteIcsCharsetUtils_sCentralEuropeanISO,	L"Central European (ISO)"
+	UBandScope2_SHOW_ALLBANDS,	L"To ALL"
+	UBandScope2_SHOW_CURRENT,	L"To Current"
+	UBandScope2_MENU_BLOCK_THIS_SPOT,	L"Block this spot"
+	UBandScope2_MENU_EDIT_BLOCKLIST,	L"Edit block list"
+	UZLinkForm_This_will_delete_all_data_and_loads_data_using_zlink,	L"This will delete all data and loads data using Z-Link"
 	OverbyteIcsCharsetUtils_sCentralEuropeanWindows,	L"Central European (Windows)"
 	OverbyteIcsCharsetUtils_sChineseTraditionalBig5,	L"Chinese Traditional (Big5)"
 	OverbyteIcsCharsetUtils_sChineseSimplifiedGB18030,	L"Chinese Simplified (GB18030)"
@@ -1868,11 +1871,11 @@ BEGIN
 	OverbyteIcsCharsetUtils_sCyrillicWindows,	L"Cyrillic (Windows)"
 	OverbyteIcsCharsetUtils_sEstonianISO,	L"Estonian (ISO)"
 	OverbyteIcsCharsetUtils_sGreekISO,	L"Greek (ISO)"
-	Vcl_Imaging_pnglang_EInvalidSpec,	L"""Portable Network Graphics"" \x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x753B\x50CF\x30BF\x30A4\x30D7 \x30D1\x30E9\x30E1\x30FC\x30BF\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
-	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
-	Vcl_OleConst_SCannotActivate,	L"OLE control activation failed"
-	Vcl_OleConst_SNoWindowHandle,	L"Could not obtain OLE control window handle"
+	OverbyteIcsCharsetUtils_sGreekWindows,	L"Greek (Windows)"
+	OverbyteIcsCharsetUtils_sHebrewISOLogical,	L"Hebrew (ISO-Logical)"
+	OverbyteIcsCharsetUtils_sHebrewISOVisual,	L"Hebrew (ISO-Visual)"
+	OverbyteIcsCharsetUtils_sHebrewWindows,	L"Hebrew (Windows)"
+	OverbyteIcsCharsetUtils_sJapaneseJIS,	L"Japanese (JIS)"
 	Vcl_OleConst_SInvalidLicense,	L"License information for %s is invalid"
 	Vcl_OleConst_SNotLicensed,	L"License information for %s not found. You cannot use this control in design mode"
 	Vcl_OleConst_sNoRunningObject,	L"%s/%s \x3068\x3057\x3066\x767B\x9332\x3055\x308C\x3066\x3044\x308B\x5B9F\x884C\x4E2D\x306E\x30AA\x30D6\x30B8\x30A7\x30AF\x30C8\x304B\x3089\x30DD\x30A4\x30F3\x30BF\x3092\x53D6\x5F97\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
@@ -1884,11 +1887,11 @@ BEGIN
 	Vcl_Imaging_JConsts_sJPEGError,	L"JPEG \x30A8\x30E9\x30FC #%d"
 	Vcl_Imaging_JConsts_sJPEGImageFile,	L"JPEG \x30A4\x30E1\x30FC\x30B8\x30D5\x30A1\x30A4\x30EB"
 	UOperatorPowerDialog_DoYouWantTheUpperBandsToHaveTheSameSettins,	L"Do you want the higher bands to have the same settings?"
-	Vcl_Imaging_pnglang_EPNGSizeExceedsText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002\x5E45\x307E\x305F\x306F\x9AD8\x3055\x304C\x6700\x5927\x5024 (65535 \x30D4\x30AF\x30BB\x30EB) \x3092\x8D85\x3048\x3066\x3044\x308B\x304B\x3089\x3067\x3059\x3002"
-	Vcl_Imaging_pnglang_EPNGUnknownPalEntryText,	L"\x5BFE\x5FDC\x3059\x308B\x30D1\x30EC\x30C3\x30C8 \x30A8\x30F3\x30C8\x30EA\x304C\x3042\x308A\x307E\x305B\x3093\x3002"
-	Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x4E0D\x660E\x306A\x5FC5\x9808\x90E8\x5206\x304C\x542B\x307E\x308C\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_Imaging_pnglang_EPNGUnknownCompressionText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x4E0D\x660E\x306A\x5727\x7E2E\x65B9\x5F0F\x3067\x30A8\x30F3\x30B3\x30FC\x30C9\x3055\x308C\x3066\x3044\x3066\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
-	Vcl_Imaging_pnglang_EPNGUnknownInterlaceText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x4E0D\x660E\x306A\x30A4\x30F3\x30BF\x30EC\x30FC\x30B9\x65B9\x5F0F\x3092\x4F7F\x7528\x3057\x3066\x3044\x3066\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	OverbyteIcsCharsetUtils_sArabicISO,	L"Arabic (ISO)"
+	OverbyteIcsCharsetUtils_sArabicWindows,	L"Arabic (Windows)"
+	OverbyteIcsCharsetUtils_sBalticISO,	L"Baltic (ISO)"
+	OverbyteIcsCharsetUtils_sBalticWindows,	L"Baltic (Windows)"
+	OverbyteIcsCharsetUtils_sCentralEuropeanISO,	L"Central European (ISO)"
 	Vcl_Imaging_pnglang_EPNGUnknownColorTypeText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x672A\x77E5\x306E\x30AB\x30E9\x30FC\x578B\x3092\x4F7F\x7528\x3057\x3066\x304A\x308A\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	Vcl_Imaging_pnglang_EPNGCannotAssignChunkText,	L"\x30C1\x30E3\x30F3\x30AF\x306F\x5272\x308A\x5F53\x3066\x5BFE\x8C61\x3068\x4E92\x63DB\x6027\x304C\x5FC5\x8981\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGUnexpectedEndText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x7121\x52B9\x3067\x3059\x3002\x30C7\x30B3\x30FC\x30C0\x304C\x4E88\x671F\x3057\x306A\x3044\x30D5\x30A1\x30A4\x30EB\x306E\x7D42\x7AEF\x3092\x691C\x51FA\x3057\x305F\x305F\x3081\x3067\x3059\x3002"
@@ -1900,11 +1903,11 @@ BEGIN
 	Vcl_Imaging_pnglang_EPNGCannotChangeTransparentText,	L"\x5404\x30D4\x30AF\x30BB\x30EB\x306B\x5BFE\x3059\x308B\x30A2\x30EB\x30D5\x30A1\x5024 (COLOR_RGBALPHA \x3068 COLOR_GRAYSCALEALPHA) \x3092\x542B\x3080 PNG \x753B\x50CF\x3067\x900F\x904E\x8272\x306E\x30D3\x30C3\x30C8\x8A2D\x5B9A\x306F\x8A31\x53EF\x3055\x308C\x3066\x3044\x307E\x305B\x3093"
 	Vcl_Imaging_pnglang_EPNGHeaderNotPresentText,	L"\x3053\x306E\x64CD\x4F5C\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x73FE\x5728\x306E\x753B\x50CF\x306B\x6709\x52B9\x306A\x30D8\x30C3\x30C0\x30FC\x304C\x306A\x3044\x304B\x3089\x3067\x3059\x3002"
 	Vcl_Imaging_pnglang_EInvalidNewSize,	L"\x30B5\x30A4\x30BA\x5909\x66F4\x3059\x308B\x753B\x50CF\x306E\x65B0\x3057\x3044\x30B5\x30A4\x30BA\x306F\x6709\x52B9\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002"
-	JclResources_RsELibraryNotFound,	L"Library not found: %s"
-	JclResources_RsEFunctionNotFound,	L"Function not found: %s.%s"
-	UzLogConst_RigPortActionList,	L"None,AlwaysOn,AlwaysOff,Handshake"
-	System_RegularExpressionsConsts_SRegExMissingExpression,	L"RegEx \x306B\x6B63\x898F\x8868\x73FE\x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059"
-	System_RegularExpressionsConsts_SRegExExpressionError,	L"\x30AA\x30D5\x30BB\x30C3\x30C8 %d \x3067\x6B63\x898F\x8868\x73FE\x306B\x30A8\x30E9\x30FC\x304C\x3042\x308A\x307E\x3059: %s"
+	Vcl_Imaging_pnglang_EInvalidSpec,	L"""Portable Network Graphics"" \x3092\x4F5C\x6210\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002\x4E0D\x6B63\x306A\x753B\x50CF\x30BF\x30A4\x30D7 \x30D1\x30E9\x30E1\x30FC\x30BF\x304C\x6307\x5B9A\x3055\x308C\x3066\x3044\x307E\x3059\x3002"
+	Vcl_Imaging_pnglang_EPNGInvalidBitDepthText,	L"\x3053\x306E""\x30DD\x30FC\x30BF\x30D6\x30EB \x30CD\x30C3\x30C8\x30EF\x30FC\x30AF \x30B0\x30E9\x30D5\x30A3\x30C3\x30AF""\x30A4\x30E1\x30FC\x30B8\x306F\x3001\x4E0D\x6B63\x306A\x30A4\x30E1\x30FC\x30B8 \x30D3\x30C3\x30C8\x6DF1\x5EA6\x3092\x4F7F\x7528\x3057\x3066\x3044\x308B\x305F\x3081\x3001\x8AAD\x307F\x8FBC\x3080\x3053\x3068\x304C\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_OleConst_SBadPropValue,	L"'%s' is not a valid property value"
+	Vcl_OleConst_SCannotActivate,	L"OLE control activation failed"
+	Vcl_OleConst_SNoWindowHandle,	L"Could not obtain OLE control window handle"
 	System_RegularExpressionsConsts_SRegExStudyError,	L"\x6B63\x898F\x8868\x73FE\x306E\x89E3\x6790\x3067\x30A8\x30E9\x30FC\x304C\x767A\x751F\x3057\x307E\x3057\x305F: %s"
 	System_RegularExpressionsConsts_SRegExMatchRequired,	L"\x6B63\x898F\x8868\x73FE\x306B\x4E00\x81F4\x3059\x308B\x3082\x306E\x304C\x5FC5\x8981\x3067\x3059"
 	System_RegularExpressionsConsts_SRegExStringsRequired,	L"Strings \x30D1\x30E9\x30E1\x30FC\x30BF\x306B\x306F\x6709\x52B9\x306A\x5024\x304C\x5FC5\x8981\x3067\x3059"
@@ -1916,11 +1919,11 @@ BEGIN
 	Vcl_Imaging_pnglang_EPNGInvalidPaletteText,	L"""Portable Network Graphics"" \x753B\x50CF\x306B\x4E0D\x6B63\x306A\x30D1\x30EC\x30C3\x30C8\x304C\x542B\x307E\x308C\x307E\x3059\x3002"
 	Vcl_Imaging_pnglang_EPNGInvalidFileHeaderText,	L"\x8AAD\x307F\x53D6\x3089\x308C\x305F\x30D5\x30A1\x30A4\x30EB\x306F\x6709\x52B9\x306A ""Portable Network Graphics"" \x753B\x50CF\x3067\x306F\x3042\x308A\x307E\x305B\x3093\x3002\x7121\x52B9\x306A\x30D8\x30C3\x30C0\x30FC\x304C\x542B\x307E\x308C\x308B\x304B\x3089\x3067\x3059\x3002 \x3053\x306E\x30D5\x30A1\x30A4\x30EB\x306F\x7834\x640D\x3057\x3066\x3044\x308B\x53EF\x80FD\x6027\x304C\x3042\x308A\x307E\x3059\x3002\x53D6\x5F97\x3092\x3084\x308A\x76F4\x3057\x3066\x304F\x3060\x3055\x3044\x3002"
 	Vcl_Imaging_pnglang_EPNGIHDRNotFirstText,	L"""Portable Network Graphics"" \x753B\x50CF\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x306A\x3044\x3001\x3042\x308B\x3044\x306F\x7121\x52B9\x3067\x3059\r\n(IHDR \x30C1\x30E3\x30F3\x30AF\x304C\x6700\x521D\x306B\x3042\x308A\x307E\x305B\x3093)\x3002"
-	JclResources_RsOSVersionWinServer,	L"Windows Server"
-	JclResources_RsOSVersionWin11,	L"Windows 11"
-	JclResources_RsProductTypeWorkStation,	L"Workstation"
-	JclResources_RsProductTypeServer,	L"Server"
-	JclResources_RsProductTypeAdvancedServer,	L"Advanced Server"
+	Vcl_Imaging_pnglang_EPNGSizeExceedsText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x30B5\x30DD\x30FC\x30C8\x3055\x308C\x3066\x3044\x307E\x305B\x3093\x3002\x5E45\x307E\x305F\x306F\x9AD8\x3055\x304C\x6700\x5927\x5024 (65535 \x30D4\x30AF\x30BB\x30EB) \x3092\x8D85\x3048\x3066\x3044\x308B\x304B\x3089\x3067\x3059\x3002"
+	Vcl_Imaging_pnglang_EPNGUnknownPalEntryText,	L"\x5BFE\x5FDC\x3059\x308B\x30D1\x30EC\x30C3\x30C8 \x30A8\x30F3\x30C8\x30EA\x304C\x3042\x308A\x307E\x305B\x3093\x3002"
+	Vcl_Imaging_pnglang_EPNGUnknownCriticalChunkText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306B\x306F\x4E0D\x660E\x306A\x5FC5\x9808\x90E8\x5206\x304C\x542B\x307E\x308C\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_Imaging_pnglang_EPNGUnknownCompressionText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x4E0D\x660E\x306A\x5727\x7E2E\x65B9\x5F0F\x3067\x30A8\x30F3\x30B3\x30FC\x30C9\x3055\x308C\x3066\x3044\x3066\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
+	Vcl_Imaging_pnglang_EPNGUnknownInterlaceText,	L"\x3053\x306E ""Portable Network Graphics"" \x753B\x50CF\x306F\x4E0D\x660E\x306A\x30A4\x30F3\x30BF\x30EC\x30FC\x30B9\x65B9\x5F0F\x3092\x4F7F\x7528\x3057\x3066\x3044\x3066\x3001\x30C7\x30B3\x30FC\x30C9\x3067\x304D\x307E\x305B\x3093\x3067\x3057\x305F\x3002"
 	JclResources_RsProductTypePersonal,	L"Home Edition"
 	JclResources_RsProductTypeProfessional,	L"Professional"
 	JclResources_RsProductTypeDatacenterServer,	L"Datacenter Server"
@@ -1932,11 +1935,11 @@ BEGIN
 	JclResources_RsHasNotTD32Info,	L"File [%s] has not TD32 debug information!"
 	JclResources_RsEUnexpectedEOSeq,	L"Unexpected end of sequence"
 	JclResources_RsWin32Error,	L"Win32 error: %s (%u)%s%s"
-	JclResources_RsOSVersionWin2003R2,	L"Windows Server 2003 R2"
-	JclResources_RsOSVersionWinXP64,	L"Windows XP x64"
-	JclResources_RsOSVersionWinVista,	L"Windows Vista"
-	JclResources_RsOSVersionWinServer2008,	L"Windows Server 2008"
-	JclResources_RsOSVersionWin7,	L"Windows 7"
+	JclResources_RsELibraryNotFound,	L"Library not found: %s"
+	JclResources_RsEFunctionNotFound,	L"Function not found: %s.%s"
+	UzLogConst_RigPortActionList,	L"None,AlwaysOn,AlwaysOff,Handshake"
+	System_RegularExpressionsConsts_SRegExMissingExpression,	L"RegEx \x306B\x6B63\x898F\x8868\x73FE\x3092\x6307\x5B9A\x3059\x308B\x5FC5\x8981\x304C\x3042\x308A\x307E\x3059"
+	System_RegularExpressionsConsts_SRegExExpressionError,	L"\x30AA\x30D5\x30BB\x30C3\x30C8 %d \x3067\x6B63\x898F\x8868\x73FE\x306B\x30A8\x30E9\x30FC\x304C\x3042\x308A\x307E\x3059: %s"
 	JclResources_RsOSVersionWinServer2008R2,	L"Windows Server 2008 R2"
 	JclResources_RsOSVersionWin8,	L"Windows 8"
 	JclResources_RsOSVersionWin8RT,	L"Windows RT"
@@ -1948,11 +1951,11 @@ BEGIN
 	JclResources_RsOSVersionWinServer2016,	L"Windows Server 2016"
 	JclResources_RsOSVersionWinServer2019,	L"Windows Server 2019"
 	JclResources_RsOSVersionWinServer2022,	L"Windows Server 2022"
-	JclResources_RsIntelCacheDescrEB,	L"3rd-level cache: 18 MByte, 24-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescrEC,	L"3rd-level cache: 24 MByte, 24-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescrF0,	L"64-Byte Prefetching"
-	JclResources_RsIntelCacheDescrF1,	L"128-Byte Prefetching"
-	JclResources_RsIntelCacheDescrFF,	L"CPUID leaf 2 does not report cache descriptor information, use CPUID leaf 4 to query cache parameters"
+	JclResources_RsOSVersionWinServer,	L"Windows Server"
+	JclResources_RsOSVersionWin11,	L"Windows 11"
+	JclResources_RsProductTypeWorkStation,	L"Workstation"
+	JclResources_RsProductTypeServer,	L"Server"
+	JclResources_RsProductTypeAdvancedServer,	L"Advanced Server"
 	JclResources_RsUnknownAMDModel,	L"Unknown AMD (Model %d)"
 	JclResources_RsOSVersionWin95,	L"Windows 95"
 	JclResources_RsOSVersionWin95OSR2,	L"Windows 95 OSR2"
@@ -1964,11 +1967,11 @@ BEGIN
 	JclResources_RsOSVersionWin2000,	L"Windows 2000"
 	JclResources_RsOSVersionWinXP,	L"Windows XP"
 	JclResources_RsOSVersionWin2003,	L"Windows Server 2003"
-	JclResources_RsIntelCacheDescrBA,	L"Data TLB1: 4 KByte pages, 4-way set associative, 64 entries"
-	JclResources_RsIntelCacheDescrC0,	L"Data TLB: 4 KByte and 4 MByte pages, 4-way set associative, 8 entries"
-	JclResources_RsIntelCacheDescrCA,	L"Shared 2nd-Level TLB: 4 KByte pages, 4-way associative, 512 entries"
-	JclResources_RsIntelCacheDescrD0,	L"3rd-level cache: 512 KByte, 4-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescrD1,	L"3rd-level cache: 1 MByte, 4-way set associative, 64 byte line size"
+	JclResources_RsOSVersionWin2003R2,	L"Windows Server 2003 R2"
+	JclResources_RsOSVersionWinXP64,	L"Windows XP x64"
+	JclResources_RsOSVersionWinVista,	L"Windows Vista"
+	JclResources_RsOSVersionWinServer2008,	L"Windows Server 2008"
+	JclResources_RsOSVersionWin7,	L"Windows 7"
 	JclResources_RsIntelCacheDescrD2,	L"3rd-level cache: 2 MByte, 4-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescrD6,	L"3rd-level cache: 1 MByte, 8-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescrD7,	L"3rd-level cache: 2 MByte, 8-way set associative, 64 byte line size"
@@ -1980,11 +1983,11 @@ BEGIN
 	JclResources_RsIntelCacheDescrE3,	L"3rd-level cache: 4 MByte, 16-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescrE4,	L"3rd-level cache: 8 MByte, 16-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescrEA,	L"3rd-level cache: 12 MByte, 24-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr7B,	L"2nd-level cache: 512 KBytes, 8-way set associative, 64 bytes line size, 2 lines per sector"
-	JclResources_RsIntelCacheDescr7C,	L"2nd-level cache: 1 MBytes, 8-way set associative, 64 bytes line size, 2 lines per sector"
-	JclResources_RsIntelCacheDescr7D,	L"2nd-level cache: 2 MBytes, 8-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr7F,	L"2nd-level cache: 512 KBytes, 2-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr80,	L"2nd-level cache: 512 KBytes, 8-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescrEB,	L"3rd-level cache: 18 MByte, 24-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescrEC,	L"3rd-level cache: 24 MByte, 24-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescrF0,	L"64-Byte Prefetching"
+	JclResources_RsIntelCacheDescrF1,	L"128-Byte Prefetching"
+	JclResources_RsIntelCacheDescrFF,	L"CPUID leaf 2 does not report cache descriptor information, use CPUID leaf 4 to query cache parameters"
 	JclResources_RsIntelCacheDescr82,	L"2nd-level cache: 256 KBytes, 8-way associative, 32 byte line size"
 	JclResources_RsIntelCacheDescr83,	L"2nd-level cache: 512 KBytes, 8-way associative, 32 byte line size"
 	JclResources_RsIntelCacheDescr84,	L"2nd-level cache: 1 MBytes, 8-way associative, 32 byte line size"
@@ -1996,11 +1999,11 @@ BEGIN
 	JclResources_RsIntelCacheDescrB2,	L"Instruction TLB: 4 KByte pages, 4-way set associative, 64 entries"
 	JclResources_RsIntelCacheDescrB3,	L"Data TLB: 4 KByte pages, 4-way set associative, 128 entries"
 	JclResources_RsIntelCacheDescrB4,	L"Data TLB1: 4 KByte pages, 4-way set associative, 256 entries"
-	JclResources_RsIntelCacheDescr5A,	L"Data TLB0: 2 MByte or 4 MByte pages, 4-way set associative, 32 entries"
-	JclResources_RsIntelCacheDescr5B,	L"Data TLB: 4 KByte and 4 MByte pages, 64 Entries"
-	JclResources_RsIntelCacheDescr5C,	L"Data TLB: 4 KByte and 4 MByte pages, 128 Entries"
-	JclResources_RsIntelCacheDescr5D,	L"Data TLB: 4 KByte and 4 MByte pages, 256 Entries"
-	JclResources_RsIntelCacheDescr60,	L"1st-level data cache: 16 KByte, 8-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescrBA,	L"Data TLB1: 4 KByte pages, 4-way set associative, 64 entries"
+	JclResources_RsIntelCacheDescrC0,	L"Data TLB: 4 KByte and 4 MByte pages, 4-way set associative, 8 entries"
+	JclResources_RsIntelCacheDescrCA,	L"Shared 2nd-Level TLB: 4 KByte pages, 4-way associative, 512 entries"
+	JclResources_RsIntelCacheDescrD0,	L"3rd-level cache: 512 KByte, 4-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescrD1,	L"3rd-level cache: 1 MByte, 4-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr66,	L"1st-level data cache: 8 KBytes, 4-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr67,	L"1st-level data cache: 16 KBytes, 4-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr68,	L"1st-level data cache: 32 KBytes, 4-way set associative, 64 byte line size"
@@ -2012,11 +2015,11 @@ BEGIN
 	JclResources_RsIntelCacheDescr78,	L"2nd-level cache: 1 MBytes, 4-way set associative, 64 bytes line size"
 	JclResources_RsIntelCacheDescr79,	L"2nd-level cache: 128 KBytes, 8-way set associative, 64 bytes line size, 2 lines per sector"
 	JclResources_RsIntelCacheDescr7A,	L"2nd-level cache: 256 KBytes, 8-way set associative, 64 bytes line size, 2 lines per sector"
-	JclResources_RsIntelCacheDescr47,	L"3rd-level cache: 8 MBytes, 4-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr48,	L"3rd-level cache: 8 MByte, 8-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr49,	L"2nd-level cache: 4 MBytes, 16-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr4A,	L"3rd-level cache: 6MByte, 12-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr4B,	L"3rd-level cache: 8MByte, 16-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr7B,	L"2nd-level cache: 512 KBytes, 8-way set associative, 64 bytes line size, 2 lines per sector"
+	JclResources_RsIntelCacheDescr7C,	L"2nd-level cache: 1 MBytes, 8-way set associative, 64 bytes line size, 2 lines per sector"
+	JclResources_RsIntelCacheDescr7D,	L"2nd-level cache: 2 MBytes, 8-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr7F,	L"2nd-level cache: 512 KBytes, 2-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr80,	L"2nd-level cache: 512 KBytes, 8-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr4C,	L"3rd-level cache: 12MByte, 12-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr4D,	L"3rd-level cache: 16MByte, 16-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr4E,	L"2nd-level cache: 6MByte, 24-way set associative, 64 byte line size"
@@ -2028,11 +2031,11 @@ BEGIN
 	JclResources_RsIntelCacheDescr56,	L"Data TLB0: 4 MByte pages, 4-way set associative, 16 entries"
 	JclResources_RsIntelCacheDescr57,	L"Data TLB0: 4 KByte pages, 4-way associative, 16 entries"
 	JclResources_RsIntelCacheDescr59,	L"Data TLB0: 4 KByte pages, fully associative, 16 entries"
-	JclResources_RsIntelCacheDescr29,	L"3rd level cache: 4 MBytes, 8-way set associative, 64 byte line size, 2 lines per sector"
-	JclResources_RsIntelCacheDescr2C,	L"1st level data cache: 32 KBytes, 8-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr30,	L"1st level instruction cache: 32 KBytes, 8-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr39,	L"2nd-level cache: 128 KBytes, 4-way set associative, sectored cache, 64-byte line size"
-	JclResources_RsIntelCacheDescr3A,	L"2nd-level cache: 192 KBytes, 6-way set associative, sectored cache, 64-byte line size"
+	JclResources_RsIntelCacheDescr5A,	L"Data TLB0: 2 MByte or 4 MByte pages, 4-way set associative, 32 entries"
+	JclResources_RsIntelCacheDescr5B,	L"Data TLB: 4 KByte and 4 MByte pages, 64 Entries"
+	JclResources_RsIntelCacheDescr5C,	L"Data TLB: 4 KByte and 4 MByte pages, 128 Entries"
+	JclResources_RsIntelCacheDescr5D,	L"Data TLB: 4 KByte and 4 MByte pages, 256 Entries"
+	JclResources_RsIntelCacheDescr60,	L"1st-level data cache: 16 KByte, 8-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr3B,	L"2nd-level cache: 128 KBytes, 2-way set associative, sectored cache, 64-byte line size"
 	JclResources_RsIntelCacheDescr3C,	L"2nd-level cache: 256 KBytes, 4-way set associative, sectored cache, 64-byte line size"
 	JclResources_RsIntelCacheDescr3D,	L"2nd-level cache: 384 KBytes, 6-way set associative, sectored cache, 64-byte line size"
@@ -2044,11 +2047,11 @@ BEGIN
 	JclResources_RsIntelCacheDescr44,	L"2nd-level cache: 1 MBytes, 4-way set associative, 32 byte line size"
 	JclResources_RsIntelCacheDescr45,	L"2nd-level cache: 2 MBytes, 4-way set associative, 32 byte line size"
 	JclResources_RsIntelCacheDescr46,	L"3rd-level cache: 4 MBytes, 4-way set associative, 64 byte line size"
-	JclResources_RsIntelCacheDescr02,	L"Instruction TLB: 4 MByte pages, 4-way set associative, 2 entries"
-	JclResources_RsIntelCacheDescr03,	L"Data TLB: 4 KByte pages, 4-way set associative, 64 entries"
-	JclResources_RsIntelCacheDescr04,	L"Data TLB: 4 MByte pages, 4-way set associative, 8 entries"
-	JclResources_RsIntelCacheDescr05,	L"Data TLB1: 4 MByte pages, 4-way set associative, 32 entries"
-	JclResources_RsIntelCacheDescr06,	L"1st level instruction cache: 8 KBytes, 4-way set associative, 32 byte line size"
+	JclResources_RsIntelCacheDescr47,	L"3rd-level cache: 8 MBytes, 4-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr48,	L"3rd-level cache: 8 MByte, 8-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr49,	L"2nd-level cache: 4 MBytes, 16-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr4A,	L"3rd-level cache: 6MByte, 12-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr4B,	L"3rd-level cache: 8MByte, 16-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr08,	L"1st level instruction cache: 16 KBytes, 4-way set associative, 32 byte line size"
 	JclResources_RsIntelCacheDescr09,	L"1st level instruction cache: 32 KBytes, 4-way set associative, 64 byte line size"
 	JclResources_RsIntelCacheDescr0A,	L"1st level data cache: 8 KBytes, 2-way set associative, 32 byte line size"
@@ -2060,11 +2063,11 @@ BEGIN
 	JclResources_RsIntelCacheDescr22,	L"3rd level cache: 512 KBytes, 4-way set associative, 64 byte line size, 2 lines per sector"
 	JclResources_RsIntelCacheDescr23,	L"3rd level cache: 1 MBytes, 8-way set associative, 64 byte line size, 2 lines per sector"
 	JclResources_RsIntelCacheDescr25,	L"3rd level cache: 2 MBytes, 8-way set associative, 64 byte line size, 2 lines per sector"
-	JclResources_RsPePkgV3Produced,	L"Delphi 3 or C++ Builder 3"
-	JclResources_RsPePkgProducerUndefined,	L"Undefined"
-	JclResources_RsPePkgBCB4Produced,	L"C++ Builder 4 or later"
-	JclResources_RsPePkgDelphi4Produced,	L"Delphi 4 or later"
-	JclResources_RsPePkgMain,	L"Main"
+	JclResources_RsIntelCacheDescr29,	L"3rd level cache: 4 MBytes, 8-way set associative, 64 byte line size, 2 lines per sector"
+	JclResources_RsIntelCacheDescr2C,	L"1st level data cache: 32 KBytes, 8-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr30,	L"1st level instruction cache: 32 KBytes, 8-way set associative, 64 byte line size"
+	JclResources_RsIntelCacheDescr39,	L"2nd-level cache: 128 KBytes, 4-way set associative, sectored cache, 64-byte line size"
+	JclResources_RsIntelCacheDescr3A,	L"2nd-level cache: 192 KBytes, 6-way set associative, sectored cache, 64-byte line size"
 	JclResources_RsPePkgWeak,	L"Weak"
 	JclResources_RsPePkgOrgWeak,	L"OrgWeak"
 	JclResources_RsPePkgImplicit,	L"Implicit"
@@ -2076,11 +2079,11 @@ BEGIN
 	JclResources_RsSynchOpenMutex,	L"Failed to open mutex"
 	JclResources_RsIntelCacheDescr00,	L"Null descriptor"
 	JclResources_RsIntelCacheDescr01,	L"Instruction TLB: 4 KByte pages, 4-way set associative, 32 entries"
-	JclResources_RsPeDEBUG_UNKNOWN,	L"UNKNOWN"
-	JclResources_RsPeDEBUG_COFF,	L"COFF"
-	JclResources_RsPeDEBUG_CODEVIEW,	L"CODEVIEW"
-	JclResources_RsPeDEBUG_FPO,	L"FPO"
-	JclResources_RsPeDEBUG_MISC,	L"MISC"
+	JclResources_RsIntelCacheDescr02,	L"Instruction TLB: 4 MByte pages, 4-way set associative, 2 entries"
+	JclResources_RsIntelCacheDescr03,	L"Data TLB: 4 KByte pages, 4-way set associative, 64 entries"
+	JclResources_RsIntelCacheDescr04,	L"Data TLB: 4 MByte pages, 4-way set associative, 8 entries"
+	JclResources_RsIntelCacheDescr05,	L"Data TLB1: 4 MByte pages, 4-way set associative, 32 entries"
+	JclResources_RsIntelCacheDescr06,	L"1st level instruction cache: 8 KBytes, 4-way set associative, 32 byte line size"
 	JclResources_RsPeDEBUG_EXCEPTION,	L"EXCEPTION"
 	JclResources_RsPeDEBUG_FIXUP,	L"FIXUP"
 	JclResources_RsPeDEBUG_OMAP_TO_SRC,	L"OMAP_TO_SRC"
@@ -2092,11 +2095,11 @@ BEGIN
 	JclResources_RsPePkgDesignOnly,	L"DesignOnly"
 	JclResources_RsPePkgRunOnly,	L"RunOnly"
 	JclResources_RsPePkgIgnoreDupUnits,	L"IgnoreDupUnits"
-	JclResources_RsPeMACHINE_AMPHA64,	L"ALPHA64"
-	JclResources_RsPeMACHINE_MIPSFPU,	L"MIPSFPU"
-	JclResources_RsPeMACHINE_MIPSFPU16,	L"MIPSFPU16"
-	JclResources_RsPeMACHINE_TRICORE,	L"Infineon"
-	JclResources_RsPeMACHINE_CEF,	L"CEF"
+	JclResources_RsPePkgV3Produced,	L"Delphi 3 or C++ Builder 3"
+	JclResources_RsPePkgProducerUndefined,	L"Undefined"
+	JclResources_RsPePkgBCB4Produced,	L"C++ Builder 4 or later"
+	JclResources_RsPePkgDelphi4Produced,	L"Delphi 4 or later"
+	JclResources_RsPePkgMain,	L"Main"
 	JclResources_RsPeMACHINE_EBC,	L"EFI Byte Code"
 	JclResources_RsPeMACHINE_AMD64,	L"AMD64 (K8)"
 	JclResources_RsPeMACHINE_M32R,	L"M32R little-endian"
@@ -2108,11 +2111,11 @@ BEGIN
 	JclResources_RsPeSUBSYSTEM_OS2_CUI,	L"OS/2"
 	JclResources_RsPeSUBSYSTEM_POSIX_CUI,	L"Posix"
 	JclResources_RsPeSUBSYSTEM_RESERVED8,	L"Reserved 8"
-	JclResources_RsPeMACHINE_R4000,	L"MIPS little-endian R4000"
-	JclResources_RsPeMACHINE_R10000,	L"MIPS little-endian R10000"
-	JclResources_RsPeMACHINE_WCEMIPSV2,	L"MIPS little-endian WCE v2"
-	JclResources_RsPeMACHINE_ALPHA,	L"Alpha_AXP"
-	JclResources_RsPeMACHINE_SH3,	L"SH3 little-endian"
+	JclResources_RsPeDEBUG_UNKNOWN,	L"UNKNOWN"
+	JclResources_RsPeDEBUG_COFF,	L"COFF"
+	JclResources_RsPeDEBUG_CODEVIEW,	L"CODEVIEW"
+	JclResources_RsPeDEBUG_FPO,	L"FPO"
+	JclResources_RsPeDEBUG_MISC,	L"MISC"
 	JclResources_RsPeMACHINE_SH3DSP,	L"SH3 DSP"
 	JclResources_RsPeMACHINE_SH3E,	L"SH3E little-endian"
 	JclResources_RsPeMACHINE_SH4,	L"SH4 little-endian"
@@ -2124,11 +2127,11 @@ BEGIN
 	JclResources_RsPeMACHINE_POWERPCFP,	L"IBM PowerPC FP"
 	JclResources_RsPeMACHINE_IA64,	L"Intel 64"
 	JclResources_RsPeMACHINE_MIPS16,	L"MIPS16"
-	JclResources_RsPeGlobalFlagsClear,	L"GlobalFlagsClear"
-	JclResources_RsPeGlobalFlagsSet,	L"GlobalFlagsSet"
-	JclResources_RsPeCriticalSectionDefaultTimeout,	L"CriticalSectionDefaultTimeout"
-	JclResources_RsPeDeCommitFreeBlockThreshold,	L"DeCommitFreeBlockThreshold"
-	JclResources_RsPeDeCommitTotalFreeThreshold,	L"DeCommitTotalFreeThreshold"
+	JclResources_RsPeMACHINE_AMPHA64,	L"ALPHA64"
+	JclResources_RsPeMACHINE_MIPSFPU,	L"MIPSFPU"
+	JclResources_RsPeMACHINE_MIPSFPU16,	L"MIPSFPU16"
+	JclResources_RsPeMACHINE_TRICORE,	L"Infineon"
+	JclResources_RsPeMACHINE_CEF,	L"CEF"
 	JclResources_RsPeLockPrefixTable,	L"LockPrefixTable"
 	JclResources_RsPeMaximumAllocationSize,	L"MaximumAllocationSize"
 	JclResources_RsPeVirtualMemoryThreshold,	L"VirtualMemoryThreshold"
@@ -2140,11 +2143,11 @@ BEGIN
 	JclResources_RsPeMACHINE_UNKNOWN,	L"Unknown"
 	JclResources_RsPeMACHINE_I386,	L"Intel 386"
 	JclResources_RsPeMACHINE_R3000,	L"MIPS little-endian R3000"
-	JclResources_RsPeOperatingSystemVersion,	L"Operating System Version"
-	JclResources_RsPeImageVersion,	L"Image Version"
-	JclResources_RsPeSubsystemVersion,	L"Subsystem Version"
-	JclResources_RsPeWin32VersionValue,	L"Win32 Version"
-	JclResources_RsPeSizeOfImage,	L"Size of Image"
+	JclResources_RsPeMACHINE_R4000,	L"MIPS little-endian R4000"
+	JclResources_RsPeMACHINE_R10000,	L"MIPS little-endian R10000"
+	JclResources_RsPeMACHINE_WCEMIPSV2,	L"MIPS little-endian WCE v2"
+	JclResources_RsPeMACHINE_ALPHA,	L"Alpha_AXP"
+	JclResources_RsPeMACHINE_SH3,	L"SH3 little-endian"
 	JclResources_RsPeSizeOfHeaders,	L"Size of Headers"
 	JclResources_RsPeCheckSum,	L"CheckSum"
 	JclResources_RsPeSubsystem,	L"Subsystem"
@@ -2156,11 +2159,11 @@ BEGIN
 	JclResources_RsPeLoaderFlags,	L"Loader Flags"
 	JclResources_RsPeNumberOfRvaAndSizes,	L"Number of RVA"
 	JclResources_RsPeVersion,	L"Version"
-	JclResources_RsPeTimeDateStamp,	L"Time Date Stamp"
-	JclResources_RsPePointerToSymbolTable,	L"Symbols Pointer"
-	JclResources_RsPeNumberOfSymbols,	L"Number of Symbols"
-	JclResources_RsPeSizeOfOptionalHeader,	L"Size of Optional Header"
-	JclResources_RsPeCharacteristics,	L"Characteristics"
+	JclResources_RsPeGlobalFlagsClear,	L"GlobalFlagsClear"
+	JclResources_RsPeGlobalFlagsSet,	L"GlobalFlagsSet"
+	JclResources_RsPeCriticalSectionDefaultTimeout,	L"CriticalSectionDefaultTimeout"
+	JclResources_RsPeDeCommitFreeBlockThreshold,	L"DeCommitFreeBlockThreshold"
+	JclResources_RsPeDeCommitTotalFreeThreshold,	L"DeCommitTotalFreeThreshold"
 	JclResources_RsPeMagic,	L"Magic"
 	JclResources_RsPeLinkerVersion,	L"Linker Version"
 	JclResources_RsPeSizeOfCode,	L"Size of Code"
@@ -2172,11 +2175,11 @@ BEGIN
 	JclResources_RsPeImageBase,	L"Image Base"
 	JclResources_RsPeSectionAlignment,	L"Section Alignment"
 	JclResources_RsPeFileAlignment,	L"File Alignment"
-	JclResources_RsPeImg_03,	L"Exceptions"
-	JclResources_RsPeImg_04,	L"Security"
-	JclResources_RsPeImg_05,	L"Base Relocations"
-	JclResources_RsPeImg_06,	L"Debug"
-	JclResources_RsPeImg_07,	L"Description"
+	JclResources_RsPeOperatingSystemVersion,	L"Operating System Version"
+	JclResources_RsPeImageVersion,	L"Image Version"
+	JclResources_RsPeSubsystemVersion,	L"Subsystem Version"
+	JclResources_RsPeWin32VersionValue,	L"Win32 Version"
+	JclResources_RsPeSizeOfImage,	L"Size of Image"
 	JclResources_RsPeImg_08,	L"Machine Value"
 	JclResources_RsPeImg_09,	L"TLS"
 	JclResources_RsPeImg_10,	L"Load configuration"
@@ -2188,11 +2191,11 @@ BEGIN
 	JclResources_RsPeSignature,	L"Signature"
 	JclResources_RsPeMachine,	L"Machine"
 	JclResources_RsPeNumberOfSections,	L"Number of Sections"
-	JclResources_RsFileUtilsLanguageIndex,	L"Illegal language index"
-	JclResources_RsFileUtilsEmptyValue,	L"No value was supplied"
-	JclResources_RsFileUtilsValueNotFound,	L"The value %s was not found."
-	JclResources_RsCreateFileMapping,	L"Failed to create FileMapping"
-	JclResources_RsCreateFileMappingView,	L"Failed to create FileMappingView"
+	JclResources_RsPeTimeDateStamp,	L"Time Date Stamp"
+	JclResources_RsPePointerToSymbolTable,	L"Symbols Pointer"
+	JclResources_RsPeNumberOfSymbols,	L"Number of Symbols"
+	JclResources_RsPeSizeOfOptionalHeader,	L"Size of Optional Header"
+	JclResources_RsPeCharacteristics,	L"Characteristics"
 	JclResources_RsFailedToObtainSize,	L"Failed to obtain size of file"
 	JclResources_RsPeReadOnlyStream,	L"Stream is read-only"
 	JclResources_RsPeCantOpen,	L"Cannot open file ""%s"""
@@ -2204,13 +2207,13 @@ BEGIN
 	JclResources_RsPeImg_00,	L"Exports"
 	JclResources_RsPeImg_01,	L"Imports"
 	JclResources_RsPeImg_02,	L"Resources"
-	JvResources_RsClInfoText,	L"Tooltip text"
-	JvResources_RsClInfoBk,	L"Tooltip background"
-	JvResources_RsGradientActiveCaption,	L"Gradient Active Caption"
-	JvResources_RsGradientInactiveCaption,	L"Gradient Inactive Caption"
-	JvResources_RsHotLight,	L"Hot Light"
-	JvResources_RsMenuBar,	L"Menu Bar"
-	JvResources_RsMenuHighlight,	L"Menu Highlight"
+	JclResources_RsPeImg_03,	L"Exceptions"
+	JclResources_RsPeImg_04,	L"Security"
+	JclResources_RsPeImg_05,	L"Base Relocations"
+	JclResources_RsPeImg_06,	L"Debug"
+	JclResources_RsPeImg_07,	L"Description"
+	JvResources_RsEInvalidWizardPage,	L"The pages belong to another wizard"
+	JvResources_RsETilingError,	L"Tiling only works on images with dimensions > 0"
 	JclResources_RsEReplacementChar,	L"Failed to get ANSI replacement character"
 	JclResources_RsDateConversion,	L"Error illegal date or time format"
 	JclResources_RsUnknownFunctionAt,	L"Unknown function at %s"
@@ -2220,6 +2223,29 @@ BEGIN
 	JclResources_RsEModuleNotValid,	L"The module with handle %d is not valid"
 	JclResources_RsFileUtilsNoVersionInfo,	L"File contains no version information"
 	JclResources_RsFileUtilsFileDoesNotExist,	L"The file %s does not exist"
+	JclResources_RsFileUtilsLanguageIndex,	L"Illegal language index"
+	JclResources_RsFileUtilsEmptyValue,	L"No value was supplied"
+	JclResources_RsFileUtilsValueNotFound,	L"The value %s was not found."
+	JclResources_RsCreateFileMapping,	L"Failed to create FileMapping"
+	JclResources_RsCreateFileMappingView,	L"Failed to create FileMappingView"
+	JvResources_RsCl3DDkShadow,	L"Dark shadow 3D elements"
+	JvResources_RsCl3DLight,	L"Highlight 3D elements"
+	JvResources_RsClInfoText,	L"Tooltip text"
+	JvResources_RsClInfoBk,	L"Tooltip background"
+	JvResources_RsGradientActiveCaption,	L"Gradient Active Caption"
+	JvResources_RsGradientInactiveCaption,	L"Gradient Inactive Caption"
+	JvResources_RsHotLight,	L"Hot Light"
+	JvResources_RsMenuBar,	L"Menu Bar"
+	JvResources_RsMenuHighlight,	L"Menu Highlight"
+	JvResources_RsFirstButtonCaption,	L"To &Start Page"
+	JvResources_RsLastButtonCaption,	L"To &Last Page"
+	JvResources_RsFinishButtonCaption,	L"&Finish"
+	JvResources_RsWelcome,	L"Welcome"
+	JvResources_RsTitle,	L"Title"
+	JvResources_RsSubtitle,	L"Subtitle"
+	JvResources_RsEInvalidParentControl,	L"The Parent should be TJvWizard or a descendant"
+	JvResources_RsClWindow,	L"Window background"
+	JvResources_RsClWindowFrame,	L"Window frame"
 	JvResources_RsClMenuText,	L"Menu text"
 	JvResources_RsClWindowText,	L"Window text"
 	JvResources_RsClCaptionText,	L"Active window title bar text"
@@ -2234,8 +2260,8 @@ BEGIN
 	JvResources_RsClBtnText,	L"Button text"
 	JvResources_RsClInactiveCaptionText,	L"Inactive window title bar text"
 	JvResources_RsClBtnHighlight,	L"Button highlight"
-	JvResources_RsCl3DDkShadow,	L"Dark shadow 3D elements"
-	JvResources_RsCl3DLight,	L"Highlight 3D elements"
+	JvResources_RsClBrightGreen,	L"Bright Green"
+	JvResources_RsClTurquoise,	L"Turquoise"
 	JvResources_RsClPlum,	L"Plum"
 	JvResources_RsClGray25,	L"Gray 25%"
 	JvResources_RsClRose,	L"Rose"
@@ -2250,8 +2276,8 @@ BEGIN
 	JvResources_RsClActiveCaption,	L"Active window title bar"
 	JvResources_RsClInactiveCaption,	L"Inactive window title bar"
 	JvResources_RsClMenu,	L"Menu background"
-	JvResources_RsClWindow,	L"Window background"
-	JvResources_RsClWindowFrame,	L"Window frame"
+	JvResources_RsClDarkTeal,	L"Dark Teal"
+	JvResources_RsClDarkBlue,	L"Dark Blue"
 	JvResources_RsClIndigo,	L"Indigo"
 	JvResources_RsClGray80,	L"Gray 80%"
 	JvResources_RsClDarkRed,	L"Dark Red"
@@ -2266,8 +2292,8 @@ BEGIN
 	JvResources_RsClGray40,	L"Gray 40%"
 	JvResources_RsClPink,	L"Pink"
 	JvResources_RsClGold,	L"Gold"
-	JvResources_RsClBrightGreen,	L"Bright Green"
-	JvResources_RsClTurquoise,	L"Turquoise"
+	JvResources_RsClGray,	L"Gray"
+	JvResources_RsClSilver,	L"Silver"
 	JvResources_RsClRed,	L"Red"
 	JvResources_RsClLime,	L"Lime"
 	JvResources_RsClYellow,	L"Yellow"
@@ -2282,8 +2308,8 @@ BEGIN
 	JvResources_RsClBrown,	L"Brown"
 	JvResources_RsClOliveGreen,	L"Olive Green"
 	JvResources_RsClDarkGreen,	L"Dark Green"
-	JvResources_RsClDarkTeal,	L"Dark Teal"
-	JvResources_RsClDarkBlue,	L"Dark Blue"
+	JvResources_RsEExtensibleIntObjCollectionExpected,	L"Expected collection"
+	JvResources_RsEExtensibleIntObjClassNameExpected,	L"Missing ClassName property"
 	JvResources_RsEExtensibleIntObjInvalidClass,	L"Invalid class type"
 	JvResources_RsUnknownLocaleIDFmt,	L"Unknown Locale ID $%.4x"
 	JvResources_RsEDirectThreadCreationNotAllowed,	L"Direct creation of a TJvDeviceReadThread object is not allowed"
@@ -2298,9 +2324,9 @@ BEGIN
 	JvResources_RsClNavy,	L"Navy blue"
 	JvResources_RsClPurple,	L"Purple"
 	JvResources_RsClTeal,	L"Teal"
-	JvResources_RsClGray,	L"Gray"
-	JvResources_RsClSilver,	L"Silver"
 	Vcl_ComStrs_sFailsetCalSelRange,	L"\x30AB\x30EC\x30F3\x30C0\x30FC\x306E\x7BC4\x56F2\x9078\x629E\x304C\x3067\x304D\x307E\x305B\x3093"
+	JvResources_RsBackButtonCaption,	L"< &Back"
+	JvResources_RsNextButtonCaption,	L"&Next >"
 	JvResources_RsDataItemRenderHasNoText,	L"(item does not support the IJvDataItemText interface)"
 	JvResources_RsEInternalError,	L"internal error"
 	JvResources_RsEItemCanNotBeDeleted,	L"Item cannot be deleted"
@@ -2314,8 +2340,6 @@ BEGIN
 	JvResources_RsEItemNotFoundInTheSelectedContext,	L"Item not found in the selected context"
 	JvResources_RsEViewListOutOfSync,	L"ViewList out of sync"
 	JvResources_RsEExtensibleIntObjDuplicateClass,	L"Implementation of that class already exists"
-	JvResources_RsEExtensibleIntObjCollectionExpected,	L"Expected collection"
-	JvResources_RsEExtensibleIntObjClassNameExpected,	L"Missing ClassName property"
 	Vcl_ComStrs_sInvalidLevelEx,	L"\x9805\x76EE ""%1:s"" \x306E\x968E\x5C64 (%0:d) \x304C\x4E0D\x6B63\x3067\x3059"
 	Vcl_ComStrs_sInvalidIndex,	L"\x4E0D\x6B63\x306A\x30A4\x30F3\x30C7\x30C3\x30AF\x30B9"
 	Vcl_ComStrs_sInsertError,	L"\x9805\x76EE\x306E\x633F\x5165\x304C\x3067\x304D\x307E\x305B\x3093"
@@ -3005,6 +3029,7 @@ END
 /* D:\github\zLog_v3000\zlog\USpcViewer.dfm */
 /* D:\github\zLog_v3000\zlog\UOptions3.DFM */
 /* D:\github\zLog_v3000\zlog\UStartup.dfm */
+/* D:\github\zLog_v3000\zlog\UExportWizard.dfm */
 /* D:\github\zLog_v3000\zlog\Main.DFM */
 /* D:\github\zLog_v3000\zlog\UAgeDialog.DFM */
 /* D:\github\zLog_v3000\zlog\UExceptionDialog.dfm */

@@ -127,6 +127,16 @@ object TargetEditor: TTargetEditor
       TabOrder = 3
       OnClick = checkShowZeroClick
     end
+    object buttonAllZero: TButton
+      Left = 470
+      Top = 9
+      Width = 90
+      Height = 33
+      Anchors = [akTop, akRight]
+      Caption = #20840#12390#12463#12522#12450
+      TabOrder = 4
+      OnClick = buttonAllZeroClick
+    end
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = 'ZLO'
