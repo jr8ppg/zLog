@@ -1386,6 +1386,10 @@ begin
          for i := 1 to FWorkLog.TotalQSO do begin
             if FWorkLog.QsoList[i].Band = b then begin
                FWorkLog.QsoList[i].Points := 0;
+               FWorkLog.QsoList[i].NewMulti1 := False;
+               FWorkLog.QsoList[i].Multi1 := '';
+               FWorkLog.QsoList[i].NewMulti2 := False;
+               FWorkLog.QsoList[i].Multi2 := '';
             end;
          end;
       end;
