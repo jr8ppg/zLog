@@ -1,0 +1,78 @@
+object formPortConfig3: TformPortConfig3
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'Port config'
+  ClientHeight = 131
+  ClientWidth = 274
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  DesignSize = (
+    274
+    131)
+  TextHeight = 13
+  object groupPortConfig: TGroupBox
+    Left = 4
+    Top = 4
+    Width = 181
+    Height = 121
+    Caption = 'COM99'
+    TabOrder = 0
+    object radioRtsPttDtrKey: TRadioButton
+      Left = 16
+      Top = 29
+      Width = 133
+      Height = 17
+      Caption = 'Key=DTR, PTT=RTS'
+      Checked = True
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      TabStop = True
+    end
+    object radioRtsKeyDtrPtt: TRadioButton
+      Left = 16
+      Top = 58
+      Width = 133
+      Height = 17
+      Caption = 'Key=RTS, PTT=DTR'
+      TabOrder = 1
+    end
+    object radioTxDKeyRtsPtt: TRadioButton
+      Left = 16
+      Top = 87
+      Width = 153
+      Height = 17
+      Caption = 'Key=TxD, PTT=RTS,DTR'
+      TabOrder = 2
+    end
+  end
+  object buttonOK: TButton
+    Left = 194
+    Top = 8
+    Width = 72
+    Height = 25
+    Anchors = [akTop, akRight]
+    Caption = 'OK'
+    Default = True
+    ModalResult = 1
+    TabOrder = 1
+  end
+  object buttonCancel: TButton
+    Left = 194
+    Top = 39
+    Width = 72
+    Height = 25
+    Anchors = [akTop, akRight]
+    Cancel = True
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 2
+  end
+end
