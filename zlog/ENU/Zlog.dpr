@@ -46,6 +46,7 @@ library Zlog;
 {ITE} {DFMFileType} {UExceptionDialog.dfm}
 {ITE} {DFMFileType} {UExportCabrillo.dfm}
 {ITE} {DFMFileType} {UExportHamlog.dfm}
+{ITE} {DFMFileType} {UExportWizard.dfm}
 {ITE} {DFMFileType} {UFDMulti.dfm}
 {ITE} {DFMFileType} {UFreqList.dfm}
 {ITE} {DFMFileType} {UFreqMemDialog.dfm}
@@ -177,6 +178,7 @@ library Zlog;
 {$R 'UExceptionDialog.dfm' 'ExceptionDialog:TForm'}
 {$R 'UExportCabrillo.dfm' 'formExportCabrillo:TForm'}
 {$R 'UExportHamlog.dfm' 'formExportHamlog:TForm'}
+{$R 'UExportWizard.dfm' 'formExportWizard:TForm'}
 {$R 'UFDMulti.dfm' 'FDMulti:TForm(ACAGMulti)'}
 {$R 'UFreqList.dfm' 'FreqList:TForm(CheckWin)'}
 {$R 'UFreqMemDialog.dfm' 'formFreqMemDialog:TForm'}

@@ -6911,6 +6911,10 @@ object MainForm: TMainForm
         Caption = '&Export...'
         OnClick = Export1Click
       end
+      object menuExportWizard: TMenuItem
+        Caption = 'Export wizard'
+        OnClick = menuExportWizardClick
+      end
       object mPXListWPX: TMenuItem
         Caption = 'Prefix List (WPX)'
         Visible = False

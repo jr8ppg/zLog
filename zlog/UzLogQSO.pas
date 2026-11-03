@@ -499,7 +499,7 @@ type
     procedure SaveToFileAsHamlog(Filename: string; nRemarks1Option: Integer; nRemarks2Option: Integer; strRemarks1: string; strRemarks2: string; nCodeOption: Integer; nNameOption: Integer; nTimeOption: Integer; strQslStateText: string; nFreqOption: Integer);
     procedure SaveToFileAsHamSupport(Filename: string);
     procedure SaveToFileAsAdif(Filename: string);
-    procedure SaveToFileAsSpc(Filename: string);
+    procedure SaveToFileAsSpc(Filename: string; fCutPowerCode: Boolean = False);
     function SplitIotaNr(NR: string): string;
     {$ENDIF}
     function IsDupe(aQSO : TQSO) : Integer;
@@ -3967,12 +3967,14 @@ begin
    CloseFile(f);
 end;
 
-procedure TLog.SaveToFileAsSpc(Filename: string);
+procedure TLog.SaveToFileAsSpc(Filename: string; fCutPowerCode: Boolean);
 var
    S: string;
    i: Integer;
    Q: TQSO;
    L: TStringList;
+   nr: string;
+   pwr: string;
 begin
    L := TStringList.Create();
    try
@@ -3984,7 +3986,12 @@ begin
 
          S := Q.Callsign;
          if Q.NrRcvd <> '' then begin
-            S := S + DupeString(' ', 11);
+            nr := Q.NrRcvd;
+            pwr := RightStr(nr, 1);
+            if (pwr = 'H') or (pwr = 'M') or (pwr = 'L') or (pwr = 'P') then begin
+               nr := LeftStr(nr, Length(nr) - 1);
+            end;
+            S := nr + DupeString(' ', 11);
             S := Copy(S, 1, 11);
             S := S + Q.NrRcvd;
          end;

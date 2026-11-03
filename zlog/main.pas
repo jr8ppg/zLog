@@ -750,6 +750,7 @@ type
     actionRitDown: TAction;
     actionXitUp: TAction;
     actionXitDown: TAction;
+    menuExportWizard: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1103,6 +1104,7 @@ type
     procedure actionRitDownExecute(Sender: TObject);
     procedure actionXitUpExecute(Sender: TObject);
     procedure actionXitDownExecute(Sender: TObject);
+    procedure menuExportWizardClick(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -1643,7 +1645,7 @@ uses
   UWAEScore, UWAEMulti, UBandPlanEditDialog, UGraphColorDialog,
   UMultipliers, UUTCDialog, UNewIOTARef, UzLogExtension,
   UTargetEditor, UExportHamlog, UExportCabrillo, UStartTimeDialog, UDateDialog,
-  UCountryChecker, USelectClusterLog, USpcViewer, UOptions3, UStartup;
+  UCountryChecker, USelectClusterLog, USpcViewer, UOptions3, UStartup, UExportWizard;
 
 {$R *.DFM}
 
@@ -7016,6 +7018,18 @@ begin
    end;
 
    { Add code to save current file under SaveDialog.FileName }
+end;
+
+procedure TMainForm.menuExportWizardClick(Sender: TObject);
+var
+   f: TformExportWizard;
+begin
+   f := TformExportWizard.Create(Self);
+   try
+      f.ShowModal();
+   finally
+      f.Release();
+   end;
 end;
 
 procedure TMainForm.SpeedButton9Click(Sender: TObject);

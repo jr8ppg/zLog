@@ -6911,6 +6911,10 @@ object MainForm: TMainForm
         Caption = #12456#12463#12473#12509#12540#12488'...(&E)'
         OnClick = Export1Click
       end
+      object menuExportWizard: TMenuItem
+        Caption = #12456#12463#12473#12509#12540#12488#12454#12451#12470#12540#12489
+        OnClick = menuExportWizardClick
+      end
       object mPXListWPX: TMenuItem
         Caption = #12503#12522#12501#12451#12483#12463#12473#12522#12473#12488'(WPX)'
         Visible = False

@@ -69,7 +69,7 @@
         <SanitizedProjectName>zlog</SanitizedProjectName>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1041</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.4.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.4.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -80,11 +80,12 @@
         <DCC_Define>EUREKALOG_VER7;EUREKALOG;$(DCC_Define)</DCC_Define>
         <Custom_Styles>Carbon|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Carbon.vsf</Custom_Styles>
         <VerInfo_Release>4</VerInfo_Release>
+        <VerInfo_Build>1</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.1;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <Icon_MainIcon>zlog_v3.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
@@ -100,7 +101,7 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.3.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.1;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_MapFile>3</DCC_MapFile>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
@@ -115,23 +116,23 @@
         <BT_BuildType>Debug</BT_BuildType>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.1;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <DCC_PEOSVersion>5.0</DCC_PEOSVersion>
         <DCC_PESubSysVersion>5.0</DCC_PESubSysVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.1;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
         <DCC_Define>USE_SSL;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.4.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=3.0.4.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.1;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <VerInfo_Debug>true</VerInfo_Debug>
@@ -139,7 +140,7 @@
         <DCC_PESubSysVersion>5.0</DCC_PESubSysVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.0;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=zLog for Windows 令和 Edition;FileVersion=3.0.4.1;InternalName=;LegalCopyright=COPYRIGHT 1997-2005 by yokobayashi, 2019-2026 JR8PPG;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=zLog for Windows 令和 Edition;ProductVersion=3.0.0.0;Comments=</VerInfo_Keys>
         <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
         <DCC_RangeChecking>true</DCC_RangeChecking>
         <DCC_Define>USE_SSL;$(DCC_Define)</DCC_Define>
@@ -432,9 +433,6 @@
         <DCCReference Include="UQsyInfo.pas">
             <Form>formQsyInfo</Form>
         </DCCReference>
-        <DCCReference Include="UExportHamlog.pas">
-            <Form>formExportHamlog</Form>
-        </DCCReference>
         <DCCReference Include="UPackageLoader.pas">
             <Form>PackageLoader</Form>
         </DCCReference>
@@ -578,6 +576,14 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UzColorCoding.pas"/>
+        <DCCReference Include="UExportHamlog.pas">
+            <Form>formExportHamlog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UExportWizard.pas">
+            <Form>formExportWizard</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -782,8 +788,8 @@
                     <RDP_Source_Files Name="Item10">UFreqTest.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item11">UJarlWorldWideRTTYMulti2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">Win32\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item13">Win64\Debug\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item14">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item13">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item14">Win64\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item16">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item17">UBasicScore.dfm</RDP_Source_Files>
@@ -871,49 +877,50 @@
                     <RDP_Source_Files Name="Item99">URateDialogEx.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item100">UNRDialog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item101">UQsyInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item102">UExportHamlog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item103">UPackageLoader.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item104">UPluginManager.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item105">USo2rNeoCp.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item106">UInformation.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item107">UStatusEdit.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item108">UMessageManager.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item109">UExportCabrillo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item110">USpotterListDlg.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item111">UStartTimeDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item112">UOperatorPowerDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item113">UDateDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item114">UCWMonitor.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item115">UELogCabrillo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item116">UPortConfigDialog3.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item117">UOptions.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item118">UJarlMemberInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item119">UCountryChecker.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item120">UzLogForm.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item121">UFreqPanel.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item122">USearch.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item123">USelectClusterLog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item124">USpcViewer.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item125">Progress.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item126">UOptions2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item127">UEntityInfo.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item128">UGrayline.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item129">UFreqMemDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item130">UStartup.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item131">UJarlWebUpload.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item132">UQSOListColumnSettings.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item133">UAudioInputDlg.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item134">UPrePostPlaybackDlg.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item135">UCwMessageEditor.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item136">UJarlWebUpload2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item137">UDmsToGridDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item138">USentNumber.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item139">UPortConfigDialog.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item140">UJarlWorldWideRTTYScore.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item141">UJarlWorldWideRTTYMulti.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item142">UPortConfigDialog2.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item143">URttyOptions.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item144">Win32\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item102">UPackageLoader.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item103">UPluginManager.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item104">USo2rNeoCp.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item105">UInformation.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item106">UStatusEdit.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item107">UMessageManager.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item108">UExportCabrillo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item109">USpotterListDlg.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item110">UStartTimeDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item111">UOperatorPowerDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item112">UDateDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item113">UCWMonitor.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item114">UELogCabrillo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item115">UPortConfigDialog3.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item116">UOptions.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item117">UJarlMemberInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item118">UCountryChecker.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item119">UzLogForm.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item120">UFreqPanel.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item121">USearch.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item122">USelectClusterLog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item123">USpcViewer.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item124">Progress.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item125">UOptions2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item126">UEntityInfo.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item127">UGrayline.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item128">UFreqMemDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item129">UStartup.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item130">UJarlWebUpload.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item131">UQSOListColumnSettings.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item132">UAudioInputDlg.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item133">UPrePostPlaybackDlg.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item134">UCwMessageEditor.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item135">UJarlWebUpload2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item136">UDmsToGridDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item137">USentNumber.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item138">UPortConfigDialog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item139">UJarlWorldWideRTTYScore.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item140">UJarlWorldWideRTTYMulti.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item141">UPortConfigDialog2.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item142">URttyOptions.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item143">UExportHamlog.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item144">UExportWizard.dfm</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item145">Win64\Release\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

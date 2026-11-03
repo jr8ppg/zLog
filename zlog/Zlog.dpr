@@ -115,7 +115,6 @@ uses
   MSACM in 'MSACM.pas',
   UNRDialog in 'UNRDialog.pas' {NRDialog},
   UQsyInfo in 'UQsyInfo.pas' {formQsyInfo},
-  UExportHamlog in 'UExportHamlog.pas' {formExportHamlog},
   UPackageLoader in 'UPackageLoader.pas' {PackageLoader},
   UPluginManager in 'UPluginManager.pas' {MarketForm},
   USo2rNeoCp in 'USo2rNeoCp.pas' {formSo2rNeoCp},
@@ -174,7 +173,9 @@ uses
   SetupApi in 'SetupApi.pas',
   UPortConfigDialog2 in 'UPortConfigDialog2.pas' {formPortConfig2},
   URttyOptions in 'URttyOptions.pas' {formRttyOptions},
-  UzColorCoding in 'UzColorCoding.pas';
+  UzColorCoding in 'UzColorCoding.pas',
+  UExportHamlog in 'UExportHamlog.pas' {formExportHamlog},
+  UExportWizard in 'UExportWizard.pas' {formExportWizard};
 
 {$R *.res}
 
