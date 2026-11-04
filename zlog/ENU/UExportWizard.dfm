@@ -1,7 +1,7 @@
 object formExportWizard: TformExportWizard
   Left = 0
   Top = 0
-  ActiveControl = editFileName
+  ActiveControl = GroupBox1
   BorderStyle = bsDialog
   Caption = 'ExportWizard'
   ClientHeight = 463
@@ -13,6 +13,7 @@ object formExportWizard: TformExportWizard
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   Position = poOwnerFormCenter
+  OnClick = buttonShowReplaceKeywordsClick
   OnCreate = FormCreate
   OnHide = FormHide
   OnShow = FormShow
@@ -22,7 +23,7 @@ object formExportWizard: TformExportWizard
     Top = 0
     Width = 668
     Height = 463
-    ActivePage = wizpageFileName
+    ActivePage = wizpageTimeZone
     ButtonBarHeight = 42
     ButtonStart.Caption = 'To &Start Page'
     ButtonStart.NumGlyphs = 1
@@ -49,8 +50,6 @@ object formExportWizard: TformExportWizard
     ShowRouteMap = False
     OnNextButtonClick = ExportWizardNextButtonClick
     OnFinishButtonClick = ExportWizardFinishButtonClick
-    ExplicitWidth = 746
-    ExplicitHeight = 501
     DesignSize = (
       668
       463)
@@ -2845,8 +2844,6 @@ object formExportWizard: TformExportWizard
         49454E44AE426082}
       WaterMark.Image.Alignment = iaCenter
       WaterMark.Image.Layout = ilCenter
-      ExplicitWidth = 746
-      ExplicitHeight = 459
     end
     object wizpageFileType: TJvWizardInteriorPage
       Header.ParentFont = False
@@ -2866,8 +2863,6 @@ object formExportWizard: TformExportWizard
       Header.Subtitle.Font.Height = -12
       Header.Subtitle.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Subtitle.Font.Style = []
-      ExplicitWidth = 746
-      ExplicitHeight = 459
       object radioFileType1: TRadioButton
         Left = 32
         Top = 88
@@ -2959,8 +2954,6 @@ object formExportWizard: TformExportWizard
       Header.Subtitle.Font.Height = -12
       Header.Subtitle.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Subtitle.Font.Style = []
-      ExplicitWidth = 746
-      ExplicitHeight = 459
       object GroupBox1: TGroupBox
         Left = 16
         Top = 80
@@ -2974,7 +2967,9 @@ object formExportWizard: TformExportWizard
           Width = 141
           Height = 17
           Caption = 'UTC'#12391#20986#21147#12377#12427
+          Checked = True
           TabOrder = 0
+          TabStop = True
         end
         object radioJST: TRadioButton
           Left = 20
@@ -3005,14 +3000,12 @@ object formExportWizard: TformExportWizard
       Header.Subtitle.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Subtitle.Font.Style = []
       Enabled = False
-      ExplicitWidth = 746
-      ExplicitHeight = 459
       object groupRemarks1: TGroupBox
         Left = 16
         Top = 80
         Width = 633
         Height = 141
-        Caption = 'Output for Remarks1'
+        Caption = 'Remarks1'#12398#20986#21147#20869#23481
         TabOrder = 0
         object buttonShowReplaceKeywords1: TSpeedButton
           Left = 600
@@ -3055,19 +3048,20 @@ object formExportWizard: TformExportWizard
             FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
             FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
             FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
+          OnClick = buttonShowReplaceKeywordsClick
         end
         object radioRemarks1Opt1: TRadioButton
           Left = 25
           Top = 49
-          Width = 60
+          Width = 100
           Height = 16
-          Caption = 'Input'
+          Caption = #20837#21147
           TabOrder = 1
         end
         object radioRemarks1Opt2: TRadioButton
           Left = 25
           Top = 75
-          Width = 69
+          Width = 100
           Height = 16
           Caption = 'Operator'
           TabOrder = 3
@@ -3075,7 +3069,7 @@ object formExportWizard: TformExportWizard
         object radioRemarks1Opt3: TRadioButton
           Left = 25
           Top = 101
-          Width = 69
+          Width = 100
           Height = 16
           Caption = 'Memo'
           TabOrder = 4
@@ -3083,15 +3077,15 @@ object formExportWizard: TformExportWizard
         object radioRemarks1Opt0: TRadioButton
           Left = 25
           Top = 23
-          Width = 92
+          Width = 100
           Height = 16
-          Caption = 'Nothing'
+          Caption = #12394#12375
           TabOrder = 0
         end
         object editRemarks1Opt1: TEdit
-          Left = 108
+          Left = 131
           Top = 45
-          Width = 486
+          Width = 463
           Height = 23
           TabOrder = 2
         end
@@ -3101,12 +3095,12 @@ object formExportWizard: TformExportWizard
         Top = 240
         Width = 633
         Height = 130
-        Caption = 'Output for Remarks2'
+        Caption = 'Remarks2'#12398#20986#21147#20869#23481
         TabOrder = 1
         object buttonShowReplaceKeywords2: TSpeedButton
           Tag = 1
           Left = 600
-          Top = 41
+          Top = 45
           Width = 21
           Height = 21
           Flat = True
@@ -3145,19 +3139,20 @@ object formExportWizard: TformExportWizard
             FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
             FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
             FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
+          OnClick = buttonShowReplaceKeywordsClick
         end
         object radioRemarks2Opt1: TRadioButton
           Left = 25
           Top = 49
-          Width = 56
+          Width = 100
           Height = 16
-          Caption = 'Input'
+          Caption = #20837#21147
           TabOrder = 1
         end
         object radioRemarks2Opt2: TRadioButton
           Left = 25
           Top = 75
-          Width = 69
+          Width = 100
           Height = 16
           Caption = 'Operator'
           TabOrder = 3
@@ -3165,7 +3160,7 @@ object formExportWizard: TformExportWizard
         object radioRemarks2Opt3: TRadioButton
           Left = 25
           Top = 101
-          Width = 69
+          Width = 100
           Height = 16
           Caption = 'Memo'
           TabOrder = 4
@@ -3173,15 +3168,15 @@ object formExportWizard: TformExportWizard
         object radioRemarks2Opt0: TRadioButton
           Left = 25
           Top = 23
-          Width = 92
+          Width = 100
           Height = 16
-          Caption = 'Nothing'
+          Caption = #12394#12375
           TabOrder = 0
         end
         object editRemarks2Opt1: TEdit
-          Left = 108
+          Left = 131
           Top = 45
-          Width = 486
+          Width = 463
           Height = 23
           TabOrder = 2
         end
@@ -3198,28 +3193,26 @@ object formExportWizard: TformExportWizard
       Header.Title.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Title.Font.Style = [fsBold]
       Header.Subtitle.Color = clNone
-      Header.Subtitle.Text = 'Subtitle'
+      Header.Subtitle.Text = #21508#31278#12467#12540#12489#12434#12393#12398#27096#12395#20986#21147#12377#12427#12363#25351#23450#12375#12414#12377#12290
       Header.Subtitle.Anchors = [akLeft, akTop, akRight, akBottom]
       Header.Subtitle.Font.Charset = DEFAULT_CHARSET
       Header.Subtitle.Font.Color = clWindowText
       Header.Subtitle.Font.Height = -12
       Header.Subtitle.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Subtitle.Font.Style = []
-      ExplicitWidth = 746
-      ExplicitHeight = 459
       object groupCode: TGroupBox
         Left = 16
         Top = 80
         Width = 185
         Height = 125
-        Caption = 'Operation Place of UR'
+        Caption = #30456#25163#23616#12398#36939#29992#22320#12467#12540#12489
         TabOrder = 0
         object radioCodeOpt0: TRadioButton
           Left = 25
           Top = 23
           Width = 150
           Height = 25
-          Caption = 'Nothing'
+          Caption = #20309#12418#20986#12373#12394#12356
           Checked = True
           TabOrder = 0
           TabStop = True
@@ -3229,7 +3222,7 @@ object formExportWizard: TformExportWizard
           Top = 54
           Width = 150
           Height = 25
-          Caption = 'Extract Multiplier'
+          Caption = #12510#12523#12481#12434#25277#20986
           TabOrder = 1
         end
         object radioCodeOpt2: TRadioButton
@@ -3237,7 +3230,7 @@ object formExportWizard: TformExportWizard
           Top = 85
           Width = 150
           Height = 25
-          Caption = 'Keep NR'
+          Caption = 'NR'#12434#12381#12398#12414#12414
           TabOrder = 2
         end
       end
@@ -3246,14 +3239,14 @@ object formExportWizard: TformExportWizard
         Top = 80
         Width = 185
         Height = 97
-        Caption = 'Output for FREQ.'
+        Caption = #21608#27874#25968#12398#20986#21147#20869#23481
         TabOrder = 1
         object radioOutputFreq1: TRadioButton
           Left = 25
           Top = 23
-          Width = 92
+          Width = 150
           Height = 25
-          Caption = 'Freq. or band'
+          Caption = #21608#27874#25968#21448#12399#12496#12531#12489
           Checked = True
           TabOrder = 0
           TabStop = True
@@ -3261,9 +3254,9 @@ object formExportWizard: TformExportWizard
         object radioOutputFreq2: TRadioButton
           Left = 25
           Top = 54
-          Width = 92
+          Width = 150
           Height = 25
-          Caption = 'Band'
+          Caption = #12496#12531#12489
           TabOrder = 1
         end
       end
@@ -3272,14 +3265,14 @@ object formExportWizard: TformExportWizard
         Top = 80
         Width = 185
         Height = 97
-        Caption = 'Name of UR'
+        Caption = #30456#25163#23616#12398#21517#21069#12539#21517#31216
         TabOrder = 2
         object radioNameOpt0: TRadioButton
           Left = 25
           Top = 23
           Width = 150
           Height = 25
-          Caption = 'Nothing'
+          Caption = #20309#12418#20986#12373#12394#12356
           Checked = True
           TabOrder = 0
           TabStop = True
@@ -3289,7 +3282,7 @@ object formExportWizard: TformExportWizard
           Top = 54
           Width = 150
           Height = 25
-          Caption = 'Received NR'
+          Caption = #21463#20449#12490#12531#12496#12540
           TabOrder = 1
         end
       end
@@ -3305,20 +3298,19 @@ object formExportWizard: TformExportWizard
       Header.Title.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Title.Font.Style = [fsBold]
       Header.Subtitle.Color = clNone
-      Header.Subtitle.Text = 'Subtitle'
+      Header.Subtitle.Text = 'QSL'#12459#12540#12489#12398#25351#23450#12392#20132#20449#26178#21051#12398#35373#23450#12434#34892#12356#12414#12377#12290
       Header.Subtitle.Anchors = [akLeft, akTop, akRight, akBottom]
       Header.Subtitle.Font.Charset = DEFAULT_CHARSET
       Header.Subtitle.Font.Color = clWindowText
       Header.Subtitle.Font.Height = -12
       Header.Subtitle.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Subtitle.Font.Style = []
-      ExplicitTop = 3
       object checkInquireJarlMemberInfo: TCheckBox
         Left = 16
         Top = 222
         Width = 189
         Height = 17
-        Caption = 'Inquire JARL member info.'
+        Caption = 'JARL'#20250#21729#24773#22577#12434#29031#20250#12377#12427
         TabOrder = 0
       end
       object groupQslMark: TGroupBox
@@ -3326,31 +3318,31 @@ object formExportWizard: TformExportWizard
         Top = 80
         Width = 185
         Height = 125
-        Caption = 'Output for Mark of QSL'
+        Caption = 'QSL'#12510#12540#12463#12398#20986#21147#20869#23481
         TabOrder = 1
         object Label1: TLabel
           Left = 25
           Top = 58
-          Width = 90
+          Width = 59
           Height = 15
           Caption = 'PSE QSL'
         end
         object Label2: TLabel
           Left = 25
           Top = 27
-          Width = 90
+          Width = 100
           Height = 15
-          Caption = 'None'
+          Caption = #35373#23450#28961#12375'(None)'
         end
         object Label3: TLabel
           Left = 25
           Top = 89
-          Width = 90
+          Width = 54
           Height = 15
           Caption = 'NO QSL'
         end
         object editQslNone: TEdit
-          Left = 121
+          Left = 140
           Top = 24
           Width = 25
           Height = 23
@@ -3358,7 +3350,7 @@ object formExportWizard: TformExportWizard
           TabOrder = 0
         end
         object editPseQsl: TEdit
-          Left = 121
+          Left = 140
           Top = 55
           Width = 25
           Height = 23
@@ -3367,7 +3359,7 @@ object formExportWizard: TformExportWizard
           Text = 'J'
         end
         object editNoQsl: TEdit
-          Left = 121
+          Left = 140
           Top = 86
           Width = 25
           Height = 23
@@ -3381,14 +3373,14 @@ object formExportWizard: TformExportWizard
         Top = 80
         Width = 185
         Height = 125
-        Caption = 'Output for QSO time'
+        Caption = #20132#20449#26178#20998#12398#20986#21147#20869#23481
         TabOrder = 2
         object radioTimeOpt0: TRadioButton
           Left = 25
           Top = 23
           Width = 150
           Height = 25
-          Caption = 'Don'#39't care'
+          Caption = #12381#12398#12414#12414
           Checked = True
           TabOrder = 0
           TabStop = True
@@ -3398,7 +3390,7 @@ object formExportWizard: TformExportWizard
           Top = 54
           Width = 150
           Height = 25
-          Caption = 'Change to JST'
+          Caption = 'JST'#12395#32113#19968
           TabOrder = 1
         end
         object radioTimeOpt2: TRadioButton
@@ -3406,7 +3398,7 @@ object formExportWizard: TformExportWizard
           Top = 85
           Width = 150
           Height = 25
-          Caption = 'Change to UTC'
+          Caption = 'UTC'#12395#32113#19968
           TabOrder = 2
         end
       end
@@ -3429,14 +3421,12 @@ object formExportWizard: TformExportWizard
       Header.Subtitle.Font.Height = -12
       Header.Subtitle.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Subtitle.Font.Style = []
-      ExplicitWidth = 746
-      ExplicitHeight = 459
       object checkRemovePowerCode: TCheckBox
         Left = 24
         Top = 88
         Width = 345
         Height = 25
-        Caption = 'Remove Trailing Power Code (H/M/L/P) from NR'
+        Caption = 'NR'#26411#23614#12398#38651#21147#31526#21495'(H,M,L,P)'#12434#21066#38500#12377#12427
         TabOrder = 0
       end
     end
@@ -3459,8 +3449,6 @@ object formExportWizard: TformExportWizard
       Header.Subtitle.Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
       Header.Subtitle.Font.Style = []
       VisibleButtons = [bkBack, bkFinish, bkCancel]
-      ExplicitWidth = 746
-      ExplicitHeight = 459
       object Label4: TLabel
         Left = 24
         Top = 107

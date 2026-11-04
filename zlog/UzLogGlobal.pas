@@ -789,6 +789,9 @@ function GetDisplayScalingFactor(x, y: Integer): double;
 procedure ExecProgram(handle: THandle; strExeName: string);
 function EnumUSBDevices(List: TStrings): Integer;
 
+function MessageBoxTimeOut(hWnd: HWND; lpText: PChar; lpCaption: PChar;
+                           uType: UINT; wLanguageId: WORD; dwMilliseconds: DWORD): Integer; stdcall;
+
 resourcestring
   MSG_INVALID_CHARACTER = 'Invalid character [%s]';
 
@@ -814,6 +817,8 @@ uses
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+function MessageBoxTimeOut; external user32 name 'MessageBoxTimeoutW';
 
 procedure TdmZLogGlobal.DataModuleCreate(Sender: TObject);
 var

@@ -94,6 +94,7 @@ type
     procedure buttonFileRefClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormHide(Sender: TObject);
+    procedure buttonShowReplaceKeywordsClick(Sender: TObject);
   private
     { Private êÈåæ }
     FFileType: Integer;
@@ -253,7 +254,31 @@ begin
       end;
 
       FDefaultExt := extlist[FFileType];
+      editFileName.Text := ChangeFileExt(CurrentFileName, FDefaultExt);
    end;
+end;
+
+procedure TformExportWizard.buttonShowReplaceKeywordsClick(Sender: TObject);
+var
+   n: Integer;
+   pt: TPoint;
+begin
+   n := TSpeedButton(Sender).Tag;
+   pt.X := TSpeedButton(Sender).Left;
+   pt.Y := TSpeedButton(Sender).Top + TSpeedButton(Sender).Height;
+
+   if n = 0 then begin
+      editRemarks1Opt1.SetFocus();
+      editRemarks1Opt1.SelStart := Length(editRemarks1Opt1.Text);
+      pt := groupRemarks1.ClientToScreen(pt);
+   end
+   else begin
+      editRemarks2Opt1.SetFocus();
+      editRemarks2Opt1.SelStart := Length(editRemarks2Opt1.Text);
+      pt := groupRemarks2.ClientToScreen(pt);
+   end;
+
+   popupReplaceKeywords.Popup(pt.X, pt.Y);
 end;
 
 procedure TformExportWizard.ExportWizardFinishButtonClick(Sender: TObject);
@@ -319,6 +344,8 @@ begin
          Log.SaveToFileAsSpc(f, checkRemovePowerCode.Checked);
       end;
    end;
+
+   MessageBoxTimeout(Handle, PChar('èoóÕÇµÇ‹ÇµÇΩ.'), PChar(Application.Title), MB_OK or MB_ICONEXCLAMATION, 0, 3000);
 
    ModalResult := mrOK;
 end;
