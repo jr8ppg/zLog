@@ -1375,6 +1375,7 @@ type
     procedure StartCqRepeatTimer();
     procedure StopCqRepeatTimer();
     function Is2bsiq(): Boolean;
+    function IsAlternatingCq(): Boolean;
     procedure LogButtonProc(nID: Integer; Q: TQSO);
     function InputStartTime(fNeedSave: Boolean; fSetDefault: Boolean): Boolean;
     procedure EnableShiftKeyAction(fEnable: Boolean);
@@ -6250,6 +6251,14 @@ begin
          if CurrentTx = CurrentRx then begin
             // InvertTx();
             FMessageManager.AddQue(WM_ZLOG_INVERT_TX, 0, 0);
+         end;
+      end
+      else begin
+         // 交互CQモード
+         if IsAlternatingCq() = True then begin
+            if FCQLoopCount > 0 then begin
+               FMessageManager.AddQue(WM_ZLOG_SWITCH_RIG, 0, 0);
+            end;
          end;
       end;
 
@@ -15427,6 +15436,11 @@ begin
    else begin
       Result := False;
    end;
+end;
+
+function TMainForm.IsAlternatingCq(): Boolean;
+begin
+   Result := FInformation.IsAlternatingCQ;
 end;
 
 procedure TMainForm.AddTaskbar(Handle: THandle);

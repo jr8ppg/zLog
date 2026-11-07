@@ -24,6 +24,7 @@ type
     ledCqRepeat: TJvLED;
     Label3: TLabel;
     panelCqRepeat: TPanel;
+    buttonAlternatingCQ: TSpeedButton;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -47,6 +48,8 @@ type
     procedure SetIsWait(fOn: Boolean);
     function GetIs2bsiq(): Boolean;
     procedure SetIs2bsiq(fOn: Boolean);
+    function GetIsAlternatingCQ(): Boolean;
+    procedure SetIsAlternatingCQ(fOn: Boolean);
     procedure SetSo2rMode(fOn: Boolean);
     procedure SetRx(rx: Integer);
     procedure SetTx(tx: Integer);
@@ -64,6 +67,7 @@ type
     property So2rMode: Boolean read FSo2rMode write SetSo2rMode;
     property Is2bsiq: Boolean read GetIs2bsiq write SetIs2bsiq;
     property IsWait: Boolean read GetIsWait write SetIsWait;
+    property IsAlternatingCQ: Boolean read GetIsAlternatingCQ write SetIsAlternatingCQ;
     property Rx: Integer write SetRx;
     property Tx: Integer write SetTx;
     property CqRepeat: Boolean write SetCqRepeat;
@@ -223,6 +227,16 @@ end;
 procedure TformInformation.SetIsWait(fOn: Boolean);
 begin
    buttonWait.Down := fOn;
+end;
+
+function TformInformation.GetIsAlternatingCQ(): Boolean;
+begin
+   Result := buttonAlternatingCQ.Down;
+end;
+
+procedure TformInformation.SetIsAlternatingCQ(fOn: Boolean);
+begin
+   buttonAlternatingCQ.Down := fOn;
 end;
 
 procedure TformInformation.SetRx(rx: Integer);

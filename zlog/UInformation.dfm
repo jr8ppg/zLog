@@ -13,13 +13,11 @@ object formInformation: TformInformation
   Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 12
   object panelCQMode: TPanel
     Left = 0
@@ -113,7 +111,7 @@ object formInformation: TformInformation
       ParentFont = False
     end
     object button2bsiq: TSpeedButton
-      Left = 60
+      Left = 116
       Top = 3
       Width = 57
       Height = 25
@@ -129,7 +127,7 @@ object formInformation: TformInformation
       OnClick = button2bsiqClick
     end
     object buttonWait: TSpeedButton
-      Left = 116
+      Left = 172
       Top = 3
       Width = 57
       Height = 25
@@ -166,13 +164,13 @@ object formInformation: TformInformation
       ParentFont = False
     end
     object ledCqRepeat: TJvLED
-      Left = 179
+      Left = 235
       Top = 12
       ColorOff = clSilver
       Status = False
     end
     object Label3: TLabel
-      Left = 179
+      Left = 235
       Top = 2
       Width = 51
       Height = 11
@@ -184,8 +182,24 @@ object formInformation: TformInformation
       Font.Style = []
       ParentFont = False
     end
+    object buttonAlternatingCQ: TSpeedButton
+      Left = 60
+      Top = 3
+      Width = 57
+      Height = 25
+      AllowAllUp = True
+      GroupIndex = 1
+      Caption = 'ALT CQ'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #65325#65331' '#65328#12468#12471#12483#12463
+      Font.Style = []
+      ParentFont = False
+      OnClick = button2bsiqClick
+    end
     object panelCqRepeat: TPanel
-      Left = 198
+      Left = 254
       Top = 12
       Width = 32
       Height = 17
