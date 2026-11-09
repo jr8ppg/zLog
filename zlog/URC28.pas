@@ -38,7 +38,7 @@ type
     constructor Create();
     destructor Destroy();
     procedure Open(HidDev: TJvHidDevice);
-    procedure Close();
+    procedure Close(HidController: TJvHidDeviceController);
     procedure Abort();
     procedure DeviceData(const Data: Pointer; Size: Word);
     property HidDev: TJvHidDevice read FHidDev write FHidDev;
@@ -105,9 +105,14 @@ begin
    Link := True;
 end;
 
-procedure TRC28.Close();
+procedure TRC28.Close(HidController: TJvHidDeviceController);
 begin
+   if FHidDev = nil then begin
+      Exit;
+   end;
+
    Link := False;
+   HidController.CheckIn(FHidDev);
    FHidDev := nil;
 end;
 

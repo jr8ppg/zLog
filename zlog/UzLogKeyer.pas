@@ -4662,7 +4662,7 @@ begin
    FParallelPort.Close();
 
    // RC-28
-   FRC28DEV.Link := False;
+   FRC28DEV.Close(HidController);
 end;
 
 procedure TdmZLogKeyer.TuneOn(nID: Integer);
