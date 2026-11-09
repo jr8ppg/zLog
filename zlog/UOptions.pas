@@ -484,6 +484,7 @@ type
     checkEnablePttRtty: TCheckBox;
     editBeforeTxRtty: TEdit;
     editAfterTxRtty: TEdit;
+    checkUseRc28: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -2117,6 +2118,7 @@ begin
       Settings._use_band_updown := checkUseBandUpDown.Checked;
       Settings._use_band_select := checkUseBandSelect.Checked;
       Settings._set_initfreq_chgmode := checkSetInitFreqChgMode.Checked;
+      Settings._use_rc28 := checkUseRc28.Checked;
 
       // supports sleep mode
       Settings._turnoff_sleep := checkTurnoffSleep.Checked;
@@ -2499,6 +2501,7 @@ begin
       checkUseBandUpDown.Checked := Settings._use_band_updown;
       checkUseBandSelect.Checked := Settings._use_band_select;
       checkSetInitFreqChgMode.Checked := Settings._set_initfreq_chgmode;
+      checkUseRc28.Checked := Settings._use_rc28;
 
       // supports sleep mode
       checkTurnoffSleep.Checked := Settings._turnoff_sleep;

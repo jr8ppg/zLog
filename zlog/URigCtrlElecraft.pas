@@ -329,7 +329,8 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   WriteData(AnsiString('RO+0010;'));
+//   SetRitOffsetSub(FRitOffset);
 end;
 
 procedure TElecraft.RitDown();
@@ -340,7 +341,8 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   WriteData(AnsiString('RO-0010;'));
+//   SetRitOffsetSub(FRitOffset);
 end;
 
 // FA and FB (VFO A/B Frequency; GET/SET)

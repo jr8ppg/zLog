@@ -23,7 +23,7 @@ object formOptions: TformOptions
     Top = 0
     Width = 444
     Height = 434
-    ActivePage = tabsheetOperateStyle
+    ActivePage = tabsheetRigControl
     Align = alClient
     TabOrder = 0
     object tabsheetOperateStyle: TTabSheet
@@ -4381,7 +4381,7 @@ object formOptions: TformOptions
         Left = 6
         Top = 4
         Width = 250
-        Height = 293
+        Height = 309
         Caption = 'General settings'
         TabOrder = 0
         object Label45: TLabel
@@ -4512,6 +4512,16 @@ object formOptions: TformOptions
           ParentShowHint = False
           ShowHint = True
           TabOrder = 11
+        end
+        object checkUseRc28: TCheckBox
+          Left = 8
+          Top = 282
+          Width = 233
+          Height = 18
+          Caption = 'Use RC-28'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 12
         end
       end
       object groupRcMemoryScan: TGroupBox
@@ -5057,13 +5067,13 @@ object formOptions: TformOptions
           Height = 22
           DroppedDownWidth = 390
           MaxMRUCount = 0
-          FontName = 'Source Code Pro'
+          FontName = #65325#65331' '#26126#26397
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
           Font.Name = #65325#65331' '#12468#12471#12483#12463
           Font.Style = []
-          ItemIndex = 120
+          ItemIndex = 108
           Options = [foFixedPitchOnly, foWysiWyg]
           ParentFont = False
           Sorted = True

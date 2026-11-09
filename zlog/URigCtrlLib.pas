@@ -742,6 +742,7 @@ end;
 
 procedure TRig.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
 begin
+   _currentFreq[_currentvfo] := Hz;
    if fSetLastFreq = True then begin
    end;
 end;

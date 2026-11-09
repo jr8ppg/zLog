@@ -31,7 +31,7 @@ uses
   UWWMulti, UWWScore, UWWZone, UARRLWMulti, UQTCForm, UzLogQSO, UzLogConst, UzLogSpc,
   UCwMessagePad, UNRDialog, UzLogOperatorInfo, UFunctionKeyPanel, Progress, Progress2,
   UQsyInfo, UserDefinedContest, UPluginManager, USo2rNeoCp, UInformation,
-  UStatusEdit, UMessageManager, UzLogContest, UBandPlan,
+  UStatusEdit, UMessageManager, UzLogContest, UBandPlan, URC28,
   UCWMonitor, UzLogForm, UzFreqMemory, USearch, UParallelPort, UEntityInfo, UGrayline, USentNumber;
 
 const
@@ -76,6 +76,11 @@ const
   WM_ZLOG_CQABORT = (WM_USER + 208);
   WM_ZLOG_SETFONTSIZE = (WM_USER + 209);
   WM_ZLOG_RESETCOLUMNWIDTH = (WM_USER + 210);
+  WM_ZLOG_RC28_DIAL = (WM_USER + 300);
+  WM_ZLOG_RC28_KEYDOWN = (WM_USER + 301);
+  WM_ZLOG_RC28_KEYUP = (WM_USER + 302);
+  WM_ZLOG_RC28_KEYSHORTPRESS = (WM_USER + 303);
+  WM_ZLOG_RC28_KEYLONGPRESS = (WM_USER + 304);
 
 type
   TEditPanel = record
@@ -895,6 +900,11 @@ type
     procedure OnPowerBroadcast( var Message: TMessage ); message WM_POWERBROADCAST;
     procedure OnZLogNonconvertKeyPress( var Message: TMessage ); message WM_ZLOG_NONCONVERTKEYPRESS;
     procedure OnZLogSetEditFields( var Message: TMessage ); message WM_ZLOG_SETEDITFIELDS;
+    procedure OnZLogRc28Dial( var Message: TMessage ); message WM_ZLOG_RC28_DIAL;
+    procedure OnZLogRc28KeyDown( var Message: TMessage ); message WM_ZLOG_RC28_KEYDOWN;
+    procedure OnZLogRc28KeyUp( var Message: TMessage ); message WM_ZLOG_RC28_KEYUP;
+    procedure OnZLogRc28KeyShortPress( var Message: TMessage ); message WM_ZLOG_RC28_KEYSHORTPRESS;
+    procedure OnZLogRc28KeyLongPress( var Message: TMessage ); message WM_ZLOG_RC28_KEYLONGPRESS;
     procedure actionQuickQSYExecute(Sender: TObject);
     procedure actionPlayMessageAExecute(Sender: TObject);
     procedure actionPlayMessageBExecute(Sender: TObject);
@@ -1349,6 +1359,7 @@ type
     procedure ResetTx(rigset: Integer);
     procedure StopMessage(mode: TMode);
     procedure ControlPTT(fOn: Boolean);
+    procedure ControlPTTEx(fOn: Boolean);
     procedure VoiceControl(fOn: Boolean; msgno: Integer);
     procedure TogglePTTfor2bsiq();
     procedure OnNonconvertKeyPress();
@@ -10440,6 +10451,153 @@ begin
    SetEditFields();
 end;
 
+procedure TMainForm.OnZLogRc28Dial( var Message: TMessage );
+var
+   direction: TRc28DialDirection;
+   accelerator: Integer;
+   rig: TRig;
+   freq: TFrequency;
+   offset: TFrequency;
+begin
+   direction := TRc28DialDirection(Message.WParam);
+   accelerator := Message.LParam;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
+      Exit;
+   end;
+
+   case accelerator of
+      1:      offset := 10;
+      2:      offset := 20;
+      3:      offset := 30;
+      4:      offset := 40;
+      5:      offset := 50;
+      6..10:  offset := 100;
+      11..20: offset := 200;
+      21..30: offset := 500;
+      else    offset := 1000;
+   end;
+
+   case direction of
+      // 右回転
+      ddRight: begin
+         if rig.Rit = True then begin
+            rig.RitUp();
+         end
+         else if rig.Xit = True then begin
+            rig.RitUp();
+         end
+         else begin  // VFO
+            freq := rig.CurrentFreq[rig.CurrentVFO] + offset;
+            rig.SetFreq(freq, False);
+         end;
+      end;
+
+      // 左回転
+      ddLeft: begin
+         if rig.Rit = True then begin
+            rig.RitDown();
+         end
+         else if rig.Xit = True then begin
+            rig.RitDown();
+         end
+         else begin  // VFO
+            freq := rig.CurrentFreq[rig.CurrentVFO] - offset;
+            rig.SetFreq(freq, False);
+         end;
+      end;
+   end;
+
+end;
+
+procedure TMainForm.OnZLogRc28KeyDown( var Message: TMessage );
+var
+   key: TRc28Key;
+begin
+   key := TRc28Key(Message.WParam);
+   case key of
+      rkTransmit: begin
+         ControlPTTEx(True);
+      end;
+   end;
+end;
+
+procedure TMainForm.OnZLogRc28KeyUp( var Message: TMessage );
+var
+   key: TRc28Key;
+begin
+   key := TRc28Key(Message.WParam);
+
+   case key of
+      rkTransmit: begin
+         ControlPTTEx(False);
+      end;
+   end;
+end;
+
+procedure TMainForm.OnZLogRc28KeyShortPress( var Message: TMessage );
+var
+   key: TRc28Key;
+   rig: TRig;
+begin
+   key := TRc28Key(Message.WParam);
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
+      Exit;
+   end;
+
+   case key of
+      rkF1: begin
+         if rig.Rit = False then begin
+            rig.Rit := True;
+         end
+         else begin
+            rig.Rit := False;
+         end;
+      end;
+
+      rkF2: begin
+         if rig.Xit = False then begin
+            rig.Xit := True;
+         end
+         else begin
+            rig.Xit := False;
+         end;
+      end;
+   end;
+end;
+
+procedure TMainForm.OnZLogRc28KeyLongPress( var Message: TMessage );
+var
+   key: TRc28Key;
+   rig: TRig;
+   freq: TFrequency;
+begin
+   key := TRc28Key(Message.WParam);
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
+   if rig = nil then begin
+      Exit;
+   end;
+
+   case key of
+      rkF1: begin
+         rig.RitClear();
+      end;
+
+      rkF2: begin
+         if rig.RitOffset > 0 then begin
+            freq := rig.CurrentFreq[rig.CurrentVFO] + rig.RitOffset;
+         end
+         else if rig.RitOffset < 0 then begin
+            freq := rig.CurrentFreq[rig.CurrentVFO] - rig.RitOffset;
+         end;
+         rig.SetFreq(freq, False);
+         rig.RitClear();
+         rig.Xit := False;
+      end;
+   end;
+end;
+
 procedure TMainForm.ShowBandMenu(b: TBand);
 begin
    BandMenu.Items[Ord(b)].Visible := True;
@@ -14797,6 +14955,59 @@ begin
    else begin
       dmZLogKeyer.ControlPTT(nID, fOn);
    end;
+
+   dmZLogKeyer.RC28.Transmit := fOn;
+end;
+
+procedure TMainForm.ControlPTTEx(fOn: Boolean);
+var
+   rig: TRig;
+   band: TBand;
+   mode: TMode;
+begin
+   band := TextToBand(BandEdit.Text);
+   mode := TextToMode(ModeEdit.Text);
+   rig := RigControl.GetRig(FCurrentRigSet, band);
+   if rig = nil then begin
+      Exit;
+   end;
+
+   if (rig <> nil) and (rig.ControlPTTSupported = True) and
+      (dmZLogGlobal.Settings._use_ptt_command = True) then begin
+      if mode = mCW then begin
+         if dmZLogGlobal.Settings._pttenabled_cw = True then begin
+            rig.ControlPTT(fOn);
+         end;
+      end
+      else if mode = mRTTY then begin
+         //
+      end
+      else begin
+         if dmZLogGlobal.Settings._pttenabled_ph = True then begin
+            rig.ControlPTT(fOn);
+         end;
+      end;
+   end;
+
+   case mode of
+      mCW: begin
+         if dmZLogGlobal.Settings._pttenabled_cw = True then begin
+            ControlPTT(fOn);
+         end;
+      end;
+
+      mRTTY: begin
+         if Assigned(FTTYConsole) then begin
+            FTTYConsole.ToggleTXRX();
+         end;
+      end;
+
+      else begin
+         if dmZLogGlobal.Settings._pttenabled_ph = True then begin
+            VoiceControl(fOn, 0);
+         end;
+      end;
+   end;
 end;
 
 procedure TMainForm.View1Click(Sender: TObject);
@@ -14871,6 +15082,9 @@ begin
          end;
       end;
    end;
+
+   // RC-28
+   dmZLogKeyer.RC28.Transmit := fOn;
 end;
 
 procedure TMainForm.TogglePTTfor2bsiq();

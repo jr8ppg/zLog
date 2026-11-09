@@ -175,7 +175,8 @@ uses
   URttyOptions in 'URttyOptions.pas' {formRttyOptions},
   UzColorCoding in 'UzColorCoding.pas',
   UExportHamlog in 'UExportHamlog.pas' {formExportHamlog},
-  UExportWizard in 'UExportWizard.pas' {formExportWizard};
+  UExportWizard in 'UExportWizard.pas' {formExportWizard},
+  URC28 in 'URC28.pas';
 
 {$R *.res}
 

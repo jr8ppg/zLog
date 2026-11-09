@@ -584,6 +584,7 @@
             <Form>formExportWizard</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="URC28.pas"/>
         <RcItem Include="resource\r0.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>IDB_ANT_0</ResourceId>
@@ -789,7 +790,7 @@
                     <RDP_Source_Files Name="Item11">UJarlWorldWideRTTYMulti2.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item12">Win32\Debug\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item13">Win32\Release\Zlog.drc</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item14">Win64\Debug\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item14">Win64\Release\Zlog.drc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item15">resource.rc</RDP_Source_Files>
                     <RDP_Source_Files Name="Item16">main.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item17">UBasicScore.dfm</RDP_Source_Files>
@@ -920,7 +921,7 @@
                     <RDP_Source_Files Name="Item142">URttyOptions.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item143">UExportHamlog.dfm</RDP_Source_Files>
                     <RDP_Source_Files Name="Item144">UExportWizard.dfm</RDP_Source_Files>
-                    <RDP_Source_Files Name="Item145">Win64\Release\Zlog.drc</RDP_Source_Files>
+                    <RDP_Source_Files Name="Item145">Win64\Debug\Zlog.drc</RDP_Source_Files>
                 </RDP_Source_Files>
             </Delphi.Personality>
             <Platforms>

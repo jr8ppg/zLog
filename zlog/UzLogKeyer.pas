@@ -14,7 +14,7 @@ uses
   System.SysUtils, System.Classes, Windows, MMSystem, Math, Forms,
   Messages, JvComponentBase, JvHidControllerClass, CPDrv, Generics.Collections,
   System.SyncObjs, System.StrUtils,
-  UzLogConst, UzLogGlobal, WinKeyer, UParallelPort
+  UzLogConst, UzLogGlobal, WinKeyer, UParallelPort, URC28
   {$IFDEF USESIDETONE},ToneGen, UzLogSound, Vcl.ExtCtrls{$ENDIF};
 
 const
@@ -179,6 +179,11 @@ type
 
     FParallelPort: TParallelPort;
 
+    // ICOM RC-28 REMOTE ENCODER
+    FUseRc28: Boolean;
+    FRC28DEV: TRC28;
+    FRC28_Detected: Boolean;
+
     // 現在送信中のポートID
     FWkRx: Integer;
     FWkTx: Integer;
@@ -301,6 +306,8 @@ type
     FWkMessageIndex: Integer;
     FWkMessageStr: string;
     FWkSendStatus: TWinKeyerSendStatus;
+    FUseWkDelay: Boolean;
+    FWkDelayTime: Integer;
 
     // SO2R support
     FSo2rType: TSo2rType;
@@ -409,6 +416,12 @@ type
     procedure SetFskPortConfig(Index: Integer; v: TPortConfig);
     function GetTtyRxPort(Index: Integer): TKeyingPort;
     procedure SetTtyRxPort(Index: Integer; port: TKeyingPort);
+
+    procedure DoRc28Dial(Sender: TObject; direction: TRc28DialDirection; accelerator: Integer);
+    procedure DoRc28KeyDown(Sender: TObject; key: TRc28Key);
+    procedure DoRc28KeyUp(Sender: TObject; key: TRc28Key);
+    procedure DoRc28KeyShortPress(Sender: TObject; key: TRc28Key);
+    procedure DoRc28KeyLongPress(Sender: TObject; key: TRc28Key);
   public
     { Public 宣言 }
     procedure InitializeBGK(msec: Integer); {Initializes BGK. msec is interval}
@@ -521,6 +534,8 @@ type
     property UseWkIgnoreSpeedPot: Boolean read FUseWkIgnoreSpeedPot write FUseWkIgnoreSpeedPot;
     property UseWkAlways9600: Boolean read FUseWkAlways9600 write FUseWkAlways9600;
     property WinKeyerRevision: Integer read FWkRevision;
+    property UseWkDelay: Boolean read FUseWkDelay write FUseWkDelay;
+    property WkDelayTime: Integer read FWkDelayTime write FWkDelayTime;
     procedure WinKeyerSendCharEx(C: Char);
     procedure WinKeyerSendChar(C: Char);
     procedure WinKeyerSendStr(nID: Integer; S: string);
@@ -564,6 +579,8 @@ type
     property FixedSpeed: Integer read FFixedSpeed write FFixedSpeed;
 
     property ParallelPort: TParallelPort read FParallelPort;
+    property UseRC28: Boolean read FUseRc28 write FUseRc28;
+    property RC28: TRC28 read FRC28DEV;
 
     procedure Open();
     procedure Close();
@@ -606,6 +623,8 @@ begin
    FUseWkOutpSelect := True;
    FUseWkIgnoreSpeedPot := False;
    FUseWkAlways9600 := False;
+   FUseWkDelay := False;
+   FWkDelayTime := 0;
    FOnSpeedChanged := nil;
    FTemporarySpeedChange := False;
    FOnCommand := nil;
@@ -662,6 +681,14 @@ begin
    end;
 
    FParallelPort := TParallelPort.Create();
+   FUseRc28 := False;
+   FRC28DEV := TRC28.Create();
+   FRC28DEV.OnDial := DoRc28Dial;
+   FRC28DEV.OnKeyDown := DoRc28KeyDown;
+   FRC28DEV.OnKeyUp := DoRc28KeyUp;
+   FRC28DEV.OnKeyShortPress := DoRc28KeyShortPress;
+   FRC28DEV.OnKeyLongPress := DoRc28KeyLongPress;
+   FRC28_Detected := False;
 
    FUserFlag := False;
    FVoiceFlag := 0;
@@ -728,6 +755,7 @@ begin
 
    HidController.Free();
    FParallelPort.Free();
+   FRC28DEV.Free();
 end;
 
 // Device抜去時、Unplug->Removal->Changeの順でfire eventする
@@ -745,14 +773,24 @@ begin
    FUsbDetecting := True;
    try
       // FNumUsbif4cw := HidController.CountByID(USBIF4CW_VENDORID, USBIF4CW_PRODID);
+//OutputDebugString(PChar(HidDev.ProductName));
 
-      if (HidDev.Attributes.ProductID = USBIF4CW_PRODID) and
-         (HidDev.Attributes.VendorID = USBIF4CW_VENDORID) then begin
+      // USBIF4CW
+      if (HidDev.Attributes.VendorID = USBIF4CW_VENDORID) and (HidDev.Attributes.ProductID = USBIF4CW_PRODID) then begin
          if HidDev.CheckOut() = True then begin
             HidDev.OpenFile();
             usbdevlist.Add(HidDev);
             usbinflist.Add(TUsbPortInfo.Create());
             FUSBIF4CW_Detected := True;
+         end;
+      end;
+
+      // ICOM RC-28
+      if (FUseRc28 = True) and (HidDev.Attributes.VendorID = VENDORID_ICOM) and (HidDev.Attributes.ProductID = PRODUCTID_RC28) then begin
+         if HidDev.CheckOut() = True then begin
+            HidDev.OpenFile();
+            FRC28DEV.Open(HidDev);
+            FRC28_Detected := True;
          end;
       end;
 
@@ -790,85 +828,94 @@ var
    fPaddleRight: Boolean;
    fPaddleLeft: Boolean;
 begin
-   if (FKeyingPort[0] <> tkpUSB) and
-      (FKeyingPort[1] <> tkpUSB) and
-      (FKeyingPort[2] <> tkpUSB) and
-      (FKeyingPort[3] <> tkpUSB) and
-      (FKeyingPort[4] <> tkpUSB) then begin
-      Exit;
-   end;
-
-   p := Data;
-
-   if FUsbInfo[0].FUSBIF4CW = HidDev then begin
-      nID := 0;
-   end
-   else if FUsbInfo[1].FUSBIF4CW = HidDev then begin
-      nID := 1;
-   end
-   else if FUsbInfo[2].FUSBIF4CW = HidDev then begin
-      nID := 2;
-   end
-   else if FUsbInfo[3].FUSBIF4CW = HidDev then begin
-      nID := 3;
-   end
-   else if FUsbInfo[4].FUSBIF4CW = HidDev then begin
-      nID := 4;
-   end
-   else begin
-      Exit;
-   end;
-   {$IFDEF DEBUG}
-//   OutputDebugString(PChar('**ID=[' + IntToStr(nID) + ']**'));
-   {$ENDIF}
-
-   {$IFDEF DEBUG}
-   s := IntToHex(p[0], 2) + ' ' +
-        IntToHex(p[1], 2) + ' ' +
-        IntToHex(p[2], 2) + ' ' +
-        IntToHex(p[3], 2) + ' ' +
-        IntToHex(p[4], 2) + ' ' +
-        IntToHex(p[5], 2) + ' ' +
-        IntToHex(p[6], 2) + ' ' +
-        IntToHex(p[7], 2);
-   {$ENDIF}
-
-   // 前回とステータスに変化があったら
-   if (p[0] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[0]) or
-      (p[1] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[1]) or
-      (p[2] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[2]) or
-      (p[3] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[3]) or
-      (p[4] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[4]) or
-      (p[5] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[5]) or
-      (p[6] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[6]) or
-      (p[7] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[7]) then begin
-      {$IFDEF DEBUG}
-//      OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
-      {$ENDIF}
-
-      // Port Data In
-      FUsbInfo[nID].FPORTDATA.FUsbPortIn[0] := p[6];
-      FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] := p[7];
-
-      // パドル状況
-      fPaddleRight := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0;
-      fPaddleLeft := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0;
-
-      if ((FUsePaddleKeyer = False) and (usbif4cwGetVersion(nID) >= 20)) then begin
-         // パドル入力があったか？
-         if fPaddleRight or fPaddleLeft then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('**PADDLE IN**'));
-            {$ENDIF}
-
-            // fire event
-            if Assigned(FOnPaddleEvent) then begin
-               FOnPaddleEvent(Self);
-            end;
-         end;
+   // USBIF4CW
+   if (HidDev.Attributes.VendorID = USBIF4CW_VENDORID) and (HidDev.Attributes.ProductID = USBIF4CW_PRODID) then begin
+      if (FKeyingPort[0] <> tkpUSB) and
+         (FKeyingPort[1] <> tkpUSB) and
+         (FKeyingPort[2] <> tkpUSB) and
+         (FKeyingPort[3] <> tkpUSB) and
+         (FKeyingPort[4] <> tkpUSB) then begin
+         Exit;
       end;
 
-      CopyMemory(@FUsbInfo[nID].FPORTDATA.FPrevPortIn, p, 8);
+      p := Data;
+
+      if FUsbInfo[0].FUSBIF4CW = HidDev then begin
+         nID := 0;
+      end
+      else if FUsbInfo[1].FUSBIF4CW = HidDev then begin
+         nID := 1;
+      end
+      else if FUsbInfo[2].FUSBIF4CW = HidDev then begin
+         nID := 2;
+      end
+      else if FUsbInfo[3].FUSBIF4CW = HidDev then begin
+         nID := 3;
+      end
+      else if FUsbInfo[4].FUSBIF4CW = HidDev then begin
+         nID := 4;
+      end
+      else begin
+         Exit;
+      end;
+      {$IFDEF DEBUG}
+   //   OutputDebugString(PChar('**ID=[' + IntToStr(nID) + ']**'));
+      {$ENDIF}
+
+      {$IFDEF DEBUG}
+      s := IntToHex(p[0], 2) + ' ' +
+           IntToHex(p[1], 2) + ' ' +
+           IntToHex(p[2], 2) + ' ' +
+           IntToHex(p[3], 2) + ' ' +
+           IntToHex(p[4], 2) + ' ' +
+           IntToHex(p[5], 2) + ' ' +
+           IntToHex(p[6], 2) + ' ' +
+           IntToHex(p[7], 2);
+      {$ENDIF}
+
+      // 前回とステータスに変化があったら
+      if (p[0] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[0]) or
+         (p[1] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[1]) or
+         (p[2] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[2]) or
+         (p[3] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[3]) or
+         (p[4] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[4]) or
+         (p[5] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[5]) or
+         (p[6] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[6]) or
+         (p[7] <> FUsbInfo[nID].FPORTDATA.FPrevPortIn[7]) then begin
+         {$IFDEF DEBUG}
+   //      OutputDebugString(PChar('***HidControllerDeviceData*** ReportID=' + IntToHex(ReportID,2) + ' DATA=' + s));
+         {$ENDIF}
+
+         // Port Data In
+         FUsbInfo[nID].FPORTDATA.FUsbPortIn[0] := p[6];
+         FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] := p[7];
+
+         // パドル状況
+         fPaddleRight := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $04) = 0;
+         fPaddleLeft := (FUsbInfo[nID].FPORTDATA.FUsbPortIn[1] and $01) = 0;
+
+         if ((FUsePaddleKeyer = False) and (usbif4cwGetVersion(nID) >= 20)) then begin
+            // パドル入力があったか？
+            if fPaddleRight or fPaddleLeft then begin
+               {$IFDEF DEBUG}
+               OutputDebugString(PChar('**PADDLE IN**'));
+               {$ENDIF}
+
+               // fire event
+               if Assigned(FOnPaddleEvent) then begin
+                  FOnPaddleEvent(Self);
+               end;
+            end;
+         end;
+
+         CopyMemory(@FUsbInfo[nID].FPORTDATA.FPrevPortIn, p, 8);
+      end;
+   end;
+
+   // RC-28
+   if (HidDev.Attributes.VendorID = VENDORID_ICOM) and (HidDev.Attributes.ProductID = PRODUCTID_RC28) then begin
+      FRC28DEV.DeviceData(Data, Size);
+      Exit;
    end;
 end;
 
@@ -4580,6 +4627,9 @@ begin
    if fUseParallel = True then begin
       FParallelPort.Open();
    end;
+
+   // RC-28
+   FRC28DEV.Link := True;
 end;
 
 procedure TdmZLogKeyer.Close();
@@ -4610,6 +4660,9 @@ begin
 
    // パラレルポート
    FParallelPort.Close();
+
+   // RC-28
+   FRC28DEV.Link := False;
 end;
 
 procedure TdmZLogKeyer.TuneOn(nID: Integer);
@@ -6451,12 +6504,12 @@ end;
 
 procedure TdmZLogKeyer.WinKeyerSleep(dwMilidec: DWORD);
 begin
-   if dmZLogGlobal.Settings._use_wk_delay = True then begin
-      if dmZLogGlobal.Settings._wk_delaytime = 0 then begin
+   if FUseWkDelay = True then begin
+      if FWkDelayTime = 0 then begin
          Sleep(dwMilidec);
       end
       else begin
-         Sleep(dmZLogGlobal.Settings._wk_delaytime);
+         Sleep(FWkDelayTime);
       end;
    end;
 end;
@@ -6530,6 +6583,31 @@ end;
 procedure TdmZLogKeyer.SetTtyRxPort(Index: Integer; port: TKeyingPort);
 begin
    FTtyRxPort[Index] := port;
+end;
+
+procedure TdmZLogKeyer.DoRc28Dial(Sender: TObject; direction: TRc28DialDirection; accelerator: Integer);
+begin
+   PostMessage(MainForm.Handle, WM_ZLOG_RC28_DIAL, WPARAM(direction), LPARAM(accelerator));
+end;
+
+procedure TdmZLogKeyer.DoRc28KeyDown(Sender: TObject; key: TRc28Key);
+begin
+   PostMessage(MainForm.Handle, WM_ZLOG_RC28_KEYDOWN, WPARAM(key), 0);
+end;
+
+procedure TdmZLogKeyer.DoRc28KeyUp(Sender: TObject; key: TRc28Key);
+begin
+   PostMessage(MainForm.Handle, WM_ZLOG_RC28_KEYUP, WPARAM(key), 0);
+end;
+
+procedure TdmZLogKeyer.DoRc28KeyShortPress(Sender: TObject; key: TRc28Key);
+begin
+   PostMessage(MainForm.Handle, WM_ZLOG_RC28_KEYSHORTPRESS, WPARAM(key), 0);
+end;
+
+procedure TdmZLogKeyer.DoRc28KeyLongPress(Sender: TObject; key: TRc28Key);
+begin
+   PostMessage(MainForm.Handle, WM_ZLOG_RC28_KEYLONGPRESS, WPARAM(key), 0);
 end;
 
 { TUSBPortInfo }

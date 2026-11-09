@@ -412,6 +412,8 @@ begin
 end;
 
 procedure TICOM.RitUp();
+var
+   Command: AnsiString;
 begin
    Inherited;
 
@@ -419,10 +421,19 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   Command := AnsiChar($21) + AnsiChar($00) +
+              // 10Hz  1Hz    1KHz  100Hz
+              AnsiChar($10) + AnsiChar($00) +
+              // 00:+   01:-
+              AnsiChar($00);
+
+   ICOMWriteData(Command);
+//   SetRitOffsetSub(FRitOffset);
 end;
 
 procedure TICOM.RitDown();
+var
+   Command: AnsiString;
 begin
    Inherited;
 
@@ -430,7 +441,14 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   Command := AnsiChar($21) + AnsiChar($00) +
+              // 10Hz  1Hz    1KHz  100Hz
+              AnsiChar($10) + AnsiChar($00) +
+              // 00:+   01:-
+              AnsiChar($01);
+
+   ICOMWriteData(Command);
+//   SetRitOffsetSub(FRitOffset);
 end;
 
 procedure TICOM.Initialize();

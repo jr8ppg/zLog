@@ -311,6 +311,7 @@ type
     _use_band_updown: Boolean;
     _use_band_select: Boolean;
     _set_initfreq_chgmode: Boolean;
+    _use_rc28: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -1383,6 +1384,9 @@ begin
       // Set the initial frequency when changing modes.
       Settings._set_initfreq_chgmode := ini.ReadBool('Rig', 'SetInitFreqWhenChangeMode', False);
 
+      // Use RC-28
+      Settings._use_rc28 := ini.ReadBool('Rig', 'UseRc28', False);
+
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
 
@@ -2281,6 +2285,9 @@ begin
       // Set the initial frequency when changing modes.
       ini.WriteBool('Rig', 'SetInitFreqWhenChangeMode', Settings._set_initfreq_chgmode);
 
+      // Use RC-28
+      ini.WriteBool('Rig', 'UseRc28', Settings._use_rc28);
+
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);
 
@@ -2672,6 +2679,8 @@ begin
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;
    dmZLogKeyer.UseWkIgnoreSpeedPot := Settings._use_wk_ignore_speed_pot;
    dmZLogKeyer.UseWkAlways9600 := Settings._use_wk_always9600;
+   dmZLogKeyer.UseWkDelay := dmZLogGlobal.Settings._use_wk_delay;
+   dmZLogKeyer.WkDelayTime := dmZLogGlobal.Settings._wk_delaytime;
    dmZLogKeyer.So2rType := Settings._so2r_type;
    dmZLogKeyer.So2rRxSelectPort := TKeyingPort(Settings._so2r_rx_port);
    dmZLogKeyer.So2rTxSelectPort := TKeyingPort(Settings._so2r_tx_port);
@@ -2719,6 +2728,9 @@ begin
    dmZLogKeyer.MarkFreq := dmZLogGlobal.Settings.RTTY.MarkFreq;
    dmZLogKeyer.FskReverse := dmZLogGlobal.Settings.RTTY.FskReverse;
    dmZLogKeyer.UseTxUOS := dmZLogGlobal.Settings.RTTY.UseTxUOS;
+
+   // RC-28
+   dmZLogKeyer.UseRC28 := dmZLogGlobal.Settings._use_rc28;
 end;
 
 function TdmZLogGlobal.GetAge(aQSO: TQSO): string;

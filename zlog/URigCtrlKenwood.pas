@@ -349,13 +349,11 @@ procedure TTS690.RitUp();
 begin
    Inherited;
    WriteData('RU;');
-   WriteData('RU;');
 end;
 
 procedure TTS690.RitDown();
 begin
    Inherited;
-   WriteData('RD;');
    WriteData('RD;');
 end;
 
@@ -587,7 +585,8 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   WriteData(AnsiString('RU00010;'));
+//   SetRitOffsetSub(FRitOffset);
 end;
 
 procedure TTS2000.RitDown();
@@ -598,7 +597,8 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   WriteData(AnsiString('RD00010;'));
+//   SetRitOffsetSub(FRitOffset);
 end;
 
 procedure TTS2000.SetWPM(wpm: Integer);

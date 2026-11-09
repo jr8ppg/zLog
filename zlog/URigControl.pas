@@ -999,6 +999,10 @@ begin
    // S-Meter
    ledSMeter1.Position := TRig(Sender).SMeter[0];
    ledSMeter2.Position := TRig(Sender).SMeter[1];
+
+   // RC-28
+   dmZLogKeyer.RC28.F1 := TRig(Sender).Rit;
+   dmZLogKeyer.RC28.F2 := TRig(Sender).Xit;
 end;
 
 procedure TRigControl.OnErrorProc(Sender: TObject; msg: string);

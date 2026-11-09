@@ -723,7 +723,7 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   WriteData(AnsiString('RU0010;'));
 end;
 
 procedure TFT2000.RitDown();
@@ -734,7 +734,7 @@ begin
       Exit;
    end;
 
-   SetRitOffsetSub(FRitOffset);
+   WriteData(AnsiString('RD0010;'));
 end;
 
 //
