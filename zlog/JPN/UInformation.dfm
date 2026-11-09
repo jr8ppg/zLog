@@ -4,7 +4,7 @@ object formInformation: TformInformation
   BorderStyle = bsSizeToolWin
   Caption = 'Information'
   ClientHeight = 32
-  ClientWidth = 654
+  ClientWidth = 594
   Color = clBtnFace
   Constraints.MinWidth = 610
   Font.Charset = DEFAULT_CHARSET
@@ -36,7 +36,7 @@ object formInformation: TformInformation
     OnClick = panelCQModeClick
   end
   object panelWpmInfo: TPanel
-    Left = 338
+    Left = 278
     Top = 0
     Width = 108
     Height = 32
@@ -48,10 +48,9 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 278
   end
   object panelTime: TPanel
-    Left = 568
+    Left = 508
     Top = 0
     Width = 86
     Height = 32
@@ -64,10 +63,9 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
-    ExplicitLeft = 508
   end
   object panelRxInfo: TPanel
-    Left = 507
+    Left = 447
     Top = 0
     Width = 61
     Height = 32
@@ -79,12 +77,11 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 3
-    ExplicitLeft = 447
   end
   object Panel1: TPanel
     Left = 42
     Top = 0
-    Width = 296
+    Width = 236
     Height = 32
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -94,7 +91,6 @@ object formInformation: TformInformation
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    ExplicitWidth = 236
     object ledPtt: TJvLED
       Left = 7
       Top = 12
@@ -219,7 +215,7 @@ object formInformation: TformInformation
     end
   end
   object panelTxInfo: TPanel
-    Left = 446
+    Left = 386
     Top = 0
     Width = 61
     Height = 32
@@ -231,6 +227,5 @@ object formInformation: TformInformation
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    ExplicitLeft = 386
   end
 end
