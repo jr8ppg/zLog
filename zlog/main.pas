@@ -10468,13 +10468,13 @@ begin
 
    case accelerator of
       1:      offset := 10;
-      2:      offset := 20;
-      3:      offset := 30;
-      4:      offset := 40;
-      5:      offset := 50;
+      2:      offset := 10;
+      3:      offset := 10;
+      4:      offset := 10;
+      5:      offset := 10;
       6..10:  offset := 100;
-      11..20: offset := 200;
-      21..30: offset := 500;
+      11..20: offset := 100;
+      21..30: offset := 100;
       else    offset := 1000;
    end;
 
@@ -10488,8 +10488,13 @@ begin
             rig.RitUp();
          end
          else begin  // VFO
-            freq := rig.CurrentFreq[rig.CurrentVFO] + offset;
-            rig.SetFreq(freq, False);
+            if rig.VfoCtrlSupported = True then begin
+               rig.VfoUp();
+            end
+            else begin
+               freq := rig.CurrentFreq[rig.CurrentVFO] + offset;
+               rig.SetFreq(freq, False);
+            end;
          end;
       end;
 
@@ -10502,8 +10507,13 @@ begin
             rig.RitDown();
          end
          else begin  // VFO
-            freq := rig.CurrentFreq[rig.CurrentVFO] - offset;
-            rig.SetFreq(freq, False);
+            if rig.VfoCtrlSupported = True then begin
+               rig.VfoDown();
+            end
+            else begin
+               freq := rig.CurrentFreq[rig.CurrentVFO] - offset;
+               rig.SetFreq(freq, False);
+            end;
          end;
       end;
    end;

@@ -56,6 +56,8 @@ type
     procedure RitUp(); override;
     procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
+    procedure VfoUp(); override;
+    procedure VfoDown(); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
     procedure SetWPM(wpm: Integer); override;
@@ -439,6 +441,7 @@ begin
    FControlPTTSupported := True;
    FToggleBandSupported := True;
    FSelectBandSupported := True;
+   FVfoCtrlSupported := True;
 end;
 
 destructor TFT2000.Destroy;
@@ -735,6 +738,18 @@ begin
    end;
 
    WriteData(AnsiString('RD0010;'));
+end;
+
+procedure TFT2000.VfoUp();
+begin
+   Inherited;
+   WriteData(AnsiString('EU001;'));
+end;
+
+procedure TFT2000.VfoDown();
+begin
+   Inherited;
+   WriteData(AnsiString('ED001;'));
 end;
 
 //

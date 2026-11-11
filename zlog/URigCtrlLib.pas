@@ -59,6 +59,7 @@ type
     _rignumber : Integer;
     FRitCtrlSupported: Boolean;
     FXitCtrlSupported: Boolean;
+    FVfoCtrlSupported: Boolean;
 
     FRit: Boolean;
     FXit: Boolean;
@@ -121,6 +122,8 @@ type
     procedure RitUp();  virtual;
     procedure RitDown();  virtual;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); virtual;
+    procedure VfoUp();  virtual;
+    procedure VfoDown();  virtual;
     procedure Reset; virtual; abstract; // called when user wants to reset the rig
                                         // after power outage etc
     procedure SetVFO(i : integer); virtual; abstract; // A:0, B:1
@@ -164,6 +167,7 @@ type
 
     property RitCtrlSupported: Boolean read FRitCtrlSupported write FRitCtrlSupported;
     property XitCtrlSupported: Boolean read FXitCtrlSupported write FXitCtrlSupported;
+    property VfoCtrlSupported: Boolean read FVfoCtrlSupported write FVfoCtrlSupported;
 
     property Rit: Boolean read FRit write SetRit;
     property Xit: Boolean read FXit write SetXit;
@@ -332,6 +336,7 @@ begin
 
    FRitCtrlSupported := True;
    FXitCtrlSupported := True;
+   FVfoCtrlSupported := False;
 
    FRit := False;
    FXit := False;
@@ -732,12 +737,12 @@ end;
 
 procedure TRig.RitUp();
 begin
-   FRitOffset := FRitOffset + 20;
+   FRitOffset := FRitOffset + 10;
 end;
 
 procedure TRig.RitDown();
 begin
-   FRitOffset := FRitOffset - 20;
+   FRitOffset := FRitOffset - 10;
 end;
 
 procedure TRig.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
@@ -745,6 +750,16 @@ begin
    _currentFreq[_currentvfo] := Hz;
    if fSetLastFreq = True then begin
    end;
+end;
+
+procedure TRig.VfoUp();
+begin
+//
+end;
+
+procedure TRig.VfoDown();
+begin
+//
 end;
 
 function TRig.GetCurrentFreq(Index: Integer): TFrequency;

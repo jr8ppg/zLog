@@ -31,6 +31,8 @@ type
     procedure RitDown(); override;
     procedure Reset; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
+    procedure VfoUp(); override;
+    procedure VfoDown(); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
     procedure ControlPTT(fOn: Boolean); override;
@@ -47,6 +49,8 @@ type
     procedure Initialize(); override;
     procedure RitUp(); override;
     procedure RitDown(); override;
+    procedure VfoUp(); override;
+    procedure VfoDown(); override;
     procedure SetWPM(wpm: Integer); override;
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
@@ -84,6 +88,7 @@ begin
    _CWR := False;
    FFineStep := False;
    FControlPTTSupported := True;
+   FVfoCtrlSupported := True;
    FSMeterMax := 15;
 end;
 
@@ -375,6 +380,18 @@ begin
       WriteData('FB' + fstr + ';');
 end;
 
+procedure TTS690.VfoUp();
+begin
+   Inherited;
+   WriteData('UP;');
+end;
+
+procedure TTS690.VfoDown();
+begin
+   Inherited;
+   WriteData('DN;');
+end;
+
 procedure TTS690.SetMode(Q: TQSO);
 var
    Command: AnsiString;
@@ -599,6 +616,18 @@ begin
 
    WriteData(AnsiString('RD00010;'));
 //   SetRitOffsetSub(FRitOffset);
+end;
+
+procedure TTS2000.VfoUp();
+begin
+   Inherited;
+   WriteData('UP01;');
+end;
+
+procedure TTS2000.VfoDown();
+begin
+   Inherited;
+   WriteData('DN01;');
 end;
 
 procedure TTS2000.SetWPM(wpm: Integer);
