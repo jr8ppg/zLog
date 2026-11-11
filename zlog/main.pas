@@ -15035,6 +15035,7 @@ begin
    r := nID + 1;
 
    fPhonePTT := dmZLogGlobal.Settings.FRigControl[r].FPhoneChgPTT;
+   rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
 
    if fOn = True then begin
       // #735
@@ -15046,7 +15047,6 @@ begin
       end;
 
       // #340
-      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
       if rig <> nil then begin
          input := dmZLogGlobal.Settings.FRigControl[rig.RigNumber].FPrePlayback;
          rig.AudioInputSelect(input);
@@ -15054,21 +15054,35 @@ begin
 
       dmZLogKeyer.SetVoiceFlag(1);
 
+      // PHでPTT制御する
       if dmZLogGlobal.Settings._pttenabled_ph then begin
-         dmZLogKeyer.ControlPTT(nID, True, fPhonePTT);
+         if dmZLogGlobal.Settings._use_ptt_command = True then begin
+            if rig <> nil then begin
+               rig.ControlPTT(True);
+            end;
+         end
+         else begin
+            dmZLogKeyer.ControlPTT(nID, True, fPhonePTT);
+         end;
          Sleep(dmZLogGlobal.Settings._pttbefore_ph);
       end;
    end
    else begin
       if dmZLogGlobal.Settings._pttenabled_ph then begin
          Sleep(dmZLogGlobal.Settings._pttafter_ph);
-         dmZLogKeyer.ControlPTT(nID, False, fPhonePTT);
+         if dmZLogGlobal.Settings._use_ptt_command = True then begin
+            if rig <> nil then begin
+               rig.ControlPTT(False);
+            end;
+         end
+         else begin
+            dmZLogKeyer.ControlPTT(nID, False, fPhonePTT);
+         end;
       end;
 
       dmZLogKeyer.SetVoiceFlag(0);
 
       // #340
-      rig := RigControl.GetRig(FCurrentRigSet, TextToBand(BandEdit.Text));
       if rig <> nil then begin
          input := dmZLogGlobal.Settings.FRigControl[rig.RigNumber].FPostPlayback;
          rig.AudioInputSelect(input);
