@@ -31,6 +31,8 @@ type
     procedure RitUp(); override;
     procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
+    procedure VfoUp(); override;
+    procedure VfoDown(); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
   end;
@@ -373,6 +375,24 @@ begin
       WriteData('FA' + fstr + ';')
    else
       WriteData('FB' + fstr + ';');
+end;
+
+// DN/DNB (Move VFO A or B or a Displayed Parameter Down; SET only; also pertains to UP/UPB)
+// SET format: DN; or DNB; or DNn; or DNBn; where n is an optional VFO change specification. DN; and
+// DNn; move VFO A down. DNB; and DNBn; move VFO B down. DN; and DNB; also change parameters
+// shown on VFO B (menu or switch settings). VFO displacement, n: 0=1 Hz; 1 or not used=10 Hz; 2=20 Hz; 3=50
+// Hz; 4=1 kHz; 5=2 kHz; 6=3 kHz; 7=5 kHz; 8=100 Hz; 9=200 Hz.
+// Note: If the VFOs are linked (non-SPLIT), DN; and DNn; set VFO B to the same frequency as VFO A.
+procedure TElecraft.VfoUp();
+begin
+   Inherited;
+   WriteData('UP;');
+end;
+
+procedure TElecraft.VfoDown();
+begin
+   Inherited;
+   WriteData('DN;');
 end;
 
 // MD $ (Operating Mode; GET/SET)
