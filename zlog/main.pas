@@ -10458,6 +10458,8 @@ var
    rig: TRig;
    freq: TFrequency;
    offset: TFrequency;
+   speed: TDialSpeed;
+   dial: TRigDial;
 begin
    direction := TRc28DialDirection(Message.WParam);
    accelerator := Message.LParam;
@@ -10466,17 +10468,14 @@ begin
       Exit;
    end;
 
+   // 加速度に合わせてステップ数を設定
    case accelerator of
-      1:      offset := 10;
-      2:      offset := 10;
-      3:      offset := 10;
-      4:      offset := 10;
-      5:      offset := 10;
-      6..10:  offset := 100;
-      11..20: offset := 100;
-      21..30: offset := 100;
-      else    offset := 1000;
+      1..10: begin speed := dsSlow; offset := 10; end;
+      else   begin speed := dsHigh; offset := 50; end;
    end;
+
+   // MAIN or SUB
+   dial := FRigControl.CtrlDial;
 
    case direction of
       // 右回転
@@ -10489,11 +10488,11 @@ begin
          end
          else begin  // VFO
             if rig.VfoCtrlSupported = True then begin
-               rig.VfoUp();
+               rig.VfoUp(dial, speed);
             end
             else begin
                freq := rig.CurrentFreq[rig.CurrentVFO] + offset;
-               rig.SetFreq(freq, False);
+               rig.SetFreqEx(dial, freq, False);
             end;
          end;
       end;
@@ -10508,11 +10507,11 @@ begin
          end
          else begin  // VFO
             if rig.VfoCtrlSupported = True then begin
-               rig.VfoDown();
+               rig.VfoDown(dial, speed);
             end
             else begin
                freq := rig.CurrentFreq[rig.CurrentVFO] - offset;
-               rig.SetFreq(freq, False);
+               rig.SetFreqEx(dial, freq, False);
             end;
          end;
       end;

@@ -312,6 +312,7 @@ type
     _use_band_select: Boolean;
     _set_initfreq_chgmode: Boolean;
     _use_rc28: Boolean;
+    _use_dial_main: Boolean;
     _turnoff_sleep: Boolean;
     _turnon_resume: Boolean;
 
@@ -1387,6 +1388,9 @@ begin
       // Use RC-28
       Settings._use_rc28 := ini.ReadBool('Rig', 'UseRc28', False);
 
+      // Select Main Dial or Sub Dial for RC-28
+      Settings._use_dial_main := ini.ReadBool('Rig', 'UseDialMain', True);
+
       // Turn off when in sleep mode
       Settings._turnoff_sleep := ini.ReadBool('Rig', 'TurnOffWhenSleepMode', True);
 
@@ -2287,6 +2291,9 @@ begin
 
       // Use RC-28
       ini.WriteBool('Rig', 'UseRc28', Settings._use_rc28);
+
+      // Select Main Dial or Sub Dial for RC-28
+      ini.WriteBool('Rig', 'UseDialMain', Settings._use_dial_main);
 
       // Turn off when in sleep mode
       ini.WriteBool('Rig', 'TurnOffWhenSleepMode', Settings._turnoff_sleep);

@@ -31,8 +31,8 @@ type
     procedure RitUp(); override;
     procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
-    procedure VfoUp(); override;
-    procedure VfoDown(); override;
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed); override;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
   end;
@@ -383,16 +383,26 @@ end;
 // shown on VFO B (menu or switch settings). VFO displacement, n: 0=1 Hz; 1 or not used=10 Hz; 2=20 Hz; 3=50
 // Hz; 4=1 kHz; 5=2 kHz; 6=3 kHz; 7=5 kHz; 8=100 Hz; 9=200 Hz.
 // Note: If the VFOs are linked (non-SPLIT), DN; and DNn; set VFO B to the same frequency as VFO A.
-procedure TElecraft.VfoUp();
+procedure TElecraft.VfoUp(dial: TRigDial; speed: TDialSpeed);
 begin
    Inherited;
-   WriteData('UP;');
+   if speed = dsSlow then begin
+      WriteData('UP1;');
+   end
+   else begin
+      WriteData('UP3;');
+   end;
 end;
 
-procedure TElecraft.VfoDown();
+procedure TElecraft.VfoDown(dial: TRigDial; speed: TDialSpeed);
 begin
    Inherited;
-   WriteData('DN;');
+   if speed = dsSlow then begin
+      WriteData('DN1;');
+   end
+   else begin
+      WriteData('DN5;');
+   end;
 end;
 
 // MD $ (Operating Mode; GET/SET)

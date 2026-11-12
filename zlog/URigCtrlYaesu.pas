@@ -56,8 +56,8 @@ type
     procedure RitUp(); override;
     procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
-    procedure VfoUp(); override;
-    procedure VfoDown(); override;
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed); override;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
     procedure SetWPM(wpm: Integer); override;
@@ -740,16 +740,30 @@ begin
    WriteData(AnsiString('RD0010;'));
 end;
 
-procedure TFT2000.VfoUp();
+procedure TFT2000.VfoUp(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of string = ( 'EU0', 'EU1' );
 begin
    Inherited;
-   WriteData(AnsiString('EU001;'));
+   if speed = dsSlow then begin
+      WriteData(AnsiString(command[dial] + '01;'));
+   end
+   else begin
+      WriteData(AnsiString(command[dial] + '05;'));
+   end;
 end;
 
-procedure TFT2000.VfoDown();
+procedure TFT2000.VfoDown(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of string = ( 'ED0', 'ED1' );
 begin
    Inherited;
-   WriteData(AnsiString('ED001;'));
+   if speed = dsSlow then begin
+      WriteData(AnsiString(command[dial] + '01;'));
+   end
+   else begin
+      WriteData(AnsiString(command[dial] + '05;'));
+   end;
 end;
 
 //

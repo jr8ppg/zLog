@@ -68,6 +68,8 @@ type
     buttonReconnectRigs: TSpeedButton;
     ledSMeter1: TRLed;
     ledSMeter2: TRLed;
+    buttonDialMain: TSpeedButton;
+    buttonDialSub: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure buttonReconnectRigsClick(Sender: TObject);
@@ -138,6 +140,8 @@ type
 
     procedure SetMemScanRigNo(no: Integer);
     function GetMemScanRigNo(): Integer;
+
+    function GetCtrlDial(): TRigDial;
   public
     { Public declarations }
     function StatusSummaryFreqHz(b: TBand; m: TMode; Hz : TFrequency): string; // returns current rig's band freq mode
@@ -176,6 +180,8 @@ type
     property LastFreq: TFrequency read GetLastFreq write SetLastFreq;
     property ImportRigNo: Integer read GetImportTo write SetImportTo;
     property RigName: string read GetRigName;
+
+    property CtrlDial: TRigDial read GetCtrlDial;
   end;
 
 resourcestring
@@ -676,6 +682,7 @@ begin
             TICOM(rig).AudioAcc := ICOMLIST[i].AudioAcc;
             TICOM(rig).AudioMicUsb := ICOMLIST[i].AudioMicUsb;
             TICOM(rig).AudioMicAcc := ICOMLIST[i].AudioMicAcc;
+            TICOM(rig).Command25Supported := ICOMLIST[i].Command25;
 
             if Pos('IC-731', rname) > 0 then begin
                TICOM(rig).Freq4Bytes := True;
@@ -782,6 +789,17 @@ begin
       rig := 5;
    end;
 
+   // RC-28
+   if dmZLogGlobal.Settings._use_rc28 = True then begin
+      buttonDialMain.Visible := True;
+      buttonDialSub.Visible := True;
+   end
+   else begin
+      buttonDialMain.Visible := False;
+      buttonDialSub.Visible := False;
+   end;
+   buttonDialMain.Down := dmZLogGlobal.Settings._use_dial_main;
+
    SetCurrentRig(rig);
 
    SetSendFreq();
@@ -810,6 +828,8 @@ begin
    end;
 
    FCurrentRig := nil;
+
+   dmZLogGlobal.Settings._use_dial_main := buttonDialMain.Down;
 end;
 
 procedure TRigControl.VisibleChangeEvent(Sender: TObject);
@@ -1173,6 +1193,8 @@ begin
    buttonMemoryClear.Enabled := True;
    buttonMemScan.Enabled := True;
    buttongrpFreqMemory.Enabled := True;
+   buttonDialMain.Enabled := True;
+   buttonDialSub.Enabled := True;
 
    FFreqLabel[0].Font.Color := dmZLogGlobal.ZNormalTextColor1;
    FFreqLabel[1].Font.Color := dmZLogGlobal.ZNormalTextColor1;
@@ -1238,6 +1260,8 @@ begin
    buttonMemScan.Enabled := False;
    buttonMemScan.Down := False;
    buttongrpFreqMemory.Enabled := False;
+   buttonDialMain.Enabled := False;
+   buttonDialSub.Enabled := False;
 
    ledMemScan.Active := False;
    ledMemScan.Status := False;
@@ -1608,6 +1632,16 @@ begin
    end
    else begin
       Result := 0;
+   end;
+end;
+
+function TRigControl.GetCtrlDial(): TRigDial;
+begin
+   if buttonDialMain.Down = True then begin
+      Result := rdMain;
+   end
+   else begin
+      Result := rdSub;
    end;
 end;
 

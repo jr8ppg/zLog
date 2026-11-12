@@ -91,6 +91,7 @@ type
     AudioAcc: string;
     AudioMicUsb: string;
     AudioMicAcc: string;
+    Command25: Boolean;
   end;
 
 const
@@ -99,115 +100,115 @@ const
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
        (name: 'IC-703';       addr: $68; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-705';       addr: $A4; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: True;
-        AudioSel:True;  AudioCmd:'1A050118'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'';   AudioMicUsb:'02'; AudioMicAcc:''; ),
+        AudioSel:True;  AudioCmd:'1A050118'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'';   AudioMicUsb:'02'; AudioMicAcc:''; Command25: False; ),
        (name: 'IC-706';       addr: $48; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-706MkII';   addr: $4E; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-706MkII-G'; addr: $58; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-707';       addr: $3E; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-718';       addr: $5E; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-721(IC-725)'; addr: $28; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-726';       addr: $30; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-728';       addr: $38; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-729';       addr: $3A; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-731(IC-735)'; addr: $04; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-732(IC-737)'; addr: $04; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-736';       addr: $40; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-738';       addr: $44; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-746';       addr: $56; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-746PRO(IC-7400)'; addr: $66; minband: b19; maxband: b144; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7000';      addr: $70; minband: b19; maxband: b430;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: False; PlayCW: True; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: False;
-        AudioSel:True;  AudioCmd:'1A050066'; AudioMic:'00'; AudioUsb:'03'; AudioAcc:'01'; AudioMicUsb:'04'; AudioMicAcc:'03'; ),
+        AudioSel:True;  AudioCmd:'1A050066'; AudioMic:'00'; AudioUsb:'03'; AudioAcc:'01'; AudioMicUsb:'04'; AudioMicAcc:'03'; Command25: False; ),
        (name: 'IC-7300MK2';   addr: $B6; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: True;
-        AudioSel:True;  AudioCmd:'1A050084'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'02'; AudioMicUsb:'03'; AudioMicAcc:'04'; ),
+        AudioSel:True;  AudioCmd:'1A050084'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'02'; AudioMicUsb:'03'; AudioMicAcc:'04'; Command25: False; ),
        (name: 'IC-7400';      addr: $66; minband: b19; maxband: b144;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7410';      addr: $80; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-750/750A(IC-751)'; addr: $1C; minband: b19; maxband: b28; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-756';       addr: $50; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-756PRO';    addr: $5C; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-756PROII';  addr: $64; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-756PRO3';   addr: $6E; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7600';      addr: $7A; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7610';      addr: $98; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: True; ),
        (name: 'IC-7700';      addr: $74; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7760';      addr: $B2; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: False;
-        AudioSel:True;  AudioCmd:'1A050129'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'03'; AudioMicUsb:'04'; AudioMicAcc:'06'; ),
+        AudioSel:True;  AudioCmd:'1A050129'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'03'; AudioMicUsb:'04'; AudioMicAcc:'06'; Command25: True; ),
        (name: 'IC-78';        addr: $62; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7800';      addr: $6A; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7851';      addr: $8E; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: False;
-        AudioSel:True;  AudioCmd:'1A050063'; AudioMic:'00'; AudioUsb:'08'; AudioAcc:'01'; AudioMicUsb:'10'; AudioMicAcc:'03'; ),
+        AudioSel:True;  AudioCmd:'1A050063'; AudioMic:'00'; AudioUsb:'08'; AudioAcc:'01'; AudioMicUsb:'10'; AudioMicAcc:'03'; Command25: True; ),
        (name: 'IC-760(IC-761)'; addr: $1E; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-760PRO(IC-765)'; addr: $2C; minband: b19; maxband: b28; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-775';       addr: $46; minband: b19; maxband: b28;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-780(IC-781)'; addr: $26; minband: b19; maxband: b28;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-575';       addr: $16; minband: b28; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-820';       addr: $42; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-821';       addr: $4C; minband: b144; maxband: b430;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-905';       addr: $AC; minband: b144; maxband: b104g; RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: True;
-        AudioSel:True;  AudioCmd:'1A050127'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'';   AudioMicUsb:'02'; AudioMicAcc:''; ),
+        AudioSel:True;  AudioCmd:'1A050127'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'';   AudioMicUsb:'02'; AudioMicAcc:''; Command25: True; ),
        (name: 'IC-910/911';   addr: $60; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-970';       addr: $2E; minband: b144; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-271';       addr: $20; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-275';       addr: $10; minband: b144; maxband: b144;  RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-371(IC-471)'; addr: $22; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-375(IC-475)'; addr: $14; minband: b430; maxband: b430; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-9100';      addr: $7C; minband: b19; maxband: b1200;   RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-9700';      addr: $A2; minband: b144; maxband: b1200;  RitCtrl: True;  XitCtrl: False; PlayCW: True; PlayPh: False; FixEdgeSel: True;
-        AudioSel:True;  AudioCmd:'1A050115'; AudioMic:'00'; AudioUsb:'03'; AudioAcc:'01'; AudioMicUsb:'04'; AudioMicAcc:'02'; ),
+        AudioSel:True;  AudioCmd:'1A050115'; AudioMic:'00'; AudioUsb:'03'; AudioAcc:'01'; AudioMicUsb:'04'; AudioMicAcc:'02'; Command25: True; ),
        (name: 'IC-1271';      addr: $24; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-1275';      addr: $18; minband: b1200; maxband: b1200; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; ),
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-2730';      addr: $90; minband: b144; maxband: b430; RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
-        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; )
+        AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:'';Command25: False; )
      );
 
 const

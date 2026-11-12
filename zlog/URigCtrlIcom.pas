@@ -36,6 +36,8 @@ type
     FAudioAcc: string;
     FAudioMicUsb: string;
     FAudioMicAcc: string;
+
+    FCommand25Supported: Boolean;
     procedure SendIcomCommand(command: string);
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
@@ -53,6 +55,7 @@ type
     procedure RitUp(); override;
     procedure RitDown(); override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
+    procedure SetFreqEx(dial: TRigDial; Hz: TFrequency; fSetLastFreq: Boolean); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetDataMode(fOn: Boolean); override;
     procedure SetVFO(i : integer); override;
@@ -75,6 +78,7 @@ type
     property AudioAcc: string read FAudioAcc write FAudioAcc;
     property AudioMicUsb: string read FAudioMicUsb write FAudioMicUsb;
     property AudioMicAcc: string read FAudioMicAcc write FAudioMicAcc;
+    property Command25Supported: Boolean read FCommand25Supported write FCommand25Supported;
   end;
 
   TIcomCommThread = class(TThread)
@@ -135,6 +139,8 @@ begin
    FAudioAcc := '';
    FAudioMicUsb := '';
    FAudioMicAcc := '';
+
+   FCommand25Supported := False;
 end;
 
 destructor TICOM.Destroy;
@@ -574,6 +580,68 @@ begin
       fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
 
       fstr := AnsiChar($05) + fstr;
+      ICOMWriteData(fstr);
+   finally
+      FPollingCount := 0;
+      FPollingTimer.Enabled := True;
+   end;
+end;
+
+procedure TICOM.SetFreqEx(dial: TRigDial; Hz: TFrequency; fSetLastFreq: Boolean);
+var
+   fstr: AnsiString;
+   freq, i: TFrequency;
+const
+   command: array[rdMain..rdSub] of AnsiString = ( AnsiChar($25) + AnsiChar($00), AnsiChar($25) + AnsiChar($01) );
+begin
+   Hz := Hz - _freqoffset;
+   Inherited SetFreqEx(dial, Hz, fSetLastFreq);
+
+   FPollingTimer.Enabled := False;
+   try
+      freq := Hz;
+      fstr := '';
+
+      // 100GHz / 10GHz
+      if (freq >= 10000000000) then begin
+         i := freq mod 100;
+         fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+         freq := freq div 100;
+      end;
+
+      // 1000MHz / 100MHz (exclude IC-731)
+      if FFreq4Bytes = False then begin
+         i := freq mod 100;
+         fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+         freq := freq div 100;
+      end;
+
+      // 10MHz / 1MHz
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
+
+      // 100KHz / 10KHz
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
+
+      // 1KHz / 100Hz
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+      freq := freq div 100;
+
+      // 10Hz / 1Hz
+      i := freq mod 100;
+      fstr := fstr + AnsiChar((i div 10) * 16 + (i mod 10));
+
+      if FCommand25Supported = True then begin
+         fstr := command[dial] + fstr;
+      end
+      else begin
+         fstr := AnsiChar($05) + fstr;
+      end;
+
       ICOMWriteData(fstr);
    finally
       FPollingCount := 0;

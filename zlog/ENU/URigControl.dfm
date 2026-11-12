@@ -57,7 +57,7 @@ object RigControl: TRigControl
     end
     object Label3: TLabel
       Left = 8
-      Top = 51
+      Top = 54
       Width = 34
       Height = 15
       Caption = 'VFO B'
@@ -68,6 +68,36 @@ object RigControl: TRigControl
       Width = 72
       Height = 15
       Caption = 'Current Freq.'
+    end
+    object ledSMeter1: TRLed
+      Left = 50
+      Top = 41
+      Width = 143
+      Height = 8
+      ColorLow = clLime
+      ColorHi = clRed
+      Orientation = trHorizontal
+      MaxValue = 100
+      BackColor = clBtnFace
+      BarSize = 14
+      Position = 0
+      BreakPos = 40
+      HoldTime = 500
+    end
+    object ledSMeter2: TRLed
+      Left = 50
+      Top = 74
+      Width = 143
+      Height = 8
+      ColorLow = clLime
+      ColorHi = clRed
+      Orientation = trHorizontal
+      MaxValue = 100
+      BackColor = clBtnFace
+      BarSize = 14
+      Position = 0
+      BreakPos = 40
+      HoldTime = 500
     end
     object Panel1: TPanel
       Left = 50
@@ -446,6 +476,23 @@ object RigControl: TRigControl
       Anchors = [akTop, akRight]
       Caption = 'SPOT Import to'
       ExplicitLeft = 97
+    end
+    object buttonDialMain: TSpeedButton
+      Left = 4
+      Top = 2
+      Width = 41
+      Height = 19
+      GroupIndex = 10
+      Down = True
+      Caption = 'MAIN'
+    end
+    object buttonDialSub: TSpeedButton
+      Left = 44
+      Top = 2
+      Width = 41
+      Height = 19
+      GroupIndex = 10
+      Caption = 'SUB'
     end
   end
   object Timer1: TTimer

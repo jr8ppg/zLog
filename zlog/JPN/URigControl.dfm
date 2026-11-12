@@ -57,7 +57,7 @@ object RigControl: TRigControl
     end
     object Label3: TLabel
       Left = 8
-      Top = 53
+      Top = 54
       Width = 34
       Height = 15
       Caption = 'VFO B'
@@ -476,6 +476,23 @@ object RigControl: TRigControl
       Anchors = [akTop, akRight]
       Caption = #12473#12509#12483#12488#21462#12426#36796#12415#20808
       ExplicitLeft = 97
+    end
+    object buttonDialMain: TSpeedButton
+      Left = 4
+      Top = 2
+      Width = 41
+      Height = 19
+      GroupIndex = 10
+      Down = True
+      Caption = 'MAIN'
+    end
+    object buttonDialSub: TSpeedButton
+      Left = 44
+      Top = 2
+      Width = 41
+      Height = 19
+      GroupIndex = 10
+      Caption = 'SUB'
     end
   end
   object Timer1: TTimer

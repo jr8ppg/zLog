@@ -31,8 +31,8 @@ type
     procedure RitDown(); override;
     procedure Reset; override;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); override;
-    procedure VfoUp(); override;
-    procedure VfoDown(); override;
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed); override;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed); override;
     procedure SetMode(Q : TQSO); override;
     procedure SetVFO(i : integer); override;
     procedure ControlPTT(fOn: Boolean); override;
@@ -49,8 +49,8 @@ type
     procedure Initialize(); override;
     procedure RitUp(); override;
     procedure RitDown(); override;
-    procedure VfoUp(); override;
-    procedure VfoDown(); override;
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed); override;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed); override;
     procedure SetWPM(wpm: Integer); override;
     procedure PlayMessageCW(msg: string); override;
     procedure StopMessageCW(); override;
@@ -380,16 +380,34 @@ begin
       WriteData('FB' + fstr + ';');
 end;
 
-procedure TTS690.VfoUp();
+procedure TTS690.VfoUp(dial: TRigDial; speed: TDialSpeed);
 begin
    Inherited;
-   WriteData('UP;');
+   if speed = dsSlow then begin
+      WriteData('UP;');
+   end
+   else begin
+      WriteData('UP;');
+      WriteData('UP;');
+      WriteData('UP;');
+      WriteData('UP;');
+      WriteData('UP;');
+   end;
 end;
 
-procedure TTS690.VfoDown();
+procedure TTS690.VfoDown(dial: TRigDial; speed: TDialSpeed);
 begin
    Inherited;
-   WriteData('DN;');
+   if speed = dsSlow then begin
+      WriteData('DN;');
+   end
+   else begin
+      WriteData('DN;');
+      WriteData('DN;');
+      WriteData('DN;');
+      WriteData('DN;');
+      WriteData('DN;');
+   end;
 end;
 
 procedure TTS690.SetMode(Q: TQSO);
@@ -618,16 +636,26 @@ begin
 //   SetRitOffsetSub(FRitOffset);
 end;
 
-procedure TTS2000.VfoUp();
+procedure TTS2000.VfoUp(dial: TRigDial; speed: TDialSpeed);
 begin
    Inherited;
-   WriteData('UP01;');
+   if speed = dsSlow then begin
+      WriteData('UP01;');
+   end
+   else begin
+      WriteData('UP05;');
+   end;
 end;
 
-procedure TTS2000.VfoDown();
+procedure TTS2000.VfoDown(dial: TRigDial; speed: TDialSpeed);
 begin
    Inherited;
-   WriteData('DN01;');
+   if speed = dsSlow then begin
+      WriteData('DN01;');
+   end
+   else begin
+      WriteData('DN05;');
+   end;
 end;
 
 procedure TTS2000.SetWPM(wpm: Integer);

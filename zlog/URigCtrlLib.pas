@@ -20,6 +20,9 @@ type
   TRigUpdateStatusEvent = procedure(Sender: TObject; rigno: Integer; currentvfo, VfoA, VfoB, Last: TFrequency; b: TBand; m: TMode) of object;
   TRigErrorEvent = procedure(Sender: TObject; msg: string) of object;
 
+  TRigDial = ( rdMain = 0, rdSub );
+  TDialSpeed = ( dsSlow = 0, dsHigh );
+
   TRig = class;
 
   TMemCh = class
@@ -122,8 +125,9 @@ type
     procedure RitUp();  virtual;
     procedure RitDown();  virtual;
     procedure SetFreq(Hz: TFrequency; fSetLastFreq: Boolean); virtual;
-    procedure VfoUp();  virtual;
-    procedure VfoDown();  virtual;
+    procedure SetFreqEx(dial: TRigDial; Hz: TFrequency; fSetLastFreq: Boolean); virtual;
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed);  virtual;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed);  virtual;
     procedure Reset; virtual; abstract; // called when user wants to reset the rig
                                         // after power outage etc
     procedure SetVFO(i : integer); virtual; abstract; // A:0, B:1
@@ -752,12 +756,17 @@ begin
    end;
 end;
 
-procedure TRig.VfoUp();
+procedure TRig.SetFreqEx(dial: TRigDial; Hz: TFrequency; fSetLastFreq: Boolean);
 begin
 //
 end;
 
-procedure TRig.VfoDown();
+procedure TRig.VfoUp(dial: TRigDial; speed: TDialSpeed);
+begin
+//
+end;
+
+procedure TRig.VfoDown(dial: TRigDial; speed: TDialSpeed);
 begin
 //
 end;
