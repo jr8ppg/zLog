@@ -62,11 +62,19 @@ type
     procedure Initialize(); override;
   end;
 
+  TTS590 = class(TTS2000)
+  public
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed); override;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed); override;
+  end;
+
   TTS890 = class(TTS2000)
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure FixEdgeSelect(no: Integer); override;
     procedure AudioInputSelect(input: TAudioInput); override;
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed); override;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed); override;
   end;
 
   TTS990 = class(TTS2000)
@@ -74,6 +82,8 @@ type
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     procedure AntSelect(no: Integer); override;
     procedure AudioInputSelect(input: TAudioInput); override;
+    procedure VfoUp(dial: TRigDial; speed: TDialSpeed); override;
+    procedure VfoDown(dial: TRigDial; speed: TDialSpeed); override;
   end;
 
 implementation
@@ -744,6 +754,32 @@ begin
    FPollingTimer.Enabled := True;
 end;
 
+{ TTS590 }
+
+procedure TTS590.VfoUp(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of AnsiString = ( 'UD0', 'UD1' );
+begin
+   if speed = dsSlow then begin
+      WriteData(command[dial] + '001;');
+   end
+   else begin
+      WriteData(command[dial] + '005;');
+   end;
+end;
+
+procedure TTS590.VfoDown(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of AnsiString = ( 'UD0', 'UD1' );
+begin
+   if speed = dsSlow then begin
+      WriteData(command[dial] + '101;');
+   end
+   else begin
+      WriteData(command[dial] + '105;');
+   end;
+end;
+
 { TTS890 }
 
 constructor TTS890.Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand);
@@ -772,6 +808,30 @@ begin
       aiAcc:      ;
       aiMicUsb:   WriteData('MS012;');
       aiMicAcc:   ;
+   end;
+end;
+
+procedure TTS890.VfoUp(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of AnsiString = ( 'UD0', 'UD1' );
+begin
+   if speed = dsSlow then begin
+      WriteData(command[dial] + '001;');
+   end
+   else begin
+      WriteData(command[dial] + '005;');
+   end;
+end;
+
+procedure TTS890.VfoDown(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of AnsiString = ( 'UD0', 'UD1' );
+begin
+   if speed = dsSlow then begin
+      WriteData(command[dial] + '101;');
+   end
+   else begin
+      WriteData(command[dial] + '105;');
    end;
 end;
 
@@ -804,6 +864,30 @@ begin
       aiAcc:      WriteData('MS00100;');
       aiMicUsb:   WriteData('MS01010;');
       aiMicAcc:   WriteData('MS01100;');
+   end;
+end;
+
+procedure TTS990.VfoUp(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of AnsiString = ( 'FC0', 'FC1' );
+begin
+   if speed = dsSlow then begin
+      WriteData(command[dial] + '00;');
+   end
+   else begin
+      WriteData(command[dial] + '02;');
+   end;
+end;
+
+procedure TTS990.VfoDown(dial: TRigDial; speed: TDialSpeed);
+const
+   command: array[rdMain..rdSub] of AnsiString = ( 'FC0', 'FC1' );
+begin
+   if speed = dsSlow then begin
+      WriteData(command[dial] + '10;');
+   end
+   else begin
+      WriteData(command[dial] + '12;');
    end;
 end;
 
