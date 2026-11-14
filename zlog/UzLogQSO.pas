@@ -3987,13 +3987,17 @@ begin
          S := Q.Callsign;
          if Q.NrRcvd <> '' then begin
             nr := Q.NrRcvd;
-            pwr := RightStr(nr, 1);
-            if (pwr = 'H') or (pwr = 'M') or (pwr = 'L') or (pwr = 'P') then begin
-               nr := LeftStr(nr, Length(nr) - 1);
+
+            if fCutPowerCode = True then begin
+               pwr := RightStr(nr, 1);
+               if (pwr = 'H') or (pwr = 'M') or (pwr = 'L') or (pwr = 'P') then begin
+                  nr := LeftStr(nr, Length(nr) - 1);
+               end;
             end;
-            S := nr + DupeString(' ', 11);
+
+            S := S + DupeString(' ', 11);
             S := Copy(S, 1, 11);
-            S := S + Q.NrRcvd;
+            S := S + nr;
          end;
 
          L.Add(S);
