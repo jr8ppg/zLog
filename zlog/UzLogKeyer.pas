@@ -668,6 +668,8 @@ begin
    {$ENDIF}
 
    HidController := TJvHidDeviceController.Create(Self, HidControllerDeviceCreateError, nil);
+   HidController.DevPollingDelayTime := 1;
+   HidController.DevThreadSleepTime := 10;
    HidController.OnDeviceChange := DoDeviceChanges;
    HidController.OnDeviceData := HidControllerDeviceData;
    HidController.OnDeviceUnplug := HidControllerDeviceUnplug;
