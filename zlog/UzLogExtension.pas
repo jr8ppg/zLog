@@ -42,6 +42,11 @@ type
 	/// </summary>
 	TAllowProc = procedure(fun: pointer); stdcall;
 
+   /// <summary>
+   /// DLL function that accepts the QSO record size and returns the size it uses
+   /// </summary>
+   TRecordSizeProc = function(size: integer): integer; stdcall;
+
 	/// <summary>
 	/// TDLL is an instance of a plugin DLL implementing ZyLO.
 	/// will be installed dynamically by invoking constructor.
@@ -64,8 +69,10 @@ type
 		PointsEvent: function (pts, mul: integer): integer; stdcall;
 		ButtonEvent: procedure(idx, btn: integer); stdcall;
 		EditorEvent: procedure(idx, key: integer); stdcall;
+      RecordSize: integer;
 		constructor Create(path: string);
 		procedure ContestOpened;
+      procedure Verify(aQSO: TQSO; var qso: TQSODataEx);
 	private
 		hnd: THandle;
 	end;
@@ -921,17 +928,17 @@ end;
 procedure zyloLogUpdated(event: TzLogEvent; bQSO, aQSO: TQSO);
 var
    dll: TDLL;
-   qso: TQSOData;
+   qso: TQSODataEx;
 begin
    if not Enabled then Exit;
    if zyloNotifySuppressDepth > 0 then Exit;
 
    if event <> evInsertQSO then begin
-      qso := bQSO.FileRecord;
+      qso := bQSO.FileRecordEx;
       for dll in Rules.Values do dll.DeleteEvent(@qso);
    end;
    if event <> evDeleteQSO then begin
-      qso := aQSO.FileRecord;
+      qso := aQSO.FileRecordEx;
       for dll in Rules.Values do dll.InsertEvent(@qso);
    end;
 end;
@@ -968,14 +975,10 @@ end;
 /// </returns>
 function zyloRequestScore(aQSO: TQSO): boolean;
 var
-	qso: TQSOData;
+	qso: TQSODataEx;
 begin
 	Result := RuleDLL <> nil;
-	if Result then begin
-		qso := aQSO.FileRecord;
-		RuleDLL.VerifyEvent(@qso);
-		aQSO.FileRecord := qso;
-	end;
+   if Result then RuleDLL.Verify(aQSO, qso);
 end;
 
 /// <summary>
@@ -991,13 +994,11 @@ end;
 /// </returns>
 function zyloRequestMulti(aQSO: TQSO; var mul: string): boolean;
 var
-	qso: TQSOData;
+	qso: TQSODataEx;
 begin
 	Result := RuleDLL <> nil;
 	if Result then begin
-		qso := aQSO.FileRecord;
-		RuleDLL.VerifyEvent(@qso);
-		aQSO.FileRecord := qso;
+      RuleDLL.Verify(aQSO, qso);
 		mul := string(qso.Multi1);
 	end;
 end;
@@ -1019,13 +1020,11 @@ end;
 /// </returns>
 function zyloRequestValid(aQSO: TQSO; var val: boolean): boolean;
 var
-	qso: TQSOData;
+	qso: TQSODataEx;
 begin
 	Result := RuleDLL <> nil;
 	if Result then begin
-		qso := aQSO.FileRecord;
-		RuleDLL.VerifyEvent(@qso);
-		aQSO.FileRecord := qso;
+      RuleDLL.Verify(aQSO, qso);
 		val := qso.Multi1 <> '';
 	end;
 end;
@@ -1119,6 +1118,11 @@ begin
 		PointsEvent := MustGetProc('zylo_points_event');
 		ButtonEvent := MustGetProc('zylo_button_event');
 		EditorEvent := MustGetProc('zylo_editor_event');
+      // ZLOX mode when the DLL accepts the 384-byte record
+      RecordSize := SizeOf(TQSOData);
+      var size := GetProcAddress(hnd, 'zylo_record_size');
+      if (size <> nil) and (TRecordSizeProc(size)(SizeOf(TQSODataEx)) = SizeOf(TQSODataEx)) then
+         RecordSize := SizeOf(TQSODataEx);
 		LastDLL := Self;
 		// LastDLL must be set here
 		// DLL may accept the following callbacks
@@ -1148,6 +1152,30 @@ begin
 	var cfg := DtoC(RulePath);
 	Self.OffsetEvent(UTCOffset);
 	Self.AttachEvent(tag, cfg);
+end;
+
+/// <summary>
+/// let the DLL score the QSO and copy the result back
+/// </summary>
+///
+/// <param name="aQSO">
+/// QSO
+/// </param>
+///
+/// <param name="qso">
+/// record passed to the DLL
+/// </param>
+procedure TDLL.Verify(aQSO: TQSO; var qso: TQSODataEx);
+var
+	ptr: pointer;
+begin
+	qso := aQSO.FileRecordEx;
+	ptr := @qso;
+	Self.VerifyEvent(ptr);
+	if RecordSize = SizeOf(TQSODataEx) then
+		aQSO.FileRecordEx := qso
+	else
+		aQSO.FileRecord := TQSOData(ptr^);
 end;
 
 procedure FreeRules;
