@@ -6909,6 +6909,7 @@ object MainForm: TMainForm
       end
       object Export1: TMenuItem
         Caption = #12456#12463#12473#12509#12540#12488'...(&E)'
+        Visible = False
         OnClick = Export1Click
       end
       object menuExportWizard: TMenuItem
@@ -8988,6 +8989,22 @@ object MainForm: TMainForm
     object actionXitDown: TAction
       Caption = 'actionXitDown'
       OnExecute = actionXitDownExecute
+    end
+    object actionDialUpSlow: TAction
+      Caption = 'actionDialUpSlow'
+      OnExecute = actionDialUpSlowExecute
+    end
+    object actionDialUpFast: TAction
+      Caption = 'actionDialUpFast'
+      OnExecute = actionDialUpFastExecute
+    end
+    object actionDialDownSlow: TAction
+      Caption = 'actionDialDownSlow'
+      OnExecute = actionDialDownSlowExecute
+    end
+    object actionDialDownFast: TAction
+      Caption = 'actionDialDownFast'
+      OnExecute = actionDialDownFastExecute
     end
   end
   object SPCMenu: TPopupMenu

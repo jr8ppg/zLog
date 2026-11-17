@@ -756,6 +756,10 @@ type
     actionXitUp: TAction;
     actionXitDown: TAction;
     menuExportWizard: TMenuItem;
+    actionDialUpSlow: TAction;
+    actionDialUpFast: TAction;
+    actionDialDownSlow: TAction;
+    actionDialDownFast: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ShowHint(Sender: TObject);
@@ -1115,6 +1119,10 @@ type
     procedure actionXitUpExecute(Sender: TObject);
     procedure actionXitDownExecute(Sender: TObject);
     procedure menuExportWizardClick(Sender: TObject);
+    procedure actionDialUpSlowExecute(Sender: TObject);
+    procedure actionDialUpFastExecute(Sender: TObject);
+    procedure actionDialDownSlowExecute(Sender: TObject);
+    procedure actionDialDownFastExecute(Sender: TObject);
   private
     FClosing: Boolean;
     FRigControl: TRigControl;
@@ -13007,57 +13015,6 @@ begin
    FSo2rNeoCp.ToggleAfBlend();
 end;
 
-procedure TMainForm.RestoreWindowsPos();
-var
-   X, Y, W, H: Integer;
-   B, BB: Boolean;
-   mon: TMonitor;
-   pt: TPoint;
-   ini: TMemIniFile;
-begin
-   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
-   try
-      dmZLogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
-
-      if (W > 0) and (H > 0) then begin
-         pt.X := X;
-         pt.Y := Y;
-         mon := Screen.MonitorFromPoint(pt, mdNearest);
-         if X < mon.Left then begin
-            X := mon.Left;
-         end;
-         if X > (mon.Left + mon.Width) then begin
-            X := (mon.Left + mon.Width) - W;
-         end;
-         if Y < mon.Top then begin
-            Y := mon.Top;
-         end;
-         if Y > (mon.Top + mon.Height) then begin
-            Y := (mon.Top + mon.Height) - H;
-         end;
-
-         if B then begin
-            mnHideCWPhToolBar.Checked := True;
-         end;
-         if BB then begin
-            mnHideMenuToolbar.Checked := True;
-         end;
-         ShowToolBar(mOther);
-
-         Position := poDesigned;
-         Left := X;
-         top := Y;
-         Width := W;
-         Height := H;
-      end
-      else begin
-         Position := poScreenCenter;
-      end;
-   finally
-      ini.Free();
-   end;
-end;
-
 // #169 Entity information
 procedure TMainForm.actionShowEntityInfoExecute(Sender: TObject);
 begin
@@ -13217,6 +13174,81 @@ begin
          rig.Xit := True;
       end;
       rig.RitDown();
+   end;
+end;
+
+// #180 DIAL UP SLOW(10Hz)
+procedure TMainForm.actionDialUpSlowExecute(Sender: TObject);
+begin
+   PostMessage(Handle, WM_ZLOG_RC28_DIAL, WPARAM(ddRight), LPARAM(1));
+end;
+
+// #181 DIAL UP FAST(50Hz)
+procedure TMainForm.actionDialUpFastExecute(Sender: TObject);
+begin
+   PostMessage(Handle, WM_ZLOG_RC28_DIAL, WPARAM(ddRight), LPARAM(11));
+end;
+
+// #182 DIAL DOWN SLOW(10Hz)
+procedure TMainForm.actionDialDownSlowExecute(Sender: TObject);
+begin
+   PostMessage(Handle, WM_ZLOG_RC28_DIAL, WPARAM(ddLeft), LPARAM(1));
+end;
+
+// #183 DIAL DOWN FAST(50Hz)
+procedure TMainForm.actionDialDownFastExecute(Sender: TObject);
+begin
+   PostMessage(Handle, WM_ZLOG_RC28_DIAL, WPARAM(ddLeft), LPARAM(11));
+end;
+
+procedure TMainForm.RestoreWindowsPos();
+var
+   X, Y, W, H: Integer;
+   B, BB: Boolean;
+   mon: TMonitor;
+   pt: TPoint;
+   ini: TMemIniFile;
+begin
+   ini := TMemIniFile.Create(ChangeFileExt(Application.ExeName, '.ini'));
+   try
+      dmZLogGlobal.ReadMainFormState(ini, X, Y, W, H, B, BB);
+
+      if (W > 0) and (H > 0) then begin
+         pt.X := X;
+         pt.Y := Y;
+         mon := Screen.MonitorFromPoint(pt, mdNearest);
+         if X < mon.Left then begin
+            X := mon.Left;
+         end;
+         if X > (mon.Left + mon.Width) then begin
+            X := (mon.Left + mon.Width) - W;
+         end;
+         if Y < mon.Top then begin
+            Y := mon.Top;
+         end;
+         if Y > (mon.Top + mon.Height) then begin
+            Y := (mon.Top + mon.Height) - H;
+         end;
+
+         if B then begin
+            mnHideCWPhToolBar.Checked := True;
+         end;
+         if BB then begin
+            mnHideMenuToolbar.Checked := True;
+         end;
+         ShowToolBar(mOther);
+
+         Position := poDesigned;
+         Left := X;
+         top := Y;
+         Width := W;
+         Height := H;
+      end
+      else begin
+         Position := poScreenCenter;
+      end;
+   finally
+      ini.Free();
    end;
 end;
 
