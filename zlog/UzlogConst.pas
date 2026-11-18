@@ -95,7 +95,7 @@ type
   end;
 
 const
-  MAXICOM = 55;
+  MAXICOM = 56;
 
   ICOMLIST : array[1..MAXICOM] of TIcomInfo =
      (
@@ -137,6 +137,8 @@ const
         AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7100';      addr: $88; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: False; PlayCW: True; PlayPh: False; FixEdgeSel: False;
         AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
+       (name: 'IC-7110';      addr: $BA; minband: b19; maxband: b430;   RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: True;
+        AudioSel:True;  AudioCmd:'1A050127'; AudioMic:'00'; AudioUsb:'01'; AudioAcc:'02'; AudioMicUsb:'03'; AudioMicAcc:'04'; Command25: True; ),
        (name: 'IC-7200';      addr: $76; minband: b19; maxband: b50;    RitCtrl: False; XitCtrl: False; PlayCW: False; PlayPh: False; FixEdgeSel: False;
         AudioSel:False; AudioCmd:'';         AudioMic:'';   AudioUsb:'';   AudioAcc:'';   AudioMicUsb:'';   AudioMicAcc:''; Command25: False; ),
        (name: 'IC-7300';      addr: $94; minband: b19; maxband: b50;    RitCtrl: True;  XitCtrl: True; PlayCW: True; PlayPh: False; FixEdgeSel: False;
