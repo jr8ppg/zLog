@@ -87,9 +87,9 @@ object TTYConsole: TTTYConsole
           Caption = 'TX '#12525#12464
         end
         object buttonTXLogClear: TButton
-          Left = 195
+          Left = 216
           Top = 3
-          Width = 70
+          Width = 49
           Height = 19
           Anchors = [akTop, akRight]
           Caption = #12463#12522#12450
@@ -97,7 +97,7 @@ object TTYConsole: TTTYConsole
           OnClick = buttonTXLogClearClick
         end
         object checkAutoPttOff: TCheckBox
-          Left = 95
+          Left = 118
           Top = 4
           Width = 97
           Height = 17
@@ -238,10 +238,58 @@ object TTYConsole: TTTYConsole
           Height = 13
           Caption = 'RX '#12525#12464
         end
+        object buttonRxPause: TSpeedButton
+          Left = 73
+          Top = -1
+          Width = 25
+          Height = 25
+          Hint = 'Pause RX'
+          AllowAllUp = True
+          GroupIndex = 2
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            0400000000000001000000000000000000001000000010000000000000000000
+            80000080000000808000800000008000800080800000C0C0C000808080000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+            3333333333333333333333333333333333333333333333333333333333333333
+            333333333333333333333333FFF33FFF33333333FFF333FFF333333999F3999F
+            3333333888F33888F333333999F3999F3333333888F33888F333333999F3999F
+            3333333888F33888F333333999F3999F3333333888F33888F333333999F3999F
+            3333333888F33888F333333999F3999F3333333888F33888F333333999F3999F
+            3333333888F33888F33333399933999333333338883338883333333333333333
+            3333333333333333333333333333333333333333333333333333333333333333
+            3333333333333333333333333333333333333333333333333333}
+          NumGlyphs = 2
+          OnClick = buttonRxPauseClick
+        end
+        object buttonRxRecord: TSpeedButton
+          Left = 50
+          Top = -1
+          Width = 25
+          Height = 25
+          Hint = 'Record RX'
+          AllowAllUp = True
+          GroupIndex = 1
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000010000000000000000000
+            80000080000000808000800000008000800080800000C0C0C000808080000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+            3333333333333333333333333333333333333333333333333333333333333333
+            3333333333333333333333333333333333333333333333333333333333FFF333
+            3333333333FFF333333333333F999F33333333333F888F3333333333F99999F3
+            33333333F88888F3333333339999999F333333338888888F333333339999999F
+            333333338888888F333333339999999F333333338888888F3333333339999933
+            3333333338888833333333333399933333333333338883333333333333333333
+            3333333333333333333333333333333333333333333333333333333333333333
+            3333333333333333333333333333333333333333333333333333}
+          NumGlyphs = 2
+          OnClick = buttonRxRecordClick
+        end
         object buttonRXLogClear: TButton
-          Left = 195
+          Left = 216
           Top = 3
-          Width = 70
+          Width = 49
           Height = 19
           Anchors = [akTop, akRight]
           Caption = #12463#12522#12450
@@ -249,9 +297,9 @@ object TTYConsole: TTTYConsole
           OnClick = buttonRXLogClearClick
         end
         object checkAutoFillNR: TCheckBox
-          Left = 95
+          Left = 118
           Top = 4
-          Width = 98
+          Width = 86
           Height = 17
           Anchors = [akTop, akRight]
           Caption = 'NR'#33258#21205#20837#21147

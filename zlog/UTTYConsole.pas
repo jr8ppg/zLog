@@ -96,6 +96,8 @@ type
     checkAutoPttOff: TCheckBox;
     actionRttyGrabRev: TAction;
     checkAutoFillNR: TCheckBox;
+    buttonRxPause: TSpeedButton;
+    buttonRxRecord: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -132,6 +134,8 @@ type
     procedure editMessageKeyPress(Sender: TObject; var Key: Char);
     procedure actionRttyGrabRevExecute(Sender: TObject);
     procedure checkboxClick(Sender: TObject);
+    procedure buttonRxRecordClick(Sender: TObject);
+    procedure buttonRxPauseClick(Sender: TObject);
   private
     { Private declarations }
     FTTYSendBuffer: string;
@@ -605,6 +609,22 @@ procedure TTTYConsole.buttonRXLogClearClick(Sender: TObject);
 begin
    RXLog.ClrScr;
    TXLog.SetFocus();
+end;
+
+procedure TTTYConsole.buttonRxPauseClick(Sender: TObject);
+begin
+   RXLog.Pause := buttonRxPause.Down;
+end;
+
+procedure TTTYConsole.buttonRxRecordClick(Sender: TObject);
+begin
+   if buttonRxRecord.Down = True then begin
+      RxLog.RecordLog := 'zlog_rtty_' + FormatDateTime('yyyymmddhhnnss', Now) + '.txt';
+      RXLog.Recording := True;
+   end
+   else begin
+      RXLog.Recording := False;
+   end;
 end;
 
 procedure TTTYConsole.buttonSendClick(Sender: TObject);
