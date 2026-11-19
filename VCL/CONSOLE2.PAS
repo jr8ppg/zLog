@@ -24,8 +24,10 @@
 
 interface
 
-uses WinTypes, WinProcs, Messages, Classes, Controls,
-     Forms, Graphics, SysUtils, AnsiStrings;
+uses
+  WinApi.Windows, WinApi.Messages, System.Classes, Vcl.Controls,
+  Vcl.Forms, Vcl.Graphics, System.SysUtils, System.AnsiStrings,
+  Vcl.ExtCtrls, System.Types, System.UITypes;
 
 
 { TConsole2
@@ -237,6 +239,15 @@ type
   TConsole2 = class(TCustomControl)
   private
     FOptions: TConsole2Options;
+    FPause: Boolean;
+    FPauseTimer: TTimer;
+    FPauseVisible: Boolean;
+    FRecording: Boolean;
+    FRecordLog: string;
+    FRecordStream: TFileStream;
+    FFlushingPause: Boolean;
+    FPauseQueue: array of AnsiString;
+    FPauseQueueCount: Integer;
     FFocused: Boolean;
     FFont: TFixedFont_;
     FCols: Integer;                        { Screen buffer dimensions }
@@ -268,6 +279,12 @@ type
     procedure WMKillFocus(var M: TWMKillFocus); message wm_KillFocus;
     procedure WMGetDlgCode(var M: TWMGetDlgCode); message wm_GetDlgCode;
     procedure WMEraseBkgnd(var M: TWMEraseBkgnd); message wm_EraseBkgnd;
+    procedure SetRecording(Value: Boolean);
+    procedure SetRecordLog(const Value: string);
+    procedure SetPause(Value: Boolean);
+    procedure FlushPauseQueue;
+    procedure PauseTimerTick(Sender: TObject);
+    procedure InvalidatePauseIndicator;
   protected
     FReading: Boolean;                     { Reading from CRT window? }
     FOldFont: TFixedFont_;
@@ -296,6 +313,7 @@ type
     procedure WriteBuf(Buffer: PAnsiChar; Count: Cardinal);
     procedure SetScrollbars;
     procedure Paint; override;
+    procedure PaintPauseIndicator;
     procedure KeyDown(var Key: Word; Shift: TShiftState); override;
     procedure KeyPress(var Key: Char); override;
     procedure DoCtrlBreak; dynamic;
@@ -326,6 +344,9 @@ type
     procedure ShowCursor; virtual;
     procedure HideCursor;
     property SelectedText: String read GetSelectedText;
+    property Pause: Boolean read FPause write SetPause;
+    property RecordLog: string read FRecordLog write SetRecordLog;
+    property Recording: Boolean read FRecording write SetRecording;
   published
     property Align;
     property ParentColor;
@@ -533,6 +554,17 @@ begin
   ResizeBuffer;
   TabStop := True;
   Enabled := True;
+  FRecording := False;
+  FRecordLog := '';
+  FRecordStream := nil;
+  FPause := False;
+  FPauseVisible := False;
+  FPauseTimer := TTimer.Create(Self);
+  FPauseTimer.Enabled := False;
+  FPauseTimer.Interval := 500;
+  FPauseTimer.OnTimer := PauseTimerTick;
+  FFlushingPause := False;
+  FPauseQueueCount := 0;
   FHasSelection := False;
   FSelStart := Point(0, 0);
   FSelEnd := Point(0, 0);
@@ -541,7 +573,10 @@ end;
 destructor TConsole2.Destroy;
 begin
   Options := Options - [coStdInput, coStdOutput];  { close files }
-  AnsiStrings.StrDispose(FBuffer);
+  FPauseTimer.Enabled := False;
+  SetRecording(False);
+  SetLength(FPauseQueue, 0);
+  System.AnsiStrings.StrDispose(FBuffer);
   FOldFont.Free;
   FFont.Free;
   inherited Destroy;
@@ -661,7 +696,7 @@ procedure TConsole2.ResizeBuffer;
 var Temp: PAnsiChar;
 begin
   Temp := PAnsiChar(StrAlloc(Cols * Rows));
-  AnsiStrings.StrDispose(FBuffer);
+  System.AnsiStrings.StrDispose(FBuffer);
   FBuffer := Temp;
   FillChar(FBuffer^,Cols * Rows,' ');
 end;
@@ -1034,6 +1069,9 @@ var
   P: PAnsiChar;
 
 begin
+  // Record the exact bytes supplied to WriteBuf, before screen processing.
+  if FRecording and (FRecordStream <> nil) and (Buffer <> nil) and (Count > 0) then
+    FRecordStream.WriteBuffer(Buffer^, Count);
   L := Cursor.X;
   R := Cursor.X;
   while Count > 0 do
@@ -1095,8 +1133,148 @@ begin
     ShowCursor;
 end;
 
-procedure TConsole2.WriteCodedBuf(Buffer: PAnsiChar; Count: Cardinal);
+procedure TConsole2.SetRecording(Value: Boolean);
+var
+  NewStream: TFileStream;
 begin
+  if FRecording = Value then Exit;
+  if Value then
+  begin
+    if FRecordLog = '' then
+      raise Exception.Create('RecordLog must be set before enabling Recording');
+    // Create/truncate the file. If opening fails, Record remains False.
+    NewStream := TFileStream.Create(FRecordLog, fmCreate);
+    FRecordStream := NewStream;
+    FRecording := True;
+  end
+  else
+  begin
+    FRecording := False;
+    FreeAndNil(FRecordStream);
+  end;
+end;
+
+procedure TConsole2.SetRecordLog(const Value: string);
+var
+  NewStream: TFileStream;
+begin
+  if FRecordLog = Value then Exit;
+  if FRecording then
+  begin
+    if Value = '' then
+      raise Exception.Create('RecordLog cannot be empty while recording');
+    // Open the replacement first; preserve the existing recording on failure.
+    NewStream := TFileStream.Create(Value, fmCreate);
+    FreeAndNil(FRecordStream);
+    FRecordStream := NewStream;
+  end;
+  FRecordLog := Value;
+end;
+
+procedure TConsole2.SetPause(Value: Boolean);
+begin
+  if FPause = Value then Exit;
+  FPause := Value;
+  FPauseVisible := Value;
+  FPauseTimer.Enabled := Value;
+  InvalidatePauseIndicator;
+  if not FPause then
+    FlushPauseQueue;
+end;
+
+procedure TConsole2.InvalidatePauseIndicator;
+var
+  R: TRect;
+begin
+  if not HandleAllocated then Exit;
+  R := Rect(Max(0, ClientWidth - 110), 0, ClientWidth, 30);
+  InvalidateRect(Handle, @R, False);
+end;
+
+procedure TConsole2.PauseTimerTick(Sender: TObject);
+begin
+  if not FPause then Exit;
+  FPauseVisible := not FPauseVisible;
+  InvalidatePauseIndicator;
+end;
+
+procedure TConsole2.PaintPauseIndicator;
+var
+  OldFont: TFont;
+  S: string;
+  hh, ww: Integer;
+  x, y: Integer;
+begin
+  if not (FPause and FPauseVisible) then Exit;
+  OldFont := TFont.Create;
+  try
+    OldFont.Assign(Canvas.Font);
+    try
+      Canvas.Font.Name := 'ＭＳ ゴシック';
+      Canvas.Font.Size := 10;
+      Canvas.Font.Style := [fsBold];
+      Canvas.Font.Color := clRed;
+      Canvas.Pen.Style := psClear;
+      Canvas.Brush.Style := bsClear;
+
+      S := '*PAUSE*';
+      ww := Canvas.TextWidth(S);
+      hh := Canvas.TextHeight(S);
+
+      x := ClientWidth - ww - 4;
+      y := hh;
+      Canvas.TextOut(x, y, S);
+    finally
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Font.Assign(OldFont);
+    end;
+  finally
+    OldFont.Free;
+  end;
+end;
+
+procedure TConsole2.FlushPauseQueue;
+var
+  S: AnsiString;
+  I: Integer;
+begin
+  if FFlushingPause then Exit;
+  FFlushingPause := True;
+  try
+    while (not FPause) and (FPauseQueueCount > 0) do
+    begin
+      // Remove the oldest entry before dispatch, allowing reentrant writes.
+      S := FPauseQueue[0];
+      for I := 1 to FPauseQueueCount - 1 do
+        FPauseQueue[I - 1] := FPauseQueue[I];
+      Dec(FPauseQueueCount);
+      FPauseQueue[FPauseQueueCount] := '';
+      if Assigned(FProcessControlCodes) then
+        FProcessControlCodes(Self, PAnsiChar(S), Length(S))
+      else
+        WriteBuf(PAnsiChar(S), Length(S));
+    end;
+    if FPauseQueueCount = 0 then
+      SetLength(FPauseQueue, 0);
+  finally
+    FFlushingPause := False;
+  end;
+end;
+
+procedure TConsole2.WriteCodedBuf(Buffer: PAnsiChar; Count: Cardinal);
+var
+  S: AnsiString;
+begin
+  if (Count = 0) or (Buffer = nil) then Exit;
+  if FPause or FFlushingPause then
+  begin
+    SetString(S, Buffer, Count); // Copy caller-owned memory immediately.
+    if FPauseQueueCount = Length(FPauseQueue) then
+      SetLength(FPauseQueue, FPauseQueueCount + 64);
+    FPauseQueue[FPauseQueueCount] := S;
+    Inc(FPauseQueueCount);
+    Exit;
+  end;
   if Assigned(FProcessControlCodes) then
     FProcessControlCodes(Self, Buffer, Count)
   else
@@ -1348,6 +1526,7 @@ begin
     Inc(PY, FCharSize.Y);
   end;
   PaintSelection;
+  PaintPauseIndicator;
 end;
 
 procedure TConsole2.WMSize(var M: TWMSize);
@@ -1694,9 +1873,9 @@ begin
   ClearColorStrings;
   FColorRules.Free;
   inherited Destroy;
-  AnsiStrings.StrDispose(PAnsiChar(FIndexes));
+  System.AnsiStrings.StrDispose(PAnsiChar(FIndexes));
   FAttrList.Free;
-  AnsiStrings.StrDispose(PAnsiChar(FCellWidths));
+  System.AnsiStrings.StrDispose(PAnsiChar(FCellWidths));
 end;
 
 procedure TColorConsole2.SetAllBackgroundColors(Value: TColor);
@@ -1782,14 +1961,14 @@ begin
   if (FColorRules = nil) or (FColorRules.Count = 0) then Exit;
 
   SetString(Line, ScreenPtr(0, Y), Cols);
-  WorkLine := AnsiStrings.AnsiUpperCase(Line);
+  WorkLine := System.AnsiStrings.AnsiUpperCase(Line);
 
   for I := 0 to FColorRules.Count - 1 do
   begin
     Rule := TConsoleColorRule(FColorRules[I]);
     FindText := AnsiString(Rule.Text);
     if FindText = '' then Continue;
-    WorkFind := AnsiStrings.AnsiUpperCase(FindText);
+    WorkFind := System.AnsiStrings.AnsiUpperCase(FindText);
     StartPos := 1;
     while StartPos <= Length(WorkLine) do
     begin
@@ -1837,8 +2016,8 @@ begin
     Exchange(Pointer(FIndexes), Pointer(P));
     Exchange(Pointer(FCellWidths), P2);
   finally
-    AnsiStrings.StrDispose(PAnsiChar(P));
-    AnsiStrings.StrDispose(PAnsiChar(P2));
+    System.AnsiStrings.StrDispose(PAnsiChar(P));
+    System.AnsiStrings.StrDispose(PAnsiChar(P2));
   end;
   FAttrList.Clear;
   A := FAttrList.Allocate(Font);
@@ -2107,6 +2286,7 @@ begin
   end;
 
   PaintSelection;
+  PaintPauseIndicator;
   Canvas.Handle := 0;
 end;
 
