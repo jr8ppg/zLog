@@ -617,9 +617,12 @@ begin
 end;
 
 procedure TTTYConsole.buttonRxRecordClick(Sender: TObject);
+var
+   filename: string;
 begin
    if buttonRxRecord.Down = True then begin
-      RxLog.RecordLog := 'zlog_rtty_' + FormatDateTime('yyyymmddhhnnss', Now) + '.txt';
+      filename := ExtractFilePath(Application.ExeName);
+      RxLog.RecordLog := filename + 'zlog_rtty_' + FormatDateTime('yyyymmddhhnnss', Now) + '.txt';
       RXLog.Recording := True;
    end
    else begin
