@@ -111,6 +111,9 @@ begin
       Exit;
    end;
 
+   F1 := False;
+   F2 := False;
+   Transmit := False;
    Link := False;
    HidController.CheckIn(FHidDev);
    FHidDev := nil;
