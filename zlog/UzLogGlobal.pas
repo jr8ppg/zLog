@@ -198,6 +198,9 @@ type
     FRigShowRitInfo: Boolean;
     FExtAntSelWndClass: string;
 
+    _polling_delay: Integer;
+    _thread_sleep_time: Integer;
+
     _icom_polling_freq_and_mode: Boolean;       // ICOM only
     _icom_response_timeout: Integer;
     _usbif4cw_sync_wpm: Boolean;
@@ -1516,6 +1519,9 @@ begin
       //
       // ここから隠し設定
       //
+      Settings._polling_delay := ini.ReadInteger('Hardware', 'PollingDelayTime', 5);
+      Settings._thread_sleep_time := ini.ReadInteger('Hardware', 'ThreadSleepTime', 5);
+
       Settings.FInfoUpdateInterval := ini.ReadInteger('Preferences', 'InfoUpdateInterval', 1000);
       Settings.FCommPortTest := ini.ReadBool('Preferences', 'CommPortTest', False);
       Settings._movetomemo := ini.ReadBool('Preferences', 'MoveToMemoWithSpace', False);
@@ -1541,6 +1547,7 @@ begin
       Settings.FRigShowRitInfo := ini.ReadBool('Rig', 'ShowRitInfo', False);
 
       Settings.FExtAntSelWndClass := ini.ReadString('ExtAntSel', 'WndClass', '');
+      // ここまで
 
       // QuickQSY
       for i := 1 to 8 do begin
@@ -2681,6 +2688,8 @@ procedure TdmZLogGlobal.InitializeCW();
 var
    i: Integer;
 begin
+   dmZLogKeyer.PollingDelay := Settings._polling_delay;
+   dmZLogKeyer.ThreadSleepTime := Settings._thread_sleep_time;
    dmZLogKeyer.UseWinKeyer := Settings._use_winkeyer;
    dmZLogKeyer.UseWk9600 := Settings._use_wk_9600;
    dmZLogKeyer.UseWkOutpSelect := Settings._use_wk_outp_select;

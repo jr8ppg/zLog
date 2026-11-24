@@ -166,6 +166,9 @@ type
     FFskKeying: array[0..MAXPORT] of TCommPortDriver;
     FTtyRxCom: array[0..MAXPORT] of TCommPortDriver;
 
+    FPollingDelay: Integer;
+    FThreadSleepTime: Integer;
+
     FMonitorThread: TKeyerMonitorThread;
     FPaddleThread: TPaddleThread;
 
@@ -471,6 +474,9 @@ type
     procedure SetRttyPTTDelay(before, after: word);
     procedure SetWeight(W : word); {Sets the weight 0-100 %}
 
+    property PollingDelay: Integer read FPollingDelay write FPollingDelay;
+    property ThreadSleepTime: Integer read FThreadSleepTime write FThreadSleepTime;
+
     property WPM: Integer read FKeyerWPM write SetWPM;
     property InitWPM: Integer read FKeyerInitWPM write FKeyerInitWPM;
     property UseSideTone: Boolean read FUseSideTone write SetUseSideTone;
@@ -617,6 +623,8 @@ var
    i: Integer;
 begin
    FInitialized := False;
+   FPollingDelay := 5;
+   FThreadSleepTime := 5;
    ResetComm();
    FUseWinKeyer := False;
    FUseWk9600 := False;
@@ -668,8 +676,8 @@ begin
    {$ENDIF}
 
    HidController := TJvHidDeviceController.Create(Self, HidControllerDeviceCreateError, nil);
-   HidController.DevPollingDelayTime := 1;
-   HidController.DevThreadSleepTime := 10;
+   HidController.DevPollingDelayTime := FPollingDelay;
+   HidController.DevThreadSleepTime := FThreadSleepTime;
    HidController.OnDeviceChange := DoDeviceChanges;
    HidController.OnDeviceData := HidControllerDeviceData;
    HidController.OnDeviceUnplug := HidControllerDeviceUnplug;
@@ -4419,6 +4427,8 @@ var
       FTtyRxCom[i].StopBits := sb1bits;
       FTtyRxCom[i].Parity := ptNONE;
       FTtyRxCom[i].EnableDTROnOpen := False;
+      FTtyRxCom[i].AsyncSend := True;
+      FTtyRxCom[i].PollingDelay := FPollingDelay;
    end;
 begin
    if FUsePaddleKeyer = True then begin
@@ -4736,6 +4746,8 @@ begin
          if FSameOtrsp = True then begin
             SetOtrspPortParam(FComKeying[i]);
          end;
+         FComKeying[i].AsyncSend := True;
+         FComKeying[i].PollingDelay := FPollingDelay;
          FComKeying[i].Connect;
       end;
 
@@ -5381,6 +5393,8 @@ begin
    else begin
       FComKeying[0].BaudRate := br1200;
    end;
+   FComKeying[0].AsyncSend := True;
+   FComKeying[0].PollingDelay := FPollingDelay;
    FComKeying[0].Connect();
 
    //2) To power up WK enable DTR and disable RTS
