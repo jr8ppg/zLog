@@ -6,7 +6,7 @@
 // AUTHOR         : Marco Cocco
 // STATUS         : Freeware 
 // INFOS          : Implementation of TCommPortDriver component:
-//                  - non multithreaded serial I/O
+//                  - worker-thread serial I/O (modified for zLog)
 // KNOWN BUGS     : none
 // COMPATIBILITY  : Windows 95/98/NT/2000
 // REPLACES       : TCommPortDriver v2.00    (Delphi 4.0)
@@ -43,7 +43,7 @@ interface
 
 uses
   // Delphi units
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Classes, System.SyncObjs, System.Generics.Collections
   // ComDrv32 units
   ;
 
@@ -107,7 +107,45 @@ const
 //------------------------------------------------------------------------
 
 type
+  TCommPortDriver = class;
+  TCPDrvWorker = class(TThread)
+  private
+    FOwner: TCommPortDriver;
+  protected
+    procedure Execute; override;
+  public
+    constructor Create(AOwner: TCommPortDriver);
+    function Stopping: Boolean;
+  end;
+  TCPDrvRx = record
+    Data: TBytes;
+    Packet: Boolean;
+  end;
+  TCPDrvTx = record
+    Data: TBytes;
+    Timeout: DWORD;
+  end;
+
   TCommPortDriver = class( TComponent )
+  private
+    FWorker: TCPDrvWorker;
+    FWake: TEvent;
+    FIOLock, FQueueLock: TCriticalSection;
+    FRxQueue: TQueue<TCPDrvRx>;
+    FTxQueue: TQueue<TCPDrvTx>;
+    FAsyncSend: Boolean;
+    FAcceptTx, FRxPosted: Boolean;
+    FTxBytes: NativeInt;
+    FLastAsyncError: Integer;
+    procedure StartWorker;
+    procedure StopWorker;
+    procedure PollRX;
+    procedure QueueRX(Data: Pointer; Size: DWORD; Packet: Boolean);
+    function WriteDataSync(DataPtr: PAnsiChar; DataSize, Timeout: DWORD): DWORD;
+    function EnqueueTX(DataPtr: PAnsiChar; DataSize, Timeout: DWORD): DWORD;
+    function GetLastAsyncError: Integer;
+    procedure SetAsyncSend(Value: Boolean);
+
   protected
     // Device Handle ( File Handle )
     FHandle                    : THandle;
@@ -254,8 +292,11 @@ type
     procedure ToggleTxD( onOff: boolean );
 
     // Make the Handle of the COM port public (for TAPI...) [read/write]
+    // AsyncSend=True: return value means accepted into the queue, not written.
+    property LastAsyncError: Integer read GetLastAsyncError;
     property Handle: THandle read FHandle write SetHandle;
   published
+    property AsyncSend: Boolean read FAsyncSend write SetAsyncSend default False;
     // # of the COM Port to use ( or pnCustom for port by name )
     property Port: TPortNumber read FPort write SetPort default pnCOM2;
     // Name of COM port
@@ -371,6 +412,11 @@ end;
 constructor TCommPortDriver.Create( AOwner: TComponent );
 begin
   inherited Create( AOwner );
+  FIOLock := TCriticalSection.Create;
+  FQueueLock := TCriticalSection.Create;
+  FWake := TEvent.Create(nil, False, False, '');
+  FRxQueue := TQueue<TCPDrvRx>.Create;
+  FTxQueue := TQueue<TCPDrvTx>.Create;
   // Initialize to default values -----------------------
   // Not connected
   FHandle                    := INVALID_HANDLE_VALUE;
@@ -430,6 +476,11 @@ begin
   // Destroy the timer's window
   if not (csDesigning in ComponentState) then
     DeallocateHWnd( FNotifyWnd );
+  FTxQueue.Free;
+  FRxQueue.Free;
+  FWake.Free;
+  FQueueLock.Free;
+  FIOLock.Free;
   // Call inherited destructor
   inherited Destroy;
 end;
@@ -448,9 +499,13 @@ begin
   begin
     // Stop the timer
     if Connected then
-      KillTimer( FNotifyWnd, 1 );
-    // No more connected 
-    FHandle := INVALID_HANDLE_VALUE;
+      StopWorker;
+    FIOLock.Acquire;
+    try
+      FHandle := INVALID_HANDLE_VALUE;
+    finally
+      FIOLock.Release;
+    end;
   end
   else
   begin
@@ -462,7 +517,7 @@ begin
     // Set COM port handle
     FHandle := Value;
     // Start the timer ( used for polling )
-    SetTimer( FNotifyWnd, 1, FPollingDelay, nil );
+    StartWorker;
   end;
 end;
 
@@ -494,6 +549,8 @@ end;
 // Selects the baud rate
 procedure TCommPortDriver.SetBaudRate( Value: TBaudRate );
 begin
+  FIOLock.Acquire;
+  try
   // Set new COM speed
   FBaudRate := Value;
   if FBaudRate <> brCustom then
@@ -501,67 +558,100 @@ begin
   // Apply changes
   if Connected then
     ApplyCOMSettings;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Selects the baud rate ( actual baud rate value )
 procedure TCommPortDriver.SetBaudRateValue( Value: DWORD );
 begin
+  FIOLock.Acquire;
+  try
   // Set new COM speed
   FBaudRate := brCustom;
   FBaudRateValue := Value;
   // Apply changes
   if Connected then
     ApplyCOMSettings;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Selects the number of data bits
 procedure TCommPortDriver.SetDataBits( Value: TDataBits );
 begin
+  FIOLock.Acquire;
+  try
   // Set new data bits
   FDataBits := Value;
   // Apply changes 
   if Connected then
     ApplyCOMSettings;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Selects the number of stop bits
 procedure TCommPortDriver.SetStopBits( Value: TStopBits );
 begin
+  FIOLock.Acquire;
+  try
   // Set new stop bits
   FStopBits := Value;
   // Apply changes 
   if Connected then
     ApplyCOMSettings;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Selects the kind of parity
 procedure TCommPortDriver.SetParity( Value: TParity );
 begin
+  FIOLock.Acquire;
+  try
   // Set new parity
   FParity := Value;
   // Apply changes 
   if Connected then
     ApplyCOMSettings;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Selects the kind of hardware flow control
 procedure TCommPortDriver.SetHwFlowControl( Value: THwFlowControl );
 begin
+  FIOLock.Acquire;
+  try
   // Set new hardware flow control
   FHwFlow := Value;
   // Apply changes 
   if Connected then
     ApplyCOMSettings;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Selects the kind of software flow control
 procedure TCommPortDriver.SetSwFlowControl( Value: TSwFlowControl );
 begin
+  FIOLock.Acquire;
+  try
   // Set new software flow control
   FSwFlow := Value;
   // Apply changes 
   if Connected then
     ApplyCOMSettings;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Sets the RX buffer size
@@ -601,6 +691,8 @@ end;
 // Sets the size of incoming packets
 procedure TCommPortDriver.SetPacketSize( Value: smallint );
 begin
+  FIOLock.Acquire;
+  try
   // PacketSize <= 0 if data isn't to be 'packetized'
   if Value <= 0 then
   begin
@@ -619,13 +711,20 @@ begin
   if DWORD(Value) > FInBufSize then
     SetInBufSize(DWORD(Value));
 
+  if DWORD(Value) > FInBufSize then
+    Value := SmallInt(FInBufSize);
   // Always store the effective requested packet size.
   FPacketSize := Value;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Sets the timeout for incoming packets
 procedure TCommPortDriver.SetPacketTimeout( Value: integer );
 begin
+  FIOLock.Acquire;
+  try
   // PacketTimeout <= 0 if packet timeout is to be disabled
   if Value < 1 then
     FPacketTimeout := -1
@@ -634,27 +733,29 @@ begin
     FPacketTimeout := FPollingDelay + (FPollingDelay*40) div 100
   else
     FPacketTimeout := Value;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Sets the delay between polling checks
 procedure TCommPortDriver.SetPollingDelay( Value: word );
 begin
+  FIOLock.Acquire;
+  try
   // Make it greater than 4 ms
   if Value < 5 then
     Value := 5;
   // If new delay is not equal to previous value...
   if Value <> FPollingDelay then
   begin
-    // Stop the timer 
-    if Connected then
-      KillTimer( FNotifyWnd, 1 );
-    // Store new delay value
     FPollingDelay := Value;
-    // Restart the timer
-    if Connected then
-      SetTimer( FNotifyWnd, 1, FPollingDelay, nil );
+    FWake.SetEvent;
     // Adjust the packet timeout 
     SetPacketTimeout( FPacketTimeout );
+  end;
+  finally
+    FIOLock.Release;
   end;
 end;
 
@@ -662,6 +763,8 @@ end;
 function TCommPortDriver.ApplyCOMSettings: boolean;
 var dcb: TDCB;
 begin
+  FIOLock.Acquire;
+  try
   // Do nothing if not connected
   Result := false;
   if not Connected then
@@ -731,6 +834,9 @@ begin
     exit;
   // Setup buffers size
   Result := SetupComm( FHandle, FInBufSize, FOutBufSize );
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 function TCommPortDriver.Connect: boolean;
@@ -779,7 +885,7 @@ begin
   // Apply timeouts
   SetCommTimeOuts( FHandle, tms );
   // Start the timer (used for polling) 
-  SetTimer( FNotifyWnd, 1, FPollingDelay, nil );
+  StartWorker;
 end;
 
 procedure TCommPortDriver.Disconnect;
@@ -787,11 +893,15 @@ begin
   if Connected then
   begin
     // Stop the timer (used for polling)
-    KillTimer( FNotifyWnd, 1 );
+    StopWorker;
     // Release the COM port
-    CloseHandle( FHandle );
-    // No more connected 
-    FHandle := INVALID_HANDLE_VALUE;
+    FIOLock.Acquire;
+    try
+      CloseHandle(FHandle);
+      FHandle := INVALID_HANDLE_VALUE;
+    finally
+      FIOLock.Release;
+    end;
   end;
 end;
 
@@ -805,6 +915,8 @@ end;
 function TCommPortDriver.GetLineStatus: TLineStatusSet;
 var dwS: DWORD;
 begin
+  FIOLock.Acquire;
+  try
   Result := [];
   if not Connected then
     exit;
@@ -817,34 +929,54 @@ begin
   if dwS and MS_DSR_ON <> 0 then Result := Result + [lsDSR];
   if dwS and MS_RING_ON <> 0 then Result := Result + [lsRING];
   if dwS and MS_RLSD_ON <> 0 then Result := Result + [lsCD];
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Returns true if polling has not been paused 
 function TCommPortDriver.IsPolling: boolean;
 begin
+  FIOLock.Acquire;
+  try
   Result := FRXPollingPauses <= 0;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Pauses polling 
 procedure TCommPortDriver.PausePolling;
 begin
+  FIOLock.Acquire;
+  try
   // Inc. RX polling pauses counter 
   inc( FRXPollingPauses );
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Re-starts polling (after pause) 
 procedure TCommPortDriver.ContinuePolling;
 begin
+  FIOLock.Acquire;
+  try
   // Do not allow an unmatched ContinuePolling call to make the counter
   // negative and silently change the polling state.
   if FRXPollingPauses > 0 then
     Dec(FRXPollingPauses);
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Flush rx/tx buffers 
 function TCommPortDriver.FlushBuffers( inBuf, outBuf: boolean ): boolean;
 var dwAction: DWORD;
 begin
+  FIOLock.Acquire;
+  try
   // Do nothing if not connected
   Result := false;
   if not Connected then
@@ -856,10 +988,20 @@ begin
   // Flush the TX data buffer
   if inBuf then
     dwAction := dwAction or PURGE_RXABORT or PURGE_RXCLEAR;
+  FQueueLock.Acquire;
+  try
+    if inBuf then FRxQueue.Clear;
+    if outBuf then begin FTxQueue.Clear; FTxBytes := 0; end;
+  finally
+    FQueueLock.Release;
+  end;
   Result := PurgeComm( FHandle, dwAction );
   // Used by the RX packet mechanism
   if Result then
     FFirstByteOfPacketTime := High(UInt64);
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Returns number of received bytes in the RX buffer
@@ -867,6 +1009,8 @@ function TCommPortDriver.CountRX: integer;
 var stat: TCOMSTAT;
     errs: DWORD;
 begin
+  FIOLock.Acquire;
+  try
   // Do nothing if port has not been opened
   Result := 65535;
   if not Connected then
@@ -882,6 +1026,9 @@ begin
   end;
 
   Result := stat.cbInQue;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Returns the output buffer free space or 65535 if not connected 
@@ -889,6 +1036,8 @@ function TCommPortDriver.OutFreeSpace: word;
 var stat: TCOMSTAT;
     errs: DWORD;
 begin
+  FIOLock.Acquire;
+  try
   if not Connected then
     Result := 65535
   else
@@ -905,11 +1054,14 @@ begin
     else
       Result := Word(FOutBufSize - stat.cbOutQue);
   end;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Sends binary data. Returns number of bytes sent. Timeout overrides
 // the value specifiend in the OutputTimeout property
-function TCommPortDriver.SendDataEx( DataPtr: PAnsiChar; DataSize, Timeout: DWORD ): DWORD;
+function TCommPortDriver.WriteDataSync( DataPtr: PAnsiChar; DataSize, Timeout: DWORD ): DWORD;
 var
   nToSend, nSent: DWORD;
   t1: UInt64;
@@ -923,6 +1075,7 @@ begin
   // Loop until all data sent or timeout occurred
   while DataSize > 0 do
   begin
+    if (FWorker <> nil) and FWorker.Stopping then Exit;
     // Get TX buffer free space
     nToSend := OutFreeSpace;
     // If output buffer has some free space...
@@ -954,6 +1107,8 @@ begin
       end;
     end;
     // Buffer is full. If we are waiting too long then exit 
+    if (FWorker <> nil) and FWorker.Stopping then
+      exit;
     if (GetTickCount64 - t1) > Timeout then
       exit;
 
@@ -1007,6 +1162,8 @@ var
   nToRead, nRead: DWORD;
   t1: UInt64;
 begin
+  FIOLock.Acquire;
+  try
   // Do nothing if port has not been opened
   Result := 0;
   if not Connected then
@@ -1062,6 +1219,9 @@ begin
     // Always restore polling, even if user code or an RTL routine raises.
     ContinuePolling;
   end;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Reads a byte. Returns true if the byte has been read 
@@ -1081,8 +1241,13 @@ end;
 procedure TCommPortDriver.ToggleDTR( onOff: boolean );
 const funcs: array[boolean] of integer = (CLRDTR,SETDTR);
 begin
+  FIOLock.Acquire;
+  try
   if Connected then
     EscapeCommFunction( FHandle, funcs[onOff] );
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // Set RTS line high (onOff=TRUE) or low (onOff=FALSE).
@@ -1090,12 +1255,19 @@ end;
 procedure TCommPortDriver.ToggleRTS( onOff: boolean );
 const funcs: array[boolean] of integer = (CLRRTS,SETRTS);
 begin
+  FIOLock.Acquire;
+  try
   if Connected then
     EscapeCommFunction( FHandle, funcs[onOff] );
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 procedure TCommPortDriver.ToggleTxD( onOff: boolean );
 begin
+  FIOLock.Acquire;
+  try
   if Connected then begin
     if onOff = True then begin
       SetCommBreak(FHandle);
@@ -1104,14 +1276,17 @@ begin
       ClearCommBreak(FHandle);
     end;
   end;
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 // COM port polling proc 
-procedure TCommPortDriver.TimerWndProc( var msg: TMessage );
+procedure TCommPortDriver.PollRX;
 var nRead, nToRead, dummy: DWORD;
     comStat: TCOMSTAT;
 begin
-  if (msg.Msg = WM_TIMER) and Connected then
+  if Connected then
   begin
     // Do nothing if RX polling has been paused
     if FRXPollingPauses > 0 then
@@ -1131,8 +1306,8 @@ begin
           // Read the packet and pass it to the app
           nRead := 0;
           if ReadFile( FHandle, FTempInBuffer[0], FPacketSize, nRead, nil ) then
-            if (nRead <> 0) and Assigned(FOnReceivePacket) then
-              FOnReceivePacket(Self, @FTempInBuffer[0], nRead);
+            if nRead <> 0 then
+              QueueRX(@FTempInBuffer[0], nRead, True);
           // Adjust time
           //if comStat.cbInQue >= FPacketSize then
             FFirstByteOfPacketTime := FFirstByteOfPacketTime +
@@ -1152,8 +1327,8 @@ begin
         // Read the "incomplete" packet
         if ReadFile( FHandle, FTempInBuffer[0], comStat.cbInQue, nRead, nil ) then
           // If PacketMode is not pmDiscard then pass the packet to the app
-          if (FPacketMode <> pmDiscard) and (nRead <> 0) and Assigned(FOnReceivePacket) then
-            FOnReceivePacket(Self, @FTempInBuffer[0], nRead);
+          if (FPacketMode <> pmDiscard) and (nRead <> 0) then
+            QueueRX(@FTempInBuffer[0], nRead, True);
         // Restart waiting for a packet
         FFirstByteOfPacketTime := High(UInt64);
         // Done
@@ -1175,12 +1350,225 @@ begin
 
     if (nToRead > 0) and
        ReadFile(FHandle, FTempInBuffer[0], nToRead, nRead, nil) then
-      if (nRead <> 0) and Assigned(FOnReceiveData) then
-        FOnReceiveData(Self, @FTempInBuffer[0], nRead);
-  end
-  // Let Windows handle other messages
-  else
-    Msg.Result := DefWindowProc( FNotifyWnd, Msg.Msg, Msg.wParam, Msg.lParam ) ;
+      if nRead <> 0 then
+        QueueRX(@FTempInBuffer[0], nRead, False);
+  end;
+end;
+
+
+const
+  WM_CPDRV_RX = WM_APP + $351;
+  CPDRV_MAX_TX = 65536;
+
+constructor TCPDrvWorker.Create(AOwner: TCommPortDriver);
+begin
+  inherited Create(True);
+  FreeOnTerminate := False;
+  FOwner := AOwner;
+end;
+
+function TCPDrvWorker.Stopping: Boolean;
+begin
+  Result := Terminated;
+end;
+
+procedure TCPDrvWorker.Execute;
+var
+  Tx: TCPDrvTx;
+  HaveTx: Boolean;
+  Sent: DWORD;
+  Delay: DWORD;
+begin
+  while not Terminated do
+  begin
+    HaveTx := False;
+    FOwner.FIOLock.Acquire;
+    try
+      if Terminated then Break;
+      FOwner.PollRX;
+      FOwner.FQueueLock.Acquire;
+      try
+        if (FOwner.FRxQueue.Count > 0) and not FOwner.FRxPosted then
+          FOwner.FRxPosted := PostMessage(FOwner.FNotifyWnd, WM_APP + $351, 0, 0);
+      finally
+        FOwner.FQueueLock.Release;
+      end;
+      FOwner.FQueueLock.Acquire;
+      try
+        if FOwner.FTxQueue.Count > 0 then
+        begin
+          Tx := FOwner.FTxQueue.Dequeue;
+          Dec(FOwner.FTxBytes, Length(Tx.Data));
+          HaveTx := True;
+        end;
+      finally
+        FOwner.FQueueLock.Release;
+      end;
+      if HaveTx and not Terminated then
+      begin
+        Sent := FOwner.WriteDataSync(PAnsiChar(@Tx.Data[0]),
+          DWORD(Length(Tx.Data)), Tx.Timeout);
+        if Sent <> DWORD(Length(Tx.Data)) then
+        begin
+          FOwner.FQueueLock.Acquire;
+          try
+            FOwner.FLastAsyncError := ERROR_WRITE_FAULT;
+            // Stop accepting commands after a partial/failed command.
+            FOwner.FAcceptTx := False;
+            FOwner.FTxQueue.Clear;
+            FOwner.FTxBytes := 0;
+          finally
+            FOwner.FQueueLock.Release;
+          end;
+        end;
+      end;
+      Delay := FOwner.FPollingDelay;
+    finally
+      FOwner.FIOLock.Release;
+    end;
+    Tx.Data := nil;
+    if not HaveTx and not Terminated then
+      FOwner.FWake.WaitFor(Delay);
+  end;
+end;
+
+procedure TCommPortDriver.StartWorker;
+begin
+  if (FWorker <> nil) or (FNotifyWnd = 0) then Exit;
+  FFirstByteOfPacketTime := High(UInt64);
+  FQueueLock.Acquire;
+  try
+    FAcceptTx := True;
+    FLastAsyncError := 0;
+  finally
+    FQueueLock.Release;
+  end;
+  FWorker := TCPDrvWorker.Create(Self);
+  FWorker.Start;
+end;
+
+procedure TCommPortDriver.StopWorker;
+var M: TMsg;
+begin
+  FQueueLock.Acquire;
+  try
+    FAcceptTx := False;
+  finally
+    FQueueLock.Release;
+  end;
+  if FWorker <> nil then
+  begin
+    FWorker.Terminate;
+    FWake.SetEvent;
+    FWorker.WaitFor;
+    FreeAndNil(FWorker);
+  end;
+  FQueueLock.Acquire;
+  try
+    FRxQueue.Clear;
+    FTxQueue.Clear;
+    FTxBytes := 0;
+    FRxPosted := False;
+  finally
+    FQueueLock.Release;
+  end;
+  if FNotifyWnd <> 0 then
+    while PeekMessage(M, FNotifyWnd, WM_CPDRV_RX, WM_CPDRV_RX, PM_REMOVE) do ;
+end;
+
+procedure TCommPortDriver.QueueRX(Data: Pointer; Size: DWORD; Packet: Boolean);
+var R: TCPDrvRx;
+begin
+  if Packet then begin
+    if not Assigned(FOnReceivePacket) then Exit;
+  end else if not Assigned(FOnReceiveData) then Exit;
+  SetLength(R.Data, Size);
+  Move(Data^, R.Data[0], Size);
+  R.Packet := Packet;
+  FQueueLock.Acquire;
+  try
+    FRxQueue.Enqueue(R);
+    if not FRxPosted then
+      FRxPosted := PostMessage(FNotifyWnd, WM_CPDRV_RX, 0, 0);
+  finally
+    FQueueLock.Release;
+  end;
+end;
+
+procedure TCommPortDriver.TimerWndProc(var Msg: TMessage);
+var R: TCPDrvRx; HaveRx: Boolean;
+begin
+  if Msg.Msg <> WM_CPDRV_RX then
+  begin
+    Msg.Result := DefWindowProc(FNotifyWnd, Msg.Msg, Msg.WParam, Msg.LParam);
+    Exit;
+  end;
+  Msg.Result := 0;
+  FQueueLock.Acquire;
+  try
+    FRxPosted := False;
+    HaveRx := FRxQueue.Count > 0;
+    if HaveRx then R := FRxQueue.Dequeue;
+    if FRxQueue.Count > 0 then
+      FRxPosted := PostMessage(FNotifyWnd, WM_CPDRV_RX, 0, 0);
+  finally
+    FQueueLock.Release;
+  end;
+  if HaveRx then
+    if R.Packet then
+    begin
+      if Assigned(FOnReceivePacket) then
+        FOnReceivePacket(Self, @R.Data[0], DWORD(Length(R.Data)));
+    end
+    else if Assigned(FOnReceiveData) then
+      FOnReceiveData(Self, @R.Data[0], DWORD(Length(R.Data)));
+end;
+
+function TCommPortDriver.EnqueueTX(DataPtr: PAnsiChar; DataSize, Timeout: DWORD): DWORD;
+var Tx: TCPDrvTx;
+begin
+  Result := 0;
+  if (DataSize = 0) or (DataPtr = nil) or (DataSize > CPDRV_MAX_TX) then Exit;
+  FQueueLock.Acquire;
+  try
+    if not FAcceptTx or (FTxBytes + NativeInt(DataSize) > CPDRV_MAX_TX) then Exit;
+    SetLength(Tx.Data, DataSize);
+    Move(DataPtr^, Tx.Data[0], DataSize);
+    Tx.Timeout := Timeout;
+    FTxQueue.Enqueue(Tx);
+    Inc(FTxBytes, DataSize);
+    Result := DataSize;
+    FWake.SetEvent;
+  finally
+    FQueueLock.Release;
+  end;
+end;
+
+function TCommPortDriver.GetLastAsyncError: Integer;
+begin
+  FQueueLock.Acquire;
+  try
+    Result := FLastAsyncError;
+  finally
+    FQueueLock.Release;
+  end;
+end;
+
+procedure TCommPortDriver.SetAsyncSend(Value: Boolean);
+begin
+  if Connected then Exit; // change only while disconnected
+  FAsyncSend := Value;
+end;
+
+function TCommPortDriver.SendDataEx(DataPtr: PAnsiChar; DataSize, Timeout: DWORD): DWORD;
+begin
+  if FAsyncSend then Exit(EnqueueTX(DataPtr, DataSize, Timeout));
+  FIOLock.Acquire;
+  try
+    Result := WriteDataSync(DataPtr, DataSize, Timeout);
+  finally
+    FIOLock.Release;
+  end;
 end;
 
 end.
