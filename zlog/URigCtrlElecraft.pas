@@ -401,7 +401,7 @@ begin
       WriteData('DN1;');
    end
    else begin
-      WriteData('DN5;');
+      WriteData('DN3;');
    end;
 end;
 

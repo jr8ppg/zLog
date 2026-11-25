@@ -24,6 +24,9 @@ type
 
     FCommThread: TIcomCommThread;
     FCommandList: TList<AnsiString>;
+    FPollQueued: Boolean;
+    FCommandBusy: Boolean;
+    FThreadStarted: Boolean;
 
     FMinWPM: Integer;      // 6
     FMaxWPM: Integer;      // 48
@@ -39,6 +42,8 @@ type
 
     FCommand25Supported: Boolean;
     procedure SendIcomCommand(command: string);
+    function QueueCommand(const S: AnsiString; IsPoll: Boolean): Boolean;
+    procedure CompletePolling;
   public
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
     destructor Destroy; override;
@@ -85,6 +90,11 @@ type
   private
     FRig: TICOM;
     FResponse: AnsiString;
+    FErrorMessage: string;
+    FPollSucceeded: Boolean;
+    FWasPoll: Boolean;
+    procedure SyncError;
+    procedure SyncComplete;
   protected
     procedure Execute(); override;
     function RecvText(var nErrorCode: Integer): AnsiString;
@@ -145,11 +155,10 @@ end;
 
 destructor TICOM.Destroy;
 begin
-   inherited;
-   FCommThread.Terminate();
-   FCommThread.WaitFor();
+   StopRequest();
    FCommThread.Free();
    FCommandList.Free();
+   inherited;
 end;
 
 procedure TICOM.AntSelect(no: Integer);
@@ -382,20 +391,25 @@ end;
 
 procedure TICOM.ICOMWriteData(S: AnsiString);
 begin
-   if FComm.Connected = False then begin
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('[' + IntToStr(_rignumber) + '] @@@not connected@@@'));
-      {$ENDIF}
-      Exit;
-   end;
+   QueueCommand(S, False);
+end;
 
-   // コマンド送信時はポーリング中止
-   FPollingTimer.Enabled := False;
-
-   // コマンドキューに追加
+function TICOM.QueueCommand(const S: AnsiString; IsPoll: Boolean): Boolean;
+begin
+   Result := False;
+   if FStopRequest or (FComm = nil) then Exit;
+   if not FComm.Connected then Exit;
    IcomLock.Enter();
-   FCommandList.Add(S);
-   IcomLock.Leave();
+   try
+      if FStopRequest then Exit;
+      if IsPoll and ((FCommandList.Count <> 0) or FCommandBusy) then Exit;
+      FCommandList.Add(S);
+      if IsPoll then FPollQueued := True;
+      Result := True;
+   finally
+      IcomLock.Leave();
+   end;
+   FPollingTimer.Enabled := False;
 end;
 
 procedure TICOM.RitClear;
@@ -460,7 +474,11 @@ end;
 procedure TICOM.Initialize();
 begin
    Inherited;
+   FPollingCount := 0;
+   FInitialPolling := False;
+   FPollQueued := False;
    FCommThread.Start();
+   FThreadStarted := True;
    FPollingTimer.Enabled := True;
 end;
 
@@ -485,47 +503,39 @@ begin
 end;
 
 procedure TICOM.PollingProcess;
+var
+   S: AnsiString;
 begin
-   FPollingTimer.Enabled := False;
-
-   if FStopRequest = True then begin
+   if FStopRequest or ((not FUsePolling) and FInitialPolling) then begin
+      FPollingTimer.Enabled := False;
       Exit;
    end;
 
-   if FGetBandAndMode = False then begin
-      ICOMWriteData(AnsiChar($03));
-   end
+   if not FGetBandAndMode then
+      S := AnsiChar($03)
    else begin
-      if FRitCtrlSupported = False then begin
-         if (FPollingCount and 1) = 0 then begin
-            ICOMWriteData(AnsiChar($03));
-         end
-         else begin
-            ICOMWriteData(AnsiChar($04));
-         end;
-      end
-      else begin
-         case FPollingCount of
-            0: ICOMWriteData(AnsiChar($03));
-            1: ICOMWriteData(AnsiChar($04));
-            2: ICOMWriteData(AnsiChar($21) + AnsiChar($01));
-            3: ICOMWriteData(AnsiChar($21) + AnsiChar($00));
-         end;
+      if (FPollingCount < 0) or (FPollingCount > 3) or
+         ((not FRitCtrlSupported) and (FPollingCount > 1)) then
+         FPollingCount := 0;
+      case FPollingCount of
+         0: S := AnsiChar($03);
+         1: S := AnsiChar($04);
+         2: S := AnsiChar($21) + AnsiChar($01);
+         3: S := AnsiChar($21) + AnsiChar($00);
       end;
    end;
+   // Leave the timer running if the command cannot be queued.
+   QueueCommand(S, True);
+end;
 
+procedure TICOM.CompletePolling;
+begin
    Inc(FPollingCount);
-   if FRitCtrlSupported = False then begin
-      if FPollingCount > 1 then begin
-         FPollingCount := 0;
-         FInitialPolling := True;
-      end;
-   end
-   else begin
-      if FPollingCount > 3 then begin
-         FPollingCount := 0;
-         FInitialPolling := True;
-      end;
+   if (not FGetBandAndMode) or
+      ((not FRitCtrlSupported) and (FPollingCount >= 2)) or
+      (FPollingCount >= 4) then begin
+      FPollingCount := 0;
+      FInitialPolling := True;
    end;
 end;
 
@@ -583,7 +593,8 @@ begin
       ICOMWriteData(fstr);
    finally
       FPollingCount := 0;
-      FPollingTimer.Enabled := True;
+      FInitialPolling := False;
+      StartPolling();
    end;
 end;
 
@@ -645,7 +656,8 @@ begin
       ICOMWriteData(fstr);
    finally
       FPollingCount := 0;
-      FPollingTimer.Enabled := True;
+      FInitialPolling := False;
+      StartPolling();
    end;
 end;
 
@@ -691,7 +703,8 @@ begin
    finally
       FIgnoreRigMode := fIgnoreRigModeBack;
       FPollingCount := 0;
-      FPollingTimer.Enabled := True;
+      FInitialPolling := False;
+      StartPolling();
    end;
 end;
 
@@ -831,48 +844,38 @@ begin
 end;
 
 procedure TICOM.StartPolling();
+var
+   Idle: Boolean;
 begin
-   if FStopRequest = True then begin
-      FPollingTimer.Enabled := False;
-      Exit;
+   IcomLock.Enter();
+   try
+      Idle := (FCommandList.Count = 0) and not FCommandBusy;
+   finally
+      IcomLock.Leave();
    end;
-
-   // トランシーブモード使わない時はポーリング再開
-   if (FUsePolling = True) then begin
-      FPollingTimer.Enabled := True;
-   end;
-
-   // トランシーブモード使う場合は１回か２回ポーリングする
-   if (FUsePolling = False) then begin
-      if FRitCtrlSupported = False then begin
-         if ((FGetBandAndMode = True) and  (FPollingCount < 2)) or
-            ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
-            if FInitialPolling = False then begin
-               FPollingTimer.Enabled := True;
-            end;
-         end;
-      end
-      else begin
-         if ((FGetBandAndMode = True) and  (FPollingCount < 4)) or
-            ((FGetBandAndMode = False) and  (FPollingCount < 1)) then begin
-            if FInitialPolling = False then begin
-               FPollingTimer.Enabled := True;
-            end;
-         end;
-      end;
-   end;
+   FPollingTimer.Enabled := Idle and (not FStopRequest) and
+      (FUsePolling or (not FInitialPolling));
 end;
 
 procedure TICOM.StopRequest();
 begin
    Inherited;
-
+   FPollingTimer.Enabled := False;
+   if Assigned(FCommThread) then begin
+      FCommThread.Terminate();
+      if not FThreadStarted then begin
+         FCommThread.Start();
+         FThreadStarted := True;
+      end;
+      FCommThread.WaitFor();
+   end;
    IcomLock.Enter();
-   FCommandList.Clear();
-   IcomLock.Leave();
-
-   FCommThread.Terminate();
-   FCommThread.WaitFor();
+   try
+      if Assigned(FCommandList) then FCommandList.Clear();
+      FPollQueued := False;
+   finally
+      IcomLock.Leave();
+   end;
 end;
 
 // 14 0C 00 00
@@ -1047,205 +1050,143 @@ end;
 
 procedure TIcomCommThread.Execute();
 var
-   S: AnsiString;
-   R: AnsiString;
-   msg: string;
+   S, R, Cmd: AnsiString;
    proc: TReceiveDataEvent;
    E: Integer;
-
-   {$IFDEF DEBUG}
-   procedure DebugDump(T: string; S: AnsiString; E: Integer);
-   var
-      str: string;
-      i: Integer;
-      L: Integer;
-   begin
-      L := Length(S);
-      str := '';
-      for i := 1 to L do begin
-         str := str + IntToHex(Byte(S[i]),2) + ' ';
-      end;
-      str := Trim(str);
-      OutputDebugString(PChar('*** ' + T + '=[' +
-      IntToStr(L) + '][' + str + '] *** (' + IntToStr(E) + ')'));
-   end;
-   {$ENDIF}
+   HasCommand, IsPoll: Boolean;
 begin
+   if Terminated then Exit;
    FRig.FComm.InputTimeout := 200;
-   while Terminated = False do begin
-      // コマンドなし
-      if FRig.FCommandList.Count = 0 then begin
+   while not Terminated do begin
+      IcomLock.Enter();
+      try
+         HasCommand := FRig.FCommandList.Count > 0;
+         if HasCommand then begin
+            FRig.FCommandBusy := True;
+            Cmd := FRig.FCommandList[0];
+            IsPoll := FRig.FPollQueued;
+            FRig.FPollQueued := False;
+         end;
+      finally
+         IcomLock.Leave();
+      end;
+      if not HasCommand then begin
          Sleep(50);
          Continue;
       end;
 
-      // コマンド取りだし
-      IcomLock.Enter();
-      S := FRig.FCommandList.Items[0];
-      proc := FRig.FComm.OnReceiveData;
-      FRig.FComm.OnReceiveData := nil;
-      IcomLock.Leave();
-
-      {$IFDEF DEBUG}
-//      DebugDump('コマンド', S, E);
-      {$ENDIF}
-
-      // 送信
-      S := AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRig.FRigAddr) + AnsiChar(FRig.FMyAddr) + S + AnsiChar($FD);
-      FRig.WriteData(S);
-      {$IFDEF DEBUG}
-      DebugDump('送信コマンド', S, E);
-      {$ENDIF}
-
-      // ちょっと待って
-      Sleep(10);
-
-      if Terminated = True then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('*** (1)Terminated=True ***'));
-         {$ENDIF}
-         Break;
-      end;
-
-      // 最初の応答電文受信
-      R := RecvText(E);
-
-      {$IFDEF DEBUG}
-      if E >= 0 then begin
-         DebugDump('受信①', R, E);
-      end;
-      {$ENDIF}
-
-      if Terminated = True then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('*** (2)Terminated=True ***'));
-         {$ENDIF}
-         Break;
-      end;
-
-      // それはエコーバックか？
-      if S = R then begin
-         // 本当の応答電文受信
-         R := RecvText(E);
-
-         {$IFDEF DEBUG}
-         if E >= 0 then begin
-            DebugDump('受信②', R, E);
+      FWasPoll := IsPoll;
+      FPollSucceeded := False;
+      FErrorMessage := '';
+      try
+         try
+            proc := FRig.FComm.OnReceiveData;
+            FRig.FComm.OnReceiveData := nil;
+            try
+               if not FRig.FComm.Connected then
+                  raise Exception.Create('COM port not connected');
+               S := AnsiChar($FE) + AnsiChar($FE) + AnsiChar(FRig.FRigAddr) +
+                    AnsiChar(FRig.FMyAddr) + Cmd + AnsiChar($FD);
+               FRig.WriteData(S);
+               Sleep(10);
+               R := RecvText(E);
+               if (not Terminated) and (E = 0) and (S = R) then
+                  R := RecvText(E);
+               if not Terminated then begin
+                  if E <> 0 then
+                     FErrorMessage := 'No complete response from ' + FRig.Name
+                  else begin
+                     FResponse := R;
+                     Synchronize(SyncProc);
+                     // Only a matching addressed reply advances initial polling.
+                     if IsPoll and (Length(R) >= 6 + Length(Cmd)) then begin
+                        FPollSucceeded := (Copy(R, 1, 2) = #$FE#$FE) and
+                           (R[3] = AnsiChar(FRig.FMyAddr)) and
+                           (R[4] = AnsiChar(FRig.FRigAddr)) and
+                           (Copy(R, 5, Length(Cmd)) = Cmd);
+                     end;
+                  end;
+               end;
+            finally
+               FRig.FComm.OnReceiveData := proc;
+            end;
+         except
+            on Ex: Exception do
+               FErrorMessage := Ex.Message;
          end;
-         {$ENDIF}
-      end;
-
-      // エラー有り
-      if E = -1 then begin
-         msg := 'No response from ' + FRig.Name;
-         {$IFDEF DEBUG}
-         msg := msg + ' (' + IntToHex(Byte(S[5])) + ')';
-         OutputDebugString(PChar('[' + IntToStr(FRig._rignumber) + '] ' + msg));
-         {$ENDIF}
-
-         if Assigned(FRig.OnError) then begin
-            FRig.OnError(FRig, msg);
+      finally
+         IcomLock.Enter();
+         try
+            if FRig.FCommandList.Count > 0 then
+               FRig.FCommandList.Delete(0);
+         finally
+            IcomLock.Leave();
          end;
-      end
-      else begin
-         // レスポンス処理
-         FResponse := R;
-         Synchronize(SyncProc);
       end;
-
-      // コマンド削除
-      {$IFDEF DEBUG}
-      OutputDebugString(PChar('*** コマンド削除 ***'));
-      {$ENDIF}
-      IcomLock.Enter();
-      if FRig.FCommandList.Count > 0 then begin
-         FRig.FCommandList.Delete(0);
+      if not Terminated then begin
+         try
+            Synchronize(SyncComplete);
+            if FErrorMessage <> '' then Synchronize(SyncError);
+         except
+            on Ex: Exception do OutputDebugString(PChar(Ex.Message));
+         end;
       end;
-      FRig.FComm.OnReceiveData := proc;
-      IcomLock.Leave();
-
-      if Terminated = True then begin
-         {$IFDEF DEBUG}
-         OutputDebugString(PChar('*** (3)Terminated=True ***'));
-         {$ENDIF}
-         Break;
-      end;
-
-      // ポーリング再開
-      FRig.StartPolling();
    end;
 end;
 
 function TIcomCommThread.RecvText(var nErrorCode: Integer): AnsiString;
 var
-   c: Integer;
-   dwTick: DWORD;
-   fStart: Boolean;
-   fResult: Boolean;
+   Started: Boolean;
+   Tick: UInt64;
    CH: AnsiChar;
 begin
-   // 応答受信 FE～FDまで受信
-   nErrorCode := 0;
-   fStart := False;
-   c := 0;
-   dwTick := GetTickCount();
    Result := '';
-   while Terminated = False do begin
-      Sleep(0);
-      CH := #00;
-      fResult := FRig.FComm.ReadChar(CH);
-      if fResult = False then begin
-         // タイムアウト判定１文字目が来るまで
-         if (c = 0) and
-            ((GetTickCount() - dwTick) > DWORD(dmZLogGlobal.Settings._icom_response_timeout)) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('*** レスポンスなし ***'));
-            {$ENDIF}
-            Result := '';
-            nErrorCode := -1;
-            Exit;
-         end;
-
-         // ２文字目以降
-         if (c >= 1) then begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('*** これ以降データなし ***'));
-            {$ENDIF}
-            nErrorCode := 1;
-            Break;
-         end;
+   nErrorCode := -1;
+   Started := False;
+   Tick := GetTickCount64();
+   while not Terminated do begin
+      if GetTickCount64() - Tick >= UInt64(Max(1, dmZLogGlobal.Settings._icom_response_timeout)) then Exit;
+      if not FRig.FComm.ReadChar(CH) then begin
+         if Started then Exit;
+         Sleep(1);
+         Continue;
       end;
-
-      // スタートキャラクタ待ち
-      if (fStart = False) then begin
-         if (CH = #$FE) then begin
-            fStart := True;
-         end
-         else begin
-            {$IFDEF DEBUG}
-            OutputDebugString(PChar('wait for start char => $' + IntToHex(Ord(CH), 2)));
-            {$ENDIF}
-            Continue;
-         end;
+      if not Started then begin
+         if CH <> #$FE then Continue;
+         Started := True;
       end;
-
-      // スタートしたらバッファに格納
-      if fStart = True then begin
-         Result := Result + CH;
-         Inc(c);
-      end;
-
-      // 終端文字まで受信したら終了
+      Result := Result + CH;
       if CH = FRig.TerminatorCode then begin
          nErrorCode := 0;
-         Break;
+         Exit;
       end;
    end;
 end;
 
+procedure TIcomCommThread.SyncComplete;
+begin
+   IcomLock.Enter();
+   try
+      FRig.FCommandBusy := False;
+   finally
+      IcomLock.Leave();
+   end;
+   if Terminated or FRig.FStopRequest then Exit;
+   if FPollSucceeded or (FWasPoll and FRig.FUsePolling) then
+      FRig.CompletePolling;
+   FRig.StartPolling;
+end;
+
+procedure TIcomCommThread.SyncError;
+begin
+   if not Terminated and not FRig.FStopRequest and Assigned(FRig.OnError) then
+      FRig.OnError(FRig, FErrorMessage);
+end;
+
 procedure TIcomCommThread.SyncProc();
 begin
-   FRig.ExecuteCommand(FResponse);
+   if not Terminated and not FRig.FStopRequest then
+      FRig.ExecuteCommand(FResponse);
 end;
 
 initialization

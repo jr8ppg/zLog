@@ -9,6 +9,7 @@ uses
   URigCtrlLib, UzLogConst, UzLogGlobal, UzLogQSO, CPDrv;
 
 const
+  YAESU_POLL_TIMEOUT = 1000; // milliseconds
   _nil2: AnsiString = AnsiChar($00) + AnsiChar($00);
   _nil3: AnsiString = AnsiChar($00) + AnsiChar($00) + AnsiChar($00);
   _nil4: AnsiString = AnsiChar($00) + AnsiChar($00) + AnsiChar($00) + AnsiChar($00);
@@ -32,7 +33,12 @@ type
   end;
 
   TFT2000 = class(TRig)
+  private
+    FPendingPoll: string;
   protected
+    procedure PollAscii(const LastCommand: AnsiString);
+    procedure CompletePoll(const Command: string);
+    procedure ResumePolling;
     procedure SetRit(flag: Boolean); override;
     procedure SetRitOffset(offset: Integer); override;
     procedure SetRitOffsetSub(offset: Integer);
@@ -275,7 +281,11 @@ begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+      if not FStopRequest then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -327,11 +337,15 @@ end;
 
 procedure TFT1000MP.PollingProcess;
 begin
+   if FPollingTimer.Interval = YAESU_POLL_TIMEOUT then
+      BufferString := '';
    FPollingTimer.Enabled := False;
    if FStopRequest = True then begin
       Exit;
    end;
 
+   FPollingTimer.Interval := YAESU_POLL_TIMEOUT;
+   FPollingTimer.Enabled := True;
    WriteData(_nil3 + AnsiChar($03) + AnsiChar($10));
 end;
 
@@ -539,13 +553,14 @@ begin
             FXit := StrToBoolDef(strTemp, False);
          end;
 
-         Inc(FPollingCount);
+         CompletePoll(strCommand);
       end;
 
       // RX切り替え＝VFO A/B切り替え
       if strCommand = 'FR' then begin
+         if Length(S) < 4 then Exit;
          FunctionRx(string(Copy(S, 3)));
-         Inc(FPollingCount);
+         CompletePoll(strCommand);
       end;
 
       // メーター値読み出し（0-255を0-100にマップする）
@@ -567,9 +582,7 @@ begin
          UpdateStatus;
       end;
    finally
-      if (FUsePolling = True) or (FInitialPolling = False) then begin
-         FPollingTimer.Enabled := True;
-      end;
+      ResumePolling;
    end;
 end;
 
@@ -614,6 +627,9 @@ end;
 
 procedure TFT2000.Initialize();
 begin
+   FPendingPoll := '';
+   FPollingCount := 0;
+   FInitialPolling := False;
    Inherited;
 
    if FUsePolling = True then begin
@@ -679,28 +695,70 @@ end;
 // P9: Tone Number
 // P10: 0:Simplex 1:Plus Shift 2:Minus Shift
 //
-procedure TFT2000.PollingProcess;
+procedure TFT2000.PollAscii(const LastCommand: AnsiString);
+var
+   Command: AnsiString;
 begin
    FPollingTimer.Enabled := False;
-   if FStopRequest = True then begin
+   if FStopRequest or ((not FUsePolling) and FInitialPolling) then
+      Exit;
+
+   // A pending command here means that its response timed out.
+   if FPendingPoll <> '' then begin
+      BufferString := '';
+   end;
+
+   if (FPollingCount < 0) or (FPollingCount > 3) then
+      FPollingCount := 0;
+
+   case FPollingCount of
+      0, 1: Command := 'IF';
+      2: Command := 'OI';
+      3: Command := LastCommand;
+   end;
+
+   FPendingPoll := string(Command);
+   // Arm before sending, including when the port is disconnected.
+   FPollingTimer.Interval := YAESU_POLL_TIMEOUT;
+   FPollingTimer.Enabled := True;
+   WriteData(Command + ';');
+end;
+
+procedure TFT2000.CompletePoll(const Command: string);
+begin
+   // Unsolicited and extra replies must not advance the polling sequence.
+   if (FPendingPoll = '') or (Command <> FPendingPoll) then
+      Exit;
+
+   FPendingPoll := '';
+   if FPollingCount = 3 then begin
+      FInitialPolling := True;
+      FPollingCount := 1;
+   end
+   else begin
+      Inc(FPollingCount);
+   end;
+end;
+
+procedure TFT2000.ResumePolling;
+begin
+   if FStopRequest or ((not FUsePolling) and FInitialPolling) then begin
+      FPollingTimer.Enabled := False;
       Exit;
    end;
 
-   case FPollingCount of
-      0, 1: begin
-         WriteData('IF;');
-      end;
+   // An unrelated or invalid reply must not cancel the response timeout.
+   if FPendingPoll <> '' then
+      Exit;
 
-      2: begin
-         WriteData('OI;');
-      end;
+   FPollingTimer.Enabled := False;
+   FPollingTimer.Interval := FPollingInterval;
+   FPollingTimer.Enabled := True;
+end;
 
-      3: begin
-         WriteData('FR;');
-         FInitialPolling := True;
-         FPollingCount := 0;
-      end;
-   end;
+procedure TFT2000.PollingProcess;
+begin
+   PollAscii('FR');
 end;
 
 procedure TFT2000.Reset;
@@ -1000,7 +1058,11 @@ begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+      if not FStopRequest then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -1067,7 +1129,11 @@ begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+      if not FStopRequest then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -1288,7 +1354,11 @@ begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+      if not FStopRequest then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -1386,7 +1456,11 @@ begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+      if not FStopRequest then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -1401,11 +1475,15 @@ end;
 
 procedure TFT847.PollingProcess;
 begin
+   if FPollingTimer.Interval = YAESU_POLL_TIMEOUT then
+      BufferString := '';
    FPollingTimer.Enabled := False;
    if FStopRequest = True then begin
       Exit;
    end;
 
+   FPollingTimer.Interval := YAESU_POLL_TIMEOUT;
+   FPollingTimer.Enabled := True;
    WriteData(_nil4 + AnsiChar($03));
 end;
 
@@ -1498,6 +1576,8 @@ end;
 
 procedure TFT817.PollingProcess;
 begin
+   if FPollingTimer.Interval = YAESU_POLL_TIMEOUT then
+      BufferString := '';
    FPollingTimer.Enabled := False;
    if FStopRequest = True then begin
       Exit;
@@ -1507,6 +1587,8 @@ begin
       BufferString :='';
       Fchange := False;
    end;
+   FPollingTimer.Interval := YAESU_POLL_TIMEOUT;
+   FPollingTimer.Enabled := True;
    WriteData(_nil4 + AnsiChar($03));
 end;
 
@@ -1516,9 +1598,15 @@ begin
    Inherited SetFreq(Hz, fSetLastFreq);
 
    FPollingTimer.Enabled := False;
-   Fchange := True;
-   sleep(130);    //waitがないとコマンド連投時に後のコマンドが欠落する
-   FPollingTimer.Enabled := True;
+   try
+      Fchange := True;
+      sleep(130);    //waitがないとコマンド連投時に後のコマンドが欠落する
+   finally
+      if not FStopRequest then begin
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
+   end;
 end;
 
 procedure TFT817.SetMode(Q: TQSO);
@@ -1552,9 +1640,15 @@ begin
    FIgnoreRigMode := fIgnoreRigModeBack;
 
    FPollingTimer.Enabled := False;
-   Fchange := True;
-   sleep(130);  //waitがないとコマンド連投時に後のコマンドが欠落する
-   FPollingTimer.Enabled := True;
+   try
+      Fchange := True;
+      sleep(130);  //waitがないとコマンド連投時に後のコマンドが欠落する
+   finally
+      if not FStopRequest then begin
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
+   end;
 end;
 
 { TFT920 }
@@ -1619,7 +1713,11 @@ begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+      if not FStopRequest then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -1673,7 +1771,11 @@ begin
          UpdateStatus;
       end;
    finally
-      FPollingTimer.Enabled := True;
+      if not FStopRequest then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
+         FPollingTimer.Enabled := True;
+      end;
    end;
 end;
 
@@ -1778,19 +1880,22 @@ begin
          strTemp := string(Copy(S, 21, 1));
          FXit := StrToBoolDef(strTemp, False);
 
-         Inc(FPollingCount);
+         CompletePoll(strCommand);
       end;
 
       // TX切り替え＝VFO A/B切り替え
       if strCommand = 'FT' then begin
+         if Length(S) < 4 then Exit;
          FunctionTx(string(Copy(S, 3)));
-         Inc(FPollingCount);
+         CompletePoll(strCommand);
       end;
 
       // RX切り替え＝VFO A/B切り替え
       if strCommand = 'FR' then begin
+         if Length(S) < 4 then Exit;
+         if (Self is TFTDX101) and (Length(S) < 5) then Exit;
          FunctionRx(string(Copy(S, 3)));
-         Inc(FPollingCount);
+         CompletePoll(strCommand);
       end;
 
       // メーター値読み出し（0-255を0-100にマップする）
@@ -1802,34 +1907,13 @@ begin
          UpdateStatus;
       end;
    finally
-      if (FUsePolling = True) or (FInitialPolling = False) then begin
-         FPollingTimer.Enabled := True;
-      end;
+      ResumePolling;
    end;
 end;
 
 procedure TFT991.PollingProcess;
 begin
-   FPollingTimer.Enabled := False;
-   if FStopRequest = True then begin
-      Exit;
-   end;
-
-   case FPollingCount of
-      0, 1: begin
-         WriteData('IF;');
-      end;
-
-      2: begin
-         WriteData('OI;');
-      end;
-
-      3: begin
-         WriteData('FT;');
-         FInitialPolling := True;
-         FPollingCount := 0;
-      end;
-   end;
+   PollAscii('FT');
 end;
 
 procedure TFT991.SetFreq(Hz: TFrequency; fSetLastFreq: Boolean);
@@ -2140,13 +2224,14 @@ begin
          strTemp := string(Copy(S, 23, 1));
          FXit := StrToBoolDef(strTemp, False);
 
-         Inc(FPollingCount);
+         CompletePoll(strCommand);
       end;
 
       // TX切り替え＝VFO A/B切り替え
       if strCommand = 'FT' then begin
+         if Length(S) < 4 then Exit;
          FunctionTx(string(Copy(S, 3)));
-         Inc(FPollingCount);
+         CompletePoll(strCommand);
       end;
 
       // メーター値読み出し（0-255を0-100にマップする）
@@ -2158,9 +2243,7 @@ begin
          UpdateStatus;
       end;
    finally
-      if (FUsePolling = True) or (FInitialPolling = False) then begin
-         FPollingTimer.Enabled := True;
-      end;
+      ResumePolling;
    end;
 end;
 
@@ -2334,26 +2417,7 @@ end;
 
 procedure TFTDX101.PollingProcess;
 begin
-   FPollingTimer.Enabled := False;
-   if FStopRequest = True then begin
-      Exit;
-   end;
-
-   case FPollingCount of
-      0, 1: begin
-         WriteData('IF;');
-      end;
-
-      2: begin
-         WriteData('OI;');
-      end;
-
-      3: begin
-         WriteData('FR;');
-         FInitialPolling := True;
-         FPollingCount := 0;
-      end;
-   end;
+   PollAscii('FR');
 end;
 
 procedure TFTDX101.AntSelect(no: Integer);

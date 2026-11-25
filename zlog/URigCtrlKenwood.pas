@@ -16,6 +16,7 @@ type
     procedure SetXit(flag: Boolean); override;
   private
     FFineStep: Boolean;
+    FPendingPoll: Boolean;
   public
     _CWR : boolean; // CW-R flag
     constructor Create(RigNum: Integer; APort: Integer; AComm: TCommPortDriver; ATimer: TTimer; MinBand, MaxBand: TBand); override;
@@ -87,6 +88,9 @@ type
   end;
 
 implementation
+
+const
+   KENWOOD_POLL_TIMEOUT = 1000; // milliseconds
 
 { TTS690 }
 
@@ -235,7 +239,15 @@ begin
          strTemp := string(Copy(S, 25, 1));
          FXit := StrToBoolDef(strTemp, False);
 
-         Inc(FPollingCount);
+         if FPendingPoll then begin
+            FPendingPoll := False;
+            if FPollingCount = 0 then begin
+               FPollingCount := 1;
+            end
+            else begin
+               FInitialPolling := True;
+            end;
+         end;
       end;
 
       if Command = 'MD' then begin
@@ -295,7 +307,12 @@ begin
          UpdateStatus;
       end;
    finally
-      if (FUsePolling = True) or (FInitialPolling = False) then begin
+      if FStopRequest or ((not FUsePolling) and FInitialPolling) then begin
+         FPollingTimer.Enabled := False;
+      end
+      else if not FPendingPoll then begin
+         FPollingTimer.Enabled := False;
+         FPollingTimer.Interval := FPollingInterval;
          FPollingTimer.Enabled := True;
       end;
    end;
@@ -303,6 +320,9 @@ end;
 
 procedure TTS690.Initialize();
 begin
+   FPendingPoll := False;
+   FPollingCount := 0;
+   FInitialPolling := False;
    Inherited;
 
    if FUsePolling = True then begin
@@ -322,13 +342,20 @@ begin
       Exit;
    end;
 
-   if FPollingCount = 0 then begin
-      WriteData('IF;');
-   end
-   else begin
-      WriteData('IF;');
-      FInitialPolling := True;
+   if (not FUsePolling) and FInitialPolling then begin
+      Exit;
    end;
+
+   // Discard an incomplete response after a timeout.
+   if FPendingPoll then begin
+      BufferString := '';
+   end;
+
+   FPendingPoll := True;
+   // Arm the timeout before sending, including synchronous responses.
+   FPollingTimer.Interval := KENWOOD_POLL_TIMEOUT;
+   FPollingTimer.Enabled := True;
+   WriteData('IF;');
 end;
 
 procedure TTS690.InquireStatus;
